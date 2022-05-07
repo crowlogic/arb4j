@@ -204,7 +204,7 @@ public class Real implements AutoCloseable {
   {
     return new Real(swigCPtr + index * Real.BYTES, false);  
   } 
-  public static final int digits = 30;
+  public static final int digits = 46;
   
   public String toFixedString()
   {
@@ -223,11 +223,15 @@ public class Real implements AutoCloseable {
   }
   
   
-  public synchronized String toString()
+  public String toString()
   {
     if ( dim == 1 )
     {
-      return getMid().toString(Math.max(1, digits)) + " +/- " + getRad().toString(5);    
+      // TODO: get the number of digits to from the exponent of the radius
+      String prefix = getMid().toString(digits);
+      // dont print the last digit since its not gauranteed to be correct
+      prefix = prefix.substring(0, prefix.length() - 1 );
+      return prefix + " +/- " + getRad().toString(5);    
       //return arblib.arb_get_str(this, digits, 1);
     }
     else
