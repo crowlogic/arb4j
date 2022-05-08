@@ -1,3 +1,12 @@
+arb4j is a Java wrapper around the fantastic and amazing arb library for ball arithmetic found at http://arblib.org
+
+========================================================================
+There is a project wiki at 
+https://github.com/crowlogic/arb4j/wiki 
+and you can see some nice examples of complex function visualization at
+https://github.com/crowlogic/arb4j/wiki/Gallery 
+=======================================================================
+ 
 To build this library you will need the following:
 
 SWIG (Tested with Versions 4.0.1 and 4.0.2)
@@ -12,9 +21,11 @@ After that happens, the script then calls the bin/caw which stands for
 "compile arblib wrapper" which, if all goes well, should leave a file
 named libarblib.so in root directory of the project
 
-The output should look this if all goes well. (You windows users are on your own, don't even talk to me about it but if someone wants to fork it and make it so it works with
-cygwin or something and non-obtrusive patches then I will entertain the idea of a pull request)
+The output should look this if all goes well. (You unfortunate victims of microsloth windoze are on your own, though if someone wants to fork it and make it so it works with
+cygwin or something and non-obtrusive patches then I will entertain the idea of a pull request if the patches are not too gnarly  )
 
+
+=====================================
 stephen@msi:~/arb4j$ gaw
 + readlink -f /home/stephen/fm/bin/gaw
 + dirname /home/stephen/git/arb4j/bin/gaw
@@ -65,7 +76,7 @@ acb_poly_struct
 + export INCLUDES=-I/usr/lib/jvm/jdk-17/include -I/usr/lib/jvm/jdk-17/include/linux
 + export SOURCES=native/complex_plot.c native/arb_wrap.c
 + gcc -O3 -fPIC -shared native/complex_plot.c native/arb_wrap.c -I/usr/lib/jvm/jdk-17/include -I/usr/lib/jvm/jdk-17/include/linux -olibarblib.so -lflint-arb
-
+===================================
 
 If that looks good, then go ahead and run "mvn install" or just open
 the project in Eclipse with the CDT (and Groovy) packages installed

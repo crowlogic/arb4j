@@ -1,6 +1,6 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|article|alt-colors|framed-theorems>>
+<style|<tuple|article|alt-colors|cite-author-year|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|<with|font-base-size|8|Complex Dynamics of The
@@ -29,113 +29,113 @@
 
     <with|par-left|1tab|1.2<space|2spc>The Frobenius-Perron Transfer Operator
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-4>>
+    <no-break><pageref|auto-5>>
 
     <with|par-left|1tab|1.3<space|2spc>Physical Interpretations of the
     Cauchy-Riemann Equations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-6>>
+    <no-break><pageref|auto-7>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>The
     Operator <with|color|dark red|font-family|rm|<with|mode|math|S<rsup|a><rsub|f><around*|(|t|)>=tanh<around*|(|ln<around*|(|1-<around*|(|<frac|f<around*|(|t|)>|a>|)><rsup|2>|)>|)>>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7><vspace|0.5fn>
+    <no-break><pageref|auto-8><vspace|0.5fn>
 
     <with|par-left|1tab|2.1<space|2spc>The Curve <with|color|dark
     red|font-family|rm|<with|mode|math|Re<around*|(|S<around*|(|t|)>|)>=0>>
     is a Bernoullian Lemniscate <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8>>
+    <no-break><pageref|auto-9>>
 
     <with|par-left|1tab|2.2<space|2spc>The Curve <with|color|dark
     red|font-family|rm|<with|mode|math|Im<around*|(|S<around*|(|t|)>|)>=0>>
     is a Conjugate Pair of Rectangular Hyperbolas
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-9>>
+    <no-break><pageref|auto-10>>
 
     <with|par-left|1tab|2.3<space|2spc>Newton Maps and Flows of
     <with|color|dark red|font-family|rm|<with|mode|math|S<rsub|f><around*|(|t|)>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-10>>
+    <no-break><pageref|auto-11>>
 
     <with|par-left|2tab|2.3.1<space|2spc>Factoring Out The Double-Root at the
     Origin of <with|color|dark red|font-family|rm|<with|mode|math|N<rsub|S<rsub|f>><around*|(|t|)>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-11>>
+    <no-break><pageref|auto-12>>
 
     <with|par-left|2tab|2.3.2<space|2spc>The Newton Flow
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-12>>
+    <no-break><pageref|auto-13>>
 
     <with|par-left|2tab|2.3.3<space|2spc>The Desingularized Newton Flow For
     Entire Functions <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-14>>
+    <no-break><pageref|auto-15>>
 
     <with|par-left|2tab|2.3.4<space|2spc>The Continuous Desingularized Newton
     Flow for Meromorphic Functions <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-16>>
+    <no-break><pageref|auto-17>>
 
     <with|par-left|2tab|2.3.5<space|2spc>The Continuous Newton Flow
     <with|color|dark red|font-family|rm|<with|mode|math|<wide|\<cal-N\>|\<bar\>><around*|(|S<rsub|f>|)>>>
     and Its Approximation <with|color|dark
     red|font-family|rm|<with|mode|math|<wide|\<cal-N\>|\<bar\>><rsup|h><around*|(|S<rsub|f>|)>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-17>>
+    <no-break><pageref|auto-18>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>The
     Riemann Zeta <with|color|dark red|font-family|rm|<with|mode|math|\<zeta\>>>
     Function> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-18><vspace|0.5fn>
+    <no-break><pageref|auto-19><vspace|0.5fn>
 
     <with|par-left|1tab|3.1<space|2spc>The Riemann Hypothesis
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-20>>
+    <no-break><pageref|auto-21>>
 
     <with|par-left|2tab|3.1.1<space|2spc>Lines of Constant Phase and the
     Riemann Hypothesis <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-22>>
+    <no-break><pageref|auto-23>>
 
     <with|par-left|1tab|3.2<space|2spc>The Hardy Z Function
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-23>>
+    <no-break><pageref|auto-24>>
 
     <with|par-left|2tab|3.2.1<space|2spc>The Phase of<with|color|dark
     red|font-family|rm|<with|mode|math|>> <with|color|dark
     red|font-family|rm|<with|mode|math|\<zeta\>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-25>>
+    <no-break><pageref|auto-26>>
 
     <with|par-left|1tab|3.3<space|2spc>The Function <with|color|dark
     red|font-family|rm|<with|mode|math|X<around*|(|t|)>=<around*|(|S\<circ\>Z|)><around*|(|t|)>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-29>>
+    <no-break><pageref|auto-30>>
 
     <with|par-left|2tab|3.3.1<space|2spc>Integration Along a Curve: A Newton
     Iteration for the Angle <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-30>>
+    <no-break><pageref|auto-31>>
 
     <with|par-left|2tab|3.3.2<space|2spc>Roots of <with|color|dark
     red|font-family|rm|<with|mode|math|X<around*|(|t|)>>> on the Real Line
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-31>>
+    <no-break><pageref|auto-32>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>Linearizing
     > <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-32><vspace|0.5fn>
+    <no-break><pageref|auto-33><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Appendix>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-33><vspace|0.5fn>
+    <no-break><pageref|auto-34><vspace|0.5fn>
 
     <with|par-left|1tab|5.1<space|2spc>The Spectral Theorem
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-34>>
+    <no-break><pageref|auto-35>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-35><vspace|0.5fn>
+    <no-break><pageref|auto-36><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Index>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-36><vspace|0.5fn>
+    <no-break><pageref|auto-37><vspace|0.5fn>
   </table-of-contents>
 
   <section|Introduction>
@@ -168,13 +168,7 @@
   <math|tanh>, that is <math|tanh<around*|(|0|)>=0>, so that roots of
   <math|Z> are roots of X.\ 
 
-  \ is that the corresponding Riemann surface of <math|X> has a topology
-  which features closed lemniscate curves around each root so that
-  compactness theoreoms and whatnot can be applied since measures on the
-  surface of Y do not escape to infinite like measures on the surfaces of the
-  Hardy <math|Z>, Riemann <math|\<zeta\>>(zeta), Riemann <math|\<xi\>>(xi),
-  or Dirichlet <math|\<eta\>>(eta) functions. Also, the surface of <math|X>
-  is compact, unlike the others.
+  \;
 
   <subsection|The Schröder Equation>
 
@@ -219,10 +213,10 @@
     of a holomorphic map <math|f> is not strictly equal to 0 or 1, that is
     <math|<around*|\||\<lambda\>|\|>\<nsubset\><around*|{|0,1|}>>,<space|1em>then
     a local holomorphic change of coordinates
-    <math|w=\<phi\><around*|(|z|)>>, called the <samp|Koenig's function>,
-    unique up to a scalar multiplication by nonzero constant, exists, having
-    a fixed-point at the origin <math|\<phi\><around*|(|0|)>=0> such that
-    Schröder's equation is true\ 
+    <math|w=\<phi\><around*|(|z|)>>, called the <samp|Koenig's
+    function><index|Koenig's function>, unique up to a scalar multiplication
+    by nonzero constant, exists, having a fixed-point at the origin
+    <math|\<phi\><around*|(|0|)>=0> such that Schröder's equation is true\ 
 
     <\equation>
       \<phi\>*\<circ\>f\<circ\>\<phi\><rsup|-1>=\<lambda\>
@@ -233,6 +227,13 @@
     0<math|>.<cite|Milnor2006> <cite-detail|Milnor2006|Theorem
     8.2><cite-detail|Shapiro1998CompositionOA|2. Koenig's Theorem, Part I.>
   </theorem>
+
+  <\lemma>
+    <strong|(<verbatim|<em|The Simplicity Lemma><verbatim|>>)> The Koenig's
+    function <math|\<phi\>*> is the only solution to the eigenvalue equation
+    as all of the other solutions are constant multiples of powers of
+    \<sigma\>
+  </lemma>
 
   <subsection|The Frobenius-Perron Transfer Operator>
 
@@ -901,73 +902,86 @@
     <cite-detail|MonsterMoonshine|Theorem 1.3.2>
   </theorem>
 
-  <\bibliography|bib|tm-plain|references>
-    <\bib-list|11>
-      <bibitem*|1><label|bib-riemann>Ueber die anzahl der primzahlen unter
-      einer gegebenen grösse. <newblock><with|font-shape|italic|Monatsberichte
-      der Berliner Akademie>, R1, 1859.<newblock>
+  <\bibliography|bib|alpha|references>
+    <with|etalchar|<macro|1|<rsup|<math|<arg|1>>>>|<\bib-list|SBK+18>
+      <bibitem*|CC89><label|bib-coxeter1989introduction>H.S.M. Coxeter and
+      H.S.M. Coxeter. <newblock><with|font-shape|italic|Introduction to
+      Geometry>. <newblock>Wiley Classics Library. Wiley, 1989.
 
-      <bibitem*|2><label|bib-klein2018riemann><with|font-shape|italic|On
-      Riemann's theory of algebraic functions and their integrals>.
-      <newblock>Cambridge: Macmillan and Bowes, 1893.<newblock>
+      <bibitem*|JJT88><label|bib-jongen1988continuous>H<nbsp>Th Jongen, Peter
+      Jonker, and Frank Twilt. <newblock>The continuous, desingularized
+      newton method for meromorphic functions. <newblock>In
+      <with|font-shape|italic|Newton's Method and Dynamical Systems>, pages
+      81\U121. Springer, 1988.
 
-      <bibitem*|3><label|bib-lawrence1972catalog><with|font-shape|italic|A
+      <bibitem*|Kle93><label|bib-klein2018riemann>Felix Klein.
+      <newblock><with|font-shape|italic|On Riemann's theory of algebraic
+      functions and their integrals>. <newblock>Cambridge: Macmillan and
+      Bowes, 1893.
+
+      <bibitem*|Kra12><label|bib-krantz2012handbook>S.G. Krantz.
+      <newblock><with|font-shape|italic|Handbook of Complex Variables>.
+      <newblock>Birkhauser Boston, 2012.
+
+      <bibitem*|LLP72><label|bib-lawrence1972catalog>J.D. Lawrence, D.L.
+      Lawrence, and Dover Publications. <newblock><with|font-shape|italic|A
       Catalog of Special Plane Curves>. <newblock>Dover Books on Mathematics.
-      Dover Publications, 1972.<newblock>
+      Dover Publications, 1972.
 
-      <bibitem*|4><label|bib-Peitgen1988GlobalAO>Global aspects of the
-      continuous and discrete newton method: a case study.
-      <newblock><with|font-shape|italic|Acta Applicandae Mathematicae>, 13,
-      1988.<newblock>
+      <bibitem*|Mil06><label|bib-Milnor2006>John Milnor.
+      <newblock><with|font-shape|italic|Dynamics in One Complex Variable>.
+      <newblock>Annals of Mathematics Studies 160. Princeton University
+      Press, 2nd edition, 2006.
 
-      <bibitem*|5><label|bib-jongen1988continuous>The continuous,
-      desingularized newton method for meromorphic functions.
-      <newblock><localize|In ><with|font-shape|italic|Newton's Method and
-      Dynamical Systems>. Springer, 1988.<newblock>
+      <bibitem*|PPS88><label|bib-Peitgen1988GlobalAO>Heinz-Otto Peitgen,
+      Michael Prufer, and Klaus Schmitt. <newblock>Global aspects of the
+      continuous and discrete newton method: A case study.
+      <newblock><with|font-shape|italic|Acta Applicandae Mathematicae>,
+      13:123\U202, 1988.
 
-      <bibitem*|6><label|bib-ds2><with|font-shape|italic|Dynamical Systems
-      II: Ergodic Theory with Applications to Dynamical Systems and
-      Statistical Mechanics>. <newblock>Springer-Verlag, 1989.<newblock>
+      <bibitem*|Rie59><label|bib-riemann>Berhhard Riemann. <newblock>Ueber
+      die anzahl der primzahlen unter einer gegebenen grösse.
+      <newblock><with|font-shape|italic|Monatsberichte der Berliner
+      Akademie>, R1:145, 1859.
 
-      <bibitem*|7><label|bib-coxeter1989introduction><with|font-shape|italic|Introduction
-      to Geometry>. <newblock>Wiley Classics Library. Wiley, 1989.<newblock>
+      <bibitem*|SBK+18><label|bib-constantPhaseRH>Wolfgang<nbsp>P Schleich,
+      Iva Bezd¥ková, Moochan<nbsp>B Kim, Paul<nbsp>C Abbott, Helmut Maier,
+      Hugh<nbsp>L Montgomery, and John<nbsp>W Neuberger. <newblock>Equivalent
+      formulations of the riemann hypothesis based on lines of constant
+      phase. <newblock><with|font-shape|italic|Physica Scripta>,
+      93(6):065201, 2018.
 
-      <bibitem*|8><label|bib-Shapiro1998CompositionOA>Composition operators
-      and schroder's functional equation.
-      <newblock><with|font-shape|italic|Contemporary Mathematics>, (213),
-      1998.<newblock>
+      <bibitem*|Sha98><label|bib-Shapiro1998CompositionOA>J.<nbsp>H. Shapiro.
+      <newblock>Composition operators and schroder's functional equation.
+      <newblock><with|font-shape|italic|Contemporary Mathematics>,
+      (213):213\U228, 1998.
 
-      <bibitem*|9><label|bib-Milnor2006><with|font-shape|italic|Dynamics in
-      One Complex Variable>. <newblock>Annals of Mathematics Studies 160.
-      Princeton University Press, 2nd<localize| edition>, 2006.<newblock>
-
-      <bibitem*|10><label|bib-krantz2012handbook><with|font-shape|italic|Handbook
-      of Complex Variables>. <newblock>Birkhauser Boston, 2012.<newblock>
-
-      <bibitem*|11><label|bib-constantPhaseRH>Equivalent formulations of the
-      riemann hypothesis based on lines of constant phase.
-      <newblock><with|font-shape|italic|Physica Scripta>, 93(6),
-      2018.<newblock>
-    </bib-list>
+      <bibitem*|Sin89><label|bib-ds2>Yakov Sinai.
+      <newblock><with|font-shape|italic|Dynamical Systems II: Ergodic Theory
+      with Applications to Dynamical Systems and Statistical Mechanics>.
+      <newblock>Springer-Verlag, 1989.
+    </bib-list>>
   </bibliography>
 
   <\the-index|idx>
-    <index+1|critical line|<pageref|auto-21>>
+    <index+1|critical line|<pageref|auto-22>>
 
     <index+1|desingularized Newton flow (for entire
-    functions)|<pageref|auto-15>>
+    functions)|<pageref|auto-16>>
 
-    <index+1|gamma function|<pageref|auto-24>>
+    <index+1|gamma function|<pageref|auto-25>>
 
-    <index+1|Hardy Z function|<pageref|auto-27>>
+    <index+1|Hardy Z function|<pageref|auto-28>>
 
-    <index+1|Newton flow|<pageref|auto-13>>
+    <index+1|Koenig's function|<pageref|auto-4>>
 
-    <index+1|Riemann zeta function|<pageref|auto-19>>
+    <index+1|Newton flow|<pageref|auto-14>>
 
-    <index+1|Riemann-Siegel (var)theta function|<pageref|auto-26>>
+    <index+1|Riemann zeta function|<pageref|auto-20>>
 
-    <index+1|transfer operator|<pageref|auto-5>>
+    <index+1|Riemann-Siegel (var)theta function|<pageref|auto-27>>
+
+    <index+1|transfer operator|<pageref|auto-6>>
   </the-index>
 </body>
 
@@ -976,68 +990,69 @@
     <associate|info-flag|none>
     <associate|page-height|auto>
     <associate|page-medium|paper>
-    <associate|page-type|letter>
+    <associate|page-type|legal>
     <associate|page-width|auto>
   </collection>
 </initial>
 
 <\references>
   <\collection>
-    <associate|N|<tuple|41|9>>
-    <associate|NS|<tuple|25|5>>
+    <associate|N|<tuple|41|7>>
+    <associate|NS|<tuple|25|4>>
     <associate|auto-1|<tuple|1|1>>
-    <associate|auto-10|<tuple|2.3|5>>
-    <associate|auto-11|<tuple|2.3.1|6>>
-    <associate|auto-12|<tuple|2.3.2|6>>
-    <associate|auto-13|<tuple|Newton flow|6>>
-    <associate|auto-14|<tuple|2.3.3|6>>
-    <associate|auto-15|<tuple|desingularized Newton flow (for entire
-    functions)|6>>
-    <associate|auto-16|<tuple|2.3.4|7>>
-    <associate|auto-17|<tuple|2.3.5|7>>
-    <associate|auto-18|<tuple|3|7>>
-    <associate|auto-19|<tuple|Riemann zeta function|7>>
-    <associate|auto-2|<tuple|1.1|2>>
-    <associate|auto-20|<tuple|3.1|8>>
-    <associate|auto-21|<tuple|critical line|8>>
-    <associate|auto-22|<tuple|3.1.1|8>>
-    <associate|auto-23|<tuple|3.2|8>>
-    <associate|auto-24|<tuple|gamma function|8>>
-    <associate|auto-25|<tuple|3.2.1|8>>
-    <associate|auto-26|<tuple|Riemann-Siegel (var)theta function|8>>
-    <associate|auto-27|<tuple|Hardy Z function|8>>
-    <associate|auto-28|<tuple|1|9>>
-    <associate|auto-29|<tuple|3.3|9>>
+    <associate|auto-10|<tuple|2.2|4>>
+    <associate|auto-11|<tuple|2.3|4>>
+    <associate|auto-12|<tuple|2.3.1|4>>
+    <associate|auto-13|<tuple|2.3.2|5>>
+    <associate|auto-14|<tuple|Newton flow|5>>
+    <associate|auto-15|<tuple|2.3.3|5>>
+    <associate|auto-16|<tuple|desingularized Newton flow (for entire
+    functions)|5>>
+    <associate|auto-17|<tuple|2.3.4|5>>
+    <associate|auto-18|<tuple|2.3.5|5>>
+    <associate|auto-19|<tuple|3|5>>
+    <associate|auto-2|<tuple|1.1|1>>
+    <associate|auto-20|<tuple|Riemann zeta function|5>>
+    <associate|auto-21|<tuple|3.1|6>>
+    <associate|auto-22|<tuple|critical line|6>>
+    <associate|auto-23|<tuple|3.1.1|6>>
+    <associate|auto-24|<tuple|3.2|6>>
+    <associate|auto-25|<tuple|gamma function|6>>
+    <associate|auto-26|<tuple|3.2.1|6>>
+    <associate|auto-27|<tuple|Riemann-Siegel (var)theta function|6>>
+    <associate|auto-28|<tuple|Hardy Z function|6>>
+    <associate|auto-29|<tuple|1|6>>
     <associate|auto-3|<tuple|1.1.1|2>>
-    <associate|auto-30|<tuple|3.3.1|9>>
-    <associate|auto-31|<tuple|3.3.2|10>>
-    <associate|auto-32|<tuple|4|10>>
-    <associate|auto-33|<tuple|5|10>>
-    <associate|auto-34|<tuple|5.1|10>>
-    <associate|auto-35|<tuple|47|11>>
-    <associate|auto-36|<tuple|11|11>>
-    <associate|auto-4|<tuple|1.2|2>>
-    <associate|auto-5|<tuple|transfer operator|2>>
-    <associate|auto-6|<tuple|1.3|3>>
-    <associate|auto-7|<tuple|2|3>>
-    <associate|auto-8|<tuple|2.1|4>>
-    <associate|auto-9|<tuple|2.2|5>>
-    <associate|bib-Milnor2006|<tuple|9|11>>
-    <associate|bib-Peitgen1988GlobalAO|<tuple|4|11>>
-    <associate|bib-Shapiro1998CompositionOA|<tuple|8|11>>
-    <associate|bib-constantPhaseRH|<tuple|11|11>>
-    <associate|bib-coxeter1989introduction|<tuple|7|11>>
-    <associate|bib-ds2|<tuple|6|11>>
-    <associate|bib-jongen1988continuous|<tuple|5|11>>
-    <associate|bib-klein2018riemann|<tuple|2|11>>
-    <associate|bib-krantz2012handbook|<tuple|10|11>>
-    <associate|bib-lawrence1972catalog|<tuple|3|11>>
-    <associate|bib-riemann|<tuple|1|11>>
-    <associate|dl|<tuple|14|7>>
+    <associate|auto-30|<tuple|3.3|7>>
+    <associate|auto-31|<tuple|3.3.1|7>>
+    <associate|auto-32|<tuple|3.3.2|7>>
+    <associate|auto-33|<tuple|4|7>>
+    <associate|auto-34|<tuple|5|8>>
+    <associate|auto-35|<tuple|5.1|8>>
+    <associate|auto-36|<tuple|47|8>>
+    <associate|auto-37|<tuple|Sin89|8>>
+    <associate|auto-4|<tuple|Koenig's function|2>>
+    <associate|auto-5|<tuple|1.2|2>>
+    <associate|auto-6|<tuple|transfer operator|2>>
+    <associate|auto-7|<tuple|1.3|2>>
+    <associate|auto-8|<tuple|2|3>>
+    <associate|auto-9|<tuple|2.1|3>>
+    <associate|bib-Milnor2006|<tuple|Mil06|8>>
+    <associate|bib-Peitgen1988GlobalAO|<tuple|PPS88|8>>
+    <associate|bib-Shapiro1998CompositionOA|<tuple|Sha98|8>>
+    <associate|bib-constantPhaseRH|<tuple|SBK+18|8>>
+    <associate|bib-coxeter1989introduction|<tuple|CC89|8>>
+    <associate|bib-ds2|<tuple|Sin89|8>>
+    <associate|bib-jongen1988continuous|<tuple|JJT88|8>>
+    <associate|bib-klein2018riemann|<tuple|Kle93|8>>
+    <associate|bib-krantz2012handbook|<tuple|Kra12|8>>
+    <associate|bib-lawrence1972catalog|<tuple|LLP72|8>>
+    <associate|bib-riemann|<tuple|Rie59|8>>
+    <associate|dl|<tuple|15|5>>
     <associate|kc|<tuple|3|2>>
-    <associate|nm|<tuple|32|7>>
-    <associate|rh|<tuple|16|8>>
-    <associate|rnm|<tuple|29|6>>
+    <associate|nm|<tuple|32|5>>
+    <associate|rh|<tuple|17|6>>
+    <associate|rnm|<tuple|29|5>>
   </collection>
 </references>
 
@@ -1080,25 +1095,27 @@
         and the argument of zeta <with|color|<quote|dark
         red>|font-family|<quote|rm>|<with|mode|<quote|math>|\<zeta\>>> on the
         critical line
-      </surround>|<pageref|auto-28>>
+      </surround>|<pageref|auto-29>>
     </associate>
     <\associate|idx>
-      <tuple|<tuple|transfer operator>|<pageref|auto-5>>
+      <tuple|<tuple|Koenig's function>|<pageref|auto-4>>
 
-      <tuple|<tuple|Newton flow>|<pageref|auto-13>>
+      <tuple|<tuple|transfer operator>|<pageref|auto-6>>
+
+      <tuple|<tuple|Newton flow>|<pageref|auto-14>>
 
       <tuple|<tuple|desingularized Newton flow (for entire
-      functions)>|<pageref|auto-15>>
+      functions)>|<pageref|auto-16>>
 
-      <tuple|<tuple|Riemann zeta function>|<pageref|auto-19>>
+      <tuple|<tuple|Riemann zeta function>|<pageref|auto-20>>
 
-      <tuple|<tuple|critical line>|<pageref|auto-21>>
+      <tuple|<tuple|critical line>|<pageref|auto-22>>
 
-      <tuple|<tuple|gamma function>|<pageref|auto-24>>
+      <tuple|<tuple|gamma function>|<pageref|auto-25>>
 
-      <tuple|<tuple|Riemann-Siegel (var)theta function>|<pageref|auto-26>>
+      <tuple|<tuple|Riemann-Siegel (var)theta function>|<pageref|auto-27>>
 
-      <tuple|<tuple|Hardy Z function>|<pageref|auto-27>>
+      <tuple|<tuple|Hardy Z function>|<pageref|auto-28>>
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Introduction>
@@ -1115,116 +1132,116 @@
 
       <with|par-left|<quote|1tab>|1.2<space|2spc>The Frobenius-Perron
       Transfer Operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4>>
+      <no-break><pageref|auto-5>>
 
       <with|par-left|<quote|1tab>|1.3<space|2spc>Physical Interpretations of
       the Cauchy-Riemann Equations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6>>
+      <no-break><pageref|auto-7>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>The
       Operator <with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|S<rsup|a><rsub|f><around*|(|t|)>=tanh<around*|(|ln<around*|(|1-<around*|(|<frac|f<around*|(|t|)>|a>|)><rsup|2>|)>|)>>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7><vspace|0.5fn>
+      <no-break><pageref|auto-8><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|2.1<space|2spc>The Curve
       <with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|Re<around*|(|S<around*|(|t|)>|)>=0>>
       is a Bernoullian Lemniscate <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
+      <no-break><pageref|auto-9>>
 
       <with|par-left|<quote|1tab>|2.2<space|2spc>The Curve
       <with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|Im<around*|(|S<around*|(|t|)>|)>=0>>
       is a Conjugate Pair of Rectangular Hyperbolas
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9>>
+      <no-break><pageref|auto-10>>
 
       <with|par-left|<quote|1tab>|2.3<space|2spc>Newton Maps and Flows of
       <with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|S<rsub|f><around*|(|t|)>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10>>
+      <no-break><pageref|auto-11>>
 
       <with|par-left|<quote|2tab>|2.3.1<space|2spc>Factoring Out The
       Double-Root at the Origin of <with|color|<quote|dark
       red>|font-family|<quote|rm>|<with|mode|<quote|math>|N<rsub|S<rsub|f>><around*|(|t|)>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11>>
+      <no-break><pageref|auto-12>>
 
       <with|par-left|<quote|2tab>|2.3.2<space|2spc>The Newton Flow
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
+      <no-break><pageref|auto-13>>
 
       <with|par-left|<quote|2tab>|2.3.3<space|2spc>The Desingularized Newton
       Flow For Entire Functions <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14>>
+      <no-break><pageref|auto-15>>
 
       <with|par-left|<quote|2tab>|2.3.4<space|2spc>The Continuous
       Desingularized Newton Flow for Meromorphic Functions
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16>>
+      <no-break><pageref|auto-17>>
 
       <with|par-left|<quote|2tab>|2.3.5<space|2spc>The Continuous Newton Flow
       <with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|<wide|\<cal-N\>|\<bar\>><around*|(|S<rsub|f>|)>>>
       and Its Approximation <with|color|<quote|dark
       red>|font-family|<quote|rm>|<with|mode|<quote|math>|<wide|\<cal-N\>|\<bar\>><rsup|h><around*|(|S<rsub|f>|)>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17>>
+      <no-break><pageref|auto-18>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>The
       Riemann Zeta <with|color|<quote|dark
       red>|font-family|<quote|rm>|<with|mode|<quote|math>|\<zeta\>>>
       Function> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-18><vspace|0.5fn>
+      <no-break><pageref|auto-19><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|3.1<space|2spc>The Riemann Hypothesis
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-20>>
+      <no-break><pageref|auto-21>>
 
       <with|par-left|<quote|2tab>|3.1.1<space|2spc>Lines of Constant Phase
       and the Riemann Hypothesis <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-22>>
+      <no-break><pageref|auto-23>>
 
       <with|par-left|<quote|1tab>|3.2<space|2spc>The Hardy Z Function
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-23>>
+      <no-break><pageref|auto-24>>
 
       <with|par-left|<quote|2tab>|3.2.1<space|2spc>The Phase
       of<with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|>>
       <with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|\<zeta\>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-25>>
+      <no-break><pageref|auto-26>>
 
       <with|par-left|<quote|1tab>|3.3<space|2spc>The Function
       <with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|X<around*|(|t|)>=<around*|(|S\<circ\>Z|)><around*|(|t|)>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-29>>
+      <no-break><pageref|auto-30>>
 
       <with|par-left|<quote|2tab>|3.3.1<space|2spc>Integration Along a Curve:
       A Newton Iteration for the Angle <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-30>>
+      <no-break><pageref|auto-31>>
 
       <with|par-left|<quote|2tab>|3.3.2<space|2spc>Roots of
       <with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|X<around*|(|t|)>>>
       on the Real Line <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-31>>
+      <no-break><pageref|auto-32>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Linearizing
       > <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-32><vspace|0.5fn>
+      <no-break><pageref|auto-33><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Appendix>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-33><vspace|0.5fn>
+      <no-break><pageref|auto-34><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|5.1<space|2spc>The Spectral Theorem
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-34>>
+      <no-break><pageref|auto-35>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-35><vspace|0.5fn>
+      <no-break><pageref|auto-36><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Index>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-36><vspace|0.5fn>
+      <no-break><pageref|auto-37><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
