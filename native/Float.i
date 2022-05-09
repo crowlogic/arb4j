@@ -1,5 +1,4 @@
 %typemap(javaimports) arf_struct %{
-import java.util.concurrent.TimeUnit;
 import static arblib.Constants.*;
 %}
 
@@ -12,6 +11,15 @@ import static arblib.Constants.*;
 
 %typemap(javacode) arf_struct %{
 
+  /**
+   * 
+   * @return {@link arblib#arf_is_nan(Float)} != 0
+   */
+  public boolean isNotANumber()
+  {
+    return arblib.arf_is_nan(this) != 0;
+  }
+  
   /**
    * @return {@link arblib#arf_equal(Float, Float)} != 0
    */

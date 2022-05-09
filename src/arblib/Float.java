@@ -36,6 +36,15 @@ public class Float implements AutoCloseable {
 
 
   /**
+   * 
+   * @return {@link arblib#arf_is_nan(Float)} != 0
+   */
+  public boolean isNotANumber()
+  {
+    return arblib.arf_is_nan(this) != 0;
+  }
+  
+  /**
    * @return {@link arblib#arf_equal(Float, Float)} != 0
    */
   @Override

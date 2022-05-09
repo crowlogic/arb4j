@@ -352,7 +352,7 @@ import static arblib.arblib.*;
     }
 
     /* any nan -> [nan +/- inf] */
-    if (arf_is_nan(a) != 0 || arf_is_nan(b) != 0)
+    if (a.isNotANumber() || b.isNotANumber() )
     {
       arb_indeterminate(this);
       return this;
