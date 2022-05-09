@@ -17,7 +17,7 @@ import arblib.FloatInterval.RootStatus;
 import static arblib.arblib.*;
 
 /**
- * Interface which defines a function from R -> R where R is the set of real
+ * Interface which defines a function from ℝ -> ℝ where ℝ is the set of real
  * number
  */
 public interface RealFunction
@@ -26,6 +26,16 @@ public interface RealFunction
 
   public static final int FLINT_BITS = 64;
 
+  /**
+   * 
+   * 
+   * @param xnew
+   * @param x
+   * @param convergenceRegion the interval I
+   * @param convergenceFactor
+   * @param prec
+   * @return C=the supremum of |f''(t)|/(2*|f'(t)| over {t,u}∈I
+   */
   public default boolean
          calculateNewtonStep(Real xnew, Real x, Real convergenceRegion, Float convergenceFactor, int prec)
   {
@@ -35,12 +45,11 @@ public interface RealFunction
       x.getRad().pow(2, err);
       convergenceFactor.getMagnitude(v).mul(err, err);
 
-      t.getMid().assign(x.getMid());
+      t.setMid(x.getMid());
       t.getRad().zero();
 
-      evaluate(t, 2, prec, u);
+      evaluate(t, 2, prec, u).div(u.get(1), prec, u);
 
-      u.div(u.get(1), prec, u);
       t.sub(u, prec, u);
       u.getRad().pow(2, err);
 
@@ -58,27 +67,29 @@ public interface RealFunction
   };
 
   /**
-   * Evaluates a bound for C=sup(1/2|f''(t)|/|f'(u)|) forall {t,u} in I where f is
-   * this function. The bound is obtained by evaluating f'(I) and f''(I) directly.
-   * If this function is ill-conditioned, then I may need to be extremely precise
-   * in order to get an effective, finite bound for C.
+   * Given an interval specified by convergenceRegion, evaluates a bound for
+   * $C=sup{t,u}∈I(|f''(t)|/(2*|f'(t)|))$. The bound is obtained by calling
+   * this{@link #evaluate(Real, int, int, Real)} directly. If this function is
+   * ill-conditioned, then convergenceRegion which specifies the interval I may
+   * need to be extremely precise in order to get an effectively finite bound for
+   * C.
    * 
-   * @param convergenceRegion          I
-   * @param jet                        Real 3-vector to hold [f,f',f'']
+   * @param convergenceRegion I
+   * @param jet               Real 3-vector to hold the results [f,f',f''] from
+   *                          calling this{@link #evaluate(Real, int, int, Real)}
    * @param prec
-   * @param resultingConvergenceFactor
+   * @param convergenceFactor
    * 
    * @return C
    */
   public default Float
-         getNewtonConvergenceFactor(Real convergenceRegion, Real jet, int prec, Float resultingConvergenceFactor)
+         getNewtonConvergenceFactor(Real convergenceRegion, Real jet, int prec, Float convergenceFactor)
   {
     assert jet.size() >= 3;
-    evaluate(convergenceRegion, 3, prec, jet);
-    jet.get(2).div(jet.get(1), prec, jet);
+    evaluate(convergenceRegion, 3, prec, jet).get(2).div(jet.get(1), prec, jet);
     arblib.arb_mul_2exp_si(jet, jet, -1);
-    arblib.arb_get_abs_ubound_arf(resultingConvergenceFactor, jet, prec);
-    return resultingConvergenceFactor;
+    arblib.arb_get_abs_ubound_arf(convergenceFactor, jet, prec);
+    return convergenceFactor;
   }
 
   /**
@@ -253,6 +264,5 @@ public interface RealFunction
     }
 
   }
-
 
 }

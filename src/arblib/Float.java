@@ -35,6 +35,29 @@ public class Float implements AutoCloseable {
   }
 
 
+  /**
+   * @return {@link arblib#arf_equal(Float, Float)} != 0
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    if ( !(obj instanceof Float))
+    {
+      return false;
+    }
+    Float that = (Float)obj;
+    return arblib.arf_equal(this, that) != 0;
+  }
+  
+  /**
+   * 
+   * @return {@link arblib#arf_is_inf(Float)} != 0
+   */
+  public boolean isInfinite()
+  {
+    return arblib.arf_is_inf(this) != 0;
+  }
+  
   @Override
   public void close()
   { 

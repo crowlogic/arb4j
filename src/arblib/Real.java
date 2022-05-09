@@ -257,6 +257,7 @@ public class Real implements AutoCloseable {
     arblib.arb_abs(this, res);
     return res;
   }
+
         
   public Real set(Real real)
   {
@@ -369,10 +370,10 @@ public class Real implements AutoCloseable {
     Float b = interval.getB();
 
     /* [-inf, -inf] or [+inf, +inf] */
-    if (arf_is_inf(a) != 0 && arf_equal(a, b) != 0)
+    if (a.isInfinite() && a.equals(b) )
     {
-      arf_set(getMid(), a);
-      mag_zero(getRad());
+      setMid(a);
+      getRad().zero();
       return this;
     }
 
