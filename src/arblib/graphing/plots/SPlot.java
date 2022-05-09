@@ -24,7 +24,6 @@ public class SPlot
     System.loadLibrary("arblib");
   }
 
-  static SFunction sFunc = new SFunction(Constants.ONE);
 
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
@@ -45,7 +44,7 @@ public class SPlot
     // (1/2)^n which is the same as multiplying by 2^n
     final int              normalization = (int) Math.pow(2, n);
 
-    SFunction              sfunc         = new SFunction(new Real().assign(2));
+    SFunction              sfunc         = new SFunction(new Real().assign(5));
     
     ComplexFunctionPlotter plotter       = new ComplexFunctionPlotter(screen,
                                                                       domain,

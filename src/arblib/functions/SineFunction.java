@@ -25,7 +25,8 @@ public class SineFunction implements
     }
     if (order >= 3)
     {
-      w.negate(w.get(2));
+      Real w2ndDeriv = w.get(2);
+      w.negate(w2ndDeriv).div(2, prec, w2ndDeriv);
     }
 
     return w;

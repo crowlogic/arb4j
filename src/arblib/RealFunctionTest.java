@@ -53,8 +53,9 @@ public class RealFunctionTest
 
     roots.refine(f, prec, 40);
 
-    // NOTE: there is a bug in real_roots.c which is why this version is more accurate 
-    
+    // NOTE: there is a bug in real_roots.c which is why this version is more
+    // accurate
+
 //    roots = f.locateRoots(roots.get(0), 20, 5000, 1, 256);
 //    System.out.println("(sub)intervals=");
 //    roots.forEach(out::println);
@@ -66,17 +67,26 @@ public class RealFunctionTest
   @Test
   public void testNewtonConvergenceFactor()
   {
-    RealFunction  f        = new SineFunction();
-    Real          x        = new Real().assign(0.7);
-    Real          jet      = f.evaluate(x, 3, prec, Real.newVector(3));
+    RealFunction  f        = new SineFunction()
+                           {
+                             @Override
+                             public Real evaluate(Real z, int order, int prec, Real w)
+                             {
+                               super.evaluate(z, order, prec, w);
+                               out.println("sin(" + z + ")=" + w);
+                               return w;
+                             }
+                           };
+    Real          jet      = Real.newVector(3);
     FloatInterval interval = new FloatInterval(0.2,
                                                0.3);
-    out.println( "real.allocatedBytes=" + jet.getAllocatedBytes() );
+    out.println("real.allocatedBytes=" + jet.getAllocatedBytes());
     System.out.println("interval=" + interval);
-    Real          region   = interval.getReal(new Real(), 256);
+    Real region = interval.getReal(new Real(), 128);
+    out.println("mag=" + region.getRad());
     System.out.println("region=" + region);
-    Float C = f.getNewtonConvergenceFactor(region, jet, 256, new Float());
-    System.out.println("C=" + C);
-    // f.calculatePartition(left, right, block, prec );
+    Float C = f.getNewtonConvergenceFactor(region, jet, 128, new Float());
+    System.out.println("C=" + C.doubleValue());
+    assertEquals(0.0773340631858446, C.doubleValue(), pow(10, -10));
   }
 }

@@ -29,7 +29,7 @@ public class XPlotter extends
     /**
      * TODO: animate this
      */
-    XPlotter plotter = new XPlotter(1);
+    XPlotter plotter = new XPlotter(5);
     plotter.plot();
     plotter.saveToFile();
   }
