@@ -6,6 +6,8 @@
   <doc-data|<doc-title|Hamiltonian Dynamics>|<doc-author|<author-data|<author-name|Stephen
   Crowley>>>>
 
+  <section|Koenig's Functions>
+
   The Koenig's function <math|\<chi\>> of a holomorphic self-map
   <math|\<varphi\>> can be thought of as an ancillary function derived from
   <math|\<varphi\>> and defined on the initial phase space which encodes all
@@ -14,8 +16,19 @@
   Here the self-map <math|\<varphi\>> whose fixed-points are of interest will
   be Newton map <math|\<varphi\>=N<around*|(|f|)>=t-<frac|f<around*|(|t|)>|<wide|f|\<dot\>><around*|(|t|)>>>.\ 
 
+  <section|Geodesics as Hamiltonian Flows>
+
+  Geodesics can be understood to be the Hamiltonian flows of a special
+  Hamiltonian vector field defined on the cotangent space of the
+  manifold.<cite|foundationalMechanics>
+
   <\bibliography|bib|tm-alpha|refs>
-    <\bib-list|4>
+    <\bib-list|5>
+      <bibitem*|AM08><label|bib-foundationalMechanics>Ralph Abraham<localize|
+      and >Jerrold<nbsp>E Marsden. <newblock><with|font-shape|italic|Foundations
+      of mechanics>. <newblock><localize|Number> 364. American Mathematical
+      Soc., 2008.<newblock>
+
       <bibitem*|Cur11><label|bib-pub>Thomas Curtright. <newblock>Potentials
       unbounded below. <newblock><with|font-shape|italic|Symmetry,
       Integrability and Geometry: Methods and Applications>, apr
@@ -51,10 +64,13 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-3|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-Curtright_2009|<tuple|CZ09|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-Curtright_2010|<tuple|CZ10|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-Curtright_2011|<tuple|CZ11|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|bib-foundationalMechanics|<tuple|AM08|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
     <associate|bib-pub|<tuple|Cur11|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
   </collection>
 </references>
@@ -69,11 +85,21 @@
       Curtright_2011
 
       pub
+
+      foundationalMechanics
     </associate>
     <\associate|toc>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Koenig's
+      Functions> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-1><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Geodesics
+      as Hamiltonian Flows> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2><vspace|0.5fn>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
+      <no-break><pageref|auto-3><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
