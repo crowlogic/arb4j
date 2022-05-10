@@ -1,6 +1,8 @@
 
 package arblib;
 
+import static java.lang.System.out;
+
 import java.util.ArrayList;
 
 import arblib.FloatInterval.RootStatus;
@@ -9,6 +11,25 @@ import arblib.RealRootInterval.RefinementResult;
 public class FoundRoots extends
                         ArrayList<RealRootInterval>
 {
+
+  @Override
+  public String toString()
+  {
+    StringBuffer sb = new StringBuffer();
+    sb.append( String.format("FoundRoots[evals=%s, unknownCount=%s, foundCount=%s]={\n", evals, unknownCount, foundCount) );
+    boolean first = true;
+    for ( RealRootInterval interval : this )
+    {
+      if ( !first )
+      {
+        sb.append(", \n");
+      }
+      sb.append( interval.toString() );
+      first = false;
+    }
+    sb.append("}\n");
+    return sb.toString();
+  }
 
   public int evals;
 
@@ -25,7 +46,7 @@ public class FoundRoots extends
    */
   public void refine(RealFunction func, int prec, int digits)
   {
-    System.out.println("digits=" + digits);
+ 
     try ( Real w = Real.newVector(3); Real v = new Real(); Real u = new Real();
           RealRootInterval convergenceRegion = new RealRootInterval(); Float convergenceFactor = new Float())
     {
@@ -33,7 +54,8 @@ public class FoundRoots extends
       {
         if (rootInterval.status == RootStatus.RootLocated)
         {
-          rootInterval.refine(func, prec, digits, w, v, convergenceRegion, convergenceFactor);
+          Real refinedRoot = rootInterval.refine(func, prec, digits, w, v, convergenceRegion, convergenceFactor);
+          out.println( "refined root " + refinedRoot );
         }
       }
     }

@@ -148,22 +148,31 @@ public class RealRootInterval extends
     }
     else
     {
-      out.println("After bisection 1 : " + this);
+      if (verbose)
+      {
+        out.println("After bisection 1 : " + this);
+      }
       if (convergenceRegion.bisectAndRefine(func, v, this, 5, lowPrec) != RefinementResult.Success)
       {
         System.out.println("second Bisection failed");
       }
       else
       {
-        out.println("After bisection 2 : " + convergenceRegion);
+        if (verbose)
+        {
+          out.println("After bisection 2 : " + convergenceRegion);
+        }
       }
 
     }
 
-    out.println("highPrec=" + highPrec);
+    if (verbose)
+    {
+      out.println("highPrec=" + highPrec);
+    }
     convergenceRegion.getReal(v, highPrec);
 
-    System.out.println(" " + "convergence region: " + convergenceRegion + " = " + " convergence region: " + v);
+    System.out.println( "convergence region: " + convergenceRegion + " = \n " + " convergence region:" + v);
 
     func.getNewtonConvergenceFactor(v, w, highPrec, convergenceFactor);
     System.out.println("Newton convergence factor: " + convergenceFactor);
@@ -277,12 +286,18 @@ public class RealRootInterval extends
 
           if (msign == asign)
           {
-            out.println("swapping " + this + " with " + u);
+            if (verbose)
+            {
+              out.println("swapping " + this + " with " + u);
+            }
             swap(u);
           }
           else
           {
-            out.println("swapping " + this + " with " + t);
+            if (verbose)
+            {
+              out.println("swapping " + this + " with " + t);
+            }
             swap(t);
           }
         }

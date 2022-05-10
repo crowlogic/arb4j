@@ -668,18 +668,18 @@
   <\conjecture>
     <label|rh>(The Riemann Hypothesis)
 
-    Bernhard Riemann conjectured in 1859<cite|riemann> that\ 
+    Bernhard Riemann conjectured <cite|riemann> that,
 
     <\equation*>
       <around*|{|Re<around*|(|t|)>=<frac|1|2>:\<zeta\><around*|(|t|)>=0\<forall\>t\<neq\>-2n\<forall\>t\<in\><wide|\<bbb-C\>|\<bar\>>,n\<in\>\<bbb-N\><rsup|+>|}>
     </equation*>
 
-    \ or in words, that all of the roots that are not negative even integers
-    where <math|\<zeta\><around*|(|-2n|)>=0> all lie on the
-    <verbatim|critical line><index|critical line>
-    <math|Re<around*|(|<frac|1|2>|)>> in the complex plane such that
-    <math|\<zeta\><around*|(|\<sigma\>+i s|)>=0> only when
-    <math|\<sigma\>=<frac|1|2>> where <math|\<bbb-R\><rsup|+>\<ni\>s\<gtr\>0>.
+    ,all of the roots that are not negative even integers where
+    <math|\<zeta\><around*|(|-2n|)>=0> all lie on the <verbatim|critical
+    line><index|critical line> <math|Re<around*|(|<frac|1|2>|)>> in the
+    complex plane such that <math|\<zeta\><around*|(|\<sigma\>+i s|)>=0> only
+    when <math|\<sigma\>=<frac|1|2>> where
+    <math|\<bbb-R\><rsup|+>\<ni\>s\<gtr\>0>.
   </conjecture>
 
   <subsubsection|Lines of Constant Phase and the Riemann Hypothesis>
@@ -902,65 +902,66 @@
     <cite-detail|MonsterMoonshine|Theorem 1.3.2>
   </theorem>
 
-  <\bibliography|bib|alpha|references>
-    <with|etalchar|<macro|1|<rsup|<math|<arg|1>>>>|<\bib-list|SBK+18>
-      <bibitem*|CC89><label|bib-coxeter1989introduction>H.S.M. Coxeter and
-      H.S.M. Coxeter. <newblock><with|font-shape|italic|Introduction to
-      Geometry>. <newblock>Wiley Classics Library. Wiley, 1989.
+  <\bibliography|bib|tm-alpha|references>
+    <\bib-list|11>
+      <bibitem*|CC89><label|bib-coxeter1989introduction>H.S.M.<nbsp>Coxeter<localize|
+      and >H.S.M.<nbsp>Coxeter. <newblock><with|font-shape|italic|Introduction
+      to Geometry>. <newblock>Wiley Classics Library. Wiley, 1989.<newblock>
 
       <bibitem*|JJT88><label|bib-jongen1988continuous>H<nbsp>Th Jongen, Peter
-      Jonker, and Frank Twilt. <newblock>The continuous, desingularized
-      newton method for meromorphic functions. <newblock>In
-      <with|font-shape|italic|Newton's Method and Dynamical Systems>, pages
-      81\U121. Springer, 1988.
+      Jonker<localize|, and >Frank Twilt. <newblock>The continuous,
+      desingularized newton method for meromorphic functions.
+      <newblock><localize|In ><with|font-shape|italic|Newton's Method and
+      Dynamical Systems>, <localize|pages >81\U121. Springer, 1988.<newblock>
 
       <bibitem*|Kle93><label|bib-klein2018riemann>Felix Klein.
       <newblock><with|font-shape|italic|On Riemann's theory of algebraic
       functions and their integrals>. <newblock>Cambridge: Macmillan and
-      Bowes, 1893.
+      Bowes, 1893.<newblock>
 
-      <bibitem*|Kra12><label|bib-krantz2012handbook>S.G. Krantz.
+      <bibitem*|Kra12><label|bib-krantz2012handbook>S.G.<nbsp>Krantz.
       <newblock><with|font-shape|italic|Handbook of Complex Variables>.
-      <newblock>Birkhauser Boston, 2012.
+      <newblock>Birkhauser Boston, 2012.<newblock>
 
-      <bibitem*|LLP72><label|bib-lawrence1972catalog>J.D. Lawrence, D.L.
-      Lawrence, and Dover Publications. <newblock><with|font-shape|italic|A
-      Catalog of Special Plane Curves>. <newblock>Dover Books on Mathematics.
-      Dover Publications, 1972.
+      <bibitem*|LLP72><label|bib-lawrence1972catalog>J.D.<nbsp>Lawrence,
+      D.L.<nbsp>Lawrence<localize|, and >Dover Publications.
+      <newblock><with|font-shape|italic|A Catalog of Special Plane Curves>.
+      <newblock>Dover Books on Mathematics. Dover Publications,
+      1972.<newblock>
 
       <bibitem*|Mil06><label|bib-Milnor2006>John Milnor.
       <newblock><with|font-shape|italic|Dynamics in One Complex Variable>.
       <newblock>Annals of Mathematics Studies 160. Princeton University
-      Press, 2nd edition, 2006.
+      Press, 2nd<localize| edition>, 2006.<newblock>
 
       <bibitem*|PPS88><label|bib-Peitgen1988GlobalAO>Heinz-Otto Peitgen,
-      Michael Prufer, and Klaus Schmitt. <newblock>Global aspects of the
-      continuous and discrete newton method: A case study.
+      Michael Prufer<localize|, and >Klaus Schmitt. <newblock>Global aspects
+      of the continuous and discrete newton method: a case study.
       <newblock><with|font-shape|italic|Acta Applicandae Mathematicae>,
-      13:123\U202, 1988.
+      13:123\U202, 1988.<newblock>
 
       <bibitem*|Rie59><label|bib-riemann>Berhhard Riemann. <newblock>Ueber
       die anzahl der primzahlen unter einer gegebenen grösse.
       <newblock><with|font-shape|italic|Monatsberichte der Berliner
-      Akademie>, R1:145, 1859.
+      Akademie>, R1:145, 1859.<newblock>
 
       <bibitem*|SBK+18><label|bib-constantPhaseRH>Wolfgang<nbsp>P Schleich,
       Iva Bezd¥ková, Moochan<nbsp>B Kim, Paul<nbsp>C Abbott, Helmut Maier,
-      Hugh<nbsp>L Montgomery, and John<nbsp>W Neuberger. <newblock>Equivalent
-      formulations of the riemann hypothesis based on lines of constant
-      phase. <newblock><with|font-shape|italic|Physica Scripta>,
-      93(6):065201, 2018.
+      Hugh<nbsp>L Montgomery<localize|, and >John<nbsp>W Neuberger.
+      <newblock>Equivalent formulations of the riemann hypothesis based on
+      lines of constant phase. <newblock><with|font-shape|italic|Physica
+      Scripta>, 93(6):65201, 2018.<newblock>
 
-      <bibitem*|Sha98><label|bib-Shapiro1998CompositionOA>J.<nbsp>H. Shapiro.
+      <bibitem*|Sha98><label|bib-Shapiro1998CompositionOA>J.<nbsp>H.<nbsp>Shapiro.
       <newblock>Composition operators and schroder's functional equation.
       <newblock><with|font-shape|italic|Contemporary Mathematics>,
-      (213):213\U228, 1998.
+      (213):213\U228, 1998.<newblock>
 
       <bibitem*|Sin89><label|bib-ds2>Yakov Sinai.
       <newblock><with|font-shape|italic|Dynamical Systems II: Ergodic Theory
       with Applications to Dynamical Systems and Statistical Mechanics>.
-      <newblock>Springer-Verlag, 1989.
-    </bib-list>>
+      <newblock>Springer-Verlag, 1989.<newblock>
+    </bib-list>
   </bibliography>
 
   <\the-index|idx>

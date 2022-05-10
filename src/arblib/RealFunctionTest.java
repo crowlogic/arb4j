@@ -51,16 +51,10 @@ public class RealFunctionTest
     assertEquals(14.13125, firstRoot.getMid().doubleValue(), pow(10, -30));
     assertEquals(first.status, FloatInterval.RootStatus.RootLocated);
 
+    System.out.println( "rootsBeforeRefinement=" + roots );
     roots.refine(f, prec, 40);
+    System.out.println( "rootsAfterRefinement=" + roots );
 
-    // NOTE: there is a bug in real_roots.c which is why this version is more
-    // accurate
-
-//    roots = f.locateRoots(roots.get(0), 20, 5000, 1, 256);
-//    System.out.println("(sub)intervals=");
-//    roots.forEach(out::println);
-//    System.out.println( "evals=" + roots.evals );
-//    //roots.get(0).refine(f, prec, 30, null, null, damn, null);
 
   }
 
