@@ -52,14 +52,14 @@ public interface ComplexFunction
     }
   }
 
-  public default boolean integrate_gl_auto_deg(Complex res,
-                                               AtomicLong evalCount,
-                                               Complex a,
-                                               Complex b,
-                                               Magnitude tol,
-                                               int deg_limit,
-                                               int verbose,
-                                               int prec)
+  public default boolean performGaussLegendreIntegrationWithAutomaticDegreeDetermination(Complex res,
+                                                                                         AtomicLong evalCount,
+                                                                                         Complex a,
+                                                                                         Complex b,
+                                                                                         Magnitude tol,
+                                                                                         int deg_limit,
+                                                                                         int verbose,
+                                                                                         int prec)
   {
     Complex   mid       = null, delta = null, wide = null;
     Magnitude tmpm      = null;
