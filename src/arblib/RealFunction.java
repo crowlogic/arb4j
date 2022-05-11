@@ -29,7 +29,7 @@ public interface RealFunction
   public static final int FLINT_BITS = 64;
 
   /**
-   * 
+   * TODO: 
    * 
    * @param xnew
    * @param x
@@ -44,7 +44,8 @@ public interface RealFunction
     try ( Magnitude err = new Magnitude(); Magnitude v = new Magnitude(); Real t = new Real();
           Real u = Real.newVector(2))
     {
-      x.getRad().pow(2, err);
+      Magnitude xRadius = x.getRad();
+      xRadius.pow(2, err);
       convergenceFactor.getMagnitude(v).mul(err, err);
 
       t.setMid(x.getMid());
@@ -53,9 +54,10 @@ public interface RealFunction
       evaluate(t, 2, prec, u).div(u.get(1), prec, u);
 
       t.sub(u, prec, u);
-      u.getRad().pow(2, err);
+      Magnitude uRadius = u.getRad();
+      uRadius.add(err, uRadius);
 
-      if (convergenceRegion.contains(u) && u.getRad().compareTo(x.getRad()) < 0)
+      if (convergenceRegion.contains(u) && uRadius.compareTo(xRadius) < 0)
       {
         xnew.get(0).swap(u);
         return true;
