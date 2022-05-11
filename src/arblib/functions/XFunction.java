@@ -12,20 +12,17 @@ import arblib.RealFunction;
 /**
  * Copyright ©2022 Stephen Crowley
  * 
- * This file is part of Arb4j.
- * 
- * Arb is free software: you can redistribute it and/or modify it under the
- * terms of the GNU Lesser General Public License (LGPL) as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version. See <http://www.gnu.org/licenses/>.
+ * This file is part of Arb4j which is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License
+ * (LGPL) as published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version. See
+ * <http://www.gnu.org/licenses/>.
  * 
  * The conjugate of this function is {@link YFunction}
  */
 public class XFunction extends
                        ComplexComposition
 {
-
-  SFunction sFunction = new SFunction();
 
   public XFunction()
   {
@@ -56,7 +53,8 @@ public class XFunction extends
   public Real realXang(Complex t, Complex s, Real scale, Real h, Real res, int prec)
   {
     assert t.isFinite();
-    try ( Complex dt = new Complex(); Complex y = Complex.newVector(2); Complex p = new Complex(); Complex Z = Complex.newVector(2))
+    try ( Complex dt = new Complex(); Complex y = Complex.newVector(2); Complex p = new Complex();
+          Complex Z = Complex.newVector(2))
     {
       s = t.add(h.mul(iπ.mul(scale, prec, dt).exp(prec, dt), dt), prec, s);
       assert s.isFinite() : String.format("s=%s t=%s h=%s a=%s dt=%s\n", s, t, h, scale, dt);
@@ -81,7 +79,7 @@ public class XFunction extends
       { 100 };
       XFunction    xFunc            = new XFunction(1);
       RealFunction realYangFunction = (inDir, order, bits, outDir) -> xFunc.realXang(y0, s, h, inDir, outDir, bits);
-      //realYangFunction.iteratedCompositionLimit(a, tester, iters, heading, prec);
+      // realYangFunction.iteratedCompositionLimit(a, tester, iters, heading, prec);
       // assertEquals(0.74754757546711682717, vector.get(0).doubleValue(),
       // Math.pow(10, -17));
       // assertEquals(0.7475482453531754, vector.get(1).doubleValue(), Math.pow(10,
