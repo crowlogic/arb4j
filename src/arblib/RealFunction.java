@@ -14,6 +14,8 @@ import static java.lang.System.out;
 import java.util.concurrent.atomic.AtomicLong;
 
 import arblib.FloatInterval.RootStatus;
+import arblib.RealRootInterval.RefinementResult;
+
 import static arblib.arblib.*;
 
 /**
@@ -65,6 +67,68 @@ public interface RealFunction
       }
     }
   };
+
+  public default RefinementResult
+         refineRootNewton(Real root, Real convergenceRegion, Float convergenceFactor, int extraPrec, int prec)
+  {
+    return refineRootNewton(root, convergenceRegion, convergenceFactor, extraPrec, prec, false);
+  }
+
+  public default RefinementResult refineRootNewton(Real root,
+                                                   Real convergenceRegion,
+                                                   Float convergenceFactor,
+                                                   int extraPrec,
+                                                   int prec,
+                                                   boolean verbose)
+  {
+    int precs[] = new int[FLINT_BITS];
+    int i, iters, wp, padding, startPrec;
+    int result;
+
+    startPrec = arblib.arb_rel_accuracy_bits(root);
+
+    if (verbose)
+    {
+      System.out.format("newton initial accuracy: %d\n", startPrec);
+    }
+
+    padding  = arblib.arf_abs_bound_lt_2exp_si(convergenceFactor);
+    padding  = Math.min(padding, prec) + 5;
+    padding  = Math.max(0, padding);
+    precs[0] = prec + padding;
+    iters    = 1;
+    while ((iters < FLINT_BITS) && (precs[iters - 1] + padding > 2 * startPrec))
+    {
+      precs[iters] = (precs[iters - 1] / 2) + padding;
+      iters++;
+
+      if (iters == FLINT_BITS)
+      {
+        return RefinementResult.ImpreciseInput;
+      }
+    }
+
+    if (verbose)
+    {
+      System.out.println("iters=" + iters);
+    }
+    for (i = iters - 1; i >= 0; i--)
+    {
+      wp = precs[i] + extraPrec;
+
+      if (verbose)
+      {
+        System.out.printf("newton step: wp = %d + %d = %d      r=%s\n", precs[i], extraPrec, wp, root);
+      }
+
+      if (!calculateNewtonStep(root, root, convergenceRegion, convergenceFactor, wp))
+      {
+        return RefinementResult.NoConvergence;
+      }
+    }
+
+    return RefinementResult.Success;
+  }
 
   /**
    * Given an interval specified by convergenceRegion, evaluates a bound for
@@ -156,20 +220,10 @@ public interface RealFunction
     {
       m.setMid(interval.getA());
       asign = evaluate(m, 1, prec, v).sign();
-      if (verbose)
-      {
-        System.out.format("f(l=%s)=%s\n", m, v);
-      }
+
       m.setMid(interval.getB());
       bsign = evaluate(m, 1, prec, v).sign();
-      if (verbose)
-      {
-        System.out.format("f(r=%s)=%s\n", m, v);
-      }
-    }
-    if (verbose)
-    {
-      System.out.format("asign=%s bsign=%s\n", asign, bsign);
+
     }
 
     roots.evals += 2;
@@ -177,8 +231,6 @@ public interface RealFunction
 
     return roots;
   }
-
-  boolean verbose = false;
 
   public default void recursivelyLocateRoots(FoundRoots found,
                                              RealRootInterval root,

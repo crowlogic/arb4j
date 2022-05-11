@@ -1,7 +1,5 @@
 package arblib;
 
-import static java.lang.System.out;
-
 public class RealRootInterval extends
                               FloatInterval
 {
@@ -63,11 +61,6 @@ public class RealRootInterval extends
       {
         return false;
       }
-      if (verbose)
-      {
-
-        System.out.format("split(left=%s right=%s) depth=%d\n", L, R, maxDepth - depth);
-      }
 
       func.recursivelyLocateRoots(found, L, asign, msign, depth + 1, maxDepth, maxEvals, maxFound, prec);
       func.recursivelyLocateRoots(found, R, msign, bsign, depth + 1, maxDepth, maxEvals, maxFound, prec);
@@ -114,8 +107,6 @@ public class RealRootInterval extends
 
   public static final int FLINT_BITS = 64;
 
-  public boolean          verbose    = false;
-
   /**
    * 
    * @param func
@@ -133,7 +124,8 @@ public class RealRootInterval extends
                      Real w,
                      Real v,
                      RealRootInterval convergenceRegion,
-                     Float convergenceFactor)
+                     Float convergenceFactor,
+                     boolean verbose)
   {
     int highPrec = (int) (digits * 3.32192809488736 + 10);
 
@@ -148,95 +140,30 @@ public class RealRootInterval extends
     }
     else
     {
-      if (verbose)
-      {
-        out.println("After bisection 1 : " + this);
-      }
+
       if (convergenceRegion.bisectAndRefine(func, v, this, 5, lowPrec) != RefinementResult.Success)
       {
         System.out.println("second Bisection failed");
       }
-      else
-      {
-        if (verbose)
-        {
-          out.println("After bisection 2 : " + convergenceRegion);
-        }
-      }
 
     }
 
-    if (verbose)
-    {
-      out.println("highPrec=" + highPrec);
-    }
     convergenceRegion.getReal(v, highPrec);
 
-    System.out.println( "convergence region: " + convergenceRegion + " = \n " + " convergence region:" + v);
-
     func.getNewtonConvergenceFactor(v, w, highPrec, convergenceFactor);
-    System.out.println("Newton convergence factor: " + convergenceFactor);
 
-    if (refineRootNewton(func, v, getReal(w, highPrec), convergenceFactor, 10, highPrec) != RefinementResult.Success)
+    if (func.refineRootNewton(v,
+                              getReal(w, highPrec),
+                              convergenceFactor,
+                              10,
+                              highPrec,
+                              verbose) != RefinementResult.Success)
     {
       System.out.println("Warning: some newton steps failed\n");
     }
     System.out.println("Refined root: " + v);
     return v;
 
-  }
-
-  public RefinementResult refineRootNewton(RealFunction func,
-                                           Real r,
-                                           Real convergenceRegion,
-                                           Float convergenceFactor,
-                                           int eval_extra_prec,
-                                           int prec)
-  {
-    int precs[] = new int[FLINT_BITS];
-    int i, iters, wp, padding, start_prec;
-    int result;
-
-    start_prec = arblib.arb_rel_accuracy_bits(r);
-
-    if (verbose)
-    {
-      System.out.format("newton initial accuracy: %d\n", start_prec);
-    }
-
-    padding  = arblib.arf_abs_bound_lt_2exp_si(convergenceFactor);
-    padding  = Math.min(padding, prec) + 5;
-    padding  = Math.max(0, padding);
-    precs[0] = prec + padding;
-    iters    = 1;
-    while ((iters < FLINT_BITS) && (precs[iters - 1] + padding > 2 * start_prec))
-    {
-      precs[iters] = (precs[iters - 1] / 2) + padding;
-      iters++;
-
-      if (iters == FLINT_BITS)
-      {
-        return RefinementResult.ImpreciseInput;
-      }
-    }
-
-    System.out.println("iters=" + iters);
-    for (i = iters - 1; i >= 0; i--)
-    {
-      wp = precs[i] + eval_extra_prec;
-
-      if (verbose)
-      {
-        System.out.printf("newton step: wp = %d + %d = %d      r=%s\n", precs[i], eval_extra_prec, wp, r);
-      }
-
-      if (!func.calculateNewtonStep(r, r, convergenceRegion, convergenceFactor, wp))
-      {
-        return RefinementResult.NoConvergence;
-      }
-    }
-
-    return RefinementResult.Success;
   }
 
   /**
@@ -286,18 +213,11 @@ public class RealRootInterval extends
 
           if (msign == asign)
           {
-            if (verbose)
-            {
-              out.println("swapping " + this + " with " + u);
-            }
             swap(u);
           }
           else
           {
-            if (verbose)
-            {
-              out.println("swapping " + this + " with " + t);
-            }
+
             swap(t);
           }
         }

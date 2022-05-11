@@ -24,7 +24,7 @@ public class RealFunctionTest
                                                          20000,
                                                          10,
                                                          256);
-    roots.refine(sineFunction, 256, 40);
+    roots.refine(sineFunction, 256, 40, true);
   }
 
   /**
@@ -51,11 +51,13 @@ public class RealFunctionTest
     assertEquals(14.13125, firstRoot.getMid().doubleValue(), pow(10, -30));
     assertEquals(first.status, FloatInterval.RootStatus.RootLocated);
 
-    System.out.println( "rootsBeforeRefinement=" + roots );
-    roots.refine(f, prec, 40);
-    System.out.println( "rootsAfterRefinement=" + roots );
+    System.out.println("rootsBeforeRefinement=" + roots);
+    roots.refine(f, prec, 40, true);
+    System.out.println("rootsAfterRefinement=" + roots);
 
-
+    assertEquals(14.134725141734693, roots.get(0).getReal(new Real(), 256).doubleValue(), 0);
+    assertEquals( 2, roots.unknownCount );
+    assertEquals( 1, roots.foundCount );
   }
 
   @Test

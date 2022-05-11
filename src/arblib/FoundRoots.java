@@ -13,6 +13,19 @@ public class FoundRoots extends
 {
 
   @Override
+  public boolean add(RealRootInterval e)
+  {
+    if ( e.status == RootStatus.RootLocated )
+    {
+      foundCount++;
+    } else if ( e.status == RootStatus.RootUnknown )
+    {
+      unknownCount++;
+    }
+    return super.add(e);
+  }
+
+  @Override
   public String toString()
   {
     StringBuffer sb = new StringBuffer();
@@ -44,7 +57,7 @@ public class FoundRoots extends
    * @param func
    * @param digits number of digits of precision needed
    */
-  public void refine(RealFunction func, int prec, int digits)
+  public void refine(RealFunction func, int prec, int digits, boolean verbose )
   {
  
     try ( Real w = Real.newVector(3); Real v = new Real(); Real u = new Real();
@@ -54,8 +67,9 @@ public class FoundRoots extends
       {
         if (rootInterval.status == RootStatus.RootLocated)
         {
-          Real refinedRoot = rootInterval.refine(func, prec, digits, w, v, convergenceRegion, convergenceFactor);
-          out.println( "refined root " + refinedRoot );
+          Real refinedRoot = rootInterval.refine(func, prec, digits, w, v, convergenceRegion, convergenceFactor, verbose );
+          refinedRoot.getInterval(prec, rootInterval);
+          rootInterval.status = FloatInterval.RootStatus.RootLocated;
         }
       }
     }
