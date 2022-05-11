@@ -40,7 +40,7 @@ public class SPlot
 
     int                    n             = 10;
 
-    // the multiplier of the Newton map of T is equal to 1/2 and thus we divide by
+    // the multiplier of the Newton map of S(t) at t=3 is equal to 1/2 and thus we divide by
     // (1/2)^n which is the same as multiplying by 2^n
     final int              normalization = (int) Math.pow(2, n);
 

@@ -14,6 +14,18 @@ import static arblib.arblib.*;
  static { System.loadLibrary( "arblib" ); }
 
   /**
+   * 
+   * @param prec
+   * @param interval
+   * @return {@link arblib#arb_get_interval_arf(Float, Float, Real, int)
+   */
+  public FloatInterval getInterval(int prec, FloatInterval interval)
+  {
+    arblib.arb_get_interval_arf(interval.getA(), interval.getB(), this, prec);
+    return interval;
+  }
+  
+  /**
    * @return {@link arblib#arb_allocated_bytes(Real)}
    */
   public int getAllocatedBytes()

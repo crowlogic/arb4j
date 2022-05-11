@@ -9,6 +9,10 @@
 package arblib;
 
 public class arblib {
+  public static void arb_get_interval_arf(Float a, Float b, Real x, int prec) {
+    arblibJNI.arb_get_interval_arf(Float.getCPtr(a), a, Float.getCPtr(b), b, Real.getCPtr(x), x, prec);
+  }
+
   public static void arb_tan(Real y, Real x, int prec) {
     arblibJNI.arb_tan(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
   }

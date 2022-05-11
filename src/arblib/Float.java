@@ -8,7 +8,6 @@
 
 package arblib;
 
-import java.util.concurrent.TimeUnit;
 import static arblib.Constants.*;
 
 public class Float implements AutoCloseable {

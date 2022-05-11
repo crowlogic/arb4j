@@ -9,6 +9,7 @@
 package arblib;
 
 public class arblibJNI {
+  public final static native void arb_get_interval_arf(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_tan(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void acb_inv(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_inv(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);

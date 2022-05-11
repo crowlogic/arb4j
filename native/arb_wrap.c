@@ -232,6 +232,28 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 extern "C" {
 #endif
 
+SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1get_1interval_1arf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  arf_struct *arg1 ;
+  arf_struct *arg2 ;
+  arb_struct *arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(arf_struct **)&jarg1; 
+  arg2 = *(arf_struct **)&jarg2; 
+  arg3 = *(arb_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  arb_get_interval_arf(arg1,arg2,(arb_struct const (*))arg3,arg4);
+  
+  
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1tan(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;

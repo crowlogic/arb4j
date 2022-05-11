@@ -1,3 +1,4 @@
+void arb_get_interval_arf(arf_t a, arf_t b, const arb_t x, slong prec);
 
 void arb_tan(arb_t y, const arb_t x, slong prec);
 
