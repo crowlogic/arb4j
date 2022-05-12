@@ -1,5 +1,7 @@
 package arblib;
 
+import static java.lang.System.out;
+
 public class RealRootInterval extends
                               FloatInterval
 {
@@ -152,14 +154,15 @@ public class RealRootInterval extends
 
     func.getNewtonConvergenceFactor(v, w, highPrec, convergenceFactor);
 
-    if (func.refineRootNewton(v,
-                              getReal(w, highPrec),
-                              convergenceFactor,
-                              10,
-                              highPrec,
-                              verbose) != RefinementResult.Success)
+    RefinementResult refinementResult = func.refineRootNewton(v,
+                                                              getReal(w, highPrec),
+                                                              convergenceFactor,
+                                                              10,
+                                                              highPrec,
+                                                              verbose);
+    if (refinementResult != RefinementResult.Success)
     {
-      System.out.println("Warning: some newton steps failed\n");
+      out.format("Warning: some newton steps failed: refinementResult=%s\n", refinementResult);
     }
     System.out.println("Refined root: " + v);
     return v;
@@ -177,17 +180,14 @@ public class RealRootInterval extends
    */
   public RefinementResult bisectAndRefine(RealFunction func, Real v, RealRootInterval t, int iters, int prec)
   {
-    int  asign, bsign, msign, result;
-    long i;
-
     try ( Real m = new Real(); RealRootInterval u = new RealRootInterval();)
     {
       m.setMid(getA());
 
-      asign = func.evaluate(m, 1, prec, v).sign();
+      int asign = func.evaluate(m, 1, prec, v).sign();
 
       m.setMid(getB());
-      bsign = func.evaluate(m, 1, prec, v).sign();
+      int bsign = func.evaluate(m, 1, prec, v).sign();
 
       /* must have proper sign changes */
       if (asign == 0 || bsign == 0 || asign == bsign)
@@ -196,10 +196,9 @@ public class RealRootInterval extends
       }
       else
       {
-
-        for (i = 0; i < iters; i++)
+        for (int i = 0; i < iters; i++)
         {
-          msign = func.calculatePartition(t, u, this, prec);
+          int msign = func.calculatePartition(t, u, this, prec);
 
           /*
            * TODO: handle the case where the value at the midpoint is actually zero even
@@ -211,15 +210,7 @@ public class RealRootInterval extends
             return RefinementResult.NoConvergence;
           }
 
-          if (msign == asign)
-          {
-            swap(u);
-          }
-          else
-          {
-
-            swap(t);
-          }
+          swap(msign == asign ? u : t);
         }
       }
     }

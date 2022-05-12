@@ -29,7 +29,7 @@ public interface RealFunction
   public static final int FLINT_BITS = 64;
 
   /**
-   * TODO: 
+   * TODO:
    * 
    * @param xnew
    * @param x
@@ -76,6 +76,17 @@ public interface RealFunction
     return refineRootNewton(root, convergenceRegion, convergenceFactor, extraPrec, prec, false);
   }
 
+  /**
+   * 
+   * 
+   * @param root
+   * @param convergenceRegion
+   * @param convergenceFactor
+   * @param extraPrec
+   * @param prec
+   * @param verbose
+   * @return
+   */
   public default RefinementResult refineRootNewton(Real root,
                                                    Real convergenceRegion,
                                                    Float convergenceFactor,
@@ -84,19 +95,16 @@ public interface RealFunction
                                                    boolean verbose)
   {
     int precs[] = new int[FLINT_BITS];
-    int i, iters, wp, padding, startPrec;
-    int result;
+    int i, iters, workingPrecision, startPrec;
 
     startPrec = arblib.arb_rel_accuracy_bits(root);
 
     if (verbose)
     {
-      System.out.format("newton initial accuracy: %d\n", startPrec);
+      System.out.format("Newton initial accuracy: %d\n", startPrec);
     }
 
-    padding  = arblib.arf_abs_bound_lt_2exp_si(convergenceFactor);
-    padding  = Math.min(padding, prec) + 5;
-    padding  = Math.max(0, padding);
+    int padding = Math.max(0, Math.min(arblib.arf_abs_bound_lt_2exp_si(convergenceFactor), prec) + 5);
     precs[0] = prec + padding;
     iters    = 1;
     while ((iters < FLINT_BITS) && (precs[iters - 1] + padding > 2 * startPrec))
@@ -116,14 +124,14 @@ public interface RealFunction
     }
     for (i = iters - 1; i >= 0; i--)
     {
-      wp = precs[i] + extraPrec;
+      workingPrecision = precs[i] + extraPrec;
 
       if (verbose)
       {
-        System.out.printf("newton step: wp = %d + %d = %d      r=%s\n", precs[i], extraPrec, wp, root);
+        System.out.printf("Newton step: wp = %d + %d = %d      r=%s\n", precs[i], extraPrec, workingPrecision, root);
       }
 
-      if (!calculateNewtonStep(root, root, convergenceRegion, convergenceFactor, wp))
+      if (!calculateNewtonStep(root, root, convergenceRegion, convergenceFactor, workingPrecision))
       {
         return RefinementResult.NoConvergence;
       }
@@ -244,8 +252,6 @@ public interface RealFunction
                                              int maxFound,
                                              int prec)
   {
-    // root.status = RootStatus.RootUnknown;
-
     RealRootInterval realRootInterval = new RealRootInterval();
     realRootInterval.set(root);
     if (found.evals >= maxEvals || found.size() >= maxFound)

@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import arblib.FloatInterval.RootStatus;
 import arblib.RealRootInterval.RefinementResult;
 
+/**
+ * TODO: add a ruleOut function to check intervals with RootUnknown status ,
+ * perhaps as part of refine
+ * 
+ * @author crow
+ *
+ */
 public class FoundRoots extends
                         ArrayList<RealRootInterval>
 {
@@ -15,10 +22,11 @@ public class FoundRoots extends
   @Override
   public boolean add(RealRootInterval e)
   {
-    if ( e.status == RootStatus.RootLocated )
+    if (e.status == RootStatus.RootLocated)
     {
       foundCount++;
-    } else if ( e.status == RootStatus.RootUnknown )
+    }
+    else if (e.status == RootStatus.RootUnknown)
     {
       unknownCount++;
     }
@@ -29,15 +37,18 @@ public class FoundRoots extends
   public String toString()
   {
     StringBuffer sb = new StringBuffer();
-    sb.append( String.format("FoundRoots[evals=%s, unknownCount=%s, foundCount=%s]={\n", evals, unknownCount, foundCount) );
+    sb.append(String.format("FoundRoots[evals=%s, unknownCount=%s, foundCount=%s]={\n",
+                            evals,
+                            unknownCount,
+                            foundCount));
     boolean first = true;
-    for ( RealRootInterval interval : this )
+    for (RealRootInterval interval : this)
     {
-      if ( !first )
+      if (!first)
       {
         sb.append(", \n");
       }
-      sb.append( interval.toString() );
+      sb.append(interval.toString());
       first = false;
     }
     sb.append("}\n");
@@ -57,9 +68,9 @@ public class FoundRoots extends
    * @param func
    * @param digits number of digits of precision needed
    */
-  public void refine(RealFunction func, int prec, int digits, boolean verbose )
+  public void refine(RealFunction func, int prec, int digits, boolean verbose)
   {
- 
+
     try ( Real w = Real.newVector(3); Real v = new Real(); Real u = new Real();
           RealRootInterval convergenceRegion = new RealRootInterval(); Float convergenceFactor = new Float())
     {
@@ -67,7 +78,14 @@ public class FoundRoots extends
       {
         if (rootInterval.status == RootStatus.RootLocated)
         {
-          Real refinedRoot = rootInterval.refine(func, prec, digits, w, v, convergenceRegion, convergenceFactor, verbose );
+          Real refinedRoot = rootInterval.refine(func,
+                                                 prec,
+                                                 digits,
+                                                 w,
+                                                 v,
+                                                 convergenceRegion,
+                                                 convergenceFactor,
+                                                 verbose);
           refinedRoot.getInterval(prec, rootInterval);
           rootInterval.status = FloatInterval.RootStatus.RootLocated;
         }

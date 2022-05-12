@@ -12,7 +12,17 @@ import arblib.functions.ZFunction;
 public class RealFunctionTest
 {
 
-  private static final int prec = 256;
+  private static final int prec         = 256;
+  private RealFunction     sineFunction = new SineFunction()
+                                        {
+                                          @Override
+                                          public Real evaluate(Real z, int order, int prec, Real w)
+                                          {
+                                            super.evaluate(z, order, prec, w);
+                                            out.println("sin(" + z + ")=" + w);
+                                            return w;
+                                          }
+                                        };
 
   @Test
   public void testLocateRootsSine()
@@ -42,7 +52,7 @@ public class RealFunctionTest
     int              maxfound = 1;
     int              prec     = 256;
     FoundRoots       roots    = f.locateRoots(damn, maxdepth, maxevals, maxfound, prec);
-    roots.forEach(out::println);
+    System.out.println("rootsBeforeRefinement=" + roots);
 
     assertEquals(192, roots.evals);
     assertEquals(3, roots.size());
@@ -51,28 +61,17 @@ public class RealFunctionTest
     assertEquals(14.13125, firstRoot.getMid().doubleValue(), pow(10, -30));
     assertEquals(first.status, FloatInterval.RootStatus.RootLocated);
 
-    System.out.println("rootsBeforeRefinement=" + roots);
     roots.refine(f, prec, 40, true);
     System.out.println("rootsAfterRefinement=" + roots);
 
     assertEquals(14.134725141734693, roots.get(0).getReal(new Real(), 256).doubleValue(), 0);
-    assertEquals( 2, roots.unknownCount );
-    assertEquals( 1, roots.foundCount );
+    assertEquals(2, roots.unknownCount);
+    assertEquals(1, roots.foundCount);
   }
 
   @Test
   public void testNewtonConvergenceFactor()
   {
-    RealFunction  f        = new SineFunction()
-                           {
-                             @Override
-                             public Real evaluate(Real z, int order, int prec, Real w)
-                             {
-                               super.evaluate(z, order, prec, w);
-                               out.println("sin(" + z + ")=" + w);
-                               return w;
-                             }
-                           };
     Real          jet      = Real.newVector(3);
     FloatInterval interval = new FloatInterval(0.2,
                                                0.3);
@@ -81,7 +80,7 @@ public class RealFunctionTest
     Real region = interval.getReal(new Real(), 128);
     out.println("mag=" + region.getRad());
     System.out.println("region=" + region);
-    Float C = f.getNewtonConvergenceFactor(region, jet, 128, new Float());
+    Float C = sineFunction.getNewtonConvergenceFactor(region, jet, 128, new Float());
     System.out.println("C=" + C.doubleValue());
     assertEquals(0.0773340631858446, C.doubleValue(), pow(10, -10));
   }
