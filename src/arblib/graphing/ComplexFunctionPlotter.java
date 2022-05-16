@@ -62,7 +62,7 @@ import arblib.util.DateUtils;
  * <http://www.gnu.org/licenses/>.
  */
 public class ComplexFunctionPlotter extends
-                                    JComponent
+                                    JComponent implements AutoCloseable
 {
 
   static class Pixel
@@ -1082,6 +1082,15 @@ public class ComplexFunctionPlotter extends
 
     }
 
+  }
+
+  @Override
+  public void close() throws Exception
+  {
+    this._w.remove();
+    this._z.remove();    
+    pixel.remove();
+    pixel2.remove();
   }
 
 }

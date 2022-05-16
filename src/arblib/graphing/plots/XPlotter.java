@@ -34,8 +34,8 @@ public class XPlotter extends
     plotter.saveToFile();
   }
 
-  public static final int width = 2500/2;
-  public static final int height = 1250/2;
+  public static final int width = 2500;
+  public static final int height = 1250;
   
   public XPlotter(double vscale) throws NoninvertibleTransformException
   {
@@ -52,5 +52,6 @@ public class XPlotter extends
     displayMode       = Part.Blend;
 
   }
+
 
 }

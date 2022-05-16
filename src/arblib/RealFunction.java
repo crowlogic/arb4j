@@ -252,43 +252,44 @@ public interface RealFunction
                                              int maxFound,
                                              int prec)
   {
-    RealRootInterval realRootInterval = new RealRootInterval();
-    realRootInterval.set(root);
-    if (found.evals >= maxEvals || found.size() >= maxFound)
+    try ( RealRootInterval realRootInterval = new RealRootInterval();)
     {
-      found.add(realRootInterval);
-    }
-    else
-    {
-      RootStatus status = root.determineRootStatus(found, this, asign, bsign, prec);
-      if (status == RootStatus.NoRoot)
+      realRootInterval.set(root);
+      if (found.evals >= maxEvals || found.size() >= maxFound)
       {
-        return;
-      }
-
-      if (status == RootStatus.RootLocated || depth >= maxDepth)
-      {
-        if (status == RootStatus.RootLocated)
-        {
-          // if (verbose)
-          {
-            out.printf("found isolated root in: %s\n", root);
-            out.flush();
-          }
-
-        }
-        System.out.println("Adding " + root);
-        realRootInterval.status = status;
-        found.add(realRootInterval.set(root));
+        found.add(realRootInterval);
       }
       else
       {
-        if (!root.split(this, found, asign, bsign, depth, maxDepth, maxEvals, maxFound, prec))
+        RootStatus status = root.determineRootStatus(found, this, asign, bsign, prec);
+        if (status == RootStatus.NoRoot)
         {
-          out.println("Possible zero at midpoint of " + this);
+          return;
+        }
+
+        if (status == RootStatus.RootLocated || depth >= maxDepth)
+        {
+          if (status == RootStatus.RootLocated)
+          {
+            // if (verbose)
+            {
+              out.printf("found isolated root in: %s\n", root);
+              out.flush();
+            }
+
+          }
+          System.out.println("Adding " + root);
+          realRootInterval.status = status;
+          found.add(realRootInterval.set(root));
+        }
+        else
+        {
+          if (!root.split(this, found, asign, bsign, depth, maxDepth, maxEvals, maxFound, prec))
+          {
+            out.println("Possible zero at midpoint of " + this);
+          }
         }
       }
-
     }
   }
 

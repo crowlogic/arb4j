@@ -178,7 +178,7 @@ public class ComplexFunctionAnimator
     BufferedImage image = convertToType(plotter.plot(), BufferedImage.TYPE_3BYTE_BGR);
     plotter.frame.setVisible(false);
     plotter.frame.hide();
-    //  
+    System.gc();
     return image;
   }
 
@@ -190,7 +190,7 @@ public class ComplexFunctionAnimator
     {
       System.out.println("codec: " + codec);
     }
-    renderAnimationSequence("hmm.avi", "avi", "ffv1", 10, 10);
+    renderAnimationSequence("hmm.avi", "avi", "ffv1", 10, 20);
   }
 
   /**

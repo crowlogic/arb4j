@@ -489,8 +489,8 @@
   <subsection|Newton Maps and Flows of <math|S<rsub|f><around*|(|t|)>>>
 
   <\definition>
-    Let <math|N<rsub|f><around*|(|t|)>> denote the Newton map of
-    <math|f<around*|(|t|)>>
+    Let <math|N<rsub|f><around*|(|t|)>> denote the <verbatim|Newton
+    map><index|Newton map> of <math|f<around*|(|t|)>>
 
     <\equation>
       N<rsub|f><around*|(|t|)>=t-<frac|f<around*|(|t|)>|<wide|f|\<dot\>><around*|(|t|)>>
@@ -500,11 +500,26 @@
   <\definition>
     The Newton map <math|N<rsub|S<rsub|f>><around*|(|t|)>> of the composition
     <math|S<rsub|f><around*|(|t|)>=S<around*|(|f<around*|(|t|)>|)>> is a
-    rational meromorphic function of <math|f<around*|(|t|)>> given by
+    rational meromorphic function of <math|f<around*|(|t|)>> given by\ 
 
     <\equation>
       <tabular|<tformat|<table|<row|<cell|N<rsub|S<rsub|f>><around*|(|t|)>>|<cell|=t-<frac|S<rsub|f><around*|(|t|)>|<wide|S|\<dot\>><rsub|f><around*|(|t|)>>>>|<row|<cell|>|<cell|=t-<frac|<frac|<around*|(|1-f<around*|(|t|)><rsup|2>|)><rsup|2>-1|<around*|(|1<rsup|>-f<around*|(|t|)><rsup|2>|)><rsup|2>+1>|<frac|8<wide|f|\<dot\>><around*|(|t|)>f<around*|(|t|)><around*|(|f<around*|(|t|)><rsup|2>-1|)>|<around*|(|<around*|(|f<around*|(|t|)>-1|)><rsup|2>*<around*|(|f<around*|(|t|)>+1|)><rsup|2>+1|)><rsup|2>>>>>|<row|<cell|>|<cell|=t-<frac|1|8><frac|<around*|(|<around*|(|f<around*|(|t|)>-1|)><rsup|2>*<around*|(|1+f<around*|(|*t|)><rsup|2>|)><rsup|2>+1|)><rsup|2>*<around*|(|<around*|(|1-f<around*|(|t|)><rsup|2>|)><rsup|2>-1|)>|f*<around*|(|t|)><wide|f|\<dot\>><around*|(|t|)><around*|(|f<around*|(|t|)><rsup|2>-1|)><around*|(|1+<around*|(|1-f<around*|(|t|)><rsup|2>|)><rsup|2>|)>>>>>>><label|NS>
     </equation>
+
+    where <math|<wide|S|\<dot\>><rsub|f><around*|(|t|)>> is the derivative of
+    the composite function <math|S<around*|(|f<around*|(|t|)>|)>><index|functional
+    derivative> given by
+
+    <math|<\text>
+      <\equation>
+        <wide|S|\<dot\>><rsub|f><around*|(|t|)>=<frac|\<mathd\>|\<mathd\>t>S<around*|(|f<around*|(|t|)>|)>=*<wide|S|\<dot\>><around*|(|f<around*|(|t|)>|)><wide|f|\<dot\>><around*|(|t|)>=<frac|8<wide|f|\<dot\>><around*|(|t|)>f<around*|(|t|)><around*|(|f<around*|(|t|)><rsup|2>-1|)>|<around*|(|<around*|(|f<around*|(|t|)>-1|)><rsup|2>*<around*|(|f<around*|(|t|)>+1|)><rsup|2>+1|)><rsup|2>><label|ds>
+      </equation>
+    </text>>
+
+    which is just the usual derivative of S multiplied by the derivate of
+    <math|f> which can be found with an application of the usual chain rule
+    of calculus and simplifying the algebra by combining like terms,
+    factoring and rearranging terms.
 
     \;
   </definition>
@@ -789,7 +804,12 @@
 
   In order to find an explicit expression for the angle
   <math|\<theta\><rsub|m><around*|(|h|)>> in the implicit formula Formula
-  (<reference|angle>) we can use Newton's method\ 
+  (<reference|angle>) we can use a modified Newton's method that converges to
+  the angle in which to step given a basepoint <math|t>, a direction
+  <math|a>, and a magnitude <math|h> to minimize the real part of a function
+  <math|f>.
+
+  \;
 
   <\with|font-base-size|14>
     <\definition>
@@ -999,42 +1019,44 @@
 
 <\references>
   <\collection>
-    <associate|N|<tuple|41|7>>
+    <associate|N|<tuple|42|7>>
     <associate|NS|<tuple|25|4>>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-10|<tuple|2.1|3>>
     <associate|auto-11|<tuple|2.2|4>>
     <associate|auto-12|<tuple|2.3|4>>
-    <associate|auto-13|<tuple|2.3.1|4>>
-    <associate|auto-14|<tuple|2.3.2|5>>
-    <associate|auto-15|<tuple|Newton flow|5>>
-    <associate|auto-16|<tuple|2.3.3|5>>
-    <associate|auto-17|<tuple|desingularized Newton flow (for entire
+    <associate|auto-13|<tuple|Newton map|4>>
+    <associate|auto-14|<tuple|functional derivative|5>>
+    <associate|auto-15|<tuple|2.3.1|5>>
+    <associate|auto-16|<tuple|2.3.2|5>>
+    <associate|auto-17|<tuple|Newton flow|5>>
+    <associate|auto-18|<tuple|2.3.3|5>>
+    <associate|auto-19|<tuple|desingularized Newton flow (for entire
     functions)|5>>
-    <associate|auto-18|<tuple|2.3.4|5>>
-    <associate|auto-19|<tuple|2.3.5|5>>
     <associate|auto-2|<tuple|1.1|2>>
-    <associate|auto-20|<tuple|3|5>>
-    <associate|auto-21|<tuple|Riemann zeta function|5>>
-    <associate|auto-22|<tuple|3.1|6>>
-    <associate|auto-23|<tuple|critical line|6>>
-    <associate|auto-24|<tuple|3.1.1|6>>
-    <associate|auto-25|<tuple|3.2|6>>
-    <associate|auto-26|<tuple|gamma function|6>>
-    <associate|auto-27|<tuple|3.2.1|6>>
-    <associate|auto-28|<tuple|Riemann-Siegel (var)theta function|6>>
-    <associate|auto-29|<tuple|Hardy Z function|6>>
+    <associate|auto-20|<tuple|2.3.4|5>>
+    <associate|auto-21|<tuple|2.3.5|5>>
+    <associate|auto-22|<tuple|3|6>>
+    <associate|auto-23|<tuple|Riemann zeta function|6>>
+    <associate|auto-24|<tuple|3.1|6>>
+    <associate|auto-25|<tuple|critical line|6>>
+    <associate|auto-26|<tuple|3.1.1|6>>
+    <associate|auto-27|<tuple|3.2|6>>
+    <associate|auto-28|<tuple|gamma function|6>>
+    <associate|auto-29|<tuple|3.2.1|6>>
     <associate|auto-3|<tuple|1.1.1|2>>
-    <associate|auto-30|<tuple|1|6>>
-    <associate|auto-31|<tuple|3.3|7>>
-    <associate|auto-32|<tuple|3.3.1|7>>
-    <associate|auto-33|<tuple|3.3.2|7>>
-    <associate|auto-34|<tuple|4|7>>
-    <associate|auto-35|<tuple|5|8>>
-    <associate|auto-36|<tuple|5.1|8>>
-    <associate|auto-37|<tuple|47|8>>
-    <associate|auto-38|<tuple|11|8>>
+    <associate|auto-30|<tuple|Riemann-Siegel (var)theta function|6>>
+    <associate|auto-31|<tuple|Hardy Z function|7>>
+    <associate|auto-32|<tuple|1|7>>
+    <associate|auto-33|<tuple|3.3|7>>
+    <associate|auto-34|<tuple|3.3.1|7>>
+    <associate|auto-35|<tuple|3.3.2|8>>
+    <associate|auto-36|<tuple|4|8>>
+    <associate|auto-37|<tuple|5|8>>
+    <associate|auto-38|<tuple|5.1|8>>
+    <associate|auto-39|<tuple|48|?>>
     <associate|auto-4|<tuple|Koenig's function|2>>
+    <associate|auto-40|<tuple|11|?>>
     <associate|auto-5|<tuple|1.2|2>>
     <associate|auto-6|<tuple|transfer operator|2>>
     <associate|auto-7|<tuple|transfer operator|2>>
@@ -1052,10 +1074,11 @@
     <associate|bib-lawrence1972catalog|<tuple|5|8>>
     <associate|bib-riemann|<tuple|8|8>>
     <associate|dl|<tuple|15|5>>
+    <associate|ds|<tuple|26|?>>
     <associate|kc|<tuple|3|2>>
-    <associate|nm|<tuple|32|5>>
+    <associate|nm|<tuple|33|5>>
     <associate|rh|<tuple|17|6>>
-    <associate|rnm|<tuple|29|5>>
+    <associate|rnm|<tuple|30|5>>
   </collection>
 </references>
 
@@ -1070,7 +1093,7 @@
 
       ds2
 
-      Koopman1931
+      Bastard
 
       krantz2012handbook
 
