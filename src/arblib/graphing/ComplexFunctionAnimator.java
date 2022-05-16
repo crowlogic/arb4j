@@ -1,10 +1,13 @@
 
 package arblib.graphing;
 
+import static java.lang.System.out;
+
 import java.awt.AWTException;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -28,19 +31,23 @@ public class ComplexFunctionAnimator
 
   /**
    * Records the screen
+   * 
+   * @throws NoninvertibleTransformException
    */
-  private static void recordScreen(String filename,
-                                   String formatname,
-                                   String codecname,
-                                   int duration,
-                                   int snapsPerSecond) throws AWTException, InterruptedException, IOException
+  private static void renderAnimationSequence(String filename,
+                                              String formatname,
+                                              String codecname,
+                                              int duration,
+                                              int snapsPerSecond) throws AWTException,
+                                                                  InterruptedException,
+                                                                  IOException,
+                                                                  NoninvertibleTransformException
   {
     /**
      * Set up the AWT infrastructure to take screenshots of the desktop.
      */
     final Robot       robot        = new Robot();
-    final Toolkit     toolkit      = Toolkit.getDefaultToolkit();
-    final Rectangle   screenbounds = new Rectangle(toolkit.getScreenSize());
+    final Rectangle   screenbounds = new Rectangle(XPlotter.width, XPlotter.height );
 
     final Rational    framerate    = Rational.make(1, snapsPerSecond);
 
@@ -118,12 +125,13 @@ public class ComplexFunctionAnimator
      * Now begin our main loop of taking screen snaps. We're going to encode and
      * then write out any resulting packets.
      */
-    final MediaPacket packet = MediaPacket.make();
-    for (int i = 0; i < duration / framerate.getDouble(); i++)
+    final MediaPacket packet     = MediaPacket.make();
+    double            frameCount = duration / framerate.getDouble();
+
+    for (int i = 0; i < frameCount; i++)
     {
       /** Make the screen capture && convert image to TYPE_3BYTE_BGR */
-      final BufferedImage screen = convertToType(robot.createScreenCapture(screenbounds),
-                                                 BufferedImage.TYPE_3BYTE_BGR);
+      final BufferedImage screen = renderFunction(i, 0.1 + (double) i / frameCount);
 
       /**
        * This is LIKELY not in YUV420P format, so we're going to convert it using some
@@ -141,8 +149,6 @@ public class ComplexFunctionAnimator
       }
       while (packet.isComplete());
 
-      /** now we'll sleep until it's time to take the next snapshot. */
-      Thread.sleep((long) (1000 * framerate.getDouble()));
     }
 
     /**
@@ -163,11 +169,25 @@ public class ComplexFunctionAnimator
     muxer.close();
   }
 
-  @SuppressWarnings("static-access")
-  public static void main(String[] args) throws InterruptedException, IOException, AWTException
+  public static BufferedImage renderFunction(int i, double a) throws NoninvertibleTransformException, IOException
   {
+    XPlotter plotter = new XPlotter(a);
+    out.println("Drawing frame " + i + " a=" + a);
+    BufferedImage image = convertToType(plotter.plot(), BufferedImage.TYPE_3BYTE_BGR);
+    plotter.frame.setVisible(false);
+    plotter.frame.hide();
+    return image;
+  }
 
-    recordScreen("hmm.avi", "avi", "something", 30, 5 );
+  @SuppressWarnings("static-access")
+  public static void
+         main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
+  {
+    for (Codec codec : Codec.getInstalledCodecs())
+    {
+      System.out.println("codec: " + codec);
+    }
+    renderAnimationSequence("hmm.avi", "avi", "flv", 10, 2);
   }
 
   /**
@@ -205,26 +225,6 @@ public class ComplexFunctionAnimator
     }
 
     return image;
-  }
-
-  public static void main2(String[] args) throws Exception
-  {
-
-    String outputFile = "X.gif";
-    System.out.println("output " + outputFile);
-
-    int frameCount = 5;
-
-    for (int i = 0; i < frameCount; i++)
-    {
-      System.out.format("Drawing frame %d out of %d", i, frameCount);
-      XPlotter plot = new XPlotter(2 + i * 0.01);
-      plot.labelHardyZRoots = false;
-      plot.plot();
-      // gif.addFrame(plot.outputImage);
-      plot.frame.dispose();
-    }
-    // gif.finish();
   }
 
 }

@@ -1,6 +1,6 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|generic|alt-colors|framed-theorems>>
+<style|<tuple|generic|alt-colors|blackboard|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Hamiltonian Dynamics>|<doc-author|<author-data|<author-name|Stephen
@@ -64,14 +64,14 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|auto-3|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-Curtright_2009|<tuple|CZ09|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-Curtright_2010|<tuple|CZ10|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-Curtright_2011|<tuple|CZ11|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-foundationalMechanics|<tuple|AM08|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
-    <associate|bib-pub|<tuple|Cur11|1|../../.TeXmacs/texts/scratch/no_name_5.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|1>>
+    <associate|auto-3|<tuple|2|1>>
+    <associate|bib-Curtright_2009|<tuple|CZ09|1>>
+    <associate|bib-Curtright_2010|<tuple|CZ10|1>>
+    <associate|bib-Curtright_2011|<tuple|CZ11|1>>
+    <associate|bib-foundationalMechanics|<tuple|AM08|1>>
+    <associate|bib-pub|<tuple|Cur11|1>>
   </collection>
 </references>
 
