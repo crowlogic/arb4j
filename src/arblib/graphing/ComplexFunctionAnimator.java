@@ -47,7 +47,8 @@ public class ComplexFunctionAnimator
      * Set up the AWT infrastructure to take screenshots of the desktop.
      */
     final Robot       robot        = new Robot();
-    final Rectangle   screenbounds = new Rectangle(XPlotter.width, XPlotter.height );
+    final Rectangle   screenbounds = new Rectangle(XPlotter.width,
+                                                   XPlotter.height);
 
     final Rational    framerate    = Rational.make(1, snapsPerSecond);
 
@@ -128,10 +129,11 @@ public class ComplexFunctionAnimator
     final MediaPacket packet     = MediaPacket.make();
     double            frameCount = duration / framerate.getDouble();
 
+    double            maxSize    = 5;
+
     for (int i = 0; i < frameCount; i++)
     {
-      /** Make the screen capture && convert image to TYPE_3BYTE_BGR */
-      final BufferedImage screen = renderFunction(i, 0.1 + (double) i / frameCount);
+      final BufferedImage screen = renderFunction(i, 0.1 + maxSize * ((double) i / frameCount));
 
       /**
        * This is LIKELY not in YUV420P format, so we're going to convert it using some
@@ -171,11 +173,13 @@ public class ComplexFunctionAnimator
 
   public static BufferedImage renderFunction(int i, double a) throws NoninvertibleTransformException, IOException
   {
+    // FIXME: draw the parameter a= that the function is rendered with
     XPlotter plotter = new XPlotter(a);
     out.println("Drawing frame " + i + " a=" + a);
     BufferedImage image = convertToType(plotter.plot(), BufferedImage.TYPE_3BYTE_BGR);
     plotter.frame.setVisible(false);
     plotter.frame.hide();
+    //  
     return image;
   }
 
@@ -187,7 +191,7 @@ public class ComplexFunctionAnimator
     {
       System.out.println("codec: " + codec);
     }
-    renderAnimationSequence("hmm.avi", "avi", "flv", 10, 2);
+    renderAnimationSequence("hmm.avi", "avi", "flv", 10, 10);
   }
 
   /**
