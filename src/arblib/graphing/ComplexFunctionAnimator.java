@@ -92,7 +92,6 @@ public class ComplexFunctionAnimator
     final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
     encoder.setPixelFormat(pixelformat);
     encoder.setTimeBase(framerate);
-
     /**
      * An annoynace of some formats is that they need global (rather than
      * per-stream) headers, and in that case you have to tell the encoder. And since
@@ -133,7 +132,7 @@ public class ComplexFunctionAnimator
 
     for (int i = 0; i < frameCount; i++)
     {
-      final BufferedImage screen = renderFunction(i, 0.1 + maxSize * ((double) i / frameCount));
+      final BufferedImage screen = renderFunction(i, 0.1 + maxSize * ((double) i / frameCount), frameCount);
 
       /**
        * This is LIKELY not in YUV420P format, so we're going to convert it using some
@@ -171,11 +170,11 @@ public class ComplexFunctionAnimator
     muxer.close();
   }
 
-  public static BufferedImage renderFunction(int i, double a) throws NoninvertibleTransformException, IOException
+  public static BufferedImage renderFunction(int i, double a, double frameCount ) throws NoninvertibleTransformException, IOException
   {
     // FIXME: draw the parameter a= that the function is rendered with
     XPlotter plotter = new XPlotter(a);
-    out.println("Drawing frame " + i + " a=" + a);
+    out.println("Drawing frame " + i + "/" + frameCount + " a=" + a);
     BufferedImage image = convertToType(plotter.plot(), BufferedImage.TYPE_3BYTE_BGR);
     plotter.frame.setVisible(false);
     plotter.frame.hide();
@@ -191,7 +190,7 @@ public class ComplexFunctionAnimator
     {
       System.out.println("codec: " + codec);
     }
-    renderAnimationSequence("hmm.avi", "avi", "flv", 10, 10);
+    renderAnimationSequence("hmm.avi", "avi", "ffv1", 10, 10);
   }
 
   /**
