@@ -252,7 +252,7 @@ public interface RealFunction
                                              int maxFound,
                                              int prec)
   {
-    try ( RealRootInterval realRootInterval = new RealRootInterval();)
+    RealRootInterval realRootInterval = new RealRootInterval();
     {
       realRootInterval.set(root);
       if (found.evals >= maxEvals || found.size() >= maxFound)
@@ -264,6 +264,7 @@ public interface RealFunction
         RootStatus status = root.determineRootStatus(found, this, asign, bsign, prec);
         if (status == RootStatus.NoRoot)
         {
+          realRootInterval.close();
           return;
         }
 
@@ -284,6 +285,7 @@ public interface RealFunction
         }
         else
         {
+          realRootInterval.close();
           if (!root.split(this, found, asign, bsign, depth, maxDepth, maxEvals, maxFound, prec))
           {
             out.println("Possible zero at midpoint of " + this);
