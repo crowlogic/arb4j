@@ -6,14 +6,14 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import arblib.functions.SineFunction;
+import arblib.functions.RealSineFunction;
 import arblib.functions.ZFunction;
 
 public class RealFunctionTest
 {
 
   private static final int prec         = 256;
-  private RealFunction     sineFunction = new SineFunction()
+  private RealFunction     sineFunction = new RealSineFunction()
                                         {
                                           @Override
                                           public Real evaluate(Real z, int order, int prec, Real w)
@@ -27,7 +27,7 @@ public class RealFunctionTest
   @Test
   public void testLocateRootsSine()
   {
-    SineFunction sineFunction = new SineFunction();
+    RealSineFunction sineFunction = new RealSineFunction();
     FoundRoots   roots        = sineFunction.locateRoots(new RealRootInterval(3,
                                                                               3.6),
                                                          50,

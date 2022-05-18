@@ -3,7 +3,7 @@ package arblib.functions;
 import arblib.Real;
 import arblib.RealFunction;
 
-public class SineFunction implements
+public class RealSineFunction implements
                           RealFunction
 {
 
