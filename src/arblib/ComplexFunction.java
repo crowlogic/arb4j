@@ -69,7 +69,7 @@ public interface ComplexFunction
   };
 
   public default ConvergenceStatus
-         integrate(Complex res, Complex a, Complex b, int goal, Magnitude tol, IntegrationOptions options, int prec)
+         integrate(Complex a, Complex b, int goal, Magnitude tol, IntegrationOptions options, int prec, Complex res)
   {
     ConvergenceStatus status;
 
@@ -78,8 +78,8 @@ public interface ComplexFunction
     {
       int        depthLimit, evalLimit, degLimit;
       AtomicLong eval = new AtomicLong();
-      int        depth, depth_max, top;
-      long       leaf_interval_count;
+      int        depth, maxDepth, top;
+      long       leafIntervalCount;
       int        alloc;
       boolean    useHeap, stopping;
 
@@ -89,7 +89,7 @@ public interface ComplexFunction
       {
         IntegrationOptions opt = new IntegrationOptions();
 
-        return integrate(res, a, b, goal, tol, opt, prec);
+        return integrate(a, b, goal, tol, opt, prec, res);
       }
 
       status     = ConvergenceStatus.Converged;
@@ -123,10 +123,10 @@ public interface ComplexFunction
         quadSimple(vs, as, bs, prec);
         mag_hypot(ms, vs.getReal().getRad(), vs.getImag().getRad());
 
-        depth = depth_max = 1;
+        depth = maxDepth = 1;
         eval.set(1);
-        stopping            = false;
-        leaf_interval_count = 0;
+        stopping          = false;
+        leafIntervalCount = 0;
 
         /* Adjust absolute tolerance based on new information. */
         acb_get_mag_lower(tmpm, vs);
@@ -155,7 +155,7 @@ public interface ComplexFunction
           if (mag_cmp(ms.get(top), new_tol) < 0 || _acb_overlaps(u, as.get(top), bs.get(top), prec) != 0 || stopping)
           {
             acb_add(s, s, vs.get(top), prec);
-            leaf_interval_count++;
+            leafIntervalCount++;
 
             depth--;
             if (useHeap && depth > 0)
@@ -193,7 +193,7 @@ public interface ComplexFunction
               }
 
               acb_add(s, s, u, prec);
-              leaf_interval_count++;
+              leafIntervalCount++;
 
               /* Adjust absolute tolerance based on new information. */
               acb_get_mag_lower(tmpm, u);
@@ -282,17 +282,17 @@ public interface ComplexFunction
           }
 
           depth++;
-          depth_max = Math.max(depth, depth_max);
+          maxDepth = Math.max(depth, maxDepth);
         }
 
         if (verbose)
         {
           System.out.format("depth %wd/%wd, eval %wd/%wd, %wd leaf intervals\n",
-                            depth_max,
+                            maxDepth,
                             depthLimit,
                             eval,
                             evalLimit,
-                            leaf_interval_count);
+                            leafIntervalCount);
         }
 
         acb_set(res, s);
@@ -325,15 +325,15 @@ public interface ComplexFunction
                                                                 boolean verbose,
                                                                 int prec)
   {
+    boolean converged = false;
     try ( Complex mid = new Complex(); Complex delta = new Complex(); Complex wide = new Complex();
           Magnitude tmpm = new Magnitude(); Complex s = new Complex(); Complex v = new Complex();
           Magnitude M = new Magnitude(); Magnitude X = new Magnitude(); Magnitude Y = new Magnitude();
           Magnitude rho = new Magnitude(); Magnitude err = new Magnitude(); Magnitude t = new Magnitude();
-          Magnitude best_rho = new Magnitude();)
+          Magnitude bestRho = new Magnitude();)
     {
-      boolean converged = false;
-      int     k, Xexp;
-      int     i, n, best_n;
+      int k, Xexp;
+      int i, n, best_n;
 
       if (deg_limit <= 0)
       {
@@ -414,7 +414,7 @@ public interface ComplexFunction
             if (best_n == -1 || n < best_n)
             {
               mag_set(err, t);
-              mag_set(best_rho, rho);
+              mag_set(bestRho, rho);
               best_n = n;
             }
 
@@ -460,7 +460,7 @@ public interface ComplexFunction
       }
     }
 
-    return true;
+    return converged;
   }
 
 }
