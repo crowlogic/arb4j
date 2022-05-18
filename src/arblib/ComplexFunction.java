@@ -52,176 +52,163 @@ public interface ComplexFunction
     }
   }
 
-  public default boolean performGaussLegendreIntegrationWithAutomaticDegreeDetermination(Complex res,
-                                                                                         AtomicLong evalCount,
-                                                                                         Complex a,
-                                                                                         Complex b,
-                                                                                         Magnitude tol,
-                                                                                         int deg_limit,
-                                                                                         int verbose,
-                                                                                         int prec)
+  /**
+   * Perform a step of Gauss-Legendre quadrature with automatic degree
+   * determination
+   * 
+   * @param res
+   * @param evalCount
+   * @param a
+   * @param b
+   * @param tol
+   * @param deg_limit
+   * @param verbose
+   * @param prec
+   * @return
+   */
+  public default boolean performGaussLegendreIntegrationAutoDeg(Complex res,
+                                                                AtomicLong evalCount,
+                                                                Complex a,
+                                                                Complex b,
+                                                                Magnitude tol,
+                                                                int deg_limit,
+                                                                int verbose,
+                                                                int prec)
   {
-    Complex   mid       = null, delta = null, wide = null;
-    Magnitude tmpm      = null;
-    boolean   converged = false;
-    Complex   s         = null, v = null;
-    Magnitude M         = null, X = null, Y = null, rho = null, err = null, t = null, best_rho = null;
-    int       k, Xexp;
-    int       i, n, best_n;
-
-    if (deg_limit <= 0)
+    try ( Complex mid = new Complex(); Complex delta = new Complex(); Complex wide = new Complex();
+          Magnitude tmpm = new Magnitude(); Complex s = new Complex(); Complex v = new Complex();
+          Magnitude M = new Magnitude(); Magnitude X = new Magnitude(); Magnitude Y = new Magnitude();
+          Magnitude rho = new Magnitude(); Magnitude err = new Magnitude(); Magnitude t = new Magnitude();
+          Magnitude best_rho = new Magnitude();)
     {
-      acb_indeterminate(res);
-      evalCount.set(0);
-      return false;
-    }
+      boolean converged = false;
+      int     k, Xexp;
+      int     i, n, best_n;
 
-    acb_init(mid);
-    acb_init(delta);
-    acb_init(wide);
-    mag_init(tmpm);
-
-    /* delta = (b-a)/2 */
-    acb_sub(delta, b, a, prec);
-    acb_mul_2exp_si(delta, delta, -1);
-
-    /* mid = (a+b)/2 */
-    acb_add(mid, a, b, prec);
-    acb_mul_2exp_si(mid, mid, -1);
-
-    acb_init(s);
-    acb_init(v);
-    mag_init(M);
-    mag_init(X);
-    mag_init(Y);
-    mag_init(rho);
-    mag_init(t);
-    mag_init(err);
-    mag_init(best_rho);
-
-    best_n = -1;
-    evalCount.set(0);
-
-    mag_inf(err);
-
-    for (Xexp = 0; Xexp < prec /* && Xexp == 0 */; Xexp += Math.max(1, Xexp))
-    {
-      mag_one(X);
-      mag_mul_2exp_si(X, X, Xexp + 1);
-
-      /* rho = X + sqrt(X^2 - 1) (lower bound) */
-      mag_mul_lower(rho, X, X);
-      mag_one(t);
-      mag_sub_lower(rho, rho, t);
-      mag_sqrt_lower(rho, rho);
-      mag_add_lower(rho, rho, X);
-
-      /* Y = sqrt(X^2 - 1) (upper bound) */
-      mag_mul(Y, X, X);
-      mag_one(t);
-      mag_sub(Y, Y, t);
-      mag_sqrt(Y, Y);
-
-      acb_zero(wide);
-      mag_set(wide.getReal().getRad(), X);
-      mag_set(wide.getImag().getRad(), Y);
-
-      /* transform to [a,b] */
-      acb_mul(wide, wide, delta, prec);
-      acb_add(wide, wide, mid, prec);
-
-      evaluate(wide, 1, prec, v);
-      evalCount.incrementAndGet();
-
-      /* no chance */
-      if (!v.isFinite())
-        break;
-
-      /* M = (b-a)/2 |f| */
-      acb_get_mag(M, v);
-      acb_get_mag(tmpm, delta);
-      mag_mul(M, M, tmpm);
-
-      /* Search for the smallest n that gives err < tol (if possible) */
-      for (i = 0; i < glStepCount && glSteps[i] <= deg_limit; i++)
+      if (deg_limit <= 0)
       {
-        n = glSteps[i];
+        acb_indeterminate(res);
+        evalCount.set(0);
+        return false;
+      }
 
-        /* (64/15) M / ((rho-1) rho^(2n-1)) */
-        mag_pow_ui_lower(t, rho, 2 * n - 1);
-        mag_one(tmpm);
-        mag_sub_lower(tmpm, rho, tmpm);
-        mag_mul_lower(t, t, tmpm);
-        mag_mul_ui_lower(t, t, 15);
-        mag_div(t, M, t);
-        mag_mul_2exp_si(t, t, 6);
+      /* delta = (b-a)/2 */
+      acb_sub(delta, b, a, prec);
+      acb_mul_2exp_si(delta, delta, -1);
 
-        if (mag_cmp(t, tol) < 0)
+      /* mid = (a+b)/2 */
+      acb_add(mid, a, b, prec);
+      acb_mul_2exp_si(mid, mid, -1);
+
+      best_n = -1;
+      evalCount.set(0);
+
+      mag_inf(err);
+
+      for (Xexp = 0; Xexp < prec /* && Xexp == 0 */; Xexp += Math.max(1, Xexp))
+      {
+        mag_one(X);
+        mag_mul_2exp_si(X, X, Xexp + 1);
+
+        /* rho = X + sqrt(X^2 - 1) (lower bound) */
+        mag_mul_lower(rho, X, X);
+        mag_one(t);
+        mag_sub_lower(rho, rho, t);
+        mag_sqrt_lower(rho, rho);
+        mag_add_lower(rho, rho, X);
+
+        /* Y = sqrt(X^2 - 1) (upper bound) */
+        mag_mul(Y, X, X);
+        mag_one(t);
+        mag_sub(Y, Y, t);
+        mag_sqrt(Y, Y);
+
+        acb_zero(wide);
+        mag_set(wide.getReal().getRad(), X);
+        mag_set(wide.getImag().getRad(), Y);
+
+        /* transform to [a,b] */
+        acb_mul(wide, wide, delta, prec);
+        acb_add(wide, wide, mid, prec);
+
+        evaluate(wide, 1, prec, v);
+        evalCount.incrementAndGet();
+
+        /* no chance */
+        if (!v.isFinite())
+          break;
+
+        /* M = (b-a)/2 |f| */
+        acb_get_mag(M, v);
+        acb_get_mag(tmpm, delta);
+        mag_mul(M, M, tmpm);
+
+        /* Search for the smallest n that gives err < tol (if possible) */
+        for (i = 0; i < glStepCount && glSteps[i] <= deg_limit; i++)
         {
-          converged = true;
-          /* The best so far. */
-          if (best_n == -1 || n < best_n)
+          n = glSteps[i];
+
+          /* (64/15) M / ((rho-1) rho^(2n-1)) */
+          mag_pow_ui_lower(t, rho, 2 * n - 1);
+          mag_one(tmpm);
+          mag_sub_lower(tmpm, rho, tmpm);
+          mag_mul_lower(t, t, tmpm);
+          mag_mul_ui_lower(t, t, 15);
+          mag_div(t, M, t);
+          mag_mul_2exp_si(t, t, 6);
+
+          if (mag_cmp(t, tol) < 0)
           {
-            mag_set(err, t);
-            mag_set(best_rho, rho);
-            best_n = n;
+            converged = true;
+            /* The best so far. */
+            if (best_n == -1 || n < best_n)
+            {
+              mag_set(err, t);
+              mag_set(best_rho, rho);
+              best_n = n;
+            }
+
+            /* Best possible n. */
+            if (n == 1)
+              break;
+          }
+        }
+      }
+
+      /* Evaluate best found Gauss-Legendre quadrature rule. */
+      if (converged)
+      {
+        try ( Real x = new Real(); Real w = new Real();)
+        {
+          assert best_n != -1;
+
+          for (i = 0; i < glStepCount; i++)
+            if (glSteps[i] == best_n)
+              break;
+
+          acb_zero(s);
+
+          for (k = 0; k < best_n; k++)
+          {
+            acb_calc_gl_node(x, w, i, k, prec);
+            acb_mul_arb(wide, delta, x, prec);
+            acb_add(wide, wide, mid, prec);
+            evaluate(wide, 0, prec, v);
+            acb_addmul_arb(s, v, w, prec);
           }
 
-          /* Best possible n. */
-          if (n == 1)
-            break;
+          evalCount.getAndAdd(best_n);
+
+          acb_mul(res, s, delta, prec);
+          acb_add_error_mag(res, err);
+
         }
       }
-    }
-
-    /* Evaluate best found Gauss-Legendre quadrature rule. */
-    if (converged)
-    {
-      try ( Real x = new Real(); Real w = new Real();)
+      else
       {
-        assert best_n != -1;
-
-        for (i = 0; i < glStepCount; i++)
-          if (glSteps[i] == best_n)
-            break;
-
-        acb_zero(s);
-
-        for (k = 0; k < best_n; k++)
-        {
-          acb_calc_gl_node(x, w, i, k, prec);
-          acb_mul_arb(wide, delta, x, prec);
-          acb_add(wide, wide, mid, prec);
-          evaluate(wide, 0, prec, v);
-          acb_addmul_arb(s, v, w, prec);
-        }
-
-        evalCount.getAndAdd(best_n);
-
-        acb_mul(res, s, delta, prec);
-        acb_add_error_mag(res, err);
-
+        acb_indeterminate(res);
       }
     }
-    else
-    {
-      acb_indeterminate(res);
-    }
-
-    acb_clear(s);
-    acb_clear(v);
-    mag_clear(M);
-    mag_clear(X);
-    mag_clear(Y);
-    mag_clear(rho);
-    mag_clear(t);
-    mag_clear(err);
-    mag_clear(best_rho);
-
-    acb_clear(mid);
-    acb_clear(delta);
-    acb_clear(wide);
-    mag_clear(tmpm);
 
     return true;
   }
