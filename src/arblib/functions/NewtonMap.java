@@ -31,13 +31,16 @@ public class NewtonMap implements
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
+    try ( Complex y = Complex.newVector(2))
+    {
     if (order >= 1)
     {
-      z.sub(f.evaluate(z, 2, prec, w).div(w.get(1), prec, w), prec, w);
+      z.sub(f.evaluate(z, 2, prec, y).div(y.get(1), prec, w), prec, w);
     }
     if (order >= 2)
     {
       throw new UnsupportedOperationException("TODO: return t-f(t)/f'(t) (also implement first derivative)");
+    }
     }
     return w;
   }

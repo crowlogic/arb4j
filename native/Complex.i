@@ -17,6 +17,8 @@ import java.io.Serializable;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public boolean printPrecision = false;
+
   public Complex resize(int alloc)
   {
     swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
@@ -342,9 +344,11 @@ import java.io.Serializable;
       {
         sb.append(",\n ");
       }
+      Real real2 = get(i).getReal();
+      Real imag2 = get(i).getImag();
       sb.append(String.format("%s %si",
-                              get(i).getReal(),
-                              get(i).getImag()));
+                              printPrecision ? real2.toString() : real2.getMid().toString(),
+                              printPrecision ? imag2.toString() : imag2.getMid().toString()));
     }
     sb.append("]");
     return sb.toString();
