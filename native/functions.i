@@ -1,3 +1,15 @@
+void acb_dft_inverse_precomp(acb_ptr w, acb_srcptr v, const acb_dft_pre_t pre, slong prec);
+ 
+void acb_dft_precomp(acb_ptr w, acb_srcptr v, const acb_dft_pre_t pre, slong prec);
+ 
+void acb_dft_precomp_clear(acb_dft_pre_t pre);
+ 
+void acb_dft_precomp_init(acb_dft_pre_t pre, slong len, slong prec);
+ 
+void acb_dft_inverse(acb_ptr w, acb_srcptr v, slong n, slong prec);
+ 
+void acb_dft(acb_ptr w, acb_srcptr v, slong n, slong prec);
+ 
 int acb_is_real(const acb_t x);
 
 int _acb_overlaps(acb_t tmp, const acb_t a, const acb_t b, slong prec);

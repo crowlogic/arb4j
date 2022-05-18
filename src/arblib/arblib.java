@@ -9,6 +9,30 @@
 package arblib;
 
 public class arblib {
+  public static void acb_dft_inverse_precomp(Complex w, Complex v, FastDFTScheme pre, int prec) {
+    arblibJNI.acb_dft_inverse_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTScheme.getCPtr(pre), pre, prec);
+  }
+
+  public static void acb_dft_precomp(Complex w, Complex v, FastDFTScheme pre, int prec) {
+    arblibJNI.acb_dft_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTScheme.getCPtr(pre), pre, prec);
+  }
+
+  public static void acb_dft_precomp_clear(FastDFTScheme pre) {
+    arblibJNI.acb_dft_precomp_clear(FastDFTScheme.getCPtr(pre), pre);
+  }
+
+  public static void acb_dft_precomp_init(FastDFTScheme pre, int len, int prec) {
+    arblibJNI.acb_dft_precomp_init(FastDFTScheme.getCPtr(pre), pre, len, prec);
+  }
+
+  public static void acb_dft_inverse(Complex w, Complex v, int n, int prec) {
+    arblibJNI.acb_dft_inverse(Complex.getCPtr(w), w, Complex.getCPtr(v), v, n, prec);
+  }
+
+  public static void acb_dft(Complex w, Complex v, int n, int prec) {
+    arblibJNI.acb_dft(Complex.getCPtr(w), w, Complex.getCPtr(v), v, n, prec);
+  }
+
   public static int acb_is_real(Complex x) {
     return arblibJNI.acb_is_real(Complex.getCPtr(x), x);
   }

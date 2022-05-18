@@ -12,6 +12,7 @@
 #include <acb_dirichlet.h>
 #include <dirichlet.h>
 #include <acb_modular.h>
+#include <acb_dft.h>
 
 #include "color.h"
 #ifndef size_t
@@ -182,3 +183,123 @@ typedef struct
 acb_poly_struct;
 
 typedef acb_poly_struct acb_poly_t[1];
+
+
+
+
+
+
+
+
+
+// DFT stuff
+
+
+typedef struct acb_dft_step_struct acb_dft_step_struct;
+typedef acb_dft_step_struct * acb_dft_step_ptr;
+
+typedef struct
+{
+    slong n;
+    acb_ptr z;
+    int zclear;
+    slong num;
+    acb_dft_step_ptr cyc;
+}
+acb_dft_cyc_struct;
+
+typedef acb_dft_cyc_struct acb_dft_cyc_t[1];
+
+typedef struct
+{
+    int e;
+    slong n; /* = 1 << e */
+    slong dv;
+    slong nz; /* = n but could be bigger */
+    acb_ptr z;
+}
+acb_dft_rad2_struct;
+
+typedef acb_dft_rad2_struct acb_dft_rad2_t[1];
+
+typedef struct
+{
+    slong n;
+    slong dv;
+    acb_ptr z; /* z[k] = e(k^2/2n) */
+    acb_ptr g; /* g[k] = dft( z ) */
+    acb_dft_rad2_t rad2;
+}
+acb_dft_bluestein_struct;
+
+typedef acb_dft_bluestein_struct acb_dft_bluestein_t[1];
+
+typedef struct
+{
+    slong n;
+    slong num;
+    acb_dft_step_ptr cyc;
+}
+acb_dft_prod_struct;
+
+typedef acb_dft_prod_struct acb_dft_prod_t[1];
+
+typedef struct
+{
+    slong n;
+	// crt_t c;
+    slong dv;
+    /* then a product */
+    acb_dft_step_ptr cyc;
+}
+acb_dft_crt_struct;
+
+typedef acb_dft_crt_struct acb_dft_crt_t[1];
+
+typedef struct
+{
+    slong n;
+    slong dv;
+    int zclear;
+    acb_ptr z;
+    slong dz;
+}
+acb_dft_naive_struct;
+
+typedef acb_dft_naive_struct acb_dft_naive_t[1];
+
+typedef struct
+{
+    slong n;
+    int type;
+    union
+    {
+        acb_dft_rad2_t rad2;
+        acb_dft_cyc_t cyc;
+        acb_dft_prod_t prod;
+        acb_dft_crt_t crt;
+        acb_dft_naive_t naive;
+        acb_dft_bluestein_t bluestein;
+    } t;
+}
+acb_dft_pre_struct;
+
+typedef acb_dft_pre_struct acb_dft_pre_t[1];
+
+/* covers both product and cyclic case */
+struct
+acb_dft_step_struct
+{
+    /* [G:H] */
+    slong m;
+    /* card H */
+    //slong M;
+    slong dv; /* = M for prod, also = M if cyc is reordered */
+    /* pointer on some roots of unity, if needed */
+    acb_srcptr z;
+    /* index of mM in z */
+    slong dz;
+    /* dft to call on H */
+    acb_dft_pre_t pre;
+    /* dft to call on G/H ? */
+};
