@@ -22,6 +22,7 @@ import java.io.Serializable;
     swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
                                                                                 false),
                                                             2 * alloc * Complex.BYTES));
+    this.dim = alloc;                                                            
     return this;
   }
     
