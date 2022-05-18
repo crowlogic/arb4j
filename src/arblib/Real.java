@@ -13,11 +13,31 @@ import java.util.concurrent.TimeUnit;
 import static arblib.Constants.*;
 import static arblib.arblib.*;
 
-public class Real implements
-                  AutoCloseable
-{
-  private transient long      swigCPtr;
+
+public class Real implements AutoCloseable {
+  private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
+
+  public Real(long cPtr, boolean cMemoryOwn) {
+    swigCMemOwn = cMemoryOwn;
+    swigCPtr = cPtr;
+  }
+
+  public static long getCPtr(Real obj) {
+    return (obj == null) ? 0 : obj.swigCPtr;
+  }
+
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
+        swigCMemOwn = false;
+        arblibJNI.delete_Real(swigCPtr);
+      }
+      swigCPtr = 0;
+    }
+  }
+
+ static { System.loadLibrary( "arblib" ); }
 
   /**
    * 
@@ -30,36 +50,7 @@ public class Real implements
     arblib.arb_get_interval_arf(interval.getA(), interval.getB(), this, prec);
     return interval;
   }
-
-  public Real(long cPtr, boolean cMemoryOwn)
-  {
-    swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
-  }
-
-  public static long getCPtr(Real obj)
-  {
-    return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
-        swigCMemOwn = false;
-        arblibJNI.delete_Real(swigCPtr);
-      }
-      swigCPtr = 0;
-    }
-  }
-
-  static
-  {
-    System.loadLibrary("arblib");
-  }
-
+  
   /**
    * @return {@link arblib#arb_allocated_bytes(Real)}
    */
@@ -67,87 +58,87 @@ public class Real implements
   {
     return arblib.arb_allocated_bytes(this);
   }
-
+  
   public Real negate(Real res)
   {
     arblib.arb_neg(res, this);
     return this;
   }
-
-  public Real sqrt(int prec)
+  
+  public Real sqrt( int prec )  
   {
-    return sqrt(prec, this);
+    return sqrt(prec,this);
   }
-
-  public Real sqrt(int prec, Real res)
+  
+  public Real sqrt( int prec, Real res )
   {
     arblib.arb_sqrt(res, this, prec);
     return this;
   }
+  
+ public boolean isFinite()
+ {
+   return arblib.arb_is_finite(this) != 0;
+ }
 
-  public boolean isFinite()
-  {
-    return arblib.arb_is_finite(this) != 0;
-  }
+ public Real floor( int prec, Real res )
+ {
+   arblib.arb_floor( res, this, prec );
+   return res;
+ }
 
-  public Real floor(int prec, Real res)
-  {
-    arblib.arb_floor(res, this, prec);
-    return res;
-  }
-
-  public Real ceil(int prec, Real res)
-  {
-    arblib.arb_ceil(res, this, prec);
-    return res;
-  }
-
+ public Real ceil( int prec, Real res )
+ {
+   arblib.arb_ceil( res, this, prec );
+   return res;
+ }
+ 
   public Real frac(int prec, Real res)
   {
-    try ( Real f = new Real())
+    try (Real f = new Real() )
     {
       return sub(floor(prec, f), prec, res);
     }
   }
-
-  public int dim = 1;
-
+ 
+   public int dim = 1;
+  
   public int size()
   {
     return dim;
   }
-
-  public static Real newVector(int dim)
+ 
+  public static Real newVector( int dim )
   {
-    Real array = arblib._arb_vec_init(dim);
+    Real array = arblib._arb_vec_init(dim);    
     array.dim = dim;
     return array;
   }
-
-  public Real cos(int prec, Real result)
+ 
+  public Real cos(int prec, Real result )
   {
-    arblib.arb_cos(result, this, prec);
+    arblib.arb_cos(result, this, prec );
     return result;
   }
 
-  public Real sin(int prec, Real result)
+  public Real sin(int prec, Real result )
   {
-    arblib.arb_sin(result, this, prec);
+    arblib.arb_sin(result, this, prec );
     return result;
   }
-
-  public Complex mul(Complex exp, int prec, Complex r)
+ 
+ public Complex mul(Complex exp, int prec, Complex r)
   {
-    arblib.acb_mul_arb(r, exp, this, prec);
+    arblib.acb_mul_arb(r, exp, this, prec );
     return r;
   }
-
-  public Real tanh(Real result, int prec)
-  {
-    arblib.arb_tanh(result, this, prec);
+  
+  public Real tanh(Real result, int prec )
+  {   
+    arblib.arb_tanh(result, this, prec );
     return result;
   }
-
+  
   public Real swap(Real u)
   {
     arblib.arb_swap(this, u);
@@ -162,25 +153,25 @@ public class Real implements
 
   public Real div(Real exp, int prec, Real r)
   {
-    arblib.arb_div(r, this, exp, prec);
+    arblib.arb_div(r, this, exp, prec );
     return r;
   }
-
+  
   public Real div(Real exp, Real r)
   {
     arblib.arb_div(r, this, exp, Complex.defaultPrec);
     return r;
   }
-
-  public Real nthHardyZero(int n, int prec)
-  {
+  
+  public Real nthHardyZero(int n, int prec) 
+  {    
     arblib.nthHardyZero(this, n, prec);
     return this;
   }
-
+  
   public int relAccuracyBits()
   {
-    return arblib.arb_rel_accuracy_bits(this);
+   return arblib.arb_rel_accuracy_bits(this);
   }
 
   public Real sub(Real real, int prec, Real res)
@@ -189,72 +180,71 @@ public class Real implements
     return res;
   }
 
-  public Real setIntervalMagnitude(Magnitude a, Magnitude b, int prec)
+  public Real setIntervalMagnitude( Magnitude a, Magnitude b, int prec )
   {
     arblib.arb_set_interval_mag(this, a, b, prec);
     return this;
   }
-
+  
   public static final int BYTES = 48;
-
-  public Real pi(int prec)
+  
+  public Real pi( int prec )
   {
     arblib.arb_const_pi(this, prec);
     return this;
   }
-
+  
   public Real init()
   {
     arblib.arb_init(this);
     return this;
   }
-
+  
   @Override
-  public void close()
-  {
+  public void close() 
+  { 
     delete();
   }
 
   public Real add(Real d, int prec, Real res)
   {
-    arblib.arb_add(res, this, d, prec);
+    arblib.arb_add(res, this, d, prec );
     return res;
   }
-
-  public Real get(int index)
+  
+  public Real get( int index )
   {
-    return new Real(swigCPtr + index * Real.BYTES,
-                    false);
-  }
-
+    return new Real(swigCPtr + index * Real.BYTES, false);  
+  } 
   public static final int digits = 46;
-
+  
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();
     sb.append("[");
     for (int i = 0; i < dim; i++)
     {
-      if (i > 0)
+      if ( i > 0 )
       {
         sb.append(",\n ");
       }
-      sb.append(String.format("%010.010f", get(i).doubleValue()));
+      sb.append(String.format("%010.010f", get(i).doubleValue() ) );
     }
     sb.append("]");
     return sb.toString();
   }
-
+  
+  
   public String toString()
   {
-    if (dim == 1)
+    if ( dim == 1 )
     {
       // TODO: get the number of digits to from the exponent of the radius
       String prefix = getMid().toString(digits);
       // dont print the last digit since its not gauranteed to be correct
-      prefix = prefix.substring(0, prefix.length() - 1);
-      return prefix + " +/- " + getRad().toString(5);
-      // return arblib.arb_get_str(this, digits, 1);
+      prefix = prefix.substring(0, prefix.length() - 1 );
+      return prefix + " +/- " + getRad().toString(5);    
+      //return arblib.arb_get_str(this, digits, 1);
     }
     else
     {
@@ -262,29 +252,31 @@ public class Real implements
       sb.append("[");
       for (int i = 0; i < dim; i++)
       {
-        if (i > 0)
+        if ( i > 0 )
         {
           sb.append(",\n ");
         }
-        sb.append(String.format("%s", get(i)));
-      }
-      sb.append("]");
-      return sb.toString();
+      sb.append(String.format("%s",
+                              get(i)));
+    }
+    sb.append("]");
+    return sb.toString();
     }
   }
-
-  public Real abs(Real res)
+      
+  public Real abs(Real res)  
   {
     arblib.arb_abs(this, res);
     return res;
   }
 
+        
   public Real set(Real real)
   {
-    arblib.arb_set(this, real);
-    return this;
+     arblib.arb_set( this, real );
+     return this;    
   }
-
+  
   public int bits()
   {
     return arblib.arb_bits(this);
@@ -295,13 +287,13 @@ public class Real implements
     arblib.arb_pos_inf(this);
     return this;
   }
-
+  
   public Real negInf()
   {
     arblib.arb_neg_inf(this);
     return this;
   }
-
+  
   public Real zero()
   {
     arblib.arb_zero(this);
@@ -313,46 +305,48 @@ public class Real implements
     arblib.arb_one(this);
     return this;
   }
-
+         
   public Real set(String string, int prec)
   {
     arblib.arb_set_str(this, string, prec);
     return this;
   }
-
-  public boolean overlaps(Real interval)
+  
+  
+  public boolean overlaps( Real interval )
   {
     return arblib.arb_overlaps(this, interval) != 0;
   }
-
-  public boolean contains(Real interval)
+  
+  public boolean contains( Real interval )
   {
     return arblib.arb_contains(this, interval) != 0;
   }
-
-  public Real assign(String string, int digits)
+  
+  
+  public Real assign( String string, int digits )
   {
     arblib.arb_set_str(this, string, digits);
     return this;
   }
-
+  
   public Real assign(double d)
   {
     arblib.arb_set_d(this, d);
     return this;
   }
-
+  
   public Real div(int k, int prec, Real res)
   {
     arblib.arb_div_si(res, this, k, prec);
     return res;
   }
-
+  
   public double doubleValue()
   {
     return getMid().doubleValue(Constants.ARF_RND_DOWN);
   }
-
+  
   public Complex mul(Complex exp, Complex r)
   {
     arblib.acb_mul_arb(r, exp, this, Complex.defaultPrec);
@@ -376,19 +370,19 @@ public class Real implements
   {
     return arblib.arb_is_negative(this) != 0;
   }
-
+  
   public boolean containsZero()
   {
     return arblib.arb_contains_zero(this) != 0;
   }
-
+  
   public Real set(FloatInterval interval, int prec)
   {
     Float a = interval.getA();
     Float b = interval.getB();
 
     /* [-inf, -inf] or [+inf, +inf] */
-    if (a.isInfinite() && a.equals(b))
+    if (a.isInfinite() && a.equals(b) )
     {
       setMid(a);
       getRad().zero();
@@ -396,7 +390,7 @@ public class Real implements
     }
 
     /* any nan -> [nan +/- inf] */
-    if (a.isNotANumber() || b.isNotANumber())
+    if (a.isNotANumber() || b.isNotANumber() )
     {
       arb_indeterminate(this);
       return this;
@@ -439,9 +433,9 @@ public class Real implements
    * 
    * @param prec
    * @param r
-   * @return the multiplicative inverse of r
+   * @return the multiplicative inverse of r 
    */
-  public Real inv(int prec, Real r)
+  public Real inv( int prec, Real r )
   {
     arblib.arb_inv(r, this, prec);
     return r;
@@ -458,47 +452,41 @@ public class Real implements
   {
     return cos(prec, r).inv(prec, r);
   }
-
+  
   public Real pow(int i, Real r)
   {
     arblib.arb_pow_ui(r, this, i, i);
     return r;
   }
-
+  
   public Real tan(int prec, Real r)
   {
     arblib.arb_tan(r, this, prec);
     return r;
   }
+  
+  
 
-  public void setMid(Float value)
-  {
+  public void setMid(Float value) {
     arblibJNI.Real_mid_set(swigCPtr, this, Float.getCPtr(value), value);
   }
 
-  public Float getMid()
-  {
+  public Float getMid() {
     long cPtr = arblibJNI.Real_mid_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Float(cPtr,
-                                          false);
+    return (cPtr == 0) ? null : new Float(cPtr, false);
   }
 
-  public void setRad(Magnitude value)
-  {
+  public void setRad(Magnitude value) {
     arblibJNI.Real_rad_set(swigCPtr, this, Magnitude.getCPtr(value), value);
   }
 
-  public Magnitude getRad()
-  {
+  public Magnitude getRad() {
     long cPtr = arblibJNI.Real_rad_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Magnitude(cPtr,
-                                              false);
+    return (cPtr == 0) ? null : new Magnitude(cPtr, false);
   }
 
-  public Real()
-  {
-    this(arblibJNI.new_Real(),
-         true);
+  public Real() {
+    this(arblibJNI.new_Real(), true);
   }
 
 }

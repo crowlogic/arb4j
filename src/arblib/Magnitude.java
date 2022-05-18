@@ -34,6 +34,31 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
     }
   }
 
+ 
+ public static final int BYTES = 16;
+ 
+ int dim;
+ 
+  public Magnitude resize(int alloc)
+  {
+    return new Magnitude(SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(Magnitude.getCPtr(this),
+                                                                                        false),
+                                                                    2 * alloc * Magnitude.BYTES)),
+                       true);
+  }
+     
+  public Magnitude get( int index )
+  {
+    assert index < dim;
+    return new Magnitude(swigCPtr + index * Magnitude.BYTES, false);  
+  } 
+  
+ public static Magnitude newVector(int dim)
+ {
+    Magnitude array = arblib._mag_vec_init(dim);    
+    array.dim = dim;
+    return array;
+ }
 
   public String toString( int digits )
   {

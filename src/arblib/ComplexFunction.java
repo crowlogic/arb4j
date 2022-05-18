@@ -2,6 +2,7 @@ package arblib;
 
 import static arblib.arblib.*;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -52,6 +53,255 @@ public interface ComplexFunction
     }
   }
 
+  public static class IntegrationOptions
+  {
+    public int     degLimit;
+    public int     evalLimit;
+    public int     depthLimit;
+    public boolean useHeap;
+    public boolean verbose;
+  }
+
+  public static enum ConvergenceStatus
+  {
+   Converged,
+   Diverged
+  };
+
+  public default ConvergenceStatus
+         integrate(Complex res, Complex a, Complex b, int goal, Magnitude tol, IntegrationOptions options, int prec)
+  {
+    ConvergenceStatus status;
+
+    try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex();
+          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude new_tol = new Magnitude();)
+    {
+      int        depthLimit, evalLimit, degLimit;
+      AtomicLong eval = new AtomicLong();
+      int        depth, depth_max, top;
+      long       leaf_interval_count;
+      int        alloc;
+      boolean    useHeap, stopping;
+
+      boolean    gl_status, verbose, real_error;
+
+      if (options == null)
+      {
+        IntegrationOptions opt = new IntegrationOptions();
+
+        return integrate(res, a, b, goal, tol, opt, prec);
+      }
+
+      status     = ConvergenceStatus.Converged;
+
+      depthLimit = options.depthLimit;
+      if (depthLimit <= 0)
+        depthLimit = 2 * prec;
+      depthLimit = Math.max(depthLimit, 1);
+
+      evalLimit  = options.evalLimit;
+      if (evalLimit <= 0)
+        evalLimit = 1000 * prec + prec * prec;
+      evalLimit = Math.max(evalLimit, 1);
+
+      goal      = Math.max(goal, 0);
+      degLimit  = options.degLimit;
+      if (degLimit <= 0)
+        degLimit = (int) (0.5 * Math.min(goal, prec) + 60);
+
+      verbose = options.verbose;
+      useHeap = options.useHeap;
+
+      alloc   = 4;
+      try ( Complex as = Complex.newVector(alloc); Complex bs = Complex.newVector(alloc);
+            Complex vs = Complex.newVector(alloc); Magnitude ms = Magnitude.newVector(alloc);)
+      {
+
+        /* Compute initial crude estimate for the whole interval. */
+        acb_set(as, a);
+        acb_set(bs, b);
+        quadSimple(vs, as, bs, prec);
+        mag_hypot(ms, vs.getReal().getRad(), vs.getImag().getRad());
+
+        depth = depth_max = 1;
+        eval.set(1);
+        stopping            = false;
+        leaf_interval_count = 0;
+
+        /* Adjust absolute tolerance based on new information. */
+        acb_get_mag_lower(tmpm, vs);
+        mag_mul_2exp_si(tmpm, tmpm, -goal);
+        mag_max(new_tol, tol, tmpm);
+
+        acb_zero(s);
+
+        while (depth >= 1)
+        {
+          if (!stopping && eval.get() >= evalLimit - 1)
+          {
+            if (verbose)
+              System.out.printf("stopping at eval_limit %wd\n", evalLimit);
+            status   = ConvergenceStatus.Diverged;
+            stopping = true;
+            continue;
+          }
+
+          if (useHeap)
+            top = 0;
+          else
+            top = depth - 1;
+
+          /* We are done with this subinterval. */
+          if (mag_cmp(ms.get(top), new_tol) < 0 || _acb_overlaps(u, as.get(top), bs.get(top), prec) != 0 || stopping)
+          {
+            acb_add(s, s, vs.get(top), prec);
+            leaf_interval_count++;
+
+            depth--;
+            if (useHeap && depth > 0)
+            {
+              acb_swap(as, as.get(depth));
+              acb_swap(bs, bs.get(depth));
+              acb_swap(vs, vs.get(depth));
+              mag_swap(ms, ms.get(depth));
+              heap_up(as, bs, vs, ms, depth);
+            }
+            continue;
+          }
+
+          /* Attempt using Gauss-Legendre rule. */
+          if (vs.get(top).isFinite())
+          {
+            gl_status = performGaussLegendreIntegrationAutoDeg(u,
+                                                               eval,
+                                                               as.get(top),
+                                                               bs.get(top),
+                                                               new_tol,
+                                                               degLimit,
+                                                               verbose,
+                                                               prec);
+
+            /* We are done with this subinterval. */
+            if (gl_status)
+            {
+              /* We know that the result is real. */
+              real_error = vs.get(top).isFinite() && vs.get(top).isReal();
+
+              if (real_error)
+              {
+                arb_zero(u.getImag());
+              }
+
+              acb_add(s, s, u, prec);
+              leaf_interval_count++;
+
+              /* Adjust absolute tolerance based on new information. */
+              acb_get_mag_lower(tmpm, u);
+              mag_mul_2exp_si(tmpm, tmpm, -goal);
+              mag_max(new_tol, new_tol, tmpm);
+
+              depth--;
+              if (useHeap && depth > 0)
+              {
+                acb_swap(as, as.get(depth));
+                acb_swap(bs, bs.get(depth));
+                acb_swap(vs, vs.get(depth));
+                mag_swap(ms, ms.get(depth));
+                heap_up(as, bs, vs, ms, depth);
+              }
+              continue;
+            }
+          }
+
+          if (depth >= depthLimit - 1)
+          {
+            if (verbose)
+              System.out.format("stopping at depth_limit %wd\n", depthLimit);
+            status   = ConvergenceStatus.Diverged;
+            stopping = true;
+            continue;
+          }
+
+          if (depth >= alloc - 1)
+          {
+            int k;
+            as.resize(alloc);
+            bs.resize(alloc);
+            vs.resize(alloc);
+            ms.resize(alloc);
+            for (k = alloc; k < 2 * alloc; k++)
+            {
+              acb_init(as.get(k));
+              acb_init(bs.get(k));
+              acb_init(vs.get(k));
+              mag_init(ms.get(k));
+            }
+            alloc *= 2;
+          }
+
+          /* Bisection. */
+          /* Interval [depth] becomes [mid, b]. */
+          acb_set(bs.get(depth), bs.get(top));
+          acb_add(as.get(depth), as.get(top), bs.get(top), prec);
+          acb_mul_2exp_si(as.get(depth), as.get(depth), -1);
+
+          /* Interval [top] becomes [a, mid]. */
+          acb_set(bs.get(top), as.get(depth));
+
+          /* Evaluate on [a, mid] */
+          quadSimple(vs.get(top), as.get(top), bs.get(top), prec);
+          mag_hypot(ms.get(top), vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
+          eval.incrementAndGet();
+          /* Adjust absolute tolerance based on new information. */
+          acb_get_mag_lower(tmpm, vs.get(top));
+          mag_mul_2exp_si(tmpm, tmpm, -goal);
+          mag_max(new_tol, new_tol, tmpm);
+
+          /* Evaluate on [mid, b] */
+          quadSimple(vs.get(depth), as.get(depth), bs.get(depth), prec);
+          mag_hypot(ms.get(depth), vs.get(depth).getReal().getRad(), vs.get(depth).getImag().getRad());
+          eval.incrementAndGet();
+          /* Adjust absolute tolerance based on new information. */
+          acb_get_mag_lower(tmpm, vs.get(depth));
+          mag_mul_2exp_si(tmpm, tmpm, -goal);
+          mag_max(new_tol, new_tol, tmpm);
+
+          /* Make the interval with the larger error the priority. */
+          if (mag_cmp(ms.get(top), ms.get(depth)) < 0)
+          {
+            acb_swap(as.get(top), as.get(depth));
+            acb_swap(bs.get(top), bs.get(depth));
+            acb_swap(vs.get(top), vs.get(depth));
+            mag_swap(ms.get(top), ms.get(depth));
+          }
+
+          if (useHeap)
+          {
+            heap_up(as, bs, vs, ms, depth);
+            heap_down(as, bs, vs, ms, depth + 1);
+          }
+
+          depth++;
+          depth_max = Math.max(depth, depth_max);
+        }
+
+        if (verbose)
+        {
+          System.out.format("depth %wd/%wd, eval %wd/%wd, %wd leaf intervals\n",
+                            depth_max,
+                            depthLimit,
+                            eval,
+                            evalLimit,
+                            leaf_interval_count);
+        }
+
+        acb_set(res, s);
+      }
+    }
+
+    return status;
+  }
+
   /**
    * Perform a step of Gauss-Legendre quadrature with automatic degree
    * determination
@@ -72,7 +322,7 @@ public interface ComplexFunction
                                                                 Complex b,
                                                                 Magnitude tol,
                                                                 int deg_limit,
-                                                                int verbose,
+                                                                boolean verbose,
                                                                 int prec)
   {
     try ( Complex mid = new Complex(); Complex delta = new Complex(); Complex wide = new Complex();

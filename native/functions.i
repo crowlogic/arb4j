@@ -1,3 +1,21 @@
+int acb_is_real(const acb_t x);
+
+int _acb_overlaps(acb_t tmp, const acb_t a, const acb_t b, slong prec);
+
+void mag_swap(mag_t x, mag_t y);
+
+void acb_swap(acb_t z, acb_t x);
+
+void mag_max(mag_t z, const mag_t x, const mag_t y);
+
+void mag_mul_2exp_si(mag_t z, const mag_t x, slong y);
+
+void acb_get_mag_lower(mag_t z, const acb_t x);
+
+void arb_get_mag_lower(mag_t z, const arb_t x);
+
+mag_ptr _mag_vec_init(slong n);
+
 void arb_get_interval_arf(arf_t a, arf_t b, const arb_t x, slong prec);
 
 void arb_tan(arb_t y, const arb_t x, slong prec);

@@ -9,6 +9,15 @@
 package arblib;
 
 public class arblibJNI {
+  public final static native int acb_is_real(long jarg1, Complex jarg1_);
+  public final static native int _acb_overlaps(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void mag_swap(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
+  public final static native void acb_swap(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
+  public final static native void mag_max(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
+  public final static native void mag_mul_2exp_si(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, int jarg3);
+  public final static native void acb_get_mag_lower(long jarg1, Magnitude jarg1_, long jarg2, Complex jarg2_);
+  public final static native void arb_get_mag_lower(long jarg1, Magnitude jarg1_, long jarg2, Real jarg2_);
+  public final static native long _mag_vec_init(int jarg1);
   public final static native void arb_get_interval_arf(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_tan(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void acb_inv(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
@@ -43,7 +52,6 @@ public class arblibJNI {
   public final static native void arb_set_arf(long jarg1, Real jarg1_, long jarg2, Float jarg2_);
   public final static native void acb_calc_gl_node(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4, int jarg5);
   public final static native void mag_one(long jarg1, Magnitude jarg1_);
-  public final static native void mag_mul_2exp_si(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, int jarg3);
   public final static native void mag_clear(long jarg1, Magnitude jarg1_);
   public final static native void mag_inf(long jarg1, Magnitude jarg1_);
   public final static native void acb_mul_2exp_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);

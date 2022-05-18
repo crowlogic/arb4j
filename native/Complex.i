@@ -17,8 +17,16 @@ import java.io.Serializable;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex resize(int alloc)
+  {
+    swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
+                                                                                false),
+                                                            2 * alloc * Complex.BYTES));
+    return this;
+  }
+    
   private static final long serialVersionUID = 1L;
-  
+    
   private void writeObject(java.io.ObjectOutputStream stream)
                 throws IOException {
                 // TODO implement
@@ -596,5 +604,12 @@ import java.io.Serializable;
   public Complex sec(int prec, Complex r)
   {
     return cos(prec, r).inv(prec, r);
-  }   
+  }
+
+  public boolean isReal()
+  {
+    return arblib.acb_is_real(this) != 0 ;
+  }
+  
+     
 %};

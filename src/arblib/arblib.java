@@ -9,6 +9,43 @@
 package arblib;
 
 public class arblib {
+  public static int acb_is_real(Complex x) {
+    return arblibJNI.acb_is_real(Complex.getCPtr(x), x);
+  }
+
+  public static int _acb_overlaps(Complex tmp, Complex a, Complex b, int prec) {
+    return arblibJNI._acb_overlaps(Complex.getCPtr(tmp), tmp, Complex.getCPtr(a), a, Complex.getCPtr(b), b, prec);
+  }
+
+  public static void mag_swap(Magnitude x, Magnitude y) {
+    arblibJNI.mag_swap(Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
+  }
+
+  public static void acb_swap(Complex z, Complex x) {
+    arblibJNI.acb_swap(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
+  }
+
+  public static void mag_max(Magnitude z, Magnitude x, Magnitude y) {
+    arblibJNI.mag_max(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
+  }
+
+  public static void mag_mul_2exp_si(Magnitude z, Magnitude x, int y) {
+    arblibJNI.mag_mul_2exp_si(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, y);
+  }
+
+  public static void acb_get_mag_lower(Magnitude z, Complex x) {
+    arblibJNI.acb_get_mag_lower(Magnitude.getCPtr(z), z, Complex.getCPtr(x), x);
+  }
+
+  public static void arb_get_mag_lower(Magnitude z, Real x) {
+    arblibJNI.arb_get_mag_lower(Magnitude.getCPtr(z), z, Real.getCPtr(x), x);
+  }
+
+  public static Magnitude _mag_vec_init(int n) {
+    long cPtr = arblibJNI._mag_vec_init(n);
+    return (cPtr == 0) ? null : new Magnitude(cPtr, false);
+  }
+
   public static void arb_get_interval_arf(Float a, Float b, Real x, int prec) {
     arblibJNI.arb_get_interval_arf(Float.getCPtr(a), a, Float.getCPtr(b), b, Real.getCPtr(x), x, prec);
   }
@@ -143,10 +180,6 @@ public class arblib {
 
   public static void mag_one(Magnitude x) {
     arblibJNI.mag_one(Magnitude.getCPtr(x), x);
-  }
-
-  public static void mag_mul_2exp_si(Magnitude z, Magnitude x, int y) {
-    arblibJNI.mag_mul_2exp_si(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, y);
   }
 
   public static void mag_clear(Magnitude x) {
