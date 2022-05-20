@@ -242,6 +242,20 @@ typedef union {
 extern "C" {
 #endif
 
+SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+  mag_struct *arg1 ;
+  double arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(mag_struct **)&jarg1; 
+  arg2 = (double)jarg2; 
+  mag_set_d(arg1,arg2);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1inverse_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;
@@ -357,32 +371,6 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1is_1real(JNIEnv *jenv, jclass
   arg1 = *(acb_struct **)&jarg1; 
   result = (int)acb_is_real((acb_struct const (*))arg1);
   jresult = (jint)result; 
-  
-  return jresult;
-}
-
-
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI__1acb_1overlaps(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
-  jint jresult = 0 ;
-  acb_struct *arg1 ;
-  acb_struct *arg2 ;
-  acb_struct *arg3 ;
-  long arg4 ;
-  int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  (void)jarg3_;
-  arg1 = *(acb_struct **)&jarg1; 
-  arg2 = *(acb_struct **)&jarg2; 
-  arg3 = *(acb_struct **)&jarg3; 
-  arg4 = (long)jarg4; 
-  result = (int)_acb_overlaps(arg1,(acb_struct const (*))arg2,(acb_struct const (*))arg3,arg4);
-  jresult = (jint)result; 
-  
-  
   
   return jresult;
 }

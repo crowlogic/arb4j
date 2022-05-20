@@ -9,6 +9,7 @@
 package arblib;
 
 public class arblibJNI {
+  public final static native void mag_set_d(long jarg1, Magnitude jarg1_, double jarg2);
   public final static native void acb_dft_inverse_precomp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, FastDFTScheme jarg3_, int jarg4);
   public final static native void acb_dft_precomp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, FastDFTScheme jarg3_, int jarg4);
   public final static native void acb_dft_precomp_clear(long jarg1, FastDFTScheme jarg1_);
@@ -16,7 +17,6 @@ public class arblibJNI {
   public final static native void acb_dft_inverse(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
   public final static native void acb_dft(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
   public final static native int acb_is_real(long jarg1, Complex jarg1_);
-  public final static native int _acb_overlaps(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void mag_swap(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
   public final static native void acb_swap(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
   public final static native void mag_max(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
