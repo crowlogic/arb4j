@@ -2,30 +2,39 @@ package arblib.curves;
 
 import arblib.*;
 
+/**
+ * A vector-valued function that represents the position of a particle which
+ * follows the trajectory of some curve in space as a function of time.
+ * 
+ *
+ */
 public interface PlanarCurve extends
                              ComplexFunction
 {
 
   /**
+   * The arc-length function measures how far this particle travels as a function
+   * of time. The formula for the arc-length function follows directly from the
+   * formula for arc length:
    * 
-   * @return 1 if this function is invertible with a unique inverse
+   * s=∫ta√(f′(u))2+(g′(u))2+(h′(u))2du
+   * 
+   * @return the function whose value represents the distance traveled by a
+   *         particle along this curve as a function of time
    */
-  public default int getInverseBranchCount()
+  public default RealFunction getArcLengthFunction()
   {
-    return 1;
+    throw new UnsupportedOperationException(getClass() + " must implement this function");
   }
 
   /**
-   * get an inverse branch 
+   * The curvature of a curve is, roughly speaking, the rate at which that curve
+   * is turning.
    * 
-   * @param branch starting at 0 which is the principal and only branch for
-   *               properly invertible functions
-   * 
-   * @return the n-th branch of the inverse function
+   * @return
    */
-  public default ComplexFunction getInverseFunction(int branch)
+  public default RealFunction getCurvatureFunction()
   {
-    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
+    throw new UnsupportedOperationException(getClass() + " must implement this function");
   }
-
 }
