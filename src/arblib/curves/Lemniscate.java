@@ -26,6 +26,12 @@ public class Lemniscate implements
                         PlanarCurve
 {
   @Override
+  public ComplexFunction differentiate()
+  {
+    return PlanarCurve.super.differentiate();
+  }
+
+  @Override
   public int getInverseBranchCount()
   {
     return 4;
