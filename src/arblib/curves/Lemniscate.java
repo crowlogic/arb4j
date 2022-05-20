@@ -7,7 +7,7 @@
  * the License, or (at your option) any later version. See
  * <http://www.gnu.org/licenses/>.
  */
-package arblib.functions.curves;
+package arblib.curves;
 
 import arblib.Complex;
 import arblib.ComplexFunction;
@@ -23,11 +23,31 @@ import arblib.Real;
  * @author crow
  */
 public class Lemniscate implements
-                        ComplexFunction
+                        PlanarCurve
 {
-  private static final Complex ONE = Constants.COMPLEX_ONE;
+  @Override
+  public int getInverseBranchCount()
+  {
+    return 4;
+  }
+
+  @Override
+  public ComplexFunction getInverseFunction(int branch)
+  {
+    switch(branch)
+    {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    }
+    throw new UnsupportedOperationException( "TODO: implement  inverse branches" );
+   
+  }
+
+  private static final Complex ONE   = Constants.COMPLEX_ONE;
   private static final Complex i     = Constants.IMAGINARY_UNIT;
-  private static Real                         sqrt2 = new Real().assign(2).sqrt(256);
+  private static Real          sqrt2 = new Real().assign(2).sqrt(256);
 
   /**
    * @param z

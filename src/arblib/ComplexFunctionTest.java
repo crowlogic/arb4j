@@ -1,6 +1,6 @@
 package arblib;
 
-import arblib.functions.curves.*;
+import arblib.curves.*;
 import junit.framework.*;
 
 public class ComplexFunctionTest extends

@@ -7,7 +7,7 @@
  * the License, or (at your option) any later version. See
  * <http://www.gnu.org/licenses/>.
  */
-package arblib.functions.curves;
+package arblib.curves;
 
 import arblib.Complex;
 import arblib.ComplexFunction;
@@ -18,12 +18,12 @@ import arblib.Real;
  * A parameterization of a rectangular unit hyperbola where t ranges over -Pi to
  * Pi: sec(t)+itan(t)
  *
- *TODO: add scale factor
+ * TODO: add scale factor
  *
  * @author crow
  */
 public class RectangularHyperbola implements
-                                  ComplexFunction
+                                  PlanarCurve
 {
   private static final Complex i = Constants.IMAGINARY_UNIT;
 

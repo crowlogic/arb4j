@@ -1,7 +1,7 @@
 package arblib.graphing;
 
 import arblib.ComplexFunction;
-import arblib.functions.curves.Lemniscate;
+import arblib.curves.*;
 
 public class ParameterizedComplexPlaneCurveTracer
 {
