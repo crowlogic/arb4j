@@ -59,7 +59,7 @@ public class Lemniscate implements
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
-    assert order == w.size();
+    assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size() );
     assert order <= 2;
 
     try ( Complex cos = z.cos(prec, new Complex()); Complex sin = z.sin(prec, new Complex());

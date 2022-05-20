@@ -151,6 +151,12 @@ public interface ComplexFunction
    Diverged
   };
 
+  public default int _acb_overlaps(Complex tmp, Complex a, Complex b, int prec)
+  {
+    acb_sub(tmp, a, b, prec);
+    return acb_contains_zero(tmp);
+  }
+
   /**
    * Computes a rigorous enclosure of the integral int(f(t),t=a..b) following a
    * line-segment between the complex numbers a and b. For finite results, a & b

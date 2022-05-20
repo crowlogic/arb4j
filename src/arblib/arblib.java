@@ -9,6 +9,10 @@
 package arblib;
 
 public class arblib {
+  public static void mag_set_d(Magnitude res, double x) {
+    arblibJNI.mag_set_d(Magnitude.getCPtr(res), res, x);
+  }
+
   public static void acb_dft_inverse_precomp(Complex w, Complex v, FastDFTScheme pre, int prec) {
     arblibJNI.acb_dft_inverse_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTScheme.getCPtr(pre), pre, prec);
   }
@@ -35,10 +39,6 @@ public class arblib {
 
   public static int acb_is_real(Complex x) {
     return arblibJNI.acb_is_real(Complex.getCPtr(x), x);
-  }
-
-  public static int _acb_overlaps(Complex tmp, Complex a, Complex b, int prec) {
-    return arblibJNI._acb_overlaps(Complex.getCPtr(tmp), tmp, Complex.getCPtr(a), a, Complex.getCPtr(b), b, prec);
   }
 
   public static void mag_swap(Magnitude x, Magnitude y) {

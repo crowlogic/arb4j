@@ -39,6 +39,12 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
  
  int dim;
  
+ public Magnitude set( double d )
+ {
+   arblib.mag_set_d(this, d );
+   return this;
+ }
+ 
   public Magnitude resize(int alloc)
   {
     swigCPtr = (SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(Magnitude.getCPtr(this),
