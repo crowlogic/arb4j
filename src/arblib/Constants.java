@@ -63,4 +63,6 @@ public class Constants
     posInf.set(realPositiveInfinity, realPositiveInfinity);
   }
 
+  public static final Real     sqrt2 = new Real().assign(2).sqrt(256);
+
 }

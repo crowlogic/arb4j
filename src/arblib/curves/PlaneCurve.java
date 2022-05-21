@@ -3,13 +3,19 @@ package arblib.curves;
 import arblib.*;
 
 /**
- * A vector-valued function that represents the position of a particle which
- * follows the trajectory of some curve in space as a function of time.
  * 
- *
+ * A plane curve is a curve that lies in a single plane. A plane curve may be
+ * closed or open. Curves which are interesting for some reason and whose
+ * properties have therefore been investigates are called "special" curves
+ * (Lawrence 1972). Some of the most common open curves are the line, parabola,
+ * and hyperbola, and some of the most common closed curves are the circle and
+ * ellipse.
+ * 
+ * @see Weisstein, Eric W. "Plane Curve." From MathWorld--A Wolfram Web
+ *      Resource. https://mathworld.wolfram.com/PlaneCurve.html
  */
-public interface PlanarCurve extends
-                             ComplexFunction
+public interface PlaneCurve extends
+                            ComplexFunction
 {
 
   /**

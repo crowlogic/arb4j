@@ -23,7 +23,7 @@ import arblib.Real;
  * @author crow
  */
 public class RectangularHyperbola implements
-                                  PlanarCurve
+                                  PlaneCurve
 {
   private static final Complex i = Constants.IMAGINARY_UNIT;
 

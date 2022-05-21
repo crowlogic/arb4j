@@ -9,26 +9,43 @@
  */
 package arblib.curves;
 
+import static arblib.Constants.sqrt2;
+
 import arblib.Complex;
 import arblib.ComplexFunction;
 import arblib.Constants;
 import arblib.Real;
 
 /**
- * A parameterization of the Lemniscate of Bernoulli with parameter 2 where t
- * ranges over -Pi to Pi
- * 
- * TODO: add scale factor
- * 
- * @author crow
+ * The Bernoullian Lemniscate was first described in 1694 by Jakob Bernoulli as
+ * a modification of an ellipse, which is the locus of points for which the sum
+ * of the distances to each of two fixed focal points is a constant. A Cassini
+ * oval, by contrast, is the locus of points for which the product of these
+ * distances is constant. In the case where the curve passes through the point
+ * midway between the foci, the oval is a lemniscate of Bernoulli.
+ *
+ * @author Jakob Bernoulli
+ * @author Stephen Crowley
  */
 public class Lemniscate implements
-                        PlanarCurve
+                        PlaneCurve
 {
+  public Lemniscate()
+  {
+    this.a = Constants.ONE;
+  }
+
+  public Lemniscate(Real a)
+  {
+    this.a = a;
+  }
+
+  Real a;
+
   @Override
   public ComplexFunction differentiate()
   {
-    return PlanarCurve.super.differentiate();
+    return PlaneCurve.super.differentiate();
   }
 
   @Override
@@ -40,20 +57,19 @@ public class Lemniscate implements
   @Override
   public ComplexFunction getInverseFunction(int branch)
   {
-    switch(branch)
+    switch (branch)
     {
     case 0:
     case 1:
     case 2:
     case 3:
     }
-    throw new UnsupportedOperationException( "TODO: implement  inverse branches" );
-   
+    throw new UnsupportedOperationException("TODO: implement  inverse branches");
+
   }
 
-  private static final Complex ONE   = Constants.COMPLEX_ONE;
-  private static final Complex i     = Constants.IMAGINARY_UNIT;
-  private static Real          sqrt2 = new Real().assign(2).sqrt(256);
+  private static final Complex ONE = Constants.COMPLEX_ONE;
+  private static final Complex i   = Constants.IMAGINARY_UNIT;
 
   /**
    * @param z
@@ -65,19 +81,19 @@ public class Lemniscate implements
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
-    assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size() );
+    assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
     assert order <= 2;
 
     try ( Complex cos = z.cos(prec, new Complex()); Complex sin = z.sin(prec, new Complex());
           Complex tmp = new Complex(); Complex divisor = ONE.sub(sin.mul(i, tmp), prec, tmp);
-          Complex numerator = sqrt2.mul(cos, prec, new Complex()))
+          Complex numerator = new Complex())
     {
-      numerator.div(divisor, prec, w);
+      sqrt2.mul(cos, prec, numerator).div(divisor, prec, w).mul(a, prec, w);
       if (order >= 2)
       {
         sqrt2.mul(sin.sub(i, numerator), numerator);
         sin.add(i, divisor).pow(2, divisor);
-        numerator.div(divisor, prec, w.get(1));
+        numerator.div(divisor, prec, w.get(1)).mul(a, prec, w.get(1));
       }
 
     }
