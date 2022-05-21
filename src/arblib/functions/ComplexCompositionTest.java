@@ -8,9 +8,10 @@ public class ComplexCompositionTest extends
 {
   public void testEval()
   {
-    try ( XFunction xFunc = new XFunction(); Complex t = new Complex().set(0.1, 0.1);
+    try ( XFunction xFunc = new XFunction(); Complex t = new Complex();
           Complex result = xFunc.evaluate(t, 1, 256, new Complex());)
     {
+      t.set(0.1, 0.1);
       System.out.println("result=" + result);
     }
   }

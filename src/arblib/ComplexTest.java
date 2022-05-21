@@ -15,11 +15,14 @@ public class ComplexTest extends
 
   public static void testNormalize()
   {
-    Complex r = new Complex().set(-0.8790040702, 4.0771861722);
-    Complex s = r.normalize(new Complex().init());
-    assertEquals(4.170862649, r.norm(), ε);
-    assertEquals(0.9775402634, s.getImag().doubleValue(), ε);
-    assertEquals(-0.2107487454, s.getReal().doubleValue(), ε);
+    try ( Complex r = new Complex(); Complex s = new Complex())
+    {
+      r.set(-0.8790040702, 4.0771861722);
+      r.normalize(s);
+      assertEquals(4.170862649, r.norm(), ε);
+      assertEquals(0.9775402634, s.getImag().doubleValue(), ε);
+      assertEquals(-0.2107487454, s.getReal().doubleValue(), ε);
+    }
 
   }
 

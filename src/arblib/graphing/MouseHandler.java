@@ -48,11 +48,14 @@ public final class MouseHandler implements
   public void mouseClicked(MouseEvent e)
   {
     Double point = plotter.mapScreenToFunction(e.getPoint());
-    Complex clicked = new Complex().set(point.x, point.y);
-    if ( plotter.mode == Mode.Default )
+    try ( Complex clicked = new Complex())
     {
-    plotter.trajectory = plotter.calculateNewtonTrajectory(clicked, 25);
-    plotter.anythingChanged = true;
+      clicked.set(point.x, point.y);
+      if (plotter.mode == Mode.Default)
+      {
+        plotter.trajectory      = plotter.calculateNewtonTrajectory(clicked, 25);
+        plotter.anythingChanged = true;
+      }
     }
   }
 
@@ -66,7 +69,7 @@ public final class MouseHandler implements
     }
     plotter.selectionStopPoint = point;
     // out.println( "Dragged to " + point );
-    plotter.anythingChanged = true;
+    plotter.anythingChanged    = true;
 
   }
 
@@ -133,7 +136,7 @@ public final class MouseHandler implements
     plotter.selection           = true;
     plotter.selectionStartPoint = point;
     // out.println("started dragging at " + point );
-    plotter.anythingChanged = true;
+    plotter.anythingChanged     = true;
 
   }
 

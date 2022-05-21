@@ -242,6 +242,7 @@ public interface RealFunction
     return roots;
   }
 
+  @SuppressWarnings("resource")
   public default void recursivelyLocateRoots(FoundRoots found,
                                              RealRootInterval root,
                                              int asign,

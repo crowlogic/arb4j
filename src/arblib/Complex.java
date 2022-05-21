@@ -230,6 +230,11 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     return s;
   }
 
+  public Complex normalize(Complex res, int prec )
+  {
+    try ( Real magnitude = new Real()) { return div(norm(prec, magnitude ), res); }
+  }
+
   public Complex normalize(Complex res)
   {
     try ( Real magnitude = new Real()) { return div(norm(defaultPrec, magnitude ), res); }

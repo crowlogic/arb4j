@@ -298,9 +298,9 @@ import static arblib.arblib.*;
   }
   
   
-  public Real assign( String string, int digits )
+  public Real assign( String string, int prec )
   {
-    arblib.arb_set_str(this, string, digits);
+    arblib.arb_set_str(this, string, prec);
     return this;
   }
   

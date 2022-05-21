@@ -23,10 +23,13 @@ public class ArblibTest extends
 
   public static void testRealFrac()
   {
-    Real a = new Real().assign(12.123456789);
-    Real bee = a.frac(prec, new Real() );
-    System.out.println( "bee " + bee );
-    double b = bee.doubleValue();
+    try ( Real a = new Real())
+    {
+      a.assign("12.123456789", 128);
+      Real bee = a.frac(prec, new Real() );
+      System.out.println( "bee " + bee );
+      double b = bee.doubleValue();
+    }
   }
   
   public static void testHardyZFunction()

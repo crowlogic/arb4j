@@ -194,8 +194,8 @@ public class ComplexFunctionPlotter extends
     brightAlphaComposite = makeComposite(0.95f);
 
     color_mode           = 0;
-    N                    = new Complex().init();
-    tangent              = new Complex().init();
+    N                    = new Complex();
+    tangent              = new Complex();
     ax.init();
     bx.init();
     ay.init();
