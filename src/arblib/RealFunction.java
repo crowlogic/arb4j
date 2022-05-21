@@ -45,7 +45,8 @@ public interface RealFunction
           Real u = Real.newVector(2))
     {
       Magnitude xRadius = x.getRad();
-      xRadius.pow(2, err);
+      xRadius.mul(xRadius, err);
+      //xRadius.pow(2, err);
       convergenceFactor.getMagnitude(v).mul(err, err);
 
       t.setMid(x.getMid());

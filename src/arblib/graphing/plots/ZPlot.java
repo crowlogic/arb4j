@@ -30,8 +30,8 @@ public class ZPlot
                                                        -100,
                                                        120,
                                                        200);
-    Dimension screen = new Dimension(2400,
-                                     1200);
+    Dimension screen = new Dimension(2400/4,
+                                     1200/4);
 
     ThreadLocalComplex Z = new ThreadLocalComplex(2);
 

@@ -242,6 +242,55 @@ typedef union {
 extern "C" {
 #endif
 
+
+#include <jni.h>
+
+JNIEnv *env;
+
+void *allocate(size_t size)
+{
+  printf("allocating %d\n", size );
+  return malloc(size);
+}
+
+void *callocate(size_t m, size_t size)
+{
+  return calloc(m, size);
+}
+
+void *reallocate(void *ptr, size_t size)
+{
+  return realloc(ptr,size);
+}
+
+void deallocate(void *ptr)
+{
+  free(ptr);
+}
+
+
+jint
+JNI_OnLoad (JavaVM *vm, void *reserved)
+{
+  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate );
+  
+  printf("arblib loading.. TODO: install functions via __flint_set_memory_functions...\n");
+  printf("\n");
+  fflush(stdout);
+
+  if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)
+  {
+    printf("GetEnv failed\n");
+    fflush(stdout);
+    return -1;
+  }
+
+
+  return JNI_VERSION_10;
+}
+
+
+
 SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   arb_struct *arg1 ;
   long arg2 ;

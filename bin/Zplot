@@ -3,7 +3,7 @@
 
 BASEDIR=$(dirname $(readlink -f $0))/..
 export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so
-export MALLOC_CONF=prof:true,lg_prof_interval:29,lg_prof_sample:17,prof_prefix:$BASEDIR/jeprof/Zplot
+export MALLOC_CONF=prof:true,prof_leak:true,lg_prof_interval:19,lg_prof_sample:17,prof_prefix:$BASEDIR/jeprof/Zplot
 CLASSPATH=`cat $BASEDIR/class.path`
 java -Djava.library.path=$BASEDIR -ea -classpath $CLASSPATH:$BASEDIR/target/classes arblib.graphing.plots.ZPlot $@
 

@@ -1,7 +1,8 @@
 %module arblib
 
 %include typemaps.i
-
+ 
+%include "init.i"
 
 #define __signed__
 #define slong signed long
