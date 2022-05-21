@@ -20,6 +20,11 @@ public interface ComplexFunction
 
   Complex evaluate(Complex z, int order, int prec, Complex w);
 
+  public default ComplexFunction differentiate()
+  {
+    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
+  }
+
   /**
    * 
    * @return 1 if this function is invertible with a unique inverse
