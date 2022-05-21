@@ -9,6 +9,10 @@
 package arblib;
 
 public class arblib {
+  public static void arb_set_si(Real x, int y) {
+    arblibJNI.arb_set_si(Real.getCPtr(x), x, y);
+  }
+
   public static void mag_set_d(Magnitude res, double x) {
     arblibJNI.mag_set_d(Magnitude.getCPtr(res), res, x);
   }

@@ -39,6 +39,12 @@ public class Real implements AutoCloseable {
 
  static { System.loadLibrary( "arblib" ); }
 
+  public Real set(int i)
+  {
+    arblib.arb_set_si(this, i);;
+    return this;
+  }
+
   /**
    * 
    * @param prec

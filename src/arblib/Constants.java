@@ -24,24 +24,24 @@ public class Constants
   public static final int FMPR_RND_FLOOR = 2;
   public static final int FMPR_RND_CEIL = 3;
   public static final int FMPR_RND_NEAR = 4;
-  public static final Real HALF = new Real().init();
-  public static final Real ONE = new Real().init();
-  public static final Complex COMPLEX_ONE = new Complex().init();
-  public static final Complex COMPLEX_HALF = new Complex().init();
+  public static final Real HALF = new Real();
+  public static final Real ONE = new Real();
+  public static final Complex COMPLEX_ONE = new Complex();
+  public static final Complex COMPLEX_HALF = new Complex();
 
-  public static final Complex IMAGINARY_UNIT = new Complex().init();
+  public static final Complex IMAGINARY_UNIT = new Complex();
 
   public static final Complex COMPLEX_ONE_POINT_OH_FIVE = new Complex();
   public static final Complex ZERO = new Complex().init();
-  public static final Real realPositiveInfinity = new Real().init();
-  public static final Complex posInf = new Complex().init();
+  public static final Real realPositiveInfinity = new Real();
+  public static final Complex posInf = new Complex();
   public static final Magnitude zeroMag = new Magnitude();
   
   public static Complex i = Constants.IMAGINARY_UNIT;
 
   public static Complex iπ = new Complex();
 
-  public static final Real π = new Real().init().pi(Complex.defaultPrec);
+  public static final Real π = new Real().pi(Complex.defaultPrec);
 
   public static final int ARB_RND = ARF_RND_DOWN;
 
@@ -63,6 +63,6 @@ public class Constants
     posInf.set(realPositiveInfinity, realPositiveInfinity);
   }
 
-  public static final Real     sqrt2 = new Real().assign(2).sqrt(256);
+  public static final Real     sqrt2 = new Real().set(2);
 
 }

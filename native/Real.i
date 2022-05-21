@@ -13,6 +13,12 @@ import static arblib.arblib.*;
 %typemap(javacode) arb_struct %{
  static { System.loadLibrary( "arblib" ); }
 
+  public Real set(int i)
+  {
+    arblib.arb_set_si(this, i);;
+    return this;
+  }
+
   /**
    * 
    * @param prec

@@ -1,3 +1,5 @@
+void arb_set_si(arb_t x, slong y);
+
 void mag_set_d(mag_t res, double x);
  
 void acb_dft_inverse_precomp(acb_ptr w, acb_srcptr v, const acb_dft_pre_t pre, slong prec);

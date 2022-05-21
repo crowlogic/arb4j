@@ -242,6 +242,20 @@ typedef union {
 extern "C" {
 #endif
 
+SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  arb_struct *arg1 ;
+  long arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = (long)jarg2; 
+  arb_set_si(arg1,arg2);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
   mag_struct *arg1 ;
   double arg2 ;

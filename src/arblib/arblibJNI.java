@@ -9,6 +9,7 @@
 package arblib;
 
 public class arblibJNI {
+  public final static native void arb_set_si(long jarg1, Real jarg1_, int jarg2);
   public final static native void mag_set_d(long jarg1, Magnitude jarg1_, double jarg2);
   public final static native void acb_dft_inverse_precomp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, FastDFTScheme jarg3_, int jarg4);
   public final static native void acb_dft_precomp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, FastDFTScheme jarg3_, int jarg4);
