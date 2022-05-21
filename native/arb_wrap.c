@@ -249,7 +249,6 @@ JNIEnv *env;
 
 void *allocate(size_t size)
 {
-  printf("allocating %d\n", size );
   return malloc(size);
 }
 
@@ -273,14 +272,10 @@ jint
 JNI_OnLoad (JavaVM *vm, void *reserved)
 {
   __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate );
-  
-  printf("arblib loading.. TODO: install functions via __flint_set_memory_functions...\n");
-  printf("\n");
-  fflush(stdout);
 
   if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)
   {
-    printf("GetEnv failed\n");
+    printf("GetEnv failed trying to load arblib\n");
     fflush(stdout);
     return -1;
   }
