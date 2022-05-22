@@ -46,6 +46,7 @@ public class ComplexTest extends
     Complex           coeffs       = interpolator.getCoeffs();
 
     coeffs.dim = interpolator.getLength();
+    coeffs.elements = new Complex[coeffs.dim];
     System.out.format("Coeffs=%s\n", coeffs);
     // TODO: make the Real class so that it can be constructed with a Stream<Real>
 

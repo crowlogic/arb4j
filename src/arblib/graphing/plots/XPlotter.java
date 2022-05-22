@@ -34,8 +34,8 @@ public class XPlotter extends
     plotter.saveToFile();
   }
 
-  public static final int width = 2500;
-  public static final int height = 1250;
+  public static final int width = 2500/3;
+  public static final int height = 1250/3;
   
   public XPlotter(double vscale) throws NoninvertibleTransformException
   {

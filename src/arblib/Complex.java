@@ -18,22 +18,31 @@ import java.io.IOException;
 import static arblib.Constants.*;
 import java.io.Serializable;
 
-public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
-  private transient long swigCPtr;
+public class Complex implements
+                     AutoCloseable,
+                     Iterable<Complex>,
+                     Serializable
+{
+  private transient long      swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public Complex(long cPtr, boolean cMemoryOwn) {
+  public Complex(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(Complex obj) {
+  public static long getCPtr(Complex obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arblibJNI.delete_Complex(swigCPtr);
       }
@@ -41,7 +50,10 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     }
   }
 
-  static { System.loadLibrary( "arblib" ); }
+  static
+  {
+    System.loadLibrary("arblib");
+  }
 
   public boolean printPrecision = false;
 
@@ -50,22 +62,22 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
                                                                                 false),
                                                             2 * alloc * Complex.BYTES));
-    this.dim = alloc;                                                            
+    this.dim = alloc;
     return this;
   }
-    
-  private static final long serialVersionUID = 1L;
-    
-  private void writeObject(java.io.ObjectOutputStream stream)
-                throws IOException {
-                // TODO implement
-        }
 
-        private void readObject(java.io.ObjectInputStream stream)
-                throws IOException, ClassNotFoundException {
-                // TODO implement
-        }
-        
+  private static final long serialVersionUID = 1L;
+
+  private void writeObject(java.io.ObjectOutputStream stream) throws IOException
+  {
+    // TODO implement
+  }
+
+  private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException
+  {
+    // TODO implement
+  }
+
   public Iterator<Real> realIterator()
   {
     return new ComplexRealPartIterator(this);
@@ -78,7 +90,9 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
 
   public Stream<Real> realStream()
   {
-    return StreamSupport.stream(Spliterators.spliterator(realIterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
+    return StreamSupport.stream(Spliterators.spliterator(realIterator(),
+                                                         dim,
+                                                         Spliterator.SIZED | Spliterator.ORDERED),
                                 false);
   }
 
@@ -89,7 +103,7 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
                                                          Spliterator.SIZED | Spliterator.ORDERED),
                                 false);
   }
-  
+
   /**
    * Computes the dot product of the vectors x and y, setting res to
    * <code>s+(-1)^subtract+sum(this[i]*y[i],i=0..len-1)</code> The initial term s
@@ -123,19 +137,20 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
                                 false);
   }
-  
+
   @Override
   public Iterator<Complex> iterator()
   {
     return new ComplexIterator(this);
   }
-  
+
   public Complex(Real firstRoot)
   {
-   this(arblibJNI.new_Complex(), true);
-   getReal().set(firstRoot);
+    this(arblibJNI.new_Complex(),
+         true);
+    getReal().set(firstRoot);
   }
- 
+
   public int relAccuracyBits()
   {
     return arblib.acb_rel_accuracy_bits(this);
@@ -157,92 +172,98 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     arblib.acb_poly_interpolate_newton(res, this, y, n, prec);
     return res;
   }
-  
-  public Complex cosh( int prec, Complex res )
+
+  public Complex cosh(int prec, Complex res)
   {
-    arblib.acb_cosh( res, this, prec );
+    arblib.acb_cosh(res, this, prec);
     return this;
   }
-  
-  public static final int BYTES = 96;
-  
+
+  public static final int BYTES       = 96;
+
   public static final int defaultPrec = 256;
- 
-  public Complex conj( Complex res )
+
+  public Complex conj(Complex res)
   {
-    arblib.acb_conj( res, this );
+    arblib.acb_conj(res, this);
     return res;
   }
-  
+
   /**
    * @param prec precision
-   * @param res Complex vector to store the result, the length of the array is the number 
-            of terms of the Taylor series of the zeta function to compute 
+   * @param res  Complex vector to store the result, the length of the array is
+   *             the number of terms of the Taylor series of the zeta function to
+   *             compute
    */
-  public Complex ζ( int prec, Complex res )
+  public Complex ζ(int prec, Complex res)
   {
     arblib.acb_dirichlet_zeta_jet(res, this, 0, res.dim, prec);
     return res;
   }
-  
+
   public boolean isFinite()
   {
     return arblib.acb_is_finite(this) != 0;
   }
-   
+
   public Complex pow(int i, Complex r)
-  {  
-    return pow( i, defaultPrec, r );
+  {
+    return pow(i, defaultPrec, r);
   }
 
-  public Complex mul(int i, Complex r )
+  public Complex mul(int i, Complex r)
   {
-    return mul(i,defaultPrec, r);
+    return mul(i, defaultPrec, r);
   }
- 
+
   public Complex slice(int start, int end)
   {
-    int size = end - start;
-    Complex x = Complex.newVector(size);
-    for ( int i = 0; i < size; i++ )
+    int     size = end - start;
+    Complex x    = Complex.newVector(size);
+    for (int i = 0; i < size; i++)
     {
-      x.get(i).set(get(start+i));
+      x.get(i).set(get(start + i));
     }
     return x;
   }
-  
- public Complex mul( int i, int prec, Complex r )
- {
-   arblib.acb_mul_si( r, this, i, prec );
-   return r;
- }
+
+  public Complex mul(int i, int prec, Complex r)
+  {
+    arblib.acb_mul_si(r, this, i, prec);
+    return r;
+  }
 
   public Complex add(Complex q, Complex s)
-{
-  return add( q, defaultPrec, s );
-}
-
-
-  public Complex add( Complex q, int prec, Complex s )
   {
-  
-    arblib.acb_add( s, this, q, prec );
+    return add(q, defaultPrec, s);
+  }
+
+  public Complex add(Complex q, int prec, Complex s)
+  {
+
+    arblib.acb_add(s, this, q, prec);
     return s;
   }
 
-  public Complex normalize(Complex res, int prec )
+  public Complex normalize(Complex res, int prec)
   {
-    try ( Real magnitude = new Real()) { return div(norm(prec, magnitude ), res); }
+    try ( Real magnitude = new Real())
+    {
+      return div(norm(prec, magnitude), res);
+    }
   }
 
   public Complex normalize(Complex res)
   {
-    try ( Real magnitude = new Real()) { return div(norm(defaultPrec, magnitude ), res); }
+    try ( Real magnitude = new Real())
+    {
+      return div(norm(defaultPrec, magnitude), res);
+    }
   }
-  
+
   public Complex div(Real norm, Complex res)
   {
-    return div( norm, defaultPrec, res );
+    return div(norm, defaultPrec, res);
   }
 
   public Complex div(Real a, int prec, Complex r)
@@ -250,109 +271,108 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     arblib.acb_div_arb(r, this, a, prec);
     return r;
   }
-    
+
   public Complex ellipticK(Complex res)
   {
     arblib.acb_elliptic_k(res, this, defaultPrec);
     return res;
   }
-  
-  public Complex mul(Complex s, Complex r )
+
+  public Complex mul(Complex s, Complex r)
   {
     assert s != this;
-    return mul( s, defaultPrec, r );
+    return mul(s, defaultPrec, r);
   }
-  
-  public Complex neg( Complex r)
+
+  public Complex neg(Complex r)
   {
-    arblib.acb_neg( r, this );
+    arblib.acb_neg(r, this);
     return r;
   }
 
-
- public Complex midpoint( Complex res )
- {
-   arblib.acb_get_mid( res, this );
-   return res;
- }
- 
- 
- public Complex mul( Complex s, int prec, Complex r )
- {
-      assert s != this;
- 
-   arblib.acb_mul(r, this, s, prec);
-   return r;
- }
- 
-   public Complex div(Complex s, Complex r)
-   {
-        assert s != this;
-   
-     return div( s, defaultPrec, r );
-   }
- 
-  public Complex div( Complex s, int prec, Complex r )
+  public Complex midpoint(Complex res)
   {
-   arblib.acb_div(r, this, s, prec);
-   return r;
+    arblib.acb_get_mid(res, this);
+    return res;
   }
- 
+
+  public Complex mul(Complex s, int prec, Complex r)
+  {
+    assert s != this;
+
+    arblib.acb_mul(r, this, s, prec);
+    return r;
+  }
+
+  public Complex div(Complex s, Complex r)
+  {
+    assert s != this;
+
+    return div(s, defaultPrec, r);
+  }
+
+  public Complex div(Complex s, int prec, Complex r)
+  {
+    arblib.acb_div(r, this, s, prec);
+    return r;
+  }
+
   public Complex mul(Real a, Complex res)
   {
     arblib.acb_mul_arb(res, this, a, defaultPrec);
     return res;
   }
- 
+
   public Complex exp(Complex res)
   {
     arblib.acb_exp(res, this, defaultPrec);
     return res;
   }
-  
+
   public Complex init()
   {
     arblib.acb_init(this);
     return this;
   }
-  
-  public Real arg( Real result )  {
-    return arg( defaultPrec, result );
-  }
-  
-  public Real arg( int prec, Real result )
+
+  public Real arg(Real result)
   {
-    arblib.acb_arg(result, this, prec );
+    return arg(defaultPrec, result);
+  }
+
+  public Real arg(int prec, Real result)
+  {
+    arblib.acb_arg(result, this, prec);
     return result;
   }
-  
+
   public Complex set(double r, double i)
   {
     getReal().assign(r);
     getImag().assign(i);
     return this;
   }
-  
+
   public Complex set(Real real, Real imag)
   {
-   	getReal().set( real );
-   	getImag().set( imag ); 
+    getReal().set(real);
+    getImag().set(imag);
     return this;
   }
-  
+
   public Complex set(Complex complex)
   {
     arblib.acb_set(this, complex);
     return this;
   }
-  
+
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();
     sb.append("[");
     for (int i = 0; i < dim; i++)
     {
-      if ( i > 0 )
+      if (i > 0)
       {
         sb.append(",\n ");
       }
@@ -364,14 +384,14 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     sb.append("]");
     return sb.toString();
   }
-    
+
   public String toString()
   {
     StringBuilder sb = new StringBuilder();
     sb.append("[");
     for (int i = 0; i < dim; i++)
     {
-      if ( i > 0 )
+      if (i > 0)
       {
         sb.append(",\n ");
       }
@@ -384,40 +404,55 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     sb.append("]");
     return sb.toString();
   }
-  
+
   public int dim = 1;
-  
+
   public int size()
   {
     return dim;
   }
-  
-  public Complex cos(int prec, Complex result )
+
+  public Complex cos(int prec, Complex result)
   {
-    arblib.acb_cos(result, this, prec );
+    arblib.acb_cos(result, this, prec);
     return result;
   }
 
-  public Complex sin(int prec, Complex result )
+  public Complex sin(int prec, Complex result)
   {
-    arblib.acb_sin(result, this, prec );
+    arblib.acb_sin(result, this, prec);
     return result;
   }
-  
+
   public int bits()
   {
     return getReal().bits() + getImag().bits();
   }
-  
-  public Complex get( int index )
+
+  Complex[] elements;
+
+  public Complex get(int index)
   {
     assert index < dim;
-    return new Complex(swigCPtr + index * Complex.BYTES, false);  
-  } 
-  
+    if ( index == 0 )
+    {
+      return this;
+    }
+    Complex element = elements[index];
+    if (element == null)
+    {
+      element = new Complex(swigCPtr + index * Complex.BYTES,
+                            false);
+    }
+    return element;
+  }
+
   public double norm()
   {
-    try ( Real magnitude = new Real() ) { return norm(defaultPrec, magnitude ).doubleValue(); }
+    try ( Real magnitude = new Real())
+    {
+      return norm(defaultPrec, magnitude).doubleValue();
+    }
   }
 
   /**
@@ -430,13 +465,13 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     arblib.acb_abs(res, this, prec);
     return res;
   }
-  
+
   public boolean containsZero()
   {
     return arblib.acb_contains_zero(this) != 0;
   }
-  
-  public boolean contains( Complex x )
+
+  public boolean contains(Complex x)
   {
     return arblib.acb_contains(this, x) != 0;
   }
@@ -447,84 +482,84 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     return res;
   }
 
-  public Complex mul( Real a, int prec, Complex r )
+  public Complex mul(Real a, int prec, Complex r)
   {
-    arblib.acb_mul_arb( r, this, a, prec );
+    arblib.acb_mul_arb(r, this, a, prec);
     return r;
   }
-  
-  public boolean overlaps( Complex x )
+
+  public boolean overlaps(Complex x)
   {
     return arblib.acb_overlaps(this, x) != 0;
   }
-  
 
-  
- /**
+  /**
    * raise to the power of an unsigned integer
-   * @param r = this^k
-   * @param k = power >= 0 
+   * 
+   * @param r    = this^k
+   * @param k    = power >= 0
    * @param prec = precision
    * @return r
    */
-  public Complex pow( int k, int prec, Complex r )
+  public Complex pow(int k, int prec, Complex r)
   {
     assert k >= 0;
     arblib.acb_pow_ui(r, this, k, prec);
     return r;
   }
-  
-  public Complex add( int k, Complex r )
+
+  public Complex add(int k, Complex r)
   {
-    return add( k, defaultPrec, r );
+    return add(k, defaultPrec, r);
   }
-  
- /**
-   * add an unsigned integer to this 
-   * @param r = this^k
-   * @param k = int >= 0 
+
+  /**
+   * add an unsigned integer to this
+   * 
+   * @param r    = this^k
+   * @param k    = int >= 0
    * @param prec = precision
    * @return r
    */
-  public Complex add( int k, int prec, Complex r )
+  public Complex add(int k, int prec, Complex r)
   {
     assert k >= 0;
     arblib.acb_add_ui(r, this, k, prec);
     return r;
   }
-  
-  public Complex sub( int k, Complex r )
+
+  public Complex sub(int k, Complex r)
   {
-    return sub( k, defaultPrec, r );
+    return sub(k, defaultPrec, r);
   }
-  
-  public Complex sub( Complex s, Complex r )
+
+  public Complex sub(Complex s, Complex r)
   {
-    return sub( s, defaultPrec, r );
+    return sub(s, defaultPrec, r);
   }
- 
- 
- public Complex tanh(Complex res)
- {
-	arblib.acb_tanh( res, this, defaultPrec );
-	return res;
- }
- 
-   public Complex(Real norm, Real imag)  
+
+  public Complex tanh(Complex res)
+  {
+    arblib.acb_tanh(res, this, defaultPrec);
+    return res;
+  }
+
+  public Complex(Real norm, Real imag)
   {
     getReal().set(norm);
     getImag().set(imag);
   }
- 
+
   public void clear()
   {
- 	arblib._acb_vec_clear(this, dim);    
+    arblib._acb_vec_clear(this, dim);
   }
-    
-   /**
-   * add an unsigned integer to this 
-   * @param r = this^k
-   * @param k = int >= 0 
+
+  /**
+   * add an unsigned integer to this
+   * 
+   * @param r    = this^k
+   * @param k    = int >= 0
    * @param prec = precision
    * @return r
    */
@@ -534,50 +569,49 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     arblib.acb_sub_ui(r, this, k, prec);
     return r;
   }
- 
- 
+
   public Complex div(int i, Complex result)
   {
-    arblib.acb_div_si(result, this, i, defaultPrec );
+    arblib.acb_div_si(result, this, i, defaultPrec);
     return result;
   }
- 
-  
-/**
-  * subtract a complex number from this 
-  * @param r = this-s
-  * @param s = number to be subtracted 
-  * @param prec = precision
-  * @return r
-  */
- public Complex sub( Complex s, int prec, Complex r )
- {
-   arblib.acb_sub(r, this, s, prec);
-   return r;
- }
- 
-  
- public static Complex newVector(int dim)
- {
-    Complex array = arblib._acb_vec_init(dim);    
-    array.dim = dim;
-    return array;
- }
-   
- public Complex plus(Complex that)
- {
-   return add(that, new Complex() );
- }
 
- public Complex div(Complex that)
- {
-   return div(that, new Complex() );
- }
+  /**
+   * subtract a complex number from this
+   * 
+   * @param r    = this-s
+   * @param s    = number to be subtracted
+   * @param prec = precision
+   * @return r
+   */
+  public Complex sub(Complex s, int prec, Complex r)
+  {
+    arblib.acb_sub(r, this, s, prec);
+    return r;
+  }
+
+  public static Complex newVector(int dim)
+  {
+    Complex array = arblib._acb_vec_init(dim);
+    array.dim      = dim;
+    array.elements = new Complex[dim];
+    return array;
+  }
+
+  public Complex plus(Complex that)
+  {
+    return add(that, new Complex());
+  }
+
+  public Complex div(Complex that)
+  {
+    return div(that, new Complex());
+  }
 
   @Override
   public void close()
   {
-    if ( dim == 1 )
+    if (dim == 1)
     {
       delete();
     }
@@ -589,7 +623,7 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
       }
     }
   }
-  
+
   Real real;
 
   public Real getReal()
@@ -622,9 +656,9 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
    * 
    * @param prec
    * @param r
-   * @return the multiplicative inverse of r 
+   * @return the multiplicative inverse of r
    */
-  public Complex inv( int prec, Complex r )
+  public Complex inv(int prec, Complex r)
   {
     arblib.acb_inv(r, this, prec);
     return r;
@@ -644,31 +678,37 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
 
   public boolean isReal()
   {
-    return arblib.acb_is_real(this) != 0 ;
+    return arblib.acb_is_real(this) != 0;
   }
-  
-     
 
-  public void setRealObj(Real value) {
+  public void setRealObj(Real value)
+  {
     arblibJNI.Complex_realObj_set(swigCPtr, this, Real.getCPtr(value), value);
   }
 
-  public Real getRealObj() {
+  public Real getRealObj()
+  {
     long cPtr = arblibJNI.Complex_realObj_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Real(cPtr, false);
+    return (cPtr == 0) ? null : new Real(cPtr,
+                                         false);
   }
 
-  public void setImagObj(Real value) {
+  public void setImagObj(Real value)
+  {
     arblibJNI.Complex_imagObj_set(swigCPtr, this, Real.getCPtr(value), value);
   }
 
-  public Real getImagObj() {
+  public Real getImagObj()
+  {
     long cPtr = arblibJNI.Complex_imagObj_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Real(cPtr, false);
+    return (cPtr == 0) ? null : new Real(cPtr,
+                                         false);
   }
 
-  public Complex() {
-    this(arblibJNI.new_Complex(), true);
+  public Complex()
+  {
+    this(arblibJNI.new_Complex(),
+         true);
   }
 
 }
