@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 
 import arblib.Complex;
 import arblib.Constants;
@@ -18,14 +19,12 @@ import arblib.graphing.ComplexFunctionPlotter;
 public class SPlot
 {
 
-
   static
   {
     System.loadLibrary("arblib");
   }
 
-
-  public static void main(String args[]) throws IOException, NoninvertibleTransformException
+  public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
   {
 
     Rectangle2D.Double domain = new Rectangle2D.Double(-Math.PI,
@@ -35,35 +34,45 @@ public class SPlot
     Dimension          screen = new Dimension(2000,
                                               1000);
 
+    final int          prec   = 512;
 
-    final int              prec          = 512;
+    int                n      = 10;
 
-    int                    n             = 10;
+    SFunction          sfunc  = new SFunction(new Real().assign(5));
 
-    // the multiplier of the Newton map of S(t) at t=3 is equal to 1/2 and thus we divide by
-    // (1/2)^n which is the same as multiplying by 2^n
-    final int              normalization = (int) Math.pow(2, n);
+    // How To Find and Fix Memory Leaks:
+    // Make the C code call back to a Java class which does the allocation and
+    // records it,  and also records the reallocations and deallocations then, at the end of this function , after the frame that contains the rendered surface is hidden, examine
+    // the remaining entries in the heap to see which ones haven't been freed yet. the native part of the code that installs the flint memory handlers as in init.i
 
-    SFunction              sfunc         = new SFunction(new Real().assign(5));
-    
-    ComplexFunctionPlotter plotter       = new ComplexFunctionPlotter(screen,
+    try ( ComplexFunctionPlotter plotter = new ComplexFunctionPlotter(screen,
                                                                       domain,
                                                                       sfunc)
-                                         {
-                                           @Override
-                                           public synchronized Complex calculateNewtonTrajectory(Complex t, int n)
-                                           {
+    {
+      @Override
+      public synchronized Complex calculateNewtonTrajectory(Complex t, int n)
+      {
 
-                                             throw new UnsupportedOperationException( "Replacing with Newton flow");
-                                            // return sfunc.SNewtonIter(t, n);
+        throw new UnsupportedOperationException("Replacing with Newton flow");
+        // return sfunc.SNewtonIter(t, n);
 
-                                           }
-                                         };
+      }
+    })
+    {
 
-    plotter.color_mode = 0;
+      plotter.color_mode  = 0;
 
-    plotter.displayMode = Part.Blend;
-    plotter.plot();
+      plotter.displayMode = Part.Blend;
+      plotter.keepRunning = true;
+      plotter.plot();
+      while ( plotter.frame.isVisible() )
+      {
+        Thread.sleep(1000);
+      }
+      System.out.println( "Now, examine the heap to see what has yet to be freed");
+      
+    }
+    
   }
 
 }

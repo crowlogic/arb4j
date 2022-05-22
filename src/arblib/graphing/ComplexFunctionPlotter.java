@@ -38,6 +38,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.Timer;
+import javax.swing.WindowConstants;
 
 import org.apache.commons.lang.time.StopWatch;
 
@@ -62,7 +63,8 @@ import arblib.util.DateUtils;
  * <http://www.gnu.org/licenses/>.
  */
 public class ComplexFunctionPlotter extends
-                                    JComponent implements AutoCloseable
+                                    JComponent implements
+                                    AutoCloseable
 {
 
   static class Pixel
@@ -145,7 +147,7 @@ public class ComplexFunctionPlotter extends
 
   private Graphics2D     dynamicOverlayGraphics;
 
-  protected JFrame       frame;
+  public JFrame          frame;
   private Font           newFont;
 
   public BufferedImage   outputImage;
@@ -303,7 +305,8 @@ public class ComplexFunctionPlotter extends
         arblib.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
         break;
       case Blend:
-        // TODO: make another mode that averages the rgb values and only calls color_function once
+        // TODO: make another mode that averages the rgb values and only calls
+        // color_function once
         w2.getImag().set(w.getImag());
         arblib.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
         Pixel pixel2 = this.pixel2.get();
@@ -582,7 +585,11 @@ public class ComplexFunctionPlotter extends
 
   public void showFrame()
   {
-    frame = Utils.openInJFrame(this, screen.width, screen.height, getClass().getSimpleName());
+    frame = Utils.openInJFrame(this,
+                               screen.width,
+                               screen.height,
+                               getClass().getSimpleName(),
+                               keepRunning ? WindowConstants.HIDE_ON_CLOSE : WindowConstants.EXIT_ON_CLOSE);
   }
 
   private void reportRenderingRate(StopWatch stopWatch)
@@ -1016,17 +1023,19 @@ public class ComplexFunctionPlotter extends
 
   }
 
-  boolean         debug    = false;
+  boolean         debug       = false;
 
   public Complex  trajectory;
 
-  private boolean showHelp = false;
+  private boolean showHelp    = false;
 
-  private Float   dx       = new Float();
+  private Float   dx          = new Float();
 
-  private Float   dy       = new Float();
+  private Float   dy          = new Float();
 
-  Mode            mode     = Mode.Default;
+  Mode            mode        = Mode.Default;
+
+  public boolean  keepRunning = false;
 
   public Double mapScreenToFunction(Point point)
   {
@@ -1085,10 +1094,10 @@ public class ComplexFunctionPlotter extends
   }
 
   @Override
-  public void close() throws Exception
+  public void close()
   {
     this._w.remove();
-    this._z.remove();    
+    this._z.remove();
     pixel.remove();
     pixel2.remove();
   }

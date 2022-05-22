@@ -61,7 +61,7 @@ public class Utils
    * specified Container as the content pane.
    */
 
-  public static JFrame openInJFrame(Container content, int width, int height, String title, Color bgColor)
+  public static JFrame openInJFrame(Container content, int width, int height, String title, Color bgColor, int closeOp )
   {
     JFrame frame = new JFrame(title);
     frame.setBackground(bgColor);
@@ -69,15 +69,15 @@ public class Utils
     frame.setSize(width, height);
     frame.setContentPane(content);
     frame.setVisible(true);
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(closeOp);
     return (frame);
   }
 
   /** Uses Color.white as the background color. */
 
-  public static JFrame openInJFrame(Container content, int width, int height, String title)
+  public static JFrame openInJFrame(Container content, int width, int height, String title, int closeOp )
   {
-    return (openInJFrame(content, width, height, title, Color.white));
+    return (openInJFrame(content, width, height, title, Color.white, closeOp));
   }
 
   /**
@@ -85,8 +85,8 @@ public class Utils
    * class as the JFrame title.
    */
 
-  public static JFrame openInJFrame(Container content, int width, int height)
+  public static JFrame openInJFrame(Container content, int width, int height, int closeOp )
   {
-    return (openInJFrame(content, width, height, content.getClass().getName(), Color.white));
+    return (openInJFrame(content, width, height, content.getClass().getName(), Color.white, closeOp ));
   }
 }
