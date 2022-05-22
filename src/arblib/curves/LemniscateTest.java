@@ -1,7 +1,6 @@
 package arblib.curves;
 
-import arblib.Complex;
-import arblib.Constants;
+import arblib.*;
 import junit.framework.TestCase;
 
 public class LemniscateTest extends
@@ -20,5 +19,17 @@ public class LemniscateTest extends
        l'(1)=[-0.93484966490787055089 +/- 2.02e-21] [-0.54494583206781146610 +/- 1.23e-21]i]
      */
     System.out.println("l(1)=" + w);
+  }
+  
+  public static void testDerivative()
+  {
+    Lemniscate l = new Lemniscate();
+    ComplexFunction dl = l.differentiate();
+    Complex l1 = l.evaluate(Constants.COMPLEX_ONE, 2, 256, Complex.newVector(2));
+    Complex dl1 = dl.evaluate(Constants.COMPLEX_ONE, 2, 256, Complex.newVector(2));
+    assertTrue( l1.get(1).equals(dl1));
+    
+    
+    
   }
 }

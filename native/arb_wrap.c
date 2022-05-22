@@ -286,6 +286,46 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
 
 
 
+SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jint jresult = 0 ;
+  acb_struct *arg1 ;
+  acb_struct *arg2 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(acb_struct **)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  result = (int)acb_equal((acb_struct const (*))arg1,(acb_struct const (*))arg2);
+  jresult = (jint)result; 
+  
+  
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jint jresult = 0 ;
+  arb_struct *arg1 ;
+  arb_struct *arg2 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = *(arb_struct **)&jarg2; 
+  result = (int)arb_equal((arb_struct const (*))arg1,(arb_struct const (*))arg2);
+  jresult = (jint)result; 
+  
+  
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   arb_struct *arg1 ;
   long arg2 ;

@@ -9,6 +9,14 @@
 package arblib;
 
 public class arblib {
+  public static int acb_equal(Complex x, Complex y) {
+    return arblibJNI.acb_equal(Complex.getCPtr(x), x, Complex.getCPtr(y), y);
+  }
+
+  public static int arb_equal(Real x, Real y) {
+    return arblibJNI.arb_equal(Real.getCPtr(x), x, Real.getCPtr(y), y);
+  }
+
   public static void arb_set_si(Real x, int y) {
     arblibJNI.arb_set_si(Real.getCPtr(x), x, y);
   }
