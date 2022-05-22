@@ -383,16 +383,23 @@ import java.io.Serializable;
     return getReal().bits() + getImag().bits();
   }
   
-  Complex[] elements;
+ Complex[] elements;
 
   public Complex get(int index)
   {
     assert index < dim;
+    if ( index == 0 )
+    {
+      return this;
+    }
     Complex element = elements[index];
-    return element != null ? element : (element = new Complex(swigCPtr + index * Complex.BYTES,
-                                                              false));
-  }
-    
+    if (element == null)
+    {
+      element = new Complex(swigCPtr + index * Complex.BYTES,
+                            false);
+    }
+    return element;
+  }    
   public double norm()
   {
     try ( Real magnitude = new Real() ) { return norm(defaultPrec, magnitude ).doubleValue(); }
@@ -538,8 +545,7 @@ import java.io.Serializable;
  public static Complex newVector(int dim)
  {
     Complex array = arblib._acb_vec_init(dim);    
-    array.dim = dim;
-    array.elements = new Complex[dim];
+    array.elements = new Complex[array.dim = dim];
     return array;
  }
    
