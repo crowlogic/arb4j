@@ -19,6 +19,12 @@ import java.io.Serializable;
 
   public boolean printPrecision = false;
 
+  public Complex setIndeterminate()
+  {
+    acb_indeterminate(this);
+    return this;
+  }
+
   /**
    * @return {@link arblib#acb_equal(Real, Real)} != 0
    */

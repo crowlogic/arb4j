@@ -455,7 +455,7 @@ public interface ComplexFunction
 
       if (degreeLimit <= 0)
       {
-        acb_indeterminate(res);
+        res.setIndeterminate();
         evalCount.set(0);
         return false;
       }
