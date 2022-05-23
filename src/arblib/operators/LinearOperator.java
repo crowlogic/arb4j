@@ -8,7 +8,7 @@ package arblib.operators;
  * <li>f(cx)=cf(x) ∀x & ∀ constant scalars c</li>
  * </ul>
  * 
- * TODO: define the interfaces of the space it operates on as generic arguments
+ * TODO: define the interfaces of the input and output space(s) as generic arguments
  */
 public interface LinearOperator
 {
