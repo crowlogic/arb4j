@@ -327,10 +327,19 @@ import java.io.Serializable;
   
   public Complex set(Complex complex)
   {
-    arblib.acb_set(this, complex);
+    if (dim == 1)
+    {
+      arblib.acb_set(this, complex);
+    }
+    else
+    {
+      for (int i = 0; i < dim; i++)
+      {
+        arblib.acb_set(get(i), complex.get(i));
+      }
+    }
     return this;
-  }
-  
+  }  
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();

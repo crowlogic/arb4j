@@ -48,14 +48,13 @@ public class Lemniscate implements
 
   private static final Complex ONE   = Constants.COMPLEX_ONE;
   private static final Complex i     = Constants.IMAGINARY_UNIT;
-  private static Real          sqrt2 = new Real().assign(2).sqrt(256);
 
   /**
    * @param z
    * @param int
    * @param order
    * @param w
-   * @return sqrt(2)*cos(t))/(1-i*sin(t)
+   * @return 2*cos(t))/(1-i*sin(t)
    */
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
@@ -65,12 +64,12 @@ public class Lemniscate implements
 
     try ( Complex cos = z.cos(prec, new Complex()); Complex sin = z.sin(prec, new Complex());
           Complex tmp = new Complex(); Complex divisor = ONE.sub(sin.mul(i, tmp), prec, tmp);
-          Complex numerator = sqrt2.mul(cos, prec, new Complex()))
+          Complex numerator = cos.mul(2, new Complex()))
     {
       numerator.div(divisor, prec, w);
       if (order >= 2)
       {
-        sqrt2.mul(sin.sub(i, numerator), numerator);
+        sin.sub(i, numerator).mul(2,numerator);
         sin.add(i, divisor).pow(2, divisor);
         numerator.div(divisor, prec, w.get(1));
       }

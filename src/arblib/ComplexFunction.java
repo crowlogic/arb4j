@@ -1,6 +1,7 @@
 package arblib;
 
 import static arblib.arblib.*;
+import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -33,9 +34,13 @@ public interface ComplexFunction
   {
     return (z, order, prec, w) ->
     {
+      assert order > 0;
+      assert w.size() >= order;
       try ( Complex x = Complex.newVector(order + 1))
       {
-        return ComplexFunction.this.evaluate(z, order + 1, prec, x).slice(1, order + 1);
+        ComplexFunction.this.evaluate(z, order + 1, prec, x);
+        Complex xslice = x.slice(1, order + 1);
+        return w.set(xslice);
       }
     };
   }
@@ -652,6 +657,24 @@ public interface ComplexFunction
     }
 
     return converged;
+  }
+
+  /**
+   * @return function which returns the absolute value of this function
+   */
+  public default ComplexFunction abs()
+  {
+    return (z, order, prec, w) ->
+    {
+      order = max(1, order);
+      assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
+      try ( Complex y = new Complex(); Complex x = new Complex())
+      {
+        ComplexFunction.this.evaluate(y, order, prec, x).abs(prec, w.getReal());
+        w.getImag().zero();
+        return w;
+      }
+    };
   }
 
 }
