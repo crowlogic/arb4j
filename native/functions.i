@@ -1,3 +1,7 @@
+int acb_equal(const acb_t x, const acb_t y);
+
+int arb_equal(const arb_t x, const arb_t y);
+
 void arb_set_si(arb_t x, slong y);
 
 void mag_set_d(mag_t res, double x);

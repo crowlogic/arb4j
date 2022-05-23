@@ -19,6 +19,20 @@ import java.io.Serializable;
 
   public boolean printPrecision = false;
 
+  /**
+   * @return {@link arblib#acb_equal(Real, Real)} != 0
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    if ( !(obj instanceof Complex))
+    {
+      return false;
+    }
+    Complex that = (Complex)obj;
+    return arblib.acb_equal(this, that) != 0;
+  }
+  
   public Complex resize(int alloc)
   {
     swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
@@ -342,7 +356,10 @@ import java.io.Serializable;
   public String toString()
   {
     StringBuilder sb = new StringBuilder();
-    sb.append("[");
+    if ( dim > 1 ) 
+    {
+      sb.append("[");
+    }
     for (int i = 0; i < dim; i++)
     {
       if ( i > 0 )
@@ -351,11 +368,14 @@ import java.io.Serializable;
       }
       Real real2 = get(i).getReal();
       Real imag2 = get(i).getImag();
-      sb.append(String.format("%s %si",
+      sb.append(String.format("(%s) + i(%s)",
                               printPrecision ? real2.toString() : real2.getMid().toString(),
                               printPrecision ? imag2.toString() : imag2.getMid().toString()));
     }
-    sb.append("]");
+    if ( dim > 1 )
+    {
+      sb.append("]");
+    }
     return sb.toString();
   }
   

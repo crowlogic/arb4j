@@ -20,6 +20,20 @@ import static arblib.arblib.*;
   }
 
   /**
+   * @return {@link arblib#arb_equal(Real, Real)} != 0
+   */
+  @Override
+  public boolean equals(Object obj)
+  {
+    if ( !(obj instanceof Real))
+    {
+      return false;
+    }
+    Real that = (Real)obj;
+    return arblib.arb_equal(this, that) != 0;
+  }
+  
+  /**
    * 
    * @param prec
    * @param interval

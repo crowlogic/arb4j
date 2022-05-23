@@ -28,7 +28,12 @@ public class Lemniscate implements
   @Override
   public ComplexFunction differentiate()
   {
-    return PlaneCurve.super.differentiate();
+    return (z, order, prec, w) ->
+    {
+      Complex result = this.evaluate(z, order, prec, w);
+      throw new UnsupportedOperationException("TODO: implement function to shift the entries of the Complex array one to the left");
+      //return result;
+    };
   }
 
   @Override
@@ -40,15 +45,15 @@ public class Lemniscate implements
   @Override
   public ComplexFunction getInverseFunction(int branch)
   {
-    switch(branch)
+    switch (branch)
     {
     case 0:
     case 1:
     case 2:
     case 3:
     }
-    throw new UnsupportedOperationException( "TODO: implement  inverse branches" );
-   
+    throw new UnsupportedOperationException("TODO: implement  inverse branches");
+
   }
 
   private static final Complex ONE   = Constants.COMPLEX_ONE;
@@ -65,7 +70,7 @@ public class Lemniscate implements
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
-    assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size() );
+    assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
     assert order <= 2;
 
     try ( Complex cos = z.cos(prec, new Complex()); Complex sin = z.sin(prec, new Complex());
