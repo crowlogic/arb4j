@@ -35,7 +35,7 @@ public class Lemniscate implements
   }
 
   @Override
-  public ComplexFunction getInverseFunction(int branch)
+  public ComplexFunction inverse(int branch)
   {
     switch (branch)
     {

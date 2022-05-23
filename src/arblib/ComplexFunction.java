@@ -59,7 +59,7 @@ public interface ComplexFunction
    * 
    * @return the n-th branch of the inverse function f^-1(x)={y:f(y)=x}
    */
-  public default ComplexFunction getInverseFunction(int branch)
+  public default ComplexFunction inverse(int branch)
   {
     throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }
@@ -461,11 +461,11 @@ public interface ComplexFunction
       }
 
       /* delta = (b-a)/2 */
-      acb_sub(delta, b, a, prec);
+      b.sub(a,prec,delta);
       acb_mul_2exp_si(delta, delta, -1);
 
       /* mid = (a+b)/2 */
-      acb_add(mid, a, b, prec);
+      a.add(b,prec,mid);
       acb_mul_2exp_si(mid, mid, -1);
 
       best_n = -1;
