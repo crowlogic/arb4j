@@ -1,6 +1,6 @@
 package arblib.functions;
 
-import static arblib.arblib.acb_poly_init;
+import static arblib.arblib.*;
 import static java.lang.Math.log;
 
 import arblib.Complex;
@@ -14,9 +14,9 @@ import arblib.arblib;
  */
 public final class Functions
 {
-  public static final int MIN_PREC = 60;
+  public static final int     MIN_PREC = 60;
 
-  public static final Complex ONE = Constants.COMPLEX_ONE;
+  public static final Complex ONE      = Constants.COMPLEX_ONE;
 
   static
   {
@@ -74,13 +74,27 @@ public final class Functions
     arblib.acb_modular_theta_series(theta1, theta2, theta3, theta4, z, tau, len, prec);
   }
 
-
-  public static boolean trace = true;
+  public static boolean trace = false;
 
   public static int precisionForDigits(int digits)
   {
     return (int) (digits * (((log(2) + log(5)) / log(2)))) + 10;
   }
 
+  /**
+   * A version of {@link Complex#overlaps(Complex)} used by the integration code
+   * which is less accurate by design
+   * 
+   * @param tmp
+   * @param a
+   * @param b
+   * @param prec
+   * @return
+   */
+  public static boolean overlaps(Complex tmp, Complex a, Complex b, int prec)
+  {
+    acb_sub(tmp, a, b, prec);
+    return acb_contains_zero(tmp) != 0;
+  }
 
 }

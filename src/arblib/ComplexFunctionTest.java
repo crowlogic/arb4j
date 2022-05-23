@@ -3,7 +3,6 @@ package arblib;
 import static arblib.Constants.ONE;
 
 import arblib.ComplexFunction.ConvergenceStatus;
-import arblib.ComplexFunction.IntegrationOptions;
 import arblib.curves.*;
 import junit.framework.*;
 
