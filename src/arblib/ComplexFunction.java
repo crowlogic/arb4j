@@ -94,18 +94,17 @@ public interface ComplexFunction
    * @param b
    * @param prec
    * @param res
+   * @return res
    */
   public default Complex simpleQuadrature(Complex a, Complex b, int prec, Complex res)
   {
     try ( Complex mid = new Complex(); Complex δ = new Complex(); Complex wide = new Complex();)
     {
       /* δ = (b-a)/2 */
-      b.sub(a, prec, δ);
-      δ.mul2e(-1, δ);
+      b.sub(a, prec, δ).mul2e(-1, δ);
 
       /* mid = (a+b)/2 */
-      a.add(b, prec, mid);
-      mid.mul2e(-1, mid);
+      a.add(b, prec, mid).mul2e(-1, mid);
 
       /* wide = mid +- [delta] */
       wide.set(mid);
