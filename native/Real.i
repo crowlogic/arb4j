@@ -459,6 +459,9 @@ import static arblib.arblib.*;
     return r;
   }
   
-  
+  public boolean isZero()
+  {
+    return arb_is_zero(this) != 0;
+  }
 %};
 

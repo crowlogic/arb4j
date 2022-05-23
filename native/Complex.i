@@ -8,6 +8,7 @@ import java.util.Spliterators;
 import java.io.IOException;
 import static arblib.Constants.*;
 import java.io.Serializable;
+import static arblib.arblib.*;
 %}
 
 %typemap(javafinalize) acb_struct ""
@@ -19,6 +20,18 @@ import java.io.Serializable;
 
   public boolean printPrecision = false;
 
+  public Complex div(int i, int prec, Complex res )
+  {
+    arblib.acb_div_si(res, this, i, prec);
+    return res; 
+  }
+  
+  public Complex negate(Complex res)
+  {
+    arblib.acb_neg(res, this);
+    return this;
+  }
+  
   public Complex setIndeterminate()
   {
     acb_indeterminate(this);

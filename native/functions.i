@@ -1,3 +1,11 @@
+int arb_is_zero(const arb_t z);
+
+int acb_is_zero(const acb_t z);
+
+void acb_div_si(acb_t z, const acb_t x, slong c, slong prec);
+
+void acb_neg(acb_t z, const acb_t x);
+
 int acb_equal(const acb_t x, const acb_t y);
 
 int arb_equal(const arb_t x, const arb_t y);

@@ -9,6 +9,10 @@
 package arblib;
 
 public class arblibJNI {
+  public final static native int arb_is_zero(long jarg1, Real jarg1_);
+  public final static native int acb_is_zero(long jarg1, Complex jarg1_);
+  public final static native void acb_div_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
+  public final static native void acb_neg(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
   public final static native int acb_equal(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
   public final static native int arb_equal(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
   public final static native void arb_set_si(long jarg1, Real jarg1_, int jarg2);
@@ -119,7 +123,6 @@ public class arblibJNI {
   public final static native void arb_floor(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_ceil(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_div(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
-  public final static native void acb_div_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
   public final static native void arb_sin(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_cos(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_mul(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
@@ -176,7 +179,6 @@ public class arblibJNI {
   public final static native void _arb_vec_clear(long jarg1, Real jarg1_, int jarg2);
   public final static native void acb_mul_onei(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
   public final static native void acb_div_onei(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-  public final static native void acb_neg(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
   public final static native void arb_pow_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void acb_abs(long jarg1, Real jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_sqrt(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);

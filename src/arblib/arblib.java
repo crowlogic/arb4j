@@ -9,6 +9,22 @@
 package arblib;
 
 public class arblib {
+  public static int arb_is_zero(Real z) {
+    return arblibJNI.arb_is_zero(Real.getCPtr(z), z);
+  }
+
+  public static int acb_is_zero(Complex z) {
+    return arblibJNI.acb_is_zero(Complex.getCPtr(z), z);
+  }
+
+  public static void acb_div_si(Complex z, Complex x, int c, int prec) {
+    arblibJNI.acb_div_si(Complex.getCPtr(z), z, Complex.getCPtr(x), x, c, prec);
+  }
+
+  public static void acb_neg(Complex z, Complex x) {
+    arblibJNI.acb_neg(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
+  }
+
   public static int acb_equal(Complex x, Complex y) {
     return arblibJNI.acb_equal(Complex.getCPtr(x), x, Complex.getCPtr(y), y);
   }
@@ -453,10 +469,6 @@ public class arblib {
     arblibJNI.arb_div(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void acb_div_si(Complex z, Complex x, int y, int prec) {
-    arblibJNI.acb_div_si(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
-  }
-
   public static void arb_sin(Real s, Real x, int prec) {
     arblibJNI.arb_sin(Real.getCPtr(s), s, Real.getCPtr(x), x, prec);
   }
@@ -681,10 +693,6 @@ public class arblib {
 
   public static void acb_div_onei(Complex z, Complex x) {
     arblibJNI.acb_div_onei(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
-  }
-
-  public static void acb_neg(Complex z, Complex x) {
-    arblibJNI.acb_neg(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
   }
 
   public static void arb_pow_ui(Real y, Real b, long e, int prec) {
