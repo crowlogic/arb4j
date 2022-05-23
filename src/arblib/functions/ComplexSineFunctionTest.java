@@ -1,9 +1,12 @@
 package arblib.functions;
 
+import static arblib.ComplexConstants.π;
+import static arblib.Constants.ZERO;
 import static java.lang.Math.pow;
 import static java.lang.System.out;
 
 import arblib.Complex;
+import arblib.ComplexFunction.ConvergenceStatus;
 import arblib.Constants;
 import junit.framework.TestCase;
 
@@ -22,6 +25,6 @@ public class ComplexSineFunctionTest extends
   public void testIntegration()
   {
     ComplexSineFunction sin = new ComplexSineFunction();
-
+    ConvergenceStatus integral = sin.integrate(ZERO, π, 0, null, null, 0, new Complex() );
   }
 }

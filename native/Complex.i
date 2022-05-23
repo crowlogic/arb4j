@@ -20,6 +20,20 @@ import static arblib.arblib.*;
 
   public boolean printPrecision = false;
 
+
+  /**
+   * Calculates this*(2^e)
+   *  
+   * @param e
+   * @param res
+   * @return {@link arblib#acb_mul_2exp_si(Complex, Complex, int)}
+   */
+  public Complex mul2e( int e, Complex res )
+  {
+    acb_mul_2exp_si(res, this, e);
+    return res;
+  }
+  
   public Complex div(int i, int prec, Complex res )
   {
     arblib.acb_div_si(res, this, i, prec);

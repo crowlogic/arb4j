@@ -6,6 +6,9 @@ import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import arblib.exceptions.NotDifferentiableException;
+import arblib.exceptions.NotIntegrableException;
+
 /**
  * Copyright ©2022 Stephen Crowley
  * 
@@ -22,12 +25,24 @@ public interface ComplexFunction
 
   /**
    * 
+   * @return a function which, when differentiated, produces this function as a
+   *         differential. It should satisfy
+   *         this{@link #integral()}{@link #differential()} == this ==
+   *         this{@link #differential()}{@link #integral()}
+   */
+  public default ComplexFunction integral() throws NotIntegrableException
+  {
+    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
+  }
+
+  /**
+   * 
    * @return a ComplexFunction which is the derivative of this one obtained by
    *         calling evaluate with an order of one plus that requested via
    *         this{@link #evaluate(Complex, int, int, Complex)} then returning a
    *         slice of the result.
    */
-  public default ComplexFunction differentiate()
+  public default ComplexFunction differential() throws NotDifferentiableException
   {
     return (z, order, prec, w) ->
     {
@@ -70,29 +85,35 @@ public interface ComplexFunction
 
   public static final int glStepCount = glSteps.length;
 
-  public default void simpleQuadrature(Complex res, Complex a, Complex b, int prec)
+  /**
+   * Calculate the simple quadrature f([a,b])*(b-a) where
+   * f=this{@link #evaluate(Complex, int, int, Complex)} with 1 function
+   * evaluation
+   * 
+   * @param a
+   * @param b
+   * @param prec
+   * @param res
+   */
+  public default void simpleQuadrature(Complex a, Complex b, int prec, Complex res)
   {
-    try ( Complex mid = new Complex(); Complex delta = new Complex(); Complex wide = new Complex();
-          Magnitude tmpm = new Magnitude();)
+    try ( Complex mid = new Complex(); Complex δ = new Complex(); Complex wide = new Complex();)
     {
       /* delta = (b-a)/2 */
-      acb_sub(delta, b, a, prec);
-      acb_mul_2exp_si(delta, delta, -1);
+      b.sub(a, prec, δ);
+      acb_mul_2exp_si(δ, δ, -1);
 
       /* mid = (a+b)/2 */
-      acb_add(mid, a, b, prec);
+      a.add(b, prec, mid);
       acb_mul_2exp_si(mid, mid, -1);
 
       /* wide = mid +- [delta] */
-      acb_set(wide, mid);
-      arb_get_mag(tmpm, delta.getReal());
-      arb_add_error_mag(wide.getReal(), tmpm);
-      arb_get_mag(tmpm, delta.getImag());
-      arb_add_error_mag(wide.getImag(), tmpm);
+      wide.set(mid);
+      arb_add_error_mag(wide.getReal(), δ.getReal().getRad());
+      arb_add_error_mag(wide.getImag(), δ.getImag().getRad());
 
-      /* Direct evaluation: integral = (b-a) * f([a,b]). */
-      evaluate(wide, 0, prec, res);
-      acb_mul(res, res, delta, prec);
+      /* Direct evaluation: integral = f([a,b]) * (b-a) */
+      evaluate(wide, 0, prec, res).mul(δ, prec, res);
       acb_mul_2exp_si(res, res, 1);
     }
   }
@@ -235,7 +256,7 @@ public interface ComplexFunction
         /* Compute initial crude estimate for the whole interval. */
         acb_set(as, a);
         acb_set(bs, b);
-        simpleQuadrature(vs, as, bs, prec);
+        simpleQuadrature(as, bs, prec, vs);
         mag_hypot(ms, vs.getReal().getRad(), vs.getImag().getRad());
 
         depth = maxDepth = 1;
@@ -367,7 +388,7 @@ public interface ComplexFunction
           bs.get(top).set(as.get(depth));
 
           /* Evaluate on [a, mid] */
-          simpleQuadrature(vs.get(top), as.get(top), bs.get(top), prec);
+          simpleQuadrature(as.get(top), bs.get(top), prec, vs.get(top));
           mag_hypot(topm, vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
           eval.incrementAndGet();
           /* Adjust absolute tolerance based on new information. */
@@ -376,7 +397,7 @@ public interface ComplexFunction
           mag_max(newTol, newTol, tmpm);
 
           /* Evaluate on [mid, b] */
-          simpleQuadrature(vs.get(depth), as.get(depth), bs.get(depth), prec);
+          simpleQuadrature(as.get(depth), bs.get(depth), prec, vs.get(depth));
           mag_hypot(ms.get(depth), vs.get(depth).getReal().getRad(), vs.get(depth).getImag().getRad());
           eval.incrementAndGet();
           /* Adjust absolute tolerance based on new information. */
@@ -423,6 +444,7 @@ public interface ComplexFunction
   /**
    * Perform a step of Gauss-Legendre quadrature with automatic degree
    * determination
+   * 
    * @param a
    * @param b
    * @param tol
@@ -461,11 +483,11 @@ public interface ComplexFunction
       }
 
       /* delta = (b-a)/2 */
-      b.sub(a,prec,delta);
+      b.sub(a, prec, delta);
       acb_mul_2exp_si(delta, delta, -1);
 
       /* mid = (a+b)/2 */
-      a.add(b,prec,mid);
+      a.add(b, prec, mid);
       acb_mul_2exp_si(mid, mid, -1);
 
       best_n = -1;

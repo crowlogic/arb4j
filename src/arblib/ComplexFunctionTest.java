@@ -4,6 +4,7 @@ import static arblib.Constants.ONE;
 
 import arblib.ComplexFunction.ConvergenceStatus;
 import arblib.curves.*;
+import arblib.exceptions.NotDifferentiableException;
 import junit.framework.*;
 
 public class ComplexFunctionTest extends
@@ -43,11 +44,12 @@ public class ComplexFunctionTest extends
 
   /**
    * test integration 2
+   * @throws NotDifferentiableException 
    */
-  public static void testIntegration2()
+  public static void testIntegration2() throws NotDifferentiableException
   {
     Lemniscate      f     = new Lemniscate();
-    ComplexFunction df    = f.differentiate();
+    ComplexFunction df    = f.differential();
 
     Complex         zero  = new Complex();
     ComplexFunction absdf = df.abs();

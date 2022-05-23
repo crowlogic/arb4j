@@ -1,6 +1,7 @@
 package arblib.curves;
 
 import arblib.*;
+import arblib.exceptions.NotDifferentiableException;
 import junit.framework.TestCase;
 
 public class LemniscateTest extends
@@ -21,10 +22,10 @@ public class LemniscateTest extends
     System.out.println("l(1)=" + w);
   }
   
-  public static void testDerivative()
+  public static void testDerivative() throws NotDifferentiableException
   {
     Lemniscate l = new Lemniscate();
-    ComplexFunction dl = l.differentiate();
+    ComplexFunction dl = l.differential();
     ComplexFunction absdl = dl.abs();
     Complex l1 = l.evaluate(Constants.COMPLEX_ONE, 2, 256, Complex.newVector(2));
     Complex dl1 = dl.evaluate(Constants.COMPLEX_ONE, 1, 256, Complex.newVector(1));
