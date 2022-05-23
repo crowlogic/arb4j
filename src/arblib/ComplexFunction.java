@@ -205,7 +205,7 @@ public interface ComplexFunction
       int        alloc;
       boolean    useHeap, stopping;
 
-      boolean    gl_status, verbose, real_error;
+      boolean    glStatus, verbose, realError;
 
       status     = ConvergenceStatus.Converged;
 
@@ -268,9 +268,9 @@ public interface ComplexFunction
 
           /* We are done with this subinterval. */
           Magnitude topm = ms.get(top);
-          if (mag_cmp(topm, newTol) < 0 || overlaps(u, as.get(top), bs.get(top), prec) || stopping)
+          if (topm.compareTo(newTol) < 0 || overlaps(u, as.get(top), bs.get(top), prec) || stopping)
           {
-            acb_add(s, s, vs.get(top), prec);
+            s.add(vs.get(top), prec, s);
             leafIntervalCount++;
 
             depth--;
@@ -288,27 +288,27 @@ public interface ComplexFunction
           /* Attempt using Gauss-Legendre rule. */
           if (vs.get(top).isFinite())
           {
-            gl_status = performGaussLegendreIntegrationAutoDeg(u,
-                                                               eval,
-                                                               as.get(top),
-                                                               bs.get(top),
-                                                               newTol,
-                                                               degLimit,
-                                                               verbose,
-                                                               prec);
+            glStatus = performGaussLegendreIntegrationAutoDeg(as.get(top),
+                                                              bs.get(top),
+                                                              newTol,
+                                                              degLimit,
+                                                              verbose,
+                                                              prec,
+                                                              eval,
+                                                              u);
 
             /* We are done with this subinterval. */
-            if (gl_status)
+            if (glStatus)
             {
               /* We know that the result is real. */
-              real_error = vs.get(top).isFinite() && vs.get(top).isReal();
+              realError = vs.get(top).isFinite() && vs.get(top).isReal();
 
-              if (real_error)
+              if (realError)
               {
                 arb_zero(u.getImag());
               }
 
-              acb_add(s, s, u, prec);
+              s.add(u, prec, s);
               leafIntervalCount++;
 
               /* Adjust absolute tolerance based on new information. */
@@ -332,7 +332,9 @@ public interface ComplexFunction
           if (depth >= depthLimit - 1)
           {
             if (verbose)
+            {
               System.out.format("stopping at depth_limit %wd\n", depthLimit);
+            }
             status   = ConvergenceStatus.Diverged;
             stopping = true;
             continue;
@@ -357,12 +359,12 @@ public interface ComplexFunction
 
           /* Bisection. */
           /* Interval [depth] becomes [mid, b]. */
-          acb_set(bs.get(depth), bs.get(top));
-          acb_add(as.get(depth), as.get(top), bs.get(top), prec);
+          bs.get(depth).set(bs.get(top));
+          as.get(top).add(bs.get(top), prec, as.get(depth));
           acb_mul_2exp_si(as.get(depth), as.get(depth), -1);
 
           /* Interval [top] becomes [a, mid]. */
-          acb_set(bs.get(top), as.get(depth));
+          bs.get(top).set(as.get(depth));
 
           /* Evaluate on [a, mid] */
           simpleQuadrature(vs.get(top), as.get(top), bs.get(top), prec);
@@ -421,25 +423,25 @@ public interface ComplexFunction
   /**
    * Perform a step of Gauss-Legendre quadrature with automatic degree
    * determination
-   * 
-   * @param res
-   * @param evalCount
    * @param a
    * @param b
    * @param tol
-   * @param deg_limit
+   * @param degreeLimit
    * @param verbose
    * @param prec
+   * @param evalCount
+   * @param res
+   * 
    * @return
    */
-  public default boolean performGaussLegendreIntegrationAutoDeg(Complex res,
-                                                                AtomicLong evalCount,
-                                                                Complex a,
+  public default boolean performGaussLegendreIntegrationAutoDeg(Complex a,
                                                                 Complex b,
                                                                 Magnitude tol,
-                                                                int deg_limit,
+                                                                int degreeLimit,
                                                                 boolean verbose,
-                                                                int prec)
+                                                                int prec,
+                                                                AtomicLong evalCount,
+                                                                Complex res)
   {
     boolean converged = false;
     try ( Complex mid = new Complex(); Complex delta = new Complex(); Complex wide = new Complex();
@@ -451,7 +453,7 @@ public interface ComplexFunction
       int k, Xexp;
       int i, n, best_n;
 
-      if (deg_limit <= 0)
+      if (degreeLimit <= 0)
       {
         acb_indeterminate(res);
         evalCount.set(0);
@@ -510,7 +512,7 @@ public interface ComplexFunction
         mag_mul(M, M, tmpm);
 
         /* Search for the smallest n that gives err < tol (if possible) */
-        for (i = 0; i < glStepCount && glSteps[i] <= deg_limit; i++)
+        for (i = 0; i < glStepCount && glSteps[i] <= degreeLimit; i++)
         {
           n = glSteps[i];
 
