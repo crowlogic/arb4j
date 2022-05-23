@@ -3,6 +3,7 @@ package arblib;
 import static arblib.Constants.ONE;
 
 import arblib.ComplexFunction.ConvergenceStatus;
+import arblib.ComplexFunction.IntegrationOptions;
 import arblib.curves.*;
 import junit.framework.*;
 
@@ -34,7 +35,7 @@ public class ComplexFunctionTest extends
     {
       absErr.set(Math.pow(2, -128));
       complexPi.set(Constants.π, Constants.ZERO.getImag());
-      f.integrate(zero, complexPi, 64, absErr, null, 128, integral);
+      assertTrue( f.integrate(zero, complexPi, 64, absErr, null, 128, integral) == ConvergenceStatus.Converged );
       // integral.printPrecision = true;
       System.out.println("integral is " + integral);
     }
@@ -54,13 +55,18 @@ public class ComplexFunctionTest extends
 
     try ( Complex complexPi = new Complex(); Complex integral = new Complex(); Magnitude absErr = new Magnitude();)
     {
-      absErr.set(Math.pow(2, -64));
+      absErr.set(Math.pow(2, -50));
       complexPi.set(Constants.π, Constants.ZERO.getImag());
-      complexPi.getReal().div(2, 128, complexPi.getReal());
+      //complexPi.getReal().div(4, 128, complexPi.getReal());
 
-      assertTrue(absdf.integrate(zero, complexPi, 128, absErr, null, 256, integral) == ConvergenceStatus.Converged);
+      IntegrationOptions opts = new IntegrationOptions();
+      opts.verbose = true;
+      ConvergenceStatus status = absdf.integrate(zero, complexPi, 128, absErr, opts, 256, integral);
+      assertTrue(status == ConvergenceStatus.Converged);
       integral.printPrecision = true;
       System.out.println("integral is " + integral);
+      System.out.println("domain is " + complexPi);
+
     }
   }
 }

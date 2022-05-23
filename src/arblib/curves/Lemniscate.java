@@ -9,6 +9,8 @@
  */
 package arblib.curves;
 
+import static java.lang.Math.max;
+
 import arblib.Complex;
 import arblib.ComplexFunction;
 import arblib.Constants;
@@ -59,6 +61,7 @@ public class Lemniscate implements
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
+    order = max(1, order);
     assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
     assert order <= 2;
 

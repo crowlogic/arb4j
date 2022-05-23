@@ -325,21 +325,35 @@ import java.io.Serializable;
     return this;
   }
   
+  /**
+   * @see arblib#acb_abs(Real, Complex, int)
+   * @param prec
+   * @param real
+   * @return
+   */
+  public Real abs(int prec, Real real)
+  {
+    arblib.acb_abs(real, this, prec);
+    return real;
+  }
+  
   public Complex set(Complex complex)
   {
+    assert dim >= complex.dim : String.format("dim=%s < complex.dim=%s\n", dim, complex.dim);
     if (dim == 1)
     {
       arblib.acb_set(this, complex);
     }
     else
     {
-      for (int i = 0; i < dim; i++)
+      for (int i = 0; i < complex.dim; i++)
       {
         arblib.acb_set(get(i), complex.get(i));
       }
     }
     return this;
-  }  
+  }
+  
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();

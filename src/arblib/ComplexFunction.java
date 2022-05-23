@@ -90,8 +90,8 @@ public interface ComplexFunction
       acb_set(wide, mid);
       arb_get_mag(tmpm, delta.getReal());
       arb_add_error_mag(wide.getReal(), tmpm);
-      arb_get_mag(tmpm, delta.getReal());
-      arb_add_error_mag(wide.getReal(), tmpm);
+      arb_get_mag(tmpm, delta.getImag());
+      arb_add_error_mag(wide.getImag(), tmpm);
 
       /* Direct evaluation: integral = (b-a) * f([a,b]). */
       evaluate(wide, 0, prec, res);
@@ -115,8 +115,7 @@ public interface ComplexFunction
    * slong deg_limit
    * 
    * Maximum quadrature degree for each subinterval. If a zero or negative value
-   * is provided, the limit is set to a default value which currently equals
-   * 
+   * is provided, the limit is set to a default value which currently equals ..
    * for Gauss-Legendre quadrature. A higher quadrature degree can be beneficial
    * for functions that are holomorphic on a large domain around the integration
    * path and yet behave irregularly, such as oscillatory entire functions. The
@@ -269,8 +268,13 @@ public interface ComplexFunction
   {
     ConvergenceStatus status;
 
+    if (options == null)
+    {
+      options = new IntegrationOptions();
+    }
+
     try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex();
-          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude new_tol = new Magnitude();)
+          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
     {
       int        depthLimit, evalLimit, degLimit;
       AtomicLong eval = new AtomicLong();
@@ -280,13 +284,6 @@ public interface ComplexFunction
       boolean    useHeap, stopping;
 
       boolean    gl_status, verbose, real_error;
-
-      if (options == null)
-      {
-        IntegrationOptions opt = new IntegrationOptions();
-
-        return integrate(a, b, relAccuracyGoalBits, absErrorToleranceGoal, opt, prec, res);
-      }
 
       status     = ConvergenceStatus.Converged;
 
@@ -327,7 +324,7 @@ public interface ComplexFunction
         /* Adjust absolute tolerance based on new information. */
         acb_get_mag_lower(tmpm, vs);
         mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-        mag_max(new_tol, absErrorToleranceGoal, tmpm);
+        mag_max(newTol, absErrorToleranceGoal, tmpm);
 
         acb_zero(s);
 
@@ -348,7 +345,8 @@ public interface ComplexFunction
             top = depth - 1;
 
           /* We are done with this subinterval. */
-          if (mag_cmp(ms.get(top), new_tol) < 0 || _acb_overlaps(u, as.get(top), bs.get(top), prec) != 0 || stopping)
+          Magnitude topm = ms.get(top);
+          if (mag_cmp(topm, newTol) < 0 || _acb_overlaps(u, as.get(top), bs.get(top), prec) != 0 || stopping)
           {
             acb_add(s, s, vs.get(top), prec);
             leafIntervalCount++;
@@ -372,7 +370,7 @@ public interface ComplexFunction
                                                                eval,
                                                                as.get(top),
                                                                bs.get(top),
-                                                               new_tol,
+                                                               newTol,
                                                                degLimit,
                                                                verbose,
                                                                prec);
@@ -394,7 +392,7 @@ public interface ComplexFunction
               /* Adjust absolute tolerance based on new information. */
               acb_get_mag_lower(tmpm, u);
               mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-              mag_max(new_tol, new_tol, tmpm);
+              mag_max(newTol, newTol, tmpm);
 
               depth--;
               if (useHeap && depth > 0)
@@ -446,12 +444,12 @@ public interface ComplexFunction
 
           /* Evaluate on [a, mid] */
           quadSimple(vs.get(top), as.get(top), bs.get(top), prec);
-          mag_hypot(ms.get(top), vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
+          mag_hypot(topm, vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
           eval.incrementAndGet();
           /* Adjust absolute tolerance based on new information. */
           acb_get_mag_lower(tmpm, vs.get(top));
           mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-          mag_max(new_tol, new_tol, tmpm);
+          mag_max(newTol, newTol, tmpm);
 
           /* Evaluate on [mid, b] */
           quadSimple(vs.get(depth), as.get(depth), bs.get(depth), prec);
@@ -460,15 +458,15 @@ public interface ComplexFunction
           /* Adjust absolute tolerance based on new information. */
           acb_get_mag_lower(tmpm, vs.get(depth));
           mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-          mag_max(new_tol, new_tol, tmpm);
+          mag_max(newTol, newTol, tmpm);
 
           /* Make the interval with the larger error the priority. */
-          if (mag_cmp(ms.get(top), ms.get(depth)) < 0)
+          if (mag_cmp(topm, ms.get(depth)) < 0)
           {
             acb_swap(as.get(top), as.get(depth));
             acb_swap(bs.get(top), bs.get(depth));
             acb_swap(vs.get(top), vs.get(depth));
-            mag_swap(ms.get(top), ms.get(depth));
+            mag_swap(topm, ms.get(depth));
           }
 
           if (useHeap)
@@ -483,10 +481,10 @@ public interface ComplexFunction
 
         if (verbose)
         {
-          System.out.format("depth %wd/%wd, eval %wd/%wd, %wd leaf intervals\n",
+          System.out.format("depth %d/%d, eval %d/%d, %d leaf intervals\n",
                             maxDepth,
                             depthLimit,
-                            eval,
+                            eval.get(),
                             evalLimit,
                             leafIntervalCount);
         }
@@ -668,9 +666,9 @@ public interface ComplexFunction
     {
       order = max(1, order);
       assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
-      try ( Complex y = new Complex(); Complex x = new Complex())
+      try ( Complex y = new Complex())
       {
-        ComplexFunction.this.evaluate(y, order, prec, x).abs(prec, w.getReal());
+        ComplexFunction.this.evaluate(y, order, prec, w).abs(prec, w.getReal());
         w.getImag().zero();
         return w;
       }
