@@ -95,17 +95,17 @@ public interface ComplexFunction
    * @param prec
    * @param res
    */
-  public default void simpleQuadrature(Complex a, Complex b, int prec, Complex res)
+  public default Complex simpleQuadrature(Complex a, Complex b, int prec, Complex res)
   {
     try ( Complex mid = new Complex(); Complex δ = new Complex(); Complex wide = new Complex();)
     {
-      /* delta = (b-a)/2 */
+      /* δ = (b-a)/2 */
       b.sub(a, prec, δ);
-      acb_mul_2exp_si(δ, δ, -1);
+      δ.mul2e(-1, δ);
 
       /* mid = (a+b)/2 */
       a.add(b, prec, mid);
-      acb_mul_2exp_si(mid, mid, -1);
+      mid.mul2e(-1, mid);
 
       /* wide = mid +- [delta] */
       wide.set(mid);
@@ -113,8 +113,7 @@ public interface ComplexFunction
       arb_add_error_mag(wide.getImag(), δ.getImag().getRad());
 
       /* Direct evaluation: integral = f([a,b]) * (b-a) */
-      evaluate(wide, 0, prec, res).mul(δ, prec, res);
-      acb_mul_2exp_si(res, res, 1);
+      return evaluate(wide, 0, prec, res).mul(δ, prec, res).mul2e(-1, res);
     }
   }
 
