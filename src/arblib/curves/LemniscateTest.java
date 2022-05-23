@@ -26,7 +26,7 @@ public class LemniscateTest extends
     Lemniscate l = new Lemniscate();
     ComplexFunction dl = l.differentiate();
     Complex l1 = l.evaluate(Constants.COMPLEX_ONE, 2, 256, Complex.newVector(2));
-    Complex dl1 = dl.evaluate(Constants.COMPLEX_ONE, 2, 256, Complex.newVector(2));
+    Complex dl1 = dl.evaluate(Constants.COMPLEX_ONE, 1, 256, Complex.newVector(2));
     assertTrue( l1.get(1).equals(dl1));
     
     

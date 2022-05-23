@@ -188,17 +188,14 @@ import java.io.Serializable;
     return mul(i,defaultPrec, r);
   }
  
-  public Complex slice(int start, int end)
+  public Complex slice( int startInclusive, int endExclusive )
   {
-    int size = end - start;
-    Complex x = Complex.newVector(size);
-    for ( int i = 0; i < size; i++ )
-    {
-      x.get(i).set(get(start+i));
-    }
-    return x;
+    int sliceDim = endExclusive - startInclusive;
+    Complex array = new Complex( swigCPtr + startInclusive * BYTES, false );
+    array.elements = new Complex[array.dim = sliceDim];
+    return array;
   }
-  
+    
  public Complex mul( int i, int prec, Complex r )
  {
    arblib.acb_mul_si( r, this, i, prec );

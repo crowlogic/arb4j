@@ -25,16 +25,6 @@ import arblib.Real;
 public class Lemniscate implements
                         PlaneCurve
 {
-  @Override
-  public ComplexFunction differentiate()
-  {
-    return (z, order, prec, w) ->
-    {
-      Complex result = this.evaluate(z, order, prec, w);
-      throw new UnsupportedOperationException("TODO: implement function to shift the entries of the Complex array one to the left");
-      //return result;
-    };
-  }
 
   @Override
   public int getInverseBranchCount()

@@ -5,6 +5,8 @@ import static arblib.arblib.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import arblib.curves.Lemniscate;
+
 /**
  * Copyright ©2022 Stephen Crowley
  * 
@@ -20,9 +22,22 @@ public interface ComplexFunction
 
   Complex evaluate(Complex z, int order, int prec, Complex w);
 
+  /**
+   * 
+   * @return a ComplexFunction which is the derivative of this one obtained by
+   *         calling evaluate with an order of one plus that requested via
+   *         this{@link #evaluate(Complex, int, int, Complex)} then returning a
+   *         slice of the result.
+   */
   public default ComplexFunction differentiate()
   {
-    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
+    return (z, order, prec, w) ->
+    {
+      try ( Complex x = Complex.newVector(order + 1))
+      {
+        return ComplexFunction.this.evaluate(z, order + 1, prec, x).slice(1, order + 1);
+      }
+    };
   }
 
   /**
