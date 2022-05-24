@@ -1,4 +1,4 @@
-%module arblib
+%module arb
 
 %include typemaps.i
  

@@ -245,6 +245,16 @@ extern "C" {
 
 #include <jni.h>
 
+extern JNIEnv* env;
+extern jclass realClass;
+extern jclass complexClass;
+extern jclass realFunctionClass;
+extern jclass complexFunctionClass;
+extern jmethodID realFunctionEvaluationMethod;
+extern jmethodID complexFunctionEvaluationMethod;
+extern jfieldID realCPtrField;
+extern jfieldID complexCPtrField;
+
 JNIEnv *env;
 
 void *allocate(size_t size)
@@ -275,7 +285,7 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
 
   if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)
   {
-    printf("GetEnv failed trying to load arblib\n");
+    printf("GetEnv failed trying to load arb\n");
     fflush(stdout);
     return -1;
   }
@@ -286,7 +296,7 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
 
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1is_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1is_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   int result;
@@ -302,7 +312,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1is_1zero(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1is_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1is_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_struct *arg1 ;
   int result;
@@ -318,7 +328,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1is_1zero(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1div_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1div_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -338,7 +348,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1div_1si(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   
@@ -354,7 +364,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1neg(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   acb_struct *arg1 ;
   acb_struct *arg2 ;
@@ -374,7 +384,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1equal(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   arb_struct *arg2 ;
@@ -394,7 +404,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1equal(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1set_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   arb_struct *arg1 ;
   long arg2 ;
   
@@ -408,7 +418,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1si(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
   mag_struct *arg1 ;
   double arg2 ;
   
@@ -422,7 +432,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set_1d(JNIEnv *jenv, jclass j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1inverse_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1inverse_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;
   acb_dft_pre_struct *arg3 ;
@@ -442,7 +452,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1inverse_1precomp(JNIEnv 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;
   acb_dft_pre_struct *arg3 ;
@@ -462,7 +472,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1precomp(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1precomp_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1precomp_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   acb_dft_pre_struct *arg1 ;
   
   (void)jenv;
@@ -474,7 +484,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1precomp_1clear(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1precomp_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1precomp_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
   acb_dft_pre_struct *arg1 ;
   long arg2 ;
   long arg3 ;
@@ -490,7 +500,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1precomp_1init(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1inverse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1inverse(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;
   long arg3 ;
@@ -508,7 +518,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1inverse(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;
   long arg3 ;
@@ -526,7 +536,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1is_1real(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1is_1real(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_struct *arg1 ;
   int result;
@@ -542,7 +552,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1is_1real(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   
@@ -558,7 +568,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1swap(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   
@@ -574,7 +584,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1swap(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1max(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1max(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -594,7 +604,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1max(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1mul_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1mul_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   long arg3 ;
@@ -612,7 +622,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1mul_12exp_1si(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1get_1mag_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1get_1mag_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   acb_struct *arg2 ;
   
@@ -628,7 +638,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1get_1mag_1lower(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1get_1mag_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1get_1mag_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   arb_struct *arg2 ;
   
@@ -644,7 +654,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1get_1mag_1lower(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI__1mag_1vec_1init(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI__1mag_1vec_1init(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jlong jresult = 0 ;
   long arg1 ;
   mag_ptr result;
@@ -658,7 +668,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI__1mag_1vec_1init(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1get_1interval_1arf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1get_1interval_1arf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   arf_struct *arg1 ;
   arf_struct *arg2 ;
   arb_struct *arg3 ;
@@ -680,7 +690,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1get_1interval_1arf(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1tan(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1tan(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -698,7 +708,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1tan(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1inv(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1inv(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -716,7 +726,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1inv(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1inv(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1inv(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -734,7 +744,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1inv(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1allocated_1bytes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1allocated_1bytes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   long result;
@@ -750,7 +760,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1allocated_1bytes(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1set_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1set_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arf_struct *arg1 ;
   mag_struct *arg2 ;
   
@@ -766,7 +776,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1set_1mag(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1mag_1add_1ulp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1mag_1add_1ulp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   arf_struct *arg3 ;
@@ -788,7 +798,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1mag_1add_1ulp(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1printd(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1printd(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   arb_struct *arg1 ;
   long arg2 ;
   
@@ -802,7 +812,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1printd(JNIEnv *jenv, jclass j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1is_1pos_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1is_1pos_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arf_struct *arg1 ;
   int result;
@@ -818,7 +828,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1is_1pos_1inf(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1is_1neg_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1is_1neg_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arf_struct *arg1 ;
   int result;
@@ -834,7 +844,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1is_1neg_1inf(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1sgn(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1sgn(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arf_struct *arg1 ;
   int result;
@@ -850,7 +860,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1sgn(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1is_1nan(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1is_1nan(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arf_struct *arg1 ;
   int result;
@@ -866,7 +876,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1is_1nan(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1equal(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   arf_struct *arg1 ;
   arf_struct *arg2 ;
@@ -886,7 +896,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1equal(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1is_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1is_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arf_struct *arg1 ;
   int result;
@@ -902,7 +912,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1is_1inf(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1get_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1get_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   arb_struct *arg2 ;
   
@@ -918,7 +928,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1get_1mag(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1sub_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1sub_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -938,7 +948,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1sub_1lower(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1add_1error_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1add_1error_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 ;
   mag_struct *arg2 ;
   
@@ -954,7 +964,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1add_1error_1mag(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1div(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1div(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -974,7 +984,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1div(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1mul_1ui_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1mul_1ui_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   unsigned long arg3 ;
@@ -992,7 +1002,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1mul_1ui_1lower(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1sub(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1sub(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -1012,7 +1022,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1sub(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT jdouble JNICALL Java_arblib_arblibJNI_mag_1get_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jdouble JNICALL Java_arb_arbJNI_mag_1get_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jdouble jresult = 0 ;
   mag_struct *arg1 ;
   double result;
@@ -1028,7 +1038,7 @@ SWIGEXPORT jdouble JNICALL Java_arblib_arblibJNI_mag_1get_1d(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   acb_struct *arg1 ;
   
   (void)jenv;
@@ -1040,7 +1050,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1zero(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sub(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1sub(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   acb_struct *arg3 ;
@@ -1062,7 +1072,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sub(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1addmul_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1addmul_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   arb_struct *arg3 ;
@@ -1084,7 +1094,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1addmul_1arb(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1add_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1add_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -1104,7 +1114,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1add_1lower(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1mul_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1mul_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -1124,7 +1134,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1mul_1lower(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1add_1error_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1add_1error_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 ;
   mag_struct *arg2 ;
   
@@ -1140,7 +1150,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1add_1error_1mag(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_heap_1up(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_heap_1up(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   acb_ptr arg3 = (acb_ptr) 0 ;
@@ -1162,7 +1172,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_heap_1up(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_heap_1down(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_heap_1down(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   acb_ptr arg3 = (acb_ptr) 0 ;
@@ -1184,7 +1194,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_heap_1down(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   
@@ -1200,7 +1210,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1neg(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1interval_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1interval_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arf_interval_struct *arg1 ;
   arf_interval_struct *arg2 ;
   
@@ -1216,7 +1226,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1interval_1swap(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1arf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1set_1arf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 ;
   arf_struct *arg2 ;
   
@@ -1232,7 +1242,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1arf(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1calc_1gl_1node(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4, jint jarg5) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1calc_1gl_1node(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4, jint jarg5) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -1254,7 +1264,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1calc_1gl_1node(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1one(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1one(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   mag_struct *arg1 ;
   
   (void)jenv;
@@ -1266,7 +1276,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1one(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   mag_struct *arg1 ;
   
   (void)jenv;
@@ -1278,7 +1288,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1clear(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   mag_struct *arg1 ;
   
   (void)jenv;
@@ -1290,7 +1300,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1inf(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mul_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -1308,7 +1318,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_12exp_1si(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1indeterminate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1indeterminate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   acb_struct *arg1 ;
   
   (void)jenv;
@@ -1320,7 +1330,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1indeterminate(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1is_1positive(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1is_1positive(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   int result;
@@ -1336,7 +1346,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1is_1positive(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1is_1negative(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1is_1negative(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   int result;
@@ -1352,7 +1362,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1is_1negative(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   
@@ -1368,7 +1378,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1sqrt(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1sqrt_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1sqrt_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   
@@ -1384,7 +1394,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1sqrt_1lower(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1rsqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1rsqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   
@@ -1400,7 +1410,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1rsqrt(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1rsqrt_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1rsqrt_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   
@@ -1416,7 +1426,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1rsqrt_1lower(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1root(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1root(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   unsigned long arg3 ;
@@ -1434,7 +1444,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1root(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1hypot(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1hypot(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -1454,7 +1464,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1hypot(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1binpow_1uiui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1binpow_1uiui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
   mag_struct *arg1 ;
   unsigned long arg2 ;
   unsigned long arg3 ;
@@ -1470,7 +1480,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1binpow_1uiui(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1polylog_1tail(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jlong jarg4, jlong jarg5) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1polylog_1tail(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jlong jarg4, jlong jarg5) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   long arg3 ;
@@ -1492,7 +1502,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1polylog_1tail(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1geom_1series(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1geom_1series(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   unsigned long arg3 ;
@@ -1510,7 +1520,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1geom_1series(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1hurwitz_1zeta_1uiui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1hurwitz_1zeta_1uiui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3) {
   mag_struct *arg1 ;
   unsigned long arg2 ;
   unsigned long arg3 ;
@@ -1526,7 +1536,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1hurwitz_1zeta_1uiui(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1set_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   mag_struct *arg1 ;
   unsigned long arg2 ;
   
@@ -1540,7 +1550,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set_1ui_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1set_1ui_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   mag_struct *arg1 ;
   unsigned long arg2 ;
   
@@ -1554,7 +1564,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set_1ui_1lower(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   
@@ -1570,7 +1580,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1set(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1pow_1ui_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1pow_1ui_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   unsigned long arg3 ;
@@ -1588,7 +1598,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1pow_1ui_1lower(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1mul_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1mul_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arf_struct *arg1 ;
   arf_struct *arg2 ;
   long arg3 ;
@@ -1606,7 +1616,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1mul_12exp_1si(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1interval_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1interval_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arf_interval_struct *arg1 ;
   arf_interval_struct *arg2 ;
   
@@ -1622,7 +1632,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1interval_1set(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1interval_1get_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1interval_1get_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arf_interval_struct *arg2 ;
   long arg3 ;
@@ -1640,7 +1650,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1interval_1get_1arb(JNIEnv *je
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1sgn_1nonzero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1sgn_1nonzero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   int result;
@@ -1656,7 +1666,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1sgn_1nonzero(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1derivative(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1derivative(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_poly_struct *arg1 ;
   acb_poly_struct *arg2 ;
   long arg3 ;
@@ -1674,7 +1684,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1derivative(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1integral(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1integral(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_poly_struct *arg1 ;
   acb_poly_struct *arg2 ;
   long arg3 ;
@@ -1692,7 +1702,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1integral(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1product_1roots(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1product_1roots(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
   acb_poly_struct *arg1 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;
   long arg3 ;
@@ -1711,7 +1721,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1product_1roots(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1evaluate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1evaluate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_poly_struct *arg2 ;
   acb_struct *arg3 ;
@@ -1733,7 +1743,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1evaluate(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1evaluate2(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1evaluate2(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   acb_poly_struct *arg3 ;
@@ -1759,7 +1769,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1evaluate2(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_flint_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_flint_1free(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   void *arg1 = (void *) 0 ;
   
   (void)jenv;
@@ -1769,7 +1779,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_flint_1free(JNIEnv *jenv, jclass j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mat_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
   arb_mat_struct *arg1 ;
   long arg2 ;
   long arg3 ;
@@ -1785,7 +1795,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mat_1init(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1get_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1get_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   acb_struct *arg2 ;
   
@@ -1801,7 +1811,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1get_1mag(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mat_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mat_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
   acb_mat_struct *arg1 ;
   long arg2 ;
   long arg3 ;
@@ -1817,7 +1827,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mat_1init(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dot(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jlong jarg4, jobject jarg4_, jint jarg5, jlong jarg6, jobject jarg6_, jint jarg7, jint jarg8, jint jarg9) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dot(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jlong jarg4, jobject jarg4_, jint jarg5, jlong jarg6, jobject jarg6_, jint jarg7, jint jarg8, jint jarg9) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   int arg3 ;
@@ -1849,7 +1859,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dot(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1interpolate_1newton(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1interpolate_1newton(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
   acb_poly_struct *arg1 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;
   acb_srcptr arg3 = (acb_srcptr) 0 ;
@@ -1871,7 +1881,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1interpolate_1newton(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arf_struct *arg1 ;
   
   (void)jenv;
@@ -1883,7 +1893,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1zero(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1cosh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1cosh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -1901,7 +1911,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1cosh(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arf_struct *arg1 ;
   arf_struct *arg2 ;
   
@@ -1917,7 +1927,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1neg(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1mul_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1mul_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4, jint jarg5) {
   jint jresult = 0 ;
   arf_ptr arg1 = (arf_ptr) 0 ;
   arf_srcptr arg2 = (arf_srcptr) 0 ;
@@ -1941,7 +1951,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1mul_1si(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1mul_1rnd_1any(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1mul_1rnd_1any(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
   jint jresult = 0 ;
   arf_ptr arg1 = (arf_ptr) 0 ;
   arf_srcptr arg2 = (arf_srcptr) 0 ;
@@ -1966,7 +1976,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1mul_1rnd_1any(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1mul_1rnd_1down(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1mul_1rnd_1down(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   jint jresult = 0 ;
   arf_ptr arg1 = (arf_ptr) 0 ;
   arf_srcptr arg2 = (arf_srcptr) 0 ;
@@ -1989,7 +1999,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1mul_1rnd_1down(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_flint_1malloc(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_flint_1malloc(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   size_t arg1 ;
   void *result = 0 ;
@@ -2003,7 +2013,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_flint_1malloc(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_flint_1realloc(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_flint_1realloc(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   jlong jresult = 0 ;
   void *arg1 = (void *) 0 ;
   size_t arg2 ;
@@ -2019,7 +2029,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_flint_1realloc(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_flint_1calloc(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_flint_1calloc(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
   jlong jresult = 0 ;
   size_t arg1 ;
   size_t arg2 ;
@@ -2035,7 +2045,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_flint_1calloc(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_color_1function(JNIEnv *jenv, jclass jcls, jdoubleArray jarg1, jdoubleArray jarg2, jdoubleArray jarg3, jlong jarg4, jobject jarg4_, jint jarg5) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_color_1function(JNIEnv *jenv, jclass jcls, jdoubleArray jarg1, jdoubleArray jarg2, jdoubleArray jarg3, jlong jarg4, jobject jarg4_, jint jarg5) {
   double *arg1 = (double *) 0 ;
   double *arg2 = (double *) 0 ;
   double *arg3 = (double *) 0 ;
@@ -2106,7 +2116,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_color_1function(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
   acb_struct *arg1 ;
   double arg2 ;
   
@@ -2120,7 +2130,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1set_1d(JNIEnv *jenv, jclass j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dirichlet_1zeta_1jet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4, jint jarg5) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dirichlet_1zeta_1jet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4, jint jarg5) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   int arg3 ;
@@ -2142,7 +2152,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dirichlet_1zeta_1jet(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dirichlet_1hardy_1z(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5, jint jarg6) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dirichlet_1hardy_1z(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5, jint jarg6) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_struct *arg2 ;
   dirichlet_group_struct *arg3 ;
@@ -2169,7 +2179,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dirichlet_1hardy_1z(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1print(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1print(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   acb_struct *arg1 ;
   
   (void)jenv;
@@ -2181,7 +2191,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1print(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT jstring JNICALL Java_arblib_arblibJNI_arb_1get_1str(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3) {
+SWIGEXPORT jstring JNICALL Java_arb_arbJNI_arb_1get_1str(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3) {
   jstring jresult = 0 ;
   arb_struct *arg1 ;
   long arg2 ;
@@ -2201,7 +2211,7 @@ SWIGEXPORT jstring JNICALL Java_arblib_arblibJNI_arb_1get_1str(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT jstring JNICALL Java_arblib_arblibJNI_arf_1get_1str(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jstring JNICALL Java_arb_arbJNI_arf_1get_1str(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jstring jresult = 0 ;
   arf_struct *arg1 ;
   long arg2 ;
@@ -2219,7 +2229,7 @@ SWIGEXPORT jstring JNICALL Java_arblib_arblibJNI_arf_1get_1str(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT jdouble JNICALL Java_arblib_arblibJNI_arf_1get_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT jdouble JNICALL Java_arb_arbJNI_arf_1get_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jdouble jresult = 0 ;
   arf_struct *arg1 ;
   int arg2 ;
@@ -2237,7 +2247,7 @@ SWIGEXPORT jdouble JNICALL Java_arblib_arblibJNI_arf_1get_1d(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
   arf_struct *arg1 ;
   double arg2 ;
   
@@ -2251,7 +2261,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1set_1d(JNIEnv *jenv, jclass j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1sub(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1sub(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
   jint jresult = 0 ;
   arf_ptr arg1 = (arf_ptr) 0 ;
   arf_srcptr arg2 = (arf_srcptr) 0 ;
@@ -2276,7 +2286,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1sub(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1conj(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1conj(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   
@@ -2292,7 +2302,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1conj(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1floor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1floor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -2310,7 +2320,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1floor(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1ceil(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1ceil(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -2328,7 +2338,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1ceil(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1div(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1div(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   arb_struct *arg3 ;
@@ -2350,7 +2360,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1div(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1sin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1sin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -2368,7 +2378,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1sin(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1cos(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1cos(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -2386,7 +2396,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1cos(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   arb_struct *arg3 ;
@@ -2408,7 +2418,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mul(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1abs_1bound_1lt_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1abs_1bound_1lt_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arf_struct *arg1 ;
   long result;
@@ -2424,7 +2434,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1abs_1bound_1lt_12exp_1si(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mul_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mul_12exp_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -2442,7 +2452,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mul_12exp_1si(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1get_1abs_1ubound_1arf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1get_1abs_1ubound_1arf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arf_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -2460,7 +2470,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1get_1abs_1ubound_1arf(JNIEnv 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mul_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mul_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   unsigned long arg3 ;
@@ -2480,7 +2490,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mul_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mul_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mul_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   unsigned long arg3 ;
@@ -2500,7 +2510,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1mul_1si(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mul_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -2520,7 +2530,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_1si(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1mul_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1mul_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4, jint jarg5) {
   jint jresult = 0 ;
   arf_ptr arg1 = (arf_ptr) 0 ;
   arf_srcptr arg2 = (arf_srcptr) 0 ;
@@ -2544,7 +2554,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1mul_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1div_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1div_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4, jint jarg5) {
   jint jresult = 0 ;
   arf_ptr arg1 = (arf_ptr) 0 ;
   arf_srcptr arg2 = (arf_srcptr) 0 ;
@@ -2568,7 +2578,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1div_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_mag_1cmp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_mag_1cmp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   mag_struct *arg1 ;
   mag_struct *arg2 ;
@@ -2588,7 +2598,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_mag_1cmp(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   
@@ -2604,7 +2614,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1swap(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   mag_struct *arg1 ;
   
   (void)jenv;
@@ -2616,7 +2626,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1init(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -2636,7 +2646,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1add(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arf_struct *arg1 ;
   arf_struct *arg2 ;
   
@@ -2652,7 +2662,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1set(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1pow_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1pow_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   unsigned long arg3 ;
@@ -2670,7 +2680,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1pow_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1mul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1mul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -2690,7 +2700,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1mul(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1get_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1get_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   arf_struct *arg2 ;
   
@@ -2706,7 +2716,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1get_1mag(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
   jint jresult = 0 ;
   arf_ptr arg1 = (arf_ptr) 0 ;
   arf_srcptr arg2 = (arf_srcptr) 0 ;
@@ -2731,7 +2741,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arf_1add(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1rel_1accuracy_1bits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1rel_1accuracy_1bits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_struct *arg1 ;
   long result;
@@ -2747,7 +2757,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1rel_1accuracy_1bits(JNIEnv *j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1bits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1bits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   long result;
@@ -2763,7 +2773,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1bits(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1pow_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1pow_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   unsigned long arg3 ;
@@ -2783,7 +2793,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1pow_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1add_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1add_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   unsigned long arg3 ;
@@ -2803,7 +2813,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1add_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1log(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1log(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -2821,7 +2831,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1log(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1tanh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1tanh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -2839,7 +2849,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1tanh(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1set_1d(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jdouble jarg2) {
   arb_struct *arg1 ;
   double arg2 ;
   
@@ -2853,7 +2863,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1d(JNIEnv *jenv, jclass j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dirichlet_1hurwitz(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dirichlet_1hurwitz(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   acb_struct *arg3 ;
@@ -2875,7 +2885,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dirichlet_1hurwitz(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dirichlet_1hardy_1theta(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5, jint jarg6) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dirichlet_1hardy_1theta(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5, jint jarg6) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_struct *arg2 ;
   dirichlet_group_struct *arg3 ;
@@ -2902,7 +2912,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dirichlet_1hardy_1theta(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   acb_struct *arg3 ;
@@ -2924,7 +2934,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1cos(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1cos(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -2942,7 +2952,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1cos(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1sin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -2960,7 +2970,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sin(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1exp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -2978,7 +2988,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1exp(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   arb_struct *arg3 ;
@@ -3000,7 +3010,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1add(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1sub(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1sub(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   arb_struct *arg3 ;
@@ -3022,7 +3032,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1sub(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1arg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1arg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -3040,7 +3050,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1arg(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1modular_1eisenstein(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1modular_1eisenstein(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -3059,7 +3069,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1modular_1eisenstein(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1pow_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1pow_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   arb_struct *arg3 ;
@@ -3081,7 +3091,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1pow_1arb(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1pow(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1pow(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   acb_struct *arg3 ;
@@ -3103,7 +3113,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1pow(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_nthHardyZero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_nthHardyZero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
   arb_struct *arg1 ;
   int arg2 ;
   long arg3 ;
@@ -3119,7 +3129,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_nthHardyZero(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1contains(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1contains(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   arb_struct *arg2 ;
@@ -3139,7 +3149,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1contains(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1contains_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1contains_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   int result;
@@ -3155,7 +3165,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1contains_1zero(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1set_1str(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1set_1str(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2, jint jarg3) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   char *arg2 = (char *) 0 ;
@@ -3180,7 +3190,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1set_1str(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1overlaps(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1overlaps(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   arb_struct *arg2 ;
@@ -3200,7 +3210,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1overlaps(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI__1acb_1vec_1init(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI__1acb_1vec_1init(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jlong jresult = 0 ;
   long arg1 ;
   acb_ptr result;
@@ -3214,7 +3224,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI__1acb_1vec_1init(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI__1arb_1vec_1init(JNIEnv *jenv, jclass jcls, jint jarg1) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI__1arb_1vec_1init(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jlong jresult = 0 ;
   long arg1 ;
   arb_ptr result;
@@ -3228,7 +3238,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI__1arb_1vec_1init(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI__1acb_1vec_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI__1acb_1vec_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   long arg2 ;
   
@@ -3241,7 +3251,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI__1acb_1vec_1clear(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mul_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   unsigned long arg3 ;
@@ -3261,7 +3271,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   
@@ -3277,7 +3287,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1set(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   acb_struct *arg1 ;
   
   (void)jenv;
@@ -3289,7 +3299,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1clear(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   acb_struct *arg3 ;
@@ -3311,7 +3321,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1add(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sub_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1sub_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   unsigned long arg3 ;
@@ -3331,7 +3341,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sub_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1div(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1div(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   acb_struct *arg3 ;
@@ -3353,7 +3363,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1div(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI__1arb_1vec_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI__1arb_1vec_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   arb_ptr arg1 = (arb_ptr) 0 ;
   long arg2 ;
   
@@ -3366,7 +3376,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI__1arb_1vec_1clear(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_1onei(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mul_1onei(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   
@@ -3382,7 +3392,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_1onei(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1div_1onei(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1div_1onei(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   
@@ -3398,7 +3408,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1div_1onei(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1pow_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1pow_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   unsigned long arg3 ;
@@ -3418,7 +3428,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1pow_1ui(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -3436,7 +3446,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1abs(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -3454,7 +3464,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1sqrt(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sqr(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1sqr(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -3472,7 +3482,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sqr(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1contains(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1contains(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   acb_struct *arg1 ;
   acb_struct *arg2 ;
@@ -3492,7 +3502,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1contains(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1overlaps(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1overlaps(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   acb_struct *arg1 ;
   acb_struct *arg2 ;
@@ -3512,7 +3522,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1overlaps(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1contains_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1contains_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_struct *arg1 ;
   int result;
@@ -3528,7 +3538,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1contains_1zero(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1allocated_1bytes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1allocated_1bytes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_struct *arg1 ;
   long result;
@@ -3544,7 +3554,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1allocated_1bytes(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mul_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   arb_struct *arg3 ;
@@ -3566,7 +3576,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1mul_1arb(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1div_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1div_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   arb_struct *arg3 ;
@@ -3588,7 +3598,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1div_1arb(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   
@@ -3604,7 +3614,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1elliptic_1k(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1elliptic_1k(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -3622,7 +3632,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1elliptic_1k(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1get_1mid(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1get_1mid(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   
@@ -3638,7 +3648,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1get_1mid(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1const_1pi(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1const_1pi(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   arb_struct *arg1 ;
   long arg2 ;
   
@@ -3652,7 +3662,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1const_1pi(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1is_1finite(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1is_1finite(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   int result;
@@ -3668,7 +3678,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1is_1finite(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1is_1finite(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1is_1finite(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_struct *arg1 ;
   int result;
@@ -3684,7 +3694,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1is_1finite(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   
@@ -3700,7 +3710,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1abs(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   
   (void)jenv;
@@ -3712,7 +3722,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1zero(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1one(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1one(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   
   (void)jenv;
@@ -3724,7 +3734,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1one(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1pos_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1pos_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   
   (void)jenv;
@@ -3736,7 +3746,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1pos_1inf(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1neg_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1neg_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   
   (void)jenv;
@@ -3748,7 +3758,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1neg_1inf(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1zero_1pm_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1zero_1pm_1inf(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   
   (void)jenv;
@@ -3760,7 +3770,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1zero_1pm_1inf(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1indeterminate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1indeterminate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   
   (void)jenv;
@@ -3772,7 +3782,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1indeterminate(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1zero_1pm_1one(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1zero_1pm_1one(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   
   (void)jenv;
@@ -3784,7 +3794,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1zero_1pm_1one(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1rel_1accuracy_1bits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1rel_1accuracy_1bits(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;
   long result;
@@ -3800,7 +3810,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_arb_1rel_1accuracy_1bits(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1unit_1interval(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1unit_1interval(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   
   (void)jenv;
@@ -3812,7 +3822,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1unit_1interval(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   mag_struct *arg1 ;
   
   (void)jenv;
@@ -3824,7 +3834,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_mag_1zero(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1div_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1div_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -3844,7 +3854,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1div_1si(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1trim(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1trim(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   
@@ -3860,7 +3870,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1trim(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1interval_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1set_1interval_1mag(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   arb_struct *arg1 ;
   mag_struct *arg2 ;
   mag_struct *arg3 ;
@@ -3882,7 +3892,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1set_1interval_1mag(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1modular_1theta_1series(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jlong jarg5, jobject jarg5_, jlong jarg6, jobject jarg6_, jint jarg7, jint jarg8) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1modular_1theta_1series(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jlong jarg5, jobject jarg5_, jlong jarg6, jobject jarg6_, jint jarg7, jint jarg8) {
   acb_poly_struct *arg1 ;
   acb_poly_struct *arg2 ;
   acb_poly_struct *arg3 ;
@@ -3918,7 +3928,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1modular_1theta_1series(JNIEnv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   acb_poly_struct *arg1 ;
   
   (void)jenv;
@@ -3930,7 +3940,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1poly_1init(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   
   (void)jenv;
@@ -3942,7 +3952,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1init(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arf_struct *arg1 ;
   
   (void)jenv;
@@ -3954,7 +3964,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arf_1init(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   acb_struct *arg1 ;
   
   (void)jenv;
@@ -3966,7 +3976,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1init(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1tanh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1tanh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -3984,7 +3994,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1tanh(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1asinh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1asinh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -4002,7 +4012,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1asinh(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1acosh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1acosh(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -4020,7 +4030,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1acosh(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1lambertw(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1lambertw(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   int arg3 ;
@@ -4040,7 +4050,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1lambertw(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1gamma(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1gamma(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -4058,7 +4068,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1gamma(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1lgamma(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1lgamma(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -4076,7 +4086,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1lgamma(JNIEnv *jenv, jclass j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1sqr(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1sqr(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
   long arg3 ;
@@ -4094,7 +4104,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_arb_1sqr(JNIEnv *jenv, jclass jcls
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;
   long arg3 ;
@@ -4112,7 +4122,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1sqrt(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_RealMatrix_1entries_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RealMatrix_1entries_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
   arb_ptr arg2 = (arb_ptr) 0 ;
   
@@ -4126,7 +4136,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_RealMatrix_1entries_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_RealMatrix_1entries_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RealMatrix_1entries_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
   arb_ptr result;
@@ -4141,7 +4151,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_RealMatrix_1entries_1get(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_RealMatrix_1r_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RealMatrix_1r_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
   long arg2 ;
   
@@ -4154,7 +4164,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_RealMatrix_1r_1set(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_RealMatrix_1r_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_RealMatrix_1r_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
   long result;
@@ -4169,7 +4179,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_RealMatrix_1r_1get(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_RealMatrix_1c_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RealMatrix_1c_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
   long arg2 ;
   
@@ -4182,7 +4192,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_RealMatrix_1c_1set(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_RealMatrix_1c_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_RealMatrix_1c_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
   long result;
@@ -4197,7 +4207,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_RealMatrix_1c_1get(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_RealMatrix_1rows_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RealMatrix_1rows_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
   arb_ptr *arg2 = (arb_ptr *) 0 ;
   
@@ -4210,7 +4220,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_RealMatrix_1rows_1set(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_RealMatrix_1rows_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RealMatrix_1rows_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
   arb_ptr *result = 0 ;
@@ -4225,7 +4235,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_RealMatrix_1rows_1get(JNIEnv *jen
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1RealMatrix(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1RealMatrix(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   arb_mat_struct *result = 0 ;
   
@@ -4237,7 +4247,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1RealMatrix(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1RealMatrix(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1RealMatrix(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
   
   (void)jenv;
@@ -4247,7 +4257,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1RealMatrix(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexMatrix_1entries_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexMatrix_1entries_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -4261,7 +4271,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexMatrix_1entries_1set(JNIEnv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_ComplexMatrix_1entries_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_ComplexMatrix_1entries_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
   acb_ptr result;
@@ -4276,7 +4286,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_ComplexMatrix_1entries_1get(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexMatrix_1r_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexMatrix_1r_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
   long arg2 ;
   
@@ -4289,7 +4299,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexMatrix_1r_1set(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_ComplexMatrix_1r_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_ComplexMatrix_1r_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
   long result;
@@ -4304,7 +4314,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_ComplexMatrix_1r_1get(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexMatrix_1c_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexMatrix_1c_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
   long arg2 ;
   
@@ -4317,7 +4327,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexMatrix_1c_1set(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_ComplexMatrix_1c_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_ComplexMatrix_1c_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
   long result;
@@ -4332,7 +4342,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_ComplexMatrix_1c_1get(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexMatrix_1rows_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexMatrix_1rows_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
   acb_ptr *arg2 = (acb_ptr *) 0 ;
   
@@ -4345,7 +4355,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexMatrix_1rows_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_ComplexMatrix_1rows_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_ComplexMatrix_1rows_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
   acb_ptr *result = 0 ;
@@ -4360,7 +4370,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_ComplexMatrix_1rows_1get(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1ComplexMatrix(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1ComplexMatrix(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_mat_struct *result = 0 ;
   
@@ -4372,7 +4382,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1ComplexMatrix(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1ComplexMatrix(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1ComplexMatrix(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
   
   (void)jenv;
@@ -4382,7 +4392,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1ComplexMatrix(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_FloatInterval_1a_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FloatInterval_1a_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arf_interval_struct *arg1 = (arf_interval_struct *) 0 ;
   arf_struct *arg2 = (arf_struct *) 0 ;
   
@@ -4396,7 +4406,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_FloatInterval_1a_1set(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_FloatInterval_1a_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FloatInterval_1a_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arf_interval_struct *arg1 = (arf_interval_struct *) 0 ;
   arf_struct *result = 0 ;
@@ -4411,7 +4421,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_FloatInterval_1a_1get(JNIEnv *jen
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_FloatInterval_1b_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FloatInterval_1b_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arf_interval_struct *arg1 = (arf_interval_struct *) 0 ;
   arf_struct *arg2 = (arf_struct *) 0 ;
   
@@ -4425,7 +4435,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_FloatInterval_1b_1set(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_FloatInterval_1b_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FloatInterval_1b_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arf_interval_struct *arg1 = (arf_interval_struct *) 0 ;
   arf_struct *result = 0 ;
@@ -4440,7 +4450,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_FloatInterval_1b_1get(JNIEnv *jen
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1FloatInterval(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1FloatInterval(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   arf_interval_struct *result = 0 ;
   
@@ -4452,7 +4462,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1FloatInterval(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1FloatInterval(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1FloatInterval(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   arf_interval_struct *arg1 = (arf_interval_struct *) 0 ;
   
   (void)jenv;
@@ -4462,7 +4472,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1FloatInterval(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Magnitude_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Magnitude_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   mag_struct *arg1 = (mag_struct *) 0 ;
   fmpz arg2 ;
   fmpz *argp2 ;
@@ -4481,7 +4491,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Magnitude_1exp_1set(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Magnitude_1exp_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Magnitude_1exp_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   mag_struct *arg1 = (mag_struct *) 0 ;
   fmpz result;
@@ -4500,7 +4510,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Magnitude_1exp_1get(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Magnitude_1man_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Magnitude_1man_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   mag_struct *arg1 = (mag_struct *) 0 ;
   mp_limb_t arg2 ;
   mp_limb_t *argp2 ;
@@ -4519,7 +4529,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Magnitude_1man_1set(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Magnitude_1man_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Magnitude_1man_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   mag_struct *arg1 = (mag_struct *) 0 ;
   mp_limb_t result;
@@ -4538,7 +4548,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Magnitude_1man_1get(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Magnitude(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1Magnitude(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   mag_struct *result = 0 ;
   
@@ -4550,7 +4560,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Magnitude(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Magnitude(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Magnitude(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mag_struct *arg1 = (mag_struct *) 0 ;
   
   (void)jenv;
@@ -4560,7 +4570,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Magnitude(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1realObj_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Complex_1realObj_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 = (acb_struct *) 0 ;
   arb_struct *arg2 = (arb_struct *) 0 ;
   
@@ -4574,7 +4584,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1realObj_1set(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Complex_1realObj_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Complex_1realObj_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_struct *arg1 = (acb_struct *) 0 ;
   arb_struct *result = 0 ;
@@ -4589,7 +4599,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Complex_1realObj_1get(JNIEnv *jen
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1imagObj_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Complex_1imagObj_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 = (acb_struct *) 0 ;
   arb_struct *arg2 = (arb_struct *) 0 ;
   
@@ -4603,7 +4613,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1imagObj_1set(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Complex_1imagObj_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Complex_1imagObj_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_struct *arg1 = (acb_struct *) 0 ;
   arb_struct *result = 0 ;
@@ -4618,7 +4628,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Complex_1imagObj_1get(JNIEnv *jen
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Complex(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1Complex(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_struct *result = 0 ;
   
@@ -4630,7 +4640,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Complex(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Complex(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Complex(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_struct *arg1 = (acb_struct *) 0 ;
   
   (void)jenv;
@@ -4640,7 +4650,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Complex(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1q_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1q_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long arg2 ;
   
@@ -4653,7 +4663,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1q_1set(JNIEnv *jen
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1q_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1q_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long result;
@@ -4668,7 +4678,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1q_1get(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1q_1even_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1q_1even_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long arg2 ;
   
@@ -4681,7 +4691,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1q_1even_1set(JNIEn
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1q_1even_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1q_1even_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long result;
@@ -4696,7 +4706,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1q_1even_1get(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1mod_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1mod_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   nmod_t arg2 ;
   nmod_t *argp2 ;
@@ -4715,7 +4725,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1mod_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1mod_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1mod_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   nmod_t result;
@@ -4734,7 +4744,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1mod_1get(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1rad_1q_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1rad_1q_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long arg2 ;
   
@@ -4747,7 +4757,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1rad_1q_1set(JNIEnv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1rad_1q_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1rad_1q_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long result;
@@ -4762,7 +4772,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1rad_1q_1get(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1phi_1q_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1phi_1q_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long arg2 ;
   
@@ -4775,7 +4785,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1phi_1q_1set(JNIEnv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1phi_1q_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1phi_1q_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long result;
@@ -4790,7 +4800,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1phi_1q_1get(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1neven_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1neven_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   long arg2 ;
   
@@ -4803,7 +4813,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1neven_1set(JNIEnv 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_DirichletGroup_1neven_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_DirichletGroup_1neven_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   long result;
@@ -4818,7 +4828,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_DirichletGroup_1neven_1get(JNIEnv 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1num_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1num_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   long arg2 ;
   
@@ -4831,7 +4841,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1num_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_DirichletGroup_1num_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_DirichletGroup_1num_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   long result;
@@ -4846,7 +4856,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_DirichletGroup_1num_1get(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1expo_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1expo_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long arg2 ;
   
@@ -4859,7 +4869,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1expo_1set(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1expo_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1expo_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long result;
@@ -4874,7 +4884,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1expo_1get(JNIEnv 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1P_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1P_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   dirichlet_prime_group_struct *arg2 = (dirichlet_prime_group_struct *) 0 ;
   
@@ -4888,7 +4898,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1P_1set(JNIEnv *jen
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1P_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1P_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   dirichlet_prime_group_struct *result = 0 ;
@@ -4903,7 +4913,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1P_1get(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1generators_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1generators_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long *arg2 = (unsigned long *) 0 ;
   
@@ -4916,7 +4926,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1generators_1set(JN
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1generators_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1generators_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long *result = 0 ;
@@ -4931,7 +4941,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1generators_1get(J
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1PHI_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1PHI_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long *arg2 = (unsigned long *) 0 ;
   
@@ -4944,7 +4954,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletGroup_1PHI_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1PHI_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1PHI_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   unsigned long *result = 0 ;
@@ -4959,7 +4969,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletGroup_1PHI_1get(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1DirichletGroup(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1DirichletGroup(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   dirichlet_group_struct *result = 0 ;
   
@@ -4971,7 +4981,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1DirichletGroup(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1DirichletGroup(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1DirichletGroup(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
   
   (void)jenv;
@@ -4981,7 +4991,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1DirichletGroup(JNIEnv *jen
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletCharacter_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletCharacter_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_char_struct *arg1 = (dirichlet_char_struct *) 0 ;
   unsigned long arg2 ;
   
@@ -4994,7 +5004,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletCharacter_1n_1set(JNIEnv 
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletCharacter_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletCharacter_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_char_struct *arg1 = (dirichlet_char_struct *) 0 ;
   unsigned long result;
@@ -5009,7 +5019,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletCharacter_1n_1get(JNIEnv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletCharacter_1log_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletCharacter_1log_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_char_struct *arg1 = (dirichlet_char_struct *) 0 ;
   unsigned long *arg2 = (unsigned long *) 0 ;
   
@@ -5022,7 +5032,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletCharacter_1log_1set(JNIEn
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletCharacter_1log_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletCharacter_1log_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_char_struct *arg1 = (dirichlet_char_struct *) 0 ;
   unsigned long *result = 0 ;
@@ -5037,7 +5047,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletCharacter_1log_1get(JNIE
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1DirichletCharacter(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1DirichletCharacter(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   dirichlet_char_struct *result = 0 ;
   
@@ -5049,7 +5059,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1DirichletCharacter(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1DirichletCharacter(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1DirichletCharacter(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   dirichlet_char_struct *arg1 = (dirichlet_char_struct *) 0 ;
   
   (void)jenv;
@@ -5059,7 +5069,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1DirichletCharacter(JNIEnv 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1p_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1p_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   unsigned long arg2 ;
   
@@ -5072,7 +5082,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1p_1set(JNIEnv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1p_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1p_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   unsigned long result;
@@ -5087,7 +5097,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1p_1get(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1e_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1e_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   int arg2 ;
   
@@ -5100,7 +5110,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1e_1set(JNIEnv
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1e_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1e_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   int result;
@@ -5115,7 +5125,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1e_1get(JNIEnv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1pe_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1pe_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   nmod_t arg2 ;
   nmod_t *argp2 ;
@@ -5134,7 +5144,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1pe_1set(JNIEn
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1pe_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1pe_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   nmod_t result;
@@ -5153,7 +5163,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1pe_1get(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1phi_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1phi_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   nmod_t arg2 ;
   nmod_t *argp2 ;
@@ -5172,7 +5182,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1phi_1set(JNIE
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1phi_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1phi_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   nmod_t result;
@@ -5191,7 +5201,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1phi_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1g_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1g_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   unsigned long arg2 ;
   
@@ -5204,7 +5214,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1g_1set(JNIEnv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1g_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1g_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   unsigned long result;
@@ -5219,7 +5229,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1g_1get(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1dlog_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1dlog_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   dlog_precomp_struct *arg2 = (dlog_precomp_struct *) 0 ;
   
@@ -5232,7 +5242,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1dlog_1set(JNI
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1dlog_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1dlog_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   dlog_precomp_struct *result = 0 ;
@@ -5247,7 +5257,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_DirichletPrimeGroup_1dlog_1get(JN
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1DirichletPrimeGroup(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1DirichletPrimeGroup(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   dirichlet_prime_group_struct *result = 0 ;
   
@@ -5259,7 +5269,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1DirichletPrimeGroup(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1DirichletPrimeGroup(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1DirichletPrimeGroup(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
   
   (void)jenv;
@@ -5269,7 +5279,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1DirichletPrimeGroup(JNIEnv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Real_1mid_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Real_1mid_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 = (arb_struct *) 0 ;
   arf_struct *arg2 = (arf_struct *) 0 ;
   
@@ -5283,7 +5293,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Real_1mid_1set(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Real_1mid_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Real_1mid_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arb_struct *arg1 = (arb_struct *) 0 ;
   arf_struct *result = 0 ;
@@ -5298,7 +5308,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Real_1mid_1get(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Real_1rad_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Real_1rad_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 = (arb_struct *) 0 ;
   mag_struct *arg2 = (mag_struct *) 0 ;
   
@@ -5312,7 +5322,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Real_1rad_1set(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Real_1rad_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Real_1rad_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arb_struct *arg1 = (arb_struct *) 0 ;
   mag_struct *result = 0 ;
@@ -5327,7 +5337,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Real_1rad_1get(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Real(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1Real(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   arb_struct *result = 0 ;
   
@@ -5339,7 +5349,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Real(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Real(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Real(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   arb_struct *arg1 = (arb_struct *) 0 ;
   
   (void)jenv;
@@ -5349,7 +5359,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Real(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MantissaNoPointer_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MantissaNoPointer_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   mantissa_noptr_struct *arg1 = (mantissa_noptr_struct *) 0 ;
   mp_limb_t *arg2 ;
   
@@ -5367,7 +5377,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MantissaNoPointer_1d_1set(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MantissaNoPointer_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MantissaNoPointer_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   mantissa_noptr_struct *arg1 = (mantissa_noptr_struct *) 0 ;
   mp_limb_t *result = 0 ;
@@ -5382,7 +5392,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MantissaNoPointer_1d_1get(JNIEnv 
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1MantissaNoPointer(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MantissaNoPointer(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   mantissa_noptr_struct *result = 0 ;
   
@@ -5394,7 +5404,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1MantissaNoPointer(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1MantissaNoPointer(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1MantissaNoPointer(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mantissa_noptr_struct *arg1 = (mantissa_noptr_struct *) 0 ;
   
   (void)jenv;
@@ -5404,7 +5414,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1MantissaNoPointer(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MantissaPointer_1alloc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MantissaPointer_1alloc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   mantissa_ptr_struct *arg1 = (mantissa_ptr_struct *) 0 ;
   mp_size_t arg2 ;
   mp_size_t *argp2 ;
@@ -5423,7 +5433,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MantissaPointer_1alloc_1set(JNIEnv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MantissaPointer_1alloc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MantissaPointer_1alloc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   mantissa_ptr_struct *arg1 = (mantissa_ptr_struct *) 0 ;
   mp_size_t result;
@@ -5442,7 +5452,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MantissaPointer_1alloc_1get(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MantissaPointer_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MantissaPointer_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   mantissa_ptr_struct *arg1 = (mantissa_ptr_struct *) 0 ;
   mp_ptr arg2 ;
   mp_ptr *argp2 ;
@@ -5461,7 +5471,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MantissaPointer_1d_1set(JNIEnv *je
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MantissaPointer_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MantissaPointer_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   mantissa_ptr_struct *arg1 = (mantissa_ptr_struct *) 0 ;
   mp_ptr result;
@@ -5480,7 +5490,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MantissaPointer_1d_1get(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1MantissaPointer(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MantissaPointer(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   mantissa_ptr_struct *result = 0 ;
   
@@ -5492,7 +5502,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1MantissaPointer(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1MantissaPointer(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1MantissaPointer(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mantissa_ptr_struct *arg1 = (mantissa_ptr_struct *) 0 ;
   
   (void)jenv;
@@ -5502,7 +5512,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1MantissaPointer(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Mantissa_1noptr_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Mantissa_1noptr_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mantissa_struct *arg1 = (mantissa_struct *) 0 ;
   mantissa_noptr_struct *arg2 = (mantissa_noptr_struct *) 0 ;
   
@@ -5516,7 +5526,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Mantissa_1noptr_1set(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Mantissa_1noptr_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Mantissa_1noptr_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   mantissa_struct *arg1 = (mantissa_struct *) 0 ;
   mantissa_noptr_struct *result = 0 ;
@@ -5531,7 +5541,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Mantissa_1noptr_1get(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Mantissa_1ptr_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Mantissa_1ptr_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mantissa_struct *arg1 = (mantissa_struct *) 0 ;
   mantissa_ptr_struct *arg2 = (mantissa_ptr_struct *) 0 ;
   
@@ -5545,7 +5555,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Mantissa_1ptr_1set(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Mantissa_1ptr_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Mantissa_1ptr_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   mantissa_struct *arg1 = (mantissa_struct *) 0 ;
   mantissa_ptr_struct *result = 0 ;
@@ -5560,7 +5570,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Mantissa_1ptr_1get(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Mantissa(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1Mantissa(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   mantissa_struct *result = 0 ;
   
@@ -5572,7 +5582,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Mantissa(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Mantissa(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Mantissa(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   mantissa_struct *arg1 = (mantissa_struct *) 0 ;
   
   (void)jenv;
@@ -5582,7 +5592,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Mantissa(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Float_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Float_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   arf_struct *arg1 = (arf_struct *) 0 ;
   fmpz arg2 ;
   fmpz *argp2 ;
@@ -5601,7 +5611,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Float_1exp_1set(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Float_1exp_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Float_1exp_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arf_struct *arg1 = (arf_struct *) 0 ;
   fmpz result;
@@ -5620,7 +5630,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Float_1exp_1get(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Float_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Float_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   arf_struct *arg1 = (arf_struct *) 0 ;
   mp_size_t arg2 ;
   mp_size_t *argp2 ;
@@ -5639,7 +5649,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Float_1size_1set(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Float_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Float_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arf_struct *arg1 = (arf_struct *) 0 ;
   mp_size_t result;
@@ -5658,7 +5668,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Float_1size_1get(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Float_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_Float_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arf_struct *arg1 = (arf_struct *) 0 ;
   mantissa_struct *arg2 = (mantissa_struct *) 0 ;
   
@@ -5672,7 +5682,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Float_1d_1set(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Float_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Float_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arf_struct *arg1 = (arf_struct *) 0 ;
   mantissa_struct *result = 0 ;
@@ -5687,7 +5697,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Float_1d_1get(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Float(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1Float(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   arf_struct *result = 0 ;
   
@@ -5699,7 +5709,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1Float(JNIEnv *jenv, jclass j
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Float(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Float(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   arf_struct *arg1 = (arf_struct *) 0 ;
   
   (void)jenv;
@@ -5709,7 +5719,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1Float(JNIEnv *jenv, jclass
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1prec_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1prec_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_prec_t arg2 ;
   mpfr_prec_t *argp2 ;
@@ -5728,7 +5738,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1prec_1set(
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1prec_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1prec_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_prec_t result;
@@ -5747,7 +5757,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1prec_1get
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1sign_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1sign_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_sign_t arg2 ;
   mpfr_sign_t *argp2 ;
@@ -5766,7 +5776,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1sign_1set(
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1sign_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1sign_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_sign_t result;
@@ -5785,7 +5795,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1sign_1get
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_exp_t arg2 ;
   mpfr_exp_t *argp2 ;
@@ -5804,7 +5814,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1exp_1set(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1exp_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1exp_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_exp_t result;
@@ -5823,7 +5833,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1exp_1get(
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mp_limb_t *arg2 = (mp_limb_t *) 0 ;
   
@@ -5836,7 +5846,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1d_1set(JNI
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mp_limb_t *result = 0 ;
@@ -5851,7 +5861,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_MultiPrecFloat_1_1mpfr_1d_1get(JN
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1MultiPrecFloat(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MultiPrecFloat(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   __mpfr_struct *result = 0 ;
   
@@ -5863,7 +5873,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1MultiPrecFloat(JNIEnv *jenv,
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1MultiPrecFloat(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1MultiPrecFloat(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   
   (void)jenv;
@@ -5873,7 +5883,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1MultiPrecFloat(JNIEnv *jen
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1coeffs_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexPolynomial_1coeffs_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_poly_struct *arg1 = (acb_poly_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -5887,7 +5897,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1coeffs_1set(JNI
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1coeffs_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_ComplexPolynomial_1coeffs_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_poly_struct *arg1 = (acb_poly_struct *) 0 ;
   acb_ptr result;
@@ -5902,7 +5912,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1coeffs_1get(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1length_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexPolynomial_1length_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_poly_struct *arg1 = (acb_poly_struct *) 0 ;
   long arg2 ;
   
@@ -5915,7 +5925,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1length_1set(JNI
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1length_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_ComplexPolynomial_1length_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_poly_struct *arg1 = (acb_poly_struct *) 0 ;
   long result;
@@ -5930,7 +5940,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1length_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1alloc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexPolynomial_1alloc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_poly_struct *arg1 = (acb_poly_struct *) 0 ;
   long arg2 ;
   
@@ -5943,7 +5953,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1alloc_1set(JNIE
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1alloc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_ComplexPolynomial_1alloc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_poly_struct *arg1 = (acb_poly_struct *) 0 ;
   long result;
@@ -5958,7 +5968,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_ComplexPolynomial_1alloc_1get(JNIE
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1ComplexPolynomial(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1ComplexPolynomial(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_poly_struct *result = 0 ;
   
@@ -5970,7 +5980,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1ComplexPolynomial(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1ComplexPolynomial(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1ComplexPolynomial(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_poly_struct *arg1 = (acb_poly_struct *) 0 ;
   
   (void)jenv;
@@ -5980,7 +5990,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1ComplexPolynomial(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   long arg2 ;
   
@@ -5993,7 +6003,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1n_1set(JNIE
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   long result;
@@ -6008,7 +6018,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1n_1get(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -6022,7 +6032,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1z_1set(JNIE
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   acb_ptr result;
@@ -6037,7 +6047,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1z_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1zclear_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1zclear_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   int arg2 ;
   
@@ -6050,7 +6060,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1zclear_1set
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1zclear_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1zclear_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   int result;
@@ -6065,7 +6075,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1zclear_1get
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1num_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1num_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   long arg2 ;
   
@@ -6078,7 +6088,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1num_1set(JN
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1num_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1num_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   long result;
@@ -6093,7 +6103,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1num_1get(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   acb_dft_step_ptr arg2 = (acb_dft_step_ptr) 0 ;
   
@@ -6107,7 +6117,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1cyc_1set(JN
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1cyc_1struct_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   acb_dft_step_ptr result;
@@ -6122,7 +6132,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1cyc_1struct_1cyc_1get(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1cyc_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1cyc_1struct(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_cyc_struct *result = 0 ;
   
@@ -6134,7 +6144,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1cyc_1struct(JNIEnv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1cyc_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1cyc_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_cyc_struct *arg1 = (acb_dft_cyc_struct *) 0 ;
   
   (void)jenv;
@@ -6144,7 +6154,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1cyc_1struct(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1e_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1e_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   int arg2 ;
   
@@ -6157,7 +6167,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1e_1set(JNI
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1e_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1e_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   int result;
@@ -6172,7 +6182,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1e_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long arg2 ;
   
@@ -6185,7 +6195,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1n_1set(JNI
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long result;
@@ -6200,7 +6210,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1n_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long arg2 ;
   
@@ -6213,7 +6223,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1dv_1set(JN
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long result;
@@ -6228,7 +6238,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1dv_1get(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1nz_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1nz_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long arg2 ;
   
@@ -6241,7 +6251,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1nz_1set(JN
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1nz_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1nz_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long result;
@@ -6256,7 +6266,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1nz_1get(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -6270,7 +6280,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1z_1set(JNI
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   acb_ptr result;
@@ -6285,7 +6295,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1rad2_1struct_1z_1get(JN
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1rad2_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1rad2_1struct(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_rad2_struct *result = 0 ;
   
@@ -6297,7 +6307,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1rad2_1struct(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1rad2_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1rad2_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   
   (void)jenv;
@@ -6307,7 +6317,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1rad2_1struct(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   long arg2 ;
   
@@ -6320,7 +6330,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1n_1se
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   long result;
@@ -6335,7 +6345,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1n_1ge
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   long arg2 ;
   
@@ -6348,7 +6358,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1dv_1s
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   long result;
@@ -6363,7 +6373,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1dv_1g
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -6377,7 +6387,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1z_1se
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_ptr result;
@@ -6392,7 +6402,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1z_1g
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1g_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1g_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -6406,7 +6416,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1g_1se
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1g_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1g_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_ptr result;
@@ -6421,7 +6431,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1g_1g
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1rad2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1rad2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_dft_rad2_struct *arg2 ;
   
@@ -6440,7 +6450,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1rad2_
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1rad2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1rad2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_dft_rad2_struct *result = 0 ;
@@ -6455,7 +6465,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1bluestein_1struct_1rad2
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1bluestein_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1bluestein_1struct(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_bluestein_struct *result = 0 ;
   
@@ -6467,7 +6477,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1bluestein_1struct(
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1bluestein_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1bluestein_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   
   (void)jenv;
@@ -6477,7 +6487,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1bluestein_1struc
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1prod_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_prod_struct *arg1 = (acb_dft_prod_struct *) 0 ;
   long arg2 ;
   
@@ -6490,7 +6500,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1n_1set(JNI
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1prod_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_prod_struct *arg1 = (acb_dft_prod_struct *) 0 ;
   long result;
@@ -6505,7 +6515,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1n_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1num_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1prod_1struct_1num_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_prod_struct *arg1 = (acb_dft_prod_struct *) 0 ;
   long arg2 ;
   
@@ -6518,7 +6528,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1num_1set(J
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1num_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1prod_1struct_1num_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_prod_struct *arg1 = (acb_dft_prod_struct *) 0 ;
   long result;
@@ -6533,7 +6543,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1num_1get(J
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1prod_1struct_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_prod_struct *arg1 = (acb_dft_prod_struct *) 0 ;
   acb_dft_step_ptr arg2 = (acb_dft_step_ptr) 0 ;
   
@@ -6547,7 +6557,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1cyc_1set(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1prod_1struct_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_prod_struct *arg1 = (acb_dft_prod_struct *) 0 ;
   acb_dft_step_ptr result;
@@ -6562,7 +6572,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1prod_1struct_1cyc_1get(
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1prod_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1prod_1struct(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_prod_struct *result = 0 ;
   
@@ -6574,7 +6584,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1prod_1struct(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1prod_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1prod_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_prod_struct *arg1 = (acb_dft_prod_struct *) 0 ;
   
   (void)jenv;
@@ -6584,7 +6594,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1prod_1struct(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   long arg2 ;
   
@@ -6597,7 +6607,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1n_1set(JNIE
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   long result;
@@ -6612,7 +6622,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1n_1get(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   long arg2 ;
   
@@ -6625,7 +6635,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1dv_1set(JNI
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   long result;
@@ -6640,7 +6650,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1dv_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   acb_dft_step_ptr arg2 = (acb_dft_step_ptr) 0 ;
   
@@ -6654,7 +6664,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1cyc_1set(JN
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   acb_dft_step_ptr result;
@@ -6669,7 +6679,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1crt_1struct_1cyc_1get(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1crt_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1crt_1struct(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_crt_struct *result = 0 ;
   
@@ -6681,7 +6691,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1crt_1struct(JNIEnv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1crt_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1crt_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   
   (void)jenv;
@@ -6691,7 +6701,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1crt_1struct(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   long arg2 ;
   
@@ -6704,7 +6714,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1n_1set(JN
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   long result;
@@ -6719,7 +6729,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1n_1get(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   long arg2 ;
   
@@ -6732,7 +6742,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1dv_1set(J
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   long result;
@@ -6747,7 +6757,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1dv_1get(J
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1zclear_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1zclear_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   int arg2 ;
   
@@ -6760,7 +6770,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1zclear_1s
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1zclear_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1zclear_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   int result;
@@ -6775,7 +6785,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1zclear_1g
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -6789,7 +6799,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1z_1set(JN
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   acb_ptr result;
@@ -6804,7 +6814,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1z_1get(J
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1dz_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1dz_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   long arg2 ;
   
@@ -6817,7 +6827,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1dz_1set(J
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1dz_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1naive_1struct_1dz_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   long result;
@@ -6832,7 +6842,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1naive_1struct_1dz_1get(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1naive_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1naive_1struct(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_naive_struct *result = 0 ;
   
@@ -6844,7 +6854,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1naive_1struct(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1naive_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1naive_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_naive_struct *arg1 = (acb_dft_naive_struct *) 0 ;
   
   (void)jenv;
@@ -6854,7 +6864,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1naive_1struct(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_FastDFTScheme_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTScheme_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_pre_struct *arg1 = (acb_dft_pre_struct *) 0 ;
   long arg2 ;
   
@@ -6867,7 +6877,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_FastDFTScheme_1n_1set(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_FastDFTScheme_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTScheme_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_pre_struct *arg1 = (acb_dft_pre_struct *) 0 ;
   long result;
@@ -6882,7 +6892,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_FastDFTScheme_1n_1get(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_FastDFTScheme_1type_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTScheme_1type_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_pre_struct *arg1 = (acb_dft_pre_struct *) 0 ;
   int arg2 ;
   
@@ -6895,7 +6905,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_FastDFTScheme_1type_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_FastDFTScheme_1type_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTScheme_1type_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_pre_struct *arg1 = (acb_dft_pre_struct *) 0 ;
   int result;
@@ -6910,7 +6920,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_FastDFTScheme_1type_1get(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_FastDFTScheme_1t_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTScheme_1t_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct *arg1 = (acb_dft_pre_struct *) 0 ;
   acb_dft_pre_struct_t *result = 0 ;
@@ -6925,7 +6935,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_FastDFTScheme_1t_1get(JNIEnv *jen
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1FastDFTScheme(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1FastDFTScheme(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_pre_struct *result = 0 ;
   
@@ -6937,7 +6947,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1FastDFTScheme(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1FastDFTScheme(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1FastDFTScheme(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_pre_struct *arg1 = (acb_dft_pre_struct *) 0 ;
   
   (void)jenv;
@@ -6947,7 +6957,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1FastDFTScheme(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1rad2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1rad2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_rad2_struct *arg2 ;
   
@@ -6966,7 +6976,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1rad2_1se
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1rad2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1rad2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_rad2_struct *result = 0 ;
@@ -6981,7 +6991,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1rad2_1g
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_cyc_struct *arg2 ;
   
@@ -7000,7 +7010,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1cyc_1set
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_cyc_struct *result = 0 ;
@@ -7015,7 +7025,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1cyc_1ge
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1prod_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1prod_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_prod_struct *arg2 ;
   
@@ -7034,7 +7044,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1prod_1se
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1prod_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1prod_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_prod_struct *result = 0 ;
@@ -7049,7 +7059,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1prod_1g
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1crt_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1crt_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_crt_struct *arg2 ;
   
@@ -7068,7 +7078,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1crt_1set
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1crt_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1crt_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_crt_struct *result = 0 ;
@@ -7083,7 +7093,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1crt_1ge
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1naive_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1naive_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_naive_struct *arg2 ;
   
@@ -7102,7 +7112,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1naive_1s
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1naive_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1naive_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_naive_struct *result = 0 ;
@@ -7117,7 +7127,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1naive_1
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1bluestein_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1bluestein_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_bluestein_struct *arg2 ;
   
@@ -7136,7 +7146,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1bluestei
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1bluestein_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1bluestein_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_bluestein_struct *result = 0 ;
@@ -7151,7 +7161,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1pre_1struct_1t_1blueste
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1pre_1struct_1t(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1pre_1struct_1t(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *result = 0 ;
   
@@ -7163,7 +7173,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1pre_1struct_1t(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1pre_1struct_1t(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1pre_1struct_1t(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   
   (void)jenv;
@@ -7173,7 +7183,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1pre_1struct_1t(J
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1m_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1m_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   long arg2 ;
   
@@ -7186,7 +7196,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1m_1set(JNI
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1m_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1m_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   long result;
@@ -7201,7 +7211,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1m_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   long arg2 ;
   
@@ -7214,7 +7224,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1dv_1set(JN
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   long result;
@@ -7229,7 +7239,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1dv_1get(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;
   
@@ -7243,7 +7253,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1z_1set(JNI
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   acb_srcptr result;
@@ -7258,7 +7268,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1z_1get(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1dz_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1dz_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   long arg2 ;
   
@@ -7271,7 +7281,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1dz_1set(JN
 }
 
 
-SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1dz_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1dz_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   long result;
@@ -7286,7 +7296,7 @@ SWIGEXPORT jint JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1dz_1get(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1pre_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1pre_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   acb_dft_pre_struct *arg2 ;
   
@@ -7305,7 +7315,7 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1pre_1set(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1pre_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1step_1struct_1pre_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   acb_dft_pre_struct *result = 0 ;
@@ -7320,7 +7330,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_acb_1dft_1step_1struct_1pre_1get(
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1step_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1step_1struct(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   struct acb_dft_step_struct *result = 0 ;
   
@@ -7332,7 +7342,7 @@ SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_new_1acb_1dft_1step_1struct(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_delete_1acb_1dft_1step_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1step_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   struct acb_dft_step_struct *arg1 = (struct acb_dft_step_struct *) 0 ;
   
   (void)jenv;

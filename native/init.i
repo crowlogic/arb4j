@@ -2,6 +2,16 @@
 %wrapper %{
 #include <jni.h>
 
+extern JNIEnv* env;
+extern jclass realClass;
+extern jclass complexClass;
+extern jclass realFunctionClass;
+extern jclass complexFunctionClass;
+extern jmethodID realFunctionEvaluationMethod;
+extern jmethodID complexFunctionEvaluationMethod;
+extern jfieldID realCPtrField;
+extern jfieldID complexCPtrField;
+
 JNIEnv *env;
 
 void *allocate(size_t size)
@@ -32,7 +42,7 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
 
   if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)
   {
-    printf("GetEnv failed trying to load arblib\n");
+    printf("GetEnv failed trying to load arb\n");
     fflush(stdout);
     return -1;
   }

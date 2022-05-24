@@ -1,5 +1,5 @@
 %typemap(javaimports) acb_poly_struct %{
-import static arblib.Constants.*;
+import static arb.Constants.*;
 %}
 
 %typemap(javafinalize) acb_poly_struct ""
@@ -14,7 +14,7 @@ import static arblib.Constants.*;
   }
   
  /**
-   * @see arblib#acb_poly_product_roots(ComplexPolynomial, Complex, int, int)
+   * @see arb#acb_poly_product_roots(ComplexPolynomial, Complex, int, int)
    * 
    * @param xs
    * @param prec
@@ -22,7 +22,7 @@ import static arblib.Constants.*;
    */
   public ComplexPolynomial productRoots(Complex xs, int prec)
   {
-    arblib.acb_poly_product_roots(this, xs, xs.dim, prec);
+    arb.acb_poly_product_roots(this, xs, xs.dim, prec);
     return this;
   }
   
@@ -32,10 +32,10 @@ import static arblib.Constants.*;
     switch (order)
     {
     case 1:
-      arblib.acb_poly_evaluate(w, this, z, prec);
+      arb.acb_poly_evaluate(w, this, z, prec);
       return w;
     case 2:
-      arblib.acb_poly_evaluate2(w, w.get(1), this, z, prec);
+      arb.acb_poly_evaluate2(w, w.get(1), this, z, prec);
       return w;
     default:
       throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented");

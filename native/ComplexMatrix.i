@@ -1,5 +1,5 @@
 %typemap(javaimports) acb_mat_struct %{
-import static arblib.Constants.*;
+import static arb.Constants.*;
 %}
 
 %typemap(javafinalize) acb_mat_struct ""
@@ -15,7 +15,7 @@ import static arblib.Constants.*;
   
   public ComplexMatrix init(int rows, int cols)
   {
-    arblib.acb_mat_init(this, rows, cols);
+    arb.acb_mat_init(this, rows, cols);
     return this;
   } 
   

@@ -1,5 +1,5 @@
 %typemap(javaimports) arb_mat_struct %{
-import static arblib.Constants.*;
+import static arb.Constants.*;
 %}
 
 %typemap(javafinalize) arb_mat_struct ""
@@ -15,7 +15,7 @@ import static arblib.Constants.*;
   
   public RealMatrix init(int rows, int cols)
   {
-    arblib.arb_mat_init(this, rows, cols);
+    arb.arb_mat_init(this, rows, cols);
     return this;
   } 
   

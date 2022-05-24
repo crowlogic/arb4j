@@ -2,7 +2,7 @@
 
 %typemap(javaimports) mag_struct %{
 import java.util.concurrent.TimeUnit;
-import static arblib.Constants.*;
+import static arb.Constants.*;
 %}
 
 %typemap(javainterfaces) mag_struct "AutoCloseable,Comparable<Magnitude>"
@@ -15,13 +15,13 @@ import static arblib.Constants.*;
  
  public Magnitude set( double d )
  {
-   arblib.mag_set_d(this, d );
+   arb.mag_set_d(this, d );
    return this;
  }
  
   public Magnitude resize(int alloc)
   {
-    swigCPtr = (SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(Magnitude.getCPtr(this),
+    swigCPtr = (SWIGTYPE_p_void.getCPtr(arb.flint_realloc(new SWIGTYPE_p_void(Magnitude.getCPtr(this),
                                                                                         false),
                                                                     2 * alloc * Magnitude.BYTES)));
     this.dim = alloc;
@@ -36,7 +36,7 @@ import static arblib.Constants.*;
   
  public static Magnitude newVector(int dim)
  {
-    Magnitude array = arblib._mag_vec_init(dim);    
+    Magnitude array = arb._mag_vec_init(dim);    
     array.dim = dim;
     return array;
  }
@@ -45,7 +45,7 @@ import static arblib.Constants.*;
   {
     try ( Float floatMag = new Float())
     {
-      arblib.arf_set_mag(floatMag, this);
+      arb.arf_set_mag(floatMag, this);
       return floatMag.toString(digits);
     }
   }
@@ -55,7 +55,7 @@ import static arblib.Constants.*;
   {
     try ( Float floatMag = new Float())
     {
-      arblib.arf_set_mag(floatMag, this);
+      arb.arf_set_mag(floatMag, this);
       return floatMag.toString();
     }
   }
@@ -70,35 +70,35 @@ import static arblib.Constants.*;
   @Override
   public int compareTo( Magnitude other )
   {
-    return arblib.mag_cmp( this, other );
+    return arb.mag_cmp( this, other );
   }
   
   public double doubleValue()
   {
-    return arblib.mag_get_d(this);
+    return arb.mag_get_d(this);
   }
   
   public Magnitude pow( long y, Magnitude res )
   {
-    arblib.mag_pow_ui(res, this, y);
+    arb.mag_pow_ui(res, this, y);
     return res;
   }
   
   public Magnitude mul(Magnitude b, Magnitude res)
   {
-    arblib.mag_mul(res, this, b );
+    arb.mag_mul(res, this, b );
     return res;    
   }
   
   public Magnitude add(Magnitude u, Magnitude res)
   {
-    arblib.mag_add(res, this, u);
+    arb.mag_add(res, this, u);
     return res;
   }
     
   public Magnitude zero()
   {
-    arblib.mag_zero(this);
+    arb.mag_zero(this);
     return this;
   }
   

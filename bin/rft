@@ -2,7 +2,7 @@
 
 BASEDIR=$(dirname $(readlink -f $0))/..
 CLASSPATH=`cat $BASEDIR/class.path`
-java -XX:+CreateCoredumpOnCrash -Djava.library.path=$BASEDIR -ea -classpath $CLASSPATH:$BASEDIR/target/classes arblib.RealFunctionTest $@
+java -XX:+CreateCoredumpOnCrash -Djava.library.path=$BASEDIR -ea -classpath $CLASSPATH:$BASEDIR/target/classes arb.RealFunctionTest $@
 
 
 

@@ -1,4 +1,4 @@
-arb4j is a Java wrapper around the fantastic and amazing arb library for ball arithmetic found at http://arblib.org
+arb4j is a Java wrapper around the fantastic and amazing arb library for ball arithmetic found at http://arb.org
 
 ========================================================================
 There is a project wiki at 
@@ -14,11 +14,11 @@ libflint-arb-dev along with its dependencies (Tested with 2.19.0)
 JDK (Tested with jdk-17 from Oracle)
 
 Once you have acquired these, run the bash script in the bin/
-subdirectory called "gaw" which stands for "generate arblib wrapper",
+subdirectory called "gaw" which stands for "generate arb wrapper",
 which will then cause the .i files in the native/ subdirectory to be
 parsed with SWIG and the corresponding java and C source files are generated.
 After that happens, the script then calls the bin/caw which stands for
-"compile arblib wrapper" which, if all goes well, should leave a file
+"compile arb wrapper" which, if all goes well, should leave a file
 named libarblib.so in root directory of the project
 
 The output should look this if all goes well. (You unfortunate victims of microsloth windoze are on your own, though if someone wants to fork it and make it so it works with
@@ -32,7 +32,7 @@ stephen@msi:~/arb4j$ gaw
 + BASEDIR=/home/stephen/git/arb4j/bin/..
 + cd /home/stephen/git/arb4j/bin/..
 + export INCLUDES=-I/usr/include/x86_64-linux-gnu -I/usr/include/linux -I/usr/include/flint -I/usr/include -I/usr/include/i386-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/11/include/
-+ swig -debug-classes -v -java -package arblib -outdir src/arblib -I/usr/include/x86_64-linux-gnu -I/usr/include/linux -I/usr/include/flint -I/usr/include -I/usr/include/i386-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/11/include/ native/arb.i
++ swig -debug-classes -v -java -package arb -outdir src/arb -I/usr/include/x86_64-linux-gnu -I/usr/include/linux -I/usr/include/flint -I/usr/include -I/usr/include/i386-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/11/include/ native/arb.i
 Language subdirectory: java
 Search paths:
    ./

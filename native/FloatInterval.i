@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
  static
  {
-   System.loadLibrary( "arblib" );
+   System.loadLibrary( "arb" );
  }
  
   public long swigCPtr;
@@ -40,7 +40,7 @@ import java.util.ArrayList;
 
   public FloatInterval swap(FloatInterval u)
   {
-    arblib.arf_interval_swap(this, u);
+    arb.arf_interval_swap(this, u);
     return this;
   }
   
@@ -90,7 +90,7 @@ import java.util.ArrayList;
   
   public Real getReal(Real res, int prec)
   {
-    arblib.arf_interval_get_arb(res, this, prec);
+    arb.arf_interval_get_arb(res, this, prec);
     return res;
   }
   

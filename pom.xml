@@ -121,11 +121,6 @@
 	</dependency>
 	<dependency>
 		<groupId>org.lwjgl</groupId>
-		<artifactId>lwjgl</artifactId>
-		<classifier>${lwjgl.natives}</classifier>
-	</dependency>
-	<dependency>
-		<groupId>org.lwjgl</groupId>
 		<artifactId>lwjgl-jemalloc</artifactId>
 		<classifier>${lwjgl.natives}</classifier>
 	</dependency>

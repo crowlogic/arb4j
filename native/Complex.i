@@ -6,9 +6,9 @@ import java.util.stream.StreamSupport;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.io.IOException;
-import static arblib.Constants.*;
+import static arb.Constants.*;
 import java.io.Serializable;
-import static arblib.arblib.*;
+import static arb.arblib.*;
 %}
 
 %typemap(javafinalize) acb_struct ""
@@ -16,7 +16,7 @@ import static arblib.arblib.*;
 %typemap(javainterfaces) acb_struct "AutoCloseable,Iterable<Complex>,Serializable"
 
 %typemap(javacode) acb_struct %{
-  static { System.loadLibrary( "arblib" ); }
+  static { System.loadLibrary( "arb" ); }
 
   public boolean printPrecision = false;
 
@@ -26,7 +26,7 @@ import static arblib.arblib.*;
    *  
    * @param e
    * @param res
-   * @return {@link arblib#acb_mul_2exp_si(Complex, Complex, int)}
+   * @return {@link arb#acb_mul_2exp_si(Complex, Complex, int)}
    */
   public Complex mul2e( int e, Complex res )
   {
@@ -36,13 +36,13 @@ import static arblib.arblib.*;
   
   public Complex div(int i, int prec, Complex res )
   {
-    arblib.acb_div_si(res, this, i, prec);
+    arb.acb_div_si(res, this, i, prec);
     return res; 
   }
   
   public Complex negate(Complex res)
   {
-    arblib.acb_neg(res, this);
+    arb.acb_neg(res, this);
     return this;
   }
   
@@ -53,7 +53,7 @@ import static arblib.arblib.*;
   }
 
   /**
-   * @return {@link arblib#acb_equal(Real, Real)} != 0
+   * @return {@link arb#acb_equal(Real, Real)} != 0
    */
   @Override
   public boolean equals(Object obj)
@@ -63,12 +63,12 @@ import static arblib.arblib.*;
       return false;
     }
     Complex that = (Complex)obj;
-    return arblib.acb_equal(this, that) != 0;
+    return arb.acb_equal(this, that) != 0;
   }
   
   public Complex resize(int alloc)
   {
-    swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
+    swigCPtr = SWIGTYPE_p_void.getCPtr(arb.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
                                                                                 false),
                                                             2 * alloc * Complex.BYTES));
     this.dim = alloc;                                                            
@@ -135,7 +135,7 @@ import static arblib.arblib.*;
    */
   public Complex dot(Complex y, Complex initial, int subtract, int xstep, int ystep, int len, int prec, Complex res)
   {
-    arblib.acb_dot(res, initial, subtract, this, xstep, y, ystep, len, prec);
+    arb.acb_dot(res, initial, subtract, this, xstep, y, ystep, len, prec);
     return res;
   }
 
@@ -159,7 +159,7 @@ import static arblib.arblib.*;
  
   public int relAccuracyBits()
   {
-    return arblib.acb_rel_accuracy_bits(this);
+    return arb.acb_rel_accuracy_bits(this);
   }
 
   /**
@@ -169,19 +169,19 @@ import static arblib.arblib.*;
    * @param prec
    * @param res  the dimension should be set, it determines the value of n passed
    *             to
-   *             {@link arblib#acb_poly_interpolate_newton(ComplexPolynomial, Complex, Complex, int, int)}
+   *             {@link arb#acb_poly_interpolate_newton(ComplexPolynomial, Complex, Complex, int, int)}
    * @return res
    */
   public ComplexPolynomial interpolateNewton(Complex y, int n, int prec, ComplexPolynomial res)
   {
     assert dim == y.dim;
-    arblib.acb_poly_interpolate_newton(res, this, y, n, prec);
+    arb.acb_poly_interpolate_newton(res, this, y, n, prec);
     return res;
   }
   
   public Complex cosh( int prec, Complex res )
   {
-    arblib.acb_cosh( res, this, prec );
+    arb.acb_cosh( res, this, prec );
     return this;
   }
   
@@ -191,7 +191,7 @@ import static arblib.arblib.*;
  
   public Complex conj( Complex res )
   {
-    arblib.acb_conj( res, this );
+    arb.acb_conj( res, this );
     return res;
   }
   
@@ -202,13 +202,13 @@ import static arblib.arblib.*;
    */
   public Complex ζ( int prec, Complex res )
   {
-    arblib.acb_dirichlet_zeta_jet(res, this, 0, res.dim, prec);
+    arb.acb_dirichlet_zeta_jet(res, this, 0, res.dim, prec);
     return res;
   }
   
   public boolean isFinite()
   {
-    return arblib.acb_is_finite(this) != 0;
+    return arb.acb_is_finite(this) != 0;
   }
    
   public Complex pow(int i, Complex r)
@@ -231,7 +231,7 @@ import static arblib.arblib.*;
     
  public Complex mul( int i, int prec, Complex r )
  {
-   arblib.acb_mul_si( r, this, i, prec );
+   arb.acb_mul_si( r, this, i, prec );
    return r;
  }
 
@@ -244,7 +244,7 @@ import static arblib.arblib.*;
   public Complex add( Complex q, int prec, Complex s )
   {
   
-    arblib.acb_add( s, this, q, prec );
+    arb.acb_add( s, this, q, prec );
     return s;
   }
 
@@ -265,13 +265,13 @@ import static arblib.arblib.*;
 
   public Complex div(Real a, int prec, Complex r)
   {
-    arblib.acb_div_arb(r, this, a, prec);
+    arb.acb_div_arb(r, this, a, prec);
     return r;
   }
     
   public Complex ellipticK(Complex res)
   {
-    arblib.acb_elliptic_k(res, this, defaultPrec);
+    arb.acb_elliptic_k(res, this, defaultPrec);
     return res;
   }
   
@@ -283,14 +283,14 @@ import static arblib.arblib.*;
   
   public Complex neg( Complex r)
   {
-    arblib.acb_neg( r, this );
+    arb.acb_neg( r, this );
     return r;
   }
 
 
  public Complex midpoint( Complex res )
  {
-   arblib.acb_get_mid( res, this );
+   arb.acb_get_mid( res, this );
    return res;
  }
  
@@ -299,7 +299,7 @@ import static arblib.arblib.*;
  {
       assert s != this;
  
-   arblib.acb_mul(r, this, s, prec);
+   arb.acb_mul(r, this, s, prec);
    return r;
  }
  
@@ -312,25 +312,25 @@ import static arblib.arblib.*;
  
   public Complex div( Complex s, int prec, Complex r )
   {
-   arblib.acb_div(r, this, s, prec);
+   arb.acb_div(r, this, s, prec);
    return r;
   }
  
   public Complex mul(Real a, Complex res)
   {
-    arblib.acb_mul_arb(res, this, a, defaultPrec);
+    arb.acb_mul_arb(res, this, a, defaultPrec);
     return res;
   }
  
   public Complex exp(Complex res)
   {
-    arblib.acb_exp(res, this, defaultPrec);
+    arb.acb_exp(res, this, defaultPrec);
     return res;
   }
   
   public Complex init()
   {
-    arblib.acb_init(this);
+    arb.acb_init(this);
     return this;
   }
   
@@ -340,7 +340,7 @@ import static arblib.arblib.*;
   
   public Real arg( int prec, Real result )
   {
-    arblib.acb_arg(result, this, prec );
+    arb.acb_arg(result, this, prec );
     return result;
   }
   
@@ -359,14 +359,14 @@ import static arblib.arblib.*;
   }
   
   /**
-   * @see arblib#acb_abs(Real, Complex, int)
+   * @see arb#acb_abs(Real, Complex, int)
    * @param prec
    * @param real
    * @return
    */
   public Real abs(int prec, Real real)
   {
-    arblib.acb_abs(real, this, prec);
+    arb.acb_abs(real, this, prec);
     return real;
   }
   
@@ -375,13 +375,13 @@ import static arblib.arblib.*;
     assert dim >= complex.dim : String.format("dim=%s < complex.dim=%s\n", dim, complex.dim);
     if (dim == 1)
     {
-      arblib.acb_set(this, complex);
+      arb.acb_set(this, complex);
     }
     else
     {
       for (int i = 0; i < complex.dim; i++)
       {
-        arblib.acb_set(get(i), complex.get(i));
+        arb.acb_set(get(i), complex.get(i));
       }
     }
     return this;
@@ -441,13 +441,13 @@ import static arblib.arblib.*;
   
   public Complex cos(int prec, Complex result )
   {
-    arblib.acb_cos(result, this, prec );
+    arb.acb_cos(result, this, prec );
     return result;
   }
 
   public Complex sin(int prec, Complex result )
   {
-    arblib.acb_sin(result, this, prec );
+    arb.acb_sin(result, this, prec );
     return result;
   }
   
@@ -485,35 +485,35 @@ import static arblib.arblib.*;
    */
   public Real norm(int prec, Real res)
   {
-    arblib.acb_abs(res, this, prec);
+    arb.acb_abs(res, this, prec);
     return res;
   }
   
   public boolean containsZero()
   {
-    return arblib.acb_contains_zero(this) != 0;
+    return arb.acb_contains_zero(this) != 0;
   }
   
   public boolean contains( Complex x )
   {
-    return arblib.acb_contains(this, x) != 0;
+    return arb.acb_contains(this, x) != 0;
   }
 
   public Complex exp(int prec, Complex res)
   {
-    arblib.acb_exp(res, this, prec);
+    arb.acb_exp(res, this, prec);
     return res;
   }
 
   public Complex mul( Real a, int prec, Complex r )
   {
-    arblib.acb_mul_arb( r, this, a, prec );
+    arb.acb_mul_arb( r, this, a, prec );
     return r;
   }
   
   public boolean overlaps( Complex x )
   {
-    return arblib.acb_overlaps(this, x) != 0;
+    return arb.acb_overlaps(this, x) != 0;
   }
   
 
@@ -528,7 +528,7 @@ import static arblib.arblib.*;
   public Complex pow( int k, int prec, Complex r )
   {
     assert k >= 0;
-    arblib.acb_pow_ui(r, this, k, prec);
+    arb.acb_pow_ui(r, this, k, prec);
     return r;
   }
   
@@ -547,7 +547,7 @@ import static arblib.arblib.*;
   public Complex add( int k, int prec, Complex r )
   {
     assert k >= 0;
-    arblib.acb_add_ui(r, this, k, prec);
+    arb.acb_add_ui(r, this, k, prec);
     return r;
   }
   
@@ -564,7 +564,7 @@ import static arblib.arblib.*;
  
  public Complex tanh(Complex res)
  {
-	arblib.acb_tanh( res, this, defaultPrec );
+	arb.acb_tanh( res, this, defaultPrec );
 	return res;
  }
  
@@ -576,7 +576,7 @@ import static arblib.arblib.*;
  
   public void clear()
   {
- 	arblib._acb_vec_clear(this, dim);    
+ 	arb._acb_vec_clear(this, dim);    
   }
     
    /**
@@ -589,14 +589,14 @@ import static arblib.arblib.*;
   public Complex sub(int k, int prec, Complex r)
   {
     assert k >= 0;
-    arblib.acb_sub_ui(r, this, k, prec);
+    arb.acb_sub_ui(r, this, k, prec);
     return r;
   }
  
  
   public Complex div(int i, Complex result)
   {
-    arblib.acb_div_si(result, this, i, defaultPrec );
+    arb.acb_div_si(result, this, i, defaultPrec );
     return result;
   }
  
@@ -610,14 +610,14 @@ import static arblib.arblib.*;
   */
  public Complex sub( Complex s, int prec, Complex r )
  {
-   arblib.acb_sub(r, this, s, prec);
+   arb.acb_sub(r, this, s, prec);
    return r;
  }
  
   
  public static Complex newVector(int dim)
  {
-    Complex array = arblib._acb_vec_init(dim);    
+    Complex array = arb._acb_vec_init(dim);    
     array.elements = new Complex[array.dim = dim];
     return array;
  }
@@ -684,7 +684,7 @@ import static arblib.arblib.*;
    */
   public Complex inv( int prec, Complex r )
   {
-    arblib.acb_inv(r, this, prec);
+    arb.acb_inv(r, this, prec);
     return r;
   }
 
@@ -702,7 +702,7 @@ import static arblib.arblib.*;
 
   public boolean isReal()
   {
-    return arblib.acb_is_real(this) != 0 ;
+    return arb.acb_is_real(this) != 0 ;
   }
 
        
