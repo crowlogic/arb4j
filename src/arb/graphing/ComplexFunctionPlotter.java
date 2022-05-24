@@ -76,7 +76,7 @@ public class ComplexFunctionPlotter extends
 
   static
   {
-    System.loadLibrary("arb");
+    System.loadLibrary("arblib");
   }
 
   protected Complex      w;

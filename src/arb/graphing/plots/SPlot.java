@@ -19,10 +19,6 @@ import arb.graphing.ComplexFunctionPlotter;
 public class SPlot
 {
 
-  static
-  {
-    System.loadLibrary("arb");
-  }
 
   public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
   {
