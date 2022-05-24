@@ -12,6 +12,42 @@ package arb;
  */
 public class IntegrationOptions
 {
+
+  public int getDegreeLimit(int relAccuracyGoalBits, int prec)
+  {
+    int dl;
+    dl = degLimit;
+    if (dl <= 0)
+    {
+      dl = (int) (0.5 * Math.min(relAccuracyGoalBits, prec) + 60);    
+    }
+    return dl;
+  }
+
+  public int getEvaluationLimit(int prec)
+  {
+    int el;
+    el = evalLimit;
+    if (el <= 0)
+    {
+      el = 1000 * prec + prec * prec;
+    }
+    el = Math.max(el, 1);
+    return el;
+  }
+
+  public int getDepthLimit(int prec)
+  {
+    int dl;
+    dl = depthLimit;
+    if (dl <= 0)
+    {
+      dl = 2 * prec;
+    }
+    dl = Math.max(dl, 1);
+    return dl;
+  }
+
   /**
    * Maximum quadrature degree for each subinterval. If a zero or negative value
    * is provided, the limit is set to a default value which currently equals ..

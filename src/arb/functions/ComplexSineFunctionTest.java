@@ -7,7 +7,9 @@ import static java.lang.System.out;
 
 import arb.Complex;
 import arb.Constants;
-import arb.ComplexFunction.ConvergenceStatus;
+import arb.IntegrationOptions;
+import arb.Magnitude;
+import arb.exceptions.LackOfConvergenceException;
 import junit.framework.TestCase;
 
 public class ComplexSineFunctionTest extends
@@ -19,12 +21,26 @@ public class ComplexSineFunctionTest extends
     Complex             y   = sin.evaluate(Constants.COMPLEX_ONE, 1, 128, new Complex());
     y.printPrecision = true;
     assertEquals(0.841470984807896506652502321630298999620980106, y.getReal().doubleValue(), pow(10, -20));
-    assertTrue( y.getImag().isZero() );
+    assertTrue(y.getImag().isZero());
   }
 
-//  public void testIntegration()
-//  {
-//    ComplexSineFunction sin = new ComplexSineFunction();
-//    ConvergenceStatus integral = sin.integrate(ZERO, π, 0, null, null, 0, new Complex() );
-//  }
+  @SuppressWarnings("resource")
+  public void testIntegration() throws LackOfConvergenceException
+  {
+    ComplexSineFunction sine                       = new ComplexSineFunction();
+    Magnitude           absoluteErrorToleranceGoal = new Magnitude().set(Math.pow(2, -50));
+    IntegrationOptions  options                    = new IntegrationOptions();
+    int                 relativeAccuracyBitsGoal   = 64;
+    int                 precisionBits              = 128;
+    options.verbose = true;
+    Complex             two                        = sine.integrate(ZERO,
+                                                                    π,
+                                                                    relativeAccuracyBitsGoal,
+                                                                    absoluteErrorToleranceGoal,
+                                                                    options,
+                                                                    precisionBits,
+                                                                    new Complex());
+    System.out.println(two + " should equal 2");
+
+  }
 }

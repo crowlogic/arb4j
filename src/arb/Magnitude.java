@@ -35,6 +35,11 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
   }
 
  
+ static
+ {
+   System.loadLibrary("arblib");
+ }
+ 
  public static final int BYTES = 16;
  
  int dim;

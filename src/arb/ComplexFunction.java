@@ -6,6 +6,7 @@ import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import arb.exceptions.LackOfConvergenceException;
 import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;
 
@@ -116,12 +117,6 @@ public interface ComplexFunction
     }
   }
 
-  public static enum ConvergenceStatus
-  {
-   Converged,
-   Diverged
-  };
-
   /**
    * Computes a rigorous enclosure of the integral int(f(t),t=a..b) following a
    * line-segment between the complex numbers a and b. For finite results, a & b
@@ -198,17 +193,20 @@ public interface ComplexFunction
    * @param res
    * @return true if the integration converged to the target accuracy on all
    *         subintervals otherwise returns false
+   * @throws LackOfConvergenceException
    */
-  public default ConvergenceStatus integrate(Complex a,
-                                             Complex b,
-                                             int relAccuracyGoalBits,
-                                             Magnitude absErrorToleranceGoal,
-                                             IntegrationOptions options,
-                                             int prec,
-                                             Complex res)
+  public default Complex integrate(Complex a,
+                                   Complex b,
+                                   int relAccuracyGoalBits,
+                                   Magnitude absErrorToleranceGoal,
+                                   IntegrationOptions options,
+                                   int prec,
+                                   Complex res) throws LackOfConvergenceException
   {
-    ConvergenceStatus status;
-
+    assert relAccuracyGoalBits > 0;
+    assert absErrorToleranceGoal != null;
+    assert res != null;
+    
     if (options == null)
     {
       options = new IntegrationOptions();
@@ -218,37 +216,24 @@ public interface ComplexFunction
           Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
     {
       int        depthLimit, evalLimit, degLimit;
-      AtomicLong eval = new AtomicLong();
       int        depth, maxDepth, top;
       long       leafIntervalCount;
-      int        alloc;
-      boolean    useHeap, stopping;
-
+      int        allocation;
+      boolean    useHeap;
       boolean    glStatus, verbose, realError;
+      AtomicLong evalCount;
 
-      status     = ConvergenceStatus.Converged;
-
-      depthLimit = options.depthLimit;
-      if (depthLimit <= 0)
-        depthLimit = 2 * prec;
-      depthLimit = Math.max(depthLimit, 1);
-
-      evalLimit  = options.evalLimit;
-      if (evalLimit <= 0)
-        evalLimit = 1000 * prec + prec * prec;
-      evalLimit           = Math.max(evalLimit, 1);
-
+      evalCount           = new AtomicLong();
+      depthLimit          = options.getDepthLimit(prec);
+      evalLimit           = options.getEvaluationLimit(prec);
       relAccuracyGoalBits = Math.max(relAccuracyGoalBits, 0);
-      degLimit            = options.degLimit;
-      if (degLimit <= 0)
-        degLimit = (int) (0.5 * Math.min(relAccuracyGoalBits, prec) + 60);
+      degLimit            = options.getDegreeLimit(relAccuracyGoalBits, prec);
+      verbose             = options.verbose;
+      useHeap             = options.useHeap;
 
-      verbose = options.verbose;
-      useHeap = options.useHeap;
-
-      alloc   = 4;
-      try ( Complex as = Complex.newVector(alloc); Complex bs = Complex.newVector(alloc);
-            Complex vs = Complex.newVector(alloc); Magnitude ms = Magnitude.newVector(alloc);)
+      allocation          = 4;
+      try ( Complex as = Complex.newVector(allocation); Complex bs = Complex.newVector(allocation);
+            Complex vs = Complex.newVector(allocation); Magnitude ms = Magnitude.newVector(allocation);)
       {
 
         /* Compute initial crude estimate for the whole interval. */
@@ -258,8 +243,7 @@ public interface ComplexFunction
         mag_hypot(ms, vs.getReal().getRad(), vs.getImag().getRad());
 
         depth = maxDepth = 1;
-        eval.set(1);
-        stopping          = false;
+        evalCount.set(1);
         leafIntervalCount = 0;
 
         /* Adjust absolute tolerance based on new information. */
@@ -271,13 +255,13 @@ public interface ComplexFunction
 
         while (depth >= 1)
         {
-          if (!stopping && eval.get() >= evalLimit - 1)
+          if (evalCount.get() >= evalLimit - 1)
           {
             if (verbose)
+            {
               System.out.printf("stopping at eval_limit %wd\n", evalLimit);
-            status   = ConvergenceStatus.Diverged;
-            stopping = true;
-            continue;
+            }
+            throw new LackOfConvergenceException("evaluating limit " + evalLimit + " exceeded ");
           }
 
           if (useHeap)
@@ -287,7 +271,7 @@ public interface ComplexFunction
 
           /* We are done with this subinterval. */
           Magnitude topm = ms.get(top);
-          if (topm.compareTo(newTol) < 0 || overlaps(u, as.get(top), bs.get(top), prec) || stopping)
+          if (topm.compareTo(newTol) < 0 || overlaps(u, as.get(top), bs.get(top), prec))
           {
             s.add(vs.get(top), prec, s);
             leafIntervalCount++;
@@ -313,7 +297,7 @@ public interface ComplexFunction
                                                               degLimit,
                                                               verbose,
                                                               prec,
-                                                              eval,
+                                                              evalCount,
                                                               u);
 
             /* We are done with this subinterval. */
@@ -352,28 +336,26 @@ public interface ComplexFunction
           {
             if (verbose)
             {
-              System.out.format("stopping at depth_limit %wd\n", depthLimit);
+              System.out.format("stopping at depth limit %wd\n", depthLimit);
             }
-            status   = ConvergenceStatus.Diverged;
-            stopping = true;
-            continue;
+            throw new LackOfConvergenceException("depth limit " + evalLimit + " exceeded ");
           }
 
-          if (depth >= alloc - 1)
+          if (depth >= allocation - 1)
           {
             int k;
-            as.resize(alloc);
-            bs.resize(alloc);
-            vs.resize(alloc);
-            ms.resize(alloc);
-            for (k = alloc; k < 2 * alloc; k++)
+            as.resize(allocation);
+            bs.resize(allocation);
+            vs.resize(allocation);
+            ms.resize(allocation);
+            for (k = allocation; k < 2 * allocation; k++)
             {
               acb_init(as.get(k));
               acb_init(bs.get(k));
               acb_init(vs.get(k));
               mag_init(ms.get(k));
             }
-            alloc *= 2;
+            allocation *= 2;
           }
 
           /* Bisection. */
@@ -388,7 +370,7 @@ public interface ComplexFunction
           /* Evaluate on [a, mid] */
           simpleQuadrature(as.get(top), bs.get(top), prec, vs.get(top));
           mag_hypot(topm, vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
-          eval.incrementAndGet();
+          evalCount.incrementAndGet();
           /* Adjust absolute tolerance based on new information. */
           acb_get_mag_lower(tmpm, vs.get(top));
           mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
@@ -397,7 +379,7 @@ public interface ComplexFunction
           /* Evaluate on [mid, b] */
           simpleQuadrature(as.get(depth), bs.get(depth), prec, vs.get(depth));
           mag_hypot(ms.get(depth), vs.get(depth).getReal().getRad(), vs.get(depth).getImag().getRad());
-          eval.incrementAndGet();
+          evalCount.incrementAndGet();
           /* Adjust absolute tolerance based on new information. */
           acb_get_mag_lower(tmpm, vs.get(depth));
           mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
@@ -427,7 +409,7 @@ public interface ComplexFunction
           System.out.format("depth %d/%d, eval %d/%d, %d leaf intervals\n",
                             maxDepth,
                             depthLimit,
-                            eval.get(),
+                            evalCount.get(),
                             evalLimit,
                             leafIntervalCount);
         }
@@ -436,7 +418,7 @@ public interface ComplexFunction
       }
     }
 
-    return status;
+    return res;
   }
 
   /**

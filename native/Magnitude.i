@@ -9,6 +9,11 @@ import static arb.Constants.*;
 
 %typemap(javacode) mag_struct %{
  
+ static
+ {
+   System.loadLibrary("arblib");
+ }
+ 
  public static final int BYTES = 16;
  
  int dim;
