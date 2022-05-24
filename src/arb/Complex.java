@@ -17,7 +17,7 @@ import java.util.Spliterators;
 import java.io.IOException;
 import static arb.Constants.*;
 import java.io.Serializable;
-import static arb.arblib.*;
+import static arb.arb.*;
 
 public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
   private transient long swigCPtr;
@@ -42,7 +42,7 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     }
   }
 
-  static { System.loadLibrary( "arb" ); }
+  static { System.loadLibrary( "arblib" ); }
 
   public boolean printPrecision = false;
 
@@ -179,7 +179,7 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
   
   public Complex(Real firstRoot)
   {
-   this(arblibJNI.new_Complex(), true);
+   this(arbJNI.new_Complex(), true);
    getReal().set(firstRoot);
   }
  
@@ -398,21 +398,21 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
   
   public Complex set(Complex complex)
   {
-    assert dim >= complex.dim : String.format("dim=%s < complex.dim=%s\n", dim, complex.dim);
     if (dim == 1)
     {
       arb.acb_set(this, complex);
     }
     else
     {
-      for (int i = 0; i < complex.dim; i++)
+      int N = Math.min(dim,complex.dim);
+      for (int i = 0; i < N; i++)
       {
         arb.acb_set(get(i), complex.get(i));
       }
     }
     return this;
   }
-  
+    
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();

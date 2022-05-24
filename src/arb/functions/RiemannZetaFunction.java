@@ -12,7 +12,7 @@ public class RiemannZetaFunction implements
   {
     assert order == w.size();
     assert prec > 0;
-    arb.arblib.acb_dirichlet_zeta_jet(w, z, 0, order, prec);
+    arb.arb.acb_dirichlet_zeta_jet(w, z, 0, order, prec);
     return w;
   }
 

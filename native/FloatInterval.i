@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
  static
  {
-   System.loadLibrary( "arb" );
+   System.loadLibrary( "arblib" );
  }
  
   public long swigCPtr;

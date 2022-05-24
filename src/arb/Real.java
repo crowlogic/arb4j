@@ -11,7 +11,7 @@ package arb;
 import java.util.concurrent.TimeUnit;
 
 import static arb.Constants.*;
-import static arb.arblib.*;
+import static arb.arb.*;
 
 
 public class Real implements AutoCloseable {
@@ -37,7 +37,7 @@ public class Real implements AutoCloseable {
     }
   }
 
- static { System.loadLibrary( "arb" ); }
+ static { System.loadLibrary( "arblib" ); }
 
   public Real set(int i)
   {

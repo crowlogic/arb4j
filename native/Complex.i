@@ -8,7 +8,7 @@ import java.util.Spliterators;
 import java.io.IOException;
 import static arb.Constants.*;
 import java.io.Serializable;
-import static arb.arblib.*;
+import static arb.arb.*;
 %}
 
 %typemap(javafinalize) acb_struct ""
@@ -16,7 +16,7 @@ import static arb.arblib.*;
 %typemap(javainterfaces) acb_struct "AutoCloseable,Iterable<Complex>,Serializable"
 
 %typemap(javacode) acb_struct %{
-  static { System.loadLibrary( "arb" ); }
+  static { System.loadLibrary( "arblib" ); }
 
   public boolean printPrecision = false;
 
@@ -153,7 +153,7 @@ import static arb.arblib.*;
   
   public Complex(Real firstRoot)
   {
-   this(arblibJNI.new_Complex(), true);
+   this(arbJNI.new_Complex(), true);
    getReal().set(firstRoot);
   }
  
@@ -372,21 +372,21 @@ import static arb.arblib.*;
   
   public Complex set(Complex complex)
   {
-    assert dim >= complex.dim : String.format("dim=%s < complex.dim=%s\n", dim, complex.dim);
     if (dim == 1)
     {
       arb.acb_set(this, complex);
     }
     else
     {
-      for (int i = 0; i < complex.dim; i++)
+      int N = Math.min(dim,complex.dim);
+      for (int i = 0; i < N; i++)
       {
         arb.acb_set(get(i), complex.get(i));
       }
     }
     return this;
   }
-  
+    
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();

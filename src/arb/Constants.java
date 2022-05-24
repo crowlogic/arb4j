@@ -1,12 +1,12 @@
 package arb;
 
-import static arb.arblib.*;
+import static arb.arb.*;
 
 public class Constants
 {
   static
   {
-    System.loadLibrary("arb");
+    System.loadLibrary("arblib");
   }
   
   public static final int MAG_BITS = 30;
@@ -45,7 +45,7 @@ public class Constants
 
   static
   {
-    arblib.mag_zero(zeroMag);
+    arb.mag_zero(zeroMag);
     arb_init(Constants.HALF);
     arb_init(Constants.ONE);
     acb_init(Constants.IMAGINARY_UNIT);

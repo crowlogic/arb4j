@@ -14,7 +14,7 @@ public class FloatInterval implements AutoCloseable {
 
  static
  {
-   System.loadLibrary( "arb" );
+   System.loadLibrary( "arblib" );
  }
  
   public long swigCPtr;

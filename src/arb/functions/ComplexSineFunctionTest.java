@@ -22,9 +22,9 @@ public class ComplexSineFunctionTest extends
     assertTrue( y.getImag().isZero() );
   }
 
-  public void testIntegration()
-  {
-    ComplexSineFunction sin = new ComplexSineFunction();
-    ConvergenceStatus integral = sin.integrate(ZERO, π, 0, null, null, 0, new Complex() );
-  }
+//  public void testIntegration()
+//  {
+//    ComplexSineFunction sin = new ComplexSineFunction();
+//    ConvergenceStatus integral = sin.integrate(ZERO, π, 0, null, null, 0, new Complex() );
+//  }
 }

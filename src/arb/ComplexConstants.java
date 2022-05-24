@@ -1,6 +1,6 @@
 package arb;
 
-import static arb.arblib.*;
+import static arb.arb.*;
 
 public class ComplexConstants
 {

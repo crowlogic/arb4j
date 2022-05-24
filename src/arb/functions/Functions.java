@@ -1,12 +1,12 @@
 package arb.functions;
 
-import static arb.arblib.*;
+import arb.arb;
+import static arb.arb.*;
 import static java.lang.Math.log;
 
 import arb.Complex;
 import arb.ComplexPolynomial;
 import arb.Constants;
-import arb.arblib;
 
 /**
  * TODO: implement and move to other classes
@@ -20,8 +20,9 @@ public final class Functions
 
   static
   {
-    System.loadLibrary("arb");
+    System.loadLibrary("arblib");
   }
+  
   public static int prec = 256;
 
   /**
@@ -71,7 +72,7 @@ public final class Functions
                              int len,
                              int prec)
   {
-    arblib.acb_modular_theta_series(theta1, theta2, theta3, theta4, z, tau, len, prec);
+    arb.acb_modular_theta_series(theta1, theta2, theta3, theta4, z, tau, len, prec);
   }
 
   public static boolean trace = false;

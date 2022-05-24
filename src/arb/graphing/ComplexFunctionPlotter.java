@@ -48,7 +48,7 @@ import arb.Constants;
 import arb.Float;
 import arb.Real;
 import arb.ThreadLocalComplex;
-import arb.arblib;
+import arb.arb;
 import arb.functions.Part;
 import arb.functions.ZFunction;
 import arb.util.DateUtils;
@@ -294,25 +294,25 @@ public class ComplexFunctionPlotter extends
       switch (displayMode)
       {
       case Phase:
-        arblib.color_function(pixel.R, pixel.G, pixel.B, w, color_mode);
+        arb.color_function(pixel.R, pixel.G, pixel.B, w, color_mode);
         break;
       case Real:
         w2.getReal().set(w.getReal());
-        arblib.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
+        arb.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
         break;
       case Imag:
         w2.getImag().set(w.getImag());
-        arblib.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
+        arb.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
         break;
       case Blend:
         // TODO: make another mode that averages the rgb values and only calls
         // color_function once
         w2.getImag().set(w.getImag());
-        arblib.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
+        arb.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
         Pixel pixel2 = this.pixel2.get();
         w2.getImag().zero();
         w2.getReal().set(w.getReal());
-        arblib.color_function(pixel2.R, pixel2.G, pixel2.B, w2, color_mode);
+        arb.color_function(pixel2.R, pixel2.G, pixel2.B, w2, color_mode);
         pixel.R[0] = (pixel.R[0] + pixel2.R[0] / 2.0);
         pixel.G[0] = (pixel.G[0] + pixel2.G[0] / 2.0);
         pixel.B[0] = (pixel.B[0] + pixel2.B[0] / 2.0);

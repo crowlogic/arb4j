@@ -1,6 +1,6 @@
 package arb.functions;
 
-import static arb.arblib.*;
+import static arb.arb.*;
 
 import arb.Complex;
 import arb.ComplexFunction;

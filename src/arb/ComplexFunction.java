@@ -1,6 +1,6 @@
 package arb;
 
-import static arb.arblib.*;
+import static arb.arb.*;
 import static arb.functions.Functions.overlaps;
 import static java.lang.Math.max;
 

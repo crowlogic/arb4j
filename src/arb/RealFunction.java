@@ -9,10 +9,8 @@
  */
 package arb;
 
-import static arb.arblib.*;
+import static arb.arb.*;
 import static java.lang.System.out;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
@@ -97,14 +95,14 @@ public interface RealFunction
     int precs[] = new int[FLINT_BITS];
     int i, iters, workingPrecision, startPrec;
 
-    startPrec = arblib.arb_rel_accuracy_bits(root);
+    startPrec = arb.arb_rel_accuracy_bits(root);
 
     if (verbose)
     {
       System.out.format("Newton initial accuracy: %d\n", startPrec);
     }
 
-    int padding = Math.max(0, Math.min(arblib.arf_abs_bound_lt_2exp_si(convergenceFactor), prec) + 5);
+    int padding = Math.max(0, Math.min(arb.arf_abs_bound_lt_2exp_si(convergenceFactor), prec) + 5);
     precs[0] = prec + padding;
     iters    = 1;
     while ((iters < FLINT_BITS) && (precs[iters - 1] + padding > 2 * startPrec))
@@ -161,8 +159,8 @@ public interface RealFunction
   {
     assert jet.size() >= 3;
     evaluate(convergenceRegion, 3, prec, jet).get(2).div(jet.get(1), prec, jet);
-    arblib.arb_mul_2exp_si(jet, jet, -1);
-    arblib.arb_get_abs_ubound_arf(convergenceFactor, jet, prec);
+    arb.arb_mul_2exp_si(jet, jet, -1);
+    arb.arb_get_abs_ubound_arf(convergenceFactor, jet, prec);
     return convergenceFactor;
   }
 
@@ -310,11 +308,11 @@ public interface RealFunction
     {
 
       /* Compute the midpoint */
-      arblib.arf_add(u, block.getA(), block.getB(), Integer.MAX_VALUE, Constants.ARF_RND_DOWN);
-      arblib.arf_mul_2exp_si(u, u, -1);
+      arb.arf_add(u, block.getA(), block.getB(), Integer.MAX_VALUE, Constants.ARF_RND_DOWN);
+      arb.arf_mul_2exp_si(u, u, -1);
 
       /* Evaluate the function at the midpoint so the sign can be returned */
-      arblib.arb_set_arf(m, u);
+      arb.arb_set_arf(m, u);
 
       int sign = evaluate(m, 1, prec, t).sign();
 

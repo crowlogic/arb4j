@@ -1,6 +1,6 @@
 package arb;
 
-import static arb.arblib.*;
+import static arb.arb.*;
 import static java.lang.Math.pow;
 import static java.lang.System.out;
 
@@ -11,7 +11,7 @@ public class ArblibTest extends
 {
   static
   {
-    System.loadLibrary("arb");
+    System.loadLibrary("arblib");
   }
 
   public static final int prec = 128;

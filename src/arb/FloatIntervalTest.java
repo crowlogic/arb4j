@@ -9,7 +9,6 @@ public class FloatIntervalTest extends
   
   public static void testPrint()
   {
-    System.loadLibrary("arb");
     FloatInterval interval = new FloatInterval(-3,
                                                3);
     System.out.println(interval);
