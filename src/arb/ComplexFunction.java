@@ -88,7 +88,7 @@ public interface ComplexFunction
 
   /**
    * Calculate the simple quadrature f([a,b])*(b-a) where
-   * f=this{@link #evaluate(Complex, int, int, Complex)} with 1 function
+   * f=this{@link #evaluate(Complex, int, int, Complex)} with a single function
    * evaluation
    * 
    * @param a
@@ -99,21 +99,24 @@ public interface ComplexFunction
    */
   public default Complex simpleQuadrature(Complex a, Complex b, int prec, Complex res)
   {
-    try ( Complex mid = new Complex(); Complex δ = new Complex(); Complex wide = new Complex();)
+    try ( Magnitude magδ = new Magnitude(); Complex midpoint = new Complex(); Complex δ = new Complex();
+          Complex widePoint = new Complex();)
     {
       /* δ = (b-a)/2 */
       b.sub(a, prec, δ).mul2e(-1, δ);
 
       /* mid = (a+b)/2 */
-      a.add(b, prec, mid).mul2e(-1, mid);
+      a.add(b, prec, midpoint).mul2e(-1, midpoint);
 
       /* wide = mid +- [delta] */
-      wide.set(mid);
-      arb_add_error_mag(wide.getReal(), δ.getReal().getRad());
-      arb_add_error_mag(wide.getImag(), δ.getImag().getRad());
+      acb_set(widePoint, midpoint);
+      arb_get_mag(magδ, δ.getReal());
+      arb_add_error_mag(widePoint.getReal(), magδ);
+      arb_get_mag(magδ, δ.getImag());
+      arb_add_error_mag(widePoint.getImag(), magδ);
 
       /* Direct evaluation: integral = f([a,b]) * (b-a) */
-      return evaluate(wide, 0, prec, res).mul(δ, prec, res).mul2e(-1, res);
+      return evaluate(widePoint, 0, prec, res).mul(δ, prec, res).mul2e(-1, res);
     }
   }
 
@@ -206,7 +209,7 @@ public interface ComplexFunction
     assert relAccuracyGoalBits > 0;
     assert absErrorToleranceGoal != null;
     assert res != null;
-    
+
     if (options == null)
     {
       options = new IntegrationOptions();

@@ -9,6 +9,7 @@ import arb.Complex;
 import arb.Constants;
 import arb.IntegrationOptions;
 import arb.Magnitude;
+import arb.Real;
 import arb.exceptions.LackOfConvergenceException;
 import junit.framework.TestCase;
 
@@ -28,10 +29,10 @@ public class ComplexSineFunctionTest extends
   public void testIntegration() throws LackOfConvergenceException
   {
     ComplexSineFunction sine                       = new ComplexSineFunction();
-    Magnitude           absoluteErrorToleranceGoal = new Magnitude().set(Math.pow(2, -50));
+    Magnitude           absoluteErrorToleranceGoal = new Magnitude().set(Math.pow(2, -77));
     IntegrationOptions  options                    = new IntegrationOptions();
-    int                 relativeAccuracyBitsGoal   = 64;
-    int                 precisionBits              = 128;
+    int                 relativeAccuracyBitsGoal   = 80;
+    int                 precisionBits              = 160;
     options.verbose = true;
     Complex             two                        = sine.integrate(ZERO,
                                                                     π,
@@ -40,6 +41,13 @@ public class ComplexSineFunctionTest extends
                                                                     options,
                                                                     precisionBits,
                                                                     new Complex());
+    Real realPart = two.getReal();
+    Real imagPart = two.getImag();
+    assertEquals( 2, realPart.getMid().doubleValue(), realPart.getRad().doubleValue() );
+    assertEquals( 0, imagPart.getMid().doubleValue(), imagPart.getRad().doubleValue() );
+    
+    two.printPrecision = true;
+    //two.getReal().toString()
     System.out.println(two + " should equal 2");
 
   }
