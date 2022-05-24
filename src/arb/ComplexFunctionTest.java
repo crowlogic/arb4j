@@ -36,7 +36,7 @@ public class ComplexFunctionTest extends
     Complex    zero = new Complex();
     try ( Complex complexPi = new Complex(); Complex integral = new Complex(); Magnitude absErr = new Magnitude();)
     {
-      
+
       absErr.set(Math.pow(2, -128));
       complexPi.set(Constants.π, Constants.ZERO.getImag());
       f.integrate(zero, complexPi, 64, absErr, null, 128, integral);
@@ -50,29 +50,32 @@ public class ComplexFunctionTest extends
    * test integration 2
    * 
    * @throws NotDifferentiableException
-   * @throws LackOfConvergenceException 
+   * @throws LackOfConvergenceException
    */
   public static void testIntegration2() throws NotDifferentiableException, LackOfConvergenceException
   {
-    Lemniscate      f     = new Lemniscate();
-    ComplexFunction df    = f.differential();
+    Lemniscate      f        = new Lemniscate();
+    ComplexFunction df       = f.differential();
 
-    Complex         zero  = new Complex();
-    ComplexFunction absdf = df.abs();
+    Complex         zero     = new Complex();
+    ComplexFunction absdf    = df.abs();
 
-    try ( Complex complexPi = new Complex(); Complex integral = new Complex(); Magnitude absErr = new Magnitude();)
-    {
-      absErr.set(Math.pow(2, -50));
-      complexPi.set(Constants.π, Constants.ZERO.getImag());
-      // complexPi.getReal().div(4, 128, complexPi.getReal());
+    Complex         integral = new Complex();
+    Magnitude       absErr   = new Magnitude();
 
-      IntegrationOptions opts = new IntegrationOptions();
-      opts.verbose = true;
-      absdf.integrate(zero, complexPi, 128, absErr, opts, 256, integral);
-      integral.printPrecision = true;
-      System.out.println("integral is " + integral);
-      System.out.println("domain is " + complexPi);
+    Complex         a        = new Complex();
+    Complex         b        = new Complex();
+    a.getReal().assign(0.2);
+    b.getReal().assign(0.3);
 
-    }
+    IntegrationOptions opts = new IntegrationOptions();
+    opts.verbose = true;
+    Complex abslprimeonehalf = df.evaluate(Constants.COMPLEX_HALF, 1, 128, new Complex() );
+    System.out.format("|l'(1/2)|=%s\n",abslprimeonehalf);
+    opts.useHeap = true;
+    absdf.integrate(a, b, 128, absErr, opts, 256, integral);
+    integral.printPrecision = true;
+    System.out.format("int(sin(x),x=%s..%s) is %s\n", a, b, integral);
+
   }
 }

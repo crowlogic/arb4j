@@ -116,7 +116,8 @@ public interface ComplexFunction
       arb_add_error_mag(widePoint.getImag(), magδ);
 
       /* Direct evaluation: integral = f([a,b]) * (b-a) */
-      return evaluate(widePoint, 0, prec, res).mul(δ, prec, res).mul2e(-1, res);
+      Complex val = evaluate(widePoint, 0, prec, res);
+      return val.mul(δ, prec, res).mul2e(-1, res);
     }
   }
 
@@ -235,8 +236,8 @@ public interface ComplexFunction
       useHeap             = options.useHeap;
 
       allocation          = 4;
-      try ( Complex as = Complex.newVector(allocation); Complex bs = Complex.newVector(allocation);
-            Complex vs = Complex.newVector(allocation); Magnitude ms = Magnitude.newVector(allocation);)
+      try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
+            Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);)
       {
 
         /* Compute initial crude estimate for the whole interval. */
@@ -595,12 +596,17 @@ public interface ComplexFunction
     {
       order = max(1, order);
       assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
-      try ( Complex y = new Complex())
+      try ( Real metric = new Real();)
       {
-        ComplexFunction.this.evaluate(y, order, prec, w).abs(prec, w.getReal());
+        ComplexFunction.this.evaluate(z, order, prec, w);
+        w.printPrecision = true;
+        z.printPrecision = true;
+        assert w.isFinite() : String.format("f(%s)=%s is not finite", z.toString(), w.toString() );
+        w.abs(prec,metric);
+        w.getReal().set(metric);
         w.getImag().zero();
-        return w;
       }
+      return w;
     };
   }
 

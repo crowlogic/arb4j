@@ -48,8 +48,8 @@ public class Lemniscate implements
 
   }
 
-  private static final Complex ONE   = Constants.COMPLEX_ONE;
-  private static final Complex i     = Constants.IMAGINARY_UNIT;
+  private static final Complex ONE = Constants.COMPLEX_ONE;
+  private static final Complex i   = Constants.IMAGINARY_UNIT;
 
   /**
    * @param z
@@ -65,16 +65,24 @@ public class Lemniscate implements
     assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
     assert order <= 2;
 
-    try ( Complex cos = z.cos(prec, new Complex()); Complex sin = z.sin(prec, new Complex());
-          Complex tmp = new Complex(); Complex divisor = ONE.sub(sin.mul(i, tmp), prec, tmp);
-          Complex numerator = cos.mul(2, new Complex()))
+    try ( Complex cos = new Complex(); Complex sin = new Complex(); Complex divisor = new Complex();
+          Complex numerator = new Complex())
     {
-      numerator.div(divisor, prec, w);
+      sin.printPrecision = true;
+      numerator.printPrecision = true;
+      z.cos(prec * 2, cos);
+      z.sin(prec * 2, sin);
+      cos.mul(2, numerator);
+      sin.mul(i, divisor);
+      ONE.sub(divisor, prec, divisor);
+      divisor.printPrecision   = true;
+
+      numerator.div(divisor, prec * 2, w);
       if (order >= 2)
       {
-        sin.sub(i, numerator).mul(2,numerator);
+        sin.sub(i, numerator).mul(2, numerator);
         sin.add(i, divisor).pow(2, divisor);
-        numerator.div(divisor, prec, w.get(1));
+        numerator.div(divisor, prec * 2, w.get(1));
       }
 
     }
