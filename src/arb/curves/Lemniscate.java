@@ -20,7 +20,9 @@ import arb.Real;
  * A parameterization of the Lemniscate of Bernoulli with parameter 2 where t
  * ranges over -Pi to Pi
  * 
- * TODO: add scale factor
+ * The curvature and tangential angle of the lemniscate are kappa(t) =
+ * (3sqrt(2)cost)/(asqrt(3-cos(2t))) and phi(t) = 3tan^(-1)(sint). TODO: add
+ * scale factor
  * 
  * @author crow
  */
@@ -68,14 +70,14 @@ public class Lemniscate implements
     try ( Complex cos = new Complex(); Complex sin = new Complex(); Complex divisor = new Complex();
           Complex numerator = new Complex())
     {
-      sin.printPrecision = true;
+      sin.printPrecision       = true;
       numerator.printPrecision = true;
       z.cos(prec * 2, cos);
       z.sin(prec * 2, sin);
       cos.mul(2, numerator);
       sin.mul(i, divisor);
       ONE.sub(divisor, prec, divisor);
-      divisor.printPrecision   = true;
+      divisor.printPrecision = true;
 
       numerator.div(divisor, prec * 2, w);
       if (order >= 2)
