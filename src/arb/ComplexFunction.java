@@ -47,7 +47,7 @@ public interface ComplexFunction
   {
     return (z, order, prec, w) ->
     {
-      assert order > 0;
+      order = Math.max(1,order);
       assert w.size() >= order;
       try ( Complex x = Complex.newVector(order + 1))
       {
@@ -117,6 +117,7 @@ public interface ComplexFunction
 
       /* Direct evaluation: integral = f([a,b]) * (b-a) */
       Complex val = evaluate(widePoint, 0, prec, res);
+      assert val.isFinite();
       return val.mul(δ, prec, res).mul2e(-1, res);
     }
   }
