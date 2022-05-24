@@ -296,6 +296,18 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
 
 
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1one(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  acb_struct *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(acb_struct **)&jarg1; 
+  acb_one(arg1);
+  
+}
+
+
 SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1is_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;

@@ -46,7 +46,12 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
 
   public boolean printPrecision = false;
 
-
+  public Complex one()
+  {
+    arb.acb_one(this);
+    return this;
+  }
+  
   /**
    * Calculates this*(2^e)
    *  

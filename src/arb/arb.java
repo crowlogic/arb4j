@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void acb_one(Complex z) {
+    arbJNI.acb_one(Complex.getCPtr(z), z);
+  }
+
   public static int arb_is_zero(Real z) {
     return arbJNI.arb_is_zero(Real.getCPtr(z), z);
   }

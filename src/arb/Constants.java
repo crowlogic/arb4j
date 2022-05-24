@@ -54,8 +54,9 @@ public class Constants
     arb_set_d(Constants.HALF, 0.5);
     COMPLEX_HALF.getReal().set(HALF);
     arb_set_d(Constants.ONE, 1);
-    arb_set_d(Constants.COMPLEX_ONE.getReal(), 1);
-    arb_set_d(Constants.IMAGINARY_UNIT.getImag(), 1);
+    Constants.COMPLEX_ONE.getReal().one();
+    
+    Constants.IMAGINARY_UNIT.getImag().one();
     iπ.getImag().pi(Complex.defaultPrec);
     realPositiveInfinity.posInf();
     posInf.set(realPositiveInfinity, realPositiveInfinity);

@@ -20,7 +20,12 @@ import static arb.arb.*;
 
   public boolean printPrecision = false;
 
-
+  public Complex one()
+  {
+    arb.acb_one(this);
+    return this;
+  }
+  
   /**
    * Calculates this*(2^e)
    *  

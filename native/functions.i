@@ -1,3 +1,5 @@
+void acb_one(acb_t z);
+ 
 int arb_is_zero(const arb_t z);
 
 int acb_is_zero(const acb_t z);
