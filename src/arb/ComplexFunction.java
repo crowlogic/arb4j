@@ -374,6 +374,8 @@ public interface ComplexFunction
 
           /* Evaluate on [a, mid] */
           simpleQuadrature(as.get(top), bs.get(top), prec, vs.get(top));
+          assert vs.get(top).isFinite();
+          
           mag_hypot(topm, vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
           evalCount.incrementAndGet();
           /* Adjust absolute tolerance based on new information. */
@@ -383,6 +385,8 @@ public interface ComplexFunction
 
           /* Evaluate on [mid, b] */
           simpleQuadrature(as.get(depth), bs.get(depth), prec, vs.get(depth));
+          assert vs.get(depth).isFinite();
+          
           mag_hypot(ms.get(depth), vs.get(depth).getReal().getRad(), vs.get(depth).getImag().getRad());
           evalCount.incrementAndGet();
           /* Adjust absolute tolerance based on new information. */
