@@ -14,7 +14,7 @@ package arb.surfaces;
  * @author crow
  *
  */
-public class ParametricSurface
+public interface ParametricSurface
 {
 
 }
