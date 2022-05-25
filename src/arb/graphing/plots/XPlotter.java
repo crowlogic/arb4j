@@ -34,17 +34,17 @@ public class XPlotter extends
     plotter.saveToFile();
   }
 
-  public static final int width = 2500/3;
-  public static final int height = 1250/3;
+  public static final int width = 2500/2;
+  public static final int height = 1250;
   
   public XPlotter(double vscale) throws NoninvertibleTransformException
   {
     super(new Dimension(width,
                         height),
           new Rectangle2D.Double(-10,
-                                 -7.5*2.5,
+                                 -7.5*5,
                                  80,
-                                 15*2.5),
+                                 15*5),
           new XFunction(vscale));
 
     color_mode        = 5;
