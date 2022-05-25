@@ -77,7 +77,10 @@ public class ComplexFunctionTest extends
     // opts.useHeap = true;
     absdf.integrate(a, b, 128, absErr, opts, prec, integral);
     integral.printPrecision = true;
-    System.out.format("int(l'(x),x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);
-
+    System.out.format("int(|l'(x)|,x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);
+    assertTrue( integral.getReal().getRad().doubleValue() <= 1e-20 );
+    assertEquals(2.62205755429211981046483958989111941368275495,
+                 integral.getReal().getMid().doubleValue(),
+                 integral.getReal().getRad().doubleValue());
   }
 }
