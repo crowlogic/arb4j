@@ -242,6 +242,7 @@ public interface ComplexFunction
         throw new UnsupportedOperationException( "TODO: needs to be debugged");
       }
       allocation          = 4;
+      // TODO: take as,bs,vs,ms  and put them in their own (static) class 
       try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
             Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);)
       {
