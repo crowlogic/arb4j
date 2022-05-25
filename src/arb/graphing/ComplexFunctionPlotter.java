@@ -160,17 +160,25 @@ public class ComplexFunctionPlotter extends
   {
     this.screen = screen;
     this.domain = domain;
-    setPreferredSize(screen);
-    setSize(screen);
     this.function  = function;
+    init();
+  }
+
+  public ComplexFunctionPlotter()
+  {
+    
+  }
+  
+  public void init() throws NoninvertibleTransformException
+  {
+    setPreferredSize(this.screen);
+    setSize(this.screen);
     renderingHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
                                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     // setBorder(BorderFactory.createTitledBorder("Node"));
-    out.format("screen=%s\ndomain=%s\n", screen, domain);
-    this.screen        = screen;
-    this.domain        = domain;
-    this.xnum          = screen.width;
-    this.ynum          = screen.height;
+    out.format("screen=%s\ndomain=%s\n", this.screen, this.domain);
+    this.xnum          = this.screen.width;
+    this.ynum          = this.screen.height;
     phase              = new Real();
     w                  = Complex.newVector(2);
     functionImage      = new BufferedImage(xnum,
@@ -202,17 +210,16 @@ public class ComplexFunctionPlotter extends
     bx.init();
     ay.init();
     by.init();
-    ax.assign(domain.getMinX());
-    ay.assign(domain.getMinY());
-    bx.assign(domain.getMaxX());
-    by.assign(domain.getMaxY());
+    ax.assign(this.domain.getMinX());
+    ay.assign(this.domain.getMinY());
+    bx.assign(this.domain.getMaxX());
+    by.assign(this.domain.getMaxY());
     bx.sub(ax, dx, prec, Constants.ARF_RND_DOWN).div(xnum * 2, dx, prec);
     by.sub(ay, dy, prec, Constants.ARF_RND_DOWN).div(ynum * 2, dy, prec);
 
     // System.out.format("dx=%s\n dy=%s\n", dx, dy);
 
     assignKeyBoardAndMouseHandler();
-
   }
 
   private synchronized void newDynamicOverlay() throws NoninvertibleTransformException
@@ -962,8 +969,10 @@ public class ComplexFunctionPlotter extends
     System.out.println("zoom to " + domain2);
   }
 
-  final ComplexFunction function;
+  protected ComplexFunction function;
 
+  boolean disableNewton = true;
+                
   // w=f(z)
   public void evalFunction(Complex z, Complex w)
   {
