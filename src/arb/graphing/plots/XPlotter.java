@@ -14,9 +14,9 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
-import arb.functions.Part;
 import arb.functions.complex.XFunction;
 import arb.graphing.ComplexFunctionPlotter;
+import arb.graphing.Part;
 
 /**
  * Renders {@link XFunction} via {@link ComplexFunctionPlotter}

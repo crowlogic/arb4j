@@ -41,14 +41,14 @@ public class ComplexComposition implements
     }
     Complex y = this.y.get();
 
-    // y=g(t) or if order==2 y=[g(t), g'(t)]
+    // y=g(t)        if order == 1 or y=[g(t), g'(t)]      if order==2 
     g.evaluate(t, order, prec, y);
-    // res=y=f(g(t)) if order==1 or y=[f(g(t)),f'(g(t))] if order==2
+    // res=y=f(g(t)) if order==1   or y=[f(g(t)),f'(g(t))] if order==2
     f.evaluate(y, order, prec, res);
 
     if (order == 2)
     {
-      // apply the chain rule res[1]=f'(g(t))*g'(t)=res[1]*y[1]
+      // apply the chain rule: res[1]*=y[1] so that res[1] = f'(g(t))*g'(t)
       Complex df = res.get(1);
       df.mul(y.get(1), df);
     }

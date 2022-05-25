@@ -35,7 +35,7 @@ public class SZetaPlotter extends
 
     color_mode        = 06;
     bilinearSmoothing = false;
-    displayMode       = arb.functions.Part.Blend;
+    displayMode       = arb.graphing.Part.Blend;
   }
 
 }

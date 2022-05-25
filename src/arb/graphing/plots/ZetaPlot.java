@@ -10,8 +10,8 @@ import javax.swing.JFrame;
 import arb.Constants;
 import arb.Real;
 import arb.ThreadLocalComplex;
-import arb.functions.Part;
 import arb.graphing.ComplexFunctionPlotter;
+import arb.graphing.Part;
 
 public class ZetaPlot
 {

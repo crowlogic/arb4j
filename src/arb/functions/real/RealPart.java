@@ -5,8 +5,7 @@ import arb.Real;
 import arb.functions.complex.ComplexFunction;
 
 public class RealPart extends
-                      ComplexPart implements
-                      RealFunction
+                      ComplexPart
 {
 
   public RealPart(ComplexFunction func)

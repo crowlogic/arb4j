@@ -6,17 +6,15 @@ import static java.lang.String.format;
 import arb.Complex;
 import arb.Constants;
 import arb.Real;
-import arb.functions.Functions;
 
 /**
  * Copyright ©2022 Stephen Crowley
  * 
- * This file is part of Arb4j.
- * 
- * Arb4j is free software: you can redistribute it and/or modify it under the
- * terms of the GNU Lesser General Public License (LGPL) as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version. See <http://www.gnu.org/licenses/>.
+ * This file is part of Arb4j which free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License
+ * (LGPL) as published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version. See
+ * <http://www.gnu.org/licenses/>.
  */
 public class TFunction implements
                        ComplexFunction
@@ -82,69 +80,6 @@ public class TFunction implements
   }
 
   /**
-   * TODO: functionalize
-   * 
-   * @param t0
-   * @param bits
-   * @param res
-   * @return
-   */
-  public Complex TNewtonLim(Complex t0, int bits, Complex res)
-  {
-    try ( Complex Y = new Complex(); Complex Z = new Complex(); Complex r = new Complex(); Complex s = new Complex(); Complex q = new Complex())
-    {
-      res.set(t0);
-      for (int i = 0; TNewton(res, bits, r).isFinite() && r.relAccuracyBits() > 60; i++)
-      {
-        if (i == 0)
-        {
-          q.set(t0);
-        }
-        if (Double.isInfinite(r.norm()))
-        {
-          res.set(Constants.posInf);
-          return res;
-        }
-        else
-        {
-          res.set(r);
-        }
-        r.sub(q, bits, s);
-        bits = r.relAccuracyBits() * 2;
-        if (Functions.trace)
-        {
-          System.out.format("i=%d q=%s\n    r=%s\n    s=%s=%.20f rabs=%d\n\n",
-                            i,
-                            q.get(0),
-                            r.get(0),
-                            s.get(0),
-                            s.get(0).norm(),
-                            r.get(0).relAccuracyBits());
-        }
-        q.set(r);
-
-      }
-    }
-    return res;
-  }
-
-  public Complex TNewtonIter(Complex t0, int n)
-  {
-    Complex trajectory = Complex.newVector(n);
-    try ( Complex t = new Complex().set(t0); Complex r = new Complex())
-    {
-      for (int i = 0; i < n; i++)
-      {
-        trajectory.get(i).set(t);
-        TNewton(t, Functions.prec, r);
-        System.out.println(i + " " + r);
-        t.set(r);
-      }
-      return trajectory;
-    }
-  }
-
-  /**
    * Radial hyperbolic tangent of the Real part of Y
    * 
    * @param t    a point on the curve where Re(Y(t))=0
@@ -162,7 +97,8 @@ public class TFunction implements
   {
     assert t.isFinite();
     assert a.isFinite();
-    try ( Complex dt = new Complex(); Complex y = Complex.newVector(2); Complex p = new Complex(); Complex Z = Complex.newVector(2))
+    try ( Complex dt = new Complex(); Complex y = Complex.newVector(2); Complex p = new Complex();
+          Complex Z = Complex.newVector(2))
     {
       s = t.add(h.mul(iπ.mul(a, prec, dt).exp(prec, dt), dt), prec, s);
       assert s.isFinite() : String.format("s=%s t=%s h=%s a=%s dt=%s\n", s, t, h, a, dt);

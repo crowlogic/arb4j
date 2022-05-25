@@ -1,7 +1,6 @@
 package arb.functions.complex;
 
 import static arb.arb.*;
-import static arb.functions.Functions.*;
 import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -13,6 +12,7 @@ import arb.Real;
 import arb.exceptions.LackOfConvergenceException;
 import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;
+import arb.graphing.Utils;
 
 /**
  * Copyright ©2022 Stephen Crowley
@@ -286,7 +286,7 @@ public interface ComplexFunction
 
           /* We are done with this subinterval. */
           Magnitude topm = ms.get(top);
-          if (topm.compareTo(newTol) < 0 || overlaps(u, as.get(top), bs.get(top), prec))
+          if (topm.compareTo(newTol) < 0 || Utils.overlaps(u, as.get(top), bs.get(top), prec))
           {
             leafIntervalCount++;
             depth--;
@@ -348,8 +348,8 @@ public interface ComplexFunction
 
           if (useHeap)
           {
-            heap_up(as, bs, vs, ms, depth);
-            heap_down(as, bs, vs, ms, depth + 1);
+            Utils.heap_up(as, bs, vs, ms, depth);
+            Utils.heap_down(as, bs, vs, ms, depth + 1);
           }
 
           depth++;
@@ -456,7 +456,7 @@ public interface ComplexFunction
     if (useHeap && depth > 0)
     {
       swapElements(depth, as, bs, vs, ms);
-      heap_up(as, bs, vs, ms, depth);
+      Utils.heap_up(as, bs, vs, ms, depth);
     }
   }
 
@@ -493,7 +493,7 @@ public interface ComplexFunction
     if (useHeap && depth > 0)
     {
       swapElements(depth, as, bs, vs, ms);
-      heap_up(as, bs, vs, ms, depth);
+      Utils.heap_up(as, bs, vs, ms, depth);
     }
   }
 

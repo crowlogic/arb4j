@@ -65,7 +65,7 @@ public class SCoshPlot
     frame.pack();
     frame.setResizable(false);
     frame.setVisible(true);
-    plotter.displayMode = arb.functions.Part.Blend;
+    plotter.displayMode = arb.graphing.Part.Blend;
     plotter.plot();
 
   }

@@ -48,7 +48,6 @@ import arb.Float;
 import arb.Real;
 import arb.ThreadLocalComplex;
 import arb.arb;
-import arb.functions.Part;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
 import arb.util.TimeUtils;

@@ -12,9 +12,9 @@ import javax.swing.WindowConstants;
 import arb.Complex;
 import arb.Constants;
 import arb.Real;
-import arb.functions.Part;
 import arb.functions.complex.SFunction;
 import arb.graphing.ComplexFunctionPlotter;
+import arb.graphing.Part;
 
 public class SPlot
 {

@@ -1,4 +1,4 @@
-package arb.functions;
+package arb.graphing;
 
 public enum Part
 {

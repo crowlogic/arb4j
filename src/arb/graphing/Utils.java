@@ -1,11 +1,16 @@
 package arb.graphing;
 
+import static arb.arb.*;
+
 import java.awt.Color;
 import java.awt.Container;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+
+import arb.Complex;
+import arb.Magnitude;
 
 /**
  * A few utilities that simplify using windows in Swing. 1998-99 Marty Hall,
@@ -88,5 +93,65 @@ public class Utils
   public static JFrame openInJFrame(Container content, int width, int height, int closeOp )
   {
     return (openInJFrame(content, width, height, content.getClass().getName(), Color.white, closeOp ));
+  }
+
+  public static void heap_up(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
+  {
+    int i, max, l, r;
+    i = 0;
+    for (;;)
+    {
+      max = i;
+      l   = 2 * i + 1;
+      r   = 2 * i + 2;
+      if (l < n && ms.get(l).compareTo(ms.get(max)) > 0)
+        max = l;
+      if (r < n && ms.get(r).compareTo(ms.get(max)) > 0)
+        max = r;
+      if (max != i)
+      {
+        as.get(i).swap(as.get(max));
+        bs.get(i).swap(bs.get(max));
+        vs.get(i).swap(vs.get(max));
+        ms.get(i).swap(ms.get(max));
+        i = max;
+      }
+      else
+      {
+        break;
+      }
+    }
+  }
+
+  public static void heap_down(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
+  {
+    int k = n - 1;
+    int j = (k - 1) / 2;
+  
+    while (k > 0 && ms.get(j).compareTo(ms.get(k)) < 0)
+    {
+      as.get(j).swap(as.get(k));
+      bs.get(j).swap(bs.get(k));
+      vs.get(j).swap(vs.get(k));
+      ms.get(j).swap(ms.get(k));
+      k = j;
+      j = (j - 1) / 2;
+    }
+  }
+
+  /**
+   * A version of {@link Complex#overlaps(Complex)} used by the integration code
+   * which is less accurate by design
+   * 
+   * @param tmp
+   * @param a
+   * @param b
+   * @param prec
+   * @return
+   */
+  public static boolean overlaps(Complex tmp, Complex a, Complex b, int prec)
+  {
+    acb_sub(tmp, a, b, prec);
+    return acb_contains_zero(tmp) != 0;
   }
 }

@@ -9,10 +9,10 @@ import javax.swing.JFrame;
 
 import arb.Complex;
 import arb.ThreadLocalComplex;
-import arb.functions.Part;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
 import arb.graphing.ComplexFunctionPlotter;
+import arb.graphing.Part;
 
 public class ZPlot
 {
