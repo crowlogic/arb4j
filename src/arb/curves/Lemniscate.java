@@ -15,6 +15,8 @@ import arb.Complex;
 import arb.ComplexFunction;
 import arb.Constants;
 import arb.Real;
+import arb.arb;
+import arb.exceptions.NotDifferentiableException;
 
 /**
  * A parameterization of the Lemniscate of Bernoulli with parameter 2 where t
@@ -29,6 +31,12 @@ import arb.Real;
 public class Lemniscate implements
                         PlaneCurve
 {
+
+  @Override
+  public ComplexFunction differential() 
+  {   
+    return new LemniscateDerivative();
+  }
 
   @Override
   public int getInverseBranchCount()
@@ -64,27 +72,22 @@ public class Lemniscate implements
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
     order = max(1, order);
-    assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
-    assert order <= 2;
+  assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
+  assert order <= 2;
+//    arb.f_lemniscate(w, z, null, order, prec);
+//return w;
 
-    try ( Complex cos = new Complex(); Complex sin = new Complex(); Complex divisor = new Complex();
-          Complex numerator = new Complex())
+    try ( Complex a = new Complex(); Complex divisor = new Complex(); Complex numerator = new Complex())
     {
-      sin.printPrecision       = true;
-      numerator.printPrecision = true;
-      z.cos(prec * 2, cos);
-      z.sin(prec * 2, sin);
-      cos.mul(2, numerator);
-      sin.mul(i, divisor);
-      ONE.sub(divisor, prec, divisor);
-      divisor.printPrecision = true;
-
-      numerator.div(divisor, prec * 2, w);
+      z.cos(prec * 2, a).mul(2, numerator);
+      z.sin(prec * 2, a).mul(i, divisor);
+      divisor.neg(divisor).add(1, divisor);
+      numerator.div(divisor, prec, w);
       if (order >= 2)
       {
-        sin.sub(i, numerator).mul(2, numerator);
-        sin.add(i, divisor).pow(2, divisor);
-        numerator.div(divisor, prec * 2, w.get(1));
+        a.sub(i, numerator).mul(2, numerator);
+        a.add(i, divisor).pow(2, divisor);
+        numerator.div(divisor, prec, w.get(1));
       }
 
     }

@@ -58,7 +58,7 @@ public class ComplexFunctionTest extends
     int             prec     = 256;
 
     Lemniscate      f        = new Lemniscate();
-    ComplexFunction df       = new LemniscateDerivative();
+    ComplexFunction df       =new LemniscateDerivative();
 
     ComplexFunction absdf    = df.abs();
 

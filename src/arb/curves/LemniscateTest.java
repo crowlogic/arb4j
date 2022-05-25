@@ -32,7 +32,7 @@ public class LemniscateTest extends
     Complex absdl1 = absdl.evaluate(Constants.COMPLEX_ONE, 1, 256, Complex.newVector(1));
     System.out.println("l'(1)=" + dl1);
     System.out.println("|l'(1)|=" + absdl1);
-    assertTrue( l1.get(1).equals(dl1));
+    assertTrue( l1.get(1).sub(dl1,256, new Complex() ).containsZero() );
     
     
     
