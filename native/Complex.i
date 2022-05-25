@@ -20,6 +20,18 @@ import static arb.arb.*;
 
   public boolean printPrecision = false;
 
+  /**
+   * @see {@link arb#acb_swap(Complex, Complex)}
+   * 
+   * @param that
+   * @return this
+   */
+  public Complex swap(Complex that)
+  {
+    acb_swap(this, that);
+    return this;
+  }
+  
   public Complex one()
   {
     arb.acb_one(this);

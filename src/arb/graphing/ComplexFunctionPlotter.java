@@ -50,7 +50,7 @@ import arb.Real;
 import arb.ThreadLocalComplex;
 import arb.arb;
 import arb.functions.Part;
-import arb.functions.ZFunction;
+import arb.functions.complex.ZFunction;
 import arb.util.DateUtils;
 
 /**

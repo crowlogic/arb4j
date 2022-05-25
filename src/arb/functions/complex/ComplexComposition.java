@@ -7,7 +7,7 @@
  * the License, or (at your option) any later version. See
  * <http://www.gnu.org/licenses/>.
  */
-package arb.functions;
+package arb.functions.complex;
 
 import arb.Complex;
 import arb.ComplexFunction;

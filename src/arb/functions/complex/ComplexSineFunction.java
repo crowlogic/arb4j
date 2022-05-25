@@ -1,15 +1,17 @@
-package arb.functions;
+package arb.functions.complex;
 
+import arb.Complex;
+import arb.ComplexFunction;
 import arb.Real;
-import arb.RealFunction;
 
-public class RealSineFunction implements
-                          RealFunction
+public class ComplexSineFunction implements
+                                 ComplexFunction
 {
 
   @Override
-  public Real evaluate(Real z, int order, int prec, Real w)
+  public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
+    order = Math.max(1,order);
     assert z != null;
     assert w != null;
     assert order <= 3;
@@ -25,7 +27,7 @@ public class RealSineFunction implements
     }
     if (order >= 3)
     {
-      Real w2ndDeriv = w.get(2);
+      Complex w2ndDeriv = w.get(2);
       w.negate(w2ndDeriv).div(2, prec, w2ndDeriv);
     }
 

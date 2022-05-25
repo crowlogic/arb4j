@@ -13,7 +13,7 @@ import arb.Complex;
 import arb.Constants;
 import arb.Real;
 import arb.functions.Part;
-import arb.functions.SFunction;
+import arb.functions.complex.SFunction;
 import arb.graphing.ComplexFunctionPlotter;
 
 public class SPlot

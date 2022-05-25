@@ -1,4 +1,4 @@
-package arb.functions;
+package arb.functions.complex;
 
 import static arb.Constants.*;
 import static java.lang.String.format;
@@ -7,6 +7,7 @@ import arb.Complex;
 import arb.ComplexFunction;
 import arb.Constants;
 import arb.Real;
+import arb.functions.Functions;
 
 /**
  * Copyright ©2022 Stephen Crowley

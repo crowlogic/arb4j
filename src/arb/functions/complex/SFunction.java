@@ -1,4 +1,4 @@
-package arb.functions;
+package arb.functions.complex;
 
 import static arb.Constants.COMPLEX_ONE;
 import static java.lang.String.format;

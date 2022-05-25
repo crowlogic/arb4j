@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 
 import arb.ComplexFunction;
 import arb.Constants;
-import arb.functions.TFunction;
+import arb.functions.complex.TFunction;
 import arb.graphing.ComplexFunctionPlotter;
 
 public class CoshPlot

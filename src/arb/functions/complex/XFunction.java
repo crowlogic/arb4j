@@ -1,12 +1,9 @@
-package arb.functions;
+package arb.functions.complex;
 
 import static arb.Constants.*;
-import static java.lang.Math.pow;
 
 import arb.Complex;
-import arb.Constants;
 import arb.Real;
-import arb.RealFunction;
 
 /**
  * Copyright ©2022 Stephen Crowley
@@ -62,30 +59,6 @@ public class XFunction extends
       y.getReal().div(p.getImag(), prec, res).tanh(res, prec).add(scale, prec, res).frac(prec, res);
       assert res.isFinite() : "result is not finite";
       return res;
-    }
-  }
-
-  public static void testXangLimit()
-  {
-    int                   prec   = 256;
-    RealConvergenceTester tester = new RealConvergenceTester(prec,
-                                                             pow(10, -17));
-    try ( Real h = new Real().assign(0.1); Real a = new Real().assign(0.75); Real heading = new Real();
-          Complex s = new Complex();
-          Complex y0 = new Complex().set(ZFunction.roots.getOrCreate(1), Constants.ZERO.getImag()))
-    {
-      int          iters[]          = new int[]
-      { 100 };
-      XFunction    xFunc            = new XFunction(1);
-      RealFunction realYangFunction = (inDir, order, bits, outDir) -> xFunc.realXang(y0, s, h, inDir, outDir, bits);
-      // realYangFunction.iteratedCompositionLimit(a, tester, iters, heading, prec);
-      // assertEquals(0.74754757546711682717, vector.get(0).doubleValue(),
-      // Math.pow(10, -17));
-      // assertEquals(0.7475482453531754, vector.get(1).doubleValue(), Math.pow(10,
-      // -17));
-
-//      System.out.println("converged to heading=" + heading + " starting from " + y0 + " in " + iters[0]
-//                    + " iterations \n  where the initial angle was a=" + a + " with vector length h=" + h);
     }
   }
 

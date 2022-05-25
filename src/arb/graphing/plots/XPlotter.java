@@ -15,7 +15,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 import arb.functions.Part;
-import arb.functions.XFunction;
+import arb.functions.complex.XFunction;
 import arb.graphing.ComplexFunctionPlotter;
 
 /**

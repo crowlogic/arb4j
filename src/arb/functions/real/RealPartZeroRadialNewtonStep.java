@@ -1,4 +1,4 @@
-package arb.functions;
+package arb.functions.real;
 
 
 import static arb.Constants.*;

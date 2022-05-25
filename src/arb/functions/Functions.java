@@ -35,16 +35,16 @@ public final class Functions
       max = i;
       l   = 2 * i + 1;
       r   = 2 * i + 2;
-      if (l < n && mag_cmp(ms.get(l), ms.get(max)) > 0)
+      if (l < n && ms.get(l).compareTo(ms.get(max)) > 0)
         max = l;
-      if (r < n && mag_cmp(ms.get(r), ms.get(max)) > 0)
+      if (r < n && ms.get(r).compareTo(ms.get(max)) > 0)
         max = r;
       if (max != i)
       {
-        acb_swap(as.get(i), as.get(max));
-        acb_swap(bs.get(i), bs.get(max));
-        acb_swap(vs.get(i), vs.get(max));
-        mag_swap(ms.get(i), ms.get(max));
+        as.get(i).swap(as.get(max));
+        bs.get(i).swap(bs.get(max));
+        vs.get(i).swap(vs.get(max));
+        ms.get(i).swap(ms.get(max));
         i = max;
       }
       else

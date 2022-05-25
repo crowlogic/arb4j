@@ -107,5 +107,14 @@ import static arb.Constants.*;
     return this;
   }
   
-  
+ /**
+   * @see arb#mag_swap(Magnitude, Magnitude)
+   * @param that
+   * @return
+   */
+  public Magnitude swap(Magnitude that)
+  {
+    arb.mag_swap(this, that);
+    return this;
+  }
 %};

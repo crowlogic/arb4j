@@ -11,7 +11,7 @@ import arb.Complex;
 import arb.ComplexFunction;
 import arb.ThreadLocalComplex;
 import arb.functions.Part;
-import arb.functions.ZFunction;
+import arb.functions.complex.ZFunction;
 import arb.graphing.ComplexFunctionPlotter;
 
 public class ZPlot

@@ -1,4 +1,4 @@
-package arb.functions;
+package arb.functions.complex;
 
 import static java.lang.Math.pow;
 

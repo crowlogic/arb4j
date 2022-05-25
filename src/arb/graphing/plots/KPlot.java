@@ -6,7 +6,7 @@ import java.io.*;
 
 import arb.*;
 import arb.functions.*;
-import arb.functions.elliptic.*;
+import arb.functions.complex.elliptic.*;
 import arb.graphing.*;
 
 public class KPlot extends

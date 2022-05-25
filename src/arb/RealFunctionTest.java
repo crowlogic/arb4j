@@ -6,8 +6,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import arb.functions.RealSineFunction;
-import arb.functions.ZFunction;
+import arb.functions.complex.ZFunction;
+import arb.functions.real.RealSineFunction;
 
 public class RealFunctionTest
 {

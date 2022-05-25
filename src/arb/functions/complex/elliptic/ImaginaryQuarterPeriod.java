@@ -1,4 +1,4 @@
-package arb.functions.elliptic;
+package arb.functions.complex.elliptic;
 
 import arb.*;
 
