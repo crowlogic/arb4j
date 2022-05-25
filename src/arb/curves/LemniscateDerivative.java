@@ -5,10 +5,17 @@ import static java.lang.Math.max;
 import arb.Complex;
 import arb.ComplexFunction;
 import arb.arb;
+import arb.exceptions.NotIntegrableException;
 
 public class LemniscateDerivative implements
                                   ComplexFunction
 {
+
+  @Override
+  public ComplexFunction integral() throws NotIntegrableException
+  {
+    return new Lemniscate();
+  }
 
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
