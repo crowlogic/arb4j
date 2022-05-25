@@ -37,6 +37,8 @@ public interface ComplexFunction
   }
 
   /**
+   * One can imagine an OrthogonalPolynomial class which overrides this method and
+   * uses instead a recurrence relation to generate its elements
    * 
    * @return a ComplexFunction which is the derivative of this one obtained by
    *         calling evaluate with an order of one plus that requested via
@@ -47,7 +49,7 @@ public interface ComplexFunction
   {
     return (z, order, prec, w) ->
     {
-      order = Math.max(1,order);
+      order = Math.max(1, order);
       assert w.size() >= order;
       try ( Complex x = Complex.newVector(order + 1))
       {
@@ -278,18 +280,9 @@ public interface ComplexFunction
           Magnitude topm = ms.get(top);
           if (topm.compareTo(newTol) < 0 || overlaps(u, as.get(top), bs.get(top), prec))
           {
-            s.add(vs.get(top), prec, s);
             leafIntervalCount++;
-
             depth--;
-            if (useHeap && depth > 0)
-            {
-              acb_swap(as, as.get(depth));
-              acb_swap(bs, bs.get(depth));
-              acb_swap(vs, vs.get(depth));
-              mag_swap(ms, ms.get(depth));
-              heap_up(as, bs, vs, ms, depth);
-            }
+            accumulateIntegrand(prec, s, depth, top, useHeap, as, bs, vs, ms);
             continue;
           }
 
@@ -308,31 +301,22 @@ public interface ComplexFunction
             /* We are done with this subinterval. */
             if (glStatus)
             {
-              /* We know that the result is real. */
-              realError = vs.get(top).isFinite() && vs.get(top).isReal();
-
-              if (realError)
-              {
-                arb_zero(u.getImag());
-              }
-
-              s.add(u, prec, s);
               leafIntervalCount++;
-
-              /* Adjust absolute tolerance based on new information. */
-              acb_get_mag_lower(tmpm, u);
-              mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-              mag_max(newTol, newTol, tmpm);
-
               depth--;
-              if (useHeap && depth > 0)
-              {
-                acb_swap(as, as.get(depth));
-                acb_swap(bs, bs.get(depth));
-                acb_swap(vs, vs.get(depth));
-                mag_swap(ms, ms.get(depth));
-                heap_up(as, bs, vs, ms, depth);
-              }
+
+              accumulateGaussLegendreQuadrature(relAccuracyGoalBits,
+                                                prec,
+                                                s,
+                                                u,
+                                                tmpm,
+                                                newTol,
+                                                depth,
+                                                top,
+                                                useHeap,
+                                                as,
+                                                bs,
+                                                vs,
+                                                ms);
               continue;
             }
           }
@@ -348,60 +332,11 @@ public interface ComplexFunction
 
           if (depth >= allocation - 1)
           {
-            int k;
-            as.resize(allocation);
-            bs.resize(allocation);
-            vs.resize(allocation);
-            ms.resize(allocation);
-            for (k = allocation; k < 2 * allocation; k++)
-            {
-              acb_init(as.get(k));
-              acb_init(bs.get(k));
-              acb_init(vs.get(k));
-              mag_init(ms.get(k));
-            }
             allocation *= 2;
+            resizeRegisters(allocation, as, bs, vs, ms);
           }
 
-          /* Bisection. */
-          /* Interval [depth] becomes [mid, b]. */
-          bs.get(depth).set(bs.get(top));
-          as.get(top).add(bs.get(top), prec, as.get(depth));
-          acb_mul_2exp_si(as.get(depth), as.get(depth), -1);
-
-          /* Interval [top] becomes [a, mid]. */
-          bs.get(top).set(as.get(depth));
-
-          /* Evaluate on [a, mid] */
-          simpleQuadrature(as.get(top), bs.get(top), prec, vs.get(top));
-          assert vs.get(top).isFinite();
-          
-          mag_hypot(topm, vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
-          evalCount.incrementAndGet();
-          /* Adjust absolute tolerance based on new information. */
-          acb_get_mag_lower(tmpm, vs.get(top));
-          mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-          mag_max(newTol, newTol, tmpm);
-
-          /* Evaluate on [mid, b] */
-          simpleQuadrature(as.get(depth), bs.get(depth), prec, vs.get(depth));
-          assert vs.get(depth).isFinite();
-          
-          mag_hypot(ms.get(depth), vs.get(depth).getReal().getRad(), vs.get(depth).getImag().getRad());
-          evalCount.incrementAndGet();
-          /* Adjust absolute tolerance based on new information. */
-          acb_get_mag_lower(tmpm, vs.get(depth));
-          mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-          mag_max(newTol, newTol, tmpm);
-
-          /* Make the interval with the larger error the priority. */
-          if (mag_cmp(topm, ms.get(depth)) < 0)
-          {
-            acb_swap(as.get(top), as.get(depth));
-            acb_swap(bs.get(top), bs.get(depth));
-            acb_swap(vs.get(top), vs.get(depth));
-            mag_swap(topm, ms.get(depth));
-          }
+          bisect(relAccuracyGoalBits, prec, tmpm, newTol, depth, top, evalCount, as, bs, vs, ms, topm);
 
           if (useHeap)
           {
@@ -428,6 +363,137 @@ public interface ComplexFunction
     }
 
     return res;
+  }
+
+  public default void resizeRegisters(int allocation, Complex as, Complex bs, Complex vs, Magnitude ms)
+  {
+    int k;
+    as.resize(allocation);
+    bs.resize(allocation);
+    vs.resize(allocation);
+    ms.resize(allocation);
+    for (k = allocation; k < 2 * allocation; k++)
+    {
+      acb_init(as.get(k));
+      acb_init(bs.get(k));
+      acb_init(vs.get(k));
+      mag_init(ms.get(k));
+    }
+  }
+
+  public default void bisect(int relAccuracyGoalBits,
+                             int prec,
+                             Magnitude tmpm,
+                             Magnitude newTol,
+                             int depth,
+                             int top,
+                             AtomicLong evalCount,
+                             Complex as,
+                             Complex bs,
+                             Complex vs,
+                             Magnitude ms,
+                             Magnitude topm)
+  {
+    /* Bisection. */
+    /* Interval [depth] becomes [mid, b]. */
+    bs.get(depth).set(bs.get(top));
+    as.get(top).add(bs.get(top), prec, as.get(depth));
+    acb_mul_2exp_si(as.get(depth), as.get(depth), -1);
+
+    /* Interval [top] becomes [a, mid]. */
+    bs.get(top).set(as.get(depth));
+
+    /* Evaluate on [a, mid] */
+    simpleQuadrature(as.get(top), bs.get(top), prec, vs.get(top));
+    assert vs.get(top).isFinite();
+
+    mag_hypot(topm, vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
+    evalCount.incrementAndGet();
+    /* Adjust absolute tolerance based on new information. */
+    acb_get_mag_lower(tmpm, vs.get(top));
+    mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
+    mag_max(newTol, newTol, tmpm);
+
+    /* Evaluate on [mid, b] */
+    simpleQuadrature(as.get(depth), bs.get(depth), prec, vs.get(depth));
+    assert vs.get(depth).isFinite();
+
+    mag_hypot(ms.get(depth), vs.get(depth).getReal().getRad(), vs.get(depth).getImag().getRad());
+    evalCount.incrementAndGet();
+    /* Adjust absolute tolerance based on new information. */
+    acb_get_mag_lower(tmpm, vs.get(depth));
+    mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
+    mag_max(newTol, newTol, tmpm);
+
+    /* Make the interval with the larger error the priority. */
+    if (mag_cmp(topm, ms.get(depth)) < 0)
+    {
+      acb_swap(as.get(top), as.get(depth));
+      acb_swap(bs.get(top), bs.get(depth));
+      acb_swap(vs.get(top), vs.get(depth));
+      mag_swap(topm, ms.get(depth));
+    }
+  }
+
+  public default void accumulateIntegrand(int prec,
+                                          Complex s,
+                                          int depth,
+                                          int top,
+                                          boolean useHeap,
+                                          Complex as,
+                                          Complex bs,
+                                          Complex vs,
+                                          Magnitude ms)
+  {
+    s.add(vs.get(top), prec, s);
+    if (useHeap && depth > 0)
+    {
+      acb_swap(as, as.get(depth));
+      acb_swap(bs, bs.get(depth));
+      acb_swap(vs, vs.get(depth));
+      mag_swap(ms, ms.get(depth));
+      heap_up(as, bs, vs, ms, depth);
+    }
+  }
+
+  public default void accumulateGaussLegendreQuadrature(int relAccuracyGoalBits,
+                                                        int prec,
+                                                        Complex s,
+                                                        Complex u,
+                                                        Magnitude tmpm,
+                                                        Magnitude newTol,
+                                                        int depth,
+                                                        int top,
+                                                        boolean useHeap,
+                                                        Complex as,
+                                                        Complex bs,
+                                                        Complex vs,
+                                                        Magnitude ms)
+  {
+    boolean realError;
+    /* We know that the result is real. */
+    realError = vs.get(top).isFinite() && vs.get(top).isReal();
+
+    if (realError)
+    {
+      arb_zero(u.getImag());
+    }
+
+    s.add(u, prec, s);
+
+    /* Adjust absolute tolerance based on new information. */
+    acb_get_mag_lower(tmpm, u);
+    mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
+    mag_max(newTol, newTol, tmpm);
+
+    if (useHeap && depth > 0)
+    {
+      acb_swap(as, as.get(depth));
+      acb_swap(bs, bs.get(depth));
+      acb_swap(vs, vs.get(depth));
+      mag_swap(ms, ms.get(depth));
+      heap_up(as, bs, vs, ms, depth);
+    }
   }
 
   /**
@@ -606,8 +672,8 @@ public interface ComplexFunction
         ComplexFunction.this.evaluate(z, order, prec, w);
         w.printPrecision = true;
         z.printPrecision = true;
-        assert w.isFinite() : String.format("f(%s)=%s is not finite", z.toString(), w.toString() );
-        w.abs(prec,metric);
+        assert w.isFinite() : String.format("f(%s)=%s is not finite", z.toString(), w.toString());
+        w.abs(prec, metric);
         w.getReal().set(metric);
         w.getImag().zero();
       }
