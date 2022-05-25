@@ -3,6 +3,7 @@ package arb;
 import static arb.Constants.ONE;
 
 import arb.curves.Lemniscate;
+import arb.curves.LemniscateDerivative;
 import arb.exceptions.LackOfConvergenceException;
 import arb.exceptions.NotDifferentiableException;
 import junit.framework.TestCase;
@@ -54,10 +55,11 @@ public class ComplexFunctionTest extends
    */
   public static void testIntegration2() throws NotDifferentiableException, LackOfConvergenceException
   {
-    Lemniscate      f        = new Lemniscate();
-    ComplexFunction df       = f.differential();
+    int             prec     = 256;
 
-    Complex         zero     = new Complex();
+    Lemniscate      f        = new Lemniscate();
+    ComplexFunction df       = new LemniscateDerivative();
+
     ComplexFunction absdf    = df.abs();
 
     Complex         integral = new Complex();
@@ -65,15 +67,15 @@ public class ComplexFunctionTest extends
 
     Complex         a        = new Complex();
     Complex         b        = new Complex();
-    a.getReal().assign(0.2);
-    b.getReal().assign(0.3);
+    Real            breal    = b.getReal();
+    breal.pi(prec).div(2, prec, breal);
 
     IntegrationOptions opts = new IntegrationOptions();
     opts.verbose = true;
-    Complex abslprimeonehalf = absdf.evaluate(Constants.COMPLEX_HALF, 1, 128, new Complex() );
-    System.out.format("|l'(1/2)|=%s\n",abslprimeonehalf);
-    //opts.useHeap = true;
-    absdf.integrate(a, b, 128, absErr, opts, 256, integral);
+    Complex abslprimeonehalf = absdf.evaluate(Constants.COMPLEX_HALF, 1, 128, new Complex());
+    System.out.format("|l'(1/2)|=%s\n", abslprimeonehalf);
+    // opts.useHeap = true;
+    absdf.integrate(a, b, 128, absErr, opts, prec, integral);
     integral.printPrecision = true;
     System.out.format("int(l'(x),x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);
 

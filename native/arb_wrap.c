@@ -223,6 +223,10 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include <acb_modular.h>
 #include <acb_dft.h>
 
+  int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
+  int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
+  int f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
+
 #include "color.h"
 #ifndef size_t
 #define size_t long unsigned int
@@ -294,6 +298,81 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_f_1lemniscate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4, jint jarg5) {
+  jint jresult = 0 ;
+  acb_ptr arg1 = (acb_ptr) 0 ;
+  acb_struct *arg2 ;
+  void *arg3 = (void *) 0 ;
+  long arg4 ;
+  long arg5 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(acb_ptr *)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(void **)&jarg3; 
+  arg4 = (long)jarg4; 
+  arg5 = (long)jarg5; 
+  result = (int)f_lemniscate(arg1,(acb_struct const (*))arg2,arg3,arg4,arg5);
+  jresult = (jint)result; 
+  
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_f_1lemniscate_1derivative(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4, jint jarg5) {
+  jint jresult = 0 ;
+  acb_ptr arg1 = (acb_ptr) 0 ;
+  acb_struct *arg2 ;
+  void *arg3 = (void *) 0 ;
+  long arg4 ;
+  long arg5 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(acb_ptr *)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(void **)&jarg3; 
+  arg4 = (long)jarg4; 
+  arg5 = (long)jarg5; 
+  result = (int)f_lemniscate_derivative(arg1,(acb_struct const (*))arg2,arg3,arg4,arg5);
+  jresult = (jint)result; 
+  
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_f_1lemniscate_1derivative_1abs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4, jint jarg5) {
+  jint jresult = 0 ;
+  acb_ptr arg1 = (acb_ptr) 0 ;
+  acb_struct *arg2 ;
+  void *arg3 = (void *) 0 ;
+  long arg4 ;
+  long arg5 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(acb_ptr *)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(void **)&jarg3; 
+  arg4 = (long)jarg4; 
+  arg5 = (long)jarg5; 
+  result = (int)f_lemniscate_derivative_abs(arg1,(acb_struct const (*))arg2,arg3,arg4,arg5);
+  jresult = (jint)result; 
+  
+  return jresult;
+}
 
 
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1one(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {

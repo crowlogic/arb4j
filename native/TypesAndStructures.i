@@ -14,6 +14,10 @@
 #include <acb_modular.h>
 #include <acb_dft.h>
 
+  int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
+  int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
+  int f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
+
 #include "color.h"
 #ifndef size_t
 #define size_t long unsigned int

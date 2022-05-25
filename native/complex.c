@@ -246,6 +246,68 @@ SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1imag_1set(JNIEnv *jenv, j
   if (arg1) (arg1)->imag = *arg2;
 }
 
+int
+f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec)
+{
+       if (order > 1)
+             flint_abort();  /* Would be needed for Taylor method. */
+
+       //res=(2*I*Cos[t])/(I + Sin[t])
+       acb_t a,numerator,divisor;
+       acb_init(a);
+       acb_init(numerator);
+       acb_init(divisor);
+
+       acb_cos(a,z,prec);
+       acb_mul_si(numerator, a, 2, prec);
+       acb_sin(a,z,prec);
+       acb_mul_onei(divisor, a);
+       acb_neg(divisor,divisor);
+       acb_add_ui(divisor,divisor,1,prec);
+       acb_div(res,numerator,divisor,prec);
+
+       acb_clear(a);
+       acb_clear(numerator);
+       acb_clear(divisor);
+
+       return 0;
+}
+
+
+int
+f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec)
+{
+  // numerator=2*(Sin[z]-I)
+  // denominator=(Sin[z]+I)^2
+  acb_t a,numerator,denominator;
+  acb_init(a);
+  acb_init(numerator);
+  acb_init(denominator);
+  acb_sin(a,z,prec);
+  acb_set(numerator,a);
+  arb_sub_ui(acb_imagref(numerator), acb_imagref(numerator), 1, prec);
+  acb_mul_ui(numerator, numerator, 2, prec );
+  acb_set(denominator,a);
+  arb_add_ui(acb_imagref(denominator), acb_imagref(denominator), 1, prec);
+  acb_pow_ui(denominator, denominator, 2, prec);
+  acb_div( res, numerator, denominator, prec );
+  acb_clear(a);
+  acb_clear(numerator);
+  acb_clear(denominator);
+  return 0;
+}
+
+int
+f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec)
+{
+  int status = f_lemniscate_derivative(res,z,param,order,prec);
+  if ( status == 0 )
+  {
+    acb_abs(acb_realref(res), res, prec);
+    arb_zero(acb_imagref(res));
+  }
+  return status;
+}
 
 #ifdef __cplusplus
 }

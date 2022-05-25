@@ -119,7 +119,6 @@ public interface ComplexFunction
 
       /* Direct evaluation: integral = f([a,b]) * (b-a) */
       Complex val = evaluate(widePoint, 0, prec, res);
-      assert val.isFinite();
       return val.mul(δ, prec, res).mul2e(-1, res);
     }
   }
@@ -368,11 +367,12 @@ public interface ComplexFunction
   public default void resizeRegisters(int allocation, Complex as, Complex bs, Complex vs, Magnitude ms)
   {
     int k;
+    allocation *= 2;
     as.resize(allocation);
     bs.resize(allocation);
     vs.resize(allocation);
     ms.resize(allocation);
-    for (k = allocation; k < 2 * allocation; k++)
+    for (k = allocation; k < allocation; k++)
     {
       acb_init(as.get(k));
       acb_init(bs.get(k));
@@ -405,7 +405,6 @@ public interface ComplexFunction
 
     /* Evaluate on [a, mid] */
     simpleQuadrature(as.get(top), bs.get(top), prec, vs.get(top));
-    assert vs.get(top).isFinite();
 
     mag_hypot(topm, vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
     evalCount.incrementAndGet();
@@ -416,7 +415,6 @@ public interface ComplexFunction
 
     /* Evaluate on [mid, b] */
     simpleQuadrature(as.get(depth), bs.get(depth), prec, vs.get(depth));
-    assert vs.get(depth).isFinite();
 
     mag_hypot(ms.get(depth), vs.get(depth).getReal().getRad(), vs.get(depth).getImag().getRad());
     evalCount.incrementAndGet();
@@ -672,10 +670,12 @@ public interface ComplexFunction
         ComplexFunction.this.evaluate(z, order, prec, w);
         w.printPrecision = true;
         z.printPrecision = true;
-        assert w.isFinite() : String.format("f(%s)=%s is not finite", z.toString(), w.toString());
-        w.abs(prec, metric);
-        w.getReal().set(metric);
-        w.getImag().zero();
+        if (w.isFinite())
+        {
+          w.abs(prec, metric);
+          w.getReal().set(metric);
+          w.getImag().zero();
+        }
       }
       return w;
     };

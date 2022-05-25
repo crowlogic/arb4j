@@ -9,6 +9,18 @@
 package arb;
 
 public class arb {
+  public static int f_lemniscate(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec) {
+    return arbJNI.f_lemniscate(Complex.getCPtr(res), res, Complex.getCPtr(z), z, SWIGTYPE_p_void.getCPtr(param), order, prec);
+  }
+
+  public static int f_lemniscate_derivative(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec) {
+    return arbJNI.f_lemniscate_derivative(Complex.getCPtr(res), res, Complex.getCPtr(z), z, SWIGTYPE_p_void.getCPtr(param), order, prec);
+  }
+
+  public static int f_lemniscate_derivative_abs(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec) {
+    return arbJNI.f_lemniscate_derivative_abs(Complex.getCPtr(res), res, Complex.getCPtr(z), z, SWIGTYPE_p_void.getCPtr(param), order, prec);
+  }
+
   public static void acb_one(Complex z) {
     arbJNI.acb_one(Complex.getCPtr(z), z);
   }

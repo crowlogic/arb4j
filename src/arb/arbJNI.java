@@ -9,6 +9,9 @@
 package arb;
 
 public class arbJNI {
+  public final static native int f_lemniscate(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4, int jarg5);
+  public final static native int f_lemniscate_derivative(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4, int jarg5);
+  public final static native int f_lemniscate_derivative_abs(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4, int jarg5);
   public final static native void acb_one(long jarg1, Complex jarg1_);
   public final static native int arb_is_zero(long jarg1, Real jarg1_);
   public final static native int acb_is_zero(long jarg1, Complex jarg1_);
