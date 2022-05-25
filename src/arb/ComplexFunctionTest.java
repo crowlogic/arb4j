@@ -71,10 +71,10 @@ public class ComplexFunctionTest extends
     breal.pi(prec).div(2, prec, breal);
 
     IntegrationOptions opts = new IntegrationOptions();
-    opts.verbose = true;
+    //opts.verbose = true;
     Complex abslprimeonehalf = absdf.evaluate(Constants.COMPLEX_HALF, 1, 128, new Complex());
     System.out.format("|l'(1/2)|=%s\n", abslprimeonehalf);
-    // opts.useHeap = true;
+    opts.useHeap = true;
     absdf.integrate(a, b, 128, absErr, opts, prec, integral);
     integral.printPrecision = true;
     System.out.format("int(|l'(x)|,x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);

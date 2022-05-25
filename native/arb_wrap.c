@@ -1241,50 +1241,6 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1add_1error_1mag(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_heap_1up(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5) {
-  acb_ptr arg1 = (acb_ptr) 0 ;
-  acb_ptr arg2 = (acb_ptr) 0 ;
-  acb_ptr arg3 = (acb_ptr) 0 ;
-  mag_ptr arg4 = (mag_ptr) 0 ;
-  long arg5 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  (void)jarg3_;
-  (void)jarg4_;
-  arg1 = *(acb_ptr *)&jarg1; 
-  arg2 = *(acb_ptr *)&jarg2; 
-  arg3 = *(acb_ptr *)&jarg3; 
-  arg4 = *(mag_ptr *)&jarg4; 
-  arg5 = (long)jarg5; 
-  heap_up(arg1,arg2,arg3,arg4,arg5);
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_heap_1down(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5) {
-  acb_ptr arg1 = (acb_ptr) 0 ;
-  acb_ptr arg2 = (acb_ptr) 0 ;
-  acb_ptr arg3 = (acb_ptr) 0 ;
-  mag_ptr arg4 = (mag_ptr) 0 ;
-  long arg5 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  (void)jarg3_;
-  (void)jarg4_;
-  arg1 = *(acb_ptr *)&jarg1; 
-  arg2 = *(acb_ptr *)&jarg2; 
-  arg3 = *(acb_ptr *)&jarg3; 
-  arg4 = *(mag_ptr *)&jarg4; 
-  arg5 = (long)jarg5; 
-  heap_down(arg1,arg2,arg3,arg4,arg5);
-}
-
-
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;

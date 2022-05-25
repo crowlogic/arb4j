@@ -62,8 +62,6 @@ public class arbJNI {
   public final static native void mag_add_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void mag_mul_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void acb_add_error_mag(long jarg1, Complex jarg1_, long jarg2, Magnitude jarg2_);
-  public final static native void heap_up(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Magnitude jarg4_, int jarg5);
-  public final static native void heap_down(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Magnitude jarg4_, int jarg5);
   public final static native void arb_neg(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
   public final static native void arf_interval_swap(long jarg1, FloatInterval jarg1_, long jarg2, FloatInterval jarg2_);
   public final static native void arb_set_arf(long jarg1, Real jarg1_, long jarg2, Float jarg2_);

@@ -7,6 +7,7 @@ import static java.lang.Math.log;
 import arb.Complex;
 import arb.ComplexPolynomial;
 import arb.Constants;
+import arb.Magnitude;
 
 /**
  * TODO: implement and move to other classes
@@ -22,8 +23,54 @@ public final class Functions
   {
     System.loadLibrary("arblib");
   }
-  
+
   public static int prec = 256;
+
+  public static void heap_up(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
+  {
+    int i, max, l, r;
+    i = 0;
+    for (;;)
+    {
+      max = i;
+      l   = 2 * i + 1;
+      r   = 2 * i + 2;
+      if (l < n && mag_cmp(ms.get(l), ms.get(max)) > 0)
+        max = l;
+      if (r < n && mag_cmp(ms.get(r), ms.get(max)) > 0)
+        max = r;
+      if (max != i)
+      {
+        acb_swap(as.get(i), as.get(max));
+        acb_swap(bs.get(i), bs.get(max));
+        acb_swap(vs.get(i), vs.get(max));
+        mag_swap(ms.get(i), ms.get(max));
+        i = max;
+      }
+      else
+      {
+        break;
+      }
+    }
+  }
+
+  public static void heap_down(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
+  {
+    int j, k;
+
+    k = n - 1;
+    j = (k - 1) / 2;
+
+    while (k > 0 && mag_cmp(ms.get(j), ms.get(k)) < 0)
+    {
+      acb_swap(as.get(j), as.get(k));
+      acb_swap(bs.get(j), bs.get(k));
+      acb_swap(vs.get(j), vs.get(k));
+      mag_swap(ms.get(j), ms.get(k));
+      k = j;
+      j = (j - 1) / 2;
+    }
+  }
 
   /**
    * lemniscate sine: z=int(1/(1-t^4),t=0..sl(z))
