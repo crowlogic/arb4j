@@ -10,7 +10,6 @@
 package arb.functions.complex;
 
 import arb.Complex;
-import arb.ComplexFunction;
 
 /**
  * <code>t-f(t)/f'(t)</code>

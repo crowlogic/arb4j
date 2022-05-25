@@ -10,6 +10,8 @@ package arb;
 
 import static arb.Constants.*;
 
+import arb.functions.complex.ComplexFunction;
+
 public class ComplexPolynomial implements AutoCloseable,ComplexFunction {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;

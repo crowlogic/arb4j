@@ -1,4 +1,4 @@
-package arb;
+package arb.functions.complex;
 
 import static arb.arb.*;
 import static arb.functions.Functions.*;
@@ -6,6 +6,10 @@ import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import arb.Complex;
+import arb.IntegrationOptions;
+import arb.Magnitude;
+import arb.Real;
 import arb.exceptions.LackOfConvergenceException;
 import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;

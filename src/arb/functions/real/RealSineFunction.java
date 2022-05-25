@@ -1,7 +1,6 @@
 package arb.functions.real;
 
 import arb.Real;
-import arb.RealFunction;
 
 public class RealSineFunction implements
                           RealFunction

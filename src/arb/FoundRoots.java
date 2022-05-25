@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
+import arb.functions.real.RealFunction;
 
 /**
  * TODO: add a ruleOut function to check intervals with RootUnknown status ,

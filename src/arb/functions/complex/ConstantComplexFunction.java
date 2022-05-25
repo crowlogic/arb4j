@@ -1,4 +1,7 @@
-package arb;
+package arb.functions.complex;
+
+import arb.Complex;
+import arb.Constants;
 
 public class ConstantComplexFunction implements
                                      ComplexFunction

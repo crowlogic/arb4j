@@ -11,7 +11,7 @@ import arb.Constants;
 import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
-import arb.RealFunction;
+import arb.functions.real.RealFunction;
 import hageldave.jplotter.canvas.BlankCanvas;
 import hageldave.jplotter.renderables.Lines;
 import hageldave.jplotter.renderables.Lines.SegmentDetails;

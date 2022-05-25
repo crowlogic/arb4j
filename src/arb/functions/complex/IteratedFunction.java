@@ -1,7 +1,6 @@
 package arb.functions.complex;
 
 import arb.Complex;
-import arb.ComplexFunction;
 
 public class IteratedFunction implements ComplexFunction
 {

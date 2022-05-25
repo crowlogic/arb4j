@@ -1,4 +1,4 @@
-package arb;
+package arb.functions.real;
 
 import static java.lang.Math.pow;
 import static java.lang.System.out;
@@ -6,8 +6,13 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import arb.Float;
+import arb.FloatInterval;
+import arb.FoundRoots;
+import arb.Real;
+import arb.RealRootInterval;
+import arb.FloatInterval.RootStatus;
 import arb.functions.complex.ZFunction;
-import arb.functions.real.RealSineFunction;
 
 public class RealFunctionTest
 {

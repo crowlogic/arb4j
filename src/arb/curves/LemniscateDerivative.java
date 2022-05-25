@@ -3,9 +3,9 @@ package arb.curves;
 import static java.lang.Math.max;
 
 import arb.Complex;
-import arb.ComplexFunction;
 import arb.arb;
 import arb.exceptions.NotIntegrableException;
+import arb.functions.complex.ComplexFunction;
 
 public class LemniscateDerivative implements
                                   ComplexFunction

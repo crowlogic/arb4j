@@ -2,6 +2,8 @@ package arb;
 
 import static java.lang.System.out;
 
+import arb.functions.real.RealFunction;
+
 public class RealRootInterval extends
                               FloatInterval
 {

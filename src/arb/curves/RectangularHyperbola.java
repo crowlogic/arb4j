@@ -10,9 +10,9 @@
 package arb.curves;
 
 import arb.Complex;
-import arb.ComplexFunction;
 import arb.Constants;
 import arb.Real;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * A parameterization of a rectangular unit hyperbola where t ranges over -Pi to

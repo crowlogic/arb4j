@@ -3,7 +3,6 @@ package arb.functions.complex;
 import static arb.arb.*;
 
 import arb.Complex;
-import arb.ComplexFunction;
 import arb.Real;
 import arb.util.AutoArrayList;
 

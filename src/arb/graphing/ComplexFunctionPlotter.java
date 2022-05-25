@@ -43,15 +43,15 @@ import javax.swing.WindowConstants;
 import org.apache.commons.lang.time.StopWatch;
 
 import arb.Complex;
-import arb.ComplexFunction;
 import arb.Constants;
 import arb.Float;
 import arb.Real;
 import arb.ThreadLocalComplex;
 import arb.arb;
 import arb.functions.Part;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
-import arb.util.DateUtils;
+import arb.util.TimeUtils;
 
 /**
  * Copyright ©2022 Stephen Crowley
@@ -602,7 +602,7 @@ public class ComplexFunctionPlotter extends
   private void reportRenderingRate(StopWatch stopWatch)
   {
     stopWatch.stop();
-    double seconds = DateUtils.convertTimeUnits(stopWatch.getTime(), TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
+    double seconds = TimeUtils.convertTimeUnits(stopWatch.getTime(), TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
     double rate    = (xnum * ynum) / seconds;
     System.out.format("Rendered in " + seconds + " seconds at a rate of %.0f pixels/sec\n", rate);
   }

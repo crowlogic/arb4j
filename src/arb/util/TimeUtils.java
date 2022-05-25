@@ -3,7 +3,7 @@ package arb.util;
 import java.util.concurrent.TimeUnit;
 
 
-public class DateUtils
+public class TimeUtils
 {
 
   public static double convertToHours(TimeUnit fromUnit, double from)

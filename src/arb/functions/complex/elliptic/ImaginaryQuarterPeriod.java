@@ -1,6 +1,7 @@
 package arb.functions.complex.elliptic;
 
 import arb.*;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * The imaginary quarter perioid i*K'(s) is the Wick rotation of the derivative

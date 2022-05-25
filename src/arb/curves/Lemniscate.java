@@ -12,11 +12,11 @@ package arb.curves;
 import static java.lang.Math.max;
 
 import arb.Complex;
-import arb.ComplexFunction;
 import arb.Constants;
 import arb.Real;
 import arb.arb;
 import arb.exceptions.NotDifferentiableException;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * A parameterization of the Lemniscate of Bernoulli with parameter 2 where t

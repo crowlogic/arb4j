@@ -7,11 +7,19 @@
  * the License, or (at your option) any later version. See
  * <http://www.gnu.org/licenses/>.
  */
-package arb;
+package arb.functions.real;
 
 import static arb.arb.*;
 import static java.lang.System.out;
 
+import arb.Constants;
+import arb.Float;
+import arb.FloatInterval;
+import arb.FoundRoots;
+import arb.Magnitude;
+import arb.Real;
+import arb.RealRootInterval;
+import arb.arb;
 import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
 

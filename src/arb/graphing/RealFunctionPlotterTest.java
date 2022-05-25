@@ -3,9 +3,9 @@ package arb.graphing;
 import javax.swing.JFrame;
 
 import arb.FloatInterval;
-import arb.RealFunction;
-import arb.RealPart;
 import arb.functions.complex.SFunction;
+import arb.functions.real.RealFunction;
+import arb.functions.real.RealPart;
 import junit.framework.TestCase;
 
 public class RealFunctionPlotterTest

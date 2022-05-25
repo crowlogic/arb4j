@@ -1,4 +1,8 @@
-package arb;
+package arb.functions.real;
+
+import arb.Complex;
+import arb.Real;
+import arb.functions.complex.ComplexFunction;
 
 public class ImaginaryPart extends
                            ComplexPart implements

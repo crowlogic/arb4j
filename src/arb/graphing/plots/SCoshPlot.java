@@ -9,8 +9,8 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import arb.ComplexFunction;
 import arb.Constants;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.TFunction;
 import arb.graphing.ComplexFunctionPlotter;

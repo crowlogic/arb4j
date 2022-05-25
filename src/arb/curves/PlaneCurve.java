@@ -1,6 +1,8 @@
 package arb.curves;
 
 import arb.*;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.real.RealFunction;
 
 /**
  * 

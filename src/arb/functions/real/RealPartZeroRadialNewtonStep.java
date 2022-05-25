@@ -4,9 +4,8 @@ package arb.functions.real;
 import static arb.Constants.*;
 
 import arb.Complex;
-import arb.ComplexFunction;
 import arb.Real;
-import arb.RealFunction;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * Copyright ©2022 Stephen Crowley

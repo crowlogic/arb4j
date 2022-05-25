@@ -4,7 +4,6 @@ import static arb.Constants.*;
 import static java.lang.String.format;
 
 import arb.Complex;
-import arb.ComplexFunction;
 import arb.Constants;
 import arb.Real;
 import arb.functions.Functions;

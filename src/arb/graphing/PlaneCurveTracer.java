@@ -11,8 +11,8 @@ package arb.graphing;
 
 import java.awt.Graphics2D;
 
-import arb.ComplexFunction;
 import arb.curves.*;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * This class does what is needed to draw the curve on a graphics context
