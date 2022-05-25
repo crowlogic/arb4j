@@ -1,7 +1,7 @@
 package arb;
 
 import static arb.arb.*;
-import static arb.functions.Functions.overlaps;
+import static arb.functions.Functions.*;
 import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -237,7 +237,12 @@ public interface ComplexFunction
       verbose             = options.verbose;
       useHeap             = options.useHeap;
 
+      if ( useHeap )
+      {
+        throw new UnsupportedOperationException( "TODO: needs to be debugged");
+      }
       allocation          = 4;
+      // TODO: take as,bs,vs,ms  and put them in their own (static) class 
       try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
             Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);)
       {
@@ -446,10 +451,7 @@ public interface ComplexFunction
     s.add(vs.get(top), prec, s);
     if (useHeap && depth > 0)
     {
-      acb_swap(as, as.get(depth));
-      acb_swap(bs, bs.get(depth));
-      acb_swap(vs, vs.get(depth));
-      mag_swap(ms, ms.get(depth));
+      swapElements(depth, as, bs, vs, ms);
       heap_up(as, bs, vs, ms, depth);
     }
   }
@@ -486,12 +488,17 @@ public interface ComplexFunction
 
     if (useHeap && depth > 0)
     {
-      acb_swap(as, as.get(depth));
-      acb_swap(bs, bs.get(depth));
-      acb_swap(vs, vs.get(depth));
-      mag_swap(ms, ms.get(depth));
+      swapElements(depth, as, bs, vs, ms);
       heap_up(as, bs, vs, ms, depth);
     }
+  }
+
+  public default void swapElements(int depth, Complex as, Complex bs, Complex vs, Magnitude ms)
+  {
+    acb_swap(as, as.get(depth));
+    acb_swap(bs, bs.get(depth));
+    acb_swap(vs, vs.get(depth));
+    mag_swap(ms, ms.get(depth));
   }
 
   /**

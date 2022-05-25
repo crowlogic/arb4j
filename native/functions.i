@@ -102,10 +102,6 @@ void mag_mul_lower(mag_t z, const mag_t x, const mag_t y);
 
 void acb_add_error_mag(acb_t x, const mag_t err);
 
-void heap_up(acb_ptr as, acb_ptr bs, acb_ptr vs, mag_ptr ms, slong n);
-
-void heap_down(acb_ptr as, acb_ptr bs, acb_ptr vs, mag_ptr ms, slong n);
-
 void arb_neg(arb_t y, const arb_t x);
 
 void arf_interval_swap(arf_interval_t v, arf_interval_t u);

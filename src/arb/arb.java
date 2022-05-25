@@ -222,14 +222,6 @@ public class arb {
     arbJNI.acb_add_error_mag(Complex.getCPtr(x), x, Magnitude.getCPtr(err), err);
   }
 
-  public static void heap_up(Complex as, Complex bs, Complex vs, Magnitude ms, int n) {
-    arbJNI.heap_up(Complex.getCPtr(as), as, Complex.getCPtr(bs), bs, Complex.getCPtr(vs), vs, Magnitude.getCPtr(ms), ms, n);
-  }
-
-  public static void heap_down(Complex as, Complex bs, Complex vs, Magnitude ms, int n) {
-    arbJNI.heap_down(Complex.getCPtr(as), as, Complex.getCPtr(bs), bs, Complex.getCPtr(vs), vs, Magnitude.getCPtr(ms), ms, n);
-  }
-
   public static void arb_neg(Real y, Real x) {
     arbJNI.arb_neg(Real.getCPtr(y), y, Real.getCPtr(x), x);
   }
