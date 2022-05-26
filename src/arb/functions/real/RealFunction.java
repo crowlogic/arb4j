@@ -9,19 +9,18 @@
  */
 package arb.functions.real;
 
-import static arb.arb.*;
 import static java.lang.System.out;
 
 import arb.Constants;
 import arb.Float;
 import arb.FloatInterval;
+import arb.FloatInterval.RootStatus;
 import arb.FoundRoots;
 import arb.Magnitude;
 import arb.Real;
 import arb.RealRootInterval;
-import arb.arb;
-import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
+import arb.arb;
 
 /**
  * Interface which defines a function from ℝ -> ℝ where ℝ is the set of real

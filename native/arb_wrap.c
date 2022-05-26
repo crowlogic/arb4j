@@ -375,6 +375,26 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_f_1lemniscate_1derivative_1abs(JNIEnv *j
 }
 
 
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1cmp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jint jresult = 0 ;
+  arf_struct *arg1 ;
+  arf_struct *arg2 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arf_struct **)&jarg1; 
+  arg2 = *(arf_struct **)&jarg2; 
+  result = (int)arf_cmp((arf_struct const (*))arg1,(arf_struct const (*))arg2);
+  jresult = (jint)result; 
+  
+  
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1one(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   acb_struct *arg1 ;
   

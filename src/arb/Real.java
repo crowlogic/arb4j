@@ -14,7 +14,7 @@ import static arb.Constants.*;
 import static arb.arb.*;
 
 
-public class Real implements AutoCloseable {
+public class Real implements AutoCloseable, Comparable<Real> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -39,6 +39,21 @@ public class Real implements AutoCloseable {
 
  static { System.loadLibrary( "arblib" ); }
 
+  /**
+   * Compares the midpoint of this to another Real, disregarding the uncertainty
+   * radius if they are not equal. If they are equal, then compare the radius
+   */
+  @Override
+  public int compareTo(Real o)
+  {
+    int cmp = getMid().compareTo(o.getMid());
+    if ( cmp == 0 )
+    {
+      cmp = getRad().compareTo(o.getRad());
+    }
+    return cmp;
+  }
+  
   public Real set(int i)
   {
     arb.arb_set_si(this, i);;

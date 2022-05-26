@@ -21,6 +21,10 @@ public class arb {
     return arbJNI.f_lemniscate_derivative_abs(Complex.getCPtr(res), res, Complex.getCPtr(z), z, SWIGTYPE_p_void.getCPtr(param), order, prec);
   }
 
+  public static int arf_cmp(Float x, Float y) {
+    return arbJNI.arf_cmp(Float.getCPtr(x), x, Float.getCPtr(y), y);
+  }
+
   public static void acb_one(Complex z) {
     arbJNI.acb_one(Complex.getCPtr(z), z);
   }

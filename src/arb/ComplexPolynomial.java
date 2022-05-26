@@ -9,7 +9,6 @@
 package arb;
 
 import static arb.Constants.*;
-
 import arb.functions.complex.ComplexFunction;
 
 public class ComplexPolynomial implements AutoCloseable,ComplexFunction {

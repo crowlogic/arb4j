@@ -5,12 +5,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.WindowConstants;
-
 import arb.Complex;
-import arb.Constants;
 import arb.Real;
 import arb.functions.complex.SFunction;
 import arb.graphing.ComplexFunctionPlotter;

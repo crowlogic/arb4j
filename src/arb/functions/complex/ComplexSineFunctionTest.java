@@ -3,7 +3,6 @@ package arb.functions.complex;
 import static arb.ComplexConstants.π;
 import static arb.Constants.ZERO;
 import static java.lang.Math.pow;
-import static java.lang.System.out;
 
 import arb.Complex;
 import arb.Constants;

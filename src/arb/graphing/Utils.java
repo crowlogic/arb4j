@@ -7,7 +7,6 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import javax.swing.WindowConstants;
 
 import arb.Complex;
 import arb.Magnitude;

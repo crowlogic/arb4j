@@ -6,7 +6,6 @@ import arb.FloatInterval;
 import arb.functions.complex.SFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealPart;
-import junit.framework.TestCase;
 
 public class RealFunctionPlotterTest
 {

@@ -1,6 +1,6 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "AutoCloseable"
+%typemap(javainterfaces) arb_struct "AutoCloseable, Comparable<Real>"
 
 %typemap(javaimports) arb_struct %{
 import java.util.concurrent.TimeUnit;
@@ -13,6 +13,21 @@ import static arb.arb.*;
 %typemap(javacode) arb_struct %{
  static { System.loadLibrary( "arblib" ); }
 
+  /**
+   * Compares the midpoint of this to another Real, disregarding the uncertainty
+   * radius if they are not equal. If they are equal, then compare the radius
+   */
+  @Override
+  public int compareTo(Real o)
+  {
+    int cmp = getMid().compareTo(o.getMid());
+    if ( cmp == 0 )
+    {
+      cmp = getRad().compareTo(o.getRad());
+    }
+    return cmp;
+  }
+  
   public Real set(int i)
   {
     arb.arb_set_si(this, i);;

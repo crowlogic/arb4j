@@ -1,6 +1,7 @@
 package arb.curves;
 
-import arb.*;
+import arb.Complex;
+import arb.Constants;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
 import junit.framework.TestCase;

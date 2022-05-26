@@ -1,7 +1,5 @@
 package arb.graphing.plots;
 
-import static arb.Constants.ONE;
-
 import java.awt.Dimension;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;

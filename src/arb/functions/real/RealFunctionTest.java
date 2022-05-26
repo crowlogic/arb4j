@@ -11,7 +11,6 @@ import arb.FloatInterval;
 import arb.FoundRoots;
 import arb.Real;
 import arb.RealRootInterval;
-import arb.FloatInterval.RootStatus;
 import arb.functions.complex.ZFunction;
 
 public class RealFunctionTest

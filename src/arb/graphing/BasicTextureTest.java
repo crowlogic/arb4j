@@ -3,7 +3,6 @@ package arb.graphing;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
-import java.awt.DisplayMode;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;

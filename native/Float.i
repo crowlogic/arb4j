@@ -3,7 +3,7 @@ import static arb.Constants.*;
 %}
 
 %typemap(javafinalize) arf_struct ""
-%typemap(javainterfaces) arf_struct "AutoCloseable"
+%typemap(javainterfaces) arf_struct "AutoCloseable,Comparable<Float>"
 
 %typemap(javacode) arf_interval_struct %{
  public static final int BYTES = 64;
@@ -11,6 +11,12 @@ import static arb.Constants.*;
 
 %typemap(javacode) arf_struct %{
 
+  @Override
+  public int compareTo(Float o)
+  {
+    return arb.arf_cmp(this, o);
+  }
+  
   /**
    * 
    * @return {@link arb#arf_is_nan(Float)} != 0

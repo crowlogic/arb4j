@@ -1,7 +1,5 @@
 package arb;
 
-import static arb.arb.*;
-
 public class ComplexConstants
 {
   public static final Complex π = new Complex();
