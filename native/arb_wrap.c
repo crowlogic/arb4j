@@ -260,21 +260,28 @@ jmethodID deallocateMethod;
 
 void *allocate(size_t size)
 {
-  return (void*) (*env)->CallLongMethod(env, heap, allocateMethod, (jlong)size);
+  void *ptr = malloc(size);
+  (*env)->CallLongMethod(env, heap, allocateMethod, (jlong)ptr, (jlong)size);
+  return ptr;
 }
 
 void *callocate(size_t m, size_t size)
 {
-  return (void*)(*env)->CallLongMethod(env,heap,callocateMethod,m,size);
+  void *ptr = calloc(m,size);
+  (*env)->CallLongMethod(env,heap,callocateMethod,ptr,m,size);
+  return ptr;
 }
 
 void *reallocate(void *ptr, size_t size)
 {
-  return (void*)(*env)->CallLongMethod(env,heap,reallocateMethod,(jlong)ptr,(jlong)size);
+  void *newptr = realloc(ptr,size);
+  (void*)(*env)->CallLongMethod(env,heap,reallocateMethod,(jlong)ptr, (jlong)newptr, (jlong)size);
+  return newptr;
 }
 
 void deallocate(void *ptr)
 {
+  free(ptr);
   (*env)->CallVoidMethod(env,heap,deallocateMethod,(jlong)ptr);
 }
 

@@ -14,6 +14,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
+import org.lwjgl.system.Configuration;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.system.MemoryUtil.MemoryAllocationReport;
 import org.lwjgl.system.MemoryUtil.MemoryAllocationReport.Aggregate;
@@ -23,25 +24,24 @@ import arb.graphing.ComplexFunctionPlotter;
 import arb.graphing.Part;
 
 /**
- * Renders {@link XFunction} via {@link ComplexFunctionPlotter}
+ * Renders the {@link XFunction} via {@link ComplexFunctionPlotter}
  */
 public class XPlotter extends
                       ComplexFunctionPlotter
 {
   public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
   {
-    /**
-     * TODO: animate this
-     */
-    XPlotter plotter = new XPlotter(5);
-    plotter.plot();
-    plotter.saveToFile();
-    plotter.setVisible(false);
-    plotter.close();
-
+    Configuration.DEBUG_MEMORY_ALLOCATOR.set(true);
+    Configuration.MEMORY_ALLOCATOR.set("rpmalloc");
+    try ( XPlotter plotter = new XPlotter(5);)
+    {
+      plotter.plot();
+      plotter.saveToFile();
+      plotter.close();
+    }
     Thread.sleep(5000);
 
-    System.out.println( "Memory Leak Report:");
+    System.out.println("Memory Leak Report:");
     printMemoryReport();
   }
 
@@ -54,9 +54,9 @@ public class XPlotter extends
       public void
              invoke(long address, long memory, long threadId, String threadName, StackTraceElement... stacktrace)
       {
-        
-        System.out.format("addr=0x%x mem=0x%x threadId=%i threadName=%s\n", address, memory, threadId, threadName );
-        for ( StackTraceElement element : stacktrace )
+
+        System.out.format("addr=0x%x mem=0x%x threadId=%i threadName=%s\n", address, memory, threadId, threadName);
+        for (StackTraceElement element : stacktrace)
         {
           System.out.println(element);
         }

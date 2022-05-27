@@ -1091,6 +1091,11 @@ public class ComplexFunctionPlotter extends
   @Override
   public void close()
   {
+    if ( frame != null && frame.isVisible() )
+    {
+      frame.setVisible(false);
+      frame.dispose();
+    }
     this._w.remove();
     this._z.remove();
     pixel.remove();
