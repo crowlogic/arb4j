@@ -1,7 +1,5 @@
 package arb.functions.complex;
 
-import static java.lang.System.out;
-
 import arb.Complex;
 import junit.framework.TestCase;
 

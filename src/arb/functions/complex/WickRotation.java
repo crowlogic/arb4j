@@ -4,7 +4,10 @@ import arb.Complex;
 import arb.Constants;
 
 /**
- * Multiplication by the imaginary unit with optional negation
+ * Multiplication by the imaginary unit with optional negation. Wick rotation is
+ * called a rotation because when we represent complex numbers as a plane, the
+ * multiplication of a complex number by i is equivalent to rotating the vector
+ * representing that number by an angle of π/2 about the origin.
  * 
  * @author crow
  */

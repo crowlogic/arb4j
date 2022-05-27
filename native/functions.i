@@ -1,7 +1,10 @@
+
 int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 int f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 
+int arf_cmp(const arf_t x, const arf_t y);
+ 
 void acb_one(acb_t z);
  
 int arb_is_zero(const arb_t z);

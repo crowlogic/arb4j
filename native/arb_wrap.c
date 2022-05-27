@@ -249,15 +249,12 @@ extern "C" {
 
 #include <jni.h>
 
-extern JNIEnv* env;
-extern jclass realClass;
-extern jclass complexClass;
-extern jclass realFunctionClass;
-extern jclass complexFunctionClass;
-extern jmethodID realFunctionEvaluationMethod;
-extern jmethodID complexFunctionEvaluationMethod;
-extern jfieldID realCPtrField;
-extern jfieldID complexCPtrField;
+JNIEnv* env;
+jobject heap;
+jmethodID allocateMethod;
+jmethodID callocateMethod;
+jmethodID reallocateMethod;
+jmethodID deallocateMethod;
 
 JNIEnv *env;
 
@@ -282,11 +279,10 @@ void deallocate(void *ptr)
 }
 
 
+
 jint
 JNI_OnLoad (JavaVM *vm, void *reserved)
 {
-  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate );
-
   if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)
   {
     printf("GetEnv failed trying to load arb\n");
@@ -294,11 +290,23 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
     return -1;
   }
 
+  jclass                heapClass = (*env)->FindClass(env,   "arb/Heap" );
+  jmethodID       heapConstructor = (*env)->GetMethodID(env, heapClass, "<init>",  "()V");
+                   allocateMethod = (*env)->GetMethodID(env, heapClass, "malloc",  "(J)J");
+                  callocateMethod = (*env)->GetMethodID(env, heapClass, "calloc",  "(JJ)J");
+                 reallocateMethod = (*env)->GetMethodID(env, heapClass, "realloc", "(JJ)J");
+                 deallocateMethod = (*env)->GetMethodID(env, heapClass, "free",    "(J)V");
+
+  heap = (*env)->NewObject(env,heapClass,heapConstructor);
+  if ( !heap )  
+  {
+    (*env)->FatalError(env, "Failed to instantiate a new Heap instance\n");
+  }
+    
+  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
 
   return JNI_VERSION_10;
 }
-
-
 
 SWIGEXPORT jint JNICALL Java_arb_arbJNI_f_1lemniscate(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4, jint jarg5) {
   jint jresult = 0 ;
@@ -370,6 +378,26 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_f_1lemniscate_1derivative_1abs(JNIEnv *j
   arg5 = (long)jarg5; 
   result = (int)f_lemniscate_derivative_abs(arg1,(acb_struct const (*))arg2,arg3,arg4,arg5);
   jresult = (jint)result; 
+  
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1cmp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jint jresult = 0 ;
+  arf_struct *arg1 ;
+  arf_struct *arg2 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arf_struct **)&jarg1; 
+  arg2 = *(arf_struct **)&jarg2; 
+  result = (int)arf_cmp((arf_struct const (*))arg1,(arf_struct const (*))arg2);
+  jresult = (jint)result; 
+  
   
   return jresult;
 }

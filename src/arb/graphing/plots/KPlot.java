@@ -1,13 +1,14 @@
 package arb.graphing.plots;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 
-import arb.*;
-import arb.functions.*;
-import arb.functions.complex.elliptic.*;
-import arb.graphing.*;
+import arb.Complex;
+import arb.functions.complex.elliptic.RealQuarterPeriod;
+import arb.graphing.ComplexFunctionPlotter;
+import arb.graphing.Part;
 
 public class KPlot extends
                    ComplexFunctionPlotter

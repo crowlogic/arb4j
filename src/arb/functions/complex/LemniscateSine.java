@@ -9,11 +9,7 @@
  */
 package arb.functions.complex;
 
-import static arb.arb.acb_poly_init;
-
 import arb.Complex;
-import arb.ComplexPolynomial;
-import arb.arb;
 
 /**
  * lemniscate sine: z=int(1/(1-t^4),t=0..sl(z))

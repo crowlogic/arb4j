@@ -1,12 +1,9 @@
 
 package arb;
 
-import static java.lang.System.out;
-
 import java.util.ArrayList;
 
 import arb.FloatInterval.RootStatus;
-import arb.RealRootInterval.RefinementResult;
 import arb.functions.real.RealFunction;
 
 /**

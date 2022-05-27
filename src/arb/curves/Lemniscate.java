@@ -13,9 +13,6 @@ import static java.lang.Math.max;
 
 import arb.Complex;
 import arb.Constants;
-import arb.Real;
-import arb.arb;
-import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
 
 /**

@@ -203,7 +203,6 @@ typedef struct {
 extern "C" {
 #endif
 
-
 SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1real_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_struct *arg1 = (acb_struct *) 0 ;
   arb_struct *arg2 = (arb_struct *) 0 ;

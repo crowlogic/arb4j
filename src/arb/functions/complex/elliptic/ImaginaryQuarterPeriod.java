@@ -1,6 +1,6 @@
 package arb.functions.complex.elliptic;
 
-import arb.*;
+import arb.Complex;
 import arb.functions.complex.ComplexFunction;
 
 /**

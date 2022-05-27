@@ -2,7 +2,6 @@ package arb;
 
 import static java.lang.System.out;
 
-import arb.FloatInterval.RootStatus;
 import junit.framework.TestCase;
 
 public class RealRootIntervalTest extends

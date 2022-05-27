@@ -10,7 +10,7 @@ package arb;
 
 import static arb.Constants.*;
 
-public class Float implements AutoCloseable {
+public class Float implements AutoCloseable,Comparable<Float> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -34,6 +34,12 @@ public class Float implements AutoCloseable {
   }
 
 
+  @Override
+  public int compareTo(Float o)
+  {
+    return arb.arf_cmp(this, o);
+  }
+  
   /**
    * 
    * @return {@link arb#arf_is_nan(Float)} != 0
