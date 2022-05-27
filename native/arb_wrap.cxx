@@ -274,19 +274,46 @@ jmethodID callocateMethod;
 jmethodID reallocateMethod;
 jmethodID deallocateMethod;
 
+void printStackTrace(JNIEnv *env) 
+{
+    jclass cls = env->FindClass("java/lang/Exception");
+    if (cls != NULL) 
+    {
+        jmethodID constructor = env->GetMethodID(cls, "<init>", "()V");
+        if(constructor != NULL) 
+        {
+            jobject exc = env->NewObject(cls, constructor);
+            if(exc != NULL)
+             {
+                jmethodID printStackTrace = env->GetMethodID(cls, "printStackTrace", "()V");
+                if(printStackTrace != NULL) 
+                {
+                    env->CallObjectMethod(exc, printStackTrace);
+                } 
+            } 
+            env->DeleteLocalRef(exc);
+        } 
+    } 
+    /* free the local ref */
+    env->DeleteLocalRef(cls);
+}
+
 void *allocate(size_t size)
 {
   void *ptr = malloc(size);
-// printf("fucking allocated %i bytes at 0x%x\n", size, ptr );
+ //printf("fucking allocated %i bytes at 0x%x\n", size, ptr );
   //env->CallStaticVoidMethod( heapClass, allocateMethod, (jlong)ptr, (jlong)size);
+	//  printStackTrace(env);
   return ptr;
 }
 
 void *callocate(size_t m, size_t size)
 {
   void *ptr = calloc(m,size);
-  env->CallStaticVoidMethod(heapClass,callocateMethod,ptr,m,size);
-     printf("fucking callocated size=%i at 0x%x\n", size, ptr );
+  //env->CallStaticVoidMethod(heapClass,callocateMethod,ptr,m,size);
+   //  printf("fucking callocated size=%i at 0x%x\n", size, ptr );
+  // env->
+ 
  
   return ptr;
 }
