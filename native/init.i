@@ -3,14 +3,11 @@
 #include <jni.h>
 
 extern JNIEnv* env;
-extern jclass realClass;
-extern jclass complexClass;
-extern jclass realFunctionClass;
-extern jclass complexFunctionClass;
-extern jmethodID realFunctionEvaluationMethod;
-extern jmethodID complexFunctionEvaluationMethod;
-extern jfieldID realCPtrField;
-extern jfieldID complexCPtrField;
+extern jclass heapClass;
+extern jmethodID rallocateMethod;
+extern jmethodID callocateMethod;
+extern jmethodID reallocateMethod;
+extern jmethodID deallocateMethod;
 
 JNIEnv *env;
 
