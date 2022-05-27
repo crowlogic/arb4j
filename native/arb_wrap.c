@@ -250,6 +250,7 @@ extern "C" {
 #include <jni.h>
 
 JNIEnv* env;
+jobject heap;
 jclass heapClass;
 jmethodID allocateMethod;
 jmethodID callocateMethod;
@@ -291,11 +292,19 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
   }
 
   heapClass = (*env)->FindClass(env, "arb/Heap");
+  jmethodID heapConstructor = (*env)->GetMethodID(env, heapClass, "<init>", "()V");
   allocateMethod = (*env)->GetMethodID(env, heapClass, "malloc", "(J)J");
   callocateMethod = (*env)->GetMethodID(env, heapClass, "calloc", "(JJ)J");
   reallocateMethod = (*env)->GetMethodID(env, heapClass, "realloc", "(JJ)J");
   deallocateMethod = (*env)->GetMethodID(env, heapClass, "free", "(J)V");
 
+  // need to instantiate the heapClass here and assign the instance to the heap variable
+  heap = (*env)->NewObject(env,heapClass,heapConstructor);
+  if ( !heap )  
+  {
+    (*env)->FatalError(env, "Failed to instantiate a new Heap instance\n");
+  }
+    
   __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
 
   return JNI_VERSION_10;
