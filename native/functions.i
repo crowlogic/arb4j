@@ -3,6 +3,10 @@ int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong pr
 int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 int f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 
+void acb_calc_gl_node(arb_t x, arb_t w, slong i, slong k, slong prec);
+
+extern "C" {
+
 int arf_cmp(const arf_t x, const arf_t y);
  
 void acb_one(acb_t z);
@@ -111,7 +115,6 @@ void arf_interval_swap(arf_interval_t v, arf_interval_t u);
 
 void arb_set_arf(arb_t x, const arf_t y);
 
-extern void acb_calc_gl_node(arb_t x, arb_t w, slong i, slong k, slong prec);
 
 void mag_one(mag_t x);
 
@@ -454,3 +457,4 @@ void acb_init(acb_t x);
   void acb_sqrt(acb_t y, const acb_t x, slong prec);
   
  // TODO: add https://arb.org/acb_modular.html#c.psl2z_t
+}
