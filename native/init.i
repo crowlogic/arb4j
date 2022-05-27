@@ -4,7 +4,6 @@
 
 JNIEnv* env;
 jobject heap;
-jclass heapClass;
 jmethodID allocateMethod;
 jmethodID callocateMethod;
 jmethodID reallocateMethod;
@@ -44,14 +43,13 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
     return -1;
   }
 
-  heapClass = (*env)->FindClass(env, "arb/Heap");
-  jmethodID heapConstructor = (*env)->GetMethodID(env, heapClass, "<init>", "()V");
-  allocateMethod = (*env)->GetMethodID(env, heapClass, "malloc", "(J)J");
-  callocateMethod = (*env)->GetMethodID(env, heapClass, "calloc", "(JJ)J");
-  reallocateMethod = (*env)->GetMethodID(env, heapClass, "realloc", "(JJ)J");
-  deallocateMethod = (*env)->GetMethodID(env, heapClass, "free", "(J)V");
+  jclass                heapClass = (*env)->FindClass(env,   "arb/Heap" );
+  jmethodID       heapConstructor = (*env)->GetMethodID(env, heapClass, "<init>",  "()V");
+                   allocateMethod = (*env)->GetMethodID(env, heapClass, "malloc",  "(J)J");
+                  callocateMethod = (*env)->GetMethodID(env, heapClass, "calloc",  "(JJ)J");
+                 reallocateMethod = (*env)->GetMethodID(env, heapClass, "realloc", "(JJ)J");
+                 deallocateMethod = (*env)->GetMethodID(env, heapClass, "free",    "(J)V");
 
-  // need to instantiate the heapClass here and assign the instance to the heap variable
   heap = (*env)->NewObject(env,heapClass,heapConstructor);
   if ( !heap )  
   {
