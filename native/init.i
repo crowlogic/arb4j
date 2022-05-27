@@ -1,8 +1,8 @@
+%header %{
+#include <map>
+%}
 
 %wrapper %{
-#include <jni.h>
-
-#include <jni.h>
 
 JNIEnv* env;
 
@@ -11,6 +11,7 @@ jmethodID allocateMethod;
 jmethodID callocateMethod;
 jmethodID reallocateMethod;
 jmethodID deallocateMethod;
+std::map<void*,size_t> allocations;
 
 void printStackTrace(JNIEnv *env) 
 {
@@ -39,37 +40,46 @@ void printStackTrace(JNIEnv *env)
 void *allocate(size_t size)
 {
   void *ptr = malloc(size);
- //printf("fucking allocated %i bytes at 0x%x\n", size, ptr );
-  //env->CallStaticVoidMethod( heapClass, allocateMethod, (jlong)ptr, (jlong)size);
-	//  printStackTrace(env);
+	//  use Thread#getStackTrace
+	allocations[ptr] = size;
   return ptr;
 }
 
 void *callocate(size_t m, size_t size)
 {
   void *ptr = calloc(m,size);
-  //env->CallStaticVoidMethod(heapClass,callocateMethod,ptr,m,size);
-   //  printf("fucking callocated size=%i at 0x%x\n", size, ptr );
-  // env->
- 
- 
+  for ( int i = 0; i < m; i++ )
+  {
+    allocations[ptr+i] = size;
+  }
+
   return ptr;
 }
 
 void *reallocate(void *ptr, size_t size)
 {
+  if ( allocations.erase(ptr) == 0 )
+  {
+   char msg[300];
+   sprintf(msg,"Tried to reallocate pointer 0x%p which  hasn't been allocated\n", ptr );   
+   env->FatalError( msg );
+  }
   void *newptr = realloc(ptr,size);
- // env->CallStaticVoidMethod(heapClass,reallocateMethod,(jlong)ptr, (jlong)newptr, (jlong)size);
-   // printf("fucking reallocated size=%i at 0x%x\n", size, ptr );
- 
+  allocations[newptr] = size;
+
   return newptr;
 }
 
 void deallocate(void *ptr)
 {
+  if ( allocations.erase(ptr) == 0 )
+  {
+   char msg[300];
+   sprintf(msg,"Tried to free pointer 0x%p which  hasn't been allocated\n", ptr );   
+   env->FatalError( msg );
+  }
+  
   free(ptr);
- // printf("fucking freed 0x%x\n", ptr );
-  //env->CallStaticVoidMethod(heapClass,deallocateMethod,(jlong)ptr);
 }
 
 jint JNI_OnLoad (JavaVM *vm, void *reserved)
@@ -93,7 +103,6 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
 
   if ( !allocateMethod || !callocateMethod || !reallocateMethod || !deallocateMethod )
   {
-    printf("hmm alloc=0x%x calloc=0x%x realloc=0x%x dealloc=0x%x\n", allocateMethod, callocateMethod, reallocateMethod, deallocate );
     env->FatalError( "Failed to find the at least one of the methods in arb.Heap\n");
   }
   __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
