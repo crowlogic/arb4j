@@ -2,12 +2,12 @@
 %wrapper %{
 #include <jni.h>
 
-extern JNIEnv* env;
-extern jclass heapClass;
-extern jmethodID rallocateMethod;
-extern jmethodID callocateMethod;
-extern jmethodID reallocateMethod;
-extern jmethodID deallocateMethod;
+JNIEnv* env;
+jclass heapClass;
+jmethodID allocateMethod;
+jmethodID callocateMethod;
+jmethodID reallocateMethod;
+jmethodID deallocateMethod;
 
 JNIEnv *env;
 
@@ -32,11 +32,10 @@ void deallocate(void *ptr)
 }
 
 
+
 jint
 JNI_OnLoad (JavaVM *vm, void *reserved)
 {
-  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate );
-
   if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)
   {
     printf("GetEnv failed trying to load arb\n");
@@ -44,9 +43,14 @@ JNI_OnLoad (JavaVM *vm, void *reserved)
     return -1;
   }
 
+  heapClass = (*env)->FindClass(env, "arb/Heap");
+  allocateMethod = (*env)->GetMethodID(env, heapClass, "malloc", "(J)J");
+  callocateMethod = (*env)->GetMethodID(env, heapClass, "calloc", "(JJ)J");
+  reallocateMethod = (*env)->GetMethodID(env, heapClass, "realloc", "(JJ)J");
+  deallocateMethod = (*env)->GetMethodID(env, heapClass, "free", "(J)V");
+
+  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
 
   return JNI_VERSION_10;
 }
-
-
 %}
