@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.lwjgl.system.Configuration;
+
+import arb.graphing.plots.XPlotter;
 import junit.framework.TestCase;
 
 public class ComplexTest extends
@@ -13,6 +16,10 @@ public class ComplexTest extends
 {
   static double ε = pow(10, -8);
 
+  static
+  {
+    Configuration.MEMORY_ALLOCATOR.set("rpmalloc");
+  }
   public static void testNormalize()
   {
     try ( Complex r = new Complex(); Complex s = new Complex())
@@ -45,11 +52,11 @@ public class ComplexTest extends
     ComplexPolynomial interpolator = x.interpolateNewton(y, 3, 256, new ComplexPolynomial());
     Complex           coeffs       = interpolator.getCoeffs();
 
-    coeffs.dim = interpolator.getLength();
+    coeffs.dim      = interpolator.getLength();
     coeffs.elements = new Complex[coeffs.dim];
     System.out.format("Coeffs=%s\n", coeffs);
     // TODO: make the Real class so that it can be constructed with a Stream<Real>
-
+    XPlotter.printMemoryReport();
   }
 
 }

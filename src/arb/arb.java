@@ -21,6 +21,10 @@ public class arb {
     return arbJNI.f_lemniscate_derivative_abs(Complex.getCPtr(res), res, Complex.getCPtr(z), z, SWIGTYPE_p_void.getCPtr(param), order, prec);
   }
 
+  public static void acb_calc_gl_node(Real x, Real w, int i, int k, int prec) {
+    arbJNI.acb_calc_gl_node(Real.getCPtr(x), x, Real.getCPtr(w), w, i, k, prec);
+  }
+
   public static int arf_cmp(Float x, Float y) {
     return arbJNI.arf_cmp(Float.getCPtr(x), x, Float.getCPtr(y), y);
   }
@@ -236,10 +240,6 @@ public class arb {
 
   public static void arb_set_arf(Real x, Float y) {
     arbJNI.arb_set_arf(Real.getCPtr(x), x, Float.getCPtr(y), y);
-  }
-
-  public static void acb_calc_gl_node(Real x, Real w, int i, int k, int prec) {
-    arbJNI.acb_calc_gl_node(Real.getCPtr(x), x, Real.getCPtr(w), w, i, k, prec);
   }
 
   public static void mag_one(Magnitude x) {

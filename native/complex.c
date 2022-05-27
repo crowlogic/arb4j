@@ -153,7 +153,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 /* Support for throwing Java exceptions */
 typedef enum {
   SWIG_JavaOutOfMemoryError = 1,
@@ -198,52 +197,6 @@ typedef struct {
 #define size_t long unsigned int
 #endif
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1real_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  acb_struct *arg1 = (acb_struct *) 0 ;
-  arb_struct *arg2 = (arb_struct *) 0 ;
-
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(acb_struct **)&jarg1;
-  arg2 = *(arb_struct **)&jarg2;
-  if (arg1) (arg1)->real = *arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Complex_1real_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  acb_struct *arg1 = (acb_struct *) 0 ;
-  arb_struct *result = 0 ;
-
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(acb_struct **)&jarg1;
-  result = (arb_struct *)& ((arg1)->real);
-  *(arb_struct **)&jresult = result;
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1imag_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  acb_struct *arg1 = (acb_struct *) 0 ;
-  arb_struct *arg2 = (arb_struct *) 0 ;
-
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(acb_struct **)&jarg1;
-  arg2 = *(arb_struct **)&jarg2;
-  if (arg1) (arg1)->imag = *arg2;
-}
 
 int
 f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec)
@@ -307,6 +260,53 @@ f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong orde
   }
   return status;
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1real_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  acb_struct *arg1 = (acb_struct *) 0 ;
+  arb_struct *arg2 = (arb_struct *) 0 ;
+
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(acb_struct **)&jarg1;
+  arg2 = *(arb_struct **)&jarg2;
+  if (arg1) (arg1)->real = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_arblib_arblibJNI_Complex_1real_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  acb_struct *arg1 = (acb_struct *) 0 ;
+  arb_struct *result = 0 ;
+
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(acb_struct **)&jarg1;
+  result = (arb_struct *)& ((arg1)->real);
+  *(arb_struct **)&jresult = result;
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_arblib_arblibJNI_Complex_1imag_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  acb_struct *arg1 = (acb_struct *) 0 ;
+  arb_struct *arg2 = (arb_struct *) 0 ;
+
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(acb_struct **)&jarg1;
+  arg2 = *(arb_struct **)&jarg2;
+  if (arg1) (arg1)->imag = *arg2;
+}
+
 
 #ifdef __cplusplus
 }

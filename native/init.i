@@ -2,59 +2,74 @@
 %wrapper %{
 #include <jni.h>
 
-JNIEnv*   env;
-jobject   heap;
+#include <jni.h>
+
+JNIEnv* env;
+
+jclass heapClass;
 jmethodID allocateMethod;
 jmethodID callocateMethod;
 jmethodID reallocateMethod;
 jmethodID deallocateMethod;
 
-JNIEnv *env;
-
 void *allocate(size_t size)
 {
-  return malloc(size);
+  void *ptr = malloc(size);
+// printf("fucking allocated %i bytes at 0x%x\n", size, ptr );
+  //env->CallStaticVoidMethod( heapClass, allocateMethod, (jlong)ptr, (jlong)size);
+  return ptr;
 }
 
 void *callocate(size_t m, size_t size)
 {
-  return calloc(m, size);
+  void *ptr = calloc(m,size);
+  //env->CallStaticVoidMethod(heapClass,callocateMethod,ptr,m,size);
+   //  printf("fucking callocated size=%i at 0x%x\n", size, ptr );
+ 
+  return ptr;
 }
 
 void *reallocate(void *ptr, size_t size)
 {
-  return realloc(ptr,size);
+  void *newptr = realloc(ptr,size);
+ // env->CallStaticVoidMethod(heapClass,reallocateMethod,(jlong)ptr, (jlong)newptr, (jlong)size);
+   // printf("fucking reallocated size=%i at 0x%x\n", size, ptr );
+ 
+  return newptr;
 }
 
 void deallocate(void *ptr)
 {
   free(ptr);
+ // printf("fucking freed 0x%x\n", ptr );
+  //env->CallStaticVoidMethod(heapClass,deallocateMethod,(jlong)ptr);
 }
 
-jint
-JNI_OnLoad (JavaVM *vm, void *reserved)
+jint JNI_OnLoad (JavaVM *vm, void *reserved)
 {
-  if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)
+  if (vm->GetEnv((void**) &env, JNI_VERSION_10) != JNI_OK)
   {
     printf("GetEnv failed trying to load arb\n");
     fflush(stdout);
     return -1;
   }
 
-  jclass                heapClass = (*env)->FindClass(env,   "arb/Heap" );
-  jmethodID       heapConstructor = (*env)->GetMethodID(env, heapClass, "<init>",  "()V");
-                   allocateMethod = (*env)->GetMethodID(env, heapClass, "malloc",  "(J)J");
-                  callocateMethod = (*env)->GetMethodID(env, heapClass, "calloc",  "(JJ)J");
-                 reallocateMethod = (*env)->GetMethodID(env, heapClass, "realloc", "(JJ)J");
-                 deallocateMethod = (*env)->GetMethodID(env, heapClass, "free",    "(J)V");
-
-  heap = (*env)->NewObject(env,heapClass,heapConstructor);
-  if ( !heap )  
+  if ( ! ( heapClass = env->FindClass( "arb/Heap" ) ) )
   {
-    (*env)->FatalError(env, "Failed to instantiate a new Heap instance\n");
+    env->FatalError( "Failed to find the heap tracking class arb.Heap\n");
   }
-    
-  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
+
+                   allocateMethod = env->GetStaticMethodID( heapClass, "malloc",  "(JJ)V"),
+                  callocateMethod = env->GetStaticMethodID( heapClass, "calloc",  "(JJ)V"),
+                 reallocateMethod = env->GetStaticMethodID( heapClass, "realloc", "(JJJ)V"),
+                 deallocateMethod = env->GetStaticMethodID( heapClass, "free",    "(J)V");
+
+  if ( !allocateMethod || !callocateMethod || !reallocateMethod || !deallocateMethod )
+  {
+    printf("hmm alloc=0x%x calloc=0x%x realloc=0x%x dealloc=0x%x\n", allocateMethod, callocateMethod, reallocateMethod, deallocate );
+    env->FatalError( "Failed to find the at least one of the methods in arb.Heap\n");
+  }
+ // __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
 
   return JNI_VERSION_10;
 }
