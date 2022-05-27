@@ -153,7 +153,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 /* Support for throwing Java exceptions */
 typedef enum {
   SWIG_JavaOutOfMemoryError = 1,

@@ -693,7 +693,7 @@ public class ComplexFunctionPlotter extends
     });
   }
 
-  public boolean showHardyZRootLocations = true;
+  public boolean showHardyZRootLocations = false;
 
   private void drawStaticMarkups()
   {

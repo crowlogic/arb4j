@@ -14,6 +14,10 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
+import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.system.MemoryUtil.MemoryAllocationReport;
+import org.lwjgl.system.MemoryUtil.MemoryAllocationReport.Aggregate;
+
 import arb.functions.complex.XFunction;
 import arb.graphing.ComplexFunctionPlotter;
 import arb.graphing.Part;
@@ -24,7 +28,7 @@ import arb.graphing.Part;
 public class XPlotter extends
                       ComplexFunctionPlotter
 {
-  public static void main(String args[]) throws IOException, NoninvertibleTransformException
+  public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
   {
     /**
      * TODO: animate this
@@ -32,19 +36,47 @@ public class XPlotter extends
     XPlotter plotter = new XPlotter(5);
     plotter.plot();
     plotter.saveToFile();
+    plotter.setVisible(false);
+    plotter.close();
+
+    Thread.sleep(5000);
+
+    System.out.println( "Memory Leak Report:");
+    printMemoryReport();
   }
 
-  public static final int width = 2500/2;
+  public static void printMemoryReport()
+  {
+    MemoryUtil.memReport(new MemoryAllocationReport()
+    {
+
+      @Override
+      public void
+             invoke(long address, long memory, long threadId, String threadName, StackTraceElement... stacktrace)
+      {
+        
+        System.out.format("addr=0x%x mem=0x%x threadId=%i threadName=%s\n", address, memory, threadId, threadName );
+        for ( StackTraceElement element : stacktrace )
+        {
+          System.out.println(element);
+        }
+        System.out.println();
+
+      }
+    }, Aggregate.GROUP_BY_STACKTRACE, false);
+  }
+
+  public static final int width  = 2500 / 2;
   public static final int height = 1250;
-  
+
   public XPlotter(double vscale) throws NoninvertibleTransformException
   {
     super(new Dimension(width,
                         height),
           new Rectangle2D.Double(-10,
-                                 -7.5*5,
+                                 -7.5 * 5,
                                  80,
-                                 15*5),
+                                 15 * 5),
           new XFunction(vscale));
 
     color_mode        = 5;
@@ -52,6 +84,5 @@ public class XPlotter extends
     displayMode       = Part.Blend;
 
   }
-
 
 }
