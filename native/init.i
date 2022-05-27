@@ -41,7 +41,7 @@ void *allocate(size_t size)
   void *ptr = malloc(size);
  //printf("fucking allocated %i bytes at 0x%x\n", size, ptr );
   //env->CallStaticVoidMethod( heapClass, allocateMethod, (jlong)ptr, (jlong)size);
-  printStackTrace(env);
+	//  printStackTrace(env);
   return ptr;
 }
 
