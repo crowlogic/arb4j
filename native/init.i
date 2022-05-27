@@ -2,8 +2,8 @@
 %wrapper %{
 #include <jni.h>
 
-JNIEnv* env;
-jobject heap;
+JNIEnv*   env;
+jobject   heap;
 jmethodID allocateMethod;
 jmethodID callocateMethod;
 jmethodID reallocateMethod;
@@ -30,8 +30,6 @@ void deallocate(void *ptr)
 {
   free(ptr);
 }
-
-
 
 jint
 JNI_OnLoad (JavaVM *vm, void *reserved)
