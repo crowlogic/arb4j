@@ -42,6 +42,8 @@ void *allocate(size_t size)
   void *ptr = malloc(size);
 	//  use Thread#getStackTrace
 	allocations[ptr] = size;
+	printf("allocated %i bytes at 0x%x\n", size, ptr );
+	fflush(stdout);
   return ptr;
 }
 
@@ -52,6 +54,8 @@ void *callocate(size_t m, size_t size)
   {
     allocations[ptr+i] = size;
   }
+	printf("callocated %i blocks of %i bytes at 0x%x\n", m, size, ptr );
+	fflush(stdout);
 
   return ptr;
 }
@@ -66,7 +70,8 @@ void *reallocate(void *ptr, size_t size)
   }
   void *newptr = realloc(ptr,size);
   allocations[newptr] = size;
-
+	printf("reallocated %i bytes from 0x%x to 0x%x \n", size, ptr, newptr );
+	fflush(stdout);
   return newptr;
 }
 
@@ -74,10 +79,16 @@ void deallocate(void *ptr)
 {
   if ( allocations.erase(ptr) == 0 )
   {
-   char msg[300];
-   sprintf(msg,"Tried to free pointer 0x%p which  hasn't been allocated\n", ptr );   
-   env->FatalError( msg );
+   printf("Tried to free pointer 0x%p which  hasn't been allocated\n", ptr );
+   fflush(stdout);
+   int *segfault=0;
+   *segfault = 1;
   }
+  else
+  {
+    printf("deallocating 0x%x\n", ptr ); 
+  }
+  
   
   free(ptr);
 }

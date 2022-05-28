@@ -2,8 +2,9 @@ package arb.operators;
 
 import arb.Complex;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.real.RealFunction;
 
-public class FourierTransform implements
+public class FourierTransform<R extends RealFunction,C extends ComplexFunction> implements
                               IntegralTransform
 {
   public FourierTransform(ComplexFunction f)
