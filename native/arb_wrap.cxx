@@ -364,7 +364,21 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
     return -1;
   }
 
-//  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
+  if ( ! ( heapClass = env->FindClass( "arb/Heap" ) ) )
+  {
+    env->FatalError( "Failed to find the heap tracking class arb.Heap\n");
+  }
+
+                   allocateMethod = env->GetStaticMethodID( heapClass, "malloc",  "(JJ)V"),
+                  callocateMethod = env->GetStaticMethodID( heapClass, "calloc",  "(JJ)V"),
+                 reallocateMethod = env->GetStaticMethodID( heapClass, "realloc", "(JJJ)V"),
+                 deallocateMethod = env->GetStaticMethodID( heapClass, "free",    "(J)V");
+
+  if ( !allocateMethod || !callocateMethod || !reallocateMethod || !deallocateMethod )
+  {
+    env->FatalError( "Failed to find the at least one of the methods in arb.Heap\n");
+  }
+  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
 
   return JNI_VERSION_10;
 }

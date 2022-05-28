@@ -350,7 +350,7 @@ public class ComplexFunctionPlotter extends
     evalFunction(z, w);
   }
 
-  boolean singleThreading = false;
+  boolean singleThreading = true;
 
   public void evaluateFunctionOnGrid()
   {
