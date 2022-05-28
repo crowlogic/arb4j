@@ -33,6 +33,7 @@ import arb.Complex;
 import arb.Constants;
 import arb.Float;
 import arb.Real;
+import arb.ThreadLocalComplex;
 import arb.arb;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
@@ -66,7 +67,14 @@ public class ComplexFunctionPlotter extends
 
   protected Complex      w;
 
-  protected Complex      N          = Complex.newVector(2); // Newton step. w/dw
+  protected Complex      N          = Complex.newVector(2);                      // Newton step. w/dw
+
+  ThreadLocalComplex     _z         = new ThreadLocalComplex(2);
+
+  ThreadLocalComplex     _w         = new ThreadLocalComplex(2);
+
+  ThreadLocal<Pixel>     pixel      = ThreadLocal.withInitial(() -> new Pixel());
+  ThreadLocal<Pixel>     pixel2     = ThreadLocal.withInitial(() -> new Pixel());
 
   public int             color_mode = 0;
 
@@ -258,20 +266,21 @@ public class ComplexFunctionPlotter extends
     g2d.setComposite(originalComposite);
   }
 
-  private void colorizeAndRecordImagePixel(int x, int y, Complex w, Pixel pixel, Pixel pixel2)
+  private void colorizeAndRecordImagePixel(int x, int y, Complex w)
   {
-    colorizePixel(w, pixel, pixel2);
+    Pixel pixel = colorizePixel(w);
 
-    int red   = (int) min(255, floor(pixel.R[0] * 255));
-    int green = (int) min(255, floor(pixel.G[0] * 255));
-    int blue  = (int) min(255, floor(pixel.B[0] * 255));
+    int   red   = (int) min(255, floor(pixel.R[0] * 255));
+    int   green = (int) min(255, floor(pixel.G[0] * 255));
+    int   blue  = (int) min(255, floor(pixel.B[0] * 255));
     functionImage.setRGB(x, y, (red << 16) | (green << 8) | blue);
   }
 
   public Part displayMode = Part.Imag;
 
-  private Pixel colorizePixel(Complex w, Pixel pixel, Pixel pixel2)
+  private Pixel colorizePixel(Complex w)
   {
+    Pixel pixel = this.pixel.get();
     try ( Complex w2 = new Complex())
     {
 
@@ -293,14 +302,13 @@ public class ComplexFunctionPlotter extends
         // color_function once
         w2.getImag().set(w.getImag());
         arb.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
-
+        Pixel pixel2 = this.pixel2.get();
         w2.getImag().zero();
         w2.getReal().set(w.getReal());
         arb.color_function(pixel2.R, pixel2.G, pixel2.B, w2, color_mode);
         pixel.R[0] = (pixel.R[0] + pixel2.R[0] / 2.0);
         pixel.G[0] = (pixel.G[0] + pixel2.G[0] / 2.0);
         pixel.B[0] = (pixel.B[0] + pixel2.B[0] / 2.0);
-
       }
     }
     return pixel;
@@ -314,11 +322,29 @@ public class ComplexFunctionPlotter extends
     g.draw(line);
   }
 
-  public Complex evaluateFunction(int x, int y, Complex z, Complex w)
-  {
+  ThreadLocal<Complex[][]> cells  = newCell();
 
-    Float zr = z.getReal().getMid();
-    Float zi = z.getImag().getMid();
+  ThreadLocal<Complex[][]> zcells = newCell();
+  ThreadLocal<Complex[][]> wcells = newCell();
+
+  public static ThreadLocal<Complex[][]> newCell()
+  {
+    return ThreadLocal.withInitial(() ->
+    {
+      Complex[][] basis = new Complex[2][2];
+      for (int i = 0; i < 2; i++)
+        for (int j = 0; j < 2; j++)
+          basis[i][j] = Complex.newVector(2);
+      return basis;
+    });
+  }
+
+  public Complex evaluateFunction(int x, int y)
+  {
+    Complex z  = _z.get();
+    Complex w  = _w.get();
+    Float   zr = z.getReal().getMid();
+    Float   zi = z.getImag().getMid();
 
     for (int thisprec = 64; thisprec < 500; thisprec *= 2)
     {
@@ -361,15 +387,12 @@ public class ComplexFunctionPlotter extends
     {
       pixelStream = pixelStream.parallel();
     }
-    final Pixel pixel  = new Pixel();
-    final Pixel pixel2 = new Pixel();
-    Complex     z      = new Complex();
-    Complex     w      = Complex.newVector(2);
-    pixelStream.forEach(idx ->
+
+    pixelStream.forEach(pixel ->
     {
-      int y = idx / xnum;
-      int x = idx % xnum;
-      colorizeAndRecordImagePixel(x, y, evaluateFunction(x, y, z, w), pixel, pixel2);
+      int y = pixel / xnum;
+      int x = pixel % xnum;
+      colorizeAndRecordImagePixel(x, y, evaluateFunction(x, y));
     });
 
   }
@@ -993,7 +1016,10 @@ public class ComplexFunctionPlotter extends
       frame.setVisible(false);
       frame.dispose();
     }
-
+    this._w.remove();
+    this._z.remove();
+    pixel.remove();
+    pixel2.remove();
   }
 
 }

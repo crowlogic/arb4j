@@ -11,7 +11,6 @@ package arb.functions.real;
 
 import static java.lang.System.out;
 
-import arb.Complex;
 import arb.Constants;
 import arb.Float;
 import arb.FloatInterval;
@@ -22,24 +21,13 @@ import arb.Real;
 import arb.RealRootInterval;
 import arb.RealRootInterval.RefinementResult;
 import arb.arb;
-import arb.functions.complex.ComplexFunction;
 
 /**
  * Interface which defines a function from ℝ -> ℝ where ℝ is the set of real
  * number
  */
-public interface RealFunction extends ComplexFunction
+public interface RealFunction
 {
-  /**
-   * 
-   */
-  @Override
-  default Complex evaluate(Complex z, int order, int prec, Complex w)
-  {
-    evaluate(z.getReal(),order,prec,w.getReal());
-    return w;
-  }
-
   public Real evaluate(Real z, int order, int prec, Real res);
 
   public static final int FLINT_BITS = 64;

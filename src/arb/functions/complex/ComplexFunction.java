@@ -4,7 +4,6 @@ import static arb.arb.*;
 import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
 
 import arb.Complex;
 import arb.IntegrationOptions;
@@ -24,7 +23,7 @@ import arb.graphing.Utils;
  * the License, or (at your option) any later version. See
  * <http://www.gnu.org/licenses/>.
  */
-public interface ComplexFunction 
+public interface ComplexFunction
 {
 
   Complex evaluate(Complex z, int order, int prec, Complex w);
@@ -116,7 +115,7 @@ public interface ComplexFunction
       a.add(b, prec, midpoint).mul2e(-1, midpoint);
 
       /* wide = mid +- [delta] */
-      widePoint.set(midpoint);
+      acb_set(widePoint, midpoint);
       arb_get_mag(magδ, δ.getReal());
       arb_add_error_mag(widePoint.getReal(), magδ);
       arb_get_mag(magδ, δ.getImag());

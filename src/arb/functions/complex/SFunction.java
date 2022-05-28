@@ -40,14 +40,13 @@ public class SFunction implements
     {
       if (order >= 1)
       {
-        t.div(a, prec, r);
-        r.pow(2, prec, r);
-        r.neg(r);
-        r.add(1, prec, r);
-        r.pow(2, prec, r);
-        r.sub(1, prec, r);
-        r.add(2, prec, s);
-        r.div(s, prec, res);
+        t.div(a, prec, r)
+         .pow(2, prec, r)
+         .neg(r)
+         .add(1, prec, r)
+         .pow(2, prec, r) 
+         .sub(1, prec, r)
+         .div(r.add(2, prec, s), prec, res);
       }
       if (order >= 2)
       {
@@ -67,9 +66,9 @@ public class SFunction implements
    */
   public Complex evaluateDerivative(Complex t, int prec, Complex res1)
   {
-    try ( Complex b = t.div(a, prec, new Complex()); Complex c = b.pow(2, prec, new Complex());
-          Complex d = c.neg(new Complex()); Complex e = d.add(1, prec, new Complex());
-          Complex g = e.pow(2, prec, new Complex()); Complex h = g.add(1, prec, new Complex());)
+    try ( Complex b = t.div(a, prec, new Complex()); Complex c = b.pow(2, prec, new Complex()); Complex d = c.neg(new Complex());
+          Complex e = d.add(1, prec, new Complex()); Complex g = e.pow(2, prec, new Complex());
+          Complex h = g.add(1, prec, new Complex());)
     {
 
       ONE.div(h.pow(2, prec, g), prec, h);
