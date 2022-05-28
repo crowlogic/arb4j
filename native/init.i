@@ -105,7 +105,7 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   {
     env->FatalError( "Failed to find the at least one of the methods in arb.Heap\n");
   }
-  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
+ // __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
 
   return JNI_VERSION_10;
 }
