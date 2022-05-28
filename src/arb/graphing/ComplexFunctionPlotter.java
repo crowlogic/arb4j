@@ -144,17 +144,17 @@ public class ComplexFunctionPlotter extends
                                 Rectangle2D.Double domain,
                                 ComplexFunction function) throws NoninvertibleTransformException
   {
-    this.screen = screen;
-    this.domain = domain;
-    this.function  = function;
+    this.screen   = screen;
+    this.domain   = domain;
+    this.function = function;
     init();
   }
 
   public ComplexFunctionPlotter()
   {
-    
+
   }
-  
+
   public void init() throws NoninvertibleTransformException
   {
     setPreferredSize(this.screen);
@@ -339,67 +339,7 @@ public class ComplexFunctionPlotter extends
     });
   }
 
-  /**
-   * TODO: this needs improvement.. its not very effective at blending regions
-   * where the hue changes sharply
-   * 
-   * @param x
-   * @param y
-   * @return
-   */
-  public Complex evaluateFunctionWithBilinearInterpolation(int x, int y)
-  {
-    Complex[][] basis  = cells.get();
-
-    Complex[][] zbasis = zcells.get();
-    Complex[][] wbasis = wcells.get();
-
-    for (int i = 0; i < 2; i++)
-    {
-
-      for (int j = 0; j < 2; j++)
-      {
-        Complex z  = zbasis[i][j];
-        Complex w  = wbasis[i][j];
-
-        Float   zr = z.getReal().getMid();
-        Float   zi = z.getImag().getMid();
-        for (int thisprec = 30; thisprec < 500; thisprec *= 2)
-        {
-          // zi = ( (by - ay) * y ) / ( ynum - 1 ) +/- dx
-          // zr = ( (bx - ax) * x ) / ( xnum - 1 ) +/- dy
-          by.sub(ay, zi, thisprec).mul(y, zi, thisprec).div(ynum - 1, zi, thisprec).add(ay, zi, thisprec);
-          bx.sub(ax, zr, thisprec).mul(x, zr, thisprec).div(xnum - 1, zr, thisprec).add(ax, zr, thisprec);
-          if (i == 0)
-          {
-            zr.sub(dx, zr, thisprec, Constants.ARF_RND_UP);
-          }
-          else
-          {
-            zr.add(dx, zr, thisprec, Constants.ARF_RND_DOWN);
-          }
-          if (j == 0)
-          {
-            zi.sub(dy, zi, thisprec, Constants.ARF_RND_UP);
-          }
-          else
-          {
-            zi.add(dy, zi, thisprec, Constants.ARF_RND_DOWN);
-          }
-          function.evaluate(z, 2, prec, w);
-          // System.out.format("(%s,%s)=%s\n", zr, zi, w );
-
-          if (w.relAccuracyBits() > 4)
-            break;
-
-        }
-      }
-    }
-    Complex w = _w.get();
-    return wbasis[0][0].add(wbasis[0][1], prec, w).add(wbasis[1][0], prec, w).add(wbasis[1][1], prec, w).div(4, w);
-  }
-
-  public Complex evaluateFunctionNoInterpolation(int x, int y)
+  public Complex evaluateFunction(int x, int y)
   {
     Complex z  = _z.get();
     Complex w  = _w.get();
@@ -436,37 +376,24 @@ public class ComplexFunctionPlotter extends
     evalFunction(z, w);
   }
 
-  public boolean bilinearSmoothing = true;
-
   boolean singleThreading = true;
-  
+
   public void evaluateFunctionOnGrid()
   {
-    AtomicInteger counter = new AtomicInteger(xnum * ynum);
+    AtomicInteger counter     = new AtomicInteger(xnum * ynum);
 
-    IntStream pixelStream = shuffledEvaluationOrder();
-    if (!singleThreading )
+    IntStream     pixelStream = shuffledEvaluationOrder();
+    if (!singleThreading)
     {
       pixelStream = pixelStream.parallel();
     }
-    if (bilinearSmoothing)
-    {     
-      pixelStream.forEach(pixel ->
-      {
-        int y = pixel / xnum;
-        int x = pixel % xnum;
-        colorizeAndRecordImagePixel(x, y, evaluateFunctionWithBilinearInterpolation(x, y));
-      });
-    }
-    else
+
+    pixelStream.forEach(pixel ->
     {
-      pixelStream.forEach(pixel ->
-      {
-        int y = pixel / xnum;
-        int x = pixel % xnum;
-        colorizeAndRecordImagePixel(x, y, evaluateFunctionNoInterpolation(x, y));
-      });
-    }
+      int y = pixel / xnum;
+      int x = pixel % xnum;
+      colorizeAndRecordImagePixel(x, y, evaluateFunction(x, y));
+    });
 
   }
 
@@ -964,8 +891,8 @@ public class ComplexFunctionPlotter extends
 
   protected ComplexFunction function;
 
-  boolean disableNewton = true;
-                
+  boolean                   disableNewton = true;
+
   // w=f(z)
   public void evalFunction(Complex z, Complex w)
   {
@@ -1081,24 +1008,10 @@ public class ComplexFunctionPlotter extends
     mode = Mode.Zoom;
   }
 
-  public Complex evaluateFunction(int i, int j)
-  {
-    if (bilinearSmoothing)
-    {
-      return evaluateFunctionWithBilinearInterpolation(i, j);
-    }
-    else
-    {
-      return evaluateFunctionNoInterpolation(i, j);
-
-    }
-
-  }
-
   @Override
   public void close()
   {
-    if ( frame != null && frame.isVisible() )
+    if (frame != null && frame.isVisible())
     {
       frame.setVisible(false);
       frame.dispose();

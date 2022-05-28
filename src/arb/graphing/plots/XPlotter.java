@@ -80,7 +80,6 @@ public class XPlotter extends
           new XFunction(vscale));
 
     color_mode        = 5;
-    bilinearSmoothing = false;
     displayMode       = Part.Blend;
 
   }

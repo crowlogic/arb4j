@@ -34,7 +34,6 @@ public class SZetaPlotter extends
                                                         new WickRotation(true))));
 
     color_mode        = 06;
-    bilinearSmoothing = false;
     displayMode       = arb.graphing.Part.Blend;
   }
 
