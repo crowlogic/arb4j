@@ -18,11 +18,6 @@ public class ZPlot
 {
   private static JFrame frame;
 
-  static
-  {
-    System.loadLibrary("arb");
-  }
-
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
 
@@ -35,14 +30,15 @@ public class ZPlot
 
     ThreadLocalComplex Z = new ThreadLocalComplex(2);
 
-    ComplexFunction normalizedHardyZFunction = (z, order, prec, w) ->
-    {
-      ZFunction.Z(z, 2, w, Complex.defaultPrec);
-      return w.normalize(w);
-    };
+//    ComplexFunction normalizedHardyZFunction = (z, order, prec, w) ->
+//    {
+//      ZFunction.Z(z, 2, w, Complex.defaultPrec);
+//      return w.normalize(w);
+//    };
+    ZFunction func = new ZFunction();
     ComplexFunctionPlotter plotter = new ComplexFunctionPlotter(screen,
                                                                 domain,
-                                                                normalizedHardyZFunction);
+                                                                func);
 
     plotter.color_mode = 1;
 

@@ -438,13 +438,20 @@ public class ComplexFunctionPlotter extends
 
   public boolean bilinearSmoothing = true;
 
+  boolean singleThreading = true;
+  
   public void evaluateFunctionOnGrid()
   {
     AtomicInteger counter = new AtomicInteger(xnum * ynum);
 
-    if (bilinearSmoothing)
+    IntStream pixelStream = shuffledEvaluationOrder();
+    if (!singleThreading )
     {
-      shuffledEvaluationOrder().parallel().forEach(pixel ->
+      pixelStream = pixelStream.parallel();
+    }
+    if (bilinearSmoothing)
+    {     
+      pixelStream.forEach(pixel ->
       {
         int y = pixel / xnum;
         int x = pixel % xnum;
@@ -453,7 +460,7 @@ public class ComplexFunctionPlotter extends
     }
     else
     {
-      shuffledEvaluationOrder().parallel().forEach(pixel ->
+      pixelStream.forEach(pixel ->
       {
         int y = pixel / xnum;
         int x = pixel % xnum;
