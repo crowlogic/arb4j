@@ -617,9 +617,10 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     getImag().set(imag);
   }
  
-  public void clear()
+  public Complex clear()
   {
- 	arb._acb_vec_clear(this, dim);    
+ 	arb._acb_vec_clear(this, dim);
+ 	return this;    
   }
     
    /**
@@ -678,17 +679,7 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
   @Override
   public void close()
   {
-    if ( dim == 1 )
-    {
-      delete();
-    }
-    else
-    {
-      for (int i = 0; i < dim; i++)
-      {
-        get(i).delete();
-      }
-    }
+   clear();
   }
   
   Real real;

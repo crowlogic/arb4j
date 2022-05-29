@@ -39,6 +39,12 @@ public class Real implements AutoCloseable, Comparable<Real> {
 
  static { System.loadLibrary( "arblib" ); }
 
+  public Real clear()
+  {
+    arb_clear(this);
+    return this;
+  }
+
   /**
    * Compares the midpoint of this to another Real, disregarding the uncertainty
    * radius if they are not equal. If they are equal, then compare the radius
@@ -238,7 +244,7 @@ public class Real implements AutoCloseable, Comparable<Real> {
   @Override
   public void close() 
   { 
-    delete();
+    clear();
   }
 
   public Real add(Real d, int prec, Real res)

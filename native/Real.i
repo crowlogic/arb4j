@@ -13,6 +13,12 @@ import static arb.arb.*;
 %typemap(javacode) arb_struct %{
  static { System.loadLibrary( "arblib" ); }
 
+  public Real clear()
+  {
+    arb_clear(this);
+    return this;
+  }
+
   /**
    * Compares the midpoint of this to another Real, disregarding the uncertainty
    * radius if they are not equal. If they are equal, then compare the radius
@@ -212,7 +218,7 @@ import static arb.arb.*;
   @Override
   public void close() 
   { 
-    delete();
+    clear();
   }
 
   public Real add(Real d, int prec, Real res)

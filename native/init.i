@@ -1,17 +1,7 @@
-%header %{
-#include <map>
-%}
 
 %wrapper %{
 
 JNIEnv* env;
-
-jclass heapClass;
-jmethodID allocateMethod;
-jmethodID callocateMethod;
-jmethodID reallocateMethod;
-jmethodID deallocateMethod;
-std::map<void*,size_t> allocations;
 
 void *allocate(size_t size)
 {
@@ -44,7 +34,7 @@ void deallocate(void *ptr)
 
 jint JNI_OnLoad (JavaVM *vm, void *reserved)
 {
-  if (vm->GetEnv((void**) &env, JNI_VERSION_10) != JNI_OK)
+  if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)
   {
     printf("GetEnv failed trying to load arb\n");
     fflush(stdout);

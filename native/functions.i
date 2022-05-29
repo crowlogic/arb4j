@@ -354,6 +354,10 @@ int arb_contains_zero(const arb_t x);
 
   void acb_clear(acb_t x);
 
+void mag_clear(mag_t x);
+
+void arb_clear(arb_t x);
+
  void acb_add(acb_t z, const acb_t x, const acb_t y, slong prec);
 
  void acb_sub_ui(acb_t z, const acb_t x, ulong y, slong prec);

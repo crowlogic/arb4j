@@ -691,6 +691,10 @@ public class arb {
     arbJNI.acb_clear(Complex.getCPtr(x), x);
   }
 
+  public static void arb_clear(Real x) {
+    arbJNI.arb_clear(Real.getCPtr(x), x);
+  }
+
   public static void acb_add(Complex z, Complex x, Complex y, int prec) {
     arbJNI.acb_add(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
