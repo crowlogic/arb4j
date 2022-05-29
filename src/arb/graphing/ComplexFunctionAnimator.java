@@ -26,150 +26,34 @@ import io.humble.video.awt.MediaPictureConverterFactory;
 
 public class ComplexFunctionAnimator
 {
-  private JFrame frame;
+  private JFrame                frame;
+  Robot                         robot;
+  private Rectangle             screenbounds;
+  private Rational              framerate;
+  private Muxer                 muxer;
+  private MuxerFormat           format;
+  private Codec                 codec;
+  private Encoder               encoder;
+  private PixelFormat.Type      pixelformat;
+  private MediaPictureConverter converter;
+  private MediaPicture          picture;
+  private MediaPacket           packet;
+  private double                frameCount;
+  private double                maxSize;
 
-  /**
-   * Records the screen
-   * 
-   * @throws NoninvertibleTransformException
-   */
-  private static void renderAnimationSequence(String filename,
-                                              String formatname,
-                                              String codecname,
-                                              int duration,
-                                              int snapsPerSecond) throws AWTException,
-                                                                  InterruptedException,
-                                                                  IOException,
-                                                                  NoninvertibleTransformException
+  public static void
+         main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
   {
-    /**
-     * Set up the AWT infrastructure to take screenshots of the desktop.
-     */
-    final Robot       robot        = new Robot();
-    final Rectangle   screenbounds = new Rectangle(XPlotter.width,
-                                                   XPlotter.height);
-
-    final Rational    framerate    = Rational.make(1, snapsPerSecond);
-
-    /**
-     * First we create a muxer using the passed in filename and formatname if given.
-     */
-    final Muxer       muxer        = Muxer.make(filename, null, formatname);
-
-    /**
-     * Now, we need to decide what type of codec to use to encode video. Muxers have
-     * limited sets of codecs they can use. We're going to pick the first one that
-     * works, or if the user supplied a codec name, we're going to force-fit that in
-     * instead.
-     */
-    final MuxerFormat format       = muxer.getFormat();
-    final Codec       codec;
-    if (codecname != null)
+    for (Codec codec : Codec.getInstalledCodecs())
     {
-      codec = Codec.findEncodingCodecByName(codecname);
+      System.out.println("codec: " + codec);
     }
-    else
-    {
-      codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId());
-    }
-
-    /**
-     * Now that we know what codec, we need to create an encoder
-     */
-    Encoder encoder = Encoder.make(codec);
-
-    /**
-     * Video encoders need to know at a minimum: width height pixel format Some also
-     * need to know frame-rate (older codecs that had a fixed rate at which video
-     * files could be written needed this). There are many other options you can set
-     * on an encoder, but we're going to keep it simpler here.
-     */
-    encoder.setWidth(screenbounds.width);
-    encoder.setHeight(screenbounds.height);
-    // We are going to use 420P as the format because that's what most video formats
-    // these days use
-    final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
-    encoder.setPixelFormat(pixelformat);
-    encoder.setTimeBase(framerate);
-    /**
-     * An annoynace of some formats is that they need global (rather than
-     * per-stream) headers, and in that case you have to tell the encoder. And since
-     * Encoders are decoupled from Muxers, there is no easy way to know this beyond
-     */
-    if (format.getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
-      encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
-
-    /** Open the encoder. */
-    encoder.open(null, null);
-
-    /** Add this stream to the muxer. */
-    muxer.addNewStream(encoder);
-
-    /** And open the muxer for business. */
-    muxer.open(null, null);
-
-    /**
-     * Next, we need to make sure we have the right MediaPicture format objects to
-     * encode data with. Java (and most on-screen graphics programs) use some
-     * variant of Red-Green-Blue image encoding (a.k.a. RGB or BGR). Most video
-     * codecs use some variant of YCrCb formatting. So we're going to have to
-     * convert. To do that, we'll introduce a MediaPictureConverter object later.
-     * object.
-     */
-    MediaPictureConverter converter = null;
-    final MediaPicture    picture   = MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelformat);
-    picture.setTimeBase(framerate);
-
-    /**
-     * Now begin our main loop of taking screen snaps. We're going to encode and
-     * then write out any resulting packets.
-     */
-    final MediaPacket packet     = MediaPacket.make();
-    double            frameCount = duration / framerate.getDouble();
-
-    double            maxSize    = 5;
-
-    for (int i = 0; i < frameCount; i++)
-    {
-      final BufferedImage screen = renderFunction(i, 0.1 + maxSize * ((double) i / frameCount), frameCount);
-
-      /**
-       * This is LIKELY not in YUV420P format, so we're going to convert it using some
-       * handy utilities.
-       */
-      if (converter == null)
-        converter = MediaPictureConverterFactory.createConverter(screen, picture);
-      converter.toPicture(picture, screen, i);
-
-      do
-      {
-        encoder.encode(packet, picture);
-        if (packet.isComplete())
-          muxer.write(packet, false);
-      }
-      while (packet.isComplete());
-
-    }
-
-    /**
-     * Encoders, like decoders, sometimes cache pictures so it can do the right
-     * key-frame optimizations. So, they need to be flushed as well. As with the
-     * decoders, the convention is to pass in a null input until the output is not
-     * complete.
-     */
-    do
-    {
-      encoder.encode(packet, null);
-      if (packet.isComplete())
-        muxer.write(packet, false);
-    }
-    while (packet.isComplete());
-
-    /** Finally, let's clean up after ourselves. */
-    muxer.close();
+    ComplexFunctionAnimator animator = new ComplexFunctionAnimator();
+    animator.renderAnimationSequence("hmm.avi", "avi", "ffv1", 10, 20);
   }
 
-  public static BufferedImage renderFunction(int i, double a, double frameCount ) throws NoninvertibleTransformException, IOException
+  public static BufferedImage
+         renderFunction(int i, double a, double frameCount) throws NoninvertibleTransformException, IOException
   {
     // FIXME: draw the parameter a= that the function is rendered with
     XPlotter plotter = new XPlotter(a);
@@ -181,15 +65,107 @@ public class ComplexFunctionAnimator
     return image;
   }
 
-  @SuppressWarnings("static-access")
-  public static void
-         main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
+  private void renderAnimationSequence(String filename,
+                                       String formatname,
+                                       String codecname,
+                                       int duration,
+                                       int snapsPerSecond) throws AWTException,
+                                                           InterruptedException,
+                                                           IOException,
+                                                           NoninvertibleTransformException
   {
-    for (Codec codec : Codec.getInstalledCodecs())
+
+    robot        = new Robot();
+    screenbounds = new Rectangle(XPlotter.width,
+                                 XPlotter.height);
+    framerate    = Rational.make(1, snapsPerSecond);
+    muxer        = Muxer.make(filename, null, formatname);
+    try
     {
-      System.out.println("codec: " + codec);
+      format = muxer.getFormat();
+      if (codecname != null)
+      {
+        codec = Codec.findEncodingCodecByName(codecname);
+      }
+      else
+      {
+        codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId());
+      }
+
+      encoder = Encoder.make(codec);
+      encoder.setWidth(screenbounds.width);
+      encoder.setHeight(screenbounds.height);
+      pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
+      encoder.setPixelFormat(pixelformat);
+      encoder.setTimeBase(framerate);
+      if (format.getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
+      {
+        encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
+      }
+      encoder.open(null, null);
+      muxer.addNewStream(encoder);
+      muxer.open(null, null);
+      converter = null;
+      picture   = MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelformat);
+      picture.setTimeBase(framerate);
+
+      packet     = MediaPacket.make();
+      frameCount = duration / framerate.getDouble();
+      maxSize    = 5;
+
+      for (int i = 0; i < frameCount; i++)
+      {
+        renderAndEncodeFrame(i);
+      }
+
+      flushCache();
     }
-    renderAnimationSequence("hmm.avi", "avi", "ffv1", 10, 20);
+    finally
+    {
+      muxer.close();
+    }
+  }
+
+  private void flushCache()
+  {
+    do
+    {
+      encoder.encode(packet, null);
+      if (packet.isComplete())
+        muxer.write(packet, false);
+    }
+    while (packet.isComplete());
+  }
+
+  protected void renderAndEncodeFrame(int i) throws NoninvertibleTransformException, IOException
+  {
+    final BufferedImage screen = renderFunction(i, 0.1 + maxSize * ((double) i / frameCount), frameCount);
+
+    /**
+     * TODO: do this on a single-threaded work queue in the background so that the
+     * other unutilized processors can be utilized without having to unnecessarily
+     * wait on this step
+     */
+    encodeFrame(i, screen);
+  }
+
+  protected void encodeFrame(int i, final BufferedImage screen)
+  {
+    if (converter == null)
+    {
+      converter = MediaPictureConverterFactory.createConverter(screen, picture);
+    }
+    converter.toPicture(picture, screen, i);
+
+    do
+    {
+      encoder.encode(packet, picture);
+      if (packet.isComplete())
+      {
+        muxer.write(packet, false);
+      }
+    }
+    while (packet.isComplete());
   }
 
   /**
