@@ -7,9 +7,10 @@
  * the License, or (at your option) any later version. See
  * <http://www.gnu.org/licenses/>.
  */
-package arb.functions.complex;
+package arb.functions.complex.dynamics;
 
 import arb.Complex;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * <code>t-f(t)/f'(t)</code>

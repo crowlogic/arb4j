@@ -1,6 +1,7 @@
-package arb.functions.complex;
+package arb.functions.complex.dynamics;
 
 import arb.Complex;
+import arb.functions.complex.SFunction;
 import junit.framework.TestCase;
 
 public class NewtonMapTest extends

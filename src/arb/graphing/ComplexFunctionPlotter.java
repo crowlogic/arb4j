@@ -37,7 +37,7 @@ import arb.ThreadLocalComplex;
 import arb.arb;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
-import arb.util.TimeUtils;
+import arb.util.Utils;
 
 /**
  * Copyright ©2022 Stephen Crowley
@@ -522,7 +522,7 @@ public class ComplexFunctionPlotter extends
   private void reportRenderingRate(StopWatch stopWatch)
   {
     stopWatch.stop();
-    double seconds = TimeUtils.convertTimeUnits(stopWatch.getTime(), TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
+    double seconds = Utils.convertTimeUnits(stopWatch.getTime(), TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
     double rate    = (xnum * ynum) / seconds;
     System.out.format("Rendered in " + seconds + " seconds at a rate of %.0f pixels/sec\n", rate);
   }

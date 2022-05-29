@@ -1,9 +1,10 @@
-package arb.graphing;
+package arb.util;
 
 import static arb.arb.*;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -11,19 +12,25 @@ import javax.swing.UIManager;
 import arb.Complex;
 import arb.Magnitude;
 
-/**
- * A few utilities that simplify using windows in Swing. 1998-99 Marty Hall,
- * http://www.apl.jhu.edu/~hall/java/
- */
-
 public class Utils
 {
+
+  public static double convertTimeUnits(double from, TimeUnit fromUnit, TimeUnit toUnit)
+  {
+    double ratio = fromUnit.convert(1L, toUnit);
+    if (!Double.isFinite(ratio) || ratio == 0.0)
+    {
+      ratio = toUnit.convert(1L, fromUnit);
+      return from * ratio;
+    }
+    return from / ratio;
+  }
 
   /**
    * Tell system to use native look and feel, as in previous releases. Metal
    * (Java) LAF is the default otherwise.
    */
-
+  
   public static void setNativeLookAndFeel()
   {
     try
@@ -64,7 +71,7 @@ public class Utils
    * A simplified way to see a JPanel or other Container. Pops up a JFrame with
    * specified Container as the content pane.
    */
-
+  
   public static JFrame openInJFrame(Container content, int width, int height, String title, Color bgColor, int closeOp )
   {
     JFrame frame = new JFrame(title);
@@ -78,7 +85,7 @@ public class Utils
   }
 
   /** Uses Color.white as the background color. */
-
+  
   public static JFrame openInJFrame(Container content, int width, int height, String title, int closeOp )
   {
     return (openInJFrame(content, width, height, title, Color.white, closeOp));
@@ -88,7 +95,7 @@ public class Utils
    * Uses Color.white as the background color, and the name of the Container's
    * class as the JFrame title.
    */
-
+  
   public static JFrame openInJFrame(Container content, int width, int height, int closeOp )
   {
     return (openInJFrame(content, width, height, content.getClass().getName(), Color.white, closeOp ));
@@ -153,4 +160,6 @@ public class Utils
     acb_sub(tmp, a, b, prec);
     return acb_contains_zero(tmp) != 0;
   }
+
+
 }
