@@ -80,9 +80,9 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
 
   protected static int   prec       = 256;
 
-  int                    xnum;
+  int                    width;
 
-  int                    ynum;
+  int                    height;
 
   public Float           ax         = new Float();
 
@@ -104,7 +104,7 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
 
   boolean                headless   = false;
 
-  protected Dimension    screen;
+  protected Dimension    resolution;
 
   protected Rectangle2D  domain;
 
@@ -140,11 +140,11 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
 
   private Graphics2D     outputGraphics;
 
-  public ComplexFunctionPlotter(Dimension screen,
+  public ComplexFunctionPlotter(Dimension resolution,
                                 Rectangle2D.Double domain,
                                 F function) throws NoninvertibleTransformException
   {
-    this.screen   = screen;
+    this.resolution   = resolution;
     this.domain   = domain;
     this.function = function;
     init();
@@ -157,24 +157,24 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
 
   public void init() throws NoninvertibleTransformException
   {
-    setPreferredSize(this.screen);
-    setSize(this.screen);
+    setPreferredSize(this.resolution);
+    setSize(this.resolution);
     renderingHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
                                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     // setBorder(BorderFactory.createTitledBorder("Node"));
-    out.format("screen=%s\ndomain=%s\n", this.screen, this.domain);
-    this.xnum          = this.screen.width;
-    this.ynum          = this.screen.height;
+    out.format("screen=%s\ndomain=%s\n", this.resolution, this.domain);
+    this.width          = this.resolution.width;
+    this.height          = this.resolution.height;
     phase              = new Real();
     w                  = Complex.newVector(2);
-    functionImage      = new BufferedImage(xnum,
-                                           ynum,
+    functionImage      = new BufferedImage(width,
+                                           height,
                                            BufferedImage.TYPE_INT_RGB);
-    staticOverlayImage = new BufferedImage(xnum,
-                                           ynum,
+    staticOverlayImage = new BufferedImage(width,
+                                           height,
                                            BufferedImage.TYPE_INT_ARGB);
-    outputImage        = new BufferedImage(xnum,
-                                           ynum,
+    outputImage        = new BufferedImage(width,
+                                           height,
                                            BufferedImage.TYPE_INT_ARGB);
     newDynamicOverlay();
 
@@ -200,8 +200,8 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
     ay.assign(this.domain.getMinY());
     bx.assign(this.domain.getMaxX());
     by.assign(this.domain.getMaxY());
-    bx.sub(ax, dx, prec, Constants.ARF_RND_DOWN).div(xnum * 2, dx, prec);
-    by.sub(ay, dy, prec, Constants.ARF_RND_DOWN).div(ynum * 2, dy, prec);
+    bx.sub(ax, dx, prec, Constants.ARF_RND_DOWN).div(width * 2, dx, prec);
+    by.sub(ay, dy, prec, Constants.ARF_RND_DOWN).div(height * 2, dy, prec);
 
     // System.out.format("dx=%s\n dy=%s\n", dx, dy);
 
@@ -210,8 +210,8 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
 
   private synchronized void newDynamicOverlay() throws NoninvertibleTransformException
   {
-    dynamicOverlayImage    = new BufferedImage(xnum,
-                                               ynum,
+    dynamicOverlayImage    = new BufferedImage(width,
+                                               height,
                                                BufferedImage.TYPE_INT_ARGB);
     dynamicOverlayGraphics = dynamicOverlayImage.createGraphics();
     setScreenCoordinateSpaceGraphicsProperties(dynamicOverlayGraphics);
@@ -364,13 +364,13 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
     // zi = ( (by - ay) * y ) / ( ynum - 1 )
     by.sub(ay, zi, prec);
     zi.mul(y, zi, prec);
-    zi.div(ynum - 1, zi, prec);
+    zi.div(height - 1, zi, prec);
     zi.add(ay, zi, prec);
 
     // zr = ( (bx - ax) * x ) / ( xnum - 1 )
     bx.sub(ax, zr, prec);
     zr.mul(x, zr, prec);
-    zr.div(xnum - 1, zr, prec);
+    zr.div(width - 1, zr, prec);
     zr.add(ax, zr, prec);
 
     evalFunction(z, w);
@@ -380,7 +380,7 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
 
   public void evaluateFunctionOnGrid()
   {
-    AtomicInteger counter     = new AtomicInteger(xnum * ynum);
+    AtomicInteger counter     = new AtomicInteger(width * height);
 
     IntStream     pixelStream = shuffledEvaluationOrder();
     if (!singleThreading)
@@ -394,8 +394,8 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
      */
     pixelStream.forEach(pixel ->
     {
-      int y = pixel / xnum;
-      int x = pixel % xnum;
+      int y = pixel / width;
+      int x = pixel % width;
       colorizeAndRecordImagePixel(x, y, evaluateFunction(x, y));
     });
 
@@ -406,8 +406,8 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
     if (screenToFunctionMapping == null)
     {
       screenToFunctionMapping = new AffineTransform();
-      double xRatio = domain.getWidth() / screen.getWidth();
-      double yRatio = domain.getHeight() / screen.getHeight();
+      double xRatio = domain.getWidth() / resolution.getWidth();
+      double yRatio = domain.getHeight() / resolution.getHeight();
       screenToFunctionMapping.translate(domain.getX(), domain.getY());
       screenToFunctionMapping.scale(xRatio, yRatio);
     }
@@ -428,15 +428,15 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
   private void markAxes()
   {
     drawLine(staticOverlayGraphics,
-             new Double(-screen.getWidth(),
+             new Double(-resolution.getWidth(),
                         0),
-             new Double(screen.getWidth(),
+             new Double(resolution.getWidth(),
                         0));
     drawLine(staticOverlayGraphics,
              new Double(0,
-                        -screen.getHeight()),
+                        -resolution.getHeight()),
              new Double(0,
-                        screen.getHeight()));
+                        resolution.getHeight()));
   }
 
   private void markHorizontalTick(double x)
@@ -457,7 +457,7 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
   {
     double x     = 0;
     int    count = 0;
-    while (x < screen.getWidth())
+    while (x < resolution.getWidth())
     {
       x += xtick;
       markHorizontalTick(x);
@@ -481,7 +481,7 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
   private void markVerticalTicks()
   {
     double y = 0;
-    while (y < screen.getHeight())
+    while (y < resolution.getHeight())
     {
       y += ytick;
       markVerticalTick(y);
@@ -514,8 +514,8 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
   public void showFrame()
   {
     frame = Utils.openInJFrame(this,
-                               screen.width,
-                               screen.height,
+                               resolution.width,
+                               resolution.height,
                                getClass().getSimpleName(),
                                keepRunning ? WindowConstants.HIDE_ON_CLOSE : WindowConstants.EXIT_ON_CLOSE);
   }
@@ -524,7 +524,7 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
   {
     stopWatch.stop();
     double seconds = Utils.convertTimeUnits(stopWatch.getTime(), TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
-    double rate    = (xnum * ynum) / seconds;
+    double rate    = (width * height) / seconds;
     System.out.format("Rendered in " + seconds + " seconds at a rate of %.0f pixels/sec\n", rate);
   }
 
@@ -840,13 +840,13 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
 
   private IntStream orderedEvaluationOrder()
   {
-    List<Integer> integers = range(0, xnum * ynum).boxed().collect(Collectors.toList());
+    List<Integer> integers = range(0, width * height).boxed().collect(Collectors.toList());
     return integers.stream().mapToInt(x -> x);
   }
 
   private IntStream shuffledEvaluationOrder()
   {
-    List<Integer> integers = range(0, xnum * ynum).boxed().collect(Collectors.toList());
+    List<Integer> integers = range(0, width * height).boxed().collect(Collectors.toList());
     Collections.shuffle(integers);
     return integers.stream().mapToInt(x -> x);
   }
