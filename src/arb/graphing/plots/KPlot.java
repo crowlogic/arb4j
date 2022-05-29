@@ -59,7 +59,7 @@ public class KPlot extends
                                     -Math.PI*5,
                                     Math.PI*10,
                                     Math.PI*10);
-    screen = new Dimension(2000,
+    resolution = new Dimension(2000,
                            1000);
 
     final int prec = 512;

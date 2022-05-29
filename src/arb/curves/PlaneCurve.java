@@ -24,7 +24,7 @@ public interface PlaneCurve extends
    * of time. The formula for the arc-length function follows directly from the
    * formula for arc length:
    * 
-   * s=∫ta√(f′(u))2+(g′(u))2+(h′(u))2du
+   * s=∫(|this'(t)|,t=0..s)
    * 
    * @return the function whose value represents the distance traveled by a
    *         particle along this curve as a function of time
@@ -35,8 +35,8 @@ public interface PlaneCurve extends
   }
 
   /**
-   * The curvature of a curve is, roughly speaking, the rate at which that curve
-   * is turning.
+   * The curvature at the point t is the area of the rectangle which spans the
+   * points this'(t) and this''(t)
    * 
    * @return
    */

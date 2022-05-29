@@ -1,39 +1,37 @@
 
 package arb.graphing;
 
-import static java.lang.System.out;
+import static java.lang.System.*;
 
-import java.awt.AWTException;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.awt.*;
+import java.awt.geom.*;
+import java.awt.image.*;
+import java.io.*;
+import java.util.concurrent.*;
+import java.util.function.*;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
-import arb.graphing.plots.XPlotter;
-import io.humble.video.Codec;
-import io.humble.video.Encoder;
-import io.humble.video.MediaPacket;
-import io.humble.video.MediaPicture;
-import io.humble.video.Muxer;
-import io.humble.video.MuxerFormat;
-import io.humble.video.PixelFormat;
-import io.humble.video.Rational;
-import io.humble.video.awt.MediaPictureConverter;
-import io.humble.video.awt.MediaPictureConverterFactory;
+import arb.graphing.plots.*;
+import io.humble.video.*;
+import io.humble.video.awt.*;
 
-public class ComplexFunctionAnimator
+public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
 {
-  public ComplexFunctionAnimator() throws NoninvertibleTransformException
-  {
-    plotter             = new XPlotter();
-    frameEncodingThread = Executors.newSingleThreadExecutor();
+  private IntConsumer frameParameterAssigner;
+  private int         width;
+  private int         height;
 
+  public ComplexFunctionAnimator(P plotter,
+                                 IntConsumer frameParameterAssigner,
+                                 int frameCount) throws NoninvertibleTransformException
+  {
+    this.plotter                = plotter;
+    frameEncodingThread         = Executors.newSingleThreadExecutor();
+    this.frameParameterAssigner = frameParameterAssigner;
+    this.frameCount             = frameCount;
+    this.width                  = plotter.width;
+    this.height                 = plotter.height;
   }
 
   private JFrame                frame;
@@ -48,16 +46,37 @@ public class ComplexFunctionAnimator
   private MediaPictureConverter converter;
   private MediaPicture          picture;
   private MediaPacket           packet;
-  private int                frameCount;
+  public int                    frameCount;
   private double                maxSize;
   private ExecutorService       frameEncodingThread;
-  private XPlotter              plotter;
+  private P                     plotter;
 
   public static void
          main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
   {
-    ComplexFunctionAnimator animator = new ComplexFunctionAnimator();
-    animator.renderAnimatedSequence("hmm.avi", "avi", "ffv1", 10, 20);
+    final int frameCount = 500;
+    SPlotter  plotter    = new SPlotter();
+    plotter.displayMode = Part.Blend;
+    int                               duration               = 5;
+    IntConsumer                       frameParameterAssigner = frame ->
+                                                             {
+                                                               double scale = 0.1 + duration * ((double) frame
+                                                                             / (double) frameCount);
+                                                               System.out.format("Setting scale to %f\n", scale);
+                                                               plotter.function.scale.assign(scale);
+                                                             };
+    ComplexFunctionAnimator<SPlotter> animator               = new ComplexFunctionAnimator(plotter,
+                                                                                           frameParameterAssigner,
+                                                                                           frameCount);
+    animator.renderAnimatedSequence("hmm.avi", "avi", "ffv1", duration, frameCount / duration);
+    animator.close();
+    System.exit(777);
+  }
+
+  private void close()
+  {
+    frameEncodingThread.shutdownNow();
+    plotter.close();
   }
 
   protected static void printInstalledCodecs()
@@ -70,14 +89,11 @@ public class ComplexFunctionAnimator
 
   public BufferedImage renderFunction(int i, int frameCount) throws NoninvertibleTransformException, IOException
   {
-    // FIXME: draw the parameter a= that the function is rendered with and extract
-    // this frame# -> parameter setting idea into an interface
-    plotter.function.f.scale.assign(0.1 + maxSize * ((double) i / frameCount));
-    out.println("Drawing frame " + i + "/" + frameCount + " a=" + plotter.function.f.scale);
+
+    out.println("Drawing frame " + i + "/" + frameCount);
 
     BufferedImage image = convertToType(plotter.render(), BufferedImage.TYPE_3BYTE_BGR);
-//    plotter.frame.setVisible(false);
-//    plotter.frame.hide();
+
     System.gc();
     return image;
   }
@@ -85,34 +101,41 @@ public class ComplexFunctionAnimator
   public void renderAnimatedSequence(String filename,
                                      String formatname,
                                      String codecname,
-                                     int duration,
-                                     int snapsPerSecond) throws AWTException,
-                                                         InterruptedException,
-                                                         IOException,
-                                                         NoninvertibleTransformException
+                                     int seconds,
+                                     int framesPerSecond) throws AWTException,
+                                                          InterruptedException,
+                                                          IOException,
+                                                          NoninvertibleTransformException
   {
 
     robot        = new Robot();
-    screenbounds = new Rectangle(XPlotter.width,
-                                 XPlotter.height);
-    framerate    = Rational.make(1, snapsPerSecond);
+    screenbounds = new Rectangle(width,
+                                 height);
+    framerate    = Rational.make(1, framesPerSecond);
     muxer        = Muxer.make(filename, null, formatname);
     try
     {
-      prepareEncoder(codecname, duration);
+      prepareEncoder(codecname, seconds);
 
       for (int i = 0; i < frameCount; i++)
       {
         renderAndEncodeFrame(i);
       }
 
+      System.out.println("Shutting down");
+      frameEncodingThread.shutdown();
+      System.out.println("Waiting on shutdown");
+
       frameEncodingThread.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+      System.out.println("Everything is shutdown.. flushing cache");
       flushCache();
+      System.out.println("Cache is flushed");
     }
     finally
     {
       muxer.close();
     }
+    System.out.println("Finished animating sequence");
   }
 
   protected void prepareEncoder(String codecname, double seconds) throws InterruptedException, IOException
@@ -155,21 +178,17 @@ public class ComplexFunctionAnimator
     {
       encoder.encode(packet, null);
       if (packet.isComplete())
+      {
         muxer.write(packet, false);
+      }
     }
     while (packet.isComplete());
   }
 
   protected void renderAndEncodeFrame(int i) throws NoninvertibleTransformException, IOException
   {
-    final BufferedImage screen = renderFunction( i, frameCount);
-
-    /**
-     * TODO: do this on a single-threaded work queue in the background so that the
-     * other unutilized processors can be utilized without having to unnecessarily
-     * wait on this step
-     */
-    encodeFrame(i, screen);
+    frameParameterAssigner.accept(i);
+    encodeFrame(i, renderFunction(i, frameCount));
   }
 
   protected void encodeFrame(int i, final BufferedImage screen)
@@ -182,6 +201,7 @@ public class ComplexFunctionAnimator
       }
       converter.toPicture(picture, screen, i);
 
+      System.out.println("Writing frame# " + i);
       do
       {
         encoder.encode(packet, picture);
@@ -191,6 +211,9 @@ public class ComplexFunctionAnimator
         }
       }
       while (packet.isComplete());
+
+      System.out.println("Wrote frame# " + i);
+
     });
   }
 

@@ -102,16 +102,13 @@
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.1557191779;org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.1557191779.;org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.debug.1279192074;cdt.managedbuild.tool.gnu.c.compiler.input.1391777951">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.1557553679;org.eclipse.linuxtools.cdt.autotools.core.configuration.build.1557553679.;org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.122025390;cdt.managedbuild.tool.gnu.c.compiler.input.403339386">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.so.release.1881443755;cdt.managedbuild.config.gnu.so.release.1881443755.;cdt.managedbuild.tool.gnu.c.compiler.so.release.194590647;cdt.managedbuild.tool.gnu.c.compiler.input.1886750268">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.so.release.1881443755;cdt.managedbuild.config.gnu.so.release.1881443755.;cdt.managedbuild.tool.gnu.cpp.compiler.so.release.991251847;cdt.managedbuild.tool.gnu.cpp.compiler.input.1680898602">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.1557191779;org.eclipse.linuxtools.cdt.autotools.core.configuration.build.debug.1557191779.;org.eclipse.linuxtools.cdt.autotools.core.toolchain.tool.gcc.debug.1279192074;cdt.managedbuild.tool.gnu.c.compiler.input.1391777951">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
