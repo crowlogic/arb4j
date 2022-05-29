@@ -2,6 +2,7 @@ package arb;
 
 import static java.lang.System.out;
 
+import arb.calculus.FoundRoots;
 import arb.functions.real.RealFunction;
 
 public class RealRootInterval extends

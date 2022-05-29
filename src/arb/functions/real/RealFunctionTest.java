@@ -8,9 +8,9 @@ import org.junit.Test;
 
 import arb.Float;
 import arb.FloatInterval;
-import arb.FoundRoots;
 import arb.Real;
 import arb.RealRootInterval;
+import arb.calculus.FoundRoots;
 import arb.functions.complex.ZFunction;
 
 public class RealFunctionTest
