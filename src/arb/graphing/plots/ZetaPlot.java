@@ -17,10 +17,6 @@ public class ZetaPlot
 {
   private static JFrame frame;
 
-  static
-  {
-    System.loadLibrary("arb");
-  }
 
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {

@@ -388,6 +388,10 @@ public class ComplexFunctionPlotter extends
       pixelStream = pixelStream.parallel();
     }
 
+    /**
+     * TODO: consider another way to do this that doesn't leave some processors idle
+     * if they have finished their calculations before the others
+     */
     pixelStream.forEach(pixel ->
     {
       int y = pixel / xnum;
