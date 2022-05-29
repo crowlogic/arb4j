@@ -75,7 +75,7 @@ public class ComplexFunctionAnimator
     plotter.function.f.scale.assign(0.1 + maxSize * ((double) i / frameCount));
     out.println("Drawing frame " + i + "/" + frameCount + " a=" + plotter.function.f.scale);
 
-    BufferedImage image = convertToType(plotter.plot(), BufferedImage.TYPE_3BYTE_BGR);
+    BufferedImage image = convertToType(plotter.render(), BufferedImage.TYPE_3BYTE_BGR);
 //    plotter.frame.setVisible(false);
 //    plotter.frame.hide();
     System.gc();

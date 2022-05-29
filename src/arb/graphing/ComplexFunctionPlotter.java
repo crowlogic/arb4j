@@ -488,12 +488,11 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
     }
   }
 
-  boolean rendering = true;
 
-  public BufferedImage plot() throws IOException, NoninvertibleTransformException
+  public BufferedImage render() throws IOException, NoninvertibleTransformException
   {
-    if (!headless)
-    {
+    if (!headless && frame == null )
+    { 
       showFrame();
     }
 
@@ -506,8 +505,6 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
     drawStaticMarkups();
 
     evaluateFunctionOnGrid();
-
-    rendering = false;
 
     reportRenderingRate(stopWatch);
 

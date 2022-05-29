@@ -54,7 +54,7 @@ public class SPlot
 
       plotter.displayMode = Part.Blend;
       plotter.keepRunning = true;
-      plotter.plot();
+      plotter.render();
       arb.arb.flint_cleanup();
       arb.arb.flint_cleanup_master();
       System.exit(1);

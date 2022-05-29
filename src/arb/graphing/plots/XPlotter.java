@@ -26,8 +26,8 @@ public class XPlotter extends
                       ComplexFunctionPlotter<XFunction>
 {
 
-  public static final int width  = 2500 / 2;
-  public static final int height = 1250;
+  public static final int width  = 2500 / 4;
+  public static final int height = 1250 / 4 ;
 
   public XPlotter(Real vscale) throws NoninvertibleTransformException
   {

@@ -48,7 +48,7 @@ public class ZPlot
     frame.setVisible(true);
     frame.setContentPane(plotter);
     plotter.displayMode = Part.Imag;
-    plotter.plot();
+    plotter.render();
 
   }
 }
