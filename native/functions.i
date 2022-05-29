@@ -1,3 +1,6 @@
+ void flint_cleanup(void);
+ void flint_cleanup_master(void);
+
 
 int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);

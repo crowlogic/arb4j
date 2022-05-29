@@ -6,16 +6,27 @@ import static java.lang.String.format;
 import arb.Complex;
 import arb.Constants;
 import arb.Real;
+import arb.exceptions.NotDifferentiableException;
 
 /**
  * The rational meromorphic quartic
- * <code>S(t)=tanh(ln(1-t^2)))=(-1 + (1 - t^2)^2)/(1 + (1 - t^2)^2)</code>
+ * <code>S(t)=tanh(ln(1-t^2)))=((1 - t^2)^2 - 1)/((1 - t^2)^2 + 1)</code>
  * 
  * @author Stephen Crowley
  */
 public class SFunction implements
                        ComplexFunction
 {
+
+  @Override
+  public ComplexFunction differential() throws NotDifferentiableException
+  {
+    return (z, order, prec, w) ->
+    {
+      assert order <= 1;
+      return evaluateDerivative(z, prec, w);
+    };
+  }
 
   private static final Complex ONE = COMPLEX_ONE;
 
@@ -44,7 +55,7 @@ public class SFunction implements
          .pow(2, prec, r)
          .neg(r)
          .add(1, prec, r)
-         .pow(2, prec, r) 
+         .pow(2, prec, r)
          .sub(1, prec, r)
          .div(r.add(2, prec, s), prec, res);
       }
@@ -66,13 +77,25 @@ public class SFunction implements
    */
   public Complex evaluateDerivative(Complex t, int prec, Complex res1)
   {
-    try ( Complex b = t.div(a, prec, new Complex()); Complex c = b.pow(2, prec, new Complex()); Complex d = c.neg(new Complex());
-          Complex e = d.add(1, prec, new Complex()); Complex g = e.pow(2, prec, new Complex());
-          Complex h = g.add(1, prec, new Complex());)
+    /**
+     * TODO: optimize this and compute (t-1)*(t+1) since it appears in both the numerator and the
+     * denominator
+     */
+    try ( Complex b = new Complex(); Complex c = new Complex(); Complex d = new Complex(); Complex e = new Complex();
+          Complex g = new Complex(); Complex h = new Complex();)
     {
-
-      ONE.div(h.pow(2, prec, g), prec, h);
-      b.mul(8, prec, g).mul(e, prec, g).mul(h, prec, g).neg(res1);
+      t.div(a, prec, b);
+      b.pow(2, prec, c);
+      c.neg(d);
+      d.add(1, prec, e);
+      e.pow(2, prec, g);
+      g.add(1, prec, h);
+      h.pow(2, prec, g);
+      ONE.div(g, prec, h);
+      b.mul(8, prec, g);
+      g.mul(e, prec, g);
+      g.mul(h, prec, g);
+      g.neg(res1);
     }
     return res1;
   }
