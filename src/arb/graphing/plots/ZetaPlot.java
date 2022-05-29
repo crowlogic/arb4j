@@ -48,7 +48,7 @@ public class ZetaPlot
     frame.setResizable(false);
     frame.setVisible(true);
     frame.setContentPane(plotter);
-    plotter.plot();
+    plotter.render();
 
   }
 }

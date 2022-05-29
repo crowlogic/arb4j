@@ -217,6 +217,7 @@ public class arbJNI {
   public final static native void arb_set_interval_mag(long jarg1, Real jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_, int jarg4);
   public final static native void acb_modular_theta_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, ComplexPolynomial jarg3_, long jarg4, ComplexPolynomial jarg4_, long jarg5, ComplexPolynomial jarg5_, long jarg6, Complex jarg6_, int jarg7, int jarg8);
   public final static native void acb_poly_init(long jarg1, ComplexPolynomial jarg1_);
+  public final static native void arf_clear(long jarg1, Float jarg1_);
   public final static native void arb_init(long jarg1, Real jarg1_);
   public final static native void arf_init(long jarg1, Float jarg1_);
   public final static native void acb_init(long jarg1, Complex jarg1_);

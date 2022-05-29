@@ -7,9 +7,11 @@ import arb.Real;
 
 /**
  * The conjugate of this function is {@link YFunction}
+ * 
+ * @author crow
  */
 public class XFunction extends
-                       ComplexComposition
+                       ComplexComposition<SFunction, ZFunction>
 {
 
   public XFunction()
@@ -18,9 +20,9 @@ public class XFunction extends
           new ZFunction());
   }
 
-  public XFunction(double scale)
+  public XFunction(Real scale)
   {
-    super(new SFunction(new Real().assign(scale)),
+    super(new SFunction(scale),
           new ZFunction());
   }
 

@@ -75,8 +75,14 @@ public class Float implements AutoCloseable,Comparable<Float> {
   @Override
   public void close()
   { 
-	delete();    
+	clear();    
   }
+  
+  public Float clear()
+  {
+    arb.arf_clear(this);
+    return this;
+  } 
   
   public String toString(int digits)
   {

@@ -17,7 +17,7 @@ public class SZetaPlotter extends
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
     SZetaPlotter plotter = new SZetaPlotter();
-    plotter.plot();
+    plotter.render();
     plotter.saveToFile();
   }
 

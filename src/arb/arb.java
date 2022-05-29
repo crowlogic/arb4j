@@ -847,6 +847,10 @@ public class arb {
     arbJNI.acb_poly_init(ComplexPolynomial.getCPtr(poly), poly);
   }
 
+  public static void arf_clear(Float x) {
+    arbJNI.arf_clear(Float.getCPtr(x), x);
+  }
+
   public static void arb_init(Real x) {
     arbJNI.arb_init(Real.getCPtr(x), x);
   }

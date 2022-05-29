@@ -48,7 +48,7 @@ import arb.util.Utils;
  * the License, or (at your option) any later version. See *
  * <http://www.gnu.org/licenses/>.
  */
-public class ComplexFunctionPlotter extends
+public class ComplexFunctionPlotter<F extends ComplexFunction> extends
                                     JComponent implements
                                     AutoCloseable
 {
@@ -142,7 +142,7 @@ public class ComplexFunctionPlotter extends
 
   public ComplexFunctionPlotter(Dimension screen,
                                 Rectangle2D.Double domain,
-                                ComplexFunction function) throws NoninvertibleTransformException
+                                F function) throws NoninvertibleTransformException
   {
     this.screen   = screen;
     this.domain   = domain;
@@ -488,12 +488,11 @@ public class ComplexFunctionPlotter extends
     }
   }
 
-  boolean rendering = true;
 
-  public BufferedImage plot() throws IOException, NoninvertibleTransformException
+  public BufferedImage render() throws IOException, NoninvertibleTransformException
   {
-    if (!headless)
-    {
+    if (!headless && frame == null )
+    { 
       showFrame();
     }
 
@@ -506,8 +505,6 @@ public class ComplexFunctionPlotter extends
     drawStaticMarkups();
 
     evaluateFunctionOnGrid();
-
-    rendering = false;
 
     reportRenderingRate(stopWatch);
 
@@ -893,7 +890,7 @@ public class ComplexFunctionPlotter extends
     System.out.println("zoom to " + domain2);
   }
 
-  protected ComplexFunction function;
+  protected F function;
 
   boolean                   disableNewton = true;
 

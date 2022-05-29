@@ -43,7 +43,7 @@ public class KPlot extends
 
       plotter.displayMode = Part.Blend;
       plotter.keepRunning = true;
-      plotter.plot();
+      plotter.render();
       while (plotter.frame.isVisible())
       {
         Thread.sleep(1000);
