@@ -12,13 +12,9 @@ package arb.graphing.plots;
 import java.awt.Dimension;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
 
-import org.lwjgl.system.Configuration;
-import org.lwjgl.system.MemoryUtil;
-import org.lwjgl.system.MemoryUtil.MemoryAllocationReport;
-import org.lwjgl.system.MemoryUtil.MemoryAllocationReport.Aggregate;
-
+import arb.Constants;
+import arb.Real;
 import arb.functions.complex.XFunction;
 import arb.graphing.ComplexFunctionPlotter;
 import arb.graphing.Part;
@@ -27,27 +23,13 @@ import arb.graphing.Part;
  * Renders the {@link XFunction} via {@link ComplexFunctionPlotter}
  */
 public class XPlotter extends
-                      ComplexFunctionPlotter
+                      ComplexFunctionPlotter<XFunction>
 {
-  public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
-  {
-    Configuration.DEBUG_MEMORY_ALLOCATOR.set(true);
-    Configuration.MEMORY_ALLOCATOR.set("rpmalloc");
-    try ( XPlotter plotter = new XPlotter(5);)
-    {
-      plotter.plot();
-      plotter.saveToFile();
-      plotter.close();
-    }
-    Thread.sleep(5000);
-
-  }
-
 
   public static final int width  = 2500 / 2;
   public static final int height = 1250;
 
-  public XPlotter(double vscale) throws NoninvertibleTransformException
+  public XPlotter(Real vscale) throws NoninvertibleTransformException
   {
     super(new Dimension(width,
                         height),
@@ -57,9 +39,14 @@ public class XPlotter extends
                                  15 * 5),
           new XFunction(vscale));
 
-    color_mode        = 5;
-    displayMode       = Part.Blend;
+    color_mode  = 5;
+    displayMode = Part.Blend;
 
+  }
+
+  public XPlotter() throws NoninvertibleTransformException
+  {
+    this(Constants.ONE);
   }
 
 }

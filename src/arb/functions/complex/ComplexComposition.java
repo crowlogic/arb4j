@@ -8,19 +8,20 @@ import arb.ThreadLocalComplex;
  * handles the chain-rule
  *
  */
-public class ComplexComposition implements
-                                ComplexFunction,
-                                AutoCloseable
+public class ComplexComposition<F extends ComplexFunction, G extends ComplexFunction> implements
+                               ComplexFunction,
+                               AutoCloseable
 {
 
-  public ComplexComposition(ComplexFunction f, ComplexFunction g)
+  public ComplexComposition(F f, G g)
   {
     this.f = f;
     this.g = g;
 
   }
 
-  ComplexFunction    f, g;
+  public F           f;
+  public G           g;
   ThreadLocalComplex y = new ThreadLocalComplex(2);
 
   @Override
@@ -32,9 +33,9 @@ public class ComplexComposition implements
     }
     Complex y = this.y.get();
 
-    // y=g(t)        if order == 1 or y=[g(t), g'(t)]      if order==2 
+    // y=g(t) if order == 1 or y=[g(t), g'(t)] if order==2
     g.evaluate(t, order, prec, y);
-    // res=y=f(g(t)) if order==1   or y=[f(g(t)),f'(g(t))] if order==2
+    // res=y=f(g(t)) if order==1 or y=[f(g(t)),f'(g(t))] if order==2
     f.evaluate(y, order, prec, res);
 
     if (order == 2)

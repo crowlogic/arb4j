@@ -4026,6 +4026,18 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1init(JNIEnv *jenv, jclass jcl
 }
 
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arf_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  arf_struct *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(arf_struct **)&jarg1; 
+  arf_clear(arg1);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_struct *arg1 ;
   

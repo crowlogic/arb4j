@@ -30,16 +30,16 @@ public class SFunction implements
 
   private static final Complex ONE = COMPLEX_ONE;
 
-  Real                         a;
+  public Real                         scale;
 
   public SFunction()
   {
-    a = Constants.ONE;
+    scale = Constants.ONE;
   }
 
   public SFunction(Real scale)
   {
-    this.a = scale;
+    this.scale = scale;
   }
 
   @Override
@@ -51,7 +51,7 @@ public class SFunction implements
     {
       if (order >= 1)
       {
-        t.div(a, prec, r)
+        t.div(scale, prec, r)
          .pow(2, prec, r)
          .neg(r)
          .add(1, prec, r)
@@ -84,7 +84,7 @@ public class SFunction implements
     try ( Complex b = new Complex(); Complex c = new Complex(); Complex d = new Complex(); Complex e = new Complex();
           Complex g = new Complex(); Complex h = new Complex();)
     {
-      t.div(a, prec, b);
+      t.div(scale, prec, b);
       b.pow(2, prec, c);
       c.neg(d);
       d.add(1, prec, e);

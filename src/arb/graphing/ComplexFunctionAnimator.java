@@ -9,6 +9,9 @@ import java.awt.Robot;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 
@@ -26,6 +29,13 @@ import io.humble.video.awt.MediaPictureConverterFactory;
 
 public class ComplexFunctionAnimator
 {
+  public ComplexFunctionAnimator() throws NoninvertibleTransformException
+  {
+    plotter             = new XPlotter();
+    frameEncodingThread = Executors.newSingleThreadExecutor();
+
+  }
+
   private JFrame                frame;
   Robot                         robot;
   private Rectangle             screenbounds;
@@ -38,41 +48,48 @@ public class ComplexFunctionAnimator
   private MediaPictureConverter converter;
   private MediaPicture          picture;
   private MediaPacket           packet;
-  private double                frameCount;
+  private int                frameCount;
   private double                maxSize;
+  private ExecutorService       frameEncodingThread;
+  private XPlotter              plotter;
 
   public static void
          main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
+  {
+    ComplexFunctionAnimator animator = new ComplexFunctionAnimator();
+    animator.renderAnimatedSequence("hmm.avi", "avi", "ffv1", 10, 20);
+  }
+
+  protected static void printInstalledCodecs()
   {
     for (Codec codec : Codec.getInstalledCodecs())
     {
       System.out.println("codec: " + codec);
     }
-    ComplexFunctionAnimator animator = new ComplexFunctionAnimator();
-    animator.renderAnimationSequence("hmm.avi", "avi", "ffv1", 10, 20);
   }
 
-  public static BufferedImage
-         renderFunction(int i, double a, double frameCount) throws NoninvertibleTransformException, IOException
+  public BufferedImage renderFunction(int i, int frameCount) throws NoninvertibleTransformException, IOException
   {
-    // FIXME: draw the parameter a= that the function is rendered with
-    XPlotter plotter = new XPlotter(a);
-    out.println("Drawing frame " + i + "/" + frameCount + " a=" + a);
+    // FIXME: draw the parameter a= that the function is rendered with and extract
+    // this frame# -> parameter setting idea into an interface
+    plotter.function.f.scale.assign(0.1 + maxSize * ((double) i / frameCount));
+    out.println("Drawing frame " + i + "/" + frameCount + " a=" + plotter.function.f.scale);
+
     BufferedImage image = convertToType(plotter.plot(), BufferedImage.TYPE_3BYTE_BGR);
-    plotter.frame.setVisible(false);
-    plotter.frame.hide();
+//    plotter.frame.setVisible(false);
+//    plotter.frame.hide();
     System.gc();
     return image;
   }
 
-  private void renderAnimationSequence(String filename,
-                                       String formatname,
-                                       String codecname,
-                                       int duration,
-                                       int snapsPerSecond) throws AWTException,
-                                                           InterruptedException,
-                                                           IOException,
-                                                           NoninvertibleTransformException
+  public void renderAnimatedSequence(String filename,
+                                     String formatname,
+                                     String codecname,
+                                     int duration,
+                                     int snapsPerSecond) throws AWTException,
+                                                         InterruptedException,
+                                                         IOException,
+                                                         NoninvertibleTransformException
   {
 
     robot        = new Robot();
@@ -82,48 +99,54 @@ public class ComplexFunctionAnimator
     muxer        = Muxer.make(filename, null, formatname);
     try
     {
-      format = muxer.getFormat();
-      if (codecname != null)
-      {
-        codec = Codec.findEncodingCodecByName(codecname);
-      }
-      else
-      {
-        codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId());
-      }
-
-      encoder = Encoder.make(codec);
-      encoder.setWidth(screenbounds.width);
-      encoder.setHeight(screenbounds.height);
-      pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
-      encoder.setPixelFormat(pixelformat);
-      encoder.setTimeBase(framerate);
-      if (format.getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
-      {
-        encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
-      }
-      encoder.open(null, null);
-      muxer.addNewStream(encoder);
-      muxer.open(null, null);
-      converter = null;
-      picture   = MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelformat);
-      picture.setTimeBase(framerate);
-
-      packet     = MediaPacket.make();
-      frameCount = duration / framerate.getDouble();
-      maxSize    = 5;
+      prepareEncoder(codecname, duration);
 
       for (int i = 0; i < frameCount; i++)
       {
         renderAndEncodeFrame(i);
       }
 
+      frameEncodingThread.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
       flushCache();
     }
     finally
     {
       muxer.close();
     }
+  }
+
+  protected void prepareEncoder(String codecname, double seconds) throws InterruptedException, IOException
+  {
+    format = muxer.getFormat();
+    if (codecname != null)
+    {
+      codec = Codec.findEncodingCodecByName(codecname);
+    }
+    else
+    {
+      codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId());
+    }
+
+    encoder = Encoder.make(codec);
+    encoder.setWidth(screenbounds.width);
+    encoder.setHeight(screenbounds.height);
+    pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
+    encoder.setPixelFormat(pixelformat);
+    encoder.setTimeBase(framerate);
+    if (format.getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
+    {
+      encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
+    }
+    encoder.open(null, null);
+    muxer.addNewStream(encoder);
+    muxer.open(null, null);
+    converter = null;
+    picture   = MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelformat);
+    picture.setTimeBase(framerate);
+
+    packet     = MediaPacket.make();
+    frameCount = (int) (seconds / framerate.getDouble());
+    maxSize    = 5;
   }
 
   private void flushCache()
@@ -139,7 +162,7 @@ public class ComplexFunctionAnimator
 
   protected void renderAndEncodeFrame(int i) throws NoninvertibleTransformException, IOException
   {
-    final BufferedImage screen = renderFunction(i, 0.1 + maxSize * ((double) i / frameCount), frameCount);
+    final BufferedImage screen = renderFunction( i, frameCount);
 
     /**
      * TODO: do this on a single-threaded work queue in the background so that the
@@ -151,21 +174,24 @@ public class ComplexFunctionAnimator
 
   protected void encodeFrame(int i, final BufferedImage screen)
   {
-    if (converter == null)
+    frameEncodingThread.execute(() ->
     {
-      converter = MediaPictureConverterFactory.createConverter(screen, picture);
-    }
-    converter.toPicture(picture, screen, i);
-
-    do
-    {
-      encoder.encode(packet, picture);
-      if (packet.isComplete())
+      if (converter == null)
       {
-        muxer.write(packet, false);
+        converter = MediaPictureConverterFactory.createConverter(screen, picture);
       }
-    }
-    while (packet.isComplete());
+      converter.toPicture(picture, screen, i);
+
+      do
+      {
+        encoder.encode(packet, picture);
+        if (packet.isComplete())
+        {
+          muxer.write(packet, false);
+        }
+      }
+      while (packet.isComplete());
+    });
   }
 
   /**

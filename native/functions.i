@@ -441,6 +441,8 @@ void acb_modular_theta_series(acb_poly_t theta1, acb_poly_t theta2, acb_poly_t t
 
  void acb_poly_init(acb_poly_t poly);
  
+ void arf_clear(arf_t x);
+ 
 void arb_init(arb_t x);
 
 void arf_init(arf_t x);
