@@ -52,6 +52,11 @@ public class FastDFTScheme {
     return arbJNI.FastDFTScheme_type_get(swigCPtr, this);
   }
 
+  public acb_dft_pre_struct_t getT() {
+    long cPtr = arbJNI.FastDFTScheme_t_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new acb_dft_pre_struct_t(cPtr, false);
+  }
+
   public FastDFTScheme() {
     this(arbJNI.new_FastDFTScheme(), true);
   }

@@ -17,13 +17,12 @@ public class SPlot
 
   public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
   {
-
     Rectangle2D.Double domain = new Rectangle2D.Double(-Math.PI,
                                                        -1.5,
                                                        Math.PI * 2,
                                                        3);
-    Dimension          screen = new Dimension(2000,
-                                              1000);
+    Dimension          screen = new Dimension(2000/4,
+                                              1000/4);
 
     final int          prec   = 512;
 
@@ -56,11 +55,9 @@ public class SPlot
       plotter.displayMode = Part.Blend;
       plotter.keepRunning = true;
       plotter.plot();
-      while ( plotter.frame.isVisible() )
-      {
-        Thread.sleep(1000);
-      }
-      System.out.println( "Now, examine the heap to see what has yet to be freed");
+      arb.arb.flint_cleanup();
+      arb.arb.flint_cleanup_master();
+      System.exit(1);
       
     }
     

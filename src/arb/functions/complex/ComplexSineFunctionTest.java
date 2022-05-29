@@ -6,9 +6,9 @@ import static java.lang.Math.pow;
 
 import arb.Complex;
 import arb.Constants;
-import arb.IntegrationOptions;
 import arb.Magnitude;
 import arb.Real;
+import arb.calculus.IntegrationOptions;
 import arb.exceptions.LackOfConvergenceException;
 import junit.framework.TestCase;
 

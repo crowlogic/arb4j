@@ -1,3 +1,6 @@
+ void flint_cleanup(void);
+ void flint_cleanup_master(void);
+
 
 int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
@@ -350,6 +353,10 @@ int arb_contains_zero(const arb_t x);
  void acb_set(acb_t z, const acb_t x);
 
   void acb_clear(acb_t x);
+
+void mag_clear(mag_t x);
+
+void arb_clear(arb_t x);
 
  void acb_add(acb_t z, const acb_t x, const acb_t y, slong prec);
 

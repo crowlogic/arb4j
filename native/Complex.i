@@ -591,9 +591,10 @@ import static arb.arb.*;
     getImag().set(imag);
   }
  
-  public void clear()
+  public Complex clear()
   {
- 	arb._acb_vec_clear(this, dim);    
+ 	arb._acb_vec_clear(this, dim);
+ 	return this;    
   }
     
    /**
@@ -652,17 +653,7 @@ import static arb.arb.*;
   @Override
   public void close()
   {
-    if ( dim == 1 )
-    {
-      delete();
-    }
-    else
-    {
-      for (int i = 0; i < dim; i++)
-      {
-        get(i).delete();
-      }
-    }
+   clear();
   }
   
   Real real;

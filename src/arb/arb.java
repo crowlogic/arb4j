@@ -9,6 +9,14 @@
 package arb;
 
 public class arb {
+  public static void flint_cleanup() {
+    arbJNI.flint_cleanup();
+  }
+
+  public static void flint_cleanup_master() {
+    arbJNI.flint_cleanup_master();
+  }
+
   public static int f_lemniscate(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec) {
     return arbJNI.f_lemniscate(Complex.getCPtr(res), res, Complex.getCPtr(z), z, SWIGTYPE_p_void.getCPtr(param), order, prec);
   }
@@ -681,6 +689,10 @@ public class arb {
 
   public static void acb_clear(Complex x) {
     arbJNI.acb_clear(Complex.getCPtr(x), x);
+  }
+
+  public static void arb_clear(Real x) {
+    arbJNI.arb_clear(Real.getCPtr(x), x);
   }
 
   public static void acb_add(Complex z, Complex x, Complex y, int prec) {
