@@ -1,7 +1,7 @@
 package arb.exceptions;
 
 public class ArbException extends
-                          Exception
+                          RuntimeException
 {
 
   public ArbException(String msg)

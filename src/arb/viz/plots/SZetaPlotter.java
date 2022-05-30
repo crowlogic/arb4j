@@ -5,10 +5,10 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
-import arb.functions.complex.ComplexComposition;
 import arb.functions.complex.RiemannZetaFunction;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.WickRotation;
+import arb.operators.ComplexCompositionOperator;
 import arb.viz.ComplexFunctionPlotter;
 
 public class SZetaPlotter extends
@@ -29,8 +29,8 @@ public class SZetaPlotter extends
                                  -5,
                                  40,
                                  10),
-          new ComplexComposition(new SFunction(),
-                                 new ComplexComposition(new RiemannZetaFunction(),
+          new ComplexCompositionOperator(new SFunction(),
+                                 new ComplexCompositionOperator(new RiemannZetaFunction(),
                                                         new WickRotation(true))));
 
     color_mode        = 06;

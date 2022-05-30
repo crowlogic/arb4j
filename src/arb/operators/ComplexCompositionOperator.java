@@ -1,19 +1,20 @@
-package arb.functions.complex;
+package arb.operators;
 
 import arb.Complex;
 import arb.ThreadLocalComplex;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * The composition of two complex-valued functions <code>f(g(t))</code> which
  * handles the chain-rule
  *
  */
-public class ComplexComposition<F extends ComplexFunction, G extends ComplexFunction> implements
-                               ComplexFunction,
-                               AutoCloseable
+public class ComplexCompositionOperator<F extends ComplexFunction, G extends ComplexFunction> implements
+                                       ComplexFunction,
+                                       AutoCloseable
 {
 
-  public ComplexComposition(F f, G g)
+  public ComplexCompositionOperator(F f, G g)
   {
     this.f = f;
     this.g = g;

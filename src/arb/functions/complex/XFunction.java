@@ -4,6 +4,7 @@ import static arb.Constants.*;
 
 import arb.Complex;
 import arb.Real;
+import arb.operators.ComplexCompositionOperator;
 
 /**
  * The conjugate of this function is {@link YFunction}
@@ -11,7 +12,7 @@ import arb.Real;
  * @author crow
  */
 public class XFunction extends
-                       ComplexComposition<SFunction, ZFunction>
+                       ComplexCompositionOperator<SFunction, ZFunction>
 {
 
   public XFunction()

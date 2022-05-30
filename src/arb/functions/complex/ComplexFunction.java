@@ -5,6 +5,8 @@ import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.junit.experimental.theories.Theories;
+
 import arb.Complex;
 import arb.Magnitude;
 import arb.Real;
@@ -26,6 +28,36 @@ public interface ComplexFunction
 {
 
   Complex evaluate(Complex z, int order, int prec, Complex w);
+
+  /**
+   * Each linear operator A on a Euclidean vector space defines a (Hermitian)
+   * adjoint operator A^* on that space according to the rule <code> 
+   *  ⟨ A x , y ⟩ = ⟨ x , A^∗ y ⟩ , 
+   * </code> The adjoint may also be called the Hermitian conjugate or simply the
+   * Hermitian[1] after Charles Hermite. It is often denoted by A† in fields like
+   * physics, especially when used in conjunction with bra–ket notation in quantum
+   * mechanics. In finite dimensions (like here where the case of the complex
+   * numbers represents 2 real numbers) where operators are represented by
+   * matrices, the Hermitian adjoint is given by the conjugate transpose (also
+   * known as the Hermitian transpose).
+   * 
+   * The above definition of an adjoint operator extends verbatim to bounded
+   * linear operators on Hilbert spaces H. The definition has been further
+   * extended to include unbounded densely defined operators whose domain is
+   * topologically dense in—but not necessarily equal to— to whole space H.
+   * 
+   * @return this(t*) where t*=conj(t) is the complex conjugate transpose
+   */
+  public default ComplexFunction adjoint()
+  {
+    return (z, order, prec, w) ->
+    {
+      try ( Complex a = z.conj(new Complex());)
+      {
+        return ComplexFunction.this.evaluate(a, order, prec, w);
+      }
+    };
+  }
 
   /**
    * 
@@ -240,12 +272,12 @@ public interface ComplexFunction
       verbose             = options.verbose;
       useHeap             = options.useHeap;
 
-      if ( useHeap )
+      if (useHeap)
       {
-        throw new UnsupportedOperationException( "TODO: needs to be debugged");
+        throw new UnsupportedOperationException("TODO: needs to be debugged");
       }
-      allocation          = 4;
-      // TODO: take as,bs,vs,ms  and put them in their own (static) class 
+      allocation = 4;
+      // TODO: take as,bs,vs,ms and put them in their own (static) class
       try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
             Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);)
       {

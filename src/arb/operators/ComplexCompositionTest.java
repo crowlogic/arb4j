@@ -1,6 +1,7 @@
-package arb.functions.complex;
+package arb.operators;
 
 import arb.Complex;
+import arb.functions.complex.XFunction;
 import junit.framework.TestCase;
 
 public class ComplexCompositionTest extends
