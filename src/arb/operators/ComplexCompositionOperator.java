@@ -5,8 +5,8 @@ import arb.ThreadLocalComplex;
 import arb.functions.complex.ComplexFunction;
 
 /**
- * The composition of two complex-valued functions <code>f(g(t))</code> which
- * handles the chain-rule
+ * The composition of two complex-valued functions <code>C_g(f(t))=f(g(t))</code> which
+ * handles the chain-rule. Also known as the Koopman operator
  *
  */
 public class ComplexCompositionOperator<F extends ComplexFunction, G extends ComplexFunction> implements

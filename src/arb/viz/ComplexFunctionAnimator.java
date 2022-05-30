@@ -54,7 +54,6 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
   public static void
          main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
   {
-    printInstalledCodecs();
     int       framesPerSecond = 30;
     int       secondsLong     = 5;
     final int frameCount      = framesPerSecond * secondsLong;
@@ -63,17 +62,16 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
     plotter.displayMode = Part.Blend;
     IntConsumer                       frameParameterAssigner = frame ->
                                                              {
-                                                               double scale = 0.1 + secondsLong * ((double) frame
-                                                                             / (double) frameCount);
+                                                               double proportion = (double) frame
+                                                                             / (double) frameCount;
+                                                               double scale      = 0.1 + secondsLong * proportion;
                                                                System.out.format("Setting scale to %f\n", scale);
                                                                plotter.function.scale.assign(scale);
                                                              };
     ComplexFunctionAnimator<XPlotter> animator               = new ComplexFunctionAnimator(plotter,
                                                                                            frameParameterAssigner,
                                                                                            frameCount);
-    // String codec = "ffv1";
-    String codec = "snow";
-    //String                            codec                  = "lagarith";
+    String                            codec                  = "ffv1";
     animator.renderAnimatedSequence("hmm.avi", "avi", codec, secondsLong, framesPerSecond);
     animator.close();
     System.exit(777);
@@ -89,16 +87,16 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
   {
     for (Codec codec : Codec.getInstalledCodecs())
     {
-    
-        System.out.println("codec: " + codec);
-      
+
+      System.out.println("codec: " + codec);
+
     }
   }
 
-  public BufferedImage renderFunction(int i, int frameCount) throws NoninvertibleTransformException, IOException
+  public BufferedImage renderFunction(int i) throws NoninvertibleTransformException, IOException
   {
 
-    out.println("Drawing frame " + i + "/" + frameCount);
+    out.println("Rendering frame " + i + " of " + frameCount);
 
     BufferedImage image = convertToType(plotter.render(), BufferedImage.TYPE_3BYTE_BGR);
 
@@ -149,15 +147,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
   protected void prepareEncoder(String codecname, double seconds) throws InterruptedException, IOException
   {
     format = muxer.getFormat();
-    if (codecname != null)
-    {
-      codec = Codec.findEncodingCodecByName(codecname);
-    }
-    else
-    {
-      codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId());
-    }
-
+    locateCodec(codecname);
     encoder = Encoder.make(codec);
     encoder.setWidth(screenbounds.width);
     encoder.setHeight(screenbounds.height);
@@ -174,9 +164,20 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
     converter = null;
     picture   = MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelformat);
     picture.setTimeBase(framerate);
-
     packet     = MediaPacket.make();
     frameCount = (int) (seconds / framerate.getDouble());
+  }
+
+  protected void locateCodec(String codecname)
+  {
+    if (codecname != null)
+    {
+      codec = Codec.findEncodingCodecByName(codecname);
+    }
+    else
+    {
+      codec = Codec.findEncodingCodec(format.getDefaultVideoCodecId());
+    }
   }
 
   private void flushCache()
@@ -195,7 +196,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
   protected void renderAndEncodeFrame(int i) throws NoninvertibleTransformException, IOException
   {
     frameParameterAssigner.accept(i);
-    encodeFrame(i, renderFunction(i, frameCount));
+    encodeFrame(i, renderFunction(i));
   }
 
   protected void encodeFrame(int i, final BufferedImage screen)
@@ -208,7 +209,6 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
       }
       converter.toPicture(picture, screen, i);
 
-      System.out.println("Writing frame# " + i);
       do
       {
         encoder.encode(packet, picture);
@@ -218,8 +218,6 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
         }
       }
       while (packet.isComplete());
-
-      System.out.println("Wrote frame# " + i);
 
     });
   }
@@ -242,14 +240,10 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
   {
     BufferedImage image;
 
-    // if the source image is already the target type, return the source image
-
     if (sourceImage.getType() == targetType)
+    {
       image = sourceImage;
-
-    // otherwise create a new image of the target type and draw the new
-    // image
-
+    }
     else
     {
       image = new BufferedImage(sourceImage.getWidth(),
