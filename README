@@ -1,4 +1,4 @@
-arb4j is a Java wrapper around the fantastic and amazing arb library for ball arithmetic found at http://arb.org
+arb4j is a Java wrapper around the fantastic and amazing arb library for ball arithmetic found at http://arblib.org
 
 ========================================================================
 There is a project wiki at 
@@ -54,19 +54,6 @@ C++ analysis...
 Generating wrappers...
 Classes
 ------------
-arf_interval_struct
-mag_struct
-acb_struct
-dirichlet_group_struct
-dirichlet_char_struct
-dirichlet_prime_group_struct
-arb_struct
-mantissa_noptr_struct
-mantissa_ptr_struct
-mantissa_struct
-arf_struct
-__mpfr_struct
-acb_poly_struct
 + /home/stephen/git/arb4j/bin/../bin/caw
 + export JAVA_HOME=/usr/lib/jvm/jdk-17
 + readlink -f /home/stephen/git/arb4j/bin/../bin/caw
