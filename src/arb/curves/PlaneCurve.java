@@ -19,6 +19,18 @@ import arb.functions.real.RealFunction;
 public interface PlaneCurve extends
                             ComplexFunction
 {
+  /**
+   * The vector r from the origin to the current position. It is also called the
+   * position vector. The derivative of r satisfies
+   * r·(dr)/(dt)=1/2d/(dt)(r·r)=1/2d/(dt)(r^2)=r(dr)/(dt)=rv, where v is the
+   * magnitude of the velocity (i.e., the speed).
+   * 
+   * @return
+   */
+  public default ComplexFunction getRadiusVector()
+  {
+    throw new UnsupportedOperationException(getClass() + " should implement this function");
+  }
 
   /**
    * The arc-length function measures how far this particle travels as a function
@@ -32,7 +44,7 @@ public interface PlaneCurve extends
    */
   public default RealFunction getArcLength()
   {
-    throw new UnsupportedOperationException(getClass() + " must implement this function");
+    throw new UnsupportedOperationException(getClass() + " should implement this function");
   }
 
   /**
