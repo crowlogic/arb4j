@@ -1,5 +1,6 @@
 package arb.curves;
 
+import arb.Real;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
@@ -29,9 +30,21 @@ public interface PlaneCurve extends
    * @return the function whose value represents the distance traveled by a
    *         particle along this curve as a function of time
    */
-  public default RealFunction getArcLengthFunction()
+  public default RealFunction getArcLength()
   {
     throw new UnsupportedOperationException(getClass() + " must implement this function");
+  }
+
+  /**
+   * 
+   * @param t
+   * @param prec
+   * @param w
+   * @return this{@link #getArcLength()}.{@link #evaluate(arb.Complex, int, int, arb.Complex)}
+   */
+  public default Real getArcLength(Real t, int prec, Real w)
+  {
+    return getArcLength().evaluate(t, 1, prec, w);
   }
 
   /**
@@ -40,8 +53,20 @@ public interface PlaneCurve extends
    * 
    * @return
    */
-  public default RealFunction getCurvatureFunction()
+  public default RealFunction getCurvature()
   {
     throw new UnsupportedOperationException(getClass() + " must implement this function");
+  }
+
+  /**
+   * 
+   * @param t
+   * @param prec
+   * @param w
+   * @return this{@link #getCurvature()}.{@link #evaluate(arb.Complex, int, int, arb.Complex)}
+   */
+  public default Real getCurvature(Real t, int prec, Real w)
+  {
+    return getCurvature().evaluate(t, 1, prec, w);
   }
 }
