@@ -25,8 +25,8 @@ public class SPlotter extends
 
   public SPlotter() throws NoninvertibleTransformException
   {
-    this(new Dimension(2000 / 2,
-                       1000 / 2),
+    this(new Dimension(2000 ,
+                       1000 ),
          new Rectangle2D.Double(-Math.PI*2,
                                 -1.5*2,
                                 Math.PI * 2*2,
