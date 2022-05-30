@@ -1,4 +1,4 @@
-package arb.graphing.plots;
+package arb.viz.plots;
 
 import java.awt.Dimension;
 import java.awt.geom.NoninvertibleTransformException;
@@ -10,8 +10,8 @@ import javax.swing.JFrame;
 import arb.Constants;
 import arb.Real;
 import arb.ThreadLocalComplex;
-import arb.graphing.ComplexFunctionPlotter;
-import arb.graphing.Part;
+import arb.viz.ComplexFunctionPlotter;
+import arb.viz.Part;
 
 public class ZetaPlot
 {

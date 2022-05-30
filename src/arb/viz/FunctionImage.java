@@ -1,4 +1,4 @@
-package arb.graphing;
+package arb.viz;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;

@@ -1,4 +1,4 @@
-package arb.graphing;
+package arb.viz;
 
 public enum Part
 {

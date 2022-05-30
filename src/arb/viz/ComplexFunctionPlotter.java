@@ -1,4 +1,4 @@
-package arb.graphing;
+package arb.viz;
 
 import static java.lang.Math.*;
 import static java.lang.System.out;

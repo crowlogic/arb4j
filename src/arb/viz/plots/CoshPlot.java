@@ -1,4 +1,4 @@
-package arb.graphing.plots;
+package arb.viz.plots;
 
 import java.awt.Dimension;
 import java.awt.geom.NoninvertibleTransformException;
@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import arb.Constants;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.TFunction;
-import arb.graphing.ComplexFunctionPlotter;
+import arb.viz.ComplexFunctionPlotter;
 
 public class CoshPlot
 {
@@ -59,7 +59,7 @@ public class CoshPlot
     frame.pack();
     frame.setResizable(false);
     frame.setVisible(true);
-    plotter.displayMode = arb.graphing.Part.Blend;
+    plotter.displayMode = arb.viz.Part.Blend;
     plotter.render();
 
   }

@@ -1,5 +1,5 @@
 
-package arb.graphing;
+package arb.viz;
 
 import java.awt.Rectangle;
 import java.awt.Shape;

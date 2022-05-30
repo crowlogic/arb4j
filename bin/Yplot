@@ -2,7 +2,7 @@
 
 BASEDIR=$(dirname $(readlink -f $0))/..
 CLASSPATH=`cat $BASEDIR/class.path`
-java -Djava.library.path=$BASEDIR -ea -classpath $CLASSPATH:$BASEDIR/target/classes arb.graphing.plots.YPlot $@
+java -Djava.library.path=$BASEDIR -ea -classpath $CLASSPATH:$BASEDIR/target/classes arb.viz.plots.YPlot $@
 
 
 

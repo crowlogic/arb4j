@@ -1,4 +1,4 @@
-package arb.graphing.plots;
+package arb.viz.plots;
 
 import java.awt.Dimension;
 import java.awt.geom.NoninvertibleTransformException;
@@ -9,7 +9,7 @@ import arb.functions.complex.ComplexComposition;
 import arb.functions.complex.RiemannZetaFunction;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.WickRotation;
-import arb.graphing.ComplexFunctionPlotter;
+import arb.viz.ComplexFunctionPlotter;
 
 public class SZetaPlotter extends
                           ComplexFunctionPlotter
@@ -34,7 +34,7 @@ public class SZetaPlotter extends
                                                         new WickRotation(true))));
 
     color_mode        = 06;
-    displayMode       = arb.graphing.Part.Blend;
+    displayMode       = arb.viz.Part.Blend;
   }
 
 }

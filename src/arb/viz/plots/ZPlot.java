@@ -1,4 +1,4 @@
-package arb.graphing.plots;
+package arb.viz.plots;
 
 import java.awt.Dimension;
 import java.awt.geom.NoninvertibleTransformException;
@@ -11,8 +11,8 @@ import arb.Complex;
 import arb.ThreadLocalComplex;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
-import arb.graphing.ComplexFunctionPlotter;
-import arb.graphing.Part;
+import arb.viz.ComplexFunctionPlotter;
+import arb.viz.Part;
 
 public class ZPlot
 {

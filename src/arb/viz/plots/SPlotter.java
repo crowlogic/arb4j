@@ -1,4 +1,4 @@
-package arb.graphing.plots;
+package arb.viz.plots;
 
 import java.awt.Dimension;
 import java.awt.geom.NoninvertibleTransformException;
@@ -9,8 +9,8 @@ import java.io.IOException;
 import arb.Complex;
 import arb.Real;
 import arb.functions.complex.SFunction;
-import arb.graphing.ComplexFunctionPlotter;
-import arb.graphing.Part;
+import arb.viz.ComplexFunctionPlotter;
+import arb.viz.Part;
 
 public class SPlotter extends
                       ComplexFunctionPlotter<SFunction>

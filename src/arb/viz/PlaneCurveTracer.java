@@ -7,7 +7,7 @@
  * the License, or (at your option) any later version. See *
  * <http://www.gnu.org/licenses/>
  */
-package arb.graphing;
+package arb.viz;
 
 import java.awt.Graphics2D;
 

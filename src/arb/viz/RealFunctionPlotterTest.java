@@ -1,4 +1,4 @@
-package arb.graphing;
+package arb.viz;
 
 import javax.swing.JFrame;
 

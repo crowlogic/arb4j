@@ -1,5 +1,5 @@
 
-package arb.graphing;
+package arb.viz;
 
 import static java.lang.System.*;
 
@@ -12,7 +12,7 @@ import java.util.function.*;
 
 import javax.swing.*;
 
-import arb.graphing.plots.*;
+import arb.viz.plots.*;
 import io.humble.video.*;
 import io.humble.video.awt.*;
 
@@ -47,28 +47,28 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
   private MediaPicture          picture;
   private MediaPacket           packet;
   public int                    frameCount;
-  private double                maxSize;
   private ExecutorService       frameEncodingThread;
   private P                     plotter;
 
   public static void
          main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
   {
-    final int frameCount = 500;
-    SPlotter  plotter    = new SPlotter();
+    int       framesPerSecond = 30;
+    int       secondsLong     = 10;
+    final int frameCount      = framesPerSecond * secondsLong;
+    SPlotter  plotter         = new SPlotter();
     plotter.displayMode = Part.Blend;
-    int                               duration               = 5;
     IntConsumer                       frameParameterAssigner = frame ->
                                                              {
-                                                               double scale = 0.1 + duration * ((double) frame
+                                                               double scale = 0.1 + secondsLong * ((double) frame
                                                                              / (double) frameCount);
                                                                System.out.format("Setting scale to %f\n", scale);
                                                                plotter.function.scale.assign(scale);
                                                              };
-    ComplexFunctionAnimator<SPlotter> animator               = new ComplexFunctionAnimator(plotter,
+    ComplexFunctionAnimator<XPlotter> animator               = new ComplexFunctionAnimator(plotter,
                                                                                            frameParameterAssigner,
                                                                                            frameCount);
-    animator.renderAnimatedSequence("hmm.avi", "avi", "ffv1", duration, frameCount / duration);
+    animator.renderAnimatedSequence("hmm.avi", "avi", "ffv1", secondsLong, framesPerSecond);
     animator.close();
     System.exit(777);
   }
@@ -122,20 +122,20 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
         renderAndEncodeFrame(i);
       }
 
-      System.out.println("Shutting down");
-      frameEncodingThread.shutdown();
-      System.out.println("Waiting on shutdown");
-
-      frameEncodingThread.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-      System.out.println("Everything is shutdown.. flushing cache");
-      flushCache();
-      System.out.println("Cache is flushed");
+      tidyUp();
     }
     finally
     {
       muxer.close();
     }
-    System.out.println("Finished animating sequence");
+    System.out.println("Finished creating " + muxer.getURL());
+  }
+
+  protected void tidyUp() throws InterruptedException
+  {
+    frameEncodingThread.shutdown();
+    frameEncodingThread.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+    flushCache();
   }
 
   protected void prepareEncoder(String codecname, double seconds) throws InterruptedException, IOException
@@ -169,7 +169,6 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
 
     packet     = MediaPacket.make();
     frameCount = (int) (seconds / framerate.getDouble());
-    maxSize    = 5;
   }
 
   private void flushCache()

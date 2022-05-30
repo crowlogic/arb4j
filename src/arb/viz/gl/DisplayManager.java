@@ -1,4 +1,4 @@
-package arb.graphing;
+package arb.viz.gl;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;

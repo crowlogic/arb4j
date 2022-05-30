@@ -1,4 +1,4 @@
-package arb.graphing;
+package arb.viz;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
