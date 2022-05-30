@@ -10,6 +10,7 @@
 package arb.functions.complex.dynamics;
 
 import arb.Complex;
+import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
 
 /**
@@ -18,29 +19,35 @@ import arb.functions.complex.ComplexFunction;
  * @author Isaac Newton
  * @author Stephen Crowley
  */
-public class NewtonMap implements
-                       ComplexFunction
+public class NewtonMap<F extends ComplexFunction> implements
+                      ComplexFunction
 {
-  public NewtonMap(ComplexFunction f)
+  @Override
+  public ComplexFunction differential() throws NotDifferentiableException
+  {
+    throw new UnsupportedOperationException("TODO: return (f(t)*f''(t))/(f'(t)^2)");
+  }
+
+  public NewtonMap(F f)
   {
     this.f = f;
   }
 
-  ComplexFunction f;
+  F f;
 
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
     try ( Complex y = Complex.newVector(2))
     {
-    if (order >= 1)
-    {
-      z.sub(f.evaluate(z, 2, prec, y).div(y.get(1), prec, w), prec, w);
-    }
-    if (order >= 2)
-    {
-      throw new UnsupportedOperationException("TODO: return t-f(t)/f'(t) (also implement first derivative)");
-    }
+      if (order >= 1)
+      {
+        z.sub(f.evaluate(z, 2, prec, y).div(y.get(1), prec, w), prec, w);
+      }
+      if (order >= 2)
+      {
+        throw new UnsupportedOperationException("TODO: return t-f(t)/f'(t) (also implement first derivative)");
+      }
     }
     return w;
   }
