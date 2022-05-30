@@ -1,12 +1,8 @@
 
-package arb.calculus;
+package arb;
 
 import java.util.ArrayList;
 
-import arb.Float;
-import arb.FloatInterval;
-import arb.Real;
-import arb.RealRootInterval;
 import arb.FloatInterval.RootStatus;
 import arb.functions.real.RealFunction;
 

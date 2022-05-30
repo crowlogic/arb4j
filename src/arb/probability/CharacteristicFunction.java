@@ -1,7 +1,6 @@
 package arb.probability;
 
 import arb.functions.complex.ComplexFunction;
-import arb.functions.real.ProbabilityDensity;
 
 /**
  * The characteristic function of any real-valued random variable completely

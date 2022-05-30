@@ -1,6 +1,0 @@
-#!/bin/sh
-
-BASEDIR=$(readlink -f $(dirname $(readlink -f $0)/)/..)
-cd $BASEDIR
-groovysh -cp `cat $BASEDIR/class.path`:$BASEDIR/target/classes -e ':load startup.groovy'
-

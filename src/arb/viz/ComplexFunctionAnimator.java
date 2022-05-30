@@ -14,6 +14,7 @@ import javax.swing.*;
 
 import arb.viz.plots.*;
 import io.humble.video.*;
+import io.humble.video.Codec.CodecCapability;
 import io.humble.video.awt.*;
 
 public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
@@ -53,10 +54,12 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
   public static void
          main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
   {
+    printInstalledCodecs();
     int       framesPerSecond = 30;
-    int       secondsLong     = 10;
+    int       secondsLong     = 5;
     final int frameCount      = framesPerSecond * secondsLong;
     SPlotter  plotter         = new SPlotter();
+    plotter.color_mode  = 2;
     plotter.displayMode = Part.Blend;
     IntConsumer                       frameParameterAssigner = frame ->
                                                              {
@@ -68,7 +71,10 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
     ComplexFunctionAnimator<XPlotter> animator               = new ComplexFunctionAnimator(plotter,
                                                                                            frameParameterAssigner,
                                                                                            frameCount);
-    animator.renderAnimatedSequence("hmm.avi", "avi", "ffv1", secondsLong, framesPerSecond);
+    // String codec = "ffv1";
+    String codec = "snow";
+    //String                            codec                  = "lagarith";
+    animator.renderAnimatedSequence("hmm.avi", "avi", codec, secondsLong, framesPerSecond);
     animator.close();
     System.exit(777);
   }
@@ -83,7 +89,9 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
   {
     for (Codec codec : Codec.getInstalledCodecs())
     {
-      System.out.println("codec: " + codec);
+    
+        System.out.println("codec: " + codec);
+      
     }
   }
 

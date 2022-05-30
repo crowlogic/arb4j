@@ -4,9 +4,9 @@ import static arb.Constants.ONE;
 
 import arb.Complex;
 import arb.Constants;
+import arb.IntegrationOptions;
 import arb.Magnitude;
 import arb.Real;
-import arb.calculus.IntegrationOptions;
 import arb.curves.Lemniscate;
 import arb.curves.LemniscateDerivative;
 import arb.exceptions.LackOfConvergenceException;
@@ -21,7 +21,7 @@ public class ComplexFunctionTest extends
     try ( Complex a = new Complex();)
     {
       a.set(ONE, ONE);
-      ComplexFunction absoluteValueOfAConstantFunction = new ConstantComplexFunction(a).abs();
+      ComplexFunction absoluteValueOfAConstantFunction = new ComplexConstant(a).abs();
 
       Real            sqrt2                            = a.abs(128, new Real());
       Complex         b                                = absoluteValueOfAConstantFunction.evaluate(Constants.ZERO,

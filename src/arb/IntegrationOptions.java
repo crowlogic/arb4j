@@ -1,4 +1,4 @@
-package arb.calculus;
+package arb;
 
 /**
  * This structure contains several fields, explained below. An

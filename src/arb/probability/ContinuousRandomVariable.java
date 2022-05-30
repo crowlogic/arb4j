@@ -1,6 +1,5 @@
 package arb.probability;
 
-import arb.functions.real.ProbabilityDensity;
 import arb.functions.real.RealFunction;
 
 public interface ContinuousRandomVariable extends

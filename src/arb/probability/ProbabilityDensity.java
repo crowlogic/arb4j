@@ -1,6 +1,7 @@
-package arb.functions.real;
+package arb.probability;
 
 import arb.functions.complex.ComplexFunction;
+import arb.functions.real.RealFunction;
 
 public interface ProbabilityDensity extends
                                     RealFunction

@@ -8,9 +8,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.junit.experimental.theories.Theories;
 
 import arb.Complex;
+import arb.IntegrationOptions;
 import arb.Magnitude;
 import arb.Real;
-import arb.calculus.IntegrationOptions;
 import arb.exceptions.LackOfConvergenceException;
 import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;

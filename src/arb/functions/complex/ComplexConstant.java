@@ -3,10 +3,10 @@ package arb.functions.complex;
 import arb.Complex;
 import arb.Constants;
 
-public class ConstantComplexFunction implements
+public class ComplexConstant implements
                                      ComplexFunction
 {
-  public ConstantComplexFunction(Complex c)
+  public ComplexConstant(Complex c)
   {
     this.c = c;
   }

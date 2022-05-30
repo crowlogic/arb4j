@@ -14,12 +14,12 @@ import static java.lang.System.out;
 import arb.Constants;
 import arb.Float;
 import arb.FloatInterval;
+import arb.FoundRoots;
 import arb.FloatInterval.RootStatus;
 import arb.Magnitude;
 import arb.Real;
 import arb.RealRootInterval;
 import arb.RealRootInterval.RefinementResult;
-import arb.calculus.FoundRoots;
 import arb.arb;
 
 /**
