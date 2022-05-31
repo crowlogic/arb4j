@@ -51,6 +51,14 @@ public class FloatInterval implements AutoCloseable {
    RootUnknown
   }
 
+ 
+  public FloatInterval clear()
+  {
+    getA().clear();
+    getB().clear();
+    return this;
+  }
+  
   public FloatInterval swap(FloatInterval u)
   {
     arb.arf_interval_swap(this, u);
@@ -68,7 +76,7 @@ public class FloatInterval implements AutoCloseable {
   @Override
   public void close()
   { 
-      delete();
+      clear();
   }
   
   public FloatInterval(double left, double right)
