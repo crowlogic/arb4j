@@ -22,6 +22,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %rename (Integer) __mpz_struct;
 %rename (FloatInterval) arf_interval_struct;
 %rename (MultiPrecFloat) __mpfr_struct;
+%rename (MultiPrecFloat) mpfr_t;
 %rename (Complex) acb_struct;
 %rename (Real) arb_struct;
 %rename (Float) arf_struct;
@@ -45,6 +46,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %include "Real.i"
 
+%include "MultiPrecFloat.i"
 
 %include "functions.i"
 

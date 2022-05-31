@@ -9,6 +9,7 @@
 package arb;
 
 public class arbJNI {
+  public final static native void mpfr_clear(long jarg1, MultiPrecFloat jarg1_);
   public final static native void flint_cleanup();
   public final static native void flint_cleanup_master();
   public final static native int f_lemniscate(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4, int jarg5);

@@ -24,6 +24,10 @@
 #endif
 %}
 
+typedef __mpfr_struct mpfr_t[1];
+typedef __mpfr_struct *mpfr_ptr;
+typedef const __mpfr_struct *mpfr_srcptr;
+
 typedef struct
 {
     arb_ptr entries;

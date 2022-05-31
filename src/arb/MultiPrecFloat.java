@@ -8,10 +8,21 @@
 
 package arb;
 
-public class MultiPrecFloat {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
 
+public class MultiPrecFloat implements AutoCloseable {
+
+ static
+ {
+   System.loadLibrary( "arblib" );
+ }
+ 
+  public long swigCPtr;
+  public boolean swigCMemOwn;
+
+  public MultiPrecFloat(long cPtr) {
+    this(cPtr,false);
+  }
+    
   public MultiPrecFloat(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
@@ -19,11 +30,6 @@ public class MultiPrecFloat {
 
   public static long getCPtr(MultiPrecFloat obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  @SuppressWarnings("deprecation")
-  protected void finalize() {
-    delete();
   }
 
   public synchronized void delete() {
@@ -35,6 +41,24 @@ public class MultiPrecFloat {
       swigCPtr = 0;
     }
   }
+
+
+  public MultiPrecFloat clear()
+  {
+    arb.mpfr_clear(this);
+    return this;
+  }
+
+  
+
+  @Override
+  public void close()
+  { 
+      clear();
+  }
+
+
+  
 
   public void set_mpfr_prec(SWIGTYPE_p_mpfr_prec_t value) {
     arbJNI.MultiPrecFloat__mpfr_prec_set(swigCPtr, this, SWIGTYPE_p_mpfr_prec_t.getCPtr(value));

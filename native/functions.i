@@ -1,3 +1,5 @@
+void mpfr_clear (mpfr_ptr);
+
  void flint_cleanup(void);
  void flint_cleanup_master(void);
 

@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void mpfr_clear(MultiPrecFloat arg0) {
+    arbJNI.mpfr_clear(MultiPrecFloat.getCPtr(arg0), arg0);
+  }
+
   public static void flint_cleanup() {
     arbJNI.flint_cleanup();
   }
