@@ -6,6 +6,12 @@ import arb.operators.ComplexCompositionOperator;
 public class TFunction extends
                        ComplexCompositionOperator<SFunction, WickRotation>
 {
+  @Override
+  public ComplexFunction adjoint()
+  {
+    return new SFunction(f.scale);
+  }
+
   public TFunction()
   {
     super(new SFunction(),
