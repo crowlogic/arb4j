@@ -30,7 +30,7 @@ public class SFunction implements
 
   private static final Complex ONE = COMPLEX_ONE;
 
-  public Real                         scale;
+  public Real                  scale;
 
   public SFunction()
   {
@@ -47,6 +47,7 @@ public class SFunction implements
   {
 
     assert res.dim >= order && order > 0 : format("res.dim = %d must be >= order = %d > 0", res.dim, order);
+    assert order <= 3;
     try ( Complex r = new Complex(); Complex s = new Complex())
     {
       if (order >= 1)
@@ -63,6 +64,10 @@ public class SFunction implements
       {
         evaluateDerivative(t, prec, res.get(1));
       }
+      if (order >= 3)
+      {
+        evaluate2ndDerivative(t, prec, res.get(2));
+      }
       return res;
     }
   }
@@ -78,8 +83,8 @@ public class SFunction implements
   public Complex evaluateDerivative(Complex t, int prec, Complex res1)
   {
     /**
-     * TODO: optimize this and compute (t-1)*(t+1) since it appears in both the numerator and the
-     * denominator
+     * TODO: optimize this and compute (t-1)*(t+1) since it appears in both the
+     * numerator and the denominator
      */
     try ( Complex b = new Complex(); Complex c = new Complex(); Complex d = new Complex(); Complex e = new Complex();
           Complex g = new Complex(); Complex h = new Complex();)
@@ -98,6 +103,42 @@ public class SFunction implements
       g.neg(res1);
     }
     return res1;
+  }
+
+  /**
+   * Evaluate the 2nd derivative of S(t)
+   * 
+   * @param t
+   * @param prec
+   * @param res
+   * @return -8*(2 - 9t^4 + 5t^6 ) / (2 - 2t^2 +t^4)^3
+   */
+  public Complex evaluate2ndDerivative(Complex t, int prec, Complex res)
+  {
+
+    try ( Complex numer = new Complex(); Complex denom = new Complex(); Complex a = new Complex();)
+    {
+      denom.getReal().set(2);
+      t.pow(2, prec, a);
+      a.mul(2, prec, a);
+      denom.sub(a, prec, denom);
+      t.pow(4, prec, a);
+      denom.add(a, prec, denom);
+      denom.pow(3, denom);
+
+      numer.getReal().set(2);
+      a.mul(9, prec, a);
+      numer.sub(a, numer);
+      t.pow(6, a);
+      a.mul(5, prec, a);
+      numer.add(a, prec, numer);
+      numer.neg(numer);
+      numer.mul(8, prec, numer);
+
+//      System.out.println("S''[t] numer is " + numer);
+//      System.out.println("S''[t] denom is " + denom);
+      return numer.div(denom, prec, res);
+    }
   }
 
 }

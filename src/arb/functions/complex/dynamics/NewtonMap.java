@@ -13,11 +13,6 @@ import arb.functions.complex.ComplexFunction;
 public class NewtonMap<F extends ComplexFunction> implements
                       ComplexFunction
 {
-  @Override
-  public ComplexFunction differential() throws NotDifferentiableException
-  {
-    throw new UnsupportedOperationException("TODO: return (f(t)*f''(t))/(f'(t)^2)");
-  }
 
   public NewtonMap(F f)
   {
@@ -29,6 +24,8 @@ public class NewtonMap<F extends ComplexFunction> implements
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
+    assert order <= 2 : String.format("requested order %d is only implemented (in this version) up to order 2",
+                                      order);
     assert w.size() >= order;
     try ( Complex y = Complex.newVector(2))
     {
@@ -44,4 +41,18 @@ public class NewtonMap<F extends ComplexFunction> implements
     return w;
   }
 
+  @Override
+  public ComplexFunction differential() throws NotDifferentiableException
+  {
+    return (t, order, prec, w) ->
+    {
+      try ( Complex s = Complex.newVector(3);)
+      {
+        f.evaluate(t, 3, prec, s);
+        Complex numerator   = s.mul(s.get(2), prec, w);
+        Complex denominator = s.get(1).pow(2, prec, s);
+        return numerator.div(denominator, prec, w);
+      }
+    };
+  }
 }

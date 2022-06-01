@@ -58,7 +58,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
     int       secondsLong     = 5;
     final int frameCount      = framesPerSecond * secondsLong;
     SPlotter  plotter         = new SPlotter();
-    plotter.color_mode  = 2;
+    plotter.color_mode  = 3;
     plotter.displayMode = Part.Blend;
     IntConsumer                       frameParameterAssigner = frame ->
                                                              {
