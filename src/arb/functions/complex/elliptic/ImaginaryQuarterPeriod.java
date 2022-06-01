@@ -1,7 +1,8 @@
 package arb.functions.complex.elliptic;
 
-import arb.Complex;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.TaylorShift;
+import arb.functions.complex.WickRotation;
+import arb.operators.ComplexCompositionOperator;
 
 /**
  * The imaginary quarter perioid i*K'(s) is the Wick rotation of the derivative
@@ -10,14 +11,14 @@ import arb.functions.complex.ComplexFunction;
  * 
  * @author crow
  */
-public class ImaginaryQuarterPeriod implements
-                                    ComplexFunction
+public class ImaginaryQuarterPeriod extends
+                                    TaylorShift<ComplexCompositionOperator<RealQuarterPeriod, WickRotation>>
 {
 
-  @Override
-  public Complex evaluate(Complex z, int order, int prec, Complex w)
+  public ImaginaryQuarterPeriod()
   {
-    throw new UnsupportedOperationException("TODO: Return i*K'(z) where K is the RealQuarterPeriod");
+    super(new ComplexCompositionOperator(new RealQuarterPeriod(),
+                                         new WickRotation(false)));
   }
 
 }

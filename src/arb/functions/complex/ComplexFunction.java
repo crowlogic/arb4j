@@ -9,15 +9,6 @@ import arb.*;
 import arb.exceptions.*;
 import arb.util.Utils;
 
-/**
- * Copyright ©2022 Stephen Crowley
- * 
- * This file is part of Arb4j which free software: you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public License
- * (LGPL) as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version. See
- * <http://www.gnu.org/licenses/>.
- */
 public interface ComplexFunction
 {
 
@@ -76,17 +67,7 @@ public interface ComplexFunction
    */
   public default ComplexFunction differential() throws NotDifferentiableException
   {
-    return (z, order, prec, w) ->
-    {
-      order = Math.max(1, order);
-      assert w.size() >= order;
-      try ( Complex x = Complex.newVector(order + 1))
-      {
-        ComplexFunction.this.evaluate(z, order + 1, prec, x);
-        Complex xslice = x.slice(1, order + 1);
-        return w.set(xslice);
-      }
-    };
+    return new TaylorShift(this);
   }
 
   /**
