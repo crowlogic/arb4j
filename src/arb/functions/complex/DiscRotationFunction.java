@@ -1,9 +1,6 @@
 package arb.functions.complex;
 
-import arb.Complex;
-import arb.Constants;
-import arb.Real;
-import arb.ThreadLocalComplex;
+import arb.*;
 
 public class DiscRotationFunction implements
                                       ComplexFunction,

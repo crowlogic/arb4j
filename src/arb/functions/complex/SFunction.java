@@ -3,9 +3,7 @@ package arb.functions.complex;
 import static arb.Constants.COMPLEX_ONE;
 import static java.lang.String.format;
 
-import arb.Complex;
-import arb.Constants;
-import arb.Real;
+import arb.*;
 import arb.exceptions.NotDifferentiableException;
 
 /**

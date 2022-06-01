@@ -2,11 +2,7 @@ package arb.functions.complex;
 
 import static arb.Constants.ONE;
 
-import arb.Complex;
-import arb.Constants;
-import arb.IntegrationOptions;
-import arb.Magnitude;
-import arb.Real;
+import arb.*;
 import arb.curves.Lemniscate;
 import arb.curves.LemniscateDerivative;
 import arb.exceptions.LackOfConvergenceException;

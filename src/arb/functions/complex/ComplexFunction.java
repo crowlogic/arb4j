@@ -5,13 +5,8 @@ import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import arb.Complex;
-import arb.IntegrationOptions;
-import arb.Magnitude;
-import arb.Real;
-import arb.exceptions.LackOfConvergenceException;
-import arb.exceptions.NotDifferentiableException;
-import arb.exceptions.NotIntegrableException;
+import arb.*;
+import arb.exceptions.*;
 
 /**
  * Copyright ©2022 Stephen Crowley

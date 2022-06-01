@@ -4,11 +4,7 @@ import static arb.ComplexConstants.π;
 import static arb.Constants.ZERO;
 import static java.lang.Math.pow;
 
-import arb.Complex;
-import arb.Constants;
-import arb.IntegrationOptions;
-import arb.Magnitude;
-import arb.Real;
+import arb.*;
 import arb.exceptions.LackOfConvergenceException;
 import junit.framework.TestCase;
 
