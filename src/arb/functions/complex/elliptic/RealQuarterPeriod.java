@@ -19,13 +19,6 @@ public class RealQuarterPeriod implements
 {
 
   @Override
-  public ComplexFunction differential() throws NotDifferentiableException
-  {
-    return new ComplexCompositionOperator(new ImaginaryQuarterPeriod(),
-                                          new WickRotation(false));
-  }
-
-  @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
     order = Math.max(1, order);
