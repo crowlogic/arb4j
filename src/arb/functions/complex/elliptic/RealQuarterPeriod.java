@@ -2,7 +2,10 @@ package arb.functions.complex.elliptic;
 
 import arb.Complex;
 import arb.arb;
+import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.WickRotation;
+import arb.operators.ComplexCompositionOperator;
 
 /**
  * K(s) is the Complete Elliptical Integral of the First Kind, ALso known as the
@@ -16,11 +19,18 @@ public class RealQuarterPeriod implements
 {
 
   @Override
+  public ComplexFunction differential() throws NotDifferentiableException
+  {
+    return new ComplexCompositionOperator(new ImaginaryQuarterPeriod(),
+                                          new WickRotation(false));
+  }
+
+  @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
     order = Math.max(1, order);
     arb.acb_elliptic_k(w, z, prec);
-    for ( int i = 2; i < order; i++ )
+    for (int i = 2; i < order; i++)
     {
       z.get(i).setIndeterminate();
     }
