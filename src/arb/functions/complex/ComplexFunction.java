@@ -5,8 +5,6 @@ import static java.lang.Math.max;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.junit.experimental.theories.Theories;
-
 import arb.Complex;
 import arb.IntegrationOptions;
 import arb.Magnitude;

@@ -1,6 +1,9 @@
 package arb.functions.complex;
 
-import arb.*;
+import arb.Complex;
+import arb.Constants;
+import arb.Real;
+import arb.ThreadLocalComplex;
 
 public class DiscRotationFunction implements
                                       ComplexFunction,
@@ -8,6 +11,8 @@ public class DiscRotationFunction implements
 {
   public DiscRotationFunction(Complex t, Real h)
   {
+    assert t != null;
+    assert h != null;
     this.t = t;
     this.h = h;
   }
