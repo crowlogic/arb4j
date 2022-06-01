@@ -16,6 +16,15 @@ public class SFunction implements
                        ComplexFunction
 {
 
+  /**
+   * A new {@link TFunction} of the same scale
+   */
+  @Override
+  public ComplexFunction adjoint()
+  {
+    return new TFunction(scale);
+  }
+
   @Override
   public ComplexFunction differential() throws NotDifferentiableException
   {
@@ -78,7 +87,7 @@ public class SFunction implements
    * @param res
    * @return (8*(t-1)*t*(t+1)) / (t^4 - 2*(t-1)*(t+1))^2
    */
-  public Complex evaluateDerivative(Complex t, int prec, Complex res1)
+  protected Complex evaluateDerivative(Complex t, int prec, Complex res1)
   {
     /**
      * TODO: optimize this and compute (t-1)*(t+1) since it appears in both the
@@ -111,30 +120,19 @@ public class SFunction implements
    * @param res
    * @return -8*(2 - 9t^4 + 5t^6 ) / (2 - 2t^2 +t^4)^3
    */
-  public Complex evaluate2ndDerivative(Complex t, int prec, Complex res)
+  protected Complex evaluate2ndDerivative(Complex t, int prec, Complex res)
   {
 
     try ( Complex numer = new Complex(); Complex denom = new Complex(); Complex a = new Complex();)
     {
       denom.getReal().set(2);
-      t.pow(2, prec, a);
-      a.mul(2, prec, a);
-      denom.sub(a, prec, denom);
-      t.pow(4, prec, a);
-      denom.add(a, prec, denom);
-      denom.pow(3, denom);
+      denom.sub(t.pow(2, prec, a).mul(2, prec, a), prec, denom);
+      denom.add(t.pow(4, prec, a), prec, denom).pow(3, denom);
 
       numer.getReal().set(2);
-      a.mul(9, prec, a);
-      numer.sub(a, numer);
-      t.pow(6, a);
-      a.mul(5, prec, a);
-      numer.add(a, prec, numer);
-      numer.neg(numer);
-      numer.mul(8, prec, numer);
+      numer.sub(a.mul(9, prec, a), numer);
+      numer.add(t.pow(6, a).mul(5, prec, a), prec, numer).neg(numer).mul(8, prec, numer);
 
-//      System.out.println("S''[t] numer is " + numer);
-//      System.out.println("S''[t] denom is " + denom);
       return numer.div(denom, prec, res);
     }
   }
