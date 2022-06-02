@@ -20,7 +20,7 @@ public class YRenderer extends
   @SuppressWarnings("resource")
   public static void main( String args[] ) throws NoninvertibleTransformException, IOException
   {
-     YRenderer renderer = new YRenderer();
+     YRenderer renderer = new YRenderer( new Real().set("0.75", 128));
      renderer.render();
   }
   
