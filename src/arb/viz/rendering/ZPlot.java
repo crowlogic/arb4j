@@ -1,4 +1,4 @@
-package arb.viz.plots;
+package arb.viz.rendering;
 
 import java.awt.Dimension;
 import java.awt.geom.NoninvertibleTransformException;
