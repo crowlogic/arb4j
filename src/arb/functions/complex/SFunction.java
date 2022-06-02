@@ -1,7 +1,6 @@
 package arb.functions.complex;
 
 import static arb.Constants.COMPLEX_ONE;
-import static java.lang.Math.max;
 import static java.lang.String.format;
 
 import arb.*;
@@ -17,55 +16,6 @@ public class SFunction implements
                        ComplexFunction
 {
 
-  @Override
-  public int getInverseBranchCount()
-  {
-    return 4;
-  }
-
-  @Override
-  public ComplexFunction inverse(int branch)
-  {
-    assert branch <= 3 : "invalid branch number";
-    try ( Complex a = new Complex(); Complex b = new Complex();)
-    {
-      a.getReal().set(scale);
-      a.add(1, branch, b);
-
-      // b = (s+1) / √( 1-s^2 )
-      switch (branch)
-      {
-      case 0:
-        return (s, order, prec, w) ->
-        {
-          // return -Sqrt[a + Sqrt[-a^2 (-1 + s^2)]/(1 - s)]
-          return w;
-        };
-      case 1:
-        return (s, order, prec, w) ->
-        {
-          // return Sqrt[a + Sqrt[-a^2 (-1 + s^2)]/(1 - s)]
-          return w;
-        };
-      case 2:
-        return (s, order, prec, w) ->
-        {
-          // return -Sqrt[a + Sqrt[-a^2 (-1 + s^2)]/(-1 + s)]
-          return w;
-        };
-      case 3:
-        return (s, order, prec, w) ->
-        {
-          // return Sqrt[a + Sqrt[-a^2 (-1 + s^2)]/(-1 + s)]
-          return w;
-        };
-      default:
-        throw new UnsupportedOperationException("invalid branch number " + branch + " as there are only "
-                      + this.getInverseBranchCount());
-      }
-    }
-  }
-
   /**
    * A new {@link TFunction} of the same scale
    */
@@ -80,17 +30,8 @@ public class SFunction implements
   {
     return (z, order, prec, w) ->
     {
-      order = max(1, order);
-      assert order <= 2;
-      if (order >= 1)
-      {
-        evaluateDerivative(z, prec, w);
-      }
-      if (order >= 2)
-      {
-        evaluate2ndDerivative(z, prec, w.get(1));
-      }
-      return w;
+      assert order <= 1;
+      return evaluateDerivative(z, prec, w);
     };
   }
 
