@@ -12,7 +12,7 @@ import java.util.function.*;
 
 import javax.swing.*;
 
-import arb.viz.plots.*;
+import arb.viz.rendering.*;
 import io.humble.video.*;
 import io.humble.video.Codec.CodecCapability;
 import io.humble.video.awt.*;
@@ -58,7 +58,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
     int       secondsLong     = 5;
     final int frameCount      = framesPerSecond * secondsLong;
     SPlotter  plotter         = new SPlotter();
-    plotter.color_mode  = 4;
+    plotter.color_mode  = 5;
     plotter.displayMode = Part.Blend;
     IntConsumer                       frameParameterAssigner = frame ->
                                                              {

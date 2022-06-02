@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 
 import org.lwjgl.system.Configuration;
 
-import arb.viz.plots.XPlotter;
+import arb.viz.rendering.XPlotter;
 import junit.framework.TestCase;
 
 public class ComplexTest extends
