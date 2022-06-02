@@ -3,19 +3,33 @@ package arb.operators;
 import arb.*;
 import arb.functions.complex.ComplexFunction;
 
-public class FourierTransform implements
-                              IntegralTransform
+/**
+ * TODO: check out the FastDFT scheme instead of this
+ * 
+ * @author crow
+ *
+ * @param <F>
+ */
+public class FourierTransform<F extends ComplexFunction> implements
+                             IntegralTransform
 {
-  public FourierTransform(ComplexFunction f)
+  private FloatInterval domain;
+  private Complex       a;
+  private Complex       b;
+
+  public FourierTransform(F f, Complex a, Complex b)
   {
     this.f = f;
+    this.a = a;
+    this.b = b;
   }
 
-  ComplexFunction f;
+  F f;
 
   @Override
   public Complex evaluate(Complex t, int order, int prec, Complex w)
   {
+    assert prec > 0;
     try ( Magnitude absErr = new Magnitude(); Complex c = new Complex())
     {
       ComplexFunction integrand = (x, integrandOrder, integrandPrec, y) ->
@@ -29,7 +43,7 @@ public class FourierTransform implements
                 .mul(t, integrandPrec, y);
       };
       absErr.set(Math.pow(2, -128));
-      return integrand.integrate(Constants.negInf, Constants.posInf, order, absErr, null, prec, w);
+      return integrand.integrate(a, b, prec, absErr, null, prec, w);
     }
   }
 

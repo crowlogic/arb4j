@@ -28,7 +28,7 @@ import arb.arb;
  */
 public interface RealFunction
 {
-  public Real evaluate(Real z, int order, int prec, Real res);
+  public Real evaluate(Real t, int order, int prec, Real res);
 
   public static final int FLINT_BITS = 64;
 
