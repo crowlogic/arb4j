@@ -5,5 +5,8 @@ import junit.framework.*;
 public class DiscRotationTest extends
                               TestCase
 {
-
+  public static void testEval()
+  {
+    
+  }
 }
