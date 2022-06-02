@@ -13,12 +13,12 @@ public class RealQuarterPeriodTest extends
     /**
      * Also tested in ComplexFunctionTest
      */
-    try ( Complex one = new Complex(); Complex lemniscateConstant = new Complex())
+    try ( Complex negone = new Complex(); Complex lemniscateConstant = new Complex())
     {
 
       lemniscateConstant.getReal().set("2.62205755429211981046483958989111941368275495 +/- 2.5597e-76", 256);
-      one.getReal().set(-1);
-      Complex s = rqp.evaluate(one, 1, 256, new Complex());
+      negone.getReal().set(-1);
+      Complex s = rqp.evaluate(negone, 1, 256, new Complex());
       s.mul(2, 256, s);
       s.printPrecision                  = true;
       lemniscateConstant.printPrecision = true;

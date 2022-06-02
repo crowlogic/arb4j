@@ -30,8 +30,8 @@ public class Lemniscate implements
 {
 
   @Override
-  public ComplexFunction differential() 
-  {   
+  public ComplexFunction differential()
+  {
     return new LemniscateDerivative();
   }
 
@@ -69,15 +69,15 @@ public class Lemniscate implements
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
     order = max(1, order);
-  assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
-  assert order <= 2;
+    assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
+    assert order <= 2;
 //    arb.f_lemniscate(w, z, null, order, prec);
 //return w;
 
     try ( Complex a = new Complex(); Complex divisor = new Complex(); Complex numerator = new Complex())
     {
-      z.cos(prec * 2, a).mul(2, numerator);
-      z.sin(prec * 2, a).mul(i, divisor);
+      z.cos(prec, a).mul(2, numerator);
+      z.sin(prec, a).mul(i, divisor);
       divisor.neg(divisor).add(1, divisor);
       numerator.div(divisor, prec, w);
       if (order >= 2)
