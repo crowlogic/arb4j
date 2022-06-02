@@ -33,6 +33,8 @@ public class Constants
   public static final Complex ZERO = new Complex().init();
   public static final Real realPositiveInfinity = new Real();
   public static final Complex posInf = new Complex();
+  public static final Complex negInf = new Complex();
+
   public static final Magnitude zeroMag = new Magnitude();
   
   public static Complex i = Constants.IMAGINARY_UNIT;
@@ -55,11 +57,12 @@ public class Constants
     COMPLEX_HALF.getReal().set(HALF);
     arb_set_d(Constants.ONE, 1);
     Constants.COMPLEX_ONE.getReal().one();
-    
     Constants.IMAGINARY_UNIT.getImag().one();
     iπ.getImag().pi(Complex.defaultPrec);
     realPositiveInfinity.posInf();
-    posInf.set(realPositiveInfinity, realPositiveInfinity);
+    posInf.set(realPositiveInfinity, ZERO.getReal());
+    posInf.neg(negInf);
+    
   }
 
   public static final Real     sqrt2 = new Real().set(2);
