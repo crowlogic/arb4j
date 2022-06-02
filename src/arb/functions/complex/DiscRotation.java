@@ -2,11 +2,11 @@ package arb.functions.complex;
 
 import arb.*;
 
-public class DiscRotationFunction implements
-                                      ComplexFunction,
-                                      AutoCloseable
+public class DiscRotation implements
+                          ComplexFunction,
+                          AutoCloseable
 {
-  public DiscRotationFunction(Complex t, Real h)
+  public DiscRotation(Complex t, Real h)
   {
     assert t != null;
     assert h != null;
