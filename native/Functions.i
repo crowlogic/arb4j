@@ -1,3 +1,7 @@
+void dirichlet_group_init(dirichlet_group_t G, ulong q);
+void dirichlet_subgroup_init(dirichlet_group_t H, const dirichlet_group_t G, ulong h);
+void dirichlet_group_clear(dirichlet_group_t G);
+
 void dirichlet_char_init(dirichlet_char_t x, const dirichlet_group_t G);
 
 void dirichlet_char_clear(dirichlet_char_t x);

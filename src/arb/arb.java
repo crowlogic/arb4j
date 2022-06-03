@@ -9,6 +9,18 @@
 package arb;
 
 public class arb {
+  public static void dirichlet_group_init(DirichletGroup G, long q) {
+    arbJNI.dirichlet_group_init(DirichletGroup.getCPtr(G), G, q);
+  }
+
+  public static void dirichlet_subgroup_init(DirichletGroup H, DirichletGroup G, long h) {
+    arbJNI.dirichlet_subgroup_init(DirichletGroup.getCPtr(H), H, DirichletGroup.getCPtr(G), G, h);
+  }
+
+  public static void dirichlet_group_clear(DirichletGroup G) {
+    arbJNI.dirichlet_group_clear(DirichletGroup.getCPtr(G), G);
+  }
+
   public static void dirichlet_char_init(DirichletCharacter x, DirichletGroup G) {
     arbJNI.dirichlet_char_init(DirichletCharacter.getCPtr(x), x, DirichletGroup.getCPtr(G), G);
   }

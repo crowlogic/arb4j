@@ -293,6 +293,50 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_dirichlet_1group_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  dirichlet_group_struct *arg1 ;
+  unsigned long arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(dirichlet_group_struct **)&jarg1; 
+  arg2 = (unsigned long)jarg2; 
+  dirichlet_group_init(arg1,arg2);
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_dirichlet_1subgroup_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3) {
+  dirichlet_group_struct *arg1 ;
+  dirichlet_group_struct *arg2 ;
+  unsigned long arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(dirichlet_group_struct **)&jarg1; 
+  arg2 = *(dirichlet_group_struct **)&jarg2; 
+  arg3 = (unsigned long)jarg3; 
+  dirichlet_subgroup_init(arg1,(dirichlet_group_struct const (*))arg2,arg3);
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_dirichlet_1group_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  dirichlet_group_struct *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(dirichlet_group_struct **)&jarg1; 
+  dirichlet_group_clear(arg1);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_dirichlet_1char_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   dirichlet_char_struct *arg1 ;
   dirichlet_group_struct *arg2 ;

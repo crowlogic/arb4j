@@ -9,6 +9,9 @@
 package arb;
 
 public class arbJNI {
+  public final static native void dirichlet_group_init(long jarg1, DirichletGroup jarg1_, long jarg2);
+  public final static native void dirichlet_subgroup_init(long jarg1, DirichletGroup jarg1_, long jarg2, DirichletGroup jarg2_, long jarg3);
+  public final static native void dirichlet_group_clear(long jarg1, DirichletGroup jarg1_);
   public final static native void dirichlet_char_init(long jarg1, DirichletCharacter jarg1_, long jarg2, DirichletGroup jarg2_);
   public final static native void dirichlet_char_clear(long jarg1, DirichletCharacter jarg1_);
   public final static native void arb_mat_clear(long jarg1, RealMatrix jarg1_);

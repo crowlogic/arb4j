@@ -48,7 +48,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %include "MultiPrecFloat.i"
 
-%include "functions.i"
+%include "Functions.i"
 
 %rename (realObj) real;
 %rename (imagObj) imag;
