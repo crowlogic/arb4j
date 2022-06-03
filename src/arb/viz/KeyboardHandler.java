@@ -20,9 +20,9 @@ public class KeyboardHandler implements
                              KeyListener
 {
 
-  private ComplexFunctionPlotter plotter;
+  private ComplexFunctionRenderer plotter;
 
-  public KeyboardHandler(ComplexFunctionPlotter abstractComplexFunctionPlotter)
+  public KeyboardHandler(ComplexFunctionRenderer abstractComplexFunctionPlotter)
   {
     this.plotter = abstractComplexFunctionPlotter;
   }

@@ -17,7 +17,7 @@ import io.humble.video.*;
 import io.humble.video.Codec.CodecCapability;
 import io.humble.video.awt.*;
 
-public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
+public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
 {
   private IntConsumer frameParameterAssigner;
   private int         width;
@@ -57,7 +57,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
     int       framesPerSecond = 30;
     int       secondsLong     = 5;
     final int frameCount      = framesPerSecond * secondsLong;
-    SPlotter  plotter         = new SPlotter();
+    SRenderer  plotter         = new SRenderer();
     plotter.color_mode  = 5;
     plotter.displayMode = Part.Blend;
     IntConsumer                       frameParameterAssigner = frame ->
@@ -68,7 +68,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
                                                                System.out.format("Setting scale to %f\n", scale);
                                                                plotter.function.scale.set(scale);
                                                              };
-    ComplexFunctionAnimator<XPlotter> animator               = new ComplexFunctionAnimator(plotter,
+    ComplexFunctionAnimator<XRenderer> animator               = new ComplexFunctionAnimator(plotter,
                                                                                            frameParameterAssigner,
                                                                                            frameCount);
     String                            codec                  = "ffv1";

@@ -9,19 +9,19 @@ import arb.functions.complex.RiemannZetaFunction;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.WickRotation;
 import arb.operators.ComplexCompositionOperator;
-import arb.viz.ComplexFunctionPlotter;
+import arb.viz.ComplexFunctionRenderer;
 
-public class SZetaPlotter extends
-                          ComplexFunctionPlotter
+public class SζRenderer extends
+                          ComplexFunctionRenderer
 {
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
-    SZetaPlotter plotter = new SZetaPlotter();
+    SζRenderer plotter = new SζRenderer();
     plotter.render();
     plotter.saveToFile();
   }
 
-  public SZetaPlotter() throws NoninvertibleTransformException
+  public SζRenderer() throws NoninvertibleTransformException
   {
     super(new Dimension(2500,
                         1250),

@@ -7,7 +7,7 @@ import arb.Complex;
 
 /**
  * TODO: cache the values that are calculated in
- * {@link ComplexFunctionPlotter#evaluateFunctionOnGrid()} using
+ * {@link ComplexFunctionRenderer#evaluateFunctionOnGrid()} using
  * {@link ByteBuffer}s memory-mapped via
  * {@link FileChannel#map(java.nio.channels.FileChannel.MapMode, long, long)}
  * 

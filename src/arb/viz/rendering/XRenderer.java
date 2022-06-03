@@ -7,20 +7,20 @@ import java.awt.geom.Rectangle2D;
 import arb.Constants;
 import arb.Real;
 import arb.functions.complex.XFunction;
-import arb.viz.ComplexFunctionPlotter;
+import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
 /**
- * Renders the {@link XFunction} via {@link ComplexFunctionPlotter}
+ * Renders the {@link XFunction} via {@link ComplexFunctionRenderer}
  */
-public class XPlotter extends
-                      ComplexFunctionPlotter<XFunction>
+public class XRenderer extends
+                       ComplexFunctionRenderer<XFunction>
 {
 
-  public static final int width  = 2500/4 ;
-  public static final int height = 1250/4  ;
+  public static final int width  = 2500 / 4;
+  public static final int height = 1250 / 4;
 
-  public XPlotter(Real vscale) throws NoninvertibleTransformException
+  public XRenderer(Real vscale) throws NoninvertibleTransformException
   {
     super(new Dimension(width,
                         height),
@@ -35,7 +35,7 @@ public class XPlotter extends
 
   }
 
-  public XPlotter() throws NoninvertibleTransformException
+  public XRenderer() throws NoninvertibleTransformException
   {
     this(Constants.ONE);
   }

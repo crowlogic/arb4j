@@ -8,14 +8,14 @@ import java.io.IOException;
 import arb.Constants;
 import arb.Real;
 import arb.functions.complex.YFunction;
-import arb.viz.ComplexFunctionPlotter;
+import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
 /**
  * Renders the {@link YFunction} 
  */
 public class YRenderer extends
-                      ComplexFunctionPlotter<YFunction>
+                      ComplexFunctionRenderer<YFunction>
 {
   @SuppressWarnings("resource")
   public static void main( String args[] ) throws NoninvertibleTransformException, IOException
@@ -24,8 +24,8 @@ public class YRenderer extends
      renderer.render();
   }
   
-  public static final int width  = 2500 ;
-  public static final int height = 1250  ;
+  public static final int width  = 2500/4 ;
+  public static final int height = 1250/4  ;
 
   public YRenderer(Real vscale) throws NoninvertibleTransformException
   {

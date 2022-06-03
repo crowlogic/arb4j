@@ -9,11 +9,10 @@ import javax.swing.JFrame;
 
 import arb.Constants;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.SFunction;
 import arb.functions.complex.TFunction;
-import arb.viz.ComplexFunctionPlotter;
+import arb.viz.ComplexFunctionRenderer;
 
-public class SCoshPlot
+public class CoshRenderer
 {
   private static JFrame frame;
 
@@ -30,25 +29,22 @@ public class SCoshPlot
     Rectangle2D.Double domain = new Rectangle2D.Double(-1.5,
                                                        -6,
                                                        4,
-                                                       30);
+                                                       12);
 
     Dimension screen = new Dimension(600,
                                      1200);
 
-    SFunction sFunction = new SFunction();
-    
+
     ComplexFunction function = (z, order, prec, w) ->
     {
       z.getReal().sub(Constants.HALF, prec, z.getReal());
       //z.cosh(prec, w);//.mul(Constants.i, prec, w);
       // TFunction.T(z, w, Constants.ONE, 2, false, prec, w);
-      //?return sFunction.evaluate(z.cosh(prec, w), 2, prec, w);
-
       return z.cosh(prec, w);
 
     };
 
-    ComplexFunctionPlotter plotter = new ComplexFunctionPlotter(screen,
+    ComplexFunctionRenderer plotter = new ComplexFunctionRenderer(screen,
                                                                 domain,
                                                                 function);
 

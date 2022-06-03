@@ -9,21 +9,22 @@ import java.io.IOException;
 import arb.Complex;
 import arb.Real;
 import arb.functions.complex.SFunction;
-import arb.viz.ComplexFunctionPlotter;
+import arb.functions.complex.TFunction;
+import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
-public class SPlotter extends
-                      ComplexFunctionPlotter<SFunction>
+public class TRenderer extends
+                      ComplexFunctionRenderer<TFunction>
 {
 
-  public SPlotter(Dimension screen, Double domain) throws NoninvertibleTransformException
+  public TRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
   {
     super(screen,
           domain,
-          new SFunction());
+          new TFunction());
   }
 
-  public SPlotter() throws NoninvertibleTransformException
+  public TRenderer() throws NoninvertibleTransformException
   {
     this(new Dimension(2000 / 2,
                        1000 / 2),
@@ -33,27 +34,14 @@ public class SPlotter extends
                                 3 * 2));
   }
 
+  @SuppressWarnings("resource")
   public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
   {
 
-    try ( SPlotter plotter = new SPlotter()
-    {
-      @Override
-      public synchronized Complex calculateNewtonTrajectory(Complex t, int n)
-      {
-
-        throw new UnsupportedOperationException("Replacing with Newton flow");
-        // return sfunc.SNewtonIter(t, n);
-
-      }
-    })
-    {
-
-      plotter.color_mode  = 1;
-      plotter.displayMode = Part.Blend;
-      plotter.render();
-
-    }
+    TRenderer plotter = new TRenderer();
+    plotter.color_mode  = 1;
+    plotter.displayMode = Part.Blend;
+    plotter.render();
 
   }
 

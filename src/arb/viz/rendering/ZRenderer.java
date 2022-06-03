@@ -11,10 +11,10 @@ import arb.Complex;
 import arb.ThreadLocalComplex;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
-import arb.viz.ComplexFunctionPlotter;
+import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
-public class ZPlot
+public class ZRenderer
 {
   private static JFrame frame;
 
@@ -36,7 +36,7 @@ public class ZPlot
 //      return w.normalize(w);
 //    };
     ZFunction func = new ZFunction();
-    ComplexFunctionPlotter plotter = new ComplexFunctionPlotter(screen,
+    ComplexFunctionRenderer plotter = new ComplexFunctionRenderer(screen,
                                                                 domain,
                                                                 func);
 

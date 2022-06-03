@@ -48,7 +48,7 @@ import arb.util.Utils;
  * the License, or (at your option) any later version. See *
  * <http://www.gnu.org/licenses/>.
  */
-public class ComplexFunctionPlotter<F extends ComplexFunction> extends
+public class ComplexFunctionRenderer<F extends ComplexFunction> extends
                                     JComponent implements
                                     AutoCloseable
 {
@@ -140,7 +140,7 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
 
   private Graphics2D     outputGraphics;
 
-  public ComplexFunctionPlotter(Dimension resolution,
+  public ComplexFunctionRenderer(Dimension resolution,
                                 Rectangle2D.Double domain,
                                 F function) throws NoninvertibleTransformException
   {
@@ -150,7 +150,7 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
     init();
   }
 
-  public ComplexFunctionPlotter()
+  public ComplexFunctionRenderer()
   {
 
   }

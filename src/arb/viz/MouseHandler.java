@@ -23,12 +23,12 @@ public final class MouseHandler implements
   /**
    * 
    */
-  private final ComplexFunctionPlotter plotter;
+  private final ComplexFunctionRenderer plotter;
 
   /**
    * @param complexPlot
    */
-  MouseHandler(ComplexFunctionPlotter complexPlot)
+  MouseHandler(ComplexFunctionRenderer complexPlot)
   {
     plotter = complexPlot;
     Z       = Complex.newVector(2);

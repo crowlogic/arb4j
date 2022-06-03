@@ -8,10 +8,10 @@ import java.io.IOException;
 import arb.Constants;
 import arb.Real;
 import arb.ThreadLocalComplex;
-import arb.viz.ComplexFunctionPlotter;
+import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
-public class ZetaPlot
+public class ζRenderer
 {
 
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
@@ -28,7 +28,7 @@ public class ZetaPlot
     ThreadLocalComplex     Z       = new ThreadLocalComplex(2);
     Real                   scale   = new Real().set(1);
 
-    ComplexFunctionPlotter plotter = new ComplexFunctionPlotter(screen,
+    ComplexFunctionRenderer plotter = new ComplexFunctionRenderer(screen,
                                                                 domain,
                                                                 (z, order, prec, w) ->
                                                                 {

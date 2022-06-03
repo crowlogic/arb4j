@@ -1,0 +1,46 @@
+package arb.viz.rendering;
+
+import java.awt.Dimension;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
+import java.io.IOException;
+
+import arb.functions.complex.SFunction;
+import arb.viz.ComplexFunctionRenderer;
+import arb.viz.Part;
+
+public class SRenderer extends
+                      ComplexFunctionRenderer<SFunction>
+{
+
+  public SRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
+  {
+    super(screen,
+          domain,
+          new SFunction());
+  }
+
+  public SRenderer() throws NoninvertibleTransformException
+  {
+    this(new Dimension(2000 / 2,
+                       1000 / 2),
+         new Rectangle2D.Double(-Math.PI * 2,
+                                -1.5 * 2,
+                                Math.PI * 2 * 2,
+                                3 * 2));
+  }
+
+  @SuppressWarnings("resource")
+  public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
+  {
+
+    SRenderer plotter = new SRenderer();
+
+    plotter.color_mode  = 1;
+    plotter.displayMode = Part.Blend;
+    plotter.render();
+
+  }
+
+}
