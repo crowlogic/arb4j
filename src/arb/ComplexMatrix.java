@@ -34,10 +34,20 @@ public class ComplexMatrix implements AutoCloseable {
   }
 
 
+  /**
+   * Calls {@link arb#acb_mat_clear(ComplexMatrix)}
+   * @return this
+   */
+  public ComplexMatrix clear()
+  {
+    arb.acb_mat_clear(this);
+    return this;
+  }
+
   @Override
   public void close()
   { 
-      delete();
+      clear();
   }
   
   public ComplexMatrix init(int rows, int cols)

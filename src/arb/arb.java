@@ -9,6 +9,14 @@
 package arb;
 
 public class arb {
+  public static void arb_mat_clear(RealMatrix mat) {
+    arbJNI.arb_mat_clear(RealMatrix.getCPtr(mat), mat);
+  }
+
+  public static void acb_mat_clear(ComplexMatrix mat) {
+    arbJNI.acb_mat_clear(ComplexMatrix.getCPtr(mat), mat);
+  }
+
   public static void acb_poly_clear(ComplexPolynomial poly) {
     arbJNI.acb_poly_clear(ComplexPolynomial.getCPtr(poly), poly);
   }

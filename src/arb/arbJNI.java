@@ -9,6 +9,8 @@
 package arb;
 
 public class arbJNI {
+  public final static native void arb_mat_clear(long jarg1, RealMatrix jarg1_);
+  public final static native void acb_mat_clear(long jarg1, ComplexMatrix jarg1_);
   public final static native void acb_poly_clear(long jarg1, ComplexPolynomial jarg1_);
   public final static native void mpfr_clear(long jarg1, MultiPrecFloat jarg1_);
   public final static native void flint_cleanup();

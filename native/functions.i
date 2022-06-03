@@ -1,3 +1,6 @@
+void arb_mat_clear(arb_mat_t mat);
+void acb_mat_clear(acb_mat_t mat);
+
 void acb_poly_clear(acb_poly_t poly);
 
 void mpfr_clear (mpfr_ptr);

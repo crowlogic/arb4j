@@ -7,10 +7,20 @@ import static arb.Constants.*;
 
 %typemap(javacode) acb_mat_struct %{
 
+  /**
+   * Calls {@link arb#acb_mat_clear(ComplexMatrix)}
+   * @return this
+   */
+  public ComplexMatrix clear()
+  {
+    arb.acb_mat_clear(this);
+    return this;
+  }
+
   @Override
   public void close()
   { 
-      delete();
+      clear();
   }
   
   public ComplexMatrix init(int rows, int cols)

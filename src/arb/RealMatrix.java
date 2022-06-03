@@ -34,11 +34,22 @@ public class RealMatrix implements AutoCloseable {
   }
 
 
+  /**
+   * Calls {@link arb#arb_mat_clear(RealMatrix)}
+   * @return this
+   */
+  public RealMatrix clear()
+  {
+    arb.arb_mat_clear(this);
+    return this;
+  }
+
   @Override
   public void close()
   { 
-      delete();
+      clear();
   }
+  
   
   public RealMatrix init(int rows, int cols)
   {
