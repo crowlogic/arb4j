@@ -293,6 +293,34 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_dirichlet_1char_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  dirichlet_char_struct *arg1 ;
+  dirichlet_group_struct *arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(dirichlet_char_struct **)&jarg1; 
+  arg2 = *(dirichlet_group_struct **)&jarg2; 
+  dirichlet_char_init(arg1,(dirichlet_group_struct const (*))arg2);
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_dirichlet_1char_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  dirichlet_char_struct *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(dirichlet_char_struct **)&jarg1; 
+  dirichlet_char_clear(arg1);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_mat_struct *arg1 ;
   

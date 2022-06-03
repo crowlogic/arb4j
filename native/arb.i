@@ -58,13 +58,13 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %rename (realObj) realObj;
 %rename (imagObj) imagObj;
 
-
 %include "ComplexPolynomial.i"
 
 %include "ComplexMatrix.i"
 
 %include "RealMatrix.i"
 
+%include "DirichletCharacter.i"
 
 %include "TypesAndStructures.i"
 

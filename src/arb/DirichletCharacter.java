@@ -8,7 +8,8 @@
 
 package arb;
 
-public class DirichletCharacter {
+
+public class DirichletCharacter implements AutoCloseable {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -21,11 +22,6 @@ public class DirichletCharacter {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  @SuppressWarnings("deprecation")
-  protected void finalize() {
-    delete();
-  }
-
   public synchronized void delete() {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
@@ -35,6 +31,40 @@ public class DirichletCharacter {
       swigCPtr = 0;
     }
   }
+
+
+  /**
+   * Calls {@link arb#dirichlet_char_clear(DirichletCharacter)}
+   * @return this
+   */
+  public DirichletCharacter clear()
+  {
+    arb.dirichlet_char_clear(this);
+    return this;
+  }
+
+  @Override
+  public void close()
+  { 
+      clear();
+  }
+  
+  /**
+   * 
+   * Initializes {@link DirichletCharacter} and sets its value to the principal character of a specified {@link DirichletGroup} G 
+   *
+   * @return this
+   *
+   * @param group the {@link DirichletGroup} 
+   * 
+   * @return this
+   */
+  public DirichletCharacter init(DirichletGroup group)
+  {
+    arb.dirichlet_char_init(this, group);
+    return this;
+  }
+    
 
   public void setN(long value) {
     arbJNI.DirichletCharacter_n_set(swigCPtr, this, value);

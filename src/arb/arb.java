@@ -9,6 +9,14 @@
 package arb;
 
 public class arb {
+  public static void dirichlet_char_init(DirichletCharacter x, DirichletGroup G) {
+    arbJNI.dirichlet_char_init(DirichletCharacter.getCPtr(x), x, DirichletGroup.getCPtr(G), G);
+  }
+
+  public static void dirichlet_char_clear(DirichletCharacter x) {
+    arbJNI.dirichlet_char_clear(DirichletCharacter.getCPtr(x), x);
+  }
+
   public static void arb_mat_clear(RealMatrix mat) {
     arbJNI.arb_mat_clear(RealMatrix.getCPtr(mat), mat);
   }

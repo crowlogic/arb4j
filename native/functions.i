@@ -1,3 +1,7 @@
+void dirichlet_char_init(dirichlet_char_t x, const dirichlet_group_t G);
+
+void dirichlet_char_clear(dirichlet_char_t x);
+
 void arb_mat_clear(arb_mat_t mat);
 void acb_mat_clear(acb_mat_t mat);
 
