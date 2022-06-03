@@ -66,7 +66,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionPlotter>
                                                                              / (double) frameCount;
                                                                double scale      = 0.1 + secondsLong * proportion;
                                                                System.out.format("Setting scale to %f\n", scale);
-                                                               plotter.function.scale.assign(scale);
+                                                               plotter.function.scale.set(scale);
                                                              };
     ComplexFunctionAnimator<XPlotter> animator               = new ComplexFunctionAnimator(plotter,
                                                                                            frameParameterAssigner,

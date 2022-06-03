@@ -750,8 +750,8 @@ public class ComplexFunctionPlotter<F extends ComplexFunction> extends
 
   public static Complex toComplex(Complex res, Double cursorInFunctionSpace2)
   {
-    res.getReal().assign(cursorInFunctionSpace2.x);
-    res.getImag().assign(cursorInFunctionSpace2.y);
+    res.getReal().set(cursorInFunctionSpace2.x);
+    res.getImag().set(cursorInFunctionSpace2.y);
     return res;
   }
 

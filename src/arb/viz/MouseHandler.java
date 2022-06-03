@@ -97,8 +97,8 @@ public final class MouseHandler implements
       {
         plotter.cursorInScreenSpace   = plotter.mapFunctionToScreen(e.getPoint());
         plotter.cursorInFunctionSpace = plotter.mapScreenToFunction(e.getPoint());
-        t.getReal().assign(plotter.cursorInFunctionSpace.x);
-        t.getImag().assign(plotter.cursorInFunctionSpace.y);
+        t.getReal().set(plotter.cursorInFunctionSpace.x);
+        t.getImag().set(plotter.cursorInFunctionSpace.y);
         plotter.mouseMoved(t);
       }
       catch (Exception ex)

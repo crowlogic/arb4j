@@ -18,7 +18,7 @@ public class FourierTransformTest extends
                                                                                                                           a,
                                                                                                                           b);
     Complex                                                t = new Complex();
-    t.getReal().assign(1);
+    t.getReal().set(1);
     int     prec = 128;
     Complex fval = f.evaluate(t, 1, prec, new Complex());
     Complex χval = χ.evaluate(t, 1, prec, new Complex());

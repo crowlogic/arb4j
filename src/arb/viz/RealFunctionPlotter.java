@@ -186,7 +186,7 @@ public class RealFunctionPlotter extends
   {
     // TODO: consider tradeoffs of passing in double[] array vs Float[] array.
     return IntStream.range(0, domainPoints.length)
-                    .mapToDouble(i -> func.evaluate(realIn.assign(domainPoints[i]), 1, prec, realOut).doubleValue())
+                    .mapToDouble(i -> func.evaluate(realIn.set(domainPoints[i]), 1, prec, realOut).doubleValue())
                     .toArray();
   }
 

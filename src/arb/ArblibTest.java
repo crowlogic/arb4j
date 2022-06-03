@@ -76,7 +76,7 @@ public class ArblibTest extends
     Complex faze = new Complex();
     z.init();
     faze.init();
-    z.getReal().assign(13.2);
+    z.getReal().set(13.2);
     acb_dirichlet_hardy_theta(faze, z, null, null, 1, prec);
     double result = faze.getReal().doubleValue();
     out.println("theta(" + z.getReal().doubleValue() + ")=" + result);

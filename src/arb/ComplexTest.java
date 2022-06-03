@@ -42,9 +42,9 @@ public class ComplexTest extends
     IntStream.range(0, 5).forEach(i ->
     {
       double xval = (double) i;
-      x.get(i).getReal().assign(xval);
+      x.get(i).getReal().set(xval);
       double yval = Math.cos(xval / 10.0);
-      y.get(i).getReal().assign(yval);
+      y.get(i).getReal().set(yval);
       System.out.format("f[%s]=%s\n", x.get(i).getReal(), y.get(i).getReal());
     });
     // TODO: figure out how to override this method with swig so that the coeff

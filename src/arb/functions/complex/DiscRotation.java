@@ -1,9 +1,10 @@
 package arb.functions.complex;
 
 import arb.*;
+import arb.functions.*;
 
 public class DiscRotation implements
-                          ComplexFunction,
+                          Function<Real, Complex>,
                           AutoCloseable
 {
   public DiscRotation(Complex t, Real h)
@@ -21,7 +22,7 @@ public class DiscRotation implements
   ThreadLocalComplex s = new ThreadLocalComplex(1);
 
   @Override
-  public Complex evaluate(Complex a, int order, int prec, Complex res)
+  public Complex evaluate(Real a, int order, int prec, Complex res)
   {
     Complex s = this.s.get();
     return a.mul(Constants.i, s).exp(prec, s).mul(h, prec, s).add(t, prec, res);
@@ -33,6 +34,22 @@ public class DiscRotation implements
     s.remove();
     t.clear();
     h.clear();
+  }
+
+  /**
+   * double-wrapper for this{@link #evaluate(Real, int, int, Complex)}
+   * 
+   * @param angle
+   * @param complex
+   * @return
+   */
+  public Complex evaluate(double angle, Complex complex)
+  {
+    try ( Real Θ = new Real())
+    {
+      Θ.set(angle);
+      return evaluate(Θ, 1, 64, complex);
+    }
   }
 
 }

@@ -26,7 +26,7 @@ public class ZetaPlot
                                                    1250);
 
     ThreadLocalComplex     Z       = new ThreadLocalComplex(2);
-    Real                   scale   = new Real().assign(1);
+    Real                   scale   = new Real().set(1);
 
     ComplexFunctionPlotter plotter = new ComplexFunctionPlotter(screen,
                                                                 domain,

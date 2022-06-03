@@ -371,7 +371,7 @@ public class Real implements AutoCloseable, Comparable<Real> {
     return this;
   }
   
-  public Real assign(double d)
+  public Real set(double d)
   {
     arb.arb_set_d(this, d);
     return this;
