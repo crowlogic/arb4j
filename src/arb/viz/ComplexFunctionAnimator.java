@@ -57,18 +57,18 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
     int       framesPerSecond = 30;
     int       secondsLong     = 5;
     final int frameCount      = framesPerSecond * secondsLong;
-    SRenderer  plotter         = new SRenderer();
-    plotter.color_mode  = 5;
-    plotter.displayMode = Part.Blend;
+    XRenderer  renderer         = new XRenderer();
+    renderer.color_mode  = 0;
+    renderer.displayMode = Part.Real;
     IntConsumer                       frameParameterAssigner = frame ->
                                                              {
                                                                double proportion = (double) frame
                                                                              / (double) frameCount;
                                                                double scale      = 0.1 + secondsLong * proportion;
                                                                System.out.format("Setting scale to %f\n", scale);
-                                                               plotter.function.scale.set(scale);
+                                                               renderer.function.f.scale.set(scale);
                                                              };
-    ComplexFunctionAnimator<XRenderer> animator               = new ComplexFunctionAnimator(plotter,
+    ComplexFunctionAnimator<XRenderer> animator               = new ComplexFunctionAnimator(renderer,
                                                                                            frameParameterAssigner,
                                                                                            frameCount);
     String                            codec                  = "ffv1";
