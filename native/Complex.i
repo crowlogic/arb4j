@@ -363,8 +363,8 @@ import static arb.arb.*;
   
   public Complex set(double r, double i)
   {
-    getReal().assign(r);
-    getImag().assign(i);
+    getReal().set(r);
+    getImag().set(i);
     return this;
   }
   

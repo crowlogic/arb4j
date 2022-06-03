@@ -48,7 +48,7 @@ import arb.functions.complex.ComplexFunction;
   {
     try ( Complex t = new Complex(); Complex s = new Complex() )
     {
-      t.getReal().assign(d);
+      t.getReal().set(d);
       return evaluate(t, 1, 70, s).getReal().doubleValue();
     }
   }
