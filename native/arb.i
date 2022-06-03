@@ -66,6 +66,8 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %include "DirichletCharacter.i"
 
+%include "DirichletGroup.i"
+
 %include "TypesAndStructures.i"
 
 

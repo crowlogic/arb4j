@@ -8,7 +8,8 @@
 
 package arb;
 
-public class DirichletGroup {
+
+public class DirichletGroup implements AutoCloseable {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -21,11 +22,6 @@ public class DirichletGroup {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  @SuppressWarnings("deprecation")
-  protected void finalize() {
-    delete();
-  }
-
   public synchronized void delete() {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
@@ -35,6 +31,36 @@ public class DirichletGroup {
       swigCPtr = 0;
     }
   }
+
+
+  /**
+   * Calls {@link arb#dirichlet_group_clear(DirichletGroup)}
+   * @return this
+   */
+  public DirichletGroup clear()
+  {
+    arb.dirichlet_group_clear(this);
+    return this;
+  }
+
+  @Override
+  public void close()
+  { 
+      clear();
+  }
+  
+  public DirichletGroup init(long q)
+  {
+    arb.dirichlet_group_init(this, q);
+    return this;
+  }
+
+  public DirichletGroup init(DirichletGroup group, long q)
+  {
+    arb.dirichlet_subgroup_init(this, group, q);
+    return this;
+  }
+    
 
   public void setQ(long value) {
     arbJNI.DirichletGroup_q_set(swigCPtr, this, value);
