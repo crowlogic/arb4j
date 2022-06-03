@@ -7,13 +7,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import arb.*;
 import arb.exceptions.*;
+import arb.functions.Function;
 import arb.util.Utils;
 
-public interface ComplexFunction
+public interface ComplexFunction extends
+                                 Function<Complex, Complex>
 {
-
-  Complex evaluate(Complex z, int order, int prec, Complex w);
-
   /**
    * Each linear operator A on a Euclidean vector space defines a (Hermitian)
    * adjoint operator A^* on that space according to the rule <code> 
