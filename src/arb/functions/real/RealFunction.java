@@ -11,49 +11,44 @@ package arb.functions.real;
 
 import static java.lang.System.out;
 
-import arb.Constants;
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.FoundRoots;
 import arb.FloatInterval.RootStatus;
-import arb.Magnitude;
-import arb.Real;
-import arb.RealRootInterval;
 import arb.RealRootInterval.RefinementResult;
-import arb.arb;
+import arb.functions.Function;
 
 /**
  * Interface which defines a function from ℝ -> ℝ where ℝ is the set of real
  * number
  */
-public interface RealFunction
+public interface RealFunction extends
+                              Function<Real, Real>
 {
-  public Real evaluate(Real t, int order, int prec, Real res);
 
   public static final int FLINT_BITS = 64;
 
   /**
    * TODO:
-   * 
-   * @param xnew
-   * @param x
+   * @param point
    * @param convergenceRegion the interval I
    * @param convergenceFactor
    * @param prec
+   * @param nextPoint
+   * 
    * @return C=the supremum of |f''(t)|/(2*|f'(t)| over {t,u}∈I
    */
   public default boolean
-         calculateNewtonStep(Real xnew, Real x, Real convergenceRegion, Float convergenceFactor, int prec)
+         calculateNewtonStep(Real point, Real convergenceRegion, Float convergenceFactor, int prec, Real nextPoint)
   {
     try ( Magnitude err = new Magnitude(); Magnitude v = new Magnitude(); Real t = new Real();
           Real u = Real.newVector(2))
     {
-      Magnitude xRadius = x.getRad();
-      //xRadius.mul(xRadius, err);
+      Magnitude xRadius = point.getRad();
+      // xRadius.mul(xRadius, err);
       xRadius.pow(2, err);
       convergenceFactor.getMagnitude(v).mul(err, err);
 
-      t.setMid(x.getMid());
+      t.setMid(point.getMid());
       t.getRad().zero();
 
       evaluate(t, 2, prec, u).div(u.get(1), prec, u);
@@ -64,12 +59,12 @@ public interface RealFunction
 
       if (convergenceRegion.contains(u) && uRadius.compareTo(xRadius) < 0)
       {
-        xnew.get(0).swap(u);
+        nextPoint.get(0).swap(u);
         return true;
       }
       else
       {
-        xnew.get(0).set(x);
+        nextPoint.get(0).set(point);
         return false;
       }
     }
@@ -136,7 +131,7 @@ public interface RealFunction
         System.out.printf("Newton step: wp = %d + %d = %d      r=%s\n", precs[i], extraPrec, workingPrecision, root);
       }
 
-      if (!calculateNewtonStep(root, root, convergenceRegion, convergenceFactor, workingPrecision))
+      if (!calculateNewtonStep(root, convergenceRegion, convergenceFactor, workingPrecision, root))
       {
         return RefinementResult.NoConvergence;
       }
