@@ -10,8 +10,21 @@ public class RealQuarterPeriodTest extends
   public static void testLemniscateConstant()
   {
     RealQuarterPeriod rqp = new RealQuarterPeriod();
-    Complex s = rqp.evaluate(new Complex().set(Constants.ZERO.getReal(), Constants.ONE), 1, 256, new Complex() );
-    
-    System.out.println("s="+ s );
+    /**
+     * Also tested in ComplexFunctionTest
+     */
+    try ( Complex negone = new Complex(); Complex lemniscateConstant = new Complex())
+    {
+
+      lemniscateConstant.getReal().set("2.62205755429211981046483958989111941368275495 +/- 2.5597e-76", 256);
+      negone.getReal().set(-1);
+      Complex s = rqp.evaluate(negone, 1, 256, new Complex());
+      s.mul(2, 256, s);
+      s.printPrecision                  = true;
+      lemniscateConstant.printPrecision = true;
+      double sval = s.getReal().getMid().doubleValue();
+      double lval = lemniscateConstant.getReal().getMid().doubleValue();
+      assertEquals(sval, lval, Math.pow(10, -17));
+    }
   }
 }
