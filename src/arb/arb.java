@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void acb_poly_clear(ComplexPolynomial poly) {
+    arbJNI.acb_poly_clear(ComplexPolynomial.getCPtr(poly), poly);
+  }
+
   public static void mpfr_clear(MultiPrecFloat arg0) {
     arbJNI.mpfr_clear(MultiPrecFloat.getCPtr(arg0), arg0);
   }

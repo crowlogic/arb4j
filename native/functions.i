@@ -1,3 +1,5 @@
+void acb_poly_clear(acb_poly_t poly);
+
 void mpfr_clear (mpfr_ptr);
 
  void flint_cleanup(void);

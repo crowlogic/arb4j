@@ -293,6 +293,18 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  acb_poly_struct *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(acb_poly_struct **)&jarg1; 
+  acb_poly_clear(arg1);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_mpfr_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   mpfr_ptr arg1 = (mpfr_ptr) 0 ;
   

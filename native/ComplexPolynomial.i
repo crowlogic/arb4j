@@ -8,10 +8,21 @@ import arb.functions.complex.ComplexFunction;
 
 %typemap(javacode) acb_poly_struct %{
 
+  /**
+   * Calls {@link arb#acb_clear(Complex)}
+   * 
+   * @return this
+   */
+  public ComplexPolynomial clear()
+  {
+    arb.acb_poly_clear(this);
+    return this;
+  }
+
   @Override
   public void close()
-  { 
-      delete();
+  {
+    clear();
   }
   
  /**
