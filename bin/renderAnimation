@@ -1,0 +1,9 @@
+#!/bin/sh -x
+
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+CLASSPATH=`cat $BASEDIR/class.path`
+java -Djava.library.path=$BASEDIR -ea -classpath $CLASSPATH:$BASEDIR/target/classes arb.viz.ComplexFunctionAnimator $@
+
+
+
