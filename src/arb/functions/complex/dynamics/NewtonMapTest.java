@@ -31,4 +31,14 @@ public class NewtonMapTest extends
     assertEquals(0.47827850346020756, w.getReal().doubleValue(), Math.pow(10, -20));
     assertEquals(0.03295813148788927, w.getImag().doubleValue(), Math.pow(10, -20));
   }
+  
+  public void testSMultiplier()
+  {
+    ComplexFunction f = new NewtonMap(new SFunction()).differential();
+    Complex         t = new Complex().set(0.0000000001, 0.000000001);
+    Complex         w = f.evaluate(t, 1, prec, new Complex());
+    
+    assertEquals(0.47827850346020756, w.getReal().doubleValue(), Math.pow(10, -20));
+    assertEquals(0.03295813148788927, w.getImag().doubleValue(), Math.pow(10, -20));
+  }
 }
