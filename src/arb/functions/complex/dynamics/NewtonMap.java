@@ -41,6 +41,9 @@ public class NewtonMap<F extends ComplexFunction> implements
     return w;
   }
 
+  /**
+   * @return (f(t)*f''(t))/(f'(t)^2)
+   */
   @Override
   public ComplexFunction differential() throws NotDifferentiableException
   {
@@ -50,8 +53,9 @@ public class NewtonMap<F extends ComplexFunction> implements
       {
         f.evaluate(t, 3, prec, s);
         Complex numerator   = s.mul(s.get(2), prec, w);
-        Complex denominator = s.get(1).pow(2, prec, s);
-        return numerator.div(denominator, prec, w);
+        Complex denominator = s.get(1).pow(2, prec, s.get(0));
+        numerator.div(denominator, prec, w);
+        return w;
       }
     };
   }
