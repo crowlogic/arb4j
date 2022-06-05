@@ -263,6 +263,13 @@
     <math|S<around*|[|e<rsup|i \<theta\>>|]>>
   </big-figure>
 
+  and\ 
+
+  <\equation>
+    <big|int><rsub|-\<pi\>><rsup|\<pi\>><around*|\||S<around*|(|e<rsup|i
+    \<theta\>>|)>|\|><rsup|2>\<mathd\>\<theta\>=<frac|14 \<pi\>|5>=2.8 \<pi\>
+  </equation>
+
   <subsection|The Frobenius-Perron Transfer Operator>
 
   <\definition>
@@ -1085,8 +1092,8 @@
 
 <\references>
   <\collection>
-    <associate|N|<tuple|45|8>>
-    <associate|NS|<tuple|28|5>>
+    <associate|N|<tuple|46|8>>
+    <associate|NS|<tuple|29|5>>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-10|<tuple|transfer operator|3>>
     <associate|auto-11|<tuple|1.3.1|3>>
@@ -1125,7 +1132,7 @@
     <associate|auto-40|<tuple|4|9>>
     <associate|auto-41|<tuple|5|9>>
     <associate|auto-42|<tuple|5.1|9>>
-    <associate|auto-43|<tuple|51|9>>
+    <associate|auto-43|<tuple|52|9>>
     <associate|auto-44|<tuple|12|9>>
     <associate|auto-5|<tuple|Koenig's function|2>>
     <associate|auto-6|<tuple|1.2|2>>
@@ -1145,13 +1152,13 @@
     <associate|bib-riemann|<tuple|8|9>>
     <associate|bib-shapiro1993composition|<tuple|11|9>>
     <associate|dl|<tuple|15|6>>
-    <associate|ds|<tuple|29|5>>
+    <associate|ds|<tuple|30|5>>
     <associate|footnote-1|<tuple|1|3>>
     <associate|footnr-1|<tuple|1|3>>
     <associate|kc|<tuple|3|2>>
-    <associate|nm|<tuple|36|6>>
+    <associate|nm|<tuple|37|6>>
     <associate|rh|<tuple|17|7>>
-    <associate|rnm|<tuple|33|6>>
+    <associate|rnm|<tuple|34|6>>
   </collection>
 </references>
 
