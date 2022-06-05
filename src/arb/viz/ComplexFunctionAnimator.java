@@ -64,7 +64,8 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
                                                              {
                                                                double proportion = (double) frame
                                                                              / (double) frameCount;
-                                                               double scale      = 0.1 + secondsLong * proportion;
+                                                               proportion /= 2;
+                                                               double scale      = 0.05 + secondsLong * proportion;
                                                                System.out.format("Setting scale to %f\n", scale);
                                                                renderer.function.f.scale.set(scale);
                                                              };
