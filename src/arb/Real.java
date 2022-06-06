@@ -55,12 +55,12 @@ public class Real implements Comparable<Real>, Field {
 
   public Complex sub(Complex a, int prec, Complex res)
   {
-    try ( Complex multiplier = new Complex())
+    try ( Complex subtrahend = new Complex())
     {
-      return add( a.neg( multiplier), prec, res );
+      return add(a.neg(subtrahend), prec, res);
     }
   }
-
+  
   public Complex add(Complex a, int prec, Complex res)
   {
     arb.acb_add_arb(res, a, this, prec);
