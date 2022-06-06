@@ -122,7 +122,6 @@ public class SFunction implements
    */
   protected Complex evaluate2ndDerivative(Complex t, int prec, Complex res)
   {
-
     try ( Complex numer = new Complex(); Complex denom = new Complex(); Complex a = new Complex();)
     {
       denom.getReal().set(2);

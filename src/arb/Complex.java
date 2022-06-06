@@ -531,6 +531,21 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
     arb.acb_abs(res, this, prec);
     return res;
   }
+
+  public Complex zero()
+  {
+    getReal().zero();
+    getImag().zero();
+    return this;
+  }
+  
+ /**
+   * @return this{@link #getReal()}{@link #isZero()} and this{@link #getImag()}{@link #isZero()}
+   */
+  public boolean isZero()
+  {
+    return getReal().isZero() && getImag().isZero();
+  }
   
   public boolean containsZero()
   {

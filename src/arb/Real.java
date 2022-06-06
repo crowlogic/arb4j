@@ -494,9 +494,9 @@ public class Real implements AutoCloseable, Comparable<Real> {
     return cos(prec, r).inv(prec, r);
   }
   
-  public Real pow(int i, Real r)
+  public Real pow(int i, int prec, Real r)
   {
-    arb.arb_pow_ui(r, this, i, i);
+    arb.arb_pow_ui(r, this, i, prec);
     return r;
   }
   
