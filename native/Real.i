@@ -13,6 +13,41 @@ import static arb.arb.*;
 %typemap(javacode) arb_struct %{
  static { System.loadLibrary( "arblib" ); }
 
+  public Complex div(Complex divisor, int prec, Complex w)
+  {
+    try ( Complex multiplier = new Complex())
+    {
+      return mul( divisor.inv(prec, multiplier), prec, w );
+    }
+  }
+
+  public Complex sub(Complex a, int prec, Complex res)
+  {
+    try ( Complex multiplier = new Complex())
+    {
+      return add( a.neg( multiplier), prec, res );
+    }
+  }
+
+  public Complex add(Complex a, int prec, Complex res)
+  {
+    arb.acb_add_arb(res, a, this, prec);
+    return res;
+  }
+
+  
+  /**
+   * Adds the magnitude to the radius of this 
+   * 
+   * @param err
+   * @return
+   */
+  public Real addUncertainty(Magnitude err)
+  {
+    arb.arb_add_error_mag(this, err);
+    return this;
+  }
+  
   public Real clear()
   {
     arb_clear(this);
@@ -142,7 +177,13 @@ import static arb.arb.*;
     return result;
   }
  
- public Complex mul(Complex exp, int prec, Complex r)
+  public Real mul(int i, int prec, Real res)
+  {
+    arb.arb_mul_si(res, this, i, prec);
+    return this;
+  }
+ 
+  public Complex mul(Complex exp, int prec, Complex r)
   {
     arb.acb_mul_arb(r, exp, this, prec );
     return r;

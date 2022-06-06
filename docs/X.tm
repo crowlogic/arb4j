@@ -461,7 +461,8 @@
 
       <\equation>
         <tabular|<tformat|<table|<row|<cell|x<around*|(|t|)>>|<cell|=<frac|<sqrt|2>cos<around*|(|t|)>|1+sin<rsup|2><around*|(|t|)>>>>|<row|<cell|y<around*|(|t|)>>|<cell|=<frac|<sqrt|2>
-        sin<around*|(|t|)> cos<around*|(|t|)>|1+sin<rsup|2><around*|(|t|)>>>>>>>
+        sin<around*|(|t|)> cos<around*|(|t|)>|1+sin<rsup|2><around*|(|t|)>>=x<around*|(|t|)>
+        sin<around*|(|t|)>>>>>>
       </equation>
 
       Let us combine the coordinate functions

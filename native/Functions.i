@@ -1,3 +1,12 @@
+void acb_add_arb(acb_t z, const acb_t x, const arb_t y, slong prec);
+
+void arb_mul_ui(arb_t z, const arb_t x, ulong y, slong prec);
+ 
+void arb_mul_si(arb_t z, const arb_t x, ulong y, slong prec);
+
+void arb_mul_si(arb_t z, const arb_t x, slong y, slong prec);
+void arb_mul_ui(arb_t z, const arb_t x, ulong y, slong prec);
+
 void dirichlet_group_init(dirichlet_group_t G, ulong q);
 void dirichlet_subgroup_init(dirichlet_group_t H, const dirichlet_group_t G, ulong h);
 void dirichlet_group_clear(dirichlet_group_t G);
@@ -270,11 +279,6 @@ slong arf_abs_bound_lt_2exp_si(const arf_t x);
 void arb_mul_2exp_si(arb_t y, const arb_t x, slong e);
 
 void arb_get_abs_ubound_arf(arf_t u, const arb_t x, slong prec);
-
- void arb_mul_ui(arb_t z, const arb_t x, ulong y, slong prec);
- 
- void arb_mul_si(arb_t z, const arb_t x, ulong y, slong prec);
-
 void acb_mul_si(acb_t z, const acb_t x, slong y, slong prec);
 
  

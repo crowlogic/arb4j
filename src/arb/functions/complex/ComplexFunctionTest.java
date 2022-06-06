@@ -41,6 +41,7 @@ public class ComplexFunctionTest extends
 
       absErr.set(Math.pow(2, -128));
       complexPi.set(Constants.π, Constants.ZERO.getImag());
+      //new ComplexFun
       f.integrate(zero, complexPi, 64, absErr, null, 128, integral);
       // integral.printPrecision = true;
       System.out.println("integral is " + integral);

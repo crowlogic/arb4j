@@ -55,15 +55,6 @@ public interface ComplexFunction extends
     throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }
 
-  /**
-   * One can imagine an OrthogonalPolynomial class which overrides this method and
-   * uses instead a recurrence relation to generate its elements
-   * 
-   * @return a ComplexFunction which is the derivative of this one obtained by
-   *         calling evaluate with an order of one plus that requested via
-   *         this{@link #evaluate(Complex, int, int, Complex)} then returning a
-   *         slice of the result.
-   */
   public default ComplexFunction differential() throws NotDifferentiableException
   {
     return new TaylorShift(this);
@@ -120,15 +111,14 @@ public interface ComplexFunction extends
       a.add(b, prec, midpoint).mul2e(-1, midpoint);
 
       /* wide = mid +- [delta] */
-      acb_set(widePoint, midpoint);
+      widePoint.set(midpoint);
       arb_get_mag(magδ, δ.getReal());
-      arb_add_error_mag(widePoint.getReal(), magδ);
+      widePoint.getReal().addUncertainty(magδ);
       arb_get_mag(magδ, δ.getImag());
-      arb_add_error_mag(widePoint.getImag(), magδ);
+      widePoint.getImag().addUncertainty(magδ);
 
       /* Direct evaluation: integral = f([a,b]) * (b-a) */
-      Complex val = evaluate(widePoint, 0, prec, res);
-      return val.mul(δ, prec, res).mul2e(-1, res);
+      return evaluate(widePoint, 0, prec, res).mul(δ, prec, res).mul2e(-1, res);
     }
   }
 
@@ -257,9 +247,7 @@ public interface ComplexFunction extends
       {
 
         /* Compute initial crude estimate for the whole interval. */
-        acb_set(as, a);
-        acb_set(bs, b);
-        simpleQuadrature(as, bs, prec, vs);
+        simpleQuadrature(as.set(a), bs.set(b), prec, vs);
         mag_hypot(ms, vs.getReal().getRad(), vs.getImag().getRad());
 
         depth = maxDepth = 1;
