@@ -1,9 +1,10 @@
 package arb.curves;
 
-import arb.Complex;
-import arb.Constants;
+import arb.*;
 import arb.exceptions.NotDifferentiableException;
+import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.real.*;
 import junit.framework.TestCase;
 
 public class LemniscateTest extends
@@ -27,11 +28,11 @@ public class LemniscateTest extends
   public static void testDerivative() throws NotDifferentiableException
   {
     Lemniscate l = new Lemniscate();
-    ComplexFunction dl = l.differential();
-    ComplexFunction absdl = dl.abs();
+    Function<Real, Complex> dl = l.differential();
+    Function<Real, Real> absdl = dl.abs();
     Complex l1 = l.evaluate(Constants.ONE, 2, 256, Complex.newVector(2));
-    Complex dl1 = dl.evaluate(Constants.COMPLEX_ONE, 1, 256, Complex.newVector(1));
-    Complex absdl1 = absdl.evaluate(Constants.COMPLEX_ONE, 1, 256, Complex.newVector(1));
+    Complex dl1 = dl.evaluate(Constants.ONE, 1, 256, Complex.newVector(1));
+    Real absdl1 = absdl.evaluate(Constants.ONE, 1, 256, new Real() );
     System.out.println("l'(1)=" + dl1);
     System.out.println("|l'(1)|=" + absdl1);
     assertTrue( l1.get(1).sub(dl1,256, new Complex() ).containsZero() );

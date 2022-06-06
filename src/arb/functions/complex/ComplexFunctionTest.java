@@ -1,13 +1,12 @@
 package arb.functions.complex;
 
-import static arb.Constants.ONE;
+import static arb.Constants.*;
 
 import arb.*;
-import arb.curves.Lemniscate;
-import arb.curves.LemniscateDerivative;
-import arb.exceptions.LackOfConvergenceException;
-import arb.exceptions.NotDifferentiableException;
-import junit.framework.TestCase;
+import arb.curves.*;
+import arb.exceptions.*;
+import arb.functions.*;
+import junit.framework.*;
 
 public class ComplexFunctionTest extends
                                  TestCase
@@ -17,17 +16,16 @@ public class ComplexFunctionTest extends
     try ( Complex a = new Complex();)
     {
       a.set(ONE, ONE);
-      ComplexFunction absoluteValueOfAConstantFunction = new ComplexConstant(a).abs();
+      Function<Complex, Real> absoluteValueOfAConstantFunction = new ComplexConstant(a).abs();
 
-      Real            sqrt2                            = a.abs(128, new Real());
-      Complex         b                                = absoluteValueOfAConstantFunction.evaluate(Constants.ZERO,
-                                                                                                   1,
-                                                                                                   128,
-                                                                                                   new Complex());
-      b.printPrecision = true;
+      Real                    sqrt2                            = a.abs(128, new Real());
+      Real                    b                                = absoluteValueOfAConstantFunction.evaluate(Constants.ZERO,
+                                                                                                           1,
+                                                                                                           128,
+                                                                                                           new Real());
 //      System.out.println("|1+i|="
 //                    + b);
-      assertEquals(sqrt2, b.getReal());
+      assertEquals(sqrt2, b);
 
     }
   }
@@ -41,7 +39,7 @@ public class ComplexFunctionTest extends
 
       absErr.set(Math.pow(2, -128));
       complexPi.set(Constants.π, Constants.ZERO.getImag());
-      //new ComplexFun
+      // new ComplexFun
       f.integrate(zero, complexPi, 64, absErr, null, 128, integral);
       // integral.printPrecision = true;
       System.out.println("integral is " + integral);
@@ -57,32 +55,30 @@ public class ComplexFunctionTest extends
    */
   public static void testIntegration2() throws NotDifferentiableException, LackOfConvergenceException
   {
-    int             prec     = 256;
+    int                  prec     = 256;
 
-    Lemniscate      f        = new Lemniscate();
-    ComplexFunction df       =new LemniscateDerivative();
+    Lemniscate           f        = new Lemniscate();
+    LemniscateDerivative df       = new LemniscateDerivative();
 
-    ComplexFunction absdf    = df.abs();
+    Function<Real, Real> absdf    = df.abs();
 
-    Complex         integral = new Complex();
-    Magnitude       absErr   = new Magnitude();
+    Real                 integral = new Real();
+    Magnitude            absErr   = new Magnitude();
 
-    Complex         a        = new Complex();
-    Complex         b        = new Complex();
-    Real            breal    = b.getReal();
-    breal.pi(prec).div(2, prec, breal);
+    Real                 a        = new Real();
+    Real                 b        = new Real();
+    b.pi(prec).div(2, prec, b);
 
-    IntegrationOptions opts = new IntegrationOptions();
-    //opts.verbose = true;
-    Complex abslprimeonehalf = absdf.evaluate(Constants.COMPLEX_HALF, 1, 128, new Complex());
+    IntegrationOptions opts             = new IntegrationOptions();
+    // opts.verbose = true;
+    Real               abslprimeonehalf = absdf.evaluate(HALF, 1, 128, new Real());
     System.out.format("|l'(1/2)|=%s\n", abslprimeonehalf);
     opts.useHeap = false;
     absdf.integrate(a, b, 128, absErr, opts, prec, integral);
-    integral.printPrecision = true;
     System.out.format("int(|l'(x)|,x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);
-    assertTrue( integral.getReal().getRad().doubleValue() <= 1e-20 );
+    assertTrue(integral.getRad().doubleValue() <= 1e-20);
     assertEquals(2.62205755429211981046483958989111941368275495,
-                 integral.getReal().getMid().doubleValue(),
-                 integral.getReal().getRad().doubleValue());
+                 integral.getMid().doubleValue(),
+                 integral.getRad().doubleValue());
   }
 }

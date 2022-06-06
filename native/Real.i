@@ -1,13 +1,19 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "AutoCloseable, Comparable<Real>"
+%typemap(javainterfaces) arb_struct "Comparable<Real>, Field"
 
 %typemap(javaimports) arb_struct %{
 import java.util.concurrent.TimeUnit;
 
 import static arb.Constants.*;
 import static arb.arb.*;
-
+/**
+ * Real numbers are points on an infinitely long line known as the real number
+ * line, where the points corresponding to integers are equally spaced. Any real
+ * number can be determined by a possibly infinite decimal representation. The
+ * real line is part of the complex plane, and the real numbers are part of the
+ * complex numbers.
+ */
 %}
 
 %typemap(javacode) arb_struct %{

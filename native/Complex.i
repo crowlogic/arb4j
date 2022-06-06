@@ -9,11 +9,15 @@ import java.io.IOException;
 import static arb.Constants.*;
 import java.io.Serializable;
 import static arb.arb.*;
+/**
+ * The complex numbers constitute an algebraically closed field, a commutative
+ * algebra over the reals, and a Euclidean vector space of dimension two.
+ */
 %}
 
 %typemap(javafinalize) acb_struct ""
 
-%typemap(javainterfaces) acb_struct "AutoCloseable,Iterable<Complex>,Serializable"
+%typemap(javainterfaces) acb_struct "Field,Iterable<Complex>,Serializable"
 
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }

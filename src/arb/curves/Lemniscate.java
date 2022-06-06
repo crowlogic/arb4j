@@ -12,6 +12,7 @@ package arb.curves;
 import static java.lang.Math.max;
 
 import arb.*;
+import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
 
 /**
@@ -29,7 +30,7 @@ public class Lemniscate implements
 {
 
   @Override
-  public ComplexFunction differential()
+  public Function<Real, Complex> differential()
   {
     return new LemniscateDerivative();
   }
@@ -86,6 +87,18 @@ public class Lemniscate implements
 
     }
     return w;
+  }
+
+  public void integrate(Complex a,
+                        Complex b,
+                        int relativeAccuracyBitsGoal,
+                        Magnitude acceptableUncertainty,
+                        Object object,
+                        int k,
+                        Complex integral)
+  {
+    // TODO Auto-generated method stub
+
   }
 
 }

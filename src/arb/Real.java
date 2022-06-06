@@ -12,9 +12,15 @@ import java.util.concurrent.TimeUnit;
 
 import static arb.Constants.*;
 import static arb.arb.*;
+/**
+ * Real numbers are points on an infinitely long line known as the real number
+ * line, where the points corresponding to integers are equally spaced. Any real
+ * number can be determined by a possibly infinite decimal representation. The
+ * real line is part of the complex plane, and the real numbers are part of the
+ * complex numbers.
+ */
 
-
-public class Real implements AutoCloseable, Comparable<Real> {
+public class Real implements Comparable<Real>, Field {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
