@@ -1,13 +1,24 @@
 package arb.functions;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
 
 import arb.*;
-import arb.exceptions.*;
-import arb.functions.complex.*;
+import arb.exceptions.NotDifferentiableException;
+import arb.functions.complex.ComplexFunction;
 
+@FunctionalInterface
 public interface Function<D extends Field, R extends Field>
 {
+  default Class<D> domainClass()
+  {
+    throw new UnsupportedOperationException("implement me");
+  };
+
+  default Class<R> rangeClass()
+  {
+    throw new UnsupportedOperationException("implement me");
+  };
+
   public R evaluate(D t, int order, int prec, R res);
 
   public default Function<D, R> differential() throws NotDifferentiableException
@@ -54,7 +65,14 @@ public interface Function<D extends Field, R extends Field>
 
   public default R newRangeElement()
   {
-    throw new UnsupportedOperationException("TODO: implement");
+    try
+    {
+      return rangeClass().newInstance();
+    }
+    catch (InstantiationException | IllegalAccessException e)
+    {
+      throw new RuntimeException(e);
+    }
   }
 
   public default void

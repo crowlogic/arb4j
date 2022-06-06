@@ -10,6 +10,7 @@ import arb.exceptions.*;
 import arb.functions.Function;
 import arb.util.Utils;
 
+@FunctionalInterface
 public interface ComplexFunction extends
                                  Function<Complex, Complex>
 {

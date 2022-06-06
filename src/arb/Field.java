@@ -17,7 +17,7 @@ public interface Field extends
   {
   }
 
-  public default <F extends Field> F abs(int prec, F w)
+  public default Real abs(int prec, Real w)
   {
     throw new UnsupportedOperationException("TODO: implement");
   }
