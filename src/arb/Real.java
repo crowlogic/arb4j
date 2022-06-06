@@ -45,6 +45,13 @@ public class Real implements Comparable<Real>, Field {
 
  static { System.loadLibrary( "arblib" ); }
 
+  @Override
+  public Real abs(int prec, Real w)
+  {
+    arb.arb_abs(w, this);
+    return w;
+  }
+  
   public Complex div(Complex divisor, int prec, Complex w)
   {
     try ( Complex multiplier = new Complex())

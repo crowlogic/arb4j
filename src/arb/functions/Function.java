@@ -9,15 +9,6 @@ import arb.functions.complex.ComplexFunction;
 @FunctionalInterface
 public interface Function<D extends Field, R extends Field>
 {
-  default Class<D> domainClass()
-  {
-    throw new UnsupportedOperationException("implement me");
-  };
-
-  default Class<R> rangeClass()
-  {
-    throw new UnsupportedOperationException("implement me");
-  };
 
   public R evaluate(D t, int order, int prec, R res);
 
@@ -46,33 +37,28 @@ public interface Function<D extends Field, R extends Field>
    */
   public default Function<D, Real> abs()
   {
-    Function<D, Real> function = (z, order, prec, w) ->
-    {
-      order = max(1, order);
-      assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
-      try ( R x = newRangeElement())
-      {
-        Function.this.evaluate(z, order, prec, x);
-        if (w.isFinite())
-        {
-          x.abs(prec, w);
-        }
-      }
-      return w;
-    };
-    return function;
+    throw new UnsupportedOperationException(" TODO: return Composition of this with AbsoluteValue function");
+    //return new AbsoluteVal
+//    Function<D, Real> function = (z, order, prec, w) ->
+//    {
+//      order = max(1, order);
+//      assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
+//      try ( R x = newRangeElement())
+//      {
+//        Function.this.evaluate(z, order, prec, x);
+//        if (w.isFinite())
+//        {
+//          x.abs(prec, w);
+//        }
+//      }
+//      return w;
+//    };
+//    return function;
   }
 
   public default R newRangeElement()
   {
-    try
-    {
-      return rangeClass().newInstance();
-    }
-    catch (InstantiationException | IllegalAccessException e)
-    {
-      throw new RuntimeException(e);
-    }
+    throw new UnsupportedOperationException("TODO: implement");
   }
 
   public default void
