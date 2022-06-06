@@ -5,6 +5,8 @@ import static java.lang.Math.max;
 import arb.*;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.real.AbsoluteValue;
+import arb.operators.CompositionOperator;
 
 @FunctionalInterface
 public interface Function<D extends Field, R extends Field>
@@ -38,7 +40,8 @@ public interface Function<D extends Field, R extends Field>
   public default Function<D, Real> abs()
   {
     throw new UnsupportedOperationException(" TODO: return Composition of this with AbsoluteValue function");
-    //return new AbsoluteVal
+    //Function<D, Real> composition = new CompositionOperator<D,Real>(this,new AbsoluteValue<D>());
+    //return composition;
 //    Function<D, Real> function = (z, order, prec, w) ->
 //    {
 //      order = max(1, order);
