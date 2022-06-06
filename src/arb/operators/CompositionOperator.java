@@ -10,7 +10,7 @@ import arb.functions.complex.ComplexFunction;
  * the Koopman operator
  *
  */
-public class CompositionOperator<FD extends Field, FR extends Field, GD extends Field, GR extends Field, F extends Function<FD, FR>, G extends Function<GD, GR>>
+public class CompositionOperator<FD extends Field, FRGD extends Field, GR extends Field, F extends Function<FD, FRGD>, G extends Function<FRGD, GR>>
                                 implements
                                 ComplexFunction,
                                 AutoCloseable
@@ -38,9 +38,9 @@ public class CompositionOperator<FD extends Field, FR extends Field, GD extends 
 
     throw new UnsupportedOperationException("TODO");
     // y=g(t) if order == 1 or y=[g(t), g'(t)] if order==2
-    //g.evaluate(t, order, prec, y);
+    // g.evaluate(t, order, prec, y);
     // res=y=f(g(t)) if order==1 or y=[f(g(t)),f'(g(t))] if order==2
-    //f.evaluate(y, order, prec, res);
+    // f.evaluate(y, order, prec, res);
 
 //    if (order == 2)
 //    {
@@ -48,7 +48,7 @@ public class CompositionOperator<FD extends Field, FR extends Field, GD extends 
 //      Complex df = res.get(1);
 //      df.mul(y.get(1), df);
 //    }
-  //  return res;
+    // return res;
   }
 
   @Override
