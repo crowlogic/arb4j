@@ -293,6 +293,88 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1add_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  acb_struct *arg1 ;
+  acb_struct *arg2 ;
+  arb_struct *arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(acb_struct **)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(arb_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  acb_add_arb(arg1,(acb_struct const (*))arg2,(arb_struct const (*))arg3,arg4);
+  
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mul_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+  arb_struct *arg1 ;
+  arb_struct *arg2 ;
+  unsigned long arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = *(arb_struct **)&jarg2; 
+  arg3 = (unsigned long)jarg3; 
+  arg4 = (long)jarg4; 
+  arb_mul_ui(arg1,(arb_struct const (*))arg2,arg3,arg4);
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mul_1si_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
+  arb_struct *arg1 ;
+  arb_struct *arg2 ;
+  unsigned long arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = *(arb_struct **)&jarg2; 
+  arg3 = (unsigned long)jarg3; 
+  arg4 = (long)jarg4; 
+  arb_mul_si(arg1,(arb_struct const (*))arg2,arg3,arg4);
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mul_1si_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jint jarg4) {
+  arb_struct *arg1 ;
+  arb_struct *arg2 ;
+  long arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = *(arb_struct **)&jarg2; 
+  arg3 = (long)jarg3; 
+  arg4 = (long)jarg4; 
+  arb_mul_si(arg1,(arb_struct const (*))arg2,arg3,arg4);
+  
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_dirichlet_1group_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   dirichlet_group_struct *arg1 ;
   unsigned long arg2 ;
@@ -2658,46 +2740,6 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1get_1abs_1ubound_1arf(JNIEnv *jenv,
   arg2 = *(arb_struct **)&jarg2; 
   arg3 = (long)jarg3; 
   arb_get_abs_ubound_arf(arg1,(arb_struct const (*))arg2,arg3);
-  
-  
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mul_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
-  arb_struct *arg1 ;
-  arb_struct *arg2 ;
-  unsigned long arg3 ;
-  long arg4 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(arb_struct **)&jarg1; 
-  arg2 = *(arb_struct **)&jarg2; 
-  arg3 = (unsigned long)jarg3; 
-  arg4 = (long)jarg4; 
-  arb_mul_ui(arg1,(arb_struct const (*))arg2,arg3,arg4);
-  
-  
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mul_1si(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jint jarg4) {
-  arb_struct *arg1 ;
-  arb_struct *arg2 ;
-  unsigned long arg3 ;
-  long arg4 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(arb_struct **)&jarg1; 
-  arg2 = *(arb_struct **)&jarg2; 
-  arg3 = (unsigned long)jarg3; 
-  arg4 = (long)jarg4; 
-  arb_mul_si(arg1,(arb_struct const (*))arg2,arg3,arg4);
   
   
 }

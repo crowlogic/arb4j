@@ -9,6 +9,22 @@
 package arb;
 
 public class arb {
+  public static void acb_add_arb(Complex z, Complex x, Real y, int prec) {
+    arbJNI.acb_add_arb(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Real.getCPtr(y), y, prec);
+  }
+
+  public static void arb_mul_ui(Real z, Real x, long y, int prec) {
+    arbJNI.arb_mul_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
+  }
+
+  public static void arb_mul_si(Real z, Real x, long y, int prec) {
+    arbJNI.arb_mul_si__SWIG_0(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
+  }
+
+  public static void arb_mul_si(Real z, Real x, int y, int prec) {
+    arbJNI.arb_mul_si__SWIG_1(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
+  }
+
   public static void dirichlet_group_init(DirichletGroup G, long q) {
     arbJNI.dirichlet_group_init(DirichletGroup.getCPtr(G), G, q);
   }
@@ -547,14 +563,6 @@ public class arb {
 
   public static void arb_get_abs_ubound_arf(Float u, Real x, int prec) {
     arbJNI.arb_get_abs_ubound_arf(Float.getCPtr(u), u, Real.getCPtr(x), x, prec);
-  }
-
-  public static void arb_mul_ui(Real z, Real x, long y, int prec) {
-    arbJNI.arb_mul_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
-  }
-
-  public static void arb_mul_si(Real z, Real x, long y, int prec) {
-    arbJNI.arb_mul_si(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
   public static void acb_mul_si(Complex z, Complex x, int y, int prec) {

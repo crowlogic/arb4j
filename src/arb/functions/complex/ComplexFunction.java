@@ -10,20 +10,23 @@ import arb.exceptions.*;
 import arb.functions.Function;
 import arb.util.Utils;
 
+@FunctionalInterface
 public interface ComplexFunction extends
                                  Function<Complex, Complex>
 {
   /**
    * Each linear operator A on a Euclidean vector space defines a (Hermitian)
-   * adjoint operator A^* on that space according to the rule <code> 
+   * adjoint operator A^* on that space according to the rule <br>
+   * <code> 
    *  ⟨ A x , y ⟩ = ⟨ x , A^∗ y ⟩ , 
-   * </code> The adjoint may also be called the Hermitian conjugate or simply the
+   * </code> <br>
+   * The adjoint may also be called the Hermitian conjugate or simply the
    * Hermitian[1] after Charles Hermite. It is often denoted by A† in fields like
    * physics, especially when used in conjunction with bra–ket notation in quantum
    * mechanics. In finite dimensions (like here where the case of the complex
-   * numbers represents 2 real numbers) where operators are represented by
-   * matrices, the Hermitian adjoint is given by the conjugate transpose (also
-   * known as the Hermitian transpose).
+   * numbers being a pair of real numbers) where operators are represented by
+   * matrices, the Hermitian adjoint is given by the <b>conjugate transpose</b>
+   * (also known as the Hermitian transpose).
    * 
    * The above definition of an adjoint operator extends verbatim to bounded
    * linear operators on Hilbert spaces H. The definition has been further
@@ -34,13 +37,14 @@ public interface ComplexFunction extends
    */
   public default ComplexFunction adjoint()
   {
-    return (z, order, prec, w) ->
+    ComplexFunction bump = (z, order, prec, w) ->
     {
       try ( Complex a = z.conj(new Complex());)
       {
         return ComplexFunction.this.evaluate(a, order, prec, w);
       }
     };
+    return bump;
   }
 
   /**
@@ -55,15 +59,6 @@ public interface ComplexFunction extends
     throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }
 
-  /**
-   * One can imagine an OrthogonalPolynomial class which overrides this method and
-   * uses instead a recurrence relation to generate its elements
-   * 
-   * @return a ComplexFunction which is the derivative of this one obtained by
-   *         calling evaluate with an order of one plus that requested via
-   *         this{@link #evaluate(Complex, int, int, Complex)} then returning a
-   *         slice of the result.
-   */
   public default ComplexFunction differential() throws NotDifferentiableException
   {
     return new TaylorShift(this);
@@ -120,15 +115,14 @@ public interface ComplexFunction extends
       a.add(b, prec, midpoint).mul2e(-1, midpoint);
 
       /* wide = mid +- [delta] */
-      acb_set(widePoint, midpoint);
+      widePoint.set(midpoint);
       arb_get_mag(magδ, δ.getReal());
-      arb_add_error_mag(widePoint.getReal(), magδ);
+      widePoint.getReal().addUncertainty(magδ);
       arb_get_mag(magδ, δ.getImag());
-      arb_add_error_mag(widePoint.getImag(), magδ);
+      widePoint.getImag().addUncertainty(magδ);
 
       /* Direct evaluation: integral = f([a,b]) * (b-a) */
-      Complex val = evaluate(widePoint, 0, prec, res);
-      return val.mul(δ, prec, res).mul2e(-1, res);
+      return evaluate(widePoint, 0, prec, res).mul(δ, prec, res).mul2e(-1, res);
     }
   }
 
@@ -257,9 +251,7 @@ public interface ComplexFunction extends
       {
 
         /* Compute initial crude estimate for the whole interval. */
-        acb_set(as, a);
-        acb_set(bs, b);
-        simpleQuadrature(as, bs, prec, vs);
+        simpleQuadrature(as.set(a), bs.set(b), prec, vs);
         mag_hypot(ms, vs.getReal().getRad(), vs.getImag().getRad());
 
         depth = maxDepth = 1;
@@ -675,26 +667,25 @@ public interface ComplexFunction extends
   /**
    * @return function which returns the absolute value of this function
    */
-  public default ComplexFunction abs()
+  public default Function<Complex, Real> abs()
   {
-    return (z, order, prec, w) ->
+    Function<Complex, Real> function = (z, order, prec, w) ->
     {
       order = max(1, order);
       assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
-      try ( Real metric = new Real();)
+      try ( Complex x = new Complex())
       {
-        ComplexFunction.this.evaluate(z, order, prec, w);
-        w.printPrecision = true;
+        ComplexFunction.this.evaluate(z, order, prec, x);
+        x.printPrecision = true;
         z.printPrecision = true;
         if (w.isFinite())
         {
-          w.abs(prec, metric);
-          w.getReal().set(metric);
-          w.getImag().zero();
+          x.abs(prec, w);
         }
       }
       return w;
     };
+    return function;
   }
 
 }

@@ -23,6 +23,7 @@ public class XRenderer extends
   {
     XRenderer r = new XRenderer();
     r.render();
+    r.saveToFile();
   }
   
   public static final int width  = 2500; 
@@ -38,7 +39,7 @@ public class XRenderer extends
                                  15 * 3),
           new XFunction(vscale));
 
-    color_mode  = 5;
+    color_mode  = 6;
     displayMode = Part.Real;
 
   }

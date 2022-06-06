@@ -1,23 +1,19 @@
 package arb.curves;
 
+import arb.Complex;
 import arb.Real;
+import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 /**
  * 
  * A plane curve is a curve that lies in a single plane. A plane curve may be
- * closed or open. Curves which are interesting for some reason and whose
- * properties have therefore been investigates are called "special" curves
- * (Lawrence 1972). Some of the most common open curves are the line, parabola,
- * and hyperbola, and some of the most common closed curves are the circle and
- * ellipse.
+ * closed or open. 
  * 
- * @see Weisstein, Eric W. "Plane Curve." From MathWorld--A Wolfram Web
- *      Resource. https://mathworld.wolfram.com/PlaneCurve.html
  */
 public interface PlaneCurve extends
-                            ComplexFunction
+                            Function<Real, Complex>
 {
   /**
    * The vector r from the origin to the current position. It is also called the

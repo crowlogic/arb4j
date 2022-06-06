@@ -18,8 +18,12 @@ import java.io.IOException;
 import static arb.Constants.*;
 import java.io.Serializable;
 import static arb.arb.*;
+/**
+ * The complex numbers constitute an algebraically closed field, a commutative
+ * algebra over the reals, and a Euclidean vector space of dimension two.
+ */
 
-public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
+public class Complex implements Field,Iterable<Complex>,Serializable {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -407,6 +411,7 @@ public class Complex implements AutoCloseable,Iterable<Complex>,Serializable {
    * @param real
    * @return
    */
+  @Override   
   public Real abs(int prec, Real real)
   {
     arb.acb_abs(real, this, prec);

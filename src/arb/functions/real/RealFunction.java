@@ -21,6 +21,7 @@ import arb.functions.Function;
  * Interface which defines a function from ℝ -> ℝ where ℝ is the set of real
  * number
  */
+@FunctionalInterface
 public interface RealFunction extends
                               Function<Real, Real>
 {

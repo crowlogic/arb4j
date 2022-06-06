@@ -34,14 +34,13 @@ public class RectangularHyperbola implements
    * @return w=sec(t)+i*tan(t)
    */
   @Override
-  public Complex evaluate(Complex t, int order, int prec, Complex w)
+  public Complex evaluate(Real x, int order, int prec, Complex w)
   {
     assert order == w.size();
     assert order <= 2;
 
     try ( Real r = new Real(); Real s = new Real();)
     {
-      Real x = t.getReal();
       w.getReal().set(x.sec(prec, r));
       w.getImag().set(x.tan(prec, s));
       if (order >= 2)

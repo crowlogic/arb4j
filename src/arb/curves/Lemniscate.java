@@ -11,8 +11,8 @@ package arb.curves;
 
 import static java.lang.Math.max;
 
-import arb.Complex;
-import arb.Constants;
+import arb.*;
+import arb.functions.*;
 import arb.functions.complex.ComplexFunction;
 
 /**
@@ -30,7 +30,7 @@ public class Lemniscate implements
 {
 
   @Override
-  public ComplexFunction differential()
+  public Function<Real, Complex> differential()
   {
     return new LemniscateDerivative();
   }
@@ -66,29 +66,39 @@ public class Lemniscate implements
    * @return 2*cos(t))/(1-i*sin(t)
    */
   @Override
-  public Complex evaluate(Complex z, int order, int prec, Complex w)
+  public Complex evaluate(Real z, int order, int prec, Complex w)
   {
     order = max(1, order);
     assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
     assert order <= 2;
-//    arb.f_lemniscate(w, z, null, order, prec);
-//return w;
 
-    try ( Complex a = new Complex(); Complex divisor = new Complex(); Complex numerator = new Complex())
+    try ( Real a = new Real(); Complex divisor = new Complex(); Complex numerator = new Complex())
     {
-      z.cos(prec, a).mul(2, numerator);
-      z.sin(prec, a).mul(i, divisor);
+      z.cos(prec, a).mul(2, prec, numerator.getReal());
+      z.sin(prec, a).mul(i, prec, divisor);
       divisor.neg(divisor).add(1, divisor);
       numerator.div(divisor, prec, w);
       if (order >= 2)
       {
-        a.sub(i, numerator).mul(2, numerator);
-        a.add(i, divisor).pow(2, divisor);
+        a.sub(i, prec, numerator).mul(2, numerator);
+        a.add(i, prec, divisor).pow(2, divisor);
         numerator.div(divisor, prec, w.get(1));
       }
 
     }
     return w;
+  }
+
+  public void integrate(Complex a,
+                        Complex b,
+                        int relativeAccuracyBitsGoal,
+                        Magnitude acceptableUncertainty,
+                        Object object,
+                        int k,
+                        Complex integral)
+  {
+    // TODO Auto-generated method stub
+
   }
 
 }

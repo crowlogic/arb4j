@@ -204,7 +204,7 @@ f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec)
        if (order > 1)
              flint_abort();  /* Would be needed for Taylor method. */
 
-       //res=(2*I*Cos[t])/(I + Sin[t])
+       //res=(√2*I*Cos[t])/(I + Sin[t])
        acb_t a,numerator,divisor;
        acb_init(a);
        acb_init(numerator);

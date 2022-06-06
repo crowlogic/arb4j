@@ -9,6 +9,10 @@
 package arb;
 
 public class arbJNI {
+  public final static native void acb_add_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
+  public final static native void arb_mul_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
+  public final static native void arb_mul_si__SWIG_0(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
+  public final static native void arb_mul_si__SWIG_1(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
   public final static native void dirichlet_group_init(long jarg1, DirichletGroup jarg1_, long jarg2);
   public final static native void dirichlet_subgroup_init(long jarg1, DirichletGroup jarg1_, long jarg2, DirichletGroup jarg2_, long jarg3);
   public final static native void dirichlet_group_clear(long jarg1, DirichletGroup jarg1_);
@@ -143,8 +147,6 @@ public class arbJNI {
   public final static native int arf_abs_bound_lt_2exp_si(long jarg1, Float jarg1_);
   public final static native void arb_mul_2exp_si(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_get_abs_ubound_arf(long jarg1, Float jarg1_, long jarg2, Real jarg2_, int jarg3);
-  public final static native void arb_mul_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
-  public final static native void arb_mul_si(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void acb_mul_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
   public final static native int arf_mul_ui(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, int jarg4, int jarg5);
   public final static native int arf_div_ui(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, int jarg4, int jarg5);
