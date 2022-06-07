@@ -538,5 +538,38 @@ import static arb.arb.*;
   {
     return arb_is_zero(this) != 0;
   }
+  
+  /**
+   * Calls this{@link #setMid(Float)}
+   * @param u value to set the midpoint of this real number ball to 
+   * @return this
+   */
+  public Real set(Float u)
+  {
+    setMid(u);
+    return this;
+  }
+
+  /**
+   * Calls this{@link #setMid(Float)}
+   * @param u value to set the midpoint of this real number ball to 
+   * @return this
+   */
+  public Real set(Float u)
+  {
+    setMid(u);
+    return this;
+  }  
+  
+  /**
+   * Calls this{@link #div(int, int, Real)} with the result=this. Useful for constructors
+   * @param i
+   * @param precision
+   * @return this
+   */
+  public Real div(int i, int precision)
+  {
+    return div(i,precision,this);
+  }  
 %};
 

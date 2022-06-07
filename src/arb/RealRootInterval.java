@@ -46,6 +46,19 @@ public class RealRootInterval extends
 
   public RootStatus status = RootStatus.RootUnknown;
 
+  /**
+   * Splits this interval into two halves
+   * @param func
+   * @param found
+   * @param asign
+   * @param bsign
+   * @param depth
+   * @param maxDepth
+   * @param maxEvals
+   * @param maxFound
+   * @param prec
+   * @return
+   */
   public boolean split(RealFunction func,
                        FoundRoots found,
                        int asign,

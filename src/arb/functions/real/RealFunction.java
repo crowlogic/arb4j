@@ -272,16 +272,6 @@ public interface RealFunction extends
 
         if (status == RootStatus.RootLocated || depth >= maxDepth)
         {
-          if (status == RootStatus.RootLocated)
-          {
-            // if (verbose)
-            {
-              out.printf("found isolated root in: %s\n", root);
-              out.flush();
-            }
-
-          }
-          System.out.println("Adding " + root);
           realRootInterval.status = status;
           found.add(realRootInterval.set(root));
         }
@@ -301,9 +291,9 @@ public interface RealFunction extends
    * 
    * @param left
    * @param right
-   * @param block
+   * @param block input: the interval to be partitioned
    * @param prec
-   * @return
+   * @return the sign of this function evaluated at the midpoint of block with a zero radius of uncertainty
    */
   public default int calculatePartition(FloatInterval left, FloatInterval right, FloatInterval block, int prec)
   {
@@ -312,12 +302,10 @@ public interface RealFunction extends
 
       /* Compute the midpoint */
       arb.arf_add(u, block.getA(), block.getB(), Integer.MAX_VALUE, Constants.ARF_RND_DOWN);
-      arb.arf_mul_2exp_si(u, u, -1);
+      u.half(u);
 
-      /* Evaluate the function at the midpoint so the sign can be returned */
-      arb.arb_set_arf(m, u);
-
-      int sign = evaluate(m, 1, prec, t).sign();
+      /* Evaluate the function at the midpoint so the sign can be returned */      
+      int sign = evaluate(m.set(u), 1, prec, t).sign();
 
       /* split the interval at the midpoint */
       left.getA().assign(block.getA());

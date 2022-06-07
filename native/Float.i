@@ -180,5 +180,17 @@ import static arb.Constants.*;
   {
     return doubleValue( ARF_RND_NEAR );
   }
-    
+ 
+  /**
+   * Calls {@link arb#arf_mul_2exp_si(Float, Float, int)}(res,this,-1)
+   * 
+   * @param res where to store the result, aliasing with res=this is perfectly
+   *            fine as is usually the case
+   * @return res
+   */
+  public Float half(Float res)
+  {
+    arb.arf_mul_2exp_si(res, this, -1);
+    return res;
+  }    
 %};
