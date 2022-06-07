@@ -1,16 +1,25 @@
 package arb.operators;
 
 import arb.*;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.*;
+import arb.functions.complex.*;
 
 /**
- * TODO: check out the FastDFT scheme instead of this
+ * Compute the Fourier transform of a real-valued function (over a truncated
+ * domain if the limits of integration include positive or negative infinity).
+ * If the domain needs to be truncated then the remainder should be properly
+ * accounted for in the result with a call to
+ * {@link Real#addUncertainty(Magnitude)}
  * 
- * @author crow
- *
- * @param <F>
+ * @see also {@link FastDFTScheme} for classes related to the Fast Fourier
+ *      Transform
+ * 
+ * @param <F> the function from the reals to either the real or complex numbers
+ *            ( or possibly more generally any number field, such as quaternions
+ *            if/when they are implemented: see
+ *            https://vixra.org/pdf/1511.0302v1.pdf )
  */
-public class FourierTransform<F extends ComplexFunction> implements
+public class FourierTransform<F extends Function<Real, ?>> implements
                              IntegralTransform
 {
   private FloatInterval domain;
