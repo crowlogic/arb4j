@@ -23,11 +23,12 @@ public class XRenderer extends
   {
     XRenderer r = new XRenderer();
     r.render();
-    r.saveToFile();
+    r.saveToFile("X.png");
   }
   
-  public static final int width  = 2500; 
-  public static final int height = 1250;
+
+  public static final int width  = 2500/2; 
+  public static final int height = 1250/2;
 
   public XRenderer(Real vscale) throws NoninvertibleTransformException
   {

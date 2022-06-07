@@ -5,12 +5,8 @@ import static java.lang.System.out;
 import static java.util.stream.IntStream.*;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,31 +18,22 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.Timer;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 import org.apache.commons.lang.time.StopWatch;
 
-import arb.Complex;
-import arb.Constants;
+import arb.*;
 import arb.Float;
-import arb.Real;
-import arb.ThreadLocalComplex;
-import arb.arb;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
 import arb.util.Utils;
 
 /**
- * Copyright ©2022 Stephen Crowley
+ * creates a rendering of a patch of a complex valued function of a complex
+ * argument using the method of domain coloring which is also called the color
+ * wheel method
  * 
- * This file is part of Arb4j which is free software: you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public License
- * (LGPL) as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version. See *
- * <http://www.gnu.org/licenses/>.
+ * @param <F> the class of {@link ComplexFunction} to be rendered
  */
 public class ComplexFunctionRenderer<F extends ComplexFunction> extends
                                     JComponent implements
@@ -141,12 +128,12 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   private Graphics2D     outputGraphics;
 
   public ComplexFunctionRenderer(Dimension resolution,
-                                Rectangle2D.Double domain,
-                                F function) throws NoninvertibleTransformException
+                                 Rectangle2D.Double domain,
+                                 F function) throws NoninvertibleTransformException
   {
-    this.resolution   = resolution;
-    this.domain   = domain;
-    this.function = function;
+    this.resolution = resolution;
+    this.domain     = domain;
+    this.function   = function;
     init();
   }
 
@@ -163,8 +150,8 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
                                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     // setBorder(BorderFactory.createTitledBorder("Node"));
     out.format("screen=%s\ndomain=%s\n", this.resolution, this.domain);
-    this.width          = this.resolution.width;
-    this.height          = this.resolution.height;
+    this.width         = this.resolution.width;
+    this.height        = this.resolution.height;
     phase              = new Real();
     w                  = Complex.newVector(2);
     functionImage      = new BufferedImage(width,
@@ -488,11 +475,10 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     }
   }
 
-
   public BufferedImage render() throws IOException, NoninvertibleTransformException
   {
-    if (!headless && frame == null )
-    { 
+    if (!headless && frame == null)
+    {
       showFrame();
     }
 
@@ -851,13 +837,18 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     return integers.stream().mapToInt(x -> x);
   }
 
-  public void saveToFile() throws IOException
+  public void saveToFile(String filename) throws IOException
   {
-    File f = new File("out.png");
+    File f = new File(filename);
     System.out.println("Saving image to " + f);
 
     ImageIO.write(functionImage, "PNG", f);
     System.out.println("Saved " + f);
+  }
+
+  public void saveToFile() throws IOException
+  {
+    saveToFile("out.png");
   }
 
   protected void zoomTo(Double upperLeft, Double lowerRight)
@@ -892,7 +883,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   protected F function;
 
-  boolean                   disableNewton = true;
+  boolean     disableNewton = true;
 
   // w=f(z)
   public void evalFunction(Complex z, Complex w)
