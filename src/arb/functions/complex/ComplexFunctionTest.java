@@ -62,7 +62,7 @@ public class ComplexFunctionTest extends
 
     Function<Real, Real> absdf    = df.abs();
 
-    Real                 integral = new Real();
+    Complex              integral = new Complex();
     Magnitude            absErr   = new Magnitude();
 
     Real                 a        = new Real();
@@ -76,9 +76,10 @@ public class ComplexFunctionTest extends
     opts.useHeap = false;
     absdf.integrate(a, b, 128, absErr, opts, prec, integral);
     System.out.format("int(|l'(x)|,x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);
-    assertTrue(integral.getRad().doubleValue() <= 1e-20);
+    assertTrue(integral.getImag().isZero());
+    assertTrue(integral.getReal().doubleValue() <= 1e-20);
     assertEquals(2.62205755429211981046483958989111941368275495,
-                 integral.getMid().doubleValue(),
-                 integral.getRad().doubleValue());
+                 integral.getReal().getMid().doubleValue(),
+                 integral.getReal().getRad().doubleValue());
   }
 }

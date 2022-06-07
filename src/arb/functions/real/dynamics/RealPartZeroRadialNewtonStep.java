@@ -1,4 +1,4 @@
-package arb.functions.real;
+package arb.functions.real.dynamics;
 
 
 import static arb.Constants.*;
@@ -6,6 +6,7 @@ import static arb.Constants.*;
 import arb.Complex;
 import arb.Real;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.real.*;
 
 /**
  * Copyright ©2022 Stephen Crowley
