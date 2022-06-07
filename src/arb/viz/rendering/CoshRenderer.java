@@ -13,7 +13,6 @@ import arb.viz.ComplexFunctionRenderer;
 
 public class CoshRenderer
 {
-  private static JFrame frame;
 
  
   static TFunction T = new TFunction(Constants.ONE);
@@ -29,13 +28,10 @@ public class CoshRenderer
     Dimension screen = new Dimension(600,
                                      1200);
 
-    SFunction sFunc = new SFunction();
     ComplexFunction function = (z, order, prec, w) ->
     {
       z.getReal().sub(Constants.HALF, prec, z.getReal());
-      z.cosh(prec, w).mul(Constants.i, prec, w);
-      return sFunc.evaluate(w, order, prec, w);
-
+      return z.cosh(prec, w).mul(Constants.i, prec, w);
     };
 
     ComplexFunctionRenderer plotter = new ComplexFunctionRenderer(screen,
@@ -44,17 +40,10 @@ public class CoshRenderer
 
     plotter.color_mode = 0;
 
-    frame = new JFrame();
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(screen);
-    frame.setPreferredSize(screen);
-    frame.setLocationRelativeTo(null);
-    frame.setContentPane(plotter);
-    frame.pack();
-    frame.setResizable(false);
-    frame.setVisible(true);
+    
     plotter.displayMode = arb.viz.Part.Blend;
     plotter.render();
+    plotter.saveToFile("cosh.png");
 
   }
 

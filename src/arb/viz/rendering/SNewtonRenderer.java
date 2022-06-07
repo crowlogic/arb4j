@@ -36,11 +36,12 @@ public class SNewtonRenderer extends
   public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
   {
 
-    SNewtonRenderer plotter = new SNewtonRenderer();
+    SNewtonRenderer renderer = new SNewtonRenderer();
 
-    plotter.color_mode  = 0;
-    plotter.displayMode = Part.Blend;
-    plotter.render();
+    renderer.color_mode  = 0;
+    renderer.displayMode = Part.Blend;
+    renderer.render();
+    renderer.saveToFile("SNewton.png");
 
   }
 
