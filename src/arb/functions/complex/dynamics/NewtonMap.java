@@ -19,7 +19,19 @@ public class NewtonMap<F extends ComplexFunction> implements
     this.f = f;
   }
 
-  F f;
+  F                     f;
+
+  final ComplexFunction diff = (t, order, prec, w) ->
+                             {
+                               try ( Complex s = Complex.newVector(3);)
+                               {
+                                 f.evaluate(t, 3, prec, s);
+                                 Complex numerator   = s.mul(s.get(2), prec, w);
+                                 Complex denominator = s.get(1).pow(2, prec, s.get(0));
+                                 numerator.div(denominator, prec, w);
+                                 return w;
+                               }
+                             };
 
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
@@ -35,7 +47,7 @@ public class NewtonMap<F extends ComplexFunction> implements
       }
       if (order >= 2)
       {
-        differential().evaluate(z, 1, prec, w.get(1));
+        diff.evaluate(z, 1, prec, w.get(1));
       }
     }
     return w;
@@ -47,16 +59,6 @@ public class NewtonMap<F extends ComplexFunction> implements
   @Override
   public ComplexFunction differential() throws NotDifferentiableException
   {
-    return (t, order, prec, w) ->
-    {
-      try ( Complex s = Complex.newVector(3);)
-      {
-        f.evaluate(t, 3, prec, s);
-        Complex numerator   = s.mul(s.get(2), prec, w);
-        Complex denominator = s.get(1).pow(2, prec, s.get(0));
-        numerator.div(denominator, prec, w);
-        return w;
-      }
-    };
+    return diff;
   }
 }
