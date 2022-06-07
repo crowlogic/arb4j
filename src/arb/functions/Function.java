@@ -1,12 +1,8 @@
 package arb.functions;
 
-import static java.lang.Math.max;
-
 import arb.*;
-import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.real.AbsoluteValue;
-import arb.operators.CompositionOperator;
+import arb.exceptions.*;
+import arb.functions.complex.*;
 
 @FunctionalInterface
 public interface Function<D extends Field, R extends Field>
@@ -40,8 +36,9 @@ public interface Function<D extends Field, R extends Field>
   public default Function<D, Real> abs()
   {
     throw new UnsupportedOperationException(" TODO: return Composition of this with AbsoluteValue function");
-    //Function<D, Real> composition = new CompositionOperator<D,Real>(this,new AbsoluteValue<D>());
-    //return composition;
+    // Function<D, Real> composition = new CompositionOperator<D,Real>(this,new
+    // AbsoluteValue<D>());
+    // return composition;
 //    Function<D, Real> function = (z, order, prec, w) ->
 //    {
 //      order = max(1, order);
@@ -64,8 +61,7 @@ public interface Function<D extends Field, R extends Field>
     throw new UnsupportedOperationException("TODO: implement");
   }
 
-  public default void
-         integrate(Real a, Real b, int i, Magnitude absErr, IntegrationOptions opts, int prec, Real integral)
+  public default Complex integrate(Real a, Real b, int prec, Magnitude absErr, Object opts, int prec2, Complex w)
   {
     throw new UnsupportedOperationException("TODO: implement");
   }
