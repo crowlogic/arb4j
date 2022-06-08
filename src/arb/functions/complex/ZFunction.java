@@ -9,19 +9,19 @@ import arb.util.AutoArrayList;
 public class ZFunction implements
                        ComplexFunction
 {
-
+  static int prec = 256;
 
   public static AutoArrayList<Real>    roots        = new AutoArrayList<>(i ->
                                                     {
                                                       Real root = new Real();
-                                                      nthHardyZero(root, i, Complex.defaultPrec);
+                                                      nthHardyZero(root, i, prec);
                                                       return root;
                                                     });
 
   public static AutoArrayList<Complex> complexRoots = new AutoArrayList<>(i ->
                                                     {
                                                       Complex root = new Complex();
-                                                      nthHardyZero(root.getReal(), i, Complex.defaultPrec);
+                                                      nthHardyZero(root.getReal(), i, prec);
                                                       return root;
                                                     });
 

@@ -240,21 +240,9 @@ public class Real implements Comparable<Real>, Field {
     return this;
   }
 
-  public Real mul(Real exp, Real r)
-  {
-    arb.arb_mul(r, exp, this, Complex.defaultPrec);
-    return r;
-  }
-
   public Real div(Real exp, int prec, Real r)
   {
     arb.arb_div(r, this, exp, prec );
-    return r;
-  }
-  
-  public Real div(Real exp, Real r)
-  {
-    arb.arb_div(r, this, exp, Complex.defaultPrec);
     return r;
   }
   
@@ -442,12 +430,6 @@ public class Real implements Comparable<Real>, Field {
     return getMid().doubleValue(Constants.ARF_RND_DOWN);
   }
   
-  public Complex mul(Complex exp, Complex r)
-  {
-    arb.acb_mul_arb(r, exp, this, Complex.defaultPrec);
-    return r;
-  }
-
   /**
    * @return arb#arb_sgn_nonzero(Real)
    */

@@ -595,16 +595,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     return array;
  }
    
- public Complex plus(Complex that)
- {
-   return add(that, new Complex() );
- }
-
- public Complex div(Complex that)
- {
-   return div(that, new Complex() );
- }
-
   @Override
   public void close()
   {
