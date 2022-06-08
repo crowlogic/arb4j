@@ -1,32 +1,28 @@
 package arb.viz;
 
 import static java.lang.Math.*;
-import static java.lang.System.out;
+import static java.lang.System.*;
 import static java.util.stream.IntStream.*;
 
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
+import java.awt.image.*;
+import java.io.*;
+import java.util.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
+import java.util.stream.*;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
 import javax.swing.*;
-
-import org.apache.commons.lang.time.StopWatch;
+import javax.swing.Timer;
 
 import arb.*;
 import arb.Float;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.ZFunction;
-import arb.util.Utils;
+import arb.functions.complex.*;
+import arb.util.*;
 
 /**
  * creates a rendering of a patch of a complex valued function of a complex
@@ -365,6 +361,8 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   boolean singleThreading = false;
 
+  private long startTime;
+
   public void evaluateFunctionOnGrid()
   {
     AtomicInteger counter     = new AtomicInteger(width * height);
@@ -482,8 +480,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
       showFrame();
     }
 
-    StopWatch stopWatch = new StopWatch();
-    stopWatch.start();
+    startTime = System.currentTimeMillis();
     startRepaintTimer();
 
     initializeCoordinateSystem();
@@ -492,7 +489,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
     evaluateFunctionOnGrid();
 
-    reportRenderingRate(stopWatch);
+    reportRenderingRate();
 
     return functionImage;
   }
@@ -506,10 +503,10 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
                                keepRunning ? WindowConstants.HIDE_ON_CLOSE : WindowConstants.EXIT_ON_CLOSE);
   }
 
-  private void reportRenderingRate(StopWatch stopWatch)
+  private void reportRenderingRate()
   {
-    stopWatch.stop();
-    double seconds = Utils.convertTimeUnits(stopWatch.getTime(), TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
+    long stopTime = System.currentTimeMillis();
+    double seconds = Utils.convertTimeUnits(stopTime - startTime, TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
     double rate    = (width * height) / seconds;
     System.out.format("Rendered in " + seconds + " seconds at a rate of %.0f pixels/sec\n", rate);
   }
