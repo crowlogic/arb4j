@@ -195,7 +195,7 @@ public class Float implements AutoCloseable,Comparable<Float> {
   
   public double doubleValue()
   {
-    return doubleValue( RoundingMode.Near );
+    return doubleValue( RoundingMode.Down );
   }
  
   /**

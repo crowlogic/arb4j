@@ -172,7 +172,7 @@ import static arb.Constants.*;
   
   public double doubleValue()
   {
-    return doubleValue( RoundingMode.Near );
+    return doubleValue( RoundingMode.Down );
   }
  
   /**
