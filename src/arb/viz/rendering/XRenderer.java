@@ -21,7 +21,7 @@ public class XRenderer extends
   @SuppressWarnings("resource")
   public static void main(String args[] ) throws IOException, NoninvertibleTransformException
   {
-    XRenderer r = new XRenderer();
+    XRenderer r = new XRenderer(new Real().set("3", 128));
     r.render();
     r.saveToFile("X.png");
   }
@@ -35,9 +35,9 @@ public class XRenderer extends
     super(new Dimension(width,
                         height),
           new Rectangle2D.Double(-10,
-                                 -7.5 * 2.5,
+                                 -Math.PI * 2,
                                  80,
-                                 15 * 3),
+                                 Math.PI * 4),
           new XFunction(vscale));
 
     color_mode  = 6;

@@ -10,6 +10,24 @@ package arb;
 
 import static arb.Constants.*;
 
+/**
+ * A {@link Float} contains four words: <br>
+ * <ul>
+ * <li>an fmpz exponent (exp)</li>
+ * <li>a size field tracking the number of limbs used (one bit of this field is
+ * also used for the sign of the number)</li>
+ * <li>and two more words</li>
+ * </ul>
+ * <br>
+ * If the precision is 128 bits or less then the last two (quad)words hold the
+ * value directly if there are at most two limbs, otherwise they contain one
+ * alloc field which tracks the total number of limbs allocated limbs, some of
+ * which can be unused, and a pointer to the actual limbs.<br>
+ * The limit in arb is 64 bits on a 32bit machine but arb4j is recommended to be
+ * used on 64bit architecures (or better?) only
+ * 
+ */
+
 public class Float implements AutoCloseable,Comparable<Float> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;

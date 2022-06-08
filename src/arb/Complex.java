@@ -157,6 +157,11 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
                                                          Spliterator.SIZED | Spliterator.ORDERED),
                                 false);
   }
+
+  public int getAllocatedBytes()
+  {
+    return getReal().getAllocatedBytes() + getImag().getAllocatedBytes();
+  }
   
   /**
    * Computes the dot product of the vectors x and y, setting res to
