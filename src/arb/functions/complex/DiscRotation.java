@@ -25,7 +25,7 @@ public class DiscRotation implements
   public Complex evaluate(Real a, int order, int prec, Complex res)
   {
     Complex s = this.s.get();
-    return a.mul(Constants.i, s).exp(prec, s).mul(h, prec, s).add(t, prec, res);
+    return a.mul(Constants.i, prec, s).exp(prec, s).mul(h, prec, s).add(t, prec, res);
   }
 
   @Override

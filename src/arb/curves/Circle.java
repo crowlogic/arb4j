@@ -19,6 +19,6 @@ public class Circle implements
   {
     order = max(order, 1);
     assert order <= 1;
-    return radius.mul(θ.mul(Constants.i, result).exp(precision, result), precision, result);
+    return radius.mul(θ.mul(Constants.i, precision, result).exp(precision, result), precision, result);
   }
 }

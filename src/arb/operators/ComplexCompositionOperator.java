@@ -43,7 +43,7 @@ public class ComplexCompositionOperator<F extends ComplexFunction, G extends Com
     {
       // apply the chain rule: res[1]*=y[1] so that res[1] = f'(g(t))*g'(t)
       Complex df = res.get(1);
-      df.mul(y.get(1), df);
+      df.mul(y.get(1), prec, df);
     }
     return res;
   }
