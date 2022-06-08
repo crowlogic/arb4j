@@ -1,9 +1,23 @@
 package arb.spaces;
 
-/**
- * TODO: model these spaces
- */
-public interface HilbertSpace extends Space
-{
+import arb.*;
+import arb.functions.*;
 
+/**
+ * Hilbert spaces (named after David Hilbert) allow generalizing the methods of
+ * linear algebra and calculus from (finite-dimensional) Euclidean vector spaces
+ * to spaces that may be infinite-dimensional. A Hilbert space is a vector space
+ * equipped with an inner product which defines a distance function for which it
+ * is a complete metric space. Hilbert spaces arise naturally and frequently in
+ * mathematics and physics, typically as function spaces.<br>
+ * 
+ * A Hilbert space H is a real or complex inner product space that is also a
+ * complete metric space with respect to the distance function induced by the
+ * inner product.
+ */
+@FunctionalInterface
+public interface HilbertSpace<D extends Field,F extends Function<D, ?>> extends
+                             Space
+{
+  public <P extends Field> P innerProduct(F left, F right);
 }

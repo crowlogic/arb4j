@@ -565,6 +565,28 @@ public class Real implements Comparable<Real>, Field {
     return arb_is_zero(this) != 0;
   }
 
+  /**
+   * Calls this{@link #setMid(Float)}
+   * @param u value to set the midpoint of this real number ball to 
+   * @return this
+   */
+  public Real set(Float u)
+  {
+    setMid(u);
+    return this;
+  }  
+  
+  /**
+   * Calls this{@link #div(int, int, Real)} with the result=this. Useful for constructors
+   * @param i
+   * @param precision
+   * @return this
+   */
+  public Real div(int i, int precision)
+  {
+    return div(i,precision,this);
+  }  
+
   public void setMid(Float value) {
     arbJNI.Real_mid_set(swigCPtr, this, Float.getCPtr(value), value);
   }
@@ -585,28 +607,6 @@ public class Real implements Comparable<Real>, Field {
 
   public Real() {
     this(arbJNI.new_Real(), true);
-  }
-
-  /**
-   * Calls this{@link #setMid(Float)}
-   * @param u value to set the midpoint of this real number ball to 
-   * @return this
-   */
-  public Real set(Float u)
-  {
-    setMid(u);
-    return this;
-  }
-
-  /**
-   * Calls this{@link #div(int, int, Real)} with the result=this. Useful for constructors
-   * @param i
-   * @param precision
-   * @return this
-   */
-  public Real div(int i, int precision)
-  {
-    return div(i,precision,this);
   }
 
 }
