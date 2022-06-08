@@ -1,4 +1,3 @@
-
 package arb.viz;
 
 import static java.lang.System.*;
@@ -57,23 +56,22 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
     int       framesPerSecond = 30;
     int       secondsLong     = 5;
     final int frameCount      = framesPerSecond * secondsLong;
-    XRenderer  renderer         = new XRenderer();
+    XRenderer renderer        = new XRenderer();
     renderer.color_mode  = 6;
     renderer.displayMode = Part.Real;
-    IntConsumer                       frameParameterAssigner = frame ->
-                                                             {
-                                                               double proportion = (double) frame
-                                                                             / (double) frameCount;
-                                                               proportion /= 2;
-                                                               double scale      = 5.05 + secondsLong * proportion;
-                                                               System.out.format("Setting scale to %f\n", scale);
-                                                               renderer.function.f.scale.set(scale);
-                                                             };
+    IntConsumer                        frameParameterAssigner = frame ->
+                                                              {
+                                                                double proportion = (double) frame
+                                                                              / (double) frameCount;
+                                                                proportion /= 2;
+                                                                double scale = 0.05 + secondsLong * proportion;
+                                                                System.out.format("Setting scale to %f\n", scale);
+                                                                renderer.function.f.scale.set(scale);
+                                                              };
     ComplexFunctionAnimator<XRenderer> animator               = new ComplexFunctionAnimator(renderer,
-                                                                                           frameParameterAssigner,
-                                                                                           frameCount);
-    String                            codec                  = "ffv1";
-    animator.renderAnimatedSequence("hmm.avi", "avi", codec, secondsLong, framesPerSecond);
+                                                                                            frameParameterAssigner,
+                                                                                            frameCount);
+    animator.renderAnimatedSequence("hmm.avi", secondsLong, framesPerSecond);
     animator.close();
     System.exit(777);
   }
@@ -96,13 +94,19 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
 
   public BufferedImage renderFunction(int i) throws NoninvertibleTransformException, IOException
   {
-
     out.println("Rendering frame " + i + " of " + frameCount);
-
     BufferedImage image = convertToType(plotter.render(), BufferedImage.TYPE_3BYTE_BGR);
-
     System.gc();
     return image;
+  }
+
+  public void
+         renderAnimatedSequence(String filename, int seconds, int framesPerSecond) throws AWTException,
+                                                                                   InterruptedException,
+                                                                                   IOException,
+                                                                                   NoninvertibleTransformException
+  {
+    renderAnimatedSequence(filename, "avi", "ffv1", seconds, framesPerSecond);
   }
 
   public void renderAnimatedSequence(String filename,
