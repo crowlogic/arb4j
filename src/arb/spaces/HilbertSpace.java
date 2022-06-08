@@ -13,10 +13,14 @@ import arb.functions.*;
  * 
  * A Hilbert space H is a real or complex inner product space that is also a
  * complete metric space with respect to the distance function induced by the
- * inner product.
+ * inner product.<br>
+ * 
+ * An element of a Hilbert space can be uniquely specified by its coordinates
+ * with respect to an orthonormal basis, in analogy with Cartesian coordinates
+ * in classical geometry.
  */
 @FunctionalInterface
-public interface HilbertSpace<D extends Field,F extends Function<D, ?>> extends
+public interface HilbertSpace<D extends Field, F extends Function<D, ?>> extends
                              Space
 {
   public <P extends Field> P innerProduct(F left, F right);
