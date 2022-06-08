@@ -22,7 +22,7 @@ public class Hemisphere implements
     try ( Real radiusSquared = new Real(); Complex coordinateSquared = new Complex())
     {
       radius.pow(2, prec, radiusSquared);
-      t.pow(2, coordinateSquared);
+      t.pow(2, prec, coordinateSquared);
       radiusSquared.sub(coordinateSquared.getReal(), prec, radiusSquared);
       radiusSquared.sub(coordinateSquared.getImag(), prec, radiusSquared);
       radiusSquared.sqrt(prec, res);

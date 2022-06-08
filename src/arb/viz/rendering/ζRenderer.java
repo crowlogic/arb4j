@@ -34,7 +34,7 @@ public class ζRenderer
                                                                 {
                                                                   return z.mul(Constants.i, prec, w)
                                                                           .ζ(prec, w)
-                                                                          .normalize(w);
+                                                                          .normalize(w, prec);
                                                                 });
 
     plotter.color_mode  = 0;

@@ -126,11 +126,11 @@ public class SFunction implements
     {
       denom.getReal().set(2);
       denom.sub(t.pow(2, prec, a).mul(2, prec, a), prec, denom);
-      denom.add(t.pow(4, prec, a), prec, denom).pow(3, denom);
+      denom.add(t.pow(4, prec, a), prec, denom).pow(3, prec, denom);
 
       numer.getReal().set(2);
-      numer.sub(a.mul(9, prec, a), numer);
-      numer.add(t.pow(6, a).mul(5, prec, a), prec, numer).neg(numer).mul(8, prec, numer);
+      numer.sub(a.mul(9, prec, a), prec, numer);
+      numer.add(t.pow(6, prec, a).mul(5, prec, a), prec, numer).neg(numer).mul(8, prec, numer);
 
       return numer.div(denom, prec, res);
     }
