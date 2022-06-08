@@ -791,7 +791,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
                            w1stDeriv.arg(prec, w1stDerivarg).doubleValue(),
                            N.getReal().doubleValue(),
                            N.getImag().doubleValue(),
-                           N.norm(prec, warg),
+                           N.norm(prec, warg).doubleValue(),
                            phase.doubleValue());
     }
   }
