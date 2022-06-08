@@ -17,7 +17,12 @@ import arb.functions.*;
  * 
  * An element of a Hilbert space can be uniquely specified by its coordinates
  * with respect to an orthonormal basis, in analogy with Cartesian coordinates
- * in classical geometry.
+ * in classical geometry.<br>
+ * 
+ * When this basis is countably infinite, it allows identifying the Hilbert
+ * space with the space of the infinite sequences that are square-summable. The
+ * latter space is often in the older literature referred to as the Hilbert
+ * space.
  */
 @FunctionalInterface
 public interface HilbertSpace<D extends Field, F extends Function<D, ?>> extends
