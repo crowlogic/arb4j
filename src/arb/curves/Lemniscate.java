@@ -80,8 +80,8 @@ public class Lemniscate implements
       numerator.div(divisor, prec, w);
       if (order >= 2)
       {
-        a.sub(i, prec, numerator).mul(2, numerator);
-        a.add(i, prec, divisor).pow(2, divisor);
+        a.sub(i, prec, numerator).mul(2, prec, numerator);
+        a.add(i, prec, divisor).pow(2, prec, divisor);
         numerator.div(divisor, prec, w.get(1));
       }
 

@@ -62,11 +62,11 @@ public class RealPartZeroRadialNewtonStep<F extends ComplexFunction> implements
 
     try ( Complex dt = new Complex(); Complex y = Complex.newVector(2); Complex p = new Complex(); Complex Z = Complex.newVector(2))
     {
-      s = t.add(h.mul(iπ.mul(a, prec, dt).exp(prec, dt), dt), prec, s);
+      s = t.add(h.mul(iπ.mul(a, prec, dt).exp(prec, dt), prec, dt), prec, s);
       assert s.isFinite() : String.format("s is not finite: s=%s t=%s h=%s a=%s dt=%s\n", s, t, h, a, dt);
 
       Real yRealPart           = func.evaluate( s, 2, prec, y).getReal();
-      Real yDerivativeImagPart = y.get(1).mul(dt, prec, p).getImag().mul(π, p.getImag());
+      Real yDerivativeImagPart = y.get(1).mul(dt, prec, p).getImag().mul(π, prec, p.getImag());
       return yRealPart.div(yDerivativeImagPart, prec, res).tanh(res, prec).add(a, prec, res).frac(prec, res);
 
     }

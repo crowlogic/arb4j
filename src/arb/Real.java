@@ -221,7 +221,13 @@ public class Real implements Comparable<Real>, Field {
     arb.arb_mul_si(res, this, i, prec);
     return this;
   }
- 
+
+  public Real mul(Real r, int prec, Real res)
+  {
+    arb.arb_mul(res, this, r, prec);
+    return this;
+  }
+
   public Complex mul(Complex exp, int prec, Complex r)
   {
     arb.acb_mul_arb(r, exp, this, prec );

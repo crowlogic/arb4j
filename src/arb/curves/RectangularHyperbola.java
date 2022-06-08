@@ -46,8 +46,8 @@ public class RectangularHyperbola implements
       if (order >= 2)
       {
         Complex dw = w.get(1);
-        dw.getReal().set(r.mul(s, s));
-        dw.getImag().set(r.mul(r, r));
+        dw.getReal().set(r.mul(s, prec, s));
+        dw.getImag().set(r.mul(r, prec, r));
       }
 
     }
