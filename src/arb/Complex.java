@@ -234,8 +234,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
   
   public static final int BYTES = 96;
   
-  public static final int defaultPrec = 256;
- 
   public Complex conj( Complex res )
   {
     arb.acb_conj( res, this );
@@ -258,16 +256,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     return arb.acb_is_finite(this) != 0;
   }
    
-  public Complex pow(int i, Complex r)
-  {  
-    return pow( i, defaultPrec, r );
-  }
-
-  public Complex mul(int i, Complex r )
-  {
-    return mul(i,defaultPrec, r);
-  }
- 
   public Complex slice( int startInclusive, int endExclusive )
   {
     int sliceDim = endExclusive - startInclusive;
@@ -282,12 +270,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
    return r;
  }
 
-  public Complex add(Complex q, Complex s)
-{
-  return add( q, defaultPrec, s );
-}
-
-
   public Complex add( Complex q, int prec, Complex s )
   {
   
@@ -300,16 +282,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     try ( Real magnitude = new Real()) { return div(norm(prec, magnitude ), res); }
   }
 
-  public Complex normalize(Complex res)
-  {
-    try ( Real magnitude = new Real()) { return div(norm(defaultPrec, magnitude ), res); }
-  }
-  
-  public Complex div(Real norm, Complex res)
-  {
-    return div( norm, defaultPrec, res );
-  }
-
   public Complex div(Real a, int prec, Complex r)
   {
     arb.acb_div_arb(r, this, a, prec);
@@ -320,12 +292,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
   {
     arb.acb_elliptic_k(res, this, defaultPrec);
     return res;
-  }
-  
-  public Complex mul(Complex s, Complex r )
-  {
-    assert s != this;
-    return mul( s, defaultPrec, r );
   }
   
   public Complex neg( Complex r)
@@ -350,39 +316,16 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
    return r;
  }
  
-   public Complex div(Complex s, Complex r)
-   {
-        assert s != this;
-   
-     return div( s, defaultPrec, r );
-   }
- 
   public Complex div( Complex s, int prec, Complex r )
   {
    arb.acb_div(r, this, s, prec);
    return r;
   }
  
-  public Complex mul(Real a, Complex res)
-  {
-    arb.acb_mul_arb(res, this, a, defaultPrec);
-    return res;
-  }
- 
-  public Complex exp(Complex res)
-  {
-    arb.acb_exp(res, this, defaultPrec);
-    return res;
-  }
-  
   public Complex init()
   {
     arb.acb_init(this);
     return this;
-  }
-  
-  public Real arg( Real result )  {
-    return arg( defaultPrec, result );
   }
   
   public Real arg( int prec, Real result )
@@ -521,10 +464,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     }
     return element;
   }    
-  public double norm()
-  {
-    try ( Real magnitude = new Real() ) { return norm(defaultPrec, magnitude ).doubleValue(); }
-  }
 
   /**
    * The absolute value
@@ -595,11 +534,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     return r;
   }
   
-  public Complex add( int k, Complex r )
-  {
-    return add( k, defaultPrec, r );
-  }
-  
  /**
    * add an unsigned integer to this 
    * @param r = this^k
@@ -613,24 +547,7 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     arb.acb_add_ui(r, this, k, prec);
     return r;
   }
-  
-  public Complex sub( int k, Complex r )
-  {
-    return sub( k, defaultPrec, r );
-  }
-  
-  public Complex sub( Complex s, Complex r )
-  {
-    return sub( s, defaultPrec, r );
-  }
- 
- 
- public Complex tanh(Complex res)
- {
-	arb.acb_tanh( res, this, defaultPrec );
-	return res;
- }
- 
+   
    public Complex(Real norm, Real imag)  
   {
     getReal().set(norm);
@@ -657,14 +574,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     return r;
   }
  
- 
-  public Complex div(int i, Complex result)
-  {
-    arb.acb_div_si(result, this, i, defaultPrec );
-    return result;
-  }
- 
-  
 /**
   * subtract a complex number from this 
   * @param r = this-s

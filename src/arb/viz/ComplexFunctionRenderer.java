@@ -43,11 +43,6 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     double B[] = new double[1];
   }
 
-  static
-  {
-    System.loadLibrary("arblib");
-  }
-
   protected Complex      w;
 
   protected Complex      N          = Complex.newVector(2);                      // Newton step. w/dw
@@ -796,7 +791,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
                            w1stDeriv.arg(prec, w1stDerivarg).doubleValue(),
                            N.getReal().doubleValue(),
                            N.getImag().doubleValue(),
-                           N.norm(),
+                           N.norm(prec, warg),
                            phase.doubleValue());
     }
   }
@@ -928,7 +923,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   {
     assert N != null;
 
-    Complex unnormalizedN = w.div(w.get(1), N).neg(N);
+    Complex unnormalizedN = w.div(w.get(1), prec, N).neg(N);
     // Complex dt = unnormalizedN.normalize(N).neg(N);
 
     // acb_div(N, w, w.get(1), prec);

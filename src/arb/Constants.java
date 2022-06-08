@@ -9,6 +9,8 @@ public class Constants
     System.loadLibrary("arblib");
   }
   
+  static int prec = 256;
+  
   public static final int MAG_BITS = 30;
   
   public static final int ARF_RND_DOWN = 0;
@@ -41,7 +43,7 @@ public class Constants
 
   public static Complex iπ = new Complex();
 
-  public static final Real π = new Real().pi(Complex.defaultPrec);
+  public static final Real π = new Real().pi(prec);
 
   public static final int ARB_RND = ARF_RND_DOWN;
 
@@ -58,7 +60,7 @@ public class Constants
     arb_set_d(Constants.ONE, 1);
     Constants.COMPLEX_ONE.getReal().one();
     Constants.IMAGINARY_UNIT.getImag().one();
-    iπ.getImag().pi(Complex.defaultPrec);
+    iπ.getImag().pi(prec);
     realPositiveInfinity.posInf();
     posInf.set(realPositiveInfinity, ZERO.getReal());
     posInf.neg(negInf);

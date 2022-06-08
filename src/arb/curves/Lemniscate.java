@@ -76,7 +76,7 @@ public class Lemniscate implements
     {
       z.cos(prec, a).mul(2, prec, numerator.getReal());
       z.sin(prec, a).mul(i, prec, divisor);
-      divisor.neg(divisor).add(1, divisor);
+      divisor.neg(divisor).add(1, prec, divisor);
       numerator.div(divisor, prec, w);
       if (order >= 2)
       {
