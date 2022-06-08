@@ -12,9 +12,11 @@ import arb.Complex;
  * {@link FileChannel#map(java.nio.channels.FileChannel.MapMode, long, long)}
  * 
  * If the precision of the number is 128 bits or less then ONLY the space
- * required o hold {@link Complex#BYTES} without any internal-to-arb allocations
- * is necessary and thus simplifies things.. so we go with the rule-of-thumb
- * that 128 is enough for calculting RGB intensities anyway
+ * required is enough to hold {@link Complex#BYTES} without any internal-to-arb
+ * allocations necessary and thus simplifies things.. so we go with the
+ * rule-of-thumb that 128 bits is enough for calculating RGB intensities
+ * anyway.. if someone wants to fork the project and change then than have a
+ * ball :)
  * 
  */
 public class FunctionImage
