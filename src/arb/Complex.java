@@ -288,9 +288,9 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     return r;
   }
     
-  public Complex ellipticK(Complex res)
+  public Complex ellipticK(int prec, Complex res)
   {
-    arb.acb_elliptic_k(res, this, defaultPrec);
+    arb.acb_elliptic_k(res, this, prec);
     return res;
   }
   

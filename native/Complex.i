@@ -262,9 +262,9 @@ import static arb.arb.*;
     return r;
   }
     
-  public Complex ellipticK(Complex res)
+  public Complex ellipticK(int prec, Complex res)
   {
-    arb.acb_elliptic_k(res, this, defaultPrec);
+    arb.acb_elliptic_k(res, this, prec);
     return res;
   }
   
