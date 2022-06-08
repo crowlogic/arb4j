@@ -221,13 +221,7 @@ public class Real implements Comparable<Real>, Field {
     arb.arb_mul_si(res, this, i, prec);
     return this;
   }
-
-  public Real mul(Real r, int prec, Real res)
-  {
-    arb.arb_mul(res, this, r, prec);
-    return this;
-  }
-
+ 
   public Complex mul(Complex exp, int prec, Complex r)
   {
     arb.acb_mul_arb(r, exp, this, prec );
@@ -573,7 +567,14 @@ public class Real implements Comparable<Real>, Field {
   public Real div(int i, int precision)
   {
     return div(i,precision,this);
-  }  
+  }
+  
+  public Real mul(Real x, int prec, Real result)
+  {
+    arb.arb_mul(result, this, x, prec );
+    return result;
+  }
+    
 
   public void setMid(Float value) {
     arbJNI.Real_mid_set(swigCPtr, this, Float.getCPtr(value), value);

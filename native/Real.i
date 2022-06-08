@@ -541,6 +541,13 @@ import static arb.arb.*;
   public Real div(int i, int precision)
   {
     return div(i,precision,this);
-  }  
+  }
+  
+  public Real mul(Real x, int prec, Real result)
+  {
+    arb.arb_mul(result, this, x, prec );
+    return result;
+  }
+    
 %};
 

@@ -253,7 +253,7 @@ import static arb.arb.*;
 
   public Complex normalize(Complex res, int prec )
   {
-    try ( Real magnitude = new Real()) { return div(norm(prec, magnitude ), res); }
+    try ( Real magnitude = new Real()) { return div(norm(prec, magnitude ), prec, res); }
   }
 
   public Complex div(Real a, int prec, Complex r)
