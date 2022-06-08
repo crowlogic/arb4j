@@ -21,15 +21,6 @@ import hageldave.jplotter.renderers.CoordSysRenderer;
 import hageldave.jplotter.renderers.LinesRenderer;
 import hageldave.jplotter.renderers.TrianglesRenderer;
 
-/**
- * Copyright ©2022 Stephen Crowley
- * 
- * This file is part of Arb4j which is free software: you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public License
- * (LGPL) as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version. See
- * <http://www.gnu.org/licenses/>.
- */
 public class RealFunctionPlotter extends
                                  BlankCanvas
 {
@@ -80,7 +71,7 @@ public class RealFunctionPlotter extends
     right          = domain.getB();
     top            = range.getA();
     bottom         = range.getB();
-    width          = right.sub(left, new Float(), prec);
+    width          = right.sub(left, prec, new Float());
     dt             = width.div(numPoints, new Float(), prec);
     point          = new Float();
     this.domain    = domain;
@@ -177,8 +168,7 @@ public class RealFunctionPlotter extends
   public double[] discretizeInterval(int n)
   {
     return IntStream.range(0, n)
-                    .mapToDouble(i -> left.add(dt.mul(i, point, prec), point, prec)
-                                          .doubleValue(Constants.ARF_RND_DOWN))
+                    .mapToDouble(i -> left.add(dt.mul(i, point, prec), prec, point).doubleValue())
                     .toArray();
   }
 

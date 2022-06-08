@@ -113,40 +113,34 @@ import static arb.Constants.*;
     return arb.arf_get_str(this,15);
   }
 
-  public double val()
+  public Float add(Float ay, int precision, Float result)
   {
-    return doubleValue( Constants.ARF_RND_UP );
+    arb.arf_add(result, this, ay, precision, ARF_RND_DOWN);
+    return result;    
+  }
+    
+  public Float add(Float ay, int thisprec, RoundingMode roundingMode, Float result)
+  {
+    arb.arf_add(result, this, ay, thisprec, roundingMode.ordinal());
+    return result;    
   }
 
-  public Float add(Float ay, Float zi, int thisprec)
+  public double doubleValue( RoundingMode roundingMode )
   {
-    arb.arf_add(zi, this, ay, thisprec, ARF_RND_DOWN);
-    return zi;    
-  }
-  
-  public Float add(Float ay, Float zi, int thisprec, int round)
-  {
-    arb.arf_add(zi, this, ay, thisprec, round);
-    return zi;    
-  }
-
-  public double doubleValue( int roundingMode )
-  {
-    return arb.arf_get_d( this, roundingMode );
+    return arb.arf_get_d( this, roundingMode.ordinal() );
   }
  
-  public Float sub(Float ay, Float zi, int thisprec)
+  public Float sub(Float ay, int thisprec, Float result)
   {
-    arb.arf_sub(zi, this, ay, thisprec, ARF_RND_DOWN);
-    return zi;    
+    return sub(ay,thisprec,RoundingMode.Down,result);
+  }
+    
+  public Float sub(Float ay, int thisprec, RoundingMode round, Float result)
+  {
+    arb.arf_sub(result, this, ay, thisprec, round.ordinal());
+    return result;    
   }
   
-  public Float sub(Float ay, Float zi, int thisprec, int round)
-  {
-    arb.arf_sub(zi, this, ay, thisprec, round);
-    return zi;    
-  }
-
   public Float mul(int ay, Float zi, int thisprec)
   {
     arb.arf_mul_ui(zi, this, ay, thisprec, ARF_RND_DOWN);
@@ -178,7 +172,7 @@ import static arb.Constants.*;
   
   public double doubleValue()
   {
-    return doubleValue( ARF_RND_NEAR );
+    return doubleValue( RoundingMode.Near );
   }
  
   /**

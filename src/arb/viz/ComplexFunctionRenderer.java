@@ -162,7 +162,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
     Font currentFont = new Font("Monospaced",
                                 Font.BOLD,
-                                6);
+                                8);
     newFont              = currentFont.deriveFont(currentFont.getSize() * 2F);
     alphaComposite       = makeComposite(0.69f);
     brightAlphaComposite = makeComposite(0.95f);
@@ -178,8 +178,8 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     ay.assign(this.domain.getMinY());
     bx.assign(this.domain.getMaxX());
     by.assign(this.domain.getMaxY());
-    bx.sub(ax, dx, prec, Constants.ARF_RND_DOWN).div(width * 2, dx, prec);
-    by.sub(ay, dy, prec, Constants.ARF_RND_DOWN).div(height * 2, dy, prec);
+    bx.sub(ax, prec, RoundingMode.Down, dx).div(width * 2, dx, prec);
+    by.sub(ay, prec, RoundingMode.Down, dy).div(height * 2, dy, prec);
 
     // System.out.format("dx=%s\n dy=%s\n", dx, dy);
 
@@ -340,21 +340,21 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   {
 
     // zi = ( (by - ay) * y ) / ( ynum - 1 )
-    by.sub(ay, zi, prec);
+    by.sub(ay, prec, zi);
     zi.mul(y, zi, prec);
     zi.div(height - 1, zi, prec);
-    zi.add(ay, zi, prec);
+    zi.add(ay, prec, zi);
 
     // zr = ( (bx - ax) * x ) / ( xnum - 1 )
-    bx.sub(ax, zr, prec);
+    bx.sub(ax, prec, zr);
     zr.mul(x, zr, prec);
     zr.div(width - 1, zr, prec);
-    zr.add(ax, zr, prec);
+    zr.add(ax, prec, zr);
 
     evalFunction(z, w);
   }
 
-  boolean singleThreading = false;
+  boolean      singleThreading = false;
 
   private long startTime;
 
@@ -500,9 +500,9 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   private void reportRenderingRate()
   {
-    long stopTime = System.currentTimeMillis();
-    double seconds = Utils.convertTimeUnits(stopTime - startTime, TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
-    double rate    = (width * height) / seconds;
+    long   stopTime = System.currentTimeMillis();
+    double seconds  = Utils.convertTimeUnits(stopTime - startTime, TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
+    double rate     = (width * height) / seconds;
     System.out.format("Rendered in " + seconds + " seconds at a rate of %.0f pixels/sec\n", rate);
   }
 

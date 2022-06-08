@@ -4,13 +4,11 @@ import static java.lang.Math.pow;
 import static java.lang.System.out;
 import static org.junit.Assert.assertEquals;
 
+
 import org.junit.Test;
 
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.FoundRoots;
-import arb.Real;
-import arb.RealRootInterval;
 import arb.functions.complex.ZFunction;
 
 public class RealFunctionTest
@@ -62,13 +60,13 @@ public class RealFunctionTest
     assertEquals(3, roots.size());
     RealRootInterval first     = roots.get(0);
     Real             firstRoot = first.getReal(new Real(), prec);
-    assertEquals(14.13125, firstRoot.getMid().doubleValue(), pow(10, -30));
+    assertEquals(14.13125, firstRoot.getMid().doubleValue(RoundingMode.Ceiling), pow(10, -30));
     assertEquals(first.status, FloatInterval.RootStatus.RootLocated);
 
     roots.refine(f, prec, 40, true);
     System.out.println("rootsAfterRefinement=" + roots);
 
-    assertEquals(14.134725141734693, roots.get(0).getReal(new Real(), 256).doubleValue(), 0);
+    assertEquals(14.134725141734693, roots.get(0).getReal(new Real(), 256).doubleValue(RoundingMode.Down), 0);
     assertEquals(2, roots.unknownCount);
     assertEquals(1, roots.foundCount);
   }

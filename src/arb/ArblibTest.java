@@ -58,7 +58,7 @@ public class ArblibTest extends
       realRoots[i] = new Real();
       realRoots[i].init();
       nthHardyZero(realRoots[i], i + 1, prec);
-      roots[i] = realRoots[i].getMid().val();
+      roots[i] = realRoots[i].getMid().doubleValue();
       System.out.println("root[" + i + "]=" + realRoots[i]);
     }
     assertTrue(realRoots[0].overlaps(firstRoot));

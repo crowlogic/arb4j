@@ -263,16 +263,12 @@ public interface ComplexFunction extends
         mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
         mag_max(newTol, absErrorToleranceGoal, tmpm);
 
-        acb_zero(s);
+        s.zero();
 
         while (depth >= 1)
         {
           if (evalCount.get() >= evalLimit - 1)
           {
-            if (verbose)
-            {
-              System.out.printf("stopping at eval_limit %wd\n", evalLimit);
-            }
             throw new LackOfConvergenceException("evaluating limit " + evalLimit + " exceeded ");
           }
 
@@ -328,10 +324,7 @@ public interface ComplexFunction extends
 
           if (depth >= depthLimit - 1)
           {
-            if (verbose)
-            {
-              System.out.format("stopping at depth limit %wd\n", depthLimit);
-            }
+
             throw new LackOfConvergenceException("depth limit " + evalLimit + " exceeded ");
           }
 

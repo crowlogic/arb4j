@@ -38,7 +38,7 @@ public class ComplexSineFunctionTest extends
                                                                     new Complex());
     Real realPart = two.getReal();
     Real imagPart = two.getImag();
-    assertEquals( 2, realPart.getMid().doubleValue(), realPart.getRad().doubleValue() );
+    assertEquals( 2, realPart.getMid().doubleValue(RoundingMode.Near), realPart.getRad().doubleValue() );
     assertEquals( 0, imagPart.getMid().doubleValue(), imagPart.getRad().doubleValue() );
     
     two.printPrecision = true;

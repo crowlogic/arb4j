@@ -401,7 +401,12 @@ import static arb.arb.*;
   
   public double doubleValue()
   {
-    return getMid().doubleValue(Constants.ARF_RND_DOWN);
+    return getMid().doubleValue();
+  }
+
+  public double doubleValue(RoundingMode rm)
+  {
+    return getMid().doubleValue(rm);
   }
   
   /**

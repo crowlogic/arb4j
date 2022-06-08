@@ -24,7 +24,7 @@ public class DiscRotationTest extends
       rotatedAndScaledPoint.printPrecision = false;
       System.out.println("rotatedAndScaledPoint=" + rotatedAndScaledPoint);
       assertEquals(0.2, rotatedAndScaledPoint.getReal().doubleValue(), Math.pow(10, -17));
-      assertEquals(0.9, rotatedAndScaledPoint.getImag().getMid().doubleValue(), Math.pow(10, -17));
+      assertEquals(0.9, rotatedAndScaledPoint.getImag().getMid().doubleValue(RoundingMode.Near), Math.pow(10, -17));
 
     }
   }
