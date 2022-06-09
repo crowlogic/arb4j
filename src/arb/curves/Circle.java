@@ -27,7 +27,7 @@ public class Circle implements
                     AutoCloseable
 {
   /**
-   * Construct a rotation of a disc as a complex-valued function of a real
+   * Construct a rotation of a circle as a complex-valued function of a real
    * argument representing the angle
    * 
    * @param t basepoint
