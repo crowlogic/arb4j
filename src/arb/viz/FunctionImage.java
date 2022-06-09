@@ -15,7 +15,7 @@ import arb.Complex;
  * required is enough to hold {@link Complex#BYTES} without any internal-to-arb
  * allocations necessary and thus simplifies things.. so we go with the
  * rule-of-thumb that 128 bits is enough for calculating RGB intensities
- * anyway.. if someone wants to fork the project and change then than have a
+ * anyway.. if someone wants to fork the project and change them then have a
  * ball :)
  * 
  */

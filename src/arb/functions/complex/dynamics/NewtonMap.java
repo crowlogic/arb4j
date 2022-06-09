@@ -29,6 +29,11 @@ public class NewtonMap<F extends ComplexFunction> implements
                                  Complex numerator   = s.mul(s.get(2), prec, w);
                                  Complex denominator = s.get(1).pow(2, prec, s.get(0));
                                  numerator.div(denominator, prec, w);
+                                 if (!w.isFinite())
+                                 {
+                                   w.getImag().zero();
+                                   w.getReal().one().div(f.multiplicityOfRoot(t), prec);
+                                 }
                                  return w;
                                }
                              };
@@ -36,7 +41,7 @@ public class NewtonMap<F extends ComplexFunction> implements
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
-    assert order <= 2 : String.format("requested order %d is only implemented (in this version) up to order 2",
+    assert order <= 2 : String.format("specified order %d is only implemented (in this version) up to order 2",
                                       order);
     assert w.size() >= order;
     try ( Complex y = Complex.newVector(2))
@@ -48,6 +53,7 @@ public class NewtonMap<F extends ComplexFunction> implements
       if (order >= 2)
       {
         diff.evaluate(z, 1, prec, w.get(1));
+
       }
     }
     return w;

@@ -681,4 +681,9 @@ public interface ComplexFunction extends
     return function;
   }
 
+  public default int multiplicityOfRoot(Complex z)
+  {
+    throw new UnsupportedOperationException("TODO: return the multiplicity of the root at the point z here, or throw an exception or something if there isn't a root at the requested point within whatever uncertainty radius is there");
+  }
+
 }

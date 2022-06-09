@@ -27,8 +27,8 @@ public class XRenderer extends
   }
   
 
-  public static final int width  = 2500/2; 
-  public static final int height = 1250/2;
+  public static final int width  = 2500; 
+  public static final int height = 1250;
 
   public XRenderer(Real vscale) throws NoninvertibleTransformException
   {
@@ -40,7 +40,7 @@ public class XRenderer extends
                                  Math.PI * 4),
           new XFunction(vscale));
 
-    color_mode  = 6;
+    color_mode  = 1;
     displayMode = Part.Real;
 
   }
