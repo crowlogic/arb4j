@@ -16,6 +16,17 @@ public class SFunction implements
                        ComplexFunction
 {
 
+  @Override
+  public int multiplicityOfRoot(Complex z)
+  {
+    if ( z.isZero() )
+    {
+      return 2;
+    }
+    // TODO: account for the the other roots
+    return 0;
+  }
+
   /**
    * A new {@link TFunction} of the same scale
    */
