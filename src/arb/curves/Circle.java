@@ -3,22 +3,81 @@ package arb.curves;
 import static java.lang.Math.max;
 
 import arb.*;
+import arb.functions.complex.SFunction;
+import arb.functions.complex.dynamics.NewtonMap;
+import arb.functions.real.RealPart;
+import arb.operators.CompositionOperator;
 
+/**
+ * A circle coordinate function representing a circle having a basepoint and
+ * radius that goes well with the {@link NewtonMap} of the {@link RealPart} of
+ * the {@link CompositionOperator} applied as the composition of the
+ * {@link SFunction} with the {@link Circle} for instance
+ * 
+ * <code>
+ *       /   Re(S(circle(0,0.01,θ)))    \
+ *  θ -  | ---------------------------- |
+ *       \ d/dθ(Re(S(circle(0,0.01,θ))) /
+ * </code>
+ *
+ *
+ */
 public class Circle implements
-                    PlaneCurve
+                    PlaneCurve,
+                    AutoCloseable
 {
-  public Circle(Real radius)
+  /**
+   * Construct a rotation of a disc as a complex-valued function of a real
+   * argument representing the angle
+   * 
+   * @param t basepoint
+   * @param h radius
+   */
+  public Circle(Complex t, Real h)
   {
-    this.radius = radius;
+    assert t != null;
+    assert h != null;
+    this.t = t;
+    this.h = h;
   }
 
-  Real radius;
+  Complex            t;
+
+  Real               h;
+
+  ThreadLocalComplex s = new ThreadLocalComplex(1);
 
   @Override
-  public Complex evaluate(Real θ, int order, int precision, Complex result)
+  public Complex evaluate(Real a, int order, int prec, Complex res)
   {
-    order = max(order, 1);
-    assert order <= 1;
-    return radius.mul(θ.mul(Constants.i, precision, result).exp(precision, result), precision, result);
+    order = max(1, order);
+    assert order <= 1 : "TODO: implement derivatives";
+    Complex s = this.s.get();
+    return a.mul(Constants.i, prec, s).exp(prec, s).mul(h, prec, s).add(t, prec, res);
   }
+
+  @Override
+  public void close() throws Exception
+  {
+    s.remove();
+    t.clear();
+    h.clear();
+  }
+
+  /**
+   * double-wrapper for this{@link #evaluate(Real, int, int, Complex)}
+   * 
+   * @param angle
+   * @param complex
+   * @return
+   */
+  public Complex evaluate(double angle, Complex complex)
+  {
+    try ( Real Θ = new Real())
+    {
+      Θ.set(angle);
+      return evaluate(Θ, 1, 64, complex);
+    }
+  }
+
 }
