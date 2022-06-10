@@ -567,12 +567,15 @@ public interface ComplexFunction extends
         mag_sub(Y, Y, t);
         mag_sqrt(Y, Y);
 
-        acb_zero(wide);
+        wide.zero();
         mag_set(wide.getReal().getRad(), X);
-        mag_set(wide.getImag().getRad(), Y);
+        if ( !wide.getImag().getMid().isZero() )
+        {
+          mag_set(wide.getImag().getRad(), Y);
+        }
 
         /* transform to [a,b] */
-        acb_mul(wide, wide, delta, prec);
+        wide.mul(delta,prec,wide);
         acb_add(wide, wide, mid, prec);
 
         evaluate(wide, 1, prec, v);

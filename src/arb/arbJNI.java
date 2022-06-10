@@ -9,6 +9,7 @@
 package arb;
 
 public class arbJNI {
+  public final static native int arf_is_zero(long jarg1, Float jarg1_);
   public final static native void acb_add_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_mul_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void arb_mul_si__SWIG_0(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);

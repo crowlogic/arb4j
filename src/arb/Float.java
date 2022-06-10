@@ -52,6 +52,14 @@ public class Float implements AutoCloseable,Comparable<Float> {
   }
 
 
+  /**
+   * @return {@link arb#arf_is_zero(Float)} != 0
+   */
+  public boolean isZero()
+  {
+    return arb.arf_is_zero(this) != 0;
+  }
+
   @Override
   public int compareTo(Float o)
   {

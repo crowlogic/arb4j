@@ -1,6 +1,7 @@
 package arb.functions.complex;
 
 import static arb.Constants.*;
+import static java.lang.System.out;
 
 import arb.*;
 import arb.curves.*;
@@ -61,9 +62,10 @@ public class ComplexFunctionTest extends
     Lemniscate           f        = new Lemniscate();
     LemniscateDerivative df       = new LemniscateDerivative();
     Complex              tmp      = new Complex();
-    // Function<Real, Real> absdf = df.abs(tmp);
     ComplexFunction      absdf    = (t, order, p, w) ->
                                   {
+                                    
+                                    assert t.getImag().isZero();
                                     df.evaluate(t.getReal(), order, prec, w).abs(prec, w.getReal());
                                     w.getImag().zero();
                                     return w;
@@ -72,13 +74,14 @@ public class ComplexFunctionTest extends
     Complex              integral = new Complex();
     Magnitude            absErr   = new Magnitude();
 
-    Complex                 a        = new Complex();
-    Complex                 b        = new Complex();
+    Complex                 a        = new Complex().init();
+    Complex                 b        = new Complex().init();
     b.getReal().pi(prec).div(2, prec, b.getReal());
-
+    out.println( "a=" + a );
+    out.println( "b=" + b );
     IntegrationOptions opts             = new IntegrationOptions();
     // opts.verbose = true;
-    Complex               abslprimeonehalf = absdf.evaluate(new Complex().set(HALF,ZERO.getReal() ), 1, 128, new Complex());
+    Complex               abslprimeonehalf = absdf.evaluate(new Complex().set(HALF,new Real().zero() ), 1, 128, new Complex());
     System.out.format("|l'(1/2)|=%s\n", abslprimeonehalf);
     opts.useHeap = false;
     absdf.integrate(a, b, 128, absErr, opts, prec, integral);

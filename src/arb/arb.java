@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static int arf_is_zero(Float x) {
+    return arbJNI.arf_is_zero(Float.getCPtr(x), x);
+  }
+
   public static void acb_add_arb(Complex z, Complex x, Real y, int prec) {
     arbJNI.acb_add_arb(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }

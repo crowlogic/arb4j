@@ -29,6 +29,14 @@ import static arb.Constants.*;
 
 %typemap(javacode) arf_struct %{
 
+  /**
+   * @return {@link arb#arf_is_zero(Float)} != 0
+   */
+  public boolean isZero()
+  {
+    return arb.arf_is_zero(this) != 0;
+  }
+
   @Override
   public int compareTo(Float o)
   {

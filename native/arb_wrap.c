@@ -293,6 +293,22 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1is_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  arf_struct *arg1 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(arf_struct **)&jarg1; 
+  result = (int)arf_is_zero((arf_struct const (*))arg1);
+  jresult = (jint)result; 
+  
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1add_1arb(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;

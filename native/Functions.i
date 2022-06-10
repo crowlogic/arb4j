@@ -1,3 +1,5 @@
+int arf_is_zero(const arf_t x);
+
 void acb_add_arb(acb_t z, const acb_t x, const arb_t y, slong prec);
 
 void arb_mul_ui(arb_t z, const arb_t x, ulong y, slong prec);
