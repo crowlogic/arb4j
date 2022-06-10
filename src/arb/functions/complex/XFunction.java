@@ -1,6 +1,7 @@
 package arb.functions.complex;
 
 import arb.Real;
+import arb.functions.*;
 import arb.operators.ComplexCompositionOperator;
 
 /**
@@ -9,7 +10,7 @@ import arb.operators.ComplexCompositionOperator;
  * @author crow
  */
 public class XFunction extends
-                       ComplexCompositionOperator<SFunction, ZFunction>
+                       ComplexCompositionOperator<SFunction, ZFunction> implements SymmetricFunction
 {
 
   public XFunction()
@@ -28,5 +29,25 @@ public class XFunction extends
   public ComplexFunction adjoint()
   {
     return new YFunction(f.scale);
+  }
+
+  @Override
+  public int getNumberOfSymmetries()
+  {    
+    return 2;
+  }
+
+  @Override
+  public Symmetry getSymmetry(int symmetry)
+  {
+    switch(symmetry)
+    {
+    case 0:
+      return new RealAxisSymmetry(false);
+    case 1:
+      return new ImaginaryAxisSymmetry(true);
+    default:
+      throw new IllegalArgumentException( "only 2 symmetries");
+    }
   }
 }

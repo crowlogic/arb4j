@@ -40,8 +40,8 @@ public class XRenderer extends
                                  Math.PI * 4),
           new XFunction(vscale));
 
-    color_mode  = 1;
-    displayMode = Part.Real;
+    color_mode  = 2;
+    displayMode = Part.Phase;
 
   }
 
