@@ -65,7 +65,7 @@ public class ComplexFunctionTest extends
     ComplexFunction      absdf    = (t, order, p, w) ->
                                   {
                                     
-                                    assert t.getImag().isZero();
+                                    assert t.getImag().getMid().isZero();
                                     df.evaluate(t.getReal(), order, prec, w).abs(prec, w.getReal());
                                     w.getImag().zero();
                                     return w;
