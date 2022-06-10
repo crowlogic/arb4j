@@ -5,7 +5,7 @@ import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 
 /**
- * The composition of two complex-valued functions
+ * The composition of two functions
  * <code>C_g(f(t))=f(g(t))</code> which handles the chain-rule. Also known as
  * the Koopman operator
  *

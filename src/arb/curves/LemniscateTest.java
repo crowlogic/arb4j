@@ -29,7 +29,8 @@ public class LemniscateTest extends
   {
     Lemniscate l = new Lemniscate();
     Function<Real, Complex> dl = l.differential();
-    Function<Real, Real> absdl = dl.abs();
+    Complex tmp = new Complex();
+    Function<Real, Real> absdl = dl.abs(tmp);
     Complex l1 = l.evaluate(Constants.ONE, 2, 256, Complex.newVector(2));
     Complex dl1 = dl.evaluate(Constants.ONE, 1, 256, Complex.newVector(1));
     Real absdl1 = absdl.evaluate(Constants.ONE, 1, 256, new Real() );

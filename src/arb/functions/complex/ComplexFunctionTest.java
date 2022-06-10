@@ -59,8 +59,8 @@ public class ComplexFunctionTest extends
 
     Lemniscate           f        = new Lemniscate();
     LemniscateDerivative df       = new LemniscateDerivative();
-
-    Function<Real, Real> absdf    = df.abs();
+    Complex              tmp      = new Complex();
+    Function<Real, Real> absdf    = df.abs(tmp);
 
     Complex              integral = new Complex();
     Magnitude            absErr   = new Magnitude();

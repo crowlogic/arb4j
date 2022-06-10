@@ -1,5 +1,6 @@
 package arb.functions;
 
+import arb.operators.*;
 import arb.*;
 import arb.exceptions.*;
 import arb.functions.complex.*;
@@ -33,27 +34,16 @@ public interface Function<D extends Field, R extends Field>
   /**
    * @return function which returns the absolute value of this function
    */
-  public default Function<D, Real> abs()
+  public default Function<D, Real> abs(R tmp)
   {
-    throw new UnsupportedOperationException(" TODO: return Composition of this with AbsoluteValue function");
-    // Function<D, Real> composition = new CompositionOperator<D,Real>(this,new
-    // AbsoluteValue<D>());
-    // return composition;
-//    Function<D, Real> function = (z, order, prec, w) ->
-//    {
-//      order = max(1, order);
-//      assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
-//      try ( R x = newRangeElement())
-//      {
-//        Function.this.evaluate(z, order, prec, x);
-//        if (w.isFinite())
-//        {
-//          x.abs(prec, w);
-//        }
-//      }
-//      return w;
-//    };
-//    return function;
+    Function<D, Real> function = (z, order, prec, w) ->
+    {
+      order = Math.max(1, order);
+      assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
+      Function.this.evaluate(z, order, prec, tmp).abs(prec, w);
+      return w;
+    };
+    return function;
   }
 
   public default R newRangeElement()
