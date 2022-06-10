@@ -16,6 +16,7 @@ import arb.Float;
 import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
 import arb.functions.Function;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * Interface which defines a function from ℝ -> ℝ where ℝ is the set of real
@@ -30,6 +31,7 @@ public interface RealFunction extends
 
   /**
    * TODO:
+   * 
    * @param point
    * @param convergenceRegion the interval I
    * @param convergenceFactor
@@ -293,7 +295,8 @@ public interface RealFunction extends
    * @param right
    * @param block input: the interval to be partitioned
    * @param prec
-   * @return the sign of this function evaluated at the midpoint of block with a zero radius of uncertainty
+   * @return the sign of this function evaluated at the midpoint of block with a
+   *         zero radius of uncertainty
    */
   public default int calculatePartition(FloatInterval left, FloatInterval right, FloatInterval block, int prec)
   {
@@ -304,7 +307,7 @@ public interface RealFunction extends
       arb.arf_add(u, block.getA(), block.getB(), Integer.MAX_VALUE, Constants.ARF_RND_DOWN);
       u.half(u);
 
-      /* Evaluate the function at the midpoint so the sign can be returned */      
+      /* Evaluate the function at the midpoint so the sign can be returned */
       int sign = evaluate(m.set(u), 1, prec, t).sign();
 
       /* split the interval at the midpoint */

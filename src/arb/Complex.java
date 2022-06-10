@@ -119,6 +119,8 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
                                                                                 false),
                                                             2 * alloc * Complex.BYTES));
     this.dim = alloc;                                                            
+    real = imag = null;
+    elements = new Complex[ dim];
     return this;
   }
     

@@ -6,6 +6,7 @@ import arb.*;
 import arb.curves.*;
 import arb.exceptions.*;
 import arb.functions.*;
+import arb.functions.real.RealFunction;
 import junit.framework.*;
 
 public class ComplexFunctionTest extends
@@ -60,24 +61,29 @@ public class ComplexFunctionTest extends
     Lemniscate           f        = new Lemniscate();
     LemniscateDerivative df       = new LemniscateDerivative();
     Complex              tmp      = new Complex();
-    Function<Real, Real> absdf    = df.abs(tmp);
+    // Function<Real, Real> absdf = df.abs(tmp);
+    ComplexFunction      absdf    = (t, order, p, w) ->
+                                  {
+                                    df.evaluate(t.getReal(), order, prec, w).abs(prec, w.getReal());
+                                    w.getImag().zero();
+                                    return w;
+                                  };
 
     Complex              integral = new Complex();
     Magnitude            absErr   = new Magnitude();
 
-    Real                 a        = new Real();
-    Real                 b        = new Real();
-    b.pi(prec).div(2, prec, b);
+    Complex                 a        = new Complex();
+    Complex                 b        = new Complex();
+    b.getReal().pi(prec).div(2, prec, b.getReal());
 
     IntegrationOptions opts             = new IntegrationOptions();
     // opts.verbose = true;
-    Real               abslprimeonehalf = absdf.evaluate(HALF, 1, 128, new Real());
+    Complex               abslprimeonehalf = absdf.evaluate(new Complex().set(HALF,ZERO.getReal() ), 1, 128, new Complex());
     System.out.format("|l'(1/2)|=%s\n", abslprimeonehalf);
     opts.useHeap = false;
     absdf.integrate(a, b, 128, absErr, opts, prec, integral);
     System.out.format("int(|l'(x)|,x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);
     assertTrue(integral.getImag().isZero());
-    assertTrue(integral.getReal().doubleValue() <= 1e-20);
     assertEquals(2.62205755429211981046483958989111941368275495,
                  integral.getReal().getMid().doubleValue(),
                  integral.getReal().getRad().doubleValue());
