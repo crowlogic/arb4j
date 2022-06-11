@@ -53,13 +53,17 @@ public class ComplexCircle implements
   {
     assert prec > 0;
     order = max(1, order);
-    assert order <= 1 : "TODO: implement derivatives";
+    assert res.size() >= order;
     Complex s = this.s.get();
-    s.set(a);
-    arb.acb_mul_onei(s, s);
+    arb.acb_mul_onei(s, a);
     s.exp(prec, s);
     s.mul(h, prec, s);
-    return s.add(t, prec, res);
+    s.add(t, prec, res);
+    for ( int i = 1; i < order; i++ )
+    {
+      arb.acb_mul_onei(res.get(i), res.get(i-1));
+    }
+    return res;
   }
 
   @Override

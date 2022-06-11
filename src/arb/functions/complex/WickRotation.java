@@ -34,7 +34,7 @@ public class WickRotation implements
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
-    assert order == w.size();
+    assert order <= w.size();
     z.mul(Constants.IMAGINARY_UNIT, prec, w);
     if (negate)
     {

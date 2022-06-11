@@ -22,7 +22,15 @@ public class CircleSTest extends
       ComplexRealPart<CircleS> realCircleS = cs.complexRealPart();
       realCircleS.evaluate(πOver2, 1, 256, z);
       assertTrue(z.getReal().doubleValue() == 0.6);
-
+      FoundRoots turningPoints = cs.realPart()
+                                   .locateRoots(new RealRootInterval(-Math.PI / 2,
+                                                                     Math.PI / 2),
+                                                50,
+                                                5000,
+                                                5,
+                                                256);
+      System.out.println("Located " + turningPoints);
+      turningPoints.refine(cs.realPart(), 256, 50, true);
 //      RealPart<NewtonMap<ComplexRealPart<CircleS>>> newtonCircleS = new RealPart<NewtonMap<ComplexRealPart<CircleS>>>(nrealCircleS.complexRealPart());
 //      newtonCircleS.ev
     }

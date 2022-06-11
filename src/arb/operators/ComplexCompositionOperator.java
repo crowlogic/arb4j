@@ -23,14 +23,14 @@ public class ComplexCompositionOperator<F extends ComplexFunction, G extends Com
 
   public F           f;
   public G           g;
-  ThreadLocalComplex y = new ThreadLocalComplex(2);
+  ThreadLocalComplex y = new ThreadLocalComplex(3);
 
   @Override
   public Complex evaluate(Complex t, int order, int prec, Complex res)
   {
-    if (order > 2)
+    if (order > 3)
     {
-      throw new UnsupportedOperationException("derivatives beyond the first not implemented and in many cases not necessary but if someone thought of a way to implement thia via automatic-differentiation that would be superbly stupendous because it is tedious to implement them all by hand depending upon what ones needs are");
+      throw new UnsupportedOperationException( String.format("TODO: implement derivative for order=%d > 2", order) );
     }
     Complex y = this.y.get();
 
@@ -45,6 +45,18 @@ public class ComplexCompositionOperator<F extends ComplexFunction, G extends Com
       Complex df = res.get(1);
       df.mul(y.get(1), prec, df);
     }
+
+    if (order == 3)
+    {
+      Complex df = res.get(1);
+      //df.mul(y.get(1), prec, df);
+      
+      throw new UnsupportedOperationException( String.format("TODO: implement 2nd derivative ") );
+
+      
+    }
+
+    
     return res;
   }
 
