@@ -26,11 +26,6 @@ public class RealFunctionPlotter extends
 {
   private static final int prec = 128;
 
-  static
-  {
-    System.loadLibrary("arb");
-  }
-
   private static double[] randomData(int n)
   {
     double[] d = new double[n];
