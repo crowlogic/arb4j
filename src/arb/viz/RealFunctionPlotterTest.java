@@ -15,10 +15,10 @@ public class RealFunctionPlotterTest
     JFrame              frame    = new JFrame();
     // RealFunction function = new RealPart(new SFunction()); // SineFunction();
     RealFunction        function = new RealPart(new CircleS());
-    FloatInterval       domain   = new FloatInterval(-Math.PI/2,
-                                                     Math.PI/2);
-    FloatInterval       range    = new FloatInterval(-.1,
-                                                     .1);
+    FloatInterval       domain   = new FloatInterval(-Math.PI,
+                                                     Math.PI);
+    FloatInterval       range    = new FloatInterval(-.5,
+                                                     .5);
     RealFunctionPlotter plotter  = new RealFunctionPlotter(function,
                                                            domain,
                                                            range,
