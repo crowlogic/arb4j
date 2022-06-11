@@ -17,12 +17,12 @@ public interface ComplexFunction extends
                                  Function<Complex, Complex>
 {
 
-  public default RealPart real()
+  public default RealPart realPart()
   {
     return new RealPart(this);
   }
 
-  public default ImaginaryPart imag()
+  public default ImaginaryPart imaginaryPart()
   {
     return new ImaginaryPart(this);
   }
