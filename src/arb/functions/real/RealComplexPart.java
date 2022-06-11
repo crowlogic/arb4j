@@ -6,7 +6,7 @@ public abstract class RealComplexPart<F extends ComplexFunction> implements
                                      RealFunction
 {
 
-  protected F func;
+  public F func;
 
   public RealComplexPart(F func)
   {

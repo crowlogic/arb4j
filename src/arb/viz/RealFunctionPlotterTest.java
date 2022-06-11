@@ -14,11 +14,12 @@ public class RealFunctionPlotterTest
   {
     JFrame              frame    = new JFrame();
     // RealFunction function = new RealPart(new SFunction()); // SineFunction();
-    RealFunction        function = new RealPart(new CircleS());
+    RealPart<CircleS>        function = new RealPart(new CircleS());
+    function.func.f.scale.set("0.1", 128);
     FloatInterval       domain   = new FloatInterval(-Math.PI,
                                                      Math.PI);
-    FloatInterval       range    = new FloatInterval(-.5,
-                                                     .5);
+    FloatInterval       range    = new FloatInterval(-2,
+                                                     2);
     RealFunctionPlotter plotter  = new RealFunctionPlotter(function,
                                                            domain,
                                                            range,
