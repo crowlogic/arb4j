@@ -20,8 +20,8 @@ public class CircleS extends
   public CircleS()
   {
     this(new SFunction(),
-         new ComplexCircle(new Complex().set(0.3,0.4),
-                           new Real().set("0.2", 128)));
+         new ComplexCircle(Constants.ZERO,
+                           Constants.ONE));
   }
 
   public CircleS(SFunction f, ComplexCircle g)
