@@ -1,8 +1,8 @@
 package arb.functions;
 
-public class AxisSymmetry implements Symmetry
+public class ReflectionSymmetry implements Symmetry
 {
-  public AxisSymmetry(boolean conjugate)
+  public ReflectionSymmetry(boolean conjugate)
   {
     this.conjugate = conjugate;
   }
