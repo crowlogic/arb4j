@@ -74,9 +74,9 @@ public class RealFunctionPlotter extends
     this.numPoints = numPoints;
     double[] seriesA_x = discretizeInterval(numPoints);
     double[] seriesA_y = sampleFunction(seriesA_x);
-    double[] seriesB_x = discretizeInterval(numPoints);
-    double[] seriesB_y = randomData(numPoints);
-    Arrays.sort(seriesB_x);
+//    double[] seriesB_x = discretizeInterval(numPoints);
+//    double[] seriesB_y = randomData(numPoints);
+   // Arrays.sort(seriesB_x);
     // create Lines objects, one solid the other dashed
     Lines lineA = new Lines();
     Lines lineB = new Lines();
@@ -89,8 +89,8 @@ public class RealFunctionPlotter extends
       addLineSegment(seriesA_x, seriesA_y, lineA, i);
     }
     // add line segments to B (the short way)
-    ArrayList<SegmentDetails> segmentsB = lineB.addLineStrip(seriesB_x, seriesB_y);
-    segmentsB.forEach(seg -> seg.setColor(Color.BLUE));
+//    ArrayList<SegmentDetails> segmentsB = lineB.addLineStrip(seriesB_x, seriesB_y);
+//    segmentsB.forEach(seg -> seg.setColor(Color.BLUE));
     // use a coordinate system for display
     CoordSysRenderer coordsys = new CoordSysRenderer();
     coordsys.setCoordinateView(left.doubleValue(), top.doubleValue(), right.doubleValue(), bottom.doubleValue());

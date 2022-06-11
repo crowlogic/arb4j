@@ -51,7 +51,7 @@ public class ComplexCompositionOperator<F extends ComplexFunction, G extends Com
       Complex df = res.get(1);
       //df.mul(y.get(1), prec, df);
       
-      throw new UnsupportedOperationException( String.format("TODO: implement 2nd derivative ") );
+      throw new UnsupportedOperationException( String.format("TODO: return 2nd derivative, g'(t)^2*f''(g(t))+f'(g(t))*g''(t) ") );
 
       
     }

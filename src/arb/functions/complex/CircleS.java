@@ -21,7 +21,7 @@ public class CircleS extends
   {
     this(new SFunction(),
          new ComplexCircle(Constants.ZERO,
-                           Constants.ONE));
+                           new Real().set("0.2", 128)));
   }
 
   public CircleS(SFunction f, ComplexCircle g)
@@ -30,4 +30,19 @@ public class CircleS extends
           g);
   }
 
+  public ComplexImaginaryPart imag()
+  {
+    return new ComplexImaginaryPart(this);
+  }
+
+  
+  public ComplexRealPart realComplex()
+  {
+    return new ComplexRealPart(this);
+  }
+
+  public ComplexImaginaryPart imagComplex()
+  {
+    return new ComplexImaginaryPart(this);
+  }
 }

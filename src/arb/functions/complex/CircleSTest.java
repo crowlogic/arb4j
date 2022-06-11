@@ -17,22 +17,21 @@ public class CircleSTest extends
       πOver2.getReal().pi(256).div(2, 256);
       Complex z = cs.evaluate(πOver2, 1, 256, new Complex());
       System.out.println("CircleS(π/2)=" + z);
-      assertTrue(z.getReal().doubleValue() == 0.6);
+      assertEquals(0.03920061491160645, z.getReal().doubleValue(), Math.pow(10,-20));
 
       ComplexRealPart<CircleS> realCircleS = cs.complexRealPart();
       realCircleS.evaluate(πOver2, 1, 256, z);
-      assertTrue(z.getReal().doubleValue() == 0.6);
+      assertEquals(0.03920061491160645, z.getReal().doubleValue(), Math.pow(10,-20));
+
       FoundRoots turningPoints = cs.realPart()
-                                   .locateRoots(new RealRootInterval(-Math.PI / 2,
-                                                                     Math.PI / 2),
+                                   .locateRoots(new RealRootInterval(0,
+                                                                     Math.PI),
                                                 50,
                                                 5000,
                                                 5,
                                                 256);
-      System.out.println("Located " + turningPoints);
+     // System.out.println("Located " + turningPoints);
       turningPoints.refine(cs.realPart(), 256, 50, true);
-//      RealPart<NewtonMap<ComplexRealPart<CircleS>>> newtonCircleS = new RealPart<NewtonMap<ComplexRealPart<CircleS>>>(nrealCircleS.complexRealPart());
-//      newtonCircleS.ev
     }
   }
 }
