@@ -4,7 +4,7 @@ import arb.*;
 import arb.functions.complex.*;
 
 public class RealPart<F extends ComplexFunction> extends
-                     ComplexPart<F>
+                     RealComplexPart<F>
 {
 
   public RealPart(F func)

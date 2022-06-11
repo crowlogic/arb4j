@@ -21,10 +21,20 @@ public interface ComplexFunction extends
   {
     return new RealPart(this);
   }
+  
+  public default ComplexRealPart complexRealPart()
+  {
+    return new ComplexRealPart(this);
+  }
 
   public default ImaginaryPart imaginaryPart()
   {
     return new ImaginaryPart(this);
+  }
+
+  public default ComplexImaginaryPart complexImagPart()
+  {
+    return new ComplexImaginaryPart(this);
   }
 
   /**

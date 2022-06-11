@@ -11,7 +11,7 @@ import arb.operators.CompositionOperator;
 
 /**
  * A circle coordinate function representing a circle having a basepoint and
- * radius that goes well with the {@link NewtonMap} of the {@link RealPart} of
+ * radius that goes well with the {@link NewtonMap} of the {@link ComplexRealPart} of
  * the {@link CompositionOperator} applied as the composition of the
  * {@link SFunction} with the {@link Circle} for instance
  * 

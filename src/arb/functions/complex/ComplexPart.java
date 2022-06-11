@@ -1,16 +1,17 @@
-package arb.functions.real;
+package arb.functions.complex;
 
+
+import arb.*;
 import arb.functions.complex.*;
 
 public abstract class ComplexPart<F extends ComplexFunction> implements
-                                 RealFunction
+                     ComplexFunction
 {
-
-  protected F func;
-
+  F f;
+  
   public ComplexPart(F func)
   {
-    this.func = func;
+    this.f = func;
   }
 
 }
