@@ -4,6 +4,8 @@ import arb.*;
 import arb.curves.Circle;
 import arb.curves.ComplexCircle;
 import arb.functions.Function;
+import arb.functions.real.ImaginaryPart;
+import arb.functions.real.RealPart;
 import arb.operators.ComplexCompositionOperator;
 import arb.operators.CompositionOperator;
 
@@ -27,6 +29,16 @@ public class CircleS extends
   {
     super(f,
           g);
+  }
+
+  public RealPart real()
+  {
+    return new RealPart(this);
+  }
+
+  public ImaginaryPart imag()
+  {
+    return new ImaginaryPart(this);
   }
 
 }

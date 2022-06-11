@@ -15,6 +15,9 @@ public class CircleSTest extends
       Complex z = cs.evaluate(πOver2, 1, 256, new Complex());
       System.out.println("CircleS(π/2)=" + z);
       assertTrue(z.getReal().doubleValue() == 0.6);
+
+      cs.real().evaluate(πOver2.getReal(), 1, 256, z.getReal());
+      assertTrue(z.getReal().doubleValue() == 0.6);
     }
   }
 }

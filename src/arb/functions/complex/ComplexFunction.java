@@ -8,12 +8,25 @@ import java.util.concurrent.atomic.AtomicLong;
 import arb.*;
 import arb.exceptions.*;
 import arb.functions.Function;
+import arb.functions.real.ImaginaryPart;
+import arb.functions.real.RealPart;
 import arb.util.Utils;
 
 @FunctionalInterface
 public interface ComplexFunction extends
                                  Function<Complex, Complex>
 {
+
+  public default RealPart real()
+  {
+    return new RealPart(this);
+  }
+
+  public default ImaginaryPart imag()
+  {
+    return new ImaginaryPart(this);
+  }
+
   /**
    * Each linear operator A on a Euclidean vector space defines a (Hermitian)
    * adjoint operator A^* on that space according to the rule <br>
