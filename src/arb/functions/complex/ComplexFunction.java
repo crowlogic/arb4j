@@ -84,7 +84,7 @@ public interface ComplexFunction extends
 
   public default ComplexFunction differential() throws NotDifferentiableException
   {
-    return new TaylorShift(this);
+    return new Shift(this);
   }
 
   /**
