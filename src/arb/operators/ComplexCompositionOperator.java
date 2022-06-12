@@ -31,7 +31,7 @@ public class ComplexCompositionOperator<F extends ComplexFunction, G extends Com
   {
     if (order > 4)
     {
-      throw new UnsupportedOperationException(String.format("TODO: implement derivative for order=%d > 2", order));
+      throw new UnsupportedOperationException(String.format("TODO: implement derivative for order=%d > 3", order));
     }
     Complex y = this.y.get();
 
