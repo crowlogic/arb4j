@@ -17,24 +17,84 @@ public interface ComplexFunction extends
                                  Function<Complex, Complex>
 {
 
-  public default RealPart realPart()
+  public static final int glSteps[]   =
+  { 1, 2, 4, 6, 8, 12, 16, 22, 32, 46, 64, 90, 128, 182, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096, 5792,
+    8192, 11586, 16384, 23170, 32768, 46340, 65536, 92682, 131072, 185364, 262144, 370728, 524288, 741456 };
+
+  public static final int glStepCount = glSteps.length;
+
+  /**
+   * @return function which returns the absolute value of this function
+   */
+  public default Function<Complex, Real> abs()
   {
-    return new RealPart(this);
-  }
-  
-  public default ComplexRealPart complexRealPart()
-  {
-    return new ComplexRealPart(this);
+    Function<Complex, Real> function = (z, order, prec, w) ->
+    {
+      order = max(1, order);
+      assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
+      try ( Complex x = new Complex())
+      {
+        ComplexFunction.this.evaluate(z, order, prec, x);
+        if (w.isFinite())
+        {
+          x.abs(prec, w);
+        }
+      }
+      return w;
+    };
+    return function;
   }
 
-  public default ImaginaryPart imaginaryPart()
+  public default void accumulateGaussLegendreQuadrature(int relAccuracyGoalBits,
+                                                        int prec,
+                                                        Complex s,
+                                                        Complex u,
+                                                        Magnitude tmpm,
+                                                        Magnitude newTol,
+                                                        int depth,
+                                                        int top,
+                                                        boolean useHeap,
+                                                        Complex as,
+                                                        Complex bs,
+                                                        Complex vs,
+                                                        Magnitude ms)
   {
-    return new ImaginaryPart(this);
+    if (vs.get(top).isFinite() && vs.get(top).isReal())
+    {
+      /* It is known that the result is real. */
+      u.getImag().zero();
+    }
+
+    s.add(u, prec, s);
+
+    /* Adjust absolute tolerance based on new information. */
+    acb_get_mag_lower(tmpm, u);
+    mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
+    mag_max(newTol, newTol, tmpm);
+
+    if (useHeap && depth > 0)
+    {
+      swapElements(depth, as, bs, vs, ms);
+      Utils.heap_up(as, bs, vs, ms, depth);
+    }
   }
 
-  public default ComplexImaginaryPart complexImagPart()
+  public default void accumulateIntegrand(int prec,
+                                          Complex s,
+                                          int depth,
+                                          int top,
+                                          boolean useHeap,
+                                          Complex as,
+                                          Complex bs,
+                                          Complex vs,
+                                          Magnitude ms)
   {
-    return new ComplexImaginaryPart(this);
+    s.add(vs.get(top), prec, s);
+    if (useHeap && depth > 0)
+    {
+      swapElements(depth, as, bs, vs, ms);
+      Utils.heap_up(as, bs, vs, ms, depth);
+    }
   }
 
   /**
@@ -70,16 +130,66 @@ public interface ComplexFunction extends
     return bump;
   }
 
-  /**
-   * 
-   * @return a function which, when differentiated, produces this function as a
-   *         differential. It should satisfy
-   *         this{@link #integral()}{@link #differential()} == this ==
-   *         this{@link #differential()}{@link #integral()}
-   */
-  public default ComplexFunction integral() throws NotIntegrableException
+  public default void bisect(int relAccuracyGoalBits,
+                             int prec,
+                             Magnitude tmpm,
+                             Magnitude newTol,
+                             int depth,
+                             int top,
+                             AtomicLong evalCount,
+                             Complex as,
+                             Complex bs,
+                             Complex vs,
+                             Magnitude ms,
+                             Magnitude topm)
   {
-    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
+    /* Bisection. */
+    /* Interval [depth] becomes [mid, b]. */
+    bs.get(depth).set(bs.get(top));
+    as.get(top).add(bs.get(top), prec, as.get(depth));
+    acb_mul_2exp_si(as.get(depth), as.get(depth), -1);
+
+    /* Interval [top] becomes [a, mid]. */
+    bs.get(top).set(as.get(depth));
+
+    /* Evaluate on [a, mid] */
+    simpleQuadrature(as.get(top), bs.get(top), prec, vs.get(top));
+
+    mag_hypot(topm, vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
+    evalCount.incrementAndGet();
+    /* Adjust absolute tolerance based on new information. */
+    acb_get_mag_lower(tmpm, vs.get(top));
+    mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
+    mag_max(newTol, newTol, tmpm);
+
+    /* Evaluate on [mid, b] */
+    simpleQuadrature(as.get(depth), bs.get(depth), prec, vs.get(depth));
+
+    mag_hypot(ms.get(depth), vs.get(depth).getReal().getRad(), vs.get(depth).getImag().getRad());
+    evalCount.incrementAndGet();
+    /* Adjust absolute tolerance based on new information. */
+    acb_get_mag_lower(tmpm, vs.get(depth));
+    mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
+    mag_max(newTol, newTol, tmpm);
+
+    /* Make the interval with the larger error the priority. */
+    if (topm.compareTo(ms.get(depth)) < 0)
+    {
+      as.get(top).swap(as.get(depth));
+      bs.get(top).swap(bs.get(depth));
+      vs.get(top).swap(vs.get(depth));
+      topm.swap(ms.get(depth));
+    }
+  }
+
+  public default ComplexImaginaryPart complexImagPart()
+  {
+    return new ComplexImaginaryPart(this);
+  }
+
+  public default ComplexRealPart complexRealPart()
+  {
+    return new ComplexRealPart(this);
   }
 
   public default ComplexFunction differential() throws NotDifferentiableException
@@ -96,57 +206,21 @@ public interface ComplexFunction extends
     return 1;
   }
 
-  /**
-   * get an inverse branch. TODO: how to specify the domain of the n-th branch?
-   * 
-   * @param branch starting at 0 which is the principal and only branch for
-   *               properly invertible functions
-   * 
-   * @return the n-th branch of the inverse function f^-1(x)={y:f(y)=x}
-   */
-  public default ComplexFunction inverse(int branch)
+  public default ImaginaryPart imaginaryPart()
   {
-    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
+    return new ImaginaryPart(this);
   }
 
-  public static final int glSteps[]   =
-  { 1, 2, 4, 6, 8, 12, 16, 22, 32, 46, 64, 90, 128, 182, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096, 5792,
-    8192, 11586, 16384, 23170, 32768, 46340, 65536, 92682, 131072, 185364, 262144, 370728, 524288, 741456 };
-
-  public static final int glStepCount = glSteps.length;
-
   /**
-   * Calculate the simple quadrature f([a,b])*(b-a) where
-   * f=this{@link #evaluate(Complex, int, int, Complex)} with a single function
-   * evaluation
    * 
-   * @param a
-   * @param b
-   * @param prec
-   * @param res
-   * @return res
+   * @return a function which, when differentiated, produces this function as a
+   *         differential. It should satisfy
+   *         this{@link #integral()}{@link #differential()} == this ==
+   *         this{@link #differential()}{@link #integral()}
    */
-  public default Complex simpleQuadrature(Complex a, Complex b, int prec, Complex res)
+  public default ComplexFunction integral() throws NotIntegrableException
   {
-    try ( Magnitude magδ = new Magnitude(); Complex midpoint = new Complex(); Complex δ = new Complex();
-          Complex widePoint = new Complex();)
-    {
-      /* δ = (b-a)/2 */
-      b.sub(a, prec, δ).mul2e(-1, δ);
-
-      /* mid = (a+b)/2 */
-      a.add(b, prec, midpoint).mul2e(-1, midpoint);
-
-      /* wide = mid +- [delta] */
-      widePoint.set(midpoint);
-      arb_get_mag(magδ, δ.getReal());
-      widePoint.getReal().addUncertainty(magδ);
-      arb_get_mag(magδ, δ.getImag());
-      widePoint.getImag().addUncertainty(magδ);
-
-      /* Direct evaluation: integral = f([a,b]) * (b-a) */
-      return evaluate(widePoint, 0, prec, res).mul(δ, prec, res).mul2e(-1, res);
-    }
+    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }
 
   /**
@@ -208,9 +282,9 @@ public interface ComplexFunction extends
    * parameter (documented below). To use all defaults, NULL can be passed for
    * options.
    * 
-   * @param a
+   * @param a                     from
    * 
-   * @param b
+   * @param b                     to
    * 
    * @param relAccuracyGoalBits   relative accuracy goal as a nonnegative number
    *                              of bits, i.e. target a relative error less than
@@ -386,136 +460,28 @@ public interface ComplexFunction extends
     return res;
   }
 
-  public default void resizeRegisters(int allocation, Complex as, Complex bs, Complex vs, Magnitude ms)
+  /**
+   * get an inverse branch. TODO: how to specify the domain of the n-th branch?
+   * 
+   * @param branch starting at 0 which is the principal and only branch for
+   *               properly invertible functions
+   * 
+   * @return the n-th branch of the inverse function f^-1(x)={y:f(y)=x}
+   */
+  public default ComplexFunction inverse(int branch)
   {
-    int k;
-    allocation *= 2;
-    as.resize(allocation);
-    bs.resize(allocation);
-    vs.resize(allocation);
-    ms.resize(allocation);
-    for (k = allocation; k < allocation; k++)
-    {
-      acb_init(as.get(k));
-      acb_init(bs.get(k));
-      acb_init(vs.get(k));
-      mag_init(ms.get(k));
-    }
+    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }
 
-  public default void bisect(int relAccuracyGoalBits,
-                             int prec,
-                             Magnitude tmpm,
-                             Magnitude newTol,
-                             int depth,
-                             int top,
-                             AtomicLong evalCount,
-                             Complex as,
-                             Complex bs,
-                             Complex vs,
-                             Magnitude ms,
-                             Magnitude topm)
+  /**
+   * 
+   * @param z
+   * @return the multiplicity of the root at the point z, or 0 if there is no root
+   *         there
+   */
+  public default int multiplicityOfRoot(Complex z)
   {
-    /* Bisection. */
-    /* Interval [depth] becomes [mid, b]. */
-    bs.get(depth).set(bs.get(top));
-    as.get(top).add(bs.get(top), prec, as.get(depth));
-    acb_mul_2exp_si(as.get(depth), as.get(depth), -1);
-
-    /* Interval [top] becomes [a, mid]. */
-    bs.get(top).set(as.get(depth));
-
-    /* Evaluate on [a, mid] */
-    simpleQuadrature(as.get(top), bs.get(top), prec, vs.get(top));
-
-    mag_hypot(topm, vs.get(top).getReal().getRad(), vs.get(top).getReal().getRad());
-    evalCount.incrementAndGet();
-    /* Adjust absolute tolerance based on new information. */
-    acb_get_mag_lower(tmpm, vs.get(top));
-    mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-    mag_max(newTol, newTol, tmpm);
-
-    /* Evaluate on [mid, b] */
-    simpleQuadrature(as.get(depth), bs.get(depth), prec, vs.get(depth));
-
-    mag_hypot(ms.get(depth), vs.get(depth).getReal().getRad(), vs.get(depth).getImag().getRad());
-    evalCount.incrementAndGet();
-    /* Adjust absolute tolerance based on new information. */
-    acb_get_mag_lower(tmpm, vs.get(depth));
-    mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-    mag_max(newTol, newTol, tmpm);
-
-    /* Make the interval with the larger error the priority. */
-    if (mag_cmp(topm, ms.get(depth)) < 0)
-    {
-      acb_swap(as.get(top), as.get(depth));
-      acb_swap(bs.get(top), bs.get(depth));
-      acb_swap(vs.get(top), vs.get(depth));
-      mag_swap(topm, ms.get(depth));
-    }
-  }
-
-  public default void accumulateIntegrand(int prec,
-                                          Complex s,
-                                          int depth,
-                                          int top,
-                                          boolean useHeap,
-                                          Complex as,
-                                          Complex bs,
-                                          Complex vs,
-                                          Magnitude ms)
-  {
-    s.add(vs.get(top), prec, s);
-    if (useHeap && depth > 0)
-    {
-      swapElements(depth, as, bs, vs, ms);
-      Utils.heap_up(as, bs, vs, ms, depth);
-    }
-  }
-
-  public default void accumulateGaussLegendreQuadrature(int relAccuracyGoalBits,
-                                                        int prec,
-                                                        Complex s,
-                                                        Complex u,
-                                                        Magnitude tmpm,
-                                                        Magnitude newTol,
-                                                        int depth,
-                                                        int top,
-                                                        boolean useHeap,
-                                                        Complex as,
-                                                        Complex bs,
-                                                        Complex vs,
-                                                        Magnitude ms)
-  {
-    boolean realError;
-    /* We know that the result is real. */
-    realError = vs.get(top).isFinite() && vs.get(top).isReal();
-
-    if (realError)
-    {
-      arb_zero(u.getImag());
-    }
-
-    s.add(u, prec, s);
-
-    /* Adjust absolute tolerance based on new information. */
-    acb_get_mag_lower(tmpm, u);
-    mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
-    mag_max(newTol, newTol, tmpm);
-
-    if (useHeap && depth > 0)
-    {
-      swapElements(depth, as, bs, vs, ms);
-      Utils.heap_up(as, bs, vs, ms, depth);
-    }
-  }
-
-  public default void swapElements(int depth, Complex as, Complex bs, Complex vs, Magnitude ms)
-  {
-    acb_swap(as, as.get(depth));
-    acb_swap(bs, bs.get(depth));
-    acb_swap(vs, vs.get(depth));
-    mag_swap(ms, ms.get(depth));
+    throw new UnsupportedOperationException("TODO: return the multiplicity of the root at the point z here, or throw an exception or something if there isn't a root at the requested point within whatever uncertainty radius is there");
   }
 
   /**
@@ -680,33 +646,68 @@ public interface ComplexFunction extends
     return converged;
   }
 
-  /**
-   * @return function which returns the absolute value of this function
-   */
-  public default Function<Complex, Real> abs()
+  public default RealPart realPart()
   {
-    Function<Complex, Real> function = (z, order, prec, w) ->
-    {
-      order = max(1, order);
-      assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
-      try ( Complex x = new Complex())
-      {
-        ComplexFunction.this.evaluate(z, order, prec, x);
-        x.printPrecision = true;
-        z.printPrecision = true;
-        if (w.isFinite())
-        {
-          x.abs(prec, w);
-        }
-      }
-      return w;
-    };
-    return function;
+    return new RealPart(this);
   }
 
-  public default int multiplicityOfRoot(Complex z)
+  public default void resizeRegisters(int allocation, Complex as, Complex bs, Complex vs, Magnitude ms)
   {
-    throw new UnsupportedOperationException("TODO: return the multiplicity of the root at the point z here, or throw an exception or something if there isn't a root at the requested point within whatever uncertainty radius is there");
+    int k;
+    allocation *= 2;
+    as.resize(allocation);
+    bs.resize(allocation);
+    vs.resize(allocation);
+    ms.resize(allocation);
+    for (k = allocation; k < allocation; k++)
+    {
+      acb_init(as.get(k));
+      acb_init(bs.get(k));
+      acb_init(vs.get(k));
+      mag_init(ms.get(k));
+    }
+  }
+
+  /**
+   * Calculate the simple quadrature f([a,b])*(b-a) where
+   * f=this{@link #evaluate(Complex, int, int, Complex)} with a single function
+   * evaluation
+   * 
+   * @param a
+   * @param b
+   * @param prec
+   * @param res
+   * @return res
+   */
+  public default Complex simpleQuadrature(Complex a, Complex b, int prec, Complex res)
+  {
+    try ( Magnitude magδ = new Magnitude(); Complex midpoint = new Complex(); Complex δ = new Complex();
+          Complex widePoint = new Complex();)
+    {
+      /* δ = (b-a)/2 */
+      b.sub(a, prec, δ).mul2e(-1, δ);
+
+      /* mid = (a+b)/2 */
+      a.add(b, prec, midpoint).mul2e(-1, midpoint);
+
+      /* wide = mid +- [delta] */
+      widePoint.set(midpoint);
+      arb_get_mag(magδ, δ.getReal());
+      widePoint.getReal().addUncertainty(magδ);
+      arb_get_mag(magδ, δ.getImag());
+      widePoint.getImag().addUncertainty(magδ);
+
+      /* Direct evaluation: integral = f([a,b]) * (b-a) */
+      return evaluate(widePoint, 0, prec, res).mul(δ, prec, res).mul2e(-1, res);
+    }
+  }
+
+  public default void swapElements(int depth, Complex as, Complex bs, Complex vs, Magnitude ms)
+  {
+    acb_swap(as, as.get(depth));
+    acb_swap(bs, bs.get(depth));
+    acb_swap(vs, vs.get(depth));
+    mag_swap(ms, ms.get(depth));
   }
 
 }
