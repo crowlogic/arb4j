@@ -298,9 +298,8 @@ public class Real implements Comparable<Real>, Field {
   public Real get( int index )
   {
     return new Real(swigCPtr + index * Real.BYTES, false);  
-  } 
-  public static final int digits = 46;
-  
+  }
+   
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();
@@ -317,8 +316,22 @@ public class Real implements Comparable<Real>, Field {
     return sb.toString();
   }
   
+  public String toString( )
+  {
+    return toString(46);
+  }
   
-  public String toString()
+  public int digits()
+  {
+    try ( Magnitude d = new Magnitude()  )
+    {
+      getRad().inv(d);
+      d.log(d);
+      d.div(Constants.log10mag, d);
+      return (int) d.doubleValue() + 2;
+    }
+  }  
+  public String toString( int digits )
   {
     if ( dim == 1 )
     {

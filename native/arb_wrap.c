@@ -293,6 +293,58 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1div(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
+  mag_struct *arg1 ;
+  mag_struct *arg2 ;
+  mag_struct *arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(mag_struct **)&jarg1; 
+  arg2 = *(mag_struct **)&jarg2; 
+  arg3 = *(mag_struct **)&jarg3; 
+  mag_div(arg1,(mag_struct const (*))arg2,(mag_struct const (*))arg3);
+  
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1log(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  mag_struct *arg1 ;
+  mag_struct *arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(mag_struct **)&jarg1; 
+  arg2 = *(mag_struct **)&jarg2; 
+  mag_log(arg1,(mag_struct const (*))arg2);
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1inv(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  mag_struct *arg1 ;
+  mag_struct *arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(mag_struct **)&jarg1; 
+  arg2 = *(mag_struct **)&jarg2; 
+  mag_inv(arg1,(mag_struct const (*))arg2);
+  
+  
+}
+
+
 SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1is_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   arf_struct *arg1 ;
@@ -1316,26 +1368,6 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1add_1error_1mag(JNIEnv *jenv, jclas
   arg1 = *(arb_struct **)&jarg1; 
   arg2 = *(mag_struct **)&jarg2; 
   arb_add_error_mag(arg1,(mag_struct const (*))arg2);
-  
-  
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1div(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
-  mag_struct *arg1 ;
-  mag_struct *arg2 ;
-  mag_struct *arg3 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  (void)jarg3_;
-  arg1 = *(mag_struct **)&jarg1; 
-  arg2 = *(mag_struct **)&jarg2; 
-  arg3 = *(mag_struct **)&jarg3; 
-  mag_div(arg1,(mag_struct const (*))arg2,(mag_struct const (*))arg3);
-  
   
   
 }

@@ -1,3 +1,9 @@
+void mag_div(mag_t z, const mag_t x, const mag_t y);
+
+void mag_log(mag_t z, const mag_t x);
+
+void mag_inv(mag_t res, const mag_t x);
+
 int arf_is_zero(const arf_t x);
 
 void acb_add_arb(acb_t z, const acb_t x, const arb_t y, slong prec);

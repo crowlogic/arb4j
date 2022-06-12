@@ -9,6 +9,18 @@
 package arb;
 
 public class arb {
+  public static void mag_div(Magnitude z, Magnitude x, Magnitude y) {
+    arbJNI.mag_div(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
+  }
+
+  public static void mag_log(Magnitude z, Magnitude x) {
+    arbJNI.mag_log(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x);
+  }
+
+  public static void mag_inv(Magnitude res, Magnitude x) {
+    arbJNI.mag_inv(Magnitude.getCPtr(res), res, Magnitude.getCPtr(x), x);
+  }
+
   public static int arf_is_zero(Float x) {
     return arbJNI.arf_is_zero(Float.getCPtr(x), x);
   }
@@ -252,10 +264,6 @@ public class arb {
 
   public static void arb_add_error_mag(Real x, Magnitude err) {
     arbJNI.arb_add_error_mag(Real.getCPtr(x), x, Magnitude.getCPtr(err), err);
-  }
-
-  public static void mag_div(Magnitude z, Magnitude x, Magnitude y) {
-    arbJNI.mag_div(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
   public static void mag_mul_ui_lower(Magnitude z, Magnitude x, long y) {

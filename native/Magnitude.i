@@ -122,4 +122,25 @@ import static arb.Constants.*;
     arb.mag_swap(this, that);
     return this;
   }
+
+
+  public Magnitude inv(Magnitude magnitude)
+  {
+    arb.mag_inv(magnitude,this);
+    return this;
+  }
+
+  public Magnitude log(Magnitude d)
+  {
+    arb.mag_log(d, this);
+    return d;
+  }
+
+  public Magnitude div(Magnitude a, Magnitude d)
+  {
+    arb.mag_div(d, this, a);
+    return d;
+  }
+  
+  
 %};

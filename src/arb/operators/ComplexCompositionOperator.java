@@ -5,8 +5,9 @@ import arb.ThreadLocalComplex;
 import arb.functions.complex.ComplexFunction;
 
 /**
- * The composition of two complex-valued functions <code>C_g(f(t))=f(g(t))</code> which
- * handles the chain-rule. Also known as the Koopman operator
+ * The composition of two complex-valued functions
+ * <code>C_g(f(t))=f(g(t))</code> which handles the chain-rule. Also known as
+ * the Koopman operator
  *
  */
 public class ComplexCompositionOperator<F extends ComplexFunction, G extends ComplexFunction> implements
@@ -28,35 +29,41 @@ public class ComplexCompositionOperator<F extends ComplexFunction, G extends Com
   @Override
   public Complex evaluate(Complex t, int order, int prec, Complex res)
   {
-    if (order > 3)
+    if (order > 4)
     {
-      throw new UnsupportedOperationException( String.format("TODO: implement derivative for order=%d > 2", order) );
+      throw new UnsupportedOperationException(String.format("TODO: implement derivative for order=%d > 2", order));
     }
     Complex y = this.y.get();
 
-    // y=g(t) if order == 1 or y=[g(t), g'(t)] if order==2
+    // y=[g(t), g'(t), g''(t)]
     g.evaluate(t, order, prec, y);
-    // res=y=f(g(t)) if order==1 or y=[f(g(t)),f'(g(t))] if order==2
+    // res=[f(g(t)),f'(g(t)),f''(g(t)]
     f.evaluate(y, order, prec, res);
 
-    if (order == 2)
+    if (order < 2)
+      return res;
+
+    if (order >= 3)
+    {
+      // res[2]= g'(t)^2*f''(g(t)) + f'(g(t))*g''(t)
+      try ( Complex tmp = new Complex())
+      {
+        Complex df2 = res.get(1); // df2=f'(g(t)
+        y.get(1).pow(2, prec, tmp); // tmp=g'(t)^2
+        tmp.mul(res.get(2), prec, res.get(2)); // tmp=tmp*res[2]=g'(t)^2*f''(g(t))
+
+        y.get(2).mul(res.get(1), prec, tmp);
+        tmp.add(res.get(2), prec, res.get(2));
+      }
+    }
+
+    if (order >= 2)
     {
       // apply the chain rule: res[1]*=y[1] so that res[1] = f'(g(t))*g'(t)
       Complex df = res.get(1);
       df.mul(y.get(1), prec, df);
     }
 
-    if (order == 3)
-    {
-      Complex df = res.get(1);
-      //df.mul(y.get(1), prec, df);
-      
-      throw new UnsupportedOperationException( String.format("TODO: return 2nd derivative, g'(t)^2*f''(g(t))+f'(g(t))*g''(t) ") );
-
-      
-    }
-
-    
     return res;
   }
 

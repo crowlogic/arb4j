@@ -131,7 +131,12 @@ public interface RealFunction extends
 
       if (verbose)
       {
-        System.out.printf("Newton step: wp = %d + %d = %d      r=%s\n", precs[i], extraPrec, workingPrecision, root);
+        System.out.printf("Newton step: wp = %03d + %03d = %03d      r=%s digits=%s\n",
+                          precs[i],
+                          extraPrec,
+                          workingPrecision,
+                          root.toString(root.digits()),
+                          root.digits());
       }
 
       if (!calculateNewtonStep(root, convergenceRegion, convergenceFactor, workingPrecision, root))

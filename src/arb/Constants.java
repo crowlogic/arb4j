@@ -37,6 +37,8 @@ public class Constants
   public static final Complex posInf = new Complex();
   public static final Complex negInf = new Complex();
 
+  public static final Magnitude log10mag = new Magnitude();
+  
   public static final Magnitude zeroMag = new Magnitude();
   
   public static Complex i = Constants.IMAGINARY_UNIT;
@@ -64,7 +66,7 @@ public class Constants
     realPositiveInfinity.posInf();
     posInf.set(realPositiveInfinity, ZERO.getReal());
     posInf.neg(negInf);
-    
+    log10mag.set(10).log(log10mag);
   }
 
   public static final Real     sqrt2 = new Real().set(2);

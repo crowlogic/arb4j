@@ -30,19 +30,5 @@ public class CircleS extends
           g);
   }
 
-  public ComplexImaginaryPart imag()
-  {
-    return new ComplexImaginaryPart(this);
-  }
 
-  
-  public ComplexRealPart realComplex()
-  {
-    return new ComplexRealPart(this);
-  }
-
-  public ComplexImaginaryPart imagComplex()
-  {
-    return new ComplexImaginaryPart(this);
-  }
 }
