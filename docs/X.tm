@@ -650,10 +650,8 @@
   </definition>
 
   The Newton flow <math|\<cal-N\><around*|(|f|)>> has the drawback that it is
-  undefined at the critical points of <math|f> where the limit diverges to a
-  different direction of the pole depending upon the direction it is
-  approached from. To remedy this situation there exists the desingularized
-  Newton flow for entire functions.\ 
+  undefined at the critical points of <math|f>. To remedy this situation
+  there exists the desingularized Newton flow for entire functions.\ 
 
   <subsubsection|The Desingularized Newton Flow For Entire Functions>
 
@@ -671,8 +669,8 @@
   </definition>
 
   The function of interest here, <math|S<rsub|f>>, is meromorphic and
-  therefore will be undefined at the critical points of f. To remedy this
-  situation we can apply the continuous Newton method for mermorphic
+  therefore will be divergent at the poles of <math|S<rsub|f>>. To rectify
+  this situation we can apply the continuous Newton method for mermorphic
   functions which defines an equivalent real holomorphic vector field devoid
   of any singularities.
 

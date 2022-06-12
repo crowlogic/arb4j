@@ -1,12 +1,9 @@
 package arb.functions.complex;
 
-import arb.*;
-import arb.curves.Circle;
+import arb.Constants;
+import arb.Real;
 import arb.curves.ComplexCircle;
-import arb.functions.Function;
-import arb.functions.*;
 import arb.operators.ComplexCompositionOperator;
-import arb.operators.CompositionOperator;
 
 /**
  * S(e^i*θ) where θ is a real-valued angle but its easier for now to work with
@@ -18,6 +15,13 @@ public class CircleS extends
 {
 
   public CircleS()
+  {
+    this(new SFunction(),
+         new ComplexCircle(Constants.ZERO,
+                           Constants.ONE));
+  }
+
+  public CircleS( Real a )
   {
     this(new SFunction(),
          new ComplexCircle(Constants.ZERO,

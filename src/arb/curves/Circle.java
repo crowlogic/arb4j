@@ -3,16 +3,16 @@ package arb.curves;
 import static java.lang.Math.max;
 
 import arb.*;
+import arb.functions.complex.ComplexRealPart;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.dynamics.NewtonMap;
-import arb.functions.real.RealPart;
-import arb.operators.CompositionOperator;
+import arb.operators.ComplexCompositionOperator;
 
 /**
  * A circle coordinate function representing a circle having a basepoint and
  * radius that goes well with the {@link NewtonMap} of the {@link ComplexRealPart} of
- * the {@link CompositionOperator} applied as the composition of the
- * {@link SFunction} with the {@link Circle} for instance
+ * the {@link ComplexCompositionOperator} applied as the composition of the
+ * {@link SFunction} with the {@link ComplexCircle} for instance
  * 
  * <code>
  *       /   Re(S(circle(0,0.01,θ)))    \
