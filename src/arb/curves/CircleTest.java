@@ -1,7 +1,6 @@
 package arb.curves;
 
 import static java.lang.Math.pow;
-import static java.lang.System.out;
 
 import arb.*;
 import junit.framework.TestCase;

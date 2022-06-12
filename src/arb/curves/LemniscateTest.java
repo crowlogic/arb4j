@@ -2,9 +2,8 @@ package arb.curves;
 
 import arb.*;
 import arb.exceptions.NotDifferentiableException;
-import arb.functions.*;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.real.*;
+import arb.functions.Function;
+import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 public class LemniscateTest extends

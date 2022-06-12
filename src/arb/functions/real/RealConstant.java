@@ -1,6 +1,5 @@
 package arb.functions.real;
 
-import arb.Constants;
 import arb.Real;
 
 public class RealConstant implements

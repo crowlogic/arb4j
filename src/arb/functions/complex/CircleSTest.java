@@ -1,9 +1,6 @@
 package arb.functions.complex;
 
 import arb.*;
-import arb.functions.complex.dynamics.NewtonMap;
-import arb.functions.complex.dynamics.NewtonMapTest;
-import arb.functions.real.RealPart;
 import junit.framework.TestCase;
 
 public class CircleSTest extends

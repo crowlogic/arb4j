@@ -8,7 +8,6 @@ import java.util.stream.IntStream;
 
 import org.lwjgl.system.Configuration;
 
-import arb.viz.rendering.XRenderer;
 import junit.framework.TestCase;
 
 public class ComplexTest extends

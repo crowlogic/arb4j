@@ -6,7 +6,7 @@ import static arb.Constants.*;
 import arb.Complex;
 import arb.Real;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.real.*;
+import arb.functions.real.RealFunction;
 
 /**
  * Copyright ©2022 Stephen Crowley

@@ -1,7 +1,6 @@
 package arb.functions.complex;
 
 import arb.Complex;
-import arb.curves.Lemniscate;
 import arb.curves.PlaneCurve;
 
 /**

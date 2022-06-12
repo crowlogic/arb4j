@@ -6,9 +6,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.io.IOException;
 
-import arb.Complex;
-import arb.Real;
-import arb.functions.complex.SFunction;
 import arb.functions.complex.TFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;

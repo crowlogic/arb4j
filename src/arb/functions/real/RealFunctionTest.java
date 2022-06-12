@@ -4,7 +4,6 @@ import static java.lang.Math.pow;
 import static java.lang.System.out;
 import static org.junit.Assert.assertEquals;
 
-
 import org.junit.Test;
 
 import arb.*;

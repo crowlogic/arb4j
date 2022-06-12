@@ -5,7 +5,6 @@ import static java.lang.Math.max;
 import arb.*;
 import arb.exceptions.NotIntegrableException;
 import arb.functions.Function;
-import arb.functions.complex.ComplexFunction;
 
 public class LemniscateDerivative implements
                                   Function<Real, Complex>

@@ -2,10 +2,7 @@ package arb.functions.complex.elliptic;
 
 import arb.Complex;
 import arb.arb;
-import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.WickRotation;
-import arb.operators.ComplexCompositionOperator;
 
 /**
  * K(s) is the Complete Elliptical Integral of the First Kind, ALso known as the

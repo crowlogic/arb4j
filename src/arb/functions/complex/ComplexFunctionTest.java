@@ -4,11 +4,12 @@ import static arb.Constants.*;
 import static java.lang.System.out;
 
 import arb.*;
-import arb.curves.*;
-import arb.exceptions.*;
-import arb.functions.*;
-import arb.functions.real.RealFunction;
-import junit.framework.*;
+import arb.curves.Lemniscate;
+import arb.curves.LemniscateDerivative;
+import arb.exceptions.LackOfConvergenceException;
+import arb.exceptions.NotDifferentiableException;
+import arb.functions.Function;
+import junit.framework.TestCase;
 
 public class ComplexFunctionTest extends
                                  TestCase

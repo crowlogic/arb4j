@@ -12,7 +12,7 @@ package arb.curves;
 import static java.lang.Math.max;
 
 import arb.*;
-import arb.functions.*;
+import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 
 /**

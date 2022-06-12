@@ -1,9 +1,8 @@
 package arb.functions;
 
-import arb.operators.*;
-import arb.*;
-import arb.exceptions.*;
-import arb.functions.complex.*;
+import arb.Field;
+import arb.exceptions.NotDifferentiableException;
+import arb.functions.complex.ComplexFunction;
 
 @FunctionalInterface
 public interface Function<D extends Field, R extends Field>

@@ -9,9 +9,9 @@ import javax.swing.JFrame;
 
 import arb.Constants;
 import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.SFunction;
 import arb.functions.complex.TFunction;
-import arb.viz.*;
+import arb.viz.ComplexFunctionRenderer;
+import arb.viz.Part;
 
 public class SCoshRenderer
 {

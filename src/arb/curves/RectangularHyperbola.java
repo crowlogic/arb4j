@@ -9,9 +9,7 @@
  */
 package arb.curves;
 
-import arb.Complex;
-import arb.Constants;
-import arb.Real;
+import arb.*;
 
 /**
  * A parameterization of a rectangular unit hyperbola where t ranges over -Pi to

@@ -7,9 +7,7 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import arb.Complex;
 import arb.ThreadLocalComplex;
-import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;

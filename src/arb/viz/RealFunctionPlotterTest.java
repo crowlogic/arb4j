@@ -3,8 +3,7 @@ package arb.viz;
 import javax.swing.JFrame;
 
 import arb.FloatInterval;
-import arb.functions.complex.*;
-import arb.functions.real.RealFunction;
+import arb.functions.complex.CircleS;
 import arb.functions.real.RealPart;
 
 public class RealFunctionPlotterTest

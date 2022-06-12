@@ -3,9 +3,8 @@ package arb.viz.rendering;
 import java.awt.Dimension;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
-import java.io.*;
+import java.io.IOException;
 
-import arb.Constants;
 import arb.Real;
 import arb.functions.complex.XFunction;
 import arb.viz.ComplexFunctionRenderer;

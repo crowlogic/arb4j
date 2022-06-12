@@ -5,10 +5,9 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
-import javax.swing.JFrame;
-
 import arb.Constants;
-import arb.functions.complex.*;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.TFunction;
 import arb.viz.ComplexFunctionRenderer;
 
 public class CoshRenderer

@@ -5,9 +5,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
-import arb.functions.complex.RiemannZetaFunction;
-import arb.functions.complex.SFunction;
-import arb.functions.complex.WickRotation;
+import arb.functions.complex.*;
 import arb.operators.ComplexCompositionOperator;
 import arb.viz.ComplexFunctionRenderer;
 

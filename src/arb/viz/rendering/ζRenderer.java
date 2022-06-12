@@ -5,9 +5,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
-import arb.Constants;
-import arb.Real;
-import arb.ThreadLocalComplex;
+import arb.*;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 

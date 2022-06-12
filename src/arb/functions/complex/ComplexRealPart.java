@@ -1,11 +1,6 @@
 package arb.functions.complex;
 
-import arb.*;
-import arb.functions.complex.*;
-import arb.functions.real.RealComplexPart;
-
-import arb.*;
-import arb.functions.complex.*;
+import arb.Complex;
 
 public class ComplexRealPart<F extends ComplexFunction> extends
                             ComplexPart<F>

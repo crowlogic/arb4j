@@ -4,10 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import arb.Constants;
 import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
@@ -17,9 +15,7 @@ import hageldave.jplotter.renderables.Lines;
 import hageldave.jplotter.renderables.Lines.SegmentDetails;
 import hageldave.jplotter.renderables.Triangles;
 import hageldave.jplotter.renderables.Triangles.TriangleDetails;
-import hageldave.jplotter.renderers.CoordSysRenderer;
-import hageldave.jplotter.renderers.LinesRenderer;
-import hageldave.jplotter.renderers.TrianglesRenderer;
+import hageldave.jplotter.renderers.*;
 
 public class RealFunctionPlotter extends
                                  BlankCanvas

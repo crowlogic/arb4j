@@ -2,9 +2,9 @@ package arb.functions.real;
 
 import static java.lang.Math.max;
 
-import arb.*;
+import arb.Field;
+import arb.Real;
 import arb.functions.Function;
-import arb.functions.complex.ComplexFunction;
 
 public class AbsoluteValue<D extends Field> implements
                           Function<D, Real>
