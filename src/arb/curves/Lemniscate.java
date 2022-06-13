@@ -21,13 +21,17 @@ import arb.functions.complex.ComplexFunction;
  * The curvature and tangential angle of the lemniscate are Κappa(t) =
  * (3*sqrt(2)*cos(t))/(scale*sqrt(3-cos(2t))) and φ(t) = 3*tan^(-1)(sin(t)).
  * 
- * The integral over the absolute value of this{@link #differential()} is equal
- * to the Lemniscate constant,
+ * 
  */
 public class Lemniscate implements
                         PlaneCurve
 {
 
+  /**
+   * The default scale is 2, which is the case where the integral over the
+   * absolute value of this{@link #differential()} is equal to the Lemniscate
+   * constant, which is the ratio of the perimeter of a lemniscate to its diameter
+   */
   @SuppressWarnings("resource")
   public Lemniscate()
   {
