@@ -57,16 +57,15 @@ public class Lemniscate implements
    * @return scale*cos(t))/(1-i*sin(t)
    */
   @Override
-  public Complex evaluate(Real z, int order, int prec, Complex w)
+  public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
     order = max(1, order);
     assert order <= w.size() : String.format("order = %d > res.size = %d", order, w.size());
     assert order <= 2;
 
-    try ( Real a = new Real(); Complex divisor = new Complex(); Complex numerator = new Complex())
+    try ( Complex a = new Complex(); Complex divisor = new Complex(); Complex numerator = new Complex())
     {
-      Real realNumer = numerator.getReal();
-      z.cos(prec, a).mul(scale, prec, realNumer);
+      z.cos(prec, a).mul(scale, prec, numerator);
       z.sin(prec, a).mul(imaginaryUnit, prec, divisor);
       divisor.neg(divisor).add(1, prec, divisor);
       numerator.div(divisor, prec, w);

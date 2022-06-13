@@ -50,6 +50,12 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
 
   public boolean printPrecision = false;
 
+  public Complex tan(int prec, Complex s)
+  {
+    arb.acb_tan(s, this, prec);
+    return this;
+  }
+
   /**
    * @see {@link arb#acb_swap(Complex, Complex)}
    * 
@@ -315,7 +321,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
  
  public Complex mul( Complex s, int prec, Complex r )
  {
-      assert s != this;
  
    arb.acb_mul(r, this, s, prec);
    return r;

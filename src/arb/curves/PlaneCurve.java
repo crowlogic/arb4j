@@ -9,11 +9,11 @@ import arb.functions.real.RealFunction;
 /**
  * 
  * A plane curve is a curve that lies in a single plane. A plane curve may be
- * closed or open. 
+ * closed or open.
  * 
  */
 public interface PlaneCurve extends
-                            Function<Real, Complex>
+                            ComplexFunction
 {
   /**
    * The vector r from the origin to the current position. It is also called the

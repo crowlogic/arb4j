@@ -48,7 +48,7 @@ public class Circle implements
   ThreadLocalComplex s = new ThreadLocalComplex(1);
 
   @Override
-  public Complex evaluate(Real a, int order, int prec, Complex res)
+  public Complex evaluate(Complex a, int order, int prec, Complex res)
   {
     order = max(1, order);
     assert order <= 1 : "TODO: implement derivatives";
@@ -73,9 +73,9 @@ public class Circle implements
    */
   public Complex evaluate(double angle, Complex complex)
   {
-    try ( Real Θ = new Real())
+    try ( Complex Θ = new Complex())
     {
-      Θ.set(angle);
+      Θ.getReal().set(angle);
       return evaluate(Θ, 1, 64, complex);
     }
   }

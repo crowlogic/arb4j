@@ -24,6 +24,12 @@ import static arb.arb.*;
 
   public boolean printPrecision = false;
 
+  public Complex tan(int prec, Complex s)
+  {
+    arb.acb_tan(s, this, prec);
+    return this;
+  }
+
   /**
    * @see {@link arb#acb_swap(Complex, Complex)}
    * 

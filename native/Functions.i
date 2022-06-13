@@ -1,3 +1,7 @@
+void acb_tan(acb_t r, const acb_t z, slong prec);
+
+void acb_sec(acb_t y, const acb_t x, slong prec);
+
 void arb_add_ui(arb_t z, const arb_t x, ulong y, slong prec);
 
 void arb_sub_ui(arb_t z, const arb_t x, ulong y, slong prec);

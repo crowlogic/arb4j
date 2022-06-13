@@ -9,6 +9,14 @@
 package arb;
 
 public class arb {
+  public static void acb_tan(Complex r, Complex z, int prec) {
+    arbJNI.acb_tan(Complex.getCPtr(r), r, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_sec(Complex y, Complex x, int prec) {
+    arbJNI.acb_sec(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
+  }
+
   public static void arb_add_ui(Real z, Real x, long y, int prec) {
     arbJNI.arb_add_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
