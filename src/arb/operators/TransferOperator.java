@@ -17,7 +17,7 @@ import arb.functions.complex.ComplexFunction;
  * modulus strictly smaller than one, then the acip is weak mixing. <br>
  * 5. If T is probability preserving and mixing, then ̂ T has exactly one
  * eigenvalue on the unit circle, equal to one, and this eigenvalue is simple.
- * (Be careful not to confuse L1-eigenvalues with L2-eigenvalues.)
+ * (Be careful not to confuse L1-eigenvalues with L2-eigenvalues.)<br>
  * 
  * @see https://www.weizmann.ac.il/math/sarigo/sites/math.sarigo/files/uploads/transferoperatorcourse-bonn.pdf
  * 

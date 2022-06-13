@@ -8,7 +8,9 @@ package arb.operators;
  * <li>f(cx)=cf(x) ∀x & ∀ constant scalars c</li>
  * </ul>
  * 
- * TODO: define the interfaces of the input and output space(s) as generic arguments
+ * TODO: define the interfaces of the input and output space(s) as generic
+ * arguments, should be straight-forward to create a generic test that tests the
+ * linearness of the implementing class
  */
 public interface LinearOperator
 {
