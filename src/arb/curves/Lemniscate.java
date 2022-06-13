@@ -15,8 +15,7 @@ import arb.*;
 import arb.functions.complex.ComplexFunction;
 
 /**
- * A parameterization of the Lemniscate of Bernoulli with parameter 2*scale
- * where t ranges over -Pi to Pi
+ * A parameterization of the Lemniscate of Bernoulli with scale parameter 
  * 
  * The curvature and tangential angle of the lemniscate are Κappa(t) =
  * (3*sqrt(2)*cos(t))/(scale*sqrt(3-cos(2t))) and φ(t) = 3*tan^(-1)(sin(t)).
