@@ -10,8 +10,7 @@ public class Cone implements
   @Override
   public Real evaluate(Complex t, int order, int prec, Real res)
   {
-    // TODO Auto-generated method stub
-    return null;
+    throw new UnsupportedOperationException("TODO");
   }
 
 }

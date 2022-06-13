@@ -29,34 +29,27 @@ public class Lemniscate implements
                         PlaneCurve
 {
 
+  public Lemniscate()
+  {
+    this(Constants.ONE);
+  }
+  
+  public Lemniscate(Real scale)
+  {
+    this.scale = scale;
+  }
+
+  private static final Complex imaginaryUnit   = Constants.IMAGINARY_UNIT;
+
+  private static final Complex ONE = Constants.COMPLEX_ONE;
+
   @Override
   public Function<Real, Complex> differential()
   {
     return new LemniscateDerivative();
   }
-
-  @Override
-  public int getInverseBranchCount()
-  {
-    return 4;
-  }
-
-  @Override
-  public ComplexFunction inverse(int branch)
-  {
-    switch (branch)
-    {
-    case 0:
-    case 1:
-    case 2:
-    case 3:
-    }
-    throw new UnsupportedOperationException("TODO: implement  inverse branches");
-
-  }
-
-  private static final Complex ONE = Constants.COMPLEX_ONE;
-  private static final Complex i   = Constants.IMAGINARY_UNIT;
+  
+  Real scale;
 
   /**
    * @param z
@@ -75,18 +68,37 @@ public class Lemniscate implements
     try ( Real a = new Real(); Complex divisor = new Complex(); Complex numerator = new Complex())
     {
       z.cos(prec, a).mul(2, prec, numerator.getReal());
-      z.sin(prec, a).mul(i, prec, divisor);
+      z.sin(prec, a).mul(imaginaryUnit, prec, divisor);
       divisor.neg(divisor).add(1, prec, divisor);
       numerator.div(divisor, prec, w);
       if (order >= 2)
       {
-        a.sub(i, prec, numerator).mul(2, prec, numerator);
-        a.add(i, prec, divisor).pow(2, prec, divisor);
+        a.sub(imaginaryUnit, prec, numerator).mul(2, prec, numerator);
+        a.add(imaginaryUnit, prec, divisor).pow(2, prec, divisor);
         numerator.div(divisor, prec, w.get(1));
       }
 
     }
     return w;
+  }
+  @Override
+  public int getInverseBranchCount()
+  {
+    return 4;
+  }
+
+  @Override
+  public ComplexFunction inverse(int branch)
+  {
+    switch (branch)
+    {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    }
+    throw new UnsupportedOperationException("TODO: implement  inverse branches");
+
   }
 
 }

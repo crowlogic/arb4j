@@ -496,6 +496,8 @@
     </proof>
   </theorem>
 
+  \;
+
   <subsection|The Curve <math|Im<around*|(|S<around*|(|t|)>|)>=0> is a
   Conjugate Pair of Rectangular Hyperbolas>
 
