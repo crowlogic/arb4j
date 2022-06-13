@@ -126,6 +126,53 @@
   url       = {https://books.google.com/books?id=LPcpAQAAMAAJ},
 }
 
+@Book{ds2,
+  title     = {Dynamical Systems II: Ergodic Theory with Applications to Dynamical Systems and Statistical Mechanics},
+  publisher = {Springer-Verlag},
+  year      = {1989},
+  author    = {Yakov Sinai},
+}
+
+@Book{krantz2012handbook,
+  title     = {Handbook of Complex Variables},
+  publisher = {Birkhauser Boston},
+  year      = {2012},
+  author    = {Krantz, S.G.},
+  isbn      = {9781461215882},
+  lccn      = {99020156},
+  url       = {https://books.google.com/books?id=6SDoBwAAQBAJ},
+}
+
+@Book{MonsterMoonshine,
+  title     = {Moonshine Beyond the Monster: The Bridge Connecting Algebra, Modular Forms, and Physics},
+  publisher = {Cambridge University Press},
+  year      = {2006},
+  author    = {Terry Gannon},
+  address   = {Cambridge Monographs on Mathematical Physics},
+  owner     = {sc},
+  timestamp = {2014.10.14},
+}
+
+@InCollection{jongen1988continuous,
+  author    = {Jongen, H Th and Jonker, Peter and Twilt, Frank},
+  title     = {The continuous, desingularized Newton method for meromorphic functions},
+  booktitle = {Newton's Method and Dynamical Systems},
+  publisher = {Springer},
+  year      = {1988},
+  pages     = {81--121},
+}
+
+@Book{lawrence1972catalog,
+  title     = {A Catalog of Special Plane Curves},
+  publisher = {Dover Publications},
+  year      = {1972},
+  author    = {Lawrence, J.D. and Lawrence, D.L.},
+  series    = {Dover Books on Mathematics},
+  isbn      = {9780486602882},
+  lccn      = {72080280},
+  url       = {https://books.google.com/books?id=F0DvAAAAMAAJ},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
 
 {shapiro1993composition,

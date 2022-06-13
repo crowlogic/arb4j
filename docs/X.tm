@@ -666,7 +666,7 @@
       <wide|z|\<dot\>><around*|(|t|)>=-<wide|<wide|f|\<dot\>><around*|(|z<around*|(|t|)>|)>|\<bar\>>f<around*|(|z<around*|(|t|)>|)>
     </equation>
 
-    <cite|jongen1988continuous>.
+    <cite|jongen1988continuous>
   </definition>
 
   The function of interest here, <math|S<rsub|f>>, is meromorphic and
@@ -987,7 +987,7 @@
   </theorem>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|5>
+    <\bib-list|10>
       <bibitem*|1><label|bib-edcd>D.S.<nbsp>Alexander,
       F.<nbsp>Iavernaro<localize|, and >A.<nbsp>Rosa.
       <newblock><with|font-shape|italic|Early Days in Complex Dynamics: A
@@ -995,22 +995,48 @@
       <newblock>History of mathematics. American Mathematical Society,
       2012.<newblock>
 
-      <bibitem*|2><label|bib-Milnor2006>John Milnor.
+      <bibitem*|2><label|bib-MonsterMoonshine>Terry Gannon.
+      <newblock><with|font-shape|italic|Moonshine Beyond the Monster: The
+      Bridge Connecting Algebra, Modular Forms, and Physics>.
+      <newblock>Cambridge University Press, Cambridge Monographs on
+      Mathematical Physics, 2006.<newblock>
+
+      <bibitem*|3><label|bib-jongen1988continuous>H<nbsp>Th Jongen, Peter
+      Jonker<localize|, and >Frank Twilt. <newblock>The continuous,
+      desingularized newton method for meromorphic functions.
+      <newblock><localize|In ><with|font-shape|italic|Newton's Method and
+      Dynamical Systems>, <localize|pages >81\U121. Springer, 1988.<newblock>
+
+      <bibitem*|4><label|bib-Koopman1931>B.<nbsp>O.<nbsp>Koopman.
+      <newblock>Hamiltonian systems and transformation in hilbert space.
+      <newblock><with|font-shape|italic|Proceedings of the National Academy
+      of Sciences>, 17(5):315\U318, 1931.<newblock>
+
+      <bibitem*|5><label|bib-krantz2012handbook>S.G.<nbsp>Krantz.
+      <newblock><with|font-shape|italic|Handbook of Complex Variables>.
+      <newblock>Birkhauser Boston, 2012.<newblock>
+
+      <bibitem*|6><label|bib-lawrence1972catalog>J.D.<nbsp>Lawrence<localize|
+      and >D.L.<nbsp>Lawrence. <newblock><with|font-shape|italic|A Catalog of
+      Special Plane Curves>. <newblock>Dover Books on Mathematics. Dover
+      Publications, 1972.<newblock>
+
+      <bibitem*|7><label|bib-Milnor2006>John Milnor.
       <newblock><with|font-shape|italic|Dynamics in One Complex Variable>.
       <newblock>Annals of Mathematics Studies 160. Princeton University
       Press, 2nd<localize| edition>, 2006.<newblock>
 
-      <bibitem*|3><label|bib-Shapiro1998CompositionOA>J.<nbsp>H.<nbsp>Shapiro.
+      <bibitem*|8><label|bib-Shapiro1998CompositionOA>J.<nbsp>H.<nbsp>Shapiro.
       <newblock>Composition operators and schroder's functional equation.
       <newblock><with|font-shape|italic|Contemporary Mathematics>,
       (213):213\U228, 1998.<newblock>
 
-      <bibitem*|4><label|bib-shapiro1993composition>J.H.<nbsp>Shapiro.
+      <bibitem*|9><label|bib-shapiro1993composition>J.H.<nbsp>Shapiro.
       <newblock><with|font-shape|italic|Composition Operators and Classical
       Function Theory>. <newblock>Universitext (Berlin. Print).
       Springer-Verlag, 1993.<newblock>
 
-      <bibitem*|5><label|bib-ds2>Yakov Sinai.
+      <bibitem*|10><label|bib-ds2>Yakov Sinai.
       <newblock><with|font-shape|italic|Dynamical Systems II: Ergodic Theory
       with Applications to Dynamical Systems and Statistical Mechanics>.
       <newblock>Springer-Verlag, 1989.<newblock>
@@ -1097,17 +1123,22 @@
     <associate|auto-41|<tuple|5|9>>
     <associate|auto-42|<tuple|5.1|9>>
     <associate|auto-43|<tuple|52|9>>
-    <associate|auto-44|<tuple|5|9>>
+    <associate|auto-44|<tuple|10|9>>
     <associate|auto-5|<tuple|Koenig's function|2>>
     <associate|auto-6|<tuple|1.2|2>>
     <associate|auto-7|<tuple|2|2>>
     <associate|auto-8|<tuple|1.3|3>>
     <associate|auto-9|<tuple|transfer operator|3>>
-    <associate|bib-Milnor2006|<tuple|2|9>>
-    <associate|bib-Shapiro1998CompositionOA|<tuple|3|9>>
-    <associate|bib-ds2|<tuple|5|9>>
+    <associate|bib-Koopman1931|<tuple|4|9>>
+    <associate|bib-Milnor2006|<tuple|7|9>>
+    <associate|bib-MonsterMoonshine|<tuple|2|9>>
+    <associate|bib-Shapiro1998CompositionOA|<tuple|8|9>>
+    <associate|bib-ds2|<tuple|10|9>>
     <associate|bib-edcd|<tuple|1|9>>
-    <associate|bib-shapiro1993composition|<tuple|4|9>>
+    <associate|bib-jongen1988continuous|<tuple|3|9>>
+    <associate|bib-krantz2012handbook|<tuple|5|9>>
+    <associate|bib-lawrence1972catalog|<tuple|6|9>>
+    <associate|bib-shapiro1993composition|<tuple|9|9>>
     <associate|dl|<tuple|15|6>>
     <associate|ds|<tuple|30|5>>
     <associate|footnote-1|<tuple|1|3>>
