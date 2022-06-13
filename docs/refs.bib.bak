@@ -126,13 +126,6 @@
   url       = {https://books.google.com/books?id=LPcpAQAAMAAJ},
 }
 
-@Book{ds2,
-  title     = {Dynamical Systems II: Ergodic Theory with Applications to Dynamical Systems and Statistical Mechanics},
-  publisher = {Springer-Verlag},
-  year      = {1989},
-  author    = {Yakov Sinai},
-}
-
 @Comment{jabref-meta: databaseType:bibtex;}
 
 {shapiro1993composition,

@@ -241,7 +241,8 @@
 
     for some neighborhood <math|\<varepsilon\><rsub|0>> of the origin
     0<math|>.<cite|Milnor2006> <cite-detail|Milnor2006|Theorem
-    8.2><cite-detail|Shapiro1998CompositionOA|2. Koenig's Theorem, Part I.>
+    8.2><cite-detail|Shapiro1998CompositionOA|2. Koenig's Theorem, Part
+    I.><cite-detail|edcd|1.7>
   </theorem>
 
   <\lemma>
@@ -985,67 +986,31 @@
     <cite-detail|MonsterMoonshine|Theorem 1.3.2>
   </theorem>
 
-  <\bibliography|bib|tm-plain|references>
-    <\bib-list|12>
-      <bibitem*|1><label|bib-coxeter1989introduction>H.S.M.<nbsp>Coxeter<localize|
-      and >H.S.M.<nbsp>Coxeter. <newblock><with|font-shape|italic|Introduction
-      to Geometry>. <newblock>Wiley Classics Library. Wiley, 1989.<newblock>
+  <\bibliography|bib|tm-plain|refs>
+    <\bib-list|5>
+      <bibitem*|1><label|bib-edcd>D.S.<nbsp>Alexander,
+      F.<nbsp>Iavernaro<localize|, and >A.<nbsp>Rosa.
+      <newblock><with|font-shape|italic|Early Days in Complex Dynamics: A
+      History of Complex Dynamics in One Variable During 1906-1942>.
+      <newblock>History of mathematics. American Mathematical Society,
+      2012.<newblock>
 
-      <bibitem*|2><label|bib-jongen1988continuous>H<nbsp>Th Jongen, Peter
-      Jonker<localize|, and >Frank Twilt. <newblock>The continuous,
-      desingularized newton method for meromorphic functions.
-      <newblock><localize|In ><with|font-shape|italic|Newton's Method and
-      Dynamical Systems>, <localize|pages >81\U121. Springer, 1988.<newblock>
-
-      <bibitem*|3><label|bib-klein2018riemann>Felix Klein.
-      <newblock><with|font-shape|italic|On Riemann's theory of algebraic
-      functions and their integrals>. <newblock>Cambridge: Macmillan and
-      Bowes, 1893.<newblock>
-
-      <bibitem*|4><label|bib-krantz2012handbook>S.G.<nbsp>Krantz.
-      <newblock><with|font-shape|italic|Handbook of Complex Variables>.
-      <newblock>Birkhauser Boston, 2012.<newblock>
-
-      <bibitem*|5><label|bib-lawrence1972catalog>J.D.<nbsp>Lawrence,
-      D.L.<nbsp>Lawrence<localize|, and >Dover Publications.
-      <newblock><with|font-shape|italic|A Catalog of Special Plane Curves>.
-      <newblock>Dover Books on Mathematics. Dover Publications,
-      1972.<newblock>
-
-      <bibitem*|6><label|bib-Milnor2006>John Milnor.
+      <bibitem*|2><label|bib-Milnor2006>John Milnor.
       <newblock><with|font-shape|italic|Dynamics in One Complex Variable>.
       <newblock>Annals of Mathematics Studies 160. Princeton University
       Press, 2nd<localize| edition>, 2006.<newblock>
 
-      <bibitem*|7><label|bib-Peitgen1988GlobalAO>Heinz-Otto Peitgen, Michael
-      Prufer<localize|, and >Klaus Schmitt. <newblock>Global aspects of the
-      continuous and discrete newton method: a case study.
-      <newblock><with|font-shape|italic|Acta Applicandae Mathematicae>,
-      13:123\U202, 1988.<newblock>
-
-      <bibitem*|8><label|bib-riemann>Berhhard Riemann. <newblock>Ueber die
-      anzahl der primzahlen unter einer gegebenen grösse.
-      <newblock><with|font-shape|italic|Monatsberichte der Berliner
-      Akademie>, R1:145, 1859.<newblock>
-
-      <bibitem*|9><label|bib-constantPhaseRH>Wolfgang<nbsp>P Schleich, Iva
-      Bezd¥ková, Moochan<nbsp>B Kim, Paul<nbsp>C Abbott, Helmut Maier,
-      Hugh<nbsp>L Montgomery<localize|, and >John<nbsp>W Neuberger.
-      <newblock>Equivalent formulations of the riemann hypothesis based on
-      lines of constant phase. <newblock><with|font-shape|italic|Physica
-      Scripta>, 93(6):65201, 2018.<newblock>
-
-      <bibitem*|10><label|bib-Shapiro1998CompositionOA>J.<nbsp>H.<nbsp>Shapiro.
+      <bibitem*|3><label|bib-Shapiro1998CompositionOA>J.<nbsp>H.<nbsp>Shapiro.
       <newblock>Composition operators and schroder's functional equation.
       <newblock><with|font-shape|italic|Contemporary Mathematics>,
       (213):213\U228, 1998.<newblock>
 
-      <bibitem*|11><label|bib-shapiro1993composition>J.H.<nbsp>Shapiro.
+      <bibitem*|4><label|bib-shapiro1993composition>J.H.<nbsp>Shapiro.
       <newblock><with|font-shape|italic|Composition Operators and Classical
       Function Theory>. <newblock>Universitext (Berlin. Print).
       Springer-Verlag, 1993.<newblock>
 
-      <bibitem*|12><label|bib-ds2>Yakov Sinai.
+      <bibitem*|5><label|bib-ds2>Yakov Sinai.
       <newblock><with|font-shape|italic|Dynamical Systems II: Ergodic Theory
       with Applications to Dynamical Systems and Statistical Mechanics>.
       <newblock>Springer-Verlag, 1989.<newblock>
@@ -1112,8 +1077,8 @@
     functions)|6>>
     <associate|auto-24|<tuple|2.3.4|6>>
     <associate|auto-25|<tuple|2.3.5|6>>
-    <associate|auto-26|<tuple|3|7>>
-    <associate|auto-27|<tuple|Riemann zeta function|7>>
+    <associate|auto-26|<tuple|3|6>>
+    <associate|auto-27|<tuple|Riemann zeta function|6>>
     <associate|auto-28|<tuple|3.1|7>>
     <associate|auto-29|<tuple|critical line|7>>
     <associate|auto-3|<tuple|1.1|2>>
@@ -1123,33 +1088,26 @@
     <associate|auto-33|<tuple|3.2.1|7>>
     <associate|auto-34|<tuple|Riemann-Siegel (var)theta function|7>>
     <associate|auto-35|<tuple|Hardy Z function|7>>
-    <associate|auto-36|<tuple|3|8>>
+    <associate|auto-36|<tuple|3|7>>
     <associate|auto-37|<tuple|3.3|8>>
     <associate|auto-38|<tuple|3.3.1|8>>
     <associate|auto-39|<tuple|3.3.2|8>>
     <associate|auto-4|<tuple|1.1.1|2>>
-    <associate|auto-40|<tuple|4|9>>
+    <associate|auto-40|<tuple|4|8>>
     <associate|auto-41|<tuple|5|9>>
     <associate|auto-42|<tuple|5.1|9>>
     <associate|auto-43|<tuple|52|9>>
-    <associate|auto-44|<tuple|12|9>>
+    <associate|auto-44|<tuple|5|9>>
     <associate|auto-5|<tuple|Koenig's function|2>>
     <associate|auto-6|<tuple|1.2|2>>
     <associate|auto-7|<tuple|2|2>>
     <associate|auto-8|<tuple|1.3|3>>
     <associate|auto-9|<tuple|transfer operator|3>>
-    <associate|bib-Milnor2006|<tuple|6|9>>
-    <associate|bib-Peitgen1988GlobalAO|<tuple|7|9>>
-    <associate|bib-Shapiro1998CompositionOA|<tuple|10|9>>
-    <associate|bib-constantPhaseRH|<tuple|9|9>>
-    <associate|bib-coxeter1989introduction|<tuple|1|9>>
-    <associate|bib-ds2|<tuple|12|9>>
-    <associate|bib-jongen1988continuous|<tuple|2|9>>
-    <associate|bib-klein2018riemann|<tuple|3|9>>
-    <associate|bib-krantz2012handbook|<tuple|4|9>>
-    <associate|bib-lawrence1972catalog|<tuple|5|9>>
-    <associate|bib-riemann|<tuple|8|9>>
-    <associate|bib-shapiro1993composition|<tuple|11|9>>
+    <associate|bib-Milnor2006|<tuple|2|9>>
+    <associate|bib-Shapiro1998CompositionOA|<tuple|3|9>>
+    <associate|bib-ds2|<tuple|5|9>>
+    <associate|bib-edcd|<tuple|1|9>>
+    <associate|bib-shapiro1993composition|<tuple|4|9>>
     <associate|dl|<tuple|15|6>>
     <associate|ds|<tuple|30|5>>
     <associate|footnote-1|<tuple|1|3>>
@@ -1169,6 +1127,8 @@
       Milnor2006
 
       Shapiro1998CompositionOA
+
+      edcd
 
       shapiro1993composition
 
