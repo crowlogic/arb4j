@@ -89,16 +89,4 @@ public class Lemniscate implements
     return w;
   }
 
-  public void integrate(Complex a,
-                        Complex b,
-                        int relativeAccuracyBitsGoal,
-                        Magnitude acceptableUncertainty,
-                        Object object,
-                        int k,
-                        Complex integral)
-  {
-    // TODO Auto-generated method stub
-
-  }
-
 }

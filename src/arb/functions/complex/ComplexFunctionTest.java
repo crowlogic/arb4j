@@ -1,6 +1,7 @@
 package arb.functions.complex;
 
 import static arb.Constants.*;
+import static java.lang.Math.max;
 import static java.lang.System.out;
 
 import arb.*;
@@ -33,39 +34,21 @@ public class ComplexFunctionTest extends
     }
   }
 
-  public static void testIntegration() throws LackOfConvergenceException
-  {
-    Lemniscate f    = new Lemniscate();
-    Complex    zero = new Complex();
-    try ( Complex complexPi = new Complex(); Complex integral = new Complex(); Magnitude absErr = new Magnitude();)
-    {
-
-      absErr.set(Math.pow(2, -128));
-      complexPi.set(Constants.π, Constants.ZERO.getImag());
-      // new ComplexFun
-      f.integrate(zero, complexPi, 64, absErr, null, 128, integral);
-      // integral.printPrecision = true;
-      System.out.println("integral is " + integral);
-    }
-
-  }
-
   /**
    * test integration 2
    * 
    * @throws NotDifferentiableException
    * @throws LackOfConvergenceException
    */
-  public static void testIntegration2() throws NotDifferentiableException, LackOfConvergenceException
+  public static void testIntegration() throws NotDifferentiableException, LackOfConvergenceException
   {
     int                  prec     = 256;
 
     Lemniscate           f        = new Lemniscate();
     LemniscateDerivative df       = new LemniscateDerivative();
-    Complex              tmp      = new Complex();
     ComplexFunction      absdf    = (t, order, p, w) ->
                                   {
-                                    
+
                                     assert t.getImag().getMid().isZero();
                                     df.evaluate(t.getReal(), order, prec, w).abs(prec, w.getReal());
                                     w.getImag().zero();
@@ -75,14 +58,17 @@ public class ComplexFunctionTest extends
     Complex              integral = new Complex();
     Magnitude            absErr   = new Magnitude();
 
-    Complex                 a        = new Complex().init();
-    Complex                 b        = new Complex().init();
+    Complex              a        = new Complex();
+    Complex              b        = new Complex();
     b.getReal().pi(prec).div(2, prec, b.getReal());
-    out.println( "a=" + a );
-    out.println( "b=" + b );
+    out.println("a=" + a);
+    out.println("b=" + b);
     IntegrationOptions opts             = new IntegrationOptions();
     // opts.verbose = true;
-    Complex               abslprimeonehalf = absdf.evaluate(new Complex().set(HALF,new Real().zero() ), 1, 128, new Complex());
+    Complex            abslprimeonehalf = absdf.evaluate(new Complex().set(HALF, new Real().zero()),
+                                                         1,
+                                                         128,
+                                                         new Complex());
     System.out.format("|l'(1/2)|=%s\n", abslprimeonehalf);
     opts.useHeap = false;
     absdf.integrate(a, b, 128, absErr, opts, prec, integral);
