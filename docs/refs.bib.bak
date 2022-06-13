@@ -173,6 +173,59 @@
   url       = {https://books.google.com/books?id=F0DvAAAAMAAJ},
 }
 
+@Article{Koopman1931,
+  author  = {B. O. Koopman},
+  title   = {Hamiltonian Systems and Transformation in Hilbert Space},
+  journal = {Proceedings of the National Academy of Sciences},
+  year    = {1931},
+  volume  = {17},
+  number  = {5},
+  pages   = {315-318},
+  doi     = {10.1073/pnas.17.5.315},
+  eprint  = {https://www.pnas.org/doi/pdf/10.1073/pnas.17.5.315},
+  url     = {https://www.pnas.org/doi/abs/10.1073/pnas.17.5.315},
+}
+
+@Book{klein2018riemann,
+  title     = {On Riemann's theory of algebraic functions and their integrals},
+  publisher = {Cambridge: Macmillan and Bowes},
+  year      = {1893},
+  author    = {Klein, Felix},
+}
+
+@Book{coxeter1989introduction,
+  title     = {Introduction to Geometry},
+  publisher = {Wiley},
+  year      = {1989},
+  author    = {Coxeter, H.S.M. and Coxeter, H.S.M.},
+  series    = {Wiley Classics Library},
+  isbn      = {9780471504580},
+  lccn      = {72093909},
+  url       = {https://books.google.com/books?id=c0ld-crynsIC},
+}
+
+@Article{riemann,
+  author    = {Riemann, Berhhard},
+  title     = {Ueber die Anzahl der Primzahlen unter einer gegebenen Grosse (On the number of prime numbers below a given size)},
+  journal   = {Monatsberichte der Berliner Akademie},
+  year      = {1859},
+  volume    = {R1},
+  pages     = {145},
+  owner     = {crow},
+  timestamp = {2008.09.03},
+}
+
+@Article{constantPhaseRH,
+  author    = {Schleich, Wolfgang P and Bezd{\v{e}}kov{\'a}, Iva and Kim, Moochan B and Abbott, Paul C and Maier, Helmut and Montgomery, Hugh L and Neuberger, John W},
+  title     = {Equivalent formulations of the Riemann hypothesis based on lines of constant phase},
+  journal   = {Physica Scripta},
+  year      = {2018},
+  volume    = {93},
+  number    = {6},
+  pages     = {065201},
+  publisher = {IOP Publishing},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}
 
 {shapiro1993composition,
