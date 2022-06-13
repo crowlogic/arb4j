@@ -9,6 +9,8 @@
 package arb;
 
 public class arbJNI {
+  public final static native void arb_add_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
+  public final static native void arb_sub_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void mag_div(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void mag_log(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
   public final static native void mag_inv(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);

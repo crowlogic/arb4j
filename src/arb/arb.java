@@ -9,6 +9,14 @@
 package arb;
 
 public class arb {
+  public static void arb_add_ui(Real z, Real x, long y, int prec) {
+    arbJNI.arb_add_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
+  }
+
+  public static void arb_sub_ui(Real z, Real x, long y, int prec) {
+    arbJNI.arb_sub_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
+  }
+
   public static void mag_div(Magnitude z, Magnitude x, Magnitude y) {
     arbJNI.mag_div(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }

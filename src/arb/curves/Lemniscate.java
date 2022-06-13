@@ -12,51 +12,46 @@ package arb.curves;
 import static java.lang.Math.max;
 
 import arb.*;
-import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 
 /**
- * A parameterization of the Lemniscate of Bernoulli with parameter 2 where t
- * ranges over -Pi to Pi
+ * A parameterization of the Lemniscate of Bernoulli with parameter 2*scale
+ * where t ranges over -Pi to Pi
  * 
- * The curvature and tangential angle of the lemniscate are kappa(t) =
- * (3sqrt(2)cost)/(asqrt(3-cos(2t))) and phi(t) = 3tan^(-1)(sint). TODO: add
- * scale factor
+ * The curvature and tangential angle of the lemniscate are Κappa(t) =
+ * (3*sqrt(2)*cos(t))/(scale*sqrt(3-cos(2t))) and φ(t) = 3*tan^(-1)(sin(t)).
  * 
- * @author crow
+ * The integral over the absolute value of this{@link #differential()} is equal
+ * to the Lemniscate constant,
  */
 public class Lemniscate implements
                         PlaneCurve
 {
 
+  @SuppressWarnings("resource")
   public Lemniscate()
   {
-    this(Constants.ONE);
+    this(new Real().set("2", 256));
   }
-  
+
   public Lemniscate(Real scale)
   {
+    assert scale != null;
     this.scale = scale;
   }
 
-  private static final Complex imaginaryUnit   = Constants.IMAGINARY_UNIT;
+  private static final Complex imaginaryUnit = Constants.IMAGINARY_UNIT;
 
-  private static final Complex ONE = Constants.COMPLEX_ONE;
+  private static final Complex ONE           = Constants.COMPLEX_ONE;
 
-  @Override
-  public Function<Real, Complex> differential()
-  {
-    return new LemniscateDerivative();
-  }
-  
-  Real scale;
+  Real                         scale;
 
   /**
    * @param z
    * @param int
    * @param order
    * @param w
-   * @return 2*cos(t))/(1-i*sin(t)
+   * @return scale*cos(t))/(1-i*sin(t)
    */
   @Override
   public Complex evaluate(Real z, int order, int prec, Complex w)
@@ -67,13 +62,14 @@ public class Lemniscate implements
 
     try ( Real a = new Real(); Complex divisor = new Complex(); Complex numerator = new Complex())
     {
-      z.cos(prec, a).mul(2, prec, numerator.getReal());
+      Real realNumer = numerator.getReal();
+      z.cos(prec, a).mul(scale, prec, realNumer);
       z.sin(prec, a).mul(imaginaryUnit, prec, divisor);
       divisor.neg(divisor).add(1, prec, divisor);
       numerator.div(divisor, prec, w);
       if (order >= 2)
       {
-        a.sub(imaginaryUnit, prec, numerator).mul(2, prec, numerator);
+        a.sub(imaginaryUnit, prec, numerator).mul(scale, prec, numerator);
         a.add(imaginaryUnit, prec, divisor).pow(2, prec, divisor);
         numerator.div(divisor, prec, w.get(1));
       }
@@ -81,6 +77,7 @@ public class Lemniscate implements
     }
     return w;
   }
+
   @Override
   public int getInverseBranchCount()
   {

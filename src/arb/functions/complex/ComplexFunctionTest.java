@@ -1,12 +1,10 @@
 package arb.functions.complex;
 
 import static arb.Constants.*;
-import static java.lang.Math.max;
 import static java.lang.System.out;
 
 import arb.*;
 import arb.curves.Lemniscate;
-import arb.curves.LemniscateDerivative;
 import arb.exceptions.LackOfConvergenceException;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.Function;
@@ -42,24 +40,24 @@ public class ComplexFunctionTest extends
    */
   public static void testIntegration() throws NotDifferentiableException, LackOfConvergenceException
   {
-    int                  prec     = 256;
+    int                     prec     = 256;
 
-    Lemniscate           f        = new Lemniscate();
-    LemniscateDerivative df       = new LemniscateDerivative();
-    ComplexFunction      absdf    = (t, order, p, w) ->
-                                  {
+    Lemniscate              f        = new Lemniscate(new Real().set("2", 128));
+    Function<Real, Complex> df       = f.differential();
+    ComplexFunction         absdf    = (t, order, p, w) ->
+                                     {
 
-                                    assert t.getImag().getMid().isZero();
-                                    df.evaluate(t.getReal(), order, prec, w).abs(prec, w.getReal());
-                                    w.getImag().zero();
-                                    return w;
-                                  };
+                                       assert t.getImag().getMid().isZero();
+                                       df.evaluate(t.getReal(), order, prec, w).abs(prec, w.getReal());
+                                       w.getImag().zero();
+                                       return w;
+                                     };
 
-    Complex              integral = new Complex();
-    Magnitude            absErr   = new Magnitude();
+    Complex                 integral = new Complex();
+    Magnitude               absErr   = new Magnitude();
 
-    Complex              a        = new Complex();
-    Complex              b        = new Complex();
+    Complex                 a        = new Complex();
+    Complex                 b        = new Complex();
     b.getReal().pi(prec).div(2, prec, b.getReal());
     out.println("a=" + a);
     out.println("b=" + b);
