@@ -3,6 +3,26 @@ package arb.operators;
 import arb.Complex;
 import arb.functions.complex.ComplexFunction;
 
+/**
+ * <h1>Dynamical interpretation of eigenvalues of the transfer operator)</h1>
+ * 
+ * 1. All eigenvalues of the transfer operator have modulus less than or equal
+ * to one.<br>
+ * 2. The invariant probability densities of T are the non-negative h ∈ L1(μ)
+ * s.t. ̂ T h = h and ∫ hdμ = 1. We call hdμ an acip(<b>absolutely continuous
+ * invariant probability measure</b>). <br>
+ * 3. If ̂ T has an acip and 1 is a simple eigenvalue of ̂ T , then the acip is
+ * ergodic. “Simple” means that dim{g ∈ L1 : ̂ T g = g} = 1. <br>
+ * 4. If ̂ T has an acip and 1 is simple, and all other eigenvalues of ̂ T have
+ * modulus strictly smaller than one, then the acip is weak mixing. <br>
+ * 5. If T is probability preserving and mixing, then ̂ T has exactly one
+ * eigenvalue on the unit circle, equal to one, and this eigenvalue is simple.
+ * (Be careful not to confuse L1-eigenvalues with L2-eigenvalues.)
+ * 
+ * @see https://www.weizmann.ac.il/math/sarigo/sites/math.sarigo/files/uploads/transferoperatorcourse-bonn.pdf
+ * 
+ * @param <F>
+ */
 public class TransferOperator<F extends ComplexFunction> implements
                              LinearOperator,
                              ComplexFunction
