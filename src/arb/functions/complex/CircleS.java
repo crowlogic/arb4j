@@ -1,6 +1,7 @@
 package arb.functions.complex;
 
-import arb.Constants;
+import static arb.Constants.*;
+
 import arb.Real;
 import arb.curves.ComplexCircle;
 import arb.operators.ComplexCompositionOperator;
@@ -17,15 +18,15 @@ public class CircleS extends
   public CircleS()
   {
     this(new SFunction(),
-         new ComplexCircle(Constants.ZERO,
-                           Constants.ONE));
+         new ComplexCircle(ZERO,
+                           ONE));
   }
 
-  public CircleS( Real a )
+  public CircleS(Real a)
   {
     this(new SFunction(),
-         new ComplexCircle(Constants.ZERO,
-                           Constants.ONE));
+         new ComplexCircle(ZERO,
+                           ONE));
   }
 
   public CircleS(SFunction f, ComplexCircle g)
@@ -33,6 +34,5 @@ public class CircleS extends
     super(f,
           g);
   }
-
 
 }

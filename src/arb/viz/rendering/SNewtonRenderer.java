@@ -6,28 +6,30 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.io.IOException;
 
-import arb.functions.complex.dynamics.SNewtonMap;
+import arb.functions.complex.SFunction;
+import arb.functions.complex.dynamics.*;
+import arb.operators.ComplexCompositionOperator;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
 public class SNewtonRenderer extends
-                      ComplexFunctionRenderer<SNewtonMap>
+                             ComplexFunctionRenderer<NewtonStep<SFunction>>
 {
 
   public SNewtonRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
   {
     super(screen,
           domain,
-          new SNewtonMap());
+          new NewtonStep<>(new SFunction()));
   }
 
   public SNewtonRenderer() throws NoninvertibleTransformException
   {
-    this(new Dimension(2000,
-                       1000),
-         new Rectangle2D.Double(-Math.PI * 2,
+    this(new Dimension(2500,
+                       1300),
+         new Rectangle2D.Double(-3,
                                 -1.5 * 2,
-                                Math.PI * 2 * 2,
+                                6,
                                 3 * 2));
   }
 
@@ -37,7 +39,7 @@ public class SNewtonRenderer extends
 
     SNewtonRenderer renderer = new SNewtonRenderer();
 
-    renderer.color_mode  = 4;
+    renderer.color_mode  = 3;
     renderer.displayMode = Part.Blend;
     renderer.render();
     renderer.saveToFile("SNewton.png");
