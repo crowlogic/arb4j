@@ -6,26 +6,25 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.io.IOException;
 
-import arb.functions.complex.SFunction;
-import arb.functions.complex.dynamics.*;
-import arb.operators.ComplexCompositionOperator;
+import arb.functions.complex.TFunction;
+import arb.functions.complex.dynamics.NewtonStep;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
-public class SNewtonRenderer extends
-                             ComplexFunctionRenderer<NewtonStep<SFunction>>
+public class TNewtonRenderer extends
+                             ComplexFunctionRenderer<NewtonStep<TFunction>>
 {
 
-  public SNewtonRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
+  public TNewtonRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
   {
     super(screen,
           domain,
-          new NewtonStep<>(new SFunction()));
+          new NewtonStep<>(new TFunction()));
   }
 
-  public SNewtonRenderer() throws NoninvertibleTransformException
-  { 
-    
+  public TNewtonRenderer() throws NoninvertibleTransformException
+  {
+
     this(new Dimension(2500,
                        1300),
          new Rectangle2D.Double(-3,
@@ -38,12 +37,12 @@ public class SNewtonRenderer extends
   public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
   {
 
-    SNewtonRenderer renderer = new SNewtonRenderer();
+    TNewtonRenderer renderer = new TNewtonRenderer();
 
     renderer.color_mode  = 1;
     renderer.displayMode = Part.Phase;
     renderer.render();
-    renderer.saveToFile("SNewton.png");
+    renderer.saveToFile("TNewton.png");
 
   }
 
