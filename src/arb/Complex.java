@@ -321,6 +321,7 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
  
  public Complex mul( Complex s, int prec, Complex r )
  {
+      assert s != this;
  
    arb.acb_mul(r, this, s, prec);
    return r;
