@@ -40,7 +40,7 @@ public class SNewtonRenderer extends
 
     SNewtonRenderer renderer = new SNewtonRenderer();
 
-    renderer.color_mode  = 0;
+    renderer.color_mode  = 2;
     renderer.displayMode = Part.Blend;
     renderer.render();
     renderer.saveToFile("SNewton.png");

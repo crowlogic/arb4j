@@ -3,15 +3,14 @@ package arb.functions.complex;
 import arb.Complex;
 
 /**
- * lemniscate sine: z=int(1/(1-t^4),t=0..sl(z))
+ * Lemniscate Sine: sl(z)=∫(1/(1-t^4),t=0..z) <br>
  * 
  * sl(x) = q(1,x)/q(3,x) <br>
  * where <br>
  * q(k,x) = theta[k](G*x;exp(-x))<br>
  * and <br>
- * G = M(1,sqrt(2) = Gauss's constant <br>
- * where M(a,b) is the arithmetic-geometric-mean of 1 and the square root of 2
- * 
+ * G = M(1,√2) = Gauss's constant <br>
+ * where M(a,b) is the arithmetic-geometric-mean of 1 and the √2
  * 
  * @param t
  * @param prec
