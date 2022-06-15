@@ -6,7 +6,7 @@ import arb.functions.complex.ComplexFunction;
 
 /**
  * <code>-f(t)/f'(t)</code>
-
+ * 
  */
 public class NewtonStep<F extends ComplexFunction> implements
                        ComplexFunction
@@ -32,7 +32,7 @@ public class NewtonStep<F extends ComplexFunction> implements
                                    w.getImag().zero();
                                    w.getReal().one().div(f.multiplicityOfRoot(t), prec);
                                  }
-                                 w.sub(1, prec, w);
+                                 w.neg(w).add(1, prec, w);
                                  return w;
                                }
                              };
