@@ -12,7 +12,8 @@ import static arb.arb.*;
  * line, where the points corresponding to integers are equally spaced. Any real
  * number can be determined by a possibly infinite decimal representation. The
  * real line is part of the complex plane, and the real numbers are part of the
- * complex numbers.
+ * complex numbers.<br>
+ * 
  */
 %}
 

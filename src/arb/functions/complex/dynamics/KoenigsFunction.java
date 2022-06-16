@@ -36,6 +36,12 @@ public class KoenigsFunction implements
     this.f = f;
   }
 
+  /**
+   * This function should evaluate the {@link IteratedFunction#} then set the
+   * error ball to the error made by truncating the approximation at some finite
+   * order
+   * 
+   */
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {

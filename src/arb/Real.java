@@ -12,30 +12,46 @@ import java.util.concurrent.TimeUnit;
 
 import static arb.Constants.*;
 import static arb.arb.*;
+
 /**
  * Real numbers are points on an infinitely long line known as the real number
  * line, where the points corresponding to integers are equally spaced. Any real
  * number can be determined by a possibly infinite decimal representation. The
  * real line is part of the complex plane, and the real numbers are part of the
- * complex numbers.
+ * complex numbers.<br>
+ * If the precision is increased and the inputs either are exact or are computed
+ * with increased accuracy as well, the output should converge proportionally,
+ * absent any bugs. The general intended strategy for using ball arithmetic is
+ * to add a few guard bits, and then repeat the calculation as necessary with an
+ * exponentially increasing number of guard bits (Ziv’s strategy) until the
+ * result is exact enough for one’s purposes (typically the first attempt will
+ * be successful).
  */
 
-public class Real implements Comparable<Real>, Field {
-  private transient long swigCPtr;
+public class Real implements
+                  Comparable<Real>,
+                  Field
+{
+  private transient long      swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public Real(long cPtr, boolean cMemoryOwn) {
+  public Real(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(Real obj) {
+  public static long getCPtr(Real obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arbJNI.delete_Real(swigCPtr);
       }
@@ -43,7 +59,10 @@ public class Real implements Comparable<Real>, Field {
     }
   }
 
- static { System.loadLibrary( "arblib" ); }
+  static
+  {
+    System.loadLibrary("arblib");
+  }
 
   @Override
   public Real abs(int prec, Real w)
@@ -51,12 +70,12 @@ public class Real implements Comparable<Real>, Field {
     arb.arb_abs(w, this);
     return w;
   }
-  
+
   public Complex div(Complex divisor, int prec, Complex w)
   {
     try ( Complex multiplier = new Complex())
     {
-      return mul( divisor.inv(prec, multiplier), prec, w );
+      return mul(divisor.inv(prec, multiplier), prec, w);
     }
   }
 
@@ -67,16 +86,15 @@ public class Real implements Comparable<Real>, Field {
       return add(a.neg(subtrahend), prec, res);
     }
   }
-  
+
   public Complex add(Complex a, int prec, Complex res)
   {
     arb.acb_add_arb(res, a, this, prec);
     return res;
   }
 
-  
   /**
-   * Adds the magnitude to the radius of this 
+   * Adds the magnitude to the radius of this
    * 
    * @param err
    * @return
@@ -86,7 +104,7 @@ public class Real implements Comparable<Real>, Field {
     arb.arb_add_error_mag(this, err);
     return this;
   }
-  
+
   public Real clear()
   {
     arb_clear(this);
@@ -101,16 +119,17 @@ public class Real implements Comparable<Real>, Field {
   public int compareTo(Real o)
   {
     int cmp = getMid().compareTo(o.getMid());
-    if ( cmp == 0 )
+    if (cmp == 0)
     {
       cmp = getRad().compareTo(o.getRad());
     }
     return cmp;
   }
-  
+
   public Real set(int i)
   {
-    arb.arb_set_si(this, i);;
+    arb.arb_set_si(this, i);
+    ;
     return this;
   }
 
@@ -120,14 +139,14 @@ public class Real implements Comparable<Real>, Field {
   @Override
   public boolean equals(Object obj)
   {
-    if ( !(obj instanceof Real))
+    if (!(obj instanceof Real))
     {
       return false;
     }
-    Real that = (Real)obj;
+    Real that = (Real) obj;
     return arb.arb_equal(this, that) != 0;
   }
-  
+
   /**
    * 
    * @param prec
@@ -139,7 +158,7 @@ public class Real implements Comparable<Real>, Field {
     arb.arb_get_interval_arf(interval.getA(), interval.getB(), this, prec);
     return interval;
   }
-  
+
   /**
    * @return {@link arb#arb_allocated_bytes(Real)}
    */
@@ -147,93 +166,93 @@ public class Real implements Comparable<Real>, Field {
   {
     return arb.arb_allocated_bytes(this);
   }
-  
+
   public Real negate(Real res)
   {
     arb.arb_neg(res, this);
     return this;
   }
-  
-  public Real sqrt( int prec )  
+
+  public Real sqrt(int prec)
   {
-    return sqrt(prec,this);
+    return sqrt(prec, this);
   }
-  
-  public Real sqrt( int prec, Real res )
+
+  public Real sqrt(int prec, Real res)
   {
     arb.arb_sqrt(res, this, prec);
     return this;
   }
-  
- public boolean isFinite()
- {
-   return arb.arb_is_finite(this) != 0;
- }
 
- public Real floor( int prec, Real res )
- {
-   arb.arb_floor( res, this, prec );
-   return res;
- }
+  public boolean isFinite()
+  {
+    return arb.arb_is_finite(this) != 0;
+  }
 
- public Real ceil( int prec, Real res )
- {
-   arb.arb_ceil( res, this, prec );
-   return res;
- }
- 
+  public Real floor(int prec, Real res)
+  {
+    arb.arb_floor(res, this, prec);
+    return res;
+  }
+
+  public Real ceil(int prec, Real res)
+  {
+    arb.arb_ceil(res, this, prec);
+    return res;
+  }
+
   public Real frac(int prec, Real res)
   {
-    try (Real f = new Real() )
+    try ( Real f = new Real())
     {
       return sub(floor(prec, f), prec, res);
     }
   }
- 
-   public int dim = 1;
-  
+
+  public int dim = 1;
+
   public int size()
   {
     return dim;
   }
- 
-  public static Real newVector( int dim )
+
+  public static Real newVector(int dim)
   {
-    Real array = arb._arb_vec_init(dim);    
+    Real array = arb._arb_vec_init(dim);
     array.dim = dim;
     return array;
   }
- 
-  public Real cos(int prec, Real result )
+
+  public Real cos(int prec, Real result)
   {
-    arb.arb_cos(result, this, prec );
+    arb.arb_cos(result, this, prec);
     return result;
   }
 
-  public Real sin(int prec, Real result )
+  public Real sin(int prec, Real result)
   {
-    arb.arb_sin(result, this, prec );
+    arb.arb_sin(result, this, prec);
     return result;
   }
- 
+
   public Real mul(int i, int prec, Real res)
   {
     arb.arb_mul_si(res, this, i, prec);
     return this;
   }
- 
+
   public Complex mul(Complex exp, int prec, Complex r)
   {
-    arb.acb_mul_arb(r, exp, this, prec );
+    arb.acb_mul_arb(r, exp, this, prec);
     return r;
   }
-  
-  public Real tanh(Real result, int prec )
-  {   
-    arb.arb_tanh(result, this, prec );
+
+  public Real tanh(Real result, int prec)
+  {
+    arb.arb_tanh(result, this, prec);
     return result;
   }
-  
+
   public Real swap(Real u)
   {
     arb.arb_swap(this, u);
@@ -242,19 +261,19 @@ public class Real implements Comparable<Real>, Field {
 
   public Real div(Real exp, int prec, Real r)
   {
-    arb.arb_div(r, this, exp, prec );
+    arb.arb_div(r, this, exp, prec);
     return r;
   }
-  
-  public Real nthHardyZero(int n, int prec) 
-  {    
+
+  public Real nthHardyZero(int n, int prec)
+  {
     arb.nthHardyZero(this, n, prec);
     return this;
   }
-  
+
   public int relAccuracyBits()
   {
-   return arb.arb_rel_accuracy_bits(this);
+    return arb.arb_rel_accuracy_bits(this);
   }
 
   public Real sub(Real real, int prec, Real res)
@@ -263,84 +282,86 @@ public class Real implements Comparable<Real>, Field {
     return res;
   }
 
-  public Real setIntervalMagnitude( Magnitude a, Magnitude b, int prec )
+  public Real setIntervalMagnitude(Magnitude a, Magnitude b, int prec)
   {
     arb.arb_set_interval_mag(this, a, b, prec);
     return this;
   }
-  
+
   public static final int BYTES = 48;
-  
-  public Real pi( int prec )
+
+  public Real pi(int prec)
   {
     arb.arb_const_pi(this, prec);
     return this;
   }
-  
+
   public Real init()
   {
     arb.arb_init(this);
     return this;
   }
-  
+
   @Override
-  public void close() 
-  { 
+  public void close()
+  {
     clear();
   }
 
   public Real add(Real d, int prec, Real res)
   {
-    arb.arb_add(res, this, d, prec );
+    arb.arb_add(res, this, d, prec);
     return res;
   }
-  
-  public Real get( int index )
+
+  public Real get(int index)
   {
-    return new Real(swigCPtr + index * Real.BYTES, false);  
+    return new Real(swigCPtr + index * Real.BYTES,
+                    false);
   }
-   
+
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();
     sb.append("[");
     for (int i = 0; i < dim; i++)
     {
-      if ( i > 0 )
+      if (i > 0)
       {
         sb.append(",\n ");
       }
-      sb.append(String.format("%010.010f", get(i).doubleValue() ) );
+      sb.append(String.format("%010.010f", get(i).doubleValue()));
     }
     sb.append("]");
     return sb.toString();
   }
-  
-  public String toString( )
+
+  public String toString()
   {
     return toString(46);
   }
-  
+
   public int digits()
   {
-    try ( Magnitude d = new Magnitude()  )
+    try ( Magnitude d = new Magnitude())
     {
       getRad().inv(d);
       d.log(d);
       d.div(Constants.log10mag, d);
       return (int) d.doubleValue() + 2;
     }
-  }  
-  public String toString( int digits )
+  }
+
+  public String toString(int digits)
   {
-    if ( dim == 1 )
+    if (dim == 1)
     {
       // TODO: get the number of digits to from the exponent of the radius
       String prefix = getMid().toString(digits);
       // dont print the last digit since its not gauranteed to be correct
-      prefix = prefix.substring(0, prefix.length() - 1 );
-      return prefix + " +/- " + getRad().toString(5);    
-      //return arb.arb_get_str(this, digits, 1);
+      prefix = prefix.substring(0, prefix.length() - 1);
+      return prefix + " +/- " + getRad().toString(5);
+      // return arb.arb_get_str(this, digits, 1);
     }
     else
     {
@@ -348,31 +369,29 @@ public class Real implements Comparable<Real>, Field {
       sb.append("[");
       for (int i = 0; i < dim; i++)
       {
-        if ( i > 0 )
+        if (i > 0)
         {
           sb.append(",\n ");
         }
-      sb.append(String.format("%s",
-                              get(i)));
-    }
-    sb.append("]");
-    return sb.toString();
+        sb.append(String.format("%s", get(i)));
+      }
+      sb.append("]");
+      return sb.toString();
     }
   }
-      
-  public Real abs(Real res)  
+
+  public Real abs(Real res)
   {
     arb.arb_abs(this, res);
     return res;
   }
 
-        
   public Real set(Real real)
   {
-     arb.arb_set( this, real );
-     return this;    
+    arb.arb_set(this, real);
+    return this;
   }
-  
+
   public int bits()
   {
     return arb.arb_bits(this);
@@ -383,13 +402,13 @@ public class Real implements Comparable<Real>, Field {
     arb.arb_pos_inf(this);
     return this;
   }
-  
+
   public Real negInf()
   {
     arb.arb_neg_inf(this);
     return this;
   }
-  
+
   public Real zero()
   {
     arb.arb_zero(this);
@@ -401,43 +420,41 @@ public class Real implements Comparable<Real>, Field {
     arb.arb_one(this);
     return this;
   }
-         
+
   public Real set(String string, int prec)
   {
     arb.arb_set_str(this, string, prec);
     return this;
   }
-  
-  
-  public boolean overlaps( Real interval )
+
+  public boolean overlaps(Real interval)
   {
     return arb.arb_overlaps(this, interval) != 0;
   }
-  
-  public boolean contains( Real interval )
+
+  public boolean contains(Real interval)
   {
     return arb.arb_contains(this, interval) != 0;
   }
-  
-  
-  public Real assign( String string, int prec )
+
+  public Real assign(String string, int prec)
   {
     arb.arb_set_str(this, string, prec);
     return this;
   }
-  
+
   public Real set(double d)
   {
     arb.arb_set_d(this, d);
     return this;
   }
-  
+
   public Real div(int k, int prec, Real res)
   {
     arb.arb_div_si(res, this, k, prec);
     return res;
   }
-  
+
   public double doubleValue()
   {
     return getMid().doubleValue();
@@ -447,7 +464,7 @@ public class Real implements Comparable<Real>, Field {
   {
     return getMid().doubleValue(rm);
   }
-  
+
   /**
    * @return arb#arb_sgn_nonzero(Real)
    */
@@ -465,19 +482,19 @@ public class Real implements Comparable<Real>, Field {
   {
     return arb.arb_is_negative(this) != 0;
   }
-  
+
   public boolean containsZero()
   {
     return arb.arb_contains_zero(this) != 0;
   }
-  
+
   public Real set(FloatInterval interval, int prec)
   {
     Float a = interval.getA();
     Float b = interval.getB();
 
     /* [-inf, -inf] or [+inf, +inf] */
-    if (a.isInfinite() && a.equals(b) )
+    if (a.isInfinite() && a.equals(b))
     {
       setMid(a);
       getRad().zero();
@@ -485,7 +502,7 @@ public class Real implements Comparable<Real>, Field {
     }
 
     /* any nan -> [nan +/- inf] */
-    if (a.isNotANumber() || b.isNotANumber() )
+    if (a.isNotANumber() || b.isNotANumber())
     {
       arb_indeterminate(this);
       return this;
@@ -528,9 +545,9 @@ public class Real implements Comparable<Real>, Field {
    * 
    * @param prec
    * @param r
-   * @return the multiplicative inverse of r 
+   * @return the multiplicative inverse of r
    */
-  public Real inv( int prec, Real r )
+  public Real inv(int prec, Real r)
   {
     arb.arb_inv(r, this, prec);
     return r;
@@ -547,20 +564,20 @@ public class Real implements Comparable<Real>, Field {
   {
     return cos(prec, r).inv(prec, r);
   }
-  
+
   public Real pow(int i, int prec, Real r)
   {
     assert i >= 0;
     arb.arb_pow_ui(r, this, i, prec);
     return r;
   }
-  
+
   public Real tan(int prec, Real r)
   {
     arb.arb_tan(r, this, prec);
     return r;
   }
-  
+
   public boolean isZero()
   {
     return arb_is_zero(this) != 0;
@@ -568,53 +585,63 @@ public class Real implements Comparable<Real>, Field {
 
   /**
    * Calls this{@link #setMid(Float)}
-   * @param u value to set the midpoint of this real number ball to 
+   * 
+   * @param u value to set the midpoint of this real number ball to
    * @return this
    */
   public Real set(Float u)
   {
     setMid(u);
     return this;
-  }  
-  
+  }
+
   /**
-   * Calls this{@link #div(int, int, Real)} with the result=this. Useful for constructors
+   * Calls this{@link #div(int, int, Real)} with the result=this. Useful for
+   * constructors
+   * 
    * @param i
    * @param precision
    * @return this
    */
   public Real div(int i, int precision)
   {
-    return div(i,precision,this);
+    return div(i, precision, this);
   }
-  
+
   public Real mul(Real x, int prec, Real result)
   {
-    arb.arb_mul(result, this, x, prec );
+    arb.arb_mul(result, this, x, prec);
     return result;
   }
-    
 
-  public void setMid(Float value) {
+  public void setMid(Float value)
+  {
     arbJNI.Real_mid_set(swigCPtr, this, Float.getCPtr(value), value);
   }
 
-  public Float getMid() {
+  public Float getMid()
+  {
     long cPtr = arbJNI.Real_mid_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Float(cPtr, false);
+    return (cPtr == 0) ? null : new Float(cPtr,
+                                          false);
   }
 
-  public void setRad(Magnitude value) {
+  public void setRad(Magnitude value)
+  {
     arbJNI.Real_rad_set(swigCPtr, this, Magnitude.getCPtr(value), value);
   }
 
-  public Magnitude getRad() {
+  public Magnitude getRad()
+  {
     long cPtr = arbJNI.Real_rad_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Magnitude(cPtr, false);
+    return (cPtr == 0) ? null : new Magnitude(cPtr,
+                                              false);
   }
 
-  public Real() {
-    this(arbJNI.new_Real(), true);
+  public Real()
+  {
+    this(arbJNI.new_Real(),
+         true);
   }
 
 }
