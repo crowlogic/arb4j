@@ -20,7 +20,7 @@ public class SNewtonKoenigsFunctionRenderer extends
     super(screen,
           domain,
           new IteratedFunction(new SNewtonMap(),
-                               2,
+                               3,
                                true));
   }
 
@@ -30,9 +30,9 @@ public class SNewtonKoenigsFunctionRenderer extends
     this(new Dimension(2500,
                        1300),
          new Rectangle2D.Double(-2.3,
-                                -1.5,
+                                -1.7,
                                 4.6,
-                                3));
+                                3.4));
   }
 
   @SuppressWarnings("resource")
@@ -42,7 +42,7 @@ public class SNewtonKoenigsFunctionRenderer extends
     SNewtonKoenigsFunctionRenderer renderer = new SNewtonKoenigsFunctionRenderer();
 
     renderer.color_mode  = 5;
-    renderer.displayMode = Part.Blend;
+    renderer.displayMode = Part.Phase;
     renderer.render();
     renderer.saveToFile("SNewtonKoenigs.png");
 
