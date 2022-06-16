@@ -1,6 +1,8 @@
 package arb.functions.complex.dynamics;
 
-import arb.Complex;
+import static java.lang.System.out;
+
+import arb.*;
 import arb.functions.complex.ComplexFunction;
 
 /**
@@ -12,25 +14,31 @@ import arb.functions.complex.ComplexFunction;
 public class IteratedFunction<F extends ComplexFunction> implements
                              ComplexFunction
 {
-  private F   f;
-  private int n;
+  private F    f;
+  private int  n;
+  private Real λ;
 
-  public IteratedFunction(F f, int n)
+  public IteratedFunction(F f, int n, boolean normalized)
   {
     this.f = f;
     this.n = n;
+    this.λ = normalized ? f.differential().abs().evaluate(Constants.ZERO, 1, 256, new Real()) : null;
   }
 
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
-    try ( Complex x = new Complex(); Complex y = new Complex())
+    assert order <= 1 : "TODO: implement order>1";
+    try ( Complex x = Complex.newVector(order); Complex y = Complex.newVector(order))
     {
       x.set(z);
       for (int i = 0; i < n; i++)
       {
         f.evaluate(x, order, prec, y);
-        System.out.println("f[" + x + "]=" + y);
+        if (λ != null)
+        {
+          y.div(λ, prec, y);
+        }
         x.set(y);
       }
       return w.set(x);

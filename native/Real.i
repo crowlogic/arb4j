@@ -524,6 +524,7 @@ import static arb.arb.*;
   
   public Real pow(int i, int prec, Real r)
   {
+    assert i >= 0;  
     arb.arb_pow_ui(r, this, i, prec);
     return r;
   }
