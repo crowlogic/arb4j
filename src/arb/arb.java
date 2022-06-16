@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static long bufferAddress(java.lang.Object buffer) {
+    return arbJNI.bufferAddress(buffer);
+  }
+
   public static void acb_tan(Complex r, Complex z, int prec) {
     arbJNI.acb_tan(Complex.getCPtr(r), r, Complex.getCPtr(z), z, prec);
   }

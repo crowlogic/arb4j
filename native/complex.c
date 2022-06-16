@@ -197,6 +197,12 @@ typedef struct {
 #define size_t long unsigned int
 #endif
 
+extern JNIEnv* env;
+
+jlong bufferAddress(jobject buffer)
+{
+  return (jlong)(*env)->GetDirectBufferAddress(env,buffer);
+}
 
 int
 f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec)

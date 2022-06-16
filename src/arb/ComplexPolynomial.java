@@ -42,7 +42,10 @@ public class ComplexPolynomial implements AutoCloseable,ComplexFunction {
    */
   public ComplexPolynomial clear()
   {
-    arb.acb_poly_clear(this);
+    if ( swigCMemOwn )
+    {
+      arb.acb_poly_clear(this);
+    }
     return this;
   }
 

@@ -1,3 +1,5 @@
+jlong bufferAddress(jobject buffer);
+
 void acb_tan(acb_t r, const acb_t z, slong prec);
 
 void acb_sec(acb_t y, const acb_t x, slong prec);

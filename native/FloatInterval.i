@@ -41,8 +41,11 @@ import java.util.ArrayList;
  
   public FloatInterval clear()
   {
-    getA().clear();
-    getB().clear();
+    if ( swigCMemOwn )
+    {
+      getA().clear();
+      getB().clear();
+    }
     return this;
   }
   

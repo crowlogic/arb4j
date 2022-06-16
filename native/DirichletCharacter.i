@@ -12,7 +12,10 @@
    */
   public DirichletCharacter clear()
   {
-    arb.dirichlet_char_clear(this);
+    if ( swigCMemOwn )
+    {
+      arb.dirichlet_char_clear(this);
+    }
     return this;
   }
 

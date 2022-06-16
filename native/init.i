@@ -32,6 +32,8 @@ void deallocate(void *ptr)
   free(ptr);
 }
 
+jlong bufferAddress(jobject buffer);
+
 jint JNI_OnLoad (JavaVM *vm, void *reserved)
 {
   if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)

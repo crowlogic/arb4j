@@ -106,7 +106,10 @@ public class Float implements AutoCloseable,Comparable<Float> {
   
   public Float clear()
   {
-    arb.arf_clear(this);
+    if ( swigCMemOwn )
+    {
+	    arb.arf_clear(this);
+    }
     return this;
   } 
   

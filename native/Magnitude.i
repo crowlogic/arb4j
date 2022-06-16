@@ -67,7 +67,10 @@ import static arb.Constants.*;
 
   public Magnitude clear()
   {
-    arb.mag_clear(this);
+    if ( swigCMemOwn )
+    {
+      arb.mag_clear(this);
+    }
     return this;
   }
   

@@ -45,7 +45,10 @@ public class MultiPrecFloat implements AutoCloseable {
 
   public MultiPrecFloat clear()
   {
-    arb.mpfr_clear(this);
+    if ( swigCMemOwn )
+    {
+      arb.mpfr_clear(this);
+    }
     return this;
   }
 

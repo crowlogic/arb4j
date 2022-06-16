@@ -9,6 +9,7 @@
 package arb;
 
 public class arbJNI {
+  public final static native long bufferAddress(java.lang.Object jarg1);
   public final static native void acb_tan(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_sec(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_add_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);

@@ -13,7 +13,10 @@ import static arb.Constants.*;
    */
   public RealMatrix clear()
   {
-    arb.arb_mat_clear(this);
+    if ( swigCMemOwn )
+    {      
+      arb.arb_mat_clear(this);
+    }
     return this;
   }
 

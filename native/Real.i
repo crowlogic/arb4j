@@ -64,7 +64,10 @@ import static arb.arb.*;
   
   public Real clear()
   {
-    arb_clear(this);
+    if ( swigCMemOwn )
+    {
+      arb_clear(this);
+    }
     return this;
   }
 

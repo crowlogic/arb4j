@@ -40,7 +40,10 @@ public class RealMatrix implements AutoCloseable {
    */
   public RealMatrix clear()
   {
-    arb.arb_mat_clear(this);
+    if ( swigCMemOwn )
+    {      
+      arb.arb_mat_clear(this);
+    }
     return this;
   }
 

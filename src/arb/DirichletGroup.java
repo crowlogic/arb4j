@@ -39,7 +39,10 @@ public class DirichletGroup implements AutoCloseable {
    */
   public DirichletGroup clear()
   {
-    arb.dirichlet_group_clear(this);
+    if ( swigCMemOwn )
+    {
+      arb.dirichlet_group_clear(this);
+    }
     return this;
   }
 

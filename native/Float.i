@@ -83,7 +83,10 @@ import static arb.Constants.*;
   
   public Float clear()
   {
-    arb.arf_clear(this);
+    if ( swigCMemOwn )
+    {
+	    arb.arf_clear(this);
+    }
     return this;
   } 
   

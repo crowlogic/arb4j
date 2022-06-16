@@ -279,6 +279,8 @@ void deallocate(void *ptr)
   free(ptr);
 }
 
+jlong bufferAddress(jobject buffer);
+
 jint JNI_OnLoad (JavaVM *vm, void *reserved)
 {
   if ((*vm)->GetEnv(vm, (void**) &env, JNI_VERSION_10) != JNI_OK)
@@ -292,6 +294,20 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
 
   return JNI_VERSION_10;
 }
+
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_bufferAddress(JNIEnv *jenv, jclass jcls, jobject jarg1) {
+  jlong jresult = 0 ;
+  jobject arg1 ;
+  jlong result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = jarg1; 
+  result = bufferAddress(arg1);
+  jresult = result; 
+  return jresult;
+}
+
 
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1tan(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   acb_struct *arg1 ;

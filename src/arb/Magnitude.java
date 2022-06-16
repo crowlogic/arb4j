@@ -93,7 +93,10 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
 
   public Magnitude clear()
   {
-    arb.mag_clear(this);
+    if ( swigCMemOwn )
+    {
+      arb.mag_clear(this);
+    }
     return this;
   }
   

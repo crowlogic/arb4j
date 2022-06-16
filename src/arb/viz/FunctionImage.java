@@ -23,21 +23,29 @@ public class FunctionImage
 {
   ByteBuffer buffer;
 
+  Complex    points[][];
+
   public static void main(String args[])
   {
     FunctionImage cache = new FunctionImage(2500,
-                                            1250,
-                                            128);
+                                            1250);
 
   }
 
-  public FunctionImage(int numXpoints, int numYpoints, int precision)
+  public FunctionImage(int numXpoints, int numYpoints)
   {
-    Complex c = new Complex();
-    c.getReal().set("324324.32423423423423423", precision);
-    c.getImag().set("29834930824890324.7892304980324980329084", precision);
-    int allocatedBytes        = c.getAllocatedBytes();
-    int totalBytesToAllocated = allocatedBytes * numXpoints * numYpoints;
-    System.out.println("Total Allocated for FunctionImage: " + totalBytesToAllocated);
+    int totalBytesToAllocate = Complex.BYTES * numXpoints * numYpoints;
+    buffer = ByteBuffer.allocateDirect(totalBytesToAllocate);
+    points = new Complex[numXpoints][numYpoints];
+    long bufferAddress = arb.arb.bufferAddress(buffer);
+    for (int i = 0; i < numXpoints; i++)
+    {
+      for (int j = 0; j < numYpoints; j++)
+      {
+        points[i][j] = new Complex(bufferAddress,
+                                   false);
+      }
+    }
   }
+
 }

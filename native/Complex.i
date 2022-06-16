@@ -541,8 +541,11 @@ import static arb.arb.*;
  
   public Complex clear()
   {
- 	arb._acb_vec_clear(this, dim);
- 	return this;    
+    if (swigCMemOwn)
+    {
+      arb._acb_vec_clear(this, dim);
+    }
+    return this;
   }
     
    /**

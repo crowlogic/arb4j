@@ -40,7 +40,11 @@ public class ComplexMatrix implements AutoCloseable {
    */
   public ComplexMatrix clear()
   {
-    arb.acb_mat_clear(this);
+    if ( swigCMemOwn )
+    {
+      arb.acb_mat_clear(this);
+    }
+    
     return this;
   }
 
