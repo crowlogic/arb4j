@@ -15,12 +15,16 @@ import arb.Complex;
  * required is enough to hold {@link Complex#BYTES} without any internal-to-arb
  * allocations necessary and thus simplifies things.. so we go with the
  * rule-of-thumb that 128 bits is enough for calculating RGB intensities
- * anyway.. if someone wants to fork the project and change them then have a
- * ball :)
+ * anyway..
  * 
  */
 public class FunctionImage
 {
+  static
+  {
+    System.loadLibrary("arblib");
+  }
+  
   ByteBuffer buffer;
 
   Complex    points[][];
@@ -42,8 +46,9 @@ public class FunctionImage
     {
       for (int j = 0; j < numYpoints; j++)
       {
-        points[i][j] = new Complex(bufferAddress,
-                                   false);
+        points[i][j]   = new Complex(bufferAddress,
+                                     false);
+        bufferAddress += Complex.BYTES;
       }
     }
   }
