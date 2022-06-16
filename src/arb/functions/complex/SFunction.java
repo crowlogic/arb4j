@@ -19,7 +19,7 @@ public class SFunction implements
   @Override
   public int multiplicityOfRoot(Complex z)
   {
-    if ( z.isZero() )
+    if ( z.isZero() || ( !z.isFinite() ) )
     {
       return 2;
     }

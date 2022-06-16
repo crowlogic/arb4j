@@ -29,14 +29,27 @@ public class NewtonMap<F extends ComplexFunction> implements
                                  Complex numerator   = s.mul(s.get(2), prec, w);
                                  Complex denominator = s.get(1).pow(2, prec, s.get(0));
                                  numerator.div(denominator, prec, w);
-                                 if (!w.isFinite())
-                                 {
-                                   w.getImag().zero();
-                                   w.getReal().one().div(f.multiplicityOfRoot(t), prec);
-                                 }
+                                 evaluatePole(t, prec, w, true);
                                  return w;
                                }
                              };
+
+  protected void evaluatePole(Complex t, int prec, Complex w, boolean b)
+  {
+    assert t != w;
+    if (!w.isFinite())
+    {
+      w.getImag().zero();
+      if (b)
+      {
+        w.getReal().one().div(f.multiplicityOfRoot(t), prec);
+      }
+      else
+      {
+        w.getReal().zero();
+      }
+    }
+  }
 
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
@@ -48,7 +61,9 @@ public class NewtonMap<F extends ComplexFunction> implements
     {
       if (order >= 1)
       {
-        z.sub(f.evaluate(z, 2, prec, y).div(y.get(1), prec, w), prec, w);
+        f.evaluate(z, 2, prec, y).div(y.get(1), prec, w);
+        evaluatePole(z, prec, w, false);
+        z.sub(w, prec, w);
       }
       if (order >= 2)
       {
