@@ -20,15 +20,15 @@ public class SNewtonKoenigsFunctionRenderer extends
     super(screen,
           domain,
           new IteratedFunction(new SNewtonMap(),
-                               3,
+                               4,
                                true));
   }
 
   public SNewtonKoenigsFunctionRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension(2500,
-                       1300),
+    this(new Dimension(2500*2,
+                       1300*2),
          new Rectangle2D.Double(-2.3,
                                 -1.7,
                                 4.6,

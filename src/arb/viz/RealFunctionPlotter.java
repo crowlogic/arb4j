@@ -11,6 +11,7 @@ import arb.FloatInterval;
 import arb.Real;
 import arb.functions.real.RealFunction;
 import hageldave.jplotter.canvas.BlankCanvas;
+import hageldave.jplotter.color.DefaultColorScheme;
 import hageldave.jplotter.renderables.Lines;
 import hageldave.jplotter.renderables.Lines.SegmentDetails;
 import hageldave.jplotter.renderables.Triangles;
@@ -88,7 +89,7 @@ public class RealFunctionPlotter extends
 //    ArrayList<SegmentDetails> segmentsB = lineB.addLineStrip(seriesB_x, seriesB_y);
 //    segmentsB.forEach(seg -> seg.setColor(Color.BLUE));
     // use a coordinate system for display
-    CoordSysRenderer coordsys = new CoordSysRenderer();
+    CoordSysRenderer coordsys = new CoordSysRenderer(DefaultColorScheme.DARK.get());
     coordsys.setCoordinateView(left.doubleValue(), top.doubleValue(), right.doubleValue(), bottom.doubleValue());
     // set the content renderer of the coordinate system
     // we want to render Lines objects
@@ -101,7 +102,7 @@ public class RealFunctionPlotter extends
     setRenderer(coordsys);
     asComponent().setPreferredSize(new Dimension(700,
                                                  400));
-    asComponent().setBackground(Color.WHITE);
+    asComponent().setBackground(new Color(DefaultColorScheme.DARK.get().getColorBackground()));
 
     // (optional) area under curve with transparency
     Triangles areaA = new Triangles();
