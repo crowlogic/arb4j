@@ -105,8 +105,11 @@ public class PointValueCache implements
           arb.arb_trim(point0.getReal(), point0.getReal());
           arb.arb_trim(point0.getImag(), point0.getImag());
           zeroPointBits = point0.bits();
-          throw new RuntimeException("point still has too many bits after trimming, " + zeroPointBits + " at " + x
-                        + "," + y);
+          if (zeroPointBits > 256)
+          {
+            throw new RuntimeException("point still has too many bits after trimming, " + zeroPointBits + " at " + x
+                          + "," + y);
+          }
         }
       }
     }
