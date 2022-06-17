@@ -15,6 +15,14 @@ public class ComplexCompositionOperator<F extends ComplexFunction, G extends Com
                                        AutoCloseable
 {
 
+  @Override
+  public ComplexFunction adjoint()
+  {
+    // FIXME: does this need to be split into a left-adjoint and a right-adjoint that takes an argument?
+    return new TransferOperator<ComplexFunction>(f);
+  }
+  
+
   public ComplexCompositionOperator(F f, G g)
   {
     this.f = f;

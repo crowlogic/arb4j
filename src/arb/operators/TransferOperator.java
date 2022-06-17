@@ -27,6 +27,16 @@ public class TransferOperator<F extends ComplexFunction> implements
                              LinearOperator,
                              ComplexFunction
 {
+
+  @Override
+  public ComplexFunction adjoint()
+  {
+    // FIXME: does this need to be split into a left-adjoint and a right-adjoint
+    // that takes an argument? probably a rhetorical question
+    return new ComplexCompositionOperator(f,
+                                          null);
+  }
+
   public TransferOperator(F f)
   {
     this.f = f;

@@ -3,6 +3,8 @@
 <style|<tuple|article|alt-colors|framed-theorems>>
 
 <\body>
+  \ 
+
   <doc-data|<doc-title|<with|font-base-size|8|Complex Dynamics of The
   Hyperbolic Tangent of The Logarithm Of One Minus The Square of The Hardy Z
   Function>>|<doc-author|>|<doc-author|<\author-data|<author-name|Stephen
@@ -260,8 +262,8 @@
   <math|S<around*|(|U|)>> where <math|U> is the unit disc.
   <cite-detail|shapiro1993composition|Ch.6 Compactness and Eigenfunctions>
 
-  <\big-figure|<image|SUnitDisc.eps|205.6pt|351.2pt||>>
-    <math|S<around*|[|e<rsup|i \<theta\>>|]>>
+  <\big-figure|<image|SUnitDisc.eps|100pt|175pt||>>
+    <math|S<around*|[|e<rsup|i \<theta\>>|]>\<forall\>\<theta\>\<in\><around*|[|-\<pi\>,\<pi\>|]>>
   </big-figure>
 
   and\ 
