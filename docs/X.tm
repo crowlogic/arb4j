@@ -29,19 +29,19 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-4>>
 
-    <with|par-left|1tab|1.2<space|2spc>Eigenfunctions and Compactness
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1tab|1.2<space|2spc>Eigenfunctions of Compact Composition
+    Operators <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6>>
 
-    <with|par-left|1tab|1.3<space|2spc>The Frobenius-Perron Transfer Operator
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|2tab|1.2.1<space|2spc>The Frobenius-Perron Transfer
+    Operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
 
-    <with|par-left|2tab|1.3.1<space|2spc>Spectra of the Newton Map of the S
+    <with|par-left|2tab|1.2.2<space|2spc>Spectra of the Newton Map of the S
     Transform and Composition Operators <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-11>>
 
-    <with|par-left|1tab|1.4<space|2spc>Physical Interpretations of the
+    <with|par-left|1tab|1.3<space|2spc>Physical Interpretations of the
     Cauchy-Riemann Equations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-12>>
 
@@ -254,7 +254,7 @@
     \<sigma\>
   </lemma>
 
-  <subsection|Eigenfunctions and Compactness>
+  <subsection|Eigenfunctions of Compact Composition Operators>
 
   Compactness of a composition operator can be determined by findout out how
   it maps the unit disc, and somehow the action of the operator is conjugate
@@ -273,7 +273,7 @@
     \<theta\>>|)>|\|><rsup|2>\<mathd\>\<theta\>=<frac|14 \<pi\>|5>=2.8 \<pi\>
   </equation>
 
-  <subsection|The Frobenius-Perron Transfer Operator>
+  <subsubsection|The Frobenius-Perron Transfer Operator>
 
   <\definition>
     The (Frobenius-Perron) <verbatim|transfer operator><index|transfer
@@ -324,6 +324,8 @@
     <tabular|<tformat|<table|<row|<cell|>|<cell|\<cal-K\>
     N<rsub|X><around*|(|t|)>>|<cell|=<rsub|>\<cal-K\>N<rsub|C<rsub|Z><around*|(|S|)>><around*|(|t|)>>>|<row|<cell|>|<cell|>|<cell|=<big|sum><rsub|s\<in\>N<rsup|-1><rsub|X><around*|(|t|)>><frac|N<rsub|X><around*|(|s|)>|<around*|\||<wide|N|\<dot\>><rsub|X><around*|(|s|)>|\|>>>>>>>
   </equation>
+
+  Spectra stuff here: <cite|cowen1994spectra>
 
   <subsection|Physical Interpretations of the Cauchy-Riemann Equations>
 
@@ -991,7 +993,7 @@
   </theorem>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|15>
+    <\bib-list|16>
       <bibitem*|1><label|bib-edcd>D.S.<nbsp>Alexander,
       F.<nbsp>Iavernaro<localize|, and >A.<nbsp>Rosa.
       <newblock><with|font-shape|italic|Early Days in Complex Dynamics: A
@@ -999,75 +1001,80 @@
       <newblock>History of mathematics. American Mathematical Society,
       2012.<newblock>
 
-      <bibitem*|2><label|bib-coxeter1989introduction>H.S.M.<nbsp>Coxeter<localize|
+      <bibitem*|2><label|bib-cowen1994spectra>Carl<nbsp>C Cowen<localize| and
+      >Barbara<nbsp>D MacCluer. <newblock>Spectra of some composition
+      operators. <newblock><with|font-shape|italic|Journal of Functional
+      Analysis>, 125(1):223\U251, 1994.<newblock>
+
+      <bibitem*|3><label|bib-coxeter1989introduction>H.S.M.<nbsp>Coxeter<localize|
       and >H.S.M.<nbsp>Coxeter. <newblock><with|font-shape|italic|Introduction
       to Geometry>. <newblock>Wiley Classics Library. Wiley, 1989.<newblock>
 
-      <bibitem*|3><label|bib-MonsterMoonshine>Terry Gannon.
+      <bibitem*|4><label|bib-MonsterMoonshine>Terry Gannon.
       <newblock><with|font-shape|italic|Moonshine Beyond the Monster: The
       Bridge Connecting Algebra, Modular Forms, and Physics>.
       <newblock>Cambridge University Press, Cambridge Monographs on
       Mathematical Physics, 2006.<newblock>
 
-      <bibitem*|4><label|bib-jongen1988continuous>H<nbsp>Th Jongen, Peter
+      <bibitem*|5><label|bib-jongen1988continuous>H<nbsp>Th Jongen, Peter
       Jonker<localize|, and >Frank Twilt. <newblock>The continuous,
       desingularized newton method for meromorphic functions.
       <newblock><localize|In ><with|font-shape|italic|Newton's Method and
       Dynamical Systems>, <localize|pages >81\U121. Springer, 1988.<newblock>
 
-      <bibitem*|5><label|bib-klein2018riemann>Felix Klein.
+      <bibitem*|6><label|bib-klein2018riemann>Felix Klein.
       <newblock><with|font-shape|italic|On Riemann's theory of algebraic
       functions and their integrals>. <newblock>Cambridge: Macmillan and
       Bowes, 1893.<newblock>
 
-      <bibitem*|6><label|bib-Koopman1931>B.<nbsp>O.<nbsp>Koopman.
+      <bibitem*|7><label|bib-Koopman1931>B.<nbsp>O.<nbsp>Koopman.
       <newblock>Hamiltonian systems and transformation in hilbert space.
       <newblock><with|font-shape|italic|Proceedings of the National Academy
       of Sciences>, 17(5):315\U318, 1931.<newblock>
 
-      <bibitem*|7><label|bib-krantz2012handbook>S.G.<nbsp>Krantz.
+      <bibitem*|8><label|bib-krantz2012handbook>S.G.<nbsp>Krantz.
       <newblock><with|font-shape|italic|Handbook of Complex Variables>.
       <newblock>Birkhauser Boston, 2012.<newblock>
 
-      <bibitem*|8><label|bib-lawrence1972catalog>J.D.<nbsp>Lawrence<localize|
+      <bibitem*|9><label|bib-lawrence1972catalog>J.D.<nbsp>Lawrence<localize|
       and >D.L.<nbsp>Lawrence. <newblock><with|font-shape|italic|A Catalog of
       Special Plane Curves>. <newblock>Dover Books on Mathematics. Dover
       Publications, 1972.<newblock>
 
-      <bibitem*|9><label|bib-Milnor2006>John Milnor.
+      <bibitem*|10><label|bib-Milnor2006>John Milnor.
       <newblock><with|font-shape|italic|Dynamics in One Complex Variable>.
       <newblock>Annals of Mathematics Studies 160. Princeton University
       Press, 2nd<localize| edition>, 2006.<newblock>
 
-      <bibitem*|10><label|bib-Peitgen1988GlobalAO>Heinz-Otto Peitgen, Michael
+      <bibitem*|11><label|bib-Peitgen1988GlobalAO>Heinz-Otto Peitgen, Michael
       Prufer<localize|, and >Klaus Schmitt. <newblock>Global aspects of the
       continuous and discrete newton method: a case study.
       <newblock><with|font-shape|italic|Acta Applicandae Mathematicae>,
       13:123\U202, 1988.<newblock>
 
-      <bibitem*|11><label|bib-riemann>Berhhard Riemann. <newblock>Ueber die
+      <bibitem*|12><label|bib-riemann>Berhhard Riemann. <newblock>Ueber die
       anzahl der primzahlen unter einer gegebenen grosse (on the number of
       prime numbers below a given size). <newblock><with|font-shape|italic|Monatsberichte
       der Berliner Akademie>, R1:145, 1859.<newblock>
 
-      <bibitem*|12><label|bib-constantPhaseRH>Wolfgang<nbsp>P Schleich, Iva
+      <bibitem*|13><label|bib-constantPhaseRH>Wolfgang<nbsp>P Schleich, Iva
       Bezd¥ková, Moochan<nbsp>B Kim, Paul<nbsp>C Abbott, Helmut Maier,
       Hugh<nbsp>L Montgomery<localize|, and >John<nbsp>W Neuberger.
       <newblock>Equivalent formulations of the riemann hypothesis based on
       lines of constant phase. <newblock><with|font-shape|italic|Physica
       Scripta>, 93(6):65201, 2018.<newblock>
 
-      <bibitem*|13><label|bib-Shapiro1998CompositionOA>J.<nbsp>H.<nbsp>Shapiro.
+      <bibitem*|14><label|bib-Shapiro1998CompositionOA>J.<nbsp>H.<nbsp>Shapiro.
       <newblock>Composition operators and schroder's functional equation.
       <newblock><with|font-shape|italic|Contemporary Mathematics>,
       (213):213\U228, 1998.<newblock>
 
-      <bibitem*|14><label|bib-shapiro1993composition>J.H.<nbsp>Shapiro.
+      <bibitem*|15><label|bib-shapiro1993composition>J.H.<nbsp>Shapiro.
       <newblock><with|font-shape|italic|Composition Operators and Classical
       Function Theory>. <newblock>Universitext (Berlin. Print).
       Springer-Verlag, 1993.<newblock>
 
-      <bibitem*|15><label|bib-ds2>Yakov Sinai.
+      <bibitem*|16><label|bib-ds2>Yakov Sinai.
       <newblock><with|font-shape|italic|Dynamical Systems II: Ergodic Theory
       with Applications to Dynamical Systems and Statistical Mechanics>.
       <newblock>Springer-Verlag, 1989.<newblock>
@@ -1116,19 +1123,19 @@
     <associate|N|<tuple|46|8>>
     <associate|NS|<tuple|29|5>>
     <associate|auto-1|<tuple|1|1>>
-    <associate|auto-10|<tuple|transfer operator|3>>
-    <associate|auto-11|<tuple|1.3.1|3>>
-    <associate|auto-12|<tuple|1.4|3>>
-    <associate|auto-13|<tuple|2|4>>
+    <associate|auto-10|<tuple|transfer operator|2>>
+    <associate|auto-11|<tuple|1.2.2|2>>
+    <associate|auto-12|<tuple|1.3|3>>
+    <associate|auto-13|<tuple|2|3>>
     <associate|auto-14|<tuple|2.1|4>>
-    <associate|auto-15|<tuple|2.2|5>>
+    <associate|auto-15|<tuple|2.2|4>>
     <associate|auto-16|<tuple|2.3|5>>
     <associate|auto-17|<tuple|Newton map|5>>
     <associate|auto-18|<tuple|functional derivative|5>>
     <associate|auto-19|<tuple|2.3.1|5>>
     <associate|auto-2|<tuple|1|1>>
-    <associate|auto-20|<tuple|2.3.2|6>>
-    <associate|auto-21|<tuple|Newton flow|6>>
+    <associate|auto-20|<tuple|2.3.2|5>>
+    <associate|auto-21|<tuple|Newton flow|5>>
     <associate|auto-22|<tuple|2.3.3|6>>
     <associate|auto-23|<tuple|desingularized Newton flow (for entire
     functions)|6>>
@@ -1136,8 +1143,8 @@
     <associate|auto-25|<tuple|2.3.5|6>>
     <associate|auto-26|<tuple|3|6>>
     <associate|auto-27|<tuple|Riemann zeta function|6>>
-    <associate|auto-28|<tuple|3.1|7>>
-    <associate|auto-29|<tuple|critical line|7>>
+    <associate|auto-28|<tuple|3.1|6>>
+    <associate|auto-29|<tuple|critical line|6>>
     <associate|auto-3|<tuple|1.1|2>>
     <associate|auto-30|<tuple|3.1.1|7>>
     <associate|auto-31|<tuple|3.2|7>>
@@ -1146,43 +1153,44 @@
     <associate|auto-34|<tuple|Riemann-Siegel (var)theta function|7>>
     <associate|auto-35|<tuple|Hardy Z function|7>>
     <associate|auto-36|<tuple|3|7>>
-    <associate|auto-37|<tuple|3.3|8>>
-    <associate|auto-38|<tuple|3.3.1|8>>
+    <associate|auto-37|<tuple|3.3|7>>
+    <associate|auto-38|<tuple|3.3.1|7>>
     <associate|auto-39|<tuple|3.3.2|8>>
     <associate|auto-4|<tuple|1.1.1|2>>
     <associate|auto-40|<tuple|4|8>>
-    <associate|auto-41|<tuple|5|9>>
-    <associate|auto-42|<tuple|5.1|9>>
+    <associate|auto-41|<tuple|5|8>>
+    <associate|auto-42|<tuple|5.1|8>>
     <associate|auto-43|<tuple|52|9>>
-    <associate|auto-44|<tuple|15|9>>
+    <associate|auto-44|<tuple|16|9>>
     <associate|auto-5|<tuple|Koenig's function|2>>
     <associate|auto-6|<tuple|1.2|2>>
     <associate|auto-7|<tuple|2|2>>
-    <associate|auto-8|<tuple|1.3|3>>
-    <associate|auto-9|<tuple|transfer operator|3>>
-    <associate|bib-Koopman1931|<tuple|6|9>>
-    <associate|bib-Milnor2006|<tuple|9|9>>
-    <associate|bib-MonsterMoonshine|<tuple|3|9>>
-    <associate|bib-Peitgen1988GlobalAO|<tuple|10|9>>
-    <associate|bib-Shapiro1998CompositionOA|<tuple|13|9>>
-    <associate|bib-constantPhaseRH|<tuple|12|9>>
-    <associate|bib-coxeter1989introduction|<tuple|2|9>>
-    <associate|bib-ds2|<tuple|15|9>>
+    <associate|auto-8|<tuple|1.2.1|2>>
+    <associate|auto-9|<tuple|transfer operator|2>>
+    <associate|bib-Koopman1931|<tuple|7|9>>
+    <associate|bib-Milnor2006|<tuple|10|9>>
+    <associate|bib-MonsterMoonshine|<tuple|4|9>>
+    <associate|bib-Peitgen1988GlobalAO|<tuple|11|9>>
+    <associate|bib-Shapiro1998CompositionOA|<tuple|14|9>>
+    <associate|bib-constantPhaseRH|<tuple|13|9>>
+    <associate|bib-cowen1994spectra|<tuple|2|9>>
+    <associate|bib-coxeter1989introduction|<tuple|3|9>>
+    <associate|bib-ds2|<tuple|16|9>>
     <associate|bib-edcd|<tuple|1|9>>
-    <associate|bib-jongen1988continuous|<tuple|4|9>>
-    <associate|bib-klein2018riemann|<tuple|5|9>>
-    <associate|bib-krantz2012handbook|<tuple|7|9>>
-    <associate|bib-lawrence1972catalog|<tuple|8|9>>
-    <associate|bib-riemann|<tuple|11|9>>
-    <associate|bib-shapiro1993composition|<tuple|14|9>>
+    <associate|bib-jongen1988continuous|<tuple|5|9>>
+    <associate|bib-klein2018riemann|<tuple|6|9>>
+    <associate|bib-krantz2012handbook|<tuple|8|9>>
+    <associate|bib-lawrence1972catalog|<tuple|9|9>>
+    <associate|bib-riemann|<tuple|12|9>>
+    <associate|bib-shapiro1993composition|<tuple|15|9>>
     <associate|dl|<tuple|15|6>>
     <associate|ds|<tuple|30|5>>
     <associate|footnote-1|<tuple|1|3>>
     <associate|footnr-1|<tuple|1|3>>
     <associate|kc|<tuple|3|2>>
     <associate|nm|<tuple|37|6>>
-    <associate|rh|<tuple|17|7>>
-    <associate|rnm|<tuple|34|6>>
+    <associate|rh|<tuple|17|6>>
+    <associate|rnm|<tuple|34|5>>
   </collection>
 </references>
 
@@ -1202,6 +1210,8 @@
       ds2
 
       Koopman1931
+
+      cowen1994spectra
 
       krantz2012handbook
 
@@ -1231,7 +1241,7 @@
 
       <tuple|normal|<\surround|<hidden-binding|<tuple>|2>|>
         <with|color|<quote|dark red>|font-family|<quote|rm>|<with|mode|<quote|math>|S<around*|[|e<rsup|i
-        \<theta\>>|]>>>
+        \<theta\>>|]>\<forall\>\<theta\>\<in\><around*|[|-\<pi\>,\<pi\>|]>>>
       </surround>|<pageref|auto-7>>
 
       <tuple|normal|<\surround|<hidden-binding|<tuple>|3>|>
@@ -1282,20 +1292,20 @@
       Theorem <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
 
-      <with|par-left|<quote|1tab>|1.2<space|2spc>Eigenfunctions and
-      Compactness <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.2<space|2spc>Eigenfunctions of Compact
+      Composition Operators <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6>>
 
-      <with|par-left|<quote|1tab>|1.3<space|2spc>The Frobenius-Perron
+      <with|par-left|<quote|2tab>|1.2.1<space|2spc>The Frobenius-Perron
       Transfer Operator <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
 
-      <with|par-left|<quote|2tab>|1.3.1<space|2spc>Spectra of the Newton Map
+      <with|par-left|<quote|2tab>|1.2.2<space|2spc>Spectra of the Newton Map
       of the S Transform and Composition Operators
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-11>>
 
-      <with|par-left|<quote|1tab>|1.4<space|2spc>Physical Interpretations of
+      <with|par-left|<quote|1tab>|1.3<space|2spc>Physical Interpretations of
       the Cauchy-Riemann Equations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-12>>
 
