@@ -38,7 +38,7 @@ public class ZRenderer
                                                                 domain,
                                                                 func);
 
-    plotter.color_mode = 1;
+    plotter.colorMode = 1;
 
     frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

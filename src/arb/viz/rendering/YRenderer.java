@@ -37,7 +37,7 @@ public class YRenderer extends
                                  15 * 5),
           new YFunction(vscale));
 
-    color_mode  = 5;
+    colorMode  = 5;
     displayMode = Part.Blend;
 
   }

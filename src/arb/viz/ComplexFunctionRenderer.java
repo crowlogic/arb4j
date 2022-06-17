@@ -45,78 +45,82 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     double B[] = new double[1];
   }
 
-  protected Complex      w;
+  protected Complex          w;
 
-  protected Complex      N          = Complex.newVector(2);                      // Newton step. w/dw
+  protected Complex          N             = Complex.newVector(2);                      // Newton step. w/dw
 
-  ThreadLocalComplex     _z         = new ThreadLocalComplex(2);
+  ThreadLocalComplex         _z            = new ThreadLocalComplex(2);
 
-  ThreadLocal<Pixel>     pixel      = ThreadLocal.withInitial(() -> new Pixel());
-  ThreadLocal<Pixel>     pixel2     = ThreadLocal.withInitial(() -> new Pixel());
+  ThreadLocal<Pixel>         pixel         = ThreadLocal.withInitial(() -> new Pixel());
+  ThreadLocal<Pixel>         pixel2        = ThreadLocal.withInitial(() -> new Pixel());
 
-  public int             color_mode = 0;
+  public int                 colorMode    = 0;
 
-  protected static int   prec       = 256;
+  /**
+   * do not set to greater than 128, see {@link PointValueCache} for the
+   * explanation
+   */
+  protected final static int precisionBits = 128;
 
-  int                    width;
+  int                        width;
 
-  int                    height;
+  int                        height;
 
-  public Float           ax         = new Float();
+  public Float               ax            = new Float();
 
-  public Float           bx         = new Float();
+  public Float               bx            = new Float();
 
-  public Float           ay         = new Float();
+  public Float               ay            = new Float();
 
-  public Float           by         = new Float();
+  public Float               by            = new Float();
 
-  BufferedImage          functionImage;
+  BufferedImage              functionImage;
 
-  BufferedImage          staticOverlayImage;
+  BufferedImage              staticOverlayImage;
 
-  BufferedImage          dynamicOverlayImage;
+  BufferedImage              dynamicOverlayImage;
 
-  private Timer          repaintTimer;
+  private Timer              repaintTimer;
 
-  private Graphics2D     functionImageGraphics;
+  private Graphics2D         functionImageGraphics;
 
-  boolean                headless   = false;
+  boolean                    headless      = false;
 
-  protected Dimension    resolution;
+  protected Dimension        resolution;
 
-  protected Rectangle2D  domain;
+  protected Rectangle2D      domain;
 
-  AffineTransform        screenToFunctionMapping;
+  AffineTransform            screenToFunctionMapping;
 
-  AffineTransform        functionToScreenMapping;
+  AffineTransform            functionToScreenMapping;
 
-  boolean                selection  = false;
+  boolean                    selection     = false;
 
-  Double                 selectionStartPoint;
+  Double                     selectionStartPoint;
 
-  Double                 selectionStopPoint;
+  Double                     selectionStopPoint;
 
-  public Double          cursorInFunctionSpace;
+  public Double              cursorInFunctionSpace;
 
-  Complex                tangent;
+  Complex                    tangent;
 
-  private double         xtick      = 1;
+  private double             xtick         = 1;
 
-  private double         ytick      = 1;
+  private double             ytick         = 1;
 
-  private AlphaComposite alphaComposite;
-  private AlphaComposite brightAlphaComposite;
+  private AlphaComposite     alphaComposite;
+  private AlphaComposite     brightAlphaComposite;
 
-  private Graphics2D     staticOverlayGraphics;
+  private Graphics2D         staticOverlayGraphics;
 
-  private Graphics2D     dynamicOverlayGraphics;
+  private Graphics2D         dynamicOverlayGraphics;
 
-  public JFrame          frame;
-  private Font           newFont;
+  public JFrame              frame;
+  private Font               newFont;
 
-  public BufferedImage   outputImage;
+  public BufferedImage       outputImage;
 
-  private Graphics2D     outputGraphics;
+  private Graphics2D         outputGraphics;
 
   public ComplexFunctionRenderer(Dimension resolution,
                                  Rectangle2D.Double domain,
@@ -125,13 +129,13 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     this.resolution = resolution;
     this.domain     = domain;
     this.function   = function;
-    this.image      = new PointCache(String.format("%s-%d-%d-%d",
-                                                   function.getClass().getSimpleName(),
-                                                   resolution.width,
-                                                   resolution.height,
-                                                   domain.hashCode()),
-                                     resolution.width,
-                                     resolution.height);
+    this.image      = new PointValueCache(String.format("%s-%d-%d-%d",
+                                                        function.getClass().getSimpleName(),
+                                                        resolution.width,
+                                                        resolution.height,
+                                                        domain.hashCode()),
+                                          resolution.width,
+                                          resolution.height);
     init();
   }
 
@@ -174,7 +178,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     alphaComposite       = makeComposite(0.69f);
     brightAlphaComposite = makeComposite(0.95f);
 
-    color_mode           = 0;
+    colorMode           = 0;
     N                    = new Complex();
     tangent              = new Complex();
     ax.init();
@@ -185,8 +189,8 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     ay.assign(this.domain.getMinY());
     bx.assign(this.domain.getMaxX());
     by.assign(this.domain.getMaxY());
-    bx.sub(ax, prec, RoundingMode.Down, dx).div(width * 2, dx, prec);
-    by.sub(ay, prec, RoundingMode.Down, dy).div(height * 2, dy, prec);
+    bx.sub(ax, precisionBits, RoundingMode.Down, dx).div(width * 2, dx, precisionBits);
+    by.sub(ay, precisionBits, RoundingMode.Down, dy).div(height * 2, dy, precisionBits);
 
     // System.out.format("dx=%s\n dy=%s\n", dx, dy);
 
@@ -272,25 +276,25 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
       switch (displayMode)
       {
       case Phase:
-        arb.color_function(pixel.R, pixel.G, pixel.B, w, color_mode);
+        arb.color_function(pixel.R, pixel.G, pixel.B, w, colorMode);
         break;
       case Real:
         w2.getReal().set(w.getReal());
-        arb.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
+        arb.color_function(pixel.R, pixel.G, pixel.B, w2, colorMode);
         break;
       case Imag:
         w2.getImag().set(w.getImag());
-        arb.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
+        arb.color_function(pixel.R, pixel.G, pixel.B, w2, colorMode);
         break;
       case Blend:
         // TODO: make another mode that averages the rgb values and only calls
         // color_function once
         w2.getImag().set(w.getImag());
-        arb.color_function(pixel.R, pixel.G, pixel.B, w2, color_mode);
+        arb.color_function(pixel.R, pixel.G, pixel.B, w2, colorMode);
         Pixel pixel2 = this.pixel2.get();
         w2.getImag().zero();
         w2.getReal().set(w.getReal());
-        arb.color_function(pixel2.R, pixel2.G, pixel2.B, w2, color_mode);
+        arb.color_function(pixel2.R, pixel2.G, pixel2.B, w2, colorMode);
         pixel.R[0] = (pixel.R[0] + pixel2.R[0] / 2.0);
         pixel.G[0] = (pixel.G[0] + pixel2.G[0] / 2.0);
         pixel.B[0] = (pixel.B[0] + pixel2.B[0] / 2.0);
@@ -324,12 +328,12 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     });
   }
 
-  PointCache image;
+  protected PointValueCache image;
 
   public Complex evaluateFunction(int x, int y)
   {
     Complex z  = _z.get();
-    Complex w  = image.pointAt(x, y);
+    Complex w  = image.pointAt(0, x, y);
     Float   zr = z.getReal().getMid();
     Float   zi = z.getImag().getMid();
 
@@ -699,7 +703,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     // w'=f'(t)
     try ( Real phase = new Real())
     {
-      N.arg(prec, phase);
+      N.arg(precisionBits, phase);
 
       double phaseAngle = phase.doubleValue();
 
@@ -795,13 +799,13 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
                            cursorInFunctionSpace.y,
                            w.getReal().doubleValue(),
                            w.getImag().doubleValue(),
-                           w.arg(prec, warg).doubleValue(),
+                           w.arg(precisionBits, warg).doubleValue(),
                            w1stDeriv.getReal().doubleValue(),
                            w1stDeriv.getImag().doubleValue(),
-                           w1stDeriv.arg(prec, w1stDerivarg).doubleValue(),
+                           w1stDeriv.arg(precisionBits, w1stDerivarg).doubleValue(),
                            N.getReal().doubleValue(),
                            N.getImag().doubleValue(),
-                           N.norm(prec, warg).doubleValue(),
+                           N.norm(precisionBits, warg).doubleValue(),
                            phase.doubleValue());
     }
   }
@@ -890,7 +894,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   // w=f(z)
   public void evalFunction(Complex z, Complex w)
   {
-    function.evaluate(z, 2, prec, w);
+    function.evaluate(z, 2, precisionBits, w);
 
   }
 
@@ -933,7 +937,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   {
     assert N != null;
 
-    Complex unnormalizedN = w.div(w.get(1), prec, N).neg(N);
+    Complex unnormalizedN = w.div(w.get(1), precisionBits, N).neg(N);
     // Complex dt = unnormalizedN.normalize(N).neg(N);
 
     // acb_div(N, w, w.get(1), prec);
@@ -942,7 +946,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     // vector, i think
     // acb_mul_onei(N, N);
     // acb_neg(N, N);
-    N.arg(prec, phase);
+    N.arg(precisionBits, phase);
 
   }
 

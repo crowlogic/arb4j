@@ -458,7 +458,7 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     return getReal().bits() + getImag().bits();
   }
   
- Complex[] elements;
+ public Complex[] elements;
 
   public Complex get(int index)
   {

@@ -57,7 +57,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
     int       secondsLong     = 5;
     final int frameCount      = framesPerSecond * secondsLong;
     XRenderer renderer        = new XRenderer();
-    renderer.color_mode  = 1;
+    renderer.colorMode  = 1;
     renderer.displayMode = Part.Phase;
     IntConsumer                        frameParameterAssigner = frame ->
                                                               {

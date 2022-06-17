@@ -35,7 +35,7 @@ public class ζRenderer
                                                                           .normalize(w, prec);
                                                                 });
 
-    plotter.color_mode  = 0;
+    plotter.colorMode  = 0;
     plotter.displayMode = Part.Blend;
 
     plotter.render();

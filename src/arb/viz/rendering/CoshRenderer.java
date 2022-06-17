@@ -37,7 +37,7 @@ public class CoshRenderer
                                                                 domain,
                                                                 function);
 
-    plotter.color_mode = 0;
+    plotter.colorMode = 0;
 
     
     plotter.displayMode = arb.viz.Part.Blend;

@@ -25,8 +25,8 @@ public class TNewtonRenderer extends
   public TNewtonRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension(2500,
-                       1300),
+    this(new Dimension(2500/2,
+                       1300/2),
          new Rectangle2D.Double(-3,
                                 -1.5 * 2,
                                 6,
@@ -39,10 +39,11 @@ public class TNewtonRenderer extends
 
     TNewtonRenderer renderer = new TNewtonRenderer();
 
-    renderer.color_mode  = 1;
+    renderer.colorMode  = 1;
     renderer.displayMode = Part.Phase;
     renderer.render();
     renderer.saveToFile("TNewton.png");
+    renderer.image.check();
 
   }
 

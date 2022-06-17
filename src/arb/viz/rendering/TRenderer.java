@@ -36,7 +36,7 @@ public class TRenderer extends
   {
 
     TRenderer plotter = new TRenderer();
-    plotter.color_mode  = 0;
+    plotter.colorMode  = 0;
     plotter.displayMode = Part.Blend;
     plotter.render();
 

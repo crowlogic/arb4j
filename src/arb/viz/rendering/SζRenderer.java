@@ -31,7 +31,7 @@ public class SζRenderer extends
                                  new ComplexCompositionOperator(new RiemannZetaFunction(),
                                                         new WickRotation(true))));
 
-    color_mode        = 06;
+    colorMode        = 06;
     displayMode       = arb.viz.Part.Blend;
   }
 

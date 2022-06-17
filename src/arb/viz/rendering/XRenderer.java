@@ -39,7 +39,7 @@ public class XRenderer extends
                                  Math.PI * 4),
           new XFunction(vscale));
 
-    color_mode  = 3;
+    colorMode  = 3;
     displayMode = Part.Real;
 
   }
