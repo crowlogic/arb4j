@@ -575,6 +575,10 @@ import static arb.arb.*;
    return r;
  }
  
+  public Complex tan(int bits)
+  {
+    return tan(bits,this);
+  }
   
  public static Complex newVector(int dim)
  {
