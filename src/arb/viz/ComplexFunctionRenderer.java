@@ -51,8 +51,6 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   ThreadLocalComplex     _z         = new ThreadLocalComplex(2);
 
-  ThreadLocalComplex     _w         = new ThreadLocalComplex(2);
-
   ThreadLocal<Pixel>     pixel      = ThreadLocal.withInitial(() -> new Pixel());
   ThreadLocal<Pixel>     pixel2     = ThreadLocal.withInitial(() -> new Pixel());
 
@@ -127,6 +125,13 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     this.resolution = resolution;
     this.domain     = domain;
     this.function   = function;
+    this.image      = new PointCache(String.format("%s-%d-%d-%d",
+                                                   function.getClass().getSimpleName(),
+                                                   resolution.width,
+                                                   resolution.height,
+                                                   domain.hashCode()),
+                                     resolution.width,
+                                     resolution.height);
     init();
   }
 
@@ -319,10 +324,12 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     });
   }
 
+  PointCache image;
+
   public Complex evaluateFunction(int x, int y)
   {
     Complex z  = _z.get();
-    Complex w  = _w.get();
+    Complex w  = image.pointAt(x, y);
     Float   zr = z.getReal().getMid();
     Float   zi = z.getImag().getMid();
 
@@ -376,9 +383,10 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
      */
     pixelStream.forEach(pixel ->
     {
-      int y = pixel / width;
-      int x = pixel % width;
-      colorizeAndRecordImagePixel(x, y, evaluateFunction(x, y));
+      int     y = pixel / width;
+      int     x = pixel % width;
+      Complex z = evaluateFunction(x, y);
+      colorizeAndRecordImagePixel(x, y, z);
     });
 
   }
@@ -1002,7 +1010,6 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
       frame.setVisible(false);
       frame.dispose();
     }
-    this._w.remove();
     this._z.remove();
     pixel.remove();
     pixel2.remove();

@@ -20,7 +20,7 @@ public class SNewtonKoenigsFunctionRenderer extends
     super(screen,
           domain,
           new IteratedFunction(new SNewtonMap(),
-                               4,
+                               5,
                                true));
   }
 
@@ -41,7 +41,7 @@ public class SNewtonKoenigsFunctionRenderer extends
 
     SNewtonKoenigsFunctionRenderer renderer = new SNewtonKoenigsFunctionRenderer();
 
-    renderer.color_mode  = 5;
+    renderer.color_mode  = 6;
     renderer.displayMode = Part.Phase;
     renderer.render();
     renderer.saveToFile("SNewtonKoenigs.png");

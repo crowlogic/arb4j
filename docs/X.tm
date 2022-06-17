@@ -462,10 +462,11 @@
       \;
 
       The parametric equations<cite|coxeter1989introduction> for the
-      lemniscate of Bernoulli with parameter 2 are given by
+      lemniscate of Bernoulli with scale parameter 2 are given by
 
       <\equation>
-        <tabular|<tformat|<table|<row|<cell|x<around*|(|t|)>>|<cell|=<frac|<sqrt|2>cos<around*|(|t|)>|1+sin<rsup|2><around*|(|t|)>>>>|<row|<cell|y<around*|(|t|)>>|<cell|=<frac|<sqrt|2>
+        <tabular|<tformat|<table|<row|<cell|x<around*|(|t|)>>|<cell|=2<frac|
+        cos<around*|(|t|)>|1+sin<rsup|2><around*|(|t|)>>>>|<row|<cell|y<around*|(|t|)>>|<cell|=2<frac|
         sin<around*|(|t|)> cos<around*|(|t|)>|1+sin<rsup|2><around*|(|t|)>>=x<around*|(|t|)>
         sin<around*|(|t|)>>>>>>
       </equation>
@@ -476,15 +477,15 @@
 
       <\equation>
         <tabular|<tformat|<table|<row|<cell|z<around*|(|t|)>>|<cell|=x<around*|(|t|)>+i
-        y<around*|(|t|)>>>|<row|<cell|>|<cell|=<frac|<sqrt|2>cos<around*|(|t|)>|1-i
+        y<around*|(|t|)>>>|<row|<cell|>|<cell|=<frac|2 cos<around*|(|t|)>|1-i
         sin<around*|(|t|)>>>>>>>
       </equation>
 
       where it can be shown that
 
       <\equation>
-        <tabular|<tformat|<table|<row|<cell|S<around*|(|z<around*|(|t|)>|)>>|<cell|=S<rsub|z><around*|(|t|)>>>|<row|<cell|>|<cell|=S<around*|(|<frac|<sqrt|2>cos<around*|(|t|)>|1-i
-        sin<around*|(|t|)>>|)>>>|<row|<cell|>|<cell|=i<frac|32
+        <tabular|<tformat|<table|<row|<cell|S<around*|(|z<around*|(|t|)>|)>>|<cell|=S<rsub|z><around*|(|t|)>>>|<row|<cell|>|<cell|=S<around*|(|<frac|S
+        cos<around*|(|t|)>|1-i sin<around*|(|t|)>>|)>>>|<row|<cell|>|<cell|=i<frac|32
         cos<around*|(|t|)><rsup|2> sin<around*|(|t|)>|20 cos<around*|(|2t|)>
         +cos<around*|(|4t|)>-13>>>>>>
       </equation>
