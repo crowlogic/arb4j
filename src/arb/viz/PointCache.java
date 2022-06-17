@@ -13,6 +13,7 @@ import arb.*;
  * rule-of-thumb that 128 bits is enough for calculating RGB intensities
  * anyway..
  * 
+ * TODO: put the derivatives in another cache
  */
 public class PointCache 
 {
