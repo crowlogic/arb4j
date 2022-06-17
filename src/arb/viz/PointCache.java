@@ -7,11 +7,6 @@ import java.nio.channels.*;
 import arb.*;
 
 /**
- * TODO: cache the values that are calculated in
- * {@link ComplexFunctionRenderer#evaluateFunctionOnGrid()} using
- * {@link ByteBuffer}s memory-mapped via
- * {@link FileChannel#map(java.nio.channels.FileChannel.MapMode, long, long)}
- * 
  * If the precision of the number is 128 bits or less then ONLY the space
  * required is enough to hold {@link Complex#BYTES} without any internal-to-arb
  * allocations necessary and thus simplifies things.. so we go with the
