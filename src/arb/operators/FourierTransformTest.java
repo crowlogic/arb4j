@@ -1,0 +1,48 @@
+package arb.operators;
+
+import static org.junit.Assert.*;
+
+import javax.swing.*;
+
+import arb.*;
+import arb.functions.real.densities.*;
+import arb.viz.*;
+
+public class FourierTransformTest
+{
+
+  public static void main(String args[])
+  {
+    GaussianDensity                   gaussian = new GaussianDensity();
+    FourierTransform<GaussianDensity> f        = new FourierTransform(gaussian);
+    f.integrationOptions.verbose = false;
+    Real input = new Real().set("0.75", 128);
+    System.out.println("input=" + input);
+    Complex val = f.evaluate(input, 1, 128, new Complex());
+    val.printPrecision = true;
+    System.out.println("val " + val);
+    assertEquals(0.0068789618474533993988662139429379749344661831855774,
+                 val.getReal().doubleValue(),
+                 Math.pow(10, -17));
+
+    InverseFourierTransform invf = new InverseFourierTransform<>(f);
+    Real                    orig = invf.evaluate(val, 1, 128, new Real());
+    System.out.println("orig=" + orig);
+    RealFunctionPlotter plotter = new RealFunctionPlotter(invf,
+                                                          new FloatInterval(-100,
+                                                                            100),
+                                                          new FloatInterval(-50,
+                                                                            400),
+                                                          500);
+    JFrame              frame   = new JFrame();
+    frame.getContentPane().add(plotter.asComponent());
+    frame.setTitle(f.getClass().getSimpleName());
+    frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    plotter.addCleanupOnWindowClosingListener(frame);
+
+    frame.pack();
+    frame.setVisible(true);
+
+  }
+
+}

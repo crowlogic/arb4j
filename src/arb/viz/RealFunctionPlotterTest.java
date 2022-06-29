@@ -1,0 +1,41 @@
+package arb.viz;
+
+import javax.swing.JFrame;
+
+import arb.FloatInterval;
+import arb.Real;
+import arb.functions.complex.CircularS;
+import arb.functions.real.RealFunction;
+import arb.functions.real.RealPart;
+import arb.functions.real.dynamics.RealNewtonMap;
+
+public class RealFunctionPlotterTest
+{
+
+  @SuppressWarnings("resource")
+  public static void main(String args[])
+  {
+    //RealNewtonMap<RealPart<CircularS>> f     = new RealNewtonMap(new RealPart(new CircularS()));
+    RealFunction        f = new RealNewtonMap(new RealPart(new CircularS(new Real().set("1", 128),
+                                                                                new Real().set("0.5", 128))));
+    //f.f.f.g.h.set(new Real().set("0.5", 128));
+    FloatInterval       domain  = new FloatInterval(-Math.PI,
+                                                    Math.PI);
+    FloatInterval       range   = new FloatInterval(-Math.PI * 2,
+                                                    Math.PI * 2);
+    RealFunctionPlotter plotter = new RealFunctionPlotter(f,
+                                                          domain,
+                                                          range,
+                                                          200);
+
+    JFrame                             frame = new JFrame();
+    frame.getContentPane().add(plotter.asComponent());
+    frame.setTitle(f.getClass().getSimpleName());
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    plotter.addCleanupOnWindowClosingListener(frame);
+
+    frame.pack();
+    frame.setVisible(true);
+
+  }
+}

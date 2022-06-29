@@ -1,0 +1,8 @@
+#!/bin/sh -x
+
+export JAVA_HOME=/usr/lib/jvm/jdk-17
+export BASEDIR=$(dirname $(readlink -f $0))/..
+
+cd $BASEDIR
+
+make

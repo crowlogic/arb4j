@@ -1,0 +1,8 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+CLASSPATH=`cat $BASEDIR/class.path`
+javap -cp $CLASSPATH:$BASEDIR/target/classes -s $@
+
+
+
