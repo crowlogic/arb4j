@@ -1,6 +1,6 @@
 package arb.functions.complex.elliptic;
 
-import arb.functions.complex.Shift;
+import arb.functions.complex.TaylorShift;
 import arb.functions.complex.WickRotation;
 import arb.operators.CompositionOperator;
 
@@ -12,7 +12,7 @@ import arb.operators.CompositionOperator;
  * @author crow
  */
 public class ImaginaryQuarterPeriod extends
-                                    Shift<CompositionOperator<RealQuarterPeriod, WickRotation>>
+                                    TaylorShift<CompositionOperator<RealQuarterPeriod, WickRotation>>
 {
 
   public ImaginaryQuarterPeriod()

@@ -11,10 +11,10 @@ import arb.Complex;
  *
  * @param <F>
  */
-public class Shift<F extends ComplexFunction> implements
+public class TaylorShift<F extends ComplexFunction> implements
                   ComplexFunction
 {
-  public Shift(F f)
+  public TaylorShift(F f)
   {
     this.f = f;
   }
