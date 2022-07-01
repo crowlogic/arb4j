@@ -13,7 +13,7 @@ import arb.viz.*;
  * Renders the {@link XFunction} via {@link ComplexFunctionRenderer}
  */
 public class XRenderer extends
-                       ComplexFunctionRenderer<NewtonFlow<XFunction>>
+                       ComplexFunctionRenderer<XFunction>
 {
 
   @SuppressWarnings("resource")
@@ -24,8 +24,8 @@ public class XRenderer extends
     r.saveToFile("X.png");
   }
 
-  public static final int width  = (int) (2500 * 0.7);
-  public static final int height = (int) (1250 * 0.7);
+  public static final int width  = (int) (2500 * 0.4);
+  public static final int height = (int) (1250 * 0.4 );
 
   public XRenderer(Real vscale) throws NoninvertibleTransformException
   {
@@ -35,28 +35,17 @@ public class XRenderer extends
                                  -Math.PI * 8,
                                  50,
                                  Math.PI * 16),
-          new NewtonFlow(new XFunction(vscale))
-          {
-
-            @Override
-            public Complex evaluate(Complex z, int order, int prec, Complex w)
-            {
-              super.evaluate(z, order, prec, w);
-              Constants.ONE.div(w, prec, w );
-              // w.sub(z, prec, w);
-              return w;
-            }
-          });
+          new XFunction(vscale));
 
     colorMode   = 0;
-    displayMode = Part.Real;
+    displayMode = Part.Phase;
 
   }
 
   @SuppressWarnings("resource")
   public XRenderer() throws NoninvertibleTransformException
   {
-    this(new Real().set("3", 128));
+    this(new Real().set("1", 128));
   }
 
 }

@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 import arb.*;
+import arb.functions.complex.*;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
@@ -15,10 +16,10 @@ public class ζRenderer
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
 
-    Rectangle2D.Double     domain  = new Rectangle2D.Double(0,
-                                                            15,
-                                                            60,
-                                                            -30);
+    Rectangle2D.Double     domain  = new Rectangle2D.Double(-1,
+                                                            0,
+                                                            1,
+                                                            -50);
 
     Dimension              screen  = new Dimension(2500,
                                                    1250);
@@ -28,15 +29,10 @@ public class ζRenderer
 
     ComplexFunctionRenderer plotter = new ComplexFunctionRenderer(screen,
                                                                 domain,
-                                                                (z, order, prec, w) ->
-                                                                {
-                                                                  return z.mul(Constants.i, prec, w)
-                                                                          .ζ(prec, w)
-                                                                          .normalize(w, prec);
-                                                                });
+                                                                new RiemannZetaFunction());
 
     plotter.colorMode  = 0;
-    plotter.displayMode = Part.Blend;
+    plotter.displayMode = Part.Phase;
 
     plotter.render();
     plotter.saveToFile();

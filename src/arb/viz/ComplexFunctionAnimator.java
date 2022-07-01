@@ -79,7 +79,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
                                                                                   scaleStop.toString(10),
                                                                                   percentComplete,
                                                                                   frame);
-                                                                renderer.function.f.f.scale.set(scale);
+                                                                renderer.function.f.scale.set(scale);
                                                               };
     ComplexFunctionAnimator<XRenderer> animator               = new ComplexFunctionAnimator(renderer,
                                                                                             frameParameterAssigner,
