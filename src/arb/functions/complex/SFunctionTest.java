@@ -24,5 +24,14 @@ public class SFunctionTest extends
   }
   
     
-
+  public static void testInverseFunctions()
+  {
+    SFunction sFunction = new SFunction();
+    
+    for ( int i = 0; i < 4; i++)
+    {
+      ComplexFunction firstInverse = sFunction.inverse(0);
+      
+    }
+  }
 }

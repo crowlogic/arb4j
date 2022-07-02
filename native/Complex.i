@@ -22,6 +22,35 @@ import static arb.arb.*;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex(String realStr, String imagStr, int precision)
+  {
+    getReal().set(realStr, precision);
+    getImag().set(imagStr, precision);
+  }
+
+  public Complex sqrt(int prec, Complex r)
+  {
+    arb.acb_sqrt(r, this, prec);
+    return r;
+  }
+
+  public Complex sqrt(int prec)
+  {
+    return sqrt(prec,this);
+  }
+
+  public Complex log(int prec, Complex r)
+  {
+    arb.acb_log(r, this, prec);
+    return r;
+  }
+
+  public Complex tanh(int prec, Complex res)
+  {
+    arb.acb_tanh(res, this, prec );
+    return res;
+  }
+
   public boolean printPrecision = false;
 
  /**

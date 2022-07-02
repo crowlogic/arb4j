@@ -1,10 +1,10 @@
 package arb.functions.complex;
 
-import static arb.Constants.COMPLEX_ONE;
-import static java.lang.String.format;
+import static arb.Constants.*;
+import static java.lang.String.*;
 
 import arb.*;
-import arb.exceptions.NotDifferentiableException;
+import arb.exceptions.*;
 
 /**
  * The rational meromorphic quartic
@@ -13,19 +13,33 @@ import arb.exceptions.NotDifferentiableException;
  * @author Stephen Crowley
  */
 public class SFunction implements
-                       ComplexFunction
+                       ComplexFunction,
+                       AutoCloseable
 {
+
+  @Override
+  public int getInverseBranchCount()
+  {
+    return SFunctionInverse.BRANCH_COUNT;
+  }
+
+  @Override
+  public ComplexFunction inverse(int branch)
+  {
+    return new SFunctionInverse(a,
+                                branch);
+  }
 
   @Override
   public String toString()
   {
-    return String.format("S(scale=%s)", scale.toString(5));
+    return String.format("S(quadraticScale=%s)", a.toString(5));
   }
 
   @Override
   public int multiplicityOfRoot(Complex z)
   {
-    if ( z.isZero() || ( !z.isFinite() ) )
+    if (z.isZero() || (!z.isFinite()))
     {
       return 2;
     }
@@ -39,7 +53,7 @@ public class SFunction implements
   @Override
   public ComplexFunction adjoint()
   {
-    return new TFunction(scale);
+    return new TFunction(a);
   }
 
   @Override
@@ -54,17 +68,25 @@ public class SFunction implements
 
   private static final Complex ONE = COMPLEX_ONE;
 
-  public Real                  scale;
+  public Real                  a;
+
+  private Real sqrta;
+
+  private Real aSquared;
+
+  private Real aQuadrupoled;
 
   public SFunction()
   {
-    scale = Constants.ONE;
-    scale.printPrecision = false;
+    this(Constants.ONE);
   }
 
-  public SFunction(Real scale)
+  public SFunction(Real a)
   {
-    this.scale = scale;
+    this.a = a;
+    this.sqrta        = a.sqrt(a.bits()); 
+    this.aSquared     = a;
+    this.aQuadrupoled = a.pow(2, a.bits(), new Real());
   }
 
   @Override
@@ -77,13 +99,7 @@ public class SFunction implements
     {
       if (order >= 1)
       {
-        t.div(scale, prec, r)
-         .pow(2, prec, r)
-         .neg(r)
-         .add(1, prec, r)
-         .pow(2, prec, r)
-         .sub(1, prec, r)
-         .div(r.add(2, prec, s), prec, res);
+        t.div(aSquared, prec, r).pow(2, prec, r).neg(r).add(1, prec, r).log(prec, r).tanh(prec, res);
       }
       if (order >= 2)
       {
@@ -103,18 +119,23 @@ public class SFunction implements
    * @param t
    * @param prec
    * @param res
-   * @return (8*(t-1)*t*(t+1)) / (t^4 - 2*(t-1)*(t+1))^2
+   * @return (8*(t-1)*t*(t+1)) / (t^4 - 2*a*(t-1)*(t+1))^2
    */
   protected Complex evaluateDerivative(Complex t, int prec, Complex res1)
   {
+
     /**
-     * TODO: optimize this and compute (t-1)*(t+1) since it appears in both the
-     * numerator and the denominator
+     * TODO: Let a=quadratic scale parameter and then compute <br>
+     * aquad = aQuadrupoled = a^4<br>
+     * asqr = aSquared = a^2<br>
+     * numer = 8*aquad*(a - t)*t*(a + t) <br>
+     * denom = (2*aquad - 2*asqr*(t^2) + t^4)^2 <br>
+     * 
      */
     try ( Complex b = new Complex(); Complex c = new Complex(); Complex d = new Complex(); Complex e = new Complex();
           Complex g = new Complex(); Complex h = new Complex();)
     {
-      t.div(scale, prec, b);
+      t.div(a, prec, b);
       b.pow(2, prec, c);
       c.neg(d);
       d.add(1, prec, e);
@@ -152,6 +173,12 @@ public class SFunction implements
 
       return numer.div(denom, prec, res);
     }
+  }
+
+  @Override
+  public void close() throws Exception
+  {
+    a.clear();
   }
 
 }

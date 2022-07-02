@@ -9,25 +9,25 @@ public class TFunction extends
   @Override
   public String toString()
   {
-    return String.format("T(scale=%s)", f.scale.toString(5));
+    return String.format("T(scale=%s)", f.a.toString(5));
   }
 
   @Override
   public ComplexFunction adjoint()
   {
-    return new SFunction(f.scale);
+    return new SFunction(f.a);
   }
 
   public TFunction()
   {
     super(new SFunction(),
           new WickRotation(false));
-    f.scale.printPrecision = false;
+    f.a.printPrecision = false;
   }
 
   public TFunction(Real scale)
   {
     this();
-    this.f.scale = scale;
+    this.f.a = scale;
   }
 }

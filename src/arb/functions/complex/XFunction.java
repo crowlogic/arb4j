@@ -34,7 +34,7 @@ public class XFunction extends
   @Override
   public ComplexFunction adjoint()
   {
-    return new YFunction(f.scale);
+    return new YFunction(f.a);
   }
 
   @Override
