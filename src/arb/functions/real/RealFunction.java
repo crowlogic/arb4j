@@ -27,6 +27,7 @@ public interface RealFunction extends
                               Function<Real, Real>
 {
 
+
   public static final int FLINT_BITS = 64;
 
   public default RealFunction tanh()
@@ -49,8 +50,6 @@ public interface RealFunction extends
       return w;
     };
   }
-
-
 
   /**
    * @param point

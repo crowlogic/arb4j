@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void arb_log(Real z, Real x, int prec) {
+    arbJNI.arb_log(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
+  }
+
   public static void arb_exp(Real z, Real x, int prec) {
     arbJNI.arb_exp(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }

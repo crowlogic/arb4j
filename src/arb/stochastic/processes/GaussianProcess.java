@@ -11,7 +11,7 @@ public class GaussianProcess implements
   @Override
   public ProbabilityDensity getProbabilityDensity()
   {
-    return new GaussianDensity();
+    return new UnitCenteredGaussianDensity();
   }
 
   @Override

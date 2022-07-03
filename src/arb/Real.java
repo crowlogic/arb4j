@@ -46,6 +46,12 @@ public class Real implements Comparable<Real>, Field {
 
  static { System.loadLibrary( "arblib" ); }
 
+  public Real log(int prec, Real res)
+  {
+    arb.arb_log(res, this, prec);
+    return res;    
+  }
+
   
   public Real mul2e( int e, Real res )
   {

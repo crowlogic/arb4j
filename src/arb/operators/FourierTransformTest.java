@@ -13,8 +13,8 @@ public class FourierTransformTest
 
   public static void main(String args[])
   {
-    GaussianDensity                   gaussian = new GaussianDensity();
-    FourierTransform<GaussianDensity> f        = new FourierTransform(gaussian);
+    UnitCenteredGaussianDensity                   gaussian = new UnitCenteredGaussianDensity();
+    FourierTransform<UnitCenteredGaussianDensity> f        = new FourierTransform(gaussian);
     f.integrationOptions.verbose = false;
     Real input = new Real().set("0.75", 128);
     System.out.println("input=" + input);

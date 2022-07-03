@@ -1,3 +1,5 @@
+void arb_log(arb_t z, const arb_t x, slong prec);
+
 void arb_exp(arb_t z, const arb_t x, slong prec);
 
 void _acb_dirichlet_hardy_z_series(acb_ptr res, acb_srcptr s, slong slen, const dirichlet_group_t G, const dirichlet_char_t chi, slong len, slong prec);

@@ -20,6 +20,12 @@ import static arb.arb.*;
 %typemap(javacode) arb_struct %{
  static { System.loadLibrary( "arblib" ); }
 
+  public Real log(int prec, Real res)
+  {
+    arb.arb_log(res, this, prec);
+    return res;    
+  }
+
   
   public Real mul2e( int e, Real res )
   {
