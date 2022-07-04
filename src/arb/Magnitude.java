@@ -181,12 +181,12 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
     return new SWIGTYPE_p_fmpz(arbJNI.Magnitude_exp_get(swigCPtr, this), true);
   }
 
-  public void setMan(SWIGTYPE_p_mp_limb_t value) {
-    arbJNI.Magnitude_man_set(swigCPtr, this, SWIGTYPE_p_mp_limb_t.getCPtr(value));
+  public void setMan(long value) {
+    arbJNI.Magnitude_man_set(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_mp_limb_t getMan() {
-    return new SWIGTYPE_p_mp_limb_t(arbJNI.Magnitude_man_get(swigCPtr, this), true);
+  public long getMan() {
+    return arbJNI.Magnitude_man_get(swigCPtr, this);
   }
 
   public Magnitude() {

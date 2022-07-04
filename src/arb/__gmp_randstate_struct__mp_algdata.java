@@ -8,16 +8,16 @@
 
 package arb;
 
-public class MantissaNoPointer {
+public class __gmp_randstate_struct__mp_algdata {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public MantissaNoPointer(long cPtr, boolean cMemoryOwn) {
+  public __gmp_randstate_struct__mp_algdata(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  public static long getCPtr(MantissaNoPointer obj) {
+  public static long getCPtr(__gmp_randstate_struct__mp_algdata obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -30,23 +30,23 @@ public class MantissaNoPointer {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        arbJNI.delete_MantissaNoPointer(swigCPtr);
+        arbJNI.delete___gmp_randstate_struct__mp_algdata(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
-  public void setD(SWIGTYPE_p_unsigned_long value) {
-    arbJNI.MantissaNoPointer_d_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
+  public void set_mp_lc(SWIGTYPE_p_void value) {
+    arbJNI.__gmp_randstate_struct__mp_algdata__mp_lc_set(swigCPtr, this, SWIGTYPE_p_void.getCPtr(value));
   }
 
-  public SWIGTYPE_p_unsigned_long getD() {
-    long cPtr = arbJNI.MantissaNoPointer_d_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
+  public SWIGTYPE_p_void get_mp_lc() {
+    long cPtr = arbJNI.__gmp_randstate_struct__mp_algdata__mp_lc_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 
-  public MantissaNoPointer() {
-    this(arbJNI.new_MantissaNoPointer(), true);
+  public __gmp_randstate_struct__mp_algdata() {
+    this(arbJNI.new___gmp_randstate_struct__mp_algdata(), true);
   }
 
 }

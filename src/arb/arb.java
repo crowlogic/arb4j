@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void arb_urandom(Real x, RandomState state, int prec) {
+    arbJNI.arb_urandom(Real.getCPtr(x), x, RandomState.getCPtr(state), state, prec);
+  }
+
   public static void arb_log(Real z, Real x, int prec) {
     arbJNI.arb_log(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }

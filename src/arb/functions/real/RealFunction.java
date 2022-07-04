@@ -12,6 +12,8 @@ package arb.functions.real;
 import static java.lang.Math.max;
 import static java.lang.System.out;
 
+import java.lang.Integer;
+
 import arb.*;
 import arb.Float;
 import arb.FloatInterval.RootStatus;

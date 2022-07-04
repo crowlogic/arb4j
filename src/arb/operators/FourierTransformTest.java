@@ -18,6 +18,7 @@ public class FourierTransformTest
     f.integrationOptions.verbose = false;
     Real input = new Real().set("0.75", 128);
     System.out.println("input=" + input);
+    
     Complex val = f.evaluate(input, 1, 128, new Complex());
     val.printPrecision = true;
     System.out.println("val " + val);

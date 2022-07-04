@@ -87,13 +87,13 @@ public class MultiPrecFloat implements AutoCloseable {
     return new SWIGTYPE_p_mpfr_exp_t(arbJNI.MultiPrecFloat__mpfr_exp_get(swigCPtr, this), true);
   }
 
-  public void set_mpfr_d(SWIGTYPE_p_mp_limb_t value) {
-    arbJNI.MultiPrecFloat__mpfr_d_set(swigCPtr, this, SWIGTYPE_p_mp_limb_t.getCPtr(value));
+  public void set_mpfr_d(SWIGTYPE_p_unsigned_long value) {
+    arbJNI.MultiPrecFloat__mpfr_d_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
   }
 
-  public SWIGTYPE_p_mp_limb_t get_mpfr_d() {
+  public SWIGTYPE_p_unsigned_long get_mpfr_d() {
     long cPtr = arbJNI.MultiPrecFloat__mpfr_d_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_mp_limb_t(cPtr, false);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
   }
 
   public MultiPrecFloat() {

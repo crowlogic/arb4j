@@ -8,16 +8,16 @@
 
 package arb;
 
-public class MantissaNoPointer {
+public class Integer {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public MantissaNoPointer(long cPtr, boolean cMemoryOwn) {
+  public Integer(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  public static long getCPtr(MantissaNoPointer obj) {
+  public static long getCPtr(Integer obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -30,23 +30,39 @@ public class MantissaNoPointer {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        arbJNI.delete_MantissaNoPointer(swigCPtr);
+        arbJNI.delete_Integer(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
-  public void setD(SWIGTYPE_p_unsigned_long value) {
-    arbJNI.MantissaNoPointer_d_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
+  public void set_mp_alloc(int value) {
+    arbJNI.Integer__mp_alloc_set(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_unsigned_long getD() {
-    long cPtr = arbJNI.MantissaNoPointer_d_get(swigCPtr, this);
+  public int get_mp_alloc() {
+    return arbJNI.Integer__mp_alloc_get(swigCPtr, this);
+  }
+
+  public void set_mp_size(int value) {
+    arbJNI.Integer__mp_size_set(swigCPtr, this, value);
+  }
+
+  public int get_mp_size() {
+    return arbJNI.Integer__mp_size_get(swigCPtr, this);
+  }
+
+  public void set_mp_d(SWIGTYPE_p_unsigned_long value) {
+    arbJNI.Integer__mp_d_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
+  }
+
+  public SWIGTYPE_p_unsigned_long get_mp_d() {
+    long cPtr = arbJNI.Integer__mp_d_get(swigCPtr, this);
     return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
   }
 
-  public MantissaNoPointer() {
-    this(arbJNI.new_MantissaNoPointer(), true);
+  public Integer() {
+    this(arbJNI.new_Integer(), true);
   }
 
 }

@@ -8,8 +8,8 @@ public class InverseFourierTransform<F extends RealToComplexFunction> implements
 {
   private static final int       relativeAccuracyBitsGoal     = 128;
   private static final Magnitude absoluteUncertaintyTolerance = new Magnitude().set(Math.pow(10, -30));
-  private static final Real      right                        = new Real().pi(128);
-  private static final Real      left                         = new Real().pi(128).neg();
+  private static final Real      right                        = new Real().set("-100",128);
+  private static final Real      left                         = new Real().set("100",128);
 
   public InverseFourierTransform(F f)
   {

@@ -14,6 +14,7 @@
 #include <acb_modular.h>
 #include <acb_dft.h>
 
+
   int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
   int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
   int f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
@@ -24,9 +25,45 @@
 #endif
 %}
 
+typedef unsigned long int	mp_limb_t;
+
 typedef __mpfr_struct mpfr_t[1];
 typedef __mpfr_struct *mpfr_ptr;
 typedef const __mpfr_struct *mpfr_srcptr;
+
+typedef struct
+{
+  int _mp_alloc;		/* Number of *limbs* allocated and pointed
+				   to by the _mp_d field.  */
+  int _mp_size;			/* abs(_mp_size) is the number of limbs the
+				   last field points to.  If _mp_size is
+				   negative this is a negative number.  */
+  mp_limb_t *_mp_d;		/* Pointer to the limbs.  */
+} __mpz_struct;
+
+
+typedef __mpz_struct mpz_t[1];
+
+/* Random state struct.  */
+typedef struct
+{
+  mpz_t _mp_seed;	  /* _mp_d member points to state of the generator. */
+  gmp_randalg_t _mp_alg;  /* Currently unused. */
+  union {
+    void *_mp_lc;         /* Pointer to function pointers structure.  */
+  } _mp_algdata;
+} __gmp_randstate_struct;
+typedef __gmp_randstate_struct gmp_randstate_t[1];
+
+typedef struct
+{
+    gmp_randstate_t gmp_state;
+    int gmp_init;
+    mp_limb_t __randval;
+    mp_limb_t __randval2;
+} flint_rand_s;
+
+typedef flint_rand_s flint_rand_t[1];
 
 typedef struct
 {
