@@ -45,12 +45,12 @@ public class GMPRandomState {
     return (cPtr == 0) ? null : new Integer(cPtr, false);
   }
 
-  public void set_mp_alg(SWIGTYPE_p_gmp_randalg_t value) {
-    arbJNI.GMPRandomState__mp_alg_set(swigCPtr, this, SWIGTYPE_p_gmp_randalg_t.getCPtr(value));
+  public void set_mp_alg(RandomAlgorithm value) {
+    arbJNI.GMPRandomState__mp_alg_set(swigCPtr, this, value.swigValue());
   }
 
-  public SWIGTYPE_p_gmp_randalg_t get_mp_alg() {
-    return new SWIGTYPE_p_gmp_randalg_t(arbJNI.GMPRandomState__mp_alg_get(swigCPtr, this), true);
+  public RandomAlgorithm get_mp_alg() {
+    return RandomAlgorithm.swigToEnum(arbJNI.GMPRandomState__mp_alg_get(swigCPtr, this));
   }
 
   public __gmp_randstate_struct__mp_algdata get_mp_algdata() {

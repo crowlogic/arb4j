@@ -257,6 +257,8 @@ public class arbJNI {
   public final static native void arb_lgamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_sqr(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void acb_sqrt(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
+  public final static native int GMP_RAND_ALG_DEFAULT_get();
+  public final static native int GMP_RAND_ALG_LC_get();
   public final static native void Integer__mp_alloc_set(long jarg1, Integer jarg1_, int jarg2);
   public final static native int Integer__mp_alloc_get(long jarg1, Integer jarg1_);
   public final static native void Integer__mp_size_set(long jarg1, Integer jarg1_, int jarg2);
@@ -267,8 +269,8 @@ public class arbJNI {
   public final static native void delete_Integer(long jarg1);
   public final static native void GMPRandomState__mp_seed_set(long jarg1, GMPRandomState jarg1_, long jarg2, Integer jarg2_);
   public final static native long GMPRandomState__mp_seed_get(long jarg1, GMPRandomState jarg1_);
-  public final static native void GMPRandomState__mp_alg_set(long jarg1, GMPRandomState jarg1_, long jarg2);
-  public final static native long GMPRandomState__mp_alg_get(long jarg1, GMPRandomState jarg1_);
+  public final static native void GMPRandomState__mp_alg_set(long jarg1, GMPRandomState jarg1_, int jarg2);
+  public final static native int GMPRandomState__mp_alg_get(long jarg1, GMPRandomState jarg1_);
   public final static native long GMPRandomState__mp_algdata_get(long jarg1, GMPRandomState jarg1_);
   public final static native long new_GMPRandomState();
   public final static native void delete_GMPRandomState(long jarg1);

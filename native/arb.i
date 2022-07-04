@@ -18,6 +18,7 @@ typedef mag_struct * mag_ptr;
 SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
+%rename (RandomAlgorithm) gmp_randalg_t;
 %rename (GMPRandomState) __gmp_randstate_struct;
 %rename (RandomState) flint_rand_s;
 %rename (FastDFTScheme) acb_dft_pre_struct;

@@ -15,6 +15,7 @@
 #include <acb_dft.h>
 
 
+
   int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
   int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
   int f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
@@ -24,6 +25,14 @@
 #define size_t long unsigned int
 #endif
 %}
+
+/* Available random number generation algorithms.  */
+typedef enum
+{
+  GMP_RAND_ALG_DEFAULT = 0,
+  GMP_RAND_ALG_LC = GMP_RAND_ALG_DEFAULT /* Linear congruential.  */
+} gmp_randalg_t;
+
 
 typedef unsigned long int	mp_limb_t;
 
