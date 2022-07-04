@@ -9,6 +9,22 @@
 package arb;
 
 public class arb {
+  public static void gmp_randclear(GMPRandomState state) {
+    arbJNI.gmp_randclear(GMPRandomState.getCPtr(state), state);
+  }
+
+  public static void gmp_randinit_mt(GMPRandomState state) {
+    arbJNI.gmp_randinit_mt(GMPRandomState.getCPtr(state), state);
+  }
+
+  public static void gmp_randinit_default(GMPRandomState arg0) {
+    arbJNI.gmp_randinit_default(GMPRandomState.getCPtr(arg0), arg0);
+  }
+
+  public static void gmp_randseed_ui(GMPRandomState arg0, long arg1) {
+    arbJNI.gmp_randseed_ui(GMPRandomState.getCPtr(arg0), arg0, arg1);
+  }
+
   public static void arb_urandom(Real x, RandomState state, int prec) {
     arbJNI.arb_urandom(Real.getCPtr(x), x, RandomState.getCPtr(state), state, prec);
   }

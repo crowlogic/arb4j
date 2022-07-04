@@ -1,4 +1,11 @@
+void gmp_randclear (gmp_randstate_t state);
 
+void gmp_randinit_mt (gmp_randstate_t state);
+
+void gmp_randinit_default (gmp_randstate_t);
+
+void gmp_randseed_ui (gmp_randstate_t, unsigned long int);
+ 
 void arb_urandom(arb_t x, flint_rand_t state, slong prec);
  
 void arb_log(arb_t z, const arb_t x, slong prec);

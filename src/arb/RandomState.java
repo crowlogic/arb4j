@@ -8,7 +8,7 @@
 
 package arb;
 
-public class RandomState {
+public class RandomState implements AutoCloseable {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -35,6 +35,29 @@ public class RandomState {
       swigCPtr = 0;
     }
   }
+
+ static { System.loadLibrary( "arblib" ); }
+
+
+  public RandomState(int seed)
+  {
+    this();
+	arb.gmp_randinit_mt(getRandomState());
+    arb.gmp_randseed_ui(getRandomState(), seed);
+   	setInitialValue(seed);  
+  }
+  
+  public void clear()
+  {
+    arb.gmp_randclear(getRandomState());    
+  }
+  
+  @Override
+  public void close()
+  {
+    clear();
+  }
+  
 
   public void setRandomState(GMPRandomState value) {
     arbJNI.RandomState_randomState_set(swigCPtr, this, GMPRandomState.getCPtr(value), value);

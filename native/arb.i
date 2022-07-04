@@ -29,6 +29,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %rename (RandomAlgorithm) gmp_randalg_t;
 %rename (GMPRandomState) __gmp_randstate_struct;
 %rename (RandomState) flint_rand_s;
+
 %rename (FastDFTScheme) acb_dft_pre_struct;
 %rename (Integer) __mpz_struct;
 %rename (FloatInterval) arf_interval_struct;
@@ -78,6 +79,8 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %include "DirichletCharacter.i"
 
 %include "DirichletGroup.i"
+
+%include "RandomState.i"
 
 %include "TypesAndStructures.i"
 

@@ -301,6 +301,56 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_gmp_1randclear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  __gmp_randstate_struct *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(__gmp_randstate_struct **)&jarg1; 
+  gmp_randclear(arg1);
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_gmp_1randinit_1mt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  __gmp_randstate_struct *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(__gmp_randstate_struct **)&jarg1; 
+  gmp_randinit_mt(arg1);
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_gmp_1randinit_1default(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  __gmp_randstate_struct *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(__gmp_randstate_struct **)&jarg1; 
+  gmp_randinit_default(arg1);
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_gmp_1randseed_1ui(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  __gmp_randstate_struct *arg1 ;
+  unsigned long arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(__gmp_randstate_struct **)&jarg1; 
+  arg2 = (unsigned long)jarg2; 
+  gmp_randseed_ui(arg1,arg2);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1urandom(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   flint_rand_s *arg2 ;

@@ -9,6 +9,10 @@
 package arb;
 
 public class arbJNI {
+  public final static native void gmp_randclear(long jarg1, GMPRandomState jarg1_);
+  public final static native void gmp_randinit_mt(long jarg1, GMPRandomState jarg1_);
+  public final static native void gmp_randinit_default(long jarg1, GMPRandomState jarg1_);
+  public final static native void gmp_randseed_ui(long jarg1, GMPRandomState jarg1_, long jarg2);
   public final static native void arb_urandom(long jarg1, Real jarg1_, long jarg2, RandomState jarg2_, int jarg3);
   public final static native void arb_log(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_exp(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
