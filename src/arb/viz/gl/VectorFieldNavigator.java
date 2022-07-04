@@ -47,8 +47,7 @@ public class VectorFieldNavigator
     frame.getContentPane()
          .setPreferredSize(new Dimension(500,
                                          500));
-    JPlotterCanvas canvas = mkCanvas(useFallback(args));
-    
+    JPlotterCanvas   canvas   = mkCanvas(useFallback(args));
 
     CoordSysRenderer coordsys = new CoordSysRenderer(DefaultColorScheme.DARK.get());
     frame.getContentPane().setBackground(new Color(DefaultColorScheme.DARK.get().getColorBackground()));
@@ -56,30 +55,36 @@ public class VectorFieldNavigator
     CompleteRenderer content = new CompleteRenderer();
     coordsys.setContent(content);
 
-    XFunction            sfunc      = new XFunction(new Real().set("1",128));
+    XFunction            sfunc      = new XFunction(new Real().set("1", 128));
 
     // setup content
-    ThreadLocalComplex              p          = new ThreadLocalComplex(1);
-    ThreadLocalComplex              q          = new ThreadLocalComplex(1);
-    ThreadLocalReal                 s          = new ThreadLocalReal();
+    ThreadLocalComplex   p          = new ThreadLocalComplex(1);
+    ThreadLocalComplex   q          = new ThreadLocalComplex(1);
+    ThreadLocalReal      s          = new ThreadLocalReal();
     int                  prec       = 128;
 
     // setup content
-    DoubleBinaryOperator fu          = (x, y) -> sfunc.evaluate(p.get().set(21+x, y), 1, prec, q.get()).getReal().doubleValue();
-    DoubleBinaryOperator fv          = (x, y) -> sfunc.evaluate(p.get().set(21+x, y), 1, prec, q.get()).getImag().doubleValue();
-    
+    DoubleBinaryOperator fu         = (x,
+                                       y) -> Math.tanh(sfunc.evaluate(p.get().set(21 + x, y), 1, prec, q.get())
+                                                            .getReal()
+                                                            .doubleValue());
+    DoubleBinaryOperator fv         = (x,
+                                       y) -> Math.tanh(sfunc.evaluate(p.get().set(21 + x, y), 1, prec, q.get())
+                                                            .getImag()
+                                                            .doubleValue());
+
     // make quiver plot
-    Points quiver = new Points(DefaultGlyph.ARROW);
-    Color color = new Color(DefaultColorMap.Q_9_SET1.getColor(1));
-    final int resolution = 400;
+    Points               quiver     = new Points(DefaultGlyph.ARROW);
+    Color                color      = new Color(DefaultColorMap.Q_9_SET1.getColor(1));
+    final int            resolution = 50;
     for (int j = 0; j < resolution; j++)
     {
       double y = j * 2.0 / (resolution - 1) - 1.0;
       for (int i = 0; i < resolution; i++)
       {
-        double x = i * 2.0 / (resolution - 1) - 1.0;
-        double u = fu.applyAsDouble(x, y);
-        double v = fv.applyAsDouble(x, y);
+        double x         = i * 2.0 / (resolution - 1) - 1.0;
+        double u         = fu.applyAsDouble(x, y);
+        double v         = fv.applyAsDouble(x, y);
         double magnitude = Math.sqrt(u * u + v * v);
         quiver.addPoint(x, y)
               .setRotation(Math.atan2(v, u))
@@ -107,14 +112,15 @@ public class VectorFieldNavigator
 
       void calcTrajectory(Point mousePoint)
       {
-        Point2D point = coordsys.transformAWT2CoordSys(mousePoint, canvas.asComponent().getHeight());
-        double h = 0.02;
+        Point2D             point      = coordsys.transformAWT2CoordSys(mousePoint,
+                                                                        canvas.asComponent().getHeight());
+        double              h          = 0.02;
         LinkedList<Point2D> trajectory = new LinkedList<>();
         trajectory.add(point);
         for (int i = 0; i < 5000; i++)
         {
-          double x = point.getX();
-          double y = point.getY();
+          double x  = point.getX();
+          double y  = point.getY();
           // runge kutta 4
           double u0 = fu.applyAsDouble(x, y);
           double v0 = fv.applyAsDouble(x, y);

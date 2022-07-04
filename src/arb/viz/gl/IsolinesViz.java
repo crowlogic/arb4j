@@ -16,7 +16,7 @@ import javax.swing.SwingUtilities;
 import org.w3c.dom.Document;
 
 import arb.*;
-import arb.functions.complex.XFunction;
+import arb.functions.complex.*;
 import hageldave.jplotter.canvas.*;
 import hageldave.jplotter.color.*;
 import hageldave.jplotter.interaction.CoordSysPanning;
@@ -64,7 +64,7 @@ public class IsolinesViz
     coordsys.setLegendRightWidth(50);
     canvas.asComponent().setBackground(bgColor);
 
-    XFunction            sfunc      = new XFunction(new Real().set("4",128));
+    SFunction            sfunc      = new SFunction(new Real().set("4",128));
 
     // setup content
     ThreadLocalComplex              p          = new ThreadLocalComplex(1);
@@ -121,7 +121,7 @@ public class IsolinesViz
                            coordsys).register();
     new CoordSysPanning(canvas,
                         coordsys).register();
-    coordsys.setCoordinateView(-7,-5,10,5);
+    coordsys.setCoordinateView(-3,-3,6,6);
 
     Lines userContour  = new Lines();
     Text  userIsoLabel = new Text("",

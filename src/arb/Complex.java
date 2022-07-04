@@ -60,6 +60,7 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     return r;
   }
 
+  
   public Complex sqrt(int prec)
   {
     return sqrt(prec,this);

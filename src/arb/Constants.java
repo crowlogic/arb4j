@@ -7,6 +7,7 @@ public class Constants
   static
   {
     System.loadLibrary("arblib");
+   // radiansPerDegree = new Real().set("180",128).div(Constants.π, 128);
   }
   
   static int prec = 256;

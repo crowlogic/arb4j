@@ -28,20 +28,6 @@ public class FourierTransformTest
     InverseFourierTransform invf = new InverseFourierTransform<>(f);
     Real                    orig = invf.evaluate(val, 1, 128, new Real());
     System.out.println("orig=" + orig);
-    RealFunctionPlotter plotter = new RealFunctionPlotter(invf,
-                                                          new FloatInterval(-100,
-                                                                            100),
-                                                          new FloatInterval(-50,
-                                                                            400),
-                                                          500);
-    JFrame              frame   = new JFrame();
-    frame.getContentPane().add(plotter.asComponent());
-    frame.setTitle(f.getClass().getSimpleName());
-    frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    plotter.addCleanupOnWindowClosingListener(frame);
-
-    frame.pack();
-    frame.setVisible(true);
 
   }
 

@@ -33,6 +33,8 @@ import static arb.arb.*;
     return res;
   }
 
+
+  
   public Real resize(int alloc)
   {
     swigCPtr = SWIGTYPE_p_void.getCPtr(arb.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
@@ -236,7 +238,7 @@ import static arb.arb.*;
   public Real mul(int i, int prec, Real res)
   {
     arb.arb_mul_si(res, this, i, prec);
-    return this;
+    return res;
   }
  
   public Complex mul(Complex exp, int prec, Complex r)
