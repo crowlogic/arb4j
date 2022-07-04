@@ -36,37 +36,37 @@ public class RandomState {
     }
   }
 
-  public void setGmp_state(GMPRandomState value) {
-    arbJNI.RandomState_gmp_state_set(swigCPtr, this, GMPRandomState.getCPtr(value), value);
+  public void setRandomState(GMPRandomState value) {
+    arbJNI.RandomState_randomState_set(swigCPtr, this, GMPRandomState.getCPtr(value), value);
   }
 
-  public GMPRandomState getGmp_state() {
-    long cPtr = arbJNI.RandomState_gmp_state_get(swigCPtr, this);
+  public GMPRandomState getRandomState() {
+    long cPtr = arbJNI.RandomState_randomState_get(swigCPtr, this);
     return (cPtr == 0) ? null : new GMPRandomState(cPtr, false);
   }
 
-  public void setGmp_init(int value) {
-    arbJNI.RandomState_gmp_init_set(swigCPtr, this, value);
+  public void setInitialValue(int value) {
+    arbJNI.RandomState_initialValue_set(swigCPtr, this, value);
   }
 
-  public int getGmp_init() {
-    return arbJNI.RandomState_gmp_init_get(swigCPtr, this);
+  public int getInitialValue() {
+    return arbJNI.RandomState_initialValue_get(swigCPtr, this);
   }
 
-  public void set__randval(long value) {
-    arbJNI.RandomState___randval_set(swigCPtr, this, value);
+  public void setRandomValue(long value) {
+    arbJNI.RandomState_randomValue_set(swigCPtr, this, value);
   }
 
-  public long get__randval() {
-    return arbJNI.RandomState___randval_get(swigCPtr, this);
+  public long getRandomValue() {
+    return arbJNI.RandomState_randomValue_get(swigCPtr, this);
   }
 
-  public void set__randval2(long value) {
-    arbJNI.RandomState___randval2_set(swigCPtr, this, value);
+  public void setRandomValue2(long value) {
+    arbJNI.RandomState_randomValue2_set(swigCPtr, this, value);
   }
 
-  public long get__randval2() {
-    return arbJNI.RandomState___randval2_get(swigCPtr, this);
+  public long getRandomValue2() {
+    return arbJNI.RandomState_randomValue2_get(swigCPtr, this);
   }
 
   public RandomState() {

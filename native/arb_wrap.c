@@ -4845,7 +4845,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Integer(JNIEnv *jenv, jclass jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_GMPRandomState_1_1mp_1seed_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_GMPRandomState_1seed_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
   __mpz_struct *arg2 ;
   
@@ -4864,7 +4864,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_GMPRandomState_1_1mp_1seed_1set(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_GMPRandomState_1_1mp_1seed_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_GMPRandomState_1seed_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
   __mpz_struct *result = 0 ;
@@ -4879,7 +4879,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_GMPRandomState_1_1mp_1seed_1get(JNIEnv 
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_GMPRandomState_1_1mp_1alg_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_GMPRandomState_1algorithm_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
   gmp_randalg_t arg2 ;
   
@@ -4892,7 +4892,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_GMPRandomState_1_1mp_1alg_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_GMPRandomState_1_1mp_1alg_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_GMPRandomState_1algorithm_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
   gmp_randalg_t result;
@@ -4907,7 +4907,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_GMPRandomState_1_1mp_1alg_1get(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_GMPRandomState_1_1mp_1algdata_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_GMPRandomState_1algorithmData_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
   __gmp_randstate_struct__mp_algdata *result = 0 ;
@@ -4944,7 +4944,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1GMPRandomState(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI__1_1gmp_1randstate_1struct_1_1mp_1algdata_1_1mp_1lc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomAlgorithmData_1_1mp_1lc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __gmp_randstate_struct__mp_algdata *arg1 = (__gmp_randstate_struct__mp_algdata *) 0 ;
   void *arg2 = (void *) 0 ;
   
@@ -4957,7 +4957,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI__1_1gmp_1randstate_1struct_1_1mp_1algdat
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI__1_1gmp_1randstate_1struct_1_1mp_1algdata_1_1mp_1lc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomAlgorithmData_1_1mp_1lc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __gmp_randstate_struct__mp_algdata *arg1 = (__gmp_randstate_struct__mp_algdata *) 0 ;
   void *result = 0 ;
@@ -4972,7 +4972,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI__1_1gmp_1randstate_1struct_1_1mp_1algda
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1_1_1gmp_1randstate_1struct_1_1mp_1algdata(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1RandomAlgorithmData(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   __gmp_randstate_struct__mp_algdata *result = 0 ;
   
@@ -4984,7 +4984,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1_1_1gmp_1randstate_1struct_1_1mp_1
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1_1_1gmp_1randstate_1struct_1_1mp_1algdata(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1RandomAlgorithmData(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   __gmp_randstate_struct__mp_algdata *arg1 = (__gmp_randstate_struct__mp_algdata *) 0 ;
   
   (void)jenv;
@@ -4994,7 +4994,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1_1_1gmp_1randstate_1struct_1_1mp
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1gmp_1state_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1randomState_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   __gmp_randstate_struct *arg2 ;
   
@@ -5013,7 +5013,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1gmp_1state_1set(JNIEnv *jen
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1gmp_1state_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1randomState_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   __gmp_randstate_struct *result = 0 ;
@@ -5028,7 +5028,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1gmp_1state_1get(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1gmp_1init_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1initialValue_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   int arg2 ;
   
@@ -5041,7 +5041,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1gmp_1init_1set(JNIEnv *jenv
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_RandomState_1gmp_1init_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_RandomState_1initialValue_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   int result;
@@ -5056,7 +5056,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_RandomState_1gmp_1init_1get(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1_1_1randval_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1randomValue_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   mp_limb_t arg2 ;
   
@@ -5069,7 +5069,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1_1_1randval_1set(JNIEnv *je
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1_1_1randval_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1randomValue_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   mp_limb_t result;
@@ -5084,7 +5084,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1_1_1randval_1get(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1_1_1randval2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1randomValue2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   mp_limb_t arg2 ;
   
@@ -5097,7 +5097,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1_1_1randval2_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1_1_1randval2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1randomValue2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   mp_limb_t result;
