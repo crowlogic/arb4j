@@ -7,14 +7,14 @@ public class RandomTest extends
 {
   public static void testBoring()
   {
-    Real        rnd   = new Real();
+    Real rnd = new Real();
     rnd.printPrecision = true;
 
     RandomState state = new RandomState(405);
 
     for (int i = 0; i < 10; i++)
     {
-      arb.arb_urandom(rnd, state, 128);
+      rnd.random(state, 128);
       System.out.println(rnd);
     }
 

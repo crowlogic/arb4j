@@ -11,4 +11,5 @@ public interface ProbabilityDensity extends
     throw new UnsupportedOperationException( "TODO: return the Fourier transform of this");
   }
   
+ //public Real sample(Random)
 }

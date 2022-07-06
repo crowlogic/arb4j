@@ -8,6 +8,15 @@ public class UnitCenteredGaussianDensity implements
                                          ProbabilityDensity
 {
 
+  public static RealFunction inv = new RealFunction()
+  {
+    @Override
+    public Real evaluate(Real t, int order, int prec, Real res)
+    {
+      return Constants.ONE.div(t, prec, res).log(prec, res).sqrt(prec, res);
+    }
+  };
+
   @Override
   public int getInverseBranchCount()
   {
@@ -17,14 +26,7 @@ public class UnitCenteredGaussianDensity implements
   @Override
   public RealFunction inverse(int branch)
   {
-    return new RealFunction()
-    {
-      @Override
-      public Real evaluate(Real t, int order, int prec, Real res)
-      {
-        return Constants.ONE.div(t, prec, res).log(prec, res).sqrt(prec, res);
-      }
-    };
+    return inv;
   }
 
   @Override

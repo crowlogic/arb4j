@@ -59,7 +59,11 @@ public class Real implements Comparable<Real>, Field {
     return res;
   }
 
-
+  public Real random(RandomState state, int bits)
+  {
+    arb.arb_urandom(this, state, bits);
+    return this;
+  }
   
   public Real resize(int alloc)
   {
