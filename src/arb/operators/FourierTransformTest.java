@@ -15,10 +15,15 @@ public class FourierTransformTest
   {
     UnitCenteredGaussianDensity                   gaussian = new UnitCenteredGaussianDensity();
     FourierTransform<UnitCenteredGaussianDensity> f        = new FourierTransform(gaussian);
+
+    /**
+     * the Fourier transform of e^(-x^2) is <br>
+     * int(e^(-x^2)*e^(-i2πyx),x=-∞..+∞)=e^(-y^2*π^2)*sqrt[π]
+     */
     f.integrationOptions.verbose = false;
     Real input = new Real().set("0.75", 128);
     System.out.println("input=" + input);
-    
+
     Complex val = f.evaluate(input, 1, 128, new Complex());
     val.printPrecision = true;
     System.out.println("val " + val);
