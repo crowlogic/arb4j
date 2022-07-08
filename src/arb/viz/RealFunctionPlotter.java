@@ -10,6 +10,7 @@ import javax.swing.*;
 import arb.*;
 import arb.Float;
 import arb.functions.*;
+import arb.functions.complex.*;
 import arb.functions.real.*;
 import arb.operators.*;
 import hageldave.jplotter.canvas.*;
@@ -122,24 +123,6 @@ public class RealFunctionPlotter extends
 
   }
 
-  public RealFunctionPlotter(InverseFourierTransform invf,
-                             FloatInterval domain2,
-                             FloatInterval range2,
-                             int numPoints2)
-  {
-    this((z, o, p, r) ->
-    {
-      try ( Complex q = new Complex())
-      {
-        q.getReal().set(z);
-        return r.set(invf.evaluate(q, o, p, r));
-      }
-    },
-         domain2,
-         range2,
-         numPoints2);
-  }
-
   public void addLineSegment(double[] seriesAx, double[] seriesA, Lines lines, int i)
   {
     double         x1      = seriesAx[i], x2 = seriesAx[i + 1];
@@ -227,7 +210,7 @@ public class RealFunctionPlotter extends
     frame.setVisible(true);
   }
 
-  public static void plotFunction(InverseFourierTransform f)
+  public static void plotFunction(ComplexToRealFunction f)
   {
     RealFunctionPlotter plotter = new RealFunctionPlotter((z, o, p, r) ->
                                 {

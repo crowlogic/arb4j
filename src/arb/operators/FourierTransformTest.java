@@ -3,11 +3,8 @@ package arb.operators;
 import static arb.Constants.*;
 import static org.junit.Assert.*;
 
-import javax.swing.*;
-
 import arb.*;
 import arb.functions.real.densities.*;
-import arb.viz.*;
 
 public class FourierTransformTest
 {
@@ -15,7 +12,7 @@ public class FourierTransformTest
   public static void main(String args[])
   {
     UnitCenteredGaussianProbabilityDensity                   gaussian = new UnitCenteredGaussianProbabilityDensity();
-    FourierTransform<UnitCenteredGaussianProbabilityDensity> f        = new FourierTransform(gaussian);
+    FourierTransform<UnitCenteredGaussianProbabilityDensity> f        = new FourierTransform(gaussian, false);
 
     /**
      * the Fourier transform of e^(-x^2) is <br>
@@ -26,6 +23,7 @@ public class FourierTransformTest
     System.out.println("input=" + input);
 
     UnitCenteredGaussianCharacteristicFunction gaussianCharacteristic = new UnitCenteredGaussianCharacteristicFunction();
+    FourierTransform<UnitCenteredGaussianProbabilityDensity> f2        = new FourierTransform(gaussianCharacteristic, true);
 
     Complex                                    val                    = f.evaluate(input, 1, 128, new Complex());
     val.printPrecision = true;
@@ -34,17 +32,15 @@ public class FourierTransformTest
                  val.getReal().doubleValue(),
                  Math.pow(10, -17));
 
-    val = gaussianCharacteristic.evaluate(new Complex().set(input, ZERO.getReal()), 1, 128, val);
+    val.getImag().zero();
+    gaussianCharacteristic.evaluate(input, 1, 128, val.getReal());
+    
     System.out.println("input=" + input);
     val.printPrecision = true;
     System.out.println("'exact' value from gaussian characteristic function         " + val);
     assertEquals(0.0068789618474533993988662139429379749344661831855774,
                  val.getReal().doubleValue(),
                  Math.pow(10, -17));
-
-    InverseFourierTransform invf = new InverseFourierTransform<>(f);
-    Real                    orig = invf.evaluate(val, 1, 128, new Real());
-    System.out.println("orig=" + orig);
 
   }
 

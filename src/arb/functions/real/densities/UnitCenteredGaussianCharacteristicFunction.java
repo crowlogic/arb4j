@@ -10,7 +10,7 @@ public class UnitCenteredGaussianCharacteristicFunction implements
 {
 
   @Override
-  public Complex evaluate(Complex z, int order, int prec, Complex res)
+  public Real evaluate(Real z, int order, int prec, Real res)
   {
     order = Math.max(order, 1);
     assert order < 2;

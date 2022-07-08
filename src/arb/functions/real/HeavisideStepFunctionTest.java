@@ -19,12 +19,12 @@ public class HeavisideStepFunctionTest
     HeavisideStepFunction h    = new HeavisideStepFunction();
     Real                  step = h.evaluate(t, 1, 128, new Real());
     println("step=" + step);
-    FourierTransform<HeavisideStepFunction> ft = new FourierTransform<HeavisideStepFunction>(h);
+//    FourierTransform<HeavisideStepFunction> ft = new FourierTransform<HeavisideStepFunction>(h);
+
     // ft.left.assign("0.00000000001", 128 );
-    ft.integrationOptions.verbose = true;
-    println("t=" + t);
-    Complex z = ft.evaluate(t, 1, 128, new Complex());
-    println("z=" + z);
+    //ft.integrationOptions.verbose = true;
+
+   // println("z=" + z);
     // This should be equal to 1/(t*i) but its not
   }
 
