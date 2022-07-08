@@ -506,7 +506,7 @@ import static arb.arb.*;
 
   public Complex get(int index)
   {
-    assert index < dim;
+    assert index < dim : String.format( "index = %d >= dim = %d", index, dim );
     if ( index == 0 && dim == 1 )
     {
       return this;

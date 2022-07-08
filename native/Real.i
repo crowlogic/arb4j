@@ -220,10 +220,19 @@ import static arb.arb.*;
     return dim;
   }
  
+  public Real slice( int startInclusive, int endExclusive )
+  {
+    int sliceDim = endExclusive - startInclusive;
+    Real array = new Real( swigCPtr + startInclusive * BYTES, false );
+    array.elements = new Real[array.dim = sliceDim];
+    return array;
+  }
+     
   public static Real newVector( int dim )
   {
     Real array = arb._arb_vec_init(dim);    
     array.dim = dim;
+    array.elements = new Real[array.dim = dim];
     return array;
   }
  
@@ -318,9 +327,22 @@ import static arb.arb.*;
     return res;
   }
   
+    public Real[] elements;
+  
   public Real get( int index )
   {
-    return new Real(swigCPtr + index * Real.BYTES, false);  
+      assert index < dim : String.format( "index = %d >= dim = %d", index, dim );
+    if ( index == 0 && dim == 1 )
+    {
+      return this;
+    }
+    Real element = elements[index];
+    if (element == null)
+    {
+      element = new Real(swigCPtr + index * Real.BYTES,
+                            false);
+    }
+    return element;  
   }
    
   public String toFixedString()
