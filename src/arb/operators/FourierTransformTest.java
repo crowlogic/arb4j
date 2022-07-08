@@ -1,29 +1,41 @@
 package arb.operators;
 
+import static arb.util.Utils.println;
 import static org.junit.Assert.*;
+
+import java.awt.Point;
 
 import arb.*;
 import arb.probability.*;
+import junit.framework.TestCase;
 
-public class FourierTransformTest
+public class FourierTransformTest extends
+                                  TestCase
 {
-  public static void main(String args[])
+  public static final int prec = 128;
+
+  public static void testDuality()
   {
-    UnitCenteredGaussianProbabilityDensity                   gaussian = new UnitCenteredGaussianProbabilityDensity();
-    FourierTransform<UnitCenteredGaussianProbabilityDensity> f        = new FourierTransform(gaussian, false);
+    UnitCenteredGaussianProbabilityDensity                   f        = new UnitCenteredGaussianProbabilityDensity();
+    FourierTransform<UnitCenteredGaussianProbabilityDensity> φnumeric = new FourierTransform(f,
+                                                                                             false);
 
     /**
      * the Fourier transform of e^(-x^2) is <br>
      * int(e^(-x^2)*e^(-i2πyx),x=-∞..+∞)=e^(-y^2*π^2)*sqrt[π]
      */
-    f.integrationOptions.verbose = false;
-    Real input = new Real().set("0.75", 128);
-    System.out.println("input=" + input);
+    φnumeric.integrationOptions.verbose = false;
+    Real point = new Real().set("0.75", prec);
+    System.out.println("point=" + point);
 
-    UnitCenteredGaussianCharacteristicFunction gaussianCharacteristic = new UnitCenteredGaussianCharacteristicFunction();
-    FourierTransform<UnitCenteredGaussianProbabilityDensity> f2        = new FourierTransform(gaussianCharacteristic, true);
+    UnitCenteredGaussianCharacteristicFunction               φexact = new UnitCenteredGaussianCharacteristicFunction();
+    FourierTransform<UnitCenteredGaussianProbabilityDensity> f2     = new FourierTransform(φexact,
+                                                                                           true);
 
-    Complex                                    val                    = f.evaluate(input, 1, 128, new Complex());
+    Complex                                                  val    = φnumeric.evaluate(point,
+                                                                                        1,
+                                                                                        prec,
+                                                                                        new Complex());
     val.printPrecision = true;
     System.out.println("val from numerically integrated truncated Fourier transform of Gaussian density " + val);
     assertEquals(0.0068789618474533993988662139429379749344661831855774,
@@ -31,15 +43,24 @@ public class FourierTransformTest
                  Math.pow(10, -17));
 
     val.getImag().zero();
-    gaussianCharacteristic.evaluate(input, 1, 128, val.getReal());
-    
-    System.out.println("input=" + input);
+    φexact.evaluate(point, 1, prec, val.getReal());
+
+    System.out.println("input=" + point);
     val.printPrecision = true;
-    System.out.println("'exact' value from gaussian characteristic function         " + val);
+    System.out.println("'exact' value from gaussian characteristic function                             " + val);
     assertEquals(0.0068789618474533993988662139429379749344661831855774,
                  val.getReal().doubleValue(),
                  Math.pow(10, -17));
 
+    try ( Complex value = new Complex(); Complex value2 = new Complex();)
+    {
+      value.printPrecision = value2.printPrecision = true;
+      f.evaluate(point, 1, prec, value.getReal());
+      println(String.format("original f[%s]=%s", point, value));
+      f2.evaluate(point, 1, prec, value2);
+      println(String.format("inverted f[%s]=%s", point, value2));
+      assertEquals(value2.getReal().doubleValue(), value.getReal().doubleValue(), 0);
+    }
   }
 
 }
