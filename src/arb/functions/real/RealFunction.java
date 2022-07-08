@@ -11,6 +11,7 @@ package arb.functions.real;
 
 import static arb.util.Utils.*;
 import static java.lang.Math.*;
+import static java.lang.String.format;
 import static java.lang.System.*;
 
 import java.lang.Integer;
@@ -260,7 +261,7 @@ public interface RealFunction extends
 
     if (verbose)
     {
-      println(String.format("locateRoots(options=%s)", config));
+      println(String.format("%s.locateRoots(options=%s)", this, config));
     }
 
     try ( Real m = new Real(); Real v = new Real();)
@@ -286,11 +287,27 @@ public interface RealFunction extends
                                              int depth,
                                              RootLocatorConfiguration config)
   {
+    if (verbose)
+    {
+      println(format("%s.recursivelyLocateRoots(found=%s, root=%s, asign=%d, bsign=%d, depth=%d)\n",
+                     this,
+                     found,
+                     root,
+                     asign,
+                     bsign,
+                     depth,
+                     config));
+    }
     try ( RealRootInterval realRootInterval = new RealRootInterval();)
     {
       realRootInterval.set(root);
       if (found.evals >= config.maxEvals || found.size() >= config.maxFound)
       {
+        if (verbose)
+        {
+          println("the configured limit was hit at " + realRootInterval + " where the configuration is " + config
+                        + " and currently at " + found);
+        }
         found.add(realRootInterval);
       }
       else
@@ -304,7 +321,12 @@ public interface RealFunction extends
 
         if (status == RootStatus.RootLocated || depth >= config.maxDepth)
         {
+
           realRootInterval.status = status;
+          if (verbose)
+          {
+            println("located root within the interval " + realRootInterval);
+          }
           found.add(realRootInterval.set(root));
         }
         else

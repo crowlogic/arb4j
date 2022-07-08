@@ -3,7 +3,7 @@ package arb.functions.real;
 import arb.Real;
 
 public class RealSineFunction implements
-                          RealFunction
+                              RealFunction
 {
 
   @Override
@@ -29,6 +29,12 @@ public class RealSineFunction implements
     }
 
     return w;
+  }
+
+  @Override
+  public String toString()
+  {
+    return "sin";
   }
 
 }

@@ -25,6 +25,12 @@ public class ComplexCircle implements
                     ComplexFunction,
                     AutoCloseable
 {
+  @Override
+  public String toString()
+  {
+    return String.format("ComplexCircle[t=%s, h=%s]", t, h.toString(6));
+  }
+
   /**
    * Construct a rotation of a circle as a complex-valued function of a real
    * argument representing the angle

@@ -33,7 +33,7 @@ public class SFunction implements
   @Override
   public String toString()
   {
-    return String.format("S(quadraticScale=%s)", a.toString(5));
+    return String.format("S(a=%s)", a.toString(5));
   }
 
   @Override

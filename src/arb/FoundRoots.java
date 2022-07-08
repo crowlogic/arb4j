@@ -35,7 +35,7 @@ public class FoundRoots extends
   public String toString()
   {
     StringBuffer sb = new StringBuffer();
-    sb.append(String.format("FoundRoots[evals=%s, unknownCount=%s, foundCount=%s]={\n",
+    sb.append(String.format("FoundRoots[evals=%s, unknownCount=%s, foundCount=%s]={",
                             evals,
                             unknownCount,
                             foundCount));
@@ -49,7 +49,7 @@ public class FoundRoots extends
       sb.append(interval.toString());
       first = false;
     }
-    sb.append("}\n");
+    sb.append("}");
     return sb.toString();
   }
 

@@ -33,8 +33,8 @@ public class RealNewtonMapTest extends
     FoundRoots root = realAngle.locateRoots(new RootLocatorConfiguration(new RealRootInterval(-.8,
                                                                                               -0.7),
                                                                          150,
-                                                                         1,
                                                                          50000,
+                                                                         1,
                                                                          512));
     root.refine(realAngle, 256, 100, true);
     System.out.println("root=" + root);
