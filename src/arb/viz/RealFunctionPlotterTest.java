@@ -28,14 +28,6 @@ public class RealFunctionPlotterTest
                                                           range,
                                                           200);
 
-    JFrame                             frame = new JFrame();
-    frame.getContentPane().add(plotter.asComponent());
-    frame.setTitle(f.getClass().getSimpleName());
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    plotter.addCleanupOnWindowClosingListener(frame);
-
-    frame.pack();
-    frame.setVisible(true);
-
+    plotter.plot();
   }
 }

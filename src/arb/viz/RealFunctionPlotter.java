@@ -235,4 +235,17 @@ public class RealFunctionPlotter extends
     frame.setVisible(true);
   }
 
+  public JFrame plot()
+  {
+    JFrame                             frame = new JFrame();
+    frame.getContentPane().add(asComponent());
+    frame.setTitle(func.getClass().getSimpleName());
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    addCleanupOnWindowClosingListener(frame);
+
+    frame.pack();
+    frame.setVisible(true);
+    return frame;
+  }
+
 }

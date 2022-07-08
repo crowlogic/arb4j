@@ -48,7 +48,7 @@ public class GeodesicTracer<P extends ComplexFunction>
 
   P surface;
 
-  public void trace()
+  public void trace() throws InterruptedException
   {
     try ( Real θ = new Real(); Real ρ = new Real();
           CircularComposition<P> direction = new CircularComposition<P>(surface,
@@ -78,6 +78,14 @@ public class GeodesicTracer<P extends ComplexFunction>
       θ.getMid().sub(ρ.getMid(), 128, zeroPointInterval.getA());
       θ.getMid().add(ρ.getMid(), 128, zeroPointInterval.getB());
 
+      RealFunctionPlotter plotter = new RealFunctionPlotter(field,
+                                                            zeroPointInterval,
+                                                            new RealRootInterval(-0.02,
+                                                                                 0.02),
+                                                            500);
+      plotter.plot();
+
+      Thread.sleep(60 * 1000);
       System.out.println("Locating over " + zeroPointInterval);
       FoundRoots root = field.locateRoots(zeroPointInterval, 150, 1, 50000, 512);
       root.refine(field, 256, 100, true);

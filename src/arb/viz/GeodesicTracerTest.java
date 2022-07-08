@@ -8,7 +8,7 @@ import junit.framework.*;
 public class GeodesicTracerTest extends
                                 TestCase
 {
-  public static void testRealPartTrace()
+  public static void testRealPartTrace() throws InterruptedException
   {
     GeodesicTracer<SFunction> tracer = new GeodesicTracer<SFunction>(new SFunction(),
                                                                      new Real().set("0.01", 128),
