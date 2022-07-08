@@ -10,7 +10,7 @@ public class RandomTest extends
     Real rnd = new Real();
     rnd.printPrecision = true;
 
-    RandomState state = new RandomState(405);
+    RandomState state = new RandomState(406);
 
     for (int i = 0; i < 10; i++)
     {

@@ -4,7 +4,7 @@ import arb.*;
 import arb.functions.real.*;
 import arb.probability.*;
 
-public class UnitCenteredGaussianDensity implements
+public class UnitCenteredGaussianProbabilityDensity implements
                                          ProbabilityDensity
 {
 
