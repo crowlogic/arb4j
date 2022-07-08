@@ -1,9 +1,9 @@
 package arb.functions.real.dynamics;
 
 import arb.*;
-import arb.functions.complex.CircularS;
-import arb.functions.real.RealPart;
-import junit.framework.TestCase;
+import arb.functions.complex.*;
+import arb.functions.real.*;
+import junit.framework.*;
 
 public class RealNewtonMapTest extends
                                TestCase
@@ -30,12 +30,12 @@ public class RealNewtonMapTest extends
     }
     System.out.println("w=" + w);
     System.out.println("angle(w)=" + angle.evaluate(new Complex(w), 1, 512, new Complex()));
-    FoundRoots root = realAngle.locateRoots(new RealRootInterval(-.8,
-                                                                 -0.7),
-                                            150,
-                                            1,
-                                            50000,
-                                            512);
+    FoundRoots root = realAngle.locateRoots(new RootLocatorConfiguration(new RealRootInterval(-.8,
+                                                                                              -0.7),
+                                                                         150,
+                                                                         1,
+                                                                         50000,
+                                                                         512));
     root.refine(realAngle, 256, 100, true);
     System.out.println("root=" + root);
     Complex hmm = new Complex(root.get(0).getReal(new Real(), 128));

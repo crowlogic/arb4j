@@ -9,7 +9,7 @@ public class CircleSTest extends
   public void testCircleS()
   {
     try ( CircularS cs = new CircularS(Constants.ONE,
-                                   Constants.ONE))
+                                       Constants.ONE))
     {
       Complex πOver2 = new Complex();
       πOver2.getReal().pi(256).div(2, 256);
@@ -25,13 +25,13 @@ public class CircleSTest extends
       realCircleS.evaluate(πOver2, 3, 256, z);
       assertEquals(0.6, z.getReal().doubleValue(), Math.pow(10, -20));
 
-      FoundRoots turningPoints = cs.realPart()
-                                   .locateRoots(new RealRootInterval(0.5,
-                                                                     0.6),
-                                                50,
-                                                5000,
-                                                5,
-                                                256);
+      RootLocatorConfiguration rootLocatorConfiguration = new RootLocatorConfiguration(new RealRootInterval(0.5,
+                                                                                                            0.6),
+                                                                                       50,
+                                                                                       5000,
+                                                                                       5,
+                                                                                       256);
+      FoundRoots               turningPoints            = cs.realPart().locateRoots(rootLocatorConfiguration);
       System.out.println("Located " + turningPoints);
       turningPoints.refine(cs.realPart(), 256, 50, true);
       System.out.println("Refined " + turningPoints);

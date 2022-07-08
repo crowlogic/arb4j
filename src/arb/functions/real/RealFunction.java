@@ -9,16 +9,17 @@
  */
 package arb.functions.real;
 
-import static java.lang.Math.max;
-import static java.lang.System.out;
+import static arb.util.Utils.*;
+import static java.lang.Math.*;
+import static java.lang.System.*;
 
 import java.lang.Integer;
 
 import arb.*;
 import arb.Float;
-import arb.FloatInterval.RootStatus;
-import arb.RealRootInterval.RefinementResult;
-import arb.functions.Function;
+import arb.FloatInterval.*;
+import arb.RealRootInterval.*;
+import arb.functions.*;
 
 /**
  * Interface which defines a function from ℝ -> ℝ where ℝ is the set of real
@@ -29,8 +30,8 @@ public interface RealFunction extends
                               Function<Real, Real>
 {
 
-
-  public static final int FLINT_BITS = 64;
+  public int     FLINT_BITS = 64;
+  public boolean verbose    = true;
 
   public default RealFunction tanh()
   {
@@ -232,13 +233,13 @@ public interface RealFunction extends
    * 1+/-2^(-10^(100))
    * 
    * @param interval the region with which to locate the roots
-   * @param maxdepth Between 20 and 50 is usually sufficient for almost all
+   * @param maxDepth Between 20 and 50 is usually sufficient for almost all
    *                 functions
-   * @param maxevals If the total number of tested subintervals exceeds maxeval,
+   * @param maxEvals If the total number of tested subintervals exceeds maxeval,
    *                 the algorithm is terminated and any untested subintervals are
    *                 added to the output. Between 100 and 100000 is usually
    *                 sufficient.
-   * @param maxfound The algorithm terminates if maxfound roots have been located.
+   * @param maxFound The algorithm terminates if maxfound roots have been located.
    *                 In particular, setting maxfound to 1 can be used to locate
    *                 just one root of the function even if there are numerous
    *                 roots. To try to find all roots, LONG_MAX may be passed.
@@ -248,57 +249,60 @@ public interface RealFunction extends
    *                 does not make sense for maxdepth to exceed prec.
    * @return a new instance of {@link FoundRoots}
    */
-  public default FoundRoots
-         locateRoots(RealRootInterval interval, int maxdepth, int maxevals, int maxfound, int prec)
+  public default FoundRoots locateRoots(RootLocatorConfiguration config)
   {
-    FoundRoots roots  = new FoundRoots();
-    int        asign, bsign;
-    long       length = 0, alloc = 0;
+    assert config.maxDepth > 1 : "you probably dont really want the max recursion limit to be less than 2";
+    FoundRoots       roots    = new FoundRoots();
+    int              asign, bsign;
+    long             length   = 0, alloc = 0;
+    RealRootInterval interval = config.interval;
+    int              prec     = config.prec;
+
+    if (verbose)
+    {
+      println(String.format("locateRoots(options=%s)", config));
+    }
 
     try ( Real m = new Real(); Real v = new Real();)
     {
       m.setMid(interval.getA());
+      roots.evals++;
       asign = evaluate(m, 1, prec, v).sign();
 
       m.setMid(interval.getB());
+      roots.evals++;
       bsign = evaluate(m, 1, prec, v).sign();
-
     }
 
-    roots.evals += 2;
-    recursivelyLocateRoots(roots, interval, asign, bsign, 0, maxdepth, maxevals, maxfound, prec);
+    recursivelyLocateRoots(roots, interval, asign, bsign, 0, config);
 
     return roots;
   }
 
-  @SuppressWarnings("resource")
   public default void recursivelyLocateRoots(FoundRoots found,
                                              RealRootInterval root,
                                              int asign,
                                              int bsign,
                                              int depth,
-                                             int maxDepth,
-                                             int maxEvals,
-                                             int maxFound,
-                                             int prec)
+                                             RootLocatorConfiguration config)
   {
-    RealRootInterval realRootInterval = new RealRootInterval();
+    try ( RealRootInterval realRootInterval = new RealRootInterval();)
     {
       realRootInterval.set(root);
-      if (found.evals >= maxEvals || found.size() >= maxFound)
+      if (found.evals >= config.maxEvals || found.size() >= config.maxFound)
       {
         found.add(realRootInterval);
       }
       else
       {
-        RootStatus status = root.determineRootStatus(found, this, asign, bsign, prec);
+        RootStatus status = root.determineRootStatus(found, this, asign, bsign, config.prec);
         if (status == RootStatus.NoRoot)
         {
           realRootInterval.close();
           return;
         }
 
-        if (status == RootStatus.RootLocated || depth >= maxDepth)
+        if (status == RootStatus.RootLocated || depth >= config.maxDepth)
         {
           realRootInterval.status = status;
           found.add(realRootInterval.set(root));
@@ -306,7 +310,7 @@ public interface RealFunction extends
         else
         {
           realRootInterval.close();
-          if (!root.split(this, found, asign, bsign, depth, maxDepth, maxEvals, maxFound, prec))
+          if (!root.split(this, found, asign, bsign, depth, config))
           {
             out.println("Possible zero at midpoint of " + this);
           }
@@ -317,8 +321,8 @@ public interface RealFunction extends
 
   /**
    * 
-   * @param left
-   * @param right
+   * @param left  output
+   * @param right output
    * @param block input: the interval to be partitioned
    * @param prec
    * @return the sign of this function evaluated at the midpoint of block with a
@@ -341,6 +345,11 @@ public interface RealFunction extends
       left.getB().assign(u);
       right.getA().assign(u);
       right.getB().assign(block.getB());
+
+      if (verbose)
+      {
+        println(String.format("calculatePartition: u=%s sign=%s\n left=%s\n right=%s\n", u, sign, left, right));
+      }
 
       return sign;
     }

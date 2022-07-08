@@ -1,8 +1,8 @@
 package arb;
 
-import static java.lang.System.out;
+import static java.lang.System.*;
 
-import arb.functions.real.RealFunction;
+import arb.functions.real.*;
 
 public class RealRootInterval extends
                               FloatInterval
@@ -50,6 +50,7 @@ public class RealRootInterval extends
 
   /**
    * Splits this interval into two halves
+   * 
    * @param f
    * @param found
    * @param asign
@@ -59,30 +60,22 @@ public class RealRootInterval extends
    * @param maxEvals
    * @param maxFound
    * @param prec
-   * @return
+   * @return false if
    */
-  public boolean split(RealFunction func,
-                       FoundRoots found,
-                       int asign,
-                       int bsign,
-                       int depth,
-                       int maxDepth,
-                       int maxEvals,
-                       int maxFound,
-                       int prec)
+  public boolean
+         split(RealFunction func, FoundRoots found, int asign, int bsign, int depth, RootLocatorConfiguration config)
   {
-
     try ( RealRootInterval L = new RealRootInterval(); RealRootInterval R = new RealRootInterval();)
     {
-      int msign = func.calculatePartition(L, R, this, prec);
+      int msign = func.calculatePartition(L, R, this, config.prec);
       found.evals++;
       if (msign == 0)
       {
         return false;
       }
 
-      func.recursivelyLocateRoots(found, L, asign, msign, depth + 1, maxDepth, maxEvals, maxFound, prec);
-      func.recursivelyLocateRoots(found, R, msign, bsign, depth + 1, maxDepth, maxEvals, maxFound, prec);
+      func.recursivelyLocateRoots(found, L, asign, msign, depth + 1, config);
+      func.recursivelyLocateRoots(found, R, msign, bsign, depth + 1, config);
     }
     return true;
   }
@@ -155,14 +148,20 @@ public class RealRootInterval extends
 
     if (bisectAndRefine(func, v, convergenceRegion, 5, lowPrec) != RefinementResult.Success)
     {
-      System.out.println("Bisection failed");
+      if (RealFunction.verbose)
+      {
+        System.out.println("Bisection failed");
+      }
     }
     else
     {
 
       if (convergenceRegion.bisectAndRefine(func, v, this, 5, lowPrec) != RefinementResult.Success)
       {
-        System.out.println("second Bisection failed");
+        if (RealFunction.verbose)
+        {
+          System.out.println("second Bisection failed");
+        }
       }
 
     }
@@ -179,9 +178,16 @@ public class RealRootInterval extends
                                                               verbose);
     if (refinementResult != RefinementResult.Success)
     {
-      out.format("Warning: some newton steps failed: refinementResult=%s\n", refinementResult);
+      if (RealFunction.verbose)
+      {
+        out.format("Warning: some newton steps failed: refinementResult=%s\n", refinementResult);
+      }
+
     }
-    System.out.println("Refined root: " + v);
+    if (RealFunction.verbose)
+    {
+      System.out.println("Refined root: " + v);
+    }
     return v;
 
   }
@@ -220,7 +226,7 @@ public class RealRootInterval extends
           /*
            * TODO: handle the case where the value at the midpoint is actually zero even
            * though it can't be distinguished via sign comparison zero, this should be
-           * just checking isZero before returning NoConvergence
+           * just checking isZero before returning NoConvergence.. right?
            */
           if (msign == 0)
           {

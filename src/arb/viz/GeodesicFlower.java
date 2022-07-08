@@ -25,7 +25,7 @@ import arb.functions.real.*;
  *
  * @param <P>
  */
-public class GeodesicTracer<P extends ComplexFunction>
+public class GeodesicFlower<P extends ComplexFunction>
 {
 
   public Real dt;
@@ -39,19 +39,25 @@ public class GeodesicTracer<P extends ComplexFunction>
    Magnitude
   };
 
-  public GeodesicTracer(P surface, Real h, What part)
+  public Complex t;
+
+  public Real    θ = new Real();
+
+  public Real    ρ = new Real();
+
+  public GeodesicFlower(P surface, Complex t0, Real dt, What part)
   {
     this.surface = surface;
-    this.dt      = h;
+    this.dt      = dt;
+    this.t       = t0;
     this.what    = part;
   }
 
   P surface;
 
-  public void trace() throws InterruptedException
+  public void flow() throws InterruptedException
   {
-    try ( Real θ = new Real(); Real ρ = new Real();
-          CircularComposition<P> direction = new CircularComposition<P>(surface,
+    try ( CircularComposition<P> direction = new CircularComposition<P>(surface,
                                                                         new ComplexCircle(ZERO,
                                                                                           dt));)
     {
@@ -80,19 +86,28 @@ public class GeodesicTracer<P extends ComplexFunction>
 
       RealFunctionPlotter plotter = new RealFunctionPlotter(field,
                                                             zeroPointInterval,
-                                                            new RealRootInterval(-0.02,
-                                                                                 0.02),
+                                                            new RealRootInterval(-0.001,
+                                                                                 0.001),
                                                             500);
       plotter.plot();
 
-      Thread.sleep(60 * 1000);
       System.out.println("Locating over " + zeroPointInterval);
-      FoundRoots root = field.locateRoots(zeroPointInterval, 150, 1, 50000, 512);
+
+      FoundRoots root = field.locateRoots(new RootLocatorConfiguration(zeroPointInterval,
+                                                                       1500,
+                                                                       50000,
+                                                                       1,
+                                                                       512));
+      System.out.println("Located  " + zeroPointInterval);
+      System.out.println("Refining...");
       root.refine(field, 256, 100, true);
       System.out.println("root=" + root);
       Complex hmm = new Complex(root.get(0).getReal(new Real(), 128));
 
       System.out.println("angle(w)=" + direction.evaluate(hmm, 1, 512, new Complex()));
+
+      Thread.sleep(60 * 1000);
+
     }
 
   }
