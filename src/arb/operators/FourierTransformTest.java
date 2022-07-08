@@ -1,14 +1,12 @@
 package arb.operators;
 
-import static arb.Constants.*;
 import static org.junit.Assert.*;
 
 import arb.*;
-import arb.functions.real.densities.*;
+import arb.probability.*;
 
 public class FourierTransformTest
 {
-
   public static void main(String args[])
   {
     UnitCenteredGaussianProbabilityDensity                   gaussian = new UnitCenteredGaussianProbabilityDensity();
@@ -27,7 +25,7 @@ public class FourierTransformTest
 
     Complex                                    val                    = f.evaluate(input, 1, 128, new Complex());
     val.printPrecision = true;
-    System.out.println("val from numerically integrated truncated Fourier transform " + val);
+    System.out.println("val from numerically integrated truncated Fourier transform of Gaussian density " + val);
     assertEquals(0.0068789618474533993988662139429379749344661831855774,
                  val.getReal().doubleValue(),
                  Math.pow(10, -17));

@@ -1,6 +1,5 @@
 package arb.stochastic.processes;
 
-import arb.functions.real.densities.*;
 import arb.probability.*;
 import arb.stochastic.*;
 

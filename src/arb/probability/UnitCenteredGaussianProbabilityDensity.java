@@ -1,8 +1,7 @@
-package arb.functions.real.densities;
+package arb.probability;
 
 import arb.*;
 import arb.functions.real.*;
-import arb.probability.*;
 
 public class UnitCenteredGaussianProbabilityDensity implements
                                          ProbabilityDensity
