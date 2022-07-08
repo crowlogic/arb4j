@@ -52,6 +52,9 @@ public class FourierTransformTest extends
                  val.getReal().doubleValue(),
                  Math.pow(10, -17));
 
+    /**
+     * TODO: also test the numerically inverted numerically integrated Fourier transform
+     */
     try ( Complex value = new Complex(); Complex value2 = new Complex();)
     {
       value.printPrecision = value2.printPrecision = true;
