@@ -69,7 +69,7 @@ public class FoundRoots extends
   public void refine(RealFunction func, int prec, int digits, boolean verbose)
   {
 
-    try ( Real w = Real.newVector(3); Real v = new Real(); Real u = new Real();
+    try ( Real w = Real.newVector(3); Real v = new Real(); RealRootInterval u = new RealRootInterval();
           RealRootInterval convergenceRegion = new RealRootInterval(); Float convergenceFactor = new Float())
     {
       for (RealRootInterval rootInterval : this)
@@ -81,6 +81,7 @@ public class FoundRoots extends
                                                  digits,
                                                  w,
                                                  v,
+                                                 u,
                                                  convergenceRegion,
                                                  convergenceFactor,
                                                  verbose);

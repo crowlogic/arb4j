@@ -363,10 +363,10 @@ public interface RealFunction extends
       int sign = evaluate(m.set(u), 1, prec, t).sign();
 
       /* split the interval at the midpoint */
-      left.getA().assign(block.getA());
-      left.getB().assign(u);
-      right.getA().assign(u);
-      right.getB().assign(block.getB());
+      left.setA(block.getA());
+      left.setB(u);
+      right.setA(u);
+      right.setB(block.getB());
 
       if (verbose)
       {

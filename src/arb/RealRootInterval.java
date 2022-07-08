@@ -137,6 +137,7 @@ public class RealRootInterval extends
    * @param highPrec
    * @param w                 3-vector of Taylor jet
    * @param v                 input/output result
+   * @param u
    * @param convergenceRegion output
    * @param convergenceFactor output
    * @param rootInterval
@@ -147,18 +148,14 @@ public class RealRootInterval extends
                      int digits,
                      Real w,
                      Real v,
+                     RealRootInterval u,
                      RealRootInterval convergenceRegion,
                      Float convergenceFactor,
                      boolean verbose)
   {
     if (RealFunction.verbose)
     {
-      println(format("%s.refine(func=%s, lowPrec=%d, digits=%d))",
-                     this,
-                     func,
-                     lowPrec,
-                     digits
-                     ));
+      println(format("%s.refine(func=%s, lowPrec=%d, digits=%d))", this, func, lowPrec, digits));
     }
     int highPrec = (int) (digits * 3.32192809488736 + 10);
 
@@ -167,7 +164,7 @@ public class RealRootInterval extends
       return null;
     }
 
-    if (bisectAndRefine(func, v, convergenceRegion, 5, lowPrec) != RefinementResult.Success)
+    if (bisectAndRefine(func, v, convergenceRegion, u, 5, lowPrec) != RefinementResult.Success)
     {
       if (RealFunction.verbose)
       {
@@ -177,7 +174,7 @@ public class RealRootInterval extends
     else
     {
 
-      if (convergenceRegion.bisectAndRefine(func, v, this, 5, lowPrec) != RefinementResult.Success)
+      if (convergenceRegion.bisectAndRefine(func, v, this, u, 5, lowPrec) != RefinementResult.Success)
       {
         if (RealFunction.verbose)
         {
@@ -222,13 +219,14 @@ public class RealRootInterval extends
    * @param prec
    * @return
    */
-  public RefinementResult bisectAndRefine(RealFunction func, Real v, RealRootInterval t, int iters, int prec)
+  public RefinementResult
+         bisectAndRefine(RealFunction func, Real v, RealRootInterval t, RealRootInterval u, int iters, int prec)
   {
     if (RealFunction.verbose)
     {
       println(String.format("%s.bisectAndRefine(func=%s, t=%s, iters=%s, prec=%s)\n", this, func, t, iters, prec));
     }
-    try ( Real m = new Real(); RealRootInterval u = new RealRootInterval();)
+    try ( Real m = new Real();)
     {
       m.setMid(getA());
 
