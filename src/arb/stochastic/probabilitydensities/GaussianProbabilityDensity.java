@@ -22,6 +22,12 @@ import arb.functions.real.RealFunction;
 public class GaussianProbabilityDensity implements
                                         ProbabilityDensity
 {
+  @Override
+  public String toString()
+  {
+    return "N[μ=" + μ.toString(5) + ", σ=" + σ.toString(5) + "]";
+  }
+
   /**
    * The parameter μ is the mean or expectation of the distribution (and also its
    * median and mode)
