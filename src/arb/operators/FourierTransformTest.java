@@ -1,13 +1,12 @@
 package arb.operators;
 
 import static arb.util.Utils.println;
-import static org.junit.Assert.*;
 
-import java.awt.Point;
-
-import arb.*;
+import arb.Complex;
+import arb.Real;
 import arb.functions.real.RealPart;
-import arb.probability.*;
+import arb.stochastic.characteristicfunctions.UnitCenteredGaussianCharacteristicFunction;
+import arb.stochastic.probabilitydensities.UnitCenteredGaussianProbabilityDensity;
 import junit.framework.TestCase;
 
 public class FourierTransformTest extends

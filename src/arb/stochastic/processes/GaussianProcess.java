@@ -1,22 +1,42 @@
 package arb.stochastic.processes;
 
-import arb.probability.*;
-import arb.stochastic.*;
+import arb.Real;
+import arb.stochastic.characteristicfunctions.*;
+import arb.stochastic.probabilitydensities.GaussianProbabilityDensity;
+import arb.stochastic.probabilitydensities.ProbabilityDensity;
 
+/**
+ * A Gaussian "white noise" process of specified mean and standard deviation
+ * 
+ *
+ */
 public class GaussianProcess implements
-                             StochasticProcess
+                             LévyProcess
 {
+
+  public GaussianProcess(Real μ, Real σ)
+  {
+    super();
+    this.p = new GaussianProbabilityDensity(μ,
+                                            σ);
+    φ      = new GaussianCharacteristicFunction(μ,
+                                                σ);
+  }
+
+  public GaussianProbabilityDensity     p;
+
+  public GaussianCharacteristicFunction φ;
 
   @Override
   public ProbabilityDensity getProbabilityDensity()
   {
-    return new UnitCenteredGaussianProbabilityDensity();
+    return p;
   }
 
   @Override
   public CharacteristicFunction getCharacteristicFunction()
   {
-    throw new UnsupportedOperationException("TODO: implement");
+    return φ;
   }
 
 }

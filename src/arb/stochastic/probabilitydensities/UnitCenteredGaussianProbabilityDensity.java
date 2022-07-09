@@ -1,4 +1,4 @@
-package arb.probability;
+package arb.stochastic.probabilitydensities;
 
 import arb.*;
 import arb.functions.real.*;

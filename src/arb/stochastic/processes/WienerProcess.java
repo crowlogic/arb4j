@@ -1,0 +1,40 @@
+package arb.stochastic.processes;
+
+import arb.stochastic.characteristicfunctions.CharacteristicFunction;
+import arb.stochastic.probabilitydensities.ProbabilityDensity;
+
+/**
+ * The Wiener process W(t) is characterised by the following properties:
+ * 
+ * 1. W(0) = 0<br>
+ * 
+ * 2. W has independent increments: for every t > 0 the future increments
+ * W(t+u)-W(t)∀u≥0 are independent of the past values {W(s):s≤t}<br>
+ * 
+ * 3. W has Gaussian increments: W(t+u)−W(t) is normally distributed with mean 0
+ * and variance u with W(t+u)−W(t)∼N(0,u)<br>
+ * 
+ * 4. W has continuous paths: W(t) is continuous in t<br>
+ * 
+ * @author crow
+ * @see https://en.wikipedia.org/wiki/Wiener_process
+ */
+public class WienerProcess implements
+                           LévyProcess
+{
+
+  @Override
+  public ProbabilityDensity getProbabilityDensity()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public CharacteristicFunction getCharacteristicFunction()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+}
