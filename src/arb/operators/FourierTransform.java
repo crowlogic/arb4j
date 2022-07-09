@@ -50,6 +50,8 @@ public class FourierTransform<F extends RealFunction> implements
       }
     };
 
+    integrationOptions.verbose = RealFunction.verbose;
+    
     return integrand.integrate(left,
                                right,
                                relativeAccuracyBitsGoal,

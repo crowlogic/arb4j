@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import java.awt.Point;
 
 import arb.*;
+import arb.functions.real.RealPart;
 import arb.probability.*;
 import junit.framework.TestCase;
 
@@ -52,17 +53,20 @@ public class FourierTransformTest extends
                  val.getReal().doubleValue(),
                  Math.pow(10, -17));
 
-    /**
-     * TODO: also test the numerically inverted numerically integrated Fourier transform
-     */
-    try ( Complex value = new Complex(); Complex value2 = new Complex();)
+    FourierTransform<RealPart<?>> f3 = new FourierTransform(new RealPart(φnumeric),
+                                                            true);
+  
+    try ( Complex value = new Complex(); Complex value2 = new Complex(); Complex value3 = new Complex(); )
     {
       value.printPrecision = value2.printPrecision = true;
       f.evaluate(point, 1, prec, value.getReal());
       println(String.format("original f[%s]=%s", point, value));
       f2.evaluate(point, 1, prec, value2);
-      println(String.format("inverted f[%s]=%s", point, value2));
+      println(String.format("inverted exact f[%s]=%s", point, value2));
       assertEquals(value2.getReal().doubleValue(), value.getReal().doubleValue(), 0);
+      f3.evaluate(point, 1, prec, value3);
+      println(String.format("inverted numericly f[%s]=%s", point, value3));
+     // assertEquals(value3.getReal().doubleValue(), value.getReal().doubleValue(), 0);
     }
   }
 
