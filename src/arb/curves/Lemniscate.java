@@ -56,9 +56,9 @@ public class Lemniscate implements
     this.scale = scale;
   }
 
-  private static final Complex imaginaryUnit = Constants.IMAGINARY_UNIT;
+  private static final Complex imaginaryUnit = Constants.imaginaryUnit;
 
-  private static final Complex ONE           = Constants.COMPLEX_ONE;
+  private static final Complex ONE           = Constants.complexOne;
 
   Real                         scale;
 

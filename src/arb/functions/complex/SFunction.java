@@ -66,7 +66,7 @@ public class SFunction implements
     };
   }
 
-  private static final Complex ONE = COMPLEX_ONE;
+  private static final Complex ONE = complexOne;
 
   public Real                  a;
 
@@ -78,7 +78,7 @@ public class SFunction implements
 
   public SFunction()
   {
-    this(Constants.ONE);
+    this(Constants.one);
   }
 
   public SFunction(Real a)

@@ -8,8 +8,8 @@ public class CircleSTest extends
 {
   public void testCircleS()
   {
-    try ( CircularS cs = new CircularS(Constants.ONE,
-                                       Constants.ONE))
+    try ( CircularS cs = new CircularS(Constants.one,
+                                       Constants.one))
     {
       Complex πOver2 = new Complex();
       πOver2.getReal().pi(256).div(2, 256);

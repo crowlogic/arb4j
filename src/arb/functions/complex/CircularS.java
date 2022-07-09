@@ -68,7 +68,7 @@ public class CircularS extends
   {
     this(new SFunction(),
          new ComplexCircle(ZERO,
-                           ONE));
+                           one));
   }
 
   public CircularS(Complex t, Real sFuncScale, Real h)

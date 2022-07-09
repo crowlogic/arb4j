@@ -45,7 +45,7 @@ public class Circle implements
   public Circle()
   {
     this(Constants.ZERO,
-         Constants.ONE);
+         Constants.one);
   }
 
   Complex            t;

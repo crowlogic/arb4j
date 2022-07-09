@@ -1,6 +1,6 @@
 package arb.curves;
 
-import static arb.Constants.HALF;
+import static arb.Constants.half;
 import static java.lang.System.out;
 
 import arb.*;
@@ -15,7 +15,7 @@ public class LemniscateTest extends
   public static void testLemniscate()
   {
     Lemniscate lem = new Lemniscate();
-    Complex    w   = lem.evaluate(Constants.COMPLEX_ONE.getReal(), 2, 555, Complex.newVector(2));
+    Complex    w   = lem.evaluate(Constants.complexOne.getReal(), 2, 555, Complex.newVector(2));
     assertEquals(0.6326452950883671, w.getReal().doubleValue(), 4.31E-21);
     assertEquals(0.5323526594920905, w.getImag().doubleValue(), 3.53E-22);
     assertEquals(-1.3220770748926536, w.get(1).getReal().doubleValue(), 2.02E-21);
@@ -39,9 +39,9 @@ public class LemniscateTest extends
                                    return w;
                                  };
 
-    Complex               l1     = l.evaluate(Constants.COMPLEX_ONE.getReal(), 2, 256, Complex.newVector(2));
-    Complex               dl1    = dl.evaluate(Constants.COMPLEX_ONE.getReal(), 1, 256, Complex.newVector(1));
-    Complex               absdl1 = absdl.evaluate(Constants.COMPLEX_ONE.getReal(), 1, 256, new Complex());
+    Complex               l1     = l.evaluate(Constants.complexOne.getReal(), 2, 256, Complex.newVector(2));
+    Complex               dl1    = dl.evaluate(Constants.complexOne.getReal(), 1, 256, Complex.newVector(1));
+    Complex               absdl1 = absdl.evaluate(Constants.complexOne.getReal(), 1, 256, new Complex());
     System.out.println("l'(1)=" + dl1);
     System.out.println("|l'(1)|=" + absdl1);
     assertTrue(l1.get(1).sub(dl1, 256, new Complex()).containsZero());
@@ -78,7 +78,7 @@ public class LemniscateTest extends
     out.println("b=" + b);
     IntegrationOptions opts             = new IntegrationOptions();
     // opts.verbose = true;
-    Complex            abslprimeonehalf = absdf.evaluate(HALF, 1, prec, new Complex());
+    Complex            abslprimeonehalf = absdf.evaluate(half, 1, prec, new Complex());
     System.out.format("|l'(1/2)|=%s\n", abslprimeonehalf);
     opts.useHeap = false;
     absdf.integrate(a, b, prec, absErr, opts, prec, integral);

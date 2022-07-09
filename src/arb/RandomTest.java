@@ -18,7 +18,7 @@ public class RandomTest extends
         x.add(rnd.random(state, 128), 128, x);
       }
       x.div(n / 2, 128);
-      assertEquals(Constants.ONE.doubleValue(), x.doubleValue(), Math.pow(10, -3));
+      assertEquals(Constants.one.doubleValue(), x.doubleValue(), Math.pow(10, -3));
     }
   }
 }

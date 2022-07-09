@@ -14,7 +14,7 @@ public class CoshRenderer
 {
 
  
-  static TFunction T = new TFunction(Constants.ONE);
+  static TFunction T = new TFunction(Constants.one);
 
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
