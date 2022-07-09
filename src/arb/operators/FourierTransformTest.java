@@ -55,8 +55,8 @@ public class FourierTransformTest extends
 
     FourierTransform<RealPart<?>> f3 = new FourierTransform(new RealPart(φnumeric),
                                                             true);
-  
-    try ( Complex value = new Complex(); Complex value2 = new Complex(); Complex value3 = new Complex(); )
+
+    try ( Complex value = new Complex(); Complex value2 = new Complex(); Complex value3 = new Complex();)
     {
       value.printPrecision = value2.printPrecision = true;
       f.evaluate(point, 1, prec, value.getReal());
@@ -66,7 +66,8 @@ public class FourierTransformTest extends
       assertEquals(value2.getReal().doubleValue(), value.getReal().doubleValue(), 0);
       f3.evaluate(point, 1, prec, value3);
       println(String.format("inverted numericly f[%s]=%s", point, value3));
-     // assertEquals(value3.getReal().doubleValue(), value.getReal().doubleValue(), 0);
+      // assertEquals(value3.getReal().doubleValue(), value.getReal().doubleValue(),
+      // 0);
     }
   }
 
