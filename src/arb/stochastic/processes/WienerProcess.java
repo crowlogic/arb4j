@@ -5,7 +5,7 @@ import arb.stochastic.probabilitydensities.ProbabilityDensity;
 
 /**
  * The Wiener process W(t) is an integral of the white-noise
- * {@link GaussianProcess} characterized by the following properties:
+ * {@link GaussianProcess} characterized by the following properties:<br>
  * 
  * 1. W(0) = 0<br>
  * 
