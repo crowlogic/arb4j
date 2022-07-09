@@ -1,4 +1,4 @@
-package arb.stochastic.probabilitydensities;
+package arb.stochastic.densities;
 
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;

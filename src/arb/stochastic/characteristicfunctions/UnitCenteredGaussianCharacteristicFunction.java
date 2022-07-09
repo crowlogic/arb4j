@@ -3,7 +3,7 @@ package arb.stochastic.characteristicfunctions;
 import static arb.Constants.*;
 
 import arb.*;
-import arb.stochastic.probabilitydensities.UnitCenteredGaussianProbabilityDensity;
+import arb.stochastic.densities.*;
 
 public class UnitCenteredGaussianCharacteristicFunction implements
                                                         CharacteristicFunction<UnitCenteredGaussianProbabilityDensity>

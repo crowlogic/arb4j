@@ -1,7 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.stochastic.characteristicfunctions.CharacteristicFunction;
-import arb.stochastic.probabilitydensities.ProbabilityDensity;
+import arb.stochastic.densities.*;
 
 /**
  * The Wiener process W(t) is an integral of the white-noise

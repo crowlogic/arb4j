@@ -6,7 +6,7 @@ import arb.Complex;
 import arb.Real;
 import arb.functions.real.RealPart;
 import arb.stochastic.characteristicfunctions.UnitCenteredGaussianCharacteristicFunction;
-import arb.stochastic.probabilitydensities.UnitCenteredGaussianProbabilityDensity;
+import arb.stochastic.densities.*;
 import junit.framework.TestCase;
 
 public class FourierTransformTest extends

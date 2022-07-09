@@ -1,7 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.stochastic.characteristicfunctions.CharacteristicFunction;
-import arb.stochastic.probabilitydensities.ProbabilityDensity;
+import arb.stochastic.densities.*;
 
 public interface StochasticProcess
 {

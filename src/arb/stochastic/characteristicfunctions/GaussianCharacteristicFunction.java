@@ -3,7 +3,7 @@ package arb.stochastic.characteristicfunctions;
 import static arb.Constants.*;
 
 import arb.*;
-import arb.stochastic.probabilitydensities.GaussianProbabilityDensity;
+import arb.stochastic.densities.*;
 
 public class GaussianCharacteristicFunction implements
                                             CharacteristicFunction<GaussianProbabilityDensity>

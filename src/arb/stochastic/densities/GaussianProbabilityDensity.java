@@ -1,4 +1,4 @@
-package arb.stochastic.probabilitydensities;
+package arb.stochastic.densities;
 
 import static arb.Constants.*;
 

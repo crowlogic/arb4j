@@ -1,17 +1,22 @@
 package arb.stochastic.characteristicfunctions;
 
 import arb.functions.real.*;
-import arb.stochastic.probabilitydensities.ProbabilityDensity;
+import arb.operators.*;
+import arb.stochastic.densities.*;
 
 /**
  * The characteristic function of any real-valued random variable completely
- * defines its probability distribution. If a random variable admits a
- * probability density function, then the characteristic function is the Fourier
- * transform of the probability density function.
+ * defines its probability distribution. <br>
  * 
- * @author crow
- *
- * @param <P>
+ * If a random variable admits a {@link ProbabilityDensity} function, then the
+ * {@link CharacteristicFunction} is its {@link FourierTransform} <br>
+ * 
+ * If the density function is symmetric about the origin then the corresponding
+ * Fourier transform will have only real-values for real arguments otherwise in
+ * general it can and will be complex-valued
+ * 
+ * @param <P> the type of {@link ProbabilityDensity} this characteristic
+ *            function corresponds to
  */
 public interface CharacteristicFunction<P extends ProbabilityDensity> extends
                                        RealFunction
