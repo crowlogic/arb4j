@@ -4,7 +4,8 @@ import arb.stochastic.characteristicfunctions.CharacteristicFunction;
 import arb.stochastic.probabilitydensities.ProbabilityDensity;
 
 /**
- * The Wiener process W(t) is characterised by the following properties:
+ * The Wiener process W(t) is an integral of the white-noise
+ * {@link GaussianProcess} characterized by the following properties:
  * 
  * 1. W(0) = 0<br>
  * 
@@ -26,14 +27,14 @@ public class WienerProcess implements
   @Override
   public ProbabilityDensity getProbabilityDensity()
   {
-    // TODO Auto-generated method stub
+    assert false : "2do";
     return null;
   }
 
   @Override
   public CharacteristicFunction getCharacteristicFunction()
   {
-    // TODO Auto-generated method stub
+    assert false : "2do";
     return null;
   }
 
