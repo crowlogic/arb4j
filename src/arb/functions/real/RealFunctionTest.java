@@ -35,7 +35,7 @@ public class RealFunctionTest
                                                                          20000,
                                                                          10,
                                                                          256);
-    FoundRoots               roots        = sineFunction.locateRoots(config);
+    Roots               roots        = sineFunction.locateRoots(config);
     roots.refine(sineFunction, 256, 40, true);
   }
 
@@ -58,7 +58,7 @@ public class RealFunctionTest
                                                                             maxevals,
                                                                             maxfound,
                                                                             prec);
-    FoundRoots               roots           = f.locateRoots(config);
+    Roots               roots           = f.locateRoots(config);
     System.out.println("rootsBeforeRefinement=" + roots);
 
     assertEquals(192, roots.evals);

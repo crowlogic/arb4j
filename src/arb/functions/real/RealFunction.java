@@ -201,7 +201,7 @@ public interface RealFunction extends
    * <code>
    * Rigorously locates single roots of this function on the interior of an interval.
    * 
-   * {@link FoundRoots} has the following properties: 
+   * {@link Roots} has the following properties: 
    * 
    * 1. The function has no roots on interval outside of the output subintervals.
    * 
@@ -248,12 +248,12 @@ public interface RealFunction extends
    *                 possibly also used for some other arithmetic operations
    *                 performed internally by the algorithm. Note that it probably
    *                 does not make sense for maxdepth to exceed prec.
-   * @return a new instance of {@link FoundRoots}
+   * @return a new instance of {@link Roots}
    */
-  public default FoundRoots locateRoots(RootLocatorConfiguration config)
+  public default Roots locateRoots(RootLocatorConfiguration config)
   {
     assert config.maxDepth > 1 : "you probably dont really want the max recursion limit to be less than 2";
-    FoundRoots       roots    = new FoundRoots();
+    Roots       roots    = new Roots();
     int              asign, bsign;
     long             length   = 0, alloc = 0;
     RealRootInterval interval = config.interval;
@@ -280,7 +280,7 @@ public interface RealFunction extends
     return roots;
   }
 
-  public default void recursivelyLocateRoots(FoundRoots found,
+  public default void recursivelyLocateRoots(Roots found,
                                              RealRootInterval root,
                                              int asign,
                                              int bsign,

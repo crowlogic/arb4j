@@ -65,7 +65,7 @@ public class RealRootInterval extends
    * @return false if
    */
   public boolean
-         split(RealFunction func, FoundRoots found, int asign, int bsign, int depth, RootLocatorConfiguration config)
+         split(RealFunction func, Roots found, int asign, int bsign, int depth, RootLocatorConfiguration config)
   {
     if (RealFunction.verbose)
     {
@@ -92,7 +92,7 @@ public class RealRootInterval extends
     return true;
   }
 
-  public RootStatus determineRootStatus(FoundRoots found, RealFunction func, int asign, int bsign, int prec)
+  public RootStatus determineRootStatus(Roots found, RealFunction func, int asign, int bsign, int prec)
   {
     status = RootStatus.RootUnknown;
     try ( Real t = Real.newVector(2); Real x = new Real())

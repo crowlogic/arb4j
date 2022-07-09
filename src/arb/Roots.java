@@ -7,14 +7,10 @@ import arb.FloatInterval.RootStatus;
 import arb.functions.real.RealFunction;
 
 /**
- * TODO: add a ruleOut function to check intervals with RootUnknown status ,
- * perhaps as part of refine
- * 
- * @author crow
- *
+ * A resizeable array of {@link RealRootInterval}s and {@link RootStatus}es
  */
-public class FoundRoots extends
-                        ArrayList<RealRootInterval>
+public class Roots extends
+                   ArrayList<RealRootInterval>
 {
 
   @Override
@@ -35,10 +31,7 @@ public class FoundRoots extends
   public String toString()
   {
     StringBuffer sb = new StringBuffer();
-    sb.append(String.format("FoundRoots[evals=%s, unknownCount=%s, foundCount=%s]={",
-                            evals,
-                            unknownCount,
-                            foundCount));
+    sb.append(String.format("Roots[evals=%s, unknownCount=%s, foundCount=%s]={", evals, unknownCount, foundCount));
     boolean first = true;
     for (RealRootInterval interval : this)
     {
@@ -69,22 +62,14 @@ public class FoundRoots extends
   public void refine(RealFunction func, int prec, int digits, boolean verbose)
   {
 
-    try ( Real w = Real.newVector(3); Real v = new Real(); RealRootInterval u = new RealRootInterval();
-          RealRootInterval convergenceRegion = new RealRootInterval(); Float convergenceFactor = new Float())
+    try ( Real w = Real.newVector(3); Real v = new Real(); RealRootInterval u = new RealRootInterval(); RealRootInterval convergenceRegion = new RealRootInterval();
+          Float convergenceFactor = new Float())
     {
       for (RealRootInterval rootInterval : this)
       {
         if (rootInterval.status != RootStatus.NoRoot)
         {
-          Real refinedRoot = rootInterval.refine(func,
-                                                 prec,
-                                                 digits,
-                                                 w,
-                                                 v,
-                                                 u,
-                                                 convergenceRegion,
-                                                 convergenceFactor,
-                                                 verbose);
+          Real refinedRoot = rootInterval.refine(func, prec, digits, w, v, u, convergenceRegion, convergenceFactor, verbose);
           refinedRoot.getInterval(prec, rootInterval);
           rootInterval.status = FloatInterval.RootStatus.RootLocated;
         }

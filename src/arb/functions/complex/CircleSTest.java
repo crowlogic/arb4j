@@ -31,7 +31,7 @@ public class CircleSTest extends
                                                                                        5000,
                                                                                        5,
                                                                                        256);
-      FoundRoots               turningPoints            = cs.realPart().locateRoots(rootLocatorConfiguration);
+      Roots               turningPoints            = cs.realPart().locateRoots(rootLocatorConfiguration);
       System.out.println("Located " + turningPoints);
       turningPoints.refine(cs.realPart(), 256, 50, true);
       System.out.println("Refined " + turningPoints);

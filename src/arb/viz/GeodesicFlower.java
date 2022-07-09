@@ -93,7 +93,7 @@ public class GeodesicFlower<P extends ComplexFunction>
 
       System.out.println("Locating over " + zeroPointInterval);
 
-      FoundRoots root = field.locateRoots(new RootLocatorConfiguration(zeroPointInterval,
+      Roots root = field.locateRoots(new RootLocatorConfiguration(zeroPointInterval,
                                                                        1500,
                                                                        50000,
                                                                        1,
