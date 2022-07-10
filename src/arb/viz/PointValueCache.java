@@ -1,12 +1,10 @@
 package arb.viz;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
+import java.io.*;
+import java.nio.*;
+import java.nio.channels.*;
 
-import arb.Complex;
-import arb.arb;
+import arb.*;
 
 /**
  * If the precision of the number is 128 bits or less then the only space
@@ -25,38 +23,48 @@ public class PointValueCache implements
     System.loadLibrary("arblib");
   }
 
-  Complex          points[][][];
+  Complex                  points[][][];
 
-  private int      width;
+  private int              width;
 
-  private int      height;
+  private int              height;
 
   private MappedByteBuffer buffer;
 
   private MappedByteBuffer buffer1;
 
-  private long     bufferAddress;
+  private long             bufferAddress;
 
-  private long     buffer1Address;
+  private long             buffer1Address;
 
   public Complex pointAt(int n, int x, int y)
   {
     return points[n][x][y];
   }
 
-  public boolean complete = true;
-  
+  public boolean           complete = true;
+
+  private FileChannel      channel;
+
+  private FileChannel      channel1;
+
+  private RandomAccessFile file;
+
+  private RandomAccessFile file1;
+
   public PointValueCache(String id, int numXpoints, int numYpoints)
   {
-    System.out.println( "Opening " + id + ".arb" + " and .arb1" );
+    System.out.println("Opening " + id + ".arb" + " and .arb1");
     this.width  = numXpoints;
     this.height = numYpoints;
     int bytes = Complex.BYTES * numXpoints * numYpoints;
-    try ( RandomAccessFile file = new RandomAccessFile(id + ".arb",
-                                                       "rw");
-          RandomAccessFile file1 = new RandomAccessFile(id + ".arb1",
-                                                        "rw"))
+
+    try
     {
+      file  = new RandomAccessFile(id + ".arb",
+                                   "rw");
+      file1 = new RandomAccessFile(id + ".arb1",
+                                   "rw");
       if (file.length() < bytes)
       {
         file.setLength(bytes);
@@ -68,8 +76,10 @@ public class PointValueCache implements
         complete = false;
       }
 
-      buffer         = file.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, bytes);
-      buffer1        = file1.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, bytes);
+      channel        = file.getChannel();
+      channel1       = file1.getChannel();
+      buffer         = channel.map(FileChannel.MapMode.READ_WRITE, 0, bytes);
+      buffer1        = channel1.map(FileChannel.MapMode.READ_WRITE, 0, bytes);
 
       points         = new Complex[2][numXpoints][numYpoints];
       bufferAddress  = arb.bufferAddress(buffer);
@@ -89,7 +99,7 @@ public class PointValueCache implements
         }
       }
       assert bufferAddress - arb.bufferAddress(buffer) == bytes;
-      
+
       check();
     }
     catch (IOException e)
@@ -117,8 +127,7 @@ public class PointValueCache implements
           zeroPointBits = point0.bits();
           if (zeroPointBits > 256)
           {
-            throw new RuntimeException("point still has too many bits after trimming, " + zeroPointBits + " at " + x
-                          + "," + y);
+            throw new RuntimeException("point still has too many bits after trimming, " + zeroPointBits + " at " + x + "," + y);
           }
         }
       }
@@ -129,8 +138,20 @@ public class PointValueCache implements
   public void close()
   {
     check();
-    buffer = null;
+    buffer  = null;
     buffer1 = null;
+    try
+    {
+      file.close();
+      file1.close();
+      channel.close();
+      channel1.close();
+    }
+    catch (IOException e)
+    {
+      throw new UnsupportedOperationException(e.getMessage(),
+                                              e);
+    }
     System.gc();
   }
 }
