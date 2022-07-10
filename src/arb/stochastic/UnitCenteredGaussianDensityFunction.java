@@ -3,8 +3,8 @@ package arb.stochastic;
 import arb.*;
 import arb.functions.real.*;
 
-public class UnitCenteredGaussianProbabilityDensity implements
-                                         ProbabilityDensity
+public class UnitCenteredGaussianDensityFunction implements
+                                         DensityFunction
 {
 
   public static RealFunction inv = new RealFunction()

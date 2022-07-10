@@ -18,8 +18,8 @@ import arb.functions.real.*;
  * 
  * @see https://en.wikipedia.org/wiki/Normal_distribution
  */
-public class GaussianProbabilityDensity implements
-                                        ProbabilityDensity
+public class GaussianDensityFunction implements
+                                        DensityFunction
 {
   @Override
   public String toString()
@@ -50,7 +50,7 @@ public class GaussianProbabilityDensity implements
                                    }
                                  };
 
-  public GaussianProbabilityDensity(Real μ, Real σ)
+  public GaussianDensityFunction(Real μ, Real σ)
   {
     this.μ = μ;
     this.σ = σ;

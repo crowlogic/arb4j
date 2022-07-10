@@ -1,17 +1,15 @@
 package arb.stochastic;
 
 import arb.*;
-import arb.functions.complex.*;
 import arb.functions.real.*;
 
-public interface ProbabilityDensity extends
-                                    RealFunction
+/**
+ * The distribution function of a ramdom variable is the integral of the
+ * corresponding density function
+ */
+public interface DistributionFunction<P extends DensityFunction> extends
+                                     RealFunction
 {
-  public default ComplexFunction getCharacteristicFunction()
-  {
-    throw new UnsupportedOperationException("TODO: return the Fourier transform of this");
-  }
-
   /**
    * Draw a (pseudo) random sample from this density
    * 
@@ -19,8 +17,8 @@ public interface ProbabilityDensity extends
    */
   public default Real sample()
   {
+
     assert false : "TODO: implement the inverse transform sampling method";
     return null;
   }
-
 }

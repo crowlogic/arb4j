@@ -14,8 +14,8 @@ public class FourierTransformTest extends
 
   public static void testDuality()
   {
-    UnitCenteredGaussianProbabilityDensity                   f        = new UnitCenteredGaussianProbabilityDensity();
-    FourierTransform<UnitCenteredGaussianProbabilityDensity> φnumeric = new FourierTransform(f,
+    UnitCenteredGaussianDensityFunction                   f        = new UnitCenteredGaussianDensityFunction();
+    FourierTransform<UnitCenteredGaussianDensityFunction> φnumeric = new FourierTransform(f,
                                                                                              false);
 
     /**
@@ -29,7 +29,7 @@ public class FourierTransformTest extends
       System.out.println("point=" + point);
 
       UnitCenteredGaussianCharacteristicFunction               φexact = new UnitCenteredGaussianCharacteristicFunction();
-      FourierTransform<UnitCenteredGaussianProbabilityDensity> f2     = new FourierTransform(φexact,
+      FourierTransform<UnitCenteredGaussianDensityFunction> f2     = new FourierTransform(φexact,
                                                                                              true);
 
       Complex                                                  val    = φnumeric.evaluate(point, 1, prec, new Complex());

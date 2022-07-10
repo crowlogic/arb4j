@@ -45,7 +45,7 @@ public class HestonProcess
   private Real                       ρ;
   private Real                       V;
   private Real                       S;
-  private GaussianProbabilityDensity gaussianDensity;
+  private GaussianDensityFunction gaussianDensity;
   private Real                       r;
   private Real                       ρsquared;
 
@@ -73,7 +73,7 @@ public class HestonProcess
     this.ρ          = new Real("0.5",
                                prec);
     ρsquared        = new Real().set(ρ).pow(2, prec);
-    gaussianDensity = new GaussianProbabilityDensity(ONE,
+    gaussianDensity = new GaussianDensityFunction(ONE,
                                                      ONE);
   }
 
@@ -88,7 +88,8 @@ public class HestonProcess
       for (int i = 1; i < n; i++)
       {
         double dblρ = ρ.doubleValue();
-        Real   ω    = gaussianDensity.sample();
+        DistributionFunction gaussianDistribution = gaussianDensity.getDistributionFunction();
+        Real   ω    = gaussianDistribution.sample();
         Real   v    = V.get(i - 1);
         Real   s    = S.get(i - 1);
         assert v.isFinite() : "variance process exploded at i=" + i;

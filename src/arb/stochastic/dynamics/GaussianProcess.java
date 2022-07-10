@@ -15,18 +15,18 @@ public class GaussianProcess implements
   public GaussianProcess(Real μ, Real σ)
   {
     super();
-    this.p = new GaussianProbabilityDensity(μ,
+    this.p = new GaussianDensityFunction(μ,
                                             σ);
     φ      = new GaussianCharacteristicFunction(μ,
                                                 σ);
   }
 
-  public GaussianProbabilityDensity     p;
+  public GaussianDensityFunction     p;
 
   public GaussianCharacteristicFunction φ;
 
   @Override
-  public ProbabilityDensity getProbabilityDensity()
+  public DensityFunction getProbabilityDensity()
   {
     return p;
   }

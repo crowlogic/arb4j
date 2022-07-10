@@ -24,7 +24,7 @@ public class WienerProcess implements
 {
 
   @Override
-  public ProbabilityDensity getProbabilityDensity()
+  public DensityFunction getProbabilityDensity()
   {
     assert false : "2do";
     return null;

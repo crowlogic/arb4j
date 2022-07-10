@@ -9,7 +9,7 @@ import arb.stochastic.*;
  */
 public interface StochasticProcess
 {
-  public ProbabilityDensity getProbabilityDensity();
+  public DensityFunction getProbabilityDensity();
 
   public CharacteristicFunction getCharacteristicFunction();
 

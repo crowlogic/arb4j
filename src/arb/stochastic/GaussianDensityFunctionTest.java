@@ -5,13 +5,13 @@ import static arb.util.Utils.*;
 import arb.*;
 import junit.framework.*;
 
-public class GaussianProbabilityDensityTest extends
+public class GaussianDensityFunctionTest extends
                                             TestCase
 {
 
   public static void testPDF()
   {
-    GaussianProbabilityDensity p            = new GaussianProbabilityDensity(new Real("5",
+    GaussianDensityFunction p            = new GaussianDensityFunction(new Real("5",
                                                                                       256),
                                                                              new Real("2",
                                                                                       256));

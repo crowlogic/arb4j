@@ -11,30 +11,32 @@ public interface Function<D extends Field, R extends Field>
 
   public default Function<D, R> differential() throws NotDifferentiableException
   {
-    throw new UnsupportedOperationException("TODO: implement");
+    assert false : "TODO: implement in " + getClass();
+    return null;
   }
 
   public default int getInverseBranchCount()
   {
-    throw new UnsupportedOperationException("TODO: implement");
+    assert false : "TODO: implement in " + getClass();
+    return 0;
   }
 
-  public default Function<D, R> integral() throws NotDifferentiableException
+  public default <F extends Function<D, R>> F integral() throws NotDifferentiableException
   {
-    throw new UnsupportedOperationException("TODO: implement");
+    assert false : "TODO: implement in " + getClass();
+    return null;
   }
 
-  public default  <F extends Function> F inverse(int branch)
+  public default <F extends Function> F inverse(int branch)
   {
-    throw new UnsupportedOperationException("TODO: implement");
+    assert false : "TODO: implement in " + getClass();
+    return null;
   }
 
   public default R newRangeElement()
   {
-    throw new UnsupportedOperationException("TODO: implement");
+    assert false : "TODO: implement in " + getClass();
+    return null;
   }
-
-
-  
 
 }

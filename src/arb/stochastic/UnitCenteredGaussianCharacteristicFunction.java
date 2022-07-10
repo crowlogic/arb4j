@@ -5,7 +5,7 @@ import static arb.Constants.*;
 import arb.*;
 
 public class UnitCenteredGaussianCharacteristicFunction implements
-                                                        CharacteristicFunction<UnitCenteredGaussianProbabilityDensity>
+                                                        CharacteristicFunction<UnitCenteredGaussianDensityFunction>
 {
 
   @Override
