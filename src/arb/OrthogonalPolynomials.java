@@ -1,6 +1,6 @@
 package arb;
 
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.*;
 
 public interface OrthogonalPolynomials extends
                                        Iterable<ComplexPolynomial>,

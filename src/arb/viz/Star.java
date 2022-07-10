@@ -1,8 +1,7 @@
 
 package arb.viz;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.*;
 
 /**

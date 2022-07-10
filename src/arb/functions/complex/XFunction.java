@@ -1,8 +1,8 @@
 package arb.functions.complex;
 
-import arb.Real;
+import arb.*;
 import arb.functions.*;
-import arb.operators.CompositionOperator;
+import arb.operators.*;
 
 /**
  * The conjugate of this function is {@link YFunction}

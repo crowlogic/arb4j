@@ -2,12 +2,10 @@ package arb.util;
 
 import static arb.arb.*;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.util.concurrent.TimeUnit;
+import java.awt.*;
+import java.util.concurrent.*;
 
-import javax.swing.JFrame;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 import arb.*;
 

@@ -1,7 +1,7 @@
 package arb.functions.complex;
 
-import arb.Complex;
-import arb.curves.PlaneCurve;
+import arb.*;
+import arb.curves.*;
 
 /**
  * TODO: implement and use to implement the {@link PlaneCurve}{@link #getArcLength()}

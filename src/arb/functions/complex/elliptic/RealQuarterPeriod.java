@@ -1,8 +1,7 @@
 package arb.functions.complex.elliptic;
 
-import arb.Complex;
-import arb.arb;
-import arb.functions.complex.ComplexFunction;
+import arb.*;
+import arb.functions.complex.*;
 
 /**
  * K(s) is the Complete Elliptical Integral of the First Kind, ALso known as the

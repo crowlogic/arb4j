@@ -1,7 +1,6 @@
 package arb.functions.complex;
 
-import arb.Complex;
-import arb.Constants;
+import arb.*;
 
 /**
  * Multiplication by the imaginary unit with optional negation. Wick rotation is

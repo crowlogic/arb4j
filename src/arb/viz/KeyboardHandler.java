@@ -1,11 +1,8 @@
 package arb.viz;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
-
-import javax.swing.*;
 
 public class KeyboardHandler implements
                              KeyListener

@@ -1,6 +1,6 @@
 package arb;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class FloatIntervalTest extends
                                TestCase

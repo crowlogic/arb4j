@@ -1,8 +1,7 @@
 package arb.functions.complex.elliptic;
 
-import arb.functions.complex.TaylorShift;
-import arb.functions.complex.WickRotation;
-import arb.operators.CompositionOperator;
+import arb.functions.complex.*;
+import arb.operators.*;
 
 /**
  * The imaginary quarter perioid i*K'(s) is the Wick rotation of the derivative

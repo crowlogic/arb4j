@@ -1,8 +1,8 @@
 package arb;
 
-import static java.lang.System.out;
+import static java.lang.System.*;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class RealRootIntervalTest extends
                                   TestCase

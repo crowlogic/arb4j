@@ -1,7 +1,7 @@
 package arb.functions.complex;
 
-import arb.Complex;
-import arb.functions.RealToComplexFunction;
+import arb.*;
+import arb.functions.*;
 
 public class Complexification implements
                               ComplexFunction

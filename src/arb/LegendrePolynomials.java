@@ -1,8 +1,8 @@
 package arb;
 
-import java.util.Iterator;
+import java.util.*;
 
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.*;
 
 public class LegendrePolynomials implements
                                  OrthogonalPolynomials

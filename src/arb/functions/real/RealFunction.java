@@ -11,7 +11,7 @@ package arb.functions.real;
 
 import static arb.util.Utils.*;
 import static java.lang.Math.*;
-import static java.lang.String.format;
+import static java.lang.String.*;
 import static java.lang.System.*;
 
 import java.lang.Integer;

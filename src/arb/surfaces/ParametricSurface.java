@@ -1,8 +1,7 @@
 package arb.surfaces;
 
-import arb.Complex;
-import arb.Real;
-import arb.functions.Function;
+import arb.*;
+import arb.functions.*;
 
 /**
  * A parametric surface is a surface in the Euclidean space R^3 which is defined

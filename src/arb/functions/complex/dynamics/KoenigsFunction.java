@@ -1,7 +1,7 @@
 package arb.functions.complex.dynamics;
 
-import arb.Complex;
-import arb.functions.complex.ComplexFunction;
+import arb.*;
+import arb.functions.complex.*;
 
 /**
  * Let D be the unit disk in the complex numbers. Let f be a holomorphic

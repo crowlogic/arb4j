@@ -1,6 +1,6 @@
 package arb.functions.complex;
 
-import arb.Complex;
+import arb.*;
 
 public class RiemannZetaFunction implements
                                  ComplexFunction
@@ -19,7 +19,7 @@ public class RiemannZetaFunction implements
     assert prec > 0;
     try ( Complex r = Complex.newVector(order))
     {
-      arb.arb.acb_dirichlet_zeta_jet(r, z, 0, order, prec);
+      arb.acb_dirichlet_zeta_jet(r, z, 0, order, prec);
       w.set(r);
     }
     return w;

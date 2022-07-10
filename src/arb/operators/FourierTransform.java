@@ -2,7 +2,6 @@ package arb.operators;
 
 import arb.*;
 import arb.functions.*;
-import arb.functions.complex.*;
 import arb.functions.real.*;
 
 public class FourierTransform<F extends RealFunction> implements

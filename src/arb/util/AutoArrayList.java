@@ -1,7 +1,7 @@
 package arb.util;
 
-import java.util.ArrayList;
-import java.util.function.Function;
+import java.util.*;
+import java.util.function.*;
 
 public class AutoArrayList<V> extends
                           ArrayList<V>

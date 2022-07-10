@@ -1,6 +1,6 @@
 package arb;
 
-import java.util.Iterator;
+import java.util.*;
 
 public abstract class ComplexPartIterator implements
                                           Iterator<Real>

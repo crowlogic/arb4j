@@ -1,8 +1,7 @@
 package arb.functions.real;
 
-import arb.Complex;
-import arb.Real;
-import arb.functions.complex.ComplexFunction;
+import arb.*;
+import arb.functions.complex.*;
 
 public class ImaginaryPart<F extends ComplexFunction> extends
                           RealComplexPart<F>

@@ -1,16 +1,13 @@
 package arb.viz.gl;
 
-import static org.lwjgl.opengl.GL.createCapabilities;
+import static org.lwjgl.opengl.GL.*;
 import static org.lwjgl.opengl.GL11.*;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
-import org.lwjgl.opengl.awt.AWTGLCanvas;
-import org.lwjgl.opengl.awt.GLData;
+import org.lwjgl.opengl.awt.*;
 
 public class AWTTest
 {

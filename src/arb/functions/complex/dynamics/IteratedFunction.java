@@ -1,9 +1,9 @@
 package arb.functions.complex.dynamics;
 
-import static java.lang.Math.max;
+import static java.lang.Math.*;
 
 import arb.*;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.*;
 
 /**
  * The infinite limit of this functiom composed with itself is the

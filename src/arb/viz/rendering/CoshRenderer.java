@@ -1,14 +1,13 @@
 package arb.viz.rendering;
 
-import java.awt.Dimension;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Rectangle2D;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.geom.*;
+import java.io.*;
 
-import arb.Constants;
+import arb.*;
 import arb.functions.complex.*;
 import arb.operators.*;
-import arb.viz.ComplexFunctionRenderer;
+import arb.viz.*;
 
 public class CoshRenderer
 {
@@ -41,7 +40,7 @@ public class CoshRenderer
     {
       plotter.colorMode   = 0;
 
-      plotter.displayMode = arb.viz.Part.Phase;
+      plotter.displayMode = Part.Phase;
       plotter.render();
       plotter.saveToFile("cosh.png");
     }

@@ -1,8 +1,7 @@
-package arb.probability.characteristicfunctions;
+package arb.probability;
 
 import arb.functions.real.*;
 import arb.operators.*;
-import arb.probability.densities.*;
 
 /**
  * The characteristic function of any real-valued random variable completely

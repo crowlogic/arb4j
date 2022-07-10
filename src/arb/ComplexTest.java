@@ -1,14 +1,13 @@
 package arb;
 
-import static java.lang.Math.pow;
+import static java.lang.Math.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.*;
+import java.util.stream.*;
 
-import org.lwjgl.system.Configuration;
+import org.lwjgl.system.*;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class ComplexTest extends
                          TestCase

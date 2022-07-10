@@ -1,10 +1,10 @@
 package arb.curves;
 
-import static java.lang.Math.max;
+import static java.lang.Math.*;
 
 import arb.*;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.real.RealFunction;
+import arb.functions.complex.*;
+import arb.functions.real.*;
 
 /**
  * A parameterization of a scaled Bernoullian lemniscate whose <br>

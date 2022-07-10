@@ -1,12 +1,10 @@
 package arb.functions.real;
 
-import static arb.util.Utils.println;
+import static arb.util.Utils.*;
 
-import org.junit.Test;
+import org.junit.*;
 
-import arb.Complex;
-import arb.Real;
-import arb.operators.FourierTransform;
+import arb.*;
 
 public class HeavisideStepFunctionTest
 {

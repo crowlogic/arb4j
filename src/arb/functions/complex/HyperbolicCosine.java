@@ -1,8 +1,6 @@
 
 package arb.functions.complex;
 
-import org.junit.experimental.max.*;
-
 import arb.*;
 
 public class HyperbolicCosine implements

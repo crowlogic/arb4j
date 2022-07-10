@@ -1,16 +1,13 @@
 package arb.viz.rendering;
 
-import java.awt.Dimension;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Rectangle2D;
+import java.awt.*;
+import java.awt.geom.*;
 import java.awt.geom.Rectangle2D.Double;
-import java.io.IOException;
+import java.io.*;
 
-import arb.Real;
-import arb.functions.complex.dynamics.IteratedFunction;
-import arb.functions.complex.dynamics.SNewtonMap;
-import arb.viz.ComplexFunctionRenderer;
-import arb.viz.Part;
+import arb.*;
+import arb.functions.complex.dynamics.*;
+import arb.viz.*;
 
 public class SNewtonKoenigsFunctionRenderer extends
                                             ComplexFunctionRenderer<IteratedFunction<SNewtonMap>>

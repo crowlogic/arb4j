@@ -1,8 +1,7 @@
 package arb.operators;
 
-import arb.Complex;
-import arb.ThreadLocalComplex;
-import arb.functions.complex.ComplexFunction;
+import arb.*;
+import arb.functions.complex.*;
 
 /**
  * The composition of two complex-valued functions

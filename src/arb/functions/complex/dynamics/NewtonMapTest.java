@@ -1,10 +1,9 @@
 package arb.functions.complex.dynamics;
 
-import arb.Complex;
-import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.SFunction;
-import junit.framework.TestCase;
+import arb.*;
+import arb.exceptions.*;
+import arb.functions.complex.*;
+import junit.framework.*;
 
 public class NewtonMapTest extends
                            TestCase

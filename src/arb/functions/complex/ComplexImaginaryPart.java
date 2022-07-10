@@ -1,6 +1,6 @@
 package arb.functions.complex;
 
-import arb.Complex;
+import arb.*;
 
 public class ComplexImaginaryPart<F extends ComplexFunction> extends
                           ComplexPart<F>

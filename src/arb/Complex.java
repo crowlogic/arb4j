@@ -48,6 +48,12 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex(double r, double i)
+  {
+    this();
+    set(r,i);
+  }
+
   public Complex(String realStr, String imagStr, int precision)
   {
     getReal().set(realStr, precision);
@@ -771,12 +777,6 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
 
   public Complex() {
     this(arbJNI.new_Complex(), true);
-  }
-
-  public Complex(double d, double e)
-  {
-    this();
-    set(d,e);
   }
 
 }

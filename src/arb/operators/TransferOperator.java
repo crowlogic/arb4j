@@ -1,7 +1,7 @@
 package arb.operators;
 
-import arb.Complex;
-import arb.functions.complex.ComplexFunction;
+import arb.*;
+import arb.functions.complex.*;
 
 /**
  * <h1>Dynamical interpretation of eigenvalues of the transfer operator)</h1>

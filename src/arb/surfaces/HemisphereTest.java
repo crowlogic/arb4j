@@ -1,9 +1,9 @@
 package arb.surfaces;
 
-import static java.lang.Math.pow;
+import static java.lang.Math.*;
 
 import arb.*;
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class HemisphereTest extends
                             TestCase

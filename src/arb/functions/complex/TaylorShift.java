@@ -1,6 +1,6 @@
 package arb.functions.complex;
 
-import arb.Complex;
+import arb.*;
 
 /**
  * This function lops off the first element of the function, this is used to

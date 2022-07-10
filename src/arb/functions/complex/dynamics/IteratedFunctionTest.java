@@ -1,9 +1,9 @@
 package arb.functions.complex.dynamics;
 
-import static java.lang.Math.pow;
+import static java.lang.Math.*;
 
 import arb.*;
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class IteratedFunctionTest extends
                                   TestCase

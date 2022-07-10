@@ -6,7 +6,6 @@ import java.io.*;
 
 import arb.*;
 import arb.functions.complex.*;
-import arb.functions.complex.dynamics.*;
 import arb.viz.*;
 
 /**

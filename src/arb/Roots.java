@@ -1,10 +1,10 @@
 
 package arb;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import arb.FloatInterval.RootStatus;
-import arb.functions.real.RealFunction;
+import arb.FloatInterval.*;
+import arb.functions.real.*;
 
 /**
  * A resizeable array of {@link RealRootInterval}s and {@link RootStatus}es

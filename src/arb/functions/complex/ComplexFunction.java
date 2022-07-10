@@ -1,16 +1,15 @@
 package arb.functions.complex;
 
 import static arb.arb.*;
-import static java.lang.Math.max;
+import static java.lang.Math.*;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.*;
 
 import arb.*;
 import arb.exceptions.*;
-import arb.functions.Function;
-import arb.functions.real.ImaginaryPart;
-import arb.functions.real.RealPart;
-import arb.util.Utils;
+import arb.functions.*;
+import arb.functions.real.*;
+import arb.util.*;
 
 @FunctionalInterface
 public interface ComplexFunction extends

@@ -1,8 +1,8 @@
 package arb.functions.complex.dynamics;
 
-import arb.Complex;
-import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.ComplexFunction;
+import arb.*;
+import arb.exceptions.*;
+import arb.functions.complex.*;
 
 /**
  * <code>-(f(t)*conjugate(f'(t)))/(1+|f(z)|^4)</code>

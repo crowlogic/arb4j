@@ -1,11 +1,10 @@
 package arb.functions.complex;
 
 import static arb.arb.*;
-import static java.lang.Math.max;
+import static java.lang.Math.*;
 
-import arb.Complex;
-import arb.Real;
-import arb.util.AutoArrayList;
+import arb.*;
+import arb.util.*;
 
 public class ZFunction implements
                        ComplexFunction 

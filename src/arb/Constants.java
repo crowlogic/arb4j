@@ -1,7 +1,5 @@
 package arb;
 
-import static arb.arb.*;
-
 public class Constants
 {
   static

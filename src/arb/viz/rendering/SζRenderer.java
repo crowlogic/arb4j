@@ -1,14 +1,13 @@
 package arb.viz.rendering;
 
-import java.awt.Dimension;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Rectangle2D;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.geom.*;
+import java.io.*;
 
-import arb.Real;
+import arb.*;
 import arb.functions.complex.*;
-import arb.operators.CompositionOperator;
-import arb.viz.ComplexFunctionRenderer;
+import arb.operators.*;
+import arb.viz.*;
 
 public class SζRenderer extends
                         ComplexFunctionRenderer
@@ -36,7 +35,7 @@ public class SζRenderer extends
                                   new WickRotation()));
 
     colorMode   = 2;
-    displayMode = arb.viz.Part.Imag;
+    displayMode = Part.Imag;
   }
 
 }

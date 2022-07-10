@@ -1,7 +1,6 @@
 package arb.probability.stochasticprocesses;
 
-import arb.probability.characteristicfunctions.*;
-import arb.probability.densities.*;
+import arb.probability.*;
 
 /**
  * A stochastic process is a family of random variables,<br>

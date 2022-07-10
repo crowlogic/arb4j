@@ -1,33 +1,30 @@
 package arb.viz.gl;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
-import java.io.File;
-import java.util.Arrays;
+import java.awt.event.*;
+import java.awt.geom.*;
+import java.io.*;
+import java.util.*;
 import java.util.List;
-import java.util.function.DoubleBinaryOperator;
-import java.util.stream.IntStream;
+import java.util.function.*;
+import java.util.stream.*;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
-import org.w3c.dom.Document;
+import org.w3c.dom.*;
 
 import arb.*;
 import arb.functions.complex.*;
 import hageldave.jplotter.canvas.*;
 import hageldave.jplotter.color.*;
-import hageldave.jplotter.interaction.CoordSysPanning;
-import hageldave.jplotter.interaction.CoordSysScrollZoom;
-import hageldave.jplotter.misc.Contours;
+import hageldave.jplotter.interaction.*;
+import hageldave.jplotter.misc.*;
 import hageldave.jplotter.renderables.*;
-import hageldave.jplotter.renderables.Lines.SegmentDetails;
-import hageldave.jplotter.renderables.Triangles.TriangleDetails;
-import hageldave.jplotter.renderers.CompleteRenderer;
-import hageldave.jplotter.renderers.CoordSysRenderer;
-import hageldave.jplotter.svg.SVGUtils;
+import hageldave.jplotter.renderables.Lines.*;
+import hageldave.jplotter.renderables.Text;
+import hageldave.jplotter.renderables.Triangles.*;
+import hageldave.jplotter.renderers.*;
+import hageldave.jplotter.svg.*;
 
 public class IsolinesViz
 {

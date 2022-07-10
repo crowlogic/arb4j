@@ -1,7 +1,6 @@
 package arb.surfaces;
 
-import arb.Complex;
-import arb.Real;
+import arb.*;
 
 public class Cone implements
                   ParametricSurface

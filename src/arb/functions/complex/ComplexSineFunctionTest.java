@@ -1,12 +1,12 @@
 package arb.functions.complex;
 
 import static arb.ComplexConstants.π;
-import static arb.Constants.ZERO;
-import static java.lang.Math.pow;
+import static arb.Constants.*;
+import static java.lang.Math.*;
 
 import arb.*;
-import arb.exceptions.LackOfConvergenceException;
-import junit.framework.TestCase;
+import arb.exceptions.*;
+import junit.framework.*;
 
 public class ComplexSineFunctionTest extends
                                      TestCase

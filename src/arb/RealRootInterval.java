@@ -1,10 +1,10 @@
 package arb;
 
-import static arb.util.Utils.println;
-import static java.lang.String.format;
-import static java.lang.System.out;
+import static arb.util.Utils.*;
+import static java.lang.String.*;
+import static java.lang.System.*;
 
-import arb.functions.real.RealFunction;
+import arb.functions.real.*;
 
 public class RealRootInterval extends
                               FloatInterval

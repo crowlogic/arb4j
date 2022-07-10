@@ -1,6 +1,6 @@
 package arb.functions.complex;
 
-import arb.Complex;
+import arb.*;
 
 /**
  * Lemniscate Sine: sl(z)=∫(1/(1-t^4),t=0..z) <br>

@@ -1,17 +1,11 @@
 package arb.viz.rendering;
 
-import java.awt.Dimension;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Rectangle2D;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.geom.*;
+import java.io.*;
 
-import javax.swing.JFrame;
-
-import arb.ThreadLocalComplex;
 import arb.functions.complex.*;
-import arb.operators.CompositionOperator;
-import arb.viz.ComplexFunctionRenderer;
-import arb.viz.Part;
+import arb.viz.*;
 
 public class ZRenderer
 {

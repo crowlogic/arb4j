@@ -1,10 +1,9 @@
-package arb.probability.densities;
+package arb.probability;
 
 import static arb.Constants.*;
 
-import arb.Constants;
-import arb.Real;
-import arb.functions.real.RealFunction;
+import arb.*;
+import arb.functions.real.*;
 
 /**
  * Normal distributions are important in statistics and are often used in the

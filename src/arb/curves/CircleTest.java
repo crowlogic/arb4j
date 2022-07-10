@@ -1,9 +1,9 @@
 package arb.curves;
 
-import static java.lang.Math.pow;
+import static java.lang.Math.*;
 
 import arb.*;
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class CircleTest extends
                         TestCase

@@ -3,7 +3,6 @@ package arb.viz;
 import arb.*;
 import arb.functions.complex.*;
 import arb.viz.GeodesicFlower.*;
-import junit.framework.*;
 
 public class GeodesicFlowTest
 {

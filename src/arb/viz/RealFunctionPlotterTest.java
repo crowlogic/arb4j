@@ -1,13 +1,9 @@
 package arb.viz;
 
-import javax.swing.JFrame;
-
-import arb.FloatInterval;
-import arb.Real;
-import arb.functions.complex.CircularS;
-import arb.functions.real.RealFunction;
-import arb.functions.real.RealPart;
-import arb.functions.real.dynamics.RealNewtonMap;
+import arb.*;
+import arb.functions.complex.*;
+import arb.functions.real.*;
+import arb.functions.real.dynamics.*;
 
 public class RealFunctionPlotterTest
 {

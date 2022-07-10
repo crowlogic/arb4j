@@ -1,9 +1,8 @@
 package arb.functions.real.dynamics;
 
-import arb.Constants;
-import arb.Real;
-import arb.exceptions.NotDifferentiableException;
-import arb.functions.real.RealFunction;
+import arb.*;
+import arb.exceptions.*;
+import arb.functions.real.*;
 
 /**
  * <code>t-f(t)/f'(t)</code>

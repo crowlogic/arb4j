@@ -1,10 +1,10 @@
 package arb;
 
 import static arb.arb.*;
-import static java.lang.Math.pow;
-import static java.lang.System.out;
+import static java.lang.Math.*;
+import static java.lang.System.*;
 
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class ArblibTest extends
                         TestCase

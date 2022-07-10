@@ -1,17 +1,16 @@
 package arb.functions;
 
 import static arb.arb.*;
-import static arb.util.Utils.println;
-import static java.lang.String.format;
+import static arb.util.Utils.*;
+import static java.lang.String.*;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.*;
 
 import arb.*;
-import arb.exceptions.LackOfConvergenceException;
-import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.real.RealPart;
-import arb.util.Utils;
+import arb.exceptions.*;
+import arb.functions.complex.*;
+import arb.functions.real.*;
+import arb.util.*;
 
 public interface RealToComplexFunction extends
                                        Function<Real, Complex>
