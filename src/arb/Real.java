@@ -46,6 +46,11 @@ public class Real implements Comparable<Real>, Field {
 
  static { System.loadLibrary( "arblib" ); }
 
+  public Real pow(int i, int prec)
+  {
+    return pow(i,prec,this);
+  }
+
   public Real(String string, int prec)
   {
     this();
@@ -701,11 +706,6 @@ public class Real implements Comparable<Real>, Field {
 
   public Real() {
     this(arbJNI.new_Real(), true);
-  }
-
-  public Real pow(int i, int prec)
-  {
-    return pow(i,prec,this);
   }
 
 }

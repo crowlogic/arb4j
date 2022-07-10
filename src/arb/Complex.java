@@ -646,7 +646,7 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     }
     return this;
   }
-    
+      
    /**
    * add an unsigned integer to this 
    * @param r = this^k
