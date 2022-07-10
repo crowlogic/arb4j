@@ -130,7 +130,7 @@ public class PointValueCache implements
   {
     check();
     buffer = null;
-    buffer = null;
+    buffer1 = null;
     System.gc();
   }
 }
