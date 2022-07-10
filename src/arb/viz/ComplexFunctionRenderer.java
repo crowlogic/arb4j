@@ -124,17 +124,25 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   private Graphics2D           outputGraphics;
 
-  public ComplexFunctionRenderer(Dimension resolution,
-                                 Rectangle2D.Double domain,
-                                 F function) throws NoninvertibleTransformException
+  public ComplexFunctionRenderer(Dimension resolution, Rectangle2D.Double domain, F function) throws NoninvertibleTransformException
   {
     this.resolution = resolution;
     this.domain     = domain;
     this.function   = function;
-    this.image      = new PointValueCache(getColorPlateName(),
-                                          resolution.width,
-                                          resolution.height);
+    initCache();
     init();
+  }
+
+  public void initCache()
+  {
+    if (image != null)
+    {
+      image.close();
+      image = null;
+    }
+    this.image = new PointValueCache(getColorPlateName(),
+                                     this.resolution.width,
+                                     this.resolution.height);
   }
 
   public String getColorPlateName()
@@ -544,7 +552,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     {
       showFrame();
     }
-    if (!headless && frame != null )
+    if (!headless && frame != null)
     {
       frame.setTitle(getColorPlateName());
     }
@@ -560,17 +568,13 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     reportRenderingRate();
 
     saveToFile();
-    
+
     return functionImage;
   }
 
   public void showFrame()
   {
-    frame = Utils.openInJFrame(this,
-                               resolution.width,
-                               resolution.height,
-                               function.toString(),
-                               keepRunning ? WindowConstants.HIDE_ON_CLOSE : WindowConstants.EXIT_ON_CLOSE);
+    frame = Utils.openInJFrame(this, resolution.width, resolution.height, function.toString(), keepRunning ? WindowConstants.HIDE_ON_CLOSE : WindowConstants.EXIT_ON_CLOSE);
   }
 
   private void reportRenderingRate()
@@ -720,13 +724,10 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   private void drawHelp()
   {
     drawTextInScreenCoordinates(true,
-                                "Press\n" + "F1     Toggle program help screen (what you're looking at)\n"
-                                              + "F2     Toggle overlay color between black and white\n"
-                                              + "F3     Toggle between Both/Real part only/Imaginary only\n"
-                                              + "B      Show Both Real and Imaginary Parts\n"
-                                              + "R      Show Real part only\n" + "I      Show Imaginary part only\n"
-                                              + "Z      Select a rectangle to be magnified\n" + "S      Save image"
-                                              + "ESC    Exit progam\n",
+                                "Press\n" + "F1     Toggle program help screen (what you're looking at)\n" + "F2     Toggle overlay color between black and white\n"
+                                              + "F3     Toggle between Both/Real part only/Imaginary only\n" + "B      Show Both Real and Imaginary Parts\n"
+                                              + "R      Show Real part only\n" + "I      Show Imaginary part only\n" + "Z      Select a rectangle to be magnified\n"
+                                              + "S      Save image" + "ESC    Exit progam\n",
                                 20,
                                 20);
 
@@ -854,8 +855,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     Complex w1stDeriv = w.get(1);
     try ( Real warg = new Real(); Real w1stDerivarg = new Real())
     {
-      return String.format("    t=%+.05f%+.05fi\n" + " f(t)=%+.05f%+.05fi arg=%+.06f\n"
-                    + "f'(t)=%+.05f%+.05fi arg=%+.06f\n N(t)=%+.05f%+.05fi mag=%.06f arg=%+.06f\n",
+      return String.format("    t=%+.05f%+.05fi\n" + " f(t)=%+.05f%+.05fi arg=%+.06f\n" + "f'(t)=%+.05f%+.05fi arg=%+.06f\n N(t)=%+.05f%+.05fi mag=%.06f arg=%+.06f\n",
                            cursorInFunctionSpace.x,
                            cursorInFunctionSpace.y,
                            w.getReal().doubleValue(),
@@ -978,13 +978,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
     if (debug)
     {
-      out.format("Cursor moved to t=%s where f(t)=%s\nfuncCoords=%s\nscreenCoords=%s\nNewtonDeriv=%s\nphase=%s\n",
-                 t,
-                 w,
-                 cursorInFunctionSpace,
-                 cursorInScreenSpace,
-                 N,
-                 phase);
+      out.format("Cursor moved to t=%s where f(t)=%s\nfuncCoords=%s\nscreenCoords=%s\nNewtonDeriv=%s\nphase=%s\n", t, w, cursorInFunctionSpace, cursorInScreenSpace, N, phase);
     }
     anythingChanged = true;
 

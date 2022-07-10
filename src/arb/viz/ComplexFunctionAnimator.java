@@ -12,7 +12,7 @@ import java.util.function.IntConsumer;
 import javax.swing.JFrame;
 
 import arb.Real;
-import arb.viz.rendering.XRenderer;
+import arb.viz.rendering.*;
 import io.humble.video.*;
 import io.humble.video.awt.MediaPictureConverter;
 import io.humble.video.awt.MediaPictureConverterFactory;
@@ -23,9 +23,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
   private int         width;
   private int         height;
 
-  public ComplexFunctionAnimator(P plotter,
-                                 IntConsumer frameParameterAssigner,
-                                 int frameCount) throws NoninvertibleTransformException
+  public ComplexFunctionAnimator(P plotter, IntConsumer frameParameterAssigner, int frameCount) throws NoninvertibleTransformException
   {
     this.plotter                = plotter;
     frameEncodingThread         = Executors.newSingleThreadExecutor();
@@ -52,34 +50,32 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
   private P                     plotter;
 
   @SuppressWarnings("resource")
-  public static void
-         main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
+  public static void main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
   {
-    int       framesPerSecond = 30;
+    int       framesPerSecond = 15;
     int       secondsLong     = 10;
     final int frameCount      = framesPerSecond * secondsLong;
-    XRenderer renderer        = new XRenderer();
+    YRenderer renderer        = new YRenderer();
     renderer.colorMode   = 1;
-    renderer.displayMode = Part.Phase;
+    renderer.displayMode = Part.Real;
     Real                               scaleStart             = new Real().one().div(2, 128);
     Real                               scaleStop              = new Real().set("3", 128);
     Real                               scaleLen               = scaleStop.sub(scaleStart, 128, new Real());
-    Real                               dt                     = new Real().one()
-                                                                          .div(framesPerSecond, 128, new Real());
+    Real                               dt                     = new Real().one().div(framesPerSecond, 128, new Real());
     Real                               dscale                 = scaleLen.div(frameCount, 128);
     Real                               scale                  = new Real().set(scaleStart);
     Real                               motion                 = new Real();
     IntConsumer                        frameParameterAssigner = frame ->
                                                               {
-                                                                double percentComplete = (double) frame
-                                                                              / (double) frameCount;
+                                                                double percentComplete = (double) frame / (double) frameCount;
                                                                 scale.add(dscale, 128, scale);
                                                                 System.out.format("Setting scale to %s of %s at %.3f%% complete on frame#%d\n",
                                                                                   scale.toString(10),
                                                                                   scaleStop.toString(10),
                                                                                   percentComplete,
                                                                                   frame);
-                                                                renderer.function.f.a.set(scale);
+                                                                renderer.function.f.f.f.a.set(scale);
+                                                                renderer.initCache();
                                                               };
     ComplexFunctionAnimator<XRenderer> animator               = new ComplexFunctionAnimator(renderer,
                                                                                             frameParameterAssigner,
@@ -114,23 +110,15 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
     return image;
   }
 
-  public void
-         renderAnimatedSequence(String filename, int seconds, int framesPerSecond) throws AWTException,
-                                                                                   InterruptedException,
-                                                                                   IOException,
-                                                                                   NoninvertibleTransformException
+  public void renderAnimatedSequence(String filename, int seconds, int framesPerSecond) throws AWTException, InterruptedException, IOException, NoninvertibleTransformException
   {
     renderAnimatedSequence(filename, "avi", "ffv1", seconds, framesPerSecond);
   }
 
-  public void renderAnimatedSequence(String filename,
-                                     String formatname,
-                                     String codecname,
-                                     int seconds,
-                                     int framesPerSecond) throws AWTException,
-                                                          InterruptedException,
-                                                          IOException,
-                                                          NoninvertibleTransformException
+  public void renderAnimatedSequence(String filename, String formatname, String codecname, int seconds, int framesPerSecond) throws AWTException,
+                                                                                                                             InterruptedException,
+                                                                                                                             IOException,
+                                                                                                                             NoninvertibleTransformException
   {
     System.out.println("Starting creation of " + filename + " ...");
     robot        = new Robot();

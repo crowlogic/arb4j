@@ -31,9 +31,9 @@ public class PointValueCache implements
 
   private int      height;
 
-  MappedByteBuffer buffer;
+  private MappedByteBuffer buffer;
 
-  MappedByteBuffer buffer1;
+  private MappedByteBuffer buffer1;
 
   private long     bufferAddress;
 
@@ -126,8 +126,11 @@ public class PointValueCache implements
   }
 
   @Override
-  public void close() throws Exception
+  public void close()
   {
     check();
+    buffer = null;
+    buffer = null;
+    System.gc();
   }
 }

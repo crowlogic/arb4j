@@ -25,8 +25,8 @@ public class YRenderer extends
      renderer.render();
   }
   
-  public static final int width  = 1900 ;
-  public static final int height = 950  ;
+  public static final int width  = 1900 /2 ;
+  public static final int height = 950 /2 ;
 
   public YRenderer(Real vscale) throws NoninvertibleTransformException
   {
@@ -34,12 +34,12 @@ public class YRenderer extends
                         height),
           new Rectangle2D.Double(-10,
                                  -22,
-                                 80,
+                                 45,
                                  44),
           new NewtonFlow<YFunction>(new YFunction(vscale)));
 
     colorMode  = 5;
-    displayMode = Part.Imag;
+    displayMode = Part.Real;
 
   }
 
