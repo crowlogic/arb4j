@@ -18,8 +18,8 @@ public interface ComplexFunction extends
 {
 
   public static final int glSteps[]   =
-  { 1, 2, 4, 6, 8, 12, 16, 22, 32, 46, 64, 90, 128, 182, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096, 5792,
-    8192, 11586, 16384, 23170, 32768, 46340, 65536, 92682, 131072, 185364, 262144, 370728, 524288, 741456 };
+  { 1, 2, 4, 6, 8, 12, 16, 22, 32, 46, 64, 90, 128, 182, 256, 362, 512, 724, 1024, 1448, 2048, 2896, 4096, 5792, 8192, 11586, 16384, 23170, 32768, 46340, 65536, 92682, 131072,
+    185364, 262144, 370728, 524288, 741456 };
 
   public static final int glStepCount = glSteps.length;
 
@@ -79,15 +79,7 @@ public interface ComplexFunction extends
     }
   }
 
-  public default void accumulateIntegrand(int prec,
-                                          Complex s,
-                                          int depth,
-                                          int top,
-                                          boolean useHeap,
-                                          Complex as,
-                                          Complex bs,
-                                          Complex vs,
-                                          Magnitude ms)
+  public default void accumulateIntegrand(int prec, Complex s, int depth, int top, boolean useHeap, Complex as, Complex bs, Complex vs, Magnitude ms)
   {
     s.add(vs.get(top), prec, s);
     if (useHeap && depth > 0)
@@ -96,8 +88,6 @@ public interface ComplexFunction extends
       Utils.heap_up(as, bs, vs, ms, depth);
     }
   }
-  
-
 
   /**
    * Each linear operator A on a Euclidean vector space defines a (Hermitian)
@@ -214,9 +204,12 @@ public interface ComplexFunction extends
   }
 
   /**
+   * An <b>antiderivative<b>, <b>inverse derivative</b>, <b>primitive
+   * function</b>, <b>primitive integral</b> or <b>indefinite integral</b> of a
+   * function f is a differentiable function F whose derivative is equal to the
+   * original function f. This can be stated symbolically as F' = f.
    * 
-   * @return a function which, when differentiated, produces this function as a
-   *         differential. It should satisfy
+   * @return ∫this which should satisfy
    *         this{@link #integral()}{@link #differential()} == this ==
    *         this{@link #differential()}{@link #integral()}
    */
@@ -320,8 +313,8 @@ public interface ComplexFunction extends
       options = new IntegrationOptions();
     }
 
-    try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex();
-          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
+    try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex(); Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude();
+          Magnitude newTol = new Magnitude();)
     {
       int        depthLimit, evalLimit, degLimit;
       int        depth, maxDepth, top;
@@ -345,8 +338,8 @@ public interface ComplexFunction extends
       }
       allocation = 4;
       // TODO: take as,bs,vs,ms and put them in their own (static) class
-      try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
-            Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);)
+      try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation); Complex vs = Complex.newVector(2 * allocation);
+            Magnitude ms = Magnitude.newVector(2 * allocation);)
       {
 
         /* Compute initial crude estimate for the whole interval. */
@@ -389,14 +382,7 @@ public interface ComplexFunction extends
           /* Attempt using Gauss-Legendre rule. */
           if (vs.get(top).isFinite())
           {
-            glStatus = performGaussLegendreIntegrationAutoDeg(as.get(top),
-                                                              bs.get(top),
-                                                              newTol,
-                                                              degLimit,
-                                                              verbose,
-                                                              prec,
-                                                              evalCount,
-                                                              u);
+            glStatus = performGaussLegendreIntegrationAutoDeg(as.get(top), bs.get(top), newTol, degLimit, verbose, prec, evalCount, u);
 
             /* We are done with this subinterval. */
             if (glStatus)
@@ -404,19 +390,7 @@ public interface ComplexFunction extends
               leafIntervalCount++;
               depth--;
 
-              accumulateGaussLegendreQuadrature(relAccuracyGoalBits,
-                                                prec,
-                                                s,
-                                                u,
-                                                tmpm,
-                                                newTol,
-                                                depth,
-                                                top,
-                                                useHeap,
-                                                as,
-                                                bs,
-                                                vs,
-                                                ms);
+              accumulateGaussLegendreQuadrature(relAccuracyGoalBits, prec, s, u, tmpm, newTol, depth, top, useHeap, as, bs, vs, ms);
               continue;
             }
           }
@@ -447,12 +421,7 @@ public interface ComplexFunction extends
 
         if (verbose)
         {
-          System.out.format("depth %d/%d, eval %d/%d, %d leaf intervals\n",
-                            maxDepth,
-                            depthLimit,
-                            evalCount.get(),
-                            evalLimit,
-                            leafIntervalCount);
+          System.out.format("depth %d/%d, eval %d/%d, %d leaf intervals\n", maxDepth, depthLimit, evalCount.get(), evalLimit, leafIntervalCount);
         }
 
         acb_set(res, s);
@@ -482,9 +451,12 @@ public interface ComplexFunction extends
    *         there
    */
   public default int multiplicityOfRoot(Complex z)
-  {   
+  {
     return 1;
-    //throw new UnsupportedOperationException(getClass() + "TODO: return the multiplicity of the root at the point " + z  + " here, or throw an exception or something if there isn't a root at the requested point within whatever uncertainty radius is there");
+    // throw new UnsupportedOperationException(getClass() + "TODO: return the
+    // multiplicity of the root at the point " + z + " here, or throw an exception
+    // or something if there isn't a root at the requested point within whatever
+    // uncertainty radius is there");
   }
 
   /**
@@ -502,21 +474,12 @@ public interface ComplexFunction extends
    * 
    * @return
    */
-  public default boolean performGaussLegendreIntegrationAutoDeg(Complex a,
-                                                                Complex b,
-                                                                Magnitude tol,
-                                                                int degreeLimit,
-                                                                boolean verbose,
-                                                                int prec,
-                                                                AtomicLong evalCount,
-                                                                Complex res)
+  public default boolean performGaussLegendreIntegrationAutoDeg(Complex a, Complex b, Magnitude tol, int degreeLimit, boolean verbose, int prec, AtomicLong evalCount, Complex res)
   {
     boolean converged = false;
-    try ( Complex mid = new Complex(); Complex delta = new Complex(); Complex wide = new Complex();
-          Magnitude tmpm = new Magnitude(); Complex s = new Complex(); Complex v = new Complex();
-          Magnitude M = new Magnitude(); Magnitude X = new Magnitude(); Magnitude Y = new Magnitude();
-          Magnitude rho = new Magnitude(); Magnitude err = new Magnitude(); Magnitude t = new Magnitude();
-          Magnitude bestRho = new Magnitude();)
+    try ( Complex mid = new Complex(); Complex delta = new Complex(); Complex wide = new Complex(); Magnitude tmpm = new Magnitude(); Complex s = new Complex();
+          Complex v = new Complex(); Magnitude M = new Magnitude(); Magnitude X = new Magnitude(); Magnitude Y = new Magnitude(); Magnitude rho = new Magnitude();
+          Magnitude err = new Magnitude(); Magnitude t = new Magnitude(); Magnitude bestRho = new Magnitude();)
     {
       int k, Xexp;
       int i, n, best_n;
@@ -684,8 +647,7 @@ public interface ComplexFunction extends
    */
   public default Complex simpleQuadrature(Complex a, Complex b, int prec, Complex res)
   {
-    try ( Magnitude magδ = new Magnitude(); Complex midpoint = new Complex(); Complex δ = new Complex();
-          Complex widePoint = new Complex();)
+    try ( Magnitude magδ = new Magnitude(); Complex midpoint = new Complex(); Complex δ = new Complex(); Complex widePoint = new Complex();)
     {
       /* δ = (b-a)/2 */
       b.sub(a, prec, δ).mul2e(-1, δ);

@@ -8,7 +8,7 @@ import arb.functions.real.RealFunction;
 
 /**
  * A parameterization of a scaled Bernoullian lemniscate whose <br>
- * <b>curvature</b> is given by
+ * <b>curvature</b> is given by <br>
  * <code> κ(t) = ((3*√2)*cos(t))/(scale*√(3-cos(2t))) <br>
  * and its <b>tangential angle</b> by <br>
  * <code> φ(t) = 3*tan^⁻¹(sin(t)) </code><br>

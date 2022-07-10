@@ -22,7 +22,7 @@ public class LemniscateArcLength implements
       arb.acb_elliptic_f(q, q, Constants.negOne, 0, prec);
       assert q.getImag().isZero();
       w.set(q.getReal());
-      return w.mul(2, prec, w);
+      return w.mul(lemniscate.scale, prec, w);
     }
   };
 

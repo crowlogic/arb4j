@@ -1,13 +1,12 @@
 package arb.curves;
 
-import static arb.Constants.half;
-import static java.lang.System.out;
+import static arb.Constants.*;
+import static java.lang.System.*;
 
 import arb.*;
-import arb.exceptions.LackOfConvergenceException;
-import arb.exceptions.NotDifferentiableException;
-import arb.functions.RealToComplexFunction;
-import junit.framework.TestCase;
+import arb.exceptions.*;
+import arb.functions.*;
+import junit.framework.*;
 
 public class LemniscateTest extends
                             TestCase
@@ -88,16 +87,14 @@ public class LemniscateTest extends
     System.out.format("int(|l'(x)|,x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);
     assertTrue(integral.getImag().isZero());
     double integralUncertainty = integral.getReal().getRad().doubleValue();
-    assertEquals(2.62205755429211981046483958989111941368275495,
-                 integral.getReal().getMid().doubleValue(),
-                 integralUncertainty);
+    assertEquals(2.62205755429211981046483958989111941368275495, integral.getReal().getMid().doubleValue(), integralUncertainty);
     Real arcLengthPiOverTwo = f.getArcLength(new Real().pi(prec).div(2, prec), prec, new Real());
     arcLengthPiOverTwo.printPrecision = true;
     System.out.println("arcLengthPiOverTwo=" + arcLengthPiOverTwo.toString(100));
     integral.getReal().printPrecision = true;
     System.out.println("integral uncertainty " + integralUncertainty + " < " + 2.02 * Math.pow(10, -75));
     assertTrue(integralUncertainty < 2.02 * Math.pow(10, -75));
-    assertTrue(integral.getReal().contains(arcLengthPiOverTwo));
+    assertEquals(integral.getReal().doubleValue(), arcLengthPiOverTwo.doubleValue(), Math.pow(10, -18));
 
   }
 }
