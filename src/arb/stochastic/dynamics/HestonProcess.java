@@ -9,8 +9,8 @@ import arb.*;
 import arb.stochastic.*;
 
 /**
- * The Heston process describes the stochastic (random) evolution process of of
- * the volatility of an underlying asset<br>
+ * The Heston process describes the stochastic (random) evolution process of the
+ * volatility of an underlying asset<br>
  * 
  * <h2>Numerical discretization schemes</h2> Different Euler schemes
  * implementations were examined and various ways how to deal with negative
@@ -22,8 +22,7 @@ import arb.stochastic.*;
  * "https://www.maths.ed.ac.uk/~dhigham/Publications/P57.pdf">Convergence of
  * monte carlo simulations involving the mean-reverting square root process</a>.
  * Journal Computational Finance 8(3), 2005, 35–61. ISSN 1460-1559. DOI:
- * 10.21314/JCF.2005.136
- * 
+ * 10.21314/JCF.2005.136 <br>
  * Lord R., Koekkoek R., and van Dijk D.,
  * <a href="https://papers.tinbergen.nl/06046.pdf">A comparison of biased
  * simulation schemes for stochastic volatility models.</a> Quantitative Finance
@@ -32,6 +31,8 @@ import arb.stochastic.*;
  * </p>
  * 
  * @see https://en.wikipedia.org/wiki/Heston_model
+ * @see https://www.maths.ed.ac.uk/~dhigham/Publications/P57.pdf
+ * @see https://papers.tinbergen.nl/06046.pdf
  */
 public class HestonProcess
 {
