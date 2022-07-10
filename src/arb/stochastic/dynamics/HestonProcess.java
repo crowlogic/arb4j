@@ -9,10 +9,27 @@ import arb.*;
 import arb.stochastic.*;
 
 /**
- * The Heston process describes the evolution of the volatility of an underlying
- * asset. It is a stochastic volatility model: such a model assumes that the
- * volatility of the asset is not constant, nor even deterministic, but follows
- * a random process.
+ * The Heston process describes the stochastic (random) evolution process of of
+ * the volatility of an underlying asset<br>
+ * 
+ * <h2>Numerical discretization schemes</h2> Different Euler schemes
+ * implementations were examined and various ways how to deal with negative
+ * values of the variance process are suggested in
+ * 
+ * <p>
+ * 
+ * Higham D.J. and Mao X., <a href=
+ * "https://www.maths.ed.ac.uk/~dhigham/Publications/P57.pdf">Convergence of
+ * monte carlo simulations involving the mean-reverting square root process</a>.
+ * Journal Computational Finance 8(3), 2005, 35–61. ISSN 1460-1559. DOI:
+ * 10.21314/JCF.2005.136
+ * 
+ * Lord R., Koekkoek R., and van Dijk D.,
+ * <a href="https://papers.tinbergen.nl/06046.pdf">A comparison of biased
+ * simulation schemes for stochastic volatility models.</a> Quantitative Finance
+ * 10(2), 2010 177–194. ISSN 1469-7688. DOI: 10.1080/14697680802392496.
+ * 
+ * </p>
  * 
  * @see https://en.wikipedia.org/wiki/Heston_model
  */
