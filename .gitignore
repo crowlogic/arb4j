@@ -3,10 +3,10 @@
 /README~
 /out.png
 /libarblib.so
-/target/
 /X.gif
 /class.path
 /hs_err_pid120044.log
+/target/classes
 /core.*
 /hs_err*.log
 /Makefile~
