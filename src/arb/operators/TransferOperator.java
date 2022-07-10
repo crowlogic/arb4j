@@ -34,7 +34,7 @@ public class TransferOperator<F extends ComplexFunction> implements
     // FIXME: does this need to be split into a left-adjoint and a right-adjoint
     // that takes an argument? probably a rhetorical question
     return new CompositionOperator(f,
-                                          null);
+                                   null);
   }
 
   public TransferOperator(F f)
@@ -54,7 +54,7 @@ public class TransferOperator<F extends ComplexFunction> implements
       {
         ComplexFunction finverse             = f.inverse(branch);
         ComplexFunction finverseDifferential = finverse.differential();
-        throw new UnsupportedOperationException("TODO: finish");
+        assert false : "TODO: finish";
         // finverseDifferential.evaluate(z, order, prec, w)
       }
     }
