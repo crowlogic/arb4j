@@ -26,7 +26,7 @@ public class GaussianProcess implements
   public GaussianCharacteristicFunction φ;
 
   @Override
-  public DensityFunction getProbabilityDensity()
+  public DensityFunction getDensityFunction()
   {
     return p;
   }
@@ -35,6 +35,13 @@ public class GaussianProcess implements
   public CharacteristicFunction getCharacteristicFunction()
   {
     return φ;
+  }
+
+  @Override
+  public DistributionFunction getDistributionFunction()
+  {
+    assert false : "TODO: implement";
+    return null;
   }
 
 }

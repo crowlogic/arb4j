@@ -24,7 +24,7 @@ public class WienerProcess implements
 {
 
   @Override
-  public DensityFunction getProbabilityDensity()
+  public DensityFunction getDensityFunction()
   {
     assert false : "2do";
     return null;
@@ -34,6 +34,13 @@ public class WienerProcess implements
   public CharacteristicFunction getCharacteristicFunction()
   {
     assert false : "2do";
+    return null;
+  }
+
+  @Override
+  public DistributionFunction getDistributionFunction()
+  {
+    assert false : "TODO: implement";
     return null;
   }
 
