@@ -1,6 +1,6 @@
-package arb.probability.stochasticprocesses;
+package arb.stochastic.dynamics;
 
-import arb.probability.*;
+import arb.stochastic.*;
 
 /**
  * The Wiener process W(t) is an integral of the white-noise

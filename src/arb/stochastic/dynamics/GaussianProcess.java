@@ -1,7 +1,7 @@
-package arb.probability.stochasticprocesses;
+package arb.stochastic.dynamics;
 
 import arb.*;
-import arb.probability.*;
+import arb.stochastic.*;
 
 /**
  * A Gaussian "white noise" process of specified mean and standard deviation

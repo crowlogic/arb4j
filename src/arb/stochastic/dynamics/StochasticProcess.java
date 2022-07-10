@@ -1,6 +1,6 @@
-package arb.probability.stochasticprocesses;
+package arb.stochastic.dynamics;
 
-import arb.probability.*;
+import arb.stochastic.*;
 
 /**
  * A stochastic process is a family of random variables,<br>

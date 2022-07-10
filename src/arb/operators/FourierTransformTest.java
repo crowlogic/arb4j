@@ -4,7 +4,7 @@ import static arb.util.Utils.*;
 
 import arb.*;
 import arb.functions.real.*;
-import arb.probability.*;
+import arb.stochastic.*;
 import junit.framework.*;
 
 public class FourierTransformTest extends

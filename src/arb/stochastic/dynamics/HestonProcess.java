@@ -1,4 +1,4 @@
-package arb.probability.stochasticprocesses;
+package arb.stochastic.dynamics;
 
 import static arb.Constants.*;
 import static arb.util.Utils.*;
@@ -6,7 +6,7 @@ import static arb.util.Utils.*;
 import java.io.*;
 
 import arb.*;
-import arb.probability.*;
+import arb.stochastic.*;
 
 /**
  * The Heston process describes the evolution of the volatility of an underlying

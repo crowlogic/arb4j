@@ -1,4 +1,4 @@
-package arb.probability;
+package arb.stochastic;
 
 import static arb.Constants.*;
 
