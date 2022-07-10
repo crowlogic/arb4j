@@ -77,4 +77,6 @@ public class Constants
 
   public static final Real sqrt2 = new Real().set(2);
 
+  public static final Complex negOne = new Complex().one().neg();
+
 }

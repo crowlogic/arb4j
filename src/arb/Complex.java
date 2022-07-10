@@ -636,9 +636,13 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
  
   public Complex clear()
   {
-    if (swigCMemOwn)
+    if ( swigCMemOwn )
     {
-      arb._acb_vec_clear(this, dim);
+      acb_clear(this);
+      for ( int i = 2; i < dim; i++ )
+      {
+        get(i).clear();
+      }
     }
     return this;
   }

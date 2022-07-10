@@ -117,6 +117,10 @@ import static arb.arb.*;
     if ( swigCMemOwn )
     {
       arb_clear(this);
+      for ( int i = 2; i < dim; i++ )
+      {
+        get(i).clear();
+      }
     }
     return this;
   }

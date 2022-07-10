@@ -138,6 +138,10 @@ public class Real implements Comparable<Real>, Field {
     if ( swigCMemOwn )
     {
       arb_clear(this);
+      for ( int i = 2; i < dim; i++ )
+      {
+        get(i).clear();
+      }
     }
     return this;
   }

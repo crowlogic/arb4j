@@ -7,36 +7,26 @@ import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 /**
- * A parameterization of the Lemniscate of Bernoulli with scale parameter
- * 
- * The curvature and tangential angle of the lemniscate are Κappa(t) =
- * (3*sqrt(2)*cos(t))/(scale*sqrt(3-cos(2t))) and φ(t) = 3*tan^(-1)(sin(t)).
+ * A parameterization of a scaled Bernoullian lemniscate whose <br>
+ * <b>curvature</b> is given by
+ * <code> κ(t) = ((3*√2)*cos(t))/(scale*√(3-cos(2t))) <br>
+ * and its <b>tangential angle</b> by <br>
+ * <code> φ(t) = 3*tan^⁻¹(sin(t)) </code><br>
  * 
  * 
  */
 public class Lemniscate implements
-                        PlaneCurve, AutoCloseable
+                        PlaneCurve,
+                        AutoCloseable
 {
 
-  static final Complex negOne = new Complex().one().neg();
-
   /**
-   * @return 2*EllipticF(a, -1) + ω*IntegerPart(a/π)
+   * @return new {@link LemniscateArcLength}
    */
   @Override
   public RealFunction getArcLength()
   {
-    return (z, order, prec, w) ->
-    {
-      try ( Complex q = new Complex();)
-      {
-        q.getReal().set(z);
-        arb.acb_elliptic_f(q, q, negOne, 0, prec);
-        assert q.getImag().isZero();
-        w.set(q.getReal());
-        return w.mul(2, prec, w);
-      }
-    };
+    return new LemniscateArcLength(this);
   }
 
   /**
@@ -78,7 +68,7 @@ public class Lemniscate implements
 
     try ( Real a = new Real(); Complex divisor = new Complex(); Complex numerator = new Complex())
     {
-      scale.mul( z.cos(prec, a), prec, numerator.getReal());
+      scale.mul(z.cos(prec, a), prec, numerator.getReal());
       z.sin(prec, a).mul(imaginaryUnit, prec, divisor);
       divisor.neg(divisor).add(1, prec, divisor);
       numerator.div(divisor, prec, w);
