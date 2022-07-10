@@ -25,17 +25,17 @@ public class YRenderer extends
      renderer.render();
   }
   
-  public static final int width  = 2500 ;
-  public static final int height = 1250  ;
+  public static final int width  = 1900 ;
+  public static final int height = 950  ;
 
   public YRenderer(Real vscale) throws NoninvertibleTransformException
   {
     super(new Dimension(width,
                         height),
           new Rectangle2D.Double(-10,
-                                 -7.5 * 5,
+                                 -22,
                                  80,
-                                 15 * 5),
+                                 44),
           new NewtonFlow<YFunction>(new YFunction(vscale)));
 
     colorMode  = 5;
