@@ -176,7 +176,7 @@ public class SFunction implements
   }
 
   @Override
-  public void close() throws Exception
+  public void close()
   {
     a.clear();
   }

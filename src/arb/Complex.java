@@ -773,4 +773,10 @@ public class Complex implements Field,Iterable<Complex>,Serializable {
     this(arbJNI.new_Complex(), true);
   }
 
+  public Complex(double d, double e)
+  {
+    this();
+    set(d,e);
+  }
+
 }

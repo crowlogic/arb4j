@@ -23,6 +23,12 @@ import static arb.arb.*;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex(double r, double i)
+  {
+    this();
+    set(r,i);
+  }
+
   public Complex(String realStr, String imagStr, int precision)
   {
     getReal().set(realStr, precision);

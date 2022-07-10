@@ -45,7 +45,7 @@ public class YRenderer extends
 
   public YRenderer() throws NoninvertibleTransformException
   {
-    this(new Real().set("3",128));
+    this(new Real("3",128));
   }
 
 }

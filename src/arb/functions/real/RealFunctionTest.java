@@ -35,7 +35,7 @@ public class RealFunctionTest
                                                                          20000,
                                                                          10,
                                                                          256);
-    Roots               roots        = sineFunction.locateRoots(config);
+    Roots                    roots        = sineFunction.locateRoots(config);
     roots.refine(sineFunction, 256, 40, true);
   }
 
@@ -58,7 +58,7 @@ public class RealFunctionTest
                                                                             maxevals,
                                                                             maxfound,
                                                                             prec);
-    Roots               roots           = f.locateRoots(config);
+    Roots                    roots           = f.locateRoots(config);
     System.out.println("rootsBeforeRefinement=" + roots);
 
     assertEquals(192, roots.evals);
@@ -79,16 +79,17 @@ public class RealFunctionTest
   @Test
   public void testNewtonConvergenceFactor()
   {
-    Real          jet      = Real.newVector(3);
-    FloatInterval interval = new FloatInterval(0.2,
-                                               0.3);
-    out.println("real.allocatedBytes=" + jet.getAllocatedBytes());
-    System.out.println("interval=" + interval);
-    Real region = interval.getReal(new Real(), 128);
-    out.println("mag=" + region.getRad());
-    System.out.println("region=" + region);
-    Float C = sineFunction.getNewtonConvergenceFactor(region, jet, 128, new Float());
-    System.out.println("C=" + C.doubleValue());
-    assertEquals(0.0773340631858446, C.doubleValue(), pow(10, -10));
+    try ( Real jet = Real.newVector(3); FloatInterval interval = new FloatInterval(0.2,
+                                                                                   0.3))
+    {
+      out.println("real.allocatedBytes=" + jet.getAllocatedBytes());
+      System.out.println("interval=" + interval);
+      Real region = interval.getReal(new Real(), 128);
+      out.println("mag=" + region.getRad());
+      System.out.println("region=" + region);
+      Float C = sineFunction.getNewtonConvergenceFactor(region, jet, 128, new Float());
+      System.out.println("C=" + C.doubleValue());
+      assertEquals(0.0773340631858446, C.doubleValue(), pow(10, -10));
+    }
   }
 }

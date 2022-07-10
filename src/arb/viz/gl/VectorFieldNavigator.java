@@ -55,7 +55,7 @@ public class VectorFieldNavigator
     CompleteRenderer content = new CompleteRenderer();
     coordsys.setContent(content);
 
-    XFunction            sfunc      = new XFunction(new Real().set("1", 128));
+    XFunction            sfunc      = new XFunction(new Real("1", 128));
 
     // setup content
     ThreadLocalComplex   p          = new ThreadLocalComplex(1);

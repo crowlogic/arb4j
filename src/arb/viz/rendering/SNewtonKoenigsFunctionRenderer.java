@@ -16,6 +16,7 @@ public class SNewtonKoenigsFunctionRenderer extends
                                             ComplexFunctionRenderer<IteratedFunction<SNewtonMap>>
 {
 
+  @SuppressWarnings("resource")
   public SNewtonKoenigsFunctionRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
   {
     super(screen,

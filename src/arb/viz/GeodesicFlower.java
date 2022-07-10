@@ -84,20 +84,21 @@ public class GeodesicFlower<P extends ComplexFunction>
       θ.getMid().sub(ρ.getMid(), 128, zeroPointInterval.getA());
       θ.getMid().add(ρ.getMid(), 128, zeroPointInterval.getB());
 
-      RealFunctionPlotter plotter = new RealFunctionPlotter(field,
-                                                            zeroPointInterval,
-                                                            new RealRootInterval(-0.001,
-                                                                                 0.001),
-                                                            500);
-      plotter.plot();
-
+      try ( RealFunctionPlotter plotter = new RealFunctionPlotter(field,
+                                                                  zeroPointInterval,
+                                                                  new RealRootInterval(-0.001,
+                                                                                       0.001),
+                                                                  500))
+      {
+        plotter.plot();
+      }
       System.out.println("Locating over " + zeroPointInterval);
 
       Roots root = field.locateRoots(new RootLocatorConfiguration(zeroPointInterval,
-                                                                       1500,
-                                                                       50000,
-                                                                       1,
-                                                                       512));
+                                                                  1500,
+                                                                  50000,
+                                                                  1,
+                                                                  512));
       System.out.println("Located  " + zeroPointInterval);
       System.out.println("Refining...");
       root.refine(field, 256, 100, true);

@@ -15,11 +15,14 @@ public class SζRenderer extends
 {
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
-    SζRenderer plotter = new SζRenderer();
-    plotter.render();
-    plotter.saveToFile();
+    try ( SζRenderer plotter = new SζRenderer())
+    {
+      plotter.render();
+      plotter.saveToFile();
+    }
   }
 
+  @SuppressWarnings("resource")
   public SζRenderer() throws NoninvertibleTransformException
   {
     super(new Dimension(5000,
@@ -29,7 +32,8 @@ public class SζRenderer extends
                                  80,
                                  -40),
           new CompositionOperator(new CompositionOperator(new SFunction(new Real().set("5", 128)),
-                                   (new RiemannZetaFunction())), new WickRotation()));
+                                                          (new RiemannZetaFunction())),
+                                  new WickRotation()));
 
     colorMode   = 2;
     displayMode = arb.viz.Part.Imag;

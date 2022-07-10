@@ -1,17 +1,17 @@
 package arb.functions.complex;
 
-import arb.Complex;
-import junit.framework.TestCase;
+import arb.*;
+import junit.framework.*;
 
 public class SFunctionTest extends
                            TestCase
 {
   public static void testS()
   {
-    SFunction sFunction = new SFunction();
-    try ( Complex t = new Complex().set(2, 0.2);)
+
+    try ( Complex t = new Complex(); var sFunction = new SFunction();)
     {
-      Complex result = sFunction.evaluate(t, 3, 256, Complex.newVector(3));
+      Complex result = sFunction.evaluate(t.set(2, 0.2), 3, 256, Complex.newVector(3));
       System.out.format("S(%s)=%s\n", t, result);
 
       assertEquals(result.getReal().doubleValue(), 0.8272968560866428);
@@ -22,16 +22,21 @@ public class SFunctionTest extends
       assertEquals(result.get(1).getImag().doubleValue(), -0.26128962310117315);
     }
   }
-  
-    
+
   public static void testInverseFunctions()
   {
-    SFunction sFunction = new SFunction();
-    
-    for ( int i = 0; i < 4; i++)
+    try ( var sFunction = new SFunction())
     {
-      ComplexFunction firstInverse = sFunction.inverse(0);
-      
+      for (int i = 0; i < 4; i++)
+      {
+        ComplexFunction firstInverse = sFunction.inverse(0);
+
+      }
+    }
+    catch (Exception e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 }

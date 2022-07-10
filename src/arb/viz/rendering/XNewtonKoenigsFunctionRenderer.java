@@ -21,7 +21,7 @@ public class XNewtonKoenigsFunctionRenderer extends
   {
     super(screen,
           domain,
-          new IteratedFunction(new NewtonMap(new YFunction(new Real().set("1", 128))),
+          new IteratedFunction(new NewtonMap(new YFunction(new Real("1", 128))),
                                3,
                                true) {
 
