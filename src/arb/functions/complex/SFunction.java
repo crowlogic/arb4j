@@ -78,7 +78,7 @@ public class SFunction implements
 
   public SFunction()
   {
-    this(Constants.one);
+    this(Constants.ONE);
   }
 
   public SFunction(Real a)

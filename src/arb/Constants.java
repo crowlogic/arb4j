@@ -27,7 +27,7 @@ public class Constants
   public static final int       FMPR_RND_CEIL  = 3;
   public static final int       FMPR_RND_NEAR  = 4;
   public static final Real      half           = new Real();
-  public static final Real      one            = new Real();
+  public static final Real      ONE            = new Real();
   public static final Complex   complexOne     = new Complex();
   public static final Complex   complexHalf    = new Complex();
 
@@ -57,12 +57,12 @@ public class Constants
   {
     zeroMag.zero();
     half.init();
-    one.init();
+    ONE.init();
     imaginaryUnit.init();
     iπ.init();
     half.one().div(2, prec);
     complexHalf.getReal().set(half);
-    one.one();
+    ONE.one();
     complexOne.getReal().one();
     imaginaryUnit.getImag().one();
     iπ.getImag().pi(prec);

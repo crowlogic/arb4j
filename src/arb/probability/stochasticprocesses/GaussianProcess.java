@@ -1,8 +1,8 @@
-package arb.stochastic.processes;
+package arb.probability.stochasticprocesses;
 
 import arb.Real;
-import arb.stochastic.characteristicfunctions.*;
-import arb.stochastic.densities.*;
+import arb.probability.characteristicfunctions.*;
+import arb.probability.densities.*;
 
 /**
  * A Gaussian "white noise" process of specified mean and standard deviation

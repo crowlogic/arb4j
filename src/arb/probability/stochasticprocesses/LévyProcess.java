@@ -1,4 +1,4 @@
-package arb.stochastic.processes;
+package arb.probability.stochasticprocesses;
 
 /**
  * A {@link LévyProcess}, named after Paul Lévy, is a stochastic process with

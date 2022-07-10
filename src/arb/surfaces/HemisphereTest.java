@@ -10,7 +10,7 @@ public class HemisphereTest extends
 {
   public static void testCoordinates()
   {
-    Hemisphere hemisphere = new Hemisphere(Constants.one,
+    Hemisphere hemisphere = new Hemisphere(Constants.ONE,
                                            true);
     Complex    t          = new Complex();
     Real       w          = new Real();

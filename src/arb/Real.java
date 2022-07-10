@@ -699,4 +699,9 @@ public class Real implements Comparable<Real>, Field {
     this(arbJNI.new_Real(), true);
   }
 
+  public Real pow(int i, int prec)
+  {
+    return pow(i,prec,this);
+  }
+
 }

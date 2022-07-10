@@ -1,6 +1,6 @@
 package arb.functions.complex;
 
-import static arb.Constants.one;
+import static arb.Constants.ONE;
 
 import arb.*;
 import arb.functions.Function;
@@ -13,7 +13,7 @@ public class ComplexFunctionTest extends
   {
     try ( Complex a = new Complex();)
     {
-      a.set(one, one);
+      a.set(ONE, ONE);
       Function<Complex, Real> absoluteValueOfAConstantFunction = new ComplexConstant(a).abs();
 
       Real                    sqrt2                            = a.abs(128, new Real());

@@ -1,8 +1,8 @@
-package arb.stochastic.characteristicfunctions;
+package arb.probability.characteristicfunctions;
 
 import arb.functions.real.*;
 import arb.operators.*;
-import arb.stochastic.densities.*;
+import arb.probability.densities.*;
 
 /**
  * The characteristic function of any real-valued random variable completely

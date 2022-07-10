@@ -1,9 +1,9 @@
-package arb.stochastic.characteristicfunctions;
+package arb.probability.characteristicfunctions;
 
 import static arb.Constants.*;
 
 import arb.*;
-import arb.stochastic.densities.*;
+import arb.probability.densities.*;
 
 public class UnitCenteredGaussianCharacteristicFunction implements
                                                         CharacteristicFunction<UnitCenteredGaussianProbabilityDensity>

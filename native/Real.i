@@ -20,6 +20,11 @@ import static arb.arb.*;
 %typemap(javacode) arb_struct %{
  static { System.loadLibrary( "arblib" ); }
 
+  public Real pow(int i, int prec)
+  {
+    return pow(i,prec,this);
+  }
+
   public Real(String string, int prec)
   {
     this();

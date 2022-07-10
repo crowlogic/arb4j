@@ -12,7 +12,7 @@ public class CircleTest extends
   public void testCoordinates()
   {
     Circle circle = new Circle(Constants.ZERO,
-                               Constants.one);
+                               Constants.ONE);
     Real   halfpi = new Real();
     halfpi.pi(256).div(2, 256);
     Complex point = circle.evaluate(halfpi, 1, 128, new Complex());

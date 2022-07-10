@@ -1,4 +1,4 @@
-package arb.stochastic.densities;
+package arb.probability.densities;
 
 import static arb.Constants.*;
 
@@ -47,7 +47,7 @@ public class GaussianProbabilityDensity implements
                                    public Real evaluate(Real t, int order, int prec, Real res)
                                    {
                                      assert false : "TODO";
-                                     return Constants.one.div(t, prec, res).log(prec, res).sqrt(prec, res);
+                                     return Constants.ONE.div(t, prec, res).log(prec, res).sqrt(prec, res);
                                    }
                                  };
 
@@ -81,5 +81,7 @@ public class GaussianProbabilityDensity implements
       return result.div(sqrt2π.mul(σ, prec, t), prec, result);
     }
   }
+
+ 
 
 }
