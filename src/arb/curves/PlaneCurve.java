@@ -11,8 +11,8 @@ import arb.functions.real.*;
  * closed or open.
  * 
  */
-public interface PlaneCurve<F extends Function> extends
-                           RealToComplexFunction
+public interface PlaneCurve extends
+                            RealToComplexFunction
 {
 
   public default ComplexFunction getUnitSpeedCurve()
@@ -20,7 +20,7 @@ public interface PlaneCurve<F extends Function> extends
     assert false : "TODO: invert the arc-length to normalize this curve so that it goes from [0,1] instead of [0,getArchLength(2π)]";
     return null;
   }
-  
+
   /**
    * The vector r from the origin to the current position. It is also called the
    * position vector. The derivative of r satisfies
