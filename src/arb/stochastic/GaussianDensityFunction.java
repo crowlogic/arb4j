@@ -4,6 +4,7 @@ import static arb.Constants.*;
 
 import arb.*;
 import arb.functions.real.*;
+import arb.viz.RealFunctionPlotter;
 
 /**
  * Normal distributions are important in statistics and are often used in the
@@ -19,8 +20,21 @@ import arb.functions.real.*;
  * @see https://en.wikipedia.org/wiki/Normal_distribution
  */
 public class GaussianDensityFunction implements
-                                        DensityFunction
+                                     DensityFunction
 {
+
+  public static void main(String args[])
+  {
+    RealFunctionPlotter plotter = new RealFunctionPlotter(new GaussianDensityFunction(Constants.ZERO.getReal(),
+                                                                                      Constants.ONE),
+                                                          new FloatInterval(-5,
+                                                                            5),
+                                                          new FloatInterval(0,
+                                                                            0.5),
+                                                          500);
+    plotter.plot();
+  }
+
   @Override
   public String toString()
   {
@@ -76,11 +90,9 @@ public class GaussianDensityFunction implements
     // e^(-(((x-μ)/σ)^2)/2)/(σ*√(2π))
     try ( Real t = new Real())
     {
-      z.sub(μ, prec, t).div(σ, prec, t).pow(2, prec, result).div(2, prec, result).negate(result).exp(prec, result);
+      z.sub(μ, prec, t).div(σ, prec).pow(2, prec, result).div(2, prec).negate(result).exp(prec, result);
       return result.div(sqrt2π.mul(σ, prec, t), prec, result);
     }
   }
-
- 
 
 }
