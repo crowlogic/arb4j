@@ -14,8 +14,6 @@ import static java.lang.Math.*;
 import static java.lang.String.*;
 import static java.lang.System.*;
 
-import java.lang.Integer;
-
 import arb.*;
 import arb.Float;
 import arb.FloatInterval.*;

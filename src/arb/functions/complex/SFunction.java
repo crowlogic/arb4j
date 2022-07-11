@@ -1,6 +1,5 @@
 package arb.functions.complex;
 
-import static arb.RealConstants.*;
 import static java.lang.String.*;
 
 import arb.*;

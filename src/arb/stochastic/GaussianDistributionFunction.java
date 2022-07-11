@@ -4,7 +4,7 @@ import static arb.RealConstants.*;
 
 import arb.*;
 import arb.functions.real.*;
-import arb.viz.RealFunctionPlotter;
+import arb.viz.*;
 
 /**
  * The cumulative distribution function for the Gaussian distribition. The

@@ -9,7 +9,6 @@ import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
 import java.awt.image.*;
 import java.io.*;
-import java.lang.Integer;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.*;

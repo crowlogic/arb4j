@@ -3,7 +3,7 @@ package arb.stochastic.processes;
 import static arb.utils.Utils.*;
 
 import arb.*;
-import arb.stochastic.GaussianDensityFunction;
+import arb.stochastic.*;
 import junit.framework.*;
 
 public class GaussianProcessTest extends

@@ -1,7 +1,6 @@
 package arb.functions.complex;
 
-import static arb.ComplexConstants.π;
-import static arb.RealConstants.*;
+import static arb.ComplexConstants.*;
 import static java.lang.Math.*;
 
 import arb.*;

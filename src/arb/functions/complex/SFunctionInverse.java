@@ -1,7 +1,5 @@
 package arb.functions.complex;
 
-import static arb.RealConstants.*;
-
 import arb.*;
 
 public class SFunctionInverse implements

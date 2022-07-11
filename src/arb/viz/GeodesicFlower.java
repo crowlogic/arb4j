@@ -9,8 +9,6 @@
  */
 package arb.viz;
 
-import static arb.RealConstants.*;
-
 import java.awt.*;
 
 import arb.*;
