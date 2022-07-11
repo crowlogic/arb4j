@@ -5,7 +5,7 @@ import static java.lang.Math.*;
 import arb.*;
 import arb.functions.*;
 
-public class AbsoluteValue<D extends Field> implements
+public class AbsoluteValue<D extends NumberField> implements
                           Function<D, Real>
 {
 

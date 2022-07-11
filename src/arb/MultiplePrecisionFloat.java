@@ -9,7 +9,7 @@
 package arb;
 
 
-public class MultiPrecFloat implements AutoCloseable {
+public class MultiplePrecisionFloat implements AutoCloseable {
 
  static
  {
@@ -19,16 +19,16 @@ public class MultiPrecFloat implements AutoCloseable {
   public long swigCPtr;
   public boolean swigCMemOwn;
 
-  public MultiPrecFloat(long cPtr) {
+  public MultiplePrecisionFloat(long cPtr) {
     this(cPtr,false);
   }
     
-  public MultiPrecFloat(long cPtr, boolean cMemoryOwn) {
+  public MultiplePrecisionFloat(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  public static long getCPtr(MultiPrecFloat obj) {
+  public static long getCPtr(MultiplePrecisionFloat obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -36,14 +36,14 @@ public class MultiPrecFloat implements AutoCloseable {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        arbJNI.delete_MultiPrecFloat(swigCPtr);
+        arbJNI.delete_MultiplePrecisionFloat(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
 
-  public MultiPrecFloat clear()
+  public MultiplePrecisionFloat clear()
   {
     if ( swigCMemOwn )
     {
@@ -64,40 +64,40 @@ public class MultiPrecFloat implements AutoCloseable {
   
 
   public void set_mpfr_prec(SWIGTYPE_p_mpfr_prec_t value) {
-    arbJNI.MultiPrecFloat__mpfr_prec_set(swigCPtr, this, SWIGTYPE_p_mpfr_prec_t.getCPtr(value));
+    arbJNI.MultiplePrecisionFloat__mpfr_prec_set(swigCPtr, this, SWIGTYPE_p_mpfr_prec_t.getCPtr(value));
   }
 
   public SWIGTYPE_p_mpfr_prec_t get_mpfr_prec() {
-    return new SWIGTYPE_p_mpfr_prec_t(arbJNI.MultiPrecFloat__mpfr_prec_get(swigCPtr, this), true);
+    return new SWIGTYPE_p_mpfr_prec_t(arbJNI.MultiplePrecisionFloat__mpfr_prec_get(swigCPtr, this), true);
   }
 
   public void set_mpfr_sign(SWIGTYPE_p_mpfr_sign_t value) {
-    arbJNI.MultiPrecFloat__mpfr_sign_set(swigCPtr, this, SWIGTYPE_p_mpfr_sign_t.getCPtr(value));
+    arbJNI.MultiplePrecisionFloat__mpfr_sign_set(swigCPtr, this, SWIGTYPE_p_mpfr_sign_t.getCPtr(value));
   }
 
   public SWIGTYPE_p_mpfr_sign_t get_mpfr_sign() {
-    return new SWIGTYPE_p_mpfr_sign_t(arbJNI.MultiPrecFloat__mpfr_sign_get(swigCPtr, this), true);
+    return new SWIGTYPE_p_mpfr_sign_t(arbJNI.MultiplePrecisionFloat__mpfr_sign_get(swigCPtr, this), true);
   }
 
   public void set_mpfr_exp(SWIGTYPE_p_mpfr_exp_t value) {
-    arbJNI.MultiPrecFloat__mpfr_exp_set(swigCPtr, this, SWIGTYPE_p_mpfr_exp_t.getCPtr(value));
+    arbJNI.MultiplePrecisionFloat__mpfr_exp_set(swigCPtr, this, SWIGTYPE_p_mpfr_exp_t.getCPtr(value));
   }
 
   public SWIGTYPE_p_mpfr_exp_t get_mpfr_exp() {
-    return new SWIGTYPE_p_mpfr_exp_t(arbJNI.MultiPrecFloat__mpfr_exp_get(swigCPtr, this), true);
+    return new SWIGTYPE_p_mpfr_exp_t(arbJNI.MultiplePrecisionFloat__mpfr_exp_get(swigCPtr, this), true);
   }
 
   public void set_mpfr_d(SWIGTYPE_p_unsigned_long value) {
-    arbJNI.MultiPrecFloat__mpfr_d_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
+    arbJNI.MultiplePrecisionFloat__mpfr_d_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
   }
 
   public SWIGTYPE_p_unsigned_long get_mpfr_d() {
-    long cPtr = arbJNI.MultiPrecFloat__mpfr_d_get(swigCPtr, this);
+    long cPtr = arbJNI.MultiplePrecisionFloat__mpfr_d_get(swigCPtr, this);
     return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
   }
 
-  public MultiPrecFloat() {
-    this(arbJNI.new_MultiPrecFloat(), true);
+  public MultiplePrecisionFloat() {
+    this(arbJNI.new_MultiplePrecisionFloat(), true);
   }
 
 }

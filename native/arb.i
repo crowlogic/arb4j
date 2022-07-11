@@ -31,10 +31,10 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %rename (RandomState) flint_rand_s;
 
 %rename (FastDFTScheme) acb_dft_pre_struct;
-%rename (Integer) __mpz_struct;
+%rename (MultiplePrecisionInteger) __mpz_struct;
 %rename (FloatInterval) arf_interval_struct;
-%rename (MultiPrecFloat) __mpfr_struct;
-%rename (MultiPrecFloat) mpfr_t;
+%rename (MultiplePrecisionFloat) __mpfr_struct;
+%rename (MultiplePrecFloatFloat) mpfr_t;
 %rename (Complex) acb_struct;
 %rename (Real) arb_struct;
 %rename (Float) arf_struct;

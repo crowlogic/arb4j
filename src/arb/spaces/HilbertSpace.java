@@ -25,8 +25,8 @@ import arb.functions.*;
  * space.
  */
 @FunctionalInterface
-public interface HilbertSpace<D extends Field, F extends Function<D, ?>> extends
+public interface HilbertSpace<D extends NumberField, F extends Function<D, ?>> extends
                              Space
 {
-  public <P extends Field> P innerProduct(F left, F right);
+  public <P extends NumberField> P innerProduct(F left, F right);
 }

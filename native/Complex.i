@@ -18,7 +18,7 @@ import static arb.arb.*;
 
 %typemap(javafinalize) acb_struct ""
 
-%typemap(javainterfaces) acb_struct "Field,Iterable<Complex>,Serializable"
+%typemap(javainterfaces) acb_struct "NumberField,Iterable<Complex>,Serializable"
 
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }

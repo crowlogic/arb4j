@@ -10,7 +10,7 @@ import arb.functions.*;
  * </code>
  *
  */
-public class HardySpace<D extends Field, F extends Function<D, ?>> implements
+public class HardySpace<D extends NumberField, F extends Function<D, ?>> implements
                        HilbertSpace<D, F>
 {
 
@@ -19,7 +19,7 @@ public class HardySpace<D extends Field, F extends Function<D, ?>> implements
    * @param right
    * @return (𝑓|𝑔)=sup{0<𝑟<1}(∫(𝑓(𝑟*exp(𝑖*𝜃))*conj(𝑔(𝑟*exp(𝑖*𝜃)))d𝜃=0..2π))
    */
-  public <P extends Field> P innerProduct(F left, F right)
+  public <P extends NumberField> P innerProduct(F left, F right)
   {
     throw new UnsupportedOperationException("TODO: return (𝑓|𝑔)=sup{0<𝑟<1}(∫(𝑓(𝑟*exp(𝑖*𝜃))*conj(𝑔(𝑟*exp(𝑖*𝜃)))d𝜃=0..2π))");
   }

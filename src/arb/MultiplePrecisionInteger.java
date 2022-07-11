@@ -8,16 +8,16 @@
 
 package arb;
 
-public class Integer {
+public class MultiplePrecisionInteger {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public Integer(long cPtr, boolean cMemoryOwn) {
+  public MultiplePrecisionInteger(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  public static long getCPtr(Integer obj) {
+  public static long getCPtr(MultiplePrecisionInteger obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -30,39 +30,39 @@ public class Integer {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        arbJNI.delete_Integer(swigCPtr);
+        arbJNI.delete_MultiplePrecisionInteger(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
   public void set_mp_alloc(int value) {
-    arbJNI.Integer__mp_alloc_set(swigCPtr, this, value);
+    arbJNI.MultiplePrecisionInteger__mp_alloc_set(swigCPtr, this, value);
   }
 
   public int get_mp_alloc() {
-    return arbJNI.Integer__mp_alloc_get(swigCPtr, this);
+    return arbJNI.MultiplePrecisionInteger__mp_alloc_get(swigCPtr, this);
   }
 
   public void set_mp_size(int value) {
-    arbJNI.Integer__mp_size_set(swigCPtr, this, value);
+    arbJNI.MultiplePrecisionInteger__mp_size_set(swigCPtr, this, value);
   }
 
   public int get_mp_size() {
-    return arbJNI.Integer__mp_size_get(swigCPtr, this);
+    return arbJNI.MultiplePrecisionInteger__mp_size_get(swigCPtr, this);
   }
 
   public void set_mp_d(SWIGTYPE_p_unsigned_long value) {
-    arbJNI.Integer__mp_d_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
+    arbJNI.MultiplePrecisionInteger__mp_d_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
   }
 
   public SWIGTYPE_p_unsigned_long get_mp_d() {
-    long cPtr = arbJNI.Integer__mp_d_get(swigCPtr, this);
+    long cPtr = arbJNI.MultiplePrecisionInteger__mp_d_get(swigCPtr, this);
     return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
   }
 
-  public Integer() {
-    this(arbJNI.new_Integer(), true);
+  public MultiplePrecisionInteger() {
+    this(arbJNI.new_MultiplePrecisionInteger(), true);
   }
 
 }

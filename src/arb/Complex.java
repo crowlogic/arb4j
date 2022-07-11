@@ -23,7 +23,7 @@ import static arb.arb.*;
  * algebra over the reals, and a Euclidean vector space of dimension two.
  */
 
-public class Complex implements Field,Iterable<Complex>,Serializable {
+public class Complex implements NumberField,Iterable<Complex>,Serializable {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 

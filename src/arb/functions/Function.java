@@ -4,7 +4,7 @@ import arb.*;
 import arb.exceptions.*;
 
 @FunctionalInterface
-public interface Function<D extends Field, R extends Field>
+public interface Function<D extends NumberField, R extends NumberField>
 {
 
   public R evaluate(D t, int order, int prec, R res);

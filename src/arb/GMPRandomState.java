@@ -36,13 +36,13 @@ public class GMPRandomState {
     }
   }
 
-  public void setSeed(Integer value) {
-    arbJNI.GMPRandomState_seed_set(swigCPtr, this, Integer.getCPtr(value), value);
+  public void setSeed(MultiplePrecisionInteger value) {
+    arbJNI.GMPRandomState_seed_set(swigCPtr, this, MultiplePrecisionInteger.getCPtr(value), value);
   }
 
-  public Integer getSeed() {
+  public MultiplePrecisionInteger getSeed() {
     long cPtr = arbJNI.GMPRandomState_seed_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Integer(cPtr, false);
+    return (cPtr == 0) ? null : new MultiplePrecisionInteger(cPtr, false);
   }
 
   public void setAlgorithm(RandomAlgorithm value) {

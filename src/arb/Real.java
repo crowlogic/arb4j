@@ -23,7 +23,7 @@ import static arb.arb.*;
  * 
  */
 
-public class Real implements Comparable<Real>, Field {
+public class Real implements Comparable<Real>, NumberField {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 

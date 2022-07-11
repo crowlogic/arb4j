@@ -30,7 +30,7 @@
 
 %typemap(javacode) __mpfr_struct %{
 
-  public MultiPrecFloat clear()
+  public MultiplePrecisionFloat clear()
   {
     if ( swigCMemOwn )
     {

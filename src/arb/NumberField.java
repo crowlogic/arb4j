@@ -8,7 +8,7 @@ package arb;
  * fields potentially represent actually existing physical fields and forces and
  * measurements on them, conserved quantities, etc
  */
-public interface Field extends
+public interface NumberField extends
                        AutoCloseable
 {
 

@@ -4789,7 +4789,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_GMP_1RAND_1ALG_1LC_1get(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_Integer_1_1mp_1alloc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1alloc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   __mpz_struct *arg1 = (__mpz_struct *) 0 ;
   int arg2 ;
   
@@ -4802,7 +4802,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_Integer_1_1mp_1alloc_1set(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_Integer_1_1mp_1alloc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1alloc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   __mpz_struct *arg1 = (__mpz_struct *) 0 ;
   int result;
@@ -4817,7 +4817,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_Integer_1_1mp_1alloc_1get(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_Integer_1_1mp_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   __mpz_struct *arg1 = (__mpz_struct *) 0 ;
   int arg2 ;
   
@@ -4830,7 +4830,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_Integer_1_1mp_1size_1set(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_Integer_1_1mp_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   __mpz_struct *arg1 = (__mpz_struct *) 0 ;
   int result;
@@ -4845,7 +4845,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_Integer_1_1mp_1size_1get(JNIEnv *jenv, j
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_Integer_1_1mp_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __mpz_struct *arg1 = (__mpz_struct *) 0 ;
   mp_limb_t *arg2 = (mp_limb_t *) 0 ;
   
@@ -4858,7 +4858,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_Integer_1_1mp_1d_1set(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Integer_1_1mp_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __mpz_struct *arg1 = (__mpz_struct *) 0 ;
   mp_limb_t *result = 0 ;
@@ -4873,7 +4873,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Integer_1_1mp_1d_1get(JNIEnv *jenv, jcl
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1Integer(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MultiplePrecisionInteger(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   __mpz_struct *result = 0 ;
   
@@ -4885,7 +4885,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1Integer(JNIEnv *jenv, jclass jcls)
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Integer(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1MultiplePrecisionInteger(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   __mpz_struct *arg1 = (__mpz_struct *) 0 ;
   
   (void)jenv;
@@ -6771,7 +6771,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Float(JNIEnv *jenv, jclass jcls,
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1prec_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionFloat_1_1mpfr_1prec_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_prec_t arg2 ;
   mpfr_prec_t *argp2 ;
@@ -6790,7 +6790,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1prec_1set(JNIEnv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1prec_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiplePrecisionFloat_1_1mpfr_1prec_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_prec_t result;
@@ -6809,7 +6809,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1prec_1get(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1sign_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionFloat_1_1mpfr_1sign_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_sign_t arg2 ;
   mpfr_sign_t *argp2 ;
@@ -6828,7 +6828,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1sign_1set(JNIEnv
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1sign_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiplePrecisionFloat_1_1mpfr_1sign_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_sign_t result;
@@ -6847,7 +6847,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1sign_1get(JNIEn
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionFloat_1_1mpfr_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_exp_t arg2 ;
   mpfr_exp_t *argp2 ;
@@ -6866,7 +6866,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1exp_1set(JNIEnv 
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1exp_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiplePrecisionFloat_1_1mpfr_1exp_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mpfr_exp_t result;
@@ -6885,7 +6885,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1exp_1get(JNIEnv
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionFloat_1_1mpfr_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mp_limb_t *arg2 = (mp_limb_t *) 0 ;
   
@@ -6898,7 +6898,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1d_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiplePrecisionFloat_1_1mpfr_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   mp_limb_t *result = 0 ;
@@ -6913,7 +6913,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiPrecFloat_1_1mpfr_1d_1get(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MultiPrecFloat(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MultiplePrecisionFloat(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   __mpfr_struct *result = 0 ;
   
@@ -6925,7 +6925,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MultiPrecFloat(JNIEnv *jenv, jclas
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1MultiPrecFloat(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1MultiplePrecisionFloat(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   __mpfr_struct *arg1 = (__mpfr_struct *) 0 ;
   
   (void)jenv;

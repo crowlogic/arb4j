@@ -145,8 +145,8 @@ public class arb {
     arbJNI.acb_poly_clear(ComplexPolynomial.getCPtr(poly), poly);
   }
 
-  public static void mpfr_clear(MultiPrecFloat arg0) {
-    arbJNI.mpfr_clear(MultiPrecFloat.getCPtr(arg0), arg0);
+  public static void mpfr_clear(MultiplePrecisionFloat arg0) {
+    arbJNI.mpfr_clear(MultiplePrecisionFloat.getCPtr(arg0), arg0);
   }
 
   public static void flint_cleanup() {
