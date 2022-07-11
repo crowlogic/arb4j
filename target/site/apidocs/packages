@@ -4,8 +4,8 @@ arb.viz
 arb.viz.gl
 arb.viz.rendering
 arb.util
-arb.stochastic.dynamics
 arb.stochastic
+arb.stochastic.processes
 arb.spaces
 arb.functions
 arb.functions.real

@@ -10,7 +10,7 @@ arb.functions.real.dynamics
 arb.operators
 arb.spaces
 arb.stochastic
-arb.stochastic.dynamics
+arb.stochastic.processes
 arb.surfaces
 arb.util
 arb.viz
