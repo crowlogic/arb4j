@@ -4,7 +4,7 @@ import static arb.arb.*;
 import static java.lang.Math.*;
 
 import arb.*;
-import arb.util.*;
+import arb.utils.*;
 
 public class ZFunction implements
                        ComplexFunction 

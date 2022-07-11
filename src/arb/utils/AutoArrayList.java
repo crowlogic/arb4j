@@ -1,4 +1,4 @@
-package arb.util;
+package arb.utils;
 
 import java.util.*;
 import java.util.function.*;

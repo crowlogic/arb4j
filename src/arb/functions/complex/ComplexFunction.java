@@ -9,7 +9,7 @@ import arb.*;
 import arb.exceptions.*;
 import arb.functions.*;
 import arb.functions.real.*;
-import arb.util.*;
+import arb.utils.*;
 
 @FunctionalInterface
 public interface ComplexFunction extends

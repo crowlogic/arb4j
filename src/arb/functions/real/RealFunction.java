@@ -9,7 +9,7 @@
  */
 package arb.functions.real;
 
-import static arb.util.Utils.*;
+import static arb.utils.Utils.*;
 import static java.lang.Math.*;
 import static java.lang.String.*;
 import static java.lang.System.*;

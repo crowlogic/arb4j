@@ -1,6 +1,6 @@
 package arb.stochastic.processes;
 
-import static arb.util.Utils.*;
+import static arb.utils.Utils.*;
 
 import arb.*;
 import arb.stochastic.GaussianDensityFunction;

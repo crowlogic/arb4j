@@ -1,7 +1,7 @@
 package arb.functions;
 
 import static arb.arb.*;
-import static arb.util.Utils.*;
+import static arb.utils.Utils.*;
 import static java.lang.String.*;
 
 import java.util.concurrent.atomic.*;
@@ -10,7 +10,7 @@ import arb.*;
 import arb.exceptions.*;
 import arb.functions.complex.*;
 import arb.functions.real.*;
-import arb.util.*;
+import arb.utils.*;
 
 public interface RealToComplexFunction extends
                                        Function<Real, Complex>

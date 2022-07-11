@@ -1,6 +1,6 @@
 package arb.functions.real;
 
-import static arb.util.Utils.*;
+import static arb.utils.Utils.*;
 
 import org.junit.*;
 

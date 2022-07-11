@@ -1,7 +1,7 @@
 package arb.stochastic.processes;
 
 import static arb.RealConstants.*;
-import static arb.util.Utils.println;
+import static arb.utils.Utils.*;
 
 import java.io.IOException;
 
