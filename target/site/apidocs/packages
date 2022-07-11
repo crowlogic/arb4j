@@ -4,7 +4,7 @@ arb.stochastic
 arb.stochastic.processes
 arb.spaces
 arb.curves
-arb.util
+arb.utils
 arb.functions
 arb.functions.real
 arb.functions.real.dynamics
