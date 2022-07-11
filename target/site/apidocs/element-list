@@ -1,5 +1,6 @@
 arb
 arb.curves
+arb.differential.homotopy
 arb.exceptions
 arb.functions
 arb.functions.complex
@@ -7,6 +8,7 @@ arb.functions.complex.dynamics
 arb.functions.complex.elliptic
 arb.functions.real
 arb.functions.real.dynamics
+arb.guts
 arb.operators
 arb.spaces
 arb.stochastic
