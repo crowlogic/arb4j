@@ -4,7 +4,7 @@ import arb.*;
 import arb.functions.real.*;
 
 /**
- * The distribution function of a ramdom variable is the integral of the
+ * The distribution function of a random variable is the integral of the
  * corresponding density function
  */
 public interface DistributionFunction<P extends DensityFunction> extends
