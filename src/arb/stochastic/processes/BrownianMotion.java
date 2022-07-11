@@ -1,4 +1,4 @@
-package arb.stochastic.dynamics;
+package arb.stochastic.processes;
 
 /**
  * An alias for the integral of white-noise which is the Wiener process (named

@@ -1,4 +1,4 @@
-package arb.stochastic.dynamics;
+package arb.stochastic.processes;
 
 import arb.stochastic.*;
 

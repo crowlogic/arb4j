@@ -1,12 +1,13 @@
-package arb.stochastic.dynamics;
+package arb.stochastic.processes;
 
-import static arb.Constants.*;
-import static arb.util.Utils.*;
+import static arb.Constants.ONE;
+import static arb.util.Utils.println;
 
-import java.io.*;
+import java.io.IOException;
 
-import arb.*;
-import arb.stochastic.*;
+import arb.Real;
+import arb.stochastic.DistributionFunction;
+import arb.stochastic.GaussianDensityFunction;
 
 /**
  * The Heston process describes the stochastic (random) evolution process of the
@@ -36,18 +37,18 @@ import arb.stochastic.*;
  */
 public class HestonProcess
 {
-  private Real                       κ;              // rate reversion to the (ergodic) mean
-  private Real                       λ;              // ergodic mean
-  private Real                       ξ;              // volatility of volatility
-  private Real                       δ;              // step-size = T / N where T is the length of the interval to be
-                                                     // simulated and N
-                                                     // is the number of mesh points calculated
-  private Real                       ρ;
-  private Real                       V;
-  private Real                       S;
+  private Real                    κ;              // rate reversion to the (ergodic) mean
+  private Real                    λ;              // ergodic mean
+  private Real                    ξ;              // volatility of volatility
+  private Real                    δ;              // step-size = T / N where T is the length of the interval to be
+                                                  // simulated and N
+                                                  // is the number of mesh points calculated
+  private Real                    ρ;
+  private Real                    V;
+  private Real                    S;
   private GaussianDensityFunction gaussianDensity;
-  private Real                       r;
-  private Real                       ρsquared;
+  private Real                    r;
+  private Real                    ρsquared;
 
   public static void main(String args[]) throws IOException
   {
@@ -60,21 +61,22 @@ public class HestonProcess
 
   public HestonProcess()
   {
-    this.r          = new Real("0",
-                               prec);
-    this.κ          = new Real("2",
-                               prec);
-    this.λ          = new Real("0.01",
-                               prec);
-    this.ξ          = new Real("0.1",
-                               prec);
-    this.δ          = new Real("0.01",
-                               prec);
-    this.ρ          = new Real("0.5",
-                               prec);
-    ρsquared        = new Real().set(ρ).pow(2, prec);
+    this.r   = new Real("0",
+                        prec);
+    this.κ   = new Real("2",
+                        prec);
+    this.λ   = new Real("0.01",
+                        prec);
+    this.ξ   = new Real("0.1",
+                        prec);
+    this.δ   = new Real("0.01",
+                        prec);
+    this.ρ   = new Real("0.5",
+                        prec);
+    ρsquared = new Real();
+    ρsquared.set(ρ).pow(2, prec);
     gaussianDensity = new GaussianDensityFunction(ONE,
-                                                     ONE);
+                                                  ONE);
   }
 
   public void simulate(int n)
@@ -87,11 +89,11 @@ public class HestonProcess
     {
       for (int i = 1; i < n; i++)
       {
-        double dblρ = ρ.doubleValue();
+        double               dblρ                 = ρ.doubleValue();
         DistributionFunction gaussianDistribution = gaussianDensity.getDistributionFunction();
-        Real   ω    = gaussianDistribution.sample();
-        Real   v    = V.get(i - 1);
-        Real   s    = S.get(i - 1);
+        Real                 ω                    = gaussianDistribution.sample();
+        Real                 v                    = V.get(i - 1);
+        Real                 s                    = S.get(i - 1);
         assert v.isFinite() : "variance process exploded at i=" + i;
         assert s.isFinite() : "level process exploded at i=" + i;
         println(String.format("i=%d, v=%s, s=%s", i - 1, v.toString(20), s.toString(20)));

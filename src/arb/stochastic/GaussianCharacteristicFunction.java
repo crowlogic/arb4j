@@ -5,6 +5,12 @@ import arb.*;
 public class GaussianCharacteristicFunction implements
                                             CharacteristicFunction<GaussianDensityFunction>
 {
+  @Override
+  public String toString()
+  {
+    return String.format("GaussianCharacteristicFunction[μ=%s, σ=%s]", μ, σ);
+  }
+
   public GaussianCharacteristicFunction(Real μ, Real σ)
   {
     super();
