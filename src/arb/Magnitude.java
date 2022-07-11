@@ -9,7 +9,7 @@
 package arb;
 
 import java.util.concurrent.TimeUnit;
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 
 public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
   private transient long swigCPtr;

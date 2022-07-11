@@ -1,6 +1,6 @@
 package arb.functions.complex;
 
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 
 import javax.swing.*;
 
@@ -58,27 +58,27 @@ public class CircularS extends
     System.out.println("function(angle(w)) should equal 0 =" + functionAtZeroAngle);
     System.out.println("angle=" + angle);
     System.out.println("degrees=" + degrees);
-    // println("hmm=" + hmm.div(Constants.radiansPerDegree, 128, new Real() ) );
+    // println("hmm=" + hmm.div(RealConstants.radiansPerDegree, 128, new Real() ) );
   }
 
   public CircularS()
   {
     this(new SFunction(),
-         new ComplexCircle(ZERO,
-                           ONE));
+         new ComplexCircle(ComplexConstants.ZERO,
+                           one));
   }
 
   public CircularS(Complex t, Real sFuncScale, Real h)
   {
     this(new SFunction(sFuncScale),
-         new ComplexCircle(ZERO,
+         new ComplexCircle(ComplexConstants.ZERO,
                            h));
   }
 
   public CircularS(Real sFuncScale, Real h)
   {
     this(new SFunction(sFuncScale),
-         new ComplexCircle(ZERO,
+         new ComplexCircle(ComplexConstants.ZERO,
                            h));
   }
 

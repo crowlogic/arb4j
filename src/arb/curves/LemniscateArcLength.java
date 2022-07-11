@@ -19,7 +19,7 @@ public class LemniscateArcLength implements
     try ( Complex q = new Complex();)
     {
       q.getReal().set(z);
-      arb.acb_elliptic_f(q, q, Constants.negOne, 0, prec);
+      arb.acb_elliptic_f(q, q, ComplexConstants.negOne, 0, prec);
       assert q.getImag().isZero();
       w.set(q.getReal());
       return w.mul(lemniscate.scale, prec, w);

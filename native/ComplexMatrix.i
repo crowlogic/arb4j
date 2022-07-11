@@ -1,5 +1,5 @@
 %typemap(javaimports) acb_mat_struct %{
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 %}
 
 %typemap(javafinalize) acb_mat_struct ""

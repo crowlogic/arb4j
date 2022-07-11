@@ -1,6 +1,6 @@
 package arb.stochastic;
 
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 
 import arb.*;
 

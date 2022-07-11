@@ -1,7 +1,7 @@
 package arb.functions.complex;
 
 import static arb.ComplexConstants.π;
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 import static java.lang.Math.*;
 
 import arb.*;
@@ -14,7 +14,7 @@ public class ComplexSineFunctionTest extends
   public void testEval()
   {
     ComplexSineFunction sin = new ComplexSineFunction();
-    Complex             y   = sin.evaluate(Constants.complexOne, 1, 128, new Complex());
+    Complex             y   = sin.evaluate(ComplexConstants.complexOne, 1, 128, new Complex());
     y.printPrecision = true;
     assertEquals(0.841470984807896506652502321630298999620980106, y.getReal().doubleValue(), pow(10, -20));
     assertTrue(y.getImag().isZero());
@@ -29,7 +29,7 @@ public class ComplexSineFunctionTest extends
     int                 relativeAccuracyBitsGoal   = 80;
     int                 precisionBits              = 160;
     options.verbose = true;
-    Complex             two                        = sine.integrate(ZERO,
+    Complex             two                        = sine.integrate(ComplexConstants.ZERO,
                                                                     π,
                                                                     relativeAccuracyBitsGoal,
                                                                     absoluteErrorToleranceGoal,

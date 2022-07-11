@@ -1,13 +1,12 @@
 package arb.stochastic.processes;
 
-import static arb.Constants.ONE;
+import static arb.RealConstants.*;
 import static arb.util.Utils.println;
 
 import java.io.IOException;
 
 import arb.Real;
-import arb.stochastic.DistributionFunction;
-import arb.stochastic.GaussianDensityFunction;
+import arb.stochastic.*;
 
 /**
  * The Heston process describes the stochastic (random) evolution process of the
@@ -37,18 +36,22 @@ import arb.stochastic.GaussianDensityFunction;
  */
 public class HestonProcess
 {
-  private Real                    κ;              // rate reversion to the (ergodic) mean
-  private Real                    λ;              // ergodic mean
-  private Real                    ξ;              // volatility of volatility
-  private Real                    δ;              // step-size = T / N where T is the length of the interval to be
-                                                  // simulated and N
-                                                  // is the number of mesh points calculated
-  private Real                    ρ;
-  private Real                    V;
-  private Real                    S;
-  private GaussianDensityFunction gaussianDensity;
-  private Real                    r;
-  private Real                    ρsquared;
+  private Real                         κ;                   // rate reversion to the (ergodic) mean
+  private Real                         λ;                   // ergodic mean
+  private Real                         ξ;                   // volatility of volatility
+  private Real                         δ;                   // step-size = T / N where T is the length of the
+                                                            // interval to be
+                                                            // simulated and N
+                                                            // is the number of mesh points calculated
+  private Real                         ρ;
+  private Real                         V;
+  private Real                         S;
+  private GaussianProcess              gaussianProcess;
+  private GaussianDensityFunction      gaussianDensity;
+  private GaussianDistributionFunction gaussianDistribution;
+
+  private Real                         r;
+  private Real                         ρsquared;
 
   public static void main(String args[]) throws IOException
   {
@@ -75,8 +78,10 @@ public class HestonProcess
                         prec);
     ρsquared = new Real();
     ρsquared.set(ρ).pow(2, prec);
-    gaussianDensity = new GaussianDensityFunction(ONE,
-                                                  ONE);
+    gaussianProcess      = new GaussianProcess(zero,
+                                               one);
+    gaussianDensity      = gaussianProcess.getDensityFunction();
+    gaussianDistribution = gaussianProcess.getDistributionFunction();
   }
 
   public void simulate(int n)

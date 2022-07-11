@@ -21,7 +21,7 @@ public class ComplexConstant implements
     }
     for ( int i = 2; i <= order; i++ )
     {
-      w.get(i).set(Constants.ZERO);
+      w.get(i).set(ComplexConstants.ZERO);
     }
     return w;
   }

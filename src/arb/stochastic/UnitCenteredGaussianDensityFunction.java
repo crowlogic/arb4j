@@ -12,7 +12,7 @@ public class UnitCenteredGaussianDensityFunction implements
     @Override
     public Real evaluate(Real t, int order, int prec, Real res)
     {
-      return Constants.ONE.div(t, prec, res).log(prec, res).sqrt(prec, res);
+      return RealConstants.one.div(t, prec, res).log(prec, res).sqrt(prec, res);
     }
   };
 

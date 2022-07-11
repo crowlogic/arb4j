@@ -8,7 +8,7 @@
 
 package arb;
 
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 import arb.functions.complex.ComplexFunction;
 
 public class ComplexPolynomial implements AutoCloseable,ComplexFunction {

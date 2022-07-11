@@ -1,6 +1,6 @@
 package arb.stochastic;
 
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 
 import arb.*;
 import arb.functions.real.*;
@@ -16,8 +16,8 @@ public class GaussianDistributionFunction implements
 
   public static void main(String args[])
   {
-    RealFunctionPlotter plotter = new RealFunctionPlotter(new GaussianDistributionFunction(Constants.ZERO.getReal(),
-                                                                                           Constants.ONE),
+    RealFunctionPlotter plotter = new RealFunctionPlotter(new GaussianDistributionFunction(ComplexConstants.ZERO.getReal(),
+                                                                                           RealConstants.one),
                                                           new FloatInterval(-5,
                                                                             5),
                                                           new FloatInterval(0,
@@ -51,7 +51,7 @@ public class GaussianDistributionFunction implements
                                    public Real evaluate(Real t, int order, int prec, Real res)
                                    {
                                      assert false : "TODO";
-                                     return Constants.ONE.div(t, prec, res).log(prec, res).sqrt(prec, res);
+                                     return RealConstants.one.div(t, prec, res).log(prec, res).sqrt(prec, res);
                                    }
                                  };
 

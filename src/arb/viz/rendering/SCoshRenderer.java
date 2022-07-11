@@ -15,7 +15,7 @@ public class SCoshRenderer
 {
   private static JFrame frame;
 
-  static TFunction      T = new TFunction(Constants.ONE);
+  static TFunction      T = new TFunction(RealConstants.one);
 
   @SuppressWarnings("resource")
   public static void main(String args[]) throws IOException, NoninvertibleTransformException

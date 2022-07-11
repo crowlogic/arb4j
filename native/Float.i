@@ -1,5 +1,6 @@
 %typemap(javaimports) arf_struct %{
-import static arb.Constants.*;
+import static arb.RealConstants.*;
+import static arb.IntegerConstants.*;
 
 /**
  * A {@link Float} contains four words: <br>

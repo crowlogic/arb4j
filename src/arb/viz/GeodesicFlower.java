@@ -9,7 +9,7 @@
  */
 package arb.viz;
 
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 
 import java.awt.*;
 
@@ -58,7 +58,7 @@ public class GeodesicFlower<P extends ComplexFunction>
   public void flow() throws InterruptedException
   {
     try ( CircularComposition<P> direction = new CircularComposition<P>(surface,
-                                                                        new ComplexCircle(ZERO,
+                                                                        new ComplexCircle(ComplexConstants.ZERO,
                                                                                           dt));)
     {
       θ.set("-0.75", 128);

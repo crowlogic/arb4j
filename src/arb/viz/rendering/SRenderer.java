@@ -31,7 +31,7 @@ public class SRenderer extends
   {
     this(dimensions,
          domain,
-         Constants.ONE);
+         RealConstants.one);
   }
 
   @SuppressWarnings("resource")

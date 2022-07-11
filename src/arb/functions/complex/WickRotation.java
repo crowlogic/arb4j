@@ -40,7 +40,7 @@ public class WickRotation implements
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
     assert order <= w.size();
-    z.mul(Constants.imaginaryUnit, prec, w);
+    z.mul(ComplexConstants.imaginaryUnit, prec, w);
     if (negate)
     {
       w.neg(w);
@@ -56,7 +56,7 @@ public class WickRotation implements
     }
     for (int i = 2; i < order; i++)
     {
-      w.get(i).set(Constants.ZERO);
+      w.get(i).set(ComplexConstants.ZERO);
     }
     return w;
   }

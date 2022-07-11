@@ -356,7 +356,7 @@ public interface RealFunction extends
     {
 
       /* Compute the midpoint */
-      arb.arf_add(u, block.getA(), block.getB(), Integer.MAX_VALUE, Constants.ARF_RND_DOWN);
+      arb.arf_add(u, block.getA(), block.getB(), Integer.MAX_VALUE, IntegerConstants.ARF_RND_DOWN);
       u.half(u);
 
       /* Evaluate the function at the midpoint so the sign can be returned */

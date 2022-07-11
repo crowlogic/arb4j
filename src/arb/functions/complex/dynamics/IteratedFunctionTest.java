@@ -44,7 +44,7 @@ public class IteratedFunctionTest extends
     assertTrue( value.isZero() );
     Complex multiplier = value.get(1);
     Real    modulus    = multiplier.abs(256, new Real());
-    assertTrue(modulus.equals(Constants.ONE));
+    assertTrue(modulus.equals(RealConstants.one));
   }
 
   @SuppressWarnings("resource")

@@ -2,7 +2,7 @@
 
 %typemap(javaimports) mag_struct %{
 import java.util.concurrent.TimeUnit;
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 %}
 
 %typemap(javainterfaces) mag_struct "AutoCloseable,Comparable<Magnitude>"

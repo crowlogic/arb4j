@@ -11,7 +11,7 @@ public class RealNewtonMapTest extends
   @SuppressWarnings("resource")
   public static void testS()
   {
-    CircularS     angle     = new CircularS(Constants.ONE,
+    CircularS     angle     = new CircularS(RealConstants.one,
                                             new Real().set("0.1", 512));
     RealPart      realAngle = new RealPart(angle);
     RealNewtonMap func      = new RealNewtonMap(realAngle,

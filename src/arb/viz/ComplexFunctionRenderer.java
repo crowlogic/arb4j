@@ -308,7 +308,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
       break;
     case Phase:
       Real r = this.r.get();
-      v = w.arg(128, r).div(Constants.π, 128, r).doubleValue();
+      v = w.arg(128, r).div(RealConstants.π, 128, r).doubleValue();
       if (!java.lang.Double.isFinite(v))
       {
         v = 0;
@@ -987,7 +987,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   public synchronized Complex calculateNewtonTrajectory(Complex t, int n)
   {
 
-    return Constants.ZERO;
+    return ComplexConstants.ZERO;
 
   }
 

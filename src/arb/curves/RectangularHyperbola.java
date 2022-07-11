@@ -22,7 +22,7 @@ import arb.*;
 public class RectangularHyperbola implements
                                   PlaneCurve
 {
-  private static final Complex i = Constants.imaginaryUnit;
+  private static final Complex i = ComplexConstants.imaginaryUnit;
 
   /**
    * @param t

@@ -19,7 +19,7 @@ public class HeavisideStepFunction implements
   {
     order = max(1, order);
     assert order < 2;
-    if (t.compareTo(Constants.ZERO.getReal()) <= 0)
+    if (t.compareTo(ComplexConstants.ZERO.getReal()) <= 0)
     {
       res.zero();
     }

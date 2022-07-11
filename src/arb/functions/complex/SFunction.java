@@ -1,6 +1,6 @@
 package arb.functions.complex;
 
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 import static java.lang.String.*;
 
 import arb.*;
@@ -66,7 +66,7 @@ public class SFunction implements
     };
   }
 
-  private static final Complex ONE = complexOne;
+  private static final Complex ONE = ComplexConstants.complexOne;
 
   public Real                  a;
 
@@ -78,7 +78,7 @@ public class SFunction implements
 
   public SFunction()
   {
-    this(Constants.ONE);
+    this(RealConstants.one);
   }
 
   public SFunction(Real a)

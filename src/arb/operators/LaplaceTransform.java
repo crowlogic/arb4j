@@ -19,7 +19,7 @@ public class LaplaceTransform<F extends RealToComplexFunction> implements
   private static final int       relativeAccuracyBitsGoal     = 128;
   private static final Magnitude absoluteUncertaintyTolerance = new Magnitude().set(Math.pow(10, -20));
   private static final Real      right                        = new Real().set("1000", 1024);
-  private static final Real      left                         = Constants.ZERO.getReal();
+  private static final Real      left                         = ComplexConstants.ZERO.getReal();
 
   public LaplaceTransform(F f)
   {

@@ -5,7 +5,9 @@
 %typemap(javaimports) arb_struct %{
 import java.util.concurrent.TimeUnit;
 
-import static arb.Constants.*;
+import static arb.RealConstants.*;
+import arb.MagnitudeConstants;
+import static arb.IntegerConstants.*;
 import static arb.arb.*;
 /**
  * Real numbers are points on an infinitely long line known as the real number
@@ -392,7 +394,7 @@ import static arb.arb.*;
     {
       getRad().inv(d);
       d.log(d);
-      d.div(Constants.log10mag, d);
+      d.div(MagnitudeConstants.log10mag, d);
       return (int) d.doubleValue() + 2;
     }
   }  

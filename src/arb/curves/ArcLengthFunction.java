@@ -31,7 +31,7 @@ public final class ArcLengthFunction implements
   {
     try ( Complex integral = new Complex();)
     {
-      absdf.integrate(Constants.ZERO.getReal(), a, prec, absErr, null, prec, integral);
+      absdf.integrate(ComplexConstants.ZERO.getReal(), a, prec, absErr, null, prec, integral);
       assert integral.getImag().isZero();
       return q.set(integral.getReal());
     }

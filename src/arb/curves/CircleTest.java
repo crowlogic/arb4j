@@ -11,8 +11,8 @@ public class CircleTest extends
   @SuppressWarnings("resource")
   public void testCoordinates()
   {
-    Circle circle = new Circle(Constants.ZERO,
-                               Constants.ONE);
+    Circle circle = new Circle(ComplexConstants.ZERO,
+                               RealConstants.one);
     Real   halfpi = new Real();
     halfpi.pi(256).div(2, 256);
     Complex point = circle.evaluate(halfpi, 1, 128, new Complex());
@@ -27,7 +27,7 @@ public class CircleTest extends
     basePoint.getReal().set("0.2", 128);
     basePoint.getImag().set("0.4", 128);
 
-    Real   radius     = Constants.half;
+    Real   radius     = RealConstants.half;
 
     Circle dr         = new Circle(basePoint,
                                    radius);
@@ -54,7 +54,7 @@ public class CircleTest extends
     basePoint.getReal().set("0.2", 128);
     basePoint.getImag().set("0.4", 128);
 
-    Real          radius = Constants.half;
+    Real          radius = RealConstants.half;
 
     ComplexCircle dr     = new ComplexCircle(basePoint,
                                              radius);

@@ -12,7 +12,7 @@ import arb.viz.*;
 public class CoshRenderer
 {
 
-  static TFunction T = new TFunction(Constants.ONE);
+  static TFunction T = new TFunction(RealConstants.one);
 
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
@@ -30,8 +30,8 @@ public class CoshRenderer
     // ComplexFunction function = new HyperbolicCosine();
 //    ComplexFunction function = (z, order, prec, w) ->
 //    {
-//      z.getReal().sub(Constants.HALF, prec, z.getReal());
-//      return z.cosh(prec, w).mul(Constants.i, prec, w);
+//      z.getReal().sub(RealConstants.HALF, prec, z.getReal());
+//      return z.cosh(prec, w).mul(RealConstants.i, prec, w);
 //    };
 
     try ( ComplexFunctionRenderer plotter = new ComplexFunctionRenderer(screen,

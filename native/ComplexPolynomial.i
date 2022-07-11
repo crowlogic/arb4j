@@ -1,5 +1,5 @@
 %typemap(javaimports) acb_poly_struct %{
-import static arb.Constants.*;
+import static arb.RealConstants.*;
 import arb.functions.complex.ComplexFunction;
 %}
 

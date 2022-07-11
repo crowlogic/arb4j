@@ -39,7 +39,7 @@ public class IteratedFunction<F extends ComplexFunction> implements
     this.f          = f;
     this.n          = n;
     this.normalized = normalized;
-    this.λ          = f.differential().abs().evaluate(Constants.ZERO, 1, 128, new Real());
+    this.λ          = f.differential().abs().evaluate(ComplexConstants.ZERO, 1, 128, new Real());
   }
 
   @Override
