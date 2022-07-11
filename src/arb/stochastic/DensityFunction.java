@@ -13,15 +13,5 @@ import arb.functions.real.*;
 public interface DensityFunction extends
                                  RealFunction
 {
-  public default DistributionFunction getDistributionFunction()
-  {
-    return integral();
-  }
-
-  public default ComplexFunction getCharacteristicFunction()
-  {
-    assert false : "TODO: return the Fourier transform of this";
-    return null;
-  }
 
 }

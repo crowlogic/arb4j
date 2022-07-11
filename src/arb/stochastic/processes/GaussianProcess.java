@@ -44,8 +44,7 @@ public class GaussianProcess implements
   @Override
   public GaussianDistributionFunction getDistributionFunction()
   {
-    assert false : "TODO: implement";
-    return null;
+    return f;
   }
 
 }

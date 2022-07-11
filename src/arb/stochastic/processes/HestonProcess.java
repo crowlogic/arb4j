@@ -95,7 +95,7 @@ public class HestonProcess
       for (int i = 1; i < n; i++)
       {
         double               dblρ                 = ρ.doubleValue();
-        DistributionFunction gaussianDistribution = gaussianDensity.getDistributionFunction();
+        DistributionFunction gaussianDistribution = gaussianProcess.getDistributionFunction();
         Real                 ω                    = gaussianDistribution.sample();
         Real                 v                    = V.get(i - 1);
         Real                 s                    = S.get(i - 1);
