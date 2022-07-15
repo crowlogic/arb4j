@@ -5,6 +5,7 @@
 #include <flint/flint.h>
 #include <arf.h>
 #include <arb.h>
+#include <arb_hypgeom.h>
 #include <acb.h>
 #include <acb_calc.h>
 #include <acb_elliptic.h>

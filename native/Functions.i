@@ -1,3 +1,9 @@
+void arb_hypgeom_erf(arb_t res, const arb_t z, slong prec);
+
+void arb_hypgeom_erfc(arb_t res, const arb_t z, slong prec);
+
+void arb_hypgeom_m(arb_t res, const arb_t a, const arb_t b, const arb_t z, int regularized, slong prec);
+ 
 void gmp_randclear (gmp_randstate_t state);
 
 void gmp_randinit_mt (gmp_randstate_t state);

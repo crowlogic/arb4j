@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void arb_hypgeom_m(Real res, Real a, Real b, Real z, int regularized, int prec) {
+    arbJNI.arb_hypgeom_m(Real.getCPtr(res), res, Real.getCPtr(a), a, Real.getCPtr(b), b, Real.getCPtr(z), z, regularized, prec);
+  }
+
   public static void gmp_randclear(GMPRandomState state) {
     arbJNI.gmp_randclear(GMPRandomState.getCPtr(state), state);
   }

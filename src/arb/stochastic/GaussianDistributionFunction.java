@@ -8,7 +8,8 @@ import arb.viz.*;
 
 /**
  * The cumulative distribution function for the Gaussian distribition. The
- * integral of the {@link GaussianDensityFunction}
+ * integral of the {@link GaussianDensityFunction}, which is equal to
+ * (1+erf((x-μ)/(σ√2)))/2
  */
 public class GaussianDistributionFunction implements
                                           DistributionFunction

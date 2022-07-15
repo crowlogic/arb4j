@@ -214,6 +214,7 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include <flint/flint.h>
 #include <arf.h>
 #include <arb.h>
+#include <arb_hypgeom.h>
 #include <acb.h>
 #include <acb_calc.h>
 #include <acb_elliptic.h>
@@ -300,6 +301,34 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
 
   return JNI_VERSION_10;
 }
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1hypgeom_1m(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5, jint jarg6) {
+  arb_struct *arg1 ;
+  arb_struct *arg2 ;
+  arb_struct *arg3 ;
+  arb_struct *arg4 ;
+  int arg5 ;
+  long arg6 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg4_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = *(arb_struct **)&jarg2; 
+  arg3 = *(arb_struct **)&jarg3; 
+  arg4 = *(arb_struct **)&jarg4; 
+  arg5 = (int)jarg5; 
+  arg6 = (long)jarg6; 
+  arb_hypgeom_m(arg1,(arb_struct const (*))arg2,(arb_struct const (*))arg3,(arb_struct const (*))arg4,arg5,arg6);
+  
+  
+  
+  
+}
+
 
 SWIGEXPORT void JNICALL Java_arb_arbJNI_gmp_1randclear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   __gmp_randstate_struct *arg1 ;
