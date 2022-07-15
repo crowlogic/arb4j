@@ -26,4 +26,11 @@ public class RealConstant implements
     return w;
   }
 
+  @Override
+  public RealFunction inverse()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

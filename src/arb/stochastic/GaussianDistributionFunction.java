@@ -51,7 +51,7 @@ public class GaussianDistributionFunction implements
                                    @Override
                                    public Real evaluate(Real t, int order, int prec, Real res)
                                    {
-                                     assert false : "TODO";
+                                     assert false : "TODO implement inverse of Gaussian CDF with arb_hypgeom_erfinv";
                                      return RealConstants.one.div(t, prec, res).log(prec, res).sqrt(prec, res);
                                    }
                                  };
@@ -71,6 +71,7 @@ public class GaussianDistributionFunction implements
   @Override
   public RealFunction inverse(int branch)
   {
+    assert branch == 0 : "only 1 branch";
     return inv;
   }
 

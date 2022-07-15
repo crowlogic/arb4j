@@ -31,4 +31,11 @@ public class DiracDeltaFunction implements
     return res;
   }
 
+  @Override
+  public RealFunction inverse()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

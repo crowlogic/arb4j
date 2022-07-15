@@ -24,6 +24,13 @@ public class LemniscateArcLength implements
       w.set(q.getReal());
       return w.mul(lemniscate.scale, prec, w);
     }
+  }
+
+  @Override
+  public RealFunction inverse()
+  {
+    // TODO Auto-generated method stub
+    return null;
   };
 
 }

@@ -36,4 +36,11 @@ public final class ArcLengthFunction implements
       return q.set(integral.getReal());
     }
   }
+
+  @Override
+  public RealFunction inverse()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

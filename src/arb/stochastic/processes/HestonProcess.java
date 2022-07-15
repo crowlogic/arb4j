@@ -6,6 +6,7 @@ import static arb.utils.Utils.*;
 import java.io.*;
 
 import arb.*;
+import arb.functions.real.RealFunction;
 import arb.stochastic.*;
 
 /**
@@ -36,22 +37,22 @@ import arb.stochastic.*;
  */
 public class HestonProcess
 {
-  private Real                         κ;                   // rate reversion to the (ergodic) mean
-  private Real                         λ;                   // ergodic mean
-  private Real                         ξ;                   // volatility of volatility
-  private Real                         δ;                   // step-size = T / N where T is the length of the
-                                                            // interval to be
-                                                            // simulated and N
-                                                            // is the number of mesh points calculated
-  private Real                         ρ;
-  private Real                         V;
-  private Real                         S;
-  private GaussianProcess              gaussianProcess;
-  private GaussianDensityFunction      gaussianDensity;
-  private GaussianDistributionFunction gaussianDistribution;
+  private Real                    κ;                   // rate reversion to the (ergodic) mean
+  private Real                    λ;                   // ergodic mean
+  private Real                    ξ;                   // volatility of volatility
+  private Real                    δ;                   // step-size = T / N where T is the length of the
+                                                       // interval to be
+                                                       // simulated and N
+                                                       // is the number of mesh points calculated
+  private Real                    ρ;
+  private Real                    V;
+  private Real                    S;
+  private GaussianProcess         gaussianProcess;
+  private GaussianDensityFunction gaussianDensity;
+  private RealFunction            gaussianDistribution;
 
-  private Real                         r;
-  private Real                         ρsquared;
+  private Real                    r;
+  private Real                    ρsquared;
 
   public static void main(String args[]) throws IOException
   {
@@ -90,18 +91,20 @@ public class HestonProcess
     this.S = Real.newVector(n);
     V.set(0.01);
     S.set(10);
-    try ( Real W1 = new Real(); Real W2 = new Real(); Real tmp = new Real(); Real b = new Real();)
+
+    try ( RandomState randomState = new RandomState(); Real ω = new Real(); Real W1 = new Real();
+          Real W2 = new Real(); Real tmp = new Real(); Real b = new Real(); Real u = new Real();)
     {
       for (int i = 1; i < n; i++)
       {
         double               dblρ                 = ρ.doubleValue();
         DistributionFunction gaussianDistribution = gaussianProcess.getDistributionFunction();
-        Real                 ω                    = gaussianDistribution.sample();
-        Real                 v                    = V.get(i - 1);
-        Real                 s                    = S.get(i - 1);
+        gaussianDistribution.sample(prec, randomState, u, ω);
+        Real v = V.get(i - 1);
+        Real s = S.get(i - 1);
         assert v.isFinite() : "variance process exploded at i=" + i;
         assert s.isFinite() : "level process exploded at i=" + i;
-        println(String.format("i=%d, v=%s, s=%s", i - 1, v.toString(20), s.toString(20)));
+        println(String.format("i=%d, v=%s, s=%s, ω=%s", i - 1, v.toString(20), s.toString(20), ω.toString(20)));
 
         W1.set(ω);
         W2.set(ρ.mul(ω, prec, W2).add(tmp.set(Math.sqrt(1.0 - dblρ * dblρ) * ω.doubleValue()), prec, W2));

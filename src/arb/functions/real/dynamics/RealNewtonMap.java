@@ -101,4 +101,11 @@ public class RealNewtonMap<F extends RealFunction> implements
     return diff;
   }
 
+  @Override
+  public RealFunction inverse()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

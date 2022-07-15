@@ -1,5 +1,7 @@
 package arb.stochastic.processes;
 
+import arb.RandomState;
+import arb.Real;
 import arb.stochastic.*;
 
 /**
@@ -15,4 +17,8 @@ public interface StochasticProcess<P extends DensityFunction, F extends Distribu
 
   public C getCharacteristicFunction();
 
+  public default Real sample(int prec, RandomState randomState, Real u, Real x)
+  {
+    return getDistributionFunction().sample(prec, randomState, u, u);    
+  }
 }

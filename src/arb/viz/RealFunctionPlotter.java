@@ -251,4 +251,5 @@ public class RealFunctionPlotter extends
     return frame;
   }
 
+
 }

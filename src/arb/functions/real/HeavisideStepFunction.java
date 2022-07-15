@@ -30,4 +30,11 @@ public class HeavisideStepFunction implements
     return res;
   }
 
+  @Override
+  public RealFunction inverse()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

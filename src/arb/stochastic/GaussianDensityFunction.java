@@ -95,4 +95,11 @@ public class GaussianDensityFunction implements
     }
   }
 
+  @Override
+  public RealFunction inverse()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

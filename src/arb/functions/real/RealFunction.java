@@ -251,7 +251,7 @@ public interface RealFunction extends
   public default Roots locateRoots(RootLocatorConfiguration config)
   {
     assert config.maxDepth > 1 : "you probably dont really want the max recursion limit to be less than 2";
-    Roots       roots    = new Roots();
+    Roots            roots    = new Roots();
     int              asign, bsign;
     long             length   = 0, alloc = 0;
     RealRootInterval interval = config.interval;
@@ -380,6 +380,11 @@ public interface RealFunction extends
   {
     return 0;
 
+  }
+
+  public default RealFunction inverse()
+  {
+   return inverse(0);
   }
 
 }

@@ -36,4 +36,11 @@ public class UnitCenteredGaussianDensityFunction implements
     return z.pow(2, prec, res).negate(res).exp(prec, res);
   }
 
+  @Override
+  public RealFunction inverse()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
 }

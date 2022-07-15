@@ -1,3 +1,7 @@
+void arb_hypgeom_erfinv(arb_t res, const arb_t z, slong prec);
+
+void arb_hypgeom_erfcinv(arb_t res, const arb_t z, slong prec);
+
 void arb_hypgeom_erf(arb_t res, const arb_t z, slong prec);
 
 void arb_hypgeom_erfc(arb_t res, const arb_t z, slong prec);
