@@ -2,9 +2,11 @@ package arb.stochastic;
 
 import static arb.RealConstants.*;
 
-import arb.*;
-import arb.functions.real.*;
-import arb.viz.*;
+import arb.FloatInterval;
+import arb.Real;
+import arb.functions.real.RealFunction;
+import arb.stochastic.processes.GaussianProcess;
+import arb.viz.RealFunctionPlotter;
 
 /**
  * Normal distributions are important in statistics and are often used in the
@@ -25,8 +27,9 @@ public class GaussianDensityFunction implements
 
   public static void main(String args[])
   {
-    RealFunctionPlotter plotter = new RealFunctionPlotter(new GaussianDensityFunction(ComplexConstants.ZERO.getReal(),
-                                                                                      RealConstants.one),
+    GaussianProcess     gp      = new GaussianProcess(zero,
+                                                      one);
+    RealFunctionPlotter plotter = new RealFunctionPlotter(new GaussianDensityFunction(gp),
                                                           new FloatInterval(-5,
                                                                             5),
                                                           new FloatInterval(0,
@@ -38,36 +41,15 @@ public class GaussianDensityFunction implements
   @Override
   public String toString()
   {
-    return "GaussianDensityFunction[μ=" + μ.toString(5) + ", σ=" + σ.toString(5) + "]";
+    return "GaussianDensityFunction[μ=" + process.μ.toString(5) + ", σ=" + process.σ.toString(5) + "]";
   }
 
-  /**
-   * The parameter μ is the mean or expectation of the distribution (and also its
-   * median and mode)
-   */
-  public Real                μ;
+  public RealFunction     inv = new InverseGaussianDensityFunction(this);
+  private GaussianProcess process;
 
-  /**
-   * The parameter σ is the standard deviation of this distribution so its
-   * variance is σ^2. A random variable with a Gaussian distribution is said to be
-   * normally distributed.
-   */
-  public Real                σ;
-
-  public static RealFunction inv = new RealFunction()
-                                 {
-                                   @Override
-                                   public Real evaluate(Real t, int order, int prec, Real res)
-                                   {
-                                     assert false : "TODO";
-                                     return RealConstants.one.div(t, prec, res).log(prec, res).sqrt(prec, res);
-                                   }
-                                 };
-
-  public GaussianDensityFunction(Real μ, Real σ)
+  public GaussianDensityFunction(GaussianProcess gaussianProcess)
   {
-    this.μ = μ;
-    this.σ = σ;
+    this.process = gaussianProcess;
   }
 
   @Override
@@ -88,18 +70,13 @@ public class GaussianDensityFunction implements
     order = Math.max(order, 1);
     assert order < 2;
     // e^(-(((x-μ)/σ)^2)/2)/(σ*√(2π))
+    Real μ = process.μ;
+    Real σ = process.σ;
     try ( Real t = new Real())
     {
       z.sub(μ, prec, t).div(σ, prec).pow(2, prec, result).div(2, prec).negate(result).exp(prec, result);
       return result.div(sqrt2π.mul(σ, prec, t), prec, result);
     }
-  }
-
-  @Override
-  public RealFunction inverse()
-  {
-    // TODO Auto-generated method stub
-    return null;
   }
 
 }

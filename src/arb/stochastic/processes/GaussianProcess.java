@@ -11,12 +11,16 @@ import arb.stochastic.*;
 public class GaussianProcess implements
                              LévyProcess<GaussianDensityFunction, GaussianDistributionFunction, GaussianCharacteristicFunction>
 {
+  public Real μ;
+
+  public Real σ;
 
   public GaussianProcess(Real μ, Real σ)
   {
     super();
-    this.p = new GaussianDensityFunction(μ,
-                                         σ);
+    this.μ = μ;
+    this.σ = σ;
+    this.p = new GaussianDensityFunction(this);
     this.φ = new GaussianCharacteristicFunction(μ,
                                                 σ);
     this.f = new GaussianDistributionFunction(μ,
@@ -28,6 +32,7 @@ public class GaussianProcess implements
   public GaussianCharacteristicFunction φ;
 
   public GaussianDistributionFunction   f;
+
 
   @Override
   public GaussianDensityFunction getDensityFunction()
