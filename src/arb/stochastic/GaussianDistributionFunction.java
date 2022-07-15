@@ -46,15 +46,7 @@ public class GaussianDistributionFunction implements
    */
   public Real                σ;
 
-  public static RealFunction inv = new RealFunction()
-                                 {
-                                   @Override
-                                   public Real evaluate(Real t, int order, int prec, Real res)
-                                   {
-                                     assert false : "TODO implement inverse of Gaussian CDF with arb_hypgeom_erfinv";
-                                     return RealConstants.one.div(t, prec, res).log(prec, res).sqrt(prec, res);
-                                   }
-                                 };
+  public RealFunction inv = new InverseGaussianDistributionFunction(this);
 
   public GaussianDistributionFunction(Real μ, Real σ)
   {

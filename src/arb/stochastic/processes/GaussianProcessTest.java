@@ -34,10 +34,11 @@ public class GaussianProcessTest extends
                                                                    256),
                                                           new Real("2",
                                                                    256));
-    RandomState     randomState     = new RandomState(41);
+    RandomState     randomState     = new RandomState(42);
     Real            u               = new Real();                        // uniform sample
     Real            x               = new Real();                        // Gaussian sample
     gaussianProcess.sample(256, randomState, u, x);
+    println("u=" + u + " sample=" + x);
 
   }
 }

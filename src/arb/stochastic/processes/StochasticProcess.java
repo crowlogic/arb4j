@@ -19,6 +19,6 @@ public interface StochasticProcess<P extends DensityFunction, F extends Distribu
 
   public default Real sample(int prec, RandomState randomState, Real u, Real x)
   {
-    return getDistributionFunction().sample(prec, randomState, u, u);    
+    return getDistributionFunction().sample(prec, randomState, u, x);    
   }
 }
