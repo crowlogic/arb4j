@@ -103,6 +103,32 @@ import static arb.arb.*;
     return res;
   }
     
+ /**
+   * The inverse of this{@link #erf(int, Real)}
+   * 
+   * @param prec
+   * @param res
+   * @return {@link arb#arb_hypgeom_erfinv(Real, Real, int)}
+   */
+  public Real erfinv(int prec, Real res)
+  {
+    arb.arb_hypgeom_erfinv(res, this, prec);
+    return res;
+  }
+
+  /**
+   * The inverse of this{@link #erfc(int, Real)}
+   * 
+   * @param prec
+   * @param res
+   * @return {@link arb#arb_hypgeom_ercfinv(Real, Real, int)}
+   */
+  public Real erfcinv(int prec, Real res)
+  {
+    arb.arb_hypgeom_erfcinv(res, this, prec);
+    return res;
+  }
+      
   public Complex div(Complex divisor, int prec, Complex w)
   {
     try ( Complex multiplier = new Complex())
