@@ -9,6 +9,14 @@
 package arb;
 
 public class arb {
+  public static void arb_hypgeom_erf(Real res, Real z, int prec) {
+    arbJNI.arb_hypgeom_erf(Real.getCPtr(res), res, Real.getCPtr(z), z, prec);
+  }
+
+  public static void arb_hypgeom_erfc(Real res, Real z, int prec) {
+    arbJNI.arb_hypgeom_erfc(Real.getCPtr(res), res, Real.getCPtr(z), z, prec);
+  }
+
   public static void arb_hypgeom_m(Real res, Real a, Real b, Real z, int regularized, int prec) {
     arbJNI.arb_hypgeom_m(Real.getCPtr(res), res, Real.getCPtr(a), a, Real.getCPtr(b), b, Real.getCPtr(z), z, regularized, prec);
   }

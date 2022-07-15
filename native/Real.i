@@ -73,6 +73,36 @@ import static arb.arb.*;
     return w;
   }
   
+  /**
+   * Computes the (Normal Gaussian) error function using an automatic algorithm
+   * choice. If z is too small to use the asymptotic expansion, a working
+   * precision sufficient to circumvent cancellation in the hypergeometric series
+   * is determined automatically, and a bound for the propagated error is computed
+   * with acb_hypgeom_erf_propagated_error().
+   * 
+   * @param prec
+   * @param res
+   * @return {@link arb#arb_hypgeom_erf(Real, Real, int)}
+   */
+  public Real erf(int prec, Real res)
+  {
+    arb.arb_hypgeom_erf(res, this, prec);
+    return res;
+  }
+
+  /**
+   * Computes the complementary (Normal Gaussian) error function  1-this{@link #erf(int, Real)}
+   * whilst avoiding the catastrophic cancellation for large positive z.
+   * @param prec
+   * @param res
+   * @return {@link arb#arb_hypgeom_erf(Real, Real, int)}
+   */
+  public Real erfc(int prec, Real res)
+  {
+    arb.arb_hypgeom_erfc(res, this, prec);
+    return res;
+  }
+    
   public Complex div(Complex divisor, int prec, Complex w)
   {
     try ( Complex multiplier = new Complex())
