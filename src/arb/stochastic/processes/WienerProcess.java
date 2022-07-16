@@ -1,8 +1,11 @@
 package arb.stochastic.processes;
 
+import arb.Real;
 import arb.stochastic.*;
 
 /**
+ * 
+ * 
  * The Wiener process W(t) is an integral of the white-noise
  * {@link GaussianProcess} characterized by the following properties:<br>
  * 
@@ -16,7 +19,15 @@ import arb.stochastic.*;
  * 
  * 4. W has continuous paths: W(t) is continuous in t<br>
  * 
- * @author crow
+ * <br>
+ * An alternative characterisation of the Wiener process is the so-called
+ * <b>Lévy characterisation</b> that says that the Wiener process is an almost
+ * surely continuous martingale with W0 = 0 and quadratic variation [W(t), W(t)]
+ * = t (which means that W(t)^2 − t is also a martingale).
+ *
+ * @author Norbert Wiener
+ * 
+ * 
  * @see https://en.wikipedia.org/wiki/Wiener_process
  */
 public class WienerProcess implements
@@ -39,6 +50,20 @@ public class WienerProcess implements
 
   @Override
   public DistributionFunction getDistributionFunction()
+  {
+    assert false : "TODO: implement";
+    return null;
+  }
+
+  @Override
+  public Real getMean()
+  {
+    assert false : "TODO: implement";
+    return null;
+  }
+
+  @Override
+  public Real getStandardDeviation()
   {
     assert false : "TODO: implement";
     return null;

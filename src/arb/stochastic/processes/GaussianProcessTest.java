@@ -30,34 +30,21 @@ public class GaussianProcessTest extends
 
   public static void testSample()
   {
-    int             prec            = 128;
-    GaussianProcess gaussianProcess = new GaussianProcess(new Real("5",
-                                                                   prec),
-                                                          new Real("2",
-                                                                   prec));
+    int             prec               = 128;
+    Real            meanμ              = new Real("5",
+                                                  prec);
+    Real            standardDeviationσ = new Real("2",
+                                                  prec);
+    GaussianProcess gaussianProcess    = new GaussianProcess(meanμ,
+                                                             standardDeviationσ);
 
+    int             n                  = 50000;
     for (int j = 0; j < 5; j++)
     {
-      try ( RandomState randomState = new RandomState(j); Real u = new Real(); // uniform sample
-            Real x = new Real(); // Gaussian sample
-            Real uAccumulator = new Real(); Real xAccumulator = new Real(); Real dx2Accumulator = new Real();)
-      {
-        int i;
-        for (i = 0; i < 20000; i++)
-        {
-          gaussianProcess.sample(prec, randomState, u, x);
-          uAccumulator.add(u, prec, uAccumulator);
-          xAccumulator.add(x, prec, xAccumulator);
-          // dx2Accumulator.add(x.sub(gaussianProcess.μ, prec, null), prec, xAccumulator);
+      RandomState randomState = new RandomState((int) (Math.random() * Integer.MAX_VALUE));
 
-        }
-        uAccumulator.div(i, prec);
-        xAccumulator.div(i, prec);
-        println("i=" + uAccumulator + " xsum=" + xAccumulator);
-        assertEquals(0.499, uAccumulator.doubleValue(), 0.01);
-        assertEquals(4.999, xAccumulator.doubleValue(), 0.01);
-
-      }
+      gaussianProcess.generateTrajectory(n, randomState, prec);
     }
   }
+
 }
