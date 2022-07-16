@@ -33,6 +33,9 @@ public interface StochasticProcess<P extends DensityFunction, F extends Distribu
           Real dx2 = new Real(); Real uAccumulator = new Real(); Real xAccumulator = new Real();
           Real dx2Accumulator = new Real();)
     {
+      uAccumulator.printPrecision = true;
+      xAccumulator.printPrecision = true;
+      dx2Accumulator.printPrecision = true;
       int i;
       for (i = 0; i < n; i++)
       {
