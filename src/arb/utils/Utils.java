@@ -223,5 +223,11 @@ public class Utils
     System.out.println(s);
   }
 
+  public static void TODO(String string)
+  {
+    System.err.println( "TODO: " + string );
+    JOptionPane.showConfirmDialog(null, "TODO: " + string + " !!! ");    
+  }
+
 
 }
