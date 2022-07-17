@@ -2,8 +2,8 @@ package arb.functions.complex;
 
 import arb.*;
 
-public class RiemannZetaFunction implements
-                                 ComplexFunction
+public class RiemannζFunction implements
+                              ComplexFunction
 {
 
   @Override

@@ -9,6 +9,7 @@
 package arb;
 
 public class arbJNI {
+  public final static native void acb_dirichlet_xi(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_hypgeom_erfinv(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_hypgeom_erfcinv(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_hypgeom_erf(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);

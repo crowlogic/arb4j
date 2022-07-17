@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void acb_dirichlet_xi(Complex res, Complex s, int prec) {
+    arbJNI.acb_dirichlet_xi(Complex.getCPtr(res), res, Complex.getCPtr(s), s, prec);
+  }
+
   public static void arb_hypgeom_erfinv(Real res, Real z, int prec) {
     arbJNI.arb_hypgeom_erfinv(Real.getCPtr(res), res, Real.getCPtr(z), z, prec);
   }

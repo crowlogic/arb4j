@@ -8,10 +8,12 @@
 
 package arb;
 
+import java.util.concurrent.TimeUnit;
+
+import static arb.RealConstants.*;
+import arb.MagnitudeConstants;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
-import arb.Magnitude;
-
 /**
  * Real numbers are points on an infinitely long line known as the real number
  * line, where the points corresponding to integers are equally spaced. Any real

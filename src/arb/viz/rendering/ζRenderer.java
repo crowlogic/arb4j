@@ -26,7 +26,7 @@ public class ζRenderer
 
     try ( ComplexFunctionRenderer plotter = new ComplexFunctionRenderer(screen,
                                                                         domain,
-                                                                        new RiemannZetaFunction()))
+                                                                        new RiemannζFunction()))
     {
       plotter.colorMode   = 0;
       plotter.displayMode = Part.Phase;

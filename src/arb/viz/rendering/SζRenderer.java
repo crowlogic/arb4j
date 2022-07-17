@@ -31,7 +31,7 @@ public class SζRenderer extends
                                  80,
                                  -40),
           new CompositionOperator(new CompositionOperator(new SFunction(new Real().set("5", 128)),
-                                                          (new RiemannZetaFunction())),
+                                                          (new RiemannζFunction())),
                                   new WickRotation()));
 
     colorMode   = 2;

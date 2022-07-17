@@ -302,6 +302,24 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dirichlet_1xi(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  acb_struct *arg1 ;
+  acb_struct *arg2 ;
+  long arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(acb_struct **)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = (long)jarg3; 
+  acb_dirichlet_xi(arg1,(acb_struct const (*))arg2,arg3);
+  
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1hypgeom_1erfinv(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;

@@ -3,12 +3,12 @@ package arb.functions.complex;
 import arb.*;
 import junit.framework.*;
 
-public class RiemannZetaFunctionTest extends
+public class RiemannζFunctionTest extends
                                      TestCase
 {
   public static void testZeta()
   {
-    RiemannZetaFunction func = new RiemannZetaFunction();
+    RiemannζFunction func = new RiemannζFunction();
     try ( Complex coordinate = new Complex())
     {
       Complex res = func.evaluate(coordinate.set(2, 0), 2, 128, Complex.newVector(2));

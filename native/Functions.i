@@ -1,3 +1,5 @@
+void acb_dirichlet_xi(acb_t res, const acb_t s, slong prec);
+ 
 void arb_hypgeom_erfinv(arb_t res, const arb_t z, slong prec);
 
 void arb_hypgeom_erfcinv(arb_t res, const arb_t z, slong prec);
