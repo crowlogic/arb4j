@@ -17,38 +17,58 @@ import arb.functions.complex.*;
 import arb.functions.real.*;
 
 /**
- * This class does what is needed to draw the curve on a graphics context
+ * This class traces out the path where the real part, imaginary part, phase, or
+ * magnitude of a function is equal to a specific value which is by default 0
  * 
- * @author crow
- *
- * @param <P>
+ * @param <P> the type of function to flow across
  */
-public class GeodesicFlower<P extends ComplexFunction>
+public class GeodesicFlower<P extends ComplexFunction> implements AutoCloseable
 {
-
-  public Real dt;
-  public What what;
-
   public static enum What
   {
    Real,
    Imag,
    Phase,
    Magnitude
-  };
+  }
 
-  public Complex t;
+  public Real    dt;
+
+  public What    what;
+
+  public Complex basepoint;
 
   public Real    θ = new Real();
 
   public Real    ρ = new Real();
 
-  public GeodesicFlower(P surface, Complex t0, Real dt, What part)
+
+  @Override
+  public void close() throws Exception
   {
-    this.surface = surface;
-    this.dt      = dt;
-    this.t       = t0;
-    this.what    = part;
+    θ.clear();
+    ρ.clear();
+    basepoint.clear();
+    dt.clear();   
+  }
+  
+  /**
+   * 
+   * @param surface
+   * @param t0      base-point from which to start flowing from
+   * @param dt      the step-size which must be small enough not to miss any
+   *                important features of the surface
+   * @param what    specifies what part of the scalar function of the surface to
+   *                minimize
+   */
+  public GeodesicFlower(P surface, Complex t0, Real dt, What what, Real θ0, Real ρ)
+  {
+    this.surface   = surface;
+    this.dt        = dt;
+    this.basepoint = t0;
+    this.what      = what;
+    this.θ.set(θ0);
+    this.ρ.set(ρ);
   }
 
   P surface;
@@ -56,11 +76,10 @@ public class GeodesicFlower<P extends ComplexFunction>
   public void flow() throws InterruptedException
   {
     try ( CircularComposition<P> direction = new CircularComposition<P>(surface,
-                                                                        new ComplexCircle(ComplexConstants.ZERO,
+                                                                        new ComplexCircle(basepoint,
                                                                                           dt));)
     {
-      θ.set("-0.75", 128);
-      ρ.set("0.05", 128);
+
       /**
        * ρ controls the (angular) width of the sector that is searched over for a
        * minimum of the specified part of the function
@@ -74,7 +93,10 @@ public class GeodesicFlower<P extends ComplexFunction>
       case Imag:
         field = new ImaginaryPart(direction);
         break;
+//      case Magnitude:
+//        //field = new ComplexMagnitude(direction);
       default:
+       
         throw new UnsupportedOperationException("TODO: implement " + what);
       }
 
@@ -115,5 +137,6 @@ public class GeodesicFlower<P extends ComplexFunction>
   {
     throw new UnsupportedOperationException("TODO: implement this after transition from Java2d to LWJGL is completed");
   }
+
 
 }

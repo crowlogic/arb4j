@@ -1,4 +1,4 @@
-package arb.guts;
+package arb.guts.langlands;
 
 public interface Reciprocity
 {

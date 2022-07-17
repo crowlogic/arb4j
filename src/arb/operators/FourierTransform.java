@@ -1,8 +1,8 @@
 package arb.operators;
 
 import arb.*;
-import arb.functions.*;
-import arb.functions.real.*;
+import arb.functions.RealToComplexFunction;
+import arb.functions.real.RealFunction;
 
 public class FourierTransform<F extends RealFunction> implements
                              IntegralTransform

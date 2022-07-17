@@ -1,8 +1,8 @@
 package arb.curves;
 
 import arb.*;
-import arb.functions.*;
-import arb.functions.real.*;
+import arb.functions.RealToComplexFunction;
+import arb.functions.real.RealFunction;
 
 public final class ArcLengthFunction implements
                                      RealFunction
@@ -13,7 +13,7 @@ public final class ArcLengthFunction implements
   {
     super();
     this.curve = curve;
-    df         = curve.differential();    
+    df         = curve.differential();
     absdf      = (t, order, prec, w) ->
                {
                  df.evaluate(t, order, prec, w).abs(prec, w.getReal());

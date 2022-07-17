@@ -142,7 +142,7 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
   }
   
  /**
-   * @see arb#mag_swap(Magnitude, Magnitude)
+   * @see arb#mag_swap(ComplexMagnitude, ComplexMagnitude)
    * @param that
    * @return
    */

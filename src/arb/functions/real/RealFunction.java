@@ -1,24 +1,16 @@
-/**
- * Copyright ©2022 Stephen Crowley
- * 
- * This file is part of Arb4j which is free software: you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public License
- * (LGPL) as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version. See
- * <http://www.gnu.org/licenses/>.
- */
 package arb.functions.real;
 
-import static arb.utils.Utils.*;
-import static java.lang.Math.*;
-import static java.lang.String.*;
-import static java.lang.System.*;
+import static arb.utils.Utils.println;
+import static java.lang.Math.max;
+import static java.lang.String.format;
+import static java.lang.System.out;
 
 import arb.*;
 import arb.Float;
-import arb.FloatInterval.*;
-import arb.RealRootInterval.*;
-import arb.functions.*;
+import arb.FloatInterval.RootStatus;
+import arb.RealRootInterval.RefinementResult;
+import arb.functions.Function;
+import arb.Magnitude;
 
 /**
  * Interface which defines a function from ℝ -> ℝ where ℝ is the set of real
