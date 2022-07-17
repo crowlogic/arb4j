@@ -3,7 +3,7 @@ arb4j is a Java wrapper around the fantastic and amazing arb library for ball ar
 ========================================================================
 There is a project wiki at 
 https://github.com/crowlogic/arb4j/wiki 
-and you can see some nice examples of complex function visualization at
+and a gallery of some renderings (including some fluidly animated sequences implying motion of some underlying dynamical system) produced with arb4j at
 https://github.com/crowlogic/arb4j/wiki/Gallery 
 =======================================================================
  
@@ -20,53 +20,3 @@ parsed with SWIG and the corresponding java and C source files are generated.
 After that happens, the script then calls the bin/caw which stands for
 "compile arb wrapper" which, if all goes well, should leave a file
 named libarblib.so in root directory of the project
-
-The output should look this if all goes well. (You unfortunate victims of microsloth windoze are on your own, though if someone wants to fork it and make it so it works with
-cygwin or something and non-obtrusive patches then I will entertain the idea of a pull request if the patches are not too gnarly  )
-
-
-=====================================
-stephen@msi:~/arb4j$ gaw
-+ readlink -f /home/stephen/fm/bin/gaw
-+ dirname /home/stephen/git/arb4j/bin/gaw
-+ BASEDIR=/home/stephen/git/arb4j/bin/..
-+ cd /home/stephen/git/arb4j/bin/..
-+ export INCLUDES=-I/usr/include/x86_64-linux-gnu -I/usr/include/linux -I/usr/include/flint -I/usr/include -I/usr/include/i386-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/11/include/
-+ swig -debug-classes -v -java -package arb -outdir src/arb -I/usr/include/x86_64-linux-gnu -I/usr/include/linux -I/usr/include/flint -I/usr/include -I/usr/include/i386-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/11/include/ native/arb.i
-Language subdirectory: java
-Search paths:
-   ./
-   /usr/include/x86_64-linux-gnu/
-   /usr/include/linux/
-   /usr/include/flint/
-   /usr/include/
-   /usr/include/i386-linux-gnu/
-   /usr/lib/gcc/x86_64-linux-gnu/11/include//
-   ./swig_lib/java/
-   /usr/share/swig4.0/java/
-   ./swig_lib/
-   /usr/share/swig4.0/
-Preprocessing...
-Starting language-specific parse...
-Processing unnamed structs...
-Processing types...
-C++ analysis...
-Generating wrappers...
-Classes
-------------
-+ /home/stephen/git/arb4j/bin/../bin/caw
-+ export JAVA_HOME=/usr/lib/jvm/jdk-17
-+ readlink -f /home/stephen/git/arb4j/bin/../bin/caw
-+ dirname /home/stephen/git/arb4j/bin/caw
-+ export BASEDIR=/home/stephen/git/arb4j/bin/..
-+ cd /home/stephen/git/arb4j/bin/..
-+ export INCLUDES=-I/usr/lib/jvm/jdk-17/include -I/usr/lib/jvm/jdk-17/include/linux
-+ export SOURCES=native/complex_plot.c native/arb_wrap.c
-+ gcc -O3 -fPIC -shared native/complex_plot.c native/arb_wrap.c -I/usr/lib/jvm/jdk-17/include -I/usr/lib/jvm/jdk-17/include/linux -olibarblib.so -lflint-arb
-===================================
-
-If that looks good, then go ahead and run "mvn install" or just open
-the project in Eclipse with the CDT (and Groovy) packages installed
-and let the builder call gaw/caw for you and open the progam "Zplot"
-or run the script bin/updateClasspath before running bin/Zplot to run
-the program from the console
