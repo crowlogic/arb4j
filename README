@@ -3,7 +3,7 @@ arb4j is a Java wrapper around the fantastic and amazing arb library for ball ar
 ========================================================================
 There is a project wiki at 
 https://github.com/crowlogic/arb4j/wiki 
-and you can see some nice examples of complex function visualization at
+and a gallery of some renderings (including some fluidly animated sequences implying motion of some underlying dynamical system) produced with arb4j at
 https://github.com/crowlogic/arb4j/wiki/Gallery 
 =======================================================================
  
