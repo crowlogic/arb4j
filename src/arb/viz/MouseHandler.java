@@ -6,8 +6,8 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
 
-import arb.utils.Utils;
 import arb.*;
+import arb.utensils.Utils;
 
 public final class MouseHandler implements
                                 MouseListener,

@@ -1,6 +1,6 @@
 package arb.operators;
 
-import static arb.utils.Utils.*;
+import static arb.utensils.Utils.*;
 
 import arb.*;
 import arb.functions.real.*;

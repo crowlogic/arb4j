@@ -11,12 +11,12 @@ import arb.operators.*;
  * @author crow
  */
 public class ImaginaryQuarterPeriod extends
-                                    TaylorShift<CompositionOperator<RealQuarterPeriod, WickRotation>>
+                                    TaylorShift<Composition<RealQuarterPeriod, WickRotation>>
 {
 
   public ImaginaryQuarterPeriod()
   {
-    super(new CompositionOperator(new RealQuarterPeriod(),
+    super(new Composition(new RealQuarterPeriod(),
                                          new WickRotation(false)));
   }
 

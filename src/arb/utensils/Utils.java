@@ -1,4 +1,4 @@
-package arb.utils;
+package arb.utensils;
 
 import static arb.arb.*;
 

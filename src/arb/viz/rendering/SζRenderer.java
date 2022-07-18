@@ -30,7 +30,7 @@ public class SζRenderer extends
                                  20,
                                  80,
                                  -40),
-          new CompositionOperator(new CompositionOperator(new SFunction(new Real().set("5", 128)),
+          new Composition(new Composition(new SFunction(new Real().set("5", 128)),
                                                           (new RiemannζFunction())),
                                   new WickRotation()));
 

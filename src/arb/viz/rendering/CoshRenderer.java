@@ -25,7 +25,7 @@ public class CoshRenderer
     Dimension          screen   = new Dimension(1200,
                                                 600);
 
-    ComplexFunction    function = new CompositionOperator(new HyperbolicCosine(),
+    ComplexFunction    function = new Composition(new HyperbolicCosine(),
                                                           new WickRotation());
     // ComplexFunction function = new HyperbolicCosine();
 //    ComplexFunction function = (z, order, prec, w) ->

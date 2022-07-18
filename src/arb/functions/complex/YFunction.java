@@ -4,7 +4,7 @@ import arb.*;
 import arb.operators.*;
 
 public class YFunction extends
-                       CompositionOperator<TFunction, ZFunction>
+                       Composition<TFunction, ZFunction>
 {
   @Override
   public String toString()

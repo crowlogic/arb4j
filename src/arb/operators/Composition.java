@@ -9,10 +9,16 @@ import arb.functions.complex.*;
  * the Koopman operator
  *
  */
-public class CompositionOperator<F extends ComplexFunction, G extends ComplexFunction> implements
-                                       ComplexFunction,
-                                       AutoCloseable
+public class Composition<F extends ComplexFunction, G extends ComplexFunction> implements
+                        ComplexFunction,
+                        AutoCloseable
 {
+  public static <F extends ComplexFunction, G extends ComplexFunction> Composition<F, G> compose(F f, G g)
+  {
+    return new Composition(f,
+                           g);
+  }
+  
 
   @Override
   public String toString()
@@ -20,16 +26,15 @@ public class CompositionOperator<F extends ComplexFunction, G extends ComplexFun
     return String.format("%s(%s)", f, g);
   }
 
-
   @Override
   public ComplexFunction adjoint()
   {
-    // FIXME: does this need to be split into a left-adjoint and a right-adjoint that takes an argument?
+    // FIXME: does this need to be split into a left-adjoint and a right-adjoint
+    // that takes an argument?
     return new TransferOperator<ComplexFunction>(f);
   }
-  
 
-  public CompositionOperator(F f, G g)
+  public Composition(F f, G g)
   {
     this.f = f;
     this.g = g;

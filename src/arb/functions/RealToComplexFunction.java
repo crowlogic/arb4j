@@ -1,7 +1,7 @@
 package arb.functions;
 
 import static arb.arb.*;
-import static arb.utils.Utils.println;
+import static arb.utensils.Utils.println;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
@@ -12,7 +12,7 @@ import arb.exceptions.LackOfConvergenceException;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealPart;
-import arb.utils.Utils;
+import arb.utensils.Utils;
 
 public interface RealToComplexFunction extends
                                        Function<Real, Complex>

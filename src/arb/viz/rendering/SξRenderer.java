@@ -7,14 +7,14 @@ import java.io.*;
 import arb.*;
 import arb.functions.complex.*;
 import arb.functions.complex.dynamics.*;
-import arb.operators.CompositionOperator;
+import arb.operators.Composition;
 import arb.viz.*;
 
 /**
  * Renders the {@link YFunction}
  */
 public class SξRenderer extends
-                        ComplexFunctionRenderer<CompositionOperator<SFunction, RiemannξFunction>>
+                        ComplexFunctionRenderer<Composition<SFunction, RiemannξFunction>>
 {
   @SuppressWarnings("resource")
   public static void main(String args[]) throws NoninvertibleTransformException, IOException
@@ -34,8 +34,7 @@ public class SξRenderer extends
                                  -30,
                                  40,
                                  120),
-          new CompositionOperator<>(new SFunction(),
-                                    new RiemannξFunction()));
+          Composition.compose(new SFunction(), new RiemannξFunction()));
 
     colorMode   = 5;
     displayMode = Part.Real;

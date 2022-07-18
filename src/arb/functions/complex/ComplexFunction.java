@@ -10,7 +10,7 @@ import arb.exceptions.*;
 import arb.functions.Function;
 import arb.functions.real.ImaginaryPart;
 import arb.functions.real.RealPart;
-import arb.utils.Utils;
+import arb.utensils.Utils;
 
 @FunctionalInterface
 public interface ComplexFunction extends

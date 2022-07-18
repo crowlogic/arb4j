@@ -22,7 +22,7 @@ import javax.swing.Timer;
 import arb.*;
 import arb.Float;
 import arb.functions.complex.*;
-import arb.utils.*;
+import arb.utensils.*;
 import hageldave.jplotter.color.*;
 
 /**
