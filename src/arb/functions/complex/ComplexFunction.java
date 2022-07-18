@@ -231,7 +231,7 @@ public interface ComplexFunction extends
    * line-segment between the complex numbers a and b. For finite results, a & b
    * must be finite and f must be bounded on the integration path. To compute
    * improper integrals, the path of integration should be manually truncated or a
-   * regularizing change of variables made if possible.
+   * regularizing change of variableExpressions made if possible.
    * 
    * By default, this function will be evaluated as the integrand and
    * this{@link #evaluate(Complex, int, int, Complex)} will only be called with

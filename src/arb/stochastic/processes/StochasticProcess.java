@@ -8,7 +8,7 @@ import arb.Real;
 import arb.stochastic.*;
 
 /**
- * A stochastic process is a family of random variables,<br>
+ * A stochastic process is a family of random variableExpressions,<br>
  * <code>{X(t) : t ∈ T} <code> <br>
  * where t usually denotes time or a time-like variable
  */

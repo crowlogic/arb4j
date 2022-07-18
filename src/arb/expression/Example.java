@@ -1,4 +1,4 @@
-package naivesound.expr;
+package arb.expression;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,9 +8,9 @@ public class Example
 
   public final static String      FORMULA = "x=2+3*(x/(42+plusone(x))),x";
 
-  private static Expr.Func<Float> plusOne = new Expr.Func<Float>()
+  private static Function<Float> plusOne = new Function<Float>()
                                           {
-                                            public float eval(Expr.FuncContext<Float> c)
+                                            public float evaluate(FunctionalExpressionContext<Float> c)
                                             {
                                               if (c.env == null)
                                               {
@@ -28,17 +28,17 @@ public class Example
     {
       sb.append(',').append(FORMULA);
     }
-    Map<String, Expr.Var>  vars  = new HashMap<String, Expr.Var>();
-    Map<String, Expr.Func> funcs = new HashMap<String, Expr.Func>();
-    funcs.put("plusone", plusOne);
+    Map<String, VariableExpression>  variableExpressions  = new HashMap<String, VariableExpression>();
+    Map<String, Function> functions = new HashMap<String, Function>();
+    functions.put("plusone", plusOne);
 
     if (evaluate)
     {
-      Expr e     = new Expr.Builder().parse(sb.toString(), vars, funcs);
+      Expression e     = new Builder().parse(sb.toString(), variableExpressions, functions);
       long start = System.nanoTime();
       for (int i = 0; i < iter; i++)
       {
-        e.eval();
+        e.evaluate();
       }
       return (System.nanoTime() - start) * 1f / iter;
     }
@@ -47,7 +47,7 @@ public class Example
       long start = System.nanoTime();
       for (int i = 0; i < iter; i++)
       {
-        new Expr.Builder().parse(sb.toString(), vars, funcs);
+        new Builder().parse(sb.toString(), variableExpressions, functions);
       }
       return (System.nanoTime() - start) * 1f / iter;
     }
@@ -66,8 +66,8 @@ public class Example
   public static void main(String[] args)
   {
     // Quick usage example
-    Expr e = new Expr.Builder().parse("2+3", null, null);
-    System.out.println(e.eval());
+    Expression e = new Builder().parse("2+3", null, null);
+    System.out.println(e.evaluate());
 
     // Performance benchmark for parsing and evaluation phases
     benchmark();

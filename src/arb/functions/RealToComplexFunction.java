@@ -30,7 +30,7 @@ public interface RealToComplexFunction extends
     @Override
     public Complex evaluate(Complex t, int order, int prec, Complex res)
     {
-      assert t.getImag().isZero() : "the underlying function accepts real-valued variables only";
+      assert t.getImag().isZero() : "the underlying function accepts real-valued variableExpressions only";
       return func.evaluate(t.getReal(), order, prec, res);
     }
 
