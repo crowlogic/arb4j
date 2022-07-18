@@ -1,13 +1,13 @@
 package arb.expression;
 
-public class BinaryBinary implements
+public class BinaryExpression implements
              Expression
 {
   final Operation         operation;
   final Expression a;
   final Expression b;
 
-  public BinaryBinary(Operation operation, Expression a, Expression b)
+  public BinaryExpression(Operation operation, Expression a, Expression b)
   {
     this.operation = operation;
     this.a  = a;

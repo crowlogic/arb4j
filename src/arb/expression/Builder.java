@@ -320,9 +320,9 @@ public class Builder
         Expression e = es.pop();
         while (e != null)
         {
-          if (e instanceof BinaryBinary)
+          if (e instanceof BinaryExpression)
           {
-            BinaryBinary binExpr = (BinaryBinary) e;
+            BinaryExpression binExpr = (BinaryExpression) e;
             if (binExpr.operation == Operation.COMMA)
             {
               args.add(binExpr.a);
@@ -364,7 +364,7 @@ public class Builder
         {
           return null; // Operand missing
         }
-        return new BinaryBinary(operation,
+        return new BinaryExpression(operation,
                                 a,
                                 b);
       }
