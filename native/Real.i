@@ -441,7 +441,7 @@ import static arb.arb.*;
   
   public String toString( )
   {
-    return toString(46);
+    return toString(20);
   }
   
   public int digits()
@@ -454,7 +454,7 @@ import static arb.arb.*;
       return (int) d.doubleValue() + 2;
     }
   }  
-    public boolean  printPrecision = false;
+    public boolean  printPrecision = true;
   public String toString( int digits )
   {
     if ( dim == 1 )

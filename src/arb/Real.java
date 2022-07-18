@@ -467,7 +467,7 @@ public class Real implements Comparable<Real>, NumberField {
   
   public String toString( )
   {
-    return toString(46);
+    return toString(20);
   }
   
   public int digits()
@@ -480,7 +480,7 @@ public class Real implements Comparable<Real>, NumberField {
       return (int) d.doubleValue() + 2;
     }
   }  
-    public boolean  printPrecision = false;
+    public boolean  printPrecision = true;
   public String toString( int digits )
   {
     if ( dim == 1 )
