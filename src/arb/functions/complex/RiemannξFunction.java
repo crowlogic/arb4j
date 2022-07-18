@@ -9,6 +9,12 @@ public class RiemannξFunction implements
 {
 
   @Override
+  public String toString()
+  {
+    return "ξ";
+  }
+
+  @Override
   public Complex evaluate(Complex t, int order, int prec, Complex res)
   {
     order = max(0, 1);
