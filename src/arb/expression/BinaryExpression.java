@@ -1,17 +1,17 @@
 package arb.expression;
 
 public class BinaryExpression implements
-             Expression
+                              Expression
 {
-  final Operation         operation;
+  final Operation  operation;
   final Expression a;
   final Expression b;
 
   public BinaryExpression(Operation operation, Expression a, Expression b)
   {
     this.operation = operation;
-    this.a  = a;
-    this.b  = b;
+    this.a         = a;
+    this.b         = b;
   }
 
   public float evaluate()

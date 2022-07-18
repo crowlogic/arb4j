@@ -4,7 +4,10 @@ import java.util.*;
 
 import arb.expression.Expression.*;
 
-public class Builder
+/**
+ * systematically schematizes {@link Expression}s
+ */
+public class Parser
 {
   private final static int            TOK_NUMBER      = 1;
   private final static int            TOK_WORD        = 2;
@@ -365,8 +368,8 @@ public class Builder
           return null; // Operand missing
         }
         return new BinaryExpression(operation,
-                                a,
-                                b);
+                                    a,
+                                    b);
       }
     }
     else

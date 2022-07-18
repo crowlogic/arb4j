@@ -34,7 +34,7 @@ public class Example
 
     if (evaluate)
     {
-      Expression e     = new Builder().parse(sb.toString(), variableExpressions, functions);
+      Expression e     = new Parser().parse(sb.toString(), variableExpressions, functions);
       long start = System.nanoTime();
       for (int i = 0; i < iter; i++)
       {
@@ -47,7 +47,7 @@ public class Example
       long start = System.nanoTime();
       for (int i = 0; i < iter; i++)
       {
-        new Builder().parse(sb.toString(), variableExpressions, functions);
+        new Parser().parse(sb.toString(), variableExpressions, functions);
       }
       return (System.nanoTime() - start) * 1f / iter;
     }
@@ -66,7 +66,7 @@ public class Example
   public static void main(String[] args)
   {
     // Quick usage example
-    Expression e = new Builder().parse("2+3", null, null);
+    Expression e = new Parser().parse("2+3", null, null);
     System.out.println(e.evaluate());
 
     // Performance benchmark for parsing and evaluation phases
