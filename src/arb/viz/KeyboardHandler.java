@@ -60,7 +60,18 @@ public class KeyboardHandler implements
     case KeyEvent.VK_Z:
       plotter.enterZoomSelectionMode();
       break;
-
+    case KeyEvent.VK_R:
+      plotter.switchDisplayModeTo(Part.Real);
+      break;
+    case KeyEvent.VK_I:
+      plotter.switchDisplayModeTo(Part.Imag);
+      break;
+    case KeyEvent.VK_P:
+      plotter.switchDisplayModeTo(Part.Phase);
+      break;
+    case KeyEvent.VK_B:
+      plotter.switchDisplayModeTo(Part.Blend);
+      break;
     case KeyEvent.VK_ESCAPE:
       System.exit(1);
       break;
@@ -85,12 +96,16 @@ public class KeyboardHandler implements
     {
     case Phase:
       displayMode = DisplayMode.Real;
+      break;
     case Real:
       displayMode = DisplayMode.Imaginary;
+      break;
     case Imaginary:
       displayMode = DisplayMode.Composite;
+      break;
     case Composite:
       displayMode = DisplayMode.Phase;
+      break;
     }
 
   }

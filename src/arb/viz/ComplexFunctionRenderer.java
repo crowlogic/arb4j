@@ -733,7 +733,8 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
                                 "Press\n" + "F1     Toggle program help screen (what you're looking at)\n"
                                               + "F2     Toggle overlay color between black and white\n"
                                               + "F3     Toggle between Both/Real part only/Imaginary only\n"
-                                              + "B      Show Both Real and Imaginary Parts\n"
+                                              + "P      Show Phase (Argument)"
+                                              + "B      Show Blend of Both Real and Imaginary Parts\n"
                                               + "R      Show Real part only\n" + "I      Show Imaginary part only\n"
                                               + "Z      Select a rectangle to be magnified\n" + "S      Save image"
                                               + "ESC    Exit progam\n",
@@ -1096,6 +1097,19 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     this._z.remove();
     pixel.remove();
     pixel2.remove();
+  }
+
+  public void switchDisplayModeTo(Part real)
+  {
+    System.out.println("setting displayMode to " + displayMode + " and re-rendering");
+    this.displayMode = real;
+    new Thread(() ->
+    {
+      evaluateFunctionOnGrid();
+      System.out.println("Finished re-rendering function after setting displayMode to " + displayMode);
+    }).start();
+    ;
+
   }
 
 }
