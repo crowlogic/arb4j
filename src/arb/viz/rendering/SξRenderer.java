@@ -23,8 +23,8 @@ public class SξRenderer extends
     renderer.render();
   }
 
-  public static final int width  = 1900 / 2;
-  public static final int height = 950 / 2;
+  public static final int width  = 1900 ;
+  public static final int height = 950 ;
 
   public SξRenderer(Real vscale) throws NoninvertibleTransformException
   {
@@ -33,7 +33,7 @@ public class SξRenderer extends
           new Rectangle2D.Double(-20,
                                  -30,
                                  40,
-                                 120),
+                                 60),
           Composition.compose(new SFunction(), new RiemannξFunction()));
 
     colorMode   = 5;
