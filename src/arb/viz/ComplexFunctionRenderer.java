@@ -30,6 +30,8 @@ import hageldave.jplotter.color.*;
  * argument using the method of domain coloring which is also called the color
  * wheel method
  * 
+ * https://github.com/crowlogic/arb4j/issues/3 Changeable color scheme
+ * 
  * @param <F> the class of {@link ComplexFunction} to be rendered
  */
 public class ComplexFunctionRenderer<F extends ComplexFunction> extends

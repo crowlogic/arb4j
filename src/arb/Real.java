@@ -480,7 +480,8 @@ public class Real implements Comparable<Real>, NumberField {
       return (int) d.doubleValue() + 2;
     }
   }  
-    public boolean  printPrecision = true;
+    public boolean  printPrecision = false;
+    
   public String toString( int digits )
   {
     if ( dim == 1 )
