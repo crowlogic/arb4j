@@ -114,7 +114,7 @@ public class GeodesicFlower<P extends ComplexFunction> implements AutoCloseable
 //      }
       System.out.println("Locating over " + zeroPointInterval);
 
-      Roots root = field.locateRoots(new RootLocatorConfiguration(zeroPointInterval,
+      Roots root = field.locateRoots(new RootLocatorOptions(zeroPointInterval,
                                                                   1500,
                                                                   50000,
                                                                   1,

@@ -30,7 +30,7 @@ public class RealNewtonMapTest extends
     }
     System.out.println("w=" + w);
     System.out.println("angle(w)=" + angle.evaluate(new Complex(w), 1, 512, new Complex()));
-    Roots root = realAngle.locateRoots(new RootLocatorConfiguration(new RealRootInterval(-.8,
+    Roots root = realAngle.locateRoots(new RootLocatorOptions(new RealRootInterval(-.8,
                                                                                               -0.7),
                                                                          150,
                                                                          50000,

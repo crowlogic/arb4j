@@ -29,7 +29,7 @@ public class RealFunctionTest
   public void testLocateRootsSine()
   {
     RealSineFunction         sineFunction = new RealSineFunction();
-    RootLocatorConfiguration config       = new RootLocatorConfiguration(new RealRootInterval(3,
+    RootLocatorOptions config       = new RootLocatorOptions(new RealRootInterval(3,
                                                                                               3.6),
                                                                          50,
                                                                          20000,
@@ -53,7 +53,7 @@ public class RealFunctionTest
     int                      maxevals        = 5000;
     int                      maxfound        = 1;
     int                      prec            = 256;
-    RootLocatorConfiguration config          = new RootLocatorConfiguration(initialInterval,
+    RootLocatorOptions config          = new RootLocatorOptions(initialInterval,
                                                                             maxdepth,
                                                                             maxevals,
                                                                             maxfound,

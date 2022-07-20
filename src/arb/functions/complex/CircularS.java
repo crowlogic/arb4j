@@ -42,7 +42,7 @@ public class CircularS extends
     frame.pack();
     frame.setVisible(true);
 
-    Roots root = circularRealPart.locateRoots(new RootLocatorConfiguration(new RealRootInterval(-.8,
+    Roots root = circularRealPart.locateRoots(new RootLocatorOptions(new RealRootInterval(-.8,
                                                                                                      -0.7),
                                                                                 150,
                                                                                 1,

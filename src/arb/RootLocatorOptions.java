@@ -1,6 +1,6 @@
 package arb;
 
-public class RootLocatorConfiguration
+public class RootLocatorOptions
 {
   @Override
   public String toString()
@@ -15,7 +15,7 @@ public class RootLocatorConfiguration
   public int              maxFound;
   public int              prec;
 
-  public RootLocatorConfiguration(RealRootInterval interval, int maxdepth, int maxevals, int maxfound, int prec)
+  public RootLocatorOptions(RealRootInterval interval, int maxdepth, int maxevals, int maxfound, int prec)
   {
     super();
     assert maxevals > 1 : "it makes no sense to set maxevals less than 1";

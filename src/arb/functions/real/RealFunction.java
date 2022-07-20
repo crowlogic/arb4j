@@ -240,7 +240,7 @@ public interface RealFunction extends
    *                 does not make sense for maxdepth to exceed prec.
    * @return a new instance of {@link Roots}
    */
-  public default Roots locateRoots(RootLocatorConfiguration config)
+  public default Roots locateRoots(RootLocatorOptions config)
   {
     assert config.maxDepth > 1 : "you probably dont really want the max recursion limit to be less than 2";
     Roots            roots    = new Roots();
@@ -275,7 +275,7 @@ public interface RealFunction extends
                                              int asign,
                                              int bsign,
                                              int depth,
-                                             RootLocatorConfiguration config)
+                                             RootLocatorOptions config)
   {
     if (verbose)
     {

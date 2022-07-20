@@ -25,13 +25,13 @@ public class CircleSTest extends
       realCircleS.evaluate(πOver2, 3, 256, z);
       assertEquals(0.6, z.getReal().doubleValue(), Math.pow(10, -20));
 
-      RootLocatorConfiguration rootLocatorConfiguration = new RootLocatorConfiguration(new RealRootInterval(0.5,
+      RootLocatorOptions rootLocatorOptions = new RootLocatorOptions(new RealRootInterval(0.5,
                                                                                                             0.6),
                                                                                        50,
                                                                                        5000,
                                                                                        5,
                                                                                        256);
-      Roots               turningPoints            = cs.realPart().locateRoots(rootLocatorConfiguration);
+      Roots               turningPoints            = cs.realPart().locateRoots(rootLocatorOptions);
       System.out.println("Located " + turningPoints);
       turningPoints.refine(cs.realPart(), 256, 50, true);
       System.out.println("Refined " + turningPoints);
