@@ -22,7 +22,8 @@ public class UnaryExpression implements
       return ~((int) this.arg.evaluate());
     case UNARY_LOGICAL_NOT:
       return ((int) this.arg.evaluate()) == 0 ? 1 : 0;
+    default:
+      return 0;
     }
-    return 0;
   }
 }

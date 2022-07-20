@@ -38,12 +38,12 @@ public interface DiffusionProcess<D extends NumberField, R extends NumberField> 
    * 
    * @return the drift coefficient
    */
-  public Function<D, R> μ();
+  public <F extends Function<D, R>> F μ();
 
   /**
    * 
    * @return the diffusion coefficient
    */
-  public Function<D, R> σ();
+  public <F extends Function<D, R>> F σ();
 
 }
