@@ -18,7 +18,11 @@ public class GeodesicFlowTest
       GeodesicFlower<SFunction> flower = new GeodesicFlower<SFunction>(new SFunction(),
                                                                        ComplexConstants.ZERO,
                                                                        dt.set("0.1", 128),
-                                                                       What.Real);
+                                                                       What.Real,
+                                                                       new Real("-0.75",
+                                                                                128),
+                                                                       new Real("0.05",
+                                                                                128));
       flower.flow();
     }
   }

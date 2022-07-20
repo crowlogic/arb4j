@@ -36,15 +36,14 @@ public class RandomState implements AutoCloseable {
     }
   }
 
- static { System.loadLibrary( "arblib" ); }
-
+  static { System.loadLibrary( "arblib" ); }
 
   public RandomState(int seed)
   {
     this();
-	arb.gmp_randinit_mt(getRandomState());
+    arb.gmp_randinit_mt(getRandomState());
     arb.gmp_randseed_ui(getRandomState(), seed);
-   	setInitialValue(seed);  
+    setInitialValue(seed);
   }
   
   public void clear()

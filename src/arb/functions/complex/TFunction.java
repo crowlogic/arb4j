@@ -4,7 +4,7 @@ import arb.*;
 import arb.operators.*;
 
 public class TFunction extends
-                       CompositionOperator<SFunction, WickRotation>
+                       Composition<SFunction, WickRotation>
 {
   @Override
   public String toString()

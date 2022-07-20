@@ -441,7 +441,7 @@ import static arb.arb.*;
   
   public String toString( )
   {
-    return toString(46);
+    return toString(20);
   }
   
   public int digits()
@@ -455,6 +455,7 @@ import static arb.arb.*;
     }
   }  
     public boolean  printPrecision = false;
+    
   public String toString( int digits )
   {
     if ( dim == 1 )

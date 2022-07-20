@@ -1,6 +1,6 @@
 package arb;
 
-import static arb.utils.Utils.*;
+import static arb.utensils.Utils.*;
 import static java.lang.String.*;
 import static java.lang.System.*;
 

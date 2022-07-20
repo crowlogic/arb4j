@@ -24,7 +24,7 @@ public class LemniscateSine implements
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
     throw new UnsupportedOperationException("TODO: implement ");
-//    // TODO: move theta1 and theta3 to ThreadLocal variables
+//    // TODO: move theta1 and theta3 to ThreadLocal variableExpressions
 //    ComplexPolynomial theta1 = new ComplexPolynomial(), theta3 = new ComplexPolynomial();
 //    acb_poly_init(theta1);
 //    acb_poly_init(theta3);

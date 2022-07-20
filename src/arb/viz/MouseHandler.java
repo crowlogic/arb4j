@@ -7,6 +7,7 @@ import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
 
 import arb.*;
+import arb.utensils.Utils;
 
 public final class MouseHandler implements
                                 MouseListener,
@@ -41,11 +42,7 @@ public final class MouseHandler implements
     try ( Complex clicked = new Complex())
     {
       clicked.set(point.x, point.y);
-      if (plotter.mode == Mode.Default)
-      {
-        plotter.trajectory      = plotter.calculateNewtonTrajectory(clicked, 25);
-        plotter.anythingChanged = true;
-      }
+      Utils.TODO("Adapt JPlotter to work with arb4j");
     }
   }
 

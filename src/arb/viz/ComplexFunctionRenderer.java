@@ -22,13 +22,15 @@ import javax.swing.Timer;
 import arb.*;
 import arb.Float;
 import arb.functions.complex.*;
-import arb.utils.*;
+import arb.utensils.*;
 import hageldave.jplotter.color.*;
 
 /**
  * creates a rendering of a patch of a complex valued function of a complex
  * argument using the method of domain coloring which is also called the color
  * wheel method
+ * 
+ * https://github.com/crowlogic/arb4j/issues/3 Changeable color scheme
  * 
  * @param <F> the class of {@link ComplexFunction} to be rendered
  */
@@ -121,7 +123,9 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   private Graphics2D           outputGraphics;
 
-  public ComplexFunctionRenderer(Dimension resolution, Rectangle2D.Double domain, F function) throws NoninvertibleTransformException
+  public ComplexFunctionRenderer(Dimension resolution,
+                                 Rectangle2D.Double domain,
+                                 F function) throws NoninvertibleTransformException
   {
     this.resolution = resolution;
     this.domain     = domain;
@@ -275,7 +279,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   ThreadLocalReal r         = new ThreadLocalReal();
 
-  private void colorizeAndRecordImagePixel(int x, int y, Complex w)
+  private void colorizePixel(int x, int y, Complex w)
   {
 //    Pixel pixel = colorizePixel(w);
 //
@@ -450,10 +454,11 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
         {
           evaluateFunction(x, y);
         }
-        colorizeAndRecordImagePixel(x, y, z);
+        colorizePixel(x, y, z);
       }
     });
 
+    image.complete = true;
   }
 
   public AffineTransform getScreenToFunctionDomainMapping()
@@ -571,7 +576,11 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   public void showFrame()
   {
-    frame = Utils.openInJFrame(this, resolution.width, resolution.height, function.toString(), keepRunning ? WindowConstants.HIDE_ON_CLOSE : WindowConstants.EXIT_ON_CLOSE);
+    frame = Utils.openInJFrame(this,
+                               resolution.width,
+                               resolution.height,
+                               function.toString(),
+                               keepRunning ? WindowConstants.HIDE_ON_CLOSE : WindowConstants.EXIT_ON_CLOSE);
   }
 
   private void reportRenderingRate()
@@ -721,10 +730,13 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   private void drawHelp()
   {
     drawTextInScreenCoordinates(true,
-                                "Press\n" + "F1     Toggle program help screen (what you're looking at)\n" + "F2     Toggle overlay color between black and white\n"
-                                              + "F3     Toggle between Both/Real part only/Imaginary only\n" + "B      Show Both Real and Imaginary Parts\n"
-                                              + "R      Show Real part only\n" + "I      Show Imaginary part only\n" + "Z      Select a rectangle to be magnified\n"
-                                              + "S      Save image" + "ESC    Exit progam\n",
+                                "Press\n" + "F1     Toggle program help screen (what you're looking at)\n"
+                                              + "F2     Toggle overlay color between black and white\n"
+                                              + "F3     Toggle between Both/Real part only/Imaginary only\n"
+                                              + "B      Show Both Real and Imaginary Parts\n"
+                                              + "R      Show Real part only\n" + "I      Show Imaginary part only\n"
+                                              + "Z      Select a rectangle to be magnified\n" + "S      Save image"
+                                              + "ESC    Exit progam\n",
                                 20,
                                 20);
 
@@ -852,7 +864,8 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     Complex w1stDeriv = w.get(1);
     try ( Real warg = new Real(); Real w1stDerivarg = new Real())
     {
-      return String.format("    t=%+.05f%+.05fi\n" + " f(t)=%+.05f%+.05fi arg=%+.06f\n" + "f'(t)=%+.05f%+.05fi arg=%+.06f\n N(t)=%+.05f%+.05fi mag=%.06f arg=%+.06f\n",
+      return String.format("    t=%+.05f%+.05fi\n" + " f(t)=%+.05f%+.05fi arg=%+.06f\n"
+                    + "f'(t)=%+.05f%+.05fi arg=%+.06f\n N(t)=%+.05f%+.05fi mag=%.06f arg=%+.06f\n",
                            cursorInFunctionSpace.x,
                            cursorInFunctionSpace.y,
                            w.getReal().doubleValue(),
@@ -975,7 +988,13 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
     if (debug)
     {
-      out.format("Cursor moved to t=%s where f(t)=%s\nfuncCoords=%s\nscreenCoords=%s\nNewtonDeriv=%s\nphase=%s\n", t, w, cursorInFunctionSpace, cursorInScreenSpace, N, phase);
+      out.format("Cursor moved to t=%s where f(t)=%s\nfuncCoords=%s\nscreenCoords=%s\nNewtonDeriv=%s\nphase=%s\n",
+                 t,
+                 w,
+                 cursorInFunctionSpace,
+                 cursorInScreenSpace,
+                 N,
+                 phase);
     }
     anythingChanged = true;
 
@@ -1020,7 +1039,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   private Float   dy          = new Float();
 
-  Mode            mode        = Mode.Default;
+  Mode            mode        = Mode.Translate;
 
   public boolean  keepRunning = false;
 
@@ -1063,7 +1082,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   void enterZoomSelectionMode()
   {
     System.out.println("Entering zoom selection mode from " + mode + " mode");
-    mode = Mode.Zoom;
+    mode = Mode.Scale;
   }
 
   @Override

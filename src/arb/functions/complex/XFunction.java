@@ -10,7 +10,7 @@ import arb.operators.*;
  * @author crow
  */
 public class XFunction extends
-                       CompositionOperator<SFunction, ZFunction> implements SymmetricFunction
+                       Composition<SFunction, ZFunction> implements SymmetricFunction
 {
 
   @Override
