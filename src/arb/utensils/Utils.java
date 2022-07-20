@@ -27,7 +27,7 @@ public class Utils
    * Tell system to use native look and feel, as in previous releases. Metal
    * (Java) LAF is the default otherwise.
    */
-  
+
   public static void setNativeLookAndFeel()
   {
     try
@@ -68,8 +68,9 @@ public class Utils
    * A simplified way to see a JPanel or other Container. Pops up a JFrame with
    * specified Container as the content pane.
    */
-  
-  public static JFrame openInJFrame(Container content, int width, int height, String title, Color bgColor, int closeOp )
+
+  public static JFrame
+         openInJFrame(Container content, int width, int height, String title, Color bgColor, int closeOp)
   {
     JFrame frame = new JFrame(title);
     frame.setBackground(bgColor);
@@ -82,8 +83,8 @@ public class Utils
   }
 
   /** Uses Color.white as the background color. */
-  
-  public static JFrame openInJFrame(Container content, int width, int height, String title, int closeOp )
+
+  public static JFrame openInJFrame(Container content, int width, int height, String title, int closeOp)
   {
     return (openInJFrame(content, width, height, title, Color.white, closeOp));
   }
@@ -92,10 +93,10 @@ public class Utils
    * Uses Color.white as the background color, and the name of the Container's
    * class as the JFrame title.
    */
-  
-  public static JFrame openInJFrame(Container content, int width, int height, int closeOp )
+
+  public static JFrame openInJFrame(Container content, int width, int height, int closeOp)
   {
-    return (openInJFrame(content, width, height, content.getClass().getName(), Color.white, closeOp ));
+    return (openInJFrame(content, width, height, content.getClass().getName(), Color.white, closeOp));
   }
 
   public static void heap_up(Real as, Real bs, Complex vs, Magnitude ms, int n)
@@ -125,7 +126,7 @@ public class Utils
       }
     }
   }
-  
+
   public static void heap_up(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
   {
     int i, max, l, r;
@@ -158,7 +159,7 @@ public class Utils
   {
     int k = n - 1;
     int j = (k - 1) / 2;
-  
+
     while (k > 0 && ms.get(j).compareTo(ms.get(k)) < 0)
     {
       as.get(j).swap(as.get(k));
@@ -171,8 +172,8 @@ public class Utils
   }
 
   /**
-   * A version of {@link Real#overlaps(Real)} used by the integration code
-   * which is less accurate by design
+   * A version of {@link Real#overlaps(Real)} used by the integration code which
+   * is less accurate by design
    * 
    * @param tmp
    * @param a
@@ -185,7 +186,7 @@ public class Utils
     arb_sub(tmp, a, b, prec);
     return arb_contains_zero(tmp) != 0;
   }
-  
+
   /**
    * A version of {@link Complex#overlaps(Complex)} used by the integration code
    * which is less accurate by design
@@ -206,7 +207,7 @@ public class Utils
   {
     int k = n - 1;
     int j = (k - 1) / 2;
-  
+
     while (k > 0 && ms.get(j).compareTo(ms.get(k)) < 0)
     {
       as.get(j).swap(as.get(k));
@@ -225,9 +226,8 @@ public class Utils
 
   public static void TODO(String string)
   {
-    System.err.println( "TODO: " + string );
-    JOptionPane.showConfirmDialog(null, "TODO: " + string + " !!! ");    
+    new Throwable("TODO: " + string).printStackTrace();
+    JOptionPane.showConfirmDialog(null, "TODO: " + string + " !!! ");
   }
-
 
 }
