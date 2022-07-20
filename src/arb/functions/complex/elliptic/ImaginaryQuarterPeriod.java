@@ -17,7 +17,7 @@ public class ImaginaryQuarterPeriod extends
   public ImaginaryQuarterPeriod()
   {
     super(new Composition(new RealQuarterPeriod(),
-                                         new WickRotation(false)));
+                          new WickRotation(false)));
   }
 
 }

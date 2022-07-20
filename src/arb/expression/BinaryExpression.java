@@ -3,20 +3,20 @@ package arb.expression;
 public class BinaryExpression implements
                               Expression
 {
-  final Operation  operation;
+  final Operators  operators;
   final Expression a;
   final Expression b;
 
-  public BinaryExpression(Operation operation, Expression a, Expression b)
+  public BinaryExpression(Operators operators, Expression a, Expression b)
   {
-    this.operation = operation;
+    this.operators = operators;
     this.a         = a;
     this.b         = b;
   }
 
   public float evaluate()
   {
-    switch (this.operation)
+    switch (this.operators)
     {
     case POWER:
       return (float) Math.pow(this.a.evaluate(), this.b.evaluate());
@@ -58,7 +58,7 @@ public class BinaryExpression implements
       return cond != 0 ? cond : this.b.evaluate();
     case ASSIGN:
       float rhs = this.b.evaluate();
-      ((VariableExpression) this.a).set(rhs);
+      ((Variable) this.a).set(rhs);
       return rhs;
     case COMMA:
       this.a.evaluate();

@@ -5,9 +5,10 @@ import java.util.*;
 import arb.expression.Expression.*;
 
 /**
- * systematically schematizes {@link Expression}s
+ * systematically schematizes {@link Expression}s with the
+ * this{@link #parse(String, Map, Map)} method
  */
-public class Parser
+public class ExpressionParser
 {
   private final static int            TOK_NUMBER      = 1;
   private final static int            TOK_WORD        = 2;
@@ -19,37 +20,44 @@ public class Parser
   private final static int            PAREN_EXPECTED  = 1;
   private final static int            PAREN_FORBIDDEN = 2;
 
-  final static Map<String, Operation> OPS             = new HashMap<String, Operation>()
+  final static Map<String, Operators> OPS             = new HashMap<String, Operators>()
                                                       {
                                                         {
-                                                          put("-u", Operation.UNARY_MINUS);
-                                                          put("!u", Operation.UNARY_LOGICAL_NOT);
-                                                          put("^u", Operation.UNARY_BITWISE_NOT);
-                                                          put("**", Operation.POWER);
-                                                          put("*", Operation.MULTIPLY);
-                                                          put("/", Operation.DIVIDE);
-                                                          put("%", Operation.REMAINDER);
-                                                          put("+", Operation.PLUS);
-                                                          put("-", Operation.MINUS);
-                                                          put("<<", Operation.SHL);
-                                                          put(">>", Operation.SHR);
-                                                          put("<", Operation.LT);
-                                                          put("<=", Operation.LE);
-                                                          put(">", Operation.GT);
-                                                          put(">=", Operation.GE);
-                                                          put("==", Operation.EQ);
-                                                          put("!=", Operation.NE);
-                                                          put("&", Operation.BITWISE_AND);
-                                                          put("^", Operation.BITWISE_XOR);
-                                                          put("|", Operation.BITWISE_OR);
-                                                          put("&&", Operation.LOGICAL_AND);
-                                                          put("||", Operation.LOGICAL_OR);
-                                                          put("=", Operation.ASSIGN);
-                                                          put(",", Operation.COMMA);
+                                                          put("-u", Operators.UNARY_MINUS);
+                                                          put("!u", Operators.UNARY_LOGICAL_NOT);
+                                                          put("^u", Operators.UNARY_BITWISE_NOT);
+                                                          put("**", Operators.POWER);
+                                                          put("*", Operators.MULTIPLY);
+                                                          put("/", Operators.DIVIDE);
+                                                          put("%", Operators.REMAINDER);
+                                                          put("+", Operators.PLUS);
+                                                          put("-", Operators.MINUS);
+                                                          put("<<", Operators.SHL);
+                                                          put(">>", Operators.SHR);
+                                                          put("<", Operators.LT);
+                                                          put("<=", Operators.LE);
+                                                          put(">", Operators.GT);
+                                                          put(">=", Operators.GE);
+                                                          put("==", Operators.EQ);
+                                                          put("!=", Operators.NE);
+                                                          put("&", Operators.BITWISE_AND);
+                                                          put("^", Operators.BITWISE_XOR);
+                                                          put("|", Operators.BITWISE_OR);
+                                                          put("&&", Operators.LOGICAL_AND);
+                                                          put("||", Operators.LOGICAL_OR);
+                                                          put("=", Operators.ASSIGN);
+                                                          put(",", Operators.COMMA);
                                                         }
                                                       };
 
-  List<String> tokenize(String input)
+  /**
+   * Splits a string into component strings by applying the appropriate grammar
+   * and syntax
+   * 
+   * @param input
+   * @return a {@link List} of {@link String}s constituting the input expression
+   */
+  public List<String> split(String input)
   {
     int          pos      = 0;
     int          expected = TOK_OPEN | TOK_NUMBER | TOK_WORD;
@@ -119,6 +127,7 @@ public class Parser
         }
         else
         {
+          assert false : "parenthesis mismatch";
           return null; // Parens mismatch
         }
       }
@@ -128,6 +137,7 @@ public class Parser
         {
           if (c != '-' && c != '^' && c != '!')
           {
+            assert false : "missing operand";
             return null; // Missing operand
           }
           tok = tok + c + 'u';
@@ -136,8 +146,7 @@ public class Parser
         else
         {
           String lastOp = null;
-          while (!Character.isLetter(c) && !Character.isDigit(c) && !Character.isWhitespace(c) && c != '_'
-                        && c != '(' && c != ')' && pos < input.length())
+          while (isNotASpecialCharacter(c) && pos < input.length())
           {
             if (OPS.containsKey(tok + input.charAt(pos)))
             {
@@ -174,24 +183,29 @@ public class Parser
     return tokens;
   }
 
-  public Expression
-         parse(String s, Map<String, VariableExpression> variableExpressions, Map<String, Function> functions)
+  protected boolean isNotASpecialCharacter(char c)
   {
-    if (variableExpressions == null)
+    return !Character.isLetter(c) && !Character.isDigit(c) && !Character.isWhitespace(c) && c != '_' && c != '('
+                  && c != ')';
+  }
+
+  public Expression parse(String s, Map<String, Variable> variables, Map<String, Function> functions)
+  {
+    if (variables == null)
     {
-      variableExpressions = new HashMap<>();
+      variables = new HashMap<>();
     }
-    Stack<String>     os     = new Stack<>();
-    Stack<Expression> es     = new Stack<>();
-    int               paren  = PAREN_ALLOWED;
-    List<String>      tokens = tokenize(s);
+    Stack<String>     os          = new Stack<>();
+    Stack<Expression> expressions = new Stack<>();
+    int               paren       = PAREN_ALLOWED;
+    List<String>      tokens      = split(s);
     if (tokens == null)
     {
       return null;
     }
     for (String token : tokens)
     {
-      paren = parseUnit(variableExpressions, functions, os, es, paren, token);
+      paren = parseUnit(variables, functions, os, expressions, paren, token);
     }
     if (paren == PAREN_EXPECTED)
     {
@@ -204,24 +218,24 @@ public class Parser
       {
         return null; // Bad paren
       }
-      Expression e = bind(op, es);
+      Expression e = bind(op, expressions);
       if (e == null)
       {
         return null;
       }
-      es.push(e);
+      expressions.push(e);
     }
-    if (es.isEmpty())
+    if (expressions.isEmpty())
     {
-      return new ConstantExpression(0);
+      return new Constant(0);
     }
     else
     {
-      return es.pop();
+      return expressions.pop();
     }
   }
 
-  protected int parseUnit(Map<String, VariableExpression> variableExpressions,
+  protected int parseUnit(Map<String, Variable> variables,
                           Map<String, Function> functions,
                           Stack<String> operands,
                           Stack<Expression> expressions,
@@ -250,11 +264,11 @@ public class Parser
     }
     else if (token.equals(")"))
     {
-      parenNext = closeParenthesis(variableExpressions, functions, operands, expressions);
+      parenNext = closeParenthesis(variables, functions, operands, expressions);
     }
     else if (parseFloat(token) != null)
     {
-      expressions.push(new ConstantExpression(parseFloat(token)));
+      expressions.push(new Constant(parseFloat(token)));
       parenNext = PAREN_FORBIDDEN;
     }
     else if (functions != null && functions.containsKey(token))
@@ -264,18 +278,31 @@ public class Parser
     }
     else if (OPS.containsKey(token))
     {
-      organizeOperands(operands, expressions, token);
+      Operators operators = OPS.get(token);
+      String    o2        = operands.isEmpty() ? null : operands.peek();
+
+      while (OPS.containsKey(o2)
+                    && ((Operators.isLeftAssoc(operators) && operators.ordinal() > OPS.get(o2).ordinal())
+                                  || (operators.ordinal() > OPS.get(o2).ordinal())))
+      {
+        Expression e = bind(o2, expressions);
+        assert e != null;
+        expressions.push(e);
+        operands.pop();
+        o2 = operands.isEmpty() ? null : operands.peek();
+      }
+      operands.push(token);
     }
     else
     {
-      if (variableExpressions.containsKey(token))
+      if (variables.containsKey(token))
       {
-        expressions.push(variableExpressions.get(token));
+        expressions.push(variables.get(token));
       }
       else
       {
-        VariableExpression v = new VariableExpression(0);
-        variableExpressions.put(token, v);
+        Variable v = new Variable(0);
+        variables.put(token, v);
         expressions.push(v);
       }
       parenNext = PAREN_FORBIDDEN;
@@ -284,49 +311,33 @@ public class Parser
     return paren;
   }
 
-  protected void organizeOperands(Stack<String> os, Stack<Expression> es, String token)
-  {
-    Operation operation = OPS.get(token);
-    String    o2        = os.isEmpty() ? null : os.peek();
-
-    while (OPS.containsKey(o2) && ((Operation.isLeftAssoc(operation) && operation.ordinal() > OPS.get(o2).ordinal())
-                  || (operation.ordinal() > OPS.get(o2).ordinal())))
-    {
-      Expression e = bind(o2, es);
-      assert e != null;
-      es.push(e);
-      os.pop();
-      o2 = os.isEmpty() ? null : os.peek();
-    }
-    os.push(token);
-  }
-
-  protected int closeParenthesis(Map<String, VariableExpression> variableExpressions,
+  protected int closeParenthesis(Map<String, Variable> variables,
                                  Map<String, Function> functions,
                                  Stack<String> os,
-                                 Stack<Expression> es)
+                                 Stack<Expression> expressions)
   {
     int parenNext;
     while (!os.isEmpty() && !os.peek().equals("(") && !os.peek().equals("{"))
     {
-      Expression e = bind(os.pop(), es);
+      Expression e = bind(os.pop(), expressions);
       assert e != null;
-      es.push(e);
+      expressions.push(e);
     }
     assert !os.isEmpty();
     if (os.pop().equals("{"))
     {
       Function<?>      f    = functions.get(os.pop());
       List<Expression> args = new ArrayList<Expression>();
-      if (!es.isEmpty())
+      if (!expressions.isEmpty())
       {
-        Expression e = es.pop();
+        Expression e = expressions.pop();
+
         while (e != null)
         {
           if (e instanceof BinaryExpression)
           {
             BinaryExpression binExpr = (BinaryExpression) e;
-            if (binExpr.operation == Operation.COMMA)
+            if (binExpr.operators == Operators.COMMA)
             {
               args.add(binExpr.a);
               e = binExpr.b;
@@ -337,9 +348,9 @@ public class Parser
           break;
         }
       }
-      es.push(new FunctionalExpressionContext<>(f,
-                                                args,
-                                                variableExpressions));
+      expressions.push(new FunctionalContext<>(f,
+                                               args,
+                                               variables));
     }
     parenNext = PAREN_FORBIDDEN;
     return parenNext;
@@ -349,14 +360,14 @@ public class Parser
   {
     if (OPS.containsKey(s))
     {
-      Operation operation = OPS.get(s);
-      if (Operation.isUnary(operation))
+      Operators operators = OPS.get(s);
+      if (Operators.isUnary(operators))
       {
         if (!stack.isEmpty() && stack.peek() == null)
         {
           return null; // Operand missing
         }
-        return new UnaryExpression(operation,
+        return new UnaryExpression(operators,
                                    stack.pop());
       }
       else
@@ -367,7 +378,7 @@ public class Parser
         {
           return null; // Operand missing
         }
-        return new BinaryExpression(operation,
+        return new BinaryExpression(operators,
                                     a,
                                     b);
       }

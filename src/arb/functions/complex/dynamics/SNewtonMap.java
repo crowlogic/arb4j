@@ -10,7 +10,7 @@ public class SNewtonMap extends
   @Override
   public String toString()
   {
-    return String.format("NewtonMap(%s)", f );
+    return String.format("NewtonMap(%s)", f);
   }
 
   public SNewtonMap()
@@ -18,7 +18,7 @@ public class SNewtonMap extends
     super(new SFunction());
   }
 
-  public SNewtonMap( Real scale )
+  public SNewtonMap(Real scale)
   {
     super(new SFunction(scale));
   }

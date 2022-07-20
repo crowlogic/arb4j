@@ -5,8 +5,7 @@ import static java.lang.Math.*;
 import arb.*;
 
 /**
- * Dirac δ function
- * <code>
+ * Dirac δ function <code>
  * δ(t)=∞ if t == 0
  *     =0 if t != 0 otherwise
  * </code>

@@ -43,11 +43,11 @@ public class CircularS extends
     frame.setVisible(true);
 
     Roots root = circularRealPart.locateRoots(new RootLocatorOptions(new RealRootInterval(-.8,
-                                                                                                     -0.7),
-                                                                                150,
-                                                                                1,
-                                                                                50000,
-                                                                                512));
+                                                                                          -0.7),
+                                                                     150,
+                                                                     1,
+                                                                     50000,
+                                                                     512));
     root.refine(circularRealPart, 256, 100, true);
     System.out.println("root=" + root);
     Real angle               = root.get(0).getReal(new Real(), 128);

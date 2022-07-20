@@ -31,11 +31,11 @@ public class RealNewtonMapTest extends
     System.out.println("w=" + w);
     System.out.println("angle(w)=" + angle.evaluate(new Complex(w), 1, 512, new Complex()));
     Roots root = realAngle.locateRoots(new RootLocatorOptions(new RealRootInterval(-.8,
-                                                                                              -0.7),
-                                                                         150,
-                                                                         50000,
-                                                                         1,
-                                                                         512));
+                                                                                   -0.7),
+                                                              150,
+                                                              50000,
+                                                              1,
+                                                              512));
     root.refine(realAngle, 256, 100, true);
     System.out.println("root=" + root);
     Complex hmm = new Complex(root.get(0).getReal(new Real(), 128));

@@ -26,12 +26,12 @@ public class CircleSTest extends
       assertEquals(0.6, z.getReal().doubleValue(), Math.pow(10, -20));
 
       RootLocatorOptions rootLocatorOptions = new RootLocatorOptions(new RealRootInterval(0.5,
-                                                                                                            0.6),
-                                                                                       50,
-                                                                                       5000,
-                                                                                       5,
-                                                                                       256);
-      Roots               turningPoints            = cs.realPart().locateRoots(rootLocatorOptions);
+                                                                                          0.6),
+                                                                     50,
+                                                                     5000,
+                                                                     5,
+                                                                     256);
+      Roots              turningPoints      = cs.realPart().locateRoots(rootLocatorOptions);
       System.out.println("Located " + turningPoints);
       turningPoints.refine(cs.realPart(), 256, 50, true);
       System.out.println("Refined " + turningPoints);

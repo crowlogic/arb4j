@@ -12,7 +12,7 @@ import arb.*;
  * @param <F>
  */
 public class TaylorShift<F extends ComplexFunction> implements
-                  ComplexFunction
+                        ComplexFunction
 {
   public TaylorShift(F f)
   {

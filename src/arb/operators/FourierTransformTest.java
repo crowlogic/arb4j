@@ -16,7 +16,7 @@ public class FourierTransformTest extends
   {
     UnitCenteredGaussianDensityFunction                   f        = new UnitCenteredGaussianDensityFunction();
     FourierTransform<UnitCenteredGaussianDensityFunction> φnumeric = new FourierTransform(f,
-                                                                                             false);
+                                                                                          false);
 
     /**
      * the Fourier transform of e^(-x^2) is <br>
@@ -28,14 +28,19 @@ public class FourierTransformTest extends
     {
       System.out.println("point=" + point);
 
-      UnitCenteredGaussianCharacteristicFunction               φexact = new UnitCenteredGaussianCharacteristicFunction();
+      UnitCenteredGaussianCharacteristicFunction            φexact = new UnitCenteredGaussianCharacteristicFunction();
       FourierTransform<UnitCenteredGaussianDensityFunction> f2     = new FourierTransform(φexact,
-                                                                                             true);
+                                                                                          true);
 
-      Complex                                                  val    = φnumeric.evaluate(point, 1, prec, new Complex());
+      Complex                                               val    = φnumeric.evaluate(point,
+                                                                                       1,
+                                                                                       prec,
+                                                                                       new Complex());
       val.printPrecision = true;
       System.out.println("val from numerically integrated truncated Fourier transform of Gaussian density " + val);
-      assertEquals(0.0068789618474533993988662139429379749344661831855774, val.getReal().doubleValue(), Math.pow(10, -17));
+      assertEquals(0.0068789618474533993988662139429379749344661831855774,
+                   val.getReal().doubleValue(),
+                   Math.pow(10, -17));
 
       val.getImag().zero();
       φexact.evaluate(point, 1, prec, val.getReal());
@@ -43,7 +48,9 @@ public class FourierTransformTest extends
       System.out.println("input=" + point);
       val.printPrecision = true;
       System.out.println("'exact' value from gaussian characteristic function                             " + val);
-      assertEquals(0.0068789618474533993988662139429379749344661831855774, val.getReal().doubleValue(), Math.pow(10, -17));
+      assertEquals(0.0068789618474533993988662139429379749344661831855774,
+                   val.getReal().doubleValue(),
+                   Math.pow(10, -17));
 
       FourierTransform<RealPart<?>> f3 = new FourierTransform(new RealPart(φnumeric),
                                                               true);

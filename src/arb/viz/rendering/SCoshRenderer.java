@@ -32,8 +32,8 @@ public class SCoshRenderer
     SFunction               sFunction = new SFunction();
 
     ComplexFunction         function  = (new Composition(sFunction,
-                                                                 new Composition(new HyperbolicCosine(),
-                                                                                         new WickRotation())));
+                                                         new Composition(new HyperbolicCosine(),
+                                                                         new WickRotation())));
 
     ComplexFunctionRenderer plotter   = new ComplexFunctionRenderer(screen,
                                                                     domain,

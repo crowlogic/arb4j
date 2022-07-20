@@ -137,7 +137,14 @@ public class RealFunctionPlotter extends
     if (Math.signum(pL.getY()) == Math.signum(pR.getY()))
     {
       // points are on same side of x-axis
-      ArrayList<TriangleDetails> quad = quads.addQuad(pL.getX(), 0, pL.getX(), pL.getY(), pR.getX(), pR.getY(), pR.getX(), 0);
+      ArrayList<TriangleDetails> quad = quads.addQuad(pL.getX(),
+                                                      0,
+                                                      pL.getX(),
+                                                      pL.getY(),
+                                                      pR.getX(),
+                                                      pR.getY(),
+                                                      pR.getX(),
+                                                      0);
       quad.forEach(tri -> tri.setColor(Color.RED));
     }
     else
@@ -154,13 +161,17 @@ public class RealFunctionPlotter extends
 
   public double[] discretizeInterval(int n)
   {
-    return IntStream.range(0, n).mapToDouble(i -> left.add(dt.mul(i, point, prec), prec, point).doubleValue()).toArray();
+    return IntStream.range(0, n)
+                    .mapToDouble(i -> left.add(dt.mul(i, point, prec), prec, point).doubleValue())
+                    .toArray();
   }
 
   public double[] sampleFunction(double[] domainPoints)
   {
     // TODO: consider tradeoffs of passing in double[] array vs Float[] array.
-    return IntStream.range(0, domainPoints.length).mapToDouble(i -> func.evaluate(realIn.set(domainPoints[i]), 1, prec, realOut).doubleValue()).toArray();
+    return IntStream.range(0, domainPoints.length)
+                    .mapToDouble(i -> func.evaluate(realIn.set(domainPoints[i]), 1, prec, realOut).doubleValue())
+                    .toArray();
   }
 
   public static void plotFunction(RealToComplexFunction f)
@@ -250,6 +261,5 @@ public class RealFunctionPlotter extends
     frame.setVisible(true);
     return frame;
   }
-
 
 }

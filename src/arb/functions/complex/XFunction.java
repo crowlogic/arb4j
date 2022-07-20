@@ -10,7 +10,8 @@ import arb.operators.*;
  * @author crow
  */
 public class XFunction extends
-                       Composition<SFunction, ZFunction> implements SymmetricFunction
+                       Composition<SFunction, ZFunction> implements
+                       SymmetricFunction
 {
 
   @Override
@@ -39,21 +40,21 @@ public class XFunction extends
 
   @Override
   public int getNumberOfSymmetries()
-  {    
+  {
     return 2;
   }
 
   @Override
   public Symmetry getSymmetry(int symmetry)
   {
-    switch(symmetry)
+    switch (symmetry)
     {
     case 0:
       return new RealAxisSymmetry(false);
     case 1:
       return new ImaginaryAxisSymmetry(true);
     default:
-      throw new IllegalArgumentException( "only 2 symmetries");
+      throw new IllegalArgumentException("only 2 symmetries");
     }
   }
 }

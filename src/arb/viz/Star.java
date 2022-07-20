@@ -11,18 +11,18 @@ import java.awt.geom.*;
  * distance between the center of the star and the origin of the branches. The
  * outer radius is the distance between the center of the star and the tips of
  * the branches.
- * </p> 
+ * </p>
  */
 
 public class Star implements
                   Shape
 {
-  private Shape starShape;
+  private Shape  starShape;
   private double x;
   private double y;
   private double innerRadius;
   private double outerRadius;
-  private int branchCount;
+  private int    branchCount;
 
   /**
    * <p>
@@ -52,29 +52,29 @@ public class Star implements
       throw new IllegalArgumentException("The inner radius must be < " + "outer radius.");
     }
 
-    this.x = x;
-    this.y = y;
+    this.x           = x;
+    this.y           = y;
     this.innerRadius = innerRadius;
     this.outerRadius = outerRadius;
     this.branchCount = branchesCount;
 
-    starShape = generateStar(x, y, innerRadius, outerRadius, branchesCount);
+    starShape        = generateStar(x, y, innerRadius, outerRadius, branchesCount);
   }
 
   private static Shape generateStar(double x, double y, double innerRadius, double outerRadius, int branchesCount)
   {
-    GeneralPath path = new GeneralPath();
+    GeneralPath path                = new GeneralPath();
 
-    double outerAngleIncrement = 2 * Math.PI / branchesCount;
+    double      outerAngleIncrement = 2 * Math.PI / branchesCount;
 
-    double outerAngle = branchesCount % 2 == 0 ? 0.0 : -(Math.PI / 2.0);
-    double innerAngle = (outerAngleIncrement / 2.0) + outerAngle;
+    double      outerAngle          = branchesCount % 2 == 0 ? 0.0 : -(Math.PI / 2.0);
+    double      innerAngle          = (outerAngleIncrement / 2.0) + outerAngle;
 
-    float x1 = (float) (Math.cos(outerAngle) * outerRadius + x);
-    float y1 = (float) (Math.sin(outerAngle) * outerRadius + y);
+    float       x1                  = (float) (Math.cos(outerAngle) * outerRadius + x);
+    float       y1                  = (float) (Math.sin(outerAngle) * outerRadius + y);
 
-    float x2 = (float) (Math.cos(innerAngle) * innerRadius + x);
-    float y2 = (float) (Math.sin(innerAngle) * innerRadius + y);
+    float       x2                  = (float) (Math.cos(innerAngle) * innerRadius + x);
+    float       y2                  = (float) (Math.sin(innerAngle) * innerRadius + y);
 
     path.moveTo(x1, y1);
     path.lineTo(x2, y2);
@@ -121,7 +121,7 @@ public class Star implements
     }
 
     this.innerRadius = innerRadius;
-    starShape = generateStar(getX(), getY(), innerRadius, getOuterRadius(), getBranchesCount());
+    starShape        = generateStar(getX(), getY(), innerRadius, getOuterRadius(), getBranchesCount());
   }
 
   /**
@@ -133,7 +133,7 @@ public class Star implements
    */
   public void setX(double x)
   {
-    this.x = x;
+    this.x    = x;
     starShape = generateStar(x, getY(), getInnerRadius(), getOuterRadius(), getBranchesCount());
   }
 
@@ -146,7 +146,7 @@ public class Star implements
    */
   public void setY(double y)
   {
-    this.y = y;
+    this.y    = y;
     starShape = generateStar(getX(), y, getInnerRadius(), getOuterRadius(), getBranchesCount());
   }
 
@@ -169,7 +169,7 @@ public class Star implements
     }
 
     this.outerRadius = outerRadius;
-    starShape = generateStar(getX(), getY(), getInnerRadius(), outerRadius, getBranchesCount());
+    starShape        = generateStar(getX(), getY(), getInnerRadius(), outerRadius, getBranchesCount());
   }
 
   /**
@@ -189,7 +189,7 @@ public class Star implements
     }
 
     this.branchCount = branchesCount;
-    starShape = generateStar(getX(), getY(), getInnerRadius(), getOuterRadius(), branchesCount);
+    starShape        = generateStar(getX(), getY(), getInnerRadius(), getOuterRadius(), branchesCount);
   }
 
   /**

@@ -1,11 +1,11 @@
 package arb.expression;
 
-public class VariableExpression implements
-                                Expression
+public class Variable implements
+                      Expression
 {
   private float value;
 
-  public VariableExpression(float value)
+  public Variable(float value)
   {
     this.set(value);
   }

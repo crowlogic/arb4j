@@ -9,7 +9,7 @@ import arb.functions.complex.*;
 import arb.viz.*;
 
 public class TRenderer extends
-                      ComplexFunctionRenderer<TFunction>
+                       ComplexFunctionRenderer<TFunction>
 {
 
   public TRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
@@ -34,7 +34,7 @@ public class TRenderer extends
   {
 
     TRenderer plotter = new TRenderer();
-    plotter.colorMode  = 0;
+    plotter.colorMode   = 0;
     plotter.displayMode = Part.Blend;
     plotter.render();
 

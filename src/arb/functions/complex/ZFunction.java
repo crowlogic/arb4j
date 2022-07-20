@@ -7,15 +7,15 @@ import arb.*;
 import arb.utensils.*;
 
 public class ZFunction implements
-                       ComplexFunction 
+                       ComplexFunction
 {
   @Override
   public String toString()
   {
-    return "Z";    
+    return "Z";
   }
 
-  static int prec = 128;
+  static int                           prec         = 128;
 
   public static AutoArrayList<Real>    roots        = new AutoArrayList<>(i ->
                                                     {
@@ -36,7 +36,7 @@ public class ZFunction implements
   {
     order = max(order, 1);
 
-    assert w.dim >= order : String.format("wdim=%d >= order = %d", w.dim, order );
+    assert w.dim >= order : String.format("wdim=%d >= order = %d", w.dim, order);
     assert prec > 0;
     assert w.size() >= order;
     try ( Complex q = Complex.newVector(order))
@@ -47,7 +47,7 @@ public class ZFunction implements
       acb_dirichlet_hardy_z(q, z, null, null, order, prec);
       return w.set(q);
     }
-    
+
   }
 
 }

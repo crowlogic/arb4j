@@ -22,7 +22,8 @@ import arb.functions.real.*;
  * 
  * @param <P> the type of function to flow across
  */
-public class GeodesicFlower<P extends ComplexFunction> implements AutoCloseable
+public class GeodesicFlower<P extends ComplexFunction> implements
+                           AutoCloseable
 {
   public static enum What
   {
@@ -42,16 +43,15 @@ public class GeodesicFlower<P extends ComplexFunction> implements AutoCloseable
 
   public Real    ρ = new Real();
 
-
   @Override
   public void close() throws Exception
   {
     θ.clear();
     ρ.clear();
     basepoint.clear();
-    dt.clear();   
+    dt.clear();
   }
-  
+
   /**
    * 
    * @param surface
@@ -96,7 +96,7 @@ public class GeodesicFlower<P extends ComplexFunction> implements AutoCloseable
 //      case Magnitude:
 //        //field = new ComplexMagnitude(direction);
       default:
-       
+
         throw new UnsupportedOperationException("TODO: implement " + what);
       }
 
@@ -115,10 +115,10 @@ public class GeodesicFlower<P extends ComplexFunction> implements AutoCloseable
       System.out.println("Locating over " + zeroPointInterval);
 
       Roots root = field.locateRoots(new RootLocatorOptions(zeroPointInterval,
-                                                                  1500,
-                                                                  50000,
-                                                                  1,
-                                                                  512));
+                                                            1500,
+                                                            50000,
+                                                            1,
+                                                            512));
       System.out.println("Located  " + zeroPointInterval);
       System.out.println("Refining...");
       root.refine(field, 256, 100, true);
@@ -137,6 +137,5 @@ public class GeodesicFlower<P extends ComplexFunction> implements AutoCloseable
   {
     throw new UnsupportedOperationException("TODO: implement this after transition from Java2d to LWJGL is completed");
   }
-
 
 }

@@ -18,7 +18,7 @@ import arb.stochastic.*;
  * (that is, not deterministic) Lévy processes have discontinuous paths. All
  * Lévy processes are additive processes
  * 
-
+ * 
  */
 public interface LévyProcess<P extends DensityFunction, F extends DistributionFunction, C extends CharacteristicFunction<P>>
                             extends

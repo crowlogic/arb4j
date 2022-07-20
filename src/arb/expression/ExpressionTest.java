@@ -2,6 +2,7 @@ package arb.expression;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.*;
 
@@ -9,18 +10,18 @@ import org.junit.Test;
 
 public class ExpressionTest
 {
-  Parser parser = new Parser();
+  ExpressionParser expressionParser = new ExpressionParser();
 
   @Test
   public void testConst()
   {
-    assertThat(new ConstantExpression(42).evaluate(), is(42f));
+    assertThat(new Constant(42).evaluate(), is(42f));
   }
 
   @Test
   public void testVar()
   {
-    VariableExpression v = new VariableExpression(42);
+    Variable v = new Variable(42);
     assertThat(v.evaluate(), is(42f));
     v.set(123);
     assertThat(v.evaluate(), is(123f));
@@ -29,28 +30,28 @@ public class ExpressionTest
   @Test
   public void testFunc()
   {
-    Function<Float>        f      = new Function<Float>()
-                                  {
-                                    public float evaluate(FunctionalExpressionContext<Float> c)
+    Function<Float>          f      = new Function<Float>()
                                     {
-                                      if (c.env == null)
+                                      public float evaluate(FunctionalContext<Float> c)
                                       {
-                                        c.env = 0f;
+                                        if (c.env == null)
+                                        {
+                                          c.env = 0f;
+                                        }
+                                        float acc = (Float) c.env;
+                                        acc   = acc + c.args.get(0).evaluate();
+                                        c.env = acc;
+                                        return acc;
                                       }
-                                      float acc = (Float) c.env;
-                                      acc   = acc + c.args.get(0).evaluate();
-                                      c.env = acc;
-                                      return acc;
-                                    }
-                                  };
-    Expression       two    = new ConstantExpression(2);
-    VariableExpression   x      = new VariableExpression(0);
-    FunctionalExpressionContext<Float> sum    = new FunctionalExpressionContext<Float>(f,
-                                                               Arrays.asList(two),
-                                                               null);
-    FunctionalExpressionContext<Float> sumVar = new FunctionalExpressionContext<Float>(f,
-                                                               Arrays.asList((Expression) x),
-                                                               null);
+                                    };
+    Expression               two    = new Constant(2);
+    Variable                 x      = new Variable(0);
+    FunctionalContext<Float> sum    = new FunctionalContext<Float>(f,
+                                                                   Arrays.asList(two),
+                                                                   null);
+    FunctionalContext<Float> sumVar = new FunctionalContext<Float>(f,
+                                                                   Arrays.asList((Expression) x),
+                                                                   null);
 
     assertThat(sum.evaluate(), is(2f));
     assertThat(sum.evaluate(), is(4f));
@@ -66,17 +67,17 @@ public class ExpressionTest
   @Test
   public void testUnary()
   {
-    assertThat(new UnaryExpression(Operation.UNARY_MINUS,
-                                          new ConstantExpression(5)).evaluate(),
+    assertThat(new UnaryExpression(Operators.UNARY_MINUS,
+                                   new Constant(5)).evaluate(),
                is(-5f));
-    assertThat(new UnaryExpression(Operation.UNARY_BITWISE_NOT,
-                                          new ConstantExpression(9)).evaluate(),
+    assertThat(new UnaryExpression(Operators.UNARY_BITWISE_NOT,
+                                   new Constant(9)).evaluate(),
                is(-10f));
-    assertThat(new UnaryExpression(Operation.UNARY_LOGICAL_NOT,
-                                          new ConstantExpression(9)).evaluate(),
+    assertThat(new UnaryExpression(Operators.UNARY_LOGICAL_NOT,
+                                   new Constant(9)).evaluate(),
                is(0f));
-    assertThat(new UnaryExpression(Operation.UNARY_LOGICAL_NOT,
-                                          new ConstantExpression(0)).evaluate(),
+    assertThat(new UnaryExpression(Operators.UNARY_LOGICAL_NOT,
+                                   new Constant(0)).evaluate(),
                is(1f));
   }
 
@@ -109,7 +110,7 @@ public class ExpressionTest
 
     for (String[] test : TESTS)
     {
-      List<String> tokens = parser.tokenize(test[0]);
+      List<String> tokens = expressionParser.split(test[0]);
       assertThat(tokens.size(), is(test.length - 1));
       for (int i = 1; i < test.length; i++)
       {
@@ -121,69 +122,78 @@ public class ExpressionTest
   @Test
   public void testNoSuchOperator()
   {
-    Parser.OPS.remove("&");
-    assertThat(parser.tokenize("1&&&") == null, is(true));
-    Parser.OPS.put("&", Operation.BITWISE_AND);
+    ExpressionParser.OPS.remove("&");
+    boolean caught = false;
+    try
+    {
+      expressionParser.split("1&&&");
+    }
+    catch (AssertionError ae)
+    {
+      caught = true;
+    }
+    assertTrue(caught);
+    ExpressionParser.OPS.put("&", Operators.BITWISE_AND);
   }
 
   @Test
   public void testNumberExpr()
   {
-    assertThat(parser.parse("", null, null).evaluate(), is(0f));
-    assertThat(parser.parse("2", null, null).evaluate(), is(2.0f));
-    assertThat(parser.parse("(2)", null, null).evaluate(), is(2.0f));
-    assertThat(parser.parse("((2))", null, null).evaluate(), is(2.0f));
-    assertThat(parser.parse("2.3", null, null).evaluate(), is(2.3f));
+    assertThat(expressionParser.parse("", null, null).evaluate(), is(0f));
+    assertThat(expressionParser.parse("2", null, null).evaluate(), is(2.0f));
+    assertThat(expressionParser.parse("(2)", null, null).evaluate(), is(2.0f));
+    assertThat(expressionParser.parse("((2))", null, null).evaluate(), is(2.0f));
+    assertThat(expressionParser.parse("2.3", null, null).evaluate(), is(2.3f));
   }
 
   @Test
   public void testVarExpr()
   {
-    Map<String, VariableExpression> variableExpressions = new HashMap<String, VariableExpression>();
-    assertThat(parser.parse("x", variableExpressions, null).evaluate(), is(0f));
-    variableExpressions.get("x").set(42);
-    assertThat(parser.parse("x", variableExpressions, null).evaluate(), is(42f));
-    assertThat(parser.parse("(x)", variableExpressions, null).evaluate(), is(42f));
+    Map<String, Variable> variables = new HashMap<String, Variable>();
+    assertThat(expressionParser.parse("x", variables, null).evaluate(), is(0f));
+    variables.get("x").set(42);
+    assertThat(expressionParser.parse("x", variables, null).evaluate(), is(42f));
+    assertThat(expressionParser.parse("(x)", variables, null).evaluate(), is(42f));
   }
 
   @Test
   public void testUnaryExpr()
   {
-    assertThat(parser.parse("-2", null, null).evaluate(), is(-2f));
-    assertThat(parser.parse("!2", null, null).evaluate(), is(0f));
-    assertThat(parser.parse("^2", null, null).evaluate(), is(-3f));
+    assertThat(expressionParser.parse("-2", null, null).evaluate(), is(-2f));
+    assertThat(expressionParser.parse("!2", null, null).evaluate(), is(0f));
+    assertThat(expressionParser.parse("^2", null, null).evaluate(), is(-3f));
   }
 
   @Test
   public void testBinaryExpr()
   {
-    assertThat(parser.parse("3+2", null, null).evaluate(), is(5f));
-    assertThat(parser.parse("3/2", null, null).evaluate(), is(1.5f));
-    assertThat(parser.parse("(3/2)|0", null, null).evaluate(), is(1f));
-    assertThat(parser.parse("2+3/2", null, null).evaluate(), is(3.5f));
-    assertThat(parser.parse("4/2+8*4/2", null, null).evaluate(), is(18f));
-    assertThat(parser.parse("w=(w!=0)", null, null).evaluate(), is(0f));
+    assertThat(expressionParser.parse("3+2", null, null).evaluate(), is(5f));
+    assertThat(expressionParser.parse("3/2", null, null).evaluate(), is(1.5f));
+    assertThat(expressionParser.parse("(3/2)|0", null, null).evaluate(), is(1f));
+    assertThat(expressionParser.parse("2+3/2", null, null).evaluate(), is(3.5f));
+    assertThat(expressionParser.parse("4/2+8*4/2", null, null).evaluate(), is(18f));
+    assertThat(expressionParser.parse("w=(w!=0)", null, null).evaluate(), is(0f));
 
-    Map<String, VariableExpression> variableExpressions = new HashMap<String, VariableExpression>();
-    variableExpressions.put("x", new VariableExpression(5));
-    assertThat(parser.parse("2*x", variableExpressions, null).evaluate(), is(10f));
-    assertThat(parser.parse("2/x", variableExpressions, null).evaluate(), is(2f / 5f));
+    Map<String, Variable> variables = new HashMap<String, Variable>();
+    variables.put("x", new Variable(5));
+    assertThat(expressionParser.parse("2*x", variables, null).evaluate(), is(10f));
+    assertThat(expressionParser.parse("2/x", variables, null).evaluate(), is(2f / 5f));
   }
 
   @Test
   public void testCommaExpr()
   {
-    assertThat(parser.parse("2, 3, 5", null, null).evaluate(), is(5f));
-    assertThat(parser.parse("2+3, 5*3", null, null).evaluate(), is(15f));
+    assertThat(expressionParser.parse("2, 3, 5", null, null).evaluate(), is(5f));
+    assertThat(expressionParser.parse("2+3, 5*3", null, null).evaluate(), is(15f));
   }
 
   @Test
   public void testAssignExpr()
   {
-    Map<String, VariableExpression> variableExpressions = new HashMap<String, VariableExpression>();
-    variableExpressions.put("x", new VariableExpression(5));
-    assertThat(parser.parse("z=10", variableExpressions, null).evaluate(), is(10f));
-    assertThat(parser.parse("y=10,x+y", variableExpressions, null).evaluate(), is(15f));
+    Map<String, Variable> variables = new HashMap<String, Variable>();
+    variables.put("x", new Variable(5));
+    assertThat(expressionParser.parse("z=10", variables, null).evaluate(), is(10f));
+    assertThat(expressionParser.parse("y=10,x+y", variables, null).evaluate(), is(15f));
   }
 
   @Test
@@ -192,22 +202,22 @@ public class ExpressionTest
     Map<String, Function> functions = new HashMap<String, Function>();
     functions.put("add3", new Function<Void>()
     {
-      public float evaluate(FunctionalExpressionContext<Void> c)
+      public float evaluate(FunctionalContext<Void> c)
       {
         return c.args.get(0).evaluate() + c.args.get(1).evaluate() + c.args.get(2).evaluate();
       }
     });
     functions.put("nop", new Function()
     {
-      public float evaluate(FunctionalExpressionContext c)
+      public float evaluate(FunctionalContext c)
       {
         return 0;
       }
     });
-    assertThat(parser.parse("2+add3(3, 7, 9)", null, functions).evaluate(), is(21f));
-    assertThat(parser.parse("2+add3(3, add3(1, 2, 3), 9)", null, functions).evaluate(), is(20f));
-    assertThat(parser.parse("nop()", null, functions).evaluate(), is(0f));
-    assertThat(parser.parse("nop(1)", null, functions).evaluate(), is(0f));
-    assertThat(parser.parse("nop((1))", null, functions).evaluate(), is(0f));
+    assertThat(expressionParser.parse("2+add3(3, 7, 9)", null, functions).evaluate(), is(21f));
+    assertThat(expressionParser.parse("2+add3(3, add3(1, 2, 3), 9)", null, functions).evaluate(), is(20f));
+    assertThat(expressionParser.parse("nop()", null, functions).evaluate(), is(0f));
+    assertThat(expressionParser.parse("nop(1)", null, functions).evaluate(), is(0f));
+    assertThat(expressionParser.parse("nop((1))", null, functions).evaluate(), is(0f));
   }
 }

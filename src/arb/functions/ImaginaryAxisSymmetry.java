@@ -1,7 +1,7 @@
 package arb.functions;
 
 public class ImaginaryAxisSymmetry extends
-                              ReflectionSymmetry
+                                   ReflectionSymmetry
 {
 
   public ImaginaryAxisSymmetry(boolean conjugate)

@@ -23,8 +23,8 @@ public class SξRenderer extends
     renderer.render();
   }
 
-  public static final int width  = 1900 ;
-  public static final int height = 950 ;
+  public static final int width  = 1900;
+  public static final int height = 950;
 
   public SξRenderer(Real vscale) throws NoninvertibleTransformException
   {

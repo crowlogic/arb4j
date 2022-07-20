@@ -18,7 +18,6 @@ public class Composition<F extends ComplexFunction, G extends ComplexFunction> i
     return new Composition(f,
                            g);
   }
-  
 
   @Override
   public String toString()

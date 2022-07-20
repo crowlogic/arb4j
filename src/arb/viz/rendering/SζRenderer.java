@@ -31,8 +31,8 @@ public class SζRenderer extends
                                  80,
                                  -40),
           new Composition(new Composition(new SFunction(new Real().set("5", 128)),
-                                                          (new RiemannζFunction())),
-                                  new WickRotation()));
+                                          (new RiemannζFunction())),
+                          new WickRotation()));
 
     colorMode   = 2;
     displayMode = Part.Imag;

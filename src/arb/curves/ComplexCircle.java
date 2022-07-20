@@ -9,9 +9,9 @@ import arb.operators.*;
 
 /**
  * A circle coordinate function representing a circle having a basepoint and
- * radius that goes well with the {@link NewtonMap} of the {@link ComplexRealPart} of
- * the {@link Composition} applied as the composition of the
- * {@link SFunction} with the {@link ComplexCircle} for instance
+ * radius that goes well with the {@link NewtonMap} of the
+ * {@link ComplexRealPart} of the {@link Composition} applied as the composition
+ * of the {@link SFunction} with the {@link ComplexCircle} for instance
  * 
  * <code>
  *       /   Re(S(circle(0,0.01,θ)))    \
@@ -22,8 +22,8 @@ import arb.operators.*;
  *
  */
 public class ComplexCircle implements
-                    ComplexFunction,
-                    AutoCloseable
+                           ComplexFunction,
+                           AutoCloseable
 {
   @Override
   public String toString()
@@ -46,9 +46,9 @@ public class ComplexCircle implements
     this.h = h;
   }
 
-  public Complex            t;
+  public Complex     t;
 
-  public Real               h;
+  public Real        h;
 
   ThreadLocalComplex s = new ThreadLocalComplex(1);
 
@@ -63,9 +63,9 @@ public class ComplexCircle implements
     s.exp(prec, s);
     s.mul(h, prec, s);
     s.add(t, prec, res);
-    for ( int i = 1; i < order; i++ )
+    for (int i = 1; i < order; i++)
     {
-      arb.acb_mul_onei(res.get(i), res.get(i-1));
+      arb.acb_mul_onei(res.get(i), res.get(i - 1));
     }
     return res;
   }

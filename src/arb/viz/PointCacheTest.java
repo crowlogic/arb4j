@@ -19,7 +19,6 @@ public class PointCacheTest extends
       somePoint.set(0.6, 0.9).tan(128);
       out.println("somePoint after=" + somePoint);
 
-  
       Complex samePoint = cache.pointAt(0, 17, 18);
       out.println("somePoint after from another file=" + somePoint);
       assertEquals(somePoint, samePoint);

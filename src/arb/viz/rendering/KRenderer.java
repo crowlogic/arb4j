@@ -17,7 +17,7 @@ public class KRenderer extends
 
     ComplexFunctionRenderer plotter = new KRenderer();
 
-    plotter.colorMode  = 0;
+    plotter.colorMode   = 0;
 
     plotter.displayMode = Part.Blend;
     plotter.keepRunning = true;
@@ -40,7 +40,7 @@ public class KRenderer extends
 
     colorMode = 6;
 
-    function   = new RealQuarterPeriod();
+    function  = new RealQuarterPeriod();
 
     init();
   }

@@ -9,7 +9,7 @@ public class ComplexSineFunction implements
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {
-    order = Math.max(1,order);
+    order = Math.max(1, order);
     assert z != null;
     assert w != null;
     assert order <= 3;

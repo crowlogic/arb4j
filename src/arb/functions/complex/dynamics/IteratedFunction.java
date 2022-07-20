@@ -26,10 +26,10 @@ public class IteratedFunction<F extends ComplexFunction> implements
   @Override
   public String toString()
   {
-    return String.format("IteratedFunction(%s,n=%d,normalized=%s)", f.toString(), n, normalized );
+    return String.format("IteratedFunction(%s,n=%d,normalized=%s)", f.toString(), n, normalized);
   }
 
-  public F       f;
+  public F        f;
   private int     n;
   private Real    λ;
   private boolean normalized;
@@ -81,6 +81,6 @@ public class IteratedFunction<F extends ComplexFunction> implements
   @Override
   public void close() throws Exception
   {
-    λ.clear(); 
+    λ.clear();
   }
 }

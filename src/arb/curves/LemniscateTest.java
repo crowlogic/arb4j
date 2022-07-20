@@ -47,7 +47,10 @@ public class LemniscateTest extends
                                    };
 
       Complex               l1     = l.evaluate(ComplexConstants.complexOne.getReal(), 2, 256, Complex.newVector(2));
-      Complex               dl1    = dl.evaluate(ComplexConstants.complexOne.getReal(), 1, 256, Complex.newVector(1));
+      Complex               dl1    = dl.evaluate(ComplexConstants.complexOne.getReal(),
+                                                 1,
+                                                 256,
+                                                 Complex.newVector(1));
       Complex               absdl1 = absdl.evaluate(ComplexConstants.complexOne.getReal(), 1, 256, new Complex());
       System.out.println("l'(1)=" + dl1);
       System.out.println("|l'(1)|=" + absdl1);
@@ -105,7 +108,9 @@ public class LemniscateTest extends
     System.out.format("int(|l'(x)|,x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);
     assertTrue(integral.getImag().isZero());
     double integralUncertainty = integral.getReal().getRad().doubleValue();
-    assertEquals(2.62205755429211981046483958989111941368275495, integral.getReal().getMid().doubleValue(), integralUncertainty);
+    assertEquals(2.62205755429211981046483958989111941368275495,
+                 integral.getReal().getMid().doubleValue(),
+                 integralUncertainty);
     Real arcLengthPiOverTwo = f.getArcLength(new Real().pi(prec).div(2, prec), prec, new Real());
     arcLengthPiOverTwo.printPrecision = true;
     System.out.println("arcLengthPiOverTwo=" + arcLengthPiOverTwo.toString(100));

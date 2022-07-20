@@ -21,17 +21,17 @@ public class ArblibTest extends
     try ( Real a = new Real())
     {
       a.assign("12.123456789", 128);
-      Real bee = a.frac(prec, new Real() );
-      System.out.println( "bee " + bee );
+      Real bee = a.frac(prec, new Real());
+      System.out.println("bee " + bee);
       double b = bee.doubleValue();
     }
   }
-  
+
   public static void testHardyZFunction()
   {
 
     Complex result = new Complex();
-    Complex input = new Complex();
+    Complex input  = new Complex();
     input.init();
     result.init();
     acb_set_d(input, 13.2);
@@ -50,9 +50,9 @@ public class ArblibTest extends
 
     out.println("firstRoot=" + firstRoot);
 
-    Real realRoots[] = new Real[10];
+    Real   realRoots[] = new Real[10];
 
-    double roots[] = new double[10];
+    double roots[]     = new double[10];
     for (int i = 0; i < roots.length; i++)
     {
       realRoots[i] = new Real();
@@ -72,7 +72,7 @@ public class ArblibTest extends
 
   public static void testHardyTheta()
   {
-    Complex z = new Complex();
+    Complex z    = new Complex();
     Complex faze = new Complex();
     z.init();
     faze.init();

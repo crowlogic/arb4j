@@ -24,7 +24,7 @@ public class XRenderer extends
   }
 
   public static final int width  = (int) (2500 * 0.4);
-  public static final int height = (int) (1250 * 0.4 );
+  public static final int height = (int) (1250 * 0.4);
 
   public XRenderer(Real vscale) throws NoninvertibleTransformException
   {

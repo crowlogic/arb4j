@@ -11,8 +11,8 @@ public class Complexification implements
     this.func = func;
   }
 
-  public RealToComplexFunction func ;
-  
+  public RealToComplexFunction func;
+
   @Override
   public Complex evaluate(Complex t, int order, int prec, Complex res)
   {

@@ -228,43 +228,52 @@ public interface ComplexFunction extends
 
   /**
    * <p>
-   * Computes a rigorous enclosure of the integral int(f(t),t=a..b) following a
-   * line-segment between the complex numbers a and b. For finite results, a & b
-   * must be finite and f must be bounded on the integration path. To compute
-   * improper integrals, the path of integration should be manually truncated or a
-   * regularizing change of variableExpressions made if possible. <br>
+   * Computes a rigorous enclosure of the integral ∫f(t=a..b) following a straight
+   * line-segment between the complex numbers a and b. <br>
+   * For finite results, a & b must be finite and f must be bounded on the
+   * integration path. <br>
+   * To compute improper integrals, the path of integration should be manually
+   * truncated or a regularizing change of variables made if possible. <br>
+   * <br>
    * 
    * By default, this function will be evaluated as the integrand and
    * this{@link #evaluate(Complex, int, int, Complex)} will only be called with
    * order = 0 or order = 1; that is, derivatives are not required. <br>
+   * <br>
    * 
    * this{@link #evaluate(Complex, int, int, Complex)} will be called with order =
    * 0 to evaluate this function normally on the integration path (either at a
-   * single point or on a subinterval). In this case, this function is treated as
-   * a pointwise defined function and can have arbitrary discontinuities. <br>
+   * single point or on a subinterval). <br>
+   * In this case, this function is treated as a pointwise defined function and
+   * can have arbitrary discontinuities. <br>
+   * <br>
    * 
    * this{@link #evaluate(Complex, int, int, Complex)} will be called with order =
    * 1 to evaluate this function on a domain surrounding a segment of the
    * integration path for the purpose of bounding the error of a quadrature
-   * formula. In this case, this{@link #evaluate(Complex, int, int, Complex)} must
-   * verify that this function is holomorphic on the line between a and b (and
-   * output a non-finite value if it is not). <br>
+   * formula. <br>
+   * In this case, this{@link #evaluate(Complex, int, int, Complex)} must verify
+   * that this function is holomorphic on the line between a and b (and output a
+   * non-finite value if it is not). <br>
+   * <br>
    * 
    * The integration algorithm combines direct interval enclosures, Gauss-Legendre
-   * quadrature where this function is holomorphic, and adaptive subdivision. This
-   * strategy supports integrands with discontinuities while providing exponential
-   * convergence for typical piecewise holomorphic integrands.
+   * quadrature where this function is holomorphic, and adaptive subdivision. <br>
+   * This strategy supports integrands with discontinuities while providing
+   * exponential convergence for typical piecewise holomorphic integrands.
    * </p>
    * 
    * <b> For typical usage, set rel_goal = prec and abs_tol = 2^(-prec). It
-   * usually only makes sense to have rel_goal between 0 and prec. </b>
+   * usually only makes sense to have rel_goal between 0 and prec. </b><br>
+   * <br>
    * 
    * The algorithm attempts to achieve an error of max(ε[abs],M*ε[rel]) on each
-   * subinterval, where M is the magnitude of the integral. These parameters are
-   * only guidelines; the cumulative error may be larger than both the prescribed
-   * absolute and relative error goals, depending on the number of subdivisions,
-   * cancellation between segments of the integral, and numerical errors in the
-   * evaluation of the integrand. <br>
+   * subinterval, where M is the magnitude of the integral. <br>
+   * These parameters are only guidelines; the cumulative error may be larger than
+   * both the prescribed absolute and relative error goals, depending on the
+   * number of subdivisions, cancellation between segments of the integral, and
+   * numerical errors in the evaluation of the integrand. <br>
+   * <br>
    * 
    * <p>
    * To compute tiny integrals with high relative accuracy, one should set
@@ -277,12 +286,14 @@ public interface ComplexFunction extends
    * some external means (for example if a midpoint-width or endpoint-width
    * estimate is known to be accurate), providing an appropriate ε[abs]~=M*ε[rel]
    * will be more efficient. <br>
+   * <br>
    * 
    * If the integral has very large magnitude, setting the absolute tolerance to a
    * corresponding large value is recommended for best performance, but it is not
    * necessary for convergence since the absolute tolerance is increased
    * automatically during the execution of the algorithm if the partial integrals
    * are found to have larger error. <br>
+   * <br>
    * 
    * Additional options for the integration can be provided via the options
    * parameter (documented below). To use all defaults, NULL can be passed for
@@ -297,10 +308,10 @@ public interface ComplexFunction extends
    *                              of bits, i.e. target a relative error less than
    *                              ε[rel=]2^(-relAccuracyGoalBits)
    * 
-   * @param absErrorToleranceGoal absolute accuracy goal as a {@link ComplexMagnitude}
-   *                              describing the error tolerance, i.e. target an
-   *                              absolute error less than
-   *                              ε[abs]=absErrorToleranceGoal
+   * @param absErrorToleranceGoal absolute accuracy goal as a
+   *                              {@link ComplexMagnitude} describing the error
+   *                              tolerance, i.e. target an absolute error less
+   *                              than ε[abs]=absErrorToleranceGoal
    * @param options
    * @param prec
    * @param res

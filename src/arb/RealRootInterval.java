@@ -64,8 +64,7 @@ public class RealRootInterval extends
    * @param prec
    * @return false if
    */
-  public boolean
-         split(RealFunction func, Roots found, int asign, int bsign, int depth, RootLocatorOptions config)
+  public boolean split(RealFunction func, Roots found, int asign, int bsign, int depth, RootLocatorOptions config)
   {
     if (RealFunction.verbose)
     {

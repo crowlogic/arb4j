@@ -28,14 +28,14 @@ public class RealFunctionTest
   @Test
   public void testLocateRootsSine()
   {
-    RealSineFunction         sineFunction = new RealSineFunction();
+    RealSineFunction   sineFunction = new RealSineFunction();
     RootLocatorOptions config       = new RootLocatorOptions(new RealRootInterval(3,
-                                                                                              3.6),
-                                                                         50,
-                                                                         20000,
-                                                                         10,
-                                                                         256);
-    Roots                    roots        = sineFunction.locateRoots(config);
+                                                                                  3.6),
+                                                             50,
+                                                             20000,
+                                                             10,
+                                                             256);
+    Roots              roots        = sineFunction.locateRoots(config);
     roots.refine(sineFunction, 256, 40, true);
   }
 
@@ -46,19 +46,19 @@ public class RealFunctionTest
   @Test
   public void testLocateRootsHardyZ()
   {
-    RealFunction             f               = new RealPart(new ZFunction());
-    RealRootInterval         initialInterval = new RealRootInterval(14,
-                                                                    14.2);
-    int                      maxdepth        = 11;
-    int                      maxevals        = 5000;
-    int                      maxfound        = 1;
-    int                      prec            = 256;
+    RealFunction       f               = new RealPart(new ZFunction());
+    RealRootInterval   initialInterval = new RealRootInterval(14,
+                                                              14.2);
+    int                maxdepth        = 11;
+    int                maxevals        = 5000;
+    int                maxfound        = 1;
+    int                prec            = 256;
     RootLocatorOptions config          = new RootLocatorOptions(initialInterval,
-                                                                            maxdepth,
-                                                                            maxevals,
-                                                                            maxfound,
-                                                                            prec);
-    Roots                    roots           = f.locateRoots(config);
+                                                                maxdepth,
+                                                                maxevals,
+                                                                maxfound,
+                                                                prec);
+    Roots              roots           = f.locateRoots(config);
     System.out.println("rootsBeforeRefinement=" + roots);
 
     assertEquals(192, roots.evals);

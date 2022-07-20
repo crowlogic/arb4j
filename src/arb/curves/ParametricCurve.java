@@ -1,6 +1,7 @@
 package arb.curves;
 
-public interface ParametricCurve extends Curve
+public interface ParametricCurve extends
+                                 Curve
 {
 
 }

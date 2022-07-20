@@ -10,20 +10,20 @@ import arb.functions.complex.dynamics.*;
 import arb.viz.*;
 
 /**
- * Renders the {@link YFunction} 
+ * Renders the {@link YFunction}
  */
 public class YRenderer extends
-                      ComplexFunctionRenderer<NewtonFlow<YFunction>>
+                       ComplexFunctionRenderer<NewtonFlow<YFunction>>
 {
   @SuppressWarnings("resource")
-  public static void main( String args[] ) throws NoninvertibleTransformException, IOException
+  public static void main(String args[]) throws NoninvertibleTransformException, IOException
   {
-     YRenderer renderer = new YRenderer( );
-     renderer.render();
+    YRenderer renderer = new YRenderer();
+    renderer.render();
   }
-  
-  public static final int width  = 1900 ;
-  public static final int height = 950 ;
+
+  public static final int width  = 1900;
+  public static final int height = 950;
 
   public YRenderer(Real vscale) throws NoninvertibleTransformException
   {
@@ -35,14 +35,15 @@ public class YRenderer extends
                                  44),
           new NewtonFlow<YFunction>(new YFunction(vscale)));
 
-    colorMode  = 5;
+    colorMode   = 5;
     displayMode = Part.Imag;
 
   }
 
   public YRenderer() throws NoninvertibleTransformException
   {
-    this(new Real("3",128));
+    this(new Real("3",
+                  128));
   }
 
 }

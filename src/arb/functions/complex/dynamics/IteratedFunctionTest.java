@@ -41,7 +41,7 @@ public class IteratedFunctionTest extends
     Complex                      coordinate  = new Complex();
     coordinate.zero();
     Complex value = sNewtonIter.evaluate(coordinate, 2, 256, Complex.newVector(2));
-    assertTrue( value.isZero() );
+    assertTrue(value.isZero());
     Complex multiplier = value.get(1);
     Real    modulus    = multiplier.abs(256, new Real());
     assertTrue(modulus.equals(RealConstants.one));
@@ -56,12 +56,11 @@ public class IteratedFunctionTest extends
     Complex                      coordinate  = new Complex();
     coordinate.zero();
     Complex value = sNewtonIter.evaluate(coordinate, 2, 256, Complex.newVector(2));
-    assertTrue( value.isZero() );
+    assertTrue(value.isZero());
     Complex multiplier = value.get(1);
     multiplier.printPrecision = true;
-    Real    modulus    = multiplier.abs(-1, new Real());    
-    assertEquals(new Real().set("0.25",256), modulus);
+    Real modulus = multiplier.abs(-1, new Real());
+    assertEquals(new Real().set("0.25", 256), modulus);
   }
 
-  
 }

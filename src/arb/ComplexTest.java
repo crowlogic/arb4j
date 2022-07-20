@@ -19,14 +19,14 @@ public class ComplexTest extends
     Configuration.MEMORY_ALLOCATOR.set("rpmalloc");
   }
   static final int prec = 256;
-  
+
   public static void testNormalize()
   {
     try ( Complex r = new Complex(); Complex s = new Complex())
     {
       r.set(-0.8790040702, 4.0771861722);
       r.normalize(s, prec);
-      assertEquals(4.170862649, r.norm(prec, new Real() ).doubleValue(), ε);
+      assertEquals(4.170862649, r.norm(prec, new Real()).doubleValue(), ε);
       assertEquals(0.9775402634, s.getImag().doubleValue(), ε);
       assertEquals(-0.2107487454, s.getReal().doubleValue(), ε);
     }

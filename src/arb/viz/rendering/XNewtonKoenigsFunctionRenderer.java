@@ -18,24 +18,27 @@ public class XNewtonKoenigsFunctionRenderer extends
   {
     super(screen,
           domain,
-          new IteratedFunction(new NewtonMap(new YFunction(new Real("1", 128))),
+          new IteratedFunction(new NewtonMap(new YFunction(new Real("1",
+                                                                    128))),
                                3,
-                               true) {
+                               true)
+          {
 
-                                @Override
-                                public Complex evaluate(Complex z, int order, int prec, Complex w)
-                                {
-                                  super.evaluate(z, order, prec, w);
-                                  //w.sub(z, prec, w);
-                                  return w;
-                                }} );
+            @Override
+            public Complex evaluate(Complex z, int order, int prec, Complex w)
+            {
+              super.evaluate(z, order, prec, w);
+              // w.sub(z, prec, w);
+              return w;
+            }
+          });
   }
 
   public XNewtonKoenigsFunctionRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension(2500/2,
-                       1250/2),
+    this(new Dimension(2500 / 2,
+                       1250 / 2),
          new Rectangle2D.Double(-5,
                                 -10,
                                 50,

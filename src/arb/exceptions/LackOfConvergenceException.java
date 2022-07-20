@@ -1,7 +1,7 @@
 package arb.exceptions;
 
 public class LackOfConvergenceException extends
-                                         ArbException
+                                        ArbException
 {
 
   public LackOfConvergenceException(String msg)

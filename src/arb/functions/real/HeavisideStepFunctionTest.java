@@ -20,9 +20,9 @@ public class HeavisideStepFunctionTest
 //    FourierTransform<HeavisideStepFunction> ft = new FourierTransform<HeavisideStepFunction>(h);
 
     // ft.left.assign("0.00000000001", 128 );
-    //ft.integrationOptions.verbose = true;
+    // ft.integrationOptions.verbose = true;
 
-   // println("z=" + z);
+    // println("z=" + z);
     // This should be equal to 1/(t*i) but its not
   }
 

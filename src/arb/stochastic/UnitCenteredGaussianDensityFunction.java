@@ -4,7 +4,7 @@ import arb.*;
 import arb.functions.real.*;
 
 public class UnitCenteredGaussianDensityFunction implements
-                                         DensityFunction
+                                                 DensityFunction
 {
 
   public static RealFunction inv = new RealFunction()

@@ -16,11 +16,11 @@ import arb.functions.real.RealFunction;
 public final class InverseGaussianDistributionFunction implements
                                                        RealFunction
 {
-  public static void main( String args[ ])
+  public static void main(String args[])
   {
     assert false : "TODO: plot InverseGaussianDistributionFunction";
   }
-  
+
   public InverseGaussianDistributionFunction(GaussianDistributionFunction f)
   {
     this.f = f;

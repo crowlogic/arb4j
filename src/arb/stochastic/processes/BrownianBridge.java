@@ -21,13 +21,15 @@ import arb.stochastic.*;
  * <b>min(s,t)−s*t/T</b> or <b>s(T − t)/T if s < t</b>. The increments in a
  * Brownian bridge are therefore not independent.
  * 
- * @see <a href="https://en.wikipedia.org/wiki/Brownian_bridge">Wikipedia</a><br>
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Brownian_bridge">Wikipedia</a><br>
  * 
- * <a href="doc-files/BrownianExcursions.pdf">Probability laws related to the
- * Jacobi theta and Riemann zeta functions, and Brownian excursions</a><br>
- * and<br>
- * <a href="doc-files/TheRiemannZetaFunctionAndProbabilityTheory.pdf">The
- * Riemann zeta function and probability theory</a>
+ *      <a href="doc-files/BrownianExcursions.pdf">Probability laws related to
+ *      the Jacobi theta and Riemann zeta functions, and Brownian
+ *      excursions</a><br>
+ *      and<br>
+ *      <a href="doc-files/TheRiemannZetaFunctionAndProbabilityTheory.pdf">The
+ *      Riemann zeta function and probability theory</a>
  */
 public class BrownianBridge implements
                             StochasticProcess

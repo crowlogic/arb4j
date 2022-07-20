@@ -11,12 +11,12 @@ public class ZFunctionTest extends
 
   public static void testZ()
   {
-    Complex res = Complex.newVector(2);
-    ZFunction Z = new ZFunction();
-    try ( Complex z = new Complex(); )
+    Complex   res = Complex.newVector(2);
+    ZFunction Z   = new ZFunction();
+    try ( Complex z = new Complex();)
     {
       // derivative.init();
-      Z.evaluate(z.set(6, 0.4), 2,  128,res);
+      Z.evaluate(z.set(6, 0.4), 2, 128, res);
       System.out.format("Z(%s)=%s\n", z, res);
       Complex derivative = res.get(1);
       System.out.format("Z'(%s)=%s\n", z, derivative);

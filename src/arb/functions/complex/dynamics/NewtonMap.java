@@ -25,7 +25,7 @@ public class NewtonMap<F extends ComplexFunction> implements
     this.f = f;
   }
 
-  public F                     f;
+  public F              f;
 
   final ComplexFunction diff = (t, order, prec, w) ->
                              {

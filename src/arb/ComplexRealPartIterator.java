@@ -1,6 +1,7 @@
 package arb;
 
-public class ComplexRealPartIterator extends ComplexPartIterator 
+public class ComplexRealPartIterator extends
+                                     ComplexPartIterator
 {
 
   public ComplexRealPartIterator(Complex x)

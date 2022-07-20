@@ -1,20 +1,20 @@
 package arb.expression;
 
 public class UnaryExpression implements
-                      Expression
+                             Expression
 {
-  private final Operation         operation;
+  private final Operators  operators;
   private final Expression arg;
 
-  public UnaryExpression(Operation operation, Expression arg)
+  public UnaryExpression(Operators operators, Expression arg)
   {
-    this.operation  = operation;
-    this.arg = arg;
+    this.operators = operators;
+    this.arg       = arg;
   }
 
   public float evaluate()
   {
-    switch (this.operation)
+    switch (this.operators)
     {
     case UNARY_MINUS:
       return -this.arg.evaluate();

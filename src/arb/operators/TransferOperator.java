@@ -34,7 +34,7 @@ public class TransferOperator<F extends ComplexFunction> implements
     // FIXME: does this need to be split into a left-adjoint and a right-adjoint
     // that takes an argument? probably a rhetorical question
     return new Composition(f,
-                                   null);
+                           null);
   }
 
   public TransferOperator(F f)

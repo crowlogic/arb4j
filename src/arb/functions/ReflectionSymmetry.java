@@ -1,6 +1,7 @@
 package arb.functions;
 
-public class ReflectionSymmetry implements Symmetry
+public class ReflectionSymmetry implements
+                                Symmetry
 {
   public ReflectionSymmetry(boolean conjugate)
   {
@@ -14,6 +15,5 @@ public class ReflectionSymmetry implements Symmetry
   {
     return conjugate;
   }
-  
 
 }

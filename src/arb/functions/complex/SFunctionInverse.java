@@ -30,7 +30,7 @@ public class SFunctionInverse implements
     {
       Complex aNumerator = point.add(1, prec, res).mul(point.pow(2, prec, r), 256, res); // aNumerator = res =
                                                                                          // (quadraticScale+1)*
-      Complex aDivisor   = ComplexConstants.complexOne.sub(r, prec, r).sqrt(prec, r);                    // aDivisor = sqrt(1-a^2)
+      Complex aDivisor   = ComplexConstants.complexOne.sub(r, prec, r).sqrt(prec, r);    // aDivisor = sqrt(1-a^2)
       aNumerator.div(aDivisor, prec, res);
       if (horizontalSign)
       {

@@ -26,7 +26,7 @@ public class CoshRenderer
                                                 600);
 
     ComplexFunction    function = new Composition(new HyperbolicCosine(),
-                                                          new WickRotation());
+                                                  new WickRotation());
     // ComplexFunction function = new HyperbolicCosine();
 //    ComplexFunction function = (z, order, prec, w) ->
 //    {

@@ -28,20 +28,20 @@ public class ComplexSineFunctionTest extends
     int                 relativeAccuracyBitsGoal   = 80;
     int                 precisionBits              = 160;
     options.verbose = true;
-    Complex             two                        = sine.integrate(ComplexConstants.ZERO,
-                                                                    π,
-                                                                    relativeAccuracyBitsGoal,
-                                                                    absoluteErrorToleranceGoal,
-                                                                    options,
-                                                                    precisionBits,
-                                                                    new Complex());
-    Real realPart = two.getReal();
-    Real imagPart = two.getImag();
-    assertEquals( 2, realPart.getMid().doubleValue(RoundingMode.Near), realPart.getRad().doubleValue() );
-    assertEquals( 0, imagPart.getMid().doubleValue(), imagPart.getRad().doubleValue() );
-    
+    Complex two      = sine.integrate(ComplexConstants.ZERO,
+                                      π,
+                                      relativeAccuracyBitsGoal,
+                                      absoluteErrorToleranceGoal,
+                                      options,
+                                      precisionBits,
+                                      new Complex());
+    Real    realPart = two.getReal();
+    Real    imagPart = two.getImag();
+    assertEquals(2, realPart.getMid().doubleValue(RoundingMode.Near), realPart.getRad().doubleValue());
+    assertEquals(0, imagPart.getMid().doubleValue(), imagPart.getRad().doubleValue());
+
     two.printPrecision = true;
-    //two.getReal().toString()
+    // two.getReal().toString()
     System.out.println(two + " should equal 2");
 
   }

@@ -16,11 +16,11 @@ public class RealNewtonMap<F extends RealFunction> implements
 
   public Real r;
 
-  public static void main( String args[] )
+  public static void main(String args[])
   {
-    
+
   }
-  
+
   public RealNewtonMap(F f)
   {
     this.f = f;

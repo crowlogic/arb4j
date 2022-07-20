@@ -19,7 +19,7 @@ public class IntegrationOptions
     dl = degLimit;
     if (dl <= 0)
     {
-      dl = (int) (0.5 * Math.min(relAccuracyGoalBits, prec) + 60);    
+      dl = (int) (0.5 * Math.min(relAccuracyGoalBits, prec) + 60);
     }
     return dl;
   }

@@ -3,7 +3,7 @@ package arb.functions.complex;
 import arb.*;
 
 public class ComplexImaginaryPart<F extends ComplexFunction> extends
-                          ComplexPart<F>
+                                 ComplexPart<F>
 {
 
   public ComplexImaginaryPart(F func)

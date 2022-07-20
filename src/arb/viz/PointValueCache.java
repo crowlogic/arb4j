@@ -127,7 +127,8 @@ public class PointValueCache implements
           zeroPointBits = point0.bits();
           if (zeroPointBits > 256)
           {
-            throw new RuntimeException("point still has too many bits after trimming, " + zeroPointBits + " at " + x + "," + y);
+            throw new RuntimeException("point still has too many bits after trimming, " + zeroPointBits + " at " + x
+                          + "," + y);
           }
         }
       }

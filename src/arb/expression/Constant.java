@@ -1,11 +1,11 @@
 package arb.expression;
 
-public class ConstantExpression implements
-            Expression
+public class Constant implements
+                      Expression
 {
   private final float value;
 
-  public ConstantExpression(float value)
+  public Constant(float value)
   {
     this.value = value;
   }

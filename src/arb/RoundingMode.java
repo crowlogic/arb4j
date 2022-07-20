@@ -1,3 +1,10 @@
 package arb;
 
-public enum RoundingMode { Down, Up, Floor, Ceiling, Near }
+public enum RoundingMode
+{
+ Down,
+ Up,
+ Floor,
+ Ceiling,
+ Near
+}

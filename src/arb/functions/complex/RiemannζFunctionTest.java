@@ -4,7 +4,7 @@ import arb.*;
 import junit.framework.*;
 
 public class RiemannζFunctionTest extends
-                                     TestCase
+                                  TestCase
 {
   public static void testZeta()
   {

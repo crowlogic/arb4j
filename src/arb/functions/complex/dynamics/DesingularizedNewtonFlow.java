@@ -9,14 +9,14 @@ import arb.functions.complex.*;
  * 
  */
 public class DesingularizedNewtonFlow<F extends ComplexFunction> implements
-                       ComplexFunction
+                                     ComplexFunction
 {
 
   @Override
   public String toString()
   {
-    return String.format("NewtonFlow(%s)", f );
-                  
+    return String.format("NewtonFlow(%s)", f);
+
   }
 
   public DesingularizedNewtonFlow(F f)
@@ -24,14 +24,14 @@ public class DesingularizedNewtonFlow<F extends ComplexFunction> implements
     this.f = f;
   }
 
-  public F                     f;
+  public F              f;
 
   final ComplexFunction diff = (t, order, prec, w) ->
                              {
                                try ( Complex s = Complex.newVector(3);)
                                {
                                  f.evaluate(t, 3, prec, s);
-                                 Complex a   = s.mul(s.get(2), prec, w);
+                                 Complex a = s.mul(s.get(2), prec, w);
                                  Complex b = s.get(1).pow(2, prec, s.get(0)).conj();
                                  a.mul(b, prec, w);
                                  if (!w.isFinite())
@@ -54,7 +54,7 @@ public class DesingularizedNewtonFlow<F extends ComplexFunction> implements
     {
       if (order >= 1)
       {
-        f.evaluate(z, 2, prec, y).mul(y.get(1).conj(), prec, w);       
+        f.evaluate(z, 2, prec, y).mul(y.get(1).conj(), prec, w);
       }
       if (order >= 2)
       {

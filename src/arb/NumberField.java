@@ -9,11 +9,11 @@ package arb;
  * measurements on them, conserved quantities, etc
  */
 public interface NumberField extends
-                       AutoCloseable
+                             AutoCloseable
 {
 
   @Override
-  public default void close() 
+  public default void close()
   {
   }
 

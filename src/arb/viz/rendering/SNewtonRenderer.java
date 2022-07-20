@@ -21,8 +21,8 @@ public class SNewtonRenderer extends
   }
 
   public SNewtonRenderer() throws NoninvertibleTransformException
-  { 
-    
+  {
+
     this(new Dimension(2560,
                        1440),
          new Rectangle2D.Double(-3,
@@ -37,7 +37,7 @@ public class SNewtonRenderer extends
 
     SNewtonRenderer renderer = new SNewtonRenderer();
 
-    renderer.colorMode  = 0;
+    renderer.colorMode   = 0;
     renderer.displayMode = Part.Real;
     renderer.render();
     renderer.saveToFile("SNewton.png");

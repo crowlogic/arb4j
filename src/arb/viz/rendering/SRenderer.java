@@ -42,7 +42,7 @@ public class SRenderer extends
                                       domain,
                                       new Real().set(3));
 
-    plotter.colorMode  = 0;
+    plotter.colorMode   = 0;
     plotter.displayMode = Part.Blend;
     plotter.render();
 

@@ -61,15 +61,18 @@ public class IsolinesViz
     coordsys.setLegendRightWidth(50);
     canvas.asComponent().setBackground(bgColor);
 
-    SFunction            sfunc      = new SFunction(new Real().set("4",128));
+    SFunction            sfunc      = new SFunction(new Real().set("4", 128));
 
     // setup content
-    ThreadLocalComplex              p          = new ThreadLocalComplex(1);
-    ThreadLocalComplex              q          = new ThreadLocalComplex(1);
-    ThreadLocalReal                 s          = new ThreadLocalReal();
+    ThreadLocalComplex   p          = new ThreadLocalComplex(1);
+    ThreadLocalComplex   q          = new ThreadLocalComplex(1);
+    ThreadLocalReal      s          = new ThreadLocalReal();
     int                  prec       = 128;
-    DoubleBinaryOperator f          = (x, y) -> sfunc.evaluate(p.get().set(21+x, y), 1, prec, q.get()).arg(prec, s.get()).doubleValue();
-    //DoubleBinaryOperator f          = (x, y) -> sfunc.evaluate(p.get().set(21+x, y), 1, prec, q.get()).getReal().doubleValue();
+    DoubleBinaryOperator f          = (x, y) -> sfunc.evaluate(p.get().set(21 + x, y), 1, prec, q.get())
+                                                     .arg(prec, s.get())
+                                                     .doubleValue();
+    // DoubleBinaryOperator f = (x, y) -> sfunc.evaluate(p.get().set(21+x, y), 1,
+    // prec, q.get()).getReal().doubleValue();
     final int            resolution = 500;
     double[][]           X          = new double[resolution][resolution];
     double[][]           Y          = new double[resolution][resolution];
@@ -118,7 +121,7 @@ public class IsolinesViz
                            coordsys).register();
     new CoordSysPanning(canvas,
                         coordsys).register();
-    coordsys.setCoordinateView(-3,-3,6,6);
+    coordsys.setCoordinateView(-3, -3, 6, 6);
 
     Lines userContour  = new Lines();
     Text  userIsoLabel = new Text("",

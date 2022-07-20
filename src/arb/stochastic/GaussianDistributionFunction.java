@@ -37,14 +37,14 @@ public class GaussianDistributionFunction implements
    * The parameter μ is the mean or expectation of the distribution (and also its
    * median and mode)
    */
-  public Real                μ;
+  public Real         μ;
 
   /**
    * The parameter σ is the standard deviation of this distribution so its
    * variance is σ^2. A random variable with a Gaussian distribution is said to be
    * normally distributed.
    */
-  public Real                σ;
+  public Real         σ;
 
   public RealFunction inv = new InverseGaussianDistributionFunction(this);
 

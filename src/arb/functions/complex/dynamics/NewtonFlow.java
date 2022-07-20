@@ -15,8 +15,8 @@ public class NewtonFlow<F extends ComplexFunction> implements
   @Override
   public String toString()
   {
-    return String.format("NewtonFlow(%s)", f );
-                  
+    return String.format("NewtonFlow(%s)", f);
+
   }
 
   public NewtonFlow(F f)
@@ -24,7 +24,7 @@ public class NewtonFlow<F extends ComplexFunction> implements
     this.f = f;
   }
 
-  public F                     f;
+  public F              f;
 
   final ComplexFunction diff = (t, order, prec, w) ->
                              {
@@ -54,7 +54,7 @@ public class NewtonFlow<F extends ComplexFunction> implements
     {
       if (order >= 1)
       {
-        f.evaluate(z, 2, prec, y).div(y.get(1), prec, w);       
+        f.evaluate(z, 2, prec, y).div(y.get(1), prec, w);
       }
       if (order >= 2)
       {

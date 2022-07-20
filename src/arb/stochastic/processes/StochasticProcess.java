@@ -8,7 +8,7 @@ import arb.Real;
 import arb.stochastic.*;
 
 /**
- * A stochastic process is a family of random variableExpressions,<br>
+ * A stochastic process is a family of random variables,<br>
  * <code>{X(t) : t ∈ T} <code> <br>
  * where t usually denotes time or a time-like variable
  */
@@ -33,8 +33,8 @@ public interface StochasticProcess<P extends DensityFunction, F extends Distribu
           Real dx2 = new Real(); Real uAccumulator = new Real(); Real xAccumulator = new Real();
           Real dx2Accumulator = new Real();)
     {
-      uAccumulator.printPrecision = true;
-      xAccumulator.printPrecision = true;
+      uAccumulator.printPrecision   = true;
+      xAccumulator.printPrecision   = true;
       dx2Accumulator.printPrecision = true;
       int i;
       for (i = 0; i < n; i++)
@@ -49,8 +49,8 @@ public interface StochasticProcess<P extends DensityFunction, F extends Distribu
       xAccumulator.div(i, prec);
       dx2Accumulator.div(i, prec).sqrt(prec);
 
-      println("seed=" + randomState.getInitialValue() + " i=" + i + " u=" + uAccumulator + " μ=" + xAccumulator + " σ="
-                    + dx2Accumulator);
+      println("seed=" + randomState.getInitialValue() + " i=" + i + " u=" + uAccumulator + " μ=" + xAccumulator
+                    + " σ=" + dx2Accumulator);
       assertEquals(0.5, uAccumulator.doubleValue(), 0.01);
       assertEquals(getMean().doubleValue(), xAccumulator.doubleValue(), 0.03);
       assertEquals(getStandardDeviation().doubleValue(), dx2Accumulator.doubleValue(), 0.02);

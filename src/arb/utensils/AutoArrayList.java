@@ -6,8 +6,8 @@ import java.util.function.*;
 public class AutoArrayList<V> extends
                           ArrayList<V>
 {
-  private static final long serialVersionUID = 1L;
-  final Class<? super V> valueClass;
+  private static final long    serialVersionUID = 1L;
+  final Class<? super V>       valueClass;
   private Function<Integer, V> constructor;
 
   public AutoArrayList(int initialCapacity, Class<? super V> valueClass)
@@ -20,7 +20,7 @@ public class AutoArrayList<V> extends
   {
     super(initialCapacity);
     this.constructor = constructor;
-    this.valueClass = null;
+    this.valueClass  = null;
   }
 
   public AutoArrayList(Class<? super V> valueClass)
@@ -31,7 +31,7 @@ public class AutoArrayList<V> extends
   public AutoArrayList(Function<Integer, V> constructor)
   {
     this.constructor = constructor;
-    this.valueClass = null;
+    this.valueClass  = null;
   }
 
   public AutoArrayList()
@@ -54,8 +54,8 @@ public class AutoArrayList<V> extends
       {
         try
         {
-          value = this.valueClass == null ? this.newValueInstance(key)
-                        : (V) this.valueClass.getConstructor(new Class[0]).newInstance(new Object[0]);
+          value = this.valueClass == null ? this.newValueInstance(key) : (V) this.valueClass.getConstructor(new Class[0])
+                                                                                            .newInstance(new Object[0]);
         }
         catch (Exception e)
         {

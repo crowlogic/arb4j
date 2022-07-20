@@ -10,7 +10,7 @@ import arb.viz.RealFunctionPlotter;
 
 /**
  * Normal distributions are important in statistics and are often used in the
- * natural and social sciences to represent real-valued random variableExpressions whose
+ * natural and social sciences to represent real-valued random variables whose
  * distributions are not known. Their importance is partly due to the central
  * limit theorem. It states that, under some conditions, the average of many
  * samples (observations) of a random variable with finite mean and variance is

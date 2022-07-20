@@ -376,7 +376,7 @@ public interface RealFunction extends
 
   public default RealFunction inverse()
   {
-   return inverse(0);
+    return inverse(0);
   }
 
 }

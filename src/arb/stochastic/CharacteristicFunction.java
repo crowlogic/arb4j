@@ -14,8 +14,8 @@ import arb.operators.*;
  * Fourier transform will have only real-values for real arguments otherwise in
  * general it can and will be complex-valued
  * 
- * @param <P> the type of {@link DensityFunction} this characteristic
- *            function corresponds to
+ * @param <P> the type of {@link DensityFunction} this characteristic function
+ *            corresponds to
  */
 public interface CharacteristicFunction<P extends DensityFunction> extends
                                        RealFunction
