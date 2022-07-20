@@ -4,7 +4,7 @@ package arb.functions.complex;
 import arb.*;
 
 public class HyperbolicCosine implements
-                              ComplexFunction
+                              EvenFunction
 {
 
   @Override
