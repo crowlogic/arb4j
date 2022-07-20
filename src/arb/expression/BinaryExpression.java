@@ -63,7 +63,8 @@ public class BinaryExpression implements
     case COMMA:
       this.a.evaluate();
       return this.b.evaluate();
+    default:
+      return 0;
     }
-    return 0;
   }
 }
