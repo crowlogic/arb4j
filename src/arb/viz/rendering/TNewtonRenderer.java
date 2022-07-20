@@ -10,14 +10,14 @@ import arb.functions.complex.dynamics.*;
 import arb.viz.*;
 
 public class TNewtonRenderer extends
-                             ComplexFunctionRenderer<NewtonFlow<XFunction>>
+                             ComplexFunctionRenderer<NewtonFlow<TFunction>>
 {
 
   public TNewtonRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
   {
     super(screen,
           domain,
-          new NewtonFlow<>(new XFunction()));
+          new NewtonFlow<>(new TFunction()));
   }
 
   public TNewtonRenderer() throws NoninvertibleTransformException
@@ -25,10 +25,10 @@ public class TNewtonRenderer extends
 
     this(new Dimension(2500/2,
                        1300/2),
-         new Rectangle2D.Double(10,
-                                -5,
-                                15,
-                                10));
+         new Rectangle2D.Double(-2.5,
+                                -2.5,
+                                5,
+                                5));
   }
 
   @SuppressWarnings("resource")
