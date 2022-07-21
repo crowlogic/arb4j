@@ -5,12 +5,12 @@ import arb.RealConstants;
 import arb.stochastic.*;
 
 /**
- * A {@link BrownianBridge} is a continuous-time {@link StochasticProcess}B(t)
- * whose {@link DistributionFunction} is the conditional (probability)
- * distribution of a standard {@link WienerProcess} W(t) which is synonymous
- * with the mathematical model of {@link BrownianMotion}) subject to the
- * condition (when standardized) that W(T) = 0, so that the process is pinned to
- * the same value at both t = 0 and t = T. More precisely:<br>
+ * A {@link BrownianBridge} is a continuous-time {@link StochasticProcess}
+ * denoted by B(t) whose {@link DistributionFunction} is the conditional
+ * (probability) distribution of a standard {@link WienerProcess} W(t) which is
+ * synonymous with the mathematical model of {@link BrownianMotion}) subject to
+ * the condition (when standardized) that W(T) = 0, so that the process is
+ * pinned to the same value at both t = 0 and t = T. More precisely:<br>
  * 
  * B t := ( W(t) ∣ W(T) = 0 ) , t∈[0,T]
  * 
