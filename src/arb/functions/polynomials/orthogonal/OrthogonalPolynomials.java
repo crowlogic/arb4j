@@ -1,5 +1,6 @@
-package arb;
+package arb.functions.polynomials.orthogonal;
 
+import arb.*;
 import arb.functions.complex.ComplexFunction;
 
 public interface OrthogonalPolynomials extends
