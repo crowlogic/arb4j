@@ -1,6 +1,7 @@
 package arb.guts.mathematical;
 
-public class GlobalClassFieldTheory
+public interface GlobalClassFieldTheory extends
+                                        ClassFieldTheory
 {
 
 }
