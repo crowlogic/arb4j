@@ -9,11 +9,12 @@
  */
 package arb.viz;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 
 import arb.*;
-import arb.curves.*;
-import arb.functions.complex.*;
+import arb.curves.ComplexCircle;
+import arb.functions.complex.CircularComposition;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.real.*;
 
 /**

@@ -1,9 +1,9 @@
 package arb.functions.complex;
 
-import static java.lang.Math.*;
+import static java.lang.Math.pow;
 
-import arb.*;
-import junit.framework.*;
+import arb.Complex;
+import junit.framework.TestCase;
 
 public class ZFunctionTest extends
                            TestCase

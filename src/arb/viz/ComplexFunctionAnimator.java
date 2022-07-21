@@ -1,20 +1,22 @@
 package arb.viz;
 
-import static java.lang.System.*;
+import static java.lang.System.out;
 
 import java.awt.*;
-import java.awt.geom.*;
-import java.awt.image.*;
-import java.io.*;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.concurrent.*;
-import java.util.function.*;
+import java.util.function.IntConsumer;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
-import arb.*;
-import arb.viz.rendering.*;
+import arb.Real;
+import arb.viz.rendering.XRenderer;
+import arb.viz.rendering.YRenderer;
 import io.humble.video.*;
-import io.humble.video.awt.*;
+import io.humble.video.awt.MediaPictureConverter;
+import io.humble.video.awt.MediaPictureConverterFactory;
 
 public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
 {

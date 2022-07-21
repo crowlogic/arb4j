@@ -1,9 +1,10 @@
 package arb.functions.real;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
 
-import arb.*;
-import arb.functions.*;
+import arb.NumberField;
+import arb.Real;
+import arb.functions.Function;
 
 public class AbsoluteValue<D extends NumberField> implements
                           Function<D, Real>

@@ -1,9 +1,9 @@
 package arb.viz;
 
-import static java.lang.System.*;
+import static java.lang.System.out;
 
-import arb.*;
-import junit.framework.*;
+import arb.Complex;
+import junit.framework.TestCase;
 
 public class PointCacheTest extends
                             TestCase

@@ -1,13 +1,15 @@
 package arb.viz.rendering;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 
-import arb.*;
-import arb.functions.complex.*;
-import arb.functions.complex.dynamics.*;
-import arb.viz.*;
+import arb.Real;
+import arb.functions.complex.YFunction;
+import arb.functions.complex.dynamics.NewtonFlow;
+import arb.viz.ComplexFunctionRenderer;
+import arb.viz.Part;
 
 /**
  * Renders the {@link YFunction}

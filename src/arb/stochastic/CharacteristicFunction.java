@@ -1,7 +1,7 @@
 package arb.stochastic;
 
-import arb.functions.real.*;
-import arb.operators.*;
+import arb.functions.real.RealFunction;
+import arb.operators.FourierTransform;
 
 /**
  * The characteristic function of any real-valued random variable completely

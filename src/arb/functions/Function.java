@@ -1,7 +1,7 @@
 package arb.functions;
 
-import arb.*;
-import arb.exceptions.*;
+import arb.NumberField;
+import arb.exceptions.NotDifferentiableException;
 
 @FunctionalInterface
 public interface Function<D extends NumberField, R extends NumberField>

@@ -1,7 +1,7 @@
 package arb.curves;
 
 import arb.*;
-import arb.functions.real.*;
+import arb.functions.real.RealFunction;
 
 public class LemniscateArcLength implements
                                  RealFunction

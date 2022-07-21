@@ -1,25 +1,30 @@
 package arb.viz.gl;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.io.*;
-import java.util.*;
-import java.util.function.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+import java.io.File;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.function.DoubleBinaryOperator;
 
 import javax.swing.*;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
 
 import arb.*;
-import arb.functions.complex.*;
+import arb.functions.complex.XFunction;
 import hageldave.jplotter.canvas.*;
-import hageldave.jplotter.color.*;
-import hageldave.jplotter.misc.*;
-import hageldave.jplotter.renderables.*;
-import hageldave.jplotter.renderers.*;
-import hageldave.jplotter.svg.*;
-import hageldave.jplotter.util.*;
+import hageldave.jplotter.color.DefaultColorMap;
+import hageldave.jplotter.color.DefaultColorScheme;
+import hageldave.jplotter.misc.DefaultGlyph;
+import hageldave.jplotter.renderables.Lines;
+import hageldave.jplotter.renderables.Points;
+import hageldave.jplotter.renderers.CompleteRenderer;
+import hageldave.jplotter.renderers.CoordSysRenderer;
+import hageldave.jplotter.svg.SVGUtils;
+import hageldave.jplotter.util.Utils;
 
 public class VectorFieldNavigator
 {

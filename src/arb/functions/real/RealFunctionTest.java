@@ -1,14 +1,14 @@
 package arb.functions.real;
 
-import static java.lang.Math.*;
-import static java.lang.System.*;
-import static org.junit.Assert.*;
+import static java.lang.Math.pow;
+import static java.lang.System.out;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.*;
+import org.junit.Test;
 
 import arb.*;
 import arb.Float;
-import arb.functions.complex.*;
+import arb.functions.complex.ZFunction;
 
 public class RealFunctionTest
 {

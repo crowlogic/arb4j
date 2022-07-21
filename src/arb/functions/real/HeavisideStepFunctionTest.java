@@ -1,10 +1,10 @@
 package arb.functions.real;
 
-import static arb.utensils.Utils.*;
+import static arb.utensils.Utils.println;
 
-import org.junit.*;
+import org.junit.Test;
 
-import arb.*;
+import arb.Real;
 
 public class HeavisideStepFunctionTest
 {

@@ -1,7 +1,7 @@
 package arb.functions.complex;
 
-import arb.*;
-import arb.functions.real.*;
+import arb.Complex;
+import arb.functions.real.RealFunction;
 
 public class RealComplexFunction<R extends RealFunction> implements
                                 ComplexFunction

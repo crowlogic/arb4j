@@ -1,10 +1,10 @@
 package arb.stochastic;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.sqrt2π;
 
 import arb.*;
-import arb.functions.real.*;
-import arb.viz.*;
+import arb.functions.real.RealFunction;
+import arb.viz.RealFunctionPlotter;
 
 /**
  * The cumulative distribution function for the Gaussian distribition. The

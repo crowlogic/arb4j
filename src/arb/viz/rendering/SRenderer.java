@@ -1,13 +1,16 @@
 package arb.viz.rendering;
 
-import java.awt.*;
-import java.awt.geom.*;
+import java.awt.Dimension;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
-import java.io.*;
+import java.io.IOException;
 
-import arb.*;
-import arb.functions.complex.*;
-import arb.viz.*;
+import arb.Real;
+import arb.RealConstants;
+import arb.functions.complex.SFunction;
+import arb.viz.ComplexFunctionRenderer;
+import arb.viz.Part;
 
 public class SRenderer extends
                        ComplexFunctionRenderer<SFunction>

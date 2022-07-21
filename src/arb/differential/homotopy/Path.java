@@ -1,6 +1,6 @@
 package arb.differential.homotopy;
 
-import arb.curves.*;
+import arb.curves.PlaneCurve;
 
 /**
  * Let X be a topological space. A path in X is a continuous map γ:[0,1]→X. You

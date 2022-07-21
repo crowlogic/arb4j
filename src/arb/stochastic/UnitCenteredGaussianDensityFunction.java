@@ -1,7 +1,8 @@
 package arb.stochastic;
 
-import arb.*;
-import arb.functions.real.*;
+import arb.Real;
+import arb.RealConstants;
+import arb.functions.real.RealFunction;
 
 public class UnitCenteredGaussianDensityFunction implements
                                                  DensityFunction

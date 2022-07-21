@@ -1,11 +1,13 @@
 package arb.viz.rendering;
 
-import java.awt.*;
-import java.awt.geom.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 
-import arb.functions.complex.elliptic.*;
-import arb.viz.*;
+import arb.functions.complex.elliptic.RealQuarterPeriod;
+import arb.viz.ComplexFunctionRenderer;
+import arb.viz.Part;
 
 public class KRenderer extends
                        ComplexFunctionRenderer

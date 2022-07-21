@@ -1,9 +1,9 @@
 package arb.functions.real.dynamics;
 
 import arb.*;
-import arb.functions.complex.*;
-import arb.functions.real.*;
-import junit.framework.*;
+import arb.functions.complex.CircularS;
+import arb.functions.real.RealPart;
+import junit.framework.TestCase;
 
 public class RealNewtonMapTest extends
                                TestCase

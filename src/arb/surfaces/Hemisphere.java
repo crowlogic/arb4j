@@ -1,6 +1,7 @@
 package arb.surfaces;
 
-import arb.*;
+import arb.Complex;
+import arb.Real;
 
 public class Hemisphere implements
                         ParametricSurface

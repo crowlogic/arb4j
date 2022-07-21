@@ -1,7 +1,8 @@
 package arb.functions.real;
 
-import arb.*;
-import junit.framework.*;
+import arb.Complex;
+import arb.Real;
+import junit.framework.TestCase;
 
 public class AbsoluteValueTest extends
                                TestCase

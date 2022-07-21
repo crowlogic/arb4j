@@ -1,6 +1,6 @@
 package arb.stochastic.processes;
 
-import arb.*;
+import arb.Real;
 import arb.stochastic.*;
 
 /**

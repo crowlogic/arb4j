@@ -1,11 +1,10 @@
 package arb.functions.complex;
 
-import static arb.ComplexConstants.*;
-import static java.lang.Math.*;
+import static arb.ComplexConstants.π;
+import static java.lang.Math.pow;
 
 import arb.*;
-import arb.exceptions.*;
-import junit.framework.*;
+import junit.framework.TestCase;
 
 public class ComplexSineFunctionTest extends
                                      TestCase
@@ -20,7 +19,7 @@ public class ComplexSineFunctionTest extends
   }
 
   @SuppressWarnings("resource")
-  public void testIntegration() throws LackOfConvergenceException
+  public void testIntegration() 
   {
     ComplexSineFunction sine                       = new ComplexSineFunction();
     Magnitude           absoluteErrorToleranceGoal = new Magnitude().set(Math.pow(2, -77));

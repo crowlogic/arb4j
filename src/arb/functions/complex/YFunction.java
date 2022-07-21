@@ -1,7 +1,7 @@
 package arb.functions.complex;
 
-import arb.*;
-import arb.operators.*;
+import arb.Real;
+import arb.operators.Composition;
 
 public class YFunction extends
                        Composition<TFunction, ZFunction>

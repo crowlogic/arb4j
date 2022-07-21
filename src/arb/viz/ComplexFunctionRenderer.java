@@ -1,29 +1,32 @@
 package arb.viz;
 
 import static java.lang.Math.*;
-import static java.lang.System.*;
+import static java.lang.System.out;
 import static java.util.stream.IntStream.*;
 
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
-import java.awt.image.*;
-import java.io.*;
-import java.util.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.*;
-import java.util.stream.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import javax.imageio.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.Timer;
 
 import arb.*;
 import arb.Float;
-import arb.functions.complex.*;
-import arb.utensils.*;
-import hageldave.jplotter.color.*;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.ZFunction;
+import arb.utensils.Utils;
+import hageldave.jplotter.color.ColorMap;
+import hageldave.jplotter.color.DefaultColorMap;
 
 /**
  * creates a rendering of a patch of a complex valued function of a complex

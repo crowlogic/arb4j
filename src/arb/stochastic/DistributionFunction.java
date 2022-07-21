@@ -1,8 +1,8 @@
 package arb.stochastic;
 
-import arb.*;
-import arb.functions.Function;
-import arb.functions.real.*;
+import arb.RandomState;
+import arb.Real;
+import arb.functions.real.RealFunction;
 
 /**
  * The distribution function of a random variable is the integral of the

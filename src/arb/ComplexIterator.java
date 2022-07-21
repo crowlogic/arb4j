@@ -1,6 +1,6 @@
 package arb;
 
-import java.util.*;
+import java.util.Iterator;
 
 public class ComplexIterator implements
                              Iterator<Complex>

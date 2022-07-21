@@ -1,7 +1,7 @@
 package arb.spaces;
 
-import arb.*;
-import arb.functions.*;
+import arb.NumberField;
+import arb.functions.Function;
 
 /**
  * A Hardy space is a {@link HilbertSpace} with inner product given by<br>

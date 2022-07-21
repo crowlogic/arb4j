@@ -1,7 +1,7 @@
 package arb.spaces;
 
-import arb.*;
-import arb.functions.*;
+import arb.NumberField;
+import arb.functions.Function;
 
 /**
  * Hilbert spaces (named after David Hilbert) allow generalizing the methods of

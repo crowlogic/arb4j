@@ -1,8 +1,8 @@
 package arb.functions.complex.dynamics;
 
-import arb.*;
-import arb.exceptions.*;
-import arb.functions.complex.*;
+import arb.Complex;
+import arb.exceptions.NotDifferentiableException;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * <code>-f(t)/f'(t)</code>
