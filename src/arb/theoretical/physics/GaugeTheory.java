@@ -1,6 +1,9 @@
 package arb.theoretical.physics;
 
-public interface GaugeTheory
+import arb.theoretical.Theory;
+
+public interface GaugeTheory extends
+                             Theory
 {
 
 }
