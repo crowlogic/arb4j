@@ -1,4 +1,4 @@
-package arb.expression;
+package arb.expressions;
 
 import java.util.*;
 

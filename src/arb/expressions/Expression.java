@@ -1,4 +1,4 @@
-package arb.expression;
+package arb.expressions;
 
 public interface Expression
 {

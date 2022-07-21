@@ -1,4 +1,4 @@
-package arb.expression;
+package arb.expressions;
 
 public class UnaryExpression implements
                              Expression

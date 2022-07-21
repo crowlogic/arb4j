@@ -1,4 +1,4 @@
-package arb.expression;
+package arb.expressions;
 
 public class Constant implements
                       Expression
