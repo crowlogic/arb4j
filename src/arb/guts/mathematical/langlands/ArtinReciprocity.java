@@ -1,4 +1,4 @@
-package arb.guts.mathematics.langlands;
+package arb.guts.mathematical.langlands;
 
 /**
  * The Artin reciprocity law, which was established by Emil Artin in a series of
