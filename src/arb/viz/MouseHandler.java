@@ -27,14 +27,6 @@ public final class MouseHandler implements
     plotter = complexPlot;
   }
 
-  public java.awt.geom.Rectangle2D.Double getSelectedRectangle()
-  {
-    return new Rectangle2D.Double(plotter.selectionStartPoint.x,
-                                  plotter.selectionStartPoint.y,
-                                  plotter.selectionStopPoint.x - plotter.selectionStartPoint.x,
-                                  plotter.selectionStopPoint.y - plotter.selectionStartPoint.y);
-  }
-
   @Override
   public void mouseClicked(MouseEvent e)
   {
@@ -54,7 +46,6 @@ public final class MouseHandler implements
     {
       startDragging(point);
     }
-    plotter.selectionStopPoint = point;
     // out.println( "Dragged to " + point );
     plotter.anythingChanged    = true;
 
@@ -121,7 +112,6 @@ public final class MouseHandler implements
   {
     assert !plotter.selection : "already dragging";
     plotter.selection           = true;
-    plotter.selectionStartPoint = point;
     // out.println("started dragging at " + point );
     plotter.anythingChanged     = true;
 
@@ -131,11 +121,8 @@ public final class MouseHandler implements
   {
     assert plotter.selection : "not dragging yet therefore cannot stop";
     plotter.selection          = false;
-    plotter.selectionStopPoint = point;
     // out.println("stopped dragging at " + point );
-    Rectangle2D.Double domain = getSelectedRectangle();
-    plotter.zoomTo(domain);
-    plotter.anythingChanged = true;
+
 
   }
 

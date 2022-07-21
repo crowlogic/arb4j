@@ -1,85 +1,87 @@
 % Encoding: UTF-8
 @article{Curtright_2010,
-	doi = {10.1088/1751-8113/43/44/445101},
+doi = {10.1088/1751-8113/43/44/445101},
   
-	url = {https://doi.org/10.1088%2F1751-8113%2F43%2F44%2F445101},
+url = {https://doi.org/10.1088%2F1751-8113%2F43%2F44%2F445101},
   
-	year = 2010,
-	month = {oct},
+year = 2010,
+month = {oct},
   
-	publisher = {{IOP} Publishing},
+publisher = {{IOP} Publishing},
   
-	volume = {43},
+volume = {43},
   
-	number = {44},
+number = {44},
   
-	pages = {445101},
+pages = {445101},
   
-	author = {Thomas L Curtright and Cosmas K Zachos},
+author = {Thomas L Curtright and Cosmas K Zachos},
   
-	title = {Chaotic maps, Hamiltonian flows and holographic methods},
+title = {Chaotic maps, Hamiltonian flows and holographic methods},
   
-	journal = {Journal of Physics A: Mathematical and Theoretical}
+journal = {Journal of Physics A: Mathematical and Theoretical}
 }
 @article{Curtright_2009,
-	doi = {10.1088/1751-8113/42/48/485208},
+doi = {10.1088/1751-8113/42/48/485208},
   
-	url = {https://doi.org/10.1088%2F1751-8113%2F42%2F48%2F485208},
+url = {https://doi.org/10.1088%2F1751-8113%2F42%2F48%2F485208},
   
-	year = 2009,
-	month = {nov},
+year = 2009,
+month = {nov},
   
-	publisher = {{IOP} Publishing},
+publisher = {{IOP} Publishing},
   
-	volume = {42},
+volume = {42},
   
-	number = {48},
+number = {48},
   
-	pages = {485208},
+pages = {485208},
   
-	author = {Thomas Curtright and Cosmas Zachos},
+author = {Thomas Curtright and Cosmas Zachos},
   
-	title = {Evolution profiles and functional equations},
+title = {Evolution profiles and functional equations},
   
-	journal = {Journal of Physics A: Mathematical and Theoretical}
+journal = {Journal of Physics A: Mathematical and Theoretical}
 }
 
 @article{Curtright_2011,
-	doi = {10.1103/physrevd.83.065019},
+doi = {10.1103/physrevd.83.065019},
   
-	url = {https://doi.org/10.1103%2Fphysrevd.83.065019},
+url = {https://doi.org/10.1103%2Fphysrevd.83.065019},
   
-	year = 2011,
-	month = {mar},
+year = 2011,
+month = {mar},
   
-	publisher = {American Physical Society ({APS})},
+publisher = {American Physical Society ({APS})},
   
-	volume = {83},
+volume = {83},
   
-	number = {6},
+number = {6},
   
-	author = {Thomas L. Curtright and Cosmas K. Zachos},
+author = {Thomas L. Curtright and Cosmas K. Zachos},
   
-	title = {Renormalization group functional equations},
+title = {Renormalization group functional equations},
   
-	journal = {Physical Review D}
+journal = {Physical Review D}
 }
+
 @article{pub,
-	doi = {10.3842/sigma.2011.042},
+doi = {10.3842/sigma.2011.042},
   
-	url = {https://doi.org/10.3842%2Fsigma.2011.042},
+url = {https://doi.org/10.3842%2Fsigma.2011.042},
   
-	year = 2011,
-	month = {apr},
+year = 2011,
+month = {apr},
   
-	publisher = {{SIGMA} (Symmetry, Integrability and Geometry: Methods and Application)},
+publisher = {{SIGMA} (Symmetry, Integrability and Geometry: Methods and Application)},
   
-	author = {Thomas Curtright},
+author = {Thomas Curtright},
   
-	title = {Potentials Unbounded Below},
+title = {Potentials Unbounded Below},
   
-	journal = {Symmetry, Integrability and Geometry: Methods and Applications}
+journal = {Symmetry, Integrability and Geometry: Methods and Applications}
 }
+
 @book{foundationalMechanics,
   title={Foundations of mechanics},
   author={Abraham, Ralph and Marsden, Jerrold E},
@@ -226,15 +228,33 @@
   publisher = {IOP Publishing},
 }
 
-@Comment{jabref-meta: databaseType:bibtex;}
+@Article{Peitgen1988GlobalAO,
+  author  = {Heinz-Otto Peitgen and Michael Prufer and Klaus Schmitt},
+  title   = {Global aspects of the continuous and discrete Newton method: A case study},
+  journal = {Acta Applicandae Mathematicae},
+  year    = {1988},
+  volume  = {13},
+  pages   = {123--202},
+}
 
-{shapiro1993composition,
-^Ititle        = {Composition Operators and Classical Function Theory},
-^Iauthor       = {Shapiro, J.H.},
-^Iyear         = 1993,
-^Ipublisher    = {Springer-Verlag},
-^Iseries       = {Universitext (Berlin. Print)},
-^Iisbn         = 9780387940670,
-^Iurl          = {https://books.google.com/books?id=LPcpAQAAMAAJ},
-^Ilccn         = 93026147
+@article{cowen1994spectra,
+  title={Spectra of some composition operators},
+  author={Cowen, Carl C and MacCluer, Barbara D},
+  journal={Journal of Functional Analysis},
+  volume={125},
+  number={1},
+  pages={223--251},
+  year={1994},
+  publisher={Elsevier}
+}
+@article{thetaVocab,
+author = {Kharchev, S. and Zabrodin, A.},
+year = {2014},
+month = {11},
+pages = {},
+title = {Theta vocabulary I},
+volume = {94},
+url = {https://arxiv.org/abs/1502.04603},
+journal = {Journal of Geometry and Physics},
+doi = {10.1016/j.geomphys.2015.03.010}
 }

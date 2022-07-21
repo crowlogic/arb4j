@@ -1,7 +1,6 @@
 package arb.viz;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -54,6 +53,10 @@ public class PointValueCache implements
 
   private RandomAccessFile file1;
 
+  private File             handle;
+
+  private File             handle1;
+
   public PointValueCache(String id, int numXpoints, int numYpoints)
   {
     System.out.println("Opening " + id + ".arb" + " and .arb1");
@@ -61,12 +64,19 @@ public class PointValueCache implements
     this.height = numYpoints;
     int bytes = Complex.BYTES * numXpoints * numYpoints;
 
+    Runtime.getRuntime().addShutdownHook(new Thread(() ->
+    {
+      PointValueCache.this.close();
+    }));
+
     try
     {
-      file  = new RandomAccessFile(id + ".arb",
-                                   "rw");
-      file1 = new RandomAccessFile(id + ".arb1",
-                                   "rw");
+      handle  = new File(id + ".arb");
+      file    = new RandomAccessFile(handle,
+                                     "rw");
+      handle1 = new File(id + ".arb1");
+      file1   = new RandomAccessFile(handle1,
+                                     "rw");
       if (file.length() < bytes)
       {
         file.setLength(bytes);
@@ -101,8 +111,6 @@ public class PointValueCache implements
         }
       }
       assert bufferAddress - arb.bufferAddress(buffer) == bytes;
-
-      check();
     }
     catch (IOException e)
     {
@@ -112,39 +120,21 @@ public class PointValueCache implements
 
   }
 
-  public void check()
-  {
-    for (int x = 0; x < width; x++)
-    {
-      for (int y = 0; y < height; y++)
-      {
-        Complex point0        = points[0][x][y];
-        Complex point1        = points[1][x][y];
-        int     zeroPointBits = point0.bits();
-        if (zeroPointBits > 256)
-        {
-          System.out.println("point has too many bits, " + zeroPointBits + " at " + x + "," + y);
-          arb.arb_trim(point0.getReal(), point0.getReal());
-          arb.arb_trim(point0.getImag(), point0.getImag());
-          zeroPointBits = point0.bits();
-          if (zeroPointBits > 256)
-          {
-            throw new RuntimeException("point still has too many bits after trimming, " + zeroPointBits + " at " + x
-                          + "," + y);
-          }
-        }
-      }
-    }
-  }
-
   @Override
   public void close()
   {
-    check();
     buffer  = null;
     buffer1 = null;
     try
     {
+      if (!complete)
+      {
+        System.err.println("Truncating incomplete files " + handle + " and " + handle1);
+        complete = true;
+        handle.delete();
+        handle1.delete();
+
+      }
       file.close();
       file1.close();
       channel.close();
@@ -155,6 +145,5 @@ public class PointValueCache implements
       throw new UnsupportedOperationException(e.getMessage(),
                                               e);
     }
-    System.gc();
   }
 }

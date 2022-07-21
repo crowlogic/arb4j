@@ -43,7 +43,6 @@ public class TNewtonRenderer extends
     renderer.displayMode = Part.Real;
     renderer.render();
     renderer.saveToFile("TNewton.png");
-    renderer.image.check();
 
   }
 
