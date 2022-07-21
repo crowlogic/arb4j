@@ -1,7 +1,7 @@
 package arb.functions.complex;
 
 import arb.*;
-import junit.framework.*;
+import junit.framework.TestCase;
 
 public class CircleSTest extends
                          TestCase

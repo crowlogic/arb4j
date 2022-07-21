@@ -1,6 +1,6 @@
 package arb.stochastic;
 
-import arb.functions.real.*;
+import arb.functions.real.RealFunction;
 
 /**
  * The probability density function (PDF) of a continuous distribution is

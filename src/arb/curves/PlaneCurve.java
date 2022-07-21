@@ -1,9 +1,9 @@
 package arb.curves;
 
-import arb.*;
-import arb.functions.*;
-import arb.functions.complex.*;
-import arb.functions.real.*;
+import arb.Real;
+import arb.functions.RealToComplexFunction;
+import arb.functions.complex.ComplexFunction;
+import arb.functions.real.RealFunction;
 
 /**
  * 

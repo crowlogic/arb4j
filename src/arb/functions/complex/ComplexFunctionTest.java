@@ -1,10 +1,10 @@
 package arb.functions.complex;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.one;
 
 import arb.*;
-import arb.functions.*;
-import junit.framework.*;
+import arb.functions.Function;
+import junit.framework.TestCase;
 
 public class ComplexFunctionTest extends
                                  TestCase

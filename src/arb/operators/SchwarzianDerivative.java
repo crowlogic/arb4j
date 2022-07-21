@@ -1,7 +1,7 @@
 package arb.operators;
 
-import arb.*;
-import arb.functions.complex.*;
+import arb.Complex;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * Among other things the Schwarzian derivative measures how much a function

@@ -1,7 +1,7 @@
 package arb.functions.complex.elliptic;
 
-import arb.*;
-import junit.framework.*;
+import arb.Complex;
+import junit.framework.TestCase;
 
 public class RealQuarterPeriodTest extends
                                    TestCase

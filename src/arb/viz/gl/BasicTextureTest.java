@@ -2,12 +2,14 @@ package arb.viz.gl;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.awt.*;
-import java.awt.image.*;
-import java.nio.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 
-import org.lwjgl.*;
-import org.lwjgl.opengl.*;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL12;
 
 public class BasicTextureTest
 {

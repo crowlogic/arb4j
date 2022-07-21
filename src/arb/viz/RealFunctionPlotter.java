@@ -1,21 +1,23 @@
 package arb.viz;
 
 import java.awt.*;
-import java.awt.geom.*;
-import java.util.*;
-import java.util.stream.*;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.stream.IntStream;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import arb.*;
 import arb.Float;
-import arb.functions.*;
-import arb.functions.real.*;
-import hageldave.jplotter.canvas.*;
-import hageldave.jplotter.color.*;
-import hageldave.jplotter.renderables.*;
-import hageldave.jplotter.renderables.Lines.*;
-import hageldave.jplotter.renderables.Triangles.*;
+import arb.functions.ComplexToRealFunction;
+import arb.functions.RealToComplexFunction;
+import arb.functions.real.RealFunction;
+import hageldave.jplotter.canvas.BlankCanvas;
+import hageldave.jplotter.color.DefaultColorScheme;
+import hageldave.jplotter.renderables.Lines;
+import hageldave.jplotter.renderables.Lines.SegmentDetails;
+import hageldave.jplotter.renderables.Triangles;
+import hageldave.jplotter.renderables.Triangles.TriangleDetails;
 import hageldave.jplotter.renderers.*;
 
 public class RealFunctionPlotter extends

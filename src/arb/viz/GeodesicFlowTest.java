@@ -1,8 +1,9 @@
 package arb.viz;
 
-import arb.*;
-import arb.functions.complex.*;
-import arb.viz.GeodesicFlower.*;
+import arb.ComplexConstants;
+import arb.Real;
+import arb.functions.complex.SFunction;
+import arb.viz.GeodesicFlower.What;
 
 public class GeodesicFlowTest
 {

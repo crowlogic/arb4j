@@ -1,7 +1,6 @@
 package arb.functions.complex;
 
 import arb.Complex;
-import arb.functions.complex.ComplexFunction;
 import arb.utensils.Utils;
 
 /**

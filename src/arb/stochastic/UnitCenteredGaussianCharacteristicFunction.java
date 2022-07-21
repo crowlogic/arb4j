@@ -2,7 +2,7 @@ package arb.stochastic;
 
 import static arb.RealConstants.*;
 
-import arb.*;
+import arb.Real;
 
 public class UnitCenteredGaussianCharacteristicFunction implements
                                                         CharacteristicFunction<UnitCenteredGaussianDensityFunction>

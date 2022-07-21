@@ -6,10 +6,10 @@ import static java.lang.Math.max;
 import java.util.concurrent.atomic.AtomicLong;
 
 import arb.*;
-import arb.exceptions.*;
+import arb.exceptions.NotDifferentiableException;
+import arb.exceptions.NotIntegrableException;
 import arb.functions.Function;
-import arb.functions.real.ImaginaryPart;
-import arb.functions.real.RealPart;
+import arb.functions.real.*;
 import arb.utensils.Utils;
 
 @FunctionalInterface

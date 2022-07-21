@@ -1,8 +1,9 @@
 package arb.functions.real;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
 
-import arb.*;
+import arb.ComplexConstants;
+import arb.Real;
 
 /**
  * Let x be the independent variable:<br>

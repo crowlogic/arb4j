@@ -1,11 +1,13 @@
 package arb.operators;
 
-import static arb.utensils.Utils.*;
+import static arb.utensils.Utils.println;
 
-import arb.*;
-import arb.functions.real.*;
-import arb.stochastic.*;
-import junit.framework.*;
+import arb.Complex;
+import arb.Real;
+import arb.functions.real.RealPart;
+import arb.stochastic.UnitCenteredGaussianCharacteristicFunction;
+import arb.stochastic.UnitCenteredGaussianDensityFunction;
+import junit.framework.TestCase;
 
 public class FourierTransformTest extends
                                   TestCase

@@ -1,6 +1,6 @@
 package arb.operators;
 
-import arb.functions.*;
+import arb.functions.RealToComplexFunction;
 
 public interface IntegralTransform extends
                                    RealToComplexFunction,

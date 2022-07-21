@@ -1,7 +1,7 @@
 package arb.functions.complex;
 
-import arb.*;
-import arb.curves.*;
+import arb.Complex;
+import arb.curves.PlaneCurve;
 
 /**
  * TODO: implement and use to implement the

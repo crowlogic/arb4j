@@ -1,6 +1,6 @@
 package arb.functions.complex.dynamics;
 
-import arb.operators.*;
+import arb.operators.Composition;
 
 public class SNewton2Map extends
                          Composition<SNewtonMap, SNewtonMap>

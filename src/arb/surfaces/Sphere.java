@@ -1,7 +1,7 @@
 package arb.surfaces;
 
-import arb.*;
-import arb.exceptions.*;
+import arb.Real;
+import arb.exceptions.ArbException;
 
 public class Sphere implements
                     RiemannSurface

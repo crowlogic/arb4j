@@ -1,6 +1,6 @@
 package arb.functions.complex;
 
-import arb.*;
+import arb.Complex;
 
 public class ComplexSineFunction implements
                                  ComplexFunction

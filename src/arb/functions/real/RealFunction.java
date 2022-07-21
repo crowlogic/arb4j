@@ -10,7 +10,6 @@ import arb.Float;
 import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
 import arb.functions.Function;
-import arb.Magnitude;
 
 /**
  * Interface which defines a function from ℝ -> ℝ where ℝ is the set of real

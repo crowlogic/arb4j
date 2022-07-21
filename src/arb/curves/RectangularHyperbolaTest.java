@@ -1,7 +1,8 @@
 package arb.curves;
 
-import arb.*;
-import junit.framework.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import junit.framework.TestCase;
 
 /**
  * TODO: implement this test: z(t)=sec(t)+itan(t)

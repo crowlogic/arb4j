@@ -2,8 +2,6 @@ package arb.expression;
 
 import java.util.*;
 
-import arb.expression.Expression.*;
-
 /**
  * systematically schematizes {@link Expression}s with the
  * this{@link #parse(String, Map, Map)} method

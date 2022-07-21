@@ -1,12 +1,12 @@
 package arb.viz;
 
-import static java.lang.System.*;
+import static java.lang.System.out;
 
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
+import java.awt.geom.Rectangle2D;
 
-import arb.*;
+import arb.Complex;
 import arb.utensils.Utils;
 
 public final class MouseHandler implements

@@ -1,13 +1,14 @@
 package arb.functions.complex;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.one;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import arb.*;
-import arb.curves.*;
-import arb.functions.real.*;
-import arb.viz.*;
+import arb.curves.ComplexCircle;
+import arb.functions.real.RealFunction;
+import arb.functions.real.RealPart;
+import arb.viz.RealFunctionPlotter;
 
 /**
  * S(e^i*θ) where θ is a real-valued angle but its easier for now to work with

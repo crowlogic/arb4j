@@ -1,7 +1,7 @@
 package arb.functions.complex.dynamics;
 
-import arb.*;
-import arb.functions.complex.*;
+import arb.Real;
+import arb.functions.complex.SFunction;
 
 public class SNewtonMap extends
                         NewtonMap<SFunction>

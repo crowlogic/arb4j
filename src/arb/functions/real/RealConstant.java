@@ -1,6 +1,6 @@
 package arb.functions.real;
 
-import arb.*;
+import arb.Real;
 
 public class RealConstant implements
                           RealFunction

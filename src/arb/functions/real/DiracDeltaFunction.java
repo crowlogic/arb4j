@@ -1,8 +1,8 @@
 package arb.functions.real;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
 
-import arb.*;
+import arb.Real;
 
 /**
  * Dirac δ function <code>

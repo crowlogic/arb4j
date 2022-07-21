@@ -1,7 +1,8 @@
 package arb.functions.complex.dynamics;
 
-import arb.*;
-import arb.functions.complex.*;
+import arb.Complex;
+import arb.Real;
+import arb.functions.complex.ComplexFunction;
 
 public abstract class ComplexDynamicalSystem<F extends ComplexFunction>
 {

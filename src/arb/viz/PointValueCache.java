@@ -1,10 +1,12 @@
 package arb.viz;
 
-import java.io.*;
-import java.nio.*;
-import java.nio.channels.*;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 
-import arb.*;
+import arb.Complex;
+import arb.arb;
 
 /**
  * If the precision of the number is 128 bits or less then the only space

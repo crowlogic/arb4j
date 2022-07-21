@@ -1,6 +1,6 @@
 package arb.stochastic;
 
-import arb.*;
+import arb.Real;
 
 public class GaussianCharacteristicFunction implements
                                             CharacteristicFunction<GaussianDensityFunction>

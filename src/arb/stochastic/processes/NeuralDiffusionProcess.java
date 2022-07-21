@@ -1,8 +1,6 @@
 package arb.stochastic.processes;
 
 import arb.Real;
-import arb.functions.Function;
-import arb.stochastic.*;
 
 /**
  * TODO: implement

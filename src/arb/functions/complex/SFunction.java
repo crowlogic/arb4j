@@ -1,9 +1,9 @@
 package arb.functions.complex;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 
 import arb.*;
-import arb.exceptions.*;
+import arb.exceptions.NotDifferentiableException;
 
 /**
  * The rational meromorphic quartic
