@@ -4,7 +4,7 @@ import arb.Real;
 import arb.RealConstants;
 import arb.functions.real.RealFunction;
 
-public class UnitCenteredGaussianDensityFunction implements
+public class StandardGaussianDensityFunction implements
                                                  DensityFunction
 {
 

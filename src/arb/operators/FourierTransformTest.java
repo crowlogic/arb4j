@@ -5,8 +5,8 @@ import static arb.utensils.Utils.println;
 import arb.Complex;
 import arb.Real;
 import arb.functions.real.RealPart;
-import arb.stochastic.UnitCenteredGaussianCharacteristicFunction;
-import arb.stochastic.UnitCenteredGaussianDensityFunction;
+import arb.stochastic.StandardGaussianCharacteristicFunction;
+import arb.stochastic.StandardGaussianDensityFunction;
 import junit.framework.TestCase;
 
 public class FourierTransformTest extends
@@ -16,8 +16,8 @@ public class FourierTransformTest extends
 
   public static void testDuality()
   {
-    UnitCenteredGaussianDensityFunction                   f        = new UnitCenteredGaussianDensityFunction();
-    FourierTransform<UnitCenteredGaussianDensityFunction> φnumeric = new FourierTransform(f,
+    StandardGaussianDensityFunction                   f        = new StandardGaussianDensityFunction();
+    FourierTransform<StandardGaussianDensityFunction> φnumeric = new FourierTransform(f,
                                                                                           false);
 
     /**
@@ -30,8 +30,8 @@ public class FourierTransformTest extends
     {
       System.out.println("point=" + point);
 
-      UnitCenteredGaussianCharacteristicFunction            φexact = new UnitCenteredGaussianCharacteristicFunction();
-      FourierTransform<UnitCenteredGaussianDensityFunction> f2     = new FourierTransform(φexact,
+      StandardGaussianCharacteristicFunction            φexact = new StandardGaussianCharacteristicFunction();
+      FourierTransform<StandardGaussianDensityFunction> f2     = new FourierTransform(φexact,
                                                                                           true);
 
       Complex                                               val    = φnumeric.evaluate(point,
