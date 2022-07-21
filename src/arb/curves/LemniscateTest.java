@@ -1,12 +1,12 @@
 package arb.curves;
 
-import static arb.RealConstants.*;
-import static java.lang.System.*;
+import static arb.RealConstants.half;
+import static java.lang.System.out;
 
 import arb.*;
-import arb.exceptions.*;
-import arb.functions.*;
-import junit.framework.*;
+import arb.exceptions.NotDifferentiableException;
+import arb.functions.RealToComplexFunction;
+import junit.framework.TestCase;
 
 public class LemniscateTest extends
                             TestCase
@@ -75,7 +75,7 @@ public class LemniscateTest extends
    * @throws LackOfConvergenceException
    */
   @SuppressWarnings("resource")
-  public static void testIntegration() throws NotDifferentiableException, LackOfConvergenceException
+  public static void testIntegration() throws NotDifferentiableException
   {
     int                   prec     = 256;
 

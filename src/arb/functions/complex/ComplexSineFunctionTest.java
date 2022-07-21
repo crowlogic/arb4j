@@ -20,7 +20,7 @@ public class ComplexSineFunctionTest extends
   }
 
   @SuppressWarnings("resource")
-  public void testIntegration() throws LackOfConvergenceException
+  public void testIntegration() 
   {
     ComplexSineFunction sine                       = new ComplexSineFunction();
     Magnitude           absoluteErrorToleranceGoal = new Magnitude().set(Math.pow(2, -77));

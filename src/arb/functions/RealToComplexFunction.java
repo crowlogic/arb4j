@@ -3,12 +3,10 @@ package arb.functions;
 import static arb.arb.*;
 import static arb.utensils.Utils.println;
 import static java.lang.String.format;
-import static java.lang.System.err;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 import arb.*;
-import arb.exceptions.LackOfConvergenceException;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealPart;
@@ -158,10 +156,7 @@ public interface RealToComplexFunction extends
 
         while (depth >= 1)
         {
-          if (evalCount.get() >= evalLimit - 1)
-          {
-            throw new LackOfConvergenceException("evaluating limit " + evalLimit + " exceeded ");
-          }
+          assert evalCount.get() < evalLimit - 1 : "evaluating limit " + evalLimit + " exceeded ";
 
           if (useHeap)
             top = 0;
@@ -213,11 +208,7 @@ public interface RealToComplexFunction extends
             }
           }
 
-          if (depth >= depthLimit - 1)
-          {
-
-            throw new LackOfConvergenceException("depth limit " + evalLimit + " exceeded ");
-          }
+          assert depth < depthLimit - 1 : "depth limit " + evalLimit + " exceeded ";
 
           if (depth >= allocation - 1)
           {

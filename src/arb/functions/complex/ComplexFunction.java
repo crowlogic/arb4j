@@ -317,7 +317,6 @@ public interface ComplexFunction extends
    * @param res
    * @return true if the integration converged to the target accuracy on all
    *         subintervals otherwise returns false
-   * @throws LackOfConvergenceException
    */
   public default Complex integrate(Complex a,
                                    Complex b,
@@ -325,7 +324,7 @@ public interface ComplexFunction extends
                                    Magnitude absErrorToleranceGoal,
                                    IntegrationOptions options,
                                    int prec,
-                                   Complex res) throws LackOfConvergenceException
+                                   Complex res)
   {
     assert relAccuracyGoalBits > 0;
     assert absErrorToleranceGoal != null;
@@ -382,10 +381,7 @@ public interface ComplexFunction extends
 
         while (depth >= 1)
         {
-          if (evalCount.get() >= evalLimit - 1)
-          {
-            throw new LackOfConvergenceException("evaluating limit " + evalLimit + " exceeded ");
-          }
+          assert evalCount.get() < evalLimit - 1 : "evaluation limit " + evalLimit + " exceeded ";
 
           if (useHeap)
             top = 0;
@@ -405,16 +401,16 @@ public interface ComplexFunction extends
           /* Attempt using Gauss-Legendre rule. */
           if (vs.get(top).isFinite())
           {
-            glStatus = performGaussLegendreIntegrationAutoDeg(as.get(top),
-                                                              bs.get(top),
-                                                              newTol,
-                                                              degLimit,
-                                                              verbose,
-                                                              prec,
-                                                              evalCount,
-                                                              u);
+            glStatus = evaluateGaussLegendreIntegral(as.get(top),
+                                                     bs.get(top),
+                                                     newTol,
+                                                     degLimit,
+                                                     verbose,
+                                                     prec,
+                                                     evalCount,
+                                                     u);
 
-            /* We are done with this subinterval. */
+            /* completed subinterval */
             if (glStatus)
             {
               leafIntervalCount++;
@@ -437,11 +433,7 @@ public interface ComplexFunction extends
             }
           }
 
-          if (depth >= depthLimit - 1)
-          {
-
-            throw new LackOfConvergenceException("depth limit " + evalLimit + " exceeded ");
-          }
+          assert depth < depthLimit - 1 : "depth limit " + evalLimit + " exceeded ";
 
           if (depth >= allocation - 1)
           {
@@ -521,14 +513,14 @@ public interface ComplexFunction extends
    * 
    * @return
    */
-  public default boolean performGaussLegendreIntegrationAutoDeg(Complex a,
-                                                                Complex b,
-                                                                Magnitude tol,
-                                                                int degreeLimit,
-                                                                boolean verbose,
-                                                                int prec,
-                                                                AtomicLong evalCount,
-                                                                Complex res)
+  public default boolean evaluateGaussLegendreIntegral(Complex a,
+                                                       Complex b,
+                                                       Magnitude tol,
+                                                       int degreeLimit,
+                                                       boolean verbose,
+                                                       int prec,
+                                                       AtomicLong evalCount,
+                                                       Complex res)
   {
     boolean converged = false;
     try ( Complex mid = new Complex(); Complex delta = new Complex(); Complex wide = new Complex();
@@ -565,14 +557,14 @@ public interface ComplexFunction extends
         mag_one(X);
         mag_mul_2exp_si(X, X, Xexp + 1);
 
-        /* rho = X + sqrt(X^2 - 1) (lower bound) */
+        /* rho = X + √(X^2 - 1) (lower bound) */
         mag_mul_lower(rho, X, X);
         mag_one(t);
         mag_sub_lower(rho, rho, t);
         mag_sqrt_lower(rho, rho);
         mag_add_lower(rho, rho, X);
 
-        /* Y = sqrt(X^2 - 1) (upper bound) */
+        /* Y = √(X^2 - 1) (upper bound) */
         mag_mul(Y, X, X);
         mag_one(t);
         mag_sub(Y, Y, t);
@@ -589,7 +581,7 @@ public interface ComplexFunction extends
         evaluate(wide, 1, prec, v);
         evalCount.incrementAndGet();
 
-        /* no chance */
+        /* no dice */
         if (!v.isFinite())
           break;
 
@@ -631,41 +623,58 @@ public interface ComplexFunction extends
       }
 
       /* Evaluate best found Gauss-Legendre quadrature rule. */
-      if (converged)
-      {
-        try ( Real x = new Real(); Real w = new Real();)
-        {
-          assert best_n != -1;
-
-          for (i = 0; i < glStepCount; i++)
-            if (glSteps[i] == best_n)
-              break;
-
-          acb_zero(s);
-
-          for (k = 0; k < best_n; k++)
-          {
-            acb_calc_gl_node(x, w, i, k, prec);
-            acb_mul_arb(wide, delta, x, prec);
-            acb_add(wide, wide, mid, prec);
-            evaluate(wide, 0, prec, v);
-            acb_addmul_arb(s, v, w, prec);
-          }
-
-          evalCount.getAndAdd(best_n);
-
-          acb_mul(res, s, delta, prec);
-          acb_add_error_mag(res, err);
-
-        }
-      }
-      else
-      {
-        acb_indeterminate(res);
-      }
+      evaluateBestGaussLegendreQuadratureRule(prec, evalCount, res, converged, mid, delta, wide, s, v, err, best_n);
     }
 
     return converged;
+  }
+
+  public default void evaluateBestGaussLegendreQuadratureRule(int prec,
+                                                              AtomicLong evalCount,
+                                                              Complex res,
+                                                              boolean converged,
+                                                              Complex mid,
+                                                              Complex delta,
+                                                              Complex wide,
+                                                              Complex s,
+                                                              Complex v,
+                                                              Magnitude err,
+                                                              int best_n)
+  {
+    int k;
+    int i;
+    if (converged)
+    {
+      try ( Real x = new Real(); Real w = new Real();)
+      {
+        assert best_n != -1;
+
+        for (i = 0; i < glStepCount; i++)
+          if (glSteps[i] == best_n)
+            break;
+
+        acb_zero(s);
+
+        for (k = 0; k < best_n; k++)
+        {
+          acb_calc_gl_node(x, w, i, k, prec);
+          acb_mul_arb(wide, delta, x, prec);
+          acb_add(wide, wide, mid, prec);
+          evaluate(wide, 0, prec, v);
+          acb_addmul_arb(s, v, w, prec);
+        }
+
+        evalCount.getAndAdd(best_n);
+
+        acb_mul(res, s, delta, prec);
+        acb_add_error_mag(res, err);
+
+      }
+    }
+    else
+    {
+      acb_indeterminate(res);
+    }
   }
 
   public default RealPart realPart()
