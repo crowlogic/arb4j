@@ -1,6 +1,4 @@
-package arb.guts.mathematical.langlands;
-
-import arb.guts.mathematical.GlobalClassFieldTheory;
+package arb.theoretical;
 
 /**
  * The Artin reciprocity law, which was established by Emil Artin in a series of

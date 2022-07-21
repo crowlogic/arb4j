@@ -1,4 +1,4 @@
-package arb.guts.mathematical;
+package arb.theoretical;
 
 public interface AlgebraicNumberTheory extends
                                        NumberTheory

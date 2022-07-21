@@ -1,4 +1,4 @@
 /**
  * Grand Unified Theories
  */
-package arb.guts;
+package arb.theoretical.physics;

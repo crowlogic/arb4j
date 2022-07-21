@@ -1,4 +1,4 @@
-package arb.guts.mathematical;
+package arb.theoretical;
 
 /**
  * Class field theory is the fundamental branch of {@link AlgebraicNumberTheory}

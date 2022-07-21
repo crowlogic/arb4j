@@ -1,4 +1,4 @@
-package arb.guts.mathematical.langlands;
+package arb.theoretical;
 
 import arb.*;
 
