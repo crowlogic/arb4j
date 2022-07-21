@@ -31,19 +31,19 @@ import arb.functions.Function;
  *      for references
  *
  */
-public interface DiffusionProcess<D extends NumberField, R extends NumberField> extends
+public interface DiffusionProcess<F extends Function> extends
                                  StochasticProcess
 {
   /**
    * 
    * @return the drift coefficient
    */
-  public <F extends Function<D, R>> F μ();
+  public F μ();
 
   /**
    * 
    * @return the diffusion coefficient
    */
-  public <F extends Function<D, R>> F σ();
+  public F σ();
 
 }

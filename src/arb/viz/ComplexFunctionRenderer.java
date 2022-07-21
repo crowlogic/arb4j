@@ -208,8 +208,8 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     ay.assign(this.domain.getMinY());
     bx.assign(this.domain.getMaxX());
     by.assign(this.domain.getMaxY());
-    bx.sub(ax, precisionBits, RoundingMode.Down, dx).div(width * 2, dx, precisionBits);
-    by.sub(ay, precisionBits, RoundingMode.Down, dy).div(height * 2, dy, precisionBits);
+    bx.sub(ax, precisionBits, RoundingMode.Down, dx).div(width * 2, precisionBits, dx);
+    by.sub(ay, precisionBits, RoundingMode.Down, dy).div(height * 2, precisionBits, dy);
 
     // System.out.format("dx=%s\n dy=%s\n", dx, dy);
 
@@ -413,13 +413,13 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     // zi = ( (by - ay) * y ) / ( ynum - 1 )
     by.sub(ay, prec, zi);
     zi.mul(y, zi, prec);
-    zi.div(height - 1, zi, prec);
+    zi.div(height - 1, prec, zi);
     zi.add(ay, prec, zi);
 
     // zr = ( (bx - ax) * x ) / ( xnum - 1 )
     bx.sub(ax, prec, zr);
     zr.mul(x, zr, prec);
-    zr.div(width - 1, zr, prec);
+    zr.div(width - 1, prec, zr);
     zr.add(ax, prec, zr);
 
     evalFunction(z, w);

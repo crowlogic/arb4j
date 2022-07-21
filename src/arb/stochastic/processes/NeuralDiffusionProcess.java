@@ -1,8 +1,6 @@
 package arb.stochastic.processes;
 
-import arb.Real;
-import arb.functions.Function;
-import arb.stochastic.*;
+import arb.functions.real.*;
 
 /**
  * TODO: implement
@@ -11,7 +9,7 @@ import arb.stochastic.*;
  *      Processes</a>
  */
 public abstract class NeuralDiffusionProcess implements
-                                             DiffusionProcess<Real, Real>
+                                             DiffusionProcess<RealFunction>
 {
 
 }

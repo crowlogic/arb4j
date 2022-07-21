@@ -64,7 +64,7 @@ public class RealFunctionPlotter extends
     top            = range.getA();
     bottom         = range.getB();
     width          = right.sub(left, prec, new Float());
-    dt             = width.div(numPoints, new Float(), prec);
+    dt             = width.div(numPoints, prec, new Float());
     point          = new Float();
     this.domain    = domain;
     this.range     = range;

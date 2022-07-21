@@ -1,9 +1,9 @@
 package arb.stochastic.processes;
 
-import arb.Real;
+import arb.functions.real.*;
 
 public interface RealDiffusionProcess extends
-                                      DiffusionProcess<Real, Real>
+                                      DiffusionProcess<RealFunction>
 {
 
 }

@@ -224,10 +224,11 @@ public class Utils
     System.out.println(s);
   }
 
-  public static void TODO(String string)
+  public static <F> F TODO(String string)
   {
     new Throwable("TODO: " + string).printStackTrace();
     JOptionPane.showConfirmDialog(null, "TODO: " + string + " !!! ");
+    return null;
   }
 
 }

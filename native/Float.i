@@ -189,9 +189,9 @@ import static arb.IntegerConstants.*;
     return res;    
   }
   
-  public Float div(int i, Float res, int thisprec)
+  public Float div(int i, int thisprec, Float res)
   {
-	return div(i,res,thisprec,ARF_RND_DOWN);
+    return div(i, res, thisprec, ARF_RND_DOWN);
   }
   
   public Float div(int numPoints, int i, Float dt, int prec )
