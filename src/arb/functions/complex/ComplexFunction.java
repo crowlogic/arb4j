@@ -304,7 +304,7 @@ public interface ComplexFunction extends
    * 
    * @param b                     to
    * 
-   * @param relAccuracyGoalBits   relative accuracy goal as a nonnegative number
+   * @param relAccuracyBitsGoal   relative accuracy goal as a nonnegative number
    *                              of bits, i.e. target a relative error less than
    *                              ε[rel=]2^(-relAccuracyGoalBits)
    * 
@@ -315,18 +315,18 @@ public interface ComplexFunction extends
    * @param options
    * @param prec
    * @param res
-   * @return true if the integration converged to the target accuracy on all
+   * @return true if the integral converged to the target accuracy on all
    *         subintervals otherwise returns false
    */
   public default Complex integrate(Complex a,
                                    Complex b,
-                                   int relAccuracyGoalBits,
+                                   int relAccuracyBitsGoal,
                                    Magnitude absErrorToleranceGoal,
                                    IntegrationOptions options,
                                    int prec,
                                    Complex res)
   {
-    assert relAccuracyGoalBits > 0;
+    assert relAccuracyBitsGoal > 0;
     assert absErrorToleranceGoal != null;
     assert res != null;
 
@@ -343,14 +343,14 @@ public interface ComplexFunction extends
       long       leafIntervalCount;
       int        allocation;
       boolean    useHeap;
-      boolean    glStatus, verbose, realError;
+      boolean    gaussLegendreIntegralConverged, verbose, realError;
       AtomicLong evalCount;
 
       evalCount           = new AtomicLong();
       depthLimit          = options.getDepthLimit(prec);
       evalLimit           = options.getEvaluationLimit(prec);
-      relAccuracyGoalBits = Math.max(relAccuracyGoalBits, 0);
-      degLimit            = options.getDegreeLimit(relAccuracyGoalBits, prec);
+      relAccuracyBitsGoal = Math.max(relAccuracyBitsGoal, 0);
+      degLimit            = options.getDegreeLimit(relAccuracyBitsGoal, prec);
       verbose             = options.verbose;
       useHeap             = options.useHeap;
 
@@ -374,7 +374,7 @@ public interface ComplexFunction extends
 
         /* Adjust absolute tolerance based on new information. */
         acb_get_mag_lower(tmpm, vs);
-        mag_mul_2exp_si(tmpm, tmpm, -relAccuracyGoalBits);
+        mag_mul_2exp_si(tmpm, tmpm, -relAccuracyBitsGoal);
         mag_max(newTol, absErrorToleranceGoal, tmpm);
 
         s.zero();
@@ -401,22 +401,22 @@ public interface ComplexFunction extends
           /* Attempt using Gauss-Legendre rule. */
           if (vs.get(top).isFinite())
           {
-            glStatus = evaluateGaussLegendreIntegral(as.get(top),
-                                                     bs.get(top),
-                                                     newTol,
-                                                     degLimit,
-                                                     verbose,
-                                                     prec,
-                                                     evalCount,
-                                                     u);
+            gaussLegendreIntegralConverged = evaluateGaussLegendreIntegral(as.get(top),
+                                                                           bs.get(top),
+                                                                           newTol,
+                                                                           degLimit,
+                                                                           verbose,
+                                                                           prec,
+                                                                           evalCount,
+                                                                           u);
 
             /* completed subinterval */
-            if (glStatus)
+            if (gaussLegendreIntegralConverged)
             {
               leafIntervalCount++;
               depth--;
 
-              accumulateGaussLegendreQuadrature(relAccuracyGoalBits,
+              accumulateGaussLegendreQuadrature(relAccuracyBitsGoal,
                                                 prec,
                                                 s,
                                                 u,
@@ -438,10 +438,10 @@ public interface ComplexFunction extends
           if (depth >= allocation - 1)
           {
             allocation *= 2;
-            resizeRegisters(allocation, as, bs, vs, ms);
+            resizeVectors(allocation, as, bs, vs, ms);
           }
 
-          bisect(relAccuracyGoalBits, prec, tmpm, newTol, depth, top, evalCount, as, bs, vs, ms, topm);
+          bisect(relAccuracyBitsGoal, prec, tmpm, newTol, depth, top, evalCount, as, bs, vs, ms, topm);
 
           if (useHeap)
           {
@@ -463,7 +463,7 @@ public interface ComplexFunction extends
                             leafIntervalCount);
         }
 
-        acb_set(res, s);
+        res.set(s);
       }
     }
 
@@ -511,7 +511,8 @@ public interface ComplexFunction extends
    * @param evalCount
    * @param res
    * 
-   * @return
+   * @return true of the integral converged, false or a thrown assertion error if
+   *         not
    */
   public default boolean evaluateGaussLegendreIntegral(Complex a,
                                                        Complex b,
@@ -682,7 +683,7 @@ public interface ComplexFunction extends
     return new RealPart(this);
   }
 
-  public default void resizeRegisters(int allocation, Complex as, Complex bs, Complex vs, Magnitude ms)
+  public default void resizeVectors(int allocation, Complex as, Complex bs, Complex vs, Magnitude ms)
   {
     int k;
     allocation *= 2;
