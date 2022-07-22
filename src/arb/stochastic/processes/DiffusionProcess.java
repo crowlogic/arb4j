@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.NumberField;
+import arb.Real;
 import arb.functions.Function;
 
 /**
@@ -31,19 +32,19 @@ import arb.functions.Function;
  *      for references
  *
  */
-public interface DiffusionProcess<F extends Function> extends
+public interface DiffusionProcess extends
                                  StochasticProcess
 {
   /**
    * 
    * @return the drift coefficient
    */
-  public F μ();
+  public Real μ();
 
   /**
    * 
    * @return the diffusion coefficient
    */
-  public F σ();
+  public Real σ();
 
 }

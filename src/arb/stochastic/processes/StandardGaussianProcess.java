@@ -1,6 +1,9 @@
 package arb.stochastic.processes;
 
-import arb.*;
+import static arb.RealConstants.*;
+
+import arb.Real;
+import arb.RealConstants;
 import arb.stochastic.*;
 
 /**
@@ -8,7 +11,7 @@ import arb.stochastic.*;
  * variance
  */
 public class StandardGaussianProcess implements
-                                     LévyProcess<StandardGaussianDensityFunction, StandardGaussianDistributionFunction, StandardGaussianCharacteristicFunction>
+                                     LévyProcess
 {
 
   @Override
@@ -52,13 +55,25 @@ public class StandardGaussianProcess implements
   @Override
   public Real getMean()
   {
-    return RealConstants.zero;
+    return zero;
   }
 
   @Override
   public Real getStandardDeviation()
   {
-    return RealConstants.one;
+    return one;
+  }
+
+  @Override
+  public Real μ()
+  {
+    return zero;
+  }
+
+  @Override
+  public Real σ()
+  {
+    return one;
   }
 
 }

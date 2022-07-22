@@ -1,21 +1,21 @@
 package arb.stochastic.processes;
 
-import arb.*;
 import arb.Float;
-import arb.functions.*;
-import arb.utensils.*;
+import arb.FloatInterval;
+import arb.Real;
+import arb.utensils.Utils;
 
-public class EulerDiscretizationScheme<F extends Function> implements
-                                      DiscretizationScheme
+public class EulerDiscretizationScheme implements
+                                       DiscretizationScheme
 {
-  public EulerDiscretizationScheme(DiffusionProcess<F> x)
+  public EulerDiscretizationScheme(DiffusionProcess x)
   {
     X = x;
   }
 
-  public DiffusionProcess<F> X;
+  public DiffusionProcess X;
 
-  public Real                dt;
+  public Real             dt;
 
   /**
    * 
@@ -30,8 +30,8 @@ public class EulerDiscretizationScheme<F extends Function> implements
   {
     int n = μmesh.size();
     assert n == σmesh.size();
-    F     a = X.μ();
-    F     b = X.σ();
+    Real  a = X.μ();
+    Real  b = X.σ();
 
     Float T = interval.getB().sub(interval.getA(), prec, dt);
 

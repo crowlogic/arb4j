@@ -9,7 +9,8 @@ import arb.stochastic.*;
  *
  */
 public class GaussianProcess implements
-                             LévyProcess<GaussianDensityFunction, GaussianDistributionFunction, GaussianCharacteristicFunction>
+                             LévyProcess
+
 {
   public Real μ;
 
@@ -59,6 +60,18 @@ public class GaussianProcess implements
 
   @Override
   public Real getStandardDeviation()
+  {
+    return σ;
+  }
+
+  @Override
+  public Real μ()
+  {
+    return μ;
+  }
+
+  @Override
+  public Real σ()
   {
     return σ;
   }

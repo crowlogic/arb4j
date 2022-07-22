@@ -20,9 +20,9 @@ import arb.stochastic.*;
  * 
  * 
  */
-public interface LévyProcess<P extends DensityFunction, F extends DistributionFunction, C extends CharacteristicFunction<P>>
-                            extends
-                            StochasticProcess<P, F, C>
+public interface LévyProcess extends
+                             DiffusionProcess,
+                             AdditiveProcess
 {
 
 }

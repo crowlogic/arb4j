@@ -69,4 +69,18 @@ public class WienerProcess implements
     return null;
   }
 
+  @Override
+  public Real μ()
+  {
+    assert false : "TODO: implement";
+    return null;
+  }
+
+  @Override
+  public Real σ()
+  {
+    assert false : "TODO: implement";
+    return null;
+  }
+
 }
