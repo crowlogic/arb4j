@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
+import org.junit.runner.JUnitCore;
+
 import arb.*;
 
 public class Utilities
@@ -228,6 +230,7 @@ public class Utilities
   public static <F> F TODO(String string)
   {
     new Throwable("TODO: " + string).printStackTrace();
+    
     JOptionPane.showConfirmDialog(null, "TODO: " + string + " !!! ");
     return null;
   }
