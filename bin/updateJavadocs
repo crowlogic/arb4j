@@ -1,0 +1,7 @@
+#!/bin/sh
+
+FMDIR=$(dirname $(readlink -f $0))/..
+cd $FMDIR
+mvn javadoc:javadoc
+cp -vr $FMDIR/target/site/apidocs/. $FMDIR/../arb4j-pages/
+
