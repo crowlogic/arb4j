@@ -11,6 +11,12 @@ public class StandardGaussianProcess implements
                                      LévyProcess<StandardGaussianDensityFunction, StandardGaussianDistributionFunction, StandardGaussianCharacteristicFunction>
 {
 
+  @Override
+  public String toString()
+  {
+    return "N[0,1]";
+  }
+
   public StandardGaussianProcess()
   {
     super();
