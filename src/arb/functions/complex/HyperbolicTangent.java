@@ -3,7 +3,7 @@ package arb.functions.complex;
 import arb.Complex;
 
 public class HyperbolicTangent implements
-                               ComplexFunction
+                               OddFunction
 {
 
   @Override
