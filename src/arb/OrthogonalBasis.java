@@ -1,6 +1,7 @@
 package arb;
 
-public interface OrthogonalBasis
+public interface OrthogonalBasis extends
+                                 Basis
 {
 
 }
