@@ -4,4 +4,7 @@ FMDIR=$(dirname $(readlink -f $0))/..
 cd $FMDIR
 mvn javadoc:javadoc
 cp -vr $FMDIR/target/site/apidocs/. $FMDIR/../arb4j-pages/
+cd $FMDIR/../arb4j-pages
+git add .
+git commit -m 'update javadocs'
 
