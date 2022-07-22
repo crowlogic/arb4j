@@ -1,4 +1,4 @@
-package arb.expressions;
+package arb.algebraic.expressions;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -1,4 +1,4 @@
-package arb.expressions;
+package arb.algebraic.expressions;
 
 import java.util.List;
 import java.util.Map;

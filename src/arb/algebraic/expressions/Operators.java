@@ -1,4 +1,4 @@
-package arb.expressions;
+package arb.algebraic.expressions;
 
 /**
  * operators are constructs defined within programming languages which behave

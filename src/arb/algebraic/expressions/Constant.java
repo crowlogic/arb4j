@@ -1,4 +1,4 @@
-package arb.expressions;
+package arb.algebraic.expressions;
 
 public class Constant implements
                       Expression

@@ -1,4 +1,4 @@
-package arb.expressions;
+package arb.algebraic.expressions;
 
 /**
  * TODO: harmonize this with {@link arb.functions.Function} and its descendants
