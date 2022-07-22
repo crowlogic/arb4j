@@ -3,8 +3,10 @@ package arb.stochastic.processes;
 import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
+import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 
-public interface DiscretizationScheme
+public interface DiscretizationScheme extends
+                                      DiscreteTimeDynamicalSystem
 {
 
   /**
