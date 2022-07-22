@@ -7,4 +7,5 @@ cp -vr $FMDIR/target/site/apidocs/. $FMDIR/../arb4j-pages/
 cd $FMDIR/../arb4j-pages
 git add .
 git commit -m 'update javadocs'
+git push
 
