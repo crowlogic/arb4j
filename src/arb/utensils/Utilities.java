@@ -10,7 +10,7 @@ import javax.swing.*;
 
 import arb.*;
 
-public class Utils
+public class Utilities
 {
 
   public static double convertTimeUnits(double from, TimeUnit fromUnit, TimeUnit toUnit)

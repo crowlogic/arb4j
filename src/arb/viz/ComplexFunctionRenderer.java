@@ -24,7 +24,7 @@ import arb.*;
 import arb.Float;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.ZFunction;
-import arb.utensils.Utils;
+import arb.utensils.Utilities;
 import hageldave.jplotter.color.ColorMap;
 import hageldave.jplotter.color.DefaultColorMap;
 
@@ -962,7 +962,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   private void reportRenderingRate()
   {
     long   stopTime = System.currentTimeMillis();
-    double seconds  = Utils.convertTimeUnits(stopTime - startTime, TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
+    double seconds  = Utilities.convertTimeUnits(stopTime - startTime, TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
     double rate     = (width * height) / seconds;
     System.out.format("Rendered in " + seconds + " seconds at a rate of %.0f pixels/sec\n", rate);
   }
@@ -1012,7 +1012,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   public void showFrame()
   {
-    frame = Utils.openInJFrame(this,
+    frame = Utilities.openInJFrame(this,
                                resolution.width,
                                resolution.height,
                                function.toString(),

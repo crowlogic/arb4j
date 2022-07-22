@@ -1,6 +1,6 @@
 package arb.functions.real;
 
-import static arb.utensils.Utils.println;
+import static arb.utensils.Utilities.println;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.lang.System.out;

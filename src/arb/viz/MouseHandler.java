@@ -7,7 +7,7 @@ import java.awt.geom.Point2D.Double;
 import java.awt.geom.Rectangle2D;
 
 import arb.Complex;
-import arb.utensils.Utils;
+import arb.utensils.Utilities;
 
 public final class MouseHandler implements
                                 MouseListener,
@@ -34,7 +34,7 @@ public final class MouseHandler implements
     try ( Complex clicked = new Complex())
     {
       clicked.set(point.x, point.y);
-      Utils.TODO("Adapt JPlotter to work with arb4j");
+      Utilities.TODO("Adapt JPlotter to work with arb4j");
     }
   }
 

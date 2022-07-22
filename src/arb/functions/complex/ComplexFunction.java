@@ -10,7 +10,7 @@ import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;
 import arb.functions.Function;
 import arb.functions.real.*;
-import arb.utensils.Utils;
+import arb.utensils.Utilities;
 
 @FunctionalInterface
 public interface ComplexFunction extends
@@ -75,7 +75,7 @@ public interface ComplexFunction extends
     if (useHeap && depth > 0)
     {
       swapElements(depth, as, bs, vs, ms);
-      Utils.heap_up(as, bs, vs, ms, depth);
+      Utilities.heap_up(as, bs, vs, ms, depth);
     }
   }
 
@@ -93,7 +93,7 @@ public interface ComplexFunction extends
     if (useHeap && depth > 0)
     {
       swapElements(depth, as, bs, vs, ms);
-      Utils.heap_up(as, bs, vs, ms, depth);
+      Utilities.heap_up(as, bs, vs, ms, depth);
     }
   }
 
@@ -390,7 +390,7 @@ public interface ComplexFunction extends
 
           /* We are done with this subinterval. */
           Magnitude topm = ms.get(top);
-          if (topm.compareTo(newTol) < 0 || Utils.overlaps(u, as.get(top), bs.get(top), prec))
+          if (topm.compareTo(newTol) < 0 || Utilities.overlaps(u, as.get(top), bs.get(top), prec))
           {
             leafIntervalCount++;
             depth--;
@@ -445,8 +445,8 @@ public interface ComplexFunction extends
 
           if (useHeap)
           {
-            Utils.heap_up(as, bs, vs, ms, depth);
-            Utils.heap_down(as, bs, vs, ms, depth + 1);
+            Utilities.heap_up(as, bs, vs, ms, depth);
+            Utilities.heap_down(as, bs, vs, ms, depth + 1);
           }
 
           depth++;

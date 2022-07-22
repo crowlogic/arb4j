@@ -1,7 +1,7 @@
 package arb.functions;
 
 import static arb.arb.*;
-import static arb.utensils.Utils.println;
+import static arb.utensils.Utilities.println;
 import static java.lang.String.format;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -10,7 +10,7 @@ import arb.*;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealPart;
-import arb.utensils.Utils;
+import arb.utensils.Utilities;
 
 public interface RealToComplexFunction extends
                                        Function<Real, Complex>
@@ -87,7 +87,7 @@ public interface RealToComplexFunction extends
     if (useHeap && depth > 0)
     {
       swapElements(depth, as, bs, vs, ms);
-      Utils.heap_up(as, bs, vs, ms, depth);
+      Utilities.heap_up(as, bs, vs, ms, depth);
     }
   }
 
@@ -165,7 +165,7 @@ public interface RealToComplexFunction extends
 
           /* We are done with this subinterval. */
           Magnitude topm = ms.get(top);
-          if (topm.compareTo(newTol) < 0 || Utils.overlaps(u, as.get(top), bs.get(top), prec))
+          if (topm.compareTo(newTol) < 0 || Utilities.overlaps(u, as.get(top), bs.get(top), prec))
           {
             leafIntervalCount++;
             depth--;
@@ -220,8 +220,8 @@ public interface RealToComplexFunction extends
 
           if (useHeap)
           {
-            Utils.heap_up(as, bs, vs, ms, depth);
-            Utils.heap_down(as, bs, vs, ms, depth + 1);
+            Utilities.heap_up(as, bs, vs, ms, depth);
+            Utilities.heap_down(as, bs, vs, ms, depth + 1);
           }
 
           depth++;
@@ -533,7 +533,7 @@ public interface RealToComplexFunction extends
     if (useHeap && depth > 0)
     {
       swapElements(depth, as, bs, vs, ms);
-      Utils.heap_up(as, bs, vs, ms, depth);
+      Utilities.heap_up(as, bs, vs, ms, depth);
     }
   }
 

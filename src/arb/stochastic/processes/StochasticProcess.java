@@ -1,6 +1,6 @@
 package arb.stochastic.processes;
 
-import static arb.utensils.Utils.println;
+import static arb.utensils.Utilities.println;
 import static org.junit.Assert.assertEquals;
 
 import arb.RandomState;

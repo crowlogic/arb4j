@@ -1,7 +1,7 @@
 package arb.functions.complex;
 
 import arb.Complex;
-import arb.utensils.Utils;
+import arb.utensils.Utilities;
 
 /**
  * @see <a href="elliptic/doc-files/ThetaFunctionVocabulary1.pdf">Theta Vocab
@@ -14,7 +14,7 @@ public class JacobiθFunction implements
   @Override
   public Complex evaluate(Complex t, int order, int prec, Complex res)
   {
-    return Utils.TODO("implement");
+    return Utilities.TODO("implement");
   }
 
 }

@@ -1,6 +1,6 @@
 package arb.functions.real;
 
-import static arb.utensils.Utils.println;
+import static arb.utensils.Utilities.println;
 
 import org.junit.Test;
 
