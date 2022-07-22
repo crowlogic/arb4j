@@ -75,7 +75,7 @@ public interface ComplexFunction extends
     if (useHeap && depth > 0)
     {
       swapElements(depth, as, bs, vs, ms);
-      Utilities.heap_up(as, bs, vs, ms, depth);
+      Utilities.heapUp(as, bs, vs, ms, depth);
     }
   }
 
@@ -93,7 +93,7 @@ public interface ComplexFunction extends
     if (useHeap && depth > 0)
     {
       swapElements(depth, as, bs, vs, ms);
-      Utilities.heap_up(as, bs, vs, ms, depth);
+      Utilities.heapUp(as, bs, vs, ms, depth);
     }
   }
 
@@ -445,8 +445,8 @@ public interface ComplexFunction extends
 
           if (useHeap)
           {
-            Utilities.heap_up(as, bs, vs, ms, depth);
-            Utilities.heap_down(as, bs, vs, ms, depth + 1);
+            Utilities.heapUp(as, bs, vs, ms, depth);
+            Utilities.heapDown(as, bs, vs, ms, depth + 1);
           }
 
           depth++;

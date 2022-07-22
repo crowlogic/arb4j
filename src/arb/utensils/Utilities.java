@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
 import org.junit.runner.JUnitCore;
+import org.lwjgl.system.MemoryStack;
 
 import arb.*;
 
@@ -102,7 +103,17 @@ public class Utilities
     return (openInJFrame(content, width, height, content.getClass().getName(), Color.white, closeOp));
   }
 
-  public static void heap_up(Real as, Real bs, Complex vs, Magnitude ms, int n)
+  /**
+   * TODO: replace usage of this function with {@link MemoryStack}
+   * 
+   * @param as
+   * @param bs
+   * @param vs
+   * @param ms
+   * @param n
+   */
+  @Deprecated(forRemoval = true)
+  public static void heapUp(Real as, Real bs, Complex vs, Magnitude ms, int n)
   {
     int i, max, l, r;
     i = 0;
@@ -130,7 +141,17 @@ public class Utilities
     }
   }
 
-  public static void heap_up(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
+  /**
+   * TODO: replace usage of this function with {@link MemoryStack}
+   * 
+   * @param as
+   * @param bs
+   * @param vs
+   * @param ms
+   * @param n
+   */
+  @Deprecated(forRemoval = true)
+  public static void heapUp(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
   {
     int i, max, l, r;
     i = 0;
@@ -158,7 +179,17 @@ public class Utilities
     }
   }
 
-  public static void heap_down(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
+  /**
+   * TODO: replace usage of this function with {@link MemoryStack}
+   * 
+   * @param as
+   * @param bs
+   * @param vs
+   * @param ms
+   * @param n
+   */
+  @Deprecated(forRemoval = true)
+  public static void heapDown(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
   {
     int k = n - 1;
     int j = (k - 1) / 2;
@@ -206,7 +237,17 @@ public class Utilities
     return acb_contains_zero(tmp) != 0;
   }
 
-  public static void heap_down(Real as, Real bs, Complex vs, Magnitude ms, int n)
+  /**
+   * TODO: replace usage of this function with {@link MemoryStack}
+   * 
+   * @param as
+   * @param bs
+   * @param vs
+   * @param ms
+   * @param n
+   */
+  @Deprecated(forRemoval = true)
+  public static void heapDown(Real as, Real bs, Complex vs, Magnitude ms, int n)
   {
     int k = n - 1;
     int j = (k - 1) / 2;
@@ -230,7 +271,7 @@ public class Utilities
   public static <F> F TODO(String string)
   {
     new Throwable("TODO: " + string).printStackTrace();
-    
+
     JOptionPane.showConfirmDialog(null, "TODO: " + string + " !!! ");
     return null;
   }
