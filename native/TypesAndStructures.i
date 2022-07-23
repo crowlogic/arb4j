@@ -139,12 +139,6 @@ typedef const acb_struct * acb_srcptr;
 
 typedef struct
 {
-fmpz
-
-    an fmpz is implemented as an slong. When its second most significant bit is 0 the fmpz represents an ordinary slong integer whose absolute value is at most FLINT_BITS - 2 bits.
-
-    When the second most significant bit is 1 then the value represents a pointer (the pointer is shifted right 2 bits and the second msb is set to 1 - this relies on the fact that malloc always allocates memory blocks on a 4 or 8 byte boundary).
-
     ulong q;                /* modulus */
     ulong q_even;           /* even part of modulus */
     nmod_t mod;             /* modulus with precomputed inverse */
