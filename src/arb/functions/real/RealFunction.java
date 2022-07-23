@@ -183,24 +183,25 @@ public interface RealFunction extends
     evaluate(convergenceRegion, 3, prec, jet).get(2).div(jet.get(1), prec, jet);
     arb.arb_mul_2exp_si(jet, jet, -1);
     arb.arb_get_abs_ubound_arf(convergenceFactor, jet, prec);
+    
     return convergenceFactor;
   }
-
+  
   /**
    * <code>
    * Rigorously locates single roots of this function on the interior of an interval.
    * 
-   * {@link Roots} has the following properties: 
+   * {@link Roots} has the following properties: <br><br>
    * 
-   * 1. The function has no roots on interval outside of the output subintervals.
+   * 1. The function has no roots on interval outside of the output subintervals.<br><br>
    * 
-   * 2. Subintervals are sorted in increasing order (with no overlap except possibly starting and ending with the same point).
+   * 2. Subintervals are sorted in increasing order (with no overlap except possibly starting and ending with the same point).<br><br>
    * 
-   * 3. Subintervals with a flag of 1 contain exactly one (single) root.
+   * 3. Subintervals with a flag of 1 contain exactly one (single) root.<br><br>
    * 
-   * 4. Subintervals with any other flag may or may not contain roots.
+   * 4. Subintervals with any other flag may or may not contain roots.<br><br>
    * 
-   * 5. If no flags other than 1 occur, all roots of the function on interval have been located.
+   * 5. If no flags other than 1 occur, all roots of the function on interval have been located.<br><br>
    *  
    * If there are output subintervals on which the existence or nonexistence of roots could not be determined, 
    * further searches on those subintervals may be attempted with possibly with increased precision and/or increased bounds for 

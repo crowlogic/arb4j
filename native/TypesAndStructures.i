@@ -1,5 +1,4 @@
 %{
-
 #include <flint/fmpz.h>
 #include <mpfr.h>
 #include <flint/flint.h>
@@ -15,17 +14,25 @@
 #include <acb_modular.h>
 #include <acb_dft.h>
 
-
-
-  int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
-  int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
-  int f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
+int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
+int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
+int f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 
 #include "color.h"
 #ifndef size_t
 #define size_t long unsigned int
 #endif
 %}
+
+/**
+ fmpz is an arbitrary precision integer implemented as a signed 64bit integer. 
+ When its second most significant bit is 0 fmpz represents an ordinary slong integer whose absolute value is at most FLINT_BITS - 2 bits.
+ When the second most significant bit is 1 fmpz represents a pointer which is shifted right 2 bits and the second msb is set to 1 - 
+ this relies on the fact that malloc always allocates memory blocks on a 4 or 8 byte boundary).
+ msb=MostSiginificantBit
+ */
+typedef long long int fmpz;
+typedef fmpz fmpz_t[1];
 
 /* Available random number generation algorithms.  */
 typedef enum
@@ -43,23 +50,23 @@ typedef const __mpfr_struct *mpfr_srcptr;
 
 typedef struct
 {
-  int _mp_alloc;		/* Number of *limbs* allocated and pointed
-				   to by the _mp_d field.  */
-  int _mp_size;			/* abs(_mp_size) is the number of limbs the
-				   last field points to.  If _mp_size is
-				   negative this is a negative number.  */
+  int _mp_alloc;		/* Number of *limbs* allocated and pointed to by the _mp_d field.  */
+  int _mp_size;			/**
+                         * abs(_mp_size) is the number of limbs the last field points to.  
+                         * If _mp_size is negative this is a negative number.  
+                         */ 
   mp_limb_t *_mp_d;		/* Pointer to the limbs.  */
 } __mpz_struct;
-
 
 typedef __mpz_struct mpz_t[1];
 
 /* Random state struct.  */
 typedef struct
 {
-  mpz_t _mp_seed;	  /* _mp_d member points to state of the generator. */
+  mpz_t _mp_seed;	      /* _mp_d member points to state of the generator. */
   gmp_randalg_t _mp_alg;  /* Currently unused. */
-  union {
+  union 
+  {
     void *_mp_lc;         /* Pointer to function pointers structure.  */
   } _mp_algdata;
 } __gmp_randstate_struct;
@@ -108,8 +115,6 @@ typedef arf_interval_struct arf_interval_t[1];
 typedef arf_interval_struct * arf_interval_ptr;
 typedef const arf_interval_struct * arf_interval_srcptr;
 
-
-
 typedef struct
 {
     fmpz exp;
@@ -120,7 +125,6 @@ mag_struct;
 typedef mag_struct mag_t[1];
 typedef mag_struct * mag_ptr;
 typedef const mag_struct * mag_srcptr;
-
 
 typedef struct
 {
@@ -135,6 +139,12 @@ typedef const acb_struct * acb_srcptr;
 
 typedef struct
 {
+fmpz
+
+    an fmpz is implemented as an slong. When its second most significant bit is 0 the fmpz represents an ordinary slong integer whose absolute value is at most FLINT_BITS - 2 bits.
+
+    When the second most significant bit is 1 then the value represents a pointer (the pointer is shifted right 2 bits and the second msb is set to 1 - this relies on the fact that malloc always allocates memory blocks on a 4 or 8 byte boundary).
+
     ulong q;                /* modulus */
     ulong q_even;           /* even part of modulus */
     nmod_t mod;             /* modulus with precomputed inverse */
@@ -239,16 +249,7 @@ acb_poly_struct;
 
 typedef acb_poly_struct acb_poly_t[1];
 
-
-
-
-
-
-
-
-
 // DFT stuff
-
 
 typedef struct acb_dft_step_struct acb_dft_step_struct;
 typedef acb_dft_step_struct * acb_dft_step_ptr;

@@ -5656,18 +5656,12 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1FloatInterval(JNIEnv *jenv, jcla
 SWIGEXPORT void JNICALL Java_arb_arbJNI_Magnitude_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   mag_struct *arg1 = (mag_struct *) 0 ;
   fmpz arg2 ;
-  fmpz *argp2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(mag_struct **)&jarg1; 
-  argp2 = *(fmpz **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null fmpz");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg2 = (fmpz)jarg2; 
   if (arg1) (arg1)->exp = arg2;
 }
 
@@ -5681,12 +5675,8 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Magnitude_1exp_1get(JNIEnv *jenv, jclas
   (void)jcls;
   (void)jarg1_;
   arg1 = *(mag_struct **)&jarg1; 
-  result =  ((arg1)->exp);
-  {
-    fmpz * resultptr = (fmpz *) malloc(sizeof(fmpz));
-    memmove(resultptr, &result, sizeof(fmpz));
-    *(fmpz **)&jresult = resultptr;
-  }
+  result = (fmpz) ((arg1)->exp);
+  jresult = (jlong)result; 
   return jresult;
 }
 
@@ -6766,18 +6756,12 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Mantissa(JNIEnv *jenv, jclass jc
 SWIGEXPORT void JNICALL Java_arb_arbJNI_Float_1exp_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   arf_struct *arg1 = (arf_struct *) 0 ;
   fmpz arg2 ;
-  fmpz *argp2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(arf_struct **)&jarg1; 
-  argp2 = *(fmpz **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null fmpz");
-    return ;
-  }
-  arg2 = *argp2; 
+  arg2 = (fmpz)jarg2; 
   if (arg1) (arg1)->exp = arg2;
 }
 
@@ -6791,12 +6775,8 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Float_1exp_1get(JNIEnv *jenv, jclass jc
   (void)jcls;
   (void)jarg1_;
   arg1 = *(arf_struct **)&jarg1; 
-  result =  ((arg1)->exp);
-  {
-    fmpz * resultptr = (fmpz *) malloc(sizeof(fmpz));
-    memmove(resultptr, &result, sizeof(fmpz));
-    *(fmpz **)&jresult = resultptr;
-  }
+  result = (fmpz) ((arg1)->exp);
+  jresult = (jlong)result; 
   return jresult;
 }
 
