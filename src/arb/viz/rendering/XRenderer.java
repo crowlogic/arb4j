@@ -22,13 +22,13 @@ public class XRenderer extends
   {
     XRenderer r = new XRenderer();
     r.displayMode = Part.Real;
-    r.colorMode   = 3;
+    r.colorMode   = 4;
     r.render();
     r.saveToFile("X-Real.png");
   }
 
-  public static final int width  = (int) (1800 / 2);
-  public static final int height = (int) (900 / 2);
+  public static final int width  = (int) (1800/2 );
+  public static final int height = (int) (900/2 );
 
   public XRenderer(Real vscale) throws NoninvertibleTransformException
   {

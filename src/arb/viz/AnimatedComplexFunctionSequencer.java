@@ -1,5 +1,6 @@
 package arb.viz;
 
+import static arb.RealConstants.*;
 import static java.lang.System.out;
 
 import java.awt.*;
@@ -56,19 +57,17 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
   public static void
          main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
   {
-    int       framesPerSecond = 15;
-    int       secondsLong     = 10;
+    int       framesPerSecond = 30;
+    int       secondsLong     = 15;
     final int frameCount      = framesPerSecond * secondsLong;
     YRenderer renderer        = new YRenderer();
     renderer.colorMode   = 1;
     renderer.displayMode = Part.Real;
-    Real                                        scaleStart             = new Real().one().div(2, 128);
-    Real                                        scaleStop              = new Real().set("3", 128);
+    Real                                        scaleStart             = half;
+    Real                                        scaleStop              = new Real("2",
+                                                                                  128);
     Real                                        scaleLen               = scaleStop.sub(scaleStart, 128, new Real());
-    Real                                        dt                     = new Real().one()
-                                                                                   .div(framesPerSecond,
-                                                                                        128,
-                                                                                        new Real());
+    Real                                        dt                     = one.div(framesPerSecond, 128, new Real());
     Real                                        dscale                 = scaleLen.div(frameCount, 128);
     Real                                        scale                  = new Real().set(scaleStart);
     Real                                        motion                 = new Real();
@@ -77,7 +76,11 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
                                                                          double percentComplete = 100.0
                                                                                        * ((double) frame
                                                                                                      / (double) frameCount);
-                                                                         scale.add(dscale, 128, scale);
+                                                                         scaleStart.add(dscale.mul(frame,
+                                                                                                   prec,
+                                                                                                   scale),
+                                                                                        prec,
+                                                                                        scale);
                                                                          System.out.format("Setting scale to %s of %s at %.3f%% complete on frame#%d\n",
                                                                                            scale.toString(10),
                                                                                            scaleStop.toString(10),
