@@ -44,9 +44,9 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.4.0</version>
 				<configuration>
-					<additionalOptions>
-						<option>--module</option>
-						<option>arb4j</option>
+					<additionalOptions>	
+						<option>--add-exports</option>
+						<option>ALL-UNNAMED=ALL-UNNAMED</option>
 					</additionalOptions>
 				</configuration>
 			</plugin>
