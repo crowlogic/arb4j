@@ -29,36 +29,29 @@ import static arb.IntegerConstants.*;
  * 
  */
 
-public class Float implements
-                   AutoCloseable,
-                   Comparable<Float>
-{
-  private transient long      swigCPtr;
+public class Float implements AutoCloseable,Comparable<Float> {
+  private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public Float(long cPtr, boolean cMemoryOwn)
-  {
+  public Float(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(Float obj)
-  {
+  public static long getCPtr(Float obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arbJNI.delete_Float(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
+
 
   /**
    * @return {@link arb#arf_is_zero(Float)} != 0
@@ -73,7 +66,7 @@ public class Float implements
   {
     return arb.arf_cmp(this, o);
   }
-
+  
   /**
    * 
    * @return {@link arb#arf_is_nan(Float)} != 0
@@ -82,21 +75,21 @@ public class Float implements
   {
     return arb.arf_is_nan(this) != 0;
   }
-
+  
   /**
    * @return {@link arb#arf_equal(Float, Float)} != 0
    */
   @Override
   public boolean equals(Object obj)
   {
-    if (!(obj instanceof Float))
+    if ( !(obj instanceof Float))
     {
       return false;
     }
-    Float that = (Float) obj;
+    Float that = (Float)obj;
     return arb.arf_equal(this, that) != 0;
   }
-
+  
   /**
    * 
    * @return {@link arb#arf_is_inf(Float)} != 0
@@ -105,136 +98,136 @@ public class Float implements
   {
     return arb.arf_is_inf(this) != 0;
   }
-
+  
   @Override
   public void close()
-  {
-    clear();
+  { 
+	clear();    
   }
-
+  
   public Float clear()
   {
-    if (swigCMemOwn)
+    if ( swigCMemOwn )
     {
-      arb.arf_clear(this);
+	    arb.arf_clear(this);
     }
     return this;
-  }
-
+  } 
+  
   public String toString(int digits)
   {
-    return arb.arf_get_str(this, digits);
+    return arb.arf_get_str(this,digits);
   }
-
+  
   public Float zero()
   {
-    arb.arf_zero(this);
+    arb.arf_zero( this );
     return this;
   }
-
-  public Float neg(Float res)
+  
+  public Float neg( Float res )
   {
-    arb.arf_neg(res, this);
+    arb.arf_neg( res, this );
     return this;
   }
-
-  public Float mul(Float y, int prec, Float res)
+  
+  public Float mul( Float y, int prec, Float res )
   {
-    arb.arf_mul_rnd_down(res, this, y, prec);
-    return this;
+   arb.arf_mul_rnd_down( res, this, y, prec );
+   return this;
   }
 
   public Magnitude getMagnitude(Magnitude v)
   {
     arb.arf_get_mag(v, this);
-    return v;
+    return v;    
   }
-
-  public Float assign(Float f)
+  
+  public Float assign( Float f )
   {
-    arb.arf_set(this, f);
+    arb.arf_set( this, f );
     return this;
   }
-
+  
   public Float assign(double i)
   {
     arb.arf_set_d(this, i);
     return this;
   }
-
+  
   public Float init()
   {
     arb.arf_init(this);
     return this;
   }
-
+  
   public String toString()
   {
-    return arb.arf_get_str(this, 15);
+    return arb.arf_get_str(this,15);
   }
 
   public Float add(Float ay, int precision, Float result)
   {
     arb.arf_add(result, this, ay, precision, ARF_RND_DOWN);
-    return result;
+    return result;    
   }
-
+    
   public Float add(Float ay, int thisprec, RoundingMode roundingMode, Float result)
   {
     arb.arf_add(result, this, ay, thisprec, roundingMode.ordinal());
-    return result;
+    return result;    
   }
 
-  public double doubleValue(RoundingMode roundingMode)
+  public double doubleValue( RoundingMode roundingMode )
   {
-    return arb.arf_get_d(this, roundingMode.ordinal());
+    return arb.arf_get_d( this, roundingMode.ordinal() );
   }
-
+ 
   public Float sub(Float ay, int thisprec, Float result)
   {
-    return sub(ay, thisprec, RoundingMode.Down, result);
+    return sub(ay,thisprec,RoundingMode.Down,result);
   }
-
+    
   public Float sub(Float ay, int thisprec, RoundingMode round, Float result)
   {
     arb.arf_sub(result, this, ay, thisprec, round.ordinal());
-    return result;
+    return result;    
   }
-
+  
   public Float mul(int ay, Float zi, int thisprec)
   {
     arb.arf_mul_ui(zi, this, ay, thisprec, ARF_RND_DOWN);
-    return zi;
+    return zi;    
   }
-
+  
   public Float mul(int ay, Float zi, int thisprec, int round)
   {
     arb.arf_mul_ui(zi, this, ay, thisprec, round);
-    return zi;
+    return zi;    
   }
 
   public Float div(int i, Float res, int thisprec, int round)
   {
-    arb.arf_div_ui(res, this, i, thisprec, round);
-    return res;
+   	arb.arf_div_ui(res, this, i, thisprec, round);
+    return res;    
   }
-
+  
   public Float div(int i, int thisprec, Float res)
   {
     return div(i, res, thisprec, ARF_RND_DOWN);
   }
-
-  public Float div(int numPoints, int i, Float dt, int prec)
+  
+  public Float div(int numPoints, int i, Float dt, int prec )
   {
     arb.arf_div_ui(dt, this, numPoints, prec, ARF_RND_DOWN);
     return dt;
   }
-
+  
   public double doubleValue()
   {
-    return doubleValue(RoundingMode.Down);
+    return doubleValue( RoundingMode.Down );
   }
-
+ 
   /**
    * Calls {@link arb#arf_mul_2exp_si(Float, Float, int)}(res,this,-1)
    * 
@@ -246,46 +239,35 @@ public class Float implements
   {
     arb.arf_mul_2exp_si(res, this, -1);
     return res;
-  }
+  }    
 
-  public void setExp(SWIGTYPE_p_fmpz value)
-  {
+  public void setExp(SWIGTYPE_p_fmpz value) {
     arbJNI.Float_exp_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
   }
 
-  public SWIGTYPE_p_fmpz getExp()
-  {
-    return new SWIGTYPE_p_fmpz(arbJNI.Float_exp_get(swigCPtr, this),
-                               true);
+  public SWIGTYPE_p_fmpz getExp() {
+    return new SWIGTYPE_p_fmpz(arbJNI.Float_exp_get(swigCPtr, this), true);
   }
 
-  public void setSize(SWIGTYPE_p_mp_size_t value)
-  {
+  public void setSize(SWIGTYPE_p_mp_size_t value) {
     arbJNI.Float_size_set(swigCPtr, this, SWIGTYPE_p_mp_size_t.getCPtr(value));
   }
 
-  public SWIGTYPE_p_mp_size_t getSize()
-  {
-    return new SWIGTYPE_p_mp_size_t(arbJNI.Float_size_get(swigCPtr, this),
-                                    true);
+  public SWIGTYPE_p_mp_size_t getSize() {
+    return new SWIGTYPE_p_mp_size_t(arbJNI.Float_size_get(swigCPtr, this), true);
   }
 
-  public void setD(Mantissa value)
-  {
+  public void setD(Mantissa value) {
     arbJNI.Float_d_set(swigCPtr, this, Mantissa.getCPtr(value), value);
   }
 
-  public Mantissa getD()
-  {
+  public Mantissa getD() {
     long cPtr = arbJNI.Float_d_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Mantissa(cPtr,
-                                             false);
+    return (cPtr == 0) ? null : new Mantissa(cPtr, false);
   }
 
-  public Float()
-  {
-    this(arbJNI.new_Float(),
-         true);
+  public Float() {
+    this(arbJNI.new_Float(), true);
   }
 
 }
