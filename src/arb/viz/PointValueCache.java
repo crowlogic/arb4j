@@ -1,11 +1,16 @@
 package arb.viz;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.FileChannel.MapMode;
+import java.nio.file.Path;
 
 import arb.Complex;
 import arb.arb;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * If the precision of the number is 128 bits or less then the only space
@@ -15,6 +20,7 @@ import arb.arb;
  * things.. so we go with the rule-of-thumb that 128 bits is enough for
  * calculating RGB intensities anyway..
  * 
+ * TODO: use MemorySegmen
  */
 public class PointValueCache implements
                              AutoCloseable
@@ -24,38 +30,30 @@ public class PointValueCache implements
     System.loadLibrary("arblib");
   }
 
-  Complex                  points[][][];
+  Complex            points[][][];
 
-  private int              width;
+  private int        width;
 
-  private int              height;
+  private int        height;
 
-  private MappedByteBuffer buffer;
+  private ByteBuffer buffer;
 
-  private MappedByteBuffer buffer1;
+  private ByteBuffer buffer1;
 
-  private long             bufferAddress;
+  private long       bufferAddress;
 
-  private long             buffer1Address;
+  private long       buffer1Address;
 
   public Complex pointAt(int n, int x, int y)
   {
     return points[n][x][y];
   }
 
-  public boolean           complete = true;
+  public boolean       complete = true;
 
-  private FileChannel      channel;
+  public MemorySegment segment;
 
-  private FileChannel      channel1;
-
-  private RandomAccessFile file;
-
-  private RandomAccessFile file1;
-
-  private File             handle;
-
-  private File             handle1;
+  public MemorySegment segment1;
 
   public PointValueCache(String id, int numXpoints, int numYpoints)
   {
@@ -71,27 +69,18 @@ public class PointValueCache implements
 
     try
     {
-      handle  = new File(id + ".arb");
-      file    = new RandomAccessFile(handle,
-                                     "rw");
-      handle1 = new File(id + ".arb1");
-      file1   = new RandomAccessFile(handle1,
-                                     "rw");
-      if (file.length() < bytes)
-      {
-        file.setLength(bytes);
-        complete = false;
-      }
-      if (file1.length() < bytes)
-      {
-        file1.setLength(bytes);
-        complete = false;
-      }
-
-      channel        = file.getChannel();
-      channel1       = file1.getChannel();
-      buffer         = channel.map(FileChannel.MapMode.READ_WRITE, 0, bytes);
-      buffer1        = channel1.map(FileChannel.MapMode.READ_WRITE, 0, bytes);
+      segment        = MemorySegment.mapFile(Path.of(id + ".arb"),
+                                             0,
+                                             bytes,
+                                             MapMode.READ_WRITE,
+                                             ResourceScope.globalScope());
+      segment1       = MemorySegment.mapFile(Path.of(id + ".arb1"),
+                                             0,
+                                             bytes,
+                                             MapMode.READ_WRITE,
+                                             ResourceScope.globalScope());
+      buffer         = segment.asByteBuffer();
+      buffer1        = segment1.asByteBuffer();
 
       points         = new Complex[2][numXpoints][numYpoints];
       bufferAddress  = arb.bufferAddress(buffer);
@@ -125,25 +114,15 @@ public class PointValueCache implements
   {
     buffer  = null;
     buffer1 = null;
-    try
-    {
-      if (!complete)
-      {
-        System.err.println("Truncating incomplete files " + handle + " and " + handle1);
-        complete = true;
-        handle.delete();
-        handle1.delete();
+    segment.unload();
+    segment1.unload();
 
-      }
-      file.close();
-      file1.close();
-      channel.close();
-      channel1.close();
-    }
-    catch (IOException e)
+    if (!complete)
     {
-      throw new UnsupportedOperationException(e.getMessage(),
-                                              e);
+      System.err.println("TODO: fix this, incomplete files " + segment + " and " + segment1);
+      complete = true;
+
     }
+
   }
 }
