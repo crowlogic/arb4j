@@ -1,14 +1,9 @@
 package arb.functions.complex;
 
-import static arb.RealConstants.one;
-
-import javax.swing.JFrame;
+import static arb.RealConstants.*;
 
 import arb.*;
-import arb.curves.ComplexCircle;
-import arb.functions.real.RealFunction;
-import arb.functions.real.RealPart;
-import arb.viz.RealFunctionPlotter;
+import arb.curves.*;
 
 /**
  * S(e^i*θ) where θ is a real-valued angle but its easier for now to work with
@@ -19,48 +14,6 @@ public class CircularS extends
                        CircularComposition<SFunction>
 {
 
-  @SuppressWarnings("resource")
-  public static void main(String args[])
-  {
-    JFrame              frame            = new JFrame();
-    RealFunction        circularRealPart = new RealPart(new CircularS(new Real().set("1", 128),
-                                                                      new Real().set("0.1", 128)));
-
-    FloatInterval       domain           = new FloatInterval(-Math.PI,
-                                                             Math.PI);
-    FloatInterval       range            = new FloatInterval(-0.011,
-                                                             0.011);
-    RealFunctionPlotter plotter          = new RealFunctionPlotter(circularRealPart,
-                                                                   domain,
-                                                                   range,
-                                                                   500);
-
-    frame.getContentPane().add(plotter.asComponent());
-    frame.setTitle(circularRealPart.getClass().getSimpleName());
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    plotter.addCleanupOnWindowClosingListener(frame);
-
-    frame.pack();
-    frame.setVisible(true);
-
-    Roots root = circularRealPart.locateRoots(new RootLocatorOptions(new RealRootInterval(-.8,
-                                                                                          -0.7),
-                                                                     150,
-                                                                     1,
-                                                                     50000,
-                                                                     512));
-    root.refine(circularRealPart, 256, 100, true);
-    System.out.println("root=" + root);
-    Real angle               = root.get(0).getReal(new Real(), 128);
-
-    Real degrees             = angle.mul(180, 128, new Real());
-
-    Real functionAtZeroAngle = circularRealPart.evaluate(angle, 1, 512, new Real());
-    System.out.println("function(angle(w)) should equal 0 =" + functionAtZeroAngle);
-    System.out.println("angle=" + angle);
-    System.out.println("degrees=" + degrees);
-    // println("hmm=" + hmm.div(RealConstants.radiansPerDegree, 128, new Real() ) );
-  }
 
   public CircularS()
   {

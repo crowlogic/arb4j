@@ -1,34 +1,28 @@
 package arb.viz;
 
-import static java.lang.Math.tanh;
-import static java.lang.System.out;
+import static java.lang.System.*;
 import static java.util.stream.IntStream.*;
 
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
+import java.awt.image.*;
+import java.io.*;
+import java.util.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
+import java.util.stream.*;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
 import javax.swing.*;
+import javax.swing.Timer;
 
 import arb.*;
 import arb.Float;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.ZFunction;
-import arb.utensils.Utilities;
-import hageldave.jplotter.color.ColorMap;
-import hageldave.jplotter.color.DefaultColorMap;
+import arb.functions.complex.*;
+import arb.utensils.*;
 
 /**
  * creates a rendering of a patch of a complex valued function of a complex
@@ -157,10 +151,6 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   private AffineTransform      originalTransform;
 
   volatile boolean             anythingChanged                 = false;
-
-  ColorMap                     colorMap                        = DefaultColorMap.S_BEACH;
-
-  ColorMap                     colorMapB                       = DefaultColorMap.S_PLASMA;
 
   ThreadLocalReal              r                               = new ThreadLocalReal();
 
@@ -323,14 +313,14 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   }
 
   boolean closing = false;
-  
+
   @Override
   public void close()
   {
     System.out.println("Renderer closing. complete=" + image.complete);
-    //unassignInputHandlers();
+    // unassignInputHandlers();
     System.out.println("Disengaged input handlers...");
-    if (!image.complete && !closing )
+    if (!image.complete && !closing)
     {
       closing = true;
       System.out.println("Dispatching WINDOW_CLOSING event to frame..");
@@ -386,46 +376,47 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   private void colorizePixel(int x, int y, Complex w)
   {
-//    Pixel pixel = colorizePixel(w);
+    Pixel pixel = colorizePixel(w);
 //
-//    int   red   = (int) min(255, floor(pixel.R[0] * 255));
-//    int   green = (int) min(255, floor(pixel.G[0] * 255));
-//    int   blue  = (int) min(255, floor(pixel.B[0] * 255));
+    int   red   = (int) Math.min(255, Math.floor(pixel.R[0] * 255));
+    int   green = (int) Math.min(255, Math.floor(pixel.G[0] * 255));
+    int   blue  = (int) Math.min(255, Math.floor(pixel.B[0] * 255));
+    functionImage.setRGB(x, y, red | green << 8 | blue << 16);
 
     // double v =
     // tanh(sqrt(pow(w.getImag().doubleValue(),2)+pow(w.getReal().doubleValue(),2)));
     // double v = tanh(w.getImag().doubleValue()+w.getReal().doubleValue()/2);
     // double v = w.arg(128, r.get()).doubleValue()/Math.PI;
-    switch (displayMode)
-    {
-    case Real:
-      double v = tanh(w.getReal().doubleValue());
-      if (!java.lang.Double.isFinite(v))
-      {
-        v = 0;
-      }
-      functionImage.setRGB(x, y, v < 0 ? colorMapB.interpolate(-v) : colorMap.interpolate(v));
-      break;
-    case Imag:
-      v = tanh(w.getImag().doubleValue());
-      if (!java.lang.Double.isFinite(v))
-      {
-        v = 0;
-      }
-      functionImage.setRGB(x, y, v < 0 ? colorMapB.interpolate(-v) : colorMap.interpolate(v));
-      break;
-    case Phase:
-      Real r = this.r.get();
-      v = w.arg(128, r).div(RealConstants.π, 128, r).doubleValue();
-      if (!java.lang.Double.isFinite(v))
-      {
-        v = 0;
-      }
-      functionImage.setRGB(x, y, v < 0 ? colorMapB.interpolate(-v) : colorMap.interpolate(v));
-      break;
-    case Blend:
+//    switch (displayMode)
+//    {
+//    case Real:
+//      double v = tanh(w.getReal().doubleValue());
+//      if (!java.lang.Double.isFinite(v))
+//      {
+//        v = 0;
+//      }
+//      functionImage.setRGB(x, y, v < 0 ? colorMapB.interpolate(-v) : colorMap.interpolate(v));
+//      break;
+//    case Imag:
+//      v = tanh(w.getImag().doubleValue());
+//      if (!java.lang.Double.isFinite(v))
+//      {
+//        v = 0;
+//      }
+//      functionImage.setRGB(x, y, v < 0 ? colorMapB.interpolate(-v) : colorMap.interpolate(v));
+//      break;
+//    case Phase:
+//      Real r = this.r.get();
+//      v = w.arg(128, r).div(RealConstants.π, 128, r).doubleValue();
+//      if (!java.lang.Double.isFinite(v))
+//      {
+//        v = 0;
+//      }
+//      functionImage.setRGB(x, y, v < 0 ? colorMapB.interpolate(-v) : colorMap.interpolate(v));
+//      break;
+//    case Blend:
 
-    }
+    // }
   }
 
   private void drawCursor() throws NoninvertibleTransformException
