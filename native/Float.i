@@ -171,30 +171,23 @@ import static arb.IntegerConstants.*;
     return result;    
   }
   
-  public Float mul(int ay, Float zi, int thisprec)
+  public Float mul(int ay, int thisprec, Float result)
   {
-    arb.arf_mul_ui(zi, this, ay, thisprec, ARF_RND_DOWN);
-    return zi;    
-  }
-  
-  public Float mul(int ay, Float zi, int thisprec, int round)
-  {
-    arb.arf_mul_ui(zi, this, ay, thisprec, round);
-    return zi;    
+    arb.arf_mul_ui(result, this, ay, thisprec, ARF_RND_DOWN);
+    return result;    
   }
 
-  public Float div(int i, int round, int thisprec, Float res)
+  public Float div(int i, RoundingMode round, int thisprec, Float res)
   {
-   	arb.arf_div_ui(res, this, i, thisprec, round);
+   	arb.arf_div_ui(res, this, i, thisprec, round.ordinal());
     return res;    
   }
   
   public Float div(int i, int thisprec, Float res)
   {
-    return div(i, ARF_RND_DOWN, thisprec, res);
+    return div(i, RoundingMode.Down, thisprec, res);
   }
 
-  
   public double doubleValue()
   {
     return doubleValue( RoundingMode.Down );

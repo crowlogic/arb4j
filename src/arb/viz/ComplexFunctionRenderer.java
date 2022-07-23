@@ -914,13 +914,13 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
     // zi = ( (by - ay) * y ) / ( ynum - 1 )
     by.sub(ay, prec, zi);
-    zi.mul(y, zi, prec);
+    zi.mul(y, prec, zi);
     zi.div(height - 1, prec, zi);
     zi.add(ay, prec, zi);
 
     // zr = ( (bx - ax) * x ) / ( xnum - 1 )
     bx.sub(ax, prec, zr);
-    zr.mul(x, zr, prec);
+    zr.mul(x, prec, zr);
     zr.div(width - 1, prec, zr);
     zr.add(ax, prec, zr);
 
