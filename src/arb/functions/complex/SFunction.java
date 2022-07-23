@@ -1,10 +1,9 @@
-package arb.functions.complex.numbertheoretic;
+package arb.functions.complex;
 
 import static java.lang.String.format;
 
 import arb.*;
 import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.HolomorphicFunction;
 
 /**
  * The rational meromorphic quartic

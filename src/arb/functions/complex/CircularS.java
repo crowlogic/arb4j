@@ -4,7 +4,6 @@ import static arb.RealConstants.*;
 
 import arb.*;
 import arb.curves.*;
-import arb.functions.complex.numbertheoretic.SFunction;
 
 /**
  * S(e^i*θ) where θ is a real-valued angle but its easier for now to work with

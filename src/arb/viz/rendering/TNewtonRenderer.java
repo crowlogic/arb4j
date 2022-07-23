@@ -6,8 +6,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.io.IOException;
 
+import arb.functions.complex.TFunction;
 import arb.functions.complex.dynamics.NewtonFlow;
-import arb.functions.complex.numbertheoretic.TFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 

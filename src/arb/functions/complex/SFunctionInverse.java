@@ -1,7 +1,6 @@
-package arb.functions.complex.numbertheoretic;
+package arb.functions.complex;
 
 import arb.*;
-import arb.functions.complex.HolomorphicFunction;
 
 public class SFunctionInverse implements
                               HolomorphicFunction

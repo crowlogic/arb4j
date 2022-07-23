@@ -1,8 +1,6 @@
-package arb.functions.complex.numbertheoretic;
+package arb.functions.complex;
 
 import arb.Real;
-import arb.functions.complex.HolomorphicFunction;
-import arb.functions.complex.WickRotation;
 import arb.operators.Composition;
 
 public class TFunction extends

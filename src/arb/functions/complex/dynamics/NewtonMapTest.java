@@ -3,7 +3,7 @@ package arb.functions.complex.dynamics;
 import arb.Complex;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.HolomorphicFunction;
-import arb.functions.complex.numbertheoretic.SFunction;
+import arb.functions.complex.SFunction;
 import junit.framework.TestCase;
 
 public class NewtonMapTest extends

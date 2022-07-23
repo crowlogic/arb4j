@@ -3,6 +3,7 @@ package arb.functions.complex.numbertheoretic;
 import arb.Real;
 import arb.functions.*;
 import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.SFunction;
 import arb.operators.Composition;
 
 /**

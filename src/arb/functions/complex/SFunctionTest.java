@@ -1,7 +1,6 @@
-package arb.functions.complex.numbertheoretic;
+package arb.functions.complex;
 
 import arb.Complex;
-import arb.functions.complex.HolomorphicFunction;
 import junit.framework.TestCase;
 
 public class SFunctionTest extends

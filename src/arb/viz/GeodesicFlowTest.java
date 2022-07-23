@@ -2,7 +2,7 @@ package arb.viz;
 
 import arb.ComplexConstants;
 import arb.Real;
-import arb.functions.complex.numbertheoretic.SFunction;
+import arb.functions.complex.SFunction;
 import arb.viz.GeodesicFlower.What;
 
 public class GeodesicFlowTest

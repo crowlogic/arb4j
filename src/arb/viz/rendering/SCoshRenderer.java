@@ -10,8 +10,6 @@ import javax.swing.JFrame;
 import arb.RealConstants;
 import arb.functions.complex.*;
 import arb.functions.complex.hyperbolic.HyperbolicCosine;
-import arb.functions.complex.numbertheoretic.SFunction;
-import arb.functions.complex.numbertheoretic.TFunction;
 import arb.operators.Composition;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
