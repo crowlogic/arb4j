@@ -34,7 +34,7 @@ public class PointValueCache implements
 
   private int        height;
 
-  private ByteBuffer buffer;
+  ByteBuffer buffer;
 
   private ByteBuffer buffer1;
 
@@ -67,11 +67,6 @@ public class PointValueCache implements
     this.width  = numXpoints;
     this.height = numYpoints;
     int bytes = Complex.BYTES * numXpoints * numYpoints;
-
-    Runtime.getRuntime().addShutdownHook(new Thread(() ->
-    {
-      PointValueCache.this.close();
-    }));
 
     try
     {
@@ -138,11 +133,14 @@ public class PointValueCache implements
   @Override
   public void close()
   {
+    assert buffer != null;
+    System.out.println("Closing function image cache " + file + " and " + file1);
     buffer  = null;
     buffer1 = null;
-    segment.unload();
-    segment1.unload();
-    
+//    segment.unload();
+//    segment1.unload();
+//    System.out.println( "unmapped caches");
+
     if (!complete)
     {
       System.err.println("Deleting incomplete files " + file + " and " + file1);
@@ -150,6 +148,6 @@ public class PointValueCache implements
       file1.delete();
 
     }
-
+    System.out.println("Finished closing cache..");
   }
 }

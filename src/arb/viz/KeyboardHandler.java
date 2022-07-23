@@ -73,9 +73,27 @@ public class KeyboardHandler implements
     case KeyEvent.VK_B:
       plotter.switchDisplayModeTo(Part.Blend);
       break;
-    case KeyEvent.VK_ESCAPE:
+    case KeyEvent.VK_ESCAPE:      
+      plotter.hide();      
       plotter.close();
-      System.exit(1);
+
+      System.out.println( "Halting in 1 second...");
+      System.out.flush();
+      try
+      {
+        Thread.sleep(1000);
+      }
+      catch (InterruptedException e1)
+      {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
+      System.out.println( "Halting ...");
+      System.out.flush();
+
+      Runtime.getRuntime().halt(1);
+      System.out.println( "Halted...");
+      System.out.flush();
       break;
     default:
       System.out.println(e);

@@ -1,10 +1,12 @@
 package arb.viz;
 
-import static java.lang.Math.*;
+import static java.lang.Math.tanh;
 import static java.lang.System.out;
 import static java.util.stream.IntStream.*;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.*;
 import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
@@ -51,7 +53,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
    * do not set to greater than 128, see {@link PointValueCache} for the
    * explanation
    */
-  protected final static int   precisionBits = 128;
+  protected final static int precisionBits = 128;
 
   public static void drawLine(Graphics2D g, Point2D.Double A, Point2D.Double B)
   {
@@ -79,29 +81,32 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     res.getImag().set(cursorInFunctionSpace2.y);
     return res;
   }
+
   protected Complex            w;
 
-  protected Complex            N             = Complex.newVector(2);                      // Newton step. w/dw
+  protected Complex            N                               = Complex.newVector(2);                      // Newton
+                                                                                                            // step.
+                                                                                                            // w/dw
 
-  ThreadLocalComplex           _z            = new ThreadLocalComplex(2);
+  ThreadLocalComplex           _z                              = new ThreadLocalComplex(2);
 
-  ThreadLocal<Pixel>           pixel         = ThreadLocal.withInitial(() -> new Pixel());
+  ThreadLocal<Pixel>           pixel                           = ThreadLocal.withInitial(() -> new Pixel());
 
-  ThreadLocal<Pixel>           pixel2        = ThreadLocal.withInitial(() -> new Pixel());
+  ThreadLocal<Pixel>           pixel2                          = ThreadLocal.withInitial(() -> new Pixel());
 
-  public int                   colorMode     = 0;
+  public int                   colorMode                       = 0;
 
   int                          width;
 
   int                          height;
 
-  public Float                 ax            = new Float();
+  public Float                 ax                              = new Float();
 
-  public Float                 bx            = new Float();
+  public Float                 bx                              = new Float();
 
-  public Float                 ay            = new Float();
+  public Float                 ay                              = new Float();
 
-  public Float                 by            = new Float();
+  public Float                 by                              = new Float();
 
   BufferedImage                functionImage;
 
@@ -113,7 +118,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   private Graphics2D           functionImageGraphics;
 
-  boolean                      headless      = false;
+  boolean                      headless                        = false;
 
   protected Dimension          resolution;
 
@@ -123,14 +128,14 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   AffineTransform              functionToScreenMapping;
 
-  boolean                      selection     = false;
+  boolean                      selection                       = false;
 
   public Double                cursorInFunctionSpace;
 
   Complex                      tangent;
-  private double               xtick         = 1;
+  private double               xtick                           = 1;
 
-  private double               ytick         = 1;
+  private double               ytick                           = 1;
 
   private AlphaComposite       alphaComposite;
 
@@ -147,72 +152,72 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   private Graphics2D           outputGraphics;
 
-  private Composite       originalComposite;
+  private Composite            originalComposite;
 
-  private AffineTransform originalTransform;
+  private AffineTransform      originalTransform;
 
-  volatile boolean        anythingChanged = false;
+  volatile boolean             anythingChanged                 = false;
 
-  ColorMap        colorMap  = DefaultColorMap.S_BEACH;
+  ColorMap                     colorMap                        = DefaultColorMap.S_BEACH;
 
-  ColorMap        colorMapB = DefaultColorMap.S_PLASMA;
+  ColorMap                     colorMapB                       = DefaultColorMap.S_PLASMA;
 
-  ThreadLocalReal r         = new ThreadLocalReal();
+  ThreadLocalReal              r                               = new ThreadLocalReal();
 
-  public Part displayMode = Part.Imag;
+  public Part                  displayMode                     = Part.Imag;
 
-  ThreadLocal<Complex[][]> cells  = newCell();
+  ThreadLocal<Complex[][]>     cells                           = newCell();
 
-  ThreadLocal<Complex[][]> zcells = newCell();
+  ThreadLocal<Complex[][]>     zcells                          = newCell();
 
-  ThreadLocal<Complex[][]> wcells = newCell();
-  protected PointValueCache image;
+  ThreadLocal<Complex[][]>     wcells                          = newCell();
+  protected PointValueCache    image;
 
-  boolean      singleThreading = false;
+  boolean                      singleThreading                 = false;
 
-  private long startTime;
+  private long                 startTime;
 
-  public boolean labelHardyZRoots = true;
+  public boolean               labelHardyZRoots                = true;
 
-  public boolean showHardyZRootLocations = false;
+  public boolean               showHardyZRootLocations         = false;
 
-  Color                  clear                           = new Color(0,
-                                                                     0,
-                                                                     0,
-                                                                     255);
+  Color                        clear                           = new Color(0,
+                                                                           0,
+                                                                           0,
+                                                                           255);
 
-  private RenderingHints renderingHints;
+  private RenderingHints       renderingHints;
 
-  public Point2D.Double  cursorInScreenSpace;
-  Color                  cursorColor                     = Color.BLACK;
+  public Point2D.Double        cursorInScreenSpace;
+  Color                        cursorColor                     = Color.BLACK;
 
   /**
    * cursor is analogous to coordinate
    */
 
-  Double                 tangentRayEndpointInScreenSpace = new Point2D.Double();
+  Double                       tangentRayEndpointInScreenSpace = new Point2D.Double();
 
-  protected F function;
+  protected F                  function;
 
-  boolean     disableNewton = true;
+  boolean                      disableNewton                   = true;
 
-  Real phase;
+  Real                         phase;
 
-  Complex damping = new Complex().set(0.1, 0);
+  Complex                      damping                         = new Complex().set(0.1, 0);
 
-  boolean         debug       = false;
+  boolean                      debug                           = false;
 
-  public Complex  trajectory;
+  public Complex               trajectory;
 
-  private boolean showHelp    = false;
+  private boolean              showHelp                        = false;
 
-  private Float   dx          = new Float();
+  private Float                dx                              = new Float();
 
-  private Float   dy          = new Float();
+  private Float                dy                              = new Float();
 
-  Mode            mode        = Mode.Translate;
+  Mode                         mode                            = Mode.Translate;
 
-  public boolean  keepRunning = false;
+  public boolean               keepRunning                     = false;
 
   public ComplexFunctionRenderer()
   {
@@ -230,15 +235,25 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     init();
   }
 
+  MouseHandler    mouseHandler    = new MouseHandler(this);
+
+  KeyboardHandler keyboardHandler = new KeyboardHandler(this);
+
   protected boolean assignKeyBoardAndMouseHandler()
   {
 
     setFocusable(true);
-    MouseHandler mouseHandler = new MouseHandler(this);
     addMouseListener(mouseHandler);
     addMouseMotionListener(mouseHandler);
-    addKeyListener(new KeyboardHandler(this));
+    addKeyListener(keyboardHandler);
     return true;
+  }
+
+  protected void unassignInputHandlers()
+  {
+    removeMouseListener(mouseHandler);
+    removeMouseMotionListener(mouseHandler);
+    removeKeyListener(keyboardHandler);
   }
 
   private void blendLayers(Graphics g, boolean dynamic)
@@ -298,18 +313,39 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   }
 
-  @Override
-  public void close()
+  public void hide()
   {
     if (frame != null && frame.isVisible())
     {
       frame.setVisible(false);
       frame.dispose();
     }
-    this._z.remove();
-    pixel.remove();
-    pixel2.remove();
-    image.close();
+  }
+
+  boolean closing = false;
+  
+  @Override
+  public void close()
+  {
+    System.out.println("Renderer closing. complete=" + image.complete);
+    //unassignInputHandlers();
+    System.out.println("Disengaged input handlers...");
+    if (!image.complete && !closing )
+    {
+      closing = true;
+      System.out.println("Dispatching WINDOW_CLOSING event to frame..");
+      // hide();
+      frame.dispatchEvent(new WindowEvent(frame,
+                                          WindowEvent.WINDOW_CLOSING));
+      System.out.println("Dispatched WINDOW_CLOSING event to frame..");
+    }
+//    this._z.remove();
+//    pixel.remove();
+//    pixel2.remove();
+    if (image.buffer != null)
+    {
+      image.close();
+    }
   }
 
   private Pixel colorizePixel(Complex w)
@@ -902,6 +938,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
   public BufferedImage render() throws IOException, NoninvertibleTransformException
   {
+
     if (!headless && frame == null)
     {
       showFrame();
@@ -917,15 +954,16 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
     drawStaticMarkups();
 
-    System.out.println( "complete = " + image.complete + " .... evaluating" );
-    
+    System.out.println("complete = " + image.complete + " .... evaluating");
+
     evaluateFunctionOnGrid();
+
+    System.out.println("complete = " + image.complete);
 
     reportRenderingRate();
 
     saveToFile();
 
-    
     return functionImage;
   }
 
@@ -1017,10 +1055,19 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
   public void showFrame()
   {
     frame = Utilities.openInJFrame(this,
-                               resolution.width,
-                               resolution.height,
-                               function.toString(),
-                               keepRunning ? WindowConstants.HIDE_ON_CLOSE : WindowConstants.EXIT_ON_CLOSE);
+                                   resolution.width,
+                                   resolution.height,
+                                   function.toString(),
+                                   keepRunning ? WindowConstants.HIDE_ON_CLOSE : WindowConstants.EXIT_ON_CLOSE);
+    frame.addWindowListener(new WindowAdapter()
+    {
+      @Override
+      public void windowClosing(WindowEvent e)
+      {
+        System.out.println("windowClosing...");
+        close();
+      }
+    });
   }
 
   private IntStream shuffledEvaluationOrder()

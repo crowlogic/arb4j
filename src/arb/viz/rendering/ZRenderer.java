@@ -19,8 +19,8 @@ public class ZRenderer
                                                        -50,
                                                        120,
                                                        100);
-    Dimension          screen = new Dimension(2400 ,
-                                              1200 );
+    Dimension          screen = new Dimension(2400 /2,
+                                              1200 /2);
 
 //    ComplexFunction normalizedHardyZFunction = (z, order, prec, w) ->
 //    {
