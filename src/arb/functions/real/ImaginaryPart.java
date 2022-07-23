@@ -2,9 +2,9 @@ package arb.functions.real;
 
 import arb.Complex;
 import arb.Real;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
-public class ImaginaryPart<F extends ComplexFunction> extends
+public class ImaginaryPart<F extends HolomorphicFunction> extends
                           RealComplexPart<F>
 {
 

@@ -1,6 +1,7 @@
-package arb.functions.complex;
+package arb.functions.complex.numbertheoretic;
 
 import arb.Complex;
+import arb.functions.complex.HolomorphicFunction;
 import junit.framework.TestCase;
 
 public class SFunctionTest extends
@@ -29,7 +30,7 @@ public class SFunctionTest extends
     {
       for (int i = 0; i < 4; i++)
       {
-        ComplexFunction firstInverse = sFunction.inverse(0);
+        HolomorphicFunction firstInverse = sFunction.inverse(0);
 
       }
     }

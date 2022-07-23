@@ -1,7 +1,7 @@
 package arb.operators;
 
 import arb.Complex;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * <h1>Dynamical interpretation of eigenvalues of the transfer operator)</h1>
@@ -23,13 +23,13 @@ import arb.functions.complex.ComplexFunction;
  * 
  * @param <F>
  */
-public class TransferOperator<F extends ComplexFunction> implements
+public class TransferOperator<F extends HolomorphicFunction> implements
                              LinearOperator,
-                             ComplexFunction
+                             HolomorphicFunction
 {
 
   @Override
-  public ComplexFunction adjoint()
+  public HolomorphicFunction adjoint()
   {
     // FIXME: does this need to be split into a left-adjoint and a right-adjoint
     // that takes an argument? probably a rhetorical question
@@ -52,8 +52,8 @@ public class TransferOperator<F extends ComplexFunction> implements
     {
       for (int branch = 0; branch < inverseBranchCount; branch++)
       {
-        ComplexFunction finverse             = f.inverse(branch);
-        ComplexFunction finverseDifferential = finverse.differential();
+        HolomorphicFunction finverse             = f.inverse(branch);
+        HolomorphicFunction finverseDifferential = finverse.differential();
         assert false : "TODO: finish";
         // finverseDifferential.evaluate(z, order, prec, w)
       }

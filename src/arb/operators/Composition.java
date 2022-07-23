@@ -2,7 +2,7 @@ package arb.operators;
 
 import arb.Complex;
 import arb.ThreadLocalComplex;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * The composition of two complex-valued functions
@@ -10,11 +10,11 @@ import arb.functions.complex.ComplexFunction;
  * the Koopman operator
  *
  */
-public class Composition<F extends ComplexFunction, G extends ComplexFunction> implements
-                        ComplexFunction,
+public class Composition<F extends HolomorphicFunction, G extends HolomorphicFunction> implements
+                        HolomorphicFunction,
                         AutoCloseable
 {
-  public static <F extends ComplexFunction, G extends ComplexFunction> Composition<F, G> compose(F f, G g)
+  public static <F extends HolomorphicFunction, G extends HolomorphicFunction> Composition<F, G> compose(F f, G g)
   {
     return new Composition(f,
                            g);
@@ -27,11 +27,11 @@ public class Composition<F extends ComplexFunction, G extends ComplexFunction> i
   }
 
   @Override
-  public ComplexFunction adjoint()
+  public HolomorphicFunction adjoint()
   {
     // FIXME: does this need to be split into a left-adjoint and a right-adjoint
     // that takes an argument?
-    return new TransferOperator<ComplexFunction>(f);
+    return new TransferOperator<HolomorphicFunction>(f);
   }
 
   public Composition(F f, G g)

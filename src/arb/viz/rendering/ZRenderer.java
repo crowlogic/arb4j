@@ -5,7 +5,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
-import arb.functions.complex.ZFunction;
+import arb.functions.complex.numbertheoretic.ZFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 

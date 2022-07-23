@@ -1,8 +1,9 @@
 
-package arb.functions.complex;
+package arb.functions.complex.hyperbolic;
 
 import arb.Complex;
 import arb.arb;
+import arb.functions.complex.EvenFunction;
 
 public class HyperbolicCosine implements
                               EvenFunction

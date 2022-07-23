@@ -1,9 +1,10 @@
-package arb.functions.complex;
+package arb.functions.complex.numbertheoretic;
 
 import arb.*;
+import arb.functions.complex.HolomorphicFunction;
 
 public class SFunctionInverse implements
-                              ComplexFunction
+                              HolomorphicFunction
 {
 
   public static final int BRANCH_COUNT = 4;

@@ -1,6 +1,7 @@
-package arb.functions.complex;
+package arb.functions.complex.numbertheoretic;
 
 import arb.Real;
+import arb.functions.complex.HolomorphicFunction;
 import arb.operators.Composition;
 
 public class YFunction extends
@@ -13,7 +14,7 @@ public class YFunction extends
   }
 
   @Override
-  public ComplexFunction adjoint()
+  public HolomorphicFunction adjoint()
   {
     return new XFunction(f.f.a);
   }

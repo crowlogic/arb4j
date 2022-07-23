@@ -1,9 +1,10 @@
-package arb.functions.complex;
+package arb.functions.complex.numbertheoretic;
 
 import static java.lang.String.format;
 
 import arb.*;
 import arb.exceptions.NotDifferentiableException;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * The rational meromorphic quartic
@@ -12,7 +13,7 @@ import arb.exceptions.NotDifferentiableException;
  * @author Stephen Crowley
  */
 public class SFunction implements
-                       ComplexFunction,
+                       HolomorphicFunction,
                        AutoCloseable
 {
 
@@ -23,7 +24,7 @@ public class SFunction implements
   }
 
   @Override
-  public ComplexFunction inverse(int branch)
+  public HolomorphicFunction inverse(int branch)
   {
     return new SFunctionInverse(a,
                                 branch);
@@ -50,13 +51,13 @@ public class SFunction implements
    * A new {@link TFunction} of the same scale
    */
   @Override
-  public ComplexFunction adjoint()
+  public HolomorphicFunction adjoint()
   {
     return new TFunction(a);
   }
 
   @Override
-  public ComplexFunction differential() throws NotDifferentiableException
+  public HolomorphicFunction differential() throws NotDifferentiableException
   {
     return (z, order, prec, w) ->
     {

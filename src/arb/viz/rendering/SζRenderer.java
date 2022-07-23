@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import arb.Real;
 import arb.functions.complex.*;
+import arb.functions.complex.numbertheoretic.RiemannζFunction;
+import arb.functions.complex.numbertheoretic.SFunction;
 import arb.operators.Composition;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;

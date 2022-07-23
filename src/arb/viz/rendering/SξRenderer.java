@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import arb.Real;
 import arb.functions.complex.*;
+import arb.functions.complex.numbertheoretic.*;
 import arb.operators.Composition;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;

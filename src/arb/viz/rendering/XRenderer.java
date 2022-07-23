@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 import arb.Real;
-import arb.functions.complex.XFunction;
+import arb.functions.complex.numbertheoretic.XFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 

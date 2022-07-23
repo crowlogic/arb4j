@@ -1,6 +1,7 @@
-package arb.functions.complex;
+package arb.functions.complex.hyperbolic;
 
 import arb.Complex;
+import arb.functions.complex.OddFunction;
 
 public class HyperbolicTangent implements
                                OddFunction

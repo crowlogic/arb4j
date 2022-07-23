@@ -1,11 +1,12 @@
-package arb.functions.complex;
+package arb.functions.complex.numbertheoretic;
 
 import static java.lang.Math.max;
 
 import arb.Complex;
+import arb.functions.complex.HolomorphicFunction;
 
 public class RiemannξFunction implements
-                              ComplexFunction
+                              HolomorphicFunction
 {
 
   @Override

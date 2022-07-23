@@ -21,7 +21,7 @@ package arb.functions.complex;
  * 2. the imaginary of f is an odd function
  */
 public interface SelfAdjointFunction extends
-                                     ComplexFunction
+                                     HolomorphicFunction
 {
 
 }

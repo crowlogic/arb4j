@@ -8,8 +8,8 @@ import java.io.IOException;
 
 import arb.Complex;
 import arb.Real;
-import arb.functions.complex.YFunction;
 import arb.functions.complex.dynamics.*;
+import arb.functions.complex.numbertheoretic.YFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 

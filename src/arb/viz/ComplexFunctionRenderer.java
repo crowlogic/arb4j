@@ -22,6 +22,7 @@ import javax.swing.Timer;
 import arb.*;
 import arb.Float;
 import arb.functions.complex.*;
+import arb.functions.complex.numbertheoretic.ZFunction;
 import arb.utensils.*;
 
 /**
@@ -29,9 +30,9 @@ import arb.utensils.*;
  * argument using the method of domain coloring which is also called the color
  * wheel method
  * 
- * @param <F> the class of {@link ComplexFunction} to be rendered
+ * @param <F> the class of {@link HolomorphicFunction} to be rendered
  */
-public class ComplexFunctionRenderer<F extends ComplexFunction> extends
+public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
                                     JComponent implements
                                     AutoCloseable
 {

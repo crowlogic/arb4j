@@ -3,7 +3,7 @@ package arb.functions.complex.dynamics;
 import static java.lang.Math.max;
 
 import arb.*;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * The infinite limit of this functiom composed with itself is the
@@ -19,8 +19,8 @@ import arb.functions.complex.ComplexFunction;
  * 
  * @param <F> a holomorphic self-map
  */
-public class IteratedFunction<F extends ComplexFunction> implements
-                             ComplexFunction,
+public class IteratedFunction<F extends HolomorphicFunction> implements
+                             HolomorphicFunction,
                              AutoCloseable
 {
   @Override

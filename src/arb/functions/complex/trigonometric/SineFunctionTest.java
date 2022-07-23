@@ -1,4 +1,4 @@
-package arb.functions.complex;
+package arb.functions.complex.trigonometric;
 
 import static arb.ComplexConstants.π;
 import static java.lang.Math.pow;
@@ -6,12 +6,12 @@ import static java.lang.Math.pow;
 import arb.*;
 import junit.framework.TestCase;
 
-public class ComplexSineFunctionTest extends
+public class SineFunctionTest extends
                                      TestCase
 {
   public void testEval()
   {
-    ComplexSineFunction sin = new ComplexSineFunction();
+    SineFunction sin = new SineFunction();
     Complex             y   = sin.evaluate(ComplexConstants.complexOne, 1, 128, new Complex());
     y.printPrecision = true;
     assertEquals(0.841470984807896506652502321630298999620980106, y.getReal().doubleValue(), pow(10, -20));
@@ -21,7 +21,7 @@ public class ComplexSineFunctionTest extends
   @SuppressWarnings("resource")
   public void testIntegration() 
   {
-    ComplexSineFunction sine                       = new ComplexSineFunction();
+    SineFunction sine                       = new SineFunction();
     Magnitude           absoluteErrorToleranceGoal = new Magnitude().set(Math.pow(2, -77));
     IntegrationOptions  options                    = new IntegrationOptions();
     int                 relativeAccuracyBitsGoal   = 80;

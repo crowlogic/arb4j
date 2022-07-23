@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import arb.*;
 import arb.Float;
-import arb.functions.complex.ZFunction;
+import arb.functions.complex.numbertheoretic.ZFunction;
 
 public class RealFunctionTest
 {

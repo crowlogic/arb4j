@@ -14,7 +14,7 @@ import java.awt.Graphics2D;
 import arb.*;
 import arb.curves.ComplexCircle;
 import arb.functions.complex.CircularComposition;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.*;
 
 /**
@@ -23,7 +23,7 @@ import arb.functions.real.*;
  * 
  * @param <P> the type of function to flow across
  */
-public class GeodesicFlower<P extends ComplexFunction> implements
+public class GeodesicFlower<P extends HolomorphicFunction> implements
                            AutoCloseable
 {
   public static enum What

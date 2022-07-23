@@ -12,9 +12,34 @@ import arb.functions.Function;
 import arb.functions.real.*;
 import arb.utensils.Utilities;
 
+/**
+ * A holomorphic function is a {@link Complex}-valued function of one or more
+ * {@link Complex} variables that is complex differentiable in a neighbourhood
+ * of each point in a domain in complex coordinate space C^n. The existence of a
+ * complex derivative in a neighbourhood is a very strong condition: it implies
+ * that a holomorphic function is infinitely differentiable and locally equal to
+ * its own Taylor series (analytic). Holomorphic functions are the central
+ * objects of study in complex analysis.
+ * 
+ * Though the term analytic function is often used interchangeably with
+ * "holomorphic function", the word "analytic" is defined in a broader sense to
+ * denote any function (real, complex, or of more general type) that can be
+ * written as a convergent power series in a neighbourhood of each point in its
+ * domain. That all holomorphic functions are complex analytic functions, and
+ * vice versa, is a major theorem in complex analysis.[1]
+ * 
+ * Holomorphic functions are also sometimes referred to as regular
+ * functions.[2][3] A holomorphic function whose domain is the whole complex
+ * plane is called an entire function. The phrase "holomorphic at a point z0"
+ * means not just differentiable at z0, but differentiable everywhere within
+ * some neighbourhood of z0 in the complex plane.
+ * 
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Holomorphic_function">Wikpedia</a>
+ */
 @FunctionalInterface
-public interface ComplexFunction extends
-                                 Function<Complex, Complex>
+public interface HolomorphicFunction extends
+                                     Function<Complex, Complex>
 {
 
   public static final int glSteps[]   =
@@ -34,7 +59,7 @@ public interface ComplexFunction extends
       assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
       try ( Complex x = new Complex())
       {
-        ComplexFunction.this.evaluate(z, order, prec, x);
+        HolomorphicFunction.this.evaluate(z, order, prec, x);
         if (w.isFinite())
         {
           x.abs(prec, w);
@@ -118,13 +143,13 @@ public interface ComplexFunction extends
    * 
    * @return this(t*) where t*=conj(t) is the complex conjugate transpose
    */
-  public default ComplexFunction adjoint()
+  public default HolomorphicFunction adjoint()
   {
-    ComplexFunction bump = (z, order, prec, w) ->
+    HolomorphicFunction bump = (z, order, prec, w) ->
     {
       try ( Complex a = z.conj(new Complex());)
       {
-        return ComplexFunction.this.evaluate(a, order, prec, w);
+        return HolomorphicFunction.this.evaluate(a, order, prec, w);
       }
     };
     return bump;
@@ -192,7 +217,7 @@ public interface ComplexFunction extends
     return new ComplexRealPart(this);
   }
 
-  public default ComplexFunction differential() throws NotDifferentiableException
+  public default HolomorphicFunction differential() throws NotDifferentiableException
   {
     return new TaylorShift(this);
   }
@@ -221,7 +246,7 @@ public interface ComplexFunction extends
    *         this{@link #integral()}{@link #differential()} == this ==
    *         this{@link #differential()}{@link #integral()}
    */
-  public default ComplexFunction integral() throws NotIntegrableException
+  public default HolomorphicFunction integral() throws NotIntegrableException
   {
     throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }
@@ -478,7 +503,7 @@ public interface ComplexFunction extends
    * 
    * @return the n-th branch of the inverse function f^-1(x)={y:f(y)=x}
    */
-  public default ComplexFunction inverse(int branch)
+  public default HolomorphicFunction inverse(int branch)
   {
     throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }

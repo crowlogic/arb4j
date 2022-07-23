@@ -2,14 +2,14 @@ package arb.functions.complex.dynamics;
 
 import arb.Complex;
 import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * <code>-(f(t)*conjugate(f'(t)))/(1+|f(z)|^4)</code>
  * 
  */
-public class DesingularizedNewtonFlow<F extends ComplexFunction> implements
-                                     ComplexFunction
+public class DesingularizedNewtonFlow<F extends HolomorphicFunction> implements
+                                     HolomorphicFunction
 {
 
   @Override
@@ -26,7 +26,7 @@ public class DesingularizedNewtonFlow<F extends ComplexFunction> implements
 
   public F              f;
 
-  final ComplexFunction diff = (t, order, prec, w) ->
+  final HolomorphicFunction diff = (t, order, prec, w) ->
                              {
                                try ( Complex s = Complex.newVector(3);)
                                {
@@ -69,7 +69,7 @@ public class DesingularizedNewtonFlow<F extends ComplexFunction> implements
    * @return (f(t)*f''(t))/(f'(t)^2)
    */
   @Override
-  public ComplexFunction differential() throws NotDifferentiableException
+  public HolomorphicFunction differential() throws NotDifferentiableException
   {
     return diff;
   }

@@ -1,7 +1,7 @@
 package arb.functions.complex.dynamics;
 
 import arb.Complex;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * Let D be the unit disk in the complex numbers. Let f be a holomorphic
@@ -27,11 +27,11 @@ import arb.functions.complex.ComplexFunction;
  * something to do with the coupling constant
  */
 public class KoenigsFunction implements
-                             ComplexFunction
+                             HolomorphicFunction
 {
-  private ComplexFunction f;
+  private HolomorphicFunction f;
 
-  public KoenigsFunction(ComplexFunction f)
+  public KoenigsFunction(HolomorphicFunction f)
   {
     this.f = f;
   }

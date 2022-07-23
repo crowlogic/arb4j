@@ -1,6 +1,8 @@
-package arb.functions.complex;
+package arb.functions.complex.numbertheoretic;
 
 import arb.Real;
+import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.WickRotation;
 import arb.operators.Composition;
 
 public class TFunction extends
@@ -13,7 +15,7 @@ public class TFunction extends
   }
 
   @Override
-  public ComplexFunction adjoint()
+  public HolomorphicFunction adjoint()
   {
     return new SFunction(f.a);
   }

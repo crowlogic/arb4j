@@ -4,7 +4,7 @@ import arb.Complex;
 import arb.functions.real.RealFunction;
 
 public class RealComplexFunction<R extends RealFunction> implements
-                                ComplexFunction
+                                HolomorphicFunction
 {
   public RealComplexFunction(R r)
   {

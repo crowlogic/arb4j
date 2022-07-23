@@ -2,7 +2,7 @@ package arb.functions.complex.dynamics;
 
 import arb.Complex;
 import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * <code>t-f(t)/f'(t)</code>
@@ -10,8 +10,8 @@ import arb.functions.complex.ComplexFunction;
  * @author Isaac Newton
  * @author Stephen Crowley
  */
-public class NewtonMap<F extends ComplexFunction> implements
-                      ComplexFunction
+public class NewtonMap<F extends HolomorphicFunction> implements
+                      HolomorphicFunction
 {
 
   @Override
@@ -27,7 +27,7 @@ public class NewtonMap<F extends ComplexFunction> implements
 
   public F              f;
 
-  final ComplexFunction diff = (t, order, prec, w) ->
+  final HolomorphicFunction diff = (t, order, prec, w) ->
                              {
                                assert order < 2;
                                assert w.size() >= order;
@@ -86,7 +86,7 @@ public class NewtonMap<F extends ComplexFunction> implements
    * @return (f(t)*f''(t))/(f'(t)^2)
    */
   @Override
-  public ComplexFunction differential() throws NotDifferentiableException
+  public HolomorphicFunction differential() throws NotDifferentiableException
   {
     return diff;
   }

@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import arb.*;
 import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealPart;
 import arb.utensils.Utilities;
 
@@ -16,7 +16,7 @@ public interface RealToComplexFunction extends
                                        Function<Real, Complex>
 {
   public class Complexification implements
-                                ComplexFunction
+                                HolomorphicFunction
   {
     public Complexification(RealToComplexFunction func)
     {
@@ -438,9 +438,9 @@ public interface RealToComplexFunction extends
         mag_mul(M, M, tmpm);
 
         /* Search for the smallest n that gives err < tol (if possible) */
-        for (i = 0; i < ComplexFunction.glStepCount && ComplexFunction.glSteps[i] <= degreeLimit; i++)
+        for (i = 0; i < HolomorphicFunction.glStepCount && HolomorphicFunction.glSteps[i] <= degreeLimit; i++)
         {
-          n = ComplexFunction.glSteps[i];
+          n = HolomorphicFunction.glSteps[i];
 
           /* (64/15) M / ((rho-1) rho^(2n-1)) */
           mag_pow_ui_lower(t, rho, 2 * n - 1);
@@ -476,8 +476,8 @@ public interface RealToComplexFunction extends
         {
           assert best_n != -1;
 
-          for (i = 0; i < ComplexFunction.glStepCount; i++)
-            if (ComplexFunction.glSteps[i] == best_n)
+          for (i = 0; i < HolomorphicFunction.glStepCount; i++)
+            if (HolomorphicFunction.glSteps[i] == best_n)
               break;
 
           acb_zero(s);

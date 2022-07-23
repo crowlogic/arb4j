@@ -2,9 +2,9 @@ package arb.functions.complex.dynamics;
 
 import arb.Complex;
 import arb.Real;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
-public abstract class ComplexDynamicalSystem<F extends ComplexFunction>
+public abstract class ComplexDynamicalSystem<F extends HolomorphicFunction>
 {
   F f;
 

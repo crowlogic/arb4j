@@ -2,7 +2,7 @@ package arb.functions.complex;
 
 import arb.Complex;
 
-public class ComplexRealPart<F extends ComplexFunction> extends
+public class ComplexRealPart<F extends HolomorphicFunction> extends
                             ComplexPart<F>
 {
 

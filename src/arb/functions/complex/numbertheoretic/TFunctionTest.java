@@ -1,4 +1,4 @@
-package arb.functions.complex;
+package arb.functions.complex.numbertheoretic;
 
 import arb.Complex;
 import junit.framework.TestCase;

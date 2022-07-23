@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import arb.RealConstants;
 import arb.functions.complex.*;
+import arb.functions.complex.hyperbolic.HyperbolicCosine;
+import arb.functions.complex.numbertheoretic.TFunction;
 import arb.operators.Composition;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
@@ -27,7 +29,7 @@ public class CoshRenderer
     Dimension          screen   = new Dimension(1200,
                                                 600);
 
-    ComplexFunction    function = new Composition(new HyperbolicCosine(),
+    HolomorphicFunction    function = new Composition(new HyperbolicCosine(),
                                                   new WickRotation());
     // ComplexFunction function = new HyperbolicCosine();
 //    ComplexFunction function = (z, order, prec, w) ->

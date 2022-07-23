@@ -3,9 +3,9 @@ package arb.functions.real;
 import arb.Complex;
 import arb.Real;
 import arb.functions.RealToComplexFunction;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
-public class RealPart<F extends ComplexFunction> extends
+public class RealPart<F extends HolomorphicFunction> extends
                      RealComplexPart<F>
 {
 
@@ -17,7 +17,7 @@ public class RealPart<F extends ComplexFunction> extends
 
   public RealPart(RealToComplexFunction realToComplexFunction)
   {
-    super((F) new ComplexFunction()
+    super((F) new HolomorphicFunction()
     {
       @Override
       public Complex evaluate(Complex t, int order, int prec, Complex res)

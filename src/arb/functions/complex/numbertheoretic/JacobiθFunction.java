@@ -1,6 +1,7 @@
-package arb.functions.complex;
+package arb.functions.complex.numbertheoretic;
 
 import arb.Complex;
+import arb.functions.complex.HolomorphicFunction;
 import arb.utensils.Utilities;
 
 /**
@@ -8,7 +9,7 @@ import arb.utensils.Utilities;
  *      1</a>
  */
 public class JacobiθFunction implements
-                             ComplexFunction
+                             HolomorphicFunction
 {
 
   @Override

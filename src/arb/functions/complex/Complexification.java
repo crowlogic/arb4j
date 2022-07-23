@@ -4,7 +4,7 @@ import arb.Complex;
 import arb.functions.RealToComplexFunction;
 
 public class Complexification implements
-                              ComplexFunction
+                              HolomorphicFunction
 {
   public Complexification(RealToComplexFunction func)
   {

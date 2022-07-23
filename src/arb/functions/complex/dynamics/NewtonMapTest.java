@@ -2,8 +2,8 @@ package arb.functions.complex.dynamics;
 
 import arb.Complex;
 import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.ComplexFunction;
-import arb.functions.complex.SFunction;
+import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.numbertheoretic.SFunction;
 import junit.framework.TestCase;
 
 public class NewtonMapTest extends
@@ -24,7 +24,7 @@ public class NewtonMapTest extends
   @SuppressWarnings("resource")
   public void testNewtonMapDerivative() throws NotDifferentiableException
   {
-    ComplexFunction f = new NewtonMap(new SFunction()).differential();
+    HolomorphicFunction f = new NewtonMap(new SFunction()).differential();
     Complex         t = new Complex().set(0.1, 0.2);
     Complex         w = f.evaluate(t, 1, prec, new Complex());
 
@@ -36,8 +36,8 @@ public class NewtonMapTest extends
   {
     SFunction       sFunction   = new SFunction();
     NewtonMap       sNewtonMap  = new NewtonMap(sFunction);
-    ComplexFunction sNewtonDiff = sNewtonMap.differential();
-    ComplexFunction f           = sNewtonDiff;
+    HolomorphicFunction sNewtonDiff = sNewtonMap.differential();
+    HolomorphicFunction f           = sNewtonDiff;
     try ( Complex t = new Complex(); Complex w = new Complex();)
     {
       f.evaluate(t.set(0, 0), 1, prec, w);

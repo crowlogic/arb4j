@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import arb.ComplexPolynomial;
 import arb.Real;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * The Legendre polynomials are defined as an orthogonal system with respect to
@@ -23,7 +23,7 @@ public class LegendrePolynomials implements
   }
 
   @Override
-  public ComplexFunction getMassDistribution()
+  public HolomorphicFunction getMassDistribution()
   {
     // TODO Auto-generated method stub
     return null;

@@ -4,7 +4,7 @@ import arb.Complex;
 import arb.ComplexConstants;
 
 public class ComplexConstant implements
-                             ComplexFunction
+                             HolomorphicFunction
 {
   public ComplexConstant(Complex c)
   {

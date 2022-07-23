@@ -1,7 +1,7 @@
 package arb.functions.polynomials.orthogonal;
 
 import arb.*;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 public interface OrthogonalPolynomials extends
                                        Iterable<ComplexPolynomial>,
@@ -12,7 +12,7 @@ public interface OrthogonalPolynomials extends
    * 
    * @return
    */
-  public ComplexFunction getMassDistribution();
+  public HolomorphicFunction getMassDistribution();
 
   /**
    * 

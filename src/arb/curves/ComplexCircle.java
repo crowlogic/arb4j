@@ -5,6 +5,7 @@ import static java.lang.Math.max;
 import arb.*;
 import arb.functions.complex.*;
 import arb.functions.complex.dynamics.NewtonMap;
+import arb.functions.complex.numbertheoretic.SFunction;
 import arb.operators.Composition;
 
 /**
@@ -22,7 +23,7 @@ import arb.operators.Composition;
  *
  */
 public class ComplexCircle implements
-                           ComplexFunction,
+                           HolomorphicFunction,
                            AutoCloseable
 {
   @Override

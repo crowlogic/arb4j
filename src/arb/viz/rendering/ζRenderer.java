@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 import arb.ThreadLocalComplex;
-import arb.functions.complex.RiemannζFunction;
+import arb.functions.complex.numbertheoretic.RiemannζFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 

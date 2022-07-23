@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import arb.Real;
 import arb.RealConstants;
-import arb.functions.complex.SFunction;
+import arb.functions.complex.numbertheoretic.SFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 

@@ -1,7 +1,8 @@
-package arb.functions.complex;
+package arb.functions.complex.lemniscatic;
 
 import arb.Complex;
 import arb.curves.PlaneCurve;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * TODO: implement and use to implement the
@@ -11,7 +12,7 @@ import arb.curves.PlaneCurve;
  *
  */
 public class LemniscateCosine implements
-                              ComplexFunction
+                              HolomorphicFunction
 {
 
   @Override

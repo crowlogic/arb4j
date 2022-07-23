@@ -3,7 +3,7 @@ package arb.functions.complex;
 import arb.Complex;
 
 public class Translation implements
-                         ComplexFunction
+                         HolomorphicFunction
 {
   public Translation(Complex t0)
   {

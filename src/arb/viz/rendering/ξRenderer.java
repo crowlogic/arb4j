@@ -6,8 +6,8 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 import arb.Real;
-import arb.functions.complex.RiemannξFunction;
-import arb.functions.complex.YFunction;
+import arb.functions.complex.numbertheoretic.RiemannξFunction;
+import arb.functions.complex.numbertheoretic.YFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 

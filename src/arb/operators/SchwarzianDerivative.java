@@ -1,7 +1,7 @@
 package arb.operators;
 
 import arb.Complex;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * Among other things the Schwarzian derivative measures how much a function
@@ -9,8 +9,8 @@ import arb.functions.complex.ComplexFunction;
  * 
  * @param <F>
  */
-public class SchwarzianDerivative<F extends ComplexFunction> implements
-                                 ComplexFunction
+public class SchwarzianDerivative<F extends HolomorphicFunction> implements
+                                 HolomorphicFunction
 {
   public SchwarzianDerivative(F f)
   {

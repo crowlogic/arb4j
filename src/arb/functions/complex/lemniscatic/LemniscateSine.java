@@ -1,6 +1,7 @@
-package arb.functions.complex;
+package arb.functions.complex.lemniscatic;
 
 import arb.Complex;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * Lemniscate Sine: sl(z)=∫(1/(1-t^4),t=0..z) <br>
@@ -17,7 +18,7 @@ import arb.Complex;
  * @param res
  */
 public class LemniscateSine implements
-                            ComplexFunction
+                            HolomorphicFunction
 {
 
   @Override

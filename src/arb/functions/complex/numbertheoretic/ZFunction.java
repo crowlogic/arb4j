@@ -1,14 +1,15 @@
-package arb.functions.complex;
+package arb.functions.complex.numbertheoretic;
 
 import static arb.arb.*;
 import static java.lang.Math.max;
 
 import arb.Complex;
 import arb.Real;
+import arb.functions.complex.HolomorphicFunction;
 import arb.utensils.AutoArrayList;
 
 public class ZFunction implements
-                       ComplexFunction
+                       HolomorphicFunction
 {
   @Override
   public String toString()
