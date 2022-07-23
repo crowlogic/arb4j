@@ -72,8 +72,8 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
     Real                               motion                 = new Real();
     IntConsumer                        frameParameterAssigner = frame ->
                                                               {
-                                                                double percentComplete = (double) frame
-                                                                              / (double) frameCount;
+                                                                double percentComplete = 100.0 * ((double) frame
+                                                                              / (double) frameCount);
                                                                 scale.add(dscale, 128, scale);
                                                                 System.out.format("Setting scale to %s of %s at %.3f%% complete on frame#%d\n",
                                                                                   scale.toString(10),
