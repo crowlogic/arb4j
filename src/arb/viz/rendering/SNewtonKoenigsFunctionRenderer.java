@@ -43,7 +43,7 @@ public class SNewtonKoenigsFunctionRenderer extends
 
     SNewtonKoenigsFunctionRenderer renderer = new SNewtonKoenigsFunctionRenderer();
 
-    renderer.colorMode   = 0;
+    renderer.colorMode   = 1;
     renderer.displayMode = Part.Phase;
     renderer.render();
     renderer.saveToFile("SNewtonKoenigs.png");

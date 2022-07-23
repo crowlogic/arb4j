@@ -40,8 +40,8 @@ public class XNewtonKoenigsFunctionRenderer extends
   public XNewtonKoenigsFunctionRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension(2500 / 2,
-                       1250 / 2),
+    this(new Dimension((int)(2500 / 1.5),
+                       (int)(1250 / 1.5)),
          new Rectangle2D.Double(-5,
                                 -10,
                                 50,
@@ -54,7 +54,7 @@ public class XNewtonKoenigsFunctionRenderer extends
 
     XNewtonKoenigsFunctionRenderer renderer = new XNewtonKoenigsFunctionRenderer();
 
-    renderer.colorMode   = 0;
+    renderer.colorMode   = 2;
     renderer.displayMode = Part.Real;
     renderer.render();
     renderer.saveToFile();

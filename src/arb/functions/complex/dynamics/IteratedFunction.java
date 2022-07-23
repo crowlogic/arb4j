@@ -69,8 +69,7 @@ public class IteratedFunction<F extends HolomorphicFunction> implements
         }
         else
         {
-          won.zero();
-          λ.pow(n, prec, won.getReal());
+          λ.pow(n, prec, won.zero().getReal());
         }
       }
       w.set(x);
