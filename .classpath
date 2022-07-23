@@ -20,5 +20,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/usr/share/java/gluegen2.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/gluegen2-rt.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jplotter"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

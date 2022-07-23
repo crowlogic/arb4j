@@ -2,11 +2,9 @@ package arb.stochastic;
 
 import static arb.RealConstants.*;
 
-import arb.FloatInterval;
-import arb.Real;
-import arb.functions.real.RealFunction;
-import arb.stochastic.processes.GaussianProcess;
-import arb.viz.RealFunctionPlotter;
+import arb.*;
+import arb.functions.real.*;
+import arb.stochastic.processes.*;
 
 /**
  * Normal distributions are important in statistics and are often used in the
@@ -24,19 +22,6 @@ import arb.viz.RealFunctionPlotter;
 public class GaussianDensityFunction implements
                                      DensityFunction
 {
-
-  public static void main(String args[])
-  {
-    GaussianProcess     gp      = new GaussianProcess(zero,
-                                                      one);
-    RealFunctionPlotter plotter = new RealFunctionPlotter(new GaussianDensityFunction(gp),
-                                                          new FloatInterval(-5,
-                                                                            5),
-                                                          new FloatInterval(0,
-                                                                            0.5),
-                                                          500);
-    plotter.plot();
-  }
 
   @Override
   public String toString()

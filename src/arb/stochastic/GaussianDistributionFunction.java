@@ -1,10 +1,9 @@
 package arb.stochastic;
 
-import static arb.RealConstants.sqrt2π;
+import static arb.RealConstants.*;
 
 import arb.*;
-import arb.functions.real.RealFunction;
-import arb.viz.RealFunctionPlotter;
+import arb.functions.real.*;
 
 /**
  * The cumulative distribution function for the Gaussian distribition. The
@@ -14,18 +13,6 @@ import arb.viz.RealFunctionPlotter;
 public class GaussianDistributionFunction implements
                                           DistributionFunction
 {
-
-  public static void main(String args[])
-  {
-    RealFunctionPlotter plotter = new RealFunctionPlotter(new GaussianDistributionFunction(ComplexConstants.ZERO.getReal(),
-                                                                                           RealConstants.one),
-                                                          new FloatInterval(-5,
-                                                                            5),
-                                                          new FloatInterval(0,
-                                                                            0.5),
-                                                          500);
-    plotter.plot();
-  }
 
   @Override
   public String toString()
