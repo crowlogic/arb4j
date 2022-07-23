@@ -57,8 +57,8 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
     int       framesPerSecond = 15;
     int       secondsLong     = 10;
     final int frameCount      = framesPerSecond * secondsLong;
-    YRenderer renderer        = new YRenderer();
-    renderer.colorMode   = 1;
+    XRenderer renderer        = new XRenderer();
+    renderer.colorMode   = 3;
     renderer.displayMode = Part.Real;
     Real                               scaleStart             = new Real().one().div(2, 128);
     Real                               scaleStop              = new Real().set("3", 128);
@@ -78,7 +78,7 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
                                                                                   scaleStop.toString(10),
                                                                                   percentComplete,
                                                                                   frame);
-                                                                renderer.function.f.f.f.a.set(scale);
+                                                                renderer.function.f.a.set(scale);
                                                                 renderer.initCache();
                                                               };
     ComplexFunctionAnimator<XRenderer> animator               = new ComplexFunctionAnimator(renderer,
