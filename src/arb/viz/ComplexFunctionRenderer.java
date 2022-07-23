@@ -309,6 +309,7 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
     this._z.remove();
     pixel.remove();
     pixel2.remove();
+    image.close();
   }
 
   private Pixel colorizePixel(Complex w)
@@ -916,12 +917,15 @@ public class ComplexFunctionRenderer<F extends ComplexFunction> extends
 
     drawStaticMarkups();
 
+    System.out.println( "complete = " + image.complete + " .... evaluating" );
+    
     evaluateFunctionOnGrid();
 
     reportRenderingRate();
 
     saveToFile();
 
+    
     return functionImage;
   }
 

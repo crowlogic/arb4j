@@ -74,6 +74,7 @@ public class KeyboardHandler implements
       plotter.switchDisplayModeTo(Part.Blend);
       break;
     case KeyEvent.VK_ESCAPE:
+      plotter.close();
       System.exit(1);
       break;
     default:

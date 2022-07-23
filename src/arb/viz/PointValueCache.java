@@ -2,8 +2,6 @@ package arb.viz;
 
 import java.io.*;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.file.Path;
 
@@ -49,11 +47,19 @@ public class PointValueCache implements
     return points[n][x][y];
   }
 
-  public boolean       complete = true;
+  public boolean       complete = false;
 
   public MemorySegment segment;
 
   public MemorySegment segment1;
+
+  public Path          path;
+
+  public Path          path1;
+
+  private File         file;
+
+  private File         file1;
 
   public PointValueCache(String id, int numXpoints, int numYpoints)
   {
@@ -69,16 +75,13 @@ public class PointValueCache implements
 
     try
     {
-      segment        = MemorySegment.mapFile(Path.of(id + ".arb"),
-                                             0,
-                                             bytes,
-                                             MapMode.READ_WRITE,
-                                             ResourceScope.globalScope());
-      segment1       = MemorySegment.mapFile(Path.of(id + ".arb1"),
-                                             0,
-                                             bytes,
-                                             MapMode.READ_WRITE,
-                                             ResourceScope.globalScope());
+      path           = Path.of(id + ".arb");
+      file           = openFileOrCreateNewOneIfNotExisting(path, bytes);
+      path1          = Path.of(id + ".arb1");
+      file1          = openFileOrCreateNewOneIfNotExisting(path1, bytes);
+
+      segment        = MemorySegment.mapFile(path, 0, bytes, MapMode.READ_WRITE, ResourceScope.globalScope());
+      segment1       = MemorySegment.mapFile(path1, 0, bytes, MapMode.READ_WRITE, ResourceScope.globalScope());
       buffer         = segment.asByteBuffer();
       buffer1        = segment1.asByteBuffer();
 
@@ -109,6 +112,29 @@ public class PointValueCache implements
 
   }
 
+  protected File openFileOrCreateNewOneIfNotExisting(Path path, int bytes) throws FileNotFoundException, IOException
+  {
+    File file = path.toFile();
+    if (file.exists() && file.length() == bytes)
+    {
+      complete = true;
+      return file;
+    }
+    createBlankFile(file, bytes);
+    return file;
+  }
+
+  protected void createBlankFile(File file, int bytes) throws FileNotFoundException, IOException
+  {
+    System.out.println("Create file " + file + " of " + bytes + " bytes ");
+    complete = false;
+    try ( RandomAccessFile raf = new RandomAccessFile(file,
+                                                      "rw"))
+    {
+      raf.setLength(bytes);
+    }
+  }
+
   @Override
   public void close()
   {
@@ -116,11 +142,12 @@ public class PointValueCache implements
     buffer1 = null;
     segment.unload();
     segment1.unload();
-
+    
     if (!complete)
     {
-      System.err.println("TODO: fix this, incomplete files " + segment + " and " + segment1);
-      complete = true;
+      System.err.println("Deleting incomplete files " + file + " and " + file1);
+      file.delete();
+      file1.delete();
 
     }
 
