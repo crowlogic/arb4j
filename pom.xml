@@ -25,8 +25,34 @@
 					<release>10</release>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<show>public</show>
+				</configuration>
+			</plugin>
 		</plugins>
+
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<additionalOptions>
+						<option>--module</option>
+						<option>arb4j</option>
+					</additionalOptions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+
 
 	<dependencyManagement>
 		<dependencies>
