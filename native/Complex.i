@@ -1,15 +1,11 @@
 
 %typemap(javaimports) acb_struct %{
-import java.util.concurrent.TimeUnit;
-import java.util.Iterator;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.io.IOException;
-import static arb.RealConstants.*;
-import java.io.Serializable;
 import static arb.arb.*;
+import java.io.*;
+import java.util.*;
+import java.util.stream.*;
+import arb.spaces.*;
+
 /**
  * The complex numbers constitute an algebraically closed field, a commutative
  * algebra over the reals, and a Euclidean vector space of dimension two.
@@ -18,11 +14,41 @@ import static arb.arb.*;
 
 %typemap(javafinalize) acb_struct ""
 
-%typemap(javainterfaces) acb_struct "NumberField,Iterable<Complex>,Serializable"
+%typemap(javainterfaces) acb_struct "NumberField,Iterable<Complex>,Serializable,EuclideanVectorSpace"
 
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  @Override
+  public NumberField innerProduct(NumberField left, NumberField right)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public int dimension()
+  {
+    return 2;
+  }
+
+  @Override
+  public Real getCoordinate(int dim)
+  {
+    assert dim >= 0;
+    assert dim < 2;
+    switch (dim)
+    {
+    case 0:
+      return getReal();
+    case 1:
+      return getImag();
+    default:
+      assert false : "impossible";
+      return null;
+    }
+  }
+  
   public Complex(double r, double i)
   {
     this();
