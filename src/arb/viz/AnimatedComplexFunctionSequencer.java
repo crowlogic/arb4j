@@ -18,15 +18,15 @@ import io.humble.video.*;
 import io.humble.video.awt.MediaPictureConverter;
 import io.humble.video.awt.MediaPictureConverterFactory;
 
-public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
+public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
 {
   private IntConsumer frameParameterAssigner;
   private int         width;
   private int         height;
 
-  public ComplexFunctionAnimator(P plotter,
-                                 IntConsumer frameParameterAssigner,
-                                 int frameCount) throws NoninvertibleTransformException
+  public AnimatedComplexFunctionSequencer(P plotter,
+                                          IntConsumer frameParameterAssigner,
+                                          int frameCount) throws NoninvertibleTransformException
   {
     this.plotter                = plotter;
     frameEncodingThread         = Executors.newSingleThreadExecutor();
@@ -62,30 +62,33 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
     YRenderer renderer        = new YRenderer();
     renderer.colorMode   = 1;
     renderer.displayMode = Part.Real;
-    Real                               scaleStart             = new Real().one().div(2, 128);
-    Real                               scaleStop              = new Real().set("3", 128);
-    Real                               scaleLen               = scaleStop.sub(scaleStart, 128, new Real());
-    Real                               dt                     = new Real().one()
-                                                                          .div(framesPerSecond, 128, new Real());
-    Real                               dscale                 = scaleLen.div(frameCount, 128);
-    Real                               scale                  = new Real().set(scaleStart);
-    Real                               motion                 = new Real();
-    IntConsumer                        frameParameterAssigner = frame ->
-                                                              {
-                                                                double percentComplete = 100.0 * ((double) frame
-                                                                              / (double) frameCount);
-                                                                scale.add(dscale, 128, scale);
-                                                                System.out.format("Setting scale to %s of %s at %.3f%% complete on frame#%d\n",
-                                                                                  scale.toString(10),
-                                                                                  scaleStop.toString(10),
-                                                                                  percentComplete,
-                                                                                  frame);
-                                                                renderer.function.f.f.f.a.set(scale);
-                                                                renderer.initCache();
-                                                              };
-    ComplexFunctionAnimator<XRenderer> animator               = new ComplexFunctionAnimator(renderer,
-                                                                                            frameParameterAssigner,
-                                                                                            frameCount);
+    Real                                        scaleStart             = new Real().one().div(2, 128);
+    Real                                        scaleStop              = new Real().set("3", 128);
+    Real                                        scaleLen               = scaleStop.sub(scaleStart, 128, new Real());
+    Real                                        dt                     = new Real().one()
+                                                                                   .div(framesPerSecond,
+                                                                                        128,
+                                                                                        new Real());
+    Real                                        dscale                 = scaleLen.div(frameCount, 128);
+    Real                                        scale                  = new Real().set(scaleStart);
+    Real                                        motion                 = new Real();
+    IntConsumer                                 frameParameterAssigner = frame ->
+                                                                       {
+                                                                         double percentComplete = 100.0
+                                                                                       * ((double) frame
+                                                                                                     / (double) frameCount);
+                                                                         scale.add(dscale, 128, scale);
+                                                                         System.out.format("Setting scale to %s of %s at %.3f%% complete on frame#%d\n",
+                                                                                           scale.toString(10),
+                                                                                           scaleStop.toString(10),
+                                                                                           percentComplete,
+                                                                                           frame);
+                                                                         renderer.function.f.f.f.a.set(scale);
+                                                                         renderer.initCache();
+                                                                       };
+    AnimatedComplexFunctionSequencer<XRenderer> animator               = new AnimatedComplexFunctionSequencer(renderer,
+                                                                                                              frameParameterAssigner,
+                                                                                                              frameCount);
     animator.renderAnimatedSequence(renderer.function.toString() + ".avi", secondsLong, framesPerSecond);
     animator.close();
     System.exit(777);

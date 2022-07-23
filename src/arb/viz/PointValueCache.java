@@ -137,9 +137,10 @@ public class PointValueCache implements
     System.out.println("Closing function image cache " + file + " and " + file1);
     buffer  = null;
     buffer1 = null;
-//    segment.unload();
-//    segment1.unload();
-//    System.out.println( "unmapped caches");
+    System.out.println( "unmapping caches");
+    segment.unload();
+    segment1.unload();
+    System.out.println( "unmapped caches");
 
     if (!complete)
     {
