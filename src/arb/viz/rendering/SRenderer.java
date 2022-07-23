@@ -43,10 +43,10 @@ public class SRenderer extends
 
     SRenderer plotter = new SRenderer(dimensions,
                                       domain,
-                                      new Real().set(3));
+                                      RealConstants.one);
 
-    plotter.colorMode   = 0;
-    plotter.displayMode = Part.Blend;
+    plotter.colorMode   = 2;
+    plotter.displayMode = Part.Real;
     plotter.render();
 
   }
