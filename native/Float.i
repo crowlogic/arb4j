@@ -183,7 +183,7 @@ import static arb.IntegerConstants.*;
     return zi;    
   }
 
-  public Float div(int i, Float res, int thisprec, int round)
+  public Float div(int i, int round, int thisprec, Float res)
   {
    	arb.arf_div_ui(res, this, i, thisprec, round);
     return res;    
@@ -191,14 +191,9 @@ import static arb.IntegerConstants.*;
   
   public Float div(int i, int thisprec, Float res)
   {
-    return div(i, res, thisprec, ARF_RND_DOWN);
+    return div(i, ARF_RND_DOWN, thisprec, res);
   }
-  
-  public Float div(int numPoints, int i, Float dt, int prec )
-  {
-    arb.arf_div_ui(dt, this, numPoints, prec, ARF_RND_DOWN);
-    return dt;
-  }
+
   
   public double doubleValue()
   {
