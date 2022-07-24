@@ -30,7 +30,7 @@ public class UnitInterval implements
     this.rightClosed = rightClosed;
   }
 
-  final boolean leftClosed, rightClosed;
+  boolean leftClosed, rightClosed;
 
   @Override
   public boolean contains(Real element)
