@@ -1,6 +1,6 @@
 package arb.spaces;
 
-import arb.NumberField;
+import arb.Field;
 import arb.functions.Function;
 
 /**
@@ -24,9 +24,8 @@ import arb.functions.Function;
  * latter space is often in the older literature referred to as the Hilbert
  * space.
  */
-@FunctionalInterface
-public interface HilbertSpace<D extends NumberField> extends
+public interface HilbertSpace<D extends Field> extends
                              Space
 {
-  public <P extends NumberField> P innerProduct(D left, D right);
+  public <P extends Field> P innerProduct(D left, D right);
 }

@@ -1,5 +1,7 @@
 package arb;
 
+import arb.spaces.Space;
+
 /**
  * A field is a set on which addition, subtraction, multiplication, and division
  * are defined and behave as the corresponding operations on rational and real
@@ -8,8 +10,8 @@ package arb;
  * fields potentially represent actually existing physical fields and forces and
  * measurements on them, conserved quantities, etc
  */
-public interface NumberField extends
-                             AutoCloseable
+public interface Field extends
+                       AutoCloseable, Space
 {
 
   @Override

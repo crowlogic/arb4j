@@ -37,7 +37,6 @@ import arb.utensils.Utilities;
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Holomorphic_function">Wikpedia</a>
  */
-@FunctionalInterface
 public interface HolomorphicFunction extends
                                      Function<Complex, Complex>
 {

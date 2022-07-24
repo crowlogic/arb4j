@@ -2,11 +2,11 @@ package arb.functions.real;
 
 import static java.lang.Math.max;
 
-import arb.NumberField;
+import arb.Field;
 import arb.Real;
 import arb.functions.Function;
 
-public class AbsoluteValue<D extends NumberField> implements
+public class AbsoluteValue<D extends Field> implements
                           Function<D, Real>
 {
 

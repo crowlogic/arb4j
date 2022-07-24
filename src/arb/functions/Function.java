@@ -1,10 +1,9 @@
 package arb.functions;
 
-import arb.NumberField;
+import arb.Field;
 import arb.exceptions.NotDifferentiableException;
 
-@FunctionalInterface
-public interface Function<D extends NumberField, R extends NumberField>
+public interface Function<D,R> 
 {
 
   public R evaluate(D t, int order, int prec, R res);

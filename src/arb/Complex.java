@@ -19,7 +19,7 @@ import arb.spaces.*;
  * algebra over the reals, and a Euclidean vector space of dimension two.
  */
 
-public class Complex implements NumberField,Iterable<Complex>,Serializable,EuclideanVectorSpace {
+public class Complex implements Field,Iterable<Complex>,Serializable,EuclideanVectorSpace {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -45,7 +45,7 @@ public class Complex implements NumberField,Iterable<Complex>,Serializable,Eucli
   static { System.loadLibrary( "arblib" ); }
 
   @Override
-  public NumberField innerProduct(NumberField left, NumberField right)
+  public Field innerProduct(Field left, Field right)
   {
     assert false : "TODO";
     return null;

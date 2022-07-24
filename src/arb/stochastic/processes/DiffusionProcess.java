@@ -1,6 +1,6 @@
 package arb.stochastic.processes;
 
-import arb.NumberField;
+import arb.Field;
 import arb.Real;
 import arb.functions.Function;
 
