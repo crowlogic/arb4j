@@ -1,0 +1,5 @@
+#!/bin/sh
+
+find src/ -type d | sed -e 's/\//./g' | cut -c5- | grep -v doc-files | xargs -n 1 -I P echo exports P\;
+
+
