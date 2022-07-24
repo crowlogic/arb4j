@@ -20,6 +20,6 @@ public interface DiscretizationScheme extends
    * @param σ0       TODO
    * @return the resulting stepsize, this{@link #dt}
    */
-  Float discretize(FloatInterval interval, int prec, Real μvector, Real σvector, Float dt, Real μ0, Real σ0);
+  Real discretize(FloatInterval interval, int prec, Real μvector, Real σvector, Real dt, Real μ0, Real σ0);
 
 }

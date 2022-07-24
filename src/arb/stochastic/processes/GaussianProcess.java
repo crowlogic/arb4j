@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.Real;
+import arb.functions.real.*;
 import arb.stochastic.*;
 
 /**
@@ -65,15 +66,15 @@ public class GaussianProcess implements
   }
 
   @Override
-  public Real μ()
+  public RealFunction μ()
   {
-    return μ;
+    return new RealConstant(μ);
   }
 
   @Override
-  public Real σ()
+  public RealFunction σ()
   {
-    return σ;
+    return new RealConstant(σ);
   }
 
 }

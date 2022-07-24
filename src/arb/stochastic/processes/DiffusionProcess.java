@@ -3,6 +3,7 @@ package arb.stochastic.processes;
 import arb.Field;
 import arb.Real;
 import arb.functions.Function;
+import arb.functions.real.*;
 
 /**
  * The notation used in probability theory (and in many applications of
@@ -37,14 +38,14 @@ public interface DiffusionProcess extends
 {
   /**
    * 
-   * @return the drift coefficient
+   * @return the drift coefficient function(
    */
-  public Real μ();
+  public RealFunction μ();
 
   /**
    * 
-   * @return the diffusion coefficient
+   * @return the diffusion coefficient function
    */
-  public Real σ();
+  public RealFunction σ();
 
 }

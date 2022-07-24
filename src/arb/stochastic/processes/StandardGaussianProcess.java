@@ -2,8 +2,8 @@ package arb.stochastic.processes;
 
 import static arb.RealConstants.*;
 
-import arb.Real;
-import arb.RealConstants;
+import arb.*;
+import arb.functions.real.*;
 import arb.stochastic.*;
 
 /**
@@ -65,15 +65,15 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public Real μ()
+  public RealFunction μ()
   {
-    return zero;
+    return new RealConstant(zero);
   }
 
   @Override
-  public Real σ()
+  public RealFunction σ()
   {
-    return one;
+    return new RealConstant(one);
   }
 
 }

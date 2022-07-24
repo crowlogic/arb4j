@@ -2,7 +2,7 @@ package arb.stochastic.processes;
 
 import arb.*;
 import arb.Float;
-import junit.framework.TestCase;
+import junit.framework.*;
 
 public class EulerDiscretizationSchemeTest extends
                                            TestCase
@@ -18,8 +18,8 @@ public class EulerDiscretizationSchemeTest extends
     Real                      μ          = Real.newVector(n);
     Real                      σ          = Real.newVector(n);
 
-    Float                     dt         = integrator.discretize(interval, 128, μ, σ, new Float(), null, null);
-    
+    Real                      dt         = integrator.discretize(interval, 128, μ, σ, new Real(), null, null);
+
     fail("Not yet implemented");
   }
 

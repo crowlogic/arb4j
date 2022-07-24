@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.Real;
+import arb.functions.real.*;
 import arb.stochastic.*;
 
 /**
@@ -70,14 +71,14 @@ public class WienerProcess implements
   }
 
   @Override
-  public Real μ()
+  public RealFunction μ()
   {
     assert false : "TODO: implement";
     return null;
   }
 
   @Override
-  public Real σ()
+  public RealFunction σ()
   {
     assert false : "TODO: implement";
     return null;
