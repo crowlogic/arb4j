@@ -14,27 +14,29 @@ import java.awt.Graphics2D;
 import arb.*;
 import arb.curves.ComplexCircle;
 import arb.curves.Curve;
+import arb.differential.geometry.AffineConnection;
+import arb.differential.geometry.Connection;
 import arb.functions.complex.CircularComposition;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.*;
 import arb.geometry.Manifold;
 
 /**
- * parallel transport (or parallel translation) is a way of transporting
- * geometrical data along smooth {@link Curve} in a {@link Manifold}. If the manifold is
- * equipped with an affine connection (a covariant derivative or connection on
- * the tangent bundle), then this connection allows one to transport vectors of
- * the manifold along curves so that they stay parallel with respect to the
- * connection.
+ * Parallel transport (or parallel translation) is a way of transporting
+ * geometrical data along smooth {@link Curve} in a {@link Manifold}. If the
+ * manifold is equipped with an {@link AffineConnection} (a covariant derivative
+ * or connection on the tangent bundle), then this connection allows one to
+ * transport vectors of the manifold along curves so that they stay parallel
+ * with respect to the connection.
  * 
- * The parallel transport for a connection thus supplies a way of, in some
- * sense, moving the local geometry of a manifold along a curve: that is, of
- * connecting the geometries of nearby points. There may be many notions of
- * parallel transport available, but a specification of one — one way of
- * connecting up the geometries of points on a curve — is tantamount to
- * providing a connection. In fact, the usual notion of connection is the
- * infinitesimal analog of parallel transport. Or, vice versa, parallel
- * transport is the local realization of a connection.
+ * The parallel transport for a {@link Connection} thus supplies a way of, in
+ * some sense, moving the local geometry of a {@link Manifold} along a
+ * {@link Curve}: that is, of connecting the geometries of nearby points. There
+ * may be many notions of parallel transport available, but a specification of
+ * one — one way of connecting up the geometries of points on a {@link Curve} —
+ * is tantamount to providing a {@link Connection}. In fact, the usual notion of
+ * connection is the infinitesimal analog of parallel transport. Or, vice versa,
+ * parallel transport is the local realization of a {@link Connection}.
  * 
  * As parallel transport supplies a local realization of the connection, it also
  * supplies a local realization of the curvature known as holonomy. The
@@ -49,7 +51,7 @@ import arb.geometry.Manifold;
  * Such curve lifting may sometimes be thought of as the parallel transport of
  * reference frames.
  * 
- * @param <P> the type of function to flow across
+ * @param <P> the function class to flow thru
  */
 public class ParallelTransporter<P extends HolomorphicFunction> implements
                                 AutoCloseable

@@ -135,6 +135,7 @@ public class PointValueCache implements
   {
     assert buffer != null;
     System.out.println("Closing function image cache " + file + " and " + file1);
+    
     buffer  = null;
     buffer1 = null;
     System.out.println( "unmapping caches");
