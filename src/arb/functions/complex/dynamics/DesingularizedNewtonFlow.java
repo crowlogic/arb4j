@@ -9,7 +9,7 @@ import arb.functions.complex.*;
  * 
  *    -f(t)*conjugate(f'(t))
  * ---------------------------
- *        1+|f(z)|⁴
+ *        1+|f(t)|⁴
  *   
  * </code>
  */
