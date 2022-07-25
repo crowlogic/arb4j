@@ -14,6 +14,7 @@ module arb4j
   requires transitive hamcrest.core;
 
   exports arb;
+  exports arb.biology;
   exports arb.geometry;
   exports arb.stochastic;
   exports arb.stochastic.processes;
