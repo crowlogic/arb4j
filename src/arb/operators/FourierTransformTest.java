@@ -2,8 +2,8 @@ package arb.operators;
 
 import static arb.utensils.Utilities.println;
 
-import arb.Complex;
-import arb.Real;
+import arb.*;
+import arb.functions.real.ErrorFunction;
 import arb.functions.real.RealPart;
 import arb.stochastic.StandardGaussianCharacteristicFunction;
 import arb.stochastic.StandardGaussianDensityFunction;
@@ -14,11 +14,16 @@ public class FourierTransformTest extends
 {
   public static final int prec = 128;
 
+  /**
+   * TODO: compare the approximation residual vs. the true function and see how
+   * the {@link ErrorFunction} compares with the {@link Magnitude}s of the
+   * uncertainty of the computed {@link Real} quantities
+   */
   public static void testDuality()
   {
     StandardGaussianDensityFunction                   f        = new StandardGaussianDensityFunction();
     FourierTransform<StandardGaussianDensityFunction> φnumeric = new FourierTransform(f,
-                                                                                          false);
+                                                                                      false);
 
     /**
      * the Fourier transform of e^(-x^2) is <br>
@@ -32,12 +37,9 @@ public class FourierTransformTest extends
 
       StandardGaussianCharacteristicFunction            φexact = new StandardGaussianCharacteristicFunction();
       FourierTransform<StandardGaussianDensityFunction> f2     = new FourierTransform(φexact,
-                                                                                          true);
+                                                                                      true);
 
-      Complex                                               val    = φnumeric.evaluate(point,
-                                                                                       1,
-                                                                                       prec,
-                                                                                       new Complex());
+      Complex                                           val    = φnumeric.evaluate(point, 1, prec, new Complex());
       val.printPrecision = true;
       System.out.println("val from numerically integrated truncated Fourier transform of Gaussian density " + val);
       assertEquals(0.0068789618474533993988662139429379749344661831855774,
