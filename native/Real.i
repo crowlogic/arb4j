@@ -1,6 +1,6 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "Comparable<Real>, NumberField"
+%typemap(javainterfaces) arb_struct "Comparable<Real>, Field"
 
 %typemap(javaimports) arb_struct %{
 import java.util.concurrent.TimeUnit;

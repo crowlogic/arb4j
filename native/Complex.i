@@ -14,13 +14,13 @@ import arb.spaces.*;
 
 %typemap(javafinalize) acb_struct ""
 
-%typemap(javainterfaces) acb_struct "NumberField,Iterable<Complex>,Serializable,EuclideanVectorSpace"
+%typemap(javainterfaces) acb_struct "Field,Iterable<Complex>,Serializable,EuclideanVectorSpace"
 
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
   @Override
-  public NumberField innerProduct(NumberField left, NumberField right)
+  public Field innerProduct(Field left, Field right)
   {
     assert false : "TODO";
     return null;

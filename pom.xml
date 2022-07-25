@@ -11,8 +11,8 @@
 		<lwjgl.natives>natives-linux</lwjgl.natives>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 		<mdep.outputFile>class.path</mdep.outputFile>
-		<maven.compiler.source>9</maven.compiler.source>
-		<maven.compiler.target>9</maven.compiler.target>
+		<maven.compiler.source>18</maven.compiler.source>
+		<maven.compiler.target>18</maven.compiler.target>
 	</properties>
 
 	<build>
@@ -22,7 +22,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>10</release>
+					<release>17</release>
 				</configuration>
 			</plugin>
 			<plugin>
