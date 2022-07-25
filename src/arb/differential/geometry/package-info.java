@@ -1,6 +1,6 @@
 /**
  * Differential geometry is a mathematical discipline that studies the geometry
- * of smooth shapes and smooth spaces, otherwise known as smooth
+ * of smooth shapes and {@link arb.spaces.Space}s, otherwise known as smooth
  * {@link arb.geometry.Manifold}s. It uses the techniques of differential
  * calculus, integral calculus, linear algebra and multilinear algebra. The
  * field has its origins in the study of spherical geometry as far back as
