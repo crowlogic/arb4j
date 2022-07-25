@@ -21,7 +21,7 @@ public interface RealFunction extends
 {
 
   public int     FLINT_BITS = 64;
-  public boolean verbose    = true;
+  public boolean verbose    = false;
 
   public default RealFunction tanh()
   {

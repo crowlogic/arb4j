@@ -10,8 +10,8 @@ public class FourierTransform<F extends RealFunction> implements
 
   public int                relativeAccuracyBitsGoal     = 128;
   public final Magnitude    absoluteUncertaintyTolerance = new Magnitude().set(Math.pow(10, -30));
-  public final Real         right                        = new Real().set("100", 128);
-  public final Real         left                         = new Real().set("-100", 128);
+  public final Real         right                        = new Real("100", 128);
+  public final Real         left                         = new Real("-100", 128);
   public IntegrationOptions integrationOptions           = new IntegrationOptions();
   private boolean           inverse;
 
@@ -30,7 +30,7 @@ public class FourierTransform<F extends RealFunction> implements
     assert order < 2;
 
     /**
-     * f(x)e^(-i2πξx) or if inverse then f(x)e^(i2πξx)
+     * f(x)*e^(-i*2*π*ξ*x) or if inverse then f(x)*e^(i*2*π*ξ*x)
      */
     RealToComplexFunction integrand = (x, integrandOrder, integrandPrec, result) ->
     {

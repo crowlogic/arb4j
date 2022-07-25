@@ -22,7 +22,6 @@ public class FourierTransformTest extends
    * {@link ErrorFunction} compares with the {@link Magnitude}s of the*
    * uncertainty of the computed {@link Real}quantities
    */
-
   public static void testDuality()
   {
     StandardGaussianDensityFunction                   f        = new StandardGaussianDensityFunction();

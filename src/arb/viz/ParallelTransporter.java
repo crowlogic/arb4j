@@ -13,18 +13,46 @@ import java.awt.Graphics2D;
 
 import arb.*;
 import arb.curves.ComplexCircle;
+import arb.curves.Curve;
 import arb.functions.complex.CircularComposition;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.*;
+import arb.geometry.Manifold;
 
 /**
- * This class traces out the path where the real part, imaginary part, phase, or
- * magnitude of a function is equal to a specific value which is by default 0
+ * parallel transport (or parallel translation) is a way of transporting
+ * geometrical data along smooth {@link Curve} in a {@link Manifold}. If the manifold is
+ * equipped with an affine connection (a covariant derivative or connection on
+ * the tangent bundle), then this connection allows one to transport vectors of
+ * the manifold along curves so that they stay parallel with respect to the
+ * connection.
+ * 
+ * The parallel transport for a connection thus supplies a way of, in some
+ * sense, moving the local geometry of a manifold along a curve: that is, of
+ * connecting the geometries of nearby points. There may be many notions of
+ * parallel transport available, but a specification of one — one way of
+ * connecting up the geometries of points on a curve — is tantamount to
+ * providing a connection. In fact, the usual notion of connection is the
+ * infinitesimal analog of parallel transport. Or, vice versa, parallel
+ * transport is the local realization of a connection.
+ * 
+ * As parallel transport supplies a local realization of the connection, it also
+ * supplies a local realization of the curvature known as holonomy. The
+ * Ambrose–Singer theorem makes explicit this relationship between curvature and
+ * holonomy.
+ * 
+ * Other notions of connection come equipped with their own parallel
+ * transportation systems as well. For instance, a Koszul connection in a vector
+ * bundle also allows for the parallel transport of vectors in much the same way
+ * as with a covariant derivative. An Ehresmann or Cartan connection supplies a
+ * lifting of curves from the manifold to the total space of a principal bundle.
+ * Such curve lifting may sometimes be thought of as the parallel transport of
+ * reference frames.
  * 
  * @param <P> the type of function to flow across
  */
-public class GeodesicFlower<P extends HolomorphicFunction> implements
-                           AutoCloseable
+public class ParallelTransporter<P extends HolomorphicFunction> implements
+                                AutoCloseable
 {
   public static enum What
   {
@@ -62,7 +90,7 @@ public class GeodesicFlower<P extends HolomorphicFunction> implements
    * @param what    specifies what part of the scalar function of the surface to
    *                minimize
    */
-  public GeodesicFlower(P surface, Complex t0, Real dt, What what, Real θ0, Real ρ)
+  public ParallelTransporter(P surface, Complex t0, Real dt, What what, Real θ0, Real ρ)
   {
     this.surface   = surface;
     this.dt        = dt;

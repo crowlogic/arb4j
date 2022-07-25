@@ -3,7 +3,7 @@ package arb.viz;
 import arb.ComplexConstants;
 import arb.Real;
 import arb.functions.complex.SFunction;
-import arb.viz.GeodesicFlower.What;
+import arb.viz.ParallelTransporter.What;
 
 public class GeodesicFlowTest
 {
@@ -16,7 +16,7 @@ public class GeodesicFlowTest
   {
     try ( Real dt = new Real();)
     {
-      GeodesicFlower<SFunction> flower = new GeodesicFlower<SFunction>(new SFunction(),
+      ParallelTransporter<SFunction> flower = new ParallelTransporter<SFunction>(new SFunction(),
                                                                        ComplexConstants.ZERO,
                                                                        dt.set("0.1", 128),
                                                                        What.Real,
