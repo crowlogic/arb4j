@@ -1,10 +1,15 @@
 package arb.stochastic.processes;
 
 import arb.Real;
-import arb.functions.real.RealBivariateFunction;
+import arb.functions.Function;
 
+/**
+ * 
+ * @author crow
+ *
+ */
 public interface CoeffecientFunction extends
-                                     RealBivariateFunction
+                                     Function<DiffusionProcessCoordinates, Real>
 {
 
 }

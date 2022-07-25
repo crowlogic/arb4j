@@ -1,7 +1,6 @@
 package arb.stochastic.processes;
 
 import arb.Real;
-import arb.functions.real.RealBivariateFunction;
 import arb.stochastic.*;
 
 /**

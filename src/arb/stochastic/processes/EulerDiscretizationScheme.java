@@ -27,12 +27,12 @@ public class EulerDiscretizationScheme implements
   @Override
   public Real discretize(FloatInterval interval, int prec, Real S, Real dt, Real initialLevel, Real initialVariance)
   {
-    int                   n     = S.size();
-    RealBivariateFunction μ     = X.μ();
-    RealBivariateFunction σ     = X.σ();
+    int                          n     = S.size();
+    DriftCoeffecientFunction     μ     = X.μ();
+    DiffusionCoeffecientFunction σ     = X.σ();
 
-    Float                 start = interval.getA();
-    Float                 T     = interval.getB().sub(start, prec, dt.getMid());
+    Float                        start = interval.getA();
+    Float                        T     = interval.getB().sub(start, prec, dt.getMid());
     try ( DiffusionProcessCoordinates coords = new DiffusionProcessCoordinates())
     {
       Real  tReal = coords.time();
