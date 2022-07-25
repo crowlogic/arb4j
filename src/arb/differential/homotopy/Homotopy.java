@@ -3,7 +3,7 @@ package arb.differential.homotopy;
 import arb.Field;
 import arb.domains.UnitInterval;
 import arb.functions.Function;
-import arb.spaces.ProductSpace;
+import arb.spaces.CartesianProduct;
 
 /**
  * two continuous functions from one topological space to another are called
@@ -24,7 +24,7 @@ import arb.spaces.ProductSpace;
  * @param <B>
  */
 public interface Homotopy<A extends Field, B extends Field> extends
-                         Function<ProductSpace<A, UnitInterval>, B>
+                         Function<CartesianProduct<A, UnitInterval>, B>
 {
 
 }

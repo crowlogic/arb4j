@@ -18,8 +18,8 @@ import arb.Set;
  * @param <A>
  * @param <B>
  */
-public interface ProductSpace<A extends Set, B extends Set> extends
-                             Space<ProductSpace<?, ?>>
+public interface CartesianProduct<A extends Set, B extends Set> extends
+                                 Space<CartesianProduct<A, B>>
 {
 
 }
