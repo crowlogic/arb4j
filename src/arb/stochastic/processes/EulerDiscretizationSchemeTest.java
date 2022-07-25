@@ -20,7 +20,6 @@ public class EulerDiscretizationSchemeTest extends
 
     Real                      dt         = integrator.discretize(interval, 128, μ, σ, new Real(), null, null);
 
-    fail("Not yet implemented");
   }
 
 }
