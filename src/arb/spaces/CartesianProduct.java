@@ -1,12 +1,14 @@
 package arb.spaces;
 
+import arb.OrderedPair;
 import arb.Set;
 
 /**
- * The Cartesian product of two sets A and B (also called the product set, set
+ * The Cartesian product of two {@link Set} A and B (also called the product set, set
  * direct product, or cross product) is defined to be the set of all points
  * (a,b) where a in A and b in B. It is denoted A×B, and is called the Cartesian
- * product since it originated in Descartes' formulation of analytic geometry.
+ * product since it originated in Descartes' formulation of analytic geometry. <br><br>
+ * 
  * In the Cartesian view, points in the plane are specified by their vertical
  * and horizontal coordinates, with points on a line being specified by just one
  * coordinate. The main examples of direct products are Euclidean three-space
@@ -18,8 +20,9 @@ import arb.Set;
  * @param <A>
  * @param <B>
  */
-public interface CartesianProduct<A extends Set, B extends Set> extends
-                                 Space<CartesianProduct<A, B>>
+public class CartesianProduct<A extends Set, B extends Set> extends
+                             OrderedPair<A, B> implements
+                             Space<CartesianProduct<A, B>>
 {
 
 }
