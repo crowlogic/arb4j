@@ -7,7 +7,7 @@ import arb.spaces.*;
 /**
  * 
  * A {@link Metric} is a distance {@link Function} on a {@link Set} X denoted by
- * ρ with non-negative {@link Real} values, defined on the
+ * ρ having non-negative {@link Real} values, defined on the
  * {@link CartesianProduct} X×X and satisfying for any x,y∈X the conditions:
  * 
  * <pre>
@@ -24,7 +24,8 @@ import arb.spaces.*;
  *
  * @param <X> the set this metric {@link Measure}s
  * 
- * @see <a href="https://encyclopediaofmath.org/wiki/Metric">The Encyclopedia of Mathematics wiki</a>
+ * @see <a href="https://encyclopediaofmath.org/wiki/Metric">The Encyclopedia of
+ *      Mathematics wiki</a>
  */
 public interface Metric<X extends Set> extends
                        Function<CartesianProduct<X, X>, Real>
