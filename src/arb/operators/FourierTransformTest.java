@@ -15,20 +15,20 @@ public class FourierTransformTest extends
   public static final int prec = 128;
 
   /**
-   * TODO: compare the approximation residual vs. the true function and see how
-   * the {@link ErrorFunction} compares with the {@link Magnitude}s of the
-   * uncertainty of the computed {@link Real} quantities
+   * The {@link FourierTransform} of e^(-x²) is
+   * ∫(e^(-x²)*e^(-i*2*π*y*x),x=-∞..+∞)=e^(-y²*π²)*√π
+   * 
+   * TODO: compare the approximation residual vs.the true function and see how*the
+   * {@link ErrorFunction} compares with the {@link Magnitude}s of the*
+   * uncertainty of the computed {@link Real}quantities
    */
+
   public static void testDuality()
   {
     StandardGaussianDensityFunction                   f        = new StandardGaussianDensityFunction();
     FourierTransform<StandardGaussianDensityFunction> φnumeric = new FourierTransform(f,
                                                                                       false);
 
-    /**
-     * the Fourier transform of e^(-x^2) is <br>
-     * int(e^(-x^2)*e^(-i2πyx),x=-∞..+∞)=e^(-y^2*π^2)*sqrt[π]
-     */
     φnumeric.integrationOptions.verbose = false;
     try ( Real point = new Real("0.75",
                                 prec))
