@@ -5,13 +5,15 @@ import arb.functions.complex.EntireFunction;
 import arb.functions.complex.MeromorphicFunction;
 
 /**
- * The desingularized <code>
+ * The desingularized {@link NewtonFlow}
  * 
- *    -f(t)*conjugate(f'(t))
- * ---------------------------
+ * <pre>
+ * 
+ *    -f(t)*conjugate(f'(t))      
+ * ---------------------------   
  *        1+|f(t)|⁴
- *   
- * </code>
+ * 
+ * </pre>
  */
 public class DesingularizedNewtonFlow<F extends MeromorphicFunction> extends
                                      NewtonFlow implements

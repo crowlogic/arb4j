@@ -5,7 +5,13 @@ import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.HolomorphicFunction;
 
 /**
- * <code>-f(t)/f'(t)</code>
+ * <pre>
+ * 
+ *      -f(t)
+ *    ----------
+ *      f'(t)
+ * 
+ * </pre>
  * 
  */
 public class NewtonFlow<F extends HolomorphicFunction> implements
@@ -24,25 +30,25 @@ public class NewtonFlow<F extends HolomorphicFunction> implements
     this.f = f;
   }
 
-  public F              f;
+  public F                  f;
 
   final HolomorphicFunction diff = (t, order, prec, w) ->
-                             {
-                               try ( Complex s = Complex.newVector(3);)
-                               {
-                                 f.evaluate(t, 3, prec, s);
-                                 Complex numerator   = s.mul(s.get(2), prec, w);
-                                 Complex denominator = s.get(1).pow(2, prec, s.get(0));
-                                 numerator.div(denominator, prec, w);
-                                 if (!w.isFinite())
                                  {
-                                   w.getImag().zero();
-                                   w.getReal().one().div(f.multiplicityOfRoot(t), prec);
-                                 }
-                                 w.neg(w).add(1, prec, w);
-                                 return w;
-                               }
-                             };
+                                   try ( Complex s = Complex.newVector(3);)
+                                   {
+                                     f.evaluate(t, 3, prec, s);
+                                     Complex numerator   = s.mul(s.get(2), prec, w);
+                                     Complex denominator = s.get(1).pow(2, prec, s.get(0));
+                                     numerator.div(denominator, prec, w);
+                                     if (!w.isFinite())
+                                     {
+                                       w.getImag().zero();
+                                       w.getReal().one().div(f.multiplicityOfRoot(t), prec);
+                                     }
+                                     w.neg(w).add(1, prec, w);
+                                     return w;
+                                   }
+                                 };
 
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
