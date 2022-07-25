@@ -9,6 +9,7 @@ import arb.Complex;
 import arb.arb;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
+import sun.misc.Unsafe;
 
 /**
  * If the precision of the number is 128 bits or less then the only space
@@ -18,7 +19,6 @@ import jdk.incubator.foreign.ResourceScope;
  * things.. so we go with the rule-of-thumb that 128 bits is enough for
  * calculating RGB intensities anyway..
  * 
- * TODO: use MemorySegmen
  */
 public class PointValueCache implements
                              AutoCloseable
