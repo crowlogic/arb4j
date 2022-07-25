@@ -1,8 +1,7 @@
 package arb.stochastic.processes;
 
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.Real;
 import arb.functions.real.*;
 import arb.utensils.Utilities;
 
@@ -38,20 +37,20 @@ public class EulerDiscretizationScheme implements
   {
     int n = μmesh.size();
     assert n == σmesh.size();
-    RealFunction μ = X.μ();
-    RealFunction σ = X.σ();
+    RealBivariateFunction μ = X.μ();
+    RealBivariateFunction σ = X.σ();
 
     Float        T = interval.getB().sub(interval.getA(), prec, dt.getMid());
-    try ( Real t = new Real(); Real s = new Real())
+    try ( Real t = new Real(); RealOrderedPair s = new RealOrderedPair())
     {
       for (int i = 0; i < n; i++)
       {
-        interval.getA().add(dt.mul(i, prec, t).getMid(), prec, s.getMid());
+        interval.getA().add(dt.mul(i, prec, t).getMid(), prec, s.b.getMid());
         
         Real μi = μmesh.get(i);
         μ.evaluate(s, 1, prec, μi);
         μi.mul(dt, prec, μi);
-        interval.getA().add(dt.mul(i, prec, t).getMid(), prec, s.getMid());
+        interval.getA().add(dt.mul(i, prec, t).getMid(), prec, s.b.getMid());
         
         Real σi = σmesh.get(i);
         σ.evaluate(s, 1, prec, σi);

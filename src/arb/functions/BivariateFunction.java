@@ -1,7 +1,9 @@
 package arb.functions;
 
+import arb.OrderedPair;
+
 public interface BivariateFunction<Ω, X> extends
-                                  MultivariateFunction<Ω, X>
+                                  MultivariateFunction<OrderedPair<Ω,Ω>, X>
 {
 
   @Override

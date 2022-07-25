@@ -1,7 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.Real;
-import arb.functions.real.*;
+import arb.functions.real.RealBivariateFunction;
 import arb.stochastic.*;
 
 /**
@@ -66,15 +66,21 @@ public class GaussianProcess implements
   }
 
   @Override
-  public RealFunction μ()
+  public RealBivariateFunction μ()
   {
-    return new RealConstant(μ);
+    return (arguments, order, precision, result) ->
+    {
+      return μ;
+    };
   }
 
   @Override
-  public RealFunction σ()
+  public RealBivariateFunction σ()
   {
-    return new RealConstant(σ);
+    return (arguments, order, precision, result) ->
+    {
+      return σ;
+    };
   }
 
 }

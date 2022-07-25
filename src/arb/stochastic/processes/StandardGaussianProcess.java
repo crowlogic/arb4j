@@ -65,15 +65,21 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public RealFunction μ()
+  public RealBivariateFunction μ()
   {
-    return new RealConstant(zero);
+    return (arguments, order, precision, result) ->
+    {
+      return zero;
+    };
   }
 
   @Override
-  public RealFunction σ()
+  public RealBivariateFunction σ()
   {
-    return new RealConstant(one);
+    return (arguments, order, precision, result) ->
+    {
+      return one;
+    };
   }
 
 }

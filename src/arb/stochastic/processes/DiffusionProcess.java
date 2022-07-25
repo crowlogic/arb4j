@@ -1,9 +1,6 @@
 package arb.stochastic.processes;
 
-import arb.Field;
-import arb.Real;
-import arb.functions.Function;
-import arb.functions.real.*;
+import arb.functions.real.RealBivariateFunction;
 
 /**
  * The notation used in probability theory (and in many applications of
@@ -23,10 +20,13 @@ import arb.functions.real.*;
  * amount that is normally distributed with expectation <b>μ(X(t),t)δ</b> and
  * variance <b>σ(X(t),t)²δ</b> and is independent of the past behavior of the
  * process. This is so because the increments of a {@link WienerProcess} are
- * independent and normally distributed. The function this{@link #μ()} is
- * referred to as the drift coefficient, while this{@link #σ()}σ is called the
- * diffusion coefficient. The stochastic process X(t) is called a diffusion
- * process, and satisfies the Markov property therefore is said to be Markovian.
+ * independent and normally distributed. <br>
+ * <br>
+ * 
+ * The function this{@link #μ()} is referred to as the drift coefficient, while
+ * this{@link #σ()}σ is called the diffusion coefficient. The stochastic process
+ * X(t) is called a diffusion process, and satisfies the Markov property
+ * therefore is said to be Markovian.
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Stochastic_differential_equation">Wikipedia</a>
@@ -34,18 +34,18 @@ import arb.functions.real.*;
  *
  */
 public interface DiffusionProcess extends
-                                 StochasticProcess
+                                  StochasticProcess
 {
   /**
    * 
-   * @return the drift coefficient function(
+   * @return the drift coefficient function
    */
-  public RealFunction μ();
+  public RealBivariateFunction μ();
 
   /**
    * 
    * @return the diffusion coefficient function
    */
-  public RealFunction σ();
+  public RealBivariateFunction σ();
 
 }

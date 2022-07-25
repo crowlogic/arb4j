@@ -71,14 +71,14 @@ public class WienerProcess implements
   }
 
   @Override
-  public RealFunction μ()
+  public RealBivariateFunction μ()
   {
     assert false : "TODO: implement";
     return null;
   }
 
   @Override
-  public RealFunction σ()
+  public RealBivariateFunction σ()
   {
     assert false : "TODO: implement";
     return null;
