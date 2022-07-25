@@ -9,7 +9,7 @@ public class MilsteinDiscretizationScheme implements
 {
 
   @Override
-  public Real discretize(FloatInterval interval, int prec, Real μvector, Real σvector, Real dt, Real μ0, Real σ0)
+  public Real discretize(FloatInterval interval, int prec, Real X, Real dt, Real μ0, Real σ0)
   {
     return arb.utensils.Utilities.TODO("implement me");
   }

@@ -21,42 +21,34 @@ public class EulerDiscretizationScheme implements
    * 
    * @param interval
    * @param prec     precision
-   * @param μmesh    upon entry it should be a Real vector of length n
-   * @param μmesh    upon entry it should be a Real vector of length n
-   * @return the resulting stepsize, this{@link #dt} after populating μmesh and
-   *         σmesh
+   * @param S        upon entry it should be a Real vector of length n
+   * @return the time delta this{@link #dt} between points of S
    */
   @Override
-  public Real discretize(FloatInterval interval,
-                         int prec,
-                         Real μmesh,
-                         Real σmesh,
-                         Real dt,
-                         Real initialLevel,
-                         Real initialVariance)
+  public Real discretize(FloatInterval interval, int prec, Real S, Real dt, Real initialLevel, Real initialVariance)
   {
-    int n = μmesh.size();
-    assert n == σmesh.size();
-    RealBivariateFunction μ = X.μ();
-    RealBivariateFunction σ = X.σ();
+    int                   n     = S.size();
+    RealBivariateFunction μ     = X.μ();
+    RealBivariateFunction σ     = X.σ();
 
-    Float        T = interval.getB().sub(interval.getA(), prec, dt.getMid());
-    try ( Real t = new Real(); RealOrderedPair s = new RealOrderedPair())
+    Float                 start = interval.getA();
+    Float                 T     = interval.getB().sub(start, prec, dt.getMid());
+    try ( DiffusionProcessCoordinates coords = new DiffusionProcessCoordinates())
     {
+      Real  tReal = coords.time();
+      Float t     = tReal.getMid();
+
       for (int i = 0; i < n; i++)
       {
-        interval.getA().add(dt.mul(i, prec, t).getMid(), prec, s.b.getMid());
-        
-        Real μi = μmesh.get(i);
-        μ.evaluate(s, 1, prec, μi);
-        μi.mul(dt, prec, μi);
-        interval.getA().add(dt.mul(i, prec, t).getMid(), prec, s.b.getMid());
-        
-        Real σi = σmesh.get(i);
-        σ.evaluate(s, 1, prec, σi);
-        σi.mul(dt, prec, σi);
-        
-        σi.mul(dt, prec, σi);
+        // t = start + dt*i
+        dt.mul(i, prec, tReal);
+        start.add(t, prec, t);
+
+        Real Si = S.get(i);
+        μ.evaluate(coords, 1, prec, Si);
+        Si.mul(dt, prec, Si);
+        start.add(dt.mul(i, prec, tReal).getMid(), prec, coords.value().getMid());
+
       }
     }
 

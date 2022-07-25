@@ -18,7 +18,7 @@ public class EulerDiscretizationSchemeTest extends
     Real                      μ          = Real.newVector(n);
     Real                      σ          = Real.newVector(n);
 
-    Real                      dt         = integrator.discretize(interval, 128, μ, σ, new Real(), null, null);
+    Real                      dt         = integrator.discretize(interval, 128, μ, new Real(), null, null);
 
   }
 

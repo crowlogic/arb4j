@@ -40,12 +40,12 @@ public interface DiffusionProcess extends
    * 
    * @return the drift coefficient function
    */
-  public RealBivariateFunction μ();
+  public DriftCoeffecientFunction μ();
 
   /**
    * 
    * @return the diffusion coefficient function
    */
-  public RealBivariateFunction σ();
+  public DiffusionCoeffecientFunction σ();
 
 }

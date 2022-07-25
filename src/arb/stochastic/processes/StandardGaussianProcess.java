@@ -65,7 +65,7 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public RealBivariateFunction μ()
+  public DriftCoeffecientFunction μ()
   {
     return (arguments, order, precision, result) ->
     {
@@ -74,7 +74,7 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public RealBivariateFunction σ()
+  public DiffusionCoeffecientFunction σ()
   {
     return (arguments, order, precision, result) ->
     {

@@ -1,7 +1,6 @@
 package arb.stochastic.processes;
 
 import arb.Real;
-import arb.functions.real.*;
 import arb.stochastic.*;
 
 /**
@@ -23,13 +22,13 @@ import arb.stochastic.*;
  * <br>
  * An alternative characterisation of the Wiener process is the so-called
  * <b>Lévy characterisation</b> that says that the Wiener process is an almost
- * surely continuous martingale with W0 = 0 and quadratic variation [W(t), W(t)]
- * = t (which means that W(t)^2 − t is also a martingale).
+ * surely continuous martingale with W(0) = 0 and quadratic variation [W(t),
+ * W(t)] = t (which means that W(t)² − t is also a martingale).
  *
  * @author Norbert Wiener
  * 
  * 
- * @see https://en.wikipedia.org/wiki/Wiener_process
+ * @see <a href="https://en.wikipedia.org/wiki/Wiener_process">Wikipedia</a>
  */
 public class WienerProcess implements
                            LévyProcess
@@ -71,14 +70,14 @@ public class WienerProcess implements
   }
 
   @Override
-  public RealBivariateFunction μ()
+  public DriftCoeffecientFunction μ()
   {
     assert false : "TODO: implement";
     return null;
   }
 
   @Override
-  public RealBivariateFunction σ()
+  public DiffusionCoeffecientFunction σ()
   {
     assert false : "TODO: implement";
     return null;
