@@ -1,5 +1,6 @@
 /**
- * https://github.com/crowlogic/arb4j/
+ * @see <a href="https://github.com/crowlogic/arb4j/">the arb4j page on
+ *      github</a>
  */
 module arb4j
 {
