@@ -1,5 +1,11 @@
 package arb.algebraic.expressions;
 
+/**
+ * An {@link Expression} can be a {@link Constant}, {@link Variable},
+ * {@link BinaryExpression}, {@link FunctionInvocation}, or {@link UnaryExpression}
+ *
+ */
+@FunctionalInterface
 public interface Expression
 {
   public float evaluate();

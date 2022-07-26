@@ -7,7 +7,7 @@ import java.util.Map;
  * 
  * @param <T> namespace (or env)
  */
-public class FunctionalContext<T> implements
+public class FunctionInvocation<T> implements
                               Expression
 {
   protected final Function<T>           f;
@@ -15,7 +15,7 @@ public class FunctionalContext<T> implements
   protected final Map<String, Variable> variables;
   public T                              env;
 
-  public FunctionalContext(Function<T> f, List<Expression> args, Map<String, Variable> variables)
+  public FunctionInvocation(Function<T> f, List<Expression> args, Map<String, Variable> variables)
   {
     this.f         = f;
     this.args      = args;

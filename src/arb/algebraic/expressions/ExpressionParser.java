@@ -346,9 +346,9 @@ public class ExpressionParser
           break;
         }
       }
-      expressions.push(new FunctionalContext<>(f,
-                                               args,
-                                               variables));
+      expressions.push(new FunctionInvocation<>(f,
+                                                args,
+                                                variables));
     }
     parenNext = PAREN_FORBIDDEN;
     return parenNext;

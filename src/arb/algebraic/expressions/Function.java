@@ -8,5 +8,5 @@ package arb.algebraic.expressions;
 @FunctionalInterface
 public interface Function<T>
 {
-  public float evaluate(FunctionalContext<T> c);
+  public float evaluate(FunctionInvocation<T> c);
 }

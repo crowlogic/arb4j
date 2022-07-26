@@ -30,26 +30,23 @@ public class ExpressionTest
   @Test
   public void testFunc()
   {
-    Function<Float>          f      = new Function<Float>()
+    Function<Float>          f      = c ->
                                     {
-                                      public float evaluate(FunctionalContext<Float> c)
+                                      if (c.env == null)
                                       {
-                                        if (c.env == null)
-                                        {
-                                          c.env = 0f;
-                                        }
-                                        float acc = (Float) c.env;
-                                        acc   = acc + c.args.get(0).evaluate();
-                                        c.env = acc;
-                                        return acc;
+                                        c.env = 0f;
                                       }
+                                      float acc = c.env;
+                                      acc   = acc + c.args.get(0).evaluate();
+                                      c.env = acc;
+                                      return acc;
                                     };
     Expression               two    = new Constant(2);
     Variable                 x      = new Variable(0);
-    FunctionalContext<Float> sum    = new FunctionalContext<Float>(f,
+    FunctionInvocation<Float> sum    = new FunctionInvocation<Float>(f,
                                                                    Arrays.asList(two),
                                                                    null);
-    FunctionalContext<Float> sumVar = new FunctionalContext<Float>(f,
+    FunctionInvocation<Float> sumVar = new FunctionInvocation<Float>(f,
                                                                    Arrays.asList((Expression) x),
                                                                    null);
 
@@ -202,14 +199,14 @@ public class ExpressionTest
     Map<String, Function> functions = new HashMap<String, Function>();
     functions.put("add3", new Function<Void>()
     {
-      public float evaluate(FunctionalContext<Void> c)
+      public float evaluate(FunctionInvocation<Void> c)
       {
         return c.args.get(0).evaluate() + c.args.get(1).evaluate() + c.args.get(2).evaluate();
       }
     });
     functions.put("nop", new Function()
     {
-      public float evaluate(FunctionalContext c)
+      public float evaluate(FunctionInvocation c)
       {
         return 0;
       }
