@@ -1,5 +1,6 @@
 package arb.topological.spaces;
 
+import arb.OpenSet;
 import arb.Set;
 import arb.topological.Topology;
 
@@ -11,7 +12,7 @@ import arb.topological.Topology;
  * that can be defined as a set of neighbourhoods for each point, that satisfy
  * some axioms formalizing the concept of closeness. There are several
  * equivalent definitions of a topology, the most commonly used is the
- * definition through open sets, which is easier to manipulate.
+ * definition through {@link OpenSet}, which is easier to work with.
  * 
  * A topological space is the most general type of a mathematical {@link Space}
  * that allows for the definition of limits, continuity, and connectedness.
