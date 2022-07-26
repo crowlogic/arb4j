@@ -1,4 +1,4 @@
-package arb.theoretical.physics.forces;
+package arb.nature.physics.forces;
 
 /**
  * the influence that produces a change in a physical quantity; "force equals

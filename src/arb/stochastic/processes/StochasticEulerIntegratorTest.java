@@ -4,7 +4,7 @@ import arb.*;
 import arb.Float;
 import junit.framework.*;
 
-public class EulerDiscretizationSchemeTest extends
+public class StochasticEulerIntegratorTest extends
                                            TestCase
 {
 

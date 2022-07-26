@@ -48,5 +48,5 @@ module arb4j
   exports arb.exceptions;
   exports arb.theoretical;
   exports arb.theoretical.physics;
-  exports arb.theoretical.physics.forces;
+  exports arb.nature.physics.forces;
 }

@@ -1,4 +1,4 @@
-package arb.theoretical.physics.forces;
+package arb.nature.physics.forces;
 
 public interface ElectromagneticForce extends
                                       Force

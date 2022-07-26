@@ -1,4 +1,4 @@
-package arb.theoretical.physics;
+package arb.nature.physics;
 
 public interface StandardModel
 {
