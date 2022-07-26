@@ -1,19 +1,21 @@
 package arb.spaces;
 
+import arb.topology.Topology;
+
 /**
- * a topological space is, roughly speaking, a geometrical {@link Space} in which
- * closeness is defined but cannot necessarily be measured by a numeric
+ * A topological space is, roughly speaking, a geometrical {@link Space} in
+ * which closeness is defined but cannot necessarily be measured by a numeric
  * distance. More specifically, a topological space is a set whose elements are
- * called points, along with an additional structure called a topology that can
- * be defined as a set of neighbourhoods for each point, that satisfy some
- * axioms formalizing the concept of closeness. There are several equivalent
- * definitions of a topology, the most commonly used is the definition through
- * open sets, which is easier to manipulate.
+ * called points, along with an additional structure called a {@link Topology}
+ * that can be defined as a set of neighbourhoods for each point, that satisfy
+ * some axioms formalizing the concept of closeness. There are several
+ * equivalent definitions of a topology, the most commonly used is the
+ * definition through open sets, which is easier to manipulate.
  * 
- * A topological space is the most general type of a mathematical {@link Space} that
- * allows for the definition of limits, continuity, and connectedness.
- * Common types of topological spaces include {@link EuclideanSpace}, metric spaces
- * and manifolds.
+ * A topological space is the most general type of a mathematical {@link Space}
+ * that allows for the definition of limits, continuity, and connectedness.
+ * Common types of topological spaces include {@link EuclideanSpace}, metric
+ * spaces and manifolds.
  * 
  * Although very general, the concept of topological spaces is a fundamental and
  * used in virtually every branch of modern mathematics. The study of
@@ -24,8 +26,8 @@ package arb.spaces;
  * 
  * @param <X>
  */
-public interface TopologicalSpace<X> extends
+public interface TopologicalSpace<X, T extends Topology> extends
                                  Space<X>
 {
-
+  public T topology();
 }

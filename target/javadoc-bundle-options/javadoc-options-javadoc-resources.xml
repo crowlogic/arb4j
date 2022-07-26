@@ -6,8 +6,5 @@
   <tagletArtifacts>
     <tagletArtifact />
   </tagletArtifacts>
-  <excludePackageNames>
-    <excludePackageName>arb.biology</excludePackageName>
-  </excludePackageNames>
   <javadocResourcesDirectory>src/main/javadoc</javadocResourcesDirectory>
 </javadocOptions>

@@ -1,6 +1,6 @@
 /**
  * Topology (from the Greek words τόπος, 'place, location', and λόγος, 'study')
- * is concerned with the properties of a geometric {@link java.lang.Object} that
+ * is concerned with the properties of geometric {@link java.lang.Object}s that
  * are preserved under continuous
  * {@link arb.topology.transformations.Transformation}s, such as
  * {@link arb.topology.transformations.Stretching},
@@ -9,7 +9,7 @@
  * {@link arb.topology.transformations.Bending}; that is, without closing holes,
  * opening holes, tearing, gluing, or passing through itself.
  * 
- * A topological space is a set endowed with a structure, called a
+ * A {@link arb.spaces.TopologicalSpace} is a set endowed with a structure, called a
  * {@link arb.topology.Topology}, which allows defining continuous
  * {@link arb.topology.transformations.Transformation} of subspaces, and, more
  * generally, all kinds of continuity. Euclidean space, and, more generally,
