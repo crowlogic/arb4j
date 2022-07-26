@@ -2,7 +2,7 @@ package arb;
 
 import arb.functions.Function;
 import arb.measure.Measure;
-import arb.spaces.*;
+import arb.topological.spaces.*;
 
 /**
  * 

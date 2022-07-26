@@ -1,4 +1,4 @@
-package arb.spaces;
+package arb.topological.spaces;
 
 import arb.Metric;
 import arb.Set;

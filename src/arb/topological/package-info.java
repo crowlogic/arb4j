@@ -10,12 +10,12 @@
  * opening holes, tearing, gluing, or passing through itself.
  * 
  * A {@link arb.spaces.TopologicalSpace} is a set endowed with a structure, called a
- * {@link arb.topology.Topology}, which allows defining continuous
+ * {@link arb.topological.Topology}, which allows defining continuous
  * {@link arb.topology.transformations.Transformation} of subspaces, and, more
  * generally, all kinds of continuity. Euclidean space, and, more generally,
- * {@link arb.spaces.MetricSpace} are examples of a
+ * {@link arb.topological.spaces.MetricSpace} are examples of a
  * {@link arb.spaces.TopologicalSpace}, as any distance or metric defines a
- * {@link arb.topology.Topology}. The transformations that are considered in
+ * {@link arb.topological.Topology}. The transformations that are considered in
  * topology are {@link arb.topology.transformations.Homeomorphism} and
  * {@link arb.differential.homotopy.Homotopy}s. A property that is invariant
  * under such transformations is a topological property. Basic examples of
@@ -26,4 +26,4 @@
  * {@link arb.curves.Circle}; connectedness, which allows distinguishing a
  * circle from two non-intersecting circles.
  */
-package arb.topology;
+package arb.topological;

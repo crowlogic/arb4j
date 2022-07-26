@@ -3,7 +3,7 @@ package arb.geometry;
 import arb.curves.Circle;
 import arb.curves.Lemniscate;
 import arb.geometry.surfaces.*;
-import arb.spaces.*;
+import arb.topological.spaces.*;
 
 /**
  * A {@link Manifold} is a {@link TopologicalSpace} that locally resembles

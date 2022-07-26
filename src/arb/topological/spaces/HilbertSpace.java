@@ -1,4 +1,4 @@
-package arb.spaces;
+package arb.topological.spaces;
 
 import arb.Field;
 import arb.functions.Function;

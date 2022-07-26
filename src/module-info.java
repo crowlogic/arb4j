@@ -15,11 +15,11 @@ module arb4j
   requires transitive hamcrest.core;
 
   exports arb;
-  exports arb.topology;
+  exports arb.topological;
   exports arb.geometry;
   exports arb.stochastic;
   exports arb.stochastic.processes;
-  exports arb.spaces;
+  exports arb.topological.spaces;
   exports arb.measure;
   exports arb.curves;
   exports arb.algebraic.expressions;

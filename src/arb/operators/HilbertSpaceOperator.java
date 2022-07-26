@@ -1,6 +1,6 @@
 package arb.operators;
 
-import arb.spaces.HilbertSpace;
+import arb.topological.spaces.HilbertSpace;
 
 /**
  * TODO: model this operator and the spaces it operates on

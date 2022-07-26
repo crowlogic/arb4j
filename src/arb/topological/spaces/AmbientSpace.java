@@ -1,4 +1,4 @@
-package arb.spaces;
+package arb.topological.spaces;
 
 /**
  * An ambient space is the space surrounding a mathematical object along with

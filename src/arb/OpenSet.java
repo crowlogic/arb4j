@@ -2,8 +2,8 @@ package arb;
 
 import arb.domains.Interval;
 import arb.geometry.Line;
-import arb.spaces.EuclideanSpace;
-import arb.spaces.MetricSpace;
+import arb.topological.spaces.EuclideanSpace;
+import arb.topological.spaces.MetricSpace;
 
 /**
  * {@link OpenSet}s are generalizations of open {@link Interval}s of the

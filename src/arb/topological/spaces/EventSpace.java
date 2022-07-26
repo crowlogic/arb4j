@@ -1,4 +1,4 @@
-package arb.spaces;
+package arb.topological.spaces;
 
 /**
  * An event is a set of outcomes of an experiment (a subset of the sample space)

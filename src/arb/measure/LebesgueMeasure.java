@@ -1,6 +1,6 @@
 package arb.measure;
 
-import arb.spaces.*;
+import arb.topological.spaces.*;
 
 /**
  * the Lebesgue measure, named after French mathematician Henri Lebesgue, is the

@@ -1,13 +1,12 @@
-package arb.spaces;
+package arb.topological.spaces;
 
 import arb.Set;
-import arb.topology.Topology;
+import arb.topological.Topology;
 
 /**
- * A topological space is, roughly speaking, a geometrical {@link Space} in
- * which closeness is defined but cannot necessarily be measured by a numeric
- * distance. More specifically, a {@link TopologicalSpace} is a {@link Space}
- * (which is itself a {@link Set} with additional structure) whose elements are
+ * A topological {@link Space} is a geometrical space in which closeness is
+ * defined but cannot necessarily be measured by a numeric distance. More
+ * specifically, a topological {@link Space} is a {@link Set} whose elements are
  * called points, along with an additional structure called a {@link Topology}
  * that can be defined as a set of neighbourhoods for each point, that satisfy
  * some axioms formalizing the concept of closeness. There are several
@@ -28,8 +27,12 @@ import arb.topology.Topology;
  * 
  * @param <X>
  */
-public interface TopologicalSpace<X, T extends Topology> extends
-                                 Space<X>
+public interface Space<X> extends
+                      Set<X>
 {
-  public T topology();
+  public default Topology topology()
+  {
+    assert false : "implement me, possibly by adding a generic variable T extendeding Topology";
+    return null;
+  }
 }

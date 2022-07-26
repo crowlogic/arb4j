@@ -3,7 +3,7 @@ package arb.domains;
 import static arb.RealConstants.*;
 
 import arb.Real;
-import arb.spaces.Space;
+import arb.topological.spaces.Space;
 
 public class UnitInterval implements
                           Interval

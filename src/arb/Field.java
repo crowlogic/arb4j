@@ -1,6 +1,6 @@
 package arb;
 
-import arb.spaces.Space;
+import arb.topological.spaces.Space;
 
 /**
  * A field is a set on which addition, subtraction, multiplication, and division

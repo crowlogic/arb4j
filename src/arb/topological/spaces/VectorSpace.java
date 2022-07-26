@@ -1,4 +1,4 @@
-package arb.spaces;
+package arb.topological.spaces;
 
 /**
  * A vector space (also called a linear space) is a set whose elements, often

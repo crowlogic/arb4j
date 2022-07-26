@@ -1,4 +1,4 @@
-package arb.topology;
+package arb.topological;
 
 import arb.*;
 

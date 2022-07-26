@@ -3,7 +3,7 @@ package arb.differential.homotopy;
 import arb.Field;
 import arb.domains.UnitInterval;
 import arb.functions.Function;
-import arb.spaces.CartesianProduct;
+import arb.topological.spaces.CartesianProduct;
 
 /**
  * two continuous functions from one topological space to another are called

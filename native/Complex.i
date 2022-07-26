@@ -4,7 +4,7 @@ import static arb.arb.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
-import arb.spaces.*;
+import arb.topological.spaces.*;
 
 /**
  * The complex numbers constitute an algebraically closed field, a commutative

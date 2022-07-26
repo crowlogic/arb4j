@@ -1,7 +1,7 @@
 package arb.geometry.surfaces;
 
 import arb.geometry.Manifold;
-import arb.spaces.EuclideanSpace;
+import arb.topological.spaces.EuclideanSpace;
 
 /**
  * A surface is a two-dimensional {@link Manifold}. Some surfaces arise as the

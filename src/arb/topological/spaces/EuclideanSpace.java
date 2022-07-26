@@ -1,4 +1,4 @@
-package arb.spaces;
+package arb.topological.spaces;
 
 public interface EuclideanSpace extends
                                 HilbertSpace

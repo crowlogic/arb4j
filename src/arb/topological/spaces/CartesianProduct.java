@@ -1,7 +1,8 @@
-package arb.spaces;
+package arb.topological.spaces;
 
 import arb.OrderedPair;
 import arb.Set;
+import arb.topological.Topology;
 
 /**
  * The Cartesian product of two {@link Set} A and B (also called the product set, set
@@ -24,5 +25,7 @@ public class CartesianProduct<A extends Set, B extends Set> extends
                              OrderedPair<A, B> implements
                              Space<CartesianProduct<A, B>>
 {
+
+ 
 
 }

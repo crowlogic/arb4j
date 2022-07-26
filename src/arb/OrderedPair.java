@@ -1,6 +1,6 @@
 package arb;
 
-import arb.spaces.VectorSpace;
+import arb.topological.spaces.VectorSpace;
 
 /**
  * An ordered pair (a, b) is a pair of {@link Object}s. The order in which the

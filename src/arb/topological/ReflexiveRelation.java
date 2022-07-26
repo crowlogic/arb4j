@@ -1,4 +1,4 @@
-package arb.topology;
+package arb.topological;
 
 public class ReflexiveRelation<A, B> extends
                               Relation<A, B>
