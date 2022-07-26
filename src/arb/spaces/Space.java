@@ -8,8 +8,8 @@ import arb.Set;
  * 
  * While modern mathematics uses many types of spaces, such as
  * {@link EuclideanSpace}, {@link LinearSpace}, {@link TopologicalSpace},
- * {@link HilbertSpace}, or probability spaces, it does not define the notion of
- * "space" itself.
+ * {@link HilbertSpace}, or {@link ProbabilitySpace}, it does not define the
+ * notion of "space" itself.
  * 
  * A space consists of selected mathematical {@link Object}s that are treated as
  * points, and selected relationships between these points.
