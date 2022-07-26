@@ -1,11 +1,13 @@
 package arb.spaces;
 
+import arb.Set;
 import arb.topology.Topology;
 
 /**
  * A topological space is, roughly speaking, a geometrical {@link Space} in
  * which closeness is defined but cannot necessarily be measured by a numeric
- * distance. More specifically, a topological space is a set whose elements are
+ * distance. More specifically, a {@link TopologicalSpace} is a {@link Space}
+ * (which is itself a {@link Set} with additional structure) whose elements are
  * called points, along with an additional structure called a {@link Topology}
  * that can be defined as a set of neighbourhoods for each point, that satisfy
  * some axioms formalizing the concept of closeness. There are several
