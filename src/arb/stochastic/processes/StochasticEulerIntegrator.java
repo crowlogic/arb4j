@@ -2,13 +2,11 @@ package arb.stochastic.processes;
 
 import arb.*;
 import arb.Float;
-import arb.functions.real.*;
-import arb.utensils.Utilities;
 
-public class EulerDiscretizationScheme implements
-                                       DiscretizationScheme
+public class StochasticEulerIntegrator implements
+                                       StochasticIntegrator
 {
-  public EulerDiscretizationScheme(DiffusionProcess x)
+  public StochasticEulerIntegrator(DiffusionProcess x)
   {
     X = x;
   }
@@ -25,7 +23,7 @@ public class EulerDiscretizationScheme implements
    * @return the time delta this{@link #dt} between points of S
    */
   @Override
-  public Real discretize(FloatInterval interval, int prec, Real S, Real dt, Real initialLevel, Real initialVariance)
+  public Real integrate(FloatInterval interval, int prec, Real S, Real dt, Real initialLevel, Real initialVariance)
   {
     int                          n     = S.size();
     DriftCoeffecientFunction     μ     = X.μ();

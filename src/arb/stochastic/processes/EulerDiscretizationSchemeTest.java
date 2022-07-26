@@ -11,14 +11,14 @@ public class EulerDiscretizationSchemeTest extends
   public void testDiscretize()
   {
     StandardGaussianProcess   B          = new StandardGaussianProcess();
-    EulerDiscretizationScheme integrator = new EulerDiscretizationScheme(B);
+    StochasticEulerIntegrator integrator = new StochasticEulerIntegrator(B);
     FloatInterval             interval   = new FloatInterval(0,
                                                              10);
     int                       n          = 10000;
     Real                      μ          = Real.newVector(n);
     Real                      σ          = Real.newVector(n);
 
-    Real                      dt         = integrator.discretize(interval, 128, μ, new Real(), null, null);
+    Real                      dt         = integrator.integrate(interval, 128, μ, new Real(), null, null);
 
   }
 
