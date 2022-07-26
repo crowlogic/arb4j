@@ -12,7 +12,8 @@ import arb.Set;
  * notion of "space" itself.
  * 
  * A space consists of selected mathematical {@link Object}s that are treated as
- * points, and selected relationships between these points.
+ * points, and selected relationships between these points which here is
+ * represented generically by the letter R.
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Space_(mathematics)">Wikipedia</a>
