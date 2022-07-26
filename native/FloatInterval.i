@@ -15,6 +15,12 @@ import java.util.ArrayList;
   public long swigCPtr;
   public boolean swigCMemOwn;
 
+  public FloatIntervalPartition partition(int n)
+  {
+    assert false : "implement me";
+    return null;
+  }
+
   public $javaclassname(long cPtr) {
     this(cPtr,false);
   }

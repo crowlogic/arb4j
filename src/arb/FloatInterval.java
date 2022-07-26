@@ -20,6 +20,12 @@ public class FloatInterval implements AutoCloseable {
   public long swigCPtr;
   public boolean swigCMemOwn;
 
+  public FloatIntervalPartition partition(int n)
+  {
+    assert false : "implement me";
+    return null;
+  }
+
   public FloatInterval(long cPtr) {
     this(cPtr,false);
   }
