@@ -3,19 +3,21 @@ package arb.topology;
 import arb.*;
 
 /**
- * relation
+ * A {@link Relation} is {@link SubSet} of the {product} of an
+ * {@link OrderedPair} of {@link Set}s, R : A x B. If (a, b)∈R then we write a R
+ * b, meaning a is related to b by R. A relation may be a:
+ * {@link ReflexiveRelation} (a R a) -> (a R b -> b R a), a
+ * {@link TransitiveRelation} (a R b and b R c -> a R c), an
+ * {@link AntiSymmetricRelation} (a R b & b R a -> a = b) or a
+ * {@link TotalRelation} (a R b or b R a).
  * 
- * 1. A subset of the {product} of two {@link Set}s, R : A x B. If (a, b) is an
- * element of R then we write a R b, meaning a is related to b by R. A relation
- * may be: {reflexive} (a R a), {symmetric} (a R b => b R a), {transitive} (a R
- * b & b R c => a R c), {antisymmetric} (a R b & b R a => a = b) or {total} (a R
- * b or b R a).
+ * @see {@link EquivalenceRelation}
+ * @see {partial ordering}
+ * @see {pre-order}
+ * @see {total ordering}
  * 
- * See {equivalence relation}, {partial ordering}, {pre-order}, {total
- * ordering}.
- * 
- *
- * 
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Relation_(mathematics)">Wikipedia</a>
  */
 public class Relation<A, B> extends
                      OrderedPair<A, B>
