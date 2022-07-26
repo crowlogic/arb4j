@@ -133,7 +133,10 @@ public class PointValueCache implements
   @Override
   public void close()
   {
-    assert buffer != null;
+    if ( buffer == null )
+    {
+      return;
+    }
     System.out.println("Closing function image cache " + file + " and " + file1);
     
     buffer  = null;

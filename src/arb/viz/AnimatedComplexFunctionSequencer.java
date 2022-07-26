@@ -13,8 +13,7 @@ import java.util.function.IntConsumer;
 import javax.swing.JFrame;
 
 import arb.Real;
-import arb.viz.rendering.XRenderer;
-import arb.viz.rendering.YRenderer;
+import arb.viz.rendering.*;
 import io.humble.video.*;
 import io.humble.video.awt.MediaPictureConverter;
 import io.humble.video.awt.MediaPictureConverterFactory;
@@ -60,9 +59,9 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
     int       framesPerSecond = 30;
     int       secondsLong     = 15;
     final int frameCount      = framesPerSecond * secondsLong;
-    YRenderer renderer        = new YRenderer();
-    renderer.colorMode   = 1;
-    renderer.displayMode = Part.Real;
+    TRenderer renderer        = new TRenderer();
+    //renderer.colorMode   = 0;
+    renderer.displayMode = Part.Blend;
     Real                                        scaleStart             = half;
     Real                                        scaleStop              = new Real("2",
                                                                                   128);
@@ -86,7 +85,7 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
                                                                                            scaleStop.toString(10),
                                                                                            percentComplete,
                                                                                            frame);
-                                                                         renderer.function.f.f.f.a.set(scale);
+                                                                         renderer.function.f.a.set(scale);
                                                                          renderer.initCache();
                                                                        };
     AnimatedComplexFunctionSequencer<XRenderer> animator               = new AnimatedComplexFunctionSequencer(renderer,
