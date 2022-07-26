@@ -1,4 +1,4 @@
-package arb.surfaces;
+package arb.geometry.surfaces;
 
 import arb.geometry.Manifold;
 import arb.spaces.EuclideanSpace;

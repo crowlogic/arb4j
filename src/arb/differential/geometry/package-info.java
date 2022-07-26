@@ -7,7 +7,7 @@
  * antiquity. It also relates to astronomy, the geodesy of the Earth, and later
  * the study of hyperbolic geometry by Lobachevsky. The simplest examples of
  * smooth {@link arb.spaces.Space}s are the plane and space
- * {@link arb.curves.Curve} and {@link arb.surfaces.Surface} in the
+ * {@link arb.curves.Curve} and {@link arb.geometry.surfaces.Surface} in the
  * three-dimensional {@link arb.spaces.EuclideanSpace}, and the study of these
  * shapes formed the basis for development of modern differential geometry
  * during the 18th and 19th centuries.

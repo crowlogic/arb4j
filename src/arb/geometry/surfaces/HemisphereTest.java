@@ -1,4 +1,4 @@
-package arb.surfaces;
+package arb.geometry.surfaces;
 
 import static java.lang.Math.pow;
 

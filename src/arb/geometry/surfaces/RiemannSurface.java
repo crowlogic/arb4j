@@ -1,4 +1,4 @@
-package arb.surfaces;
+package arb.geometry.surfaces;
 
 /**
  * A Riemann surface is a connected 1-dimensional complex manifold which can be

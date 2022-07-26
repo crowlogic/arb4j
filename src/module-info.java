@@ -37,7 +37,7 @@ module arb4j
   exports arb.functions.complex.lemniscatic;
   exports arb.functions.complex.trigonometric;
   exports arb.operators;
-  exports arb.surfaces;
+  exports arb.geometry.surfaces;
   exports arb.differential.geometry;
   exports arb.differential.homotopy;
   exports arb.viz;
