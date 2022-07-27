@@ -48,6 +48,13 @@ public class Real implements Comparable<Real>, Field {
 
  static { System.loadLibrary( "arblib" ); }
 
+  public Real(Float div, Magnitude mag)
+  {
+    this(0,false);
+    setMid(div);
+    setRad(mag);
+  }
+
   public Real div(Real σ, int prec)
   {
     return div(σ,prec,this);

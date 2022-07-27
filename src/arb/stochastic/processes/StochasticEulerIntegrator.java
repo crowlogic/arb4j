@@ -1,14 +1,19 @@
 package arb.stochastic.processes;
 
+import static arb.RealConstants.*;
+
 import arb.*;
 import arb.Float;
 
 public class StochasticEulerIntegrator implements
                                        StochasticIntegrator
 {
-  public StochasticEulerIntegrator(DiffusionProcess x)
+  private RandomState randomState;
+
+  public StochasticEulerIntegrator(DiffusionProcess x, RandomState randomState)
   {
-    X = x;
+    X                = x;
+    this.randomState = randomState;
   }
 
   public DiffusionProcess X;
@@ -23,33 +28,41 @@ public class StochasticEulerIntegrator implements
    * @return the time delta this{@link #dt} between points of S
    */
   @Override
-  public Real integrate(FloatInterval interval, int prec, Real S, Real dt, Real initialLevel, Real initialVariance)
+  public Partition integrate(FloatInterval interval, int prec, int n, DiffusionProcessCoordinates coords)
   {
-    int                          n     = S.size();
     DriftCoeffecientFunction     μ     = X.μ();
     DiffusionCoeffecientFunction σ     = X.σ();
+    Real                         x     = Real.newVector(n);
 
     Float                        start = interval.getA();
-    Float                        T     = interval.getB().sub(start, prec, dt.getMid());
-    try ( DiffusionProcessCoordinates coords = new DiffusionProcessCoordinates())
+    try ( Float T = interval.length(prec, new Float()); Real u = new Real(); Real Z = new Real();
+          Real μi = new Real(); Real σi = new Real();)
     {
-      Real  tReal = coords.time();
-      Float t     = tReal.getMid();
+      Partition       partition = interval.partition(n, prec);
+      GaussianProcess W         = new GaussianProcess(zero,
+                                                      partition.δt);
 
-      for (int i = 0; i < n; i++)
+      int             i         = 0;
+      for (Float t : partition)
       {
-        // t = start + dt*i
-        dt.mul(i, prec, tReal);
-        start.add(t, prec, t);
+        Real xi = x.get(i);
+        coords.setTime(t);
 
-        Real Si = S.get(i);
-        μ.evaluate(coords, 1, prec, Si);
-        Si.mul(dt, prec, Si);
-        start.add(dt.mul(i, prec, tReal).getMid(), prec, coords.value().getMid());
+        μ.evaluate(coords, 1, prec, μi);
+        σ.evaluate(coords, 1, prec, σi);
+        W.sample(prec, randomState, u, Z);
 
+        System.out.format("i=%d μi=%s σi=%s Z=%s uniformRandom=%s\n", i, μi, σi, Z, u);
+
+        // xi = μi * dt + σi * Z
+        μi.mul(dt, prec, xi);
+        σi.mul(Z, prec, u);
+        u.add(xi, prec, xi);
+
+        System.out.format("i=%d μi=%s σi=%s Z=%s σi*Z=%s xi=%s\n", i, μi, σi, Z, u, xi);
       }
-    }
 
-    return dt;
+      return partition;
+    }
   }
 }
