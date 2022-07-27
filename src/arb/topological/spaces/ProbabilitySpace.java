@@ -2,6 +2,7 @@ package arb.topological.spaces;
 
 import arb.Set;
 import arb.stochastic.DistributionFunction;
+import arb.topological.Space;
 
 /**
  * A {@link ProbabilitySpace} or a probability triple (Ω,F,P) is a mathematical

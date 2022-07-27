@@ -1,5 +1,7 @@
 package arb.topological.spaces;
 
+import arb.topological.Space;
+
 /**
  * A vector space (also called a linear space) is a set whose elements, often
  * called vectors, may be added together and multiplied ("scaled") by numbers

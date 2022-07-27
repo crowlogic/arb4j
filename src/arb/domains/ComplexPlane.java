@@ -1,6 +1,7 @@
 package arb.domains;
 
 import arb.*;
+import arb.topological.Space;
 import arb.topological.spaces.*;
 
 /**

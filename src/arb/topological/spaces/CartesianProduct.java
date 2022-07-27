@@ -2,6 +2,7 @@ package arb.topological.spaces;
 
 import arb.OrderedPair;
 import arb.Set;
+import arb.topological.Space;
 import arb.topological.Topology;
 
 /**

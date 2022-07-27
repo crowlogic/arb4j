@@ -1,8 +1,8 @@
-package arb.topological.spaces;
+package arb.topological;
 
 import arb.OpenSet;
 import arb.Set;
-import arb.topological.Topology;
+import arb.topological.spaces.EuclideanSpace;
 
 /**
  * A topological {@link Space} is a geometrical space in which closeness is

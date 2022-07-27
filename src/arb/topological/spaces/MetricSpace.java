@@ -2,6 +2,7 @@ package arb.topological.spaces;
 
 import arb.Metric;
 import arb.Set;
+import arb.topological.Space;
 
 /**
  * 

@@ -1,5 +1,6 @@
 package arb.domains;
 
+import arb.topological.Space;
 import arb.topological.spaces.*;
 
 public interface Interval<F> extends

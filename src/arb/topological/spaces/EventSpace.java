@@ -1,5 +1,7 @@
 package arb.topological.spaces;
 
+import arb.topological.Space;
+
 /**
  * An event is a set of outcomes of an experiment (a subset of the sample space)
  * to which a probability is assigned. A single outcome may be an element of

@@ -3,9 +3,9 @@ package arb.domains;
 import static arb.RealConstants.*;
 
 import arb.Real;
+import arb.topological.Space;
 import arb.Float;
 import arb.FloatConstants;
-import arb.topological.spaces.Space;
 
 public class UnitInterval implements
                           FloatInterval

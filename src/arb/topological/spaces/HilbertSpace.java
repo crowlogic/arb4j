@@ -2,6 +2,7 @@ package arb.topological.spaces;
 
 import arb.Field;
 import arb.functions.Function;
+import arb.topological.Space;
 
 /**
  * Hilbert spaces (named after David Hilbert) allow generalizing the methods of
