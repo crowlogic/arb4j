@@ -1,8 +1,7 @@
 package arb.stochastic.processes;
 
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.Real;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 
 public interface StochasticIntegrator extends
@@ -13,12 +12,14 @@ public interface StochasticIntegrator extends
    * 
    * @param interval
    * @param prec     precision
-   * @param X  upon entry it should be a Real vector of length n, upon
+   * @param X        upon entry it should be a Real vector of length n, upon
    *                 return its elements are the level
    * @param μ0       TODO
    * @param σ0       TODO
-   * @return the resulting stepsize, this{@link #dt}
+   * @return the resulting {@link Partition}, this{@link #dt}
    */
-  Real integrate(FloatInterval interval, int prec, Real X, Real dt, Real μ0, Real σ0);
-
+  public Partition integrate(FloatInterval interval,
+                             int prec,
+                             int n,
+                             DiffusionProcessCoordinates coords);
 }

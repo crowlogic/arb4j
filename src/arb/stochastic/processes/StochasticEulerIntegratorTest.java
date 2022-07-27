@@ -7,19 +7,19 @@ public class StochasticEulerIntegratorTest extends
                                            TestCase
 {
   public static final int prec = 128;
+  private Real            σ;
 
   public void testDiscretize()
   {
-    StandardGaussianProcess   B          = new StandardGaussianProcess();
-    StochasticEulerIntegrator integrator = new StochasticEulerIntegrator(B);
-    FloatInterval             interval   = new FloatInterval(0,
-                                                             10);
-    int                       n          = 10000;
-    Partition                 partition  = interval.partition(n, prec);
-    Real                      μ          = Real.newVector(n);
-    Real                      σ          = Real.newVector(n);
+    RandomState                 randomState = new RandomState(31337);
+    StandardGaussianProcess     B           = new StandardGaussianProcess();
+    StochasticEulerIntegrator   integrator  = new StochasticEulerIntegrator(B, randomState);
+    FloatInterval               interval    = new FloatInterval(0,
+                                                                10);
+    int                         n           = 10000;
 
-    Real                      dt         = integrator.integrate(interval, 128, μ, new Real(), null, null);
+    DiffusionProcessCoordinates coords      = new DiffusionProcessCoordinates();
+    Partition                   partition   = integrator.integrate(interval, 128, n, coords);
 
   }
 

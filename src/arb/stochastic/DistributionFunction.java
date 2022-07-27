@@ -12,7 +12,8 @@ public interface DistributionFunction<P extends DensityFunction> extends
                                      RealFunction
 {
   /**
-   * Draw a (pseudo) random sample from this density
+   * Draw a (pseudo) random sample from this density via the inverse sampling
+   * method
    * 
    * @return
    */

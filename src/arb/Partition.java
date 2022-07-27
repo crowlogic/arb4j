@@ -21,7 +21,7 @@ public class Partition implements
   FloatInterval   interval;
   Float           partitions;
   int             n;
-  private Float   δt;
+  public Real     δt;
   private int     prec;
   private Float[] elements;
 
@@ -30,6 +30,7 @@ public class Partition implements
   MemorySegment   segment;
 
   private long    swigCPtr;
+  private Float   dtfloat;
 
   public Partition(int precision, FloatInterval interval, int n)
   {
@@ -37,13 +38,15 @@ public class Partition implements
     swigCPtr  = segment.address().toRawLongValue();
     this.n    = n;
     this.prec = precision;
-    δt        = interval.length(precision, new Float()).div(n, precision);
+    dtfloat   = new Float();
+    δt        = new Real(interval.length(precision, dtfloat).div(n, precision),
+                         MagnitudeConstants.zeroMag);
     elements  = new Float[n + 1];
     for (int i = 0; i <= n; i++)
     {
       Float τi = elements[i] = new Float(swigCPtr + Float.BYTES * i,
                                          false);
-      δt.mul(i, prec, τi);
+      dtfloat.mul(i, prec, τi);
     }
   }
 
@@ -69,7 +72,7 @@ public class Partition implements
     {
       return;
     }
-    δt.close();
+    dtfloat.close();
     scope.close();
     swigCPtr = 0;
   }
