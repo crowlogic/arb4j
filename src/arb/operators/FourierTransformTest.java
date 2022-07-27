@@ -64,10 +64,10 @@ public class FourierTransformTest extends
         f.evaluate(point, 1, prec, value.getReal());
         println(String.format("original f[%s]=%s", point, value));
         f2.evaluate(point, 1, prec, value2);
-        println(String.format("inverted exact f[%s]=%s", point, value2));
+        println(String.format("numerically inverted exact f[%s]=%s", point, value2));
         assertEquals(value2.getReal().doubleValue(), value.getReal().doubleValue(), 0);
         f3.evaluate(point, 1, prec, value3);
-        println(String.format("inverted numericly f[%s]=%s", point, value3));
+        println(String.format("numerically inverted numericlly transformed (this one needs work) f[%s]=%s", point, value3));
         // assertEquals(value3.getReal().doubleValue(), value.getReal().doubleValue(),
         // 0);
       }

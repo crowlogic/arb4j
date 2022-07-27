@@ -8,7 +8,7 @@ import arb.FloatConstants;
 import arb.topological.spaces.Space;
 
 public class UnitInterval implements
-                          Interval
+                          FloatInterval
 {
   /**
    * 

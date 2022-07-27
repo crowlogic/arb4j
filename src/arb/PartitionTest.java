@@ -14,6 +14,14 @@ public class PartitionTest extends
           Partition partition = interval.partition(500, prec);)
     {
       int i = 0;
+      try ( Real mesh = new Real("0.02",
+                                 128);)
+      {
+        assertTrue(mesh.overlaps(partition.δt));
+        assertTrue(mesh.contains(partition.δt));
+        assertTrue(partition.δt.overlaps(mesh));
+      }
+
       for (Float x : partition)
       {
         System.out.println(i + " -> " + x);

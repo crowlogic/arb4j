@@ -1,12 +1,12 @@
 package arb;
 
-import arb.domains.Interval;
+import arb.domains.FloatInterval;
 import arb.geometry.Line;
 import arb.topological.spaces.EuclideanSpace;
 import arb.topological.spaces.MetricSpace;
 
 /**
- * {@link OpenSet}s are generalizations of open {@link Interval}s of the
+ * {@link OpenSet}s are generalizations of open {@link FloatInterval}s of the
  * {@link Real} {@link Line}.
  * 
  * In a {@link MetricSpace} (a {@link Set} along with a distance defined between

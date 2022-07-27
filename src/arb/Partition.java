@@ -5,7 +5,6 @@ import java.lang.ref.Cleaner.*;
 import java.util.*;
 
 import jdk.incubator.foreign.*;
-import jdk.incubator.foreign.MemorySegment;
 
 /**
  * A {@link Partition} denoted P of ...
@@ -33,16 +32,26 @@ public class Partition implements
   private long    swigCPtr;
   private Float   dtfloat;
 
+  /**
+   * Construct a {@link Partition} of a {@link FloatInterval} TODO: should the
+   * mesh be a Real instead of a Float?
+   * 
+   * 
+   * @param precision
+   * @param interval
+   * @param n
+   */
   public Partition(int precision, FloatInterval interval, int n)
   {
-    segment   = MemorySegment.allocateNative(Float.BYTES * (n + 1), scope);
-    swigCPtr  = segment.address().toRawLongValue();
-    this.n    = n;
-    this.prec = precision;
-    dtfloat   = new Float();
-    δt        = new Real(interval.length(precision, dtfloat).div(n, precision),
-                         MagnitudeConstants.zeroMag);
-    elements  = new Float[n + 1];
+    segment           = MemorySegment.allocateNative(Float.BYTES * (n + 1), scope);
+    swigCPtr          = segment.address().toRawLongValue();
+    this.n            = n;
+    this.prec         = precision;
+    dtfloat           = new Float();
+    δt                = new Real(interval.length(precision, dtfloat).div(n, precision),
+                                 MagnitudeConstants.zeroMag);
+    δt.printPrecision = true;
+    elements          = new Float[n + 1];
     for (int i = 0; i <= n; i++)
     {
       Float τi = elements[i] = new Float(swigCPtr + Float.BYTES * i,
@@ -74,6 +83,7 @@ public class Partition implements
       return;
     }
     dtfloat.close();
+    δt.close();
     scope.close();
     swigCPtr = 0;
   }
