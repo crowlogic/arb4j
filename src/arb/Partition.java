@@ -1,6 +1,7 @@
 package arb;
 
 import java.io.Closeable;
+import java.lang.ref.Cleaner.Cleanable;
 
 import sun.misc.Unsafe;
 
@@ -13,7 +14,8 @@ import sun.misc.Unsafe;
 public class Partition extends
                        Float implements
                        AutoCloseable,
-                       Closeable
+                       Closeable,
+                       Cleanable
 {
   FloatInterval       interval;
   Float               partitions;
@@ -30,5 +32,11 @@ public class Partition extends
   public void close()
   {
     fun.freeMemory(pointer());
+  }
+
+  @Override
+  public void clean()
+  {
+    close();
   }
 }
