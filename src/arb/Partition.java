@@ -20,7 +20,7 @@ public class Partition implements
 {
   FloatInterval   interval;
   Float           partitions;
-  private int     n;
+  int             n;
   private Float   δt;
   private int     prec;
   private Float[] elements;
@@ -28,17 +28,18 @@ public class Partition implements
   ResourceScope   scope = ResourceScope.newSharedScope();
 
   MemorySegment   segment;
+
   private long    swigCPtr;
 
   public Partition(int precision, FloatInterval interval, int n)
   {
-    segment   = MemorySegment.allocateNative(Float.BYTES * n, scope);
+    segment   = MemorySegment.allocateNative(Float.BYTES * (n + 1), scope);
     swigCPtr  = segment.address().toRawLongValue();
     this.n    = n;
     this.prec = precision;
     δt        = interval.length(precision, new Float()).div(n, precision);
-    elements  = new Float[n];
-    for (int i = 0; i < n; i++)
+    elements  = new Float[n + 1];
+    for (int i = 0; i <= n; i++)
     {
       Float τi = elements[i] = new Float(swigCPtr + Float.BYTES * i,
                                          false);
@@ -82,21 +83,6 @@ public class Partition implements
   @Override
   public Iterator<Float> iterator()
   {
-    return new Iterator<Float>()
-    {
-      int i;
-
-      @Override
-      public boolean hasNext()
-      {
-        return i < n;
-      }
-
-      @Override
-      public Float next()
-      {
-        return get(i++);
-      }
-    };
+    return new PartitionIterator(this);
   }
 }
