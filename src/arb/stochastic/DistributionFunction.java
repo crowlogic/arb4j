@@ -16,9 +16,9 @@ public interface DistributionFunction<P extends DensityFunction> extends
    * 
    * @return
    */
-  public default Real sample(int prec, RandomState randomState, Real u, Real result)
+  public default Real sample(int prec, RandomState randomState, Real result)
   {
     RealFunction inverse = inverse();
-    return inverse.evaluate(u.random(randomState, prec), 1, prec, result);
+    return inverse.evaluate(result.random(randomState, prec), 1, prec, result);
   }
 }
