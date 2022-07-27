@@ -57,10 +57,10 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
          main(String[] args) throws InterruptedException, IOException, AWTException, NoninvertibleTransformException
   {
     int       framesPerSecond = 30;
-    int       secondsLong     = 15;
-    final int frameCount      = framesPerSecond * secondsLong;
+    double    secondsLong     = 3.75;
+    final int frameCount      = (int) (framesPerSecond * secondsLong);
     TRenderer renderer        = new TRenderer();
-    //renderer.colorMode   = 0;
+    // renderer.colorMode = 0;
     renderer.displayMode = Part.Blend;
     Real                                        scaleStart             = half;
     Real                                        scaleStop              = new Real("2",
@@ -122,18 +122,18 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
   }
 
   public void
-         renderAnimatedSequence(String filename, int seconds, int framesPerSecond) throws AWTException,
+         renderAnimatedSequence(String filename, double secondsLong, int framesPerSecond) throws AWTException,
                                                                                    InterruptedException,
                                                                                    IOException,
                                                                                    NoninvertibleTransformException
   {
-    renderAnimatedSequence(filename, "avi", "ffv1", seconds, framesPerSecond);
+    renderAnimatedSequence(filename, "avi", "ffv1", secondsLong, framesPerSecond);
   }
 
   public void renderAnimatedSequence(String filename,
                                      String formatname,
                                      String codecname,
-                                     int seconds,
+                                     double secondsLong,
                                      int framesPerSecond) throws AWTException,
                                                           InterruptedException,
                                                           IOException,
@@ -147,7 +147,7 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
     muxer        = Muxer.make(filename, null, formatname);
     try
     {
-      prepareEncoder(codecname, seconds);
+      prepareEncoder(codecname, secondsLong);
 
       for (int i = 0; i < frameCount; i++)
       {
