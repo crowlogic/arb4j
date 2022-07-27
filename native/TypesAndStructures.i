@@ -14,6 +14,8 @@
 #include <acb_modular.h>
 #include <acb_dft.h>
 
+typedef long int		mp_size_t;
+
 int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 int f_lemniscate_derivative(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
 int f_lemniscate_derivative_abs(acb_ptr res, const acb_t z, void * param, slong order, slong prec);

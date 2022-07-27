@@ -1,12 +1,12 @@
 package arb.stochastic.processes;
 
 import arb.*;
-import arb.Float;
 import junit.framework.*;
 
 public class StochasticEulerIntegratorTest extends
                                            TestCase
 {
+  public static final int prec = 128;
 
   public void testDiscretize()
   {
@@ -15,7 +15,7 @@ public class StochasticEulerIntegratorTest extends
     FloatInterval             interval   = new FloatInterval(0,
                                                              10);
     int                       n          = 10000;
-    Partition partition = interval.partition(n);
+    Partition                 partition  = interval.partition(n, prec);
     Real                      μ          = Real.newVector(n);
     Real                      σ          = Real.newVector(n);
 

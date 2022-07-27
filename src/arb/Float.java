@@ -30,14 +30,9 @@ import static arb.IntegerConstants.*;
  */
 
 public class Float implements AutoCloseable,Comparable<Float> {
-  protected transient long swigCPtr;
+  private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  protected long pointer() 
-  {
-    return swigCPtr;
-  }
-  
   public Float(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
@@ -58,6 +53,20 @@ public class Float implements AutoCloseable,Comparable<Float> {
   }
 
 
+  public static final int BYTES = 32;
+
+  /**
+   * Self-referencing this{@link #div(int, int, Float)}
+   * 
+   * @param n
+   * @param precision
+   * @return this number divided by n
+   */
+  public Float div(int n, int precision)
+  {
+    return div(n, precision, this);
+  }
+  
   /**
    * @return {@link arb#arf_is_zero(Float)} != 0
    */
@@ -108,6 +117,11 @@ public class Float implements AutoCloseable,Comparable<Float> {
   public void close()
   { 
 	clear();    
+  }
+  
+  protected long getPointer() 
+  {
+    return swigCPtr;
   }
   
   public Float clear()

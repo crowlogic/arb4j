@@ -1,15 +1,12 @@
 package arb.viz;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel.MapMode;
-import java.nio.file.Path;
+import java.nio.*;
+import java.nio.channels.FileChannel.*;
+import java.nio.file.*;
 
-import arb.Complex;
-import arb.arb;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import sun.misc.Unsafe;
+import arb.*;
+import jdk.incubator.foreign.*;
 
 /**
  * If the precision of the number is 128 bits or less then the only space
@@ -26,8 +23,7 @@ public class PointValueCache implements
   static
   {
     System.loadLibrary("arblib");
-    Unsafe fun = Unsafe.getUnsafe();
-    
+
   }
 
   Complex            points[][][];

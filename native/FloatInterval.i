@@ -12,14 +12,20 @@ import java.util.ArrayList;
    System.loadLibrary( "arblib" );
  }
  
+ /**
+   * Calculates the length of the interval
+   * 
+   * @param prec the accuracy in bits of the result to be produced
+   * @param res  the result
+   * 
+   * @return the result this{@link #getB()} - this{@link #getA()}
+   */
+  public Float length(int prec, Float res)
+  {
+    return getB().sub(getA(), prec, res);
+  }
   public long swigCPtr;
   public boolean swigCMemOwn;
-
-  public FloatIntervalPartition partition(int n)
-  {
-    assert false : "implement me";
-    return null;
-  }
 
   public $javaclassname(long cPtr) {
     this(cPtr,false);
@@ -61,7 +67,7 @@ import java.util.ArrayList;
     return this;
   }
   
-  public static final int BYTES = 64;
+  public static final int BYTES = Float.BYTES * 2;
 
   @Override
   public String toString()
@@ -88,6 +94,13 @@ import java.util.ArrayList;
    getA().init();
    getB().init();
    return this;
+  }
+  
+  public Partition partition(int n, int prec)
+  {
+    return new Partition(prec,
+                         this,
+                         n);
   }
   
   public FloatInterval(Float left, Float right)

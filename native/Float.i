@@ -30,6 +30,20 @@ import static arb.IntegerConstants.*;
 
 %typemap(javacode) arf_struct %{
 
+  public static final int BYTES = 32;
+
+  /**
+   * Self-referencing this{@link #div(int, int, Float)}
+   * 
+   * @param n
+   * @param precision
+   * @return this number divided by n
+   */
+  public Float div(int n, int precision)
+  {
+    return div(n, precision, this);
+  }
+  
   /**
    * @return {@link arb#arf_is_zero(Float)} != 0
    */

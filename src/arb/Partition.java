@@ -1,9 +1,10 @@
 package arb;
 
-import java.io.Closeable;
-import java.lang.ref.Cleaner.Cleanable;
+import java.io.*;
+import java.lang.ref.Cleaner.*;
+import java.util.*;
 
-import sun.misc.Unsafe;
+import jdk.incubator.foreign.*;
 
 /**
  * A {@link Partition} denoted P of ...
@@ -11,32 +12,91 @@ import sun.misc.Unsafe;
  * @see <a href="functions/doc-files/IntegrationNotes.pdf">notes on Riemann
  *      integration</a>
  */
-public class Partition extends
-                       Float implements
+public class Partition implements
                        AutoCloseable,
                        Closeable,
-                       Cleanable
+                       Cleanable,
+                       Iterable<Float>
 {
-  FloatInterval       interval;
-  Float               partitions;
-  final static Unsafe fun = Unsafe.getUnsafe();
+  FloatInterval   interval;
+  Float           partitions;
+  private int     n;
+  private Float   δt;
+  private int     prec;
+  private Float[] elements;
 
-  public Partition(FloatInterval interval, int n)
+  ResourceScope   scope = ResourceScope.newSharedScope();
+
+  MemorySegment   segment;
+  private long    swigCPtr;
+
+  public Partition(int precision, FloatInterval interval, int n)
   {
-    super(fun.allocateMemory(n * FloatInterval.BYTES),
-          false);
-    // TODO: add indexed accessor and generate uniformly spaced partition
+    segment   = MemorySegment.allocateNative(Float.BYTES * n, scope);
+    swigCPtr  = segment.address().toRawLongValue();
+    this.n    = n;
+    this.prec = precision;
+    δt        = interval.length(precision, new Float()).div(n, precision);
+    elements  = new Float[n];
+    for (int i = 0; i < n; i++)
+    {
+      Float τi = elements[i] = new Float(swigCPtr + Float.BYTES * i,
+                                         false);
+      δt.mul(i, prec, τi);
+    }
   }
 
+  /**
+   * 
+   * @param i
+   * @return the i-th element of the {@link Partition}
+   */
+  public Float get(int i)
+  {
+    return elements[i];
+
+  }
+
+  /**
+   * Once this is called, the {@link Float}s returned from this{@link #get(int)}
+   * are no longer valid
+   */
   @Override
   public void close()
   {
-    fun.freeMemory(pointer());
+    if (swigCPtr == 0)
+    {
+      return;
+    }
+    δt.close();
+    scope.close();
+    swigCPtr = 0;
   }
 
   @Override
   public void clean()
   {
     close();
+  }
+
+  @Override
+  public Iterator<Float> iterator()
+  {
+    return new Iterator<Float>()
+    {
+      int i;
+
+      @Override
+      public boolean hasNext()
+      {
+        return i < n;
+      }
+
+      @Override
+      public Float next()
+      {
+        return get(i++);
+      }
+    };
   }
 }
