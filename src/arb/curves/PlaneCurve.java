@@ -15,6 +15,17 @@ public interface PlaneCurve extends
                             RealToComplexFunction
 {
 
+  /**
+   * The 1st derivative of the coordinate vector (function) of a
+   * {@link PlaneCurve} is the tangent vector
+   * 
+   * @return
+   */
+  public default RealToComplexFunction getTangentVector()
+  {
+    return differential();
+  }
+
   public default HolomorphicFunction getUnitSpeedCurve()
   {
     assert false : "TODO: invert the arc-length to normalize this curve so that it goes from [0,1] instead of [0,getArchLength(2π)]";
