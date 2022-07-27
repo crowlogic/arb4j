@@ -26,6 +26,8 @@ public class PointValueCache implements
   static
   {
     System.loadLibrary("arblib");
+    Unsafe fun = Unsafe.getUnsafe();
+    
   }
 
   Complex            points[][][];
@@ -34,7 +36,7 @@ public class PointValueCache implements
 
   private int        height;
 
-  ByteBuffer buffer;
+  ByteBuffer         buffer;
 
   private ByteBuffer buffer1;
 
@@ -133,18 +135,18 @@ public class PointValueCache implements
   @Override
   public void close()
   {
-    if ( buffer == null )
+    if (buffer == null)
     {
       return;
     }
     System.out.println("Closing function image cache " + file + " and " + file1);
-    
+
     buffer  = null;
     buffer1 = null;
-    System.out.println( "unmapping caches");
+    System.out.println("unmapping caches");
     segment.unload();
     segment1.unload();
-    System.out.println( "unmapped caches");
+    System.out.println("unmapped caches");
 
     if (!complete)
     {

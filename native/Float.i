@@ -82,6 +82,11 @@ import static arb.IntegerConstants.*;
 	clear();    
   }
   
+  protected long getPointer() 
+  {
+    return swigCPtr;
+  }
+  
   public Float clear()
   {
     if ( swigCMemOwn )

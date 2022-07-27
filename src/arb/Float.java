@@ -30,9 +30,14 @@ import static arb.IntegerConstants.*;
  */
 
 public class Float implements AutoCloseable,Comparable<Float> {
-  private transient long swigCPtr;
+  protected transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
+  protected long pointer() 
+  {
+    return swigCPtr;
+  }
+  
   public Float(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
