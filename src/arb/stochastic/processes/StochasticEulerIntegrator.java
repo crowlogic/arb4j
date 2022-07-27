@@ -32,9 +32,11 @@ public class StochasticEulerIntegrator implements
   {
     DriftCoeffecientFunction     μ     = X.μ();
     DiffusionCoeffecientFunction σ     = X.σ();
+    Real                         x     = Real.newVector(n);
 
     Float                        start = interval.getA();
-    try ( Float T = interval.length(prec, new Float()); Real μi = new Real(); Real σi = new Real();)
+    try ( Float T = interval.length(prec, new Float()); Real u = new Real(); Real Z = new Real();
+          Real μi = new Real(); Real σi = new Real();)
     {
       Partition       partition = interval.partition(n, prec);
       GaussianProcess W         = new GaussianProcess(zero,
@@ -43,11 +45,21 @@ public class StochasticEulerIntegrator implements
       int             i         = 0;
       for (Float t : partition)
       {
+        Real xi = x.get(i);
         coords.setTime(t);
+
         μ.evaluate(coords, 1, prec, μi);
         σ.evaluate(coords, 1, prec, σi);
+        W.sample(prec, randomState, u, Z);
 
-        // W.sample(prec, randomState, Xi, X);
+        System.out.format("i=%d μi=%s σi=%s Z=%s uniformRandom=%s\n", i, μi, σi, Z, u);
+
+        // xi = μi * dt + σi * Z
+        μi.mul(dt, prec, xi);
+        σi.mul(Z, prec, u);
+        u.add(xi, prec, xi);
+
+        System.out.format("i=%d μi=%s σi=%s Z=%s σi*Z=%s xi=%s\n", i, μi, σi, Z, u, xi);
       }
 
       return partition;
