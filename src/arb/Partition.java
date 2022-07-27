@@ -5,6 +5,7 @@ import java.lang.ref.Cleaner.*;
 import java.util.*;
 
 import jdk.incubator.foreign.*;
+import jdk.incubator.foreign.MemorySegment;
 
 /**
  * A {@link Partition} denoted P of ...

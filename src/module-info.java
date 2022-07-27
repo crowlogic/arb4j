@@ -13,6 +13,7 @@ module arb4j
   requires transitive org.lwjgl.glfw;
   requires transitive junit;
   requires transitive hamcrest.core;
+  requires java.base;
 
   exports arb;
   exports arb.topological;
