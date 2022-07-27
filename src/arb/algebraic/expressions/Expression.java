@@ -6,9 +6,9 @@ package arb.algebraic.expressions;
  *
  */
 @FunctionalInterface
-public interface Expression
+public interface Expression<X>
 {
-  public float evaluate();
+  public X evaluate();
 
   /**
    * 

@@ -8,6 +8,8 @@ import java.util.*;
 
 import org.junit.Test;
 
+import arb.algebraic.expressions.operators.unary.*;
+
 public class ExpressionTest
 {
   ExpressionParser expressionParser = new ExpressionParser();
@@ -30,25 +32,25 @@ public class ExpressionTest
   @Test
   public void testFunc()
   {
-    Function<Float>          f      = c ->
-                                    {
-                                      if (c.env == null)
-                                      {
-                                        c.env = 0f;
-                                      }
-                                      float acc = c.env;
-                                      acc   = acc + c.args.get(0).evaluate();
-                                      c.env = acc;
-                                      return acc;
-                                    };
-    Expression               two    = new Constant(2);
-    Variable                 x      = new Variable(0);
+    Function<Float>           f      = c ->
+                                     {
+                                       if (c.env == null)
+                                       {
+                                         c.env = 0f;
+                                       }
+                                       float acc = c.env;
+                                       acc   = acc + c.args.get(0).evaluate();
+                                       c.env = acc;
+                                       return acc;
+                                     };
+    Expression                two    = new Constant(2);
+    Variable                  x      = new Variable(0);
     FunctionInvocation<Float> sum    = new FunctionInvocation<Float>(f,
-                                                                   Arrays.asList(two),
-                                                                   null);
+                                                                     Arrays.asList(two),
+                                                                     null);
     FunctionInvocation<Float> sumVar = new FunctionInvocation<Float>(f,
-                                                                   Arrays.asList((Expression) x),
-                                                                   null);
+                                                                     Arrays.asList((Expression) x),
+                                                                     null);
 
     assertThat(sum.evaluate(), is(2f));
     assertThat(sum.evaluate(), is(4f));
@@ -64,16 +66,16 @@ public class ExpressionTest
   @Test
   public void testUnary()
   {
-    assertThat(new UnaryExpression(Operators.UNARY_MINUS,
+    assertThat(new UnaryExpression(Minus.instance,
                                    new Constant(5)).evaluate(),
                is(-5f));
-    assertThat(new UnaryExpression(Operators.UNARY_BITWISE_NOT,
+    assertThat(new UnaryExpression(BitwiseNot.instance,
                                    new Constant(9)).evaluate(),
                is(-10f));
-    assertThat(new UnaryExpression(Operators.UNARY_LOGICAL_NOT,
+    assertThat(new UnaryExpression(LogicalNot.instance,
                                    new Constant(9)).evaluate(),
                is(0f));
-    assertThat(new UnaryExpression(Operators.UNARY_LOGICAL_NOT,
+    assertThat(new UnaryExpression(LogicalNot.instance,
                                    new Constant(0)).evaluate(),
                is(1f));
   }
@@ -130,7 +132,7 @@ public class ExpressionTest
       caught = true;
     }
     assertTrue(caught);
-    ExpressionParser.OPS.put("&", Operators.BITWISE_AND);
+    ExpressionParser.OPS.put("&", Operator.BITWISE_AND);
   }
 
   @Test
@@ -196,10 +198,10 @@ public class ExpressionTest
   @Test
   public void testFuncExpr()
   {
-    Map<String, Function> functions = new HashMap<String, Function>();
-    functions.put("add3", new Function<Void>()
+    Map<String, Function<Float>> functions = new HashMap<String, Function<Float>>();
+    functions.put("add3", new Function<Float>()
     {
-      public float evaluate(FunctionInvocation<Void> c)
+      public float evaluate(FunctionInvocation<Float> c)
       {
         return c.args.get(0).evaluate() + c.args.get(1).evaluate() + c.args.get(2).evaluate();
       }

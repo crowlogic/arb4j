@@ -6,7 +6,7 @@ public abstract class ExpressionCompiler<F extends arb.functions.Function<?, ?>>
                                         java.util.function.Function<String, F>
 {
   public ExpressionParser      parser = new ExpressionParser();
-  public Map<String, Function> functions;
+  public Map<String, Function<Float>> functions;
   public Map<String, Variable> variables;
 
   public ExpressionCompiler()

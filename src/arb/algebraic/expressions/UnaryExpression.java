@@ -1,29 +1,28 @@
 package arb.algebraic.expressions;
 
+import arb.algebraic.expressions.operators.unary.UnaryOperator;
+
 public class UnaryExpression implements
                              Expression
 {
-  private final Operators  operators;
-  private final Expression arg;
+  private final UnaryOperator<Float, Float> operator;
+  private final Expression                  arg;
 
-  public UnaryExpression(Operators operators, Expression arg)
+  public UnaryExpression(UnaryOperator<Float, Float> operator, Expression arg)
   {
-    this.operators = operators;
-    this.arg       = arg;
+    this.operator = operator;
+    this.arg      = arg;
   }
 
-  public float evaluate()
+  public Float evaluate(Float arg)
   {
-    switch (this.operators)
-    {
-    case UNARY_MINUS:
-      return -this.arg.evaluate();
-    case UNARY_BITWISE_NOT:
-      return ~((int) this.arg.evaluate());
-    case UNARY_LOGICAL_NOT:
-      return ((int) this.arg.evaluate()) == 0 ? 1 : 0;
-    default:
-      return 0;
-    }
+    return operator.evaluate(arg);
+  }
+
+  @Override
+  public Float evaluate()
+  {
+    return arb.utensils.Utilities.TODO("implement me");
+    
   }
 }

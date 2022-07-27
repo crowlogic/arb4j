@@ -2,51 +2,53 @@ package arb.algebraic.expressions;
 
 import java.util.*;
 
+import arb.algebraic.expressions.operators.unary.*;
+
 /**
  * systematically schematizes {@link Expression}s with the
  * this{@link #parse(String, Map, Map)} method
  */
 public class ExpressionParser
 {
-  private final static int            TOK_NUMBER      = 1;
-  private final static int            TOK_WORD        = 2;
-  private final static int            TOK_OP          = 4;
-  private final static int            TOK_OPEN        = 8;
-  private final static int            TOK_CLOSE       = 16;
+  private final static int           TOK_NUMBER      = 1;
+  private final static int           TOK_WORD        = 2;
+  private final static int           TOK_OP          = 4;
+  private final static int           TOK_OPEN        = 8;
+  private final static int           TOK_CLOSE       = 16;
 
-  private final static int            PAREN_ALLOWED   = 0;
-  private final static int            PAREN_EXPECTED  = 1;
-  private final static int            PAREN_FORBIDDEN = 2;
+  private final static int           PAREN_ALLOWED   = 0;
+  private final static int           PAREN_EXPECTED  = 1;
+  private final static int           PAREN_FORBIDDEN = 2;
 
-  final static Map<String, Operators> OPS             = new HashMap<String, Operators>()
-                                                      {
-                                                        {
-                                                          put("-u", Operators.UNARY_MINUS);
-                                                          put("!u", Operators.UNARY_LOGICAL_NOT);
-                                                          put("^u", Operators.UNARY_BITWISE_NOT);
-                                                          put("**", Operators.POWER);
-                                                          put("*", Operators.MULTIPLY);
-                                                          put("/", Operators.DIVIDE);
-                                                          put("%", Operators.REMAINDER);
-                                                          put("+", Operators.PLUS);
-                                                          put("-", Operators.MINUS);
-                                                          put("<<", Operators.SHL);
-                                                          put(">>", Operators.SHR);
-                                                          put("<", Operators.LT);
-                                                          put("<=", Operators.LE);
-                                                          put(">", Operators.GT);
-                                                          put(">=", Operators.GE);
-                                                          put("==", Operators.EQ);
-                                                          put("!=", Operators.NE);
-                                                          put("&", Operators.BITWISE_AND);
-                                                          put("^", Operators.BITWISE_XOR);
-                                                          put("|", Operators.BITWISE_OR);
-                                                          put("&&", Operators.LOGICAL_AND);
-                                                          put("||", Operators.LOGICAL_OR);
-                                                          put("=", Operators.ASSIGN);
-                                                          put(",", Operators.COMMA);
-                                                        }
-                                                      };
+  final static Map<String, Operator> OPS             = new HashMap<String, Operator>()
+                                                     {
+                                                       {
+                                                         put("-u", new Minus());
+                                                         put("!u", new LogicalNot());
+                                                         put("^u", new BitwiseNot());
+                                                         put("**", Operator.POWER);
+                                                         put("*", Operator.MULTIPLY);
+                                                         put("/", Operator.DIVIDE);
+                                                         put("%", Operator.REMAINDER);
+                                                         put("+", Operator.PLUS);
+                                                         put("-", Operator.MINUS);
+                                                         put("<<", Operator.SHL);
+                                                         put(">>", Operator.SHR);
+                                                         put("<", Operator.LT);
+                                                         put("<=", Operator.LE);
+                                                         put(">", Operator.GT);
+                                                         put(">=", Operator.GE);
+                                                         put("==", Operator.EQ);
+                                                         put("!=", Operator.NE);
+                                                         put("&", Operator.BITWISE_AND);
+                                                         put("^", Operator.BITWISE_XOR);
+                                                         put("|", Operator.BITWISE_OR);
+                                                         put("&&", Operator.LOGICAL_AND);
+                                                         put("||", Operator.LOGICAL_OR);
+                                                         put("=", Operator.ASSIGN);
+                                                         put(",", Operator.COMMA);
+                                                       }
+                                                     };
 
   /**
    * Splits a string into component strings by applying the appropriate grammar
@@ -187,7 +189,7 @@ public class ExpressionParser
                   && c != ')';
   }
 
-  public Expression parse(String s, Map<String, Variable> variables, Map<String, Function> functions)
+  public Expression parse(String s, Map<String, Variable> variables, Map<String, Function<Float>> functions)
   {
     if (variables == null)
     {
@@ -234,7 +236,7 @@ public class ExpressionParser
   }
 
   protected int parseUnit(Map<String, Variable> variables,
-                          Map<String, Function> functions,
+                          Map<String, Function<Float>> functions,
                           Stack<String> operands,
                           Stack<Expression> expressions,
                           int paren,
@@ -276,12 +278,11 @@ public class ExpressionParser
     }
     else if (OPS.containsKey(token))
     {
-      Operators operators = OPS.get(token);
-      String    o2        = operands.isEmpty() ? null : operands.peek();
+      Operator operators = OPS.get(token);
+      String   o2        = operands.isEmpty() ? null : operands.peek();
 
-      while (OPS.containsKey(o2)
-                    && ((Operators.isLeftAssoc(operators) && operators.ordinal() > OPS.get(o2).ordinal())
-                                  || (operators.ordinal() > OPS.get(o2).ordinal())))
+      while (OPS.containsKey(o2) && ((Operator.isLeftAssoc(operators) && operators.ordinal() > OPS.get(o2).ordinal())
+                    || (operators.ordinal() > OPS.get(o2).ordinal())))
       {
         Expression e = bind(o2, expressions);
         assert e != null;
@@ -310,7 +311,7 @@ public class ExpressionParser
   }
 
   protected int closeParenthesis(Map<String, Variable> variables,
-                                 Map<String, Function> functions,
+                                 Map<String, Function<Float>> functions,
                                  Stack<String> os,
                                  Stack<Expression> expressions)
   {
@@ -324,8 +325,8 @@ public class ExpressionParser
     assert !os.isEmpty();
     if (os.pop().equals("{"))
     {
-      Function<?>      f    = functions.get(os.pop());
-      List<Expression> args = new ArrayList<Expression>();
+      Function<Float>  f    = functions.get(os.pop());
+      List<Expression<Float>> args = new ArrayList<Expression<Float>>();
       if (!expressions.isEmpty())
       {
         Expression e = expressions.pop();
@@ -335,7 +336,7 @@ public class ExpressionParser
           if (e instanceof BinaryExpression)
           {
             BinaryExpression binExpr = (BinaryExpression) e;
-            if (binExpr.operators == Operators.COMMA)
+            if (binExpr.operator == Operator.COMMA)
             {
               args.add(binExpr.a);
               e = binExpr.b;
@@ -358,14 +359,14 @@ public class ExpressionParser
   {
     if (OPS.containsKey(s))
     {
-      Operators operators = OPS.get(s);
-      if (Operators.isUnary(operators))
+      Operator operator = OPS.get(s);
+      if (Operator.isUnary(operator))
       {
         if (!stack.isEmpty() && stack.peek() == null)
         {
           return null; // Operand missing
         }
-        return new UnaryExpression(operators,
+        return new UnaryExpression((UnaryOperator) operator,
                                    stack.pop());
       }
       else
@@ -376,7 +377,7 @@ public class ExpressionParser
         {
           return null; // Operand missing
         }
-        return new BinaryExpression(operators,
+        return new BinaryExpression((BinaryOperator) operator,
                                     a,
                                     b);
       }

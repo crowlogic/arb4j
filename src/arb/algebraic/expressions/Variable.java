@@ -32,7 +32,7 @@ public class Variable implements
     this.value = value;
   }
 
-  public float evaluate()
+  public Float evaluate()
   {
     return this.value;
   }

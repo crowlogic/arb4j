@@ -10,7 +10,8 @@ public class Constant implements
     this.value = value;
   }
 
-  public float evaluate()
+  @Override
+  public Float evaluate()
   {
     return this.value;
   }

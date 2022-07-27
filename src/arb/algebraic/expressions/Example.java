@@ -25,8 +25,8 @@ public class Example
     {
       sb.append(',').append(FORMULA);
     }
-    Map<String, Variable> variables = new HashMap<String, Variable>();
-    Map<String, Function> functions = new HashMap<String, Function>();
+    Map<String, Variable>        variables = new HashMap<String, Variable>();
+    Map<String, Function<Float>> functions = new HashMap<String, Function<Float>>();
     functions.put("plusone", plusOne);
 
     if (evaluate)
