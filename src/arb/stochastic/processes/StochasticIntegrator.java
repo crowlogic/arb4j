@@ -18,7 +18,7 @@ public interface StochasticIntegrator extends
    * @param σ0       TODO
    * @return the resulting {@link Partition}, this{@link #dt}
    */
-  public Partition integrate(FloatInterval interval,
+  public EvaluationSequence integrate(FloatInterval interval,
                              int prec,
                              int n,
                              DiffusionProcessCoordinates coords);

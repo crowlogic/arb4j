@@ -1,7 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.*;
-import junit.framework.*;
+import junit.framework.TestCase;
 
 public class StochasticEulerIntegratorTest extends
                                            TestCase
@@ -13,14 +13,17 @@ public class StochasticEulerIntegratorTest extends
   {
     RandomState                 randomState = new RandomState(31337);
     StandardGaussianProcess     B           = new StandardGaussianProcess();
-    StochasticEulerIntegrator   integrator  = new StochasticEulerIntegrator(B, randomState);
+    StochasticEulerIntegrator   integrator  = new StochasticEulerIntegrator(B,
+                                                                            randomState);
     FloatInterval               interval    = new FloatInterval(0,
                                                                 10);
     int                         n           = 10000;
 
     DiffusionProcessCoordinates coords      = new DiffusionProcessCoordinates();
-    Partition                   partition   = integrator.integrate(interval, 128, n, coords);
-
+    EvaluationSequence          trajectory  = integrator.integrate(interval, 128, n, coords);
+    /**
+     * TODO: add Real.mean(), Real.stdev() and Real.variance() methods
+     */
   }
 
 }

@@ -69,7 +69,7 @@ public class GaussianProcess implements
   {
     return (arguments, order, precision, result) ->
     {
-      return μ;
+      return result.set(μ);
     };
   }
 
@@ -78,7 +78,7 @@ public class GaussianProcess implements
   {
     return (arguments, order, precision, result) ->
     {
-      return σ;
+      return result.set(σ);
     };
   }
 

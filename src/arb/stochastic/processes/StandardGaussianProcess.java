@@ -69,7 +69,7 @@ public class StandardGaussianProcess implements
   {
     return (arguments, order, precision, result) ->
     {
-      return zero;
+      return result.set(zero);
     };
   }
 
@@ -78,7 +78,7 @@ public class StandardGaussianProcess implements
   {
     return (arguments, order, precision, result) ->
     {
-      return one;
+      return result.set(one);
     };
   }
 

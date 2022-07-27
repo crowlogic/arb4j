@@ -23,7 +23,7 @@ public interface StochasticProcess<P extends DensityFunction, F extends Distribu
 
   public C getCharacteristicFunction();
 
-  public default Real sample(int prec, RandomState randomState, Real u, Real x)
+  public default Real sample(int prec, RandomState randomState, Real x)
   {
     return getDistributionFunction().sample(prec, randomState, x);
   }
@@ -40,7 +40,7 @@ public interface StochasticProcess<P extends DensityFunction, F extends Distribu
       int i;
       for (i = 0; i < n; i++)
       {
-        sample(prec, randomState, x, x);
+        sample(prec, randomState, x);
         x.sub(μ, prec, dx2).pow(2, prec, dx2);
         xAccumulator.add(x, prec, xAccumulator);
         dx2Accumulator.add(dx2, prec, dx2Accumulator);

@@ -1,7 +1,8 @@
 package arb.stochastic.processes;
 
-import arb.*;
 import arb.Float;
+import arb.Real;
+import arb.RealOrderedPair;
 
 /**
  * The arguments passed to the functions representing the drift rate
@@ -45,6 +46,12 @@ public class DiffusionProcessCoordinates extends
   public DiffusionProcessCoordinates setTime(Float t)
   {
     b.set(t);
+    return this;
+  }
+
+  public DiffusionProcessCoordinates setValue(Real x)
+  {
+    a.set(x);
     return this;
   }
 }
