@@ -1,10 +1,12 @@
 package arb.domains;
 
-import arb.Real;
+import arb.Float;
 import arb.topological.spaces.Space;
 
 public interface Interval extends
-                          Space<Real>
+                          Space<Float>
 {
+  public Float left();
 
+  public Float right();
 }

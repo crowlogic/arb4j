@@ -3,6 +3,8 @@ package arb.domains;
 import static arb.RealConstants.*;
 
 import arb.Real;
+import arb.Float;
+import arb.FloatConstants;
 import arb.topological.spaces.Space;
 
 public class UnitInterval implements
@@ -11,7 +13,7 @@ public class UnitInterval implements
   /**
    * 
    * @param closed the closedness of the interval. if true then endpoints will be
-   *               included, otherwise they won't be
+   *               incluRealded, otherwise they won't be
    */
   public UnitInterval(boolean closed)
   {
@@ -33,11 +35,25 @@ public class UnitInterval implements
   boolean leftClosed, rightClosed;
 
   @Override
-  public boolean contains(Real element)
+  public boolean contains(Float element)
   {
-    boolean left  = leftClosed ? element.compareTo(zero) >= 0 : element.compareTo(zero) > 0;
-    boolean right = rightClosed ? element.compareTo(one) <= 0 : element.compareTo(one) < 0;
+    boolean left  = leftClosed ? element.compareTo(zero.getMid()) >= 0 : element.compareTo(zero.getMid()) > 0;
+    boolean right = rightClosed ? element.compareTo(one.getMid()) <= 0 : element.compareTo(one.getMid()) < 0;
     return left && right;
+  }
+
+  @Override
+  public Float left()
+  {
+    return FloatConstants.zero;
+
+  }
+
+  @Override
+  public Float right()
+  {
+    return FloatConstants.one;
+
   }
 
 }

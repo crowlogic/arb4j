@@ -22,7 +22,6 @@ module arb4j
   exports arb.topological.spaces;
   exports arb.measure;
   exports arb.curves;
-  exports arb.algebraic.expressions;
   exports arb.algebraic.geometry;
   exports arb.domains;
   exports arb.utensils;

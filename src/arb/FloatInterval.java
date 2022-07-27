@@ -20,7 +20,7 @@ public class FloatInterval implements AutoCloseable {
   public long swigCPtr;
   public boolean swigCMemOwn;
 
-  public FloatIntervalPartition partition(int n)
+  public Partition partition(int n)
   {
     assert false : "implement me";
     return null;

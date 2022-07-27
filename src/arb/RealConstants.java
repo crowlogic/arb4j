@@ -20,6 +20,7 @@ public class RealConstants
   public static final Real sqrtπ    = new Real();
   public static final Real sqrt2π   = new Real();
   public static final Real sqrt2    = new Real();
+  public static final Real negOne   = new Real().one().neg();
 
   static
   {
