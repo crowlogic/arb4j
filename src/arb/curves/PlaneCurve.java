@@ -4,11 +4,14 @@ import arb.Real;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;
+import arb.geometry.surfaces.Plane;
 
 /**
  * 
- * A plane curve is a curve that lies in a single plane. A plane curve may be
- * closed or open.
+ * A plane curve is a {@link Curve} that lies in a single {@link Plane}. A plane
+ * curve may be closed or open. This function maps a real number representing
+ * distance along the curve to a complex number whose real and imaginary parts
+ * represent points in the Euclidean {@link Plane}
  * 
  */
 public interface PlaneCurve extends
@@ -33,16 +36,23 @@ public interface PlaneCurve extends
   }
 
   /**
-   * The vector r from the origin to the current position. It is also called the
-   * position vector. The derivative of r satisfies
-   * r·(dr)/(dt)=1/2d/(dt)(r·r)=1/2d/(dt)(r^2)=r(dr)/(dt)=rv, where v is the
-   * magnitude of the velocity (i.e., the speed).
+   * a synonym for this{@link #evaluate(Real, int, int, arb.Complex)}
    * 
-   * @return
+   * @return this
    */
-  public default HolomorphicFunction getRadiusVector()
+  public default RealToComplexFunction getRadiusVector()
   {
-    throw new UnsupportedOperationException(getClass() + " should implement this function");
+    return this;
+  }
+
+  /**
+   * a synonym for this{@link #evaluate(Real, int, int, arb.Complex)}
+   * 
+   * @return this
+   */
+  public default RealToComplexFunction getPositionVector()
+  {
+    return this;
   }
 
   /**
