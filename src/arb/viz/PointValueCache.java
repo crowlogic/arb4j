@@ -1,12 +1,18 @@
 package arb.viz;
 
 import java.io.*;
-import java.nio.*;
-import java.nio.channels.FileChannel.*;
-import java.nio.file.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileChannel.MapMode;
+import java.nio.file.Path;
 
 import arb.*;
-import jdk.incubator.foreign.*;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * If the precision of the number is 128 bits or less then the only space
@@ -16,6 +22,13 @@ import jdk.incubator.foreign.*;
  * things.. so we go with the rule-of-thumb that 128 bits is enough for
  * calculating RGB intensities anyway..
  * 
+ * 
+ * TODO: Clients requiring sophisticated, low-level control over mapped memory
+ * segments, should consider writing custom mapped memory segment factories;
+ * using CLinker, e.g. on Linux, it is possible to call mmap with the desired
+ * parameters; the returned address can be easily wrapped into a memory segment,
+ * using MemoryAddress.ofLong(long) and ofAddress(MemoryAddress, long,
+ * ResourceScope).
  */
 public class PointValueCache implements
                              AutoCloseable
@@ -59,6 +72,8 @@ public class PointValueCache implements
 
   private File         file1;
 
+  ResourceScope        scope    = ResourceScope.newSharedScope();
+
   public PointValueCache(String id, int numXpoints, int numYpoints)
   {
     System.out.println("Opening " + id + ".arb" + " and .arb1");
@@ -73,8 +88,8 @@ public class PointValueCache implements
       path1          = Path.of(id + ".arb1");
       file1          = openFileOrCreateNewOneIfNotExisting(path1, bytes);
 
-      segment        = MemorySegment.mapFile(path, 0, bytes, MapMode.READ_WRITE, ResourceScope.globalScope());
-      segment1       = MemorySegment.mapFile(path1, 0, bytes, MapMode.READ_WRITE, ResourceScope.globalScope());
+      segment        = MemorySegment.mapFile(path, 0, bytes, MapMode.READ_WRITE, scope);
+      segment1       = MemorySegment.mapFile(path1, 0, bytes, MapMode.READ_WRITE, scope);
       buffer         = segment.asByteBuffer();
       buffer1        = segment1.asByteBuffer();
 
@@ -128,6 +143,43 @@ public class PointValueCache implements
     }
   }
 
+  public static void closeDirectBuffer(FileChannel channel)
+  {
+
+    try
+    {
+      Class  channelClass = Class.forName("sun.nio.ch.FileChannelImpl");
+
+      Method unmap        = channelClass.getDeclaredMethod("unmap", channelClass);
+      unmap.setAccessible(true);
+      unmap.invoke(channelClass, channel);
+    }
+    catch (NoSuchMethodException e)
+    {
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e)
+    {
+      e.printStackTrace();
+    }
+    catch (IllegalArgumentException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (InvocationTargetException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (ClassNotFoundException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
+
   @Override
   public void close()
   {
@@ -135,14 +187,12 @@ public class PointValueCache implements
     {
       return;
     }
+    scope.close();
     System.out.println("Closing function image cache " + file + " and " + file1);
 
     buffer  = null;
+
     buffer1 = null;
-    System.out.println("unmapping caches");
-    segment.unload();
-    segment1.unload();
-    System.out.println("unmapped caches");
 
     if (!complete)
     {
