@@ -9,7 +9,7 @@ public class StochasticEulerIntegratorTest extends
   public static final int prec = 128;
   private Real            σ;
 
-  public void testDiscretize()
+  public void testIntegrator()
   {
     RandomState                 randomState = new RandomState((int) (Math.random() * Integer.MAX_VALUE));
     StandardGaussianProcess     B           = new StandardGaussianProcess();
