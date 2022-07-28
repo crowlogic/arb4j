@@ -34,12 +34,6 @@ import arb.topological.spaces.*;
   }
 
   @Override
-  public Complex div(int j, int prec)
-  {
-    return div(j, prec, this);
-  }
-
-  @Override
   public int dimension()
   {
     return 2;

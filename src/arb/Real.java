@@ -71,11 +71,6 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
     setRad(mag);
   }
 
-  public Real div(Real σ, int prec)
-  {
-    return div(σ,prec,this);
-  }
-
   public Real pow(int i, int prec)
   {
     return pow(i,prec,this);
@@ -752,17 +747,6 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
     setMid(u);
     return this;
   }  
-  
-  /**
-   * Calls this{@link #div(int, int, Real)} with the result=this. Useful for constructors
-   * @param i
-   * @param precision
-   * @return this
-   */
-  public Real div(int i, int precision)
-  {
-    return div(i,precision,this);
-  }
   
   public Real mul(Real x, int prec, Real result)
   {

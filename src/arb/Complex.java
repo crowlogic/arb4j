@@ -59,12 +59,6 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
   }
 
   @Override
-  public Complex div(int j, int prec)
-  {
-    return div(j, prec, this);
-  }
-
-  @Override
   public int dimension()
   {
     return 2;
