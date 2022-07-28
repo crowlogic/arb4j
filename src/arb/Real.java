@@ -8,15 +8,11 @@
 
 package arb;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.*;
-
-import arb.*;
-
-import static arb.RealConstants.*;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Real numbers are points on an infinitely long line known as the real number
@@ -40,12 +36,6 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public Stream<Real> stream()
-  {
-    return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
-                                false);
-  }
-  
   public synchronized void delete() {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
@@ -64,6 +54,12 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
     return dim;    
   }
 
+  public Stream<Real> stream()
+  {
+    return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
+                                false);
+  }
+  
   @Override
   public Iterator<Real> iterator()
   {

@@ -3,12 +3,11 @@
 %typemap(javainterfaces) arb_struct "Comparable<Real>, Iterable<Real>, Field<Real>"
 
 %typemap(javaimports) arb_struct %{
-import java.util.concurrent.TimeUnit;
-import java.util.Iterator;
-import static arb.RealConstants.*;
-import arb.MagnitudeConstants;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Real numbers are points on an infinitely long line known as the real number
@@ -29,6 +28,12 @@ import static arb.arb.*;
     return dim;    
   }
 
+  public Stream<Real> stream()
+  {
+    return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
+                                false);
+  }
+  
   @Override
   public Iterator<Real> iterator()
   {
