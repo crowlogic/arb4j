@@ -164,6 +164,28 @@ public interface Field<X extends Field<X>> extends
   }
 
   /**
+   * Subtracts a field element from this field
+   * 
+   * @param element to be subtracted from this
+   * @param prec
+   * @return this after the result has been assigned to it
+   */
+  public default X sub(X element, int prec)
+  {
+    return sub(element, prec, (X) X.this);
+  }
+
+  /**
+   * Subtracts a field element from this field
+   * 
+   * @param element to be subtracted from this
+   * @param prec
+   * @param result
+   * @return result
+   */
+  public X sub(X element, int prec, X result);
+
+  /**
    * Adds two elements of this field
    * 
    * @param element

@@ -8,10 +8,13 @@
 
 package arb;
 
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.Iterator;
+import java.util.stream.*;
+
+import arb.*;
+
 import static arb.RealConstants.*;
-import arb.MagnitudeConstants;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
 
@@ -37,6 +40,12 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  public Stream<Real> stream()
+  {
+    return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
+                                false);
+  }
+  
   public synchronized void delete() {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {

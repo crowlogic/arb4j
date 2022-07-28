@@ -18,7 +18,7 @@ public class StochasticEulerIntegrator implements
 
   public DiffusionProcess X;
 
-  public boolean          verbose = true;
+  public boolean          verbose = false;
 
   /**
    * 
@@ -42,7 +42,7 @@ public class StochasticEulerIntegrator implements
       μi.printPrecision = true;
       σi.printPrecision = true;
       GaussianProcess W = new GaussianProcess(zero,
-                                              partition.δt.sqrt(prec, sqrtδt));
+                                              partition.δt);
 
       int             i = -1;
       for (Float t : partition)
