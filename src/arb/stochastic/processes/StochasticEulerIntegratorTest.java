@@ -19,8 +19,8 @@ public class StochasticEulerIntegratorTest extends
                                                               100);
     int                       n           = 300 * 1000;
 
-    DiffusionProcessState     coords      = new DiffusionProcessState();
-    EvaluationSequence        samplePath  = integrator.integrate(interval, prec, n, coords);
+    DiffusionProcessState     state      = new DiffusionProcessState();
+    EvaluationSequence        samplePath  = integrator.integrate(interval, prec, n, state);
     Real                      μ           = samplePath.values.arithmeticMean(prec, new Real());
     μ.printPrecision = true;
     double absMean = Math.abs(μ.doubleValue());
