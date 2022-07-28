@@ -499,20 +499,19 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   }  
     public boolean  printPrecision = false;
     
-  public String toString( int digits )
+  public String toString(int digits)
   {
-    if ( dim == 1 )
+    if (dim == 1)
     {
       // TODO: get the number of digits to from the exponent of the radius
       String prefix = getMid().toString(digits);
-      if ( !printPrecision )
+      if (!printPrecision)
       {
         return prefix;
       }
-      // dont print the last digit since its not gauranteed to be correct
-      prefix = prefix.substring(0, prefix.length() - 1 );
-      return prefix + " +/- " + getRad().toString(5);    
-      //return arb.arb_get_str(this, digits, 1);
+
+      return prefix + " +/- " + getRad().toString(5);
+      // return arb.arb_get_str(this, digits, 1);
     }
     else
     {
@@ -520,15 +519,14 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
       sb.append("[");
       for (int i = 0; i < dim; i++)
       {
-        if ( i > 0 )
+        if (i > 0)
         {
           sb.append(",\n ");
         }
-      sb.append(String.format("%s",
-                              get(i)));
-    }
-    sb.append("]");
-    return sb.toString();
+        sb.append(String.format("%s", get(i)));
+      }
+      sb.append("]");
+      return sb.toString();
     }
   }
       

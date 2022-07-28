@@ -21,8 +21,9 @@ public class StochasticEulerIntegratorTest extends
 
     DiffusionProcessCoordinates coords      = new DiffusionProcessCoordinates();
     EvaluationSequence          samplePath  = integrator.integrate(interval, 128, n, coords);
-    Real                        μ           = samplePath.values.Σ(prec, new Real());
-
+    Real                        μ           = samplePath.values.Σ(prec, new Real()).div(n, prec);
+    μ.printPrecision = true;
+    System.out.println("mean=" + μ);
     /**
      * TODO: add Real.mean(), Real.stdev() and Real.variance() methods
      */
