@@ -19,7 +19,7 @@ public class StochasticEulerIntegratorTest extends
                                                                 10);
     int                         n           = 10000;
 
-    DiffusionProcessCoordinates coords      = new DiffusionProcessCoordinates();
+    DiffusionProcessState coords      = new DiffusionProcessState();
     EvaluationSequence          samplePath  = integrator.integrate(interval, 128, n, coords);
     Real                        μ           = samplePath.values.arithmeticMean(prec, new Real());
     μ.printPrecision = true;

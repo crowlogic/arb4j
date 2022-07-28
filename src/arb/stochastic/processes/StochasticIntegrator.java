@@ -21,5 +21,5 @@ public interface StochasticIntegrator extends
   public EvaluationSequence integrate(FloatInterval interval,
                              int prec,
                              int n,
-                             DiffusionProcessCoordinates coords);
+                             DiffusionProcessState coords);
 }

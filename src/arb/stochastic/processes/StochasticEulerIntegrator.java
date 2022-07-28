@@ -1,6 +1,6 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.zero;
+import static arb.RealConstants.*;
 
 import arb.*;
 import arb.Float;
@@ -28,7 +28,7 @@ public class StochasticEulerIntegrator implements
    * @return the time delta this{@link #dt} between points of S
    */
   @Override
-  public EvaluationSequence integrate(FloatInterval interval, int prec, int n, DiffusionProcessCoordinates coords)
+  public EvaluationSequence integrate(FloatInterval interval, int prec, int n, DiffusionProcessState state)
   {
     DriftCoeffecientFunction     μ     = X.μ();
     DiffusionCoeffecientFunction σ     = X.σ();
@@ -38,27 +38,25 @@ public class StochasticEulerIntegrator implements
     try ( Float T = interval.length(prec, new Float()); Real Z = new Real(); Real μi = new Real();
           Real σi = new Real(); Real sqrtδt = new Real();)
     {
-      Partition       partition = interval.partition(n, prec);
+      Partition partition = interval.partition(n, prec);
       μi.printPrecision = true;
-      σi.printPrecision = true;      
-      GaussianProcess W         = new GaussianProcess(zero,
-                                                      partition.δt.sqrt(prec, sqrtδt));
+      σi.printPrecision = true;
+      GaussianProcess W = new GaussianProcess(zero,
+                                              partition.δt.sqrt(prec, sqrtδt));
 
-      int             i         = -1;
+      int             i = -1;
       for (Float t : partition)
       {
         Real xi = x.get(++i);
-        xi.printPrecision = true;
-        coords.setTime(t);
+        state.setTime(t);
 
-        μ.evaluate(coords, 1, prec, μi);
-        σ.evaluate(coords, 1, prec, σi);
+        μ.evaluate(state, 1, prec, μi);
+        σ.evaluate(state, 1, prec, σi);
         W.sample(prec, randomState, Z);
 
-        // xi = μi * δt + σi * Z where Z is a draw from W=N(0,√(δt))
+        // coords.value = xi = μi * δt + σi * Z where Z is a draw from W=N(0,√(δt))
         μi.mul(partition.δt, prec, μi).add(σi.mul(Z, prec, σi), prec, xi);
-
-        coords.setValue(xi);
+        state.setValue(xi);
 
         if (verbose)
         {

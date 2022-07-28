@@ -7,7 +7,7 @@ public class StochasticMilsteinIntegrator implements
 {
 
   @Override
-  public EvaluationSequence integrate(FloatInterval interval, int prec, int n, DiffusionProcessCoordinates coords)
+  public EvaluationSequence integrate(FloatInterval interval, int prec, int n, DiffusionProcessState coords)
   {
     assert false : "implement me";
     return null;

@@ -9,7 +9,7 @@ import arb.functions.Function;
  *
  */
 public interface CoeffecientFunction extends
-                                     Function<DiffusionProcessCoordinates, Real>
+                                     Function<DiffusionProcessState, Real>
 {
 
 }

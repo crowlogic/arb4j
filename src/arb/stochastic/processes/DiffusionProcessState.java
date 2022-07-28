@@ -10,16 +10,16 @@ import arb.RealOrderedPair;
  * which would be expresed in mathematical notation as μ(Sₜ,t) and σ(Sₜ,t) for
  * the drift and diffusion respectively
  */
-public class DiffusionProcessCoordinates extends
+public class DiffusionProcessState extends
                                          RealOrderedPair
 {
 
-  public DiffusionProcessCoordinates()
+  public DiffusionProcessState()
   {
     super();
   }
 
-  public DiffusionProcessCoordinates(Real a, Real b)
+  public DiffusionProcessState(Real a, Real b)
   {
     super(a,
           b);
@@ -43,13 +43,13 @@ public class DiffusionProcessCoordinates extends
     return b;
   }
 
-  public DiffusionProcessCoordinates setTime(Float t)
+  public DiffusionProcessState setTime(Float t)
   {
     b.set(t);
     return this;
   }
 
-  public DiffusionProcessCoordinates setValue(Real x)
+  public DiffusionProcessState setValue(Real x)
   {
     a.set(x);
     return this;
