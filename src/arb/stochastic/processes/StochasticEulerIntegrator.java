@@ -48,6 +48,7 @@ public class StochasticEulerIntegrator implements
       for (Float t : partition)
       {
         Real xi = x.get(++i);
+        xi.printPrecision = true;
         coords.setTime(t);
 
         μ.evaluate(coords, 1, prec, μi);
