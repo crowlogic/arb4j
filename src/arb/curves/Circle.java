@@ -1,12 +1,11 @@
 package arb.curves;
 
-import static java.lang.Math.max;
+import static java.lang.Math.*;
 
 import arb.*;
-import arb.functions.complex.ComplexRealPart;
-import arb.functions.complex.SFunction;
-import arb.functions.complex.dynamics.NewtonMap;
-import arb.operators.Composition;
+import arb.functions.complex.*;
+import arb.functions.complex.dynamics.*;
+import arb.operators.*;
 
 /**
  * A circle coordinate function representing a circle having a basepoint and

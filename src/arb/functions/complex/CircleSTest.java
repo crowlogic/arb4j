@@ -1,6 +1,7 @@
 package arb.functions.complex;
 
 import arb.*;
+import arb.functions.real.*;
 import junit.framework.TestCase;
 
 public class CircleSTest extends
@@ -21,8 +22,7 @@ public class CircleSTest extends
       Real zr2 = z.get(2).getReal();
       assertEquals(0.128, zr2.getMid().doubleValue(RoundingMode.Near), zr2.getRad().doubleValue());
 
-      ComplexRealPart<CircularS> realCircleS = cs.complexRealPart();
-      realCircleS.evaluate(πOver2, 3, 256, z);
+      cs.evaluate(πOver2, 3, 256, z);
       assertEquals(0.6, z.getReal().doubleValue(), Math.pow(10, -20));
 
       RootLocatorOptions rootLocatorOptions = new RootLocatorOptions(new RealRootInterval(0.5,

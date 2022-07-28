@@ -1,16 +1,15 @@
 package arb.functions.complex;
 
 import static arb.arb.*;
-import static java.lang.Math.max;
+import static java.lang.Math.*;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.*;
 
 import arb.*;
-import arb.exceptions.NotDifferentiableException;
-import arb.exceptions.NotIntegrableException;
-import arb.functions.Function;
+import arb.exceptions.*;
+import arb.functions.*;
 import arb.functions.real.*;
-import arb.utensils.Utilities;
+import arb.utensils.*;
 
 /**
  * A holomorphic function is a {@link Complex}-valued function of one or more
@@ -19,20 +18,23 @@ import arb.utensils.Utilities;
  * complex derivative in a neighbourhood is a very strong condition: it implies
  * that a holomorphic function is infinitely differentiable and locally equal to
  * its own Taylor series (analytic). Holomorphic functions are the central
- * objects of study in complex analysis.<br><br>
+ * objects of study in complex analysis.<br>
+ * <br>
  * 
  * Though the term analytic function is often used interchangeably with
  * "holomorphic function", the word "analytic" is defined in a broader sense to
  * denote any function (real, complex, or of more general type) that can be
  * written as a convergent power series in a neighbourhood of each point in its
  * domain. That all holomorphic functions are complex analytic functions, and
- * vice versa, is a major theorem in complex analysis.<br><br>
+ * vice versa, is a major theorem in complex analysis.<br>
+ * <br>
  * 
  * Holomorphic functions are also sometimes referred to as regular
  * functions.[2][3] A holomorphic function whose domain is the whole complex
  * plane is called an entire function. The phrase "holomorphic at a point z0"
  * means not just differentiable at z0, but differentiable everywhere within
- * some neighbourhood of z0 in the complex plane.<br><br>
+ * some neighbourhood of z0 in the complex plane.<br>
+ * <br>
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Holomorphic_function">Wikpedia</a>
@@ -204,16 +206,6 @@ public interface HolomorphicFunction extends
       vs.get(top).swap(vs.get(depth));
       topm.swap(ms.get(depth));
     }
-  }
-
-  public default ComplexImaginaryPart complexImagPart()
-  {
-    return new ComplexImaginaryPart(this);
-  }
-
-  public default ComplexRealPart complexRealPart()
-  {
-    return new ComplexRealPart(this);
   }
 
   public default HolomorphicFunction differential() throws NotDifferentiableException
