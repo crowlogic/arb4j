@@ -50,6 +50,12 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   static { System.loadLibrary( "arblib" ); }
 
   @Override
+  public int dim()
+  {
+    return dim;    
+  }
+
+  @Override
   public Iterator<Real> iterator()
   {
     return new RealIterator(this);
@@ -786,13 +792,5 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   public Real() {
     this(arbJNI.new_Real(), true);
   }
-
-  @Override
-  public int dim()
-  {
-    return dim;    
-  }
-
-
 
 }
