@@ -26,6 +26,11 @@ public interface Field<X extends Field<X>> extends
   public X get(int index);
 
   /**
+   * Summation is the addition of a sequence of any kind of numbers, called
+   * addends or summands; the result is their sum or total. Beside numbers, other
+   * types of values can be summed as well: functions, vectors, matrices,
+   * polynomials and, in general, elements of any type of mathematical objects on
+   * which an operation denoted "+" is defined.
    * 
    * @param prec
    * @param result
