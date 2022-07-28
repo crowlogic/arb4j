@@ -24,6 +24,12 @@ import static arb.arb.*;
   static { System.loadLibrary( "arblib" ); }
 
   @Override
+  public int dim()
+  {
+    return dim;    
+  }
+
+  @Override
   public Iterator<Real> iterator()
   {
     return new RealIterator(this);

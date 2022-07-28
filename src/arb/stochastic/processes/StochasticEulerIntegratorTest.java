@@ -11,7 +11,7 @@ public class StochasticEulerIntegratorTest extends
 
   public void testDiscretize()
   {
-    RandomState                 randomState = new RandomState(31337);
+    RandomState                 randomState = new RandomState(69);
     StandardGaussianProcess     B           = new StandardGaussianProcess();
     StochasticEulerIntegrator   integrator  = new StochasticEulerIntegrator(B,
                                                                             randomState);
@@ -21,7 +21,7 @@ public class StochasticEulerIntegratorTest extends
 
     DiffusionProcessCoordinates coords      = new DiffusionProcessCoordinates();
     EvaluationSequence          samplePath  = integrator.integrate(interval, 128, n, coords);
-    Real                        μ           = samplePath.values.Σ(prec, new Real()).div(n, prec);
+    Real                        μ           = samplePath.values.arithmeticMean(prec, new Real());
     μ.printPrecision = true;
     System.out.println("mean=" + μ);
     /**

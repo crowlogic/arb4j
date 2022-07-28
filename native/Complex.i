@@ -27,6 +27,18 @@ import arb.topological.spaces.*;
     return null;
   }
 
+ @Override
+  public int dim()
+  {
+    return dim;
+  }
+
+  @Override
+  public Complex div(int j, int prec)
+  {
+    return div(j, prec, this);
+  }
+
   @Override
   public int dimension()
   {

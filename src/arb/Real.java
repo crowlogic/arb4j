@@ -787,4 +787,12 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
     this(arbJNI.new_Real(), true);
   }
 
+  @Override
+  public int dim()
+  {
+    return dim;    
+  }
+
+
+
 }
