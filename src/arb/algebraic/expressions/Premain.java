@@ -1,0 +1,32 @@
+package arb.algebraic.expressions;
+
+import java.lang.instrument.*;
+import java.security.ProtectionDomain;
+
+public class Premain
+{
+
+  public static void premain(String agentArgs, Instrumentation inst)
+  {
+    inst.addTransformer(new ClassFileTransformer()
+    {
+
+      @Override
+      public byte[] transform(ClassLoader l,
+                              String name,
+                              Class c,
+                              ProtectionDomain d,
+                              byte[] b) throws IllegalClassFormatException
+      {
+
+        if (name.equals("java/lang/Integer"))
+        {
+          CustomClassWriter cr = new CustomClassWriter(b);
+          return cr.addField();
+        }
+        return b;
+      }
+    });
+  }
+
+}
