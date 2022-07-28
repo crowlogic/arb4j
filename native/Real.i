@@ -74,6 +74,13 @@ import java.util.stream.StreamSupport;
     return res;
   }
 
+  /**
+   * Sets this to a uniformly distributed (pseudo) random number
+   * 
+   * @param state the {@link RandomState}
+   * @param bits  precision
+   * @return uniformly distributed pseudo-random number
+   */
   public Real random(RandomState state, int bits)
   {
     arb.arb_urandom(this, state, bits);

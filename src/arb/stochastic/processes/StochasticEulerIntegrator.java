@@ -40,10 +40,10 @@ public class StochasticEulerIntegrator implements
       Partition partition = interval.partition(n, prec);
       μi.printPrecision = true;
       σi.printPrecision = true;
-      GaussianProcess W = new GaussianProcess(zero,
-                                              partition.δt);
+      WhiteNoise W = new WhiteNoise(zero,
+                                    partition.δt);
 
-      int             i = -1;
+      int        i = -1;
       for (Float t : partition)
       {
         Real xi = x.get(++i);
@@ -52,7 +52,7 @@ public class StochasticEulerIntegrator implements
 
         μ.evaluate(state, 1, prec, μi);
         σ.evaluate(state, 1, prec, σi);
-        W.sample(prec, randomState, Z);
+        W.sample(state.time(), prec, randomState, Z);
 
         // coords.value = xi = μi * δt + σi * Z where Z is a draw from W=N(0,√(δt))
         μi.mul(partition.δt, prec, μi).add(σi.mul(Z, prec, σi), prec, xi);

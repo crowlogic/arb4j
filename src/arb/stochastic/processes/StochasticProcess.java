@@ -13,19 +13,19 @@ import arb.stochastic.*;
  * <code>{X(t) : t ∈ T} <code> <br>
  * where t usually denotes time or a time-like variable
  */
-public interface StochasticProcess<P extends DensityFunction, F extends DistributionFunction, C extends CharacteristicFunction<P>>
+public interface StochasticProcess<P extends ProbabilityDensityFunction, F extends ProbabilityDistributionFunction, C extends CharacteristicFunction>
                                   extends
                                   ContinuousTimeDynamicalSystem
 {
-  public P getDensityFunction();
+  public P getDensityFunction(Real t);
 
-  public F getDistributionFunction();
+  public F getDistributionFunction(Real t);
 
-  public C getCharacteristicFunction();
+  public C getCharacteristicFunction(Real t);
 
-  public default Real sample(int prec, RandomState randomState, Real x)
+  public default Real sample(Real t, int prec, RandomState randomState, Real x)
   {
-    return getDistributionFunction().sample(prec, randomState, x);
+    return getDistributionFunction(t).sample(prec, randomState, x);
   }
 
 }

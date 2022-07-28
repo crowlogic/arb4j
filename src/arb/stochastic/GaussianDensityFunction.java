@@ -7,34 +7,47 @@ import arb.functions.real.*;
 import arb.stochastic.processes.*;
 
 /**
- * Normal distributions are important in statistics and are often used in the
- * natural and social sciences to represent real-valued random variables whose
- * distributions are not known. Their importance is partly due to the central
- * limit theorem. It states that, under some conditions, the average of many
- * samples (observations) of a random variable with finite mean and variance is
- * itself a random variable—whose distribution converges to a normal
- * distribution as the number of samples increases. Therefore, physical
- * quantities that are expected to be the sum of many independent processes,
- * such as measurement errors, often have distributions that are nearly normal.
+ * The Gaussian distribution's probability density is a very important density
+ * given by the function
+ * 
+ * <pre>
+ *  p(x;μ,σ) = e^( -( ( ( x - μ ) ÷ σ )²) ÷ 2) ÷ ( σ * √(2π) )
+ * </pre>
+ * 
+ * its importance is partly due to the central limit theorem. It states that,
+ * under some conditions, the average of many samples (observations) of a random
+ * variable with finite mean and variance is itself a {@link RandomVariable}
+ * whose distribution converges to a normal distribution as the number of
+ * samples increases. Therefore, physical quantities that are expected to be the
+ * sum of many independent processes, such as measurement errors, often have
+ * distributions that are nearly normal.
  * 
  * @see https://en.wikipedia.org/wiki/Normal_distribution
  */
 public class GaussianDensityFunction implements
-                                     DensityFunction
+                                     ProbabilityDensityFunction
 {
 
   @Override
   public String toString()
   {
-    return "GaussianDensityFunction[μ=" + process.μ.toString(5) + ", σ=" + process.σ.toString(5) + "]";
+    return "GaussianDensityFunction[μ=" + μ.toString(5) + ", σ=" + σ.toString(5) + "]";
   }
 
-  public RealFunction     inv = new InverseGaussianDensityFunction(this);
-  private GaussianProcess process;
+  public RealFunction inv = new InverseGaussianDensityFunction(this);
+  private Real        μ;
+  private Real        σ;
 
-  public GaussianDensityFunction(GaussianProcess gaussianProcess)
+  public GaussianDensityFunction(WhiteNoise gaussianProcess)
   {
-    this.process = gaussianProcess;
+    this.σ = gaussianProcess.σ;
+    this.μ = gaussianProcess.μ;
+  }
+
+  public GaussianDensityFunction(Real μ, Real σ)
+  {
+    this.μ = μ;
+    this.σ = σ;
   }
 
   @Override
@@ -54,9 +67,7 @@ public class GaussianDensityFunction implements
   {
     order = Math.max(order, 1);
     assert order < 2;
-    // e^(-(((x-μ)/σ)^2)/2)/(σ*√(2π))
-    Real μ = process.μ;
-    Real σ = process.σ;
+    // e^( -( ( ( x - μ ) ÷ σ )²) ÷ 2) ÷ ( σ * √(2π) )
     try ( Real t = new Real())
     {
       z.sub(μ, prec, t).div(σ, prec).pow(2, prec, result).div(2, prec).negate(result).exp(prec, result);

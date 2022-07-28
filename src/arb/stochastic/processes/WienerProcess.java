@@ -9,7 +9,7 @@ import arb.stochastic.*;
  * 
  * 
  * The Wiener process W(t) is an integral of the white-noise
- * {@link GaussianProcess} characterized by the following properties:<br>
+ * {@link WhiteNoise} characterized by the following properties:<br>
  * 
  * 1. W(0) = 0<br>
  * 
@@ -37,21 +37,21 @@ public class WienerProcess implements
 {
 
   @Override
-  public DensityFunction getDensityFunction()
+  public ProbabilityDensityFunction getDensityFunction(Real t)
   {
     assert false : "2do";
     return null;
   }
 
   @Override
-  public CharacteristicFunction getCharacteristicFunction()
+  public CharacteristicFunction getCharacteristicFunction(Real t)
   {
     assert false : "2do";
     return null;
   }
 
   @Override
-  public DistributionFunction getDistributionFunction()
+  public ProbabilityDistributionFunction getDistributionFunction(Real t)
   {
     assert false : "TODO: implement";
     return null;

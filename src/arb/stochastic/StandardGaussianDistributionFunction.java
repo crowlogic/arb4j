@@ -4,7 +4,7 @@ import arb.*;
 import arb.utensils.*;
 
 public class StandardGaussianDistributionFunction implements
-                                                  DistributionFunction<StandardGaussianDensityFunction>
+                                                  ProbabilityDistributionFunction<StandardGaussianDensityFunction>
 {
 
   @Override

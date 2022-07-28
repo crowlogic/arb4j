@@ -5,7 +5,7 @@ import arb.RealConstants;
 import arb.functions.real.RealFunction;
 
 public class StandardGaussianDensityFunction implements
-                                                 DensityFunction
+                                                 ProbabilityDensityFunction
 {
 
   public static RealFunction inv = new RealFunction()

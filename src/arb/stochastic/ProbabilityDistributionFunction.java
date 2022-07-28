@@ -8,12 +8,12 @@ import arb.functions.real.RealFunction;
  * The distribution function of a random variable is the integral of the
  * corresponding density function
  */
-public interface DistributionFunction<P extends DensityFunction> extends
-                                     RealFunction
+public interface ProbabilityDistributionFunction<P extends ProbabilityDensityFunction> extends
+                                                RealFunction
 {
   /**
    * Draw a (pseudo) random sample from this density via the inverse sampling
-   * method
+   * method, that is, drawing from a uniform distribution with Ra
    * 
    * @return
    */

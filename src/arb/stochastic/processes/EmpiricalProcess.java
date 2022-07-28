@@ -15,7 +15,7 @@ import arb.stochastic.*;
  * @see <a href="https://en.wikipedia.org/wiki/Empirical_process">Wikipedia</a>
  */
 public interface EmpiricalProcess extends
-                                  StochasticProcess<DensityFunction, DistributionFunction<DensityFunction>, CharacteristicFunction<DensityFunction>>
+                                  StochasticProcess<ProbabilityDensityFunction, ProbabilityDistributionFunction<ProbabilityDensityFunction>, CharacteristicFunction<ProbabilityDensityFunction>>
 {
 
 }

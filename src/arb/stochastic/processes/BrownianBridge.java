@@ -6,7 +6,7 @@ import arb.stochastic.*;
 
 /**
  * A {@link BrownianBridge} is a continuous-time {@link StochasticProcess}
- * denoted by B(t) whose {@link DistributionFunction} is the conditional
+ * denoted by B(t) whose {@link ProbabilityDistributionFunction} is the conditional
  * (probability) distribution of a standard {@link WienerProcess} W(t) which is
  * synonymous with the mathematical model of {@link BrownianMotion}) subject to
  * the condition (when standardized) that W(T) = 0, so that the process is
@@ -35,21 +35,21 @@ public class BrownianBridge implements
 {
 
   @Override
-  public DensityFunction getDensityFunction()
+  public ProbabilityDensityFunction getDensityFunction(Real t)
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public DistributionFunction getDistributionFunction()
+  public ProbabilityDistributionFunction getDistributionFunction(Real t)
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public CharacteristicFunction getCharacteristicFunction()
+  public CharacteristicFunction getCharacteristicFunction(Real t)
   {
     assert false : "TODO";
     return null;

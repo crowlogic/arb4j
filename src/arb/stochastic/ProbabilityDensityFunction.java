@@ -9,7 +9,7 @@ import arb.functions.real.RealFunction;
  * 
  *
  */
-public interface DensityFunction extends
+public interface ProbabilityDensityFunction extends
                                  RealFunction
 {
 

@@ -11,7 +11,7 @@ import arb.functions.real.*;
  * (1+erf((x-μ)/(σ√2)))/2
  */
 public class GaussianDistributionFunction implements
-                                          DistributionFunction
+                                          ProbabilityDistributionFunction
 {
 
   @Override
