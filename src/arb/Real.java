@@ -8,12 +8,10 @@
 
 package arb;
 
-import java.util.concurrent.TimeUnit;
-
-import static arb.RealConstants.*;
-import arb.MagnitudeConstants;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
+
+import java.util.Iterator;
 
 /**
  * Real numbers are points on an infinitely long line known as the real number
@@ -25,8 +23,9 @@ import static arb.arb.*;
  */
 
 public class Real implements
+                  Iterable<Real>,
                   Comparable<Real>,
-                  Field
+                  Field<Real>
 {
   private transient long      swigCPtr;
   protected transient boolean swigCMemOwn;
@@ -452,6 +451,7 @@ public class Real implements
     clear();
   }
 
+  @Override
   public Real add(Real d, int prec, Real res)
   {
     arb.arb_add(res, this, d, prec);
@@ -804,6 +804,19 @@ public class Real implements
   {
     this(arbJNI.new_Real(),
          true);
+  }
+
+  public Real Σ(int prec, Real result)
+  {
+    result.zero();
+    forEach(element -> result.add(element, prec, result));
+    return result;
+  }
+
+  @Override
+  public Iterator<Real> iterator()
+  {
+    return new RealIterator(this);
   }
 
 }

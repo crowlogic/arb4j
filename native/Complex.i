@@ -7,8 +7,9 @@ import java.util.stream.*;
 import arb.topological.spaces.*;
 
 /**
- * The complex numbers constitute an algebraically closed field, a commutative
- * algebra over the reals, and a Euclidean vector space of dimension two.
+ * The {@link Complex} numbers constitute an algebraically closed {@link Field}, a
+ * commutative algebra over the {@link Real}s, and a
+ * {@link EuclideanVectorSpace} of dimension two.
  */
 %}
 
@@ -352,9 +353,9 @@ import arb.topological.spaces.*;
    return r;
  }
 
+  @Override
   public Complex add( Complex q, int prec, Complex s )
-  {
-  
+  {  
     arb.acb_add( s, this, q, prec );
     return s;
   }

@@ -1,6 +1,6 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "Comparable<Real>, Field"
+%typemap(javainterfaces) arb_struct "Comparable<Real>, Iterable<Real>, Field<Real>"
 
 %typemap(javaimports) arb_struct %{
 import java.util.concurrent.TimeUnit;
@@ -20,11 +20,20 @@ import static arb.arb.*;
 %}
 
 %typemap(javacode) arb_struct %{
- static { System.loadLibrary( "arblib" ); }
+  static { System.loadLibrary( "arblib" ); }
 
+  @Override
+  public Iterator<Real> iterator()
+  {
+    return new RealIterator(this);
+  }
+  
+  /**
+    * Copy constructor
+    */
   public Real(Float div, Magnitude mag)
   {
-    this(0,false);
+    this();
     setMid(div);
     setRad(mag);
   }
