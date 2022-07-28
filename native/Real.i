@@ -152,7 +152,7 @@ import static arb.arb.*;
     return mul( divisor.inv(prec, w), prec, w );   
   }
 
-	public Real sech(int prec, Real w)
+  public Real sech(int prec, Real w)
   {
     arb.arb_sech(w, this, prec);
     return w;
@@ -341,6 +341,7 @@ import static arb.arb.*;
     return result;
   }
  
+  @Override
   public Real mul(int i, int prec, Real res)
   {
     arb.arb_mul_si(res, this, i, prec);
@@ -365,6 +366,7 @@ import static arb.arb.*;
     return this;
   }
 
+  @Override
   public Real div(Real exp, int prec, Real r)
   {
     arb.arb_div(r, this, exp, prec );
@@ -574,6 +576,7 @@ import static arb.arb.*;
     return this;
   }
   
+  @Override
   public Real div(int k, int prec, Real res)
   {
     arb.arb_div_si(res, this, k, prec);
