@@ -94,9 +94,7 @@ public class KeyboardHandler implements
     case KeyEvent.VK_7:
       plotter.switchToColorMode(6);
       break;
-    case KeyEvent.VK_8:
-      plotter.switchToColorMode(7);
-      break;
+
 
     case KeyEvent.VK_ESCAPE:
       plotter.hide();

@@ -453,7 +453,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
                                 "Press\n" + "F1     Toggle program help screen (what you're looking at)\n"
                                               + "F2     Toggle overlay color between black and white\n"
                                               + "F3     Cycle display modes thru Real, Imaginary, Blend, and Phase\n"
-                                              + "1-8    Set color mode\n" + "P      Show Phase (Argument)\n"
+                                              + "1-7    Set color mode\n" + "P      Show Phase (Argument)\n"
                                               + "B      Show Blend of Both Real and Imaginary Parts\n"
                                               + "R      Show Real part only\n" + "I      Show Imaginary part only\n"
                                               + "S      Save image\n" + "ESC    Exit progam\n",
