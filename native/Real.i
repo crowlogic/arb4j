@@ -4,11 +4,12 @@
 
 %typemap(javaimports) arb_struct %{
 import java.util.concurrent.TimeUnit;
-
+import java.util.Iterator;
 import static arb.RealConstants.*;
 import arb.MagnitudeConstants;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
+
 /**
  * Real numbers are points on an infinitely long line known as the real number
  * line, where the points corresponding to integers are equally spaced. Any real
