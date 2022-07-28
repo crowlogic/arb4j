@@ -36,11 +36,12 @@ public class StochasticEulerIntegrator implements
 
     Float                        start = interval.getA();
     try ( Float T = interval.length(prec, new Float()); Real Z = new Real(); Real μi = new Real();
-          Real σi = new Real();)
+          Real σi = new Real(); Real sqrtδt = new Real();)
     {
       Partition       partition = interval.partition(n, prec);
+
       GaussianProcess W         = new GaussianProcess(zero,
-                                                      partition.δt);
+                                                      partition.δt.sqrt(prec, sqrtδt));
 
       int             i         = -1;
       for (Float t : partition)
@@ -52,10 +53,8 @@ public class StochasticEulerIntegrator implements
         σ.evaluate(coords, 1, prec, σi);
         W.sample(prec, randomState, Z);
 
-        // xi = μi * dt + σi * Z
-        μi.mul(partition.δt, prec, μi);
-        σi.mul(Z, prec, σi);
-        μi.add(σi, prec, xi);
+        // xi = μi * δt + σi * Z where Z is a draw from W=N(0,√(δt))
+        μi.mul(partition.δt, prec, μi).add(σi.mul(Z, prec, σi), prec, xi);
 
         coords.setValue(xi);
 

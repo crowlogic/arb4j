@@ -37,7 +37,7 @@ public class YRenderer extends
                                  44),
           new NewtonFlow<YFunction>(new YFunction(vscale)));
 
-    colorMode   = 5;
+    colorMode   = 4;
     displayMode = Part.Imag;
 
   }
