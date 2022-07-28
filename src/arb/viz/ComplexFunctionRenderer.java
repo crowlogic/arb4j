@@ -155,7 +155,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   ThreadLocalReal              r                               = new ThreadLocalReal();
 
-  public Part                  displayMode                     = Part.Imag;
+  public Part                  displayMode                     = Part.Imaginary;
 
   ThreadLocal<Complex[][]>     cells                           = newCell();
 
@@ -354,7 +354,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
         w2.getReal().set(w.getReal());
         arb.color_function(pixel.R, pixel.G, pixel.B, w2, colorMode);
         break;
-      case Imag:
+      case Imaginary:
         w2.getImag().set(w.getImag());
         arb.color_function(pixel.R, pixel.G, pixel.B, w2, colorMode);
         break;
@@ -452,12 +452,11 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     drawTextInScreenCoordinates(true,
                                 "Press\n" + "F1     Toggle program help screen (what you're looking at)\n"
                                               + "F2     Toggle overlay color between black and white\n"
-                                              + "F3     Toggle between Both/Real part only/Imaginary only\n"
-                                              + "P      Show Phase (Argument)"
+                                              + "F3     Cycle display modes thru Real, Imaginary, Blend, and Phase\n"
+                                              + "0-7    Set color mode\n" + "P      Show Phase (Argument)\n"
                                               + "B      Show Blend of Both Real and Imaginary Parts\n"
                                               + "R      Show Real part only\n" + "I      Show Imaginary part only\n"
-                                              + "Z      Select a rectangle to be magnified\n" + "S      Save image"
-                                              + "ESC    Exit progam\n",
+                                              + "S      Save image\n" + "ESC    Exit progam\n",
                                 20,
                                 20);
 
@@ -1088,16 +1087,30 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     }
   }
 
-  public void switchDisplayModeTo(Part real)
+  public void switchToColorMode(int i)
+  {
+    System.out.println("setting colorMode to " + colorMode + " and re-rendering");
+    this.colorMode = i;
+    reevaluateFunctionOnGrid();
+
+  }
+
+  public void switchToDisplayMode(Part real)
   {
     System.out.println("setting displayMode to " + displayMode + " and re-rendering");
     this.displayMode = real;
+    reevaluateFunctionOnGrid();
+
+  }
+
+  protected void reevaluateFunctionOnGrid()
+  {
     new Thread(() ->
     {
+      System.out.println("re-rendering function");
       evaluateFunctionOnGrid();
-      System.out.println("Finished re-rendering function after setting displayMode to " + displayMode);
+      System.out.println("Finished re-rendering function");
     }).start();
-    ;
 
   }
 

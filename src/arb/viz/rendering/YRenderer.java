@@ -39,7 +39,7 @@ public class YRenderer extends
           new NewtonFlow<YFunction>(new YFunction(vscale)));
 
     colorMode   = 4;
-    displayMode = Part.Imag;
+    displayMode = Part.Imaginary;
   }
 
   public YRenderer() throws NoninvertibleTransformException

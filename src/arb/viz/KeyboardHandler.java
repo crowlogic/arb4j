@@ -56,28 +56,53 @@ public class KeyboardHandler implements
       toggleCursorColor();
       break;
     case KeyEvent.VK_F3:
-      toggleDisplay();
+      cycleDisplayMode();
       break;
     case KeyEvent.VK_Z:
       plotter.enterZoomSelectionMode();
       break;
     case KeyEvent.VK_R:
-      plotter.switchDisplayModeTo(Part.Real);
+      plotter.switchToDisplayMode(Part.Real);
       break;
     case KeyEvent.VK_I:
-      plotter.switchDisplayModeTo(Part.Imag);
+      plotter.switchToDisplayMode(Part.Imaginary);
       break;
     case KeyEvent.VK_P:
-      plotter.switchDisplayModeTo(Part.Phase);
+      plotter.switchToDisplayMode(Part.Phase);
       break;
     case KeyEvent.VK_B:
-      plotter.switchDisplayModeTo(Part.Blend);
+      plotter.switchToDisplayMode(Part.Blend);
       break;
-    case KeyEvent.VK_ESCAPE:      
-      plotter.hide();      
+    case KeyEvent.VK_0:
+      plotter.switchToColorMode(0);
+      break;
+    case KeyEvent.VK_1:
+      plotter.switchToColorMode(1);
+      break;
+    case KeyEvent.VK_2:
+      plotter.switchToColorMode(2);
+      break;
+    case KeyEvent.VK_3:
+      plotter.switchToColorMode(3);
+      break;
+    case KeyEvent.VK_4:
+      plotter.switchToColorMode(4);
+      break;
+    case KeyEvent.VK_5:
+      plotter.switchToColorMode(5);
+      break;
+    case KeyEvent.VK_6:
+      plotter.switchToColorMode(6);
+      break;
+    case KeyEvent.VK_7:
+      plotter.switchToColorMode(7);
+      break;
+
+    case KeyEvent.VK_ESCAPE:
+      plotter.hide();
       plotter.close();
 
-      System.out.println( "Halting in 1 second...");
+      System.out.println("Halting in 1 second...");
       System.out.flush();
       try
       {
@@ -88,11 +113,11 @@ public class KeyboardHandler implements
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
-      System.out.println( "Halting ...");
+      System.out.println("Halting ...");
       System.out.flush();
 
       Runtime.getRuntime().halt(1);
-      System.out.println( "Halted...");
+      System.out.println("Halted...");
       System.out.flush();
       break;
     default:
@@ -100,34 +125,23 @@ public class KeyboardHandler implements
     }
   }
 
-  enum DisplayMode
+  public void cycleDisplayMode()
   {
-   Phase,
-   Real,
-   Imaginary,
-   Composite
-  };
-
-  DisplayMode displayMode = DisplayMode.Phase;
-
-  public void toggleDisplay()
-  {
-    switch (displayMode)
+    switch (plotter.displayMode)
     {
     case Phase:
-      displayMode = DisplayMode.Real;
+      plotter.switchToDisplayMode(Part.Real);
       break;
     case Real:
-      displayMode = DisplayMode.Imaginary;
+      plotter.switchToDisplayMode(Part.Imaginary);
       break;
     case Imaginary:
-      displayMode = DisplayMode.Composite;
+      plotter.switchToDisplayMode(Part.Blend);
       break;
-    case Composite:
-      displayMode = DisplayMode.Phase;
+    case Blend:
+      plotter.switchToDisplayMode(Part.Phase);
       break;
     }
-
   }
 
   @Override

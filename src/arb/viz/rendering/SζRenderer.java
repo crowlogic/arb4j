@@ -38,7 +38,7 @@ public class SζRenderer extends
                           new WickRotation()));
 
     colorMode   = 2;
-    displayMode = Part.Imag;
+    displayMode = Part.Imaginary;
   }
 
 }

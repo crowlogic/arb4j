@@ -1,9 +1,9 @@
 package arb.viz;
 
-public enum Part
+public enum Part 
 {
  Real,
- Imag,
+ Imaginary,
  Phase,
  Blend
 }
