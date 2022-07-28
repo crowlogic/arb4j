@@ -28,23 +28,6 @@ public class GaussianProcessTest extends
     assertEquals(0.0116064045858180667, pAtSomePoint.doubleValue(), Math.pow(10, -17));
   }
 
-  public static void testSample()
-  {
-    int             prec               = 128;
-    Real            meanμ              = new Real("5",
-                                                  prec);
-    Real            standardDeviationσ = new Real("2",
-                                                  prec);
-    GaussianProcess gaussianProcess    = new GaussianProcess(meanμ,
-                                                             standardDeviationσ);
 
-    int             n                  = 50000;
-    for (int j = 0; j < 5; j++)
-    {
-      RandomState randomState = new RandomState((int) (Math.random() * Integer.MAX_VALUE));
-
-      gaussianProcess.generateTrajectory(n, randomState, prec);
-    }
-  }
 
 }

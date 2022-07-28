@@ -52,17 +52,6 @@ public class GaussianProcess implements
     return f;
   }
 
-  @Override
-  public Real getMean()
-  {
-    return μ;
-  }
-
-  @Override
-  public Real getStandardDeviation()
-  {
-    return σ;
-  }
 
   @Override
   public DriftCoeffecientFunction μ()

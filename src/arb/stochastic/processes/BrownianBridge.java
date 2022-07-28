@@ -55,17 +55,5 @@ public class BrownianBridge implements
     return null;
   }
 
-  @Override
-  public Real getMean()
-  {
-    return RealConstants.zero;
-  }
-
-  @Override
-  public Real getStandardDeviation()
-  {
-    assert false : "TODO";
-    return null;
-  }
 
 }

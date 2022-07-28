@@ -1,5 +1,7 @@
 package arb.stochastic.processes;
 
+import static arb.RealConstants.*;
+
 import arb.Real;
 import arb.stochastic.*;
 
@@ -15,7 +17,7 @@ import arb.stochastic.*;
  * W(t+u)-W(t)∀u≥0 are independent of the past values {W(s):s≤t}<br>
  * 
  * 3. W has Gaussian increments: W(t+u)−W(t) is normally distributed with mean 0
- * and variance u with W(t+u)−W(t)∼N(0,u)<br>
+ * and variance u, standard deviation σ=√u, with W(t+u)−W(t)∼N(0,u)<br>
  * 
  * 4. W has continuous paths: W(t) is continuous in t<br>
  * 
@@ -55,32 +57,23 @@ public class WienerProcess implements
     return null;
   }
 
-  @Override
-  public Real getMean()
-  {
-    assert false : "TODO: implement";
-    return null;
-  }
-
-  @Override
-  public Real getStandardDeviation()
-  {
-    assert false : "TODO: implement";
-    return null;
-  }
 
   @Override
   public DriftCoeffecientFunction μ()
   {
-    assert false : "TODO: implement";
-    return null;
+    return (arguments, order, precision, result) ->
+    {
+      return result.set(zero);
+    };
   }
 
   @Override
   public DiffusionCoeffecientFunction σ()
   {
-    assert false : "TODO: implement";
-    return null;
+    return (arguments, order, precision, result) ->
+    {
+      return result.set(arguments.time().sqrt(precision));
+    };
   }
 
 }

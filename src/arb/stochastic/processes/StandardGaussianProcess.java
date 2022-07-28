@@ -53,18 +53,6 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public Real getMean()
-  {
-    return zero;
-  }
-
-  @Override
-  public Real getStandardDeviation()
-  {
-    return one;
-  }
-
-  @Override
   public DriftCoeffecientFunction μ()
   {
     return (arguments, order, precision, result) ->
