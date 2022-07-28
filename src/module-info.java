@@ -25,6 +25,8 @@ module arb4j
   exports arb.mechanics.classical;
   exports arb.mechanics.quantum;
   exports arb.mechanics.relativistic;
+  exports arb.mechanics.relativistic.general;
+  exports arb.mechanics.relativistic.special;
   exports arb.geometry;
   exports arb.stochastic;
   exports arb.stochastic.processes;
