@@ -73,28 +73,28 @@ public class KeyboardHandler implements
     case KeyEvent.VK_B:
       plotter.switchToDisplayMode(Part.Blend);
       break;
-    case KeyEvent.VK_0:
+    case KeyEvent.VK_1:
       plotter.switchToColorMode(0);
       break;
-    case KeyEvent.VK_1:
+    case KeyEvent.VK_2:
       plotter.switchToColorMode(1);
       break;
-    case KeyEvent.VK_2:
+    case KeyEvent.VK_3:
       plotter.switchToColorMode(2);
       break;
-    case KeyEvent.VK_3:
+    case KeyEvent.VK_4:
       plotter.switchToColorMode(3);
       break;
-    case KeyEvent.VK_4:
+    case KeyEvent.VK_5:
       plotter.switchToColorMode(4);
       break;
-    case KeyEvent.VK_5:
+    case KeyEvent.VK_6:
       plotter.switchToColorMode(5);
       break;
-    case KeyEvent.VK_6:
+    case KeyEvent.VK_7:
       plotter.switchToColorMode(6);
       break;
-    case KeyEvent.VK_7:
+    case KeyEvent.VK_8:
       plotter.switchToColorMode(7);
       break;
 
