@@ -11,7 +11,7 @@ public class StochasticEulerIntegratorTest extends
 
   public void testDiscretize()
   {
-    RandomState                 randomState = new RandomState(69);
+    RandomState                 randomState = new RandomState((int) (Math.random() * Integer.MAX_VALUE));
     StandardGaussianProcess     B           = new StandardGaussianProcess();
     StochasticEulerIntegrator   integrator  = new StochasticEulerIntegrator(B,
                                                                             randomState);
@@ -23,9 +23,11 @@ public class StochasticEulerIntegratorTest extends
     EvaluationSequence          samplePath  = integrator.integrate(interval, 128, n, coords);
     Real                        μ           = samplePath.values.arithmeticMean(prec, new Real());
     μ.printPrecision = true;
-    System.out.println("mean=" + μ);
+    System.out.println("mean=" + μ + " seed=" + randomState.getInitialValue());
+    double absMean = Math.abs(μ.doubleValue());
+    assertTrue(absMean + " is too far away from zero with seed=" + randomState.getInitialValue(), absMean < 0.0001);
     /**
-     * TODO: add Real.mean(), Real.stdev() and Real.variance() methods
+     * TODO: add  Real.stdev() and Real.variance() methods
      */
   }
 

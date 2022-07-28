@@ -39,7 +39,8 @@ public class StochasticEulerIntegrator implements
           Real σi = new Real(); Real sqrtδt = new Real();)
     {
       Partition       partition = interval.partition(n, prec);
-
+      μi.printPrecision = true;
+      σi.printPrecision = true;      
       GaussianProcess W         = new GaussianProcess(zero,
                                                       partition.δt.sqrt(prec, sqrtδt));
 
