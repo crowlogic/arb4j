@@ -1,6 +1,6 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.zero;
 
 import arb.*;
 import arb.Float;
@@ -30,11 +30,10 @@ public class StochasticEulerIntegrator implements
   @Override
   public EvaluationSequence integrate(FloatInterval interval, int prec, int n, DiffusionProcessState state)
   {
-    DriftCoeffecientFunction     μ     = X.μ();
-    DiffusionCoeffecientFunction σ     = X.σ();
-    Real                         x     = Real.newVector(n + 1);
+    DriftCoeffecientFunction     μ = X.μ();
+    DiffusionCoeffecientFunction σ = X.σ();
+    Real                         x = Real.newVector(n + 1);
 
-    Float                        start = interval.getA();
     try ( Float T = interval.length(prec, new Float()); Real Z = new Real(); Real μi = new Real();
           Real σi = new Real(); Real sqrtδt = new Real();)
     {
