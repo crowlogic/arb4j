@@ -61,6 +61,53 @@ public interface Field<X extends Field<X>> extends
   }
 
   /**
+   * Performs multiplication
+   * 
+   * @param x
+   * @param prec
+   * @param result
+   * @return the result after it has been populated with the the product of this
+   *         and x
+   */
+  public X mul(X x, int prec, X result);
+
+  /**
+   * Performs multiplication with a (signed) integer
+   * 
+   * @param x
+   * @param prec
+   * @return this after it has been populated with the result
+   */
+  public default X mul(int x, int prec)
+  {
+    return mul(x, prec);
+  }
+
+  /**
+   * Performs multiplication with a (signed) integer
+   * 
+   * @param x
+   * @param prec
+   * @param result
+   * 
+   * @return result after it has been populated with the the product of the field
+   *         element with the integer
+   */
+  public X mul(int x, int prec, X result);
+
+  /**
+   * Performs multiplication
+   * 
+   * @param x
+   * @param prec
+   * @return this after it has been populated with the result
+   */
+  public default X mul(X x, int prec)
+  {
+    return mul(x, prec, (X) X.this);
+  }
+
+  /**
    * Compute the quotient of two arithmetic field elements
    * 
    * @param j    integer to divide by

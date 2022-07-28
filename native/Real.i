@@ -148,11 +148,8 @@ import static arb.arb.*;
   }
       
   public Complex div(Complex divisor, int prec, Complex w)
-  {
-    try ( Complex multiplier = new Complex())
-    {
-      return mul( divisor.inv(prec, multiplier), prec, w );
-    }
+  {  
+    return mul( divisor.inv(prec, w), prec, w );   
   }
 
 	public Real sech(int prec, Real w)
