@@ -35,7 +35,7 @@ public class StochasticEulerIntegrator implements
     Real                         x = Real.newVector(n + 1);
 
     try ( Float T = interval.length(prec, new Float()); Real Z = new Real(); Real μi = new Real();
-          Real σi = new Real(); Real sqrtδt = new Real();)
+          Real σi = new Real();)
     {
       Partition partition = interval.partition(n, prec);
       μi.printPrecision = true;
