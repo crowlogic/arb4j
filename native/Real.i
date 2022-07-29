@@ -34,6 +34,11 @@ import java.util.stream.StreamSupport;
                                 false);
   }
   
+  public Real abs()
+  {
+    return abs(this);
+  }
+  
   @Override
   public Iterator<Real> iterator()
   {

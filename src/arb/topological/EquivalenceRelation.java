@@ -1,7 +1,7 @@
 package arb.topological;
 
-public class EquivalenceRelation<A, B> extends
-                                Relation<A, B>
+public interface EquivalenceRelation<A, B> extends
+                                BinaryRelation<A, B>
 {
-
+  public boolean equivalent( A a, B b );
 }

@@ -1,7 +1,7 @@
 package arb.topological;
 
-public class TotalRelation<A, B> extends
-                          Relation<A, B>
+public interface TotalRelation<A, B> extends
+                          BinaryRelation<A, B>
 {
 
 }

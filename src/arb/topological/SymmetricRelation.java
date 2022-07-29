@@ -1,7 +1,7 @@
 package arb.topological;
 
-public class SymmetricRelation<A, B> extends
-                              Relation<A, B>
+public interface SymmetricRelation<A, B> extends
+                              BinaryRelation<A, B>
 {
 
 }

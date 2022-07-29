@@ -3,7 +3,7 @@ package arb.topological;
 import arb.*;
 
 /**
- * A {@link Relation} is {@link SubSet} of the {product} of an
+ * A {@link BinaryRelation} is {@link SubSet} of the {product} of an
  * {@link OrderedPair} of {@link Set}s, R : A x B. If (a, b)∈R then we write a R
  * b, meaning a is related to b by R. A relation may be a:
  * {@link ReflexiveRelation} (a R a) -> (a R b -> b R a), a
@@ -19,8 +19,7 @@ import arb.*;
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Relation_(mathematics)">Wikipedia</a>
  */
-public class Relation<A, B> extends
-                     OrderedPair<A, B>
+public interface BinaryRelation<A, B> extends Comparable<Object>
 {
 
 }

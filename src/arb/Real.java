@@ -790,4 +790,11 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
     this(arbJNI.new_Real(), true);
   }
 
+  public Real abs()
+  {
+    return abs(this);
+  }
+
+
+
 }

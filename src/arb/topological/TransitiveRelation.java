@@ -1,7 +1,7 @@
 package arb.topological;
 
-public class TransitiveRelation<A, B> extends
-                               Relation<A, B>
+public interface TransitiveRelation<A, B> extends
+                                   BinaryRelation<A, B>
 {
 
 }

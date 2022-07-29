@@ -38,7 +38,7 @@ public class StochasticEulerIntegrator extends
           Real σi = new Real(); Real sqrtδt = new Real();)
     {
       Partition partition = interval.partition(n, prec);
-      state.mesh = partition.δt;
+      state.mesh.set( partition.δt );
       μi.printPrecision = true;
       σi.printPrecision = true;
       GaussianProbabilityDistribution W = new GaussianProbabilityDistribution(zero,
@@ -55,14 +55,21 @@ public class StochasticEulerIntegrator extends
         assert μi.isFinite();
         σ.evaluate(state, 1, prec, σi).mul(W.sample(prec, randomState, Z), prec);
         assert σi.isFinite();
-        
+
         // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
         // W=N(0,√(δt))
         state.setValue(μi.add(σi, prec, xi).add(state.value(), prec));
 
         if (verbose)
         {
-          System.out.format("i=%s time=%s μi=%s σi=%s Z=%s xi=%s\n state=%s\n", i, state.getTime().toString(7), μi, σi, Z, xi, state);
+          System.out.format("i=%s time=%s μi=%s σi=%s Z=%s xi=%s\n state=%s\n",
+                            i,
+                            state.getTime().toString(7),
+                            μi,
+                            σi,
+                            Z,
+                            xi,
+                            state);
         }
       }
 
@@ -71,4 +78,3 @@ public class StochasticEulerIntegrator extends
     }
   }
 }
-

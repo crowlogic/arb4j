@@ -1,7 +1,7 @@
 package arb.topological;
 
-public class AntiSymmetricRelation extends
-                                   Relation
+public interface AntiSymmetricRelation extends
+                                   BinaryRelation
 {
 
 }
