@@ -1,4 +1,3 @@
-* TODO: add Real.stdev() and Real.variance() methods
 * fullscreen mode for ComplexFunctionRenderer
 * replace usage of Utilities#heapUp and heapDown with MemoryStack
 * homotopy API 
