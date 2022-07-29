@@ -1,4 +1,4 @@
-package arb.stochastic.processes;
+package arb.stochastic.processes.continuoustime;
 
 import arb.*;
 import arb.Float;

@@ -1,4 +1,6 @@
-package arb.stochastic.processes;
+package arb.stochastic.processes.continuoustime;
+
+import java.lang.ref.Cleaner.Cleanable;
 
 import arb.Real;
 import arb.stochastic.*;
@@ -22,15 +24,31 @@ import arb.stochastic.*;
  * process have been changed so that there is a tendency of the walk to move
  * back towards a central location, with a greater attraction when the process
  * is further away from the center. The {@link OrnsteinUhlenbeckProcess} can
- * also be considered as the continuous-time analogu of the discrete-time
+ * also be considered as the continuous-time analog of the discrete-time
  * autoregressive process of order 1. process.
  * 
  * <a href=
  * "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process">Wikipedia</a>
  */
 public class OrnsteinUhlenbeckProcess implements
-                                      DiffusionProcess
+                                      DiffusionProcess,
+                                      AutoCloseable,
+                                      Cleanable
 {
+  /**
+   * mean-reversion rate
+   */
+  public final Real θ = new Real();
+
+  /**
+   * ergodic mean
+   */
+  public final Real μ = new Real();
+
+  /**
+   * standard deviation, the square of this is the variance
+   */
+  public final Real σ = new Real();
 
   @Override
   public ProbabilityDensityFunction getDensityFunction(Real t)
@@ -65,6 +83,20 @@ public class OrnsteinUhlenbeckProcess implements
   {
     return arb.utensils.Utilities.TODO("implement me");
 
+  }
+
+  @Override
+  public void clean()
+  {
+    close();
+  }
+
+  @Override
+  public void close()
+  {
+    θ.close();
+    μ.close();
+    σ.close();
   }
 
 }

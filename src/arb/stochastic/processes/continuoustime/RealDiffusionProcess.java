@@ -1,4 +1,4 @@
-package arb.stochastic.processes;
+package arb.stochastic.processes.continuoustime;
 
 public interface RealDiffusionProcess extends
                                       DiffusionProcess

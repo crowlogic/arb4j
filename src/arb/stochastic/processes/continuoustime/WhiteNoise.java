@@ -1,4 +1,4 @@
-package arb.stochastic.processes;
+package arb.stochastic.processes.continuoustime;
 
 import static arb.ComplexConstants.prec;
 import static arb.RealConstants.zero;
