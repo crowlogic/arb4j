@@ -3,6 +3,12 @@
 %typemap(javacode) flint_rand_s %{
   static { System.loadLibrary( "arblib" ); }
 
+  @Override
+  public String toString()
+  {
+    return String.format("RandomState[initialValueSeed=%s]", getInitialValue());
+  }
+  
   public RandomState(int seed)
   {
     this();

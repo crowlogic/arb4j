@@ -22,6 +22,41 @@ import java.util.stream.StreamSupport;
 %typemap(javacode) arb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+   public Real variance(int prec, Real result)
+  {
+    try ( Real mean = new Real())
+    {
+      return variance(prec, arithmeticMean(prec, mean), result);
+    }
+  }
+
+  public Real variance(int prec, Real mean, Real result)
+  {
+    result.zero();
+    try ( Real tmp = new Real(); Real elementMinusMeanSquared = new Real() )
+    {
+      for (Real element : this)
+      {
+        element.sub(mean, prec, tmp).pow(2, prec,elementMinusMeanSquared);
+        result.add( elementMinusMeanSquared, prec );
+      }
+    }
+    return result.div(dim, prec);
+  }
+  
+  public Real standardDeviation(int prec, Real result)
+  {
+    try ( Real mean = new Real())
+    {
+      return standardDeviation(prec, arithmeticMean(prec, mean), result);
+    }  }
+  
+  public Real standardDeviation(int prec, Real mean, Real result)
+  {
+    return variance(prec, mean, result).sqrt(prec);
+  }
+  
+  
   @Override
   public int dim()
   {
