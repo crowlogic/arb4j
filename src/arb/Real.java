@@ -60,6 +60,11 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
                                 false);
   }
   
+  public Real abs()
+  {
+    return abs(this);
+  }
+  
   @Override
   public Iterator<Real> iterator()
   {
@@ -316,7 +321,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   public Real sqrt( int prec, Real res )
   {
     arb.arb_sqrt(res, this, prec);
-    return this;
+    return res;
   }
   
  public boolean isFinite()
@@ -750,17 +755,17 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   }
 
   /**
-   * Calls this{@link #setMid(Float)}
+   * Calls this{@link #setMid(Float)} and zeros out the radius
    * @param u value to set the midpoint of this real number ball to 
    * @return this
    */
   public Real set(Float u)
   {
     setMid(u);
-    setRad(MagnitudeConstants.zeroMag);
+    getRad().zero();
     return this;
   }  
-  
+   
   public Real mul(Real x, int prec, Real result)
   {
     arb.arb_mul(result, this, x, prec );
@@ -789,12 +794,5 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   public Real() {
     this(arbJNI.new_Real(), true);
   }
-
-  public Real abs()
-  {
-    return abs(this);
-  }
-
-
 
 }

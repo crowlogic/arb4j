@@ -64,6 +64,15 @@ public class DiffusionProcessState implements
     time.set(t);
     return this;
   }
+  
+  public synchronized DiffusionProcessState setTime(Real t)
+  {
+    assert !prevTime.isFinite()
+                  || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation";
+    prevTime.set(time);
+    time.set(t);
+    return this;
+  }
 
   public DiffusionProcessState setValue(Real x)
   {
@@ -93,4 +102,6 @@ public class DiffusionProcessState implements
     return time;
 
   }
+
+
 }

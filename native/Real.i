@@ -295,7 +295,7 @@ import java.util.stream.StreamSupport;
   public Real sqrt( int prec, Real res )
   {
     arb.arb_sqrt(res, this, prec);
-    return this;
+    return res;
   }
   
  public boolean isFinite()
