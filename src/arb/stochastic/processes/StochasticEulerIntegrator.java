@@ -4,6 +4,7 @@ import static arb.RealConstants.zero;
 
 import arb.*;
 import arb.Float;
+import arb.stochastic.GaussianProbabilityDistribution;
 
 public class StochasticEulerIntegrator extends
                                        AbstractStochasticIntegrator implements
@@ -34,14 +35,15 @@ public class StochasticEulerIntegrator extends
     Real                         x = Real.newVector(n + 1);
 
     try ( Float T = interval.length(prec, new Float()); Real Z = new Real(); Real μi = new Real();
-          Real σi = new Real();)
+          Real σi = new Real(); Real sqrtδt = new Real();)
     {
       Partition partition = interval.partition(n, prec);
       μi.printPrecision = true;
       σi.printPrecision = true;
-      WienerProcess W = new WienerProcess(partition.δt);
+      GaussianProbabilityDistribution W = new GaussianProbabilityDistribution(zero,
+                                                                              partition.δt.sqrt(prec, sqrtδt));
 
-      int           i = -1;
+      int                             i = -1;
       for (Float t : partition)
       {
         Real xi = x.get(++i);
@@ -50,7 +52,7 @@ public class StochasticEulerIntegrator extends
 
         μ.evaluate(state, 1, prec, μi);
         σ.evaluate(state, 1, prec, σi);
-        W.sample(state.dt(), prec, randomState, Z);
+        W.sample(prec, randomState, Z);
 
         // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
         // W=N(0,√(δt))
