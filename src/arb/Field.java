@@ -1,6 +1,6 @@
 package arb;
 
-import arb.measure.*;
+import arb.measures.*;
 import arb.theoretical.*;
 import arb.topological.*;
 

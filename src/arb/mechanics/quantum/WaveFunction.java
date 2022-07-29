@@ -2,9 +2,9 @@ package arb.mechanics.quantum;
 
 import arb.Complex;
 import arb.functions.Function;
-import arb.measure.Measure;
-import arb.nature.physics.Observable;
+import arb.measures.Measure;
 import arb.operators.FourierTransform;
+import arb.physics.Observable;
 import arb.topological.Space;
 
 /**

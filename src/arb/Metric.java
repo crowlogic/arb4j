@@ -1,7 +1,7 @@
 package arb;
 
 import arb.functions.Function;
-import arb.measure.Measure;
+import arb.measures.Measure;
 import arb.topological.spaces.*;
 
 /**

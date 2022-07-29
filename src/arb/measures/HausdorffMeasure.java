@@ -1,4 +1,4 @@
-package arb.measure;
+package arb.measures;
 
 /**
  * Hausdorff measure is a generalization of the traditional notions of area and

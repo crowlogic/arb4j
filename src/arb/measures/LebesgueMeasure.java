@@ -1,4 +1,4 @@
-package arb.measure;
+package arb.measures;
 
 import arb.topological.spaces.*;
 

@@ -31,7 +31,7 @@ module arb4j
   exports arb.stochastic;
   exports arb.stochastic.processes;
   exports arb.topological.spaces;
-  exports arb.measure;
+  exports arb.measures;
   exports arb.curves;
   exports arb.algebraic.geometry;
   exports arb.domains;
@@ -59,5 +59,5 @@ module arb4j
   exports arb.exceptions;
   exports arb.theoretical;
   exports arb.theoretical.physics;
-  exports arb.nature.physics.forces;
+  exports arb.physics.forces;
 }

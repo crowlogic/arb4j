@@ -1,4 +1,4 @@
-package arb.nature.physics.forces;
+package arb.physics.forces;
 
 public interface WeakForce extends
                            Force

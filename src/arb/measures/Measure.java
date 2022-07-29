@@ -1,4 +1,4 @@
-package arb.measure;
+package arb.measures;
 
 /**
  * the concept of a measure is a generalization and formalization of geometrical

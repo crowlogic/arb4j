@@ -19,7 +19,7 @@
  * topology are {@link arb.topology.transformations.Homeomorphism} and
  * {@link arb.differential.homotopy.Homotopy}s. A property that is invariant
  * under such transformations is a topological property. Basic examples of
- * topological properties are: the {@link arb.measure.Dimension}, which allows
+ * topological properties are: the {@link arb.measures.Dimension}, which allows
  * distinguishing between a {@link arb.geometry.Line} and a
  * {@link arb.geometry.surfaces.Surface}; compactness, which allows
  * distinguishing between a {@link arb.geometry.Line} and a

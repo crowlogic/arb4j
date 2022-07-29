@@ -1,4 +1,4 @@
-package arb.measure;
+package arb.measures;
 
 public interface FractalDimension extends
                                   Dimension
