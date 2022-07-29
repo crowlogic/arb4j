@@ -75,7 +75,8 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
     try ( Real mean = new Real())
     {
       return standardDeviation(prec, arithmeticMean(prec, mean), result);
-    }  }
+    }  
+  }
   
   public Real standardDeviation(int prec, Real mean, Real result)
   {
