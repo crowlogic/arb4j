@@ -1,0 +1,23 @@
+* TODO: add Real.stdev() and Real.variance() methods
+* fullscreen mode for ComplexFunctionRenderer
+* replace usage of Utilities#heapUp and heapDown with MemoryStack
+* homotopy API 
+* refine the SWIG definitions so that the pointers to pointers in RealMatrix and ComplexMatrix are handled optimally and without ugly code
+* fix ParallelTransporter crash: free(): double free detected in tcache
+* implement Lemniscate elliptic functions 
+* Transfer operator API
+* foreign API: custom mapped memory segment factories instead of JNI DirectByteBuffers to alleviate the problems preventing large animations from being rendered within a single JVM
+* use ErrorFunction to correct the numerically integrated Fourier transforms
+* complex root-finding API 
+* Scale/Rotate/Translate as Part of JPlotter/OpenGL renovation 
+* 3d protein model
+* Euler and Milstein SDE integrator
+* harness reflection symmetry to accelerate rendering 
+* orthogonal polynomial API
+* algebraic expression parser, evaluator and compiler
+* parallelize ComplexFunction.integrate
+* implement (inter-host) distributed processing 
+* Shape Operator
+* API for plane curve Curvature
+* Koenig linearization - SchroederFunctional And InverseSeries
+* Add color-wheel legend to ComplexFunctionPlotter by adding another BufferedImage to be blended, and allow the ability to move them about dynamically via the mouse
