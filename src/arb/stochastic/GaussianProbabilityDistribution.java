@@ -10,7 +10,7 @@ import arb.functions.real.*;
  * integral of the {@link GaussianDensityFunction}, which is equal to
  * (1+erf((x-μ)/(σ√2)))/2
  */
-public class GaussianDistributionFunction implements
+public class GaussianProbabilityDistribution implements
                                           ProbabilityDistributionFunction
 {
 
@@ -35,7 +35,7 @@ public class GaussianDistributionFunction implements
 
   public RealFunction inv = new InverseGaussianDistributionFunction(this);
 
-  public GaussianDistributionFunction(Real μ, Real σ)
+  public GaussianProbabilityDistribution(Real μ, Real σ)
   {
     this.μ = μ;
     this.σ = σ;

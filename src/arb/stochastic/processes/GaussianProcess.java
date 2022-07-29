@@ -1,5 +1,6 @@
 package arb.stochastic.processes;
 
+import arb.functions.real.ErrorFunction;
 import arb.stochastic.*;
 import arb.theoretical.ProbabilityTheory;
 import arb.topological.Space;
@@ -20,16 +21,15 @@ import arb.topological.Space;
  * multivariate normal distributions.
  * 
  * Gaussian processes are useful in statistical modelling, benefiting from
- * properties inherited from the normal distribution. For example, if a random
- * process is modelled as a Gaussian process, the distributions of various
- * derived quantities can be obtained explicitly. Such quantities include the
- * average value of the process over a range of times and the error in
- * estimating the average using sample values at a small set of times. While
- * exact models often scale poorly as the amount of data increases, multiple
- * approximation methods have been developed which often retain good accuracy
- * while drastically reducing computation time.
+ * properties inherited from the normal {@link GaussianProbabilityDistribution}
+ * distribution. For example, if a {@link StochasticProcess} is modelled as a
+ * {@link GaussianProcess}, the distributions of various derived quantities can
+ * be obtained explicitly. Such quantities include <i>the average value of the
+ * process over a range of times</i> and <i>the error in estimating the average
+ * using sample values at a small set of times</a>.
  * 
  * @author crow
+ * @see the related {@link ErrorFunction}
  *
  * @param <P>
  * @param <F>

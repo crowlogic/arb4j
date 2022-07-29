@@ -4,7 +4,7 @@ import arb.*;
 import arb.functions.real.RealFunction;
 
 /**
- * The inverse of the {@link GaussianDistributionFunction} is <br>
+ * The inverse of the {@link GaussianProbabilityDistribution} is <br>
  * <code>
  *  μ + σ*InverseErf[2*x-1]*√2
  * </code> where μ is the mean and σ^2 is the variance of a normally distributed
@@ -21,12 +21,12 @@ public final class InverseGaussianDistributionFunction implements
     assert false : "TODO: plot InverseGaussianDistributionFunction";
   }
 
-  public InverseGaussianDistributionFunction(GaussianDistributionFunction f)
+  public InverseGaussianDistributionFunction(GaussianProbabilityDistribution f)
   {
     this.f = f;
   }
 
-  GaussianDistributionFunction f;
+  GaussianProbabilityDistribution f;
 
   /**
    * @return res = μ + σ*InverseErf[2*x-1]*√2

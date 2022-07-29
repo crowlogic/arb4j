@@ -33,7 +33,7 @@ import arb.stochastic.*;
  * @see <a href="https://en.wikipedia.org/wiki/Wiener_process">Wikipedia</a>
  */
 public class WienerProcess implements
-                           GaussianProcess<GaussianDensityFunction, GaussianDistributionFunction, GaussianCharacteristicFunction>
+                           GaussianProcess<GaussianDensityFunction, GaussianProbabilityDistribution, GaussianCharacteristicFunction>
 {
 
   private Real σ;
@@ -58,7 +58,7 @@ public class WienerProcess implements
   }
 
   @Override
-  public GaussianDistributionFunction getDistributionFunction(Real t)
+  public GaussianProbabilityDistribution getDistributionFunction(Real t)
   {
     assert false : "TODO: implement";
     return null;
