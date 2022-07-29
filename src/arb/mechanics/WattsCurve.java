@@ -36,4 +36,10 @@ public class WattsCurve implements
      return null;
   }
 
+  @Override
+  public int degree()
+  {
+    return 6;
+  }
+
 }
