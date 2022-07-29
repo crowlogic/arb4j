@@ -20,5 +20,5 @@ import arb.curves.PlaneCurve;
 public interface AlgebraicCurve extends
                                 Curve
 {
-
+  public int degree();
 }
