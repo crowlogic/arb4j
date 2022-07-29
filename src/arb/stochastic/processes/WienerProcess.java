@@ -8,13 +8,13 @@ import arb.stochastic.*;
 /**
  * 
  * 
- * The Wiener process W(t) is an integral of the white-noise {@link WhiteNoise}
- * characterized by the following properties:<br>
+ * The Wiener process W(t) is an integrated {@link WhiteNoise} characterized by
+ * the following properties:<br>
  * 
  * 1. W(0) = 0<br>
  * 
  * 2. W has independent increments: for every t > 0 the future increments
- * W(t+u)-W(t)∀u≥0 are independent of the past values {W(s):s≤t}<br>
+ * W(t+u)-W(t)∀u≥0 are <b>independent</b> of the past values {W(s):s≤t}<br>
  * 
  * 3. W has Gaussian increments: W(t+u)−W(t) is normally distributed with mean 0
  * and variance u, standard deviation σ=√u, with W(t+u)−W(t)∼N(0,u)<br>
@@ -67,7 +67,7 @@ public class WienerProcess implements
   @Override
   public DriftCoeffecientFunction μ()
   {
-    return (arguments, order, precision, result) ->
+    return (state, order, precision, result) ->
     {
       return result.set(zero);
     };
@@ -76,9 +76,9 @@ public class WienerProcess implements
   @Override
   public DiffusionCoeffecientFunction σ()
   {
-    return (arguments, order, precision, result) ->
+    return (state, order, precision, result) ->
     {
-      return result.set(arguments.dt().sqrt(precision));
+      return result.set(state.dt().sqrt(precision));
     };
   }
 
