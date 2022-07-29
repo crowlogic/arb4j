@@ -32,7 +32,9 @@ public class Lemniscate implements
   /**
    * The default scale is 2, which is the case where the integral over the
    * absolute value of this{@link #differential()} is equal to the Lemniscate
-   * constant, which is the ratio of the perimeter of a lemniscate to its diameter
+   * constant, which is the ratio of the perimeter of a lemniscate to its
+   * diameter, this means that the lemniscate constant is to the
+   * {@link Lemniscate} as π is to the {@link Circle}
    */
   @SuppressWarnings("resource")
   public Lemniscate()
@@ -106,7 +108,7 @@ public class Lemniscate implements
   @Override
   public void close() throws Exception
   {
-    scale.clear();
+    scale.close();
   }
 
 }
