@@ -7,7 +7,7 @@ public class AbstractStochasticIntegrator
 
   protected RandomState   randomState;
   public DiffusionProcess X;
-  public boolean          verbose = true;
+  public boolean          verbose = false;
 
   public AbstractStochasticIntegrator()
   {
