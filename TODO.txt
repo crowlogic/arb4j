@@ -1,3 +1,6 @@
+* in DiffusionProcessState.dt() also calculate and cache sqrt(dt) so
+  its not recomputed on each iteration when the step-length doesnt
+  change between iterations
 * fullscreen mode for ComplexFunctionRenderer
 * replace usage of Utilities#heapUp and heapDown with MemoryStack
 * homotopy API 

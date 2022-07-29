@@ -20,11 +20,7 @@ public class DiffusionProcessState implements
   @Override
   public String toString()
   {
-    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s]",
-                         prevTime,
-                         time,
-                         value,
-                         dt);
+    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s]", prevTime, time, value, dt);
   }
 
   private final Real prevTime = new Real().negInf();
@@ -83,15 +79,23 @@ public class DiffusionProcessState implements
     close();
   }
 
-  public synchronized Real dt()
+  /**
+   * @param result
+   * @return
+   */
+  public synchronized Real dt(Real result)
   {
+    if (dt.isFinite())
+    {
+      return dt;
+    }
     if (!prevTime.isFinite())
     {
       return zero;
     }
     assert time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
                   + " prevTime=" + prevTime;
-    return time.sub(prevTime, time.bits(), dt);
+    return time.sub(prevTime, time.bits(), result);
   }
 
   public Real getTime()

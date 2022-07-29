@@ -78,7 +78,7 @@ public class WienerProcess implements
   {
     return (state, order, precision, result) ->
     {
-      Real dt = state.dt();
+      Real dt = state.dt(result);
       assert dt.isFinite() : "dt=" + dt;
       return dt.sqrt(precision, result).mul(σ, precision);
     };

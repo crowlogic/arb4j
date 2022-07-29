@@ -75,7 +75,7 @@ public class WhiteNoise implements
   {
     return (state, order, precision, result) ->
     {
-      return σ.mul(state.dt().sqrt(precision, result), precision, result);
+      return σ.mul(state.dt(result).sqrt(precision, result), precision, result);
     };
   }
 
