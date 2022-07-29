@@ -1,30 +1,39 @@
 package arb.stochastic.processes;
 
+import static arb.ComplexConstants.prec;
+import static arb.RealConstants.zero;
+
 import arb.Real;
 import arb.stochastic.*;
 
 /**
- * A Gaussian "white noise" process of specified fixed mean and standard deviation
+ * A Gaussian "white noise" process of specified fixed mean and standard
+ * deviation
  * 
  *
  */
 public class WhiteNoise implements
-                             LévyProcess
+                        GaussianProcess
 
 {
-  public Real μ;
 
   public Real σ;
 
-  public WhiteNoise(Real μ, Real σ)
+  /**
+   * TODO: move the parameters into a class instead of duplicating them across the
+   * density, distribution, and characteristic functions
+   * 
+   * @param σ
+   */
+  public WhiteNoise(Real σ)
   {
     super();
-    this.μ = μ;
     this.σ = σ;
-    this.p = new GaussianDensityFunction(this);
-    this.φ = new GaussianCharacteristicFunction(μ,
+    this.p = new GaussianDensityFunction(zero,
+                                         σ);
+    this.φ = new GaussianCharacteristicFunction(zero,
                                                 σ);
-    this.f = new GaussianDistributionFunction(μ,
+    this.f = new GaussianDistributionFunction(zero,
                                               σ);
   }
 
@@ -52,22 +61,21 @@ public class WhiteNoise implements
     return f;
   }
 
-
   @Override
   public DriftCoeffecientFunction μ()
   {
-    return (arguments, order, precision, result) ->
+    return (state, order, precision, result) ->
     {
-      return result.set(μ);
+      return zero;
     };
   }
 
   @Override
   public DiffusionCoeffecientFunction σ()
   {
-    return (arguments, order, precision, result) ->
+    return (state, order, precision, result) ->
     {
-      return result.set(σ);
+      return σ.mul(state.dt().sqrt(precision, result), precision, result);
     };
   }
 

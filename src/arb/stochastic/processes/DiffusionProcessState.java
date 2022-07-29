@@ -1,5 +1,7 @@
 package arb.stochastic.processes;
 
+import java.lang.ref.Cleaner.Cleanable;
+
 import arb.Float;
 import arb.Real;
 import arb.RealOrderedPair;
@@ -11,9 +13,17 @@ import arb.RealOrderedPair;
  * the drift and diffusion respectively
  */
 public class DiffusionProcessState extends
-                                         RealOrderedPair
+                                         RealOrderedPair implements AutoCloseable, Cleanable
 {
+  @Override
+  public void close()
+  {
+    super.close();
+    dt.close();
+  }
 
+  public Real dt = new Real();
+  
   public DiffusionProcessState()
   {
     super();
@@ -27,7 +37,7 @@ public class DiffusionProcessState extends
 
   /**
    * 
-   * @return value at this{@link #time()}
+   * @return value at this{@link #dt()}
    */
   public Real value()
   {
@@ -38,7 +48,7 @@ public class DiffusionProcessState extends
    * 
    * @return the time
    */
-  public Real time()
+  public Real dt()
   {
     return b;
   }
@@ -53,5 +63,11 @@ public class DiffusionProcessState extends
   {
     a.set(x);
     return this;
+  }
+
+  @Override
+  public void clean()
+  {
+    close();
   }
 }

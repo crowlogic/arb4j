@@ -1,5 +1,7 @@
 package arb.stochastic.processes;
 
+import arb.stochastic.*;
+
 /**
  * The notation used in probability theory (and in many applications of
  * probability theory, for instance mathematical finance) is slightly different.
@@ -32,8 +34,9 @@ package arb.stochastic.processes;
  *      for references
  *
  */
-public interface DiffusionProcess extends
-                                  StochasticProcess
+public interface DiffusionProcess<P extends ProbabilityDensityFunction, F extends ProbabilityDistributionFunction, C extends CharacteristicFunction>
+                                 extends
+                                 StochasticProcess<P, F, C>
 {
   /**
    * 

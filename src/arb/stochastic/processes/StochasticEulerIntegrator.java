@@ -5,20 +5,16 @@ import static arb.RealConstants.zero;
 import arb.*;
 import arb.Float;
 
-public class StochasticEulerIntegrator implements
+public class StochasticEulerIntegrator extends
+                                       AbstractStochasticIntegrator implements
                                        StochasticIntegrator
 {
-  private RandomState randomState;
-
   public StochasticEulerIntegrator(DiffusionProcess x, RandomState randomState)
   {
+    super();
     X                = x;
     this.randomState = randomState;
   }
-
-  public DiffusionProcess X;
-
-  public boolean          verbose = false;
 
   /**
    * 
@@ -32,6 +28,9 @@ public class StochasticEulerIntegrator implements
   {
     DriftCoeffecientFunction     μ = X.μ();
     DiffusionCoeffecientFunction σ = X.σ();
+    // x is the set of values of the evaluation sequence which is a Partition
+    // together with a set of values for each element of the partition
+
     Real                         x = Real.newVector(n + 1);
 
     try ( Float T = interval.length(prec, new Float()); Real Z = new Real(); Real μi = new Real();
@@ -40,10 +39,9 @@ public class StochasticEulerIntegrator implements
       Partition partition = interval.partition(n, prec);
       μi.printPrecision = true;
       σi.printPrecision = true;
-      WhiteNoise W = new WhiteNoise(zero,
-                                    partition.δt);
+      WienerProcess W = new WienerProcess(partition.δt);
 
-      int        i = -1;
+      int           i = -1;
       for (Float t : partition)
       {
         Real xi = x.get(++i);
@@ -52,11 +50,13 @@ public class StochasticEulerIntegrator implements
 
         μ.evaluate(state, 1, prec, μi);
         σ.evaluate(state, 1, prec, σi);
-        W.sample(state.time(), prec, randomState, Z);
+        W.sample(state.dt(), prec, randomState, Z);
 
-        // coords.value = xi = μi * δt + σi * Z where Z is a draw from W=N(0,√(δt))
-        μi.mul(partition.δt, prec, μi).add(σi.mul(Z, prec, σi), prec, xi);
-        state.setValue(xi);
+        // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
+        // W=N(0,√(δt))
+        μi.mul(partition.δt, prec, μi);
+        σi.mul(Z, prec, σi);
+        state.setValue(μi.add(σi, prec, xi).add(state.value(), prec));
 
         if (verbose)
         {

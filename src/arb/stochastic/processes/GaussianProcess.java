@@ -37,7 +37,7 @@ import arb.topological.Space;
  */
 public interface GaussianProcess<P extends ProbabilityDensityFunction, F extends ProbabilityDistributionFunction, C extends CharacteristicFunction>
                                 extends
-                                StochasticProcess<P, F, C>
+                                DiffusionProcess<P,F,C>
 {
 
 }

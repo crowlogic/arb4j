@@ -38,12 +38,6 @@ public class GaussianDensityFunction implements
   private Real        μ;
   private Real        σ;
 
-  public GaussianDensityFunction(WhiteNoise gaussianProcess)
-  {
-    this.σ = gaussianProcess.σ;
-    this.μ = gaussianProcess.μ;
-  }
-
   public GaussianDensityFunction(Real μ, Real σ)
   {
     this.μ = μ;
