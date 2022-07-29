@@ -18,7 +18,7 @@ import arb.curves.PlaneCurve;
  * @see <a href="https://en.wikipedia.org/wiki/Algebraic_curve">Wikipedia</a>
  */
 public interface AlgebraicCurve extends
-                                PlaneCurve
+                                Curve
 {
 
 }
