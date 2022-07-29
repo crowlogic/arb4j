@@ -3,6 +3,7 @@ package arb.stochastic.processes;
 import static arb.RealConstants.*;
 import static arb.utensils.Utilities.println;
 
+import arb.Magnitude;
 import arb.Real;
 import junit.framework.TestCase;
 
@@ -11,19 +12,35 @@ public class WienerProcessTest extends
 {
   public static final int prec = 128;
 
+  public void testunitσ()
+  {
+    testσ(one);
+  }
+
   public void testσ()
   {
-    WienerProcess         wienerProcess = new WienerProcess(new Real("3.5",
-                                                                     prec));
+    testσ(new Real("3",
+                   128));
+  }
+
+  protected static void testσ(Real three)
+  {
+    WienerProcess         wienerProcess = new WienerProcess(three);
     DiffusionProcessState state         = new DiffusionProcessState();
     state.setTime(zero);
     state.setTime(half);
     Real drift = wienerProcess.μ().evaluate(state, 1, prec, new Real());
     assertTrue(drift.isZero());
-    Real diffusion = wienerProcess.σ().evaluate(state, 1, prec, new Real());
-    println(state + " σ=" + diffusion);
-    Real sqrtHalf = half.sqrt(prec, new Real());
-    assertTrue(diffusion + " != " + sqrtHalf, diffusion.equals(sqrtHalf));
-
+    Real diffusion      = wienerProcess.σ().evaluate(state, 1, prec, new Real());
+    Real sqrtHalfTimesσ = half.sqrt(prec, new Real()).mul(three, prec);
+    diffusion.printPrecision      = true;
+    sqrtHalfTimesσ.printPrecision = true;
+    println( "sqrtHalfTimesσ=" + sqrtHalfTimesσ.toString() + "\n     diffusion=" + diffusion.toString() ); 
+    assertTrue(diffusion.getRad().sub(sqrtHalfTimesσ.getRad(), new Magnitude()).doubleValue() < Math.pow(10, -45));
+    assertTrue(diffusion.getMid().toString(80) + " != " + sqrtHalfTimesσ.getMid().toString(80),
+               diffusion.getMid().equals(sqrtHalfTimesσ.getMid()));
+    assertTrue(diffusion.toString(80) + " != " + sqrtHalfTimesσ.toString(80),
+               diffusion.equals(sqrtHalfTimesσ));
   }
+
 }

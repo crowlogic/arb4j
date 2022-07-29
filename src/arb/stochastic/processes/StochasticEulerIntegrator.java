@@ -38,7 +38,7 @@ public class StochasticEulerIntegrator extends
           Real σi = new Real(); Real sqrtδt = new Real();)
     {
       Partition partition = interval.partition(n, prec);
-      state.mesh.set( partition.δt );
+      state.dt.set( partition.δt );
       μi.printPrecision = true;
       σi.printPrecision = true;
       GaussianProbabilityDistribution W = new GaussianProbabilityDistribution(zero,

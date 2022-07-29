@@ -20,11 +20,11 @@ public class DiffusionProcessState implements
   @Override
   public String toString()
   {
-    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, mesh=%s]",
+    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s]",
                          prevTime,
                          time,
                          value,
-                         mesh);
+                         dt);
   }
 
   private final Real prevTime = new Real().negInf();
@@ -35,7 +35,6 @@ public class DiffusionProcessState implements
   public void close()
   {
     dt.close();
-    mesh.close();
     time.close();
     prevTime.close();
     value.close();
@@ -43,9 +42,7 @@ public class DiffusionProcessState implements
 
   public final Real value = new Real();
 
-  public Real       mesh  = new Real();
-
-  private Real      dt    = new Real();
+  public final Real dt    = new Real().indeterminate();
 
   /**
    * 
@@ -64,7 +61,7 @@ public class DiffusionProcessState implements
     time.set(t);
     return this;
   }
-  
+
   public synchronized DiffusionProcessState setTime(Real t)
   {
     assert !prevTime.isFinite()
@@ -102,6 +99,5 @@ public class DiffusionProcessState implements
     return time;
 
   }
-
 
 }

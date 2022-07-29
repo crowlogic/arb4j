@@ -341,6 +341,15 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
    return res;
  }
  
+  /**
+   * @return this after calling arb#arb_indeterminate(Real)
+   */
+  public Real indeterminate()
+  {
+    arb_indeterminate(this);
+    return this;
+  }
+ 
   public Real frac(int prec, Real res)
   {
     try (Real f = new Real() )
