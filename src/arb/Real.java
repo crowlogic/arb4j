@@ -757,6 +757,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   public Real set(Float u)
   {
     setMid(u);
+    setRad(MagnitudeConstants.zeroMag);
     return this;
   }  
   

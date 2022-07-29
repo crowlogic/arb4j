@@ -1,10 +1,11 @@
 package arb.stochastic.processes;
 
+import static arb.RealConstants.zero;
+
 import java.lang.ref.Cleaner.Cleanable;
 
 import arb.Float;
 import arb.Real;
-import arb.RealOrderedPair;
 
 /**
  * The arguments passed to the functions representing the drift rate
@@ -12,28 +13,35 @@ import arb.RealOrderedPair;
  * which would be expresed in mathematical notation as μ(Sₜ,t) and σ(Sₜ,t) for
  * the drift and diffusion respectively
  */
-public class DiffusionProcessState extends
-                                         RealOrderedPair implements AutoCloseable, Cleanable
+public class DiffusionProcessState implements
+                                   AutoCloseable,
+                                   Cleanable
 {
+  @Override
+  public String toString()
+  {
+    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s]", prevTime, time, value);
+  }
+
+  private final Real prevTime = new Real().negInf();
+
+  private final Real time     = new Real().negInf();
+
   @Override
   public void close()
   {
-    super.close();
     dt.close();
+    mesh.close();
+    time.close();
+    prevTime.close();
+    value.close();
   }
 
-  public Real dt = new Real();
-  
-  public DiffusionProcessState()
-  {
-    super();
-  }
+  public final Real value = new Real();
 
-  public DiffusionProcessState(Real a, Real b)
-  {
-    super(a,
-          b);
-  }
+  public Real       mesh  = new Real();
+
+  private Real      dt    = new Real();
 
   /**
    * 
@@ -41,27 +49,21 @@ public class DiffusionProcessState extends
    */
   public Real value()
   {
-    return a;
+    return value;
   }
 
-  /**
-   * 
-   * @return the time
-   */
-  public Real dt()
+  public synchronized DiffusionProcessState setTime(Float t)
   {
-    return b;
-  }
-
-  public DiffusionProcessState setTime(Float t)
-  {
-    b.set(t);
+    assert !prevTime.isFinite()
+                  || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation";
+    prevTime.set(time);
+    time.set(t);
     return this;
   }
 
   public DiffusionProcessState setValue(Real x)
   {
-    a.set(x);
+    value.set(x);
     return this;
   }
 
@@ -69,5 +71,22 @@ public class DiffusionProcessState extends
   public void clean()
   {
     close();
+  }
+
+  public synchronized Real dt()
+  {
+    if (!prevTime.isFinite())
+    {
+      return zero;
+    }
+    assert time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
+                  + " prevTime=" + prevTime;
+    return time.sub(prevTime, time.bits(), dt);
+  }
+
+  public Real getTime()
+  {
+    return time;
+
   }
 }

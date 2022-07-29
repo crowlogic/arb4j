@@ -724,16 +724,17 @@ import java.util.stream.StreamSupport;
   }
 
   /**
-   * Calls this{@link #setMid(Float)}
+   * Calls this{@link #setMid(Float)} and zeros out the radius
    * @param u value to set the midpoint of this real number ball to 
    * @return this
    */
   public Real set(Float u)
   {
     setMid(u);
+    getRad().zero();
     return this;
   }  
-  
+   
   public Real mul(Real x, int prec, Real result)
   {
     arb.arb_mul(result, this, x, prec );

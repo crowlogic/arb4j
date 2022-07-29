@@ -18,7 +18,7 @@ public class StochasticEulerIntegratorTest extends
                                                                           randomState);
     FloatInterval             interval    = new FloatInterval(0,
                                                               10);
-    int                       n           = 100 ; //* 1000;
+    int                       n           = 100;                                                       // * 1000;
 
     DiffusionProcessState     state       = new DiffusionProcessState();
     EvaluationSequence        samplePath  = integrator.integrate(interval, prec, n, state);
