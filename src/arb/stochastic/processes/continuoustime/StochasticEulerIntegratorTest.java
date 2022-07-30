@@ -37,7 +37,7 @@ public class StochasticEulerIntegratorTest extends
       double σδ = Math.abs(variance.doubleValue()-state.dt.doubleValue());
       println( "σδ=" + σδ);
       assert absMean < 0.04 : absMean + " is too far away from zero with seed=" + randomState.getInitialValue();
-      assert σδ < 5e-5 : σδ + " is too far away from zero with seed=" + randomState.getInitialValue();
+      assert σδ < 0.00005 : σδ + " is too far away from zero with seed=" + randomState.getInitialValue();
     }
 
     /**

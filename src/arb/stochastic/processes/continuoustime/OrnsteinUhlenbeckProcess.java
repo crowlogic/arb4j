@@ -6,7 +6,7 @@ import arb.Real;
 import arb.stochastic.*;
 
 /**
- * The {@link OrnsteinUhlenbeckProcess} is a stochastic process with
+ * The {@link OrnsteinUhlenbeckProcess} is a {@link StochasticProcess} with
  * applications in financial mathematics and the physical sciences. Its original
  * application in physics was as a model for the velocity of a massive Brownian
  * particle under the influence of friction. It is named after Leonard Ornstein
