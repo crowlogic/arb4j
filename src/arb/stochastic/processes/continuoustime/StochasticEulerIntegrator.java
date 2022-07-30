@@ -14,11 +14,18 @@ public class StochasticEulerIntegrator extends
                                        AutoCloseable,
                                        Cleanable
 {
+  private DriftCoeffecientFunction     μ;
+  private DiffusionCoeffecientFunction σ;
+
   public StochasticEulerIntegrator(DiffusionProcess x, RandomState randomState)
   {
     super();
-    X                = x;
-    this.randomState = randomState;
+    X                 = x;
+    μ                 = X.μ();
+    σ                 = X.σ();
+    this.randomState  = randomState;
+    μi.printPrecision = true;
+    σi.printPrecision = true;
   }
 
   Float T      = new Float();
@@ -37,19 +44,17 @@ public class StochasticEulerIntegrator extends
   @Override
   public EvaluationSequence integrate(FloatInterval interval, int prec, int n, DiffusionProcessState state)
   {
-    DriftCoeffecientFunction     μ = X.μ();
-    DiffusionCoeffecientFunction σ = X.σ();
+
     // x is the set of values of the evaluation sequence which is a Partition
     // together with a set of values for each element of the partition
 
-    Real                         x = Real.newVector(n + 1);
+    Real x = Real.newVector(n + 1);
 
     interval.length(prec, T);
 
     Partition partition = interval.partition(n, prec);
     state.dt.set(partition.δt);
-    μi.printPrecision = true;
-    σi.printPrecision = true;
+
     GaussianProbabilityDistribution W = new GaussianProbabilityDistribution(zero,
                                                                             partition.δt.sqrt(prec, sqrtδt));
 

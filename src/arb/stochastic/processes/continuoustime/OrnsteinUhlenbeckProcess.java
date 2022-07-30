@@ -51,6 +51,20 @@ public class OrnsteinUhlenbeckProcess implements
   public final Real σ = new Real();
 
   @Override
+  public DriftCoeffecientFunction μ()
+  {
+    return arb.utensils.Utilities.TODO("implement me");
+
+  }
+
+  @Override
+  public DiffusionCoeffecientFunction σ()
+  {
+    return arb.utensils.Utilities.TODO("implement me");
+
+  }
+
+  @Override
   public ProbabilityDensityFunction getDensityFunction(Real t)
   {
     return arb.utensils.Utilities.TODO("implement me");
@@ -66,20 +80,6 @@ public class OrnsteinUhlenbeckProcess implements
 
   @Override
   public CharacteristicFunction getCharacteristicFunction(Real t)
-  {
-    return arb.utensils.Utilities.TODO("implement me");
-
-  }
-
-  @Override
-  public DriftCoeffecientFunction μ()
-  {
-    return arb.utensils.Utilities.TODO("implement me");
-
-  }
-
-  @Override
-  public DiffusionCoeffecientFunction σ()
   {
     return arb.utensils.Utilities.TODO("implement me");
 
