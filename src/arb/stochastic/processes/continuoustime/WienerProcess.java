@@ -36,7 +36,7 @@ public class WienerProcess implements
                            GaussianProcess<GaussianDensityFunction, GaussianProbabilityDistribution, GaussianCharacteristicFunction>
 {
 
-  private Real σ;
+  Real σ;
 
   public WienerProcess(Real σ)
   {
@@ -80,7 +80,7 @@ public class WienerProcess implements
     {
       Real dt = state.dt(result);
       assert dt.isFinite() : "dt=" + dt;
-      return dt.sqrt(precision, result).mul(σ, precision);
+      return dt.sqrt(precision, result).mul(σ, precision,result);
     };
   }
 

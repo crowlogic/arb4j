@@ -20,7 +20,7 @@ public class DiffusionProcessState implements
   @Override
   public String toString()
   {
-    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s]", prevTime, time, value, dt);
+    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s]", prevTime, time, value, dt.toFixedString());
   }
 
   private final Real prevTime = new Real().negInf();
