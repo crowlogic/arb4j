@@ -2,47 +2,22 @@ package arb.stochastic.processes.continuoustime;
 
 import static arb.RealConstants.zero;
 
-import java.lang.ref.Cleaner.Cleanable;
-
 import arb.*;
 import arb.Float;
 import arb.stochastic.GaussianProbabilityDistribution;
 
 public class StochasticEulerIntegrator extends
                                        AbstractStochasticIntegrator implements
-                                       StochasticIntegrator,
-                                       AutoCloseable,
-                                       Cleanable
+                                       StochasticIntegrator
 {
-  private DriftCoeffecientFunction     μ;
-  private DiffusionCoeffecientFunction σ;
-
-  public StochasticEulerIntegrator(DiffusionProcess x, RandomState randomState)
+  public StochasticEulerIntegrator(DiffusionProcess x)
   {
-    super();
-    X                 = x;
-    μ                 = X.μ();
-    σ                 = X.σ();
-    this.randomState  = randomState;
-    μi.printPrecision = true;
-    σi.printPrecision = true;
+    super(x);
   }
 
-  Float T      = new Float();
-  Real  Z      = new Real();
-  Real  μi     = new Real();
-  Real  σi     = new Real();
-  Real  sqrtδt = new Real();
-
-  /**
-   * 
-   * @param interval
-   * @param prec     precision
-   * @param S        upon entry it should be a Real vector of length n
-   * @return the time delta this{@link #dt} between points of S
-   */
   @Override
-  public EvaluationSequence integrate(FloatInterval interval, int prec, int n, DiffusionProcessState state)
+  public synchronized EvaluationSequence
+         integrate(DiffusionProcessState state, FloatInterval interval, int n, RandomState randomState, int prec)
   {
 
     // x is the set of values of the evaluation sequence which is a Partition
@@ -55,10 +30,16 @@ public class StochasticEulerIntegrator extends
     Partition partition = interval.partition(n, prec);
     state.dt.set(partition.δt);
 
-    GaussianProbabilityDistribution W = new GaussianProbabilityDistribution(zero,
-                                                                            partition.δt.sqrt(prec, sqrtδt));
+    GaussianProbabilityDistribution W                  = new GaussianProbabilityDistribution(zero,
+                                                                                             partition.δt.sqrt(prec,
+                                                                                                               sqrtδt));
 
-    int                             i = -1;
+    int                             i                  = -1;
+    EvaluationSequence              evaluationSequence = new EvaluationSequence(partition,
+                                                                                x);
+
+    evaluationSequence.values.stream().parallel().forEach(value -> W.sample(prec, randomState, value));
+
     for (Float t : partition)
     {
       Real xi = x.get(++i);
@@ -67,7 +48,7 @@ public class StochasticEulerIntegrator extends
 
       μ.evaluate(state, 1, prec, μi).mul(partition.δt, prec);
       assert μi.isFinite();
-      σ.evaluate(state, 1, prec, σi).mul(W.sample(prec, randomState, Z), prec);
+      σ.evaluate(state, 1, prec, σi).mul(xi, prec);
       assert σi.isFinite();
 
       // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
@@ -87,8 +68,7 @@ public class StochasticEulerIntegrator extends
       }
     }
 
-    return new EvaluationSequence(partition,
-                                  x);
+    return evaluationSequence;
 
   }
 
@@ -98,19 +78,4 @@ public class StochasticEulerIntegrator extends
 
   }
 
-  @Override
-  public void clean()
-  {
-    close();
-  }
-
-  @Override
-  public void close()
-  {
-    T.close();
-    Z.close();
-    μi.close();
-    σi.close();
-    sqrtδt.close();
-  }
 }

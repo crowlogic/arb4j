@@ -1,10 +1,13 @@
 package arb;
 
-import java.io.*;
-import java.lang.ref.Cleaner.*;
+import java.io.Closeable;
+import java.lang.ref.Cleaner.Cleanable;
 import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-import jdk.incubator.foreign.*;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * A {@link Partition} denoted P of ...
@@ -98,5 +101,11 @@ public class Partition implements
   public Iterator<Float> iterator()
   {
     return new PartitionIterator(this);
+  }
+
+  public Stream<Float> stream()
+  {
+    return StreamSupport.stream(Spliterators.spliterator(iterator(), n, Spliterator.SIZED | Spliterator.ORDERED),
+                                false);
   }
 }
