@@ -40,9 +40,7 @@ public class StochasticEulerIntegratorTest extends
       assert σδ < 0.00005 : σδ + " is too far away from zero with seed=" + randomState.getInitialValue();
     }
 
-    /**
-     * TODO: add Real.stdev() and Real.variance() methods
-     */
+
   }
 
 }
