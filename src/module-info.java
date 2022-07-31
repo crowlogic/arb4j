@@ -23,6 +23,7 @@ module arb4j
   requires transitive org.objectweb.asm.util;
 
   exports arb;
+  exports arb.algebraic.expressions;
   exports arb.algebraic.geometry;
   exports arb.geometry;
   exports arb.geometry.curves;
