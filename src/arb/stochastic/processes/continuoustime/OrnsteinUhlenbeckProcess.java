@@ -43,6 +43,12 @@ public class OrnsteinUhlenbeckProcess implements
                                       AutoCloseable,
                                       Cleanable
 {
+  @Override
+  public String toString()
+  {
+    return String.format("OrnsteinUhlenbeckProcess[mean μ=%s, μ-reversion rate θ=%s, stdev σ=%s]", μ, θ, σ);
+  }
+
   /**
    * mean-reversion rate
    */
