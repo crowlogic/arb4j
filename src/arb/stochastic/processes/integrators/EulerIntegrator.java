@@ -10,9 +10,20 @@ import arb.stochastic.GaussianProbabilityDistribution;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 
+/**
+ * Integrates a {@link DiffusionProcess} via Euler's method
+ * 
+ * <pre>
+ * dXₜ = μ(Xₜ,t)dt + σ(Xₜ,t)dBₜ
+ * </pre>
+ * 
+ * where Bₜ is a BrownianMotion also-known-as a WienerProcess having zero mean
+ * drift and standard deviation parameter σ=√(dt) such that the variance is dt,
+ * the time elapsed
+ */
 public class EulerIntegrator extends
-                                       AbstractStochasticIntegrator implements
-                                       StochasticIntegrator
+                             AbstractStochasticIntegrator implements
+                             StochasticIntegrator
 {
   public EulerIntegrator(DiffusionProcess x)
   {
