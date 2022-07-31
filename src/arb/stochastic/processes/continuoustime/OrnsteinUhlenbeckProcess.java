@@ -27,6 +27,14 @@ import arb.stochastic.*;
  * also be considered as the continuous-time analog of the discrete-time
  * autoregressive process of order 1. process.
  * 
+ * The stochastic differential equation it satisifies is
+ * 
+ * <pre>
+ *   dXₜ = θ*(μ-Xₜ)dt+σdWₜ
+ * </pre>
+ * 
+ * where the parameters are this{@link #θ}, this{@link #μ}, and this{@link #σ}
+ * 
  * <a href=
  * "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process">Wikipedia</a>
  */
@@ -38,51 +46,49 @@ public class OrnsteinUhlenbeckProcess implements
   /**
    * mean-reversion rate
    */
-  public final Real θ = new Real();
+  public Real θ = new Real();
 
   /**
-   * ergodic mean
+   * ergodic long-term asymptotic limiting mean around which the values of the
+   * process vary
    */
-  public final Real μ = new Real();
+  public Real μ = new Real();
 
   /**
-   * standard deviation, the square of this is the variance
+   * standard deviation, the square root of the variance of this process
    */
-  public final Real σ = new Real();
+  public Real σ = new Real();
 
+  public OrnsteinUhlenbeckProcess(Real θ, Real μ, Real σ)
+  {
+    super();
+    this.θ = θ;
+    this.μ = μ;
+    this.σ = σ;
+  }
+
+  /**
+   * @return θ*(μ-Xₜ)
+   */
   @Override
   public DriftCoeffecientFunction μ()
   {
-    return arb.utensils.Utilities.TODO("implement me");
-
+    return (state, order, prec, result) ->
+    {
+      return θ.mul(μ.sub(state.value, prec, result), prec, result);
+    };
   }
 
+  /**
+   * @return σ
+   */
   @Override
   public DiffusionCoeffecientFunction σ()
   {
-    return arb.utensils.Utilities.TODO("implement me");
-
-  }
-
-  @Override
-  public ProbabilityDensityFunction getDensityFunction(Real t)
-  {
-    return arb.utensils.Utilities.TODO("implement me");
-
-  }
-
-  @Override
-  public ProbabilityDistributionFunction getDistributionFunction(Real t)
-  {
-    return arb.utensils.Utilities.TODO("implement me");
-
-  }
-
-  @Override
-  public CharacteristicFunction getCharacteristicFunction(Real t)
-  {
-    return arb.utensils.Utilities.TODO("implement me");
-
+    return (state, order, prec, result) ->
+    {
+      return result.set(σ);
+    };
   }
 
   @Override

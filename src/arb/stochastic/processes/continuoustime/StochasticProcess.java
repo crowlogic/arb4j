@@ -17,11 +17,22 @@ public interface StochasticProcess<P extends ProbabilityDensityFunction, F exten
                                   extends
                                   ContinuousTimeDynamicalSystem
 {
-  public P getDensityFunction(Real t);
+  public default P getDensityFunction(Real t)
+  {
+    return arb.utensils.Utilities.TODO("implement me");
 
-  public F getDistributionFunction(Real t);
+  }
 
-  public C getCharacteristicFunction(Real t);
+  public default F getDistributionFunction(Real t)
+  {
+    return arb.utensils.Utilities.TODO("implement me");
+
+  }
+
+  public default C getCharacteristicFunction(Real t)
+  {
+    return arb.utensils.Utilities.TODO("implement me");
+  }
 
   public default Real sample(Real t, int prec, RandomState randomState, Real x)
   {
