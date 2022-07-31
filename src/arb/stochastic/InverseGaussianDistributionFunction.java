@@ -1,5 +1,7 @@
 package arb.stochastic;
 
+import static arb.RealConstants.one;
+
 import arb.*;
 import arb.functions.real.RealFunction;
 
@@ -36,7 +38,7 @@ public final class InverseGaussianDistributionFunction implements
   {
     order = Math.max(0, order);
     assert order == 1 : "TODO: only 1st order implemented (for now)";
-    arb.arb_hypgeom_erfinv(res, x.mul(2, prec, res).sub(RealConstants.one, prec, res), prec);
+    arb.arb_hypgeom_erfinv(res, x.mul(2, prec, res).sub(one, prec, res), prec);
     res.mul(RealConstants.sqrt2, prec, res);
     res.mul(f.σ, prec, res);
     res.add(f.μ, prec, res);

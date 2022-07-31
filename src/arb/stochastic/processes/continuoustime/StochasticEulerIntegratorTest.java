@@ -40,7 +40,7 @@ public class StochasticEulerIntegratorTest extends
         double absMean = Math.abs(μ.doubleValue());
         Real   σδ      = sampleStdev.sub(populationStdev, prec).abs();
         System.out.println("σδ=" + σδ);
-        assert absMean < 0.15 : "absolute mean " + absMean + " is too far away from zero with seed="
+        assert absMean < 0.2 : "absolute mean " + absMean + " is too far away from zero with seed="
                       + randomState.getInitialValue();
         assert σδ.doubleValue() < 0.5 : "population and sample σ " + σδ.toFixedString()
                       + " is too far away from zero with seed=" + randomState.getInitialValue();
