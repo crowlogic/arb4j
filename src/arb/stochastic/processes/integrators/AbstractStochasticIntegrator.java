@@ -17,7 +17,6 @@ public abstract class AbstractStochasticIntegrator implements
   protected DriftCoeffecientFunction     μ;
   protected DiffusionCoeffecientFunction σ;
   protected Float                        T       = new Float();
-  protected Real                         Z       = new Real();
   protected Real                         μi      = new Real();
   protected Real                         σi      = Real.newVector(2);
   protected Real                         sqrtδt  = new Real();
@@ -41,7 +40,6 @@ public abstract class AbstractStochasticIntegrator implements
   public void close()
   {
     T.close();
-    Z.close();
     μi.close();
     σi.close();
     sqrtδt.close();

@@ -22,13 +22,13 @@ public class DiffusionProcessState implements
 {
   public DiffusionProcessState(RandomState randomState)
   {
-    this.randomState = randomState;
+    this.randomState     = randomState;
     value.printPrecision = true;
   }
 
   public DiffusionProcessState()
   {
-    this(new RandomState((int) Math.random() * Integer.MAX_VALUE));
+    this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
   }
 
   public final RandomState randomState;

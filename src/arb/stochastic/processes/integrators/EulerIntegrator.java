@@ -71,12 +71,11 @@ public class EulerIntegrator extends
 
       if (verbose)
       {
-        System.out.format("i=%s time=%s μi=%s σi=%s Z=%s xi=%s\n state=%s\n",
+        System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n",
                           i,
                           state.getTime().toString(7),
                           μi,
                           σi,
-                          Z,
                           xi,
                           state);
       }
