@@ -34,7 +34,8 @@ import arb.stochastic.*;
  * </pre>
  * 
  * where the parameters are this{@link #θ}, this{@link #μ}, and this{@link #σ}
- * 
+ *  /**
+   * Test 
  * <a href=
  * "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process">Wikipedia</a>
  */
@@ -81,6 +82,7 @@ public class OrnsteinUhlenbeckProcess implements
   {
     return (state, order, prec, result) ->
     {
+      assert order <= 2;
       return θ.mul(μ.sub(state.value, prec, result), prec, result);
     };
   }
@@ -93,6 +95,7 @@ public class OrnsteinUhlenbeckProcess implements
   {
     return (state, order, prec, result) ->
     {
+      assert order <= 2;
       return result.set(σ);
     };
   }

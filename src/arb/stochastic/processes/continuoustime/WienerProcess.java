@@ -43,32 +43,13 @@ public class WienerProcess implements
     this.σ = σ;
   }
 
-  @Override
-  public GaussianDensityFunction getDensityFunction(Real t)
-  {
-    assert false : "2do";
-    return null;
-  }
-
-  @Override
-  public GaussianCharacteristicFunction getCharacteristicFunction(Real t)
-  {
-    assert false : "2do";
-    return null;
-  }
-
-  @Override
-  public GaussianProbabilityDistribution getDistributionFunction(Real t)
-  {
-    assert false : "TODO: implement";
-    return null;
-  }
 
   @Override
   public DriftCoeffecientFunction μ()
   {
     return (state, order, precision, result) ->
     {
+      assert order <= 2;
       return result.set(zero);
     };
   }
@@ -78,6 +59,7 @@ public class WienerProcess implements
   {
     return (state, order, precision, result) ->
     {
+      assert order <= 2;
       Real dt = state.dt(result);
       assert dt.isFinite() : "dt=" + dt;
       return dt.sqrt(precision, result).mul(σ, precision,result);
