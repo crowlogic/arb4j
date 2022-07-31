@@ -1,10 +1,12 @@
-package arb.stochastic.processes.continuoustime;
+package arb.stochastic.processes.continuoustime.integrators;
 
 import static arb.RealConstants.zero;
 
 import arb.*;
 import arb.Float;
 import arb.stochastic.GaussianProbabilityDistribution;
+import arb.stochastic.processes.continuoustime.DiffusionProcess;
+import arb.stochastic.processes.continuoustime.DiffusionProcessState;
 
 public class StochasticEulerIntegrator extends
                                        AbstractStochasticIntegrator implements

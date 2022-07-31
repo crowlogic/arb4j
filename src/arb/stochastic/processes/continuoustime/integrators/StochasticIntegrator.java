@@ -1,7 +1,9 @@
-package arb.stochastic.processes.continuoustime;
+package arb.stochastic.processes.continuoustime.integrators;
 
 import arb.*;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
+import arb.stochastic.processes.continuoustime.DiffusionProcessState;
+import arb.stochastic.processes.continuoustime.WhiteNoise;
 
 public interface StochasticIntegrator extends
                                       DiscreteTimeDynamicalSystem

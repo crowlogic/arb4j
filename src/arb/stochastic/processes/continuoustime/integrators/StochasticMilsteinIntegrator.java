@@ -1,6 +1,8 @@
-package arb.stochastic.processes.continuoustime;
+package arb.stochastic.processes.continuoustime.integrators;
 
 import arb.*;
+import arb.stochastic.processes.continuoustime.DiffusionProcess;
+import arb.stochastic.processes.continuoustime.DiffusionProcessState;
 
 public class StochasticMilsteinIntegrator extends
                                           AbstractStochasticIntegrator

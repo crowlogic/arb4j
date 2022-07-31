@@ -1,9 +1,11 @@
-package arb.stochastic.processes.continuoustime;
+package arb.stochastic.processes.continuoustime.integrators;
 
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 
 import arb.*;
+import arb.stochastic.processes.continuoustime.DiffusionProcessState;
+import arb.stochastic.processes.continuoustime.WienerProcess;
 import junit.framework.TestCase;
 
 public class StochasticEulerIntegratorTest extends
