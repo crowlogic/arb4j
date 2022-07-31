@@ -1,11 +1,10 @@
 package arb.stochastic.processes.integrators;
 
 import static arb.FloatConstants.one;
-import static arb.RealConstants.zero;
 
 import arb.*;
 import arb.Float;
-import arb.stochastic.GaussianProbabilityDistribution;
+import arb.stochastic.StandardGaussianDistribution;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 
@@ -49,14 +48,13 @@ public class MilsteinIntegrator extends
 
     Partition partition = interval.partition(n, prec);
     state.dt.set(partition.δt);
+    partition.δt.sqrt(prec, sqrtδt);
 
-    GaussianProbabilityDistribution W                  = new GaussianProbabilityDistribution(zero,
-                                                                                             partition.δt.sqrt(prec,
-                                                                                                               sqrtδt));
+    StandardGaussianDistribution W                  = new StandardGaussianDistribution();
 
-    int                             i                  = -1;
-    EvaluationSequence              evaluationSequence = new EvaluationSequence(partition,
-                                                                                x);
+    int                          i                  = -1;
+    EvaluationSequence           evaluationSequence = new EvaluationSequence(partition,
+                                                                             x);
 
     evaluationSequence.generateRandomSamples(W, state.randomState, prec);
 
@@ -68,14 +66,17 @@ public class MilsteinIntegrator extends
 
       μ.evaluate(state, 1, prec, μi).mul(partition.δt, prec);
       assert μi.isFinite();
-      σ.evaluate(state, 1, prec, σi).mul(xi, prec);
-      // TODO: add second order correction
+      σ.evaluate(state, 2, prec, σi).mul(xi, prec).mul(sqrtδt, prec);
+      // TODO: add second order correction.. the derivative is in σi.get(1) .. the 2nd
+      // order to be added is ( (Zₜ)² - 1 ) * ( dt * σ(Xₜ)∂Xₜ * σ(Xₜ) ) / 2 where
+      // σ(Xₜ)∂Xₜ is the derivative of σ with relative to X, which is a function of t,
+      // but this method will not work if either coefficient function depends directly
+      // on t
       assert σi.isFinite();
 
       // state.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
       // W=N(0,√(δt))
-      // TODO: call the Euler method here then add the second order correction ( (Zₜ)²
-      // - 1 ) * ( dt * σ(Xₜ)∂Xₜ * σ(Xₜ) ) / 2
+      // TODO: call the Euler method here then add the second order correction
       state.setValue(μi.add(σi, prec, xi).add(state.value(), prec));
 
       if (verbose)

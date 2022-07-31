@@ -25,14 +25,14 @@ public class StandardGaussianProcess implements
     super();
     this.p = new StandardGaussianDensityFunction();
     this.φ = new StandardGaussianCharacteristicFunction();
-    this.f = new StandardGaussianDistributionFunction();
+    this.f = new StandardGaussianDistribution();
   }
 
   public StandardGaussianDensityFunction        p;
 
   public StandardGaussianCharacteristicFunction φ;
 
-  public StandardGaussianDistributionFunction   f;
+  public StandardGaussianDistribution   f;
 
   @Override
   public StandardGaussianDensityFunction getDensityFunction(Real t)
@@ -47,7 +47,7 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public StandardGaussianDistributionFunction getDistributionFunction(Real t)
+  public StandardGaussianDistribution getDistributionFunction(Real t)
   {
     return f;
   }

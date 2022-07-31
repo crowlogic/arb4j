@@ -19,7 +19,7 @@ public abstract class AbstractStochasticIntegrator implements
   protected Float                        T       = new Float();
   protected Real                         Z       = new Real();
   protected Real                         μi      = new Real();
-  protected Real                         σi      = new Real();
+  protected Real                         σi      = Real.newVector(2);
   protected Real                         sqrtδt  = new Real();
 
   public AbstractStochasticIntegrator(DiffusionProcess x)
