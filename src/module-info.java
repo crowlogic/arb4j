@@ -1,5 +1,8 @@
 /**
- * @see <a href="https://github.com/crowlogic/arb4j/">the arb4j page on
+ * A high-performance Java API for arblib, the fantastic and amazing
+ * arbitrary-precision ball arithmetic C library, implemented via SWIG
+ * 
+ * @see <a href="https://github.com/crowlogic/arb4j/">the arb4j homepage on
  *      github</a>
  */
 module arb4j
