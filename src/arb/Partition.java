@@ -88,7 +88,6 @@ public class Partition implements
     dtfloat.close();
     δt.close();
     scope.close();
-    swigCPtr = 0;
   }
 
   @Override

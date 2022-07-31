@@ -56,9 +56,11 @@ public class DiffusionProcessState implements
     value.close();
   }
 
-  public final Real value = new Real();
+  public final Real value  = new Real();
 
-  public final Real dt    = new Real().indeterminate();
+  public final Real sqrtdt = new Real().indeterminate();
+
+  public final Real dt     = new Real().indeterminate();
 
   /**
    * 
@@ -107,6 +109,7 @@ public class DiffusionProcessState implements
   {
     if (dt.isFinite())
     {
+      // return the fixed-length step-size if its set
       return dt;
     }
     if (!prevTime.isFinite())
@@ -121,6 +124,22 @@ public class DiffusionProcessState implements
   public Real getTime()
   {
     return time;
+
+  }
+
+  public Real sqrtdt(Real result)
+  {
+    if (sqrtdt.isFinite())
+    {
+      return sqrtdt;
+    }
+    if (dt.isFinite())
+    {
+      return dt.sqrt(dt.bits(), sqrtdt);
+    }
+    assert time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
+                  + " prevTime=" + prevTime;
+    return time.sub(prevTime, time.bits(), result).sqrt(time.bits(), result);
 
   }
 

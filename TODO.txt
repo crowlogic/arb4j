@@ -1,6 +1,3 @@
-* in DiffusionProcessState.dt() also calculate and cache sqrt(dt) so
-  its not recomputed on each iteration when the step-length doesnt
-  change between iterations
 * fullscreen mode for ComplexFunctionRenderer
 * replace usage of Utilities#heapUp and heapDown with MemoryStack
 * homotopy API 
@@ -23,3 +20,22 @@
 * API for plane curve Curvature
 * Koenig linearization - SchroederFunctional And InverseSeries
 * Add color-wheel legend to ComplexFunctionPlotter by adding another BufferedImage to be blended, and allow the ability to move them about dynamically via the mouse
+
+
+Zoom/Magnify
+-------------
+
+When Z is pressed there is an indicator that zoom box
+selection mode has been activated.
+
+Press esc to exit zoom selection mode
+click selects point
+click selects the second point which causes the graph
+to be replotted from the specified coordinates.
+If esc is pressed after the 1st point is clicked, it goes
+back to selection mode, if esc is pressed again it exits
+zoom selection mode
+
+
+ 
+

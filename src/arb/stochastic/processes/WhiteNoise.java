@@ -34,14 +34,14 @@ public class WhiteNoise implements
     this.φ = new GaussianCharacteristicFunction(zero,
                                                 σ);
     this.f = new GaussianProbabilityDistribution(zero,
-                                              σ);
+                                                 σ);
   }
 
-  public GaussianDensityFunction        p;
+  public GaussianDensityFunction         p;
 
-  public GaussianCharacteristicFunction φ;
+  public GaussianCharacteristicFunction  φ;
 
-  public GaussianProbabilityDistribution   f;
+  public GaussianProbabilityDistribution f;
 
   @Override
   public GaussianDensityFunction getDensityFunction(Real t)
@@ -75,7 +75,7 @@ public class WhiteNoise implements
   {
     return (state, order, precision, result) ->
     {
-      return σ.mul(state.dt(result).sqrt(precision, result), precision, result);
+      return σ.mul(state.sqrtdt(result), precision, result);
     };
   }
 
