@@ -4,7 +4,7 @@ import static arb.RealConstants.*;
 
 import arb.*;
 import arb.functions.real.*;
-import arb.stochastic.processes.continuoustime.*;
+import arb.stochastic.processes.*;
 
 /**
  * The Gaussian distribution's probability density is a very important density

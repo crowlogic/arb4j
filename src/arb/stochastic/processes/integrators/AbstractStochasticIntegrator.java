@@ -1,10 +1,10 @@
-package arb.stochastic.processes.continuoustime.integrators;
+package arb.stochastic.processes.integrators;
 
 import java.lang.ref.Cleaner.Cleanable;
 
 import arb.Float;
 import arb.Real;
-import arb.stochastic.processes.continuoustime.*;
+import arb.stochastic.processes.*;
 
 public abstract class AbstractStochasticIntegrator implements
                                                    StochasticIntegrator,

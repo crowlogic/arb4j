@@ -1,9 +1,10 @@
-package arb.stochastic.processes.continuoustime.integrators;
+package arb.stochastic.processes.integrators;
 
 import arb.*;
+import arb.Float;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
-import arb.stochastic.processes.continuoustime.DiffusionProcessState;
-import arb.stochastic.processes.continuoustime.WhiteNoise;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.WhiteNoise;
 
 public interface StochasticIntegrator extends
                                       DiscreteTimeDynamicalSystem
@@ -23,4 +24,8 @@ public interface StochasticIntegrator extends
    */
   public EvaluationSequence
          integrate(DiffusionProcessState state, FloatInterval interval, int n, RandomState randomState, int prec);
+
+  public Float weakConvergenceOrder();
+
+  public Float strongConvergenceOrder();
 }

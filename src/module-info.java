@@ -56,8 +56,8 @@ module arb4j
   exports arb.operators;
   exports arb.physics.forces;
   exports arb.stochastic;
-  exports arb.stochastic.processes.continuoustime;
-  exports arb.stochastic.processes.continuoustime.integrators;
+  exports arb.stochastic.processes;
+  exports arb.stochastic.processes.integrators;
   exports arb.theoretical;
   exports arb.theoretical.physics;
   exports arb.topological.spaces;

@@ -1,12 +1,14 @@
-package arb.stochastic.processes.continuoustime.integrators;
+package arb.stochastic.processes.integrators;
 
-import static arb.RealConstants.zero;
+import static arb.FloatConstants.half;
+import static arb.FloatConstants.one;
+import static arb.RealConstants.*;
 
 import arb.*;
 import arb.Float;
 import arb.stochastic.GaussianProbabilityDistribution;
-import arb.stochastic.processes.continuoustime.DiffusionProcess;
-import arb.stochastic.processes.continuoustime.DiffusionProcessState;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
 
 public class StochasticEulerIntegrator extends
                                        AbstractStochasticIntegrator implements
@@ -74,9 +76,15 @@ public class StochasticEulerIntegrator extends
   }
 
   @Override
-  public void evolve()
+  public Float weakConvergenceOrder()
   {
+    return one;
+  }
 
+  @Override
+  public Float strongConvergenceOrder()
+  {
+    return half;
   }
 
 }

@@ -1,4 +1,4 @@
-package arb.stochastic.processes.continuoustime;
+package arb.stochastic.processes;
 
 import static arb.RealConstants.zero;
 
@@ -6,6 +6,7 @@ import java.lang.ref.Cleaner.Cleanable;
 
 import arb.Float;
 import arb.Real;
+import arb.dynamical.systems.State;
 
 /**
  * The arguments passed to the functions representing the drift rate
@@ -13,7 +14,7 @@ import arb.Real;
  * which would be expresed in mathematical notation as μ(Sₜ,t) and σ(Sₜ,t) for
  * the drift and diffusion respectively
  */
-public class DiffusionProcessState implements
+public class DiffusionProcessState implements State,
                                    AutoCloseable,
                                    Cleanable
 {

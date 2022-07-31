@@ -1,4 +1,4 @@
-package arb.stochastic.processes.continuoustime;
+package arb.stochastic.processes;
 
 import static arb.utensils.Utilities.println;
 import static org.junit.Assert.assertEquals;

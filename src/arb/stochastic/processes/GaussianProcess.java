@@ -1,4 +1,4 @@
-package arb.stochastic.processes.continuoustime;
+package arb.stochastic.processes;
 
 import arb.functions.real.ErrorFunction;
 import arb.stochastic.*;
