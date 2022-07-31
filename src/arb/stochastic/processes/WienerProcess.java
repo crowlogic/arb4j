@@ -53,6 +53,11 @@ public class WienerProcess implements
     return (state, order, precision, result) ->
     {
       assert order <= 2;
+      if ( order >= 2 )
+      {
+        // the derivative of the constant σ is zero
+        result.get(1).zero();
+      }
       return result.set(zero);
     };
   }
@@ -65,7 +70,13 @@ public class WienerProcess implements
       assert order <= 2;
       Real sqrtdt = state.sqrtdt(precision, result);
       assert sqrtdt.isFinite() : "√dt=" + sqrtdt;
-      return sqrtdt.mul(σ, precision, result);
+      sqrtdt.mul(σ, precision, result);
+      if ( order >= 2 )
+      {
+        // the derivative of the constant σ is zero
+        result.get(1).zero();
+      }
+      return result;
     };
   }
 

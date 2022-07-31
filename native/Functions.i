@@ -44,6 +44,8 @@ void acb_sec(acb_t y, const acb_t x, slong prec);
 
 void arb_add_ui(arb_t z, const arb_t x, ulong y, slong prec);
 
+void arb_sub_si(arb_t z, const arb_t x, slong y, slong prec);
+ 
 void arb_sub_ui(arb_t z, const arb_t x, ulong y, slong prec);
 
 void mag_div(mag_t z, const mag_t x, const mag_t y);

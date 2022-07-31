@@ -7,7 +7,7 @@ import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.WienerProcess;
 import junit.framework.TestCase;
 
-public class EulerIntegratorTest extends
+public class StochasticIntegrationTest extends
                                  TestCase
 {
   public static final int prec = 128;

@@ -22,7 +22,18 @@ import java.util.stream.StreamSupport;
 %typemap(javacode) arb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
-   public Real variance(int prec, Real result)
+  public Real sub(int x, int prec, Real res)
+  {
+    arb.arb_sub_si(res, this, x, prec);
+    return res;
+  }
+
+  public Real sub(int i, int prec)
+  {
+    return sub(i,prec,this);
+  }
+  
+  public Real variance(int prec, Real result)
   {
     try ( Real mean = new Real())
     {

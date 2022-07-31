@@ -32,6 +32,7 @@ public class arbJNI {
   public final static native void acb_tan(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_sec(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_add_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
+  public final static native void arb_sub_si(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
   public final static native void arb_sub_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void mag_div(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void mag_log(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);

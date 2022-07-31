@@ -101,6 +101,10 @@ public class arb {
     arbJNI.arb_add_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
+  public static void arb_sub_si(Real z, Real x, int y, int prec) {
+    arbJNI.arb_sub_si(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
+  }
+
   public static void arb_sub_ui(Real z, Real x, long y, int prec) {
     arbJNI.arb_sub_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
