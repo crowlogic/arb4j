@@ -21,7 +21,7 @@ public class StochasticEulerIntegratorTest extends
       println("testStandardWienerProcessIntegration  " + randomState);
       WienerProcess B = new WienerProcess(new Real("5",
                                                    128));
-      try ( StochasticEulerIntegrator integrator = new StochasticEulerIntegrator(B))
+      try ( EulerIntegrator integrator = new EulerIntegrator(B))
       {
         FloatInterval         interval   = new FloatInterval(0,
                                                              10);

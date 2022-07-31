@@ -10,11 +10,11 @@ import arb.stochastic.GaussianProbabilityDistribution;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 
-public class StochasticEulerIntegrator extends
+public class EulerIntegrator extends
                                        AbstractStochasticIntegrator implements
                                        StochasticIntegrator
 {
-  public StochasticEulerIntegrator(DiffusionProcess x)
+  public EulerIntegrator(DiffusionProcess x)
   {
     super(x);
   }

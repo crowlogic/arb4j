@@ -7,11 +7,11 @@ import arb.Float;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 
-public class StochasticMilsteinIntegrator extends
+public class MilsteinIntegrator extends
                                           AbstractStochasticIntegrator
 {
 
-  public StochasticMilsteinIntegrator(DiffusionProcess x)
+  public MilsteinIntegrator(DiffusionProcess x)
   {
     super(x);
   }
