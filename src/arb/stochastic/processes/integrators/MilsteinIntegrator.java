@@ -50,7 +50,7 @@ public class MilsteinIntegrator extends
     EvaluationSequence              evaluationSequence = new EvaluationSequence(partition,
                                                                                 x);
 
-    evaluationSequence.values.stream().parallel().forEach(value -> W.sample(prec, state.randomState, value));
+    evaluationSequence.generateRandomSamples(W, state.randomState, prec);
 
     for (Float t : partition)
     {
