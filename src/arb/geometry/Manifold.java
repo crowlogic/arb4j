@@ -1,7 +1,7 @@
 package arb.geometry;
 
-import arb.curves.Circle;
-import arb.curves.Lemniscate;
+import arb.geometry.curves.Circle;
+import arb.geometry.curves.Lemniscate;
 import arb.geometry.surfaces.*;
 import arb.topological.Space;
 import arb.topological.spaces.*;

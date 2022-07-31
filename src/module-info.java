@@ -7,8 +7,11 @@
  */
 module arb4j
 {
-  requires transitive jdk.incubator.foreign;
+  requires java.base;
   requires transitive java.desktop;
+  requires transitive java.instrument;
+  requires transitive java.logging;
+  requires transitive jdk.incubator.foreign;
   requires transitive humble.video.noarch;
   requires transitive lwjgl3.awt;
   requires transitive org.lwjgl;
@@ -16,30 +19,19 @@ module arb4j
   requires transitive org.lwjgl.glfw;
   requires transitive junit;
   requires transitive hamcrest.core;
-  requires java.base;
-  requires transitive java.logging;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
-  requires transitive java.instrument;
 
   exports arb;
-  exports arb.topological;
-  exports arb.mechanics;
-  exports arb.mechanics.classical;
-  exports arb.mechanics.quantum;
-  exports arb.mechanics.relativistic;
-  exports arb.mechanics.relativistic.general;
-  exports arb.mechanics.relativistic.special;
-  exports arb.geometry;
-  exports arb.stochastic;
-  exports arb.stochastic.processes.continuoustime;
-  exports arb.stochastic.processes.continuoustime.integrators;
-  exports arb.topological.spaces;
-  exports arb.measures;
-  exports arb.curves;
   exports arb.algebraic.geometry;
-  exports arb.domains;
-  exports arb.utensils;
+  exports arb.geometry;
+  exports arb.geometry.curves;
+  exports arb.geometry.surfaces;
+  exports arb.geometry.differential;
+  exports arb.geometry.differential.homotopy;
+  exports arb.domains;  
+  exports arb.dynamical.systems;
+  exports arb.exceptions;
   exports arb.functions;
   exports arb.functions.polynomials.orthogonal;
   exports arb.functions.real;
@@ -51,17 +43,25 @@ module arb4j
   exports arb.functions.complex.dynamics;
   exports arb.functions.complex.lemniscatic;
   exports arb.functions.complex.trigonometric;
+  exports arb.groups;
+  exports arb.topological;
+  exports arb.measures;  
+  exports arb.mechanics;
+  exports arb.mechanics.classical;
+  exports arb.mechanics.quantum;
+  exports arb.mechanics.relativistic;
+  exports arb.mechanics.relativistic.general;
+  exports arb.mechanics.relativistic.special;
   exports arb.operators;
-  exports arb.geometry.surfaces;
-  exports arb.differential.geometry;
-  exports arb.differential.homotopy;
+  exports arb.physics.forces;
+  exports arb.stochastic;
+  exports arb.stochastic.processes.continuoustime;
+  exports arb.stochastic.processes.continuoustime.integrators;
+  exports arb.theoretical;
+  exports arb.theoretical.physics;
+  exports arb.topological.spaces;
+  exports arb.utensils;
   exports arb.viz;
   exports arb.viz.gl;
   exports arb.viz.rendering;
-  exports arb.groups;
-  exports arb.dynamical.systems;
-  exports arb.exceptions;
-  exports arb.theoretical;
-  exports arb.theoretical.physics;
-  exports arb.physics.forces;
 }

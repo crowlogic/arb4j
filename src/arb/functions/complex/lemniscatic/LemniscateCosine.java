@@ -1,8 +1,8 @@
 package arb.functions.complex.lemniscatic;
 
 import arb.Complex;
-import arb.curves.PlaneCurve;
 import arb.functions.complex.HolomorphicFunction;
+import arb.geometry.curves.PlaneCurve;
 
 /**
  * TODO: implement and use to implement the

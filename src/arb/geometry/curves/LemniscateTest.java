@@ -1,4 +1,4 @@
-package arb.curves;
+package arb.geometry.curves;
 
 import static arb.RealConstants.half;
 import static java.lang.System.out;

@@ -1,4 +1,4 @@
-package arb.differential.geometry;
+package arb.geometry.differential;
 
 /**
  * 

@@ -1,7 +1,7 @@
 package arb.algebraic.geometry;
 
-import arb.curves.Curve;
-import arb.curves.PlaneCurve;
+import arb.geometry.curves.Curve;
+import arb.geometry.curves.PlaneCurve;
 
 /**
  * An affine algebraic curve is a plane curve which is the zero set of a

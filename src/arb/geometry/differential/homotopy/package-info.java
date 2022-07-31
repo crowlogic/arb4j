@@ -4,4 +4,4 @@
  * ὁμός homós "same, similar" and τόπος tópos "place") if one can be
  * "continuously deformed" into the other.
  */
-package arb.differential.homotopy;
+package arb.geometry.differential.homotopy;

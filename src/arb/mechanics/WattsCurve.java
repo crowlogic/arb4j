@@ -3,8 +3,8 @@ package arb.mechanics;
 import arb.Complex;
 import arb.Real;
 import arb.algebraic.geometry.AlgebraicCurve;
-import arb.curves.*;
 import arb.geometry.Line;
+import arb.geometry.curves.*;
 
 /**
  * A curve named after James Watt (1736-1819), the Scottish engineer who

@@ -17,13 +17,13 @@
  * {@link arb.spaces.TopologicalSpace}, as any distance or metric defines a
  * {@link arb.topological.Topology}. The transformations that are considered in
  * topology are {@link arb.topology.transformations.Homeomorphism} and
- * {@link arb.differential.homotopy.Homotopy}s. A property that is invariant
+ * {@link arb.geometry.differential.homotopy.Homotopy}s. A property that is invariant
  * under such transformations is a topological property. Basic examples of
  * topological properties are: the {@link arb.measures.Dimension}, which allows
  * distinguishing between a {@link arb.geometry.Line} and a
  * {@link arb.geometry.surfaces.Surface}; compactness, which allows
  * distinguishing between a {@link arb.geometry.Line} and a
- * {@link arb.curves.Circle}; connectedness, which allows distinguishing a
+ * {@link arb.geometry.curves.Circle}; connectedness, which allows distinguishing a
  * circle from two non-intersecting circles.
  */
 package arb.topological;

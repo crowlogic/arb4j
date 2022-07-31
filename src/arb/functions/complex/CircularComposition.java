@@ -1,6 +1,6 @@
 package arb.functions.complex;
 
-import arb.curves.ComplexCircle;
+import arb.geometry.curves.ComplexCircle;
 import arb.operators.Composition;
 
 public class CircularComposition<F extends HolomorphicFunction> extends

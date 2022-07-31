@@ -12,14 +12,14 @@ package arb.viz;
 import java.awt.Graphics2D;
 
 import arb.*;
-import arb.curves.ComplexCircle;
-import arb.curves.Curve;
-import arb.differential.geometry.AffineConnection;
-import arb.differential.geometry.Connection;
 import arb.functions.complex.CircularComposition;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.*;
 import arb.geometry.Manifold;
+import arb.geometry.curves.ComplexCircle;
+import arb.geometry.curves.Curve;
+import arb.geometry.differential.AffineConnection;
+import arb.geometry.differential.Connection;
 
 /**
  * Parallel transport (or parallel translation) is a way of transporting

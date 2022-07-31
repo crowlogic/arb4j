@@ -1,4 +1,4 @@
-package arb.differential.homotopy;
+package arb.geometry.differential.homotopy;
 
 import arb.topological.*;
 

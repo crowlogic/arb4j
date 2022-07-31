@@ -3,7 +3,7 @@ package arb.functions.complex;
 import static arb.RealConstants.*;
 
 import arb.*;
-import arb.curves.*;
+import arb.geometry.curves.*;
 
 /**
  * S(e^i*θ) where θ is a real-valued angle but its easier for now to work with

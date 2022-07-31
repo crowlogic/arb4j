@@ -1,4 +1,4 @@
-package arb.curves;
+package arb.geometry.curves;
 
 import static java.lang.Math.*;
 
