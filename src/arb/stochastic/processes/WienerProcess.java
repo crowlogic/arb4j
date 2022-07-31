@@ -1,6 +1,8 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.zero;
+
+import java.lang.ref.Cleaner.Cleanable;
 
 import arb.Real;
 import arb.stochastic.*;
@@ -33,7 +35,9 @@ import arb.stochastic.*;
  * @see <a href="https://en.wikipedia.org/wiki/Wiener_process">Wikipedia</a>
  */
 public class WienerProcess implements
-                           GaussianProcess<GaussianDensityFunction, GaussianProbabilityDistribution, GaussianCharacteristicFunction>
+                           GaussianProcess<GaussianDensityFunction, GaussianProbabilityDistribution, GaussianCharacteristicFunction>,
+                           AutoCloseable,
+                           Cleanable
 {
 
   Real σ;
@@ -42,7 +46,6 @@ public class WienerProcess implements
   {
     this.σ = σ;
   }
-
 
   @Override
   public DriftCoeffecientFunction μ()
@@ -62,8 +65,21 @@ public class WienerProcess implements
       assert order <= 2;
       Real dt = state.dt(result);
       assert dt.isFinite() : "dt=" + dt;
-      return dt.sqrt(precision, result).mul(σ, precision,result);
+      return dt.sqrt(precision, result).mul(σ, precision, result);
     };
+  }
+
+  @Override
+  public void clean()
+  {
+    close();
+
+  }
+
+  @Override
+  public void close()
+  {
+    σ.close();
   }
 
 }

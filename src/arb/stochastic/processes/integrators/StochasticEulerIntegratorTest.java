@@ -17,18 +17,20 @@ public class StochasticEulerIntegratorTest extends
   {
     for (int i = 0; i < 5; i++)
     {
-      RandomState randomState = new RandomState((int) (Math.random() * Integer.MAX_VALUE));
-      println("testStandardWienerProcessIntegration  " + randomState);
       WienerProcess B = new WienerProcess(new Real("5",
                                                    128));
       try ( EulerIntegrator integrator = new EulerIntegrator(B))
       {
-        FloatInterval         interval   = new FloatInterval(0,
-                                                             10);
-        int                   n          = 500 * 1000;
+        FloatInterval         interval = new FloatInterval(0,
+                                                           10);
+        int                   n        = 500 * 1000;
 
-        DiffusionProcessState state      = new DiffusionProcessState();
-        EvaluationSequence    samplePath = integrator.integrate(state, interval, n, randomState, prec);
+        DiffusionProcessState state    = new DiffusionProcessState();
+        RandomState           randomState = state.randomState;
+        println("testStandardWienerProcessIntegration  " + randomState);
+        randomState.setInitialValue((int) (Math.random() * Integer.MAX_VALUE));
+
+        EvaluationSequence samplePath = integrator.integrate(state, interval, n, prec);
         println("state=" + state);
         Real μ               = samplePath.values.arithmeticMean(prec, new Real());
         Real sampleStdev     = samplePath.values.standardDeviation(prec, μ, new Real());

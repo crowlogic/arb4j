@@ -21,7 +21,7 @@ public class EulerIntegrator extends
 
   @Override
   public synchronized EvaluationSequence
-         integrate(DiffusionProcessState state, FloatInterval interval, int n, RandomState randomState, int prec)
+         integrate(DiffusionProcessState state, FloatInterval interval, int n, int prec)
   {
     // x is the set of values of the evaluation sequence which is a Partition
     // together with a set of values for each element of the partition
@@ -41,7 +41,7 @@ public class EulerIntegrator extends
     EvaluationSequence              evaluationSequence = new EvaluationSequence(partition,
                                                                                 x);
 
-    evaluationSequence.values.stream().parallel().forEach(value -> W.sample(prec, randomState, value));
+    evaluationSequence.values.stream().parallel().forEach(value -> W.sample(prec, state.randomState, value));
 
     for (Float t : partition)
     {

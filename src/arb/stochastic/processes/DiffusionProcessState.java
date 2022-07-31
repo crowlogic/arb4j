@@ -5,6 +5,7 @@ import static arb.RealConstants.zero;
 import java.lang.ref.Cleaner.Cleanable;
 
 import arb.Float;
+import arb.RandomState;
 import arb.Real;
 import arb.dynamical.systems.State;
 
@@ -14,14 +15,32 @@ import arb.dynamical.systems.State;
  * which would be expresed in mathematical notation as μ(Sₜ,t) and σ(Sₜ,t) for
  * the drift and diffusion respectively
  */
-public class DiffusionProcessState implements State,
+public class DiffusionProcessState implements
+                                   State,
                                    AutoCloseable,
                                    Cleanable
 {
+  public DiffusionProcessState(RandomState randomState)
+  {
+    this.randomState = randomState;
+  }
+
+  public DiffusionProcessState()
+  {
+    this(new RandomState((int) Math.random() * Integer.MAX_VALUE));
+  }
+
+  public final RandomState randomState;
+
   @Override
   public String toString()
   {
-    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s]", prevTime, time, value, dt.toFixedString());
+    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s, randomState=%s]",
+                         prevTime,
+                         time,
+                         value,
+                         dt.toFixedString(),
+                         randomState);
   }
 
   private final Real prevTime = new Real().negInf();

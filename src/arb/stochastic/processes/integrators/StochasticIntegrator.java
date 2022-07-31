@@ -4,7 +4,6 @@ import arb.*;
 import arb.Float;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 import arb.stochastic.processes.DiffusionProcessState;
-import arb.stochastic.processes.WhiteNoise;
 
 public interface StochasticIntegrator extends
                                       DiscreteTimeDynamicalSystem
@@ -16,14 +15,12 @@ public interface StochasticIntegrator extends
    *                    initial values
    * @param interval    the interval over which to integrate
    * @param n           number of pieces to split the interval into
-   * @param randomState the {@link RandomState} used to generate the
-   *                    {@link WhiteNoise}
    * @param prec        the number of bits of precision to use for the
    *                    calculations
    * @return
    */
   public EvaluationSequence
-         integrate(DiffusionProcessState state, FloatInterval interval, int n, RandomState randomState, int prec);
+         integrate(DiffusionProcessState state, FloatInterval interval, int n, int prec);
 
   public Float weakConvergenceOrder();
 
