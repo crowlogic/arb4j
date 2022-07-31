@@ -10,15 +10,23 @@ import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 
 /**
- * Integrates a {@link DiffusionProcess} via Euler's method
+ * Integrates a {@link DiffusionProcess} via Milstein's method
  * 
  * <pre>
- * dXₜ = μ(Xₜ,t)dt + σ(Xₜ,t)dBₜ + !!!TODO!!!secondOrderCorrection!!!TODO!!!
+ * dXₜ = μ(Xₜ)*dt + σ(Xₜ)*dBₜ + ( (Zₜ)² - 1 ) * ( dt * σ(Xₜ)∂Xₜ * σ(Xₜ) ) / 2
  * </pre>
  * 
- * where Bₜ is a BrownianMotion also-known-as a WienerProcess having zero mean
- * drift and standard deviation parameter σ=√(dt) such that the variance is dt,
- * the time elapsed
+ * where σ(Xₜ)∂Xₜ is the derivative of σ relative to X, not t; and Bₜ is a
+ * BrownianMotion also-known-as a WienerProcess having zero mean drift and
+ * standard deviation parameter σ=√(dt) such that the variance is dt, the time
+ * elapsed. This method is only applicable to processes whose drift and
+ * diffusions do not *directly* depend on t. TODO: find a way to assert this, at
+ * compile-time preferably. <br>
+ * <br>
+ * 
+ * The key to the Milstein scheme is that the accuracy of the discretization is
+ * increased by considering expansions of the coefficients μₜ=μ(Sₜ) and σₜ=σ(Sₜ)
+ * via Itō’s lemma.
  */
 public class MilsteinIntegrator extends
                                 EulerIntegrator
@@ -64,8 +72,10 @@ public class MilsteinIntegrator extends
       // TODO: add second order correction
       assert σi.isFinite();
 
-      // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
+      // state.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
       // W=N(0,√(δt))
+      // TODO: call the Euler method here then add the second order correction ( (Zₜ)²
+      // - 1 ) * ( dt * σ(Xₜ)∂Xₜ * σ(Xₜ) ) / 2
       state.setValue(μi.add(σi, prec, xi).add(state.value(), prec));
 
       if (verbose)
