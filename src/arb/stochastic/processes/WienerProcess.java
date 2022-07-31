@@ -63,7 +63,7 @@ public class WienerProcess implements
     return (state, order, precision, result) ->
     {
       assert order <= 2;
-      Real sqrtdt = state.sqrtdt(result);
+      Real sqrtdt = state.sqrtdt(precision, result);
       assert sqrtdt.isFinite() : "√dt=" + sqrtdt;
       return sqrtdt.mul(σ, precision, result);
     };

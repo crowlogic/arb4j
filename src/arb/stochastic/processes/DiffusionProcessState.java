@@ -23,6 +23,7 @@ public class DiffusionProcessState implements
   public DiffusionProcessState(RandomState randomState)
   {
     this.randomState = randomState;
+    value.printPrecision = true;
   }
 
   public DiffusionProcessState()
@@ -127,7 +128,7 @@ public class DiffusionProcessState implements
 
   }
 
-  public Real sqrtdt(Real result)
+  public Real sqrtdt(int prec, Real result)
   {
     if (sqrtdt.isFinite())
     {
@@ -135,11 +136,13 @@ public class DiffusionProcessState implements
     }
     if (dt.isFinite())
     {
-      return dt.sqrt(dt.bits(), sqrtdt);
+      return dt.sqrt(prec, sqrtdt);
     }
     assert time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
                   + " prevTime=" + prevTime;
-    return time.sub(prevTime, time.bits(), result).sqrt(time.bits(), result);
+    time.sub(prevTime, prec, result);
+    result.sqrt(prec, result);
+    return result;
 
   }
 
