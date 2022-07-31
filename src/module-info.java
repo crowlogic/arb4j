@@ -30,6 +30,7 @@ module arb4j
   exports arb.geometry;
   exports arb.stochastic;
   exports arb.stochastic.processes.continuoustime;
+  exports arb.stochastic.processes.continuoustime.integrators;
   exports arb.topological.spaces;
   exports arb.measures;
   exports arb.curves;
