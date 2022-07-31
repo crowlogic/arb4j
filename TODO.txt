@@ -1,3 +1,5 @@
+* use ErrorFunction to correct the numerically integrated Fourier transforms
+* parallelize ComplexFunction.integrate
 * fullscreen mode for ComplexFunctionRenderer
 * replace usage of Utilities#heapUp and heapDown with MemoryStack
 * homotopy API 
@@ -6,7 +8,6 @@
 * implement Lemniscate elliptic functions 
 * Transfer operator API
 * foreign API: custom mapped memory segment factories instead of JNI DirectByteBuffers to alleviate the problems preventing large animations from being rendered within a single JVM
-* use ErrorFunction to correct the numerically integrated Fourier transforms
 * complex root-finding API 
 * Scale/Rotate/Translate as Part of JPlotter/OpenGL renovation 
 * 3d protein model
@@ -14,7 +15,6 @@
 * harness reflection symmetry to accelerate rendering 
 * orthogonal polynomial API
 * algebraic expression parser, evaluator and compiler
-* parallelize ComplexFunction.integrate
 * implement (inter-host) distributed processing 
 * Shape Operator
 * API for plane curve Curvature
