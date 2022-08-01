@@ -24,7 +24,7 @@ public class FloatIntervalTest extends
         x.printPrecision = true;
         println(x);
       }
-      assertEquals(new Real("9.5 +/- 1",
+      assertEquals(new Real("9.5 +/- 0.5",
                             128),
                    partition.T.get(9));
     }

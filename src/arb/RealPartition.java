@@ -33,7 +33,7 @@ public class RealPartition implements
         ti                = T.get(i);
         ti.printPrecision = true;
         dt.mul(i, prec, ti.getMid()).add( halfdt, prec );
-        dt.getMagnitude(ti.getRad());
+        halfdt.getMagnitude(ti.getRad());
       }
     }
   }
