@@ -1,15 +1,29 @@
 package arb;
 
+import static arb.utensils.Utilities.println;
+
 import junit.framework.TestCase;
 
 public class FloatIntervalTest extends
                                TestCase
 {
+  public static final int prec = 128;
 
-  public static void testPrint()
+  public static void testRealInterval()
   {
-    FloatInterval interval = new FloatInterval(-3,
-                                               3);
+    FloatInterval interval = new FloatInterval(0,
+                                               10);
     System.out.println(interval);
+
+    try ( RealPartition partition = new RealPartition(interval,
+                                                      prec,
+                                                      10000))
+    {
+      for (Real x : partition)
+      {
+        x.printPrecision = true;
+        println(x);
+      }
+    }
   }
 }

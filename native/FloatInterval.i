@@ -124,6 +124,16 @@ import java.util.ArrayList;
     return res;
   }
   
-
+  /**
+   * Calculate the midpoint
+   * 
+   * @param prec
+   * @param res
+   * @return result after having been assigned (a+b)/2
+   */
+  public Float mid(int prec, Float res)
+  {
+    return getA().add(getB(), prec, res).div(2, prec);
+  }
   
 %};

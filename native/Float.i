@@ -33,6 +33,19 @@ import static arb.IntegerConstants.*;
   public static final int BYTES = 32;
 
   /**
+   * Self-referencing this{@link #add(int, int, Float)}
+   * 
+   * @param n
+   * @param precision
+   * @return this number plus n
+   */
+
+  public Float add(Float add, int prec)
+  {
+   return add( add, prec, this ); 
+  }
+
+  /**
    * Self-referencing this{@link #div(int, int, Float)}
    * 
    * @param n

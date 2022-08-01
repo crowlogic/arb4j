@@ -277,4 +277,9 @@ public class Float implements AutoCloseable,Comparable<Float> {
     this(arbJNI.new_Float(), true);
   }
 
+  public Float add(Float add, int prec)
+  {
+   return add( add, prec, this ); 
+  }
+
 }
