@@ -11,6 +11,17 @@ public class GeometricBrownianMotion implements
   public final Real μ = new Real();
   public final Real σ = new Real();
 
+  public GeometricBrownianMotion()
+  {
+
+  }
+
+  public GeometricBrownianMotion(Real mean, Real stdev)
+  {
+    μ.set(mean);
+    σ.set(stdev);
+  }
+
   /**
    * @return μ*Sₜ
    */
