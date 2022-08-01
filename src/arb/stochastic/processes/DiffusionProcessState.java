@@ -122,7 +122,7 @@ public class DiffusionProcessState implements
     return time.sub(prevTime, time.bits(), result);
   }
 
-  public Real getTime()
+  public Real time()
   {
     return time;
 

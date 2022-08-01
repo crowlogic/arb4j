@@ -86,7 +86,7 @@ public class MilsteinIntegrator extends
         {
           System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n",
                             i,
-                            state.getTime().toString(7),
+                            state.time().toString(7),
                             μi,
                             σi,
                             xi,

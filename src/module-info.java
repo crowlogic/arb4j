@@ -21,6 +21,7 @@ module arb4j
   requires transitive hamcrest.core;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
+  requires gral.core;
 
   exports arb;
   exports arb.algebraic.expressions;
