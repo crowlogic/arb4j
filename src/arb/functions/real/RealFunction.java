@@ -20,31 +20,15 @@ public interface RealFunction extends
                               Function<Real, Real>
 {
 
-  public int     FLINT_BITS = 64;
-  public boolean verbose    = false;
-
-  public default RealFunction tanh()
-  {
-    return (t, order, prec, w) ->
-    {
-      order = max(1, order);
-      assert w.size() >= order;
-      assert order <= 2;
-      if (order >= 1)
-      {
-        t.tanh(w, prec);
-      }
-      if (order >= 2)
-      {
-        t.sech(prec, w.get(1))
-         .pow(2, prec, w.get(1))
-         .mul(RealFunction.this.differential().evaluate(t, 1, prec, w.get(1)), prec, w.get(1));
-      }
-      return w;
-    };
-  }
+  public static final int FLINT_BITS = 64;
+  public boolean          verbose    = false;
 
   /**
+   * Performs one step of Newton's method. Should not usually be called directly
+   * unless
+   * {@link RealFunction#refineRootNewton(Real, Real, Float, int, int, boolean)}
+   * fails to suit your needs
+   * 
    * @param point
    * @param convergenceRegion the interval I
    * @param convergenceFactor
@@ -85,14 +69,10 @@ public interface RealFunction extends
     }
   };
 
-  public default RefinementResult
-         refineRootNewton(Real root, Real convergenceRegion, Float convergenceFactor, int extraPrec, int prec)
-  {
-    return refineRootNewton(root, convergenceRegion, convergenceFactor, extraPrec, prec, false);
-  }
-
   /**
-   * 
+   * Refines the precision of a root. Should not be called directly unless
+   * {@link RealRootInterval#refine(RealFunction, int, int, Real, Real, RealRootInterval, RealRootInterval, Float, boolean)}
+   * fails to suit your needs
    * 
    * @param root
    * @param convergenceRegion
@@ -100,7 +80,7 @@ public interface RealFunction extends
    * @param extraPrec
    * @param prec
    * @param verbose
-   * @return
+   * @return a {@link RefinementResult} indicating the status
    */
   public default RefinementResult refineRootNewton(Real root,
                                                    Real convergenceRegion,
@@ -183,10 +163,10 @@ public interface RealFunction extends
     evaluate(convergenceRegion, 3, prec, jet).get(2).div(jet.get(1), prec, jet);
     arb.arb_mul_2exp_si(jet, jet, -1);
     arb.arb_get_abs_ubound_arf(convergenceFactor, jet, prec);
-    
+
     return convergenceFactor;
   }
-  
+
   /**
    * <code>
    * Rigorously locates single roots of this function on the interior of an interval.
@@ -270,6 +250,17 @@ public interface RealFunction extends
     return roots;
   }
 
+  /**
+   * This function shouldn't usually be called directly unless
+   * this{@link #locateRoots(RootLocatorOptions)} fails to suit your needs
+   * 
+   * @param found
+   * @param root
+   * @param asign
+   * @param bsign
+   * @param depth
+   * @param config
+   */
   public default void recursivelyLocateRoots(Roots found,
                                              RealRootInterval root,
                                              int asign,
@@ -368,12 +359,23 @@ public interface RealFunction extends
 
   }
 
+  /**
+   * 
+   * @param t
+   * @return the multiplicity of the root at the point t or 0 if there is no root
+   *         there
+   */
   public default int multiplicityOfRoot(Real t)
   {
+    assert false : "TODO: implement me in " + getClass();
     return 0;
-
   }
 
+  /**
+   * 
+   * @return the first inverse branch, or the only one if there is only one, which
+   *         is the case if the function is properly invertable
+   */
   public default RealFunction inverse()
   {
     return inverse(0);

@@ -45,11 +45,10 @@ public class EulerIntegrator extends
                              StochasticIntegrator
 {
 
-  /** First corporate color used for normal coloring. */
   protected static final Color COLOR1 = new Color(55,
                                                   170,
                                                   200);
-  /** Second corporate color used as signal color */
+  
   protected static final Color COLOR2 = new Color(200,
                                                   80,
                                                   75);
@@ -108,7 +107,7 @@ public class EulerIntegrator extends
                                        40.0,
                                        40.0,
                                        40.0));
-    plot.setBackground(Color.WHITE);
+    plot.setBackground(Color.BLACK);
     plot.getTitle().setText(EulerIntegrator.class.toString());
 
     // Format plot area
@@ -149,6 +148,12 @@ public class EulerIntegrator extends
     // Format axes
     AxisRenderer axisRendererX = new LinearRenderer2D();
     AxisRenderer axisRendererY = plot.getAxisRenderer(XYPlot.AXIS_Y);
+    axisRendererX.setTickColor(Color.WHITE);
+    axisRendererX.setMinorTickColor(Color.white);
+    axisRendererY.setTickColor(Color.WHITE);
+    axisRendererY.setMinorTickColor(Color.white);
+    axisRendererY.setShapeColor(Color.white);
+    axisRendererX.setShapeColor(Color.white);
     axisRendererX.setLabel(new Label("Time t"));
     plot.setAxisRenderer(XYPlot.AXIS_X, axisRendererX);
 
