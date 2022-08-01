@@ -30,7 +30,7 @@ module arb4j
   exports arb.geometry.surfaces;
   exports arb.geometry.differential;
   exports arb.geometry.differential.homotopy;
-  exports arb.domains;  
+  exports arb.domains;
   exports arb.dynamical.systems;
   exports arb.exceptions;
   exports arb.functions;
@@ -46,7 +46,7 @@ module arb4j
   exports arb.functions.complex.trigonometric;
   exports arb.groups;
   exports arb.topological;
-  exports arb.measures;  
+  exports arb.measures;
   exports arb.mechanics;
   exports arb.mechanics.classical;
   exports arb.mechanics.quantum;

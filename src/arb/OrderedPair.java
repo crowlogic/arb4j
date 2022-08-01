@@ -30,6 +30,12 @@ import arb.topological.spaces.VectorSpace;
  */
 public class OrderedPair<A, B>
 {
+  @Override
+  public String toString()
+  {
+    return String.format("OrderedPair[a=%s, b=%s]", a, b);
+  }
+
   public OrderedPair()
   {
 

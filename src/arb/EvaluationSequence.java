@@ -1,12 +1,14 @@
 package arb;
 
 import java.lang.ref.Cleaner.Cleanable;
+import java.util.Iterator;
 
 import arb.stochastic.ProbabilityDensityFunction;
 import arb.stochastic.ProbabilityDistributionFunction;
 
 public class EvaluationSequence implements
-                                Cleanable
+                                Cleanable,
+                                Iterable<RealOrderedPair>
 {
   public EvaluationSequence(RealPartition partition, Real values)
   {
@@ -15,7 +17,7 @@ public class EvaluationSequence implements
   }
 
   public RealPartition partition;
-  public Real      values;
+  public Real          values;
 
   /**
    * Populates the this{@link #values} of this {@link EvaluationSequence} with
@@ -41,6 +43,12 @@ public class EvaluationSequence implements
   public void clean()
   {
     values.close();
+  }
+
+  @Override
+  public Iterator<RealOrderedPair> iterator()
+  {
+    return new EvaluationSequenceIterator(this);
   }
 
 }

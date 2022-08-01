@@ -1,14 +1,15 @@
 package arb.stochastic.processes.integrators;
 
+import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.half;
 import static arb.FloatConstants.one;
 import static arb.RealConstants.*;
+import static arb.utensils.Utilities.println;
 
 import arb.*;
 import arb.Float;
 import arb.stochastic.GaussianProbabilityDistribution;
-import arb.stochastic.processes.DiffusionProcess;
-import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.*;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method
@@ -25,6 +26,21 @@ public class EulerIntegrator extends
                              AbstractStochasticIntegrator implements
                              StochasticIntegrator
 {
+
+  public static void main(String args[])
+  {
+    EulerIntegrator       integrator = new EulerIntegrator(new StandardGaussianProcess());
+    DiffusionProcessState state      = new DiffusionProcessState();
+    for (OrderedPair sample : integrator.integrate(state,
+                                                   new FloatInterval(0,
+                                                                     1),
+                                                   500,
+                                                   prec))
+    {
+      println(sample);
+    }
+  }
+
   public EulerIntegrator(DiffusionProcess x)
   {
     super(x);
@@ -54,6 +70,7 @@ public class EulerIntegrator extends
 
     evaluationSequence.values.stream().parallel().forEach(value -> W.sample(prec, state.randomState, value));
 
+    state.setTime(interval.getA());
     for (Real t : partition)
     {
       Real xi = x.get(++i);
@@ -71,13 +88,7 @@ public class EulerIntegrator extends
 
       if (verbose)
       {
-        System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n",
-                          i,
-                          state.getTime().toString(7),
-                          μi,
-                          σi,
-                          xi,
-                          state);
+        System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n", i, state.getTime(), μi, σi, xi, state);
       }
     }
 

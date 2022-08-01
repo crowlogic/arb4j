@@ -102,7 +102,14 @@ import java.util.ArrayList;
                          this,
                          n);
   }
-  
+
+  public RealPartition realPartition(int n, int prec)
+  {
+    return new RealPartition(this,
+                             prec,
+                             n);
+  }
+    
   public FloatInterval(Float left, Float right)
   {
     this();

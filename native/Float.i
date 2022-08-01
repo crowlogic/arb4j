@@ -30,6 +30,11 @@ import static arb.IntegerConstants.*;
 
 %typemap(javacode) arf_struct %{
 
+ static
+ {
+   System.loadLibrary( "arblib" );
+ }
+ 
   public static final int BYTES = 32;
 
   /**

@@ -53,7 +53,25 @@ public class Float implements AutoCloseable,Comparable<Float> {
   }
 
 
+ static
+ {
+   System.loadLibrary( "arblib" );
+ }
+ 
   public static final int BYTES = 32;
+
+  /**
+   * Self-referencing this{@link #add(int, int, Float)}
+   * 
+   * @param n
+   * @param precision
+   * @return this number plus n
+   */
+
+  public Float add(Float add, int prec)
+  {
+   return add( add, prec, this ); 
+  }
 
   /**
    * Self-referencing this{@link #div(int, int, Float)}
@@ -275,11 +293,6 @@ public class Float implements AutoCloseable,Comparable<Float> {
 
   public Float() {
     this(arbJNI.new_Float(), true);
-  }
-
-  public Float add(Float add, int prec)
-  {
-   return add( add, prec, this ); 
   }
 
 }
