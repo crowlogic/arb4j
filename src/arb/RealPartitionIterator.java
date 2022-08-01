@@ -20,13 +20,13 @@ public class RealPartitionIterator implements
   @Override
   public boolean hasNext()
   {
-    return i < this.partition.x.dim;
+    return i < this.partition.T.dim;
   }
 
   @Override
   public Real next()
   {
-    return this.partition.x.get(i++);
+    return this.partition.T.get(i++);
   }
 
 }

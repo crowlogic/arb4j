@@ -17,13 +17,17 @@ public class FloatIntervalTest extends
 
     try ( RealPartition partition = new RealPartition(interval,
                                                       prec,
-                                                      10000))
+                                                      10))
     {
       for (Real x : partition)
       {
         x.printPrecision = true;
         println(x);
       }
+      assertEquals(new Real("9.5 +/- 1",
+                            128),
+                   partition.T.get(9));
     }
+
   }
 }

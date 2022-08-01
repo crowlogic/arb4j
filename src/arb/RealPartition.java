@@ -1,5 +1,7 @@
 package arb;
 
+import static arb.utensils.Utilities.println;
+
 import java.io.Closeable;
 import java.lang.ref.Cleaner.Cleanable;
 import java.util.Iterator;
@@ -10,25 +12,29 @@ public class RealPartition implements
                            Cleanable,
                            Iterable<Real>
 {
-  public final Real  x;
+  public final Real  T;
 
   public final Float dt     = new Float();
   public final Float halfdt = new Float();
 
   public RealPartition(FloatInterval interval, int prec, int n)
   {
-    x = Real.newVector(n);
+    T = Real.newVector(n);
     interval.length(prec, dt).div(n, prec);
-    x.printPrecision = true;
-    dt.div(2, prec,
-           halfdt);
-    Real xi = x;
-    for (int i = 0; i < n; i++)
+    T.printPrecision = true;
+    dt.div(2, prec, halfdt);
+    Real ti = T;
+    println("halfdt=" + halfdt);
+    try ( Float t = new Float())
     {
-      xi = x.get(i);
-      xi.printPrecision = true;
-      interval.getA().add(halfdt.add(dt.mul(i, prec, xi.getMid()), prec), prec);
-      dt.getMagnitude(xi.getRad());
+      t.assign(interval.getA()).add(halfdt, prec);
+      for (int i = 0; i < n; i++)
+      {
+        ti                = T.get(i);
+        ti.printPrecision = true;
+        dt.mul(i, prec, ti.getMid()).add( halfdt, prec );
+        dt.getMagnitude(ti.getRad());
+      }
     }
   }
 
@@ -48,7 +54,7 @@ public class RealPartition implements
   @Override
   public void close()
   {
-    x.close();
+    T.close();
   }
 
 }
