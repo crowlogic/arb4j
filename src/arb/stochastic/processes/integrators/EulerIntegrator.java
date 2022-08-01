@@ -41,12 +41,12 @@ public class EulerIntegrator extends
 
     interval.length(prec, T);
 
-    Partition partition = interval.partition(n, prec);
-    state.dt.set(partition.δt);
+    RealPartition partition = interval.realPartition(n, prec);
+    state.dt.set(partition.dt);
 
     GaussianProbabilityDistribution W                  = new GaussianProbabilityDistribution(zero,
-                                                                                             partition.δt.sqrt(prec,
-                                                                                                               sqrtδt));
+                                                                                             state.dt.sqrt(prec,
+                                                                                                           sqrtδt));
 
     int                             i                  = -1;
     EvaluationSequence              evaluationSequence = new EvaluationSequence(partition,
@@ -54,13 +54,13 @@ public class EulerIntegrator extends
 
     evaluationSequence.values.stream().parallel().forEach(value -> W.sample(prec, state.randomState, value));
 
-    for (Float t : partition)
+    for (Real t : partition)
     {
       Real xi = x.get(++i);
       xi.printPrecision = true;
       state.setTime(t);
 
-      μ.evaluate(state, 1, prec, μi).mul(partition.δt, prec);
+      μ.evaluate(state, 1, prec, μi).mul(state.dt, prec);
       assert μi.isFinite();
       σ.evaluate(state, 1, prec, σi).mul(xi, prec);
       assert σi.isFinite();

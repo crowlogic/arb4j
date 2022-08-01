@@ -54,12 +54,13 @@ public class StochasticIntegrationTest extends
     Real μ               = samplePath.values.arithmeticMean(prec, new Real());
     Real sampleStdev     = samplePath.values.standardDeviation(prec, μ, new Real());
     Real populationStdev = ((AbstractStochasticIntegrator) integrator).σ.evaluate(state, 1, prec, new Real());
-
+    populationStdev.printPrecision = true;
+    sampleStdev.printPrecision = true;
     μ.printPrecision = true;
     System.out.println("       μ=" + μ);
     sampleStdev.printPrecision = true;
-    System.out.println("populationStdev=" + populationStdev.toFixedString());
-    System.out.println("    sampleStdev=" + sampleStdev.toFixedString());
+    System.out.println("populationStdev=" + populationStdev.toString());
+    System.out.println("    sampleStdev=" + sampleStdev.toString());
     double absMean = Math.abs(μ.doubleValue());
     Real   σδ      = sampleStdev.sub(populationStdev, prec).abs();
     System.out.println("σδ=" + σδ);
