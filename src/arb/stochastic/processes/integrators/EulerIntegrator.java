@@ -70,10 +70,10 @@ public class EulerIntegrator extends
                                                        prec))
     {
       println(sample);
-      data.add(sample.a.getMid().doubleValue(), sample.b.doubleValue());
+      data.add(sample.a.doubleValue(), sample.b.doubleValue());
 
     }
-            
+
     print(data);
 
   }
@@ -90,8 +90,6 @@ public class EulerIntegrator extends
     formatPlot(plot);
 
     formatAxes(plot);
-
-    //formatDataPointRenderer(linearSeries, plot);
 
     formatDataLines(linearSeries, plot);
 
@@ -143,16 +141,6 @@ public class EulerIntegrator extends
     discreteRenderer.setColor(COLOR1);
     discreteRenderer.setStroke(new BasicStroke(0.5f));
     plot.setLineRenderers(seriesLin, discreteRenderer);
- 
- 
-  }
-
-  protected static void formatDataPointRenderer(DataSeries seriesLin, XYPlot plot)
-  {
-    // Format rendering of data points
-    PointRenderer sizeablePointRenderer = new DefaultPointRenderer2D();
-    sizeablePointRenderer.setColor(COLOR1);
-    plot.setPointRenderers(seriesLin, sizeablePointRenderer);
 
   }
 
@@ -163,17 +151,17 @@ public class EulerIntegrator extends
     AxisRenderer axisRendererY = plot.getAxisRenderer(XYPlot.AXIS_Y);
     axisRendererX.setLabel(new Label("Time t"));
     plot.setAxisRenderer(XYPlot.AXIS_X, axisRendererX);
-  
+
     // Custom stroke for the x-axis
     BasicStroke stroke = new BasicStroke(0.1f);
     axisRendererX.setShapeStroke(stroke);
-    
-    Label linearAxisLabel = new Label("Xₜ");
-//    linearAxisLabel.setRotation(90);
-    
+
+    Label linearAxisLabel = new Label("Value Xₜ");
+    linearAxisLabel.setRotation(90);
+
     axisRendererY.setLabel(linearAxisLabel);
     // Change intersection point of Y axis
-    //axisRendererY.setIntersection(1.0);
+    axisRendererY.setIntersection(1.0);
     axisRendererY.setTicksAutoSpaced(true);
     axisRendererX.setTicksAutoSpaced(false);
     // Change tick spacing
@@ -207,7 +195,7 @@ public class EulerIntegrator extends
     EvaluationSequence              evaluationSequence = new EvaluationSequence(partition,
                                                                                 x);
 
-    evaluationSequence.values.stream().parallel().forEach(value -> W.sample(prec, state.randomState, value));
+    evaluationSequence.generateRandomSamples(W, state.randomState, prec);
 
     state.setTime(interval.getA());
     for (Real t : partition)
