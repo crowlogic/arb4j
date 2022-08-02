@@ -258,12 +258,12 @@ import java.util.stream.StreamSupport;
   {
     if ( swigCMemOwn )
     {
+      swigCMemOwn = false;    
       arb_clear(this);
       for ( int i = 2; i < dim; i++ )
       {
         get(i).clear();
       }
-      swigCMemOwn = false;
     }
     return this;
   }
