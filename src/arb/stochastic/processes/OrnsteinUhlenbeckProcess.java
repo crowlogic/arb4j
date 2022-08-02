@@ -27,17 +27,16 @@ import arb.stochastic.*;
  * also be considered as the continuous-time analog of the discrete-time
  * autoregressive process of order 1. process.
  * 
- * The stochastic differential equation it satisifies is
+ * The stochastic differential equation it satisfies is
  * 
  * <pre>
- *   dXₜ = θ*(μ-Xₜ)dt+σdWₜ
+ * dXₜ = λ * (θ - Xₜ) * dt + σ * dWₜ
  * </pre>
  * 
- * where the parameters are this{@link #θ}, this{@link #μ}, and this{@link #σ}
- *  /**
-   * Test 
- * <a href=
- * "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process">Wikipedia</a>
+ * where the parameters are this{@link #λ}, this{@link #θ}, and this{@link #σ}
+ * 
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process">Wikipedia</a>
  */
 public class OrnsteinUhlenbeckProcess implements
                                       DiffusionProcess,
@@ -47,35 +46,44 @@ public class OrnsteinUhlenbeckProcess implements
   @Override
   public String toString()
   {
-    return String.format("OrnsteinUhlenbeckProcess[mean μ=%s, μ-reversion rate θ=%s, stdev σ=%s]", μ, θ, σ);
+    return String.format("OrnsteinUhlenbeckProcess[ergodic mean θ=%s, mean-reversion rate λ=%s, stdev σ=%s]",
+                         θ,
+                         λ,
+                         σ);
   }
 
   /**
    * mean-reversion rate
    */
-  public Real θ = new Real();
+  public Real λ = new Real();
 
   /**
    * ergodic long-term asymptotic limiting mean around which the values of the
    * process vary
    */
-  public Real μ = new Real();
+  public Real θ = new Real();
 
   /**
    * standard deviation, the square root of the variance of this process
    */
   public Real σ = new Real();
 
-  public OrnsteinUhlenbeckProcess(Real θ, Real μ, Real σ)
+  /**
+   * 
+   * @param λ mean-reversion rate
+   * @param θ ergodic mean
+   * @param σ standard deviation, square root of variance
+   */
+  public OrnsteinUhlenbeckProcess(Real λ, Real θ, Real σ)
   {
     super();
+    this.λ = λ;
     this.θ = θ;
-    this.μ = μ;
     this.σ = σ;
   }
 
   /**
-   * @return θ*(μ-Xₜ)
+   * @return [λ*(θ-Xₜ) , -λ ]
    */
   @Override
   public DriftCoeffecientFunction<DiffusionProcessState> μ()
@@ -83,12 +91,17 @@ public class OrnsteinUhlenbeckProcess implements
     return (state, order, prec, result) ->
     {
       assert order <= 2;
-      return θ.mul(μ.sub(state.value, prec, result), prec, result);
+      λ.mul(θ.sub(state.value, prec, result), prec, result);
+      if (order >= 2)
+      {
+        result.get(1).set(λ).neg();
+      }
+      return result;
     };
   }
 
   /**
-   * @return σ
+   * @return [σ, 0]
    */
   @Override
   public DiffusionCoeffecientFunction<DiffusionProcessState> σ()
@@ -96,7 +109,12 @@ public class OrnsteinUhlenbeckProcess implements
     return (state, order, prec, result) ->
     {
       assert order <= 2;
-      return result.set(σ);
+      result.set(σ);
+      if (order >= 2)
+      {
+        result.get(1).zero();
+      }
+      return result;
     };
   }
 
@@ -109,8 +127,8 @@ public class OrnsteinUhlenbeckProcess implements
   @Override
   public void close()
   {
+    λ.close();
     θ.close();
-    μ.close();
     σ.close();
   }
 

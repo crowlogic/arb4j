@@ -2,27 +2,29 @@ package arb.stochastic.processes.integrators;
 
 import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.half;
-import static arb.RealConstants.one;
-import static arb.RealConstants.zero;
-import static arb.utensils.Utilities.*;
+import static arb.RealConstants.*;
+import static arb.utensils.Utilities.println;
 
 import java.awt.*;
-import java.awt.geom.*;
+import java.awt.geom.Point2D;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import arb.*;
 import arb.Float;
-import arb.stochastic.*;
+import arb.stochastic.GaussianProbabilityDistribution;
 import arb.stochastic.processes.*;
-import arb.utensils.*;
-import de.erichseifert.gral.data.*;
-import de.erichseifert.gral.graphics.*;
+import arb.utensils.Utilities;
+import de.erichseifert.gral.data.DataSeries;
+import de.erichseifert.gral.data.DataTable;
+import de.erichseifert.gral.graphics.Insets2D;
 import de.erichseifert.gral.graphics.Label;
-import de.erichseifert.gral.plots.*;
-import de.erichseifert.gral.plots.axes.*;
-import de.erichseifert.gral.plots.lines.*;
-import de.erichseifert.gral.ui.*;
+import de.erichseifert.gral.plots.XYPlot;
+import de.erichseifert.gral.plots.axes.AxisRenderer;
+import de.erichseifert.gral.plots.axes.LinearRenderer2D;
+import de.erichseifert.gral.plots.lines.AbstractLineRenderer2D;
+import de.erichseifert.gral.plots.lines.SmoothLineRenderer2D;
+import de.erichseifert.gral.ui.InteractivePanel;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method
@@ -49,29 +51,36 @@ public class EulerIntegrator extends
 
   public static void main(String args[])
   {
-    EulerIntegrator       integrator = new EulerIntegrator(new GeometricBrownianMotion(new Real("-0.5",
-                                                                                                128),
-                                                                                       one));
-    DiffusionProcessState state      = new DiffusionProcessState(one);
-
-    // Generate data
-    DataTable             data       = new DataTable(Double.class,
-                                                     Double.class);
-
-    EvaluationSequence    path       = integrator.integrate(state,
-                                                            new FloatInterval(0,
-                                                                              1),
-                                                            500,
-                                                            prec);
-
-    for (RealOrderedPair sample : path)
+   
+    OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(new Real("1.5",
+                                                                             128),
+                                                                    new Real("2",
+                                                                             128),
+                                                                    new Real("0.1",
+                                                                             128));
+    try ( EulerIntegrator integrator = new EulerIntegrator(process))
     {
-      data.add(sample.a.doubleValue(), sample.b.doubleValue());
+      DiffusionProcessState state = new DiffusionProcessState(process.θ);
+
+      // Generate data
+      DataTable             data  = new DataTable(Double.class,
+                                                  Double.class);
+
+      EvaluationSequence    path  = integrator.integrate(state,
+                                                         new FloatInterval(0,
+                                                                           5),
+                                                         750,
+                                                         prec);
+
+      for (RealOrderedPair sample : path)
+      {
+        data.add(sample.a.doubleValue(), sample.b.doubleValue());
+      }
+
+      print(data);
+
+      println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
     }
-
-    print(data);
-
-    println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
 
   }
 
@@ -92,8 +101,8 @@ public class EulerIntegrator extends
 
     // Add plot to Swing component
     Utilities.openInJFrame(new InteractivePanel(plot),
+                           1900,
                            800,
-                           600,
                            EulerIntegrator.class.toString(),
                            JFrame.EXIT_ON_CLOSE);
   }

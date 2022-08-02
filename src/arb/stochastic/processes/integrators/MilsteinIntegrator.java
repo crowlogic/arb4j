@@ -1,11 +1,14 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.FloatConstants.*;
+import static arb.ComplexConstants.prec;
+import static arb.FloatConstants.one;
+import static arb.utensils.Utilities.println;
 
 import arb.*;
 import arb.Float;
-import arb.dynamical.systems.*;
+import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 import arb.stochastic.processes.*;
+import de.erichseifert.gral.data.DataTable;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -32,6 +35,43 @@ public class MilsteinIntegrator extends
                                 EulerIntegrator implements
                                 AutoCloseable
 {
+
+  public static void main(String args[])
+  {
+
+    OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(new Real("1.2",
+                                                                             128),
+                                                                    new Real("2",
+                                                                             128),
+                                                                    new Real("0.7",
+                                                                             128));
+    try ( MilsteinIntegrator integrator = new MilsteinIntegrator(process))
+    {
+      DiffusionProcessState state = new DiffusionProcessState(new Real("3",
+                                                                       128));
+
+      // Generate data
+      DataTable             data  = new DataTable(Double.class,
+                                                  Double.class);
+
+      EvaluationSequence    path  = integrator.integrate(state,
+                                                         new FloatInterval(0,
+                                                                           5),
+                                                         750,
+                                                         prec);
+
+      for (RealOrderedPair sample : path)
+      {
+        data.add(sample.a.doubleValue(), sample.b.doubleValue());
+      }
+
+      print(data);
+
+      println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
+    }
+
+  }
+
   @Override
   public void close()
   {
