@@ -26,9 +26,22 @@ public class DiffusionProcessState implements
     value.printPrecision = true;
   }
 
+  /**
+   * initialize with a randomly generated initial value seed
+   */
   public DiffusionProcessState()
   {
     this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
+  }
+
+  /**
+   * initialize with a randomly generated initial value seed and call
+   * this{@link #setValue(Real)} to set the initial value of the process
+   */
+  public DiffusionProcessState(Real S0)
+  {
+    this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
+    setValue(S0);
   }
 
   public final RandomState randomState;
@@ -84,7 +97,8 @@ public class DiffusionProcessState implements
   public synchronized DiffusionProcessState setTime(Real t)
   {
     assert !prevTime.isFinite()
-                  || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation";
+                  || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time="
+                                + time + " prevTime=" + prevTime;
     prevTime.set(time);
     time.set(t);
     return this;

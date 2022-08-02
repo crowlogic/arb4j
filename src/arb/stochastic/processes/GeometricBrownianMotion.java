@@ -1,5 +1,8 @@
 package arb.stochastic.processes;
 
+import static arb.RealConstants.zero;
+import static arb.RealConstants.one;
+
 import arb.Real;
 
 /**
@@ -13,7 +16,7 @@ public class GeometricBrownianMotion implements
 
   public GeometricBrownianMotion()
   {
-
+    this(zero,one);
   }
 
   public GeometricBrownianMotion(Real mean, Real stdev)

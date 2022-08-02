@@ -2,13 +2,12 @@ package arb.stochastic.processes.integrators;
 
 import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.*;
+import static arb.RealConstants.one;
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.JFrame;
 
@@ -21,13 +20,12 @@ import de.erichseifert.gral.data.DataSeries;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.graphics.Insets2D;
 import de.erichseifert.gral.graphics.Label;
-import de.erichseifert.gral.graphics.Orientation;
 import de.erichseifert.gral.plots.XYPlot;
-import de.erichseifert.gral.plots.axes.*;
-import de.erichseifert.gral.plots.lines.*;
-import de.erichseifert.gral.plots.points.*;
+import de.erichseifert.gral.plots.axes.AxisRenderer;
+import de.erichseifert.gral.plots.axes.LinearRenderer2D;
+import de.erichseifert.gral.plots.lines.AbstractLineRenderer2D;
+import de.erichseifert.gral.plots.lines.SmoothLineRenderer2D;
 import de.erichseifert.gral.ui.InteractivePanel;
-import de.erichseifert.gral.util.GraphicsUtils;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method
@@ -48,32 +46,36 @@ public class EulerIntegrator extends
   protected static final Color COLOR1 = new Color(55,
                                                   170,
                                                   200);
-  
+
   protected static final Color COLOR2 = new Color(200,
                                                   80,
                                                   75);
 
   public static void main(String args[])
   {
-    EulerIntegrator       integrator = new EulerIntegrator(new StandardGaussianProcess());
-    DiffusionProcessState state      = new DiffusionProcessState();
+    EulerIntegrator       integrator = new EulerIntegrator(new GeometricBrownianMotion(new Real("-0.5",
+                                                                                                128),
+                                                                                       one));
+    DiffusionProcessState state      = new DiffusionProcessState(one);
 
     // Generate data
     DataTable             data       = new DataTable(Double.class,
                                                      Double.class);
 
-    for (RealOrderedPair sample : integrator.integrate(state,
-                                                       new FloatInterval(0,
-                                                                         1),
-                                                       500,
-                                                       prec))
-    {
-      println(sample);
-      data.add(sample.a.doubleValue(), sample.b.doubleValue());
+    EvaluationSequence    path       = integrator.integrate(state,
+                                                            new FloatInterval(0,
+                                                                              1),
+                                                            500,
+                                                            prec);
 
+    for (RealOrderedPair sample : path)
+    {
+      data.add(sample.a.doubleValue(), sample.b.doubleValue());
     }
 
     print(data);
+
+    println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
 
   }
 
@@ -184,7 +186,7 @@ public class EulerIntegrator extends
   {
     // x is the set of values of the evaluation sequence which is a Partition
     // together with a set of values for each element of the partition
-
+    assert !state.value().isZero() : "state.value must be strictly positive";
     Real x = Real.newVector(n + 1);
 
     interval.length(prec, T);
@@ -209,14 +211,25 @@ public class EulerIntegrator extends
       xi.printPrecision = true;
       state.setTime(t);
 
-      μ.evaluate(state, 1, prec, μi).mul(state.dt, prec);
+      μ.evaluate(state, 1, prec, μi);
+      μi.mul(state.dt, prec);
       assert μi.isFinite();
-      σ.evaluate(state, 1, prec, σi).mul(xi, prec);
+
+      σ.evaluate(state, 1, prec, σi);
+      assert !σi.isZero();
       assert σi.isFinite();
+
+      if (verbose)
+      {
+        println("i=" + " xi=" + xi + " μi=" + μi + " σi=" + σi);
+      }
+      σi.mul(xi, prec);
 
       // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
       // W=N(0,√(δt))
-      state.setValue(μi.add(σi, prec, xi).add(state.value(), prec));
+      μi.add(σi, prec, xi);
+
+      state.setValue(xi.add(state.value(), prec));
 
       if (verbose)
       {
@@ -231,7 +244,7 @@ public class EulerIntegrator extends
   @Override
   public Float weakConvergenceOrder()
   {
-    return one;
+    return FloatConstants.one;
   }
 
   @Override
