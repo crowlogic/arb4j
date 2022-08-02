@@ -1,6 +1,9 @@
 package arb.dynamical.systems;
 
-public interface DiscreteTimeDynamicalSystem extends
-                                             DynamicalSystem
+import arb.*;
+
+public interface DiscreteTimeDynamicalSystem<S extends State> extends
+                                            DynamicalSystem
 {
+  public EvaluationSequence evolve(S state, int prec, EvaluationSequence evalSeq);
 }

@@ -1,31 +1,28 @@
 package arb.stochastic.processes.integrators;
 
 import static arb.ComplexConstants.prec;
-import static arb.FloatConstants.*;
+import static arb.FloatConstants.half;
 import static arb.RealConstants.one;
 import static arb.RealConstants.zero;
-import static arb.utensils.Utilities.println;
+import static arb.utensils.Utilities.*;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import arb.*;
 import arb.Float;
-import arb.stochastic.GaussianProbabilityDistribution;
+import arb.stochastic.*;
 import arb.stochastic.processes.*;
-import arb.utensils.Utilities;
-import de.erichseifert.gral.data.DataSeries;
-import de.erichseifert.gral.data.DataTable;
-import de.erichseifert.gral.graphics.Insets2D;
+import arb.utensils.*;
+import de.erichseifert.gral.data.*;
+import de.erichseifert.gral.graphics.*;
 import de.erichseifert.gral.graphics.Label;
-import de.erichseifert.gral.plots.XYPlot;
-import de.erichseifert.gral.plots.axes.AxisRenderer;
-import de.erichseifert.gral.plots.axes.LinearRenderer2D;
-import de.erichseifert.gral.plots.lines.AbstractLineRenderer2D;
-import de.erichseifert.gral.plots.lines.SmoothLineRenderer2D;
-import de.erichseifert.gral.ui.InteractivePanel;
+import de.erichseifert.gral.plots.*;
+import de.erichseifert.gral.plots.axes.*;
+import de.erichseifert.gral.plots.lines.*;
+import de.erichseifert.gral.ui.*;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method
@@ -39,8 +36,7 @@ import de.erichseifert.gral.ui.InteractivePanel;
  * the time elapsed
  */
 public class EulerIntegrator extends
-                             AbstractStochasticIntegrator implements
-                             StochasticIntegrator
+                             AbstractStochasticIntegrator<DiffusionProcessState>
 {
 
   protected static final Color COLOR1 = new Color(55,
@@ -186,7 +182,6 @@ public class EulerIntegrator extends
   {
     // x is the set of values of the evaluation sequence which is a Partition
     // together with a set of values for each element of the partition
-    Real x = Real.newVector(n + 1);
 
     interval.length(prec, T);
 
@@ -197,47 +192,53 @@ public class EulerIntegrator extends
                                                                                              state.dt.sqrt(prec,
                                                                                                            sqrtδt));
 
-    int                             i                  = -1;
     EvaluationSequence              evaluationSequence = new EvaluationSequence(partition,
-                                                                                x);
+                                                                                Real.newVector(n));
 
     evaluationSequence.generateRandomSamples(W, state.randomState, prec);
 
     state.setTime(interval.getA());
     for (Real t : partition)
     {
-      Real xi = x.get(++i);
-      xi.printPrecision = true;
-      state.setTime(t);
-
-      μ.evaluate(state, 1, prec, μi);
-      μi.mul(state.dt, prec);
-      assert μi.isFinite();
-
-      σ.evaluate(state, 1, prec, σi);
-      assert !σi.isZero();
-      assert σi.isFinite();
-
-      if (verbose)
-      {
-        println("i=" + " xi=" + xi + " μi=" + μi + " σi=" + σi);
-      }
-      σi.mul(xi, prec);
-
-      // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
-      // W=N(0,√(δt))
-      μi.add(σi, prec, xi);
-
-      state.setValue(xi.add(state.value(), prec));
-
-      if (verbose)
-      {
-        System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n", i, state.time(), μi, σi, xi, state);
-      }
+      evolve(state.setTime(t), prec, evaluationSequence);
     }
 
     return evaluationSequence;
 
+  }
+
+  @Override
+  public EvaluationSequence evolve(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
+  {
+    Real xi = evaluationSequence.values.get(++evaluationSequence.i);
+    xi.printPrecision = true;
+
+    μ.evaluate(state, 1, prec, μi);
+    μi.mul(state.dt, prec);
+    assert μi.isFinite();
+
+    σ.evaluate(state, 1, prec, σi);
+    assert !σi.isZero();
+    assert σi.isFinite();
+
+    if (verbose)
+    {
+      println("i=" + " xi=" + xi + " μi=" + μi + " σi=" + σi);
+    }
+    σi.mul(xi, prec);
+
+    // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
+    // W=N(0,√(δt))
+    μi.add(σi, prec, xi);
+
+    state.setValue(xi.add(state.value(), prec));
+
+    if (verbose)
+    {
+      System.out.format(" time=%s μi=%s σi=%s xi=%s\n state=%s\n", state.time(), μi, σi, xi, state);
+    }
+
+    return evaluationSequence;
   }
 
   @Override

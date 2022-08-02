@@ -4,12 +4,13 @@ import java.lang.ref.Cleaner.Cleanable;
 
 import arb.Float;
 import arb.Real;
+import arb.dynamical.systems.*;
 import arb.stochastic.processes.*;
 
-public abstract class AbstractStochasticIntegrator implements
-                                                   StochasticIntegrator,
-                                                   AutoCloseable,
-                                                   Cleanable
+public abstract class AbstractStochasticIntegrator<S extends State> implements
+                                                  StochasticIntegrator<S>,
+                                                  AutoCloseable,
+                                                  Cleanable
 {
 
   public DiffusionProcess                                       X;

@@ -2,11 +2,11 @@ package arb.stochastic.processes.integrators;
 
 import arb.*;
 import arb.Float;
-import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
+import arb.dynamical.systems.*;
 import arb.stochastic.processes.DiffusionProcessState;
 
-public interface StochasticIntegrator extends
-                                      DiscreteTimeDynamicalSystem
+public interface StochasticIntegrator<S extends State> extends 
+                                      DiscreteTimeDynamicalSystem<S>
 {
 
   /**
