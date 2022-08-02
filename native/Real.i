@@ -22,12 +22,45 @@ import java.util.stream.StreamSupport;
 %typemap(javacode) arb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  /**
+   * Self-referencing this{@link #add(int, int, Real)}
+   * 
+   * @param i
+   * @param prec
+   * @return
+   */
+  public Real add(int i, int prec)
+  {
+    return add(i, prec, this);
+  }
+
   public Real sub(int x, int prec, Real res)
   {
     arb.arb_sub_si(res, this, x, prec);
     return res;
   }
 
+  /**
+   * Add an integer to this
+   * 
+   * @param d    possibly signed integer to add
+   * @param prec precision
+   * @param res  where to store the result
+   * @return the result of the addition
+   */
+  public Real add(int d, int prec, Real res)
+  {
+    if (d > 0)
+    {
+      arb.arb_add_ui(res, this, d, prec);
+    }
+    else if (d < 0)
+    {
+      arb.arb_sub_ui(res, this, -d, prec);
+    }
+    return res;
+  }
+  
   public Real sub(int i, int prec)
   {
     return sub(i,prec,this);
