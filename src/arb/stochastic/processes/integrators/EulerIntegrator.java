@@ -193,7 +193,7 @@ public class EulerIntegrator extends
                                                                                                            sqrtδt));
 
     EvaluationSequence              evaluationSequence = new EvaluationSequence(partition,
-                                                                                Real.newVector(n));
+                                                                                Real.newVector(n + 1));
 
     evaluationSequence.generateRandomSamples(W, state.randomState, prec);
 

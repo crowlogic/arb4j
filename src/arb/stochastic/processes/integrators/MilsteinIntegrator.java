@@ -48,6 +48,7 @@ public class MilsteinIntegrator extends
     assert μi.isFinite();
     σ.evaluate(state, 2, prec, σi).mul(xi, prec).mul(sqrtδt, prec);
     assert σi.isFinite();
+    // 2nd order correction
     σi.mul(σi.get(1), prec, σσi).mul(state.dt, prec).div(2, prec).mul(xi.pow(2, prec).sub(1, prec), prec);
 
     // the derivative is in σi.get(1) .. the 2nd
