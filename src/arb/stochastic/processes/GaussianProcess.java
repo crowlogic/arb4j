@@ -1,9 +1,9 @@
 package arb.stochastic.processes;
 
-import arb.functions.real.ErrorFunction;
+import arb.functions.real.*;
 import arb.stochastic.*;
-import arb.theoretical.ProbabilityTheory;
-import arb.topological.Space;
+import arb.theoretical.*;
+import arb.topological.*;
 
 /**
  * In {@link ProbabilityTheory} and statistics, a {@link GaussianProcess} is a
@@ -35,9 +35,8 @@ import arb.topological.Space;
  * @param <F>
  * @param <C>
  */
-public interface GaussianProcess<P extends ProbabilityDensityFunction, F extends ProbabilityDistributionFunction, C extends CharacteristicFunction>
-                                extends
-                                LévyProcess<P, F, C>
+public interface GaussianProcess extends
+                                 LévyProcess
 {
 
 }

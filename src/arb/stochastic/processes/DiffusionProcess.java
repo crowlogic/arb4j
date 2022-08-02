@@ -1,5 +1,6 @@
 package arb.stochastic.processes;
 
+import arb.dynamical.systems.*;
 import arb.stochastic.*;
 
 /**
@@ -34,20 +35,20 @@ import arb.stochastic.*;
  *      for references
  *
  */
-public interface DiffusionProcess<P extends ProbabilityDensityFunction, F extends ProbabilityDistributionFunction, C extends CharacteristicFunction>
+public interface DiffusionProcess<S extends State>
                                  extends
-                                 StochasticProcess<P, F, C>
+                                 StochasticProcess
 {
   /**
    * 
    * @return the drift coefficient function
    */
-  public DriftCoeffecientFunction μ();
+  public DriftCoeffecientFunction<S> μ();
 
   /**
    * 
    * @return the diffusion coefficient function
    */
-  public DiffusionCoeffecientFunction σ();
+  public DiffusionCoeffecientFunction<S> σ();
 
 }

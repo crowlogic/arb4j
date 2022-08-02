@@ -14,9 +14,9 @@ import arb.stochastic.*;
  * @param <F>
  * @param <C>
  */
-public interface MarkovProcess<P extends ProbabilityDensityFunction, F extends ProbabilityDistributionFunction, C extends CharacteristicFunction>
+public interface MarkovProcess
                               extends
-                              StochasticProcess<P, F, C>
+                              StochasticProcess
 {
 
 }

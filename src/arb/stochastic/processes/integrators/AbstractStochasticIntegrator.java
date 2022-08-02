@@ -12,14 +12,14 @@ public abstract class AbstractStochasticIntegrator implements
                                                    Cleanable
 {
 
-  public DiffusionProcess                X;
-  public boolean                         verbose = false;
-  protected DriftCoeffecientFunction     μ;
-  protected DiffusionCoeffecientFunction σ;
-  protected Float                        T       = new Float();
-  protected Real                         μi      = new Real();
-  protected Real                         σi      = Real.newVector(2);
-  protected Real                         sqrtδt  = new Real();
+  public DiffusionProcess                                       X;
+  public boolean                                                verbose = false;
+  protected DriftCoeffecientFunction<DiffusionProcessState>     μ;
+  protected DiffusionCoeffecientFunction<DiffusionProcessState> σ;
+  protected Float                                               T       = new Float();
+  protected Real                                                μi      = new Real();
+  protected Real                                                σi      = Real.newVector(2);
+  protected Real                                                sqrtδt  = new Real();
 
   public AbstractStochasticIntegrator(DiffusionProcess x)
   {

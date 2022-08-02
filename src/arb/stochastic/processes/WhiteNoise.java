@@ -62,7 +62,7 @@ public class WhiteNoise implements
   }
 
   @Override
-  public DriftCoeffecientFunction μ()
+  public DriftCoeffecientFunction<DiffusionProcessState> μ()
   {
     return (state, order, precision, result) ->
     {
@@ -71,7 +71,7 @@ public class WhiteNoise implements
   }
 
   @Override
-  public DiffusionCoeffecientFunction σ()
+  public DiffusionCoeffecientFunction<DiffusionProcessState> σ()
   {
     return (state, order, precision, result) ->
     {

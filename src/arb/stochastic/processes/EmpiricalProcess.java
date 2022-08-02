@@ -1,7 +1,5 @@
 package arb.stochastic.processes;
 
-import arb.stochastic.*;
-
 /**
  * An empirical process is a {@link StochasticProcess} that describes the
  * proportion of objects in a system in a given state. For a process in a
@@ -15,7 +13,7 @@ import arb.stochastic.*;
  * @see <a href="https://en.wikipedia.org/wiki/Empirical_process">Wikipedia</a>
  */
 public interface EmpiricalProcess extends
-                                  StochasticProcess<ProbabilityDensityFunction, ProbabilityDistributionFunction<ProbabilityDensityFunction>, CharacteristicFunction<ProbabilityDensityFunction>>
+                                  StochasticProcess
 {
 
 }

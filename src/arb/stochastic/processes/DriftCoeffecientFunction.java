@@ -1,7 +1,9 @@
 package arb.stochastic.processes;
 
-public interface DriftCoeffecientFunction extends
-                                          CoeffecientFunction
+import arb.dynamical.systems.*;
+
+public interface DriftCoeffecientFunction<S extends State> extends
+                                         CoeffecientFunction<S>
 {
 
 }

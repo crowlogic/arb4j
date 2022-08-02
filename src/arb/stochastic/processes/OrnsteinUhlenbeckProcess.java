@@ -78,7 +78,7 @@ public class OrnsteinUhlenbeckProcess implements
    * @return θ*(μ-Xₜ)
    */
   @Override
-  public DriftCoeffecientFunction μ()
+  public DriftCoeffecientFunction<DiffusionProcessState> μ()
   {
     return (state, order, prec, result) ->
     {
@@ -91,7 +91,7 @@ public class OrnsteinUhlenbeckProcess implements
    * @return σ
    */
   @Override
-  public DiffusionCoeffecientFunction σ()
+  public DiffusionCoeffecientFunction<DiffusionProcessState> σ()
   {
     return (state, order, prec, result) ->
     {
