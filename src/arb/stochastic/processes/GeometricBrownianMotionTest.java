@@ -1,5 +1,6 @@
 package arb.stochastic.processes;
 
+import static arb.RealConstants.*;
 import static arb.utensils.Utilities.println;
 
 import arb.*;
@@ -16,7 +17,7 @@ public class GeometricBrownianMotionTest extends
     try ( EulerIntegrator integrator = new EulerIntegrator(gbm))
     {
       DiffusionProcessState state              = new DiffusionProcessState();
-
+      state.setValue(one);
       EvaluationSequence    evaluationSequence = integrator.integrate(state,
                                                                       new FloatInterval(0,
                                                                                         1),

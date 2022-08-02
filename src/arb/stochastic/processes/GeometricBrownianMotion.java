@@ -46,6 +46,7 @@ public class GeometricBrownianMotion implements
   {
     return (state, order, prec, result) ->
     {
+      assert !state.value().isZero() : "state.value must be strictly positive";
       Real Sₜ = state.value;
       return σ.mul(Sₜ, prec, result);
     };

@@ -186,7 +186,6 @@ public class EulerIntegrator extends
   {
     // x is the set of values of the evaluation sequence which is a Partition
     // together with a set of values for each element of the partition
-    assert !state.value().isZero() : "state.value must be strictly positive";
     Real x = Real.newVector(n + 1);
 
     interval.length(prec, T);
