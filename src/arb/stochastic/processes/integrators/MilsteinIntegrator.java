@@ -4,6 +4,7 @@ import static arb.FloatConstants.*;
 
 import arb.*;
 import arb.Float;
+import arb.dynamical.systems.*;
 import arb.stochastic.processes.*;
 
 /**
@@ -16,9 +17,11 @@ import arb.stochastic.processes.*;
  * where σ(Xₜ)∂Xₜ is the derivative of σ relative to X, not t; and Bₜ is a
  * BrownianMotion also-known-as a WienerProcess having zero mean drift and
  * standard deviation parameter σ=√(dt) such that the variance is dt, the time
- * elapsed. This method is only applicable to processes whose drift and
- * diffusions do not *directly* depend on t. TODO: find a way to assert this, at
- * compile-time preferably. <br>
+ * elapsed between invocations of
+ * {@link DiscreteTimeDynamicalSystem}{@link #jump(DiffusionProcessState, int, EvaluationSequence)}.
+ * This method is only applicable to processes whose drift and diffusions do not
+ * *directly* depend on t. TODO: find a way to assert this, at compile-time
+ * preferably. <br>
  * <br>
  * 
  * The key to the Milstein scheme is that the accuracy of the discretization is
