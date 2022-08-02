@@ -13,7 +13,7 @@ import arb.stochastic.*;
  * and George Eugene Uhlenbeck.
  * 
  * The Ornstein–Uhlenbeck process is a stationary {@link GaussMarkovProcess},
- * which means that it is a {@link GaussianProcess}, a {@link MarkovProcess#},
+ * which means that it is a {@link GaussianProcess}, a {@link MarkovProcess},
  * and is temporally homogeneous. In fact, it is the <b>only</b> nontrivial
  * process that satisfies these three conditions, up to allowing linear
  * transformations of the space and time variables. Over time, the process tends
