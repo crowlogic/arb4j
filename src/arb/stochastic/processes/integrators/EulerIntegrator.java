@@ -109,7 +109,7 @@ public class EulerIntegrator extends
                                        40.0,
                                        40.0,
                                        40.0));
-    plot.setBackground(Color.BLACK);
+    plot.setBackground(Color.GRAY);
     plot.getTitle().setText(EulerIntegrator.class.toString());
 
     // Format plot area
