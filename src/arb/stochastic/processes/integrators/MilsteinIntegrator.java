@@ -39,7 +39,7 @@ public class MilsteinIntegrator extends
   Real σσi = new Real();
 
   @Override
-  public EvaluationSequence evolve(DiffusionProcessState state, int prec, EvaluationSequence evalSequence)
+  public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evalSequence)
   {
     Real xi = evalSequence.values.get(++evalSequence.i); // xi is the i-th sample from a standard normal distribution
     xi.printPrecision = true;
