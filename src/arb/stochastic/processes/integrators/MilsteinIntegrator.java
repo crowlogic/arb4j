@@ -1,12 +1,10 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.FloatConstants.one;
+import static arb.FloatConstants.*;
 
 import arb.*;
 import arb.Float;
-import arb.stochastic.StandardGaussianDistribution;
-import arb.stochastic.processes.DiffusionProcess;
-import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.*;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -28,75 +26,58 @@ import arb.stochastic.processes.DiffusionProcessState;
  * via Itō’s lemma.
  */
 public class MilsteinIntegrator extends
-                                EulerIntegrator
+                                EulerIntegrator implements
+                                AutoCloseable
 {
+  @Override
+  public void close()
+  {
+    super.close();
+    σσi.close();
+  }
+
+  Real σσi = new Real();
+
+  @Override
+  public EvaluationSequence evolve(DiffusionProcessState state, int prec, EvaluationSequence evalSequence)
+  {
+    Real xi = evalSequence.values.get(++evalSequence.i); // xi is the i-th sample from a standard normal distribution
+    xi.printPrecision = true;
+
+    μ.evaluate(state, 1, prec, μi).mul(state.dt, prec);
+    assert μi.isFinite();
+    σ.evaluate(state, 2, prec, σi).mul(xi, prec).mul(sqrtδt, prec);
+    assert σi.isFinite();
+    σi.mul(σi.get(1), prec, σσi).mul(state.dt, prec).div(2, prec).mul(xi.pow(2, prec).sub(1, prec), prec);
+
+    // the derivative is in σi.get(1) .. the 2nd
+    // order to be added is ( (Zₜ)² - 1 ) * ( dt * σ(Xₜ)∂Xₜ * σ(Xₜ) ) / 2 where
+    // σ(Xₜ)∂Xₜ is the derivative of σ relative to X, which is a function of t,
+    // but this method will not work if either coefficient function depends directly
+    // on t
+
+    // xi = xi + μi * δt + σi * Z + ( dt * δσi * σi ) * ( (Zₜ)² - 1 ) / 2
+    // where Z is a drawn from a standard Gaussian N(0,1) and xi is the value of Xₜ
+    // at the i-th element of the partition of the interval of integration
+    state.setValue(μi.add(σi, prec, xi).add(σσi, prec).add(state.value(), prec));
+
+    if (verbose)
+    {
+      System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n",
+                        evalSequence.i,
+                        state.time().toString(7),
+                        μi,
+                        σi,
+                        xi,
+                        state);
+    }
+
+    return evalSequence;
+  }
 
   public MilsteinIntegrator(DiffusionProcess x)
   {
     super(x);
-  }
-
-  @Override
-  public EvaluationSequence integrate(DiffusionProcessState state, FloatInterval interval, int n, int prec)
-  {
-    // x is the set of values of the evaluation sequence which is a Partition
-    // together with a set of values for each element of the partition
-
-    Real x = Real.newVector(n + 1);
-
-    interval.length(prec, T);
-
-    RealPartition partition = interval.realPartition(n, prec);
-    state.dt.set(partition.dt).sqrt(prec, sqrtδt);
-
-    StandardGaussianDistribution W                  = new StandardGaussianDistribution();
-
-    int                          i                  = -1;
-    EvaluationSequence           evaluationSequence = new EvaluationSequence(partition,
-                                                                             x);
-
-    evaluationSequence.generateRandomSamples(W, state.randomState, prec);
-
-    try ( Real σσi = new Real();)
-    {
-      for (Real t : partition)
-      {
-        state.setTime(t);
-        Real xi = x.get(++i); // xi is the i-th sample from a standard normal distribution
-        xi.printPrecision = true;
-
-        μ.evaluate(state, 1, prec, μi).mul(state.dt, prec);
-        assert μi.isFinite();
-        σ.evaluate(state, 2, prec, σi).mul(xi, prec).mul(sqrtδt, prec);
-        assert σi.isFinite();
-        σi.mul(σi.get(1), prec, σσi).mul(state.dt, prec).div(2, prec).mul(xi.pow(2, prec).sub(1, prec), prec);
-
-        // the derivative is in σi.get(1) .. the 2nd
-        // order to be added is ( (Zₜ)² - 1 ) * ( dt * σ(Xₜ)∂Xₜ * σ(Xₜ) ) / 2 where
-        // σ(Xₜ)∂Xₜ is the derivative of σ relative to X, which is a function of t,
-        // but this method will not work if either coefficient function depends directly
-        // on t
-
-        // xi = xi + μi * δt + σi * Z + ( dt * δσi * σi ) * ( (Zₜ)² - 1 ) / 2
-        // where Z is a drawn from a standard Gaussian N(0,1) and xi is the value of Xₜ
-        // at the i-th element of the partition of the interval of integration
-        state.setValue(μi.add(σi, prec, xi).add(σσi, prec).add(state.value(), prec));
-
-        if (verbose)
-        {
-          System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n",
-                            i,
-                            state.time().toString(7),
-                            μi,
-                            σi,
-                            xi,
-                            state);
-        }
-      }
-    }
-
-    return evaluationSequence;
-
   }
 
   @Override

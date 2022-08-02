@@ -289,6 +289,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
       {
         get(i).clear();
       }
+      swigCMemOwn = false;
     }
     return this;
   }

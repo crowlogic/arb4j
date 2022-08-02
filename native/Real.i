@@ -263,10 +263,11 @@ import java.util.stream.StreamSupport;
       {
         get(i).clear();
       }
+      swigCMemOwn = false;
     }
     return this;
   }
-
+  
   /**
    * Compares the midpoint of this to another Real, disregarding the uncertainty
    * radius if they are not equal. If they are equal, then compare the radius
