@@ -53,7 +53,7 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public DriftCoeffecientFunction<DiffusionProcessState> μ(int i)
+  public DriftCoeffecientFunction<DiffusionProcessState> μ()
   {
     return (arguments, order, precision, result) ->
     {
@@ -62,7 +62,7 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public DiffusionCoeffecientFunction<DiffusionProcessState> σ(int i)
+  public DiffusionCoeffecientFunction<DiffusionProcessState> σ()
   {
     return (arguments, order, precision, result) ->
     {

@@ -4,7 +4,7 @@ import arb.*;
 
 public class BivariateDiffusionProcess<S extends DiffusionProcessState> extends
                                       OrderedPair<DiffusionProcess<S>, DiffusionProcess<S>> implements
-                                      StochasticProcess, DiffusionProcess<S>
+                                      StochasticProcess
 
 {
 
@@ -25,17 +25,6 @@ public class BivariateDiffusionProcess<S extends DiffusionProcessState> extends
     return 2;
   }
 
-  @Override
-  public <F extends DriftCoeffecientFunction<S>> F μ(int i)
-  {
-    return a.μ(i);
-  }
-
-  @Override
-  public <F extends DiffusionCoeffecientFunction<S>> F σ(int i)
-  {
-    return a.σ(i);
-  }
 
   
 

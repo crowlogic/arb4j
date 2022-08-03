@@ -30,7 +30,7 @@ public class WienerProcessTest extends
       DiffusionProcessState state = new DiffusionProcessState();
       state.setTime(zero);
       state.setTime(half);
-      Real drift = wienerProcess.μ(0).evaluate(state, 1, prec, new Real());
+      Real drift = wienerProcess.μ().evaluate(state, 1, prec, new Real());
       assertTrue(drift.isZero());
       Real diffusion      = wienerProcess.σ().evaluate(state, 1, prec, new Real());
       Real sqrtHalfTimesσ = half.sqrt(prec, new Real()).mul(three, prec);

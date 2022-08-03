@@ -47,7 +47,7 @@ public class WienerProcess implements
   }
 
   @Override
-  public DriftCoeffecientFunction<DiffusionProcessState> μ(int i)
+  public DriftCoeffecientFunction<DiffusionProcessState> μ()
   {
     return (state, order, precision, result) ->
     {
@@ -62,7 +62,7 @@ public class WienerProcess implements
   }
 
   @Override
-  public DiffusionCoeffecientFunction<DiffusionProcessState> σ(int i)
+  public DiffusionCoeffecientFunction<DiffusionProcessState> σ()
   {
     return (state, order, precision, result) ->
     {

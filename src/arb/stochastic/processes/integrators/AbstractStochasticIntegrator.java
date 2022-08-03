@@ -9,10 +9,16 @@ import arb.stochastic.processes.DiffusionProcessState;
 
 public abstract class AbstractStochasticIntegrator<S extends DiffusionProcessState, D extends DiffusionProcess<S>>
                                                   implements
-                                                  StochasticIntegrator<S>,
+                                                  StochasticIntegrator<S, D>,
                                                   AutoCloseable,
                                                   Cleanable
 {
+  @Override
+  public D X()
+  {
+    return X;
+  }
+
   public S        state;
   public D        X;
   public boolean  verbose = false;

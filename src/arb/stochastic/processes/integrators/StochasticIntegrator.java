@@ -4,12 +4,12 @@ import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatInterval;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
-import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.*;
 
-public interface StochasticIntegrator<S extends DiffusionProcessState> extends
+public interface StochasticIntegrator<S extends DiffusionProcessState, D extends DiffusionProcess<S>> extends
                                      DiscreteTimeDynamicalSystem<S>
 {
-
+  
   public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq);
 
   /**
@@ -34,4 +34,6 @@ public interface StochasticIntegrator<S extends DiffusionProcessState> extends
   }
 
   public Float strongConvergenceOrder(int dim);
+
+  public D X();
 }

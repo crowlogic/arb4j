@@ -6,26 +6,24 @@ import arb.stochastic.processes.*;
 
 public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState, X extends DiffusionProcess<S>>
                                                 extends
-                                                OrderedPair<StochasticIntegrator<S>, StochasticIntegrator<S>>
+                                                OrderedPair<StochasticIntegrator<S, X>, StochasticIntegrator<S, X>>
                                                 implements
-                                                StochasticIntegrator<S>
+                                                StochasticIntegrator<S, X>
 {
 
-  private BivariateDiffusionProcess<S> process;
+  private X process;
 
-  S                                    state;
+  S         state;
 
   public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S> process,
                                              S state,
-                                             StochasticIntegrator<S> xIntegrator,
-                                             StochasticIntegrator<S> yIntegrator,
-                                             X x,
-                                             X y)
+                                             StochasticIntegrator<S, X> xIntegrator,
+                                             StochasticIntegrator<S, X> yIntegrator)
   {
     super(xIntegrator,
           yIntegrator);
-    process    = new BivariateDiffusionProcess<>(x,
-                                                 y);
+    process    = new BivariateDiffusionProcess<>(xIntegrator.X(),
+                                                 yIntegrator.X());
     this.state = state;
   }
 
@@ -62,6 +60,12 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
     assert false : "implement me";
     return null;
 
+  }
+
+  @Override
+  public X X()
+  {
+    return process;
   }
 
 }

@@ -36,36 +36,8 @@ public interface DiffusionProcess<S extends DiffusionProcessState> extends
                                  StochasticProcess
 {
 
-  public default <F extends DriftCoeffecientFunction<S>> F μ()
-  {
-    return μ(0);
-  }
+  public <F extends DriftCoeffecientFunction<S>> F μ();
 
-  /**
-   * 
-   * @param i TODO
-   * @return the drift coefficient function
-   */
-  public default <F extends DriftCoeffecientFunction<S>> F μ(int i)
-  {
-    assert i == 0 : "this should be overrriden by " + getClass();
-    return μ();
-  }
-
-  public default <F extends DiffusionCoeffecientFunction<S>> F σ()
-  {
-    return σ(0);
-  }
-
-  /**
-   * 
-   * @param i TODO
-   * @return the diffusion coefficient function
-   */
-  public default <F extends DiffusionCoeffecientFunction<S>> F σ(int i)
-  {
-    assert i == 0 : "this should be overrriden by " + getClass();
-    return σ();
-  }
+  public <F extends DiffusionCoeffecientFunction<S>> F σ();
 
 }

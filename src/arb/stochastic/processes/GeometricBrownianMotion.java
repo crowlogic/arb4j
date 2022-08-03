@@ -29,7 +29,7 @@ public class GeometricBrownianMotion implements
    * @return μ*Sₜ
    */
   @Override
-  public DriftCoeffecientFunction<DiffusionProcessState> μ(int i)
+  public DriftCoeffecientFunction<DiffusionProcessState> μ()
   {
     return (state, order, prec, result) ->
     {
@@ -42,7 +42,7 @@ public class GeometricBrownianMotion implements
    * @return σ*Sₜ
    */
   @Override
-  public DiffusionCoeffecientFunction<DiffusionProcessState> σ(int i)
+  public DiffusionCoeffecientFunction<DiffusionProcessState> σ()
   {
     return (state, order, prec, result) ->
     {
