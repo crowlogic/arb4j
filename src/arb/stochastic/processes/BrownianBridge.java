@@ -55,5 +55,12 @@ public class BrownianBridge implements
     return null;
   }
 
+  @Override
+  public int dim()
+  {
+    return 1;
+    
+  }
+
 
 }

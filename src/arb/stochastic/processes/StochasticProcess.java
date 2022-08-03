@@ -13,7 +13,15 @@ import arb.stochastic.*;
 public interface StochasticProcess extends
                                    ContinuousTimeDynamicalSystem
 {
-
+  /**
+   * 
+   * @return the dimension of this process
+   */
+  public default int dim()
+  {
+    return 1;
+  }
+  
   public default <P extends ProbabilityDensityFunction> P getDensityFunction(Real t)
   {
     return arb.utensils.Utilities.TODO("implement me");
