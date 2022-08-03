@@ -1,10 +1,9 @@
 package arb.stochastic.processes;
 
-import arb.OrderedPair;
+import arb.*;
 
-public class BivariateDiffusionProcess<S extends DiffusionProcessState, D extends DiffusionProcess<S>>
-                                      extends
-                                      OrderedPair<D, D> implements
+public class BivariateDiffusionProcess<S extends DiffusionProcessState> extends
+                                      OrderedPair<DiffusionProcess<S>, DiffusionProcess<S>> implements
                                       StochasticProcess
 
 {
@@ -14,7 +13,7 @@ public class BivariateDiffusionProcess<S extends DiffusionProcessState, D extend
     super();
   }
 
-  public BivariateDiffusionProcess(D a, D b)
+  public BivariateDiffusionProcess(DiffusionProcess<S> a, DiffusionProcess<S> b)
   {
     super(a,
           b);

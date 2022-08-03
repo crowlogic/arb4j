@@ -11,11 +11,11 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
                                                 StochasticIntegrator<S>
 {
 
-  private BivariateDiffusionProcess<S, X> process;
+  private BivariateDiffusionProcess<S> process;
 
-  S                                       state;
+  S                                    state;
 
-  public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S, X> process,
+  public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S> process,
                                              S state,
                                              StochasticIntegrator<S> xIntegrator,
                                              StochasticIntegrator<S> yIntegrator,
