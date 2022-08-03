@@ -1,25 +1,33 @@
 package arb.stochastic.processes.integrators;
 
-import arb.EvaluationSequence;
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.stochastic.processes.BivariateDiffusionProcess;
-import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.*;
 
-public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState> implements
+public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState, X extends DiffusionProcess<S>, Y extends DiffusionProcess<S>>
+                                                extends
+                                                OrderedPair<StochasticIntegrator<S>, StochasticIntegrator<S>>
+                                                implements
                                                 StochasticIntegrator<S>
 {
 
-  public BivariateDiffusionProcess process;
+  private BivariateDiffusionProcess<S, X, Y> process;
 
-  public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess process, S state)
+  S                                          state;
+
+  public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S, X, Y> process,
+                                             S state,
+                                             StochasticIntegrator<S> xIntegrator,
+                                             StochasticIntegrator<S> yIntegrator,
+                                             X x,
+                                             Y y)
   {
-    super();
-    this.process = process;
-    this.state   = state;
+    super(xIntegrator,
+          yIntegrator);
+    process    = new BivariateDiffusionProcess<>(x,
+                                                 y);
+    this.state = state;
   }
-
-  S state;
 
   @Override
   public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq)

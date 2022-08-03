@@ -10,4 +10,15 @@ public class BivariateDiffusionProcess<S extends DiffusionProcessState, A extend
 
 {
 
+  public BivariateDiffusionProcess()
+  {
+    super();
+  }
+
+  public BivariateDiffusionProcess(A a, B b)
+  {
+    super(a,
+          b);
+  }
+
 }
