@@ -1,18 +1,17 @@
 package arb.stochastic.processes.integrators;
 
-import java.lang.ref.Cleaner.Cleanable;
+import java.lang.ref.Cleaner.*;
 
+import arb.*;
 import arb.Float;
-import arb.Real;
-import arb.dynamical.systems.*;
 import arb.stochastic.processes.*;
 
-public abstract class AbstractStochasticIntegrator<S extends State> implements
+public abstract class AbstractStochasticIntegrator<S extends DiffusionProcessState> implements
                                                   StochasticIntegrator<S>,
                                                   AutoCloseable,
                                                   Cleanable
 {
-
+  public S                                                      state;
   public DiffusionProcess                                       X;
   public boolean                                                verbose = false;
   protected DriftCoeffecientFunction<DiffusionProcessState>     μ;

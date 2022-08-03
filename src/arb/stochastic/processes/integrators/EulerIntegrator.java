@@ -58,17 +58,15 @@ public class EulerIntegrator extends
                                                                              128),
                                                                     new Real("0.1",
                                                                              128));
-    try ( EulerIntegrator integrator = new EulerIntegrator(process))
+    try ( EulerIntegrator integrator = new EulerIntegrator(process, new DiffusionProcessState(process.θ)))
     {
-      DiffusionProcessState state = new DiffusionProcessState(process.θ);
 
       // Generate data
       DataTable             data  = new DataTable(Double.class,
                                                   Double.class);
 
-      EvaluationSequence    path  = integrator.integrate(state,
-                                                         new FloatInterval(0,
-                                                                           5),
+      EvaluationSequence    path  = integrator.integrate(new FloatInterval(0,
+                         5),
                                                          750,
                                                          prec);
 
@@ -180,14 +178,16 @@ public class EulerIntegrator extends
     axisRendererX.setTickSpacing(0.1);
   }
 
-  public EulerIntegrator(DiffusionProcess x)
+
+  public EulerIntegrator(DiffusionProcess x, DiffusionProcessState diffusionProcessState)
   {
     super(x);
+    state = diffusionProcessState;
   }
 
   @Override
   public synchronized EvaluationSequence
-         integrate(DiffusionProcessState state, FloatInterval interval, int n, int prec)
+         integrate(FloatInterval interval, int n, int prec)
   {
     // x is the set of values of the evaluation sequence which is a Partition
     // together with a set of values for each element of the partition

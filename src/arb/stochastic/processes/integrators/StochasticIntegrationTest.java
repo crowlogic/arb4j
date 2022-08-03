@@ -17,7 +17,8 @@ public class StochasticIntegrationTest extends
     {
       WienerProcess B = new WienerProcess(new Real("5",
                                                    128));
-      try ( MilsteinIntegrator integrator = new MilsteinIntegrator(B))
+      try ( MilsteinIntegrator integrator = new MilsteinIntegrator(B,
+                                                                   new DiffusionProcessState()))
       {
         testStochasticIntegrator(integrator);
       }
@@ -30,7 +31,8 @@ public class StochasticIntegrationTest extends
     {
       WienerProcess B = new WienerProcess(new Real("5",
                                                    128));
-      try ( EulerIntegrator integrator = new EulerIntegrator(B))
+      try ( EulerIntegrator integrator = new EulerIntegrator(B,
+                                                             new DiffusionProcessState()))
       {
         testStochasticIntegrator(integrator);
       }
@@ -43,12 +45,12 @@ public class StochasticIntegrationTest extends
                                                           10);
     int                   n           = 500 * 1000;
 
-    DiffusionProcessState state       = new DiffusionProcessState();
+    DiffusionProcessState state       = integrator.state;
     RandomState           randomState = state.randomState;
     println("testStandardWienerProcessIntegration  " + randomState);
     randomState.setInitialValue((int) (Math.random() * Integer.MAX_VALUE));
 
-    EvaluationSequence samplePath = integrator.integrate(state, interval, n, prec);
+    EvaluationSequence samplePath = integrator.integrate(interval, n, prec);
     println("state=" + state);
     Real μ               = samplePath.values.arithmeticMean(prec, new Real());
     Real sampleStdev     = samplePath.values.standardDeviation(prec, μ, new Real());

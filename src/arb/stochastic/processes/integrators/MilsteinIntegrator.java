@@ -45,23 +45,21 @@ public class MilsteinIntegrator extends
                                                                              128),
                                                                     new Real("1.5",
                                                                              128));
-    try ( MilsteinIntegrator integrator = new MilsteinIntegrator(process))
+    try ( MilsteinIntegrator integrator = new MilsteinIntegrator(process,
+                                                                 new DiffusionProcessState(new Real("3",
+                                                                                                    128))))
     {
-      DiffusionProcessState state = new DiffusionProcessState(new Real("3",
-                                                                       128));
 
-      
-      System.out.println( "state.seed="  + state.randomState.getInitialValue() );
-      
+      System.out.println("state.seed=" + integrator.state.randomState.getInitialValue());
+
       // Generate data
-      DataTable             data  = new DataTable(Double.class,
-                                                  Double.class);
+      DataTable          data = new DataTable(Double.class,
+                                              Double.class);
 
-      EvaluationSequence    path  = integrator.integrate(state,
-                                                         new FloatInterval(0,
-                                                                           5),
-                                                         750,
-                                                         prec);
+      EvaluationSequence path = integrator.integrate(new FloatInterval(0,
+                                                                       5),
+                                                     750,
+                                                     prec);
 
       for (RealOrderedPair sample : path)
       {
@@ -122,9 +120,10 @@ public class MilsteinIntegrator extends
     return evalSequence;
   }
 
-  public MilsteinIntegrator(DiffusionProcess x)
+  public MilsteinIntegrator(DiffusionProcess x, DiffusionProcessState state)
   {
-    super(x);
+    super(x,
+          state);
   }
 
   @Override

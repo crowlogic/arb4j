@@ -1,3 +1,4 @@
+* multivariate EvaluationSequence
 * use ErrorFunction to correct the numerically integrated Fourier transforms
 * parallelize ComplexFunction.integrate
 * fullscreen mode for ComplexFunctionRenderer

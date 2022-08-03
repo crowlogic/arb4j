@@ -13,17 +13,17 @@ public class GeometricBrownianMotionTest extends
 
   public void testEulerIntegration()
   {
-    GeometricBrownianMotion gbm = new GeometricBrownianMotion();
-    try ( EulerIntegrator integrator = new EulerIntegrator(gbm))
+    GeometricBrownianMotion gbm   = new GeometricBrownianMotion();
+    DiffusionProcessState   state = new DiffusionProcessState();
+    state.setValue(one);
+    try ( EulerIntegrator integrator = new EulerIntegrator(gbm,
+                                                           state))
     {
-      DiffusionProcessState state              = new DiffusionProcessState();
-      state.setValue(one);
-      EvaluationSequence    evaluationSequence = integrator.integrate(state,
-                                                                      new FloatInterval(0,
-                                                                                        1),
-                                                                      500 ,
-                                                                      128);
-      println( state );
+      EvaluationSequence evaluationSequence = integrator.integrate(new FloatInterval(0,
+                                                                                     1),
+                                                                   500,
+                                                                   128);
+      println(state);
       for (OrderedPair x : evaluationSequence)
       {
         println(x);
