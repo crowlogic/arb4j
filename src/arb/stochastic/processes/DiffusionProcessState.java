@@ -162,7 +162,8 @@ public class DiffusionProcessState implements
 
   public <D extends DiffusionProcessState> D cloneState(DiffusionProcessState target)
   {
-    target.setTime(time);
+    target.prevTime.set(prevTime);
+    target.time.set(time);
     target.dt.set(dt);
     target.randomState = randomState;
     target.sqrtdt.set(sqrtdt);
