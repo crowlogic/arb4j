@@ -22,10 +22,10 @@ package arb.stochastic.processes;
  * independent and normally distributed. <br>
  * <br>
  * 
- * The function this{@link #μ()} is referred to as the drift coefficient, while
- * this{@link #σ()}σ is called the diffusion coefficient. The stochastic process
- * Xₜ is called a diffusion process, and satisfies the Markov property therefore
- * is said to be Markovian.
+ * The function this{@link #μ(int)} is referred to as the drift coefficient,
+ * while this{@link #σ(int)}σ is called the diffusion coefficient. The
+ * stochastic process Xₜ is called a diffusion process, and satisfies the Markov
+ * property therefore is said to be Markovian.
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Stochastic_differential_equation">Wikipedia</a>
@@ -35,16 +35,37 @@ package arb.stochastic.processes;
 public interface DiffusionProcess<S extends DiffusionProcessState> extends
                                  StochasticProcess
 {
-  /**
-   * 
-   * @return the drift coefficient function
-   */
-  public <F extends DriftCoeffecientFunction<S>> F μ();
+
+  public default <F extends DriftCoeffecientFunction<S>> F μ()
+  {
+    return μ(0);
+  }
 
   /**
    * 
+   * @param i TODO
+   * @return the drift coefficient function
+   */
+  public default <F extends DriftCoeffecientFunction<S>> F μ(int i)
+  {
+    assert i == 0 : "this should be overrriden by " + getClass();
+    return μ();
+  }
+
+  public default <F extends DiffusionCoeffecientFunction<S>> F σ()
+  {
+    return σ(0);
+  }
+
+  /**
+   * 
+   * @param i TODO
    * @return the diffusion coefficient function
    */
-  public <F extends DiffusionCoeffecientFunction<S>> F σ();
+  public default <F extends DiffusionCoeffecientFunction<S>> F σ(int i)
+  {
+    assert i == 0 : "this should be overrriden by " + getClass();
+    return σ();
+  }
 
 }
