@@ -44,7 +44,7 @@ public class DiffusionProcessState implements
     setValue(S0);
   }
 
-  public final RandomState randomState;
+  public RandomState randomState;
 
   @Override
   public String toString()
@@ -158,6 +158,16 @@ public class DiffusionProcessState implements
     result.sqrt(prec, result);
     return result;
 
+  }
+
+  public <D extends DiffusionProcessState> D cloneState(DiffusionProcessState target)
+  {
+    target.setTime(time);
+    target.dt.set(dt);
+    target.randomState = randomState;
+    target.sqrtdt.set(sqrtdt);
+    target.value.set(value);
+    return (D) target;
   }
 
 }
