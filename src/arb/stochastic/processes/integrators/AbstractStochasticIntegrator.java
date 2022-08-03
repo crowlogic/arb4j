@@ -1,31 +1,30 @@
 package arb.stochastic.processes.integrators;
 
-import java.lang.ref.Cleaner.*;
+import java.lang.ref.Cleaner.Cleanable;
 
-import arb.*;
 import arb.Float;
-import arb.stochastic.processes.*;
+import arb.Real;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
 
-public abstract class AbstractStochasticIntegrator<S extends DiffusionProcessState> implements
+public abstract class AbstractStochasticIntegrator<S extends DiffusionProcessState, D extends DiffusionProcess<S>>
+                                                  implements
                                                   StochasticIntegrator<S>,
                                                   AutoCloseable,
                                                   Cleanable
 {
-  public S                                                      state;
-  public DiffusionProcess                                       X;
-  public boolean                                                verbose = false;
-  protected DriftCoeffecientFunction<DiffusionProcessState>     μ;
-  protected DiffusionCoeffecientFunction<DiffusionProcessState> σ;
-  protected Float                                               T       = new Float();
-  protected Real                                                μi      = new Real();
-  protected Real                                                σi      = Real.newVector(2);
-  protected Real                                                sqrtδt  = new Real();
+  public S        state;
+  public D        X;
+  public boolean  verbose = false;
 
-  public AbstractStochasticIntegrator(DiffusionProcess x)
+  protected Float T       = new Float();
+  protected Real  μi      = new Real();
+  protected Real  σi      = Real.newVector(2);
+  protected Real  sqrtδt  = new Real();
+
+  public AbstractStochasticIntegrator(D x)
   {
     X                 = x;
-    μ                 = X.μ();
-    σ                 = X.σ();
     μi.printPrecision = true;
     σi.printPrecision = true;
   }

@@ -1,6 +1,7 @@
 package arb.functions;
 
 import arb.Field;
+import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 
 public interface Function<D,R> 

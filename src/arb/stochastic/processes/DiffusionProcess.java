@@ -1,8 +1,5 @@
 package arb.stochastic.processes;
 
-import arb.dynamical.systems.*;
-import arb.stochastic.*;
-
 /**
  * The notation used in probability theory (and in many applications of
  * probability theory, for instance mathematical finance) is slightly different.
@@ -35,20 +32,19 @@ import arb.stochastic.*;
  *      for references
  *
  */
-public interface DiffusionProcess<S extends State>
-                                 extends
+public interface DiffusionProcess<S extends DiffusionProcessState> extends
                                  StochasticProcess
 {
   /**
    * 
    * @return the drift coefficient function
    */
-  public DriftCoeffecientFunction<S> μ();
+  public <F extends DriftCoeffecientFunction<S>> F μ();
 
   /**
    * 
    * @return the diffusion coefficient function
    */
-  public DiffusionCoeffecientFunction<S> σ();
+  public <F extends DiffusionCoeffecientFunction<S>> F σ();
 
 }

@@ -37,8 +37,8 @@ import de.erichseifert.gral.ui.InteractivePanel;
  * drift and standard deviation parameter σ=√(dt) such that the variance is dt,
  * the time elapsed
  */
-public class EulerIntegrator extends
-                             AbstractStochasticIntegrator<DiffusionProcessState>
+public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
+                            AbstractStochasticIntegrator<D, P>
 {
 
   protected static final Color COLOR1 = new Color(55,
@@ -51,24 +51,25 @@ public class EulerIntegrator extends
 
   public static void main(String args[])
   {
-   
+
     OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(new Real("1.5",
                                                                              128),
                                                                     new Real("2",
                                                                              128),
                                                                     new Real("0.1",
                                                                              128));
-    try ( EulerIntegrator integrator = new EulerIntegrator(process, new DiffusionProcessState(process.θ)))
+    try ( EulerIntegrator integrator = new EulerIntegrator(process,
+                                                           new DiffusionProcessState(process.θ)))
     {
 
       // Generate data
-      DataTable             data  = new DataTable(Double.class,
-                                                  Double.class);
+      DataTable          data = new DataTable(Double.class,
+                                              Double.class);
 
-      EvaluationSequence    path  = integrator.integrate(new FloatInterval(0,
-                         5),
-                                                         750,
-                                                         prec);
+      EvaluationSequence path = integrator.integrate(new FloatInterval(0,
+                                                                       5),
+                                                     750,
+                                                     prec);
 
       for (RealOrderedPair sample : path)
       {
@@ -178,16 +179,19 @@ public class EulerIntegrator extends
     axisRendererX.setTickSpacing(0.1);
   }
 
-
-  public EulerIntegrator(DiffusionProcess x, DiffusionProcessState diffusionProcessState)
+  public EulerIntegrator(P x, D diffusionProcessState)
   {
     super(x);
     state = diffusionProcessState;
+    μ     = X.μ();
+    σ     = X.σ();
   }
 
+  DriftCoeffecientFunction<D>     μ;
+  DiffusionCoeffecientFunction<D> σ;
+
   @Override
-  public synchronized EvaluationSequence
-         integrate(FloatInterval interval, int n, int prec)
+  public synchronized EvaluationSequence integrate(FloatInterval interval, int n, int prec)
   {
     // x is the set of values of the evaluation sequence which is a Partition
     // together with a set of values for each element of the partition
@@ -217,16 +221,16 @@ public class EulerIntegrator extends
   }
 
   @Override
-  public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
+  public EvaluationSequence jump(D state, int prec, EvaluationSequence evaluationSequence)
   {
     Real xi = evaluationSequence.values.get(++evaluationSequence.i);
     xi.printPrecision = true;
 
-    μ.evaluate(state, 1, prec, μi);
+    X.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt, prec);
     assert μi.isFinite();
 
-    σ.evaluate(state, 1, prec, σi);
+    X.σ().evaluate(state, 1, prec, σi);
     assert !σi.isZero();
     assert σi.isFinite();
 
@@ -252,13 +256,13 @@ public class EulerIntegrator extends
   }
 
   @Override
-  public Float weakConvergenceOrder()
+  public Float weakConvergenceOrder(int dim)
   {
     return FloatConstants.one;
   }
 
   @Override
-  public Float strongConvergenceOrder()
+  public Float strongConvergenceOrder(int dim)
   {
     return half;
   }

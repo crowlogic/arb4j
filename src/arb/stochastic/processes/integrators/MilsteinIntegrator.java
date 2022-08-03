@@ -31,9 +31,9 @@ import de.erichseifert.gral.data.DataTable;
  * increased by considering expansions of the coefficients μₜ=μ(Sₜ) and σₜ=σ(Sₜ)
  * via Itō’s lemma.
  */
-public class MilsteinIntegrator extends
-                                EulerIntegrator implements
-                                AutoCloseable
+public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
+                               EulerIntegrator<P, D> implements
+                               AutoCloseable
 {
 
   public static void main(String args[])
@@ -83,7 +83,7 @@ public class MilsteinIntegrator extends
   Real σσi = new Real();
 
   @Override
-  public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evalSequence)
+  public EvaluationSequence jump(D state, int prec, EvaluationSequence evalSequence)
   {
     Real xi = evalSequence.values.get(++evalSequence.i); // xi is the i-th sample from a standard normal distribution
     xi.printPrecision = true;
@@ -120,7 +120,7 @@ public class MilsteinIntegrator extends
     return evalSequence;
   }
 
-  public MilsteinIntegrator(DiffusionProcess x, DiffusionProcessState state)
+  public MilsteinIntegrator(P x, D state)
   {
     super(x,
           state);

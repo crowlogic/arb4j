@@ -94,14 +94,14 @@ public class DiffusionProcessState implements
     return this;
   }
 
-  public synchronized DiffusionProcessState setTime(Real t)
+  public synchronized <D extends DiffusionProcessState> D setTime(Real t)
   {
     assert !prevTime.isFinite()
                   || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time="
                                 + time + " prevTime=" + prevTime;
     prevTime.set(time);
     time.set(t);
-    return this;
+    return (D) this;
   }
 
   public DiffusionProcessState setValue(Real x)

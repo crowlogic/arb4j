@@ -1,13 +1,25 @@
 package arb.stochastic.processes.integrators;
 
-import arb.*;
+import arb.EvaluationSequence;
 import arb.Float;
-import arb.dynamical.systems.*;
-import arb.stochastic.processes.*;
+import arb.FloatInterval;
+import arb.stochastic.processes.BivariateDiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
 
 public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState> implements
                                                 StochasticIntegrator<S>
 {
+
+  public BivariateDiffusionProcess process;
+
+  public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess process, S state)
+  {
+    super();
+    this.process = process;
+    this.state   = state;
+  }
+
+  S state;
 
   @Override
   public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq)
@@ -23,17 +35,19 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
   }
 
   @Override
-  public Float weakConvergenceOrder()
+  public Float weakConvergenceOrder(int dim)
   {
-    // TODO Auto-generated method stub
+    assert false : "implement me";
     return null;
+
   }
 
   @Override
-  public Float strongConvergenceOrder()
+  public Float strongConvergenceOrder(int dim)
   {
-    // TODO Auto-generated method stub
+    assert false : "implement me";
     return null;
+
   }
 
 }
