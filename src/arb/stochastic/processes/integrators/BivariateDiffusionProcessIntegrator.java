@@ -4,23 +4,23 @@ import arb.*;
 import arb.Float;
 import arb.stochastic.processes.*;
 
-public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState, X extends DiffusionProcess<S>, Y extends DiffusionProcess<S>>
+public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState, X extends DiffusionProcess<S>>
                                                 extends
                                                 OrderedPair<StochasticIntegrator<S>, StochasticIntegrator<S>>
                                                 implements
                                                 StochasticIntegrator<S>
 {
 
-  private BivariateDiffusionProcess<S, X, Y> process;
+  private BivariateDiffusionProcess<S, X> process;
 
-  S                                          state;
+  S                                       state;
 
-  public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S, X, Y> process,
+  public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S, X> process,
                                              S state,
                                              StochasticIntegrator<S> xIntegrator,
                                              StochasticIntegrator<S> yIntegrator,
                                              X x,
-                                             Y y)
+                                             X y)
   {
     super(xIntegrator,
           yIntegrator);
