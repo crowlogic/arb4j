@@ -238,6 +238,7 @@ public class EulerIntegrator extends
 
     // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
     // W=N(0,√(δt))
+    // xi = μi + σi
     μi.add(σi, prec, xi);
 
     state.setValue(xi.add(state.value(), prec));

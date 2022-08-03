@@ -9,6 +9,8 @@ public interface StochasticIntegrator<S extends State> extends
                                       DiscreteTimeDynamicalSystem<S>
 {
 
+  public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq);
+
   /**
    * 
    * @param state       the {@link DiffusionProcessState} already configured with

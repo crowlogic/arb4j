@@ -43,13 +43,16 @@ public class MilsteinIntegrator extends
                                                                              128),
                                                                     new Real("2",
                                                                              128),
-                                                                    new Real("0.7",
+                                                                    new Real("1.5",
                                                                              128));
     try ( MilsteinIntegrator integrator = new MilsteinIntegrator(process))
     {
       DiffusionProcessState state = new DiffusionProcessState(new Real("3",
                                                                        128));
 
+      
+      System.out.println( "state.seed="  + state.randomState.getInitialValue() );
+      
       // Generate data
       DataTable             data  = new DataTable(Double.class,
                                                   Double.class);
