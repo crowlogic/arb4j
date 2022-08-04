@@ -1,31 +1,54 @@
+* bivariate EvaluationSequence
+* multivariate EvaluationSequence 
+
+* foreign API: custom mapped memory segment factories instead of JNI DirectByteBuffers to alleviate the problems preventing large animations from being rendered within a single JVM
+
 * use confined ResourceScopes in Java to implement constant Real,
 Float, and Complex objects that throw exceptions if attemps to modify
 them are made .. it uses kernel level page signalling to detect.. very
 cool
 
-* multivariate EvaluationSequence
-* use ErrorFunction to correct the numerically integrated Fourier transforms
-* parallelize ComplexFunction.integrate
-* fullscreen mode for ComplexFunctionRenderer
-* replace usage of Utilities#heapUp and heapDown with MemoryStack
-* homotopy API 
-* refine the SWIG definitions so that the pointers to pointers in RealMatrix and ComplexMatrix are handled optimally and without ugly code
-* fix ParallelTransporter crash: free(): double free detected in tcache
-* implement Lemniscate elliptic functions 
-* Transfer operator API
-* foreign API: custom mapped memory segment factories instead of JNI DirectByteBuffers to alleviate the problems preventing large animations from being rendered within a single JVM
-* complex root-finding API 
-* Scale/Rotate/Translate as Part of JPlotter/OpenGL renovation 
-* 3d protein model
-* Euler and Milstein SDE integrator
 * harness reflection symmetry to accelerate rendering 
-* orthogonal polynomial API
+
+* implement Lemniscate elliptic functions 
+
 * algebraic expression parser, evaluator and compiler
+
+* use ErrorFunction to correct the numerically integrated Fourier transforms
+
+
+* parallelize ComplexFunction.integrate
+
+* fullscreen mode for ComplexFunctionRenderer
+
+* replace usage of Utilities#heapUp and heapDown with MemoryStack
+
+* homotopy API 
+
+* refine the SWIG definitions so that the pointers to pointers in RealMatrix and ComplexMatrix are handled optimally and without ugly code
+
+* fix ParallelTransporter crash: free(): double free detected in tcache
+
+* Transfer operator API
+
+* port Real root-finding API to Complex values
+
+* Scale/Rotate/Translate as Part of JPlotter/OpenGL renovation 
+
+* 3d protein model
+
+* orthogonal polynomial API
+
 * implement (inter-host) distributed processing 
+
 * Shape Operator
+
 * API for plane curve Curvature
+
 * Koenig linearization - SchroederFunctional And InverseSeries
+
 * Add color-wheel legend to ComplexFunctionPlotter by adding another BufferedImage to be blended, and allow the ability to move them about dynamically via the mouse
+
 
 
 Zoom/Magnify
