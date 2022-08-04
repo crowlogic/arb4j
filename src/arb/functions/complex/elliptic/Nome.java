@@ -21,7 +21,7 @@ import arb.Complex;
  * {@link Complex} q ∈ C with 0 < | q | < 1, τ is not a single-valued function
  * of q.
  */
-public class Nome
+public interface Nome extends EllipticFunction
 {
 
 }
