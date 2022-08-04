@@ -143,43 +143,7 @@ public class PointValueCache implements
     }
   }
 
-  public static void closeDirectBuffer(FileChannel channel)
-  {
-
-    try
-    {
-      Class  channelClass = Class.forName("sun.nio.ch.FileChannelImpl");
-
-      Method unmap        = channelClass.getDeclaredMethod("unmap", channelClass);
-      unmap.setAccessible(true);
-      unmap.invoke(channelClass, channel);
-    }
-    catch (NoSuchMethodException e)
-    {
-      e.printStackTrace();
-    }
-    catch (IllegalAccessException e)
-    {
-      e.printStackTrace();
-    }
-    catch (IllegalArgumentException e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    catch (InvocationTargetException e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    catch (ClassNotFoundException e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
-  }
-
+  
   @Override
   public void close()
   {
