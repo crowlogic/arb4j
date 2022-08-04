@@ -13,8 +13,28 @@ public class HermitePolynomials implements
   @Override
   public Iterator<ComplexPolynomial> iterator()
   {
-    // TODO Auto-generated method stub
-    return null;
+    return new Iterator<ComplexPolynomial>()
+    {
+      int i = 0;
+      Real order = new Real();
+      
+      @Override
+      public boolean hasNext()
+      {
+        return true;
+      }
+
+      @Override
+      public ComplexPolynomial next()
+      {
+        assert false : "TODO: workout the details on this API"; 
+        Real poly = Real.newVector(i);
+        order.set(i++);
+        arb.arb_hypgeom_hermite_h(poly, order, null, 0);
+        // TODO Auto-generated method stub
+        return null;
+      }
+    };
   }
 
   @Override
