@@ -39,7 +39,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   @Override
   public String toString()
   {
-    return String.format("MilsteinIntegrator[X=%s, sqrtδt=%s]", state, X, sqrtδt);
+    return String.format("MilsteinIntegrator[X=%s, sqrtδt=%s, state=%s]", X, sqrtδt, state);
   }
 
   public static void main(String args[])
