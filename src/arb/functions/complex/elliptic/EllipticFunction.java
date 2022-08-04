@@ -10,5 +10,5 @@ import arb.functions.complex.MeromorphicFunction;
 public interface EllipticFunction extends
                                   MeromorphicFunction
 {
-
+  public FundamentalPeriodPair periodPair();
 }
