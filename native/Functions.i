@@ -1,3 +1,4 @@
+void arb_hypgeom_hermite_h(arb_t res, const arb_t nu, const arb_t z, slong prec);
 
 void acb_dirichlet_xi(acb_t res, const acb_t s, slong prec);
  
