@@ -37,6 +37,10 @@ public class arb {
     arbJNI.gmp_randclear(GMPRandomState.getCPtr(state), state);
   }
 
+  public static void arb_hypgeom_hermite_h(Real res, Real nu, Real z, int prec) {
+    arbJNI.arb_hypgeom_hermite_h(Real.getCPtr(res), res, Real.getCPtr(nu), nu, Real.getCPtr(z), z, prec);
+  }
+
   public static void gmp_randinit_mt(GMPRandomState state) {
     arbJNI.gmp_randinit_mt(GMPRandomState.getCPtr(state), state);
   }

@@ -431,6 +431,28 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_gmp_1randclear(JNIEnv *jenv, jclass jcls
 }
 
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1hypgeom_1hermite_1h(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  arb_struct *arg1 ;
+  arb_struct *arg2 ;
+  arb_struct *arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = *(arb_struct **)&jarg2; 
+  arg3 = *(arb_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  arb_hypgeom_hermite_h(arg1,(arb_struct const (*))arg2,(arb_struct const (*))arg3,arg4);
+  
+  
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_gmp_1randinit_1mt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   __gmp_randstate_struct *arg1 ;
   

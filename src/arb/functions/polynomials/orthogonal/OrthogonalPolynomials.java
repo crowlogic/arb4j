@@ -12,13 +12,13 @@ public interface OrthogonalPolynomials extends
    * 
    * @return
    */
-  public HolomorphicFunction getMassDistribution();
+  public HolomorphicFunction getDistribution();
 
   /**
    * 
    * @return a Real whose midpoint and radius cover the domain over which these
    *         polynomials are orthogonal over with respect to the measure given by
-   *         this{@link #getMassDistribution()}
+   *         this{@link #getDistribution()}
    */
-  public Real getDomain();
+  public Domain getDomain();
 }

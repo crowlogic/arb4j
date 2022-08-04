@@ -11,7 +11,7 @@ import arb.topological.spaces.*;
  * by the imaginary numbers.
  */
 public interface ComplexPlane extends
-                              Space<Complex>
+                              Domain<Complex>
 {
 
 }

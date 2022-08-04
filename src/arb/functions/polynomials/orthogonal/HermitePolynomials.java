@@ -1,18 +1,12 @@
 package arb.functions.polynomials.orthogonal;
 
-import java.util.Iterator;
+import java.util.*;
 
-import arb.ComplexPolynomial;
-import arb.Real;
-import arb.functions.complex.HolomorphicFunction;
+import arb.*;
+import arb.functions.complex.*;
 
-/**
- * The Legendre polynomials are defined as an orthogonal system with respect to
- * the weight function w(x)=1 over the interval [−1,1]
- * 
- */
-public class LegendrePolynomials implements
-                                 OrthogonalPolynomials
+public class HermitePolynomials implements
+                                OrthogonalPolynomials
 {
 
   @Override
@@ -29,6 +23,9 @@ public class LegendrePolynomials implements
     return null;
   }
 
+  /**
+   * 
+   */
   @Override
   public Real getDomain()
   {
