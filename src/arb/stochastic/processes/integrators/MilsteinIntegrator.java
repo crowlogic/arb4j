@@ -1,14 +1,14 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.ComplexConstants.prec;
-import static arb.FloatConstants.one;
-import static arb.utensils.Utilities.println;
+import static arb.ComplexConstants.*;
+import static arb.FloatConstants.*;
+import static arb.utensils.Utilities.*;
 
 import arb.*;
 import arb.Float;
-import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
+import arb.dynamical.systems.*;
 import arb.stochastic.processes.*;
-import de.erichseifert.gral.data.DataTable;
+import de.erichseifert.gral.data.*;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -35,6 +35,12 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                EulerIntegrator<P, D> implements
                                AutoCloseable
 {
+
+  @Override
+  public String toString()
+  {
+    return String.format("MilsteinIntegrator[X=%s, sqrtδt=%s]", state, X, sqrtδt);
+  }
 
   public static void main(String args[])
   {
@@ -87,7 +93,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   {
     Real xi = evalSequence.values.get(++evalSequence.i); // xi is the i-th sample from a standard normal distribution
     xi.printPrecision = true;
-
+    println(this + ".step..state=" + state);
     μ.evaluate(state, 1, prec, μi).mul(state.dt, prec);
     assert μi.isFinite();
     σ.evaluate(state, 2, prec, σi).mul(xi, prec).mul(sqrtδt, prec);
@@ -102,7 +108,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     // on t
     return evalSequence;
   }
-  
+
   @Override
   public EvaluationSequence jump(D state, int prec, EvaluationSequence evalSequence)
   {

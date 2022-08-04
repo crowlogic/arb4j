@@ -80,7 +80,7 @@ public interface Field<X extends Field<X>> extends
    */
   public default X mul(int x, int prec)
   {
-    return mul(x, prec);
+    return mul(x, prec, (X) X.this);
   }
 
   /**
@@ -93,7 +93,7 @@ public interface Field<X extends Field<X>> extends
    * @return result after it has been populated with the the product of the field
    *         element with the integer
    */
-  public X mul(int x, int prec, X result);
+  public <Y extends X> Y mul(int x, int prec, Y result);
 
   /**
    * Performs multiplication

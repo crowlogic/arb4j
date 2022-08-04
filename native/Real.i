@@ -565,7 +565,7 @@ import java.util.stream.StreamSupport;
   
   public String toString( )
   {
-    return toString(20);
+    return toString(digits());
   }
   
   public int digits()

@@ -591,7 +591,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   
   public String toString( )
   {
-    return toString(20);
+    return toString(digits());
   }
   
   public int digits()

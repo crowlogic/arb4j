@@ -49,7 +49,7 @@ public class DiffusionProcessState implements
   @Override
   public String toString()
   {
-    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s, randomState=%s]",
+    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s, %s]",
                          prevTime,
                          time,
                          value,
