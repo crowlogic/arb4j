@@ -34,6 +34,8 @@ public class DiffusionProcessState implements
     this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
   }
 
+
+  
   /**
    * initialize with a randomly generated initial value seed and call
    * this{@link #setValue(Real)} to set the initial value of the process
