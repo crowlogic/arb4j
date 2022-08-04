@@ -94,8 +94,10 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     Real xi = evalSequence.values.get(++i); // xi is the i-th sample from a standard normal distribution
     xi.printPrecision = true;
     println(this + ".step..state=" + state);
-    μ.evaluate(state, 1, prec, μi).mul(state.dt, prec);
-    assert μi.isFinite();
+    μ.evaluate(state, 1, prec, μi);
+    assert μi.isFinite() : μi + " is not finite for μ=" + μ.getClass().getSimpleName() + " X=" + X + "\nstate="
+                  + state;
+    μi.mul(state.dt, prec);
     σ.evaluate(state, 2, prec, σi).mul(xi, prec).mul(sqrtδt, prec);
     assert σi.isFinite();
     // 2nd order correction

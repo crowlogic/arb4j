@@ -106,6 +106,7 @@ public class DiffusionProcessState implements
 
   public DiffusionProcessState setValue(Real x)
   {
+    assert x.isFinite() : x + " is not finite";
     value.set(x);
     return this;
   }
