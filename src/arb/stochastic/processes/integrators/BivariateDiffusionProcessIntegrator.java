@@ -55,7 +55,7 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
     state.dt.set(partition.dt).sqrt(prec, sqrtδt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
-                                                                   Real.newVector(n + 1));
+                                                                   Real.newVector(n +1));
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
                                                                                  state.dt.sqrt(prec, sqrtδt)),

@@ -18,7 +18,6 @@ public class EvaluationSequence implements
 
   public RealPartition partition;
   public Real          values;
-  public int                             i                  = -1;
 
   /**
    * Populates the this{@link #values} of this {@link EvaluationSequence} with

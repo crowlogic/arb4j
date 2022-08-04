@@ -27,6 +27,7 @@ public abstract class AbstractStochasticIntegrator<S extends DiffusionProcessSta
   protected Real  μi      = new Real();
   protected Real  σi      = Real.newVector(2);
   protected Real  sqrtδt  = new Real();
+  public int      i       = -1;
 
   public AbstractStochasticIntegrator(D x)
   {

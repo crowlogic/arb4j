@@ -91,7 +91,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   @Override
   public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
   {
-    Real xi = evalSequence.values.get(++evalSequence.i); // xi is the i-th sample from a standard normal distribution
+    Real xi = evalSequence.values.get(++i); // xi is the i-th sample from a standard normal distribution
     xi.printPrecision = true;
     println(this + ".step..state=" + state);
     μ.evaluate(state, 1, prec, μi).mul(state.dt, prec);
@@ -112,7 +112,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   @Override
   public EvaluationSequence jump(D state, int prec, EvaluationSequence evalSequence)
   {
-    Real xi = evalSequence.values.get(evalSequence.i); // xi is the i-th sample from a standard normal distribution
+    Real xi = evalSequence.values.get(i); // xi is the i-th sample from a standard normal distribution
 
     // xi = xi + μi * δt + σi * Z + ( dt * δσi * σi ) * ( (Zₜ)² - 1 ) / 2
     // where Z is a drawn from a standard Gaussian N(0,1) and xi is the value of Xₜ
@@ -122,7 +122,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     if (verbose)
     {
       System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n",
-                        evalSequence.i,
+                        i,
                         state.time().toString(7),
                         μi,
                         σi,
