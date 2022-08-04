@@ -91,17 +91,24 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   @Override
   public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
   {
+    assert state.dt != null && state.dt.isFinite() : "state is null or not finite";
     Real xi = evalSequence.values.get(++i); // xi is the i-th sample from a standard normal distribution
     xi.printPrecision = true;
-    println(this + ".step..state=" + state);
     μ.evaluate(state, 1, prec, μi);
     assert μi.isFinite() : μi + " is not finite for μ=" + μ.getClass().getSimpleName() + " X=" + X + "\nstate="
                   + state;
     μi.mul(state.dt, prec);
-    σ.evaluate(state, 2, prec, σi).mul(xi, prec).mul(sqrtδt, prec);
+    σ.evaluate(state, 2, prec, σi);
+    assert σi.isFinite() : "σσ is not finite " + σσi + "\nσ=" + σi;
+    σi.mul(xi, prec);
+    assert σi.isFinite() : "σσ is not finite " + σσi + "\nσ=" + σi + " xi=" + xi;
+    assert !sqrtδt.isZero() : "sqrtδt is zero";
+    xi.mul(sqrtδt, prec);
     assert σi.isFinite();
     // 2nd order correction
-    σi.mul(σi.get(1), prec, σσi).mul(state.dt, prec).div(2, prec).mul(xi.pow(2, prec).sub(1, prec), prec);
+    σi.mul(σi.get(1), prec, σσi);
+    assert σσi.isFinite() : "σσ is not finite " + σσi + "\nσ=" + σi;
+    σσi.mul(state.dt, prec).div(2, prec).mul(xi.pow(2, prec).sub(1, prec), prec);
 
     // the derivative is in σi.get(1) .. the 2nd
     // order to be added is ( (Zₜ)² - 1 ) * ( dt * σ(Xₜ)∂Xₜ * σ(Xₜ) ) / 2 where
@@ -119,7 +126,14 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     // xi = xi + μi * δt + σi * Z + ( dt * δσi * σi ) * ( (Zₜ)² - 1 ) / 2
     // where Z is a drawn from a standard Gaussian N(0,1) and xi is the value of Xₜ
     // at the i-th element of the partition of the interval of integration
-    state.setValue(μi.add(σi, prec, xi).add(σσi, prec).add(state.value(), prec));
+    assert μi.isFinite() : "μ " + μi + " is not finite";
+    assert σi.isFinite() : "σ " + μi + " is not finite";
+    μi.add(σi, prec, xi);
+    assert xi.isFinite() : "x " + xi + " is not finite";
+    assert σσi.isFinite() : "σσ " + " is not finite";
+    xi.add(σσi, prec);
+    xi.add(state.value(), prec);
+    state.setValue(xi);
 
     if (verbose)
     {
