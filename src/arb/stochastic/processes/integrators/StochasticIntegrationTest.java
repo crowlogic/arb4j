@@ -2,6 +2,8 @@ package arb.stochastic.processes.integrators;
 
 import static arb.utensils.Utilities.*;
 
+import java.util.stream.*;
+
 import arb.*;
 import arb.stochastic.processes.*;
 import junit.framework.*;
@@ -13,7 +15,7 @@ public class StochasticIntegrationTest extends
 
   public void testStandardWienerProcessWithMilsteinIntegrator()
   {
-    for (int i = 0; i < 5; i++)
+    IntStream.range(0, 5).parallel().forEach(i ->
     {
       WienerProcess B = new WienerProcess(new Real("5",
                                                    128));
@@ -22,12 +24,12 @@ public class StochasticIntegrationTest extends
       {
         testStochasticIntegrator(integrator);
       }
-    }
+    });
   }
 
   public void testStandardWienerProcessWithEulerIntegrator()
   {
-    for (int i = 0; i < 5; i++)
+    IntStream.range(0, 5).parallel().forEach(i ->
     {
       WienerProcess B = new WienerProcess(new Real("5",
                                                    128));
@@ -36,7 +38,7 @@ public class StochasticIntegrationTest extends
       {
         testStochasticIntegrator(integrator);
       }
-    }
+    });
   }
 
   protected void testStochasticIntegrator(AbstractStochasticIntegrator integrator)

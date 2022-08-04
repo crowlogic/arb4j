@@ -1,3 +1,8 @@
+* use confined ResourceScopes in Java to implement constant Real,
+Float, and Complex objects that throw exceptions if attemps to modify
+them are made .. it uses kernel level page signalling to detect.. very
+cool
+
 * multivariate EvaluationSequence
 * use ErrorFunction to correct the numerically integrated Fourier transforms
 * parallelize ComplexFunction.integrate

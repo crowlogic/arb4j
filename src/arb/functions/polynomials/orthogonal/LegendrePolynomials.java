@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import arb.ComplexPolynomial;
 import arb.Real;
+import arb.domains.*;
 import arb.functions.complex.HolomorphicFunction;
 
 /**
@@ -30,7 +31,7 @@ public class LegendrePolynomials implements
   }
 
   @Override
-  public Real getDomain()
+  public Domain getDomain()
   {
     // TODO Auto-generated method stub
     return null;

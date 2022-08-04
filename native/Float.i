@@ -1,6 +1,9 @@
 %typemap(javaimports) arf_struct %{
+import arb.Field;
+import java.util.Iterator;
 import static arb.RealConstants.*;
 import static arb.IntegerConstants.*;
+import jdk.incubator.foreign.*;
 
 /**
  * A {@link Float} contains four words: <br>
@@ -22,7 +25,7 @@ import static arb.IntegerConstants.*;
 %}
 
 %typemap(javafinalize) arf_struct ""
-%typemap(javainterfaces) arf_struct "AutoCloseable,Comparable<Float>"
+%typemap(javainterfaces) arf_struct "AutoCloseable,Comparable<Float>,Field<Float>"
 
 %typemap(javacode) arf_interval_struct %{
  public static final int BYTES = 64;
@@ -37,6 +40,62 @@ import static arb.IntegerConstants.*;
  
   public static final int BYTES = 32;
 
+  MemorySegment               segment;
+  private ResourceScope       scope;
+  public int dim;
+
+  protected Float(MemorySegment segment, int length)
+  {
+    this(segment.address().toRawLongValue(),
+         false);
+    this.segment = segment;
+  }
+
+  public static Float newVector(int length)
+  {
+    ResourceScope scope = ResourceScope.newSharedScope();
+    Float         array = new Float(MemorySegment.allocateNative(Float.BYTES * length, scope),
+                                    length);
+    array.scope = scope;
+    array.dim = length;
+    return array;
+  }
+
+
+  @Override
+  public Iterator<Float> iterator()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public int dim()
+  {
+    return dim;
+  }
+
+  @Override
+  public Float get(int index)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
+  @Override
+  public Float div(Float j, int prec, Float result)
+  {
+    arb.arf_div(result, this, j, prec, RoundingMode.Near.ordinal());
+    return this;
+  }
+
+  @Override
+  public Real abs(int prec, Real w)
+  {
+    assert false : "TODO";
+    return null;
+  }
+
   /**
    * Self-referencing this{@link #add(int, int, Float)}
    * 
@@ -44,7 +103,6 @@ import static arb.IntegerConstants.*;
    * @param precision
    * @return this number plus n
    */
-
   public Float add(Float add, int prec)
   {
    return add( add, prec, this ); 
@@ -119,15 +177,22 @@ import static arb.IntegerConstants.*;
     return swigCPtr;
   }
   
-  public Float clear()
+ public Float clear()
   {
-    if ( swigCMemOwn )
+    if (swigCMemOwn)
     {
-	    arb.arf_clear(this);
+      arb.arf_clear(this);
+    }
+    else
+    {
+      if ( scope != null && scope.isAlive() ) 
+      {        
+        scope.close();
+      }
     }
     return this;
-  } 
-  
+  }
+    
   public String toString(int digits)
   {
     return arb.arf_get_str(this,digits);
@@ -145,6 +210,7 @@ import static arb.IntegerConstants.*;
     return this;
   }
   
+  @Override
   public Float mul( Float y, int prec, Float res )
   {
    arb.arf_mul_rnd_down( res, this, y, prec );
@@ -180,6 +246,7 @@ import static arb.IntegerConstants.*;
     return arb.arf_get_str(this,15);
   }
 
+  @Override
   public Float add(Float ay, int precision, Float result)
   {
     arb.arf_add(result, this, ay, precision, ARF_RND_DOWN);
@@ -197,6 +264,7 @@ import static arb.IntegerConstants.*;
     return arb.arf_get_d( this, roundingMode.ordinal() );
   }
  
+  @Override
   public Float sub(Float ay, int thisprec, Float result)
   {
     return sub(ay,thisprec,RoundingMode.Down,result);

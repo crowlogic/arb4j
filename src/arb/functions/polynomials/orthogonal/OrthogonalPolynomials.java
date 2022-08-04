@@ -1,7 +1,8 @@
 package arb.functions.polynomials.orthogonal;
 
 import arb.*;
-import arb.functions.complex.HolomorphicFunction;
+import arb.domains.*;
+import arb.functions.complex.*;
 
 public interface OrthogonalPolynomials extends
                                        Iterable<ComplexPolynomial>,

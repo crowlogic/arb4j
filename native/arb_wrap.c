@@ -419,6 +419,31 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1hypgeom_1m(JNIEnv *jenv, jclass jcl
 }
 
 
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arf_1div(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
+  jint jresult = 0 ;
+  arf_ptr arg1 = (arf_ptr) 0 ;
+  arf_srcptr arg2 = (arf_srcptr) 0 ;
+  arf_srcptr arg3 = (arf_srcptr) 0 ;
+  long arg4 ;
+  int arg5 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(arf_ptr *)&jarg1; 
+  arg2 = *(arf_srcptr *)&jarg2; 
+  arg3 = *(arf_srcptr *)&jarg3; 
+  arg4 = (long)jarg4; 
+  arg5 = (int)jarg5; 
+  result = (int)arf_div(arg1,(arf_struct const *)arg2,(arf_struct const *)arg3,arg4,arg5);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_gmp_1randclear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   __gmp_randstate_struct *arg1 ;
   

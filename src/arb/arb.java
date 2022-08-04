@@ -33,6 +33,10 @@ public class arb {
     arbJNI.arb_hypgeom_m(Real.getCPtr(res), res, Real.getCPtr(a), a, Real.getCPtr(b), b, Real.getCPtr(z), z, regularized, prec);
   }
 
+  public static int arf_div(Float z, Float x, Float y, int prec, int rnd) {
+    return arbJNI.arf_div(Float.getCPtr(z), z, Float.getCPtr(x), x, Float.getCPtr(y), y, prec, rnd);
+  }
+
   public static void gmp_randclear(GMPRandomState state) {
     arbJNI.gmp_randclear(GMPRandomState.getCPtr(state), state);
   }

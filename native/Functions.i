@@ -10,6 +10,8 @@ void arb_hypgeom_erf(arb_t res, const arb_t z, slong prec);
 void arb_hypgeom_erfc(arb_t res, const arb_t z, slong prec);
 
 void arb_hypgeom_m(arb_t res, const arb_t a, const arb_t b, const arb_t z, int regularized, slong prec);
+
+int arf_div(arf_ptr z, arf_srcptr x, arf_srcptr y, slong prec, arf_rnd_t rnd);
  
 void gmp_randclear (gmp_randstate_t state);
 void arb_hypgeom_hermite_h(arb_t res, const arb_t nu, const arb_t z, slong prec);

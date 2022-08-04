@@ -15,6 +15,7 @@ public class arbJNI {
   public final static native void arb_hypgeom_erf(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_hypgeom_erfc(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_hypgeom_m(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, long jarg4, Real jarg4_, int jarg5, int jarg6);
+  public final static native int arf_div(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4, int jarg5);
   public final static native void gmp_randclear(long jarg1, GMPRandomState jarg1_);
   public final static native void arb_hypgeom_hermite_h(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void gmp_randinit_mt(long jarg1, GMPRandomState jarg1_);
