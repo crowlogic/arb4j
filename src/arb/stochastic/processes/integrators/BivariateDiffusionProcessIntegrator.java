@@ -68,6 +68,7 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
       state.setTime(t);
       step(state, prec, evaluationSequence);
       jump(state, prec, evaluationSequence);
+      System.out.println( state );
     }
 
     return evaluationSequence;

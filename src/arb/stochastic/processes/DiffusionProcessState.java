@@ -11,9 +11,9 @@ import arb.dynamical.systems.State;
 
 /**
  * The arguments passed to the functions representing the drift rate
- * {@link DiffusionProcess#μ(int)} and diffusion rate {@link DiffusionProcess#σ(int)}
- * which would be expresed in mathematical notation as μ(Sₜ,t) and σ(Sₜ,t) for
- * the drift and diffusion respectively
+ * {@link DiffusionProcess#μ(int)} and diffusion rate
+ * {@link DiffusionProcess#σ(int)} which would be expresed in mathematical
+ * notation as μ(Sₜ,t) and σ(Sₜ,t) for the drift and diffusion respectively
  */
 public class DiffusionProcessState implements
                                    State,
@@ -49,12 +49,12 @@ public class DiffusionProcessState implements
   @Override
   public String toString()
   {
-    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s, %s]",
+    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s, seed=%s]",
                          prevTime,
                          time,
                          value,
                          dt.toFixedString(),
-                         randomState);
+                         randomState.getInitialValue());
   }
 
   private final Real prevTime = new Real().negInf();
@@ -126,11 +126,11 @@ public class DiffusionProcessState implements
     if (dt.isFinite())
     {
       // return the fixed-length step-size if its set
-      return dt;
+      return result.set(dt);
     }
     if (!prevTime.isFinite())
     {
-      return zero;
+      return result.set(zero);
     }
     assert time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
                   + " prevTime=" + prevTime;
@@ -145,19 +145,17 @@ public class DiffusionProcessState implements
 
   public Real sqrtdt(int prec, Real result)
   {
-    if (sqrtdt.isFinite())
+    if (sqrtdt.isFinite() && !sqrtdt.isZero())
     {
-      return sqrtdt;
+      return result.set(sqrtdt);
     }
     if (dt.isFinite())
     {
-      return dt.sqrt(prec, sqrtdt);
+      return result.set(dt.sqrt(prec, sqrtdt));
     }
     assert time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
                   + " prevTime=" + prevTime;
-    time.sub(prevTime, prec, result);
-    result.sqrt(prec, result);
-    return result;
+    return time.sub(prevTime, prec, result).sqrt(prec);
 
   }
 

@@ -84,6 +84,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   {
     super.close();
     σσi.close();
+
   }
 
   Real σσi = new Real();
@@ -92,6 +93,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
   {
     assert state.dt != null && state.dt.isFinite() : "state is null or not finite";
+    setSqrtδt(state, prec);
     Real xi = evalSequence.values.get(++i); // xi is the i-th sample from a standard normal distribution
     xi.printPrecision = true;
     μ.evaluate(state, 1, prec, μi);
@@ -99,14 +101,16 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                   + state;
     μi.mul(state.dt, prec);
     σ.evaluate(state, 2, prec, σi);
-    assert σi.isFinite() : "σσ is not finite " + σσi + "\nσ=" + σi;
+    assert σi.isFinite() && σi.get(1).isFinite() : "σ is not finite " + σσi + "\nσ=" + σi;
     σi.mul(xi, prec);
-    assert σi.isFinite() : "σσ is not finite " + σσi + "\nσ=" + σi + " xi=" + xi;
+    assert σi.isFinite() && σi.get(1).isFinite() : "σ is not finite " + σσi + "\nσ=" + σi + " xi=" + xi;
     assert !sqrtδt.isZero() : "sqrtδt is zero";
     xi.mul(sqrtδt, prec);
     assert σi.isFinite();
     // 2nd order correction
     σi.mul(σi.get(1), prec, σσi);
+    assert σi.isFinite() && σi.get(1).isFinite() : "σ is not finite " + σσi + "\nσ=" + σi + " xi=" + xi;
+
     assert σσi.isFinite() : "σσ is not finite " + σσi + "\nσ=" + σi;
     σσi.mul(state.dt, prec).div(2, prec).mul(xi.pow(2, prec).sub(1, prec), prec);
 
@@ -118,21 +122,21 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     return evalSequence;
   }
 
+  public void setSqrtδt(D state, int prec)
+  {
+    if (sqrtδt == null || sqrtδt.isZero())
+    {
+      state.sqrtdt(prec, sqrtδt);
+      assert !sqrtδt.isZero() : "dt=" + state.dt(σσi) + " sqrtδt=" + sqrtδt;
+    }
+  }
+
   @Override
   public EvaluationSequence jump(D state, int prec, EvaluationSequence evalSequence)
   {
-    Real xi = evalSequence.values.get(i); // xi is the i-th sample from a standard normal distribution
+    Real xi = evalSequence.values.get(i); // xi is the i-th sample from a normal distribution wIth variance equal to
+                                          // dt
 
-    // xi = xi + μi * δt + σi * Z + ( dt * δσi * σi ) * ( (Zₜ)² - 1 ) / 2
-    // where Z is a drawn from a standard Gaussian N(0,1) and xi is the value of Xₜ
-    // at the i-th element of the partition of the interval of integration
-    assert μi.isFinite() : "μ " + μi + " is not finite";
-    assert σi.isFinite() : "σ " + μi + " is not finite";
-    μi.add(σi, prec, xi);
-    assert xi.isFinite() : "x " + xi + " is not finite";
-    assert σσi.isFinite() : "σσ " + " is not finite";
-    xi.add(σσi, prec);
-    xi.add(state.value(), prec);
     state.setValue(xi);
 
     if (verbose)
