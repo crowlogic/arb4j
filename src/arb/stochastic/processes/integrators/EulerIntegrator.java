@@ -220,9 +220,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
   }
 
   @Override
-  public EvaluationSequence jump(D state, int prec, EvaluationSequence evaluationSequence)
+  public EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence)
   {
-    Real xi = evaluationSequence.values.get(++evaluationSequence.i);
+    Real xi = evaluationSequence.values.get(evaluationSequence.i);
     xi.printPrecision = true;
 
     X.μ().evaluate(state, 1, prec, μi);
@@ -243,6 +243,13 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     // W=N(0,√(δt))
     // xi = μi + σi
     μi.add(σi, prec, xi);
+    return evaluationSequence;
+  }
+
+  @Override
+  public EvaluationSequence jump(D state, int prec, EvaluationSequence evaluationSequence)
+  {
+    Real xi = evaluationSequence.values.get(evaluationSequence.i);
 
     state.setValue(xi.add(state.value(), prec));
 

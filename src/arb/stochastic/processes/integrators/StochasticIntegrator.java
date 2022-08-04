@@ -13,6 +13,32 @@ public interface StochasticIntegrator<S extends DiffusionProcessState, D extends
   @Override
   public void close();
 
+  /**
+   * Calculate the {@link EvaluationSequence#i}-th value of step-length
+   * {@link DiffusionProcessState#dt()} by calling {@link DiffusionProcess#μ()}
+   * and {@link DiffusionProcess#σ()} and scaling by
+   * {@link DiffusionProcessState#dt} accordingly. Does *not change the state*,
+   * this is done by
+   * this{@link #jump(DiffusionProcessState, int, EvaluationSequence)}
+   * 
+   * @param state
+   * @param prec
+   * @param evalSeq
+   * @return
+   */
+  public EvaluationSequence step(S state, int prec, EvaluationSequence evalSeq);
+
+  /**
+   * Jump to the {@link DiffusionProcessState} in the given
+   * {@link EvaluationSequence} after
+   * this{@link #step(DiffusionProcessState, int, EvaluationSequence)} has been
+   * called
+   * 
+   * @param state
+   * @param prec
+   * @param evalSeq
+   * @return
+   */
   public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq);
 
   /**

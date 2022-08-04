@@ -27,15 +27,19 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
     this.state = state;
   }
 
-  DiffusionProcessState instantA = new DiffusionProcessState();
-  DiffusionProcessState instantB = new DiffusionProcessState();
+  @Override
+  public EvaluationSequence step(S state, int prec, EvaluationSequence evalSeq)
+  {
+    a.step(state, prec, evalSeq);
+    b.step(state, prec, evalSeq);
+    return evalSeq;
+  }
 
   @Override
   public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq)
   {
-    a.jump(state.cloneState(instantA), prec, evalSeq);
-    b.jump(state.cloneState(instantB), prec, evalSeq);
-    assert instantA.time().equals(instantB.time());
+    a.jump(state, prec, evalSeq);
+    b.jump(state, prec, evalSeq);
     return evalSeq;
   }
 
