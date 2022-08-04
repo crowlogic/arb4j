@@ -5,7 +5,7 @@ import arb.Float;
 import arb.dynamical.systems.*;
 import arb.stochastic.processes.*;
 
-public interface StochasticIntegrator<S extends DiffusionProcessState, D extends DiffusionProcess<S>> extends
+public interface StochasticIntegrator<S extends State, D extends DiffusionProcess<S>> extends
                                      DiscreteTimeDynamicalSystem<S>,
                                      AutoCloseable
 {

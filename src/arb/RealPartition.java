@@ -12,28 +12,28 @@ public class RealPartition implements
                            Cleanable,
                            Iterable<Real>
 {
-  public final Real  T;
+  public final Real T;
 
-  public final Float dt     = new Float();
-  public final Float halfdt = new Float();
+  public final Real dt     = new Real();
+  public final Real halfdt = new Real();
 
   public RealPartition(FloatInterval interval, int prec, int n)
   {
     T = Real.newVector(n);
-    interval.length(prec, dt).div(n, prec);
+    interval.length(prec, dt.getMid()).div(n, prec);
     T.printPrecision = true;
     dt.div(2, prec, halfdt);
     Real ti = T;
     println("halfdt=" + halfdt);
-    try ( Float t = new Float())
+    try ( Real t = new Real())
     {
-      t.assign(interval.getA()).add(halfdt, prec);
+      t.set(interval.getA()).add(halfdt, prec);
       for (int i = 0; i < n; i++)
       {
         ti                = T.get(i);
         ti.printPrecision = true;
-        dt.mul(i, prec, ti.getMid()).add( halfdt, prec );
-        halfdt.getMagnitude(ti.getRad());
+        dt.mul(i, prec, ti).add(halfdt, prec);
+        halfdt.getMid().getMagnitude(ti.getRad());
       }
     }
   }

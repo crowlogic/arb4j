@@ -15,7 +15,7 @@ public class StochasticIntegrationTest extends
 
   public void testStandardWienerProcessWithMilsteinIntegrator()
   {
-    IntStream.range(0, 5).parallel().forEach(i ->
+    IntStream.range(0, 1).forEach(i ->
     {
       WienerProcess B = new WienerProcess(new Real("5",
                                                    128));
@@ -29,7 +29,7 @@ public class StochasticIntegrationTest extends
 
   public void testStandardWienerProcessWithEulerIntegrator()
   {
-    IntStream.range(0, 5).parallel().forEach(i ->
+    IntStream.range(0, 1).forEach(i ->
     {
       WienerProcess B = new WienerProcess(new Real("5",
                                                    128));

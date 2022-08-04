@@ -1,5 +1,7 @@
 package arb.stochastic.processes;
 
+import arb.dynamical.systems.State;
+
 /**
  * The notation used in probability theory (and in many applications of
  * probability theory, for instance mathematical finance) is slightly different.
@@ -32,7 +34,7 @@ package arb.stochastic.processes;
  *      for references
  *
  */
-public interface DiffusionProcess<S extends DiffusionProcessState> extends
+public interface DiffusionProcess<S extends State> extends
                                  StochasticProcess
 {
 

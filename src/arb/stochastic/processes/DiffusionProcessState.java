@@ -94,14 +94,15 @@ public class DiffusionProcessState implements
     return this;
   }
 
-  public synchronized <D extends DiffusionProcessState> D setTime(Real t)
+  @Override
+  public DiffusionProcessState setTime(Real t)
   {
     assert !prevTime.isFinite()
                   || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time="
                                 + time + " prevTime=" + prevTime;
     prevTime.set(time);
     time.set(t);
-    return (D) this;
+    return this;
   }
 
   public DiffusionProcessState setValue(Real x)
@@ -168,6 +169,12 @@ public class DiffusionProcessState implements
     target.sqrtdt.set(sqrtdt);
     target.value.set(value);
     return (D) target;
+  }
+
+  @Override
+  public RandomState getRandomState()
+  {
+    return randomState;
   }
 
 }

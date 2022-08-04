@@ -4,13 +4,16 @@ import static arb.RealConstants.zero;
 
 import arb.*;
 import arb.Float;
+import arb.dynamical.systems.State;
 import arb.stochastic.GaussianProbabilityDistribution;
-import arb.stochastic.processes.*;
+import arb.stochastic.processes.BivariateDiffusionProcess;
+import arb.stochastic.processes.DiffusionProcess;
 
-public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState, X extends DiffusionProcess<S>, I extends StochasticIntegrator<S, X>>
+public class BivariateDiffusionProcessIntegrator<S extends State, X extends DiffusionProcess<S>, I extends StochasticIntegrator<S, X>>
                                                 extends
                                                 OrderedPair<I, I> implements
-                                                StochasticIntegrator<S, X>, AutoCloseable
+                                                StochasticIntegrator<S, X>,
+                                                AutoCloseable
 {
 
   private X process;
@@ -52,14 +55,14 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
   {
 
     RealPartition partition = interval.realPartition(n, prec);
-    state.dt.set(partition.dt).sqrt(prec, sqrtδt);
+    state.dt(partition.dt).sqrt(prec, sqrtδt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
-                                                                   Real.newVector(n +1));
+                                                                   Real.newVector(n + 1));
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
-                                                                                 state.dt.sqrt(prec, sqrtδt)),
-                                             state.randomState,
+                                                                                 state.dt(sqrtδt).sqrt(prec)),
+                                             state.getRandomState(),
                                              prec);
 
     state.setTime(interval.getA());
@@ -68,7 +71,7 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
       state.setTime(t);
       step(state, prec, evaluationSequence);
       jump(state, prec, evaluationSequence);
-      System.out.println( state );
+      System.out.println(state);
     }
 
     return evaluationSequence;
@@ -99,7 +102,16 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
   @Override
   public void close()
   {
-    state.close();
+    try
+    {
+      state.close();
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage(),
+                                 e);
+    }
     sqrtδt.close();
   }
 
