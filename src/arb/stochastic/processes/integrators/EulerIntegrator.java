@@ -56,19 +56,19 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                                                                              128),
                                                                     new Real("0.1",
                                                                              128));
-    try ( StochasticIntegrator<DiffusionProcessState, OrnsteinUhlenbeckProcess> integrator = StochasticIntegratorFactory.newIntegrator(IntegrationMethod.Euler,
-                                                                                                                                       process,
-                                                                                                                                       new DiffusionProcessState(process.θ));)
+    try ( var integrator = StochasticIntegratorFactory.newIntegrator(IntegrationMethod.Euler,
+                                                                     process,
+                                                                     new DiffusionProcessState(process.θ));)
     {
 
       // Generate data
-      DataTable          data = new DataTable(Double.class,
-                                              Double.class);
+      DataTable data = new DataTable(Double.class,
+                                     Double.class);
 
-      EvaluationSequence path = integrator.integrate(new FloatInterval(0,
-                                                                       5),
-                                                     750,
-                                                     prec);
+      var       path = integrator.integrate(new FloatInterval(0,
+                                                              5),
+                                            750,
+                                            prec);
 
       for (RealOrderedPair sample : path)
       {

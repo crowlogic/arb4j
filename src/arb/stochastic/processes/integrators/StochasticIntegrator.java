@@ -16,6 +16,9 @@ public interface StochasticIntegrator<S extends DiffusionProcessState, D extends
   public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq);
 
   /**
+   * Integrate the associated {@link DiffusionProcess} over a given interval which
+   * is partitioned into a given number of elements resulting in some sufficiently
+   * small mesh
    * 
    * @param interval the interval over which to integrate
    * @param n        number of pieces to split the interval into
