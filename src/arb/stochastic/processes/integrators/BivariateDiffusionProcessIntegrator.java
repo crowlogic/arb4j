@@ -1,24 +1,28 @@
 package arb.stochastic.processes.integrators;
 
+import static arb.RealConstants.zero;
+
 import arb.*;
 import arb.Float;
+import arb.stochastic.GaussianProbabilityDistribution;
 import arb.stochastic.processes.*;
 
-public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState, X extends DiffusionProcess<S>>
+public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState, X extends DiffusionProcess<S>, I extends StochasticIntegrator<S, X>>
                                                 extends
-                                                OrderedPair<StochasticIntegrator<S, X>, StochasticIntegrator<S, X>>
-                                                implements
-                                                StochasticIntegrator<S, X>
+                                                OrderedPair<I, I> implements
+                                                StochasticIntegrator<S, X>, AutoCloseable
 {
 
   private X process;
 
   S         state;
 
+  Real      sqrtδt = new Real();
+
   public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S> process,
                                              S state,
-                                             StochasticIntegrator<S, X> xIntegrator,
-                                             StochasticIntegrator<S, X> yIntegrator)
+                                             I xIntegrator,
+                                             I yIntegrator)
   {
     super(xIntegrator,
           yIntegrator);
@@ -46,8 +50,27 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
   @Override
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec)
   {
-    assert false : "implement me";
-    return null;
+
+    RealPartition partition = interval.realPartition(n, prec);
+    state.dt.set(partition.dt).sqrt(prec, sqrtδt);
+
+    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
+                                                                   Real.newVector(n + 1));
+
+    evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
+                                                                                 state.dt.sqrt(prec, sqrtδt)),
+                                             state.randomState,
+                                             prec);
+
+    state.setTime(interval.getA());
+    for (Real t : partition)
+    {
+      state.setTime(t);
+      step(state, prec, evaluationSequence);
+      jump(state, prec, evaluationSequence);
+    }
+
+    return evaluationSequence;
   }
 
   @Override
@@ -76,6 +99,7 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
   public void close()
   {
     state.close();
+    sqrtδt.close();
   }
 
 }
