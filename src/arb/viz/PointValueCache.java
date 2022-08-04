@@ -11,6 +11,7 @@ import java.nio.channels.FileChannel.MapMode;
 import java.nio.file.Path;
 
 import arb.*;
+import arb.geometry.surfaces.RiemannSurface;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
@@ -39,6 +40,9 @@ public class PointValueCache implements
 
   }
 
+  /**
+   * TODO: this could represent a set of patches of {@link RiemannSurface} sheets
+   */
   Complex            points[][][];
 
   private int        width;
@@ -143,7 +147,6 @@ public class PointValueCache implements
     }
   }
 
-  
   @Override
   public void close()
   {
@@ -151,12 +154,12 @@ public class PointValueCache implements
     {
       return;
     }
-    scope.close();
-    System.out.println("Closing function image cache " + file + " and " + file1);
-
     buffer  = null;
 
     buffer1 = null;
+
+    scope.close();
+    System.out.println("Closing function image cache " + file + " and " + file1);
 
     if (!complete)
     {
