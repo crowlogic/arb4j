@@ -46,7 +46,7 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
   @Override
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec)
   {
-    // TODO Auto-generated method stub
+    assert false : "implement me";
     return null;
   }
 
