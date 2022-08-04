@@ -1,5 +1,7 @@
 package arb.viz;
 
+import static arb.utensils.Utilities.println;
+
 import java.io.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
@@ -136,7 +138,7 @@ public class PointValueCache implements
     return file;
   }
 
-  protected void createBlankFile(File file, int bytes) throws FileNotFoundException, IOException
+  protected void createBlankFile(File file, int bytes)
   {
     System.out.println("Create file " + file + " of " + bytes + " bytes ");
     complete = false;
@@ -144,6 +146,14 @@ public class PointValueCache implements
                                                       "rw"))
     {
       raf.setLength(bytes);
+
+      
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      System.exit(1);
+      ;
     }
   }
 
