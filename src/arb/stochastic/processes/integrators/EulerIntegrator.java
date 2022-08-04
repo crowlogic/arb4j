@@ -212,7 +212,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     state.setTime(interval.getA());
     for (Real t : partition)
     {
-      jump(state.setTime(t), prec, evaluationSequence);
+      state.setTime(t);
+      step(state, prec, evaluationSequence);
+      jump(state, prec, evaluationSequence);
     }
 
     return evaluationSequence;
@@ -222,7 +224,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
   @Override
   public EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence)
   {
-    Real xi = evaluationSequence.values.get(evaluationSequence.i);
+    Real xi = evaluationSequence.values.get(++evaluationSequence.i);
     xi.printPrecision = true;
 
     X.μ().evaluate(state, 1, prec, μi);

@@ -83,7 +83,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   Real σσi = new Real();
 
   @Override
-  public EvaluationSequence jump(D state, int prec, EvaluationSequence evalSequence)
+  public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
   {
     Real xi = evalSequence.values.get(++evalSequence.i); // xi is the i-th sample from a standard normal distribution
     xi.printPrecision = true;
@@ -100,6 +100,13 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     // σ(Xₜ)∂Xₜ is the derivative of σ relative to X, which is a function of t,
     // but this method will not work if either coefficient function depends directly
     // on t
+    return evalSequence;
+  }
+  
+  @Override
+  public EvaluationSequence jump(D state, int prec, EvaluationSequence evalSequence)
+  {
+    Real xi = evalSequence.values.get(evalSequence.i); // xi is the i-th sample from a standard normal distribution
 
     // xi = xi + μi * δt + σi * Z + ( dt * δσi * σi ) * ( (Zₜ)² - 1 ) / 2
     // where Z is a drawn from a standard Gaussian N(0,1) and xi is the value of Xₜ
