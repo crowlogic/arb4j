@@ -39,7 +39,7 @@ import arb.stochastic.*;
  *      "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process">Wikipedia</a>
  */
 public class OrnsteinUhlenbeckProcess implements
-                                      DiffusionProcess,
+                                      DiffusionProcess<DiffusionProcessState>,
                                       AutoCloseable,
                                       Cleanable
 {

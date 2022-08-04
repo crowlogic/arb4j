@@ -68,4 +68,10 @@ public class BivariateDiffusionProcessIntegrator<S extends DiffusionProcessState
     return process;
   }
 
+  @Override
+  public void close()
+  {
+    state.close();
+  }
+
 }

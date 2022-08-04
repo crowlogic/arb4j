@@ -1,15 +1,18 @@
 package arb.stochastic.processes.integrators;
 
-import arb.EvaluationSequence;
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
+import arb.dynamical.systems.*;
 import arb.stochastic.processes.*;
 
 public interface StochasticIntegrator<S extends DiffusionProcessState, D extends DiffusionProcess<S>> extends
-                                     DiscreteTimeDynamicalSystem<S>
+                                     DiscreteTimeDynamicalSystem<S>,
+                                     AutoCloseable
 {
-  
+
+  @Override
+  public void close();
+
   public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq);
 
   /**

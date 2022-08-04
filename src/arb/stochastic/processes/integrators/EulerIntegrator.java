@@ -2,29 +2,27 @@ package arb.stochastic.processes.integrators;
 
 import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.half;
-import static arb.RealConstants.*;
-import static arb.utensils.Utilities.println;
+import static arb.RealConstants.zero;
+import static arb.utensils.Utilities.*;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
+import java.awt.geom.*;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import arb.*;
 import arb.Float;
-import arb.stochastic.GaussianProbabilityDistribution;
+import arb.stochastic.*;
 import arb.stochastic.processes.*;
-import arb.utensils.Utilities;
-import de.erichseifert.gral.data.DataSeries;
-import de.erichseifert.gral.data.DataTable;
-import de.erichseifert.gral.graphics.Insets2D;
+import arb.stochastic.processes.integrators.StochasticIntegratorFactory.*;
+import arb.utensils.*;
+import de.erichseifert.gral.data.*;
+import de.erichseifert.gral.graphics.*;
 import de.erichseifert.gral.graphics.Label;
-import de.erichseifert.gral.plots.XYPlot;
-import de.erichseifert.gral.plots.axes.AxisRenderer;
-import de.erichseifert.gral.plots.axes.LinearRenderer2D;
-import de.erichseifert.gral.plots.lines.AbstractLineRenderer2D;
-import de.erichseifert.gral.plots.lines.SmoothLineRenderer2D;
-import de.erichseifert.gral.ui.InteractivePanel;
+import de.erichseifert.gral.plots.*;
+import de.erichseifert.gral.plots.axes.*;
+import de.erichseifert.gral.plots.lines.*;
+import de.erichseifert.gral.ui.*;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method
@@ -58,8 +56,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                                                                              128),
                                                                     new Real("0.1",
                                                                              128));
-    try ( EulerIntegrator integrator = new EulerIntegrator(process,
-                                                           new DiffusionProcessState(process.θ)))
+    try ( StochasticIntegrator<DiffusionProcessState, OrnsteinUhlenbeckProcess> integrator = StochasticIntegratorFactory.newIntegrator(IntegrationMethod.Euler,
+                                                                                                                                       process,
+                                                                                                                                       new DiffusionProcessState(process.θ));)
     {
 
       // Generate data
