@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void arb_hypgeom_hermite_h(Real res, Real nu, Real z, int prec) {
+    arbJNI.arb_hypgeom_hermite_h(Real.getCPtr(res), res, Real.getCPtr(nu), nu, Real.getCPtr(z), z, prec);
+  }
+
   public static void acb_dirichlet_xi(Complex res, Complex s, int prec) {
     arbJNI.acb_dirichlet_xi(Complex.getCPtr(res), res, Complex.getCPtr(s), s, prec);
   }
@@ -39,10 +43,6 @@ public class arb {
 
   public static void gmp_randclear(GMPRandomState state) {
     arbJNI.gmp_randclear(GMPRandomState.getCPtr(state), state);
-  }
-
-  public static void arb_hypgeom_hermite_h(Real res, Real nu, Real z, int prec) {
-    arbJNI.arb_hypgeom_hermite_h(Real.getCPtr(res), res, Real.getCPtr(nu), nu, Real.getCPtr(z), z, prec);
   }
 
   public static void gmp_randinit_mt(GMPRandomState state) {
