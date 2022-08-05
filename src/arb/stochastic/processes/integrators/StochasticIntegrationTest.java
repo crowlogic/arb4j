@@ -41,7 +41,8 @@ public class StochasticIntegrationTest extends
     });
   }
 
-  protected void testStochasticIntegrator(AbstractStochasticIntegrator integrator)
+  protected void
+            testStochasticIntegrator(AbstractStochasticIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> integrator)
   {
     FloatInterval         interval    = new FloatInterval(0,
                                                           10);
@@ -56,11 +57,7 @@ public class StochasticIntegrationTest extends
     println("state=" + state);
     Real μ               = samplePath.values.arithmeticMean(prec, new Real());
     Real sampleStdev     = samplePath.values.standardDeviation(prec, μ, new Real());
-    Real populationStdev = ((AbstractStochasticIntegrator<DiffusionProcessState, WienerProcess>) integrator).X.σ()
-                                                                                                              .evaluate(state,
-                                                                                                                        1,
-                                                                                                                        prec,
-                                                                                                                        new Real());
+    Real populationStdev = integrator.X.σ().evaluate(state, 1, prec, new Real());
     populationStdev.printPrecision = true;
     sampleStdev.printPrecision     = true;
     μ.printPrecision               = true;

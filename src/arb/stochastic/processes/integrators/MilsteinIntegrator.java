@@ -56,7 +56,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                                                                     128))))
     {
 
-      System.out.println("state.seed=" + integrator.state.randomState.getInitialValue());
+      System.out.println("state.seed=" + integrator.state.getRandomState().getInitialValue());
 
       // Generate data
       DataTable          data = new DataTable(Double.class,
@@ -127,7 +127,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     if (sqrtδt == null || sqrtδt.isZero())
     {
       state.sqrtdt(prec, sqrtδt);
-      assert !sqrtδt.isZero() : "dt=" + state.dt(σσi) + " sqrtδt=" + sqrtδt;
+      assert !sqrtδt.isZero() : "dt=" + state.getδt(σσi) + " sqrtδt=" + sqrtδt;
     }
   }
 

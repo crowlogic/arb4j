@@ -14,6 +14,8 @@ public interface State<X> extends
 
   RandomState getRandomState();
 
-  Real dt(Real result);
+  Real getδt(Real result);
+
+  Real setδt(Real dt);
 
 }

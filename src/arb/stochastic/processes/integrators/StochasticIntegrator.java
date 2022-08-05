@@ -67,5 +67,4 @@ public interface StochasticIntegrator<S extends State, D extends DiffusionProces
 
   public Float strongConvergenceOrder(int dim);
 
-  public D X();
 }

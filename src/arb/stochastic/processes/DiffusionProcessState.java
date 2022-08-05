@@ -124,7 +124,7 @@ public class DiffusionProcessState implements
    * @param result
    * @return
    */
-  public synchronized Real dt(Real result)
+  public synchronized Real getδt(Real result)
   {
     if (dt.isFinite())
     {
@@ -177,6 +177,12 @@ public class DiffusionProcessState implements
   public RandomState getRandomState()
   {
     return randomState;
+  }
+
+  @Override
+  public Real setδt(Real dt)
+  {
+    return this.dt.set(dt);
   }
 
 }

@@ -1,52 +1,54 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.RealConstants.zero;
+import static arb.RealConstants.*;
 
 import arb.*;
 import arb.Float;
-import arb.dynamical.systems.State;
-import arb.stochastic.GaussianProbabilityDistribution;
-import arb.stochastic.processes.BivariateDiffusionProcess;
-import arb.stochastic.processes.DiffusionProcess;
+import arb.dynamical.systems.*;
+import arb.stochastic.*;
+import arb.stochastic.processes.*;
 
-public class BivariateDiffusionProcessIntegrator<S extends State, X extends DiffusionProcess<S>, I extends StochasticIntegrator<S, X>>
-                                                extends
-                                                OrderedPair<I, I> implements
-                                                StochasticIntegrator<S, X>,
+public class BivariateDiffusionProcessIntegrator<S extends State> implements
+                                                StochasticIntegrator<S, DiffusionProcess<S>>,
                                                 AutoCloseable
 {
+  static final int                                          dim           = 2;
 
-  private X process;
+  public final StochasticIntegrator<S, DiffusionProcess<S>> integrators[] = new StochasticIntegrator[dim];
 
-  S         state;
+  S                                                         state;
 
-  Real      sqrtδt = new Real();
+  Real                                                      sqrtδt        = new Real();
 
   public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S> process,
                                              S state,
-                                             I xIntegrator,
-                                             I yIntegrator)
+                                             AbstractStochasticIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> xIntegrator,
+                                             AbstractStochasticIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> yIntegrator)
   {
-    super(xIntegrator,
-          yIntegrator);
-    process    = new BivariateDiffusionProcess<>(xIntegrator.X(),
-                                                 yIntegrator.X());
-    this.state = state;
+    integrators[0] = xIntegrator;
+    integrators[1] = yIntegrator;
+    process        = new BivariateDiffusionProcess<>(xIntegrator.X,
+                                                     yIntegrator.X);
+    this.state     = state;
   }
 
   @Override
   public EvaluationSequence step(S state, int prec, EvaluationSequence evalSeq)
   {
-    a.step(state, prec, evalSeq);
-    b.step(state, prec, evalSeq);
+    for (int i = 0; i < dim; i++)
+    {
+      integrators[i].step(state, prec, evalSeq);
+    }
     return evalSeq;
   }
 
   @Override
   public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq)
   {
-    a.jump(state, prec, evalSeq);
-    b.jump(state, prec, evalSeq);
+    for (int i = 0; i < dim; i++)
+    {
+      integrators[i].jump(state, prec, evalSeq);
+    }
     return evalSeq;
   }
 
@@ -55,13 +57,13 @@ public class BivariateDiffusionProcessIntegrator<S extends State, X extends Diff
   {
 
     RealPartition partition = interval.realPartition(n, prec);
-    state.dt(partition.dt).sqrt(prec, sqrtδt);
+    state.setδt(partition.dt).sqrt(prec, sqrtδt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
                                                                    Real.newVector(n + 1));
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
-                                                                                 state.dt(sqrtδt).sqrt(prec)),
+                                                                                 state.getδt(sqrtδt).sqrt(prec)),
                                              state.getRandomState(),
                                              prec);
 
@@ -91,12 +93,6 @@ public class BivariateDiffusionProcessIntegrator<S extends State, X extends Diff
     assert false : "implement me";
     return null;
 
-  }
-
-  @Override
-  public X X()
-  {
-    return process;
   }
 
   @Override
