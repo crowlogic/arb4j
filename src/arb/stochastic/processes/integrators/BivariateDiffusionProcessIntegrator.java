@@ -22,8 +22,8 @@ public class BivariateDiffusionProcessIntegrator<S extends State> implements
 
   public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S> process,
                                              S state,
-                                             AbstractStochasticIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> xIntegrator,
-                                             AbstractStochasticIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> yIntegrator)
+                                             AbstractStochasticIntegrator<S, DiffusionProcess<S>> xIntegrator,
+                                             AbstractStochasticIntegrator<S, DiffusionProcess<S>> yIntegrator)
   {
     integrators[0] = xIntegrator;
     integrators[1] = yIntegrator;

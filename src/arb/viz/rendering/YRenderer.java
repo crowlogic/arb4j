@@ -34,8 +34,8 @@ public class YRenderer extends
                         height),
           new Rectangle2D.Double(-10,
                                  -24,
-                                 50 * 2,
-                                 50),
+                                 30 * 2,
+                                 30),
           new NewtonFlow<YFunction>(new YFunction(vscale)));
 
     colorMode   = 4;

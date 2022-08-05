@@ -1,7 +1,8 @@
 package arb.dynamical.systems;
 
-public interface ContinuousTimeDynamicalSystem extends
-                                               DynamicalSystem
-{
+import arb.EvaluationSequence;
 
+public interface ContinuousTimeDynamicalSystem<S extends State> extends
+                                              DynamicalSystem
+{
 }

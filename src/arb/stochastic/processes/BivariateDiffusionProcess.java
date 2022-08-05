@@ -5,7 +5,7 @@ import arb.dynamical.systems.State;
 
 public class BivariateDiffusionProcess<S extends State> extends
                                       OrderedPair<DiffusionProcess<S>, DiffusionProcess<S>> implements
-                                      StochasticProcess
+                                      MultivariateStochasticProcess
 
 {
 
@@ -26,6 +26,7 @@ public class BivariateDiffusionProcess<S extends State> extends
     return 2;
   }
 
+ 
 
   
 
