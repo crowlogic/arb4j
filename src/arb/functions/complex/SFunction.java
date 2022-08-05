@@ -15,9 +15,6 @@ import arb.exceptions.NotDifferentiableException;
  * 
  * is the hyperbolic tangent of the logarithm of one minus the square of its
  * argument.<br>
- * If we let t=x+iy then the following figure shows the
- * {@link AlgebraicVariety}s corresponding to the implicitly defined level
- * curves of -1, 0, and 1 for the Real and Imaginary parts.
  * 
  * <br>
  * 

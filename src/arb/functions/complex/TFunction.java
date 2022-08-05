@@ -1,6 +1,9 @@
 package arb.functions.complex;
 
 import arb.Real;
+import arb.algebraic.geometry.*;
+import arb.functions.complex.hyperbolic.*;
+import arb.functions.real.*;
 import arb.operators.Composition;
 
 /**
@@ -12,11 +15,10 @@ import arb.operators.Composition;
  * 
  * is the
  * 
- * is the hyperbolic tangent of the logarithm of one plus the square of its
- * argument.<br>
- * If we let t=x+iy then the following figure shows the algebraic varieties
- * corresponding to the implicitly defined level curves of -1, 0, and 1 for the
- * Real and Imaginary parts.
+ * is the {@link HyperbolicTangent} of the logarithm of one plus the square of
+ * its argument. If we let t=x+iy then the following figure shows the
+ * {@link AlgebraicVariety}s corresponding to the implicitly defined level
+ * curves of -1, 0, and 1 for the {@link Real} and {@link ImaginaryPart}s.
  * 
  * <br>
  * 
