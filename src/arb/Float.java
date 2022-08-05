@@ -266,7 +266,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   
   public String toString()
   {
-    return arb.arf_get_str(this,7);
+    return arb.arf_get_str(this,15);
   }
 
   @Override

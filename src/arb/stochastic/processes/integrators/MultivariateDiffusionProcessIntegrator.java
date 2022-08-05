@@ -8,9 +8,9 @@ import arb.dynamical.systems.*;
 import arb.stochastic.*;
 import arb.stochastic.processes.*;
 
-public class BivariateDiffusionProcessIntegrator<S extends State> implements
-                                                StochasticIntegrator<S, DiffusionProcess<S>>,
-                                                AutoCloseable
+public class MultivariateDiffusionProcessIntegrator<S extends State> implements
+                                                   StochasticIntegrator<S, DiffusionProcess<S>>,
+                                                   AutoCloseable
 {
   static final int                                          dim           = 2;
 
@@ -20,15 +20,15 @@ public class BivariateDiffusionProcessIntegrator<S extends State> implements
 
   Real                                                      sqrtδt        = new Real();
 
-  public BivariateDiffusionProcessIntegrator(BivariateDiffusionProcess<S> process,
-                                             S state,
-                                             AbstractStochasticIntegrator<S, DiffusionProcess<S>> xIntegrator,
-                                             AbstractStochasticIntegrator<S, DiffusionProcess<S>> yIntegrator)
+  public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess<S> process,
+                                                S state,
+                                                AbstractStochasticIntegrator<S, DiffusionProcess<S>> xIntegrator,
+                                                AbstractStochasticIntegrator<S, DiffusionProcess<S>> yIntegrator)
   {
     integrators[0] = xIntegrator;
     integrators[1] = yIntegrator;
-    process        = new BivariateDiffusionProcess<>(xIntegrator.X,
-                                                     yIntegrator.X);
+    process        = new MultivariateDiffusionProcess<S>(xIntegrator.X,
+                                                         yIntegrator.X);
     this.state     = state;
   }
 
