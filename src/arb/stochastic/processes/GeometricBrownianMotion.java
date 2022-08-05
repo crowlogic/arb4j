@@ -9,7 +9,7 @@ import arb.Real;
  * dSₜ=μ*Sₜ*dt+ σ*Sₜ*dWₜ
  */
 public class GeometricBrownianMotion implements
-                                     DiffusionProcess
+                                     DiffusionProcess<DiffusionProcessState>
 {
   public final Real μ = new Real();
   public final Real σ = new Real();
