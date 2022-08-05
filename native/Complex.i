@@ -763,10 +763,5 @@ import arb.topological.spaces.*;
     return arb.acb_is_real(this) != 0 ;
   }
 
-  public Complex pow(int i, int prec)
-  {
-    return pow(i,prec,this);
-  }
-
        
 %};

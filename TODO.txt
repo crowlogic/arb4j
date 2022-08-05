@@ -1,4 +1,3 @@
-* optimize SFunction derivatives
 * bivariate EvaluationSequence
 * multivariate EvaluationSequence 
 

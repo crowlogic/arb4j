@@ -788,11 +788,6 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
     return arb.acb_is_real(this) != 0 ;
   }
 
-  public Complex pow(int i, int prec)
-  {
-    return pow(i,prec,this);
-  }
-
        
 
   public void setRealObj(Real value) {
