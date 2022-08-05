@@ -19,5 +19,14 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/usr/share/java/gluegen2.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/gluegen2-rt.jar"/>
+	<classpathentry kind="lib" path="/home/crow/.m2/repository/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar" sourcepath="/home/crow/.m2/repository/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.apache.commons"/>
+			<attribute name="maven.artifactId" value="commons-math3"/>
+			<attribute name="maven.version" value="3.6.1"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

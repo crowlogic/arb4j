@@ -10,6 +10,9 @@ package arb;
 
 import arb.Field;
 import java.util.Iterator;
+
+import org.apache.commons.math3.FieldElement;
+
 import static arb.RealConstants.*;
 import static arb.IntegerConstants.*;
 import jdk.incubator.foreign.*;
@@ -32,7 +35,7 @@ import jdk.incubator.foreign.*;
  * 
  */
 
-public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
+public class Float implements AutoCloseable,Comparable<Float> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -85,34 +88,23 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   }
 
 
-  @Override
-  public Iterator<Float> iterator()
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
   public int dim()
   {
     return dim;
   }
 
-  @Override
   public Float get(int index)
   {
     assert false : "TODO";
     return null;
   }
 
-  @Override
   public Float div(Float j, int prec, Float result)
   {
     arb.arf_div(result, this, j, prec, RoundingMode.Near.ordinal());
     return this;
   }
 
-  @Override
   public Real abs(int prec, Real w)
   {
     assert false : "TODO";
@@ -233,7 +225,6 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     return this;
   }
   
-  @Override
   public Float mul( Float y, int prec, Float res )
   {
    arb.arf_mul_rnd_down( res, this, y, prec );
@@ -269,7 +260,6 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     return arb.arf_get_str(this,7);
   }
 
-  @Override
   public Float add(Float ay, int precision, Float result)
   {
     arb.arf_add(result, this, ay, precision, ARF_RND_DOWN);
@@ -287,7 +277,6 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     return arb.arf_get_d( this, roundingMode.ordinal() );
   }
  
-  @Override
   public Float sub(Float ay, int thisprec, Float result)
   {
     return sub(ay,thisprec,RoundingMode.Down,result);
