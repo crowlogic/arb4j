@@ -2,6 +2,10 @@ package arb.functions.complex;
 
 import arb.*;
 
+/**
+ * 
+ * @author Stephen Crowley ©LGPL 2022 *
+ */
 public class SFunctionInverse implements
                               HolomorphicFunction
 {
