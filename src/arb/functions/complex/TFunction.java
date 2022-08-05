@@ -4,8 +4,16 @@ import arb.Real;
 import arb.operators.Composition;
 
 /**
- * T(t)=tanh(ln(1+t^2)) is the hyperbolic tangent of the logarithm of one plus
- * the square of its argument.<br>
+ * The rational {@link MeromorphicFunction} defined by the quartic equation
+ * 
+ * <pre>
+ * T(t)=tanh(ln(1+t²)))=((1 + t²)² - 1)/((1 + t²)² + 1)
+ * </pre>
+ * 
+ * is the
+ * 
+ * is the hyperbolic tangent of the logarithm of one plus the square of its
+ * argument.<br>
  * If we let t=x+iy then the following figure shows the algebraic varieties
  * corresponding to the implicitly defined level curves of -1, 0, and 1 for the
  * Real and Imaginary parts.
