@@ -8,10 +8,11 @@ import arb.dynamical.systems.*;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 
-public abstract class AbstractStochasticIntegrator<S extends State, D extends DiffusionProcess<S>> implements
-                                                  StochasticIntegrator<S, D>,
-                                                  AutoCloseable,
-                                                  Cleanable
+public abstract class AbstractDiffusionProcessIntegrator<S extends DiffusionProcessState, D extends DiffusionProcess<S>>
+                                                        implements
+                                                        DiffusionProcessIntegrator<S, D>,
+                                                        AutoCloseable,
+                                                        Cleanable
 {
 
   public S        state;
@@ -24,7 +25,7 @@ public abstract class AbstractStochasticIntegrator<S extends State, D extends Di
   protected Real  sqrtδt  = new Real();
   public int      i       = -1;
 
-  public AbstractStochasticIntegrator(D x)
+  public AbstractDiffusionProcessIntegrator(D x)
   {
     X                 = x;
     μi.printPrecision = true;

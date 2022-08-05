@@ -36,7 +36,7 @@ import de.erichseifert.gral.ui.*;
  * the time elapsed
  */
 public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
-                            AbstractStochasticIntegrator<D, P>
+                            AbstractDiffusionProcessIntegrator<D, P>
 {
 
   protected static final Color COLOR1 = new Color(55,

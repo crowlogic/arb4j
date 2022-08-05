@@ -14,7 +14,7 @@ public abstract class StochasticIntegratorFactory
    * Construct a new instance of either a {@link IntegrationMethod#Euler} or
    * {@link IntegrationMethod#Milstein}
    * 
-   * @param <X>     the type of {@link StochasticIntegrator}
+   * @param <X>     the type of {@link DiffusionProcessIntegrator}
    * @param <P>     the type of {@link DiffusionProcess}
    * @param <D>     the type of {@link DiffusionProcessState}
    * @param method
@@ -23,7 +23,7 @@ public abstract class StochasticIntegratorFactory
    * @return a newly constructed instance of the specified method where the given
    *         process and state has been passed to the constructor
    */
-  public static <X extends StochasticIntegrator<D, P>, P extends DiffusionProcess<D>, D extends DiffusionProcessState>
+  public static <X extends DiffusionProcessIntegrator<D, P>, P extends DiffusionProcess<D>, D extends DiffusionProcessState>
          X
          newIntegrator(IntegrationMethod method, P process, D state)
   {

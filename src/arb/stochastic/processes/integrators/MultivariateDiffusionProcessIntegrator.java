@@ -1,34 +1,34 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.zero;
 
 import arb.*;
 import arb.Float;
-import arb.dynamical.systems.*;
-import arb.stochastic.*;
+import arb.dynamical.systems.State;
+import arb.stochastic.GaussianProbabilityDistribution;
 import arb.stochastic.processes.*;
 
-public class MultivariateDiffusionProcessIntegrator<S extends State> implements
-                                                   StochasticIntegrator<S, DiffusionProcess<S>>,
+public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffusionProcessState> implements
+                                                   DiffusionProcessIntegrator<S, DiffusionProcess<S>>,
                                                    AutoCloseable
 {
-  static final int                                          dim           = 2;
+  static final int                                                                                        dim           = 2;
 
-  public final StochasticIntegrator<S, DiffusionProcess<S>> integrators[] = new StochasticIntegrator[dim];
+  public final DiffusionProcessIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> integrators[] = new DiffusionProcessIntegrator[dim];
 
-  S                                                         state;
+  S                                                                                                       state;
 
-  Real                                                      sqrtδt        = new Real();
+  Real                                                                                                    sqrtδt        = new Real();
 
-  public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess<S> process,
+  public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess process,
                                                 S state,
-                                                AbstractStochasticIntegrator<S, DiffusionProcess<S>> xIntegrator,
-                                                AbstractStochasticIntegrator<S, DiffusionProcess<S>> yIntegrator)
+                                                AbstractDiffusionProcessIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> xIntegrator,
+                                                AbstractDiffusionProcessIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> yIntegrator)
   {
     integrators[0] = xIntegrator;
     integrators[1] = yIntegrator;
-    process        = new MultivariateDiffusionProcess<S>(xIntegrator.X,
-                                                         yIntegrator.X);
+    process        = new MultivariateDiffusionProcess(xIntegrator.X,
+                                                      yIntegrator.X);
     this.state     = state;
   }
 
@@ -37,7 +37,7 @@ public class MultivariateDiffusionProcessIntegrator<S extends State> implements
   {
     for (int i = 0; i < dim; i++)
     {
-      integrators[i].step(state, prec, evalSeq);
+      integrators[i].step(state.get(i), prec, evalSeq);
     }
     return evalSeq;
   }
@@ -47,7 +47,7 @@ public class MultivariateDiffusionProcessIntegrator<S extends State> implements
   {
     for (int i = 0; i < dim; i++)
     {
-      integrators[i].jump(state, prec, evalSeq);
+      integrators[i].jump(state.get(i), prec, evalSeq);
     }
     return evalSeq;
   }

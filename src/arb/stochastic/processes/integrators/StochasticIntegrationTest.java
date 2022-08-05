@@ -42,7 +42,7 @@ public class StochasticIntegrationTest extends
   }
 
   protected void
-            testStochasticIntegrator(AbstractStochasticIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> integrator)
+            testStochasticIntegrator(AbstractDiffusionProcessIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> integrator)
   {
     FloatInterval         interval    = new FloatInterval(0,
                                                           10);
