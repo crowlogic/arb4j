@@ -3,16 +3,21 @@ package arb.functions.complex;
 import static java.lang.String.format;
 
 import arb.*;
+import arb.algebraic.geometry.*;
 import arb.exceptions.NotDifferentiableException;
 
 /**
  * The rational meromorphic quartic
- * <pre>S(t)=tanh(ln(1-t²)))=((1 - t²)² - 1)/((1 - t²)² + 1)</pre> is the
- * hyperbolic tangent of the logarithm of one minus the square of its
+ * 
+ * <pre>
+ * S(t)=tanh(ln(1-t²)))=((1 - t²)² - 1)/((1 - t²)² + 1)
+ * </pre>
+ * 
+ * is the hyperbolic tangent of the logarithm of one minus the square of its
  * argument.<br>
- * If we let t=x+iy then the following figure shows the algebraic varieties
- * corresponding to the implicitly defined level curves of -1, 0, and 1 for the
- * Real and Imaginary parts.
+ * If we let t=x+iy then the following figure shows the
+ * {@link AlgebraicVariety}s corresponding to the implicitly defined level
+ * curves of -1, 0, and 1 for the Real and Imaginary parts.
  * 
  * <br>
  * 
