@@ -31,15 +31,15 @@ import de.erichseifert.gral.data.*;
  * increased by considering expansions of the coefficients μₜ=μ(Sₜ) and σₜ=σ(Sₜ)
  * via Itō’s lemma.
  */
-public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
-                               EulerIntegrator<P, D> implements
+public class MilsteinIntegrator<S extends DiffusionProcessState, P extends DiffusionProcess<S>> extends
+                               EulerIntegrator<S, P> implements
                                AutoCloseable
 {
 
   @Override
   public String toString()
   {
-    return String.format("MilsteinIntegrator[X=%s, sqrtδt=%s, state=%s]", X, sqrtδt, state);
+    return String.format("MilsteinIntegrator[X=%s, sqrtδt=%s, state=%s]", process, sqrtδt, state);
   }
 
   public static void main(String args[])
@@ -51,9 +51,9 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                                              128),
                                                                     new Real("1.5",
                                                                              128));
-    try ( MilsteinIntegrator integrator = new MilsteinIntegrator(process,
-                                                                 new DiffusionProcessState(new Real("3",
-                                                                                                    128))))
+    try ( MilsteinIntegrator integrator = new MilsteinIntegrator<DiffusionProcessState, OrnsteinUhlenbeckProcess>(process,
+                                                                                                                  new DiffusionProcessState(new Real("3",
+                                                                                                                                                     128))))
     {
 
       System.out.println("state.seed=" + integrator.state.getRandomState().getInitialValue());
@@ -90,14 +90,14 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   Real σσi = new Real();
 
   @Override
-  public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
+  public EvaluationSequence step(S state, int prec, EvaluationSequence evalSequence)
   {
     assert state.dt != null && state.dt.isFinite() : "state is null or not finite";
     setSqrtδt(state, prec);
     Real xi = evalSequence.values.get(++i); // xi is the i-th sample from a standard normal distribution
     xi.printPrecision = true;
     μ.evaluate(state, 1, prec, μi);
-    assert μi.isFinite() : μi + " is not finite for μ=" + μ.getClass().getSimpleName() + " X=" + X + "\nstate="
+    assert μi.isFinite() : μi + " is not finite for μ=" + μ.getClass().getSimpleName() + " X=" + process + "\nstate="
                   + state;
     μi.mul(state.dt, prec);
     σ.evaluate(state, 2, prec, σi);
@@ -122,7 +122,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     return evalSequence;
   }
 
-  public void setSqrtδt(D state, int prec)
+  public void setSqrtδt(S state, int prec)
   {
     if (sqrtδt == null || sqrtδt.isZero())
     {
@@ -132,7 +132,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   }
 
   @Override
-  public EvaluationSequence jump(D state, int prec, EvaluationSequence evalSequence)
+  public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSequence)
   {
     Real xi = evalSequence.values.get(i); // xi is the i-th sample from a normal distribution wIth variance equal to
                                           // dt
@@ -153,7 +153,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     return evalSequence;
   }
 
-  public MilsteinIntegrator(P x, D state)
+  public MilsteinIntegrator(P x, S state)
   {
     super(x,
           state);

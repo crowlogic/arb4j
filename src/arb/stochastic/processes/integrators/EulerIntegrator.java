@@ -14,7 +14,6 @@ import arb.*;
 import arb.Float;
 import arb.stochastic.*;
 import arb.stochastic.processes.*;
-import arb.stochastic.processes.integrators.StochasticIntegratorFactory.*;
 import arb.utensils.*;
 import de.erichseifert.gral.data.*;
 import de.erichseifert.gral.graphics.*;
@@ -35,8 +34,8 @@ import de.erichseifert.gral.ui.*;
  * drift and standard deviation parameter σ=√(dt) such that the variance is dt,
  * the time elapsed
  */
-public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
-                            AbstractStochasticIntegrator<D, P>
+public class EulerIntegrator<S extends DiffusionProcessState, P extends DiffusionProcess<S>> extends
+                            AbstractStochasticIntegrator<S>
 {
 
   protected static final Color COLOR1 = new Color(55,
@@ -56,28 +55,30 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                                                                              128),
                                                                     new Real("0.1",
                                                                              128));
-    try ( var integrator = StochasticIntegratorFactory.newIntegrator(IntegrationMethod.Euler,
-                                                                     process,
-                                                                     new DiffusionProcessState(process.θ));)
+    try ( var integrator = new EulerIntegrator<>(process,
+                                                 new DiffusionProcessState(process.θ)))
     {
-
-      // Generate data
-      DataTable data = new DataTable(Double.class,
-                                     Double.class);
-
-      var       path = integrator.integrate(new FloatInterval(0,
-                                                              5),
-                                            750,
-                                            prec);
-
-      for (RealOrderedPair sample : path)
       {
-        data.add(sample.a.doubleValue(), sample.b.doubleValue());
+
+        // Generate data
+        DataTable data = new DataTable(Double.class,
+                                       Double.class);
+
+        var       path = integrator.integrate(new FloatInterval(0,
+                                                                5),
+                                              750,
+                                              prec);
+
+        for (RealOrderedPair sample : path)
+        {
+          System.out.println(sample);
+          data.add(sample.a.doubleValue(), sample.b.doubleValue());
+        }
+
+        print(data);
+
+        println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
       }
-
-      print(data);
-
-      println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
     }
 
   }
@@ -178,16 +179,16 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     axisRendererX.setTickSpacing(0.1);
   }
 
-  public EulerIntegrator(P x, D diffusionProcessState)
+  public EulerIntegrator(P x, S diffusionProcessState)
   {
     super(x);
     state = diffusionProcessState;
-    μ     = X.μ();
-    σ     = X.σ();
+    μ     = process.μ();
+    σ     = process.σ();
   }
 
-  DriftCoeffecientFunction<D>     μ;
-  DiffusionCoeffecientFunction<D> σ;
+  DriftCoeffecientFunction<S>     μ;
+  DiffusionCoeffecientFunction<S> σ;
 
   @Override
   public synchronized EvaluationSequence integrate(FloatInterval interval, int n, int prec)
@@ -198,14 +199,14 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     interval.length(prec, T);
 
     RealPartition partition = interval.realPartition(n, prec);
-    state.dt.set(partition.dt);
+    state.getδt(partition.dt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
                                                                    Real.newVector(n + 1));
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
-                                                                                 state.dt.sqrt(prec, sqrtδt)),
-                                             state.randomState,
+                                                                                 partition.dt.sqrt(prec, sqrtδt)),
+                                             state.getRandomState(),
                                              prec);
 
     state.setTime(interval.getA());
@@ -220,16 +221,17 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
   }
 
   @Override
-  public EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence)
+  public EvaluationSequence step(S state, int prec, EvaluationSequence evaluationSequence)
   {
     Real xi = evaluationSequence.values.get(++i);
     xi.printPrecision = true;
+    state.getδt(dt);
 
-    X.μ().evaluate(state, 1, prec, μi);
-    μi.mul(state.dt, prec);
+    process.μ().evaluate(state, 1, prec, μi);
+    μi.mul(dt, prec);
     assert μi.isFinite();
 
-    X.σ().evaluate(state, 1, prec, σi);
+    process.σ().evaluate(state, 1, prec, σi);
     assert !σi.isZero();
     assert σi.isFinite();
 
@@ -246,8 +248,10 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     return evaluationSequence;
   }
 
+  Real dt = new Real();
+
   @Override
-  public EvaluationSequence jump(D state, int prec, EvaluationSequence evaluationSequence)
+  public EvaluationSequence jump(S state, int prec, EvaluationSequence evaluationSequence)
   {
     Real xi = evaluationSequence.values.get(i);
 
