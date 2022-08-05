@@ -31,17 +31,18 @@ public class StochasticIntegrationTest extends
   {
     IntStream.range(0, 1).forEach(i ->
     {
-      WienerProcess   B          = new WienerProcess(new Real("5",
-                                                              128));
-      EulerIntegrator integrator = new EulerIntegrator(B,
-                                                       new DiffusionProcessState());
+      WienerProcess B = new WienerProcess(new Real("5",
+                                                   128));
+      try ( EulerIntegrator integrator = new EulerIntegrator(B,
+                                                             new DiffusionProcessState()))
       {
         testStochasticIntegrator(integrator);
       }
     });
   }
 
-  protected void testStochasticIntegrator(AbstractStochasticIntegrator<DiffusionProcessState> integrator)
+  protected void
+            testStochasticIntegrator(AbstractStochasticIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> integrator)
   {
     FloatInterval         interval    = new FloatInterval(0,
                                                           10);
@@ -56,7 +57,7 @@ public class StochasticIntegrationTest extends
     println("state=" + state);
     Real μ               = samplePath.values.arithmeticMean(prec, new Real());
     Real sampleStdev     = samplePath.values.standardDeviation(prec, μ, new Real());
-    Real populationStdev = integrator.process.σ().evaluate(state, 1, prec, new Real());
+    Real populationStdev = integrator.X.σ().evaluate(state, 1, prec, new Real());
     populationStdev.printPrecision = true;
     sampleStdev.printPrecision     = true;
     μ.printPrecision               = true;

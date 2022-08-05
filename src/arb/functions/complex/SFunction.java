@@ -3,23 +3,12 @@ package arb.functions.complex;
 import static java.lang.String.format;
 
 import arb.*;
-import arb.algebraic.geometry.*;
 import arb.exceptions.NotDifferentiableException;
 
 /**
  * The rational meromorphic quartic
+ * <code>S(t)=tanh(ln(1-t^2)))=((1 - t^2)^2 - 1)/((1 - t^2)^2 + 1)</code>
  * 
- * <pre>
- * S(t)=tanh(ln(1-t²)))=((1 - t²)² - 1)/((1 - t²)² + 1)
- * </pre>
- * 
- * is the hyperbolic tangent of the logarithm of one minus the square of its
- * argument.<br>
- * 
- * <br>
- * 
- * @see <a href="doc-files/X.pdf">Complex Dynamics of The Hyperbolic Tangent of
- *      The Logarithm Of One Minus The Square of The Hardy Z Function</a>
  * @author Stephen Crowley
  */
 public class SFunction implements
@@ -174,12 +163,12 @@ public class SFunction implements
     try ( Complex numer = new Complex(); Complex denom = new Complex(); Complex a = new Complex();)
     {
       denom.getReal().set(2);
-      denom.sub(t.pow(2, prec, a).mul(2, prec), prec, denom);
-      denom.add(t.pow(4, prec, a), prec, denom).pow(3, prec);
+      denom.sub(t.pow(2, prec, a).mul(2, prec, a), prec, denom);
+      denom.add(t.pow(4, prec, a), prec, denom).pow(3, prec, denom);
 
       numer.getReal().set(2);
-      numer.sub(a.mul(9, prec), prec, numer);
-      numer.add(t.pow(6, prec, a).mul(5, prec), prec, numer).neg().mul(8, prec);
+      numer.sub(a.mul(9, prec, a), prec, numer);
+      numer.add(t.pow(6, prec, a).mul(5, prec, a), prec, numer).neg(numer).mul(8, prec, numer);
 
       return numer.div(denom, prec, res);
     }
