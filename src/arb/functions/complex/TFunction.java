@@ -3,8 +3,25 @@ package arb.functions.complex;
 import arb.Real;
 import arb.operators.Composition;
 
+/**
+ * T(t)=tanh(ln(1+t^2)) is the hyperbolic tangent of the logarithm of one plus
+ * the square of its argument.<br>
+ * If we let t=x+iy then the following figure shows the algebraic varieties
+ * corresponding to the implicitly defined level curves of -1, 0, and 1 for the
+ * Real and Imaginary parts.
+ * 
+ * <br>
+ * 
+ * <img src="doc-files/ReImT.png"/>
+ * 
+ * <br>
+ * 
+ * @see <a href="doc-files/X.pdf">Complex Dynamics of The Hyperbolic Tangent of
+ *      The Logarithm Of One Minus The Square of The Hardy Z Function</a>
+ */
 public class TFunction extends
-                       Composition<SFunction, WickRotation>
+                       Composition<SFunction, WickRotation> implements
+                       MeromorphicFunction
 {
   @Override
   public String toString()
