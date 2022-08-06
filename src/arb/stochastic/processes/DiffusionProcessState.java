@@ -14,6 +14,8 @@ import arb.dynamical.systems.State;
  * {@link DiffusionProcess#μ(int)} and diffusion rate
  * {@link DiffusionProcess#σ(int)} which would be expresed in mathematical
  * notation as μ(Sₜ,t) and σ(Sₜ,t) for the drift and diffusion respectively
+ * 
+ * TODO: extract out the time-related fields into another
  */
 public class DiffusionProcessState implements
                                    State,
