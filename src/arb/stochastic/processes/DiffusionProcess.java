@@ -38,8 +38,8 @@ public interface DiffusionProcess<S extends State> extends
                                  StochasticProcess
 {
 
-  public <F extends DriftCoeffecientFunction<S>> F μ();
+  public DriftCoeffecientFunction<S> μ();
 
-  public <F extends DiffusionCoeffecientFunction<S>> F σ();
+  public DiffusionCoeffecientFunction<S> σ();
 
 }
