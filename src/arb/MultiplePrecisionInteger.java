@@ -8,7 +8,9 @@
 
 package arb;
 
-public class MultiplePrecisionInteger {
+import java.util.Iterator;
+
+public class MultiplePrecisionInteger implements Field {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -63,6 +65,99 @@ public class MultiplePrecisionInteger {
 
   public MultiplePrecisionInteger() {
     this(arbJNI.new_MultiplePrecisionInteger(), true);
+  }
+
+  @Override
+  public void close() throws Exception
+  {
+    assert false : "implement me";
+    
+  }
+
+  @Override
+  public Iterator iterator()
+  {
+    assert false : "implement me";
+    return null;
+    
+  }
+
+  @Override
+  public int dim()
+  {
+    return 1;    
+  }
+
+  @Override
+  public Field get(int index)
+  {
+    assert false : "implement me";
+    return null;
+    
+  }
+
+  @Override
+  public Field mul(Field x, int prec, Field result)
+  {
+    assert false : "implement me";
+    return null;
+    
+  }
+
+  @Override
+  public Field mul(int x, int prec, Field result)
+  {
+    assert false : "implement me";
+    return null;
+    
+  }
+
+  @Override
+  public Field div(int j, int prec, Field result)
+  {
+    assert false : "implement me";
+    return null;
+    
+  }
+
+  @Override
+  public Field div(Field j, int prec, Field result)
+  {
+    assert false : "implement me";
+    return null;
+    
+  }
+
+  @Override
+  public Field sub(Field element, int prec, Field result)
+  {
+    assert false : "implement me";
+    return null;
+    
+  }
+
+  @Override
+  public Field add(Field element, int prec, Field result)
+  {
+    assert false : "implement me";
+    return null;
+    
+  }
+
+  @Override
+  public Field zero()
+  {
+    assert false : "implement me";
+    return null;
+    
+  }
+
+  @Override
+  public Real abs(int prec, Real w)
+  {
+    assert false : "implement me";
+    return null;
+    
   }
 
 }
