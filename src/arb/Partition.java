@@ -23,6 +23,7 @@ public interface Partition<F extends Field> extends
    */
   F get(int i);
 
+  @Override
   Iterator<F> iterator();
 
   @Override
