@@ -16,7 +16,7 @@ import arb.functions.complex.MeromorphicFunction;
  * </pre>
  */
 public class DesingularizedNewtonFlow<F extends MeromorphicFunction> extends
-                                     NewtonFlow implements
+                                     NewtonFlow<F> implements
                                      EntireFunction
 {
 

@@ -1,9 +1,9 @@
 package arb.stochastic;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.sqrt2π;
 
-import arb.*;
-import arb.functions.real.*;
+import arb.Real;
+import arb.functions.real.RealFunction;
 
 /**
  * The cumulative distribution function for the Gaussian distribition. The
@@ -11,7 +11,7 @@ import arb.functions.real.*;
  * (1+erf((x-μ)/(σ√2)))/2
  */
 public class GaussianProbabilityDistribution implements
-                                          ProbabilityDistributionFunction
+                                             ProbabilityDistributionFunction<GaussianDensityFunction>
 {
 
   @Override
