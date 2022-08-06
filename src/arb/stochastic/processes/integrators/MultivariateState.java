@@ -1,11 +1,13 @@
 package arb.stochastic.processes.integrators;
 
-import arb.dynamical.systems.*;
-import arb.stochastic.processes.*;
+import arb.Real;
+import arb.dynamical.systems.State;
+import arb.stochastic.processes.DiffusionProcessState;
 
-public interface MultivariateState extends State
+public interface MultivariateState extends
+                                   State<Real>
 {
-    int dim();
-    
-    public DiffusionProcessState get( int i );
+  int dim();
+
+  public DiffusionProcessState get(int i);
 }

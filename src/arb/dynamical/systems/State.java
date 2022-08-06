@@ -4,8 +4,7 @@ import arb.*;
 import arb.Float;
 
 public interface State<X> extends
-                      Set<X>,
-                      AutoCloseable
+                      Set<X>
 {
 
   State<X> setTime(Real t);

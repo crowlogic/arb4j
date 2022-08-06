@@ -4,7 +4,6 @@ import static arb.RealConstants.zero;
 
 import arb.*;
 import arb.Float;
-import arb.dynamical.systems.State;
 import arb.stochastic.GaussianProbabilityDistribution;
 import arb.stochastic.processes.*;
 
@@ -98,15 +97,9 @@ public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffus
   @Override
   public void close()
   {
-    try
+    for (int i = 0; i < dim; i++)
     {
-      state.close();
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-      throw new RuntimeException(e.getMessage(),
-                                 e);
+      integrators[i].close();
     }
     sqrtδt.close();
   }

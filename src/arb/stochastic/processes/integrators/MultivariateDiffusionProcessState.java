@@ -51,13 +51,6 @@ public class MultivariateDiffusionProcessState implements
   }
 
   @Override
-  public void close() throws Exception
-  {
-    assert false : "implement me";
-
-  }
-
-  @Override
   public int dim()
   {
     assert false : "implement me";
