@@ -80,7 +80,8 @@ public interface Field<X extends Field<X>> extends
    */
   public default X mul(int x, int prec)
   {
-    return mul(x, prec, (X) X.this);
+    X result = (X) this;
+    return mul(x, prec, result);
   }
 
   /**
@@ -104,7 +105,8 @@ public interface Field<X extends Field<X>> extends
    */
   public default X mul(X x, int prec)
   {
-    return mul(x, prec, (X) X.this);
+    X result = (X) this;
+    return mul(x, prec, result);
   }
 
   /**
@@ -116,7 +118,7 @@ public interface Field<X extends Field<X>> extends
    */
   public default X div(int j, int prec)
   {
-    return div(j, prec, (X) X.this);
+    return div(j, prec, (X) this);
   }
 
   /**
@@ -148,7 +150,7 @@ public interface Field<X extends Field<X>> extends
    */
   public default X div(X j, int prec)
   {
-    return div(j, prec, (X) X.this);
+    return div(j, prec, (X) this);
   }
 
   /**
@@ -160,7 +162,7 @@ public interface Field<X extends Field<X>> extends
    */
   public default X add(X element, int prec)
   {
-    return add(element, prec, (X) X.this);
+    return add(element, prec, (X) this);
   }
 
   /**
@@ -172,7 +174,7 @@ public interface Field<X extends Field<X>> extends
    */
   public default X sub(X element, int prec)
   {
-    return sub(element, prec, (X) X.this);
+    return sub(element, prec, (X) this);
   }
 
   /**
