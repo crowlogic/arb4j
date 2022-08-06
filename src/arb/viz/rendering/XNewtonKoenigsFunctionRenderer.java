@@ -43,9 +43,9 @@ public class XNewtonKoenigsFunctionRenderer extends
     this(new Dimension((int)(2500 / 1.5),
                        (int)(1250 / 1.5)),
          new Rectangle2D.Double(-5,
-                                -10,
-                                50,
-                                20));
+                                -20,
+                                25,
+                                40));
   }
 
   @SuppressWarnings("resource")
@@ -54,8 +54,8 @@ public class XNewtonKoenigsFunctionRenderer extends
 
     XNewtonKoenigsFunctionRenderer renderer = new XNewtonKoenigsFunctionRenderer();
 
-    renderer.colorMode   = 2;
-    renderer.displayMode = Part.Real;
+    renderer.colorMode   = 1;
+    renderer.displayMode = Part.Phase;
     renderer.render();
     renderer.saveToFile();
 

@@ -109,9 +109,9 @@ public class FloatInterval implements AutoCloseable {
    return this;
   }
   
-  public Partition partition(int n, int prec)
+  public FloatPartition partition(int n, int prec)
   {
-    return new Partition(prec,
+    return new FloatPartition(prec,
                          this,
                          n);
   }

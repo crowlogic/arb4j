@@ -5,12 +5,12 @@ import java.util.*;
 final class PartitionIterator implements
                               Iterator<Float>
 {
-  private final Partition partition;
+  private final FloatPartition partition;
 
   /**
    * @param partition
    */
-  PartitionIterator(Partition partition)
+  PartitionIterator(FloatPartition partition)
   {
     this.partition = partition;
   }

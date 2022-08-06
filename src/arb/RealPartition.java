@@ -1,7 +1,5 @@
 package arb;
 
-import static arb.utensils.Utilities.println;
-
 import java.io.Closeable;
 import java.lang.ref.Cleaner.Cleanable;
 import java.util.Iterator;
@@ -10,7 +8,7 @@ public class RealPartition implements
                            AutoCloseable,
                            Closeable,
                            Cleanable,
-                           Iterable<Real>
+                           Partition<Real>
 {
   public final Real T;
 
@@ -24,7 +22,6 @@ public class RealPartition implements
     T.printPrecision = true;
     dt.div(2, prec, halfdt);
     Real ti = T;
-    println("halfdt=" + halfdt);
     try ( Real t = new Real())
     {
       t.set(interval.getA()).add(halfdt, prec);
@@ -55,6 +52,18 @@ public class RealPartition implements
   public void close()
   {
     T.close();
+  }
+
+  @Override
+  public long count()
+  {
+    return T.dim;
+  }
+
+  @Override
+  public Real get(int i)
+  {
+    return T.get(i);
   }
 
 }
