@@ -1,10 +1,7 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.zero;
-
 import java.lang.ref.Cleaner.Cleanable;
 
-import arb.Float;
 import arb.RandomState;
 import arb.Real;
 import arb.dynamical.systems.State;
@@ -12,13 +9,13 @@ import arb.dynamical.systems.State;
 /**
  * The arguments passed to the functions representing the drift rate
  * {@link DiffusionProcess#μ(int)} and diffusion rate
- * {@link DiffusionProcess#σ(int)} which would be expresed in mathematical
+ * {@link DiffusionProcess#σ(int)} which would be expressed in mathematical
  * notation as μ(Sₜ,t) and σ(Sₜ,t) for the drift and diffusion respectively
  * 
- * TODO: extract out the time-related fields into another
  */
-public class DiffusionProcessState implements
-                                   State,
+public class DiffusionProcessState extends
+                                   ContinuousTimeState implements
+                                   State<Real>,
                                    AutoCloseable,
                                    Cleanable
 {
@@ -36,8 +33,6 @@ public class DiffusionProcessState implements
     this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
   }
 
-
-  
   /**
    * initialize with a randomly generated initial value seed and call
    * this{@link #setValue(Real)} to set the initial value of the process
@@ -61,24 +56,14 @@ public class DiffusionProcessState implements
                          randomState.getInitialValue());
   }
 
-  private final Real prevTime = new Real().negInf();
-
-  private final Real time     = new Real().negInf();
-
   @Override
   public void close()
   {
-    dt.close();
-    time.close();
-    prevTime.close();
+    super.close();
     value.close();
   }
 
-  public final Real value  = new Real();
-
-  public final Real sqrtdt = new Real().indeterminate();
-
-  public final Real dt     = new Real().indeterminate();
+  public final Real value = new Real();
 
   /**
    * 
@@ -87,26 +72,6 @@ public class DiffusionProcessState implements
   public Real value()
   {
     return value;
-  }
-
-  public synchronized DiffusionProcessState setTime(Float t)
-  {
-    assert !prevTime.isFinite()
-                  || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation";
-    prevTime.set(time);
-    time.set(t);
-    return this;
-  }
-
-  @Override
-  public DiffusionProcessState setTime(Real t)
-  {
-    assert !prevTime.isFinite()
-                  || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time="
-                                + time + " prevTime=" + prevTime;
-    prevTime.set(time);
-    time.set(t);
-    return this;
   }
 
   public DiffusionProcessState setValue(Real x)
@@ -120,48 +85,6 @@ public class DiffusionProcessState implements
   public void clean()
   {
     close();
-  }
-
-  /**
-   * @param result
-   * @return
-   */
-  public synchronized Real getδt(Real result)
-  {
-    if (dt.isFinite())
-    {
-      // return the fixed-length step-size if its set
-      return result.set(dt);
-    }
-    if (!prevTime.isFinite())
-    {
-      return result.set(zero);
-    }
-    assert time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
-                  + " prevTime=" + prevTime;
-    return time.sub(prevTime, time.bits(), result);
-  }
-
-  public Real time()
-  {
-    return time;
-
-  }
-
-  public Real sqrtdt(int prec, Real result)
-  {
-    if (sqrtdt.isFinite() && !sqrtdt.isZero())
-    {
-      return result.set(sqrtdt);
-    }
-    if (dt.isFinite())
-    {
-      return result.set(dt.sqrt(prec, sqrtdt));
-    }
-    assert time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
-                  + " prevTime=" + prevTime;
-    return time.sub(prevTime, prec, result).sqrt(prec);
-
   }
 
   public <D extends DiffusionProcessState> D cloneState(DiffusionProcessState target)
@@ -179,12 +102,6 @@ public class DiffusionProcessState implements
   public RandomState getRandomState()
   {
     return randomState;
-  }
-
-  @Override
-  public Real setδt(Real dt)
-  {
-    return this.dt.set(dt);
   }
 
 }
