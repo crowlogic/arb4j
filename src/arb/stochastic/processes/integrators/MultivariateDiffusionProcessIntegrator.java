@@ -77,6 +77,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
     for (Real t : partition)
     {
+      println("");
       multivariateState.setTime(t);
       step(multivariateState, prec, evaluationSequence);
       jump(multivariateState, prec, evaluationSequence);
