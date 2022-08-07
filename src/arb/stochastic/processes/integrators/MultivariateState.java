@@ -4,10 +4,10 @@ import arb.Real;
 import arb.dynamical.systems.State;
 import arb.stochastic.processes.DiffusionProcessState;
 
-public interface MultivariateState extends
-                                   State<Real>
+public interface MultivariateState<S extends State> extends
+                                   State<S>
 {
   int dim();
 
-  public DiffusionProcessState getState(int i);
+  public S getState(int i);
 }

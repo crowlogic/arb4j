@@ -2,57 +2,62 @@ package arb.stochastic.processes.integrators;
 
 import static arb.RealConstants.zero;
 
-import arb.*;
+import arb.EvaluationSequence;
 import arb.Float;
+import arb.FloatInterval;
+import arb.Real;
+import arb.RealPartition;
 import arb.stochastic.GaussianProbabilityDistribution;
-import arb.stochastic.processes.*;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.MultivariateDiffusionProcess;
 
-public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffusionProcessState> implements
-                                                   DiffusionProcessIntegrator<S, DiffusionProcess<S>>,
+public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffusionProcessState> implements
                                                    AutoCloseable
 {
-  static final int                                                dim           = 2;
+  final int                                                       dim;
 
-  public final DiffusionProcessIntegrator<S, DiffusionProcess<S>> integrators[] = new DiffusionProcessIntegrator[dim];
+  public final DiffusionProcessIntegrator<M, DiffusionProcess<M>> integrators[];
 
-  S                                                               state;
+  M                                                               state;
 
-  Real                                                            sqrtδt        = new Real();
+  Real                                                            sqrtδt = new Real();
 
   private MultivariateDiffusionProcess                            process;
 
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess process,
-                                                S state,
-                                                DiffusionProcessIntegrator<S, DiffusionProcess<S>> xIntegrator,
-                                                DiffusionProcessIntegrator<S, DiffusionProcess<S>> yIntegrator)
+                                                M state,
+                                                DiffusionProcessIntegrator<M, DiffusionProcess<M>>... integrators)
   {
-    integrators[0] = xIntegrator;
-    integrators[1] = yIntegrator;
-    this.process   = process;
-    this.state     = state;
+    dim              = process.dim();
+    this.integrators = new DiffusionProcessIntegrator[dim];
+    for (int i = 0; i < dim; i++)
+    {
+      this.integrators[i] = integrators[i];
+    }
+    this.process = process;
+    this.state   = state;
   }
 
-  @Override
-  public EvaluationSequence step(S state, int prec, EvaluationSequence evalSeq)
+  public EvaluationSequence step(M state, int prec, EvaluationSequence evalSeq)
   {
     for (int i = 0; i < dim; i++)
     {
+      System.out.println("Stepping " + integrators[i] + " to " + state);
       integrators[i].step(state, prec, evalSeq);
     }
     return evalSeq;
   }
 
-  @Override
-  public EvaluationSequence jump(S state, int prec, EvaluationSequence evalSeq)
+  public EvaluationSequence jump(M state, int prec, EvaluationSequence evalSeq)
   {
     for (int i = 0; i < dim; i++)
     {
-      integrators[i].jump(state, prec, evalSeq);
+      integrators[i].jump(state.getState(i), prec, evalSeq);
     }
     return evalSeq;
   }
 
-  @Override
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec)
   {
 
@@ -77,22 +82,6 @@ public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffus
     }
 
     return evaluationSequence;
-  }
-
-  @Override
-  public Float weakConvergenceOrder(int dim)
-  {
-    assert false : "implement me";
-    return null;
-
-  }
-
-  @Override
-  public Float strongConvergenceOrder(int dim)
-  {
-    assert false : "implement me";
-    return null;
-
   }
 
   @Override

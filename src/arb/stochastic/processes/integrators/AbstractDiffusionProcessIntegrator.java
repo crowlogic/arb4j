@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import arb.Float;
 import arb.Real;
 import arb.dynamical.systems.*;
+import arb.stochastic.processes.ContinuousTimeState;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.utensils.Utilities;
@@ -23,7 +24,7 @@ import de.erichseifert.gral.plots.lines.AbstractLineRenderer2D;
 import de.erichseifert.gral.plots.lines.SmoothLineRenderer2D;
 import de.erichseifert.gral.ui.InteractivePanel;
 
-public abstract class AbstractDiffusionProcessIntegrator<S extends DiffusionProcessState, D extends DiffusionProcess<S>>
+public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTimeState, D extends DiffusionProcess<S>>
                                                         implements
                                                         DiffusionProcessIntegrator<S, D>,
                                                         AutoCloseable,

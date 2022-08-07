@@ -5,11 +5,20 @@ import static arb.FloatConstants.half;
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 
-import arb.*;
+import arb.EvaluationSequence;
 import arb.Float;
+import arb.FloatConstants;
+import arb.FloatInterval;
+import arb.Real;
+import arb.RealOrderedPair;
+import arb.RealPartition;
 import arb.stochastic.GaussianProbabilityDistribution;
-import arb.stochastic.processes.*;
-import arb.stochastic.processes.integrators.StochasticIntegratorFactory.IntegrationMethod;
+import arb.stochastic.processes.ContinuousTimeState;
+import arb.stochastic.processes.DiffusionCoeffecientFunction;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.DriftCoeffecientFunction;
+import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
 import de.erichseifert.gral.data.DataTable;
 
 /**
@@ -23,7 +32,7 @@ import de.erichseifert.gral.data.DataTable;
  * drift and standard deviation parameter σ=√(dt) such that the variance is dt,
  * the time elapsed
  */
-public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
+public class EulerIntegrator<P extends DiffusionProcess<D>, D extends ContinuousTimeState> extends
                             AbstractDiffusionProcessIntegrator<D, P>
 {
 
@@ -36,10 +45,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                                                                              128),
                                                                     new Real("0.1",
                                                                              128));
-    try ( var integrator = StochasticIntegratorFactory.newIntegrator(IntegrationMethod.Euler,
-                                                                     process,
-                                                                     new DiffusionProcessState(new Real("3",
-                                                                                                        128)));)
+    try ( var integrator = new EulerIntegrator(process,
+                                               new DiffusionProcessState(new Real("3",
+                                                                                  128)));)
     {
 
       // Generate data
@@ -90,7 +98,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
                                                                                  state.sqrtdt(prec, sqrtdt)),
-                                             state.randomState,
+                                             state.getRandomState(),
                                              prec);
 
     state.setTime(interval.getA());
@@ -98,7 +106,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     {
       state.setTime(t);
       step(state, prec, evaluationSequence);
-      jump(state, prec, evaluationSequence);
+      jump((DiffusionProcessState) state, prec, evaluationSequence);
     }
 
     return evaluationSequence;
@@ -132,7 +140,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
   }
 
   @Override
-  public EvaluationSequence jump(D state, int prec, EvaluationSequence evaluationSequence)
+  public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
   {
     Real xi = evaluationSequence.values.get(i);
 

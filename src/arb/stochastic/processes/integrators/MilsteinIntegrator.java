@@ -121,7 +121,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   }
 
   @Override
-  public EvaluationSequence jump(D state, int prec, EvaluationSequence evalSequence)
+  public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evalSequence)
   {
     Real xi = evalSequence.values.get(i); // xi is the i-th sample from a normal distribution wIth variance equal to
                                           // dt

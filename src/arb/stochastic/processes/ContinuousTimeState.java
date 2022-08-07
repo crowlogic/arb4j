@@ -6,9 +6,9 @@ import arb.Float;
 import arb.Real;
 import arb.dynamical.systems.State;
 
-public abstract class ContinuousTimeState implements
-                                          AutoCloseable,
-                                          State<Real>
+public abstract class ContinuousTimeState<S> implements
+                                         AutoCloseable,
+                                         State<S>
 {
 
   private final Real prevTime = new Real().negInf();
@@ -44,9 +44,9 @@ public abstract class ContinuousTimeState implements
 
   public final ContinuousTimeState setTime(Real t)
   {
-    assert !prevTime.isFinite()
-                  || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time="
-                                + time + " prevTime=" + prevTime;
+    assert prevTime != null && t != null
+                  && t.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
+                                + " prevTime=" + prevTime;
     prevTime.set(time);
     time.set(t);
     return this;
@@ -74,7 +74,14 @@ public abstract class ContinuousTimeState implements
     }
     if (!prevTime.isFinite())
     {
-      return result.set(zero);
+      if (result == null)
+      {
+        return zero;
+      }
+      else
+      {
+        return result.set(zero);
+      }
     }
     assert time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
                   + " prevTime=" + prevTime;

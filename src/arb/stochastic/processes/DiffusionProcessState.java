@@ -14,7 +14,7 @@ import arb.dynamical.systems.State;
  * 
  */
 public class DiffusionProcessState extends
-                                   ContinuousTimeState implements
+                                   ContinuousTimeState<Real> implements
                                    State<Real>,
                                    AutoCloseable,
                                    Cleanable
@@ -55,8 +55,6 @@ public class DiffusionProcessState extends
                          dt().toFixedString(),
                          randomState.getInitialValue());
   }
-
-  
 
   @Override
   public void close()
