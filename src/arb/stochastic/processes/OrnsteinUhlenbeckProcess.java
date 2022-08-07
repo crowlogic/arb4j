@@ -47,9 +47,9 @@ public class OrnsteinUhlenbeckProcess implements
                                       Cleanable
 {
   /**
-   * @return a {@link RealProbabilityDensityFunction} which is a function of the
-   *         {@link DiffusionProcessState} as a bivariate function
-   *         (t=time,x=value)
+   * @return a {@link ProbabilityDensityFunction} <b>p(t,x)</b> which is a
+   *         function of the {@link DiffusionProcessState} as a bivariate function
+   *         of the states time and value fields (t=time,x=value)
    * @see <a href=
    *      "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process#Fokker%E2%80%93Planck_equation_representation">Fokker–Planck
    *      equation representation</a>
