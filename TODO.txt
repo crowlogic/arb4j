@@ -1,4 +1,7 @@
-
+* modify MultivariateDiffusionProcessIntegrator to use Real
+getCorrelation(int i, int j) to generate the white noises it uses to
+perform the integrations
+  
 * foreign API: custom mapped memory segment factories instead of JNI DirectByteBuffers to alleviate the problems preventing large animations from being rendered within a single JVM
 
 * use confined ResourceScopes in Java to implement constant Real,
