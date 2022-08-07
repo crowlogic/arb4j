@@ -4,10 +4,16 @@ import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.one;
 import static arb.utensils.Utilities.println;
 
-import arb.*;
+import arb.EvaluationSequence;
 import arb.Float;
+import arb.FloatInterval;
+import arb.RandomState;
+import arb.Real;
+import arb.RealOrderedPair;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
-import arb.stochastic.processes.*;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
 import de.erichseifert.gral.data.DataTable;
 
 /**
@@ -45,27 +51,26 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   public static void main(String args[])
   {
 
-    OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(new Real("1.2",
+    OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(new Real("1.5",
                                                                              128),
                                                                     new Real("2",
                                                                              128),
-                                                                    new Real("1.5",
+                                                                    new Real("0.1",
                                                                              128));
-    try ( MilsteinIntegrator integrator = new MilsteinIntegrator(process,
-                                                                 new DiffusionProcessState(new Real("3",
-                                                                                                    128))))
+    try ( var integrator = new MilsteinIntegrator(process,
+                                                  new DiffusionProcessState(new Real("3",
+                                                                                     128),
+                                                                            new RandomState(31337)));)
     {
 
-      System.out.println("state.seed=" + integrator.state.getRandomState().getInitialValue());
-
       // Generate data
-      DataTable          data = new DataTable(Double.class,
-                                              Double.class);
+      DataTable data = new DataTable(Double.class,
+                                     Double.class);
 
-      EvaluationSequence path = integrator.integrate(new FloatInterval(0,
-                                                                       5),
-                                                     750,
-                                                     prec);
+      var       path = integrator.integrate(new FloatInterval(0,
+                                                              5),
+                                            750,
+                                            prec);
 
       for (RealOrderedPair sample : path)
       {
@@ -92,20 +97,8 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   @Override
   public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
   {
-    Real xi = evalSequence.values.get(state.nextIndex()); // xi is the i-th sample from a standard normal
-                                                          // distribution
-    xi.printPrecision = true;
-    μ.evaluate(state, 1, prec, μi);
-    assert μi.isFinite() : μi + " is not finite for μ=" + μ.getClass().getSimpleName() + " X=" + diffusionProcess + "\nstate="
-                  + state;
-    μi.mul(state.dt(), prec);
-    σ.evaluate(state, 2, prec, σi);
-    assert σi.isFinite() && σi.get(1).isFinite() : "σ is not finite " + σσi + "\nσ=" + σi;
-    σi.mul(xi, prec);
-    assert σi.isFinite() && σi.get(1).isFinite() : "σ is not finite " + σσi + "\nσ=" + σi + " xi=" + xi;
-    assert !sqrtdt.isZero() : "sqrtδt is zero";
-    xi.mul(sqrtdt, prec);
-    assert σi.isFinite();
+    Real xi = step(state, prec, evalSequence, 2).values.get(state.index());
+
     // 2nd order correction
     σi.mul(σi.get(1), prec, σσi);
     assert σi.isFinite() && σi.get(1).isFinite() : "σ is not finite " + σσi + "\nσ=" + σi + " xi=" + xi;
@@ -113,34 +106,13 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     assert σσi.isFinite() : "σσ is not finite " + σσi + "\nσ=" + σi;
     σσi.mul(state.dt(), prec).div(2, prec).mul(xi.pow(2, prec).sub(1, prec), prec);
 
+    μi.add(σi, prec, xi).add(σσi, prec);
+
     // the derivative is in σi.get(1) .. the 2nd
     // order to be added is ( (Zₜ)² - 1 ) * ( dt * σ(Xₜ)∂Xₜ * σ(Xₜ) ) / 2 where
     // σ(Xₜ)∂Xₜ is the derivative of σ relative to X, which is a function of t,
     // but this method will not work if either coefficient function depends directly
     // on t
-    return evalSequence;
-  }
-
-  @Override
-  public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evalSequence)
-  {
-    Real xi = evalSequence.values.get(state.index()); // xi is the i-th sample from a normal distribution wIth
-                                                      // variance equal to
-    // dt
-
-    state.setValue(xi);
-
-    if (verbose)
-    {
-      System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n",
-                        state.index(),
-                        state.time().toString(7),
-                        μi,
-                        σi,
-                        xi,
-                        state);
-    }
-
     return evalSequence;
   }
 

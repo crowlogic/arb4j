@@ -19,7 +19,6 @@ public class DiffusionProcessState extends
                                    AutoCloseable,
                                    Cleanable
 {
- 
 
   public DiffusionProcessState(RandomState randomState)
   {
@@ -33,6 +32,16 @@ public class DiffusionProcessState extends
   public DiffusionProcessState()
   {
     this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
+  }
+
+  /**
+   * initialize with a specified {@link RandomState} and call
+   * this{@link #setValue(Real)} to set the initial value of the process
+   */
+  public DiffusionProcessState(Real S0, RandomState randomState )
+  {
+    this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
+    setValue(S0);
   }
 
   /**

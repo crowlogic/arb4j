@@ -19,7 +19,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public final DiffusionProcessIntegrator<M, DiffusionProcess<M>> integrators[];
 
-  M                                                               state;
+  M                                                               multivariateState;
 
   Real                                                            sqrtδt = new Real();
 
@@ -35,8 +35,8 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     {
       this.integrators[i] = integrators[i];
     }
-    this.process = process;
-    this.state   = state;
+    this.process           = process;
+    this.multivariateState = state;
   }
 
   public EvaluationSequence step(M state, int prec, EvaluationSequence evalSeq)
@@ -45,6 +45,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     {
       integrators[i].step(state, prec, evalSeq);
     }
+    this.multivariateState.nextIndex();
     return evalSeq;
   }
 
@@ -61,23 +62,24 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
   {
 
     RealPartition partition = interval.realPartition(n, prec);
-    state.setdt(partition.dt).sqrt(prec, sqrtδt);
+    multivariateState.setdt(partition.dt).sqrt(prec, sqrtδt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
                                                                    Real.newVector(n + 1));
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
-                                                                                 state.getdt(sqrtδt).sqrt(prec)),
-                                             state.getRandomState(),
+                                                                                 multivariateState.getdt(sqrtδt)
+                                                                                                  .sqrt(prec)),
+                                             multivariateState.getRandomState(),
                                              prec);
 
-    state.setTime(interval.getA());
+    multivariateState.setTime(interval.getA());
     for (Real t : partition)
     {
-      state.setTime(t);
-      step(state, prec, evaluationSequence);
-      jump(state, prec, evaluationSequence);
-      System.out.println(state);
+      multivariateState.setTime(t);
+      step(multivariateState, prec, evaluationSequence);
+      jump(multivariateState, prec, evaluationSequence);
+      System.out.println(multivariateState);
     }
 
     return evaluationSequence;

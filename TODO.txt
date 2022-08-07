@@ -1,5 +1,3 @@
-* bivariate EvaluationSequence
-* multivariate EvaluationSequence 
 
 * foreign API: custom mapped memory segment factories instead of JNI DirectByteBuffers to alleviate the problems preventing large animations from being rendered within a single JVM
 

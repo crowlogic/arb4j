@@ -4,11 +4,13 @@ import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.half;
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
+import static java.lang.String.format;
 
 import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatConstants;
 import arb.FloatInterval;
+import arb.RandomState;
 import arb.Real;
 import arb.RealOrderedPair;
 import arb.RealPartition;
@@ -47,7 +49,8 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
                                                                              128));
     try ( var integrator = new EulerIntegrator(process,
                                                new DiffusionProcessState(new Real("3",
-                                                                                  128)));)
+                                                                                  128),
+                                                                         new RandomState(31337))))
     {
 
       // Generate data
@@ -115,14 +118,18 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   @Override
   public EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence)
   {
-    Real xi = evaluationSequence.values.get(state.nextIndex());
+    return step(state, prec, evaluationSequence, 1);
+  }
+
+  protected EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
+  {
+    Real xi = evaluationSequence.values.get(state.index());
     xi.printPrecision = true;
 
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt(), prec);
     assert μi.isFinite();
-
-    diffusionProcess.σ().evaluate(state, 1, prec, σi);
+    diffusionProcess.σ().evaluate(state, σorder, prec, σi);
     assert !σi.isZero();
     assert σi.isFinite();
 
@@ -132,17 +139,20 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     }
     σi.mul(xi, prec);
 
-    // coords.value = xi = previous(xi) + μi * δt + σi * Z where Z is a draw from
-    // W=N(0,√(δt))
-    // xi = μi + σi
-    μi.add(σi, prec, xi);
+    if (σorder == 1)
+    {
+      μi.add(σi, prec, xi);
+    }
+
     return evaluationSequence;
   }
 
   @Override
   public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
   {
-    Real xi = evaluationSequence.values.get(state.index());
+    int i = state.nextIndex();
+    assert i >= 0;
+    Real xi = evaluationSequence.values.get(i);
 
     state.setValue(xi.add(state.value(), prec));
 

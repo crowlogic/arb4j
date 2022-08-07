@@ -136,7 +136,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
 
   public S        state;
   public D        diffusionProcess;
-  public boolean  verbose = false;
+  public boolean  verbose ;
 
   protected Float T       = new Float();
   protected Real  μi      = new Real();
