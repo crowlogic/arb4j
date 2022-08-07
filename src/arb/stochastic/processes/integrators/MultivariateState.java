@@ -9,5 +9,5 @@ public interface MultivariateState extends
 {
   int dim();
 
-  public DiffusionProcessState get(int i);
+  public DiffusionProcessState getState(int i);
 }

@@ -1,12 +1,20 @@
 package arb.stochastic.processes;
 
-public interface MultivariateDiffusionProcess extends
-                                              MultivariateStochasticProcess
+import arb.EvaluationSequence;
+import arb.dynamical.systems.ContinuousTimeDynamicalSystem;
+import arb.stochastic.processes.integrators.MultivariateState;
+
+public interface MultivariateDiffusionProcess<D extends MultivariateState> extends
+                                             ContinuousTimeDynamicalSystem<D>
 
 {
 
   int dim();
 
-  public DiffusionProcessState get(int i);
+  public DiffusionProcess get(int i);
+
+  boolean verbose = false;
+
+  DiffusionProcessState getState(int i);
 
 }

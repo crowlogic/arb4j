@@ -11,20 +11,20 @@ public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffus
                                                    DiffusionProcessIntegrator<S, DiffusionProcess<S>>,
                                                    AutoCloseable
 {
-  static final int                                                                                        dim           = 2;
+  static final int                                                dim           = 2;
 
-  public final DiffusionProcessIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> integrators[] = new DiffusionProcessIntegrator[dim];
+  public final DiffusionProcessIntegrator<S, DiffusionProcess<S>> integrators[] = new DiffusionProcessIntegrator[dim];
 
-  S                                                                                                       state;
+  S                                                               state;
 
-  Real                                                                                                    sqrtδt        = new Real();
+  Real                                                            sqrtδt        = new Real();
 
-  private MultivariateDiffusionProcess process;
+  private MultivariateDiffusionProcess                            process;
 
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess process,
                                                 S state,
-                                                AbstractDiffusionProcessIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> xIntegrator,
-                                                AbstractDiffusionProcessIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> yIntegrator)
+                                                DiffusionProcessIntegrator<S, DiffusionProcess<S>> xIntegrator,
+                                                DiffusionProcessIntegrator<S, DiffusionProcess<S>> yIntegrator)
   {
     integrators[0] = xIntegrator;
     integrators[1] = yIntegrator;
@@ -37,7 +37,7 @@ public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffus
   {
     for (int i = 0; i < dim; i++)
     {
-      integrators[i].step(state.get(i), prec, evalSeq);
+      integrators[i].step(state, prec, evalSeq);
     }
     return evalSeq;
   }
@@ -47,7 +47,7 @@ public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffus
   {
     for (int i = 0; i < dim; i++)
     {
-      integrators[i].jump(state.get(i), prec, evalSeq);
+      integrators[i].jump(state, prec, evalSeq);
     }
     return evalSeq;
   }
