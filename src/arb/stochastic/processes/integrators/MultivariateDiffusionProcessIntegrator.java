@@ -43,7 +43,6 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
   {
     for (int i = 0; i < dim; i++)
     {
-      System.out.println("Stepping " + integrators[i] + " to " + state);
       integrators[i].step(state, prec, evalSeq);
     }
     return evalSeq;
