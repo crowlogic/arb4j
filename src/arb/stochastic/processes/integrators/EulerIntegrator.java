@@ -75,8 +75,8 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   {
     super(x);
     state = diffusionProcessState;
-    μ     = X.μ();
-    σ     = X.σ();
+    μ     = diffusionProcess.μ();
+    σ     = diffusionProcess.σ();
   }
 
   DriftCoeffecientFunction<D>     μ;
@@ -118,11 +118,11 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     Real xi = evaluationSequence.values.get(state.nextIndex());
     xi.printPrecision = true;
 
-    X.μ().evaluate(state, 1, prec, μi);
+    diffusionProcess.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt(), prec);
     assert μi.isFinite();
 
-    X.σ().evaluate(state, 1, prec, σi);
+    diffusionProcess.σ().evaluate(state, 1, prec, σi);
     assert !σi.isZero();
     assert σi.isFinite();
 

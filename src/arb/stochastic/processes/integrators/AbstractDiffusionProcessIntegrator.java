@@ -37,21 +37,22 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
   protected static final Color COLOR2 = new Color(200,
                                                   80,
                                                   75);
+
   protected static void print(DataTable data)
   {
     DataSeries linearSeries = new DataSeries(data,
                                              0,
                                              1);
-  
+
     // Create new xy-plot
     XYPlot     plot         = new XYPlot(linearSeries);
-  
+
     formatPlot(plot);
-  
+
     formatAxes(plot);
-  
+
     formatDataLines(linearSeries, plot);
-  
+
     // Add plot to Swing component
     Utilities.openInJFrame(new InteractivePanel(plot),
                            1900,
@@ -69,7 +70,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
                                        40.0));
     plot.setBackground(Color.GRAY);
     plot.getTitle().setText(EulerIntegrator.class.toString());
-  
+
     // Format plot area
     plot.getPlotArea()
         .setBackground(new RadialGradientPaint(new Point2D.Double(0.5,
@@ -100,7 +101,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     discreteRenderer.setColor(COLOR1);
     discreteRenderer.setStroke(new BasicStroke(0.5f));
     plot.setLineRenderers(seriesLin, discreteRenderer);
-  
+
   }
 
   protected static void formatAxes(XYPlot plot)
@@ -116,14 +117,14 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     axisRendererX.setShapeColor(Color.white);
     axisRendererX.setLabel(new Label("Time t"));
     plot.setAxisRenderer(XYPlot.AXIS_X, axisRendererX);
-  
+
     // Custom stroke for the x-axis
     BasicStroke stroke = new BasicStroke(0.1f);
     axisRendererX.setShapeStroke(stroke);
-  
+
     Label linearAxisLabel = new Label("Value Xₜ");
     linearAxisLabel.setRotation(90);
-  
+
     axisRendererY.setLabel(linearAxisLabel);
     // Change intersection point of Y axis
     axisRendererY.setIntersection(1.0);
@@ -134,7 +135,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
   }
 
   public S        state;
-  public D        X;
+  public D        diffusionProcess;
   public boolean  verbose = false;
 
   protected Float T       = new Float();
@@ -144,7 +145,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
 
   public AbstractDiffusionProcessIntegrator(D x)
   {
-    X                 = x;
+    diffusionProcess  = x;
     μi.printPrecision = true;
     σi.printPrecision = true;
   }

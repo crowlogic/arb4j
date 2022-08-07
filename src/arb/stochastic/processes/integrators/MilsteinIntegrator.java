@@ -39,7 +39,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   @Override
   public String toString()
   {
-    return String.format("MilsteinIntegrator[X=%s, sqrtδt=%s, state=%s]", X, sqrtdt, state);
+    return String.format("MilsteinIntegrator[X=%s, sqrtδt=%s, state=%s]", diffusionProcess, sqrtdt, state);
   }
 
   public static void main(String args[])
@@ -96,7 +96,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                           // distribution
     xi.printPrecision = true;
     μ.evaluate(state, 1, prec, μi);
-    assert μi.isFinite() : μi + " is not finite for μ=" + μ.getClass().getSimpleName() + " X=" + X + "\nstate="
+    assert μi.isFinite() : μi + " is not finite for μ=" + μ.getClass().getSimpleName() + " X=" + diffusionProcess + "\nstate="
                   + state;
     μi.mul(state.dt(), prec);
     σ.evaluate(state, 2, prec, σi);

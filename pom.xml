@@ -156,11 +156,6 @@
 			<version>${lwjgl3-awt.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.joml</groupId>
-			<artifactId>joml</artifactId>
-			<version>1.10.4</version>
-		</dependency>
-		<dependency>
 			<groupId>com.github.orange451</groupId>
 			<artifactId>LWJGUI</artifactId>
 			<version>pre-mt</version>
