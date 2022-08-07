@@ -96,11 +96,11 @@ import java.util.ArrayList;
    return this;
   }
   
-  public Partition partition(int n, int prec)
+  public FloatPartition partition(int n, int prec)
   {
-    return new Partition(prec,
-                         this,
-                         n);
+    return new FloatPartition(prec,
+                    	      this,
+                        	  n);
   }
 
   public RealPartition realPartition(int n, int prec)

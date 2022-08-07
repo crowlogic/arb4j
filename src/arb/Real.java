@@ -604,21 +604,15 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
       return (int) d.doubleValue() + 2;
     }
   }  
-    public boolean  printPrecision = false;
+    public boolean  printPrecision = true;
     
-  public String toString(int digits)
+ public String toString(int digits)
   {
     if (dim == 1)
     {
-      // TODO: get the number of digits to from the exponent of the radius
       String prefix = getMid().toString(digits);
-      if (!printPrecision)
-      {
-        return prefix;
-      }
 
-      return prefix + " +/- " + getRad().toString(5);
-      // return arb.arb_get_str(this, digits, 1);
+      return arb.arb_get_str(this, digits, printPrecision ? 0 : IntegerConstants.ARB_STR_MORE);
     }
     else
     {
