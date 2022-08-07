@@ -37,6 +37,7 @@ import arb.stochastic.*;
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process">Wikipedia</a>
+ * 
  */
 public class OrnsteinUhlenbeckProcess implements
                                       DiffusionProcess<DiffusionProcessState>,
@@ -45,6 +46,11 @@ public class OrnsteinUhlenbeckProcess implements
                                       AutoCloseable,
                                       Cleanable
 {
+  /**
+   * @see <a href=
+   *      "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process#Fokker%E2%80%93Planck_equation_representation">Fokker–Planck
+   *      equation representation</a>
+   */
   @Override
   public RealProbabilityDensityFunction getTransitionProbabilityDensity()
   {
