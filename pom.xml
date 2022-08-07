@@ -78,6 +78,11 @@
 			<version>0.3.0</version>
 		</dependency>
 		<dependency>
+			<groupId>com.spinyowl</groupId>
+			<artifactId>legui</artifactId>
+			<version>4.1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>de.erichseifert.gral</groupId>
 			<artifactId>gral-core</artifactId>
 			<version>0.11</version>
@@ -122,6 +127,7 @@
 			<artifactId>lwjgl</artifactId>
 			<classifier>${lwjgl.natives}</classifier>
 		</dependency>
+
 		<dependency>
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-assimp</artifactId>
@@ -156,8 +162,15 @@
 
 
 	<repositories>
-
-
+	<repository>
+	 <id>sonatype</id>
+	 <name>sonatype</name>
+	 <url>https://oss.sonatype.org/content/repositories/releases</url>
+	</repository>
+	<repository>
+	 <id>spinyowl</id>
+	 <url>https://raw.github.com/SpinyOwl/repo/releases</url>
+	</repository>
 		<repository>
 			<id>amelentev</id>
 			<url>https://amelentev.github.io/mvnrepo/</url>
@@ -171,24 +184,13 @@
 			</snapshots>
 		</repository>
 		<repository>
-			<id>mvnrepository</id>
-			<name>mvnrepository</name>
-			<url>https://www.mvnrepository.com</url>
-		</repository>
-		<repository>
-			<id>devmapfish</id>
-			<url>https://dev.mapfish.org/maven/repository/</url>
-		</repository>
-		<repository>
 			<id>oracleReleases</id>
 			<name>Oracle Released Java Packages</name>
 			<url>https://download.oracle.com/maven</url>
 			<layout>default</layout>
 		</repository>
-		<repository>
-			<id>maven2central</id>
-			<url>https://central.maven.org/maven2/</url>
-		</repository>
+
+
 
 	</repositories>
 

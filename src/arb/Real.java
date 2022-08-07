@@ -604,11 +604,11 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
       return (int) d.doubleValue() + 2;
     }
   }  
-    public boolean  printPrecision = true;
+    public boolean  printPrecision = false;
     
   public String toString(int digits)
   {
-    digits = Math.min(30, Math.max(40, digits));
+    digits = Math.min(20, Math.max(7, digits));
     
     if (dim == 1)
     {
