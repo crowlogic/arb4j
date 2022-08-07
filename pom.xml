@@ -79,9 +79,10 @@
 		</dependency>
 		<dependency>
 			<groupId>com.spinyowl</groupId>
-			<artifactId>legui</artifactId>
-			<version>4.0.0</version>
+			<artifactId>cbchain</artifactId>
+			<version>1.0.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>de.erichseifert.gral</groupId>
 			<artifactId>gral-core</artifactId>
@@ -158,10 +159,24 @@
 			<artifactId>lwjgl3-awt</artifactId>
 			<version>${lwjgl3-awt.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.joml</groupId>
+			<artifactId>joml</artifactId>
+			<version>1.10.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.orange451</groupId>
+			<artifactId>LWJGUI</artifactId>
+			<version>pre-mt</version>
+		</dependency>
 	</dependencies>
 
 
 	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 		<repository>
 			<id>sonatype</id>
 			<name>sonatype</name>

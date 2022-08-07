@@ -23,6 +23,8 @@ module arb4j
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
   requires gral.core;
+  requires org.joml;
+  requires LWJGUI.pre.mt;
 
   exports arb;
   exports arb.algebraic.expressions;
