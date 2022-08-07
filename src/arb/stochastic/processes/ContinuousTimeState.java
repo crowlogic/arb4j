@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
 import static arb.RealConstants.zero;
+import static arb.utensils.Utilities.println;
 
 import arb.Float;
 import arb.Real;
@@ -42,8 +43,10 @@ public abstract class ContinuousTimeState<S> implements
     return this;
   }
 
-  public final ContinuousTimeState setTime(Real t)
+  public ContinuousTimeState setTime(Real t)
   {
+    t.printPrecision = true;
+    println("Setting " + this.getClass().getSimpleName() + ".time to " + t.toString(10));
     assert prevTime != null && t != null
                   && t.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
                                 + " prevTime=" + prevTime;
@@ -115,12 +118,16 @@ public abstract class ContinuousTimeState<S> implements
 
   }
 
-  public final Real setdt(Real dt)
+  public ContinuousTimeState<S> setdt(Real dt)
   {
-    return this.dt.set(dt);
+    dt.printPrecision = true;
+    println("Setting " + this.getClass().getSimpleName() + ".dt to " + dt.toString(10));
+
+    this.dt.set(dt);
+    return this;
   }
 
-  int i = 0;
+  protected int i = 0;
 
   /**
    * 

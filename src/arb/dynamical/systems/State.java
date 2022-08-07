@@ -11,10 +11,10 @@ public interface State<X> extends
 
   State<X> setTime(Float a);
 
-  RandomState getRandomState();
-
   Real getdt(Real dt);
 
-  Real setdt(Real dt);
+  State<X> setdt(Real dt);
+
+  RandomState getRandomState();
 
 }

@@ -1,6 +1,7 @@
 package arb.stochastic.processes.integrators;
 
 import static arb.RealConstants.zero;
+import static arb.utensils.Utilities.println;
 
 import arb.EvaluationSequence;
 import arb.Float;
@@ -60,9 +61,10 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec)
   {
-
+    println("Partitioning " + interval + " into " + n + " pieces at " + prec + " bits of precision");
     RealPartition partition = interval.realPartition(n, prec);
-    multivariateState.setdt(partition.dt).sqrt(prec, sqrtδt);
+    multivariateState.setdt(partition.dt);
+    partition.dt.sqrt(prec, sqrtδt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
                                                                    Real.newVector(n + 1));
@@ -73,7 +75,6 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
                                              multivariateState.getRandomState(),
                                              prec);
 
-    multivariateState.setTime(interval.getA());
     for (Real t : partition)
     {
       multivariateState.setTime(t);

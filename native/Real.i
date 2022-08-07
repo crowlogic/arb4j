@@ -588,7 +588,7 @@ import java.util.stream.StreamSupport;
     {
       return arb.arb_get_str(this,
                              digits,
-                             printPrecision ? 0 : IntegerConstants.ARB_STR_NO_RADIUS);
+                             printPrecision ? IntegerConstants.ARB_STR_MORE : IntegerConstants.ARB_STR_NO_RADIUS);
     }
     else
     {

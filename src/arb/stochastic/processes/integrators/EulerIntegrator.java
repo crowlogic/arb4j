@@ -121,6 +121,17 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     return step(state, prec, evaluationSequence, 1);
   }
 
+  /**
+   * 
+   * @param state
+   * @param prec
+   * @param evaluationSequence
+   * @param σorder             the order to pass to the
+   *                           {@link DiffusionCoeffecientFunction}, the
+   *                           {@link MilsteinIntegrator} calls this with 2, but
+   *                           the EulerIntegrator only needs 1
+   * @return
+   */
   protected EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
   {
     Real xi = evaluationSequence.values.get(state.index());
@@ -131,7 +142,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     assert μi.isFinite();
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
     assert !σi.isZero();
-    assert σi.isFinite();
+    assert σi.isFinite() : "X.σ is not finite. state=" + state ;
 
     if (verbose)
     {
