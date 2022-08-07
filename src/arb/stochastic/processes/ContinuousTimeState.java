@@ -3,18 +3,18 @@ package arb.stochastic.processes;
 import static arb.RealConstants.zero;
 
 import arb.Float;
-import arb.RandomState;
 import arb.Real;
 import arb.dynamical.systems.State;
 
-public class ContinuousTimeState implements
-                                 AutoCloseable, State<Real>
+public abstract class ContinuousTimeState implements
+                                          AutoCloseable,
+                                          State<Real>
 {
 
-  protected final Real prevTime = new Real().negInf();
-  protected final Real time     = new Real().negInf();
-  public final Real    sqrtdt   = new Real().indeterminate();
-  public final Real    dt       = new Real().indeterminate();
+  private final Real prevTime = new Real().negInf();
+  private final Real time     = new Real().negInf();
+  private final Real sqrtdt   = new Real().indeterminate();
+  private final Real dt       = new Real().indeterminate();
 
   public ContinuousTimeState()
   {
@@ -22,7 +22,7 @@ public class ContinuousTimeState implements
   }
 
   @Override
-  public void close() 
+  public void close()
   {
     prevTime.close();
     time.close();
@@ -30,7 +30,10 @@ public class ContinuousTimeState implements
     dt.close();
   }
 
-  public synchronized ContinuousTimeState setTime(Float t)
+  /**
+   * TODO: support variable this{@link #dt}
+   */
+  public synchronized final ContinuousTimeState setTime(Float t)
   {
     assert !prevTime.isFinite()
                   || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation";
@@ -39,7 +42,7 @@ public class ContinuousTimeState implements
     return this;
   }
 
-  public ContinuousTimeState setTime(Real t)
+  public final ContinuousTimeState setTime(Real t)
   {
     assert !prevTime.isFinite()
                   || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time="
@@ -49,14 +52,23 @@ public class ContinuousTimeState implements
     return this;
   }
 
+  public final Real dt()
+  {
+    return getdt(null);
+  }
+
   /**
    * @param result
    * @return
    */
-  public synchronized Real getδt(Real result)
+  public synchronized final Real getdt(Real result)
   {
     if (dt.isFinite())
     {
+      if (result == null)
+      {
+        return dt;
+      }
       // return the fixed-length step-size if its set
       return result.set(dt);
     }
@@ -69,13 +81,18 @@ public class ContinuousTimeState implements
     return time.sub(prevTime, time.bits(), result);
   }
 
-  public Real time()
+  public final Real prevTime()
+  {
+    return prevTime;
+  }
+
+  public final Real time()
   {
     return time;
 
   }
 
-  public Real sqrtdt(int prec, Real result)
+  public final Real sqrtdt(int prec, Real result)
   {
     if (sqrtdt.isFinite() && !sqrtdt.isZero())
     {
@@ -91,17 +108,9 @@ public class ContinuousTimeState implements
 
   }
 
-  public Real setδt(Real dt)
+  public final Real setdt(Real dt)
   {
     return this.dt.set(dt);
-  }
-
-  @Override
-  public RandomState getRandomState()
-  {
-    assert false : "implement me";
-    return null;
-    
   }
 
 }

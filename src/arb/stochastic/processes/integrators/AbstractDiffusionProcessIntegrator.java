@@ -139,7 +139,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends DiffusionProc
   protected Float T       = new Float();
   protected Real  μi      = new Real();
   protected Real  σi      = Real.newVector(2);
-  protected Real  sqrtδt  = new Real();
+  protected Real  sqrtdt  = new Real();
   public int      i       = -1;
 
   public AbstractDiffusionProcessIntegrator(D x)
@@ -161,6 +161,6 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends DiffusionProc
     T.close();
     μi.close();
     σi.close();
-    sqrtδt.close();
+    sqrtdt.close();
   }
 }

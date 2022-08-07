@@ -35,7 +35,7 @@ public class MultivariateDiffusionProcessState implements
   }
 
   @Override
-  public Real getδt(Real result)
+  public Real getdt(Real result)
   {
     assert false : "implement me";
     return null;
@@ -43,7 +43,7 @@ public class MultivariateDiffusionProcessState implements
   }
 
   @Override
-  public Real setδt(Real dt)
+  public Real setdt(Real dt)
   {
     assert false : "implement me";
     return null;

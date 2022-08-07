@@ -19,6 +19,8 @@ public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffus
 
   Real                                                                                                    sqrtδt        = new Real();
 
+  private MultivariateDiffusionProcess process;
+
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess process,
                                                 S state,
                                                 AbstractDiffusionProcessIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> xIntegrator,
@@ -26,8 +28,7 @@ public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffus
   {
     integrators[0] = xIntegrator;
     integrators[1] = yIntegrator;
-    process        = new MultivariateDiffusionProcess(xIntegrator.X,
-                                                      yIntegrator.X);
+    this.process   = process;
     this.state     = state;
   }
 
@@ -56,13 +57,13 @@ public class MultivariateDiffusionProcessIntegrator<S extends MultivariateDiffus
   {
 
     RealPartition partition = interval.realPartition(n, prec);
-    state.setδt(partition.dt).sqrt(prec, sqrtδt);
+    state.setdt(partition.dt).sqrt(prec, sqrtδt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
                                                                    Real.newVector(n + 1));
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
-                                                                                 state.getδt(sqrtδt).sqrt(prec)),
+                                                                                 state.getdt(sqrtδt).sqrt(prec)),
                                              state.getRandomState(),
                                              prec);
 

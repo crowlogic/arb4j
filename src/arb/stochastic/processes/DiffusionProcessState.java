@@ -49,12 +49,14 @@ public class DiffusionProcessState extends
   public String toString()
   {
     return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s, seed=%s]",
-                         prevTime,
-                         time,
+                         prevTime(),
+                         time(),
                          value,
-                         dt.toFixedString(),
+                         dt().toFixedString(),
                          randomState.getInitialValue());
   }
+
+  
 
   @Override
   public void close()
@@ -87,22 +89,10 @@ public class DiffusionProcessState extends
     close();
   }
 
-  public <D extends DiffusionProcessState> D cloneState(DiffusionProcessState target)
-  {
-    target.prevTime.set(prevTime);
-    target.time.set(time);
-    target.dt.set(dt);
-    target.randomState = randomState;
-    target.sqrtdt.set(sqrtdt);
-    target.value.set(value);
-    return (D) target;
-  }
-
   @Override
   public RandomState getRandomState()
   {
     return randomState;
   }
-
 
 }

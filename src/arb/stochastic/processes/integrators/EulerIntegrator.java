@@ -3,25 +3,14 @@ package arb.stochastic.processes.integrators;
 import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.half;
 import static arb.RealConstants.zero;
-import static arb.utensils.Utilities.*;
-
-import java.awt.*;
-import java.awt.geom.*;
-
-import javax.swing.*;
+import static arb.utensils.Utilities.println;
 
 import arb.*;
 import arb.Float;
-import arb.stochastic.*;
+import arb.stochastic.GaussianProbabilityDistribution;
 import arb.stochastic.processes.*;
-import arb.stochastic.processes.integrators.StochasticIntegratorFactory.*;
-import arb.utensils.*;
-import de.erichseifert.gral.data.*;
-import de.erichseifert.gral.graphics.*;
-import de.erichseifert.gral.plots.*;
-import de.erichseifert.gral.plots.axes.*;
-import de.erichseifert.gral.plots.lines.*;
-import de.erichseifert.gral.ui.*;
+import arb.stochastic.processes.integrators.StochasticIntegratorFactory.IntegrationMethod;
+import de.erichseifert.gral.data.DataTable;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method
@@ -38,8 +27,6 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                             AbstractDiffusionProcessIntegrator<D, P>
 {
 
-
-
   public static void main(String args[])
   {
 
@@ -51,7 +38,8 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                                                                              128));
     try ( var integrator = StochasticIntegratorFactory.newIntegrator(IntegrationMethod.Euler,
                                                                      process,
-                                                                     new DiffusionProcessState(process.θ));)
+                                                                     new DiffusionProcessState(new Real("3",
+                                                                                                        128)));)
     {
 
       // Generate data
@@ -95,13 +83,13 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     interval.length(prec, T);
 
     RealPartition partition = interval.realPartition(n, prec);
-    state.dt.set(partition.dt);
+    state.setdt(partition.dt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
                                                                    Real.newVector(n + 1));
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
-                                                                                 state.dt.sqrt(prec, sqrtδt)),
+                                                                                 state.sqrtdt(prec, sqrtdt)),
                                              state.randomState,
                                              prec);
 
@@ -123,7 +111,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     xi.printPrecision = true;
 
     X.μ().evaluate(state, 1, prec, μi);
-    μi.mul(state.dt, prec);
+    μi.mul(state.dt(), prec);
     assert μi.isFinite();
 
     X.σ().evaluate(state, 1, prec, σi);

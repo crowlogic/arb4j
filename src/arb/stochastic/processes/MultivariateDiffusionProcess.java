@@ -1,26 +1,12 @@
 package arb.stochastic.processes;
 
-import arb.dynamical.systems.State;
-
-public class MultivariateDiffusionProcess implements
-                                          MultivariateStochasticProcess
+public interface MultivariateDiffusionProcess extends
+                                              MultivariateStochasticProcess
 
 {
 
-  public MultivariateDiffusionProcess()
-  {
-    super();
-  }
+  int dim();
 
-  public MultivariateDiffusionProcess(DiffusionProcess x, DiffusionProcess x2)
-  {
-    assert false : "...";
-  }
-
-  @Override
-  public int dim()
-  {
-    return 2;
-  }
+  public DiffusionProcessState get(int i);
 
 }

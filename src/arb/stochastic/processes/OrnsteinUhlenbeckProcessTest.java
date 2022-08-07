@@ -31,8 +31,8 @@ public class OrnsteinUhlenbeckProcessTest extends
       σi.printPrecision = true;
       state.setTime(zero);
       state.value().set(one);
-      state.dt.set(new Real("0.0001",
-                            128));
+      state.setdt(new Real("0.0001",
+                           128));
 
       process.μ().evaluate(state, 1, prec, μi);
       process.σ().evaluate(state, 1, prec, σi);
