@@ -2,9 +2,9 @@ package arb;
 
 public class IntegerConstants
 {
-
-  public static final int ARB_STR_MORE = 2;
   public static final int ARB_STR_CONDENSE = 16;
+  public static final int ARB_STR_NO_RADIUS = 2;
+  public static final int ARB_STR_MORE = 1;
   public static final int MAG_BITS       = 30;
   public static final int ARF_RND_DOWN   = RoundingMode.Down.ordinal();
   public static final int ARF_RND_UP     = RoundingMode.Up.ordinal();;

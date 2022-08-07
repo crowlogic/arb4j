@@ -5,6 +5,12 @@ public class RealOrderedPair extends
                              AutoCloseable
 {
 
+  @Override
+  public String toString()
+  {
+    return String.format("RealOrderedPair[a=%s, b=%s]", a.toFixedString(), b.toFixedString() );
+  }
+
   public RealOrderedPair()
   {
     super(new Real(),

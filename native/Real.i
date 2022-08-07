@@ -578,15 +578,17 @@ import java.util.stream.StreamSupport;
       return (int) d.doubleValue() + 2;
     }
   }  
-    public boolean  printPrecision = true;
+    public boolean  printPrecision = false;
     
- public String toString(int digits)
+  public String toString(int digits)
   {
+    digits = Math.min(20, Math.max(7, digits));
+    
     if (dim == 1)
     {
-      String prefix = getMid().toString(digits);
-
-      return arb.arb_get_str(this, digits, printPrecision ? 0 : IntegerConstants.ARB_STR_MORE);
+      return arb.arb_get_str(this,
+                             digits,
+                             printPrecision ? 0 : IntegerConstants.ARB_STR_NO_RADIUS);
     }
     else
     {
@@ -598,7 +600,7 @@ import java.util.stream.StreamSupport;
         {
           sb.append(",\n ");
         }
-        sb.append(String.format("%s", get(i)));
+        sb.append(String.format("%s", get(i).toString(digits)));
       }
       sb.append("]");
       return sb.toString();

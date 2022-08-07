@@ -25,7 +25,7 @@ public class GeometricBrownianMotionTest extends
                                                                    500,
                                                                    128);
       println(state);
-      for (OrderedPair x : evaluationSequence)
+      for (RealOrderedPair x : evaluationSequence)
       {
         println(x);
       }

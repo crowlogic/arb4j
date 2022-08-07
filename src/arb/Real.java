@@ -606,13 +606,15 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   }  
     public boolean  printPrecision = true;
     
- public String toString(int digits)
+  public String toString(int digits)
   {
+    digits = Math.min(30, Math.max(40, digits));
+    
     if (dim == 1)
     {
-      String prefix = getMid().toString(digits);
-
-      return arb.arb_get_str(this, digits, printPrecision ? 0 : IntegerConstants.ARB_STR_MORE);
+      return arb.arb_get_str(this,
+                             digits,
+                             printPrecision ? 0 : IntegerConstants.ARB_STR_NO_RADIUS);
     }
     else
     {
@@ -624,7 +626,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
         {
           sb.append(",\n ");
         }
-        sb.append(String.format("%s", get(i)));
+        sb.append(String.format("%s", get(i).toString(digits)));
       }
       sb.append("]");
       return sb.toString();
