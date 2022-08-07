@@ -22,7 +22,7 @@ public interface StochasticProcess extends
     return 1;
   }
   
-  public default <P extends ProbabilityDensityFunction> P getDensityFunction(Real t)
+  public default <P extends RealProbabilityDensityFunction> P getDensityFunction(Real t)
   {
     return arb.utensils.Utilities.TODO("implement me");
 

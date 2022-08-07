@@ -3,7 +3,7 @@ package arb;
 import java.lang.ref.Cleaner.Cleanable;
 import java.util.Iterator;
 
-import arb.stochastic.ProbabilityDensityFunction;
+import arb.stochastic.RealProbabilityDensityFunction;
 import arb.stochastic.ProbabilityDistributionFunction;
 
 public class EvaluationSequence implements
@@ -23,7 +23,7 @@ public class EvaluationSequence implements
    * Populates the this{@link #values} of this {@link EvaluationSequence} with
    * random {@link Real} numbers sampled from some density function
    * 
-   * @param pdf         the {@link ProbabilityDensityFunction} to populate
+   * @param pdf         the {@link RealProbabilityDensityFunction} to populate
    *                    this{@link #values} with
    *                    {@link ProbabilityDistributionFunction#sample(int, RandomState, Real)}s
    *                    from

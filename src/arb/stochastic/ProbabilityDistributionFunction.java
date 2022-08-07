@@ -8,7 +8,7 @@ import arb.functions.real.RealFunction;
  * The distribution function of a random variable is the integral of the
  * corresponding density function
  */
-public interface ProbabilityDistributionFunction<P extends ProbabilityDensityFunction> extends
+public interface ProbabilityDistributionFunction<P extends RealProbabilityDensityFunction> extends
                                                 RealFunction
 {
   /**

@@ -35,7 +35,7 @@ public class BrownianBridge implements
 {
 
   @Override
-  public ProbabilityDensityFunction getDensityFunction(Real t)
+  public RealProbabilityDensityFunction getDensityFunction(Real t)
   {
     assert false : "TODO";
     return null;

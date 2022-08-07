@@ -40,9 +40,18 @@ import arb.stochastic.*;
  */
 public class OrnsteinUhlenbeckProcess implements
                                       DiffusionProcess<DiffusionProcessState>,
+                                      MarkovProcess,
+                                      StationaryProcess,
                                       AutoCloseable,
                                       Cleanable
 {
+  @Override
+  public RealProbabilityDensityFunction getTransitionProbabilityDensity()
+  {
+    assert false : "TODO: implement and return {\\displaystyle P(x,t\\mid x',t')={\\sqrt {\\frac {\\theta }{2\\pi D(1-e^{-2\\theta (t-t')})}}}\\exp \\left[-{\\frac {\\theta }{2D}}{\\frac {(x-x'e^{-\\theta (t-t')})^{2}}{1-e^{-2\\theta (t-t')}}}\\right]}";
+    return null;
+  }
+
   @Override
   public String toString()
   {

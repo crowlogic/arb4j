@@ -7,7 +7,7 @@ package arb.stochastic;
  * outcomes in a sample space to a measurable space, often the real numbers.
  * This graph shows how random variable is a function from all possible outcomes
  * to real values. It also shows how random variable is used for defining
- * {@link ProbabilityDensityFunction}.
+ * {@link RealProbabilityDensityFunction}.
  * 
  * Informally, randomness typically represents some fundamental element of
  * chance, such as in the roll of a dice; it may also represent uncertainty,

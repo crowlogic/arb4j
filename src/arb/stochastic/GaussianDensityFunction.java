@@ -25,7 +25,7 @@ import arb.stochastic.processes.*;
  * @see https://en.wikipedia.org/wiki/Normal_distribution
  */
 public class GaussianDensityFunction implements
-                                     ProbabilityDensityFunction
+                                     RealProbabilityDensityFunction
 {
 
   @Override

@@ -1,17 +1,20 @@
 package arb.operators;
 
 import arb.*;
-import arb.functions.RealToComplexFunction;
-import arb.functions.real.RealFunction;
+import arb.functions.*;
+import arb.functions.real.*;
+import arb.stochastic.*;
 
-public class FourierTransform<F extends RealFunction> implements
+public class FourierTransform<F extends Function<Real,Real>> implements
                              IntegralTransform
 {
 
   public int                relativeAccuracyBitsGoal     = 128;
   public final Magnitude    absoluteUncertaintyTolerance = new Magnitude().set(Math.pow(10, -30));
-  public final Real         right                        = new Real("100", 128);
-  public final Real         left                         = new Real("-100", 128);
+  public final Real         right                        = new Real("100",
+                                                                    128);
+  public final Real         left                         = new Real("-100",
+                                                                    128);
   public IntegrationOptions integrationOptions           = new IntegrationOptions();
   private boolean           inverse;
 
