@@ -46,7 +46,7 @@ public abstract class ContinuousTimeState<S> implements
   public ContinuousTimeState setTime(Real t)
   {
     t.printPrecision = true;
-    println("Setting " + this.getClass().getSimpleName() + ".time to " + t.toString(10));
+    //println("Setting " + this.getClass().getSimpleName() + ".time to " + t.toString(10));
     assert prevTime != null && t != null
                   && t.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
                                 + " prevTime=" + prevTime;
