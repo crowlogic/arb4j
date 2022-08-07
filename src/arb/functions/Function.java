@@ -21,19 +21,7 @@ public interface Function<D,R>
     return 0;
   }
 
-  public default <F extends Function<D, R>> F integral() throws NotDifferentiableException
-  {
-    assert false : "TODO: implement in " + getClass();
-    return null;
-  }
-
   public default <F extends Function> F inverse(int branch)
-  {
-    assert false : "TODO: implement in " + getClass();
-    return null;
-  }
-
-  public default R newRangeElement()
   {
     assert false : "TODO: implement in " + getClass();
     return null;
