@@ -1,6 +1,12 @@
 package arb.stochastic.processes.integrators;
 
-import java.awt.*;
+import static arb.utensils.Utilities.println;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.RadialGradientPaint;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
 import java.lang.ref.Cleaner.Cleanable;
 
@@ -8,10 +14,8 @@ import javax.swing.JFrame;
 
 import arb.Float;
 import arb.Real;
-import arb.dynamical.systems.*;
 import arb.stochastic.processes.ContinuousTimeState;
 import arb.stochastic.processes.DiffusionProcess;
-import arb.stochastic.processes.DiffusionProcessState;
 import arb.utensils.Utilities;
 import de.erichseifert.gral.data.DataSeries;
 import de.erichseifert.gral.data.DataTable;
@@ -38,7 +42,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
                                                   80,
                                                   75);
 
-  protected static void print(DataTable data)
+  protected void print(DataTable data)
   {
     DataSeries linearSeries = new DataSeries(data,
                                              0,
@@ -54,14 +58,37 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     formatDataLines(linearSeries, plot);
 
     // Add plot to Swing component
-    Utilities.openInJFrame(new InteractivePanel(plot),
-                           1900,
-                           800,
-                           EulerIntegrator.class.toString(),
-                           JFrame.EXIT_ON_CLOSE);
+    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, getClass().toString(), JFrame.EXIT_ON_CLOSE)
+             .addKeyListener(new KeyListener()
+             {
+
+               @Override
+               public void keyTyped(KeyEvent e)
+               {
+
+               }
+
+               @Override
+               public void keyPressed(KeyEvent e)
+               {
+                 switch (e.getKeyCode())
+                 {
+                 case KeyEvent.VK_ESCAPE:
+                   System.exit(1);
+                 }
+
+               }
+
+               @Override
+               public void keyReleased(KeyEvent e)
+               {
+
+               }
+             });
+    ;
   }
 
-  protected static void formatPlot(XYPlot plot)
+  protected void formatPlot(XYPlot plot)
   {
     // Format plot
     plot.setInsets(new Insets2D.Double(20.0,
@@ -69,7 +96,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
                                        40.0,
                                        40.0));
     plot.setBackground(Color.GRAY);
-    plot.getTitle().setText(EulerIntegrator.class.toString());
+    plot.getTitle().setText(getClass().toString());
 
     // Format plot area
     plot.getPlotArea()
@@ -136,12 +163,12 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
 
   public S        state;
   public D        diffusionProcess;
-  public boolean  verbose ;
+  public boolean  verbose;
 
-  protected Float T       = new Float();
-  protected Real  μi      = new Real();
-  protected Real  σi      = Real.newVector(2);
-  protected Real  sqrtdt  = new Real();
+  protected Float T      = new Float();
+  protected Real  μi     = new Real();
+  protected Real  σi     = Real.newVector(2);
+  protected Real  sqrtdt = new Real();
 
   public AbstractDiffusionProcessIntegrator(D x)
   {

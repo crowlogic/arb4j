@@ -77,7 +77,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
 
-      print(data);
+      integrator.print(data);
 
       println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
     }

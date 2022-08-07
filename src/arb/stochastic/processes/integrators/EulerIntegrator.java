@@ -67,9 +67,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
 
-      print(data);
+      integrator.print(data);
 
-      println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
+      println("mean=" + path.values.arithmeticMean(128, new Real()));
     }
 
   }
@@ -142,7 +142,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     assert μi.isFinite();
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
     assert !σi.isZero();
-    assert σi.isFinite() : "X.σ is not finite. state=" + state ;
+    assert σi.isFinite() : "X.σ is not finite. state=" + state;
 
     if (verbose)
     {
