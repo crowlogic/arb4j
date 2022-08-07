@@ -1,6 +1,7 @@
 package arb.topological.spaces;
 
 import arb.Set;
+import arb.measures.MeasurableSpace;
 import arb.topological.Space;
 
 /**
@@ -22,7 +23,7 @@ import arb.topological.Space;
  * @param <E> the type of events that occur in the {@link Space}
  */
 public interface SampleSpace<E> extends
-                            Space<E>
+                            MeasurableSpace<E>
 {
 
 }

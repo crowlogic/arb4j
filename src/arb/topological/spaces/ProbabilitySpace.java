@@ -1,8 +1,7 @@
 package arb.topological.spaces;
 
-import arb.Set;
+import arb.measures.MeasureSpace;
 import arb.stochastic.ProbabilityDistributionFunction;
-import arb.topological.Space;
 
 /**
  * A {@link ProbabilitySpace} or a probability triple (Ω,F,P) is a mathematical
@@ -13,13 +12,13 @@ import arb.topological.Space;
  *            outcomes
  * @param <F> An {@link EventSpace}, which is a set of outcomes in the
  *            {@link SampleSpace} Ω.
- * @param <P> A probability {@link ProbabilityDistributionFunction}, which assigns each
- *            event in the {@link EventSpace} a probability, which is a number
- *            between 0 and 1.
+ * @param <P> A probability {@link ProbabilityDistributionFunction}, which
+ *            assigns each event in the {@link EventSpace} a probability, which
+ *            is a number between 0 and 1.
  */
 public interface ProbabilitySpace<Ω extends SampleSpace, F extends EventSpace<Ω>, P extends ProbabilityDistributionFunction>
                                  extends
-                                 Space<Ω>
+                                 MeasureSpace<Ω>
 {
 
 }
