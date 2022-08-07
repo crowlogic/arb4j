@@ -19,6 +19,8 @@ public class DiffusionProcessState extends
                                    AutoCloseable,
                                    Cleanable
 {
+ 
+
   public DiffusionProcessState(RandomState randomState)
   {
     this.randomState     = randomState;

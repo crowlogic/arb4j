@@ -120,4 +120,24 @@ public abstract class ContinuousTimeState<S> implements
     return this.dt.set(dt);
   }
 
+  int i = -1;
+
+  /**
+   * 
+   * @return
+   */
+  public final int index()
+  {
+    return i;
+  }
+
+  /**
+   * 
+   * @return ++i
+   */
+  public final int nextIndex()
+  {
+    return ++i;
+  }
+
 }

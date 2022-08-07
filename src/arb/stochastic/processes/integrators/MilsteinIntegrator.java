@@ -92,7 +92,8 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   @Override
   public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
   {
-    Real xi = evalSequence.values.get(++i); // xi is the i-th sample from a standard normal distribution
+    Real xi = evalSequence.values.get(state.nextIndex()); // xi is the i-th sample from a standard normal
+                                                          // distribution
     xi.printPrecision = true;
     μ.evaluate(state, 1, prec, μi);
     assert μi.isFinite() : μi + " is not finite for μ=" + μ.getClass().getSimpleName() + " X=" + X + "\nstate="
@@ -123,15 +124,16 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   @Override
   public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evalSequence)
   {
-    Real xi = evalSequence.values.get(i); // xi is the i-th sample from a normal distribution wIth variance equal to
-                                          // dt
+    Real xi = evalSequence.values.get(state.index()); // xi is the i-th sample from a normal distribution wIth
+                                                      // variance equal to
+    // dt
 
     state.setValue(xi);
 
     if (verbose)
     {
       System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n",
-                        i,
+                        state.index(),
                         state.time().toString(7),
                         μi,
                         σi,

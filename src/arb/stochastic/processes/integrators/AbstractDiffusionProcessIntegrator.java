@@ -141,7 +141,6 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
   protected Real  μi      = new Real();
   protected Real  σi      = Real.newVector(2);
   protected Real  sqrtdt  = new Real();
-  public int      i       = -1;
 
   public AbstractDiffusionProcessIntegrator(D x)
   {
