@@ -47,12 +47,15 @@ public class OrnsteinUhlenbeckProcess implements
                                       Cleanable
 {
   /**
+   * @return a {@link RealProbabilityDensityFunction} which is a function of the
+   *         {@link DiffusionProcessState} as a bivariate function
+   *         (t=time,x=value)
    * @see <a href=
    *      "https://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process#Fokker%E2%80%93Planck_equation_representation">Fokker–Planck
    *      equation representation</a>
    */
   @Override
-  public RealProbabilityDensityFunction getTransitionProbabilityDensity()
+  public ProbabiltiyDensityFunction<DiffusionProcessState> getTransitionProbabilityDensity()
   {
     assert false : "TODO: implement and return {\\displaystyle P(x,t\\mid x',t')={\\sqrt {\\frac {\\theta }{2\\pi D(1-e^{-2\\theta (t-t')})}}}\\exp \\left[-{\\frac {\\theta }{2D}}{\\frac {(x-x'e^{-\\theta (t-t')})^{2}}{1-e^{-2\\theta (t-t')}}}\\right]}";
     return null;

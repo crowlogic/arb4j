@@ -14,8 +14,8 @@ import arb.stochastic.*;
  * @param <F>
  * @param <C>
  */
-public interface MarkovProcess extends
+public interface MarkovProcess<X> extends
                                StochasticProcess
 {
-  public RealProbabilityDensityFunction getTransitionProbabilityDensity();
+  public ProbabiltiyDensityFunction<X> getTransitionProbabilityDensity();
 }
