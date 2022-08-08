@@ -55,7 +55,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
 
     formatAxes(plot);
 
-    formatDataLines(linearSeries, plot);
+    formatDataLines(linearSeries, plot, COLOR1);
 
     // Add plot to Swing component
     Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, getClass().toString(), JFrame.EXIT_ON_CLOSE)
@@ -90,6 +90,8 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
 
   protected void formatPlot(XYPlot plot)
   {
+
+    formatAxes(plot);
     // Format plot
     plot.setInsets(new Insets2D.Double(20.0,
                                        40.0,
@@ -121,17 +123,22 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     plot.getPlotArea().setBorderStroke(null);
   }
 
-  protected static void formatDataLines(DataSeries seriesLin, XYPlot plot)
+  protected static void formatDataLines(DataSeries seriesLin, XYPlot plot, Color color)
   {
     // Format data lines
     AbstractLineRenderer2D discreteRenderer = new SmoothLineRenderer2D();
-    discreteRenderer.setColor(COLOR1);
-    discreteRenderer.setStroke(new BasicStroke(0.5f));
+    discreteRenderer.setColor(color);
+    discreteRenderer.setGap(0);
+    
+    discreteRenderer.setStroke(new BasicStroke(3.5f,
+                                               BasicStroke.CAP_BUTT,
+                                               BasicStroke.JOIN_MITER));
+
     plot.setLineRenderers(seriesLin, discreteRenderer);
 
   }
 
-  protected static void formatAxes(XYPlot plot)
+  protected void formatAxes(XYPlot plot)
   {
     // Format axes
     AxisRenderer axisRendererX = new LinearRenderer2D();
