@@ -222,6 +222,10 @@ int arb_is_positive(const arb_t x);
 
 int arb_is_negative(const arb_t x);
 
+int arb_is_nonnegative(const arb_t x);
+
+int arb_is_nonpositive(const arb_t x);
+
 void mag_sqrt(mag_t y, const mag_t x);
 void mag_sqrt_lower(mag_t y, const mag_t x);
 void mag_rsqrt(mag_t y, const mag_t x);

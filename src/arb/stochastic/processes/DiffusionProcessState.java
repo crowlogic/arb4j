@@ -1,5 +1,7 @@
 package arb.stochastic.processes;
 
+import static arb.utensils.Utilities.println;
+
 import java.lang.ref.Cleaner.Cleanable;
 
 import arb.RandomState;
@@ -88,6 +90,7 @@ public class DiffusionProcessState extends
   public DiffusionProcessState setValue(Real x)
   {
     assert x.isFinite() : x + " is not finite";
+    println( "Setting " + getClass().getSimpleName() + ".value to " + x );
     value.set(x);
     return this;
   }

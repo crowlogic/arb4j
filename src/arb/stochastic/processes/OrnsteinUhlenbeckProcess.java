@@ -109,7 +109,7 @@ public class OrnsteinUhlenbeckProcess implements
     return (state, order, prec, result) ->
     {
       assert order <= 2;
-      λ.mul(θ.sub(state.value, prec, result), prec, result);
+      λ.mul(θ.sub(state.value(), prec, result), prec, result);
       if (order >= 2)
       {
         result.get(1).set(λ).neg();

@@ -29,4 +29,9 @@ public interface MultivariateDiffusionProcess<D extends MultivariateState> exten
    */
   Real getCorrelation(int i, int j);
 
+  /**
+   * Throws a Throwable if things aren't right
+   */
+  void validate();
+
 }
