@@ -2206,6 +2206,38 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1is_1negative(JNIEnv *jenv, jclass j
 }
 
 
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1is_1nonnegative(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  arb_struct *arg1 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(arb_struct **)&jarg1; 
+  result = (int)arb_is_nonnegative((arb_struct const (*))arg1);
+  jresult = (jint)result; 
+  
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1is_1nonpositive(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  arb_struct *arg1 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(arb_struct **)&jarg1; 
+  result = (int)arb_is_nonpositive((arb_struct const (*))arg1);
+  jresult = (jint)result; 
+  
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_mag_1sqrt(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   mag_struct *arg1 ;
   mag_struct *arg2 ;

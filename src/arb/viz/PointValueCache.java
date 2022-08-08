@@ -6,12 +6,12 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import jdk.incubator.foreign.CLinker;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.nio.file.Path;
-
 import arb.*;
 import arb.geometry.surfaces.RiemannSurface;
 import jdk.incubator.foreign.MemorySegment;
@@ -39,6 +39,7 @@ public class PointValueCache implements
   static
   {
     System.loadLibrary("arblib");
+    CLinker linker = CLinker.systemCLinker();
 
   }
 
@@ -147,7 +148,6 @@ public class PointValueCache implements
     {
       raf.setLength(bytes);
 
-      
     }
     catch (Exception e)
     {

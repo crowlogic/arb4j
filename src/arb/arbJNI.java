@@ -119,6 +119,8 @@ public class arbJNI {
   public final static native void acb_indeterminate(long jarg1, Complex jarg1_);
   public final static native int arb_is_positive(long jarg1, Real jarg1_);
   public final static native int arb_is_negative(long jarg1, Real jarg1_);
+  public final static native int arb_is_nonnegative(long jarg1, Real jarg1_);
+  public final static native int arb_is_nonpositive(long jarg1, Real jarg1_);
   public final static native void mag_sqrt(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
   public final static native void mag_sqrt_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
   public final static native void mag_rsqrt(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);

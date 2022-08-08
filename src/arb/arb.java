@@ -450,6 +450,14 @@ public class arb {
     return arbJNI.arb_is_negative(Real.getCPtr(x), x);
   }
 
+  public static int arb_is_nonnegative(Real x) {
+    return arbJNI.arb_is_nonnegative(Real.getCPtr(x), x);
+  }
+
+  public static int arb_is_nonpositive(Real x) {
+    return arbJNI.arb_is_nonpositive(Real.getCPtr(x), x);
+  }
+
   public static void mag_sqrt(Magnitude y, Magnitude x) {
     arbJNI.mag_sqrt(Magnitude.getCPtr(y), y, Magnitude.getCPtr(x), x);
   }
