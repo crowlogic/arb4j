@@ -20,8 +20,7 @@ import arb.*;
  * In 1998, three mathematicians proved Langlands' conjectures for local fields,
  * and in a November 1999 lecture at the Institute for Advanced Study at
  * Princeton University, L. Lafforgue presented a proof of the conjectures for
- * function fields. This leaves only the case of {@link Field}s
- * unresolved.<br>
+ * function fields. This leaves only the case of {@link Field}s unresolved.<br>
  * 
  * https://mathworld.wolfram.com/LanglandsProgram.html
  * https://en.wikipedia.org/wiki/Langlands_program
@@ -30,6 +29,8 @@ import arb.*;
  * @see {@link ArtinReciprocity} as well as Automorphic Forms
  * @see {@link LanglandsReciprocity}
  * @see {@link Reciprocity} and the Taniyama-Shimura Conjecture
+ * @see <a href=
+ *      "doc-files/KMSStatesAndComplexMultiplication.pdf">KMSStatesAndComplexMultiplication</a>
  */
 public interface LanglandsProgram
 {
