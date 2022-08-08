@@ -8,16 +8,16 @@
 
 package arb;
 
-public class acb_dft_rad2_struct {
+public class FastDFTRadix2Scheme {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public acb_dft_rad2_struct(long cPtr, boolean cMemoryOwn) {
+  public FastDFTRadix2Scheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  public static long getCPtr(acb_dft_rad2_struct obj) {
+  public static long getCPtr(FastDFTRadix2Scheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -30,55 +30,55 @@ public class acb_dft_rad2_struct {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        arbJNI.delete_acb_dft_rad2_struct(swigCPtr);
+        arbJNI.delete_FastDFTRadix2Scheme(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
   public void setE(int value) {
-    arbJNI.acb_dft_rad2_struct_e_set(swigCPtr, this, value);
+    arbJNI.FastDFTRadix2Scheme_e_set(swigCPtr, this, value);
   }
 
   public int getE() {
-    return arbJNI.acb_dft_rad2_struct_e_get(swigCPtr, this);
+    return arbJNI.FastDFTRadix2Scheme_e_get(swigCPtr, this);
   }
 
   public void setN(int value) {
-    arbJNI.acb_dft_rad2_struct_n_set(swigCPtr, this, value);
+    arbJNI.FastDFTRadix2Scheme_n_set(swigCPtr, this, value);
   }
 
   public int getN() {
-    return arbJNI.acb_dft_rad2_struct_n_get(swigCPtr, this);
+    return arbJNI.FastDFTRadix2Scheme_n_get(swigCPtr, this);
   }
 
   public void setDv(int value) {
-    arbJNI.acb_dft_rad2_struct_dv_set(swigCPtr, this, value);
+    arbJNI.FastDFTRadix2Scheme_dv_set(swigCPtr, this, value);
   }
 
   public int getDv() {
-    return arbJNI.acb_dft_rad2_struct_dv_get(swigCPtr, this);
+    return arbJNI.FastDFTRadix2Scheme_dv_get(swigCPtr, this);
   }
 
   public void setNz(int value) {
-    arbJNI.acb_dft_rad2_struct_nz_set(swigCPtr, this, value);
+    arbJNI.FastDFTRadix2Scheme_nz_set(swigCPtr, this, value);
   }
 
   public int getNz() {
-    return arbJNI.acb_dft_rad2_struct_nz_get(swigCPtr, this);
+    return arbJNI.FastDFTRadix2Scheme_nz_get(swigCPtr, this);
   }
 
   public void setZ(Complex value) {
-    arbJNI.acb_dft_rad2_struct_z_set(swigCPtr, this, Complex.getCPtr(value), value);
+    arbJNI.FastDFTRadix2Scheme_z_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
   public Complex getZ() {
-    long cPtr = arbJNI.acb_dft_rad2_struct_z_get(swigCPtr, this);
+    long cPtr = arbJNI.FastDFTRadix2Scheme_z_get(swigCPtr, this);
     return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public acb_dft_rad2_struct() {
-    this(arbJNI.new_acb_dft_rad2_struct(), true);
+  public FastDFTRadix2Scheme() {
+    this(arbJNI.new_FastDFTRadix2Scheme(), true);
   }
 
 }

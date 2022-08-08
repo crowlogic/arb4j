@@ -29,8 +29,12 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %rename (RandomAlgorithm) gmp_randalg_t;
 %rename (GMPRandomState) __gmp_randstate_struct;
 %rename (RandomState) flint_rand_s;
-
+%rename (FastDFTBluesteinScheme) acb_dft_bluestein_struct;
+%rename (FastDFTPrecomputedCyclicScheme) acb_dft_cyc_precomp;
+%rename (FastDFTRadix2Scheme) acb_dft_rad2_struct;
 %rename (FastDFTScheme) acb_dft_pre_struct;
+%rename (FastDFTChineseRemainder) acb_dft_crt_struct;
+%rename (FastDFTSchemeUnion) acb_dft_pre_struct_t;
 %rename (MultiplePrecisionInteger) __mpz_struct;
 %rename (FloatInterval) arf_interval_struct;
 %rename (MultiplePrecisionFloat) __mpfr_struct;

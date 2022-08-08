@@ -301,6 +301,26 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  acb_ptr arg1 = (acb_ptr) 0 ;
+  acb_srcptr arg2 = (acb_srcptr) 0 ;
+  acb_dft_rad2_struct *arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(acb_ptr *)&jarg1; 
+  arg2 = *(acb_srcptr *)&jarg2; 
+  arg3 = *(acb_dft_rad2_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  acb_dft_rad2_precomp(arg1,(acb_struct const *)arg2,(acb_dft_rad2_struct const (*))arg3,arg4);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1hypgeom_1hermite_1h(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;
@@ -7403,7 +7423,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1cyc_1struct(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1e_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1e_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   int arg2 ;
   
@@ -7416,7 +7436,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1e_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1e_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1e_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   int result;
@@ -7431,7 +7451,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1e_1get(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long arg2 ;
   
@@ -7444,7 +7464,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1n_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long result;
@@ -7459,7 +7479,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1n_1get(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long arg2 ;
   
@@ -7472,7 +7492,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1dv_1set(JNIEnv *
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long result;
@@ -7487,7 +7507,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1dv_1get(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1nz_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1nz_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long arg2 ;
   
@@ -7500,7 +7520,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1nz_1set(JNIEnv *
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1nz_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1nz_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   long result;
@@ -7515,7 +7535,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1nz_1get(JNIEnv *
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -7529,7 +7549,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1z_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTRadix2Scheme_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   acb_ptr result;
@@ -7544,7 +7564,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1struct_1z_1get(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1rad2_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1FastDFTRadix2Scheme(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_rad2_struct *result = 0 ;
   
@@ -7556,7 +7576,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1rad2_1struct(JNIEnv *jen
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1rad2_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1FastDFTRadix2Scheme(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_rad2_struct *arg1 = (acb_dft_rad2_struct *) 0 ;
   
   (void)jenv;
@@ -7566,7 +7586,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1rad2_1struct(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   long arg2 ;
   
@@ -7579,7 +7599,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1n_1set(JNIE
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   long result;
@@ -7594,7 +7614,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1n_1get(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   long arg2 ;
   
@@ -7607,7 +7627,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1dv_1set(JNI
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   long result;
@@ -7622,7 +7642,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1dv_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1z_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -7636,7 +7656,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1z_1set(JNIE
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1z_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_ptr result;
@@ -7651,7 +7671,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1z_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1g_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1g_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_ptr arg2 = (acb_ptr) 0 ;
   
@@ -7665,7 +7685,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1g_1set(JNIE
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1g_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1g_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_ptr result;
@@ -7680,7 +7700,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1g_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1rad2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1rad2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_dft_rad2_struct *arg2 ;
   
@@ -7699,7 +7719,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1rad2_1set(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1rad2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTBluesteinScheme_1rad2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   acb_dft_rad2_struct *result = 0 ;
@@ -7714,7 +7734,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1bluestein_1struct_1rad2_1get(
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1bluestein_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1FastDFTBluesteinScheme(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_bluestein_struct *result = 0 ;
   
@@ -7726,7 +7746,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1bluestein_1struct(JNIEnv
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1bluestein_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1FastDFTBluesteinScheme(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_bluestein_struct *arg1 = (acb_dft_bluestein_struct *) 0 ;
   
   (void)jenv;
@@ -7843,7 +7863,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1prod_1struct(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTChineseRemainder_1n_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   long arg2 ;
   
@@ -7856,7 +7876,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1n_1set(JNIEnv *je
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTChineseRemainder_1n_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   long result;
@@ -7871,7 +7891,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1n_1get(JNIEnv *je
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTChineseRemainder_1dv_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   long arg2 ;
   
@@ -7884,7 +7904,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1dv_1set(JNIEnv *j
 }
 
 
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_FastDFTChineseRemainder_1dv_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jint jresult = 0 ;
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   long result;
@@ -7899,7 +7919,7 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1dv_1get(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTChineseRemainder_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   acb_dft_step_ptr arg2 = (acb_dft_step_ptr) 0 ;
   
@@ -7913,7 +7933,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1cyc_1set(JNIEnv *
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTChineseRemainder_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   acb_dft_step_ptr result;
@@ -7928,7 +7948,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1crt_1struct_1cyc_1get(JNIEnv 
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1crt_1struct(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1FastDFTChineseRemainder(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_crt_struct *result = 0 ;
   
@@ -7940,7 +7960,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1crt_1struct(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1crt_1struct(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1FastDFTChineseRemainder(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_crt_struct *arg1 = (acb_dft_crt_struct *) 0 ;
   
   (void)jenv;
@@ -8206,7 +8226,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1FastDFTScheme(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1rad2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1rad2_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_rad2_struct *arg2 ;
   
@@ -8225,7 +8245,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1rad2_1set(JNIE
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1rad2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1rad2_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_rad2_struct *result = 0 ;
@@ -8240,7 +8260,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1rad2_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1cyc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_cyc_struct *arg2 ;
   
@@ -8259,7 +8279,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1cyc_1set(JNIEn
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1cyc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_cyc_struct *result = 0 ;
@@ -8274,7 +8294,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1cyc_1get(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1prod_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1prod_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_prod_struct *arg2 ;
   
@@ -8293,7 +8313,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1prod_1set(JNIE
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1prod_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1prod_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_prod_struct *result = 0 ;
@@ -8308,7 +8328,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1prod_1get(JNI
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1crt_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1crt_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_crt_struct *arg2 ;
   
@@ -8327,7 +8347,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1crt_1set(JNIEn
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1crt_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1crt_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_crt_struct *result = 0 ;
@@ -8342,7 +8362,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1crt_1get(JNIE
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1naive_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1naive_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_naive_struct *arg2 ;
   
@@ -8361,7 +8381,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1naive_1set(JNI
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1naive_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1naive_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_naive_struct *result = 0 ;
@@ -8376,7 +8396,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1naive_1get(JN
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1bluestein_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1bluestein_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_bluestein_struct *arg2 ;
   
@@ -8395,7 +8415,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1bluestein_1set
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1bluestein_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_FastDFTSchemeUnion_1bluestein_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   acb_dft_bluestein_struct *result = 0 ;
@@ -8410,7 +8430,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_acb_1dft_1pre_1struct_1t_1bluestein_1ge
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1pre_1struct_1t(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1FastDFTSchemeUnion(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   acb_dft_pre_struct_t *result = 0 ;
   
@@ -8422,7 +8442,7 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1acb_1dft_1pre_1struct_1t(JNIEnv *j
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1acb_1dft_1pre_1struct_1t(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1FastDFTSchemeUnion(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   acb_dft_pre_struct_t *arg1 = (acb_dft_pre_struct_t *) 0 ;
   
   (void)jenv;

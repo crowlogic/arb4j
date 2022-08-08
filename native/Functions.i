@@ -1,3 +1,5 @@
+void acb_dft_rad2_precomp(acb_ptr w, acb_srcptr v, const acb_dft_rad2_t t, slong prec);
+ 
 void arb_hypgeom_hermite_h(arb_t res, const arb_t nu, const arb_t z, slong prec);
 
 void acb_dirichlet_xi(acb_t res, const acb_t s, slong prec);
