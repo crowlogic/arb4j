@@ -5,8 +5,8 @@
 %include "init.i"
 
 #define __signed__
-#define slong signed long
-#define ulong unsigned long
+#define slong signed long 
+#define ulong unsigned long 
 #define fmpr_rnd_t int
 #define arf_rnd_t int
 
@@ -38,7 +38,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %rename (MultiplePrecisionInteger) __mpz_struct;
 %rename (FloatInterval) arf_interval_struct;
 %rename (MultiplePrecisionFloat) __mpfr_struct;
-%rename (MultiplePrecFloatFloat) mpfr_t;
 %rename (Complex) acb_struct;
 %rename (Real) arb_struct;
 %rename (Float) arf_struct;

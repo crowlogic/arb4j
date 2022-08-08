@@ -223,6 +223,9 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include <acb_modular.h>
 #include <acb_dft.h>
 
+typedef signed long int fmpz;
+typedef fmpz fmpz_t[1];
+
 typedef long int		mp_size_t;
 
 int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);
@@ -300,6 +303,28 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
 
   return JNI_VERSION_10;
 }
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_fmpz_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  fmpz *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(long long **)&jarg1; 
+  fmpz_zero(arg1);
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_fmpz_1one(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  fmpz *arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(long long **)&jarg1; 
+  fmpz_one(arg1);
+  
+}
+
 
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
