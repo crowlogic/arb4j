@@ -1,29 +1,55 @@
 package arb.viz;
 
-import static java.lang.System.*;
-import static java.util.stream.IntStream.*;
+import static java.lang.System.out;
+import static java.util.stream.IntStream.range;
+import static java.util.stream.IntStream.rangeClosed;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.HeadlessException;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
-import java.awt.image.*;
-import java.io.*;
-import java.util.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.*;
-import java.util.stream.*;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-import javax.imageio.*;
-import javax.swing.*;
+import javax.imageio.ImageIO;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.Timer;
+import javax.swing.WindowConstants;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
 import arb.Float;
-import arb.functions.complex.*;
+import arb.Real;
+import arb.RoundingMode;
+import arb.ThreadLocalComplex;
+import arb.ThreadLocalReal;
+import arb.arb;
+import arb.functions.complex.HolomorphicFunction;
 import arb.functions.complex.numbertheoretic.ZFunction;
-import arb.utensils.*;
+import arb.utensils.Utilities;
 
 /**
  * creates a rendering of a patch of a complex valued function of a complex

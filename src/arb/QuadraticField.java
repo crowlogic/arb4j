@@ -7,7 +7,7 @@ package arb;
  * quadratic field and is denoted Q(sqrt(D)). <br>
  * If D>0, the field is called a real quadratic field, and <br>
  * if D<0, it is called an imaginary quadratic field. <br>
- * The integers in Q(sqrt(1)) are simply called "the" integers. <br>
+ * The integers in Q(sqrt(1)) are simply called "the" {@link Integer}. <br>
  * The integers in Q(sqrt(-1)) are called Gaussian integers,<br>
  * and the integers in Q(sqrt(-3)) are called Eisenstein integers. <br>
  * The algebraic integers in an arbitrary {@link QuadraticField} do not
