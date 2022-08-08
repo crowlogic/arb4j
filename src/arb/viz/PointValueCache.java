@@ -39,7 +39,6 @@ public class PointValueCache implements
   static
   {
     System.loadLibrary("arblib");
-    CLinker linker = CLinker.systemCLinker();
 
   }
 
