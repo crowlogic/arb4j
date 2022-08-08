@@ -90,7 +90,7 @@ public class DiffusionProcessState extends
   public DiffusionProcessState setValue(Real x)
   {
     assert x.isFinite() : x + " is not finite";
-    println( "Setting " + getClass().getSimpleName() + ".value to " + x );
+    //println( "Setting " + getClass().getSimpleName() + ".value to " + x );
     value.set(x);
     return this;
   }

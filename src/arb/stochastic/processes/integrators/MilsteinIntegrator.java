@@ -4,6 +4,11 @@ import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.one;
 import static arb.utensils.Utilities.println;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
+
 import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatInterval;
@@ -14,7 +19,11 @@ import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
+import arb.utensils.Utilities;
+import de.erichseifert.gral.data.DataSeries;
 import de.erichseifert.gral.data.DataTable;
+import de.erichseifert.gral.plots.XYPlot;
+import de.erichseifert.gral.ui.InteractivePanel;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -51,37 +60,105 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   public static void main(String args[])
   {
 
-    OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(new Real("1.5",
-                                                                             128),
-                                                                    new Real("2",
-                                                                             128),
-                                                                    new Real("0.1",
-                                                                             128));
+    OrnsteinUhlenbeckProcess process  = new OrnsteinUhlenbeckProcess(new Real("1.5",
+                                                                              128),
+                                                                     new Real("2",
+                                                                              128),
+                                                                     new Real("0.1",
+                                                                              128));
+    OrnsteinUhlenbeckProcess process2 = new OrnsteinUhlenbeckProcess(new Real("1.5",
+                                                                              128),
+                                                                     new Real("2",
+                                                                              128),
+                                                                     new Real("0.1",
+                                                                              128));
     try ( var integrator = new MilsteinIntegrator(process,
                                                   new DiffusionProcessState(new Real("3",
                                                                                      128),
-                                                                            new RandomState(31337)));)
+                                                                            new RandomState(31337)));
+          var integrator2 = new MilsteinIntegrator(process2,
+                                                   new DiffusionProcessState(new Real("3",
+                                                                                      128),
+                                                                             new RandomState(31337)));)
     {
 
       // Generate data
-      DataTable data = new DataTable(Double.class,
-                                     Double.class);
-
-      var       path = integrator.integrate(new FloatInterval(0,
-                                                              5),
-                                            750,
-                                            prec);
+      DataTable data  = new DataTable(Double.class,
+                                      Double.class);
+      DataTable data2 = new DataTable(Double.class,
+                                      Double.class);
+      var       path  = integrator.integrate(new FloatInterval(0,
+                                                               5),
+                                             750,
+                                             prec);
 
       for (RealOrderedPair sample : path)
       {
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
-
-      integrator.print(data);
+      var path2 = integrator2.integrate(new FloatInterval(0,
+                                                          5),
+                                        750,
+                                        prec);
+      for (RealOrderedPair sample : path2)
+      {
+        data2.add(sample.a.doubleValue(), sample.b.doubleValue());
+      }
+      integrator.print(data, data2);
 
       println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
     }
 
+  }
+
+  protected void print(DataTable data, DataTable data2)
+  {
+    DataSeries linearSeries  = new DataSeries(data,
+                                              0,
+                                              1);
+    DataSeries linearSeries2 = new DataSeries(data2,
+                                              0,
+                                              1);
+
+    // Create new xy-plot
+    XYPlot     plot          = new XYPlot(linearSeries,
+                                          linearSeries2);
+
+    formatPlot(plot);
+
+    formatAxes(plot);
+
+    formatDataLines(linearSeries, plot);
+
+    // Add plot to Swing component
+    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, getClass().toString(), JFrame.EXIT_ON_CLOSE)
+             .addKeyListener(new KeyListener()
+             {
+
+               @Override
+               public void keyTyped(KeyEvent e)
+               {
+
+               }
+
+               @Override
+               public void keyPressed(KeyEvent e)
+               {
+                 switch (e.getKeyCode())
+                 {
+                 case KeyEvent.VK_ESCAPE:
+                   System.exit(1);
+                 }
+
+               }
+
+               @Override
+               public void keyReleased(KeyEvent e)
+               {
+
+               }
+             });
+    ;
   }
 
   @Override
