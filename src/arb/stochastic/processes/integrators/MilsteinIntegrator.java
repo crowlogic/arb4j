@@ -1,25 +1,24 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.ComplexConstants.*;
-import static arb.FloatConstants.*;
-import static arb.utensils.Utilities.*;
+import static arb.ComplexConstants.prec;
+import static arb.FloatConstants.one;
+import static arb.utensils.Utilities.println;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.lang.Integer;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 
-import javax.swing.*;
-
-import arb.*;
+import arb.EvaluationSequence;
 import arb.Float;
-import arb.dynamical.systems.*;
-import arb.stochastic.processes.*;
-import arb.utensils.*;
-import de.erichseifert.gral.data.*;
-import de.erichseifert.gral.plots.*;
-import de.erichseifert.gral.plots.points.*;
-import de.erichseifert.gral.ui.*;
+import arb.FloatInterval;
+import arb.RandomState;
+import arb.Real;
+import arb.RealOrderedPair;
+import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
+import de.erichseifert.gral.data.DataTable;
+import de.erichseifert.gral.plots.points.PointRenderer;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -69,100 +68,40 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                                      new Real("0.1",
                                                                               128));
     int                      seed     = (int) (Integer.MAX_VALUE * Math.random());
-    try ( var integrator = new MilsteinIntegrator(process,
-                                                  new DiffusionProcessState(new Real("3",
-                                                                                     128),
-                                                                            new RandomState(seed)));
-          var integrator2 = new MilsteinIntegrator(process2,
-                                                   new DiffusionProcessState(new Real("3",
-                                                                                      128),
-                                                                             new RandomState(seed)));)
+
+    // Generate data
+    DataTable                data     = new DataTable(Double.class,
+                                                      Double.class);
+
+    DiffusionProcessState    state    = new DiffusionProcessState(new Real("3",
+                                                                           128),
+                                                                  new RandomState(seed));
+    integrateProcess(false, process, state, data);
+    print(process.getClass().getSimpleName(), data);
+
+  }
+
+  protected static void integrateProcess(boolean useMilstein,
+                                         OrnsteinUhlenbeckProcess process,
+                                         DiffusionProcessState state,
+                                         DataTable data)
+  {
+    try ( var integrator = useMilstein ? new MilsteinIntegrator(process,
+                                                                state) : new EulerIntegrator(process,
+                                                                                             state);)
+
     {
-      
-      // Generate data
-      DataTable     data     = new DataTable(Double.class,
-                                             Double.class);
-      DataTable     data2    = new DataTable(Double.class,
-                                             Double.class);
+
       FloatInterval interval = new FloatInterval(0,
                                                  5);
       var           path     = integrator.integrate(interval, 750 / 4, prec);
-      var           path2    = integrator2.integrate(interval, 750 / 4, prec);
 
       for (RealOrderedPair sample : path)
       {
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
-      for (RealOrderedPair sample : path2)
-      {
-        data2.add(sample.a.doubleValue(), sample.b.doubleValue());
-      }
-      integrator.print(data, data2);
 
-      println("mean=" + path.values.arithmeticMean(128, new Real()) + " " + path.partition.dt);
     }
-
-  }
-
-  protected void print(DataTable data, DataTable data2)
-  {
-    DataSeries linearSeries  = new DataSeries(data,
-                                              0,
-                                              1);
-    DataSeries linearSeries2 = new DataSeries(data2,
-                                              0,
-                                              1);
-
-    // Create new xy-plot
-    XYPlot     plot          = new XYPlot(linearSeries,
-                                          linearSeries2);
-
-    formatPlot(plot);
-    plot.setPointRenderers(data, new DefaultPointRenderer2D());
-    plot.setPointRenderers(data2, new DefaultPointRenderer2D());
-    halveThePointSize(plot.getPointRenderers(data).get(0));
-    halveThePointSize(plot.getPointRenderers(data2).get(0));
-
-    formatDataLines(linearSeries, plot, Color.RED);
-    formatDataLines(linearSeries2, plot, Color.GREEN);
-
-    // Add plot to Swing component
-    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, getClass().toString(), JFrame.EXIT_ON_CLOSE)
-             .addKeyListener(new KeyListener()
-             {
-
-               @Override
-               public void keyTyped(KeyEvent e)
-               {
-
-               }
-
-               @Override
-               public void keyPressed(KeyEvent e)
-               {
-                 switch (e.getKeyCode())
-                 {
-                 case KeyEvent.VK_ESCAPE:
-                   System.exit(1);
-                 }
-
-               }
-
-               @Override
-               public void keyReleased(KeyEvent e)
-               {
-
-               }
-             });
-    ;
-  }
-
-  public void halveThePointSize(PointRenderer pointRenderer)
-  {
-    Shape oldShape = pointRenderer.getShape();
-    // Get a new shape that is twice as large
-    Shape newShape = AffineTransform.getScaleInstance(0, 0).createTransformedShape(oldShape);
-    pointRenderer.setShape(newShape);
   }
 
   @Override

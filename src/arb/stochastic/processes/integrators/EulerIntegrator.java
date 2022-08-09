@@ -6,6 +6,12 @@ import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 import static java.lang.String.format;
 
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
+
 import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatConstants;
@@ -17,7 +23,12 @@ import arb.RealPartition;
 import arb.dynamical.systems.*;
 import arb.stochastic.GaussianProbabilityDistribution;
 import arb.stochastic.processes.*;
+import arb.utensils.Utilities;
+import de.erichseifert.gral.data.DataSeries;
 import de.erichseifert.gral.data.DataTable;
+import de.erichseifert.gral.plots.XYPlot;
+import de.erichseifert.gral.plots.points.DefaultPointRenderer2D;
+import de.erichseifert.gral.ui.InteractivePanel;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method
@@ -63,7 +74,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
 
-      integrator.print(data);
+      print(integrator.getClass().getSimpleName(), data);
 
       println("mean=" + path.values.arithmeticMean(128, new Real()));
     }
@@ -183,6 +194,57 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   public Float strongConvergenceOrder(int dim)
   {
     return half;
+  }
+
+  protected void print(String title, DataTable data, DataTable data2)
+  {
+    DataSeries linearSeries  = new DataSeries(data,
+                                              0,
+                                              1);
+    DataSeries linearSeries2 = new DataSeries(data2,
+                                              0,
+                                              1);
+
+    // Create new xy-plot
+    XYPlot     plot          = new XYPlot(linearSeries,
+                                          linearSeries2);
+
+    formatPlot(title, plot);
+    plot.setPointRenderers(data, new DefaultPointRenderer2D());
+    plot.setPointRenderers(data2, new DefaultPointRenderer2D());
+
+    formatDataLines(linearSeries, plot, Color.RED);
+    formatDataLines(linearSeries2, plot, Color.GREEN);
+
+    // Add plot to Swing component
+    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, getClass().toString(), JFrame.EXIT_ON_CLOSE)
+             .addKeyListener(new KeyListener()
+             {
+
+               @Override
+               public void keyTyped(KeyEvent e)
+               {
+
+               }
+
+               @Override
+               public void keyPressed(KeyEvent e)
+               {
+                 switch (e.getKeyCode())
+                 {
+                 case KeyEvent.VK_ESCAPE:
+                   System.exit(1);
+                 }
+
+               }
+
+               @Override
+               public void keyReleased(KeyEvent e)
+               {
+
+               }
+             });
+    ;
   }
 
 }

@@ -34,6 +34,33 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
                                                         AutoCloseable,
                                                         Cleanable
 {
+  public static final class KeyHandler implements
+                                       KeyListener
+  {
+    @Override
+    public void keyTyped(KeyEvent e)
+    {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+      switch (e.getKeyCode())
+      {
+      case KeyEvent.VK_ESCAPE:
+        System.exit(1);
+      }
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+
+    }
+  }
+
   protected static final Color COLOR1 = new Color(55,
                                                   170,
                                                   200);
@@ -42,7 +69,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
                                                   80,
                                                   75);
 
-  protected void print(DataTable data)
+  protected static void print(String title, DataTable data)
   {
     DataSeries linearSeries = new DataSeries(data,
                                              0,
@@ -51,44 +78,19 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     // Create new xy-plot
     XYPlot     plot         = new XYPlot(linearSeries);
 
-    formatPlot(plot);
+    formatPlot(title, plot);
 
     formatAxes(plot);
 
     formatDataLines(linearSeries, plot, COLOR1);
 
     // Add plot to Swing component
-    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, getClass().toString(), JFrame.EXIT_ON_CLOSE)
-             .addKeyListener(new KeyListener()
-             {
+    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, title, JFrame.EXIT_ON_CLOSE)
+             .addKeyListener(new KeyHandler());
 
-               @Override
-               public void keyTyped(KeyEvent e)
-               {
-
-               }
-
-               @Override
-               public void keyPressed(KeyEvent e)
-               {
-                 switch (e.getKeyCode())
-                 {
-                 case KeyEvent.VK_ESCAPE:
-                   System.exit(1);
-                 }
-
-               }
-
-               @Override
-               public void keyReleased(KeyEvent e)
-               {
-
-               }
-             });
-    ;
   }
 
-  protected void formatPlot(XYPlot plot)
+  protected static void formatPlot(String title, XYPlot plot)
   {
 
     formatAxes(plot);
@@ -98,7 +100,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
                                        40.0,
                                        40.0));
     plot.setBackground(Color.GRAY);
-    plot.getTitle().setText(getClass().toString());
+    plot.getTitle().setText(title);
 
     // Format plot area
     plot.getPlotArea()
@@ -129,7 +131,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     AbstractLineRenderer2D discreteRenderer = new SmoothLineRenderer2D();
     discreteRenderer.setColor(color);
     discreteRenderer.setGap(0);
-    
+
     discreteRenderer.setStroke(new BasicStroke(3.5f,
                                                BasicStroke.CAP_BUTT,
                                                BasicStroke.JOIN_MITER));
@@ -138,7 +140,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
 
   }
 
-  protected void formatAxes(XYPlot plot)
+  protected static void formatAxes(XYPlot plot)
   {
     // Format axes
     AxisRenderer axisRendererX = new LinearRenderer2D();
