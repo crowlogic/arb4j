@@ -35,7 +35,7 @@ public class EvaluationSequence implements
   public EvaluationSequence
          generateRandomSamples(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
   {
-    values.stream().parallel().forEach(value -> pdf.sample(prec, randomState, value));
+    values.forEach(value -> pdf.sample(prec, randomState, value));
     return this;
   }
 

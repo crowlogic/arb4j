@@ -143,15 +143,15 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
    */
   protected EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
   {
-    Real xi = evaluationSequence.values.get(state.index());
+    int i = state.index();
+    Real xi = evaluationSequence.values.get(i);
     xi.printPrecision = true;
 
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt(), prec);
     assert μi.isFinite();
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
-    assert !σi.isZero();
-    assert σi.isFinite() : "X.σ is not finite. state=" + state;
+    assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. state=" + state;
 
     if (verbose)
     {
@@ -196,7 +196,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     return half;
   }
 
-  protected void print(String title, DataTable data, DataTable data2)
+  protected static void print(String title, DataTable data, DataTable data2)
   {
     DataSeries linearSeries  = new DataSeries(data,
                                               0,
@@ -217,7 +217,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     formatDataLines(linearSeries2, plot, Color.GREEN);
 
     // Add plot to Swing component
-    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, getClass().toString(), JFrame.EXIT_ON_CLOSE)
+    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, title, JFrame.EXIT_ON_CLOSE)
              .addKeyListener(new KeyListener()
              {
 

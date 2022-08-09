@@ -33,7 +33,12 @@ public class DiffusionProcessState extends
    */
   public DiffusionProcessState()
   {
-    this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
+    this(new RandomState(randomInteger()));
+  }
+
+  protected static int randomInteger()
+  {
+    return (int) (Math.random() * Integer.MAX_VALUE);
   }
 
   /**
@@ -42,7 +47,7 @@ public class DiffusionProcessState extends
    */
   public DiffusionProcessState(Real S0, RandomState randomState)
   {
-    this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
+    this(randomState);
     setValue(S0);
   }
 
@@ -52,7 +57,7 @@ public class DiffusionProcessState extends
    */
   public DiffusionProcessState(Real S0)
   {
-    this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
+    this(new RandomState(randomInteger()));
     setValue(S0);
   }
 

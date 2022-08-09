@@ -1,10 +1,22 @@
 package arb;
 
+import static arb.utensils.Utilities.println;
+
 import junit.framework.TestCase;
 
 public class RandomTest extends
                         TestCase
 {
+  public static void testRandomState()
+  {
+    RandomState state = new RandomState(55);
+    RandomState state2 = new RandomState(55);
+    Real rnd = new Real().random(state, 128);
+    Real rnd2 = new Real().random(state2, 128);
+    println("rnd(55)=" + rnd );
+    println("rnd(55)=" + rnd2 );
+  }
+  
   public static void testUniformRandom()
   {
 

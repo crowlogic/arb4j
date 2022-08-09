@@ -56,6 +56,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     multivariateState.nextIndex();
     for (int i = 0; i < dim; i++)
     {
+      assert false : "TODO: add multivarite support to EvaluationSequence";                    
       integrators[i].jump(multivariateState.getState(i), prec, evalSeq);
     }
     return evalSeq;

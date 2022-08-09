@@ -4,9 +4,6 @@ import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.one;
 import static arb.utensils.Utilities.println;
 
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-
 import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatInterval;
@@ -18,7 +15,6 @@ import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
 import de.erichseifert.gral.data.DataTable;
-import de.erichseifert.gral.plots.points.PointRenderer;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -67,17 +63,24 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                                               128),
                                                                      new Real("0.1",
                                                                               128));
-    int                      seed     = (int) (Integer.MAX_VALUE * Math.random());
+    int                      seed     = 55;
 
     // Generate data
     DataTable                data     = new DataTable(Double.class,
+                                                      Double.class);
+    DataTable                data2    = new DataTable(Double.class,
                                                       Double.class);
 
     DiffusionProcessState    state    = new DiffusionProcessState(new Real("3",
                                                                            128),
                                                                   new RandomState(seed));
+    DiffusionProcessState    state2   = new DiffusionProcessState(new Real("3",
+                                                                           128),
+                                                                  new RandomState(seed));
+
     integrateProcess(false, process, state, data);
-    print(process.getClass().getSimpleName(), data);
+    integrateProcess(true, process2, state2, data2);
+    print(process.getClass().getSimpleName(), data, data2);
 
   }
 
@@ -93,8 +96,9 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     {
 
       FloatInterval interval = new FloatInterval(0,
-                                                 5);
-      var           path     = integrator.integrate(interval, 750 / 4, prec);
+                                                 1);
+      integrator.verbose = true;
+      var path = integrator.integrate(interval, 10, prec);
 
       for (RealOrderedPair sample : path)
       {
@@ -114,6 +118,8 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
 
   Real σσi = new Real();
 
+  boolean warned = false;
+  
   @Override
   public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
   {
@@ -125,7 +131,11 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
 
     assert σσi.isFinite() : "σσ is not finite " + σσi + "\nσ=" + σi;
     σσi.mul(state.dt(), prec).div(2, prec).mul(xi.pow(2, prec).sub(1, prec), prec);
-
+    if ( !warned && σσi.isZero())
+    {
+      System.err.println("It it useless to use Milstein method on a " + diffusionProcess.getClass().getSimpleName());
+      warned = true;
+    }
     μi.add(σi, prec, xi).add(σσi, prec);
 
     // the derivative is in σi.get(1) .. the 2nd
