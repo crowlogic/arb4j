@@ -63,7 +63,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                                               128),
                                                                      new Real("0.1",
                                                                               128));
-    int                      seed     = 55;
+    int                      seed     = 31337;
 
     // Generate data
     DataTable                data     = new DataTable(Double.class,
@@ -76,16 +76,16 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                                   new RandomState(seed));
     DiffusionProcessState    state2   = new DiffusionProcessState(new Real("3",
                                                                            128),
-                                                                  new RandomState(seed));
+                                                                  new RandomState(seed+1));
 
     integrateProcess(false, process, state, data);
-    integrateProcess(true, process2, state2, data2);
+    integrateProcess(false, process2, state2, data2);
     print(process.getClass().getSimpleName(), data, data2);
 
   }
 
   protected static void integrateProcess(boolean useMilstein,
-                                         OrnsteinUhlenbeckProcess process,
+                                         DiffusionProcess process,
                                          DiffusionProcessState state,
                                          DataTable data)
   {
@@ -97,7 +97,6 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
 
       FloatInterval interval = new FloatInterval(0,
                                                  1);
-      integrator.verbose = true;
       var path = integrator.integrate(interval, 10, prec);
 
       for (RealOrderedPair sample : path)
