@@ -304,28 +304,6 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_fmpz_1zero(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  fmpz *arg1 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(long long **)&jarg1; 
-  fmpz_zero(arg1);
-  
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_fmpz_1one(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  fmpz *arg1 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(long long **)&jarg1; 
-  fmpz_one(arg1);
-  
-}
-
-
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;

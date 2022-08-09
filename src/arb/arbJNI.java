@@ -9,8 +9,6 @@
 package arb;
 
 public class arbJNI {
-  public final static native void fmpz_zero(long jarg1);
-  public final static native void fmpz_one(long jarg1);
   public final static native void acb_dft_rad2_precomp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, FastDFTRadix2Scheme jarg3_, int jarg4);
   public final static native void arb_hypgeom_hermite_h(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void acb_dirichlet_xi(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);

@@ -42,28 +42,24 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
   {
-    try
-    {
-      multivariateState.lock();
-      for (int i = 0; i < dim; i++)
-      {
-        integrators[i].step(multivariateState, prec, evalSeq);
-      }
-      this.multivariateState.nextIndex();
-      return evalSeq;
-    }
-    finally
-    {
-      multivariateState.unlock();
-    }
-  }
 
-  public EvaluationSequence jump(M state, int prec, EvaluationSequence evalSeq)
-  {
     for (int i = 0; i < dim; i++)
     {
-      integrators[i].jump(state.getState(i), prec, evalSeq);
+      integrators[i].step(multivariateState, prec, evalSeq);
     }
+    return evalSeq;
+
+  }
+
+  public EvaluationSequence jump(int prec, EvaluationSequence evalSeq)
+  {
+    multivariateState.unlock();
+    multivariateState.nextIndex();
+    for (int i = 0; i < dim; i++)
+    {
+      integrators[i].jump(multivariateState.getState(i), prec, evalSeq);
+    }
+
     return evalSeq;
   }
 
@@ -88,11 +84,12 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     {
       println("");
       multivariateState.setTime(t);
+      multivariateState.lock();
       step(prec, evaluationSequence);
       System.out.println("after step " + multivariateState);
       process.validate();
 
-      jump(multivariateState, prec, evaluationSequence);
+      jump(prec, evaluationSequence);
       System.out.println("after jump " + multivariateState);
 
       process.validate();

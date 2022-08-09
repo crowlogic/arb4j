@@ -1,6 +1,3 @@
-void fmpz_zero(fmpz_t f);
-void fmpz_one(fmpz_t f);
-
 void acb_dft_rad2_precomp(acb_ptr w, acb_srcptr v, const acb_dft_rad2_t t, slong prec);
  
 void arb_hypgeom_hermite_h(arb_t res, const arb_t nu, const arb_t z, slong prec);
