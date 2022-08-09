@@ -104,7 +104,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     for (Real t : partition)
     {
       state.setTime(t);
+      state.lock();
       step(state, prec, evaluationSequence);
+      state.unlock();
       jump((DiffusionProcessState) state, prec, evaluationSequence);
     }
 
