@@ -1,16 +1,38 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.zero;
-import static arb.utensils.Utilities.println;
+import static arb.RealConstants.*;
+import static arb.utensils.Utilities.*;
 
+import arb.*;
 import arb.Float;
-import arb.Real;
-import arb.dynamical.systems.State;
+import arb.dynamical.systems.*;
 
 public abstract class ContinuousTimeState<S> implements
                                          AutoCloseable,
-                                         State<S>
+                                         State<S>,
+                                         Lockable
 {
+  @Override
+  public boolean locked()
+  {
+    return locked;
+  }
+
+  private boolean locked = false;
+
+  @Override
+  public void lock()
+  {
+    assert !locked : "this " + getClass().getSimpleName() + " is already locked";
+    locked = true;
+  }
+
+  @Override
+  public void unlock()
+  {
+    assert locked : "this " + getClass().getSimpleName() + " isn't locked";
+    locked = false;
+  }
 
   private final Real prevTime = new Real().negInf();
   private final Real time     = new Real().negInf();
@@ -36,6 +58,7 @@ public abstract class ContinuousTimeState<S> implements
    */
   public synchronized final ContinuousTimeState setTime(Float t)
   {
+    checkLock();
     assert !prevTime.isFinite()
                   || time.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation";
     prevTime.set(time);
@@ -45,8 +68,10 @@ public abstract class ContinuousTimeState<S> implements
 
   public ContinuousTimeState setTime(Real t)
   {
+    checkLock();
     t.printPrecision = true;
-    //println("Setting " + this.getClass().getSimpleName() + ".time to " + t.toString(10));
+    // println("Setting " + this.getClass().getSimpleName() + ".time to " +
+    // t.toString(10));
     assert prevTime != null && t != null
                   && t.compareTo(prevTime) > 0 : "this isnt programmed for backwards time translation, time=" + time
                                 + " prevTime=" + prevTime;
@@ -55,6 +80,12 @@ public abstract class ContinuousTimeState<S> implements
     return this;
   }
 
+  /**
+   * TODO: employ the copy-on-write feature of memory-mapping to effectively make
+   * the returned value immutable by other callers
+   * 
+   * @return
+   */
   public final Real dt()
   {
     return getdt(null);
@@ -120,6 +151,7 @@ public abstract class ContinuousTimeState<S> implements
 
   public ContinuousTimeState<S> setdt(Real dt)
   {
+    checkLock();
     dt.printPrecision = true;
     println("Setting " + this.getClass().getSimpleName() + ".dt to " + dt.toString(10));
 
@@ -140,10 +172,12 @@ public abstract class ContinuousTimeState<S> implements
 
   /**
    * 
-   * @return i++
+   * @return i++ if this isn't this{@link #locked()} otherwise an
+   *         {@link AssertionError} is thrown if assertions are enabled with -ea
    */
   public final int nextIndex()
   {
+    checkLock();
     return i++;
   }
 

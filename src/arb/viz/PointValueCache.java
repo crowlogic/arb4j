@@ -1,21 +1,13 @@
 package arb.viz;
 
-import static arb.utensils.Utilities.println;
-
 import java.io.*;
-import java.lang.reflect.Method;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import jdk.incubator.foreign.CLinker;
-import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileChannel.MapMode;
-import java.nio.file.Path;
+import java.nio.*;
+import java.nio.channels.FileChannel.*;
+import java.nio.file.*;
+
 import arb.*;
-import arb.geometry.surfaces.RiemannSurface;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import arb.geometry.surfaces.*;
+import jdk.incubator.foreign.*;
 
 /**
  * If the precision of the number is 128 bits or less then the only space
@@ -39,8 +31,6 @@ public class PointValueCache implements
   static
   {
     System.loadLibrary("arblib");
-    
-
   }
 
   /**

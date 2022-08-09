@@ -14,6 +14,9 @@
 #include <acb_modular.h>
 #include <acb_dft.h>
 
+typedef signed long int fmpz;
+typedef fmpz fmpz_t[1];
+
 typedef long int		mp_size_t;
 
 int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);

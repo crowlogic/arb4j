@@ -40,7 +40,7 @@ public class DiffusionProcessState extends
    * initialize with a specified {@link RandomState} and call
    * this{@link #setValue(Real)} to set the initial value of the process
    */
-  public DiffusionProcessState(Real S0, RandomState randomState )
+  public DiffusionProcessState(Real S0, RandomState randomState)
   {
     this(new RandomState((int) (Math.random() * Integer.MAX_VALUE)));
     setValue(S0);
@@ -90,7 +90,7 @@ public class DiffusionProcessState extends
   public DiffusionProcessState setValue(Real x)
   {
     assert x.isFinite() : x + " is not finite";
-    //println( "Setting " + getClass().getSimpleName() + ".value to " + x );
+    // println( "Setting " + getClass().getSimpleName() + ".value to " + x );
     value.set(x);
     return this;
   }

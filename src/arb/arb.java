@@ -9,6 +9,18 @@
 package arb;
 
 public class arb {
+  public static void fmpz_zero(SWIGTYPE_p_long_long f) {
+    arbJNI.fmpz_zero(SWIGTYPE_p_long_long.getCPtr(f));
+  }
+
+  public static void fmpz_one(SWIGTYPE_p_long_long f) {
+    arbJNI.fmpz_one(SWIGTYPE_p_long_long.getCPtr(f));
+  }
+
+  public static void acb_dft_rad2_precomp(Complex w, Complex v, FastDFTRadix2Scheme t, int prec) {
+    arbJNI.acb_dft_rad2_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTRadix2Scheme.getCPtr(t), t, prec);
+  }
+
   public static void arb_hypgeom_hermite_h(Real res, Real nu, Real z, int prec) {
     arbJNI.arb_hypgeom_hermite_h(Real.getCPtr(res), res, Real.getCPtr(nu), nu, Real.getCPtr(z), z, prec);
   }

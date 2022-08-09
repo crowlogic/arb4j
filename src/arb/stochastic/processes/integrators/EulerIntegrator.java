@@ -14,13 +14,9 @@ import arb.RandomState;
 import arb.Real;
 import arb.RealOrderedPair;
 import arb.RealPartition;
+import arb.dynamical.systems.*;
 import arb.stochastic.GaussianProbabilityDistribution;
-import arb.stochastic.processes.ContinuousTimeState;
-import arb.stochastic.processes.DiffusionCoeffecientFunction;
-import arb.stochastic.processes.DiffusionProcess;
-import arb.stochastic.processes.DiffusionProcessState;
-import arb.stochastic.processes.DriftCoeffecientFunction;
-import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
+import arb.stochastic.processes.*;
 import de.erichseifert.gral.data.DataTable;
 
 /**

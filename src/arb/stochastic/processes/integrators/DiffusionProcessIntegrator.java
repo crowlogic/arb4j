@@ -14,9 +14,9 @@ public interface DiffusionProcessIntegrator<S extends State, D extends Diffusion
   public void close();
 
   /**
-   * Calculate the {@link EvaluationSequence#i}-th value of step-length
-   * {@link DiffusionProcessState#dt()} by calling {@link DiffusionProcess#μ()}
-   * and {@link DiffusionProcess#σ()} and scaling by
+   * Calculate the i-th value of step-length {@link DiffusionProcessState#dt()}
+   * where i={@link DiffusionProcessState#index()} by calling
+   * {@link DiffusionProcess#μ()} and {@link DiffusionProcess#σ()} and scaling by
    * {@link DiffusionProcessState#dt} accordingly. Does *not change the state*,
    * this is done by
    * this{@link #jump(DiffusionProcessState, int, EvaluationSequence)}

@@ -78,7 +78,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                                                       128),
                                                                              new RandomState(seed)));)
     {
-
+      
       // Generate data
       DataTable     data     = new DataTable(Double.class,
                                              Double.class);
@@ -87,12 +87,12 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
       FloatInterval interval = new FloatInterval(0,
                                                  5);
       var           path     = integrator.integrate(interval, 750 / 4, prec);
+      var           path2    = integrator2.integrate(interval, 750 / 4, prec);
 
       for (RealOrderedPair sample : path)
       {
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
-      var path2 = integrator2.integrate(interval, 750 / 4, prec);
       for (RealOrderedPair sample : path2)
       {
         data2.add(sample.a.doubleValue(), sample.b.doubleValue());
