@@ -11,7 +11,7 @@ public class PartitionTest extends
   {
     try ( FloatInterval interval = new FloatInterval(0,
                                                      10);
-          FloatPartition partition = interval.partition(500, prec);)
+          FloatPartition partition = interval.floatPartition(500, prec);)
     {
       int i = 0;
       try ( Real mesh = new Real("0.02",

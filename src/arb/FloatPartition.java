@@ -107,7 +107,7 @@ public class FloatPartition implements
   }
 
   @Override
-  public long count()
+  public int count()
   {
     return n;
   }

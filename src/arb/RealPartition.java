@@ -55,7 +55,7 @@ public class RealPartition implements
   }
 
   @Override
-  public long count()
+  public int count()
   {
     return T.dim;
   }

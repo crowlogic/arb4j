@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 public class RandomTest extends
                         TestCase
 {
+  @SuppressWarnings("resource")
   public static void testRandomState()
   {
     RandomState state = new RandomState(55);

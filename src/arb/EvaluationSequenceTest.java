@@ -1,0 +1,27 @@
+package arb;
+
+import static arb.utensils.Utilities.println;
+
+import arb.stochastic.StandardGaussianDistribution;
+import junit.framework.TestCase;
+
+public class EvaluationSequenceTest extends
+                                    TestCase
+{
+
+  public void testIntervalPartitionEvalSequence()
+  {
+    try ( FloatInterval fi = new FloatInterval(0,
+                                               5))
+    {
+      EvaluationSequence es = new EvaluationSequence(fi.partition(50000, 128));
+
+      es.generateRandomSamples(new StandardGaussianDistribution(), new RandomState(31337), 128);
+      Real   var      = es.values.variance(128, new Real());
+      double vardelta = Math.abs(var.doubleValue() - 1);
+      println("vardelta=" + vardelta);
+      assertTrue(vardelta < 0.0035);
+    }
+  }
+
+}

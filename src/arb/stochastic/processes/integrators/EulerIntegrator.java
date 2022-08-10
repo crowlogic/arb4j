@@ -100,11 +100,10 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
 
     interval.length(prec, T);
 
-    RealPartition partition = interval.realPartition(n, prec);
+    RealPartition partition = interval.partition(n, prec);
     state.setdt(partition.dt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
-                                                                   Real.newVector(n + 1));
+    EvaluationSequence evaluationSequence = new EvaluationSequence(partition);
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
                                                                                  state.sqrtdt(prec, sqrtdt)),
@@ -143,7 +142,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
    */
   protected EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
   {
-    int i = state.index();
+    int  i  = state.index();
     Real xi = evaluationSequence.values.get(i);
     xi.printPrecision = true;
 

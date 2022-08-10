@@ -3,25 +3,27 @@ package arb;
 import java.lang.ref.Cleaner.Cleanable;
 import java.util.Iterator;
 
-import arb.stochastic.RealProbabilityDensityFunction;
 import arb.stochastic.ProbabilityDistributionFunction;
+import arb.stochastic.RealProbabilityDensityFunction;
 
 public class EvaluationSequence implements
                                 Cleanable,
                                 Iterable<RealOrderedPair>
 {
-  public EvaluationSequence(RealPartition partition, Real values)
+  public EvaluationSequence(RealPartition partition)
   {
     this.partition = partition;
-    this.values    = values;
+    this.values    = Real.newVector(partition.count());
   }
 
-  public RealPartition partition;
-  public Real          values;
+  public final RealPartition partition;
+  public final Real          values;
 
   /**
    * Populates the this{@link #values} of this {@link EvaluationSequence} with
    * random {@link Real} numbers sampled from some density function
+   * 
+   * TODO: find a way to parallelize this while keeping determinism
    * 
    * @param pdf         the {@link RealProbabilityDensityFunction} to populate
    *                    this{@link #values} with

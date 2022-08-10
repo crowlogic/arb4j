@@ -66,12 +66,11 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
   {
     process.validate();
     println("Partitioning " + interval + " into " + n + " pieces at " + prec + " bits of precision");
-    RealPartition partition = interval.realPartition(n, prec);
+    RealPartition partition = interval.partition(n, prec);
     multivariateState.setdt(partition.dt);
     partition.dt.sqrt(prec, sqrtδt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
-                                                                   Real.newVector(n + 1));
+    EvaluationSequence evaluationSequence = new EvaluationSequence(partition);
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
                                                                                  multivariateState.getdt(sqrtδt)

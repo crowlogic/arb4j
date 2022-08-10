@@ -14,7 +14,7 @@ public interface Partition<F extends Field> extends
    * 
    * @return the number of elements of the partition
    */
-  long count();
+  int count();
 
   /**
    * 
