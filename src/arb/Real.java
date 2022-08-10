@@ -14,6 +14,8 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import arb.stochastic.ProbabilityDistributionFunction;
+
 /**
  * Real numbers are points on an infinitely long line known as the real number
  * line, where the points corresponding to integers are equally spaced. Any real
@@ -901,6 +903,20 @@ public class Real implements
   {
     this(arbJNI.new_Real(),
          true);
+  }
+
+  /**
+   * Populate the elements of this with samples drawn from a specific PDF with the
+   * {@link ProbabilityDistributionFunction#sample(int, RandomState, Real)}
+   * function
+   * 
+   * @param pdf
+   * @param randomState
+   * @param prec
+   */
+  public void randomlyGenerate(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
+  {
+    forEach(value -> pdf.sample(prec, randomState, value));
   }
 
 }

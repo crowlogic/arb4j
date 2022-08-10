@@ -76,7 +76,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                                   new RandomState(seed));
     DiffusionProcessState    state2   = new DiffusionProcessState(new Real("3",
                                                                            128),
-                                                                  new RandomState(seed+1));
+                                                                  new RandomState(seed + 1));
 
     integrateProcess(false, process, state, data);
     integrateProcess(false, process2, state2, data2);
@@ -97,7 +97,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
 
       FloatInterval interval = new FloatInterval(0,
                                                  1);
-      var path = integrator.integrate(interval, 10, prec);
+      var           path     = integrator.integrate(interval, 10, prec);
 
       for (RealOrderedPair sample : path)
       {
@@ -115,14 +115,16 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
 
   }
 
-  Real σσi = new Real();
+  Real    σσi    = new Real();
 
   boolean warned = false;
-  
+
   @Override
   public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
   {
-    Real xi = step(state, prec, evalSequence, 2).values.get(state.index());
+    step(state, prec, evalSequence, 2);
+
+    Real xi = evalSequence.values[0].get(state.index());
 
     // 2nd order correction
     σi.mul(σi.get(1), prec, σσi);
@@ -130,7 +132,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
 
     assert σσi.isFinite() : "σσ is not finite " + σσi + "\nσ=" + σi;
     σσi.mul(state.dt(), prec).div(2, prec).mul(xi.pow(2, prec).sub(1, prec), prec);
-    if ( !warned && σσi.isZero())
+    if (!warned && σσi.isZero())
     {
       System.err.println("It it useless to use Milstein method on a " + diffusionProcess.getClass().getSimpleName());
       warned = true;

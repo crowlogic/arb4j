@@ -76,10 +76,12 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
 
       print(integrator.getClass().getSimpleName(), data);
 
-      println("mean=" + path.values.arithmeticMean(128, new Real()));
+      println("mean=" + path.values[0].arithmeticMean(128, new Real()));
     }
 
   }
+
+  private int dim;
 
   public EulerIntegrator(P x, D diffusionProcessState)
   {
@@ -87,6 +89,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     state = diffusionProcessState;
     μ     = diffusionProcess.μ();
     σ     = diffusionProcess.σ();
+    this.dim = 0;
   }
 
   DriftCoeffecientFunction<D>     μ;
@@ -103,7 +106,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     RealPartition partition = interval.partition(n, prec);
     state.setdt(partition.dt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition);
+    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,1);
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
                                                                                  state.sqrtdt(prec, sqrtdt)),
@@ -143,7 +146,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   protected EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
   {
     int  i  = state.index();
-    Real xi = evaluationSequence.values.get(i);
+    Real xi = evaluationSequence.values[dim].get(i);
     xi.printPrecision = true;
 
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
@@ -167,17 +170,17 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   }
 
   @Override
-  public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
+  public final EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
   {
     int i = state.nextIndex();
     assert i >= 0;
-    Real xi = evaluationSequence.values.get(i);
+    Real xi = evaluationSequence.values[dim].get(i);
 
     state.setValue(xi.add(state.value(), prec));
 
     if (verbose)
     {
-      System.out.format(" time=%s μi=%s σi=%s xi=%s\n state=%s\n", state.time(), μi, σi, xi, state);
+      System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n", i, state.time(), μi, σi, xi, state);
     }
 
     return evaluationSequence;

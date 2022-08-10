@@ -9,18 +9,20 @@ public class EvaluationSequenceIterator extends
 {
   int                        i;
   private EvaluationSequence evalseq;
+  private int dim;
 
-  public EvaluationSequenceIterator(EvaluationSequence evalseq)
+  public EvaluationSequenceIterator(EvaluationSequence evalseq, int dim)
   {
-    this.evalseq = evalseq;
+    this.evalseq     = evalseq;
     a.printPrecision = b.printPrecision = true;
+    this.dim         = dim;
   }
 
   @Override
   public RealOrderedPair next()
   {
     a.set(evalseq.partition.T.get(i));
-    b.set(evalseq.values.get(i));
+    b.set(evalseq.values[dim].get(i));
     i++;
     return this;
   }

@@ -24,6 +24,7 @@ public interface DiffusionProcessIntegrator<S extends State, D extends Diffusion
    * @param state
    * @param prec
    * @param evalSeq
+   * @param dim TODO
    * @return
    */
   public EvaluationSequence step(S state, int prec, EvaluationSequence evalSeq);
@@ -31,7 +32,7 @@ public interface DiffusionProcessIntegrator<S extends State, D extends Diffusion
   /**
    * Jump to the {@link DiffusionProcessState} in the given
    * {@link EvaluationSequence} after
-   * this{@link #step(DiffusionProcessState, int, EvaluationSequence)} has been
+   * this{@link #step(DiffusionProcessState, int, EvaluationSequence, int)} has been
    * called
    * 
    * @param state

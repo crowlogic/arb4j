@@ -1,13 +1,17 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.utensils.Utilities.*;
-import java.lang.Integer;
+import static arb.utensils.Utilities.println;
 
-import java.util.stream.*;
+import java.util.stream.IntStream;
 
-import arb.*;
-import arb.stochastic.processes.*;
-import junit.framework.*;
+import arb.EvaluationSequence;
+import arb.FloatInterval;
+import arb.RandomState;
+import arb.Real;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.WienerProcess;
+import junit.framework.TestCase;
 
 public class StochasticIntegrationTest extends
                                        TestCase
@@ -56,8 +60,8 @@ public class StochasticIntegrationTest extends
 
     EvaluationSequence samplePath = integrator.integrate(interval, n, prec);
     println("state=" + state);
-    Real μ               = samplePath.values.arithmeticMean(prec, new Real());
-    Real sampleStdev     = samplePath.values.standardDeviation(prec, μ, new Real());
+    Real μ               = samplePath.values[0].arithmeticMean(prec, new Real());
+    Real sampleStdev     = samplePath.values[0].standardDeviation(prec, μ, new Real());
     Real populationStdev = integrator.diffusionProcess.σ().evaluate(state, 1, prec, new Real());
     populationStdev.printPrecision = true;
     sampleStdev.printPrecision     = true;

@@ -10,14 +10,22 @@ public class EvaluationSequence implements
                                 Cleanable,
                                 Iterable<RealOrderedPair>
 {
-  public EvaluationSequence(RealPartition partition)
+  private int dim;
+
+  public EvaluationSequence(RealPartition partition, int dim)
   {
+    assert dim > 0;
     this.partition = partition;
-    this.values    = Real.newVector(partition.count());
+    this.values    = new Real[dim];
+    this.dim       = dim;
+    for (int i = 0; i < dim; i++)
+    {
+      values[i] = Real.newVector(partition.count());
+    }
   }
 
   public final RealPartition partition;
-  public final Real          values;
+  public final Real[]        values;
 
   /**
    * Populates the this{@link #values} of this {@link EvaluationSequence} with
@@ -37,20 +45,31 @@ public class EvaluationSequence implements
   public EvaluationSequence
          generateRandomSamples(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
   {
-    values.forEach(value -> pdf.sample(prec, randomState, value));
+    for (Real dim : values)
+    {
+      dim.randomlyGenerate(pdf, randomState, prec);
+    }
     return this;
   }
 
   @Override
   public void clean()
   {
-    values.close();
+    for (Real array : values)
+    {
+      array.close();
+    }
   }
 
-  @Override
   public Iterator<RealOrderedPair> iterator()
   {
-    return new EvaluationSequenceIterator(this);
+    return iterator(0);
+  }
+
+  public Iterator<RealOrderedPair> iterator(int i)
+  {
+    return new EvaluationSequenceIterator(this,
+                                          i);
   }
 
 }

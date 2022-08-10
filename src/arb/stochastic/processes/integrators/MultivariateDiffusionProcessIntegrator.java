@@ -70,7 +70,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     multivariateState.setdt(partition.dt);
     partition.dt.sqrt(prec, sqrtδt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition);
+    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,1);
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
                                                                                  multivariateState.getdt(sqrtδt)
