@@ -56,7 +56,6 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     multivariateState.nextIndex();
     for (int i = 0; i < dim; i++)
     {
-      assert false : "TODO: add multivarite support to EvaluationSequence";                    
       integrators[i].jump(multivariateState.getState(i), prec, evalSeq);
     }
     return evalSeq;
@@ -70,7 +69,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     multivariateState.setdt(partition.dt);
     partition.dt.sqrt(prec, sqrtδt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,1);
+    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,process.dim());
 
     evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
                                                                                  multivariateState.getdt(sqrtδt)
@@ -80,18 +79,15 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
     for (Real t : partition)
     {
-      println("");
       multivariateState.setTime(t);
       multivariateState.lock();
       process.validate();
       step(prec, evaluationSequence);
       multivariateState.unlock();
-
       process.validate();
-      System.out.println("after step " + multivariateState);
 
       jump(prec, evaluationSequence);
-      System.out.println("after jump " + multivariateState);
+      System.out.println("jump " + multivariateState);
 
       process.validate();
     }

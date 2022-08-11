@@ -91,6 +91,15 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     σ     = diffusionProcess.σ();
     this.dim = 0;
   }
+  
+  public EulerIntegrator(P x, D diffusionProcessState, int dim )
+  {
+    super(x);
+    state = diffusionProcessState;
+    μ     = diffusionProcess.μ();
+    σ     = diffusionProcess.σ();
+    this.dim = dim;
+  }
 
   DriftCoeffecientFunction<D>     μ;
   DiffusionCoeffecientFunction<D> σ;
