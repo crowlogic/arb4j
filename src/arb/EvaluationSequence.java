@@ -5,7 +5,13 @@ import java.util.Iterator;
 
 import arb.stochastic.ProbabilityDistributionFunction;
 import arb.stochastic.RealProbabilityDensityFunction;
+import arb.stochastic.processes.CorrelatedWienerProcess;
 
+/**
+ * TODO: how to implement {@link CorrelatedWienerProcess}
+ * 
+ *
+ */
 public class EvaluationSequence implements
                                 Cleanable,
                                 Iterable<RealOrderedPair>
