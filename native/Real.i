@@ -8,6 +8,7 @@ import static arb.arb.*;
 import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import arb.stochastic.ProbabilityDistributionFunction;
 
 /**
  * Real numbers are points on an infinitely long line known as the real number
@@ -22,6 +23,18 @@ import java.util.stream.StreamSupport;
 %typemap(javacode) arb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  /**
+   * Calls {@link Real#random(RandomState, int)} on each element of this
+   * 
+   * @param pdf
+   * @param randomState
+   * @param prec
+   */
+  public void randomlyGenerate(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
+  {
+    forEach(element -> element.random(randomState, prec));
+  }
+  
   /**
    * Self-referencing this{@link #add(int, int, Real)}
    * 
