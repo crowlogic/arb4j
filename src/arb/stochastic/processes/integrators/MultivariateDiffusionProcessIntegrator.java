@@ -63,7 +63,6 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec)
   {
-    process.validate();
     println("Partitioning " + interval + " into " + n + " pieces at " + prec + " bits of precision");
     RealPartition partition = interval.partition(n, prec);
     multivariateState.setdt(partition.dt);
@@ -81,15 +80,12 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     {
       multivariateState.setTime(t);
       multivariateState.lock();
-      process.validate();
       step(prec, evaluationSequence);
       multivariateState.unlock();
-      process.validate();
 
       jump(prec, evaluationSequence);
       System.out.println("jump " + multivariateState);
 
-      process.validate();
     }
 
     return evaluationSequence;

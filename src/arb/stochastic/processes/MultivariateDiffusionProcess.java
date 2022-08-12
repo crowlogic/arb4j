@@ -17,7 +17,6 @@ public interface MultivariateDiffusionProcess<D extends MultivariateState> exten
 
   boolean verbose = false;
 
-  DiffusionProcessState getState(int i);
 
   /**
    * This must be symmetric.. corr(i,j) must equal corr(j,i). When i=j the
@@ -28,10 +27,5 @@ public interface MultivariateDiffusionProcess<D extends MultivariateState> exten
    * @return
    */
   Real getCorrelation(int i, int j);
-
-  /**
-   * Throws a Throwable if things aren't right
-   */
-  void validate();
 
 }
