@@ -13,11 +13,11 @@ import arb.operators.Composition;
  * {@link ComplexRealPart} of the {@link Composition} applied as the composition
  * of the {@link SFunction} with the {@link ComplexCircle} for instance
  * 
- * <code>
+ * <pre>
  *       /   Re(S(circle(0,0.01,θ)))    \
  *  θ -  | ---------------------------- |
  *       \ d/dθ(Re(S(circle(0,0.01,θ))) /
- * </code>
+ * </pre>
  *
  *
  */
