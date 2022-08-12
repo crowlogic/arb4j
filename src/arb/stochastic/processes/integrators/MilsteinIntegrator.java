@@ -144,6 +144,8 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   {
     super(x,
           state);
+    assert !μ.dependsOnAbsoluteTime() : "the Milstein method does not work for coeffecients that depend directly on the value of t";
+    assert !σ.dependsOnAbsoluteTime() : "the Milstein method does not work for coeffecients that depend directly on the value of t";
   }
 
   public MilsteinIntegrator(P p, D d, int i)
@@ -151,6 +153,8 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     super(p,
           d,
           i);
+    assert !μ.dependsOnAbsoluteTime() : "the Milstein method does not work for coeffecients that depend directly on the value of t";
+    assert !σ.dependsOnAbsoluteTime() : "the Milstein method does not work for coeffecients that depend directly on the value of t";
   }
 
   @Override
