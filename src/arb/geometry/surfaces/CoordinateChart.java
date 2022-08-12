@@ -44,7 +44,7 @@ import arb.topology.transformations.Homeomorphism;
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Category:Coordinate_charts_in_general_relativity">CoordinateChartsInGeneralRelativity@Wikipedia</a>
  */
-public interface CoordinateChart
+public interface CoordinateChart extends Homeomorphism
 {
 
 }
