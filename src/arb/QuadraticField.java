@@ -3,7 +3,7 @@ package arb;
 /**
  * 
  * 
- * An algebraic integer of the form a+bsqrt(D) where D is squarefree forms a
+ * An algebraic integer of the form a+b*√D where D is square-free forms a
  * quadratic field and is denoted Q(sqrt(D)). <br>
  * If D>0, the field is called a real quadratic field, and <br>
  * if D<0, it is called an imaginary quadratic field. <br>
