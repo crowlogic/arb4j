@@ -544,20 +544,20 @@ import arb.stochastic.ProbabilityDistributionFunction;
   
     public Real[] elements;
   
-  public Real get( int index )
+  public Real get(int index)
   {
-      assert index < dim : String.format( "index = %d >= dim = %d", index, dim );
-    if ( index == 0 && dim == 1 )
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (index == 0 && dim == 1)
     {
       return this;
     }
     Real element = elements[index];
     if (element == null)
     {
-      element = new Real(swigCPtr + index * Real.BYTES,
-                            false);
+      element = elements[index] = new Real(swigCPtr + index * Real.BYTES,
+                                           false);
     }
-    return element;  
+    return element;
   }
    
   public String toFixedString()

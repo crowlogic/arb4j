@@ -55,12 +55,10 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
    * @param pdf
    * @param randomState
    * @param prec
-   * @return 
    */
-  public Real randomlyGenerate(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
+  public void randomlyGenerate(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
   {
     forEach(element -> element.random(randomState, prec));
-    return this;
   }
   
   /**
@@ -572,20 +570,20 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
   
     public Real[] elements;
   
-  public Real get( int index )
+  public Real get(int index)
   {
-      assert index < dim : String.format( "index = %d >= dim = %d", index, dim );
-    if ( index == 0 && dim == 1 )
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (index == 0 && dim == 1)
     {
       return this;
     }
     Real element = elements[index];
     if (element == null)
     {
-      element = new Real(swigCPtr + index * Real.BYTES,
-                            false);
+      element = elements[index] = new Real(swigCPtr + index * Real.BYTES,
+                                           false);
     }
-    return element;  
+    return element;
   }
    
   public String toFixedString()

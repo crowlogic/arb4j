@@ -578,8 +578,8 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
     Complex element = elements[index];
     if (element == null)
     {
-      element = new Complex(swigCPtr + index * Complex.BYTES,
-                            false);
+      element = elements[index] = new Complex(swigCPtr + index * Complex.BYTES,
+                            	              false);
     }
     return element;
   }    

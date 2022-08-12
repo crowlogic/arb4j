@@ -14,7 +14,8 @@ public class EvaluationSequenceTest extends
     try ( FloatInterval fi = new FloatInterval(0,
                                                5))
     {
-      EvaluationSequence es = new EvaluationSequence(fi.realPartition(50000, 128),
+      RealPartition realPartition = fi.realPartition(50000, 128);
+      EvaluationSequence es = new EvaluationSequence(realPartition,
                                                      1);
 
       es.generateRandomSamples(new StandardGaussianDistribution(), new RandomState(31337), 128);
