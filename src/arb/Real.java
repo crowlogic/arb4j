@@ -55,10 +55,12 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real> {
    * @param pdf
    * @param randomState
    * @param prec
+   * @return 
    */
-  public void randomlyGenerate(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
+  public Real randomlyGenerate(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
   {
     forEach(element -> element.random(randomState, prec));
+    return this;
   }
   
   /**

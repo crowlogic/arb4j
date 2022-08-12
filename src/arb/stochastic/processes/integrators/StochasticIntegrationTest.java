@@ -22,13 +22,12 @@ public class StochasticIntegrationTest extends
   {
     IntStream.range(0, 1).forEach(i ->
     {
-      WienerProcess B = new WienerProcess(new Real("5",
-                                                   128));
-      try ( MilsteinIntegrator integrator = new MilsteinIntegrator(B,
-                                                                   new DiffusionProcessState()))
-      {
-        testStochasticIntegrator(integrator);
-      }
+      WienerProcess      B          = new WienerProcess(new Real("5",
+                                                                 128));
+      DiffusionProcessState state = new DiffusionProcessState();
+      MilsteinIntegrator integrator = new MilsteinIntegrator(B,
+                                                                state);
+      testStochasticIntegrator(integrator);
     });
   }
 
@@ -46,8 +45,7 @@ public class StochasticIntegrationTest extends
     });
   }
 
-  protected void
-            testStochasticIntegrator(AbstractDiffusionProcessIntegrator<DiffusionProcessState, DiffusionProcess<DiffusionProcessState>> integrator)
+  protected void testStochasticIntegrator(AbstractDiffusionProcessIntegrator<DiffusionProcessState, ?> integrator)
   {
     FloatInterval         interval    = new FloatInterval(0,
                                                           10);
