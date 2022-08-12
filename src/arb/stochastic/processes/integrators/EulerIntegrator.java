@@ -112,7 +112,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
 
     interval.length(prec, T);
 
-    RealPartition partition = interval.partition(n, prec);
+    RealPartition partition = interval.realPartition(n, prec);
     state.setdt(partition.dt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,1);

@@ -1,20 +1,13 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.ComplexConstants.prec;
-import static arb.FloatConstants.one;
-import static arb.utensils.Utilities.println;
+import static arb.ComplexConstants.*;
+import static arb.FloatConstants.*;
 
-import arb.EvaluationSequence;
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.RandomState;
-import arb.Real;
-import arb.RealOrderedPair;
-import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
-import arb.stochastic.processes.DiffusionProcess;
-import arb.stochastic.processes.DiffusionProcessState;
-import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
-import de.erichseifert.gral.data.DataTable;
+import arb.dynamical.systems.*;
+import arb.stochastic.processes.*;
+import de.erichseifert.gral.data.*;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -151,6 +144,13 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   {
     super(x,
           state);
+  }
+
+  public MilsteinIntegrator(P p, D d, int i)
+  {
+    super(p,
+          d,
+          i);
   }
 
   @Override

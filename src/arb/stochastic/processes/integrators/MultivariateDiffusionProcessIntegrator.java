@@ -64,7 +64,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec)
   {
     println("Partitioning " + interval + " into " + n + " pieces at " + prec + " bits of precision");
-    RealPartition partition = interval.partition(n, prec);
+    RealPartition partition = interval.realPartition(n, prec);
     multivariateState.setdt(partition.dt);
     partition.dt.sqrt(prec, sqrtδt);
 
