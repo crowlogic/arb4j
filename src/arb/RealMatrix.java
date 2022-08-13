@@ -86,13 +86,13 @@ public class RealMatrix implements AutoCloseable {
     return arbJNI.RealMatrix_c_get(swigCPtr, this);
   }
 
-  public void setRows(SWIGTYPE_p_p_arb_struct value) {
-    arbJNI.RealMatrix_rows_set(swigCPtr, this, SWIGTYPE_p_p_arb_struct.getCPtr(value));
+  public void setRows(Real value) {
+    arbJNI.RealMatrix_rows_set(swigCPtr, this, Real.getCPtr(value), value);
   }
 
-  public SWIGTYPE_p_p_arb_struct getRows() {
+  public Real getRows() {
     long cPtr = arbJNI.RealMatrix_rows_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_p_arb_struct(cPtr, false);
+    return (cPtr == 0) ? null : new Real(cPtr, false);
   }
 
   public RealMatrix() {

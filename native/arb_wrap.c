@@ -5509,30 +5509,36 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_RealMatrix_1c_1get(JNIEnv *jenv, jclass 
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_RealMatrix_1rows_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RealMatrix_1rows_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
-  arb_ptr *arg2 = (arb_ptr *) 0 ;
+  arb_struct *arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg2_;
   arg1 = *(arb_mat_struct **)&jarg1; 
-  arg2 = *(arb_ptr **)&jarg2; 
-  if (arg1) (arg1)->rows = arg2;
+  arg2 = *(arb_struct **)&jarg2; 
+  {
+    size_t ii;
+    arb_struct *b = (arb_struct *) arg1->rows;
+    for (ii = 0; ii < (size_t)1; ii++) b[ii] = *((arb_struct *) arg2 + ii);
+  }
+  
 }
 
 
 SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RealMatrix_1rows_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   arb_mat_struct *arg1 = (arb_mat_struct *) 0 ;
-  arb_ptr *result = 0 ;
+  arb_struct *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(arb_mat_struct **)&jarg1; 
-  result = (arb_ptr *) ((arg1)->rows);
-  *(arb_ptr **)&jresult = result; 
+  result = (arb_struct *) ((arg1)->rows);
+  *(arb_struct **)&jresult = result; 
   return jresult;
 }
 
@@ -5644,30 +5650,36 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_ComplexMatrix_1c_1get(JNIEnv *jenv, jcla
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexMatrix_1rows_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexMatrix_1rows_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
-  acb_ptr *arg2 = (acb_ptr *) 0 ;
+  acb_struct *arg2 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg2_;
   arg1 = *(acb_mat_struct **)&jarg1; 
-  arg2 = *(acb_ptr **)&jarg2; 
-  if (arg1) (arg1)->rows = arg2;
+  arg2 = *(acb_struct **)&jarg2; 
+  {
+    size_t ii;
+    acb_struct *b = (acb_struct *) arg1->rows;
+    for (ii = 0; ii < (size_t)1; ii++) b[ii] = *((acb_struct *) arg2 + ii);
+  }
+  
 }
 
 
 SWIGEXPORT jlong JNICALL Java_arb_arbJNI_ComplexMatrix_1rows_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   acb_mat_struct *arg1 = (acb_mat_struct *) 0 ;
-  acb_ptr *result = 0 ;
+  acb_struct *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(acb_mat_struct **)&jarg1; 
-  result = (acb_ptr *) ((arg1)->rows);
-  *(acb_ptr **)&jresult = result; 
+  result = (acb_struct *) ((arg1)->rows);
+  *(acb_struct **)&jresult = result; 
   return jresult;
 }
 

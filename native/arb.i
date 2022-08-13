@@ -18,6 +18,7 @@ typedef mag_struct * mag_ptr;
 SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
+%rename (RealVector) *arb_ptr;
 %rename (initialValue) gmp_init;
 %rename (algorithm) _mp_alg;
 %rename (seed) _mp_seed;

@@ -86,13 +86,13 @@ typedef struct
 } flint_rand_s;
 
 typedef flint_rand_s flint_rand_t[1];
-
+ 
 typedef struct
 {
     arb_ptr entries;
     slong r;
     slong c;
-    arb_ptr * rows;
+    arb_t rows;
 }
 arb_mat_struct;
 
@@ -103,7 +103,7 @@ typedef struct
     acb_ptr entries;
     slong r;
     slong c;
-    acb_ptr * rows;
+    acb_t rows;
 }
 acb_mat_struct;
 

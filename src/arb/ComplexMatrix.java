@@ -86,13 +86,13 @@ public class ComplexMatrix implements AutoCloseable {
     return arbJNI.ComplexMatrix_c_get(swigCPtr, this);
   }
 
-  public void setRows(SWIGTYPE_p_p_acb_struct value) {
-    arbJNI.ComplexMatrix_rows_set(swigCPtr, this, SWIGTYPE_p_p_acb_struct.getCPtr(value));
+  public void setRows(Complex value) {
+    arbJNI.ComplexMatrix_rows_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public SWIGTYPE_p_p_acb_struct getRows() {
+  public Complex getRows() {
     long cPtr = arbJNI.ComplexMatrix_rows_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_p_acb_struct(cPtr, false);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
   public ComplexMatrix() {

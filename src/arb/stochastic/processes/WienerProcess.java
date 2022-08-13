@@ -54,7 +54,7 @@ public class WienerProcess implements
       assert order <= 2;
       if (order >= 2)
       {
-        // the derivative of the constant σ is zero
+        // the derivative of the constant 0 is zero
         result.get(1).zero();
       }
       return result.set(zero);

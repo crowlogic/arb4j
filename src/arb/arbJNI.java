@@ -310,7 +310,7 @@ public class arbJNI {
   public final static native int RealMatrix_r_get(long jarg1, RealMatrix jarg1_);
   public final static native void RealMatrix_c_set(long jarg1, RealMatrix jarg1_, int jarg2);
   public final static native int RealMatrix_c_get(long jarg1, RealMatrix jarg1_);
-  public final static native void RealMatrix_rows_set(long jarg1, RealMatrix jarg1_, long jarg2);
+  public final static native void RealMatrix_rows_set(long jarg1, RealMatrix jarg1_, long jarg2, Real jarg2_);
   public final static native long RealMatrix_rows_get(long jarg1, RealMatrix jarg1_);
   public final static native long new_RealMatrix();
   public final static native void delete_RealMatrix(long jarg1);
@@ -320,7 +320,7 @@ public class arbJNI {
   public final static native int ComplexMatrix_r_get(long jarg1, ComplexMatrix jarg1_);
   public final static native void ComplexMatrix_c_set(long jarg1, ComplexMatrix jarg1_, int jarg2);
   public final static native int ComplexMatrix_c_get(long jarg1, ComplexMatrix jarg1_);
-  public final static native void ComplexMatrix_rows_set(long jarg1, ComplexMatrix jarg1_, long jarg2);
+  public final static native void ComplexMatrix_rows_set(long jarg1, ComplexMatrix jarg1_, long jarg2, Complex jarg2_);
   public final static native long ComplexMatrix_rows_get(long jarg1, ComplexMatrix jarg1_);
   public final static native long new_ComplexMatrix();
   public final static native void delete_ComplexMatrix(long jarg1);
