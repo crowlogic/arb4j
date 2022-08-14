@@ -1,9 +1,9 @@
 package arb.theoretical;
 
 /**
+ * TODO: {@link LanglandsProgram} 
  * 
- * @see LanglandsProgram
- * @see http://www.math.uchicago.edu/~emerton/pdffiles/reciprocity.pdf
+ * @see <a href="doc-files/Reciprocity.pdf">Reciprocity</a>
  */
 public interface LanglandsReciprocity extends
                                       ArtinReciprocity
