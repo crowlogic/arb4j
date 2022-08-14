@@ -18,7 +18,7 @@ public class EvaluationSequence implements
 {
   private int dim;
 
-  public EvaluationSequence(Partition partition, int dim)
+  public EvaluationSequence(RealPartition partition, int dim)
   {
     assert dim > 0;
     this.partition = partition;
@@ -30,7 +30,7 @@ public class EvaluationSequence implements
     }
   }
 
-  public final Partition<Float> partition;
+  public final RealPartition partition;
   public final Real[]        values;
 
   /**
