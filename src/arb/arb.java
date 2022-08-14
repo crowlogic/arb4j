@@ -9,6 +9,39 @@
 package arb;
 
 public class arb {
+  public static int close(int __fd) {
+    return arbJNI.close(__fd);
+  }
+
+  public static int open(String file, int oflag) {
+    return arbJNI.open__SWIG_0(file, oflag);
+  }
+
+  public static int creat(String pathname, long mode) {
+    return arbJNI.creat(pathname, mode);
+  }
+
+  public static int open(String pathname, int flags, long mode) {
+    return arbJNI.open__SWIG_1(pathname, flags, mode);
+  }
+
+  public static int msync(SWIGTYPE_p_void addr, long length, int flags) {
+    return arbJNI.msync(SWIGTYPE_p_void.getCPtr(addr), length, flags);
+  }
+
+  public static int munmap(SWIGTYPE_p_void addr, long length) {
+    return arbJNI.munmap(SWIGTYPE_p_void.getCPtr(addr), length);
+  }
+
+  public static SWIGTYPE_p_void mmap(SWIGTYPE_p_void addr, long len, int prot, int flags, int fd, int offset) {
+    long cPtr = arbJNI.mmap(SWIGTYPE_p_void.getCPtr(addr), len, prot, flags, fd, offset);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+  }
+
+  public static int mprotect(SWIGTYPE_p_void addr, long len, int prot) {
+    return arbJNI.mprotect(SWIGTYPE_p_void.getCPtr(addr), len, prot);
+  }
+
   public static void acb_dft_rad2_precomp(Complex w, Complex v, FastDFTRadix2Scheme t, int prec) {
     arbJNI.acb_dft_rad2_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTRadix2Scheme.getCPtr(t), t, prec);
   }

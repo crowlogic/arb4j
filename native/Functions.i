@@ -1,3 +1,15 @@
+#define __off_t long int
+
+
+int close (int __fd);
+int open (const char *file, int oflag, ...);
+int creat(const char *pathname, unsigned int mode);
+int open(const char *pathname, int flags, unsigned int mode);
+int msync(void *addr, size_t length, int flags);
+int munmap(void *addr, size_t length);
+void *mmap (void *addr, size_t len, int prot, int flags, int fd, __off_t offset);		   
+int mprotect (void *addr, size_t len, int prot);
+
 void acb_dft_rad2_precomp(acb_ptr w, acb_srcptr v, const acb_dft_rad2_t t, slong prec);
  
 void arb_hypgeom_hermite_h(arb_t res, const arb_t nu, const arb_t z, slong prec);

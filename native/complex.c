@@ -13,6 +13,7 @@
 #include <acb_dirichlet.h>
 #include <dirichlet.h>
 #include <acb_modular.h>
+#include <sys/mman.h>
 
 #include "color.h"
 #ifndef size_t

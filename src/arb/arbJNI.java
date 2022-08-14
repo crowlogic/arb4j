@@ -9,6 +9,14 @@
 package arb;
 
 public class arbJNI {
+  public final static native int close(int jarg1);
+  public final static native int open__SWIG_0(String jarg1, int jarg2);
+  public final static native int creat(String jarg1, long jarg2);
+  public final static native int open__SWIG_1(String jarg1, int jarg2, long jarg3);
+  public final static native int msync(long jarg1, long jarg2, int jarg3);
+  public final static native int munmap(long jarg1, long jarg2);
+  public final static native long mmap(long jarg1, long jarg2, int jarg3, int jarg4, int jarg5, int jarg6);
+  public final static native int mprotect(long jarg1, long jarg2, int jarg3);
   public final static native void acb_dft_rad2_precomp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, FastDFTRadix2Scheme jarg3_, int jarg4);
   public final static native void arb_hypgeom_hermite_h(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void acb_dirichlet_xi(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);

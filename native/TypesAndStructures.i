@@ -13,6 +13,9 @@
 #include <dirichlet.h>
 #include <acb_modular.h>
 #include <acb_dft.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 typedef signed long int fmpz;
 typedef fmpz fmpz_t[1];
