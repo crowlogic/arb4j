@@ -8,7 +8,6 @@ import arb.EvaluationSequence;
 import arb.FloatInterval;
 import arb.RandomState;
 import arb.Real;
-import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.WienerProcess;
 import junit.framework.TestCase;
@@ -22,10 +21,10 @@ public class StochasticIntegrationTest extends
   {
     IntStream.range(0, 1).forEach(i ->
     {
-      WienerProcess      B          = new WienerProcess(new Real("5",
-                                                                 128));
-      DiffusionProcessState state = new DiffusionProcessState();
-      MilsteinIntegrator integrator = new MilsteinIntegrator(B,
+      WienerProcess         B          = new WienerProcess(new Real("1",
+                                                                    128));
+      DiffusionProcessState state      = new DiffusionProcessState();
+      MilsteinIntegrator    integrator = new MilsteinIntegrator(B,
                                                                 state);
       testStochasticIntegrator(integrator);
     });
@@ -35,12 +34,13 @@ public class StochasticIntegrationTest extends
   {
     IntStream.range(0, 1).forEach(i ->
     {
-      WienerProcess B = new WienerProcess(new Real("5",
+      WienerProcess B = new WienerProcess(new Real("1",
                                                    128));
       try ( EulerIntegrator integrator = new EulerIntegrator(B,
                                                              new DiffusionProcessState()))
       {
         testStochasticIntegrator(integrator);
+
       }
     });
   }
@@ -49,7 +49,7 @@ public class StochasticIntegrationTest extends
   {
     FloatInterval         interval    = new FloatInterval(0,
                                                           10);
-    int                   n           = 500 * 1000;
+    int                   n           = 50 * 1000;
 
     DiffusionProcessState state       = integrator.state;
     RandomState           randomState = state.randomState;

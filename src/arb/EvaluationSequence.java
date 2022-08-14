@@ -51,9 +51,9 @@ public class EvaluationSequence implements
   public EvaluationSequence
          generateRandomSamples(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
   {
-    for (Real dim : values)
+    for (Real valueSequence : values)
     {
-      dim.randomlyGenerate(pdf, randomState, prec);
+      pdf.sample(valueSequence, randomState, prec);
     }
     return this;
   }
