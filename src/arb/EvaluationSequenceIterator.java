@@ -21,7 +21,7 @@ public class EvaluationSequenceIterator extends
   @Override
   public RealOrderedPair next()
   {
-    a.set(evalseq.partition.T.get(i));
+    a.set(evalseq.partition.get(i));
     b.set(evalseq.values[dim].get(i));
     i++;
     return this;
@@ -30,7 +30,7 @@ public class EvaluationSequenceIterator extends
   @Override
   public boolean hasNext()
   {
-    return i < evalseq.partition.T.dim;
+    return i < evalseq.partition.count();
   }
 
 }

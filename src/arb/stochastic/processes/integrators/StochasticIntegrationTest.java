@@ -37,7 +37,7 @@ public class StochasticIntegrationTest extends
       WienerProcess B = new WienerProcess(new Real("1",
                                                    128));
       try ( EulerIntegrator integrator = new EulerIntegrator(B,
-                                                             new DiffusionProcessState()))
+                                                             new DiffusionProcessState(new RandomState(31337))))
       {
         testStochasticIntegrator(integrator);
 
@@ -53,8 +53,7 @@ public class StochasticIntegrationTest extends
 
     DiffusionProcessState state       = integrator.state;
     RandomState           randomState = state.randomState;
-    println("testStandardWienerProcessIntegration  " + randomState);
-    randomState.setInitialValue((int) (Math.random() * Integer.MAX_VALUE));
+    println("testStandardWienerProcessIntegration  randomState=" + randomState);
 
     EvaluationSequence samplePath = integrator.integrate(interval, n, prec);
     println("state=" + state);
