@@ -55,7 +55,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
   {
     int status = arbJNI.mprotect(swigCPtr, BYTES * dim, Protections.PROT_READ.bitfield);
     assert status == 0 : "mprotect call failed. TODO: implement errno";
-
+    locked = true;
   }
 
   @Override
@@ -63,6 +63,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
   {
     int status = arbJNI.mprotect(swigCPtr, BYTES * dim, Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
     assert status == 0 : "mprotect call failed. TODO: implement errno";
+    locked = false;
   }
 
   boolean locked = false;
