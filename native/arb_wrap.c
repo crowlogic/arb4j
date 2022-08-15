@@ -260,6 +260,7 @@ extern "C" {
 
 
 
+
 extern int errorNumber();
 
 JNIEnv* env;
@@ -317,6 +318,22 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_getpagesize(JNIEnv *jenv, jclass jcls) {
   (void)jcls;
   result = (int)getpagesize();
   jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_alignedMalloc(JNIEnv *jenv, jclass jcls, jint jarg1, jint jarg2) {
+  jlong jresult = 0 ;
+  int arg1 ;
+  int arg2 ;
+  jlong result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (int)jarg1; 
+  arg2 = (int)jarg2; 
+  result = alignedMalloc(arg1,arg2);
+  jresult = result; 
   return jresult;
 }
 

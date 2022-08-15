@@ -15,6 +15,7 @@ typedef mag_struct * mag_ptr;
 
 %typemap(in) slong = long;
 
+
 SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 

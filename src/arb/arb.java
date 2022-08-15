@@ -13,6 +13,10 @@ public class arb {
     return arbJNI.getpagesize();
   }
 
+  public static long alignedMalloc(int alignment, int size) {
+    return arbJNI.alignedMalloc(alignment, size);
+  }
+
   public static int errorNumber() {
     return arbJNI.errorNumber();
   }

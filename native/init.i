@@ -1,6 +1,7 @@
 
 %wrapper %{
 
+
 extern int errorNumber();
 
 JNIEnv* env;
