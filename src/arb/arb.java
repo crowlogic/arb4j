@@ -9,6 +9,14 @@
 package arb;
 
 public class arb {
+  public static int getpagesize() {
+    return arbJNI.getpagesize();
+  }
+
+  public static int errorNumber() {
+    return arbJNI.errorNumber();
+  }
+
   public static int close(int __fd) {
     return arbJNI.close(__fd);
   }

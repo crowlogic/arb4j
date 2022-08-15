@@ -1,6 +1,8 @@
 
 %wrapper %{
 
+extern int errorNumber();
+
 JNIEnv* env;
 
 void *allocate(size_t size)

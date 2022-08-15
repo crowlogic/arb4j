@@ -22,6 +22,11 @@
 
 extern JNIEnv *env;
 
+int errorNumber()
+{
+  return errno;
+}
+
 jlong
 bufferAddress (jobject buffer)
 {

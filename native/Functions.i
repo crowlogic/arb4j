@@ -1,6 +1,8 @@
 #define __off_t long int
 
-
+int getpagesize(void);
+       
+int errorNumber();
 int close (int __fd);
 int open (const char *file, int oflag, ...);
 int creat(const char *pathname, unsigned int mode);

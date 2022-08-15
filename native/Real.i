@@ -28,7 +28,7 @@ import arb.Lockable;
   public void lock()
   {
     int status = arbJNI.mprotect(swigCPtr, BYTES * dim, Protections.PROT_READ.bitfield);
-    assert status == 0 : "mprotect call failed. TODO: implement errno";
+    assert status == 0 : "mprotect call failed. errno=" + arb.errorNumber();
     locked = true;
   }
 
@@ -36,11 +36,12 @@ import arb.Lockable;
   public void unlock()
   {
     int status = arbJNI.mprotect(swigCPtr, BYTES * dim, Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
-    assert status == 0 : "mprotect call failed. TODO: implement errno";
+    assert status == 0 : "mprotect call failed. errno=" + arb.errorNumber();
     locked = false;
   }
 
   boolean locked = false;
+  
   @Override
   public boolean locked()
   {

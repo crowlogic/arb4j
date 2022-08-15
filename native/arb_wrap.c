@@ -260,6 +260,8 @@ extern "C" {
 
 
 
+extern int errorNumber();
+
 JNIEnv* env;
 
 void *allocate(size_t size)
@@ -306,6 +308,30 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
 
   return JNI_VERSION_10;
 }
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_getpagesize(JNIEnv *jenv, jclass jcls) {
+  jint jresult = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (int)getpagesize();
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_errorNumber(JNIEnv *jenv, jclass jcls) {
+  jint jresult = 0 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (int)errorNumber();
+  jresult = (jint)result; 
+  return jresult;
+}
+
 
 SWIGEXPORT jint JNICALL Java_arb_arbJNI_close(JNIEnv *jenv, jclass jcls, jint jarg1) {
   jint jresult = 0 ;

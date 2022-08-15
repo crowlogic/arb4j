@@ -1,8 +1,11 @@
 #include <acb.h>
 
 #include <jni.h>
+#include <unistd.h>
 
 typedef arb_ptr* arb_vec;
+
+int errorNumber();
 
 void  color_function(double * R, double * G, double * B, const acb_t z, int mode);
 
