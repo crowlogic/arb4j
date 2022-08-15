@@ -21,7 +21,7 @@ import arb.Real;
 import arb.RealOrderedPair;
 import arb.RealPartition;
 import arb.dynamical.systems.*;
-import arb.stochastic.GaussianProbabilityDistribution;
+import arb.stochastic.*;
 import arb.stochastic.processes.*;
 import arb.utensils.Utilities;
 import de.erichseifert.gral.data.DataSeries;
@@ -117,7 +117,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,1);
 
-    evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
+    evaluationSequence.generateRandomSamples(new GaussianDistribution(zero,
                                                                                  state.sqrtdt(prec, sqrtdt)),
                                              state.getRandomState(),
                                              prec);

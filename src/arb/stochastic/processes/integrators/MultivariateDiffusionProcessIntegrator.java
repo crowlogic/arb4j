@@ -8,7 +8,7 @@ import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
 import arb.RealPartition;
-import arb.stochastic.GaussianProbabilityDistribution;
+import arb.stochastic.GaussianDistribution;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.MultivariateDiffusionProcess;
@@ -70,7 +70,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,process.dim());
 
-    evaluationSequence.generateRandomSamples(new GaussianProbabilityDistribution(zero,
+    evaluationSequence.generateRandomSamples(new GaussianDistribution(zero,
                                                                                  multivariateState.getdt(sqrtδt)
                                                                                                   .sqrt(prec)),
                                              multivariateState.getRandomState(),

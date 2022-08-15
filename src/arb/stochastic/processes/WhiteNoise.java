@@ -33,7 +33,7 @@ public class WhiteNoise implements
                                          σ);
     this.φ = new GaussianCharacteristicFunction(zero,
                                                 σ);
-    this.f = new GaussianProbabilityDistribution(zero,
+    this.f = new GaussianDistribution(zero,
                                                  σ);
   }
 
@@ -41,7 +41,7 @@ public class WhiteNoise implements
 
   public GaussianCharacteristicFunction  φ;
 
-  public GaussianProbabilityDistribution f;
+  public GaussianDistribution f;
 
   @Override
   public GaussianDensityFunction getDensityFunction(Real t)
@@ -56,7 +56,7 @@ public class WhiteNoise implements
   }
 
   @Override
-  public GaussianProbabilityDistribution getDistributionFunction(Real t)
+  public GaussianDistribution getDistributionFunction(Real t)
   {
     return f;
   }

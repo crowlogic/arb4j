@@ -21,7 +21,7 @@ import arb.topological.*;
  * multivariate normal distributions.
  * 
  * Gaussian processes are useful in statistical modelling, benefiting from
- * properties inherited from the normal {@link GaussianProbabilityDistribution}
+ * properties inherited from the normal {@link GaussianDistribution}
  * distribution. For example, if a {@link StochasticProcess} is modelled as a
  * {@link GaussianProcess}, the distributions of various derived quantities can
  * be obtained explicitly. Such quantities include <i>the average value of the
