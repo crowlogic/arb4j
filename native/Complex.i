@@ -36,6 +36,7 @@ import arb.topological.spaces.*;
   @Override
   public int dimension()
   {
+ 
     return 2;
   }
 

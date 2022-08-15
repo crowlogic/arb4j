@@ -1,6 +1,7 @@
 #define __off_t long int
 
 int getpagesize(void);
+jlong alignedMalloc( int alignment, int size );
        
 int errorNumber();
 int close (int __fd);

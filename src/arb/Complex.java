@@ -61,6 +61,7 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
   @Override
   public int dimension()
   {
+ 
     return 2;
   }
 

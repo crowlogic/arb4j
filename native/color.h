@@ -5,6 +5,8 @@
 
 typedef arb_ptr* arb_vec;
 
+jlong alignedMalloc( int alignment, int size );
+
 int errorNumber();
 
 void  color_function(double * R, double * G, double * B, const acb_t z, int mode);
