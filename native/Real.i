@@ -1,6 +1,6 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "Comparable<Real>, Iterable<Real>, Field<Real>"
+%typemap(javainterfaces) arb_struct "Comparable<Real>, Iterable<Real>, Field<Real>, Lockable"
 
 %typemap(javaimports) arb_struct %{
 import static arb.IntegerConstants.*;
@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import arb.stochastic.ProbabilityDistributionFunction;
+import arb.Lockable;
 
 /**
  * Real numbers are points on an infinitely long line known as the real number
@@ -23,6 +24,39 @@ import arb.stochastic.ProbabilityDistributionFunction;
 %typemap(javacode) arb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  @Override
+  public void lock()
+  {
+    int status = arbJNI.mprotect(swigCPtr, BYTES, Protections.PROT_READ.bitfield);
+    assert status == 0 : "mprotect call failed. TODO: implement errno";
+
+  }
+
+  @Override
+  public void unlock()
+  {
+    int status = arbJNI.mprotect(swigCPtr, BYTES, Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
+    assert status == 0 : "mprotect call failed. TODO: implement errno";
+  }
+
+  boolean locked = false;
+  @Override
+  public boolean locked()
+  {
+    return locked;
+  }
+  
+  /**
+   * @see {@link Real#log(int, Real)}
+   * 
+   * @param prec
+   * @return log(prec,this)
+   */
+  public Real log(int prec)
+  {
+    return log(prec, this);
+  }
+  
   /**
    * Calls {@link Real#random(RandomState, int)} on each element of this
    * 
