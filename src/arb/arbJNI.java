@@ -11,6 +11,7 @@ package arb;
 public class arbJNI {
   public final static native int getpagesize();
   public final static native long alignedMalloc(int jarg1, int jarg2);
+  public final static native long memalign(long jarg1, long jarg2);
   public final static native int errorNumber();
   public final static native int close(int jarg1);
   public final static native int open__SWIG_0(String jarg1, int jarg2);

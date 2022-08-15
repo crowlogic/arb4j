@@ -2,6 +2,7 @@
 
 int getpagesize(void);
 jlong alignedMalloc( int alignment, int size );
+void *memalign(size_t alignment, size_t size);
        
 int errorNumber();
 int close (int __fd);

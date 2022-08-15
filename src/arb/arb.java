@@ -17,6 +17,11 @@ public class arb {
     return arbJNI.alignedMalloc(alignment, size);
   }
 
+  public static SWIGTYPE_p_void memalign(long alignment, long size) {
+    long cPtr = arbJNI.memalign(alignment, size);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+  }
+
   public static int errorNumber() {
     return arbJNI.errorNumber();
   }

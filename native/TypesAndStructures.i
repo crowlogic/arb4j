@@ -16,6 +16,7 @@
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <malloc.h>
 
 typedef signed long int fmpz;
 typedef fmpz fmpz_t[1];
