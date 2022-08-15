@@ -29,7 +29,7 @@ import arb.Lockable;
   {
     int status = arbJNI.mprotect(swigCPtr, BYTES * dim, Protections.PROT_READ.bitfield);
     assert status == 0 : "mprotect call failed. TODO: implement errno";
-
+    locked = true;
   }
 
   @Override
@@ -37,6 +37,7 @@ import arb.Lockable;
   {
     int status = arbJNI.mprotect(swigCPtr, BYTES * dim, Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
     assert status == 0 : "mprotect call failed. TODO: implement errno";
+    unlocked = false;
   }
 
   boolean locked = false;
