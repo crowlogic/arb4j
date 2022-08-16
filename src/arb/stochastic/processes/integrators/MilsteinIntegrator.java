@@ -1,13 +1,20 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.ComplexConstants.*;
-import static arb.FloatConstants.*;
+import static arb.ComplexConstants.prec;
+import static arb.FloatConstants.one;
 
-import arb.*;
+import arb.EvaluationSequence;
 import arb.Float;
-import arb.dynamical.systems.*;
-import arb.stochastic.processes.*;
-import de.erichseifert.gral.data.*;
+import arb.FloatInterval;
+import arb.RandomState;
+import arb.Real;
+import arb.RealOrderedPair;
+import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
+import arb.stochastic.processes.ContinuousTimeState;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
+import de.erichseifert.gral.data.DataTable;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -30,7 +37,7 @@ import de.erichseifert.gral.data.*;
  * increased by considering expansions of the coefficients μₜ=μ(Sₜ) and σₜ=σ(Sₜ)
  * via Itō’s lemma.
  */
-public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
+public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends ContinuousTimeState> extends
                                EulerIntegrator<P, D> implements
                                AutoCloseable
 {
