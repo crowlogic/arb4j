@@ -8,6 +8,7 @@
 
 package arb;
 
+import org.lwjgl.system.*;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
 import java.util.*;
@@ -246,6 +247,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
     arb.arb_urandom(this, state, bits);
     return this;
   }
+  
   
   public Real resize(int alloc)
   {
@@ -560,12 +562,22 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
     arb.nthHardyZero(this, n, prec);
     return this;
   }
-  
-  public int relAccuracyBits()
-  {
-   return arb.arb_rel_accuracy_bits(this);
-  }
 
+public int relAccuracyBits()
+{
+ return arb.arb_rel_accuracy_bits(this);
+}
+
+  public synchronized void relocateToPageBoundary()                                             
+  {                                                                                           
+    long pointer = SWIGTYPE_p_void.getCPtr(arb.memalign(arb.getpagesize(), Real.BYTES * dim));  
+    MemoryUtil.memCopy(swigCPtr, pointer, Real.BYTES * dim );                                   
+    delete();                                                                                   
+    swigCPtr = pointer;                                                                         
+  }                                                                                             
+                                                                                              
+ 
+ 
   public Real sub(Real real, int prec, Real res)
   {
     arb.arb_sub(res, this, real, prec);
