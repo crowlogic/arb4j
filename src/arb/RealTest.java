@@ -32,9 +32,5 @@ public class RealTest extends
     }
   }
 
-  public void testUnlock()
-  {
-    fail("Not yet implemented");
-  }
 
 }
