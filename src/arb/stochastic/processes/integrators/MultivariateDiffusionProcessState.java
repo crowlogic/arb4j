@@ -1,12 +1,15 @@
 package arb.stochastic.processes.integrators;
 
-import java.util.*;
+import java.util.Iterator;
 
-import arb.*;
-import arb.stochastic.processes.*;
+import arb.Lockable;
+import arb.Real;
+import arb.stochastic.processes.ContinuousTimeState;
+import arb.stochastic.processes.DiffusionProcessState;
 
 public abstract class MultivariateDiffusionProcessState extends
-                                                        ContinuousTimeState<DiffusionProcessState> implements
+                                                        ContinuousTimeState<DiffusionProcessState>
+                                                        implements
                                                         MultivariateState<DiffusionProcessState>,
                                                         Iterable<DiffusionProcessState>
 {

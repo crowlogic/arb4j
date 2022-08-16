@@ -85,7 +85,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
       jump(prec, evaluationSequence);
       System.out.println("jump " + multivariateState);
-      System.out.println("this " + this);      
+      System.out.println("this " + this.process );      
     }
 
     return evaluationSequence;

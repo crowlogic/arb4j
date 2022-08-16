@@ -523,6 +523,24 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_mprotect(JNIEnv *jenv, jclass jcls, jlon
 }
 
 
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_memset(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2, jlong jarg3) {
+  jlong jresult = 0 ;
+  void *arg1 = (void *) 0 ;
+  int arg2 ;
+  size_t arg3 ;
+  void *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(void **)&jarg1; 
+  arg2 = (int)jarg2; 
+  arg3 = (size_t)jarg3; 
+  result = (void *)memset(arg1,arg2,arg3);
+  *(void **)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;

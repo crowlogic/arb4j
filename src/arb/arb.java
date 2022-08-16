@@ -59,6 +59,11 @@ public class arb {
     return arbJNI.mprotect(SWIGTYPE_p_void.getCPtr(addr), len, prot);
   }
 
+  public static SWIGTYPE_p_void memset(SWIGTYPE_p_void s, int c, long n) {
+    long cPtr = arbJNI.memset(SWIGTYPE_p_void.getCPtr(s), c, n);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+  }
+
   public static void acb_dft_rad2_precomp(Complex w, Complex v, FastDFTRadix2Scheme t, int prec) {
     arbJNI.acb_dft_rad2_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTRadix2Scheme.getCPtr(t), t, prec);
   }
