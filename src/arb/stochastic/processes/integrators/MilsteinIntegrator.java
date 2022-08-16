@@ -29,8 +29,7 @@ import de.erichseifert.gral.data.DataTable;
  * elapsed between invocations of
  * {@link DiscreteTimeDynamicalSystem}{@link #jump(DiffusionProcessState, int, EvaluationSequence)}.
  * This method is only applicable to processes whose drift and diffusions do not
- * *directly* depend on t. TODO: find a way to assert this, at compile-time
- * preferably. <br>
+ * *directly* depend on t.  <br>
  * <br>
  * 
  * The key to the Milstein scheme is that the accuracy of the discretization is
