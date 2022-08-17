@@ -46,12 +46,12 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
   public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
   {
 
-
     for (int i = 0; i < dim; i++)
     {
 
       do
       {
+        assert multivariateState.verify() : multivariateState;
         integrators[i].step(multivariateState, prec, evalSeq);
         assert process.verify();
         assert multivariateState.verify();
@@ -96,6 +96,9 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
       multivariateState.unlock();
 
       jump(prec, evaluationSequence);
+      assert process.verify() : process;
+      assert multivariateState.verify() : multivariateState
+                    + " TODO: modify jump to return boolean whose falsity indicates we should resample and redo the step";
       System.out.println("jump " + multivariateState);
       System.out.println("this " + this.process + "\n");
     }
