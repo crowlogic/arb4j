@@ -10,7 +10,6 @@ import arb.RandomState;
 import arb.Real;
 import arb.RealOrderedPair;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
-import arb.stochastic.processes.ContinuousTimeState;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
@@ -29,14 +28,14 @@ import de.erichseifert.gral.data.DataTable;
  * elapsed between invocations of
  * {@link DiscreteTimeDynamicalSystem}{@link #jump(DiffusionProcessState, int, EvaluationSequence)}.
  * This method is only applicable to processes whose drift and diffusions do not
- * *directly* depend on t.  <br>
+ * *directly* depend on t. <br>
  * <br>
  * 
  * The key to the Milstein scheme is that the accuracy of the discretization is
  * increased by considering expansions of the coefficients μₜ=μ(Sₜ) and σₜ=σ(Sₜ)
  * via Itō’s lemma.
  */
-public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends ContinuousTimeState> extends
+public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
                                EulerIntegrator<P, D> implements
                                AutoCloseable
 {

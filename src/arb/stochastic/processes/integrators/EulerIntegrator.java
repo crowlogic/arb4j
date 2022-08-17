@@ -41,7 +41,7 @@ import de.erichseifert.gral.ui.InteractivePanel;
  * drift and standard deviation parameter σ=√(dt) such that the variance is dt,
  * the time elapsed
  */
-public class EulerIntegrator<P extends DiffusionProcess<D>, D extends ContinuousTimeState> extends
+public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
                             AbstractDiffusionProcessIntegrator<D, P>
 {
 
@@ -115,7 +115,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     RealPartition partition = interval.realPartition(n, prec);
     state.setdt(partition.dt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
+    evaluationSequence = new EvaluationSequence(partition,
                                                                    1);
 
     evaluationSequence.generateRandomSamples(new GaussianDistribution(zero,
@@ -181,6 +181,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   }
 
   boolean nonNegative = true;
+  private EvaluationSequence evaluationSequence;
 
   @Override
   public final boolean jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
@@ -192,6 +193,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     xi.add(state.value(), prec);
     if (!nonNegative || xi.isNegative())
     {
+      System.err.println( "calculated variance = " + xi + " cannot be negative");
       return false;
     }
     else
@@ -274,6 +276,15 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   @Override
   public boolean verify()
   {
+    int i = state.index();
+    assert i >= 0;
+    Real xi = evaluationSequence.values[dim].get(i);
+
+    xi.add(state.value(), prec);
+    if (!nonNegative || xi.isNegative())
+    {
+      return false;
+    }
     return true;
 
   }

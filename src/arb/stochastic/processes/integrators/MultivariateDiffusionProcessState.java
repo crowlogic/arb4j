@@ -9,7 +9,7 @@ import arb.stochastic.processes.ContinuousTimeState;
 import arb.stochastic.processes.DiffusionProcessState;
 
 public abstract class MultivariateDiffusionProcessState extends
-                                                        ContinuousTimeState<DiffusionProcessState> implements
+                                                        DiffusionProcessState implements
                                                         MultivariateState<DiffusionProcessState>,
                                                         Iterable<DiffusionProcessState>,
                                                         Verifiable
@@ -90,5 +90,16 @@ public abstract class MultivariateDiffusionProcessState extends
 
   @Override
   public abstract DiffusionProcessState getState(int i);
+
+  /**
+   * Sets each of the dimensions indices to this{@link #index()}
+   */
+  public void resetIndices()
+  {
+    for (int i = 0; i < dim(); i++)
+    {
+      getState(i).setIndex(index());
+    }
+  }
 
 }

@@ -66,7 +66,7 @@ public abstract class ContinuousTimeState<S> implements
     return this;
   }
 
-  public ContinuousTimeState setTime(Real t)
+  public synchronized ContinuousTimeState setTime(Real t)
   {
     checkLock();
     t.printPrecision = true;

@@ -76,10 +76,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     }
     else
     {
-      for (int i = 0; i < dim; i++)
-      {
-        multivariateState.getState(i).setIndex(multivariateState.index());
-      }
+      multivariateState.resetIndices();
     }
     return jumped;
   }
@@ -106,11 +103,11 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
       multivariateState.lock();
       step(prec, evaluationSequence);
       multivariateState.unlock();
-      assert jump(prec, evaluationSequence);
+      assert jump(prec, evaluationSequence) : multivariateState;
       System.out.println("jump " + multivariateState);
       System.out.println("this " + this.process + "\n");
     }
-    
+
     return evaluationSequence;
   }
 
