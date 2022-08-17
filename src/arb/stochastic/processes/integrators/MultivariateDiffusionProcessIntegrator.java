@@ -8,6 +8,7 @@ import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
 import arb.RealPartition;
+import arb.Verifiable;
 import arb.stochastic.GaussianDistribution;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
@@ -42,6 +43,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
   {
+    assert multivariateState.verify() : "negative variance " + multivariateState;
 
     for (int i = 0; i < dim; i++)
     {
@@ -68,24 +70,24 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     multivariateState.setdt(partition.dt);
     partition.dt.sqrt(prec, sqrtδt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,process.dim());
+    EvaluationSequence   evaluationSequence = new EvaluationSequence(partition,
+                                                                     process.dim());
 
-    evaluationSequence.generateRandomSamples(new GaussianDistribution(zero,
-                                                                                 multivariateState.getdt(sqrtδt)
-                                                                                                  .sqrt(prec)),
-                                             multivariateState.getRandomState(),
-                                             prec);
+    GaussianDistribution gaussian           = new GaussianDistribution(zero,
+                                                                       multivariateState.getdt(sqrtδt).sqrt(prec));
+    evaluationSequence.generateRandomSamples(gaussian, multivariateState.getRandomState(), prec);
 
     for (Real t : partition)
     {
       multivariateState.setTime(t);
+      multivariateState.verify();
       multivariateState.lock();
       step(prec, evaluationSequence);
       multivariateState.unlock();
 
       jump(prec, evaluationSequence);
       System.out.println("jump " + multivariateState);
-      System.out.println("this " + this.process );      
+      System.out.println("this " + this.process + "\n");
     }
 
     return evaluationSequence;

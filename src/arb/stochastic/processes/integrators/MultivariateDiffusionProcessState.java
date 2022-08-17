@@ -4,14 +4,15 @@ import java.util.Iterator;
 
 import arb.Lockable;
 import arb.Real;
+import arb.Verifiable;
 import arb.stochastic.processes.ContinuousTimeState;
 import arb.stochastic.processes.DiffusionProcessState;
 
 public abstract class MultivariateDiffusionProcessState extends
-                                                        ContinuousTimeState<DiffusionProcessState>
-                                                        implements
+                                                        ContinuousTimeState<DiffusionProcessState> implements
                                                         MultivariateState<DiffusionProcessState>,
-                                                        Iterable<DiffusionProcessState>
+                                                        Iterable<DiffusionProcessState>,
+                                                        Verifiable
 {
 
   @Override

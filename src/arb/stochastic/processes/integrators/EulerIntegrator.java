@@ -161,6 +161,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt(), prec);
     assert μi.isFinite();
+    
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
     assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. state=" + state;
 
@@ -207,7 +208,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     return half;
   }
 
-  protected static void print(String title, DataTable data, DataTable data2)
+  public static void print(String title, DataTable data, DataTable data2)
   {
     DataSeries linearSeries  = new DataSeries(data,
                                               0,

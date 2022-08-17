@@ -69,7 +69,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
                                                   80,
                                                   75);
 
-  protected static void print(String title, DataTable data)
+  public static void print(String title, DataTable data)
   {
     DataSeries linearSeries = new DataSeries(data,
                                              0,
