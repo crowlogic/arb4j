@@ -174,6 +174,18 @@ public abstract class ContinuousTimeState<S> implements
 
   /**
    * 
+   * @return i-- if this isn't this{@link #locked()} otherwise an
+   *         {@link AssertionError} is thrown if assertions are enabled with -ea
+   */
+  public final int prevIndex()
+  {
+    checkLock();
+    return i--;
+  }
+
+  
+  /**
+   * 
    * @return i++ if this isn't this{@link #locked()} otherwise an
    *         {@link AssertionError} is thrown if assertions are enabled with -ea
    */

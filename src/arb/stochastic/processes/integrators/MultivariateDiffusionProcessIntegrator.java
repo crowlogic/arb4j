@@ -4,14 +4,11 @@ import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 
 import arb.EvaluationSequence;
-import arb.Float;
 import arb.FloatInterval;
 import arb.Real;
 import arb.RealPartition;
-import arb.Verifiable;
 import arb.stochastic.GaussianDistribution;
 import arb.stochastic.processes.DiffusionProcess;
-import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.MultivariateDiffusionProcess;
 
 public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffusionProcessState> implements
@@ -63,14 +60,28 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   }
 
-  public EvaluationSequence jump(int prec, EvaluationSequence evalSeq)
+  public boolean jump(int prec, EvaluationSequence evalSeq)
   {
-    multivariateState.nextIndex();
-    for (int i = 0; i < dim; i++)
+    boolean jumped = true;
+    for (int i = 0; i < dim && jumped; i++)
     {
-      integrators[i].jump(multivariateState.getState(i), prec, evalSeq);
+      if (!integrators[i].jump(multivariateState.getState(i), prec, evalSeq))
+      {
+        jumped = false;
+      }
     }
-    return evalSeq;
+    if (jumped)
+    {
+      multivariateState.nextIndex();
+    }
+    else
+    {
+      for (int i = 0; i < dim; i++)
+      {
+        multivariateState.getState(i).setIndex(multivariateState.index());
+      }
+    }
+    return jumped;
   }
 
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec)
@@ -81,28 +92,25 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     partition.dt.sqrt(prec, sqrtδt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
-                                                                   process.dim());
+                                                                   process.dim() + 1);
 
     gaussian = new GaussianDistribution(zero,
                                         multivariateState.getdt(sqrtδt).sqrt(prec));
     evaluationSequence.generateRandomSamples(gaussian, multivariateState.getRandomState(), prec);
+    multivariateState.verify();
 
     for (Real t : partition)
     {
       multivariateState.setTime(t);
-      multivariateState.verify();
+
       multivariateState.lock();
       step(prec, evaluationSequence);
       multivariateState.unlock();
-
-      jump(prec, evaluationSequence);
-      assert process.verify() : process;
-      assert multivariateState.verify() : multivariateState
-                    + " TODO: modify jump to return boolean whose falsity indicates we should resample and redo the step";
+      assert jump(prec, evaluationSequence);
       System.out.println("jump " + multivariateState);
       System.out.println("this " + this.process + "\n");
     }
-
+    
     return evaluationSequence;
   }
 

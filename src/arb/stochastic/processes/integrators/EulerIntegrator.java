@@ -180,21 +180,32 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     return true; // return false if variance went negative
   }
 
+  boolean nonNegative = true;
+
   @Override
-  public final EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
+  public final boolean jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
   {
-    int i = state.nextIndex();
+    int i = state.index();
     assert i >= 0;
     Real xi = evaluationSequence.values[dim].get(i);
 
-    state.setValue(xi.add(state.value(), prec));
-
-    if (verbose)
+    xi.add(state.value(), prec);
+    if (!nonNegative || xi.isNegative())
     {
-      System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n", i, state.time(), μi, σi, xi, state);
+      return false;
     }
+    else
+    {
+      state.nextIndex();
+      state.setValue(xi);
 
-    return evaluationSequence;
+      if (verbose)
+      {
+        System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n", i, state.time(), μi, σi, xi, state);
+      }
+
+      return true;
+    }
   }
 
   @Override

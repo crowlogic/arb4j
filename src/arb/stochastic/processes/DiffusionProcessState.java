@@ -66,7 +66,8 @@ public class DiffusionProcessState extends
   @Override
   public String toString()
   {
-    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s, seed=%s]",
+    return String.format("DiffusionProcessState[i=%s, prevTime=%s, time=%s, value=%s, dt=%s, seed=%s]",
+                         i,
                          prevTime(),
                          time(),
                          value,
@@ -110,6 +111,11 @@ public class DiffusionProcessState extends
   public RandomState getRandomState()
   {
     return randomState;
+  }
+
+  public void setIndex(int index)
+  {
+    this.i = index;
   }
 
 }

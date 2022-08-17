@@ -48,9 +48,9 @@ public interface DiffusionProcessIntegrator<S extends State, D extends Diffusion
    * @param state
    * @param prec
    * @param evalSeq
-   * @return
+   * @return false if jump failed due to invalid state transition
    */
-  public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evalSeq);
+  public boolean jump(DiffusionProcessState state, int prec, EvaluationSequence evalSeq);
 
   /**
    * Integrate the associated {@link DiffusionProcess} over a given interval which
