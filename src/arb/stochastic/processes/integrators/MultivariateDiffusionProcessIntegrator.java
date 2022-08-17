@@ -103,7 +103,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
       multivariateState.lock();
       step(prec, evaluationSequence);
       multivariateState.unlock();
-      assert jump(prec, evaluationSequence) : multivariateState;
+      assert jump(prec, evaluationSequence) : "lastValidState=" + multivariateState;
       System.out.println("jump " + multivariateState);
       System.out.println("this " + this.process + "\n");
     }
