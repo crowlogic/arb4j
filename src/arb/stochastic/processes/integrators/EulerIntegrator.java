@@ -86,18 +86,18 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   public EulerIntegrator(P x, D diffusionProcessState)
   {
     super(x);
-    state = diffusionProcessState;
-    μ     = diffusionProcess.μ();
-    σ     = diffusionProcess.σ();
+    state    = diffusionProcessState;
+    μ        = diffusionProcess.μ();
+    σ        = diffusionProcess.σ();
     this.dim = 0;
   }
-  
-  public EulerIntegrator(P x, D diffusionProcessState, int dim )
+
+  public EulerIntegrator(P x, D diffusionProcessState, int dim)
   {
     super(x);
-    state = diffusionProcessState;
-    μ     = diffusionProcess.μ();
-    σ     = diffusionProcess.σ();
+    state    = diffusionProcessState;
+    μ        = diffusionProcess.μ();
+    σ        = diffusionProcess.σ();
     this.dim = dim;
   }
 
@@ -115,10 +115,11 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     RealPartition partition = interval.realPartition(n, prec);
     state.setdt(partition.dt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,1);
+    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
+                                                                   1);
 
     evaluationSequence.generateRandomSamples(new GaussianDistribution(zero,
-                                                                                 state.sqrtdt(prec, sqrtdt)),
+                                                                      state.sqrtdt(prec, sqrtdt)),
                                              state.getRandomState(),
                                              prec);
 
@@ -136,7 +137,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   }
 
   @Override
-  public EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence)
+  public boolean step(D state, int prec, EvaluationSequence evaluationSequence)
   {
     return step(state, prec, evaluationSequence, 1);
   }
@@ -152,7 +153,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
    *                           the EulerIntegrator only needs 1
    * @return
    */
-  protected EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
+  protected boolean step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
   {
     int  i  = state.index();
     Real xi = evaluationSequence.values[dim].get(i);
@@ -161,7 +162,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt(), prec);
     assert μi.isFinite();
-    
+
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
     assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. state=" + state;
 
@@ -176,7 +177,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
       μi.add(σi, prec, xi);
     }
 
-    return evaluationSequence;
+    return true; // return false if variance went negative
   }
 
   @Override
@@ -257,6 +258,13 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
                }
              });
     ;
+  }
+
+  @Override
+  public boolean verify()
+  {
+    return true;
+
   }
 
 }

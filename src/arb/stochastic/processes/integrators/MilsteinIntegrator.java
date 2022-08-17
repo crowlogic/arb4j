@@ -119,7 +119,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Continu
   boolean warned = false;
 
   @Override
-  public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
+  public boolean step(D state, int prec, EvaluationSequence evalSequence)
   {
     step(state, prec, evalSequence, 2);
 
@@ -143,7 +143,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Continu
     // σ(Xₜ)∂Xₜ is the derivative of σ relative to X, which is a function of t,
     // but this method will not work if either coefficient function depends directly
     // on t
-    return evalSequence;
+    return true;
   }
 
   public MilsteinIntegrator(P x, D state)

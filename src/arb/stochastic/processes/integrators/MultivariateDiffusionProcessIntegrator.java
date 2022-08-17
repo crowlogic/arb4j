@@ -27,6 +27,8 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   private MultivariateDiffusionProcess                            process;
 
+  private GaussianDistribution                                    gaussian;
+
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess process,
                                                 M state,
                                                 DiffusionProcessIntegrator<M, DiffusionProcess<M>>... integrators)
@@ -43,11 +45,19 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
   {
-    assert multivariateState.verify() : "negative variance " + multivariateState;
+
 
     for (int i = 0; i < dim; i++)
     {
-      integrators[i].step(multivariateState, prec, evalSeq);
+
+      do
+      {
+        integrators[i].step(multivariateState, prec, evalSeq);
+        assert process.verify();
+        assert multivariateState.verify();
+      }
+      while (!multivariateState.verify());
+
     }
     return evalSeq;
 
@@ -70,11 +80,11 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     multivariateState.setdt(partition.dt);
     partition.dt.sqrt(prec, sqrtδt);
 
-    EvaluationSequence   evaluationSequence = new EvaluationSequence(partition,
-                                                                     process.dim());
+    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
+                                                                   process.dim());
 
-    GaussianDistribution gaussian           = new GaussianDistribution(zero,
-                                                                       multivariateState.getdt(sqrtδt).sqrt(prec));
+    gaussian = new GaussianDistribution(zero,
+                                        multivariateState.getdt(sqrtδt).sqrt(prec));
     evaluationSequence.generateRandomSamples(gaussian, multivariateState.getRandomState(), prec);
 
     for (Real t : partition)
