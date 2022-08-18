@@ -2,6 +2,9 @@ package arb.stochastic.processes.integrators;
 
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
+import static java.lang.System.err;
+
+import java.util.Arrays;
 
 import arb.EvaluationSequence;
 import arb.FloatInterval;
@@ -18,7 +21,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public final DiffusionProcessIntegrator<M, DiffusionProcess<M>> integrators[];
 
-  M                                                               multivariateState;
+  M                                                               state;
 
   Real                                                            sqrtδt = new Real();
 
@@ -36,8 +39,8 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     {
       this.integrators[i] = integrators[i];
     }
-    this.process           = process;
-    this.multivariateState = state;
+    this.process = process;
+    this.state   = state;
   }
 
   public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
@@ -48,12 +51,12 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
       do
       {
-        assert multivariateState.verify() : multivariateState;
-        integrators[i].step(multivariateState, prec, evalSeq);
+        assert state.verify() : state;
+        integrators[i].step(state, prec, evalSeq);
         assert process.verify();
-        assert multivariateState.verify();
+        assert state.verify();
       }
-      while (!multivariateState.verify());
+      while (!state.verify());
 
     }
     return evalSeq;
@@ -65,18 +68,18 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     boolean jumped = true;
     for (int i = 0; i < dim && jumped; i++)
     {
-      if (!integrators[i].jump(multivariateState.getState(i), prec, evalSeq))
+      if (!integrators[i].jump(state.getState(i), prec, evalSeq))
       {
         jumped = false;
       }
     }
     if (jumped)
     {
-      multivariateState.nextIndex();
+      state.nextIndex();
     }
     else
     {
-      multivariateState.resetIndices();
+      state.resetIndices();
     }
     return jumped;
   }
@@ -85,32 +88,49 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
   {
     println("Partitioning " + interval + " into " + n + " pieces at " + prec + " bits of precision");
     RealPartition partition = interval.realPartition(n, prec);
-    multivariateState.setdt(partition.dt);
+    state.setdt(partition.dt);
     partition.dt.sqrt(prec, sqrtδt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
                                                                    process.dim() + 1);
 
     gaussian = new GaussianDistribution(zero,
-                                        multivariateState.getdt(sqrtδt).sqrt(prec));
-    evaluationSequence.generateRandomSamples(gaussian, multivariateState.getRandomState(), prec);
-    multivariateState.verify();
+                                        state.getdt(sqrtδt).sqrt(prec));
+    evaluationSequence.generateRandomSamples(gaussian, state.getRandomState(), prec);
+    state.verify();
 
     for (Real t : partition)
     {
-      multivariateState.setTime(t);
+      state.setTime(t);
+      boolean jumped = false;
 
-      multivariateState.lock();
-      step(prec, evaluationSequence);
-      multivariateState.unlock();
-      assert jump(prec, evaluationSequence) : "lastValidState=" + multivariateState;
-      System.out.println("jump " + multivariateState);
-      System.out.println("this " + this.process + "\n");
+      do
+      {
+        state.lock();
+        step(prec, evaluationSequence);
+        state.unlock();
+        if (!(jumped = jump(prec, evaluationSequence)))
+        {
+          err.println("Jump failed: " + state + " regenerating ");
+          Arrays.asList(evaluationSequence.values)
+                .forEach(sample -> sample.get(state.index())
+                                         .randomlyGenerate(gaussian, state.getRandomState(), prec));
+
+        }
+      }
+      while (!jumped);
+      if (verbose)
+      {
+        System.out.println("jump " + state);
+        System.out.println("this " + this.process + "\n");
+      }
     }
 
     return evaluationSequence;
   }
 
+  boolean verbose = false;
+  
   @Override
   public void close()
   {
