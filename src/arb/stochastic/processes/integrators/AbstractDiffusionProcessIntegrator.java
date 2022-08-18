@@ -1,7 +1,5 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.utensils.Utilities.println;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.RadialGradientPaint;
@@ -143,28 +141,36 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
   protected static void formatAxes(XYPlot plot)
   {
     // Format axes
-    AxisRenderer axisRendererX = new LinearRenderer2D();
-    AxisRenderer axisRendererY = plot.getAxisRenderer(XYPlot.AXIS_Y);
-    axisRendererX.setTickColor(Color.WHITE);
-    axisRendererX.setMinorTickColor(Color.white);
+    AxisRenderer axisRendererY  = plot.getAxisRenderer(XYPlot.AXIS_Y);
+    AxisRenderer axisRendererX  = new LinearRenderer2D();
     axisRendererY.setTickColor(Color.WHITE);
     axisRendererY.setMinorTickColor(Color.white);
     axisRendererY.setShapeColor(Color.white);
+
+    axisRendererX.setTickColor(Color.WHITE);
+    axisRendererX.setMinorTickColor(Color.white);
     axisRendererX.setShapeColor(Color.white);
     axisRendererX.setLabel(new Label("Time t"));
     plot.setAxisRenderer(XYPlot.AXIS_X, axisRendererX);
-
+   // plot.setAxisRenderer(XYPlot.AXIS_Y2, axisRendererY2);
     // Custom stroke for the x-axis
-    BasicStroke stroke = new BasicStroke(0.1f);
+    BasicStroke stroke = new BasicStroke(0.2f);
     axisRendererX.setShapeStroke(stroke);
 
-    Label linearAxisLabel = new Label("Value Xₜ");
-    linearAxisLabel.setRotation(90);
+    Label spotPriceLabel = new Label("Value Sₜ");
+    spotPriceLabel.setRotation(90);
 
-    axisRendererY.setLabel(linearAxisLabel);
-    // Change intersection point of Y axis
-    axisRendererY.setIntersection(1.0);
+    Label varianceLabel = new Label("Variance Vₜ");
+    varianceLabel.setRotation(90);
+
+    axisRendererY.setLabel(spotPriceLabel);
+
     axisRendererY.setTicksAutoSpaced(true);
+
+//    axisRendererY2.setLabel(varianceLabel);
+//
+//    axisRendererY2.setTicksAutoSpaced(true);
+
     axisRendererX.setTicksAutoSpaced(false);
     // Change tick spacing
     axisRendererX.setTickSpacing(0.1);

@@ -48,16 +48,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
     for (int i = 0; i < dim; i++)
     {
-
-      do
-      {
-        assert state.verify() : state;
-        integrators[i].step(state, prec, evalSeq);
-        assert process.verify();
-        assert state.verify();
-      }
-      while (!state.verify());
-
+      integrators[i].step(state, prec, evalSeq);
     }
     return evalSeq;
 
@@ -130,7 +121,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
   }
 
   boolean verbose = false;
-  
+
   @Override
   public void close()
   {

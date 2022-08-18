@@ -27,6 +27,13 @@ public class CartesianProduct<A extends Set, B extends Set> extends
                              Space<CartesianProduct<A, B>>
 {
 
+  public CartesianProduct(A a, B b)
+  {
+    super(a,
+          b);
+    // TODO Auto-generated constructor stub
+  }
+
  
 
 }

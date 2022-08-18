@@ -16,6 +16,7 @@ import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatConstants;
 import arb.FloatInterval;
+import arb.OrderedPair;
 import arb.RandomState;
 import arb.Real;
 import arb.RealOrderedPair;
@@ -69,7 +70,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                                             750,
                                             prec);
 
-      for (RealOrderedPair sample : path)
+      for (OrderedPair<Real, Real> sample : path)
       {
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
@@ -116,7 +117,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     state.setdt(partition.dt);
 
     evaluationSequence = new EvaluationSequence(partition,
-                                                                   1);
+                                                1);
 
     evaluationSequence.generateRandomSamples(new GaussianDistribution(zero,
                                                                       state.sqrtdt(prec, sqrtdt)),
@@ -180,7 +181,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     return true; // return false if variance went negative
   }
 
-  boolean nonNegative = true;
+  boolean                    nonNegative = true;
   private EvaluationSequence evaluationSequence;
 
   @Override
@@ -193,7 +194,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     xi.add(state.value(), prec);
     if (!nonNegative || xi.isNegative())
     {
-      System.err.println( "calculated variance = " + xi + " cannot be negative");
+      System.err.println("calculated variance = " + xi + " cannot be negative");
       return false;
     }
     else
@@ -243,33 +244,33 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     formatDataLines(linearSeries2, plot, Color.GREEN);
 
     // Add plot to Swing component
-    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, title, JFrame.EXIT_ON_CLOSE)
-             .addKeyListener(new KeyListener()
-             {
+    InteractivePanel interactivePanel = new InteractivePanel(plot);
+    Utilities.openInJFrame(interactivePanel, 1900, 800, title, JFrame.EXIT_ON_CLOSE).addKeyListener(new KeyListener()
+    {
 
-               @Override
-               public void keyTyped(KeyEvent e)
-               {
+      @Override
+      public void keyTyped(KeyEvent e)
+      {
 
-               }
+      }
 
-               @Override
-               public void keyPressed(KeyEvent e)
-               {
-                 switch (e.getKeyCode())
-                 {
-                 case KeyEvent.VK_ESCAPE:
-                   System.exit(1);
-                 }
+      @Override
+      public void keyPressed(KeyEvent e)
+      {
+        switch (e.getKeyCode())
+        {
+        case KeyEvent.VK_ESCAPE:
+          System.exit(1);
+        }
 
-               }
+      }
 
-               @Override
-               public void keyReleased(KeyEvent e)
-               {
+      @Override
+      public void keyReleased(KeyEvent e)
+      {
 
-               }
-             });
+      }
+    });
     ;
   }
 

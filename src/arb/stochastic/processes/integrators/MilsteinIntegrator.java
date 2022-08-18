@@ -6,6 +6,7 @@ import static arb.FloatConstants.one;
 import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatInterval;
+import arb.OrderedPair;
 import arb.RandomState;
 import arb.Real;
 import arb.RealOrderedPair;
@@ -97,7 +98,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                  1);
       var           path     = integrator.integrate(interval, 10, prec);
 
-      for (RealOrderedPair sample : path)
+      for (OrderedPair<Real, Real> sample : path)
       {
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
