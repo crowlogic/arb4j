@@ -6,19 +6,20 @@ import arb.stochastic.*;
 
 /**
  * A {@link BrownianBridge} is a continuous-time {@link StochasticProcess}
- * denoted by B(t) whose {@link ProbabilityDistributionFunction} is the conditional
- * (probability) distribution of a standard {@link WienerProcess} W(t) which is
- * synonymous with the mathematical model of {@link BrownianMotion}) subject to
- * the condition (when standardized) that W(T) = 0, so that the process is
- * pinned to the same value at both t = 0 and t = T. More precisely:<br>
+ * denoted by B(t) whose {@link ProbabilityDistributionFunction} is the
+ * conditional (probability) distribution of a standard {@link WienerProcess}
+ * W(t) which is synonymous with the mathematical model of Brownian motion
+ * subject to the condition (when standardized) that W(T) = 0, so that the
+ * process is pinned to the same value at both t = 0 and t = T. More
+ * precisely:<br>
  * 
- * B t := ( W(t) ∣ W(T) = 0 ) , t∈[0,T]
+ * Bt := ( W(t) ∣ W(T) = 0 ) , t∈[0,T]
  * 
  * The expected value of the bridge is zero, with variance <b>t*(T−t)/T</b>
  * implying that the most uncertainty is in the middle of the bridge, with zero
  * uncertainty at the nodes. The covariance of B(s) and B(t) is
- * <b>min(s,t)−s*t/T</b> or <b>s(T − t)/T if s < t</b>. The increments in a
- * Brownian bridge are therefore not independent.
+ * <b>min(s,t)−s*t/T</b> or <b>s(T − t)/T if s lessThan t</b>. The increments in
+ * a Brownian bridge are therefore not independent.
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Brownian_bridge">Wikipedia</a><br>
@@ -59,8 +60,7 @@ public class BrownianBridge implements
   public int dim()
   {
     return 1;
-    
-  }
 
+  }
 
 }

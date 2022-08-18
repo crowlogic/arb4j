@@ -1,14 +1,18 @@
 package arb.stochastic.processes.integrators;
 
-import java.util.*;
+import java.util.Iterator;
 
-import arb.*;
-import arb.stochastic.processes.*;
+import arb.Lockable;
+import arb.Real;
+import arb.Verifiable;
+import arb.stochastic.processes.ContinuousTimeState;
+import arb.stochastic.processes.DiffusionProcessState;
 
 public abstract class MultivariateDiffusionProcessState extends
-                                                        ContinuousTimeState<DiffusionProcessState> implements
+                                                        DiffusionProcessState implements
                                                         MultivariateState<DiffusionProcessState>,
-                                                        Iterable<DiffusionProcessState>
+                                                        Iterable<DiffusionProcessState>,
+                                                        Verifiable
 {
 
   @Override
@@ -86,5 +90,16 @@ public abstract class MultivariateDiffusionProcessState extends
 
   @Override
   public abstract DiffusionProcessState getState(int i);
+
+  /**
+   * Sets each of the dimensions indices to this{@link #index()}
+   */
+  public void resetIndices()
+  {
+    for (int i = 0; i < dim(); i++)
+    {
+      getState(i).setIndex(index());
+    }
+  }
 
 }

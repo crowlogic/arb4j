@@ -23,14 +23,6 @@
 
 extern JNIEnv *env;
 
-jlong alignedMalloc( int alignment, int size )
-{
-  jlong address;
-  void *memptr = &address;
-  posix_memalign(&memptr, alignment, size);
-  printf("allocated 0x%lx\n", address);
-  return address;
-}
 int errorNumber()
 {
   return errno;

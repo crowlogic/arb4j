@@ -1,13 +1,18 @@
 package arb.stochastic.processes.integrators;
 
-import arb.*;
+import arb.EvaluationSequence;
 import arb.Float;
-import arb.dynamical.systems.*;
-import arb.stochastic.processes.*;
+import arb.FloatInterval;
+import arb.Verifiable;
+import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
+import arb.dynamical.systems.State;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
 
 public interface DiffusionProcessIntegrator<S extends State, D extends DiffusionProcess<S>> extends
                                            DiscreteTimeDynamicalSystem<S>,
-                                           AutoCloseable
+                                           AutoCloseable,
+                                           Verifiable
 {
 
   @Override
@@ -24,23 +29,28 @@ public interface DiffusionProcessIntegrator<S extends State, D extends Diffusion
    * @param state
    * @param prec
    * @param evalSeq
-   * @param dim TODO
-   * @return
+   * @param dim     TODO
+   * @return true if stepped, false if the process failed for some reason such as
+   *         its value going beyond a boundary. In this case, another random
+   *         sample from the same distribution should be generated and the process
+   *         repeated until a value is found which does not cross the boundary,
+   *         this is better than reflecting across 0 or truncating to 0, and
+   *         should not introduce any additional bias in principle
    */
-  public EvaluationSequence step(S state, int prec, EvaluationSequence evalSeq);
+  public boolean step(S state, int prec, EvaluationSequence evalSeq);
 
   /**
    * Jump to the {@link DiffusionProcessState} in the given
    * {@link EvaluationSequence} after
-   * this{@link #step(DiffusionProcessState, int, EvaluationSequence, int)} has been
-   * called
+   * this{@link #step(DiffusionProcessState, int, EvaluationSequence, int)} has
+   * been called
    * 
    * @param state
    * @param prec
    * @param evalSeq
-   * @return
+   * @return false if jump failed due to invalid state transition
    */
-  public EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evalSeq);
+  public boolean jump(DiffusionProcessState state, int prec, EvaluationSequence evalSeq);
 
   /**
    * Integrate the associated {@link DiffusionProcess} over a given interval which

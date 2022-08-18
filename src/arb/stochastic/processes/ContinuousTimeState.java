@@ -66,7 +66,7 @@ public abstract class ContinuousTimeState<S> implements
     return this;
   }
 
-  public ContinuousTimeState setTime(Real t)
+  public synchronized ContinuousTimeState setTime(Real t)
   {
     checkLock();
     t.printPrecision = true;
@@ -172,6 +172,18 @@ public abstract class ContinuousTimeState<S> implements
     return i;
   }
 
+  /**
+   * 
+   * @return i-- if this isn't this{@link #locked()} otherwise an
+   *         {@link AssertionError} is thrown if assertions are enabled with -ea
+   */
+  public final int prevIndex()
+  {
+    checkLock();
+    return i--;
+  }
+
+  
   /**
    * 
    * @return i++ if this isn't this{@link #locked()} otherwise an

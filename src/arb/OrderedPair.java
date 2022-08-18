@@ -36,11 +36,7 @@ public class OrderedPair<A, B>
     return String.format("OrderedPair[a=%s, b=%s]", a, b);
   }
 
-  public OrderedPair()
-  {
-
-  }
-
+  
   public OrderedPair(A a, B b)
   {
     super();

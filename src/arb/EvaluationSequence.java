@@ -14,7 +14,7 @@ import arb.stochastic.processes.CorrelatedWienerProcess;
  */
 public class EvaluationSequence implements
                                 Cleanable,
-                                Iterable<RealOrderedPair>
+                                Iterable<OrderedPair<Real, Real>>
 {
   private int dim;
 
@@ -26,7 +26,9 @@ public class EvaluationSequence implements
     this.dim       = dim;
     for (int i = 0; i < dim; i++)
     {
-      values[i] = Real.newVector(partition.count());
+      int n = partition.count();
+      System.out.println("n=" + n);
+      values[i] = Real.newVector(n);
     }
   }
 
@@ -67,15 +69,10 @@ public class EvaluationSequence implements
     }
   }
 
-  public Iterator<RealOrderedPair> iterator()
-  {
-    return iterator(0);
-  }
-
-  public Iterator<RealOrderedPair> iterator(int i)
+  public Iterator<OrderedPair<Real, Real>> iterator()
   {
     return new EvaluationSequenceIterator(this,
-                                          i);
+                                          dim);
   }
 
 }

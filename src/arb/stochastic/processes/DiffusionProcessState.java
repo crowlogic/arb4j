@@ -1,9 +1,8 @@
 package arb.stochastic.processes;
 
-import static arb.utensils.Utilities.println;
-
 import java.lang.ref.Cleaner.Cleanable;
 
+import arb.Lockable;
 import arb.RandomState;
 import arb.Real;
 import arb.dynamical.systems.State;
@@ -16,17 +15,21 @@ import arb.dynamical.systems.State;
  * 
  */
 public class DiffusionProcessState extends
-                                   ContinuousTimeState<Real> implements
-                                   State<Real>,
+                                   ContinuousTimeState<DiffusionProcessState> implements
+                                   State<DiffusionProcessState>,
                                    AutoCloseable,
-                                   Cleanable
+                                   Cleanable,
+                                   Lockable
 {
 
-  public DiffusionProcessState(RandomState randomState)
+  protected static int randomInteger()
   {
-    this.randomState     = randomState;
-    value.printPrecision = true;
+    return (int) (Math.random() * Integer.MAX_VALUE);
   }
+
+  public RandomState randomState;
+
+  public final Real value = new Real();
 
   /**
    * initialize with a randomly generated initial value seed
@@ -36,19 +39,10 @@ public class DiffusionProcessState extends
     this(new RandomState(randomInteger()));
   }
 
-  protected static int randomInteger()
+  public DiffusionProcessState(RandomState randomState)
   {
-    return (int) (Math.random() * Integer.MAX_VALUE);
-  }
-
-  /**
-   * initialize with a specified {@link RandomState} and call
-   * this{@link #setValue(Real)} to set the initial value of the process
-   */
-  public DiffusionProcessState(Real S0, RandomState randomState)
-  {
-    this(randomState);
-    setValue(S0);
+    this.randomState     = randomState;
+    value.printPrecision = true;
   }
 
   /**
@@ -61,17 +55,20 @@ public class DiffusionProcessState extends
     setValue(S0);
   }
 
-  public RandomState randomState;
+  /**
+   * initialize with a specified {@link RandomState} and call
+   * this{@link #setValue(Real)} to set the initial value of the process
+   */
+  public DiffusionProcessState(Real S0, RandomState randomState)
+  {
+    this(randomState);
+    setValue(S0);
+  }
 
   @Override
-  public String toString()
+  public void clean()
   {
-    return String.format("DiffusionProcessState[prevTime=%s, time=%s, value=%s, dt=%s, seed=%s]",
-                         prevTime(),
-                         time(),
-                         value,
-                         dt().toFixedString(),
-                         randomState.getInitialValue());
+    close();
   }
 
   @Override
@@ -81,15 +78,23 @@ public class DiffusionProcessState extends
     value.close();
   }
 
-  public final Real value = new Real();
-
-  /**
-   * 
-   * @return value at this{@link #dt()}
-   */
-  public Real value()
+  @Override
+  public RandomState getRandomState()
   {
-    return value;
+    return randomState;
+  }
+
+  @Override
+  public void lock()
+  {
+   super.lock();
+    
+  }
+
+  public void setIndex(int index)
+  {
+    checkLock();
+    this.i = index;
   }
 
   public DiffusionProcessState setValue(Real x)
@@ -101,15 +106,30 @@ public class DiffusionProcessState extends
   }
 
   @Override
-  public void clean()
+  public String toString()
   {
-    close();
+    return String.format("DiffusionProcessState[i=%s, prevTime=%s, time=%s, value=%s, dt=%s, seed=%s]",
+                         i,
+                         prevTime(),
+                         time(),
+                         value,
+                         dt().toFixedString(),
+                         randomState.getInitialValue());
   }
 
   @Override
-  public RandomState getRandomState()
+  public void unlock()
   {
-    return randomState;
+    super.unlock();
+  }
+
+  /**
+   * 
+   * @return value at this{@link #dt()}
+   */
+  public Real value()
+  {
+    return value;
   }
 
 }

@@ -16,6 +16,7 @@ import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatConstants;
 import arb.FloatInterval;
+import arb.OrderedPair;
 import arb.RandomState;
 import arb.Real;
 import arb.RealOrderedPair;
@@ -41,7 +42,7 @@ import de.erichseifert.gral.ui.InteractivePanel;
  * drift and standard deviation parameter σ=√(dt) such that the variance is dt,
  * the time elapsed
  */
-public class EulerIntegrator<P extends DiffusionProcess<D>, D extends ContinuousTimeState> extends
+public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
                             AbstractDiffusionProcessIntegrator<D, P>
 {
 
@@ -69,7 +70,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
                                             750,
                                             prec);
 
-      for (RealOrderedPair sample : path)
+      for (OrderedPair<Real, Real> sample : path)
       {
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
@@ -86,18 +87,18 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   public EulerIntegrator(P x, D diffusionProcessState)
   {
     super(x);
-    state = diffusionProcessState;
-    μ     = diffusionProcess.μ();
-    σ     = diffusionProcess.σ();
+    state    = diffusionProcessState;
+    μ        = diffusionProcess.μ();
+    σ        = diffusionProcess.σ();
     this.dim = 0;
   }
-  
-  public EulerIntegrator(P x, D diffusionProcessState, int dim )
+
+  public EulerIntegrator(P x, D diffusionProcessState, int dim)
   {
     super(x);
-    state = diffusionProcessState;
-    μ     = diffusionProcess.μ();
-    σ     = diffusionProcess.σ();
+    state    = diffusionProcessState;
+    μ        = diffusionProcess.μ();
+    σ        = diffusionProcess.σ();
     this.dim = dim;
   }
 
@@ -115,10 +116,11 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     RealPartition partition = interval.realPartition(n, prec);
     state.setdt(partition.dt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,1);
+    evaluationSequence = new EvaluationSequence(partition,
+                                                1);
 
     evaluationSequence.generateRandomSamples(new GaussianDistribution(zero,
-                                                                                 state.sqrtdt(prec, sqrtdt)),
+                                                                      state.sqrtdt(prec, sqrtdt)),
                                              state.getRandomState(),
                                              prec);
 
@@ -136,7 +138,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
   }
 
   @Override
-  public EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence)
+  public boolean step(D state, int prec, EvaluationSequence evaluationSequence)
   {
     return step(state, prec, evaluationSequence, 1);
   }
@@ -152,7 +154,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
    *                           the EulerIntegrator only needs 1
    * @return
    */
-  protected EvaluationSequence step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
+  protected boolean step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
   {
     int  i  = state.index();
     Real xi = evaluationSequence.values[dim].get(i);
@@ -161,6 +163,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt(), prec);
     assert μi.isFinite();
+
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
     assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. state=" + state;
 
@@ -175,24 +178,37 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
       μi.add(σi, prec, xi);
     }
 
-    return evaluationSequence;
+    return true; // return false if variance went negative
   }
 
+  boolean                    nonNegative = true;
+  private EvaluationSequence evaluationSequence;
+
   @Override
-  public final EvaluationSequence jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
+  public final boolean jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)
   {
-    int i = state.nextIndex();
+    int i = state.index();
     assert i >= 0;
     Real xi = evaluationSequence.values[dim].get(i);
 
-    state.setValue(xi.add(state.value(), prec));
-
-    if (verbose)
+    xi.add(state.value(), prec);
+    if (!nonNegative || xi.isNegative())
     {
-      System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n", i, state.time(), μi, σi, xi, state);
+      System.err.println("calculated variance = " + xi + " cannot be negative");
+      return false;
     }
+    else
+    {
+      state.nextIndex();
+      state.setValue(xi);
 
-    return evaluationSequence;
+      if (verbose)
+      {
+        System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n", i, state.time(), μi, σi, xi, state);
+      }
+
+      return true;
+    }
   }
 
   @Override
@@ -207,7 +223,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     return half;
   }
 
-  protected static void print(String title, DataTable data, DataTable data2)
+  public static void print(String title, DataTable data, DataTable data2)
   {
     DataSeries linearSeries  = new DataSeries(data,
                                               0,
@@ -228,34 +244,50 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends Continuous
     formatDataLines(linearSeries2, plot, Color.GREEN);
 
     // Add plot to Swing component
-    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, title, JFrame.EXIT_ON_CLOSE)
-             .addKeyListener(new KeyListener()
-             {
+    InteractivePanel interactivePanel = new InteractivePanel(plot);
+    Utilities.openInJFrame(interactivePanel, 1900, 800, title, JFrame.EXIT_ON_CLOSE).addKeyListener(new KeyListener()
+    {
 
-               @Override
-               public void keyTyped(KeyEvent e)
-               {
+      @Override
+      public void keyTyped(KeyEvent e)
+      {
 
-               }
+      }
 
-               @Override
-               public void keyPressed(KeyEvent e)
-               {
-                 switch (e.getKeyCode())
-                 {
-                 case KeyEvent.VK_ESCAPE:
-                   System.exit(1);
-                 }
+      @Override
+      public void keyPressed(KeyEvent e)
+      {
+        switch (e.getKeyCode())
+        {
+        case KeyEvent.VK_ESCAPE:
+          System.exit(1);
+        }
 
-               }
+      }
 
-               @Override
-               public void keyReleased(KeyEvent e)
-               {
+      @Override
+      public void keyReleased(KeyEvent e)
+      {
 
-               }
-             });
+      }
+    });
     ;
+  }
+
+  @Override
+  public boolean verify()
+  {
+    int i = state.index();
+    assert i >= 0;
+    Real xi = evaluationSequence.values[dim].get(i);
+
+    xi.add(state.value(), prec);
+    if (!nonNegative || xi.isNegative())
+    {
+      return false;
+    }
+    return true;
+
   }
 
 }

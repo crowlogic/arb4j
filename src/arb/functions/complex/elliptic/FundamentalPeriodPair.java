@@ -17,4 +17,10 @@ public class FundamentalPeriodPair extends
                                    OrderedPair<Complex, Complex>
 {
 
+  public FundamentalPeriodPair(Complex a, Complex b)
+  {
+    super(a,
+          b);
+  }
+
 }

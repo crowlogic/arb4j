@@ -3,11 +3,13 @@ package arb.stochastic.processes;
 import arb.EvaluationSequence;
 import arb.Real;
 import arb.RealConstants;
+import arb.Verifiable;
 import arb.dynamical.systems.ContinuousTimeDynamicalSystem;
 import arb.stochastic.processes.integrators.MultivariateState;
 
 public interface MultivariateDiffusionProcess<D extends MultivariateState> extends
-                                             ContinuousTimeDynamicalSystem<D>
+                                             ContinuousTimeDynamicalSystem<D>,
+                                             Verifiable
 
 {
 
@@ -16,7 +18,6 @@ public interface MultivariateDiffusionProcess<D extends MultivariateState> exten
   public DiffusionProcess get(int i);
 
   boolean verbose = false;
-
 
   /**
    * This must be symmetric.. corr(i,j) must equal corr(j,i). When i=j the
@@ -27,5 +28,7 @@ public interface MultivariateDiffusionProcess<D extends MultivariateState> exten
    * @return
    */
   Real getCorrelation(int i, int j);
+
+
 
 }

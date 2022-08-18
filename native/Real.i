@@ -479,6 +479,26 @@ import arb.Lockable;
     return array;
   }
      
+ public static Real newAlignedVector(int i)
+  {
+    long pointer = SWIGTYPE_p_void.getCPtr(arb.memalign(arb.getpagesize(), i * Real.BYTES));
+    arb.memset(new SWIGTYPE_p_void(pointer,
+                                   false),
+               0,
+               i * Real.BYTES);
+    Real x = new Real(pointer,
+                      true); // Real.newVector(5);
+    x.elements = new Real[x.dim = i];
+    for (int j = 0; j < i; j++)
+    {
+      Real y = x.elements[j] = new Real(pointer + (Real.BYTES * j),
+                                        false);
+      y.init();
+
+    }
+    return x;
+  }
+       
   public static Real newVector( int dim )
   {
     Real array = arb._arb_vec_init(dim);    

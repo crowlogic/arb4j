@@ -19,7 +19,6 @@ module arb4j
   requires transitive org.lwjgl.opengl;
   requires transitive org.lwjgl.glfw;
   requires transitive junit;
-  requires transitive hamcrest.core;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
   requires transitive gral.core;

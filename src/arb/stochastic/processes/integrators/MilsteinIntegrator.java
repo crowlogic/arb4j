@@ -1,13 +1,20 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.ComplexConstants.*;
-import static arb.FloatConstants.*;
+import static arb.ComplexConstants.prec;
+import static arb.FloatConstants.one;
 
-import arb.*;
+import arb.EvaluationSequence;
 import arb.Float;
-import arb.dynamical.systems.*;
-import arb.stochastic.processes.*;
-import de.erichseifert.gral.data.*;
+import arb.FloatInterval;
+import arb.OrderedPair;
+import arb.RandomState;
+import arb.Real;
+import arb.RealOrderedPair;
+import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
+import de.erichseifert.gral.data.DataTable;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -22,8 +29,7 @@ import de.erichseifert.gral.data.*;
  * elapsed between invocations of
  * {@link DiscreteTimeDynamicalSystem}{@link #jump(DiffusionProcessState, int, EvaluationSequence)}.
  * This method is only applicable to processes whose drift and diffusions do not
- * *directly* depend on t. TODO: find a way to assert this, at compile-time
- * preferably. <br>
+ * *directly* depend on t. <br>
  * <br>
  * 
  * The key to the Milstein scheme is that the accuracy of the discretization is
@@ -92,7 +98,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                  1);
       var           path     = integrator.integrate(interval, 10, prec);
 
-      for (RealOrderedPair sample : path)
+      for (OrderedPair<Real, Real> sample : path)
       {
         data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
@@ -113,7 +119,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   boolean warned = false;
 
   @Override
-  public EvaluationSequence step(D state, int prec, EvaluationSequence evalSequence)
+  public boolean step(D state, int prec, EvaluationSequence evalSequence)
   {
     step(state, prec, evalSequence, 2);
 
@@ -137,7 +143,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     // σ(Xₜ)∂Xₜ is the derivative of σ relative to X, which is a function of t,
     // but this method will not work if either coefficient function depends directly
     // on t
-    return evalSequence;
+    return true;
   }
 
   public MilsteinIntegrator(P x, D state)
