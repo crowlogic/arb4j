@@ -592,10 +592,7 @@ public interface HolomorphicFunction extends
         mag_set(wide.getImag().getRad(), Y);
 
         /* transform to [a,b] */
-        wide.mul(delta, prec, wide);
-        acb_add(wide, wide, mid, prec);
-
-        evaluate(wide, 1, prec, v);
+        evaluate(wide.mul(delta, prec, wide).add(mid, prec, wide), 1, prec, v);
         evalCount.incrementAndGet();
 
         /* no dice */
@@ -612,7 +609,7 @@ public interface HolomorphicFunction extends
         {
           n = glSteps[i];
 
-          /* (64/15) M / ((rho-1) rho^(2n-1)) */
+          /* (64/15) M / ((ρ-1) ρ^(2n-1)) */
           mag_pow_ui_lower(t, rho, 2 * n - 1);
           mag_one(tmpm);
           mag_sub_lower(tmpm, rho, tmpm);
@@ -670,27 +667,24 @@ public interface HolomorphicFunction extends
           if (glSteps[i] == best_n)
             break;
 
-        acb_zero(s);
+        s.zero();
 
         for (k = 0; k < best_n; k++)
         {
           acb_calc_gl_node(x, w, i, k, prec);
-          acb_mul_arb(wide, delta, x, prec);
-          acb_add(wide, wide, mid, prec);
-          evaluate(wide, 0, prec, v);
+          evaluate(delta.mul(x, prec, wide).add(mid, prec, wide), 0, prec, v);
           acb_addmul_arb(s, v, w, prec);
         }
 
         evalCount.getAndAdd(best_n);
 
-        acb_mul(res, s, delta, prec);
-        acb_add_error_mag(res, err);
+        acb_add_error_mag(s.mul(delta, prec, res), err);
 
       }
     }
     else
     {
-      acb_indeterminate(res);
+      res.setIndeterminate();
     }
   }
 
