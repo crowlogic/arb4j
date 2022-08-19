@@ -1,4 +1,4 @@
-package arb.functions.complex.lemniscatic;
+package arb.functions.complex.elliptic.lemniscatic;
 
 import arb.Complex;
 import arb.functions.complex.HolomorphicFunction;
