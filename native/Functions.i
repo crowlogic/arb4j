@@ -115,7 +115,9 @@ int arb_mat_ldl(arb_mat_t res, const arb_mat_t A, slong prec);
  void arb_mat_solve_ldl_precomp(arb_mat_t X, const arb_mat_t L, const arb_mat_t B, slong prec);
   void arb_mat_inv_ldl_precomp(arb_mat_t X, const arb_mat_t L, slong prec);
     void acb_mat_dft(acb_mat_t mat, int type, slong prec);
-         
+
+ int acb_mat_eig_multiple(acb_ptr E, const acb_mat_t A, acb_srcptr E_approx, const acb_mat_t R_approx, slong prec);
+          
 void arb_mat_clear(arb_mat_t mat);
 void acb_mat_clear(acb_mat_t mat);
 

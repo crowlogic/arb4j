@@ -276,6 +276,10 @@ public class arb {
     arbJNI.acb_mat_dft(ComplexMatrix.getCPtr(mat), mat, type, prec);
   }
 
+  public static int acb_mat_eig_multiple(Complex E, ComplexMatrix A, Complex E_approx, ComplexMatrix R_approx, int prec) {
+    return arbJNI.acb_mat_eig_multiple(Complex.getCPtr(E), E, ComplexMatrix.getCPtr(A), A, Complex.getCPtr(E_approx), E_approx, ComplexMatrix.getCPtr(R_approx), R_approx, prec);
+  }
+
   public static void arb_mat_clear(RealMatrix mat) {
     arbJNI.arb_mat_clear(RealMatrix.getCPtr(mat), mat);
   }

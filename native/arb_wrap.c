@@ -1580,6 +1580,34 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mat_1dft(JNIEnv *jenv, jclass jcls,
 }
 
 
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_acb_1mat_1eig_1multiple(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5) {
+  jint jresult = 0 ;
+  acb_ptr arg1 = (acb_ptr) 0 ;
+  acb_mat_struct *arg2 ;
+  acb_srcptr arg3 = (acb_srcptr) 0 ;
+  acb_mat_struct *arg4 ;
+  long arg5 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg4_;
+  arg1 = *(acb_ptr *)&jarg1; 
+  arg2 = *(acb_mat_struct **)&jarg2; 
+  arg3 = *(acb_srcptr *)&jarg3; 
+  arg4 = *(acb_mat_struct **)&jarg4; 
+  arg5 = (long)jarg5; 
+  result = (int)acb_mat_eig_multiple(arg1,(acb_mat_struct const (*))arg2,(acb_struct const *)arg3,(acb_mat_struct const (*))arg4,arg5);
+  jresult = (jint)result; 
+  
+  
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_mat_struct *arg1 ;
   
