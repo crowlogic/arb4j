@@ -272,6 +272,10 @@ public class arb {
     arbJNI.arb_mat_inv_ldl_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, prec);
   }
 
+  public static void acb_mat_dft(ComplexMatrix mat, int type, int prec) {
+    arbJNI.acb_mat_dft(ComplexMatrix.getCPtr(mat), mat, type, prec);
+  }
+
   public static void arb_mat_clear(RealMatrix mat) {
     arbJNI.arb_mat_clear(RealMatrix.getCPtr(mat), mat);
   }

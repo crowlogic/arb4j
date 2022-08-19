@@ -74,6 +74,7 @@ public class arbJNI {
   public final static native int arb_mat_ldl(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native void arb_mat_solve_ldl_precomp(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);
   public final static native void arb_mat_inv_ldl_precomp(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
+  public final static native void acb_mat_dft(long jarg1, ComplexMatrix jarg1_, int jarg2, int jarg3);
   public final static native void arb_mat_clear(long jarg1, RealMatrix jarg1_);
   public final static native void acb_mat_clear(long jarg1, ComplexMatrix jarg1_);
   public final static native void acb_poly_clear(long jarg1, ComplexPolynomial jarg1_);

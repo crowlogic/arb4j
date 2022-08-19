@@ -1564,6 +1564,22 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1inv_1ldl_1precomp(JNIEnv *jenv
 }
 
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mat_1dft(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+  acb_mat_struct *arg1 ;
+  int arg2 ;
+  long arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(acb_mat_struct **)&jarg1; 
+  arg2 = (int)jarg2; 
+  arg3 = (long)jarg3; 
+  acb_mat_dft(arg1,arg2,arg3);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_mat_struct *arg1 ;
   
