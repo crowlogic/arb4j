@@ -106,7 +106,15 @@ void dirichlet_group_clear(dirichlet_group_t G);
 void dirichlet_char_init(dirichlet_char_t x, const dirichlet_group_t G);
 
 void dirichlet_char_clear(dirichlet_char_t x);
-
+int arb_mat_cho(arb_mat_t L, const arb_mat_t A, slong prec);
+void arb_mat_solve_cho_precomp(arb_mat_t X, const arb_mat_t L, const arb_mat_t B, slong prec);
+int arb_mat_spd_solve(arb_mat_t X, const arb_mat_t A, const arb_mat_t B, slong prec);
+void arb_mat_inv_cho_precomp(arb_mat_t X, const arb_mat_t L, slong prec);
+int arb_mat_spd_inv(arb_mat_t X, const arb_mat_t A, slong prec);
+int arb_mat_ldl(arb_mat_t res, const arb_mat_t A, slong prec);
+ void arb_mat_solve_ldl_precomp(arb_mat_t X, const arb_mat_t L, const arb_mat_t B, slong prec);
+  void arb_mat_inv_ldl_precomp(arb_mat_t X, const arb_mat_t L, slong prec);
+        
 void arb_mat_clear(arb_mat_t mat);
 void acb_mat_clear(acb_mat_t mat);
 

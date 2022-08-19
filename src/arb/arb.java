@@ -240,6 +240,38 @@ public class arb {
     arbJNI.dirichlet_char_clear(DirichletCharacter.getCPtr(x), x);
   }
 
+  public static int arb_mat_cho(RealMatrix L, RealMatrix A, int prec) {
+    return arbJNI.arb_mat_cho(RealMatrix.getCPtr(L), L, RealMatrix.getCPtr(A), A, prec);
+  }
+
+  public static void arb_mat_solve_cho_precomp(RealMatrix X, RealMatrix L, RealMatrix B, int prec) {
+    arbJNI.arb_mat_solve_cho_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, RealMatrix.getCPtr(B), B, prec);
+  }
+
+  public static int arb_mat_spd_solve(RealMatrix X, RealMatrix A, RealMatrix B, int prec) {
+    return arbJNI.arb_mat_spd_solve(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, RealMatrix.getCPtr(B), B, prec);
+  }
+
+  public static void arb_mat_inv_cho_precomp(RealMatrix X, RealMatrix L, int prec) {
+    arbJNI.arb_mat_inv_cho_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, prec);
+  }
+
+  public static int arb_mat_spd_inv(RealMatrix X, RealMatrix A, int prec) {
+    return arbJNI.arb_mat_spd_inv(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, prec);
+  }
+
+  public static int arb_mat_ldl(RealMatrix res, RealMatrix A, int prec) {
+    return arbJNI.arb_mat_ldl(RealMatrix.getCPtr(res), res, RealMatrix.getCPtr(A), A, prec);
+  }
+
+  public static void arb_mat_solve_ldl_precomp(RealMatrix X, RealMatrix L, RealMatrix B, int prec) {
+    arbJNI.arb_mat_solve_ldl_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, RealMatrix.getCPtr(B), B, prec);
+  }
+
+  public static void arb_mat_inv_ldl_precomp(RealMatrix X, RealMatrix L, int prec) {
+    arbJNI.arb_mat_inv_ldl_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, prec);
+  }
+
   public static void arb_mat_clear(RealMatrix mat) {
     arbJNI.arb_mat_clear(RealMatrix.getCPtr(mat), mat);
   }

@@ -1392,6 +1392,178 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_dirichlet_1char_1clear(JNIEnv *jenv, jcl
 }
 
 
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1mat_1cho(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jint jresult = 0 ;
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  long arg3 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = (long)jarg3; 
+  result = (int)arb_mat_cho(arg1,(arb_mat_struct const (*))arg2,arg3);
+  jresult = (jint)result; 
+  
+  
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1solve_1cho_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  arb_mat_struct *arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = *(arb_mat_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  arb_mat_solve_cho_precomp(arg1,(arb_mat_struct const (*))arg2,(arb_mat_struct const (*))arg3,arg4);
+  
+  
+  
+}
+
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1mat_1spd_1solve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  jint jresult = 0 ;
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  arb_mat_struct *arg3 ;
+  long arg4 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = *(arb_mat_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  result = (int)arb_mat_spd_solve(arg1,(arb_mat_struct const (*))arg2,(arb_mat_struct const (*))arg3,arg4);
+  jresult = (jint)result; 
+  
+  
+  
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1inv_1cho_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  long arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = (long)jarg3; 
+  arb_mat_inv_cho_precomp(arg1,(arb_mat_struct const (*))arg2,arg3);
+  
+  
+}
+
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1mat_1spd_1inv(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jint jresult = 0 ;
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  long arg3 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = (long)jarg3; 
+  result = (int)arb_mat_spd_inv(arg1,(arb_mat_struct const (*))arg2,arg3);
+  jresult = (jint)result; 
+  
+  
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1mat_1ldl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jint jresult = 0 ;
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  long arg3 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = (long)jarg3; 
+  result = (int)arb_mat_ldl(arg1,(arb_mat_struct const (*))arg2,arg3);
+  jresult = (jint)result; 
+  
+  
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1solve_1ldl_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  arb_mat_struct *arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = *(arb_mat_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  arb_mat_solve_ldl_precomp(arg1,(arb_mat_struct const (*))arg2,(arb_mat_struct const (*))arg3,arg4);
+  
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1inv_1ldl_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  long arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = (long)jarg3; 
+  arb_mat_inv_ldl_precomp(arg1,(arb_mat_struct const (*))arg2,arg3);
+  
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   arb_mat_struct *arg1 ;
   
