@@ -7,7 +7,7 @@
  * calculation of an ellipses' arc length.
  * 
  * Important elliptic functions are
- * {@link arb.functions.complex.numbertheoretic.JacobiθFunction}s and the
+ * {@link arb.functions.complex.elliptic.JacobiEllipticθFunction}s and the
  * Weierstrass ℘-function.
  * 
  * Further development of this theory led to hyperelliptic functions and modular
