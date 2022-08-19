@@ -78,7 +78,9 @@ public class arbJNI {
   public final static native int acb_mat_eig_multiple(long jarg1, Complex jarg1_, long jarg2, ComplexMatrix jarg2_, long jarg3, Complex jarg3_, long jarg4, ComplexMatrix jarg4_, int jarg5);
   public final static native void arb_mat_clear(long jarg1, RealMatrix jarg1_);
   public final static native void acb_mat_clear(long jarg1, ComplexMatrix jarg1_);
+  public final static native void arb_mat_init(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
   public final static native void acb_poly_clear(long jarg1, ComplexPolynomial jarg1_);
+  public final static native long arb_mat_entry_ptr(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
   public final static native void mpfr_clear(long jarg1, MultiplePrecisionFloat jarg1_);
   public final static native void flint_cleanup();
   public final static native void flint_cleanup_master();
@@ -172,7 +174,6 @@ public class arbJNI {
   public final static native void acb_poly_evaluate(long jarg1, Complex jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_poly_evaluate2(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, ComplexPolynomial jarg3_, long jarg4, Complex jarg4_, int jarg5);
   public final static native void flint_free(long jarg1);
-  public final static native void arb_mat_init(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
   public final static native void acb_get_mag(long jarg1, Magnitude jarg1_, long jarg2, Complex jarg2_);
   public final static native void acb_mat_init(long jarg1, ComplexMatrix jarg1_, int jarg2, int jarg3);
   public final static native void acb_dot(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, long jarg4, Complex jarg4_, int jarg5, long jarg6, Complex jarg6_, int jarg7, int jarg8, int jarg9);

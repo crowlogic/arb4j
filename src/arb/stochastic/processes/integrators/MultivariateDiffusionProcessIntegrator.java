@@ -6,10 +6,7 @@ import static java.lang.System.err;
 
 import java.util.Arrays;
 
-import arb.EvaluationSequence;
-import arb.FloatInterval;
-import arb.Real;
-import arb.RealPartition;
+import arb.*;
 import arb.stochastic.GaussianDistribution;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.MultivariateDiffusionProcess;
@@ -29,8 +26,11 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   private GaussianDistribution                                    gaussian;
 
+  private RealMatrix correlationMatrix;
+
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess process,
                                                 M state,
+                                                RealMatrix correlationMatrix,
                                                 DiffusionProcessIntegrator<M, DiffusionProcess<M>>... integrators)
   {
     dim              = process.dim();
@@ -39,6 +39,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     {
       this.integrators[i] = integrators[i];
     }
+    this.correlationMatrix = correlationMatrix;
     this.process = process;
     this.state   = state;
   }

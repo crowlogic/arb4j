@@ -288,8 +288,17 @@ public class arb {
     arbJNI.acb_mat_clear(ComplexMatrix.getCPtr(mat), mat);
   }
 
+  public static void arb_mat_init(RealMatrix mat, int r, int c) {
+    arbJNI.arb_mat_init(RealMatrix.getCPtr(mat), mat, r, c);
+  }
+
   public static void acb_poly_clear(ComplexPolynomial poly) {
     arbJNI.acb_poly_clear(ComplexPolynomial.getCPtr(poly), poly);
+  }
+
+  public static Real arb_mat_entry_ptr(RealMatrix mat, int i, int j) {
+    long cPtr = arbJNI.arb_mat_entry_ptr(RealMatrix.getCPtr(mat), mat, i, j);
+    return (cPtr == 0) ? null : new Real(cPtr, false);
   }
 
   public static void mpfr_clear(MultiplePrecisionFloat arg0) {
@@ -663,10 +672,6 @@ public class arb {
 
   public static void flint_free(SWIGTYPE_p_void ptr) {
     arbJNI.flint_free(SWIGTYPE_p_void.getCPtr(ptr));
-  }
-
-  public static void arb_mat_init(RealMatrix mat, int r, int c) {
-    arbJNI.arb_mat_init(RealMatrix.getCPtr(mat), mat, r, c);
   }
 
   public static void acb_get_mag(Magnitude u, Complex z) {

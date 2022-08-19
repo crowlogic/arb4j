@@ -1632,6 +1632,22 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1mat_1clear(JNIEnv *jenv, jclass jcl
 }
 
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+  arb_mat_struct *arg1 ;
+  long arg2 ;
+  long arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = (long)jarg2; 
+  arg3 = (long)jarg3; 
+  arb_mat_init(arg1,arg2,arg3);
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   acb_poly_struct *arg1 ;
   
@@ -1641,6 +1657,26 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1poly_1clear(JNIEnv *jenv, jclass jc
   arg1 = *(acb_poly_struct **)&jarg1; 
   acb_poly_clear(arg1);
   
+}
+
+
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_arb_1mat_1entry_1ptr(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
+  jlong jresult = 0 ;
+  arb_mat_struct *arg1 ;
+  long arg2 ;
+  long arg3 ;
+  arb_ptr result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = (long)jarg2; 
+  arg3 = (long)jarg3; 
+  result = (arb_ptr)arb_mat_entry_ptr(arg1,arg2,arg3);
+  *(arb_ptr *)&jresult = result; 
+  
+  return jresult;
 }
 
 
@@ -3224,22 +3260,6 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_flint_1free(JNIEnv *jenv, jclass jcls, j
   (void)jcls;
   arg1 = *(void **)&jarg1; 
   flint_free(arg1);
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1init(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
-  arb_mat_struct *arg1 ;
-  long arg2 ;
-  long arg3 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(arb_mat_struct **)&jarg1; 
-  arg2 = (long)jarg2; 
-  arg3 = (long)jarg3; 
-  arb_mat_init(arg1,arg2,arg3);
-  
 }
 
 
