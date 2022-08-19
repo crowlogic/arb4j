@@ -39,7 +39,7 @@ public class EvaluationSequence implements
    * Populates the this{@link #values} of this {@link EvaluationSequence} with
    * random {@link Real} numbers sampled from some density function
    * 
-   * TODO: find a way to parallelize this while keeping determinism
+   * TODO: handle correlation matrix
    * 
    * @param pdf         the {@link RealProbabilityDensityFunction} to populate
    *                    this{@link #values} with
