@@ -13,17 +13,17 @@ module arb4j
   requires transitive java.instrument;
   requires transitive java.logging;
   requires transitive jdk.incubator.foreign;
-  requires transitive humble.video.noarch;
-  requires transitive lwjgl3.awt;
-  requires transitive org.lwjgl;
-  requires transitive org.lwjgl.opengl;
-  requires transitive org.lwjgl.glfw;
   requires transitive junit;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
   requires transitive gral.core;
+  requires transitive humble.video.noarch;
+  requires transitive org.lwjgl;
+  requires transitive org.lwjgl.opengl;
+  requires transitive org.lwjgl.glfw;
   requires transitive org.joml;
   requires transitive LWJGUI.pre.mt;
+  requires transitive pngdecoder;
 
   exports arb;
   exports arb.algebraic.expressions;

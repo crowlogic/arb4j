@@ -77,7 +77,11 @@
 			<artifactId>humble-video-all</artifactId>
 			<version>0.3.0</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.l33tlabs.twl</groupId>
+			<artifactId>pngdecoder</artifactId>
+			<version>1.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>de.erichseifert.gral</groupId>
@@ -99,22 +103,7 @@
 			<artifactId>jogl-all</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.lwjgl</groupId>
-			<artifactId>lwjgl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.lwjgl</groupId>
-			<artifactId>lwjgl-assimp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.lwjgl</groupId>
-			<artifactId>lwjgl-glfw</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.lwjgl</groupId>
-			<artifactId>lwjgl-opengl</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-stb</artifactId>
@@ -149,11 +138,6 @@
 			<groupId>org.joml</groupId>
 			<artifactId>joml</artifactId>
 			<version>1.10.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.lwjglx</groupId>
-			<artifactId>lwjgl3-awt</artifactId>
-			<version>${lwjgl3-awt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.orange451</groupId>
