@@ -541,6 +541,102 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_memset(JNIEnv *jenv, jclass jcls, jlong
 }
 
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1dot_1simple(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jlong jarg4, jobject jarg4_, jint jarg5, jlong jarg6, jobject jarg6_, jint jarg7, jint jarg8, jint jarg9) {
+  arb_struct *arg1 ;
+  arb_struct *arg2 ;
+  int arg3 ;
+  arb_srcptr arg4 = (arb_srcptr) 0 ;
+  long arg5 ;
+  arb_srcptr arg6 = (arb_srcptr) 0 ;
+  long arg7 ;
+  long arg8 ;
+  long arg9 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg4_;
+  (void)jarg6_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = *(arb_struct **)&jarg2; 
+  arg3 = (int)jarg3; 
+  arg4 = *(arb_srcptr *)&jarg4; 
+  arg5 = (long)jarg5; 
+  arg6 = *(arb_srcptr *)&jarg6; 
+  arg7 = (long)jarg7; 
+  arg8 = (long)jarg8; 
+  arg9 = (long)jarg9; 
+  arb_dot_simple(arg1,(arb_struct const (*))arg2,arg3,(arb_struct const *)arg4,arg5,(arb_struct const *)arg6,arg7,arg8,arg9);
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1dot_1precise(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jlong jarg4, jobject jarg4_, jint jarg5, jlong jarg6, jobject jarg6_, jint jarg7, jint jarg8, jint jarg9) {
+  arb_struct *arg1 ;
+  arb_struct *arg2 ;
+  int arg3 ;
+  arb_srcptr arg4 = (arb_srcptr) 0 ;
+  long arg5 ;
+  arb_srcptr arg6 = (arb_srcptr) 0 ;
+  long arg7 ;
+  long arg8 ;
+  long arg9 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg4_;
+  (void)jarg6_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = *(arb_struct **)&jarg2; 
+  arg3 = (int)jarg3; 
+  arg4 = *(arb_srcptr *)&jarg4; 
+  arg5 = (long)jarg5; 
+  arg6 = *(arb_srcptr *)&jarg6; 
+  arg7 = (long)jarg7; 
+  arg8 = (long)jarg8; 
+  arg9 = (long)jarg9; 
+  arb_dot_precise(arg1,(arb_struct const (*))arg2,arg3,(arb_struct const *)arg4,arg5,(arb_struct const *)arg6,arg7,arg8,arg9);
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1dot(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jlong jarg4, jobject jarg4_, jint jarg5, jlong jarg6, jobject jarg6_, jint jarg7, jint jarg8, jint jarg9) {
+  arb_struct *arg1 ;
+  arb_struct *arg2 ;
+  int arg3 ;
+  arb_srcptr arg4 = (arb_srcptr) 0 ;
+  long arg5 ;
+  arb_srcptr arg6 = (arb_srcptr) 0 ;
+  long arg7 ;
+  long arg8 ;
+  long arg9 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg4_;
+  (void)jarg6_;
+  arg1 = *(arb_struct **)&jarg1; 
+  arg2 = *(arb_struct **)&jarg2; 
+  arg3 = (int)jarg3; 
+  arg4 = *(arb_srcptr *)&jarg4; 
+  arg5 = (long)jarg5; 
+  arg6 = *(arb_srcptr *)&jarg6; 
+  arg7 = (long)jarg7; 
+  arg8 = (long)jarg8; 
+  arg9 = (long)jarg9; 
+  arb_dot(arg1,(arb_struct const (*))arg2,arg3,(arb_struct const *)arg4,arg5,(arb_struct const *)arg6,arg7,arg8,arg9);
+  
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1dft_1rad2_1precomp(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_ptr arg1 = (acb_ptr) 0 ;
   acb_srcptr arg2 = (acb_srcptr) 0 ;

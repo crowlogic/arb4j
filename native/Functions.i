@@ -17,6 +17,14 @@ int mprotect (void *addr, size_t len, int prot);
 
 void *memset(void *s, int c, size_t n);
 
+void arb_dot_simple(arb_t res, const arb_t initial, int subtract,
+    arb_srcptr x, slong xstep, arb_srcptr y, slong ystep, slong len, slong prec);
+void arb_dot_precise(arb_t res, const arb_t initial, int subtract,
+    arb_srcptr x, slong xstep, arb_srcptr y, slong ystep, slong len, slong prec);
+void arb_dot(arb_t res, const arb_t initial, int subtract,
+    arb_srcptr x, slong xstep, arb_srcptr y, slong ystep, slong len, slong prec);
+
+
 void acb_dft_rad2_precomp(acb_ptr w, acb_srcptr v, const acb_dft_rad2_t t, slong prec);
  
 void arb_hypgeom_hermite_h(arb_t res, const arb_t nu, const arb_t z, slong prec);
