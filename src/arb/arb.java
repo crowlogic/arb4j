@@ -64,6 +64,18 @@ public class arb {
     return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 
+  public static void arb_dot_simple(Real res, Real initial, int subtract, Real x, int xstep, Real y, int ystep, int len, int prec) {
+    arbJNI.arb_dot_simple(Real.getCPtr(res), res, Real.getCPtr(initial), initial, subtract, Real.getCPtr(x), x, xstep, Real.getCPtr(y), y, ystep, len, prec);
+  }
+
+  public static void arb_dot_precise(Real res, Real initial, int subtract, Real x, int xstep, Real y, int ystep, int len, int prec) {
+    arbJNI.arb_dot_precise(Real.getCPtr(res), res, Real.getCPtr(initial), initial, subtract, Real.getCPtr(x), x, xstep, Real.getCPtr(y), y, ystep, len, prec);
+  }
+
+  public static void arb_dot(Real res, Real initial, int subtract, Real x, int xstep, Real y, int ystep, int len, int prec) {
+    arbJNI.arb_dot(Real.getCPtr(res), res, Real.getCPtr(initial), initial, subtract, Real.getCPtr(x), x, xstep, Real.getCPtr(y), y, ystep, len, prec);
+  }
+
   public static void acb_dft_rad2_precomp(Complex w, Complex v, FastDFTRadix2Scheme t, int prec) {
     arbJNI.acb_dft_rad2_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTRadix2Scheme.getCPtr(t), t, prec);
   }

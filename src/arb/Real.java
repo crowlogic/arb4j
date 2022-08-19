@@ -938,6 +938,47 @@ public int relAccuracyBits()
     arb.arb_mul(result, this, x, prec );
     return result;
   }
+
+  public Real dotProduct(Real other, int prec, Real res)
+  {
+    assert dim == other.dim;
+    res.zero();
+    try ( Real x = new Real();)
+    {
+      for (int i = 0; i < dim; i++)
+      {
+        get(i).mul(other.get(i), prec, x);
+        res.add(x, prec);
+      }
+    }
+    return res;
+  }
+
+  /**
+   * <pre>
+   *                 n*Σ(this*that)-Σthis*Σthat 
+   *      ----------------------------------------------------- 
+   *       √(n*Σ(this^2)-(Σthis)^2) * √( n*Σ(that^2)-(that)^2) 
+   * </pre>
+   *  
+   * @param other vector to compare with
+   * @param res where to store the result∈[-1,1] 
+   * @return the correlation between this and that
+   */
+  public Real correlation(Real that, int prec, Real res)
+  {
+    assert dim == that.dim : "dimensions must match, this.dim=" + dim + " != that.dim = " + that.dim;
+    try ( Real thisSum = new Real(); Real thatSum = new Real(); Real thisThatDotProduct = new Real();)
+    {
+      this.Σ(prec, thisSum);
+      that.Σ(prec, thatSum);
+      dotProduct(that, prec, thisThatDotProduct);
+      // return ( n*Σ(this*that)-Σthis*Σthat ) / (
+      // √(n*Σ(this^2)-(Σthis)^2)*√(n*Σ(that^2)-(that)^2) )
+      assert false : "TODO: return ( n*Σ(this*that)-Σthis*Σthat ) / ( √(n*Σ(this^2)-(Σthis)^2)*√(n*Σ(that^2)-(that)^2) )";
+    }
+    return null;
+  }
     
 
   public void setMid(Float value) {
