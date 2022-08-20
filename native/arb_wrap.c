@@ -325,6 +325,28 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1printd(JNIEnv *jenv, jclass jc
 }
 
 
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1mat_1inv(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  jint jresult = 0 ;
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  long arg3 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = (long)jarg3; 
+  result = (int)arb_mat_inv(arg1,(arb_mat_struct const (*))arg2,arg3);
+  jresult = (jint)result; 
+  
+  
+  return jresult;
+}
+
+
 SWIGEXPORT jint JNICALL Java_arb_arbJNI_getpagesize(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   int result;

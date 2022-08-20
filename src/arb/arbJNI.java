@@ -10,6 +10,7 @@ package arb;
 
 public class arbJNI {
   public final static native void arb_mat_printd(long jarg1, RealMatrix jarg1_, int jarg2);
+  public final static native int arb_mat_inv(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native int getpagesize();
   public final static native long alignedMalloc(int jarg1, int jarg2);
   public final static native long memalign(long jarg1, long jarg2);

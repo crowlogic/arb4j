@@ -11,6 +11,7 @@ import dnl.utils.text.table.*;
 
 %typemap(javacode) arb_mat_struct %{
 
+
  /**
    * Accessor for the i,j-th element
    * 

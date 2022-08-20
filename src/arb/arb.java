@@ -13,6 +13,10 @@ public class arb {
     arbJNI.arb_mat_printd(RealMatrix.getCPtr(mat), mat, digits);
   }
 
+  public static int arb_mat_inv(RealMatrix X, RealMatrix A, int prec) {
+    return arbJNI.arb_mat_inv(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, prec);
+  }
+
   public static int getpagesize() {
     return arbJNI.getpagesize();
   }
