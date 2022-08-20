@@ -87,6 +87,18 @@ import dnl.utils.text.table.*;
     m.init(rows, cols);
     return m;
   }
+
+  /**
+   * @see arb#arb_mat_transpose(RealMatrix, RealMatrix)
+   * 
+   * @param result
+   * @return result
+   */  
+  public RealMatrix transpose(RealMatrix result)
+  {
+    arb.arb_mat_transpose(result, this);
+    return result;
+  }
   
   /**
    * Calls {@link arb#arb_mat_clear(RealMatrix)}

@@ -311,6 +311,22 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1transpose(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arb_mat_transpose(arg1,(arb_mat_struct const (*))arg2);
+  
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1mul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   arb_mat_struct *arg1 ;
   arb_mat_struct *arg2 ;
@@ -1702,22 +1718,6 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1init(JNIEnv *jenv, jclass jcls
   arg2 = (long)jarg2; 
   arg3 = (long)jarg3; 
   arb_mat_init(arg1,arg2,arg3);
-  
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1transpose(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  arb_mat_struct *arg1 ;
-  arb_mat_struct *arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(arb_mat_struct **)&jarg1; 
-  arg2 = *(arb_mat_struct **)&jarg2; 
-  arb_mat_transpose(arg1,(arb_mat_struct const (*))arg2);
-  
   
 }
 

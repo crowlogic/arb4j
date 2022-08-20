@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void arb_mat_transpose(RealMatrix mat1, RealMatrix mat2) {
+    arbJNI.arb_mat_transpose(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
+  }
+
   public static void arb_mat_mul(RealMatrix res, RealMatrix mat1, RealMatrix mat2, int prec) {
     arbJNI.arb_mat_mul(RealMatrix.getCPtr(res), res, RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2, prec);
   }
@@ -302,10 +306,6 @@ public class arb {
 
   public static void arb_mat_init(RealMatrix mat, int rows, int cols) {
     arbJNI.arb_mat_init(RealMatrix.getCPtr(mat), mat, rows, cols);
-  }
-
-  public static void arb_mat_transpose(RealMatrix dest, RealMatrix src) {
-    arbJNI.arb_mat_transpose(RealMatrix.getCPtr(dest), dest, RealMatrix.getCPtr(src), src);
   }
 
   public static void acb_poly_clear(ComplexPolynomial poly) {

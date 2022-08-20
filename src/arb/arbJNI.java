@@ -9,6 +9,7 @@
 package arb;
 
 public class arbJNI {
+  public final static native void arb_mat_transpose(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native void arb_mat_mul(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);
   public final static native void arb_mat_printd(long jarg1, RealMatrix jarg1_, int jarg2);
   public final static native int arb_mat_inv(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
@@ -82,7 +83,6 @@ public class arbJNI {
   public final static native void arb_mat_clear(long jarg1, RealMatrix jarg1_);
   public final static native void acb_mat_clear(long jarg1, ComplexMatrix jarg1_);
   public final static native void arb_mat_init(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
-  public final static native void arb_mat_transpose(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native void acb_poly_clear(long jarg1, ComplexPolynomial jarg1_);
   public final static native long arb_mat_entry_ptr(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
   public final static native void mpfr_clear(long jarg1, MultiplePrecisionFloat jarg1_);

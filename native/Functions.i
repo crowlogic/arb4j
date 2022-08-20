@@ -1,5 +1,7 @@
 #define __off_t long int
 
+void arb_mat_transpose(arb_mat_t mat1, const arb_mat_t mat2);
+
  void arb_mat_mul(arb_mat_t res, const arb_mat_t mat1, const arb_mat_t mat2, slong prec);
  
  void arb_mat_printd(const arb_mat_t mat, slong digits);
