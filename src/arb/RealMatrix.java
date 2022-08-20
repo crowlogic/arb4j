@@ -37,7 +37,7 @@ public class RealMatrix implements AutoCloseable {
     }
   }
 
-
+  static { System.loadLibrary( "arblib" ); }
   /**
    * @see arb#arb_mat_zero(RealMatrix)
    * 

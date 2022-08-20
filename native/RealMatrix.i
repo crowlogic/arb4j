@@ -10,7 +10,7 @@ import dnl.utils.text.table.*;
 %typemap(javainterfaces) arb_mat_struct "AutoCloseable"
 
 %typemap(javacode) arb_mat_struct %{
-
+  static { System.loadLibrary( "arblib" ); }
   /**
    * @see arb#arb_mat_zero(RealMatrix)
    * 
