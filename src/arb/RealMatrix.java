@@ -38,6 +38,51 @@ public class RealMatrix implements AutoCloseable {
   }
 
 
+  /**
+   * @see arb#arb_mat_zero(RealMatrix)
+   * 
+   * @return this
+   */
+  public RealMatrix zero()
+  {
+    arb.arb_mat_zero(this);
+    return this;
+  }
+
+  /**
+   * Puts 1s on the diagonal and zeros everywhere else
+   * 
+   * @see arb#arb_mat_one(RealMatrix)
+   * 
+   * @return this
+   */
+  public RealMatrix identity()
+  {
+    arb.arb_mat_one(this);
+    return this;
+  }
+
+  /**
+   * @see arb#arb_mat_overlaps(RealMatrix, RealMatrix)
+   * @param other
+   * @return
+   */
+  public boolean overlaps(RealMatrix other)
+  {
+    return arb.arb_mat_overlaps(this, other) != 0;
+  }
+
+  /**
+   * @see arb#arb_mat_contains(RealMatrix, RealMatrix)
+   * @param other
+   * @return
+   */
+  public boolean contains(RealMatrix other)
+  {
+    return arb.arb_mat_overlaps(this, other) != 0;
+  }
+
+
   @Override
   public boolean equals(Object obj)
   {
