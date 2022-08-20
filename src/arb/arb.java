@@ -9,6 +9,22 @@
 package arb;
 
 public class arb {
+  public static int arb_mat_eq(RealMatrix mat1, RealMatrix mat2) {
+    return arbJNI.arb_mat_eq(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static int arb_mat_ne(RealMatrix mat1, RealMatrix mat2) {
+    return arbJNI.arb_mat_ne(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static void arb_mat_zero(RealMatrix mat) {
+    arbJNI.arb_mat_zero(RealMatrix.getCPtr(mat), mat);
+  }
+
+  public static void arb_mat_one(RealMatrix mat) {
+    arbJNI.arb_mat_one(RealMatrix.getCPtr(mat), mat);
+  }
+
   public static void arb_mat_transpose(RealMatrix mat1, RealMatrix mat2) {
     arbJNI.arb_mat_transpose(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
   }

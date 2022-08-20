@@ -38,6 +38,17 @@ public class RealMatrix implements AutoCloseable {
   }
 
 
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (!(obj instanceof RealMatrix))
+    {
+      return false;
+    }
+    RealMatrix other = (RealMatrix)obj;
+    return arb.arb_mat_eq(this, other) != 0;    
+  }
+
 
  /**
    * Accessor for the i,j-th element
@@ -63,7 +74,9 @@ public class RealMatrix implements AutoCloseable {
     {
       for (int j = 0; j < this.getCols(); ++j)
       {
-        String string  = get(i, j).toFixedString();
+        Real x = get(i, j);
+        x.printPrecision = true;
+        String string  = x.toString();
         int    decimal = string.indexOf(46);
         if (decimal > maxDecimal)
         {
@@ -86,13 +99,13 @@ public class RealMatrix implements AutoCloseable {
                                                 strings);
     ByteArrayOutputStream os    = new ByteArrayOutputStream();
     PrintStream           ps    = new PrintStream(os);
-    StringBuffer          sb    = new StringBuffer();
+    StringBuffer          sb    = new StringBuffer();   
     table.setAddRowNumbering(true);
     table.printTable(ps, 0);
     ps.close();
     try
     {
-      return os.toString("UTF8");
+      return "\n" + os.toString("UTF8");
     }
     catch (UnsupportedEncodingException e)
     {

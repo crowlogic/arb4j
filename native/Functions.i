@@ -1,5 +1,10 @@
 #define __off_t long int
 
+int arb_mat_eq(const arb_mat_t mat1, const arb_mat_t mat2);
+int arb_mat_ne(const arb_mat_t mat1, const arb_mat_t mat2);
+void arb_mat_zero(arb_mat_t mat);
+void arb_mat_one(arb_mat_t mat);
+    
 void arb_mat_transpose(arb_mat_t mat1, const arb_mat_t mat2);
 
  void arb_mat_mul(arb_mat_t res, const arb_mat_t mat1, const arb_mat_t mat2, slong prec);

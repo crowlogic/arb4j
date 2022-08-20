@@ -11,6 +11,17 @@ import dnl.utils.text.table.*;
 
 %typemap(javacode) arb_mat_struct %{
 
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (!(obj instanceof RealMatrix))
+    {
+      return false;
+    }
+    RealMatrix other = (RealMatrix)obj;
+    return arb.arb_mat_eq(this, other) != 0;    
+  }
+
 
  /**
    * Accessor for the i,j-th element
