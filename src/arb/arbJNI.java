@@ -9,6 +9,9 @@
 package arb;
 
 public class arbJNI {
+  public final static native int arb_mat_overlaps(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
+  public final static native int arb_mat_contains(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
+  public final static native void arb_mat_set(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native int arb_mat_eq(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native int arb_mat_ne(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native void arb_mat_zero(long jarg1, RealMatrix jarg1_);

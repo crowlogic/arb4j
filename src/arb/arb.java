@@ -9,6 +9,18 @@
 package arb;
 
 public class arb {
+  public static int arb_mat_overlaps(RealMatrix mat1, RealMatrix mat2) {
+    return arbJNI.arb_mat_overlaps(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static int arb_mat_contains(RealMatrix mat1, RealMatrix mat2) {
+    return arbJNI.arb_mat_contains(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
+  }
+
+  public static void arb_mat_set(RealMatrix dest, RealMatrix src) {
+    arbJNI.arb_mat_set(RealMatrix.getCPtr(dest), dest, RealMatrix.getCPtr(src), src);
+  }
+
   public static int arb_mat_eq(RealMatrix mat1, RealMatrix mat2) {
     return arbJNI.arb_mat_eq(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
   }

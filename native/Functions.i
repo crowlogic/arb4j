@@ -1,5 +1,8 @@
 #define __off_t long int
 
+ int arb_mat_overlaps(const arb_mat_t mat1, const arb_mat_t mat2);
+  int arb_mat_contains(const arb_mat_t mat1, const arb_mat_t mat2);
+ void arb_mat_set(arb_mat_t dest, const arb_mat_t src);
 int arb_mat_eq(const arb_mat_t mat1, const arb_mat_t mat2);
 int arb_mat_ne(const arb_mat_t mat1, const arb_mat_t mat2);
 void arb_mat_zero(arb_mat_t mat);
