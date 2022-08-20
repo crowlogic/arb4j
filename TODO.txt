@@ -4,11 +4,6 @@ perform the integrations
   
 * foreign API: custom mapped memory segment factories instead of JNI DirectByteBuffers to alleviate the problems preventing large animations from being rendered within a single JVM
 
-* use confined ResourceScopes in Java to implement constant Real,
-Float, and Complex objects that throw exceptions if attemps to modify
-them are made .. it uses kernel level page signalling to detect.. very
-cool
-
 * harness reflection symmetry to accelerate rendering 
 
 * implement Lemniscate elliptic functions 
@@ -26,8 +21,6 @@ cool
 
 * homotopy API 
 
-* refine the SWIG definitions so that the pointers to pointers in RealMatrix and ComplexMatrix are handled optimally and without ugly code
-
 * fix ParallelTransporter crash: free(): double free detected in tcache
 
 * Transfer operator API
@@ -35,8 +28,6 @@ cool
 * port Real root-finding API to Complex values
 
 * Scale/Rotate/Translate as Part of JPlotter/OpenGL renovation 
-
-* 3d protein model
 
 * orthogonal polynomial API
 
@@ -52,7 +43,7 @@ cool
 
 
 
-Zoom/Magnify
+Zoom/Magnify - OpenGL 3d surface rendering
 -------------
 
 When Z is pressed there is an indicator that zoom box
