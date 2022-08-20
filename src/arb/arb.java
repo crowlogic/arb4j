@@ -9,6 +9,22 @@
 package arb;
 
 public class arb {
+  public static void acb_hypgeom_beta_lower_series(ComplexPolynomial res, Complex a, Complex b, ComplexPolynomial z, int regularized, int n, int prec) {
+    arbJNI.acb_hypgeom_beta_lower_series(ComplexPolynomial.getCPtr(res), res, Complex.getCPtr(a), a, Complex.getCPtr(b), b, ComplexPolynomial.getCPtr(z), z, regularized, n, prec);
+  }
+
+  public static void acb_hypgeom_beta_lower(Complex res, Complex a, Complex b, Complex z, int regularized, int prec) {
+    arbJNI.acb_hypgeom_beta_lower(Complex.getCPtr(res), res, Complex.getCPtr(a), a, Complex.getCPtr(b), b, Complex.getCPtr(z), z, regularized, prec);
+  }
+
+  public static void acb_hypgeom_gamma_upper(Complex res, Complex s, Complex z, int regularized, int prec) {
+    arbJNI.acb_hypgeom_gamma_upper(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(z), z, regularized, prec);
+  }
+
+  public static void acb_hypgeom_gamma_lower(Complex res, Complex s, Complex z, int regularized, int prec) {
+    arbJNI.acb_hypgeom_gamma_lower(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(z), z, regularized, prec);
+  }
+
   public static int arb_mat_overlaps(RealMatrix mat1, RealMatrix mat2) {
     return arbJNI.arb_mat_overlaps(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
   }

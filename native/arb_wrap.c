@@ -213,6 +213,7 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include <flint/flint.h>
 #include <arf.h>
 #include <arb.h>
+#include <acb_hypgeom.h>
 #include <arb_hypgeom.h>
 #include <acb.h>
 #include <acb_calc.h>
@@ -310,6 +311,112 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
 
   return JNI_VERSION_10;
 }
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1hypgeom_1beta_1lower_1series(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5, jint jarg6, jint jarg7) {
+  acb_poly_struct *arg1 ;
+  acb_struct *arg2 ;
+  acb_struct *arg3 ;
+  acb_poly_struct *arg4 ;
+  int arg5 ;
+  long arg6 ;
+  long arg7 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg4_;
+  arg1 = *(acb_poly_struct **)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(acb_struct **)&jarg3; 
+  arg4 = *(acb_poly_struct **)&jarg4; 
+  arg5 = (int)jarg5; 
+  arg6 = (long)jarg6; 
+  arg7 = (long)jarg7; 
+  acb_hypgeom_beta_lower_series(arg1,(acb_struct const (*))arg2,(acb_struct const (*))arg3,(acb_poly_struct const (*))arg4,arg5,arg6,arg7);
+  
+  
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1hypgeom_1beta_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jlong jarg4, jobject jarg4_, jint jarg5, jint jarg6) {
+  acb_struct *arg1 ;
+  acb_struct *arg2 ;
+  acb_struct *arg3 ;
+  acb_struct *arg4 ;
+  int arg5 ;
+  long arg6 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  (void)jarg4_;
+  arg1 = *(acb_struct **)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(acb_struct **)&jarg3; 
+  arg4 = *(acb_struct **)&jarg4; 
+  arg5 = (int)jarg5; 
+  arg6 = (long)jarg6; 
+  acb_hypgeom_beta_lower(arg1,(acb_struct const (*))arg2,(acb_struct const (*))arg3,(acb_struct const (*))arg4,arg5,arg6);
+  
+  
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1hypgeom_1gamma_1upper(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
+  acb_struct *arg1 ;
+  acb_struct *arg2 ;
+  acb_struct *arg3 ;
+  int arg4 ;
+  long arg5 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(acb_struct **)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(acb_struct **)&jarg3; 
+  arg4 = (int)jarg4; 
+  arg5 = (long)jarg5; 
+  acb_hypgeom_gamma_upper(arg1,(acb_struct const (*))arg2,(acb_struct const (*))arg3,arg4,arg5);
+  
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1hypgeom_1gamma_1lower(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
+  acb_struct *arg1 ;
+  acb_struct *arg2 ;
+  acb_struct *arg3 ;
+  int arg4 ;
+  long arg5 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(acb_struct **)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(acb_struct **)&jarg3; 
+  arg4 = (int)jarg4; 
+  arg5 = (long)jarg5; 
+  acb_hypgeom_gamma_lower(arg1,(acb_struct const (*))arg2,(acb_struct const (*))arg3,arg4,arg5);
+  
+  
+  
+}
+
 
 SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1mat_1overlaps(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;

@@ -1,5 +1,10 @@
 #define __off_t long int
 
+ void acb_hypgeom_beta_lower_series(acb_poly_t res, const acb_t a, const acb_t b, const acb_poly_t z, int regularized, slong n, slong prec);
+ void acb_hypgeom_beta_lower(acb_t res, const acb_t a, const acb_t b, const acb_t z, int regularized, slong prec);
+ void acb_hypgeom_gamma_upper(acb_t res, const acb_t s, const acb_t z, int regularized, slong prec);
+ void acb_hypgeom_gamma_lower(acb_t res, const acb_t s, const acb_t z, int regularized, slong prec);
+    
  int arb_mat_overlaps(const arb_mat_t mat1, const arb_mat_t mat2);
   int arb_mat_contains(const arb_mat_t mat1, const arb_mat_t mat2);
  void arb_mat_set(arb_mat_t dest, const arb_mat_t src);
