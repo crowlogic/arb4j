@@ -128,6 +128,19 @@ public class RealMatrix implements AutoCloseable {
     return this;
   }
 
+  /**
+   * @see arb#arb_mat_mul(RealMatrix, RealMatrix, RealMatrix, int)
+   * @param x
+   * @param prec
+   * @param result
+   * @return result
+   */
+  public RealMatrix mul(RealMatrix x, int prec, RealMatrix result)
+  {
+    arb.arb_mat_mul(result, this, x, prec);
+    return result;
+  }
+
   @Override
   public void close()
   { 

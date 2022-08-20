@@ -9,6 +9,7 @@
 package arb;
 
 public class arbJNI {
+  public final static native void arb_mat_mul(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);
   public final static native void arb_mat_printd(long jarg1, RealMatrix jarg1_, int jarg2);
   public final static native int arb_mat_inv(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native int getpagesize();

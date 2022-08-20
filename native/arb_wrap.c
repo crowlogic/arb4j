@@ -311,6 +311,28 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1mul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  arb_mat_struct *arg1 ;
+  arb_mat_struct *arg2 ;
+  arb_mat_struct *arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = *(arb_mat_struct **)&jarg2; 
+  arg3 = *(arb_mat_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  arb_mat_mul(arg1,(arb_mat_struct const (*))arg2,(arb_mat_struct const (*))arg3,arg4);
+  
+  
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1printd(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   arb_mat_struct *arg1 ;
   long arg2 ;

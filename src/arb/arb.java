@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void arb_mat_mul(RealMatrix res, RealMatrix mat1, RealMatrix mat2, int prec) {
+    arbJNI.arb_mat_mul(RealMatrix.getCPtr(res), res, RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2, prec);
+  }
+
   public static void arb_mat_printd(RealMatrix mat, int digits) {
     arbJNI.arb_mat_printd(RealMatrix.getCPtr(mat), mat, digits);
   }
