@@ -5,11 +5,11 @@ import arb.functions.complex.HolomorphicFunction;
 import arb.geometry.curves.PlaneCurve;
 
 /**
- * TODO: implement and use to implement the
- * {@link PlaneCurve}{@link #getArcLength()}
+ * TODO: implement and use to provide the {@link PlaneCurve#getArcLength()}
+ * function
  * 
- * @author crow
- *
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Lemniscate_elliptic_functions">LemniscateEllipticFunctions@Wikipedia</a>
  */
 public class LemniscateCosine implements
                               HolomorphicFunction

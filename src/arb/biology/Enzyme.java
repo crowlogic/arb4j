@@ -20,7 +20,7 @@ package arb.biology;
  * Other biocatalysts are catalytic RNA molecules, called ribozymes. Enzymes'
  * specificity comes from their unique three-dimensional structures.
  * 
- * @see <a href="
+ * @see <a href="https://en.wikipedia.org/wiki/Enzyme">Enzyme@Wikipedia</a>
  */
 public interface Enzyme extends
                         Protein,

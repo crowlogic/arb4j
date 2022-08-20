@@ -9,8 +9,8 @@
 		<lwjgl.natives>natives-linux</lwjgl.natives>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 		<mdep.outputFile>class.path</mdep.outputFile>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.source>18</maven.compiler.source>
+		<maven.compiler.target>18</maven.compiler.target>
 	</properties>
 
 	<build>
@@ -20,7 +20,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>17</release>
+					<release>18</release>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -94,11 +94,7 @@
 			<artifactId>gral-core</artifactId>
 			<version>0.11</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.hageldave.imagingkit</groupId>
-			<artifactId>imagingkit-core</artifactId>
-			<version>2.1</version>
-		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
