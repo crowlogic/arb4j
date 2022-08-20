@@ -16,10 +16,10 @@ public class SRenderer extends
                        ComplexFunctionRenderer<SFunction>
 {
 
-  private static final Double    domain     = new Rectangle2D.Double(-Math.PI ,
-                                                                     -1.5 ,
-                                                                     Math.PI * 2 ,
-                                                                     3 );
+  private static final Double    domain     = new Rectangle2D.Double(-Math.PI,
+                                                                     -1.5,
+                                                                     Math.PI * 2,
+                                                                     3);
   private static final Dimension dimensions = new Dimension(2000 / 2,
                                                             1000 / 2);
 

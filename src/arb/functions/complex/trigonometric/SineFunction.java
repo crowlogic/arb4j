@@ -4,7 +4,7 @@ import arb.Complex;
 import arb.functions.complex.HolomorphicFunction;
 
 public class SineFunction implements
-                                 HolomorphicFunction
+                          HolomorphicFunction
 {
 
   @Override

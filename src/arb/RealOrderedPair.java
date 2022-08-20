@@ -8,7 +8,7 @@ public class RealOrderedPair extends
   @Override
   public String toString()
   {
-    return String.format("RealOrderedPair[a=%s, b=%s]", a.toFixedString(), b.toFixedString() );
+    return String.format("RealOrderedPair[a=%s, b=%s]", a.toFixedString(), b.toFixedString());
   }
 
   public RealOrderedPair()

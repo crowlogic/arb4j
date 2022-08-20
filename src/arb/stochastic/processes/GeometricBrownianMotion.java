@@ -16,7 +16,8 @@ public class GeometricBrownianMotion implements
 
   public GeometricBrownianMotion()
   {
-    this(zero,one);
+    this(zero,
+         one);
   }
 
   public GeometricBrownianMotion(Real mean, Real stdev)

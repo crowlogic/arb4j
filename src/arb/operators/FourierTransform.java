@@ -5,7 +5,7 @@ import arb.functions.*;
 import arb.functions.real.*;
 import arb.stochastic.*;
 
-public class FourierTransform<F extends Function<Real,Real>> implements
+public class FourierTransform<F extends Function<Real, Real>> implements
                              IntegralTransform
 {
 

@@ -29,6 +29,4 @@ public interface MultivariateDiffusionProcess<D extends MultivariateState> exten
    */
   Real getCorrelation(int i, int j);
 
-
-
 }

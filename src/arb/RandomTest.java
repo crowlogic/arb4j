@@ -10,14 +10,14 @@ public class RandomTest extends
   @SuppressWarnings("resource")
   public static void testRandomState()
   {
-    RandomState state = new RandomState(55);
+    RandomState state  = new RandomState(55);
     RandomState state2 = new RandomState(55);
-    Real rnd = new Real().random(state, 128);
-    Real rnd2 = new Real().random(state2, 128);
-    println("rnd(55)=" + rnd );
-    println("rnd(55)=" + rnd2 );
+    Real        rnd    = new Real().random(state, 128);
+    Real        rnd2   = new Real().random(state2, 128);
+    println("rnd(55)=" + rnd);
+    println("rnd(55)=" + rnd2);
   }
-  
+
   public static void testUniformRandom()
   {
 

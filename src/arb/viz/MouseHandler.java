@@ -47,7 +47,7 @@ public final class MouseHandler implements
       startDragging(point);
     }
     // out.println( "Dragged to " + point );
-    plotter.anythingChanged    = true;
+    plotter.anythingChanged = true;
 
   }
 
@@ -111,18 +111,17 @@ public final class MouseHandler implements
   private void startDragging(Double point)
   {
     assert !plotter.selection : "already dragging";
-    plotter.selection           = true;
+    plotter.selection       = true;
     // out.println("started dragging at " + point );
-    plotter.anythingChanged     = true;
+    plotter.anythingChanged = true;
 
   }
 
   private void stopDragging(Double point)
   {
     assert plotter.selection : "not dragging yet therefore cannot stop";
-    plotter.selection          = false;
+    plotter.selection = false;
     // out.println("stopped dragging at " + point );
-
 
   }
 

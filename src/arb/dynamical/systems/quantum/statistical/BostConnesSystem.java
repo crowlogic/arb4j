@@ -12,7 +12,7 @@ import arb.dynamical.systems.DynamicalSystem;
  * 
  * Such systems have been studied for their connection with Hilbert's Twelfth
  * Problem. In the case of a Bost–Connes system over Q, the absolute Galois
- * group acts on the ground states of the system. 
+ * group acts on the ground states of the system.
  * 
  * 
  *

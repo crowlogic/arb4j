@@ -5,7 +5,7 @@ import static arb.RealConstants.*;
 import arb.Real;
 
 public class StandardGaussianCharacteristicFunction implements
-                                                        CharacteristicFunction<StandardGaussianDensityFunction>
+                                                    CharacteristicFunction<StandardGaussianDensityFunction>
 {
 
   @Override

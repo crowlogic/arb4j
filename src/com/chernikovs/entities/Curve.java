@@ -26,7 +26,13 @@ public class Curve extends
           scale);
   }
 
-  public Curve(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, Vector3f colour)
+  public Curve(TexturedModel model,
+               Vector3f position,
+               float rotX,
+               float rotY,
+               float rotZ,
+               float scale,
+               Vector3f colour)
   {
     super(model,
           position,
@@ -37,7 +43,13 @@ public class Curve extends
           colour);
   }
 
-  public Curve(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, VectorFunction f)
+  public Curve(TexturedModel model,
+               Vector3f position,
+               float rotX,
+               float rotY,
+               float rotZ,
+               float scale,
+               VectorFunction f)
   {
     super(model,
           position,
@@ -48,7 +60,14 @@ public class Curve extends
     function = f;
   }
 
-  public Curve(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, Vector3f colour, VectorFunction f)
+  public Curve(TexturedModel model,
+               Vector3f position,
+               float rotX,
+               float rotY,
+               float rotZ,
+               float scale,
+               Vector3f colour,
+               VectorFunction f)
   {
     super(model,
           position,

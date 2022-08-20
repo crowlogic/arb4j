@@ -6,10 +6,12 @@ import arb.topological.Space;
 import arb.topological.Topology;
 
 /**
- * The Cartesian product of two {@link Set} A and B (also called the product set, set
- * direct product, or cross product) is defined to be the set of all points
- * (a,b) where a in A and b in B. It is denoted A×B, and is called the Cartesian
- * product since it originated in Descartes' formulation of analytic geometry. <br><br>
+ * The Cartesian product of two {@link Set} A and B (also called the product
+ * set, set direct product, or cross product) is defined to be the set of all
+ * points (a,b) where a in A and b in B. It is denoted A×B, and is called the
+ * Cartesian product since it originated in Descartes' formulation of analytic
+ * geometry. <br>
+ * <br>
  * 
  * In the Cartesian view, points in the plane are specified by their vertical
  * and horizontal coordinates, with points on a line being specified by just one
@@ -33,7 +35,5 @@ public class CartesianProduct<A extends Set, B extends Set> extends
           b);
     // TODO Auto-generated constructor stub
   }
-
- 
 
 }

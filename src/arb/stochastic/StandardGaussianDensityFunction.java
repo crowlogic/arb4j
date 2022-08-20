@@ -5,7 +5,7 @@ import arb.RealConstants;
 import arb.functions.real.RealFunction;
 
 public class StandardGaussianDensityFunction implements
-                                                 RealProbabilityDensityFunction
+                                             RealProbabilityDensityFunction
 {
 
   public static RealFunction inv = new RealFunction()
@@ -36,6 +36,5 @@ public class StandardGaussianDensityFunction implements
     assert order < 2;
     return z.pow(2, prec, res).negate(res).exp(prec, res);
   }
-
 
 }

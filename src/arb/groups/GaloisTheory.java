@@ -24,7 +24,8 @@ import arb.theoretical.Theory;
  * all known proofs that this characterization is complete require Galois
  * theory).
  * 
- * @see <a href="https://en.wikipedia.org/wiki/Galois_theory">GaloisTheory@Wikipedia</a>
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Galois_theory">GaloisTheory@Wikipedia</a>
  */
 public interface GaloisTheory extends
                               Theory

@@ -7,25 +7,25 @@ import arb.*;
 import junit.framework.TestCase;
 
 public class SineFunctionTest extends
-                                     TestCase
+                              TestCase
 {
   public void testEval()
   {
     SineFunction sin = new SineFunction();
-    Complex             y   = sin.evaluate(ComplexConstants.complexOne, 1, 128, new Complex());
+    Complex      y   = sin.evaluate(ComplexConstants.complexOne, 1, 128, new Complex());
     y.printPrecision = true;
     assertEquals(0.841470984807896506652502321630298999620980106, y.getReal().doubleValue(), pow(10, -20));
     assertTrue(y.getImag().isZero());
   }
 
   @SuppressWarnings("resource")
-  public void testIntegration() 
+  public void testIntegration()
   {
-    SineFunction sine                       = new SineFunction();
-    Magnitude           absoluteErrorToleranceGoal = new Magnitude().set(Math.pow(2, -77));
-    IntegrationOptions  options                    = new IntegrationOptions();
-    int                 relativeAccuracyBitsGoal   = 80;
-    int                 precisionBits              = 160;
+    SineFunction       sine                       = new SineFunction();
+    Magnitude          absoluteErrorToleranceGoal = new Magnitude().set(Math.pow(2, -77));
+    IntegrationOptions options                    = new IntegrationOptions();
+    int                relativeAccuracyBitsGoal   = 80;
+    int                precisionBits              = 160;
     options.verbose = true;
     Complex two      = sine.integrate(ComplexConstants.ZERO,
                                       π,

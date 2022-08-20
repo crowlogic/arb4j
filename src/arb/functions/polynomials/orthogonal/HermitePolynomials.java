@@ -15,9 +15,9 @@ public class HermitePolynomials implements
   {
     return new Iterator<ComplexPolynomial>()
     {
-      int i = 0;
+      int  i     = 0;
       Real order = new Real();
-      
+
       @Override
       public boolean hasNext()
       {
@@ -27,7 +27,7 @@ public class HermitePolynomials implements
       @Override
       public ComplexPolynomial next()
       {
-        assert false : "TODO: workout the details on this API"; 
+        assert false : "TODO: workout the details on this API";
         Real poly = Real.newVector(i);
         order.set(i++);
         arb.arb_hypgeom_hermite_h(poly, order, null, 0);

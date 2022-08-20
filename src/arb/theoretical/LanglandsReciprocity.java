@@ -1,7 +1,7 @@
 package arb.theoretical;
 
 /**
- * TODO: {@link LanglandsProgram} 
+ * TODO: {@link LanglandsProgram}
  * 
  * @see <a href="doc-files/Reciprocity.pdf">Reciprocity</a>
  */

@@ -89,7 +89,8 @@ public class CurveAnalysis extends
     sliderPane.getChildren().add(sliderGrid);
 
     DraggablePane finishPane = new DraggablePane();
-    finishPane.setAbsolutePosition(Display.getWidth() * Display.getRenderPart() - 100, Display.getHeight() - lineHeight);
+    finishPane.setAbsolutePosition(Display.getWidth() * Display.getRenderPart() - 100,
+                                   Display.getHeight() - lineHeight);
 
     finish.setPrefSize(100, lineHeight);
     finish.setFontSize(20);

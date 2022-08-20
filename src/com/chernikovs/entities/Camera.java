@@ -67,9 +67,11 @@ public class Camera
 //	    position.x = lookAt.x - distance * (float)Math.sin(Math.toRadians(yaw)) * (float)Math.cos(Math.toRadians(pitch));
 //        position.y = lookAt.y - distance * (float)Math.cos(Math.toRadians(yaw)) * (float)Math.cos(Math.toRadians(pitch));
 //        position.z = lookAt.z + distance * (float)Math.sin(Math.toRadians(pitch));
-    position.x = lookAt.x - distance * (float) Math.sin(Math.toRadians(yaw)) * (float) Math.cos(Math.toRadians(pitch));
+    position.x = lookAt.x
+                  - distance * (float) Math.sin(Math.toRadians(yaw)) * (float) Math.cos(Math.toRadians(pitch));
     position.y = lookAt.y + distance * (float) Math.sin(Math.toRadians(pitch));
-    position.z = lookAt.z + distance * (float) Math.cos(Math.toRadians(yaw)) * (float) Math.cos(Math.toRadians(pitch));
+    position.z = lookAt.z
+                  + distance * (float) Math.cos(Math.toRadians(yaw)) * (float) Math.cos(Math.toRadians(pitch));
   }
 
   /**

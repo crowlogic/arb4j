@@ -16,7 +16,6 @@ import static org.objectweb.asm.Opcodes.V1_5;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.util.TraceClassVisitor;
 
-
 public class CustomClassWriter
 {
 

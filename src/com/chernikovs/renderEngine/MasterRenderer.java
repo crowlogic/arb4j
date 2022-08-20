@@ -301,7 +301,10 @@ public class MasterRenderer implements
     ArrayList<Vector> result = new ArrayList<>();
     for (Vector vector : vectors)
     {
-      result.add(FunctionHandler.createVector(vector.getPosition(), vector.getDirection(), vector.getColour(), loader));
+      result.add(FunctionHandler.createVector(vector.getPosition(),
+                                              vector.getDirection(),
+                                              vector.getColour(),
+                                              loader));
     }
     return result;
   }

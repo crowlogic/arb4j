@@ -29,7 +29,7 @@ public class DiffusionProcessState extends
 
   public RandomState randomState;
 
-  public final Real value = new Real();
+  public final Real  value = new Real();
 
   /**
    * initialize with a randomly generated initial value seed
@@ -87,8 +87,8 @@ public class DiffusionProcessState extends
   @Override
   public void lock()
   {
-   super.lock();
-    
+    super.lock();
+
   }
 
   public void setIndex(int index)

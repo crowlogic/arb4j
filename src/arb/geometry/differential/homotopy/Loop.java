@@ -8,7 +8,7 @@ import arb.topological.Space;
  * {@link Loop} if γ(0)=γ(1)=x then it is said to be a loop <b>based at x</b>.
  */
 public interface Loop extends
-                     Path
+                      Path
 {
 
 }

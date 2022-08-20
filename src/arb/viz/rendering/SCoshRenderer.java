@@ -34,7 +34,7 @@ public class SCoshRenderer
 
     SFunction               sFunction = new SFunction();
 
-    HolomorphicFunction         function  = (new Composition(sFunction,
+    HolomorphicFunction     function  = (new Composition(sFunction,
                                                          new Composition(new HyperbolicCosine(),
                                                                          new WickRotation())));
 

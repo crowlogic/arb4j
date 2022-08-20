@@ -34,14 +34,14 @@ public class WhiteNoise implements
     this.φ = new GaussianCharacteristicFunction(zero,
                                                 σ);
     this.f = new GaussianDistribution(zero,
-                                                 σ);
+                                      σ);
   }
 
-  public GaussianDensityFunction         p;
+  public GaussianDensityFunction        p;
 
-  public GaussianCharacteristicFunction  φ;
+  public GaussianCharacteristicFunction φ;
 
-  public GaussianDistribution f;
+  public GaussianDistribution           f;
 
   @Override
   public GaussianDensityFunction getDensityFunction(Real t)

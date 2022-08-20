@@ -7,7 +7,7 @@ import lwjgui.scene.Context;
 import lwjgui.scene.Node;
 
 class GearsRenderer implements
-                              Renderer
+                    Renderer
 {
   static float[] pos       =
   { 5.0f, 5.0f, 10.0f, 0.0f };

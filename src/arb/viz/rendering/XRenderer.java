@@ -27,8 +27,8 @@ public class XRenderer extends
     r.saveToFile("X-Real.png");
   }
 
-  public static final int width  = (int) (1800 );
-  public static final int height = (int) (900 );
+  public static final int width  = (int) (1800);
+  public static final int height = (int) (900);
 
   public XRenderer(Real vscale) throws NoninvertibleTransformException
   {

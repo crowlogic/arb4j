@@ -14,7 +14,6 @@ public class CircularS extends
                        CircularComposition<SFunction>
 {
 
-
   public CircularS()
   {
     this(new SFunction(),

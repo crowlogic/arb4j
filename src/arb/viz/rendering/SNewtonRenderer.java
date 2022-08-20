@@ -25,8 +25,8 @@ public class SNewtonRenderer extends
   public SNewtonRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension(2560/2,
-                       1440/2),
+    this(new Dimension(2560 / 2,
+                       1440 / 2),
          new Rectangle2D.Double(-3,
                                 -1.5 * 2,
                                 6,

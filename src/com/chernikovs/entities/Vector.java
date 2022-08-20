@@ -11,7 +11,13 @@ public class Vector extends
 
   private Vector3f direction;
 
-  public Vector(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, Vector3f direction)
+  public Vector(TexturedModel model,
+                Vector3f position,
+                float rotX,
+                float rotY,
+                float rotZ,
+                float scale,
+                Vector3f direction)
   {
     super(model,
           position,
@@ -22,7 +28,14 @@ public class Vector extends
     this.direction = direction;
   }
 
-  public Vector(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, Vector3f direction, Vector3f colour)
+  public Vector(TexturedModel model,
+                Vector3f position,
+                float rotX,
+                float rotY,
+                float rotZ,
+                float scale,
+                Vector3f direction,
+                Vector3f colour)
   {
     super(model,
           position,

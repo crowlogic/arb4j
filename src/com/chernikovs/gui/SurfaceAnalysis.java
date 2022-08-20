@@ -134,7 +134,8 @@ public class SurfaceAnalysis extends
     sliderVPane.getChildren().add(sliderVGrid);
 
     DraggablePane finishPane = new DraggablePane();
-    finishPane.setAbsolutePosition(Display.getWidth() * Display.getRenderPart() - 100, Display.getHeight() - lineHeight);
+    finishPane.setAbsolutePosition(Display.getWidth() * Display.getRenderPart() - 100,
+                                   Display.getHeight() - lineHeight);
 
     Button finish = new Button("Finish");
     finish.setPrefSize(100, lineHeight);
@@ -185,8 +186,10 @@ public class SurfaceAnalysis extends
     to2.setText(String.valueOf(to2_));
 
     Vector2f u0v0Plane = getu0v0Plane(index);
-    gaussianCurvature.setText(String.valueOf((float) getSurface(index).getGaussianCurvature(u0v0Plane.x, u0v0Plane.y)));
-    averageCurvature.setText(String.valueOf((float) getSurface(index).getAverageCurvature(u0v0Plane.x, u0v0Plane.y)));
+    gaussianCurvature.setText(String.valueOf((float) getSurface(index).getGaussianCurvature(u0v0Plane.x,
+                                                                                            u0v0Plane.y)));
+    averageCurvature.setText(String.valueOf((float) getSurface(index).getAverageCurvature(u0v0Plane.x,
+                                                                                          u0v0Plane.y)));
 
     double[] mainCurvatures = getSurface(index).getMainCurvatures(u0v0Plane.x, u0v0Plane.y);
     mainCurvature1.setText(String.valueOf((float) mainCurvatures[0]));

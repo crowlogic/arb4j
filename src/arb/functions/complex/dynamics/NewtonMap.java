@@ -25,22 +25,22 @@ public class NewtonMap<F extends HolomorphicFunction> implements
     this.f = f;
   }
 
-  public F              f;
+  public F                  f;
 
   final HolomorphicFunction diff = (t, order, prec, w) ->
-                             {
-                               assert order < 2;
-                               assert w.size() >= order;
-                               try ( Complex s = Complex.newVector(3);)
-                               {
-                                 f.evaluate(t, 3, prec, s);
-                                 Complex numerator   = s.mul(s.get(2), prec, w);
-                                 Complex denominator = s.get(1).pow(2, prec, s.get(0));
-                                 numerator.div(denominator, prec, w);
-                                 evaluatePole(t, prec, w, true);
-                                 return w;
-                               }
-                             };
+                                 {
+                                   assert order < 2;
+                                   assert w.size() >= order;
+                                   try ( Complex s = Complex.newVector(3);)
+                                   {
+                                     f.evaluate(t, 3, prec, s);
+                                     Complex numerator   = s.mul(s.get(2), prec, w);
+                                     Complex denominator = s.get(1).pow(2, prec, s.get(0));
+                                     numerator.div(denominator, prec, w);
+                                     evaluatePole(t, prec, w, true);
+                                     return w;
+                                   }
+                                 };
 
   protected void evaluatePole(Complex t, int prec, Complex w, boolean b)
   {

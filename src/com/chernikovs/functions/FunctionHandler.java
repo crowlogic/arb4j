@@ -121,12 +121,12 @@ public class FunctionHandler
    */
   public static float[] getNormals(BivariateVectorFunction f, float[] gap1, float[] gap2, float step1, float step2)
   {
-    int             xSteps  = (int) ((gap1[1] - gap1[0]) / step1) + 1;
-    int             ySteps  = (int) ((gap2[1] - gap2[0]) / step2) + 1;
-    int             points  = xSteps * ySteps;
-    float[]         normals = new float[points * 3];
-    float           x       = gap1[0];
-    float           y       = gap2[0];
+    int                     xSteps  = (int) ((gap1[1] - gap1[0]) / step1) + 1;
+    int                     ySteps  = (int) ((gap2[1] - gap2[0]) / step2) + 1;
+    int                     points  = xSteps * ySteps;
+    float[]                 normals = new float[points * 3];
+    float                   x       = gap1[0];
+    float                   y       = gap2[0];
     BivariateVectorFunction normal  = f.getNormal();
     for (int j = 0; j < ySteps; j++)
     {
@@ -156,7 +156,13 @@ public class FunctionHandler
    * @param loader loader to load model
    * @return created surface
    */
-  public static Surface createSurface(BivariateFunction f, float[] gap1, float[] gap2, float step1, float step2, Vector3f colour, Loader loader)
+  public static Surface createSurface(BivariateFunction f,
+                                      float[] gap1,
+                                      float[] gap2,
+                                      float step1,
+                                      float step2,
+                                      Vector3f colour,
+                                      Loader loader)
   {
     ArrayDeque<String> x = new ArrayDeque<>();
     x.add("x");
@@ -167,8 +173,8 @@ public class FunctionHandler
     postfixes.add(y);
     postfixes.add(f.getPostfix());
     BivariateVectorFunction newF = new BivariateVectorFunction(postfixes,
-                                               "x",
-                                               "y");
+                                                               "x",
+                                                               "y");
     return createSurface(newF, gap1, gap2, step1, step2, colour, loader);
   }
 
@@ -184,7 +190,13 @@ public class FunctionHandler
    * @param loader loader to load model
    * @return created surface
    */
-  public static Surface createSurface(BivariateVectorFunction f, float[] gap1, float[] gap2, float step1, float step2, Vector3f colour, Loader loader)
+  public static Surface createSurface(BivariateVectorFunction f,
+                                      float[] gap1,
+                                      float[] gap2,
+                                      float step1,
+                                      float step2,
+                                      Vector3f colour,
+                                      Loader loader)
   {
     int[]         indices       = getIndices(gap1, gap2, step1, step2);
     float[]       vertices      = getVertices(f, gap1, gap2, step1, step2);
@@ -288,7 +300,13 @@ public class FunctionHandler
                      f);
   }
 
-  private static ArrayList<Curve> getGrid(BivariateVectorFunction f, float[] gap1, float[] gap2, float step1, float step2, Vector3f colour, Loader loader)
+  private static ArrayList<Curve> getGrid(BivariateVectorFunction f,
+                                          float[] gap1,
+                                          float[] gap2,
+                                          float step1,
+                                          float step2,
+                                          Vector3f colour,
+                                          Loader loader)
   {
     int              xSteps     = (int) ((gap1[1] - gap1[0]) / step1) + 1;
     int              ySteps     = (int) ((gap2[1] - gap2[0]) / step2) + 1;

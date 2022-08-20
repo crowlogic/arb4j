@@ -77,7 +77,14 @@ public abstract class Options
     return result;
   }
 
-  protected static Pane createVariableOptions(String text, double width, double height, TextField varText, TextField from, TextField to, TextField step, CheckBox pi)
+  protected static Pane createVariableOptions(String text,
+                                              double width,
+                                              double height,
+                                              TextField varText,
+                                              TextField from,
+                                              TextField to,
+                                              TextField step,
+                                              CheckBox pi)
   {
     GridPane res = new GridPane();
     res.setMinSize(width, height);

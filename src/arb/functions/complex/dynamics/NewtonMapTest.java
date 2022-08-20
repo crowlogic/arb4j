@@ -25,8 +25,8 @@ public class NewtonMapTest extends
   public void testNewtonMapDerivative() throws NotDifferentiableException
   {
     HolomorphicFunction f = new NewtonMap(new SFunction()).differential();
-    Complex         t = new Complex().set(0.1, 0.2);
-    Complex         w = f.evaluate(t, 1, prec, new Complex());
+    Complex             t = new Complex().set(0.1, 0.2);
+    Complex             w = f.evaluate(t, 1, prec, new Complex());
 
     assertEquals(0.47827850346020756, w.getReal().doubleValue(), Math.pow(10, -20));
     assertEquals(0.03295813148788927, w.getImag().doubleValue(), Math.pow(10, -20));
@@ -34,8 +34,8 @@ public class NewtonMapTest extends
 
   public void testSMultiplier()
   {
-    SFunction       sFunction   = new SFunction();
-    NewtonMap       sNewtonMap  = new NewtonMap(sFunction);
+    SFunction           sFunction   = new SFunction();
+    NewtonMap           sNewtonMap  = new NewtonMap(sFunction);
     HolomorphicFunction sNewtonDiff = sNewtonMap.differential();
     HolomorphicFunction f           = sNewtonDiff;
     try ( Complex t = new Complex(); Complex w = new Complex();)

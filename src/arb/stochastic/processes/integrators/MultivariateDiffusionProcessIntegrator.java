@@ -26,7 +26,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   private GaussianDistribution                                    gaussian;
 
-  private RealMatrix correlationMatrix;
+  private RealMatrix                                              correlationMatrix;
 
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess process,
                                                 M state,
@@ -40,8 +40,8 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
       this.integrators[i] = integrators[i];
     }
     this.correlationMatrix = correlationMatrix;
-    this.process = process;
-    this.state   = state;
+    this.process           = process;
+    this.state             = state;
   }
 
   public EvaluationSequence step(int prec, EvaluationSequence evalSeq)

@@ -141,8 +141,8 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
   protected static void formatAxes(XYPlot plot)
   {
     // Format axes
-    AxisRenderer axisRendererY  = plot.getAxisRenderer(XYPlot.AXIS_Y);
-    AxisRenderer axisRendererX  = new LinearRenderer2D();
+    AxisRenderer axisRendererY = plot.getAxisRenderer(XYPlot.AXIS_Y);
+    AxisRenderer axisRendererX = new LinearRenderer2D();
     axisRendererY.setTickColor(Color.WHITE);
     axisRendererY.setMinorTickColor(Color.white);
     axisRendererY.setShapeColor(Color.white);
@@ -152,7 +152,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     axisRendererX.setShapeColor(Color.white);
     axisRendererX.setLabel(new Label("Time t"));
     plot.setAxisRenderer(XYPlot.AXIS_X, axisRendererX);
-   // plot.setAxisRenderer(XYPlot.AXIS_Y2, axisRendererY2);
+    // plot.setAxisRenderer(XYPlot.AXIS_Y2, axisRendererY2);
     // Custom stroke for the x-axis
     BasicStroke stroke = new BasicStroke(0.2f);
     axisRendererX.setShapeStroke(stroke);
@@ -180,10 +180,10 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
   public D        diffusionProcess;
   public boolean  verbose = false;
 
-  protected Float T      = new Float();
-  protected Real  μi     = new Real();
-  protected Real  σi     = Real.newVector(2);
-  protected Real  sqrtdt = new Real();
+  protected Float T       = new Float();
+  protected Real  μi      = new Real();
+  protected Real  σi      = Real.newVector(2);
+  protected Real  sqrtdt  = new Real();
 
   public AbstractDiffusionProcessIntegrator(D x)
   {

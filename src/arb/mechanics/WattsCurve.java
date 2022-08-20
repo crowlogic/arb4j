@@ -32,8 +32,8 @@ public class WattsCurve implements
   @Override
   public Complex evaluate(Real t, int order, int prec, Complex res)
   {
-     assert false : "implement me";
-     return null;
+    assert false : "implement me";
+    return null;
   }
 
   @Override

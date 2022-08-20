@@ -103,7 +103,11 @@ public class Renderer
     GL20.glEnableVertexAttribArray(0);
     // GL20.glEnableVertexAttribArray(1);
     // GL20.glEnableVertexAttribArray(2);
-    Matrix4f transformationMatrix = Maths.createTransformationMatrix(vector.getPosition(), vector.getRotX(), vector.getRotY(), vector.getRotZ(), vector.getScale());
+    Matrix4f transformationMatrix = Maths.createTransformationMatrix(vector.getPosition(),
+                                                                     vector.getRotX(),
+                                                                     vector.getRotY(),
+                                                                     vector.getRotZ(),
+                                                                     vector.getScale());
     shader.loadTransformationMatrix(transformationMatrix);
     shader.loadColour(vector.getColour());
     // ModelTexture texture = model.getTexture();
@@ -134,7 +138,11 @@ public class Renderer
     GL20.glEnableVertexAttribArray(0);
     // GL20.glEnableVertexAttribArray(1);
     // GL20.glEnableVertexAttribArray(2);
-    Matrix4f transformationMatrix = Maths.createTransformationMatrix(curve.getPosition(), curve.getRotX(), curve.getRotY(), curve.getRotZ(), curve.getScale());
+    Matrix4f transformationMatrix = Maths.createTransformationMatrix(curve.getPosition(),
+                                                                     curve.getRotX(),
+                                                                     curve.getRotY(),
+                                                                     curve.getRotZ(),
+                                                                     curve.getScale());
     shader.loadTransformationMatrix(transformationMatrix);
     shader.loadColour(curve.getColour());
     // ModelTexture texture = model.getTexture();
@@ -166,7 +174,11 @@ public class Renderer
     GL20.glEnableVertexAttribArray(0);
     GL20.glEnableVertexAttribArray(1);
     GL20.glEnableVertexAttribArray(2);
-    Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+    Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
+                                                                     entity.getRotX(),
+                                                                     entity.getRotY(),
+                                                                     entity.getRotZ(),
+                                                                     entity.getScale());
     shader.loadTransformationMatrix(transformationMatrix);
     shader.loadColour(entity.getColour());
     ModelTexture texture = model.getTexture();

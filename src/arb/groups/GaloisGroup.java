@@ -1,7 +1,7 @@
 package arb.groups;
 
 /**
- * TODO... 
+ * TODO...
  * 
  * @author crow
  *

@@ -32,7 +32,7 @@ public class StandardGaussianProcess implements
 
   public StandardGaussianCharacteristicFunction φ;
 
-  public StandardGaussianDistribution   f;
+  public StandardGaussianDistribution           f;
 
   @Override
   public StandardGaussianDensityFunction getDensityFunction(Real t)

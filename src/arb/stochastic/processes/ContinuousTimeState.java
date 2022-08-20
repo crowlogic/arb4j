@@ -97,14 +97,14 @@ public abstract class ContinuousTimeState<S> implements
    */
   public synchronized final Real getdt(Real result)
   {
-    
+
     if (dt.isFinite())
     {
       if (result == null)
       {
         return dt;
       }
-      
+
       // return the fixed-length step-size if its set
       return result.set(dt);
     }
@@ -183,7 +183,6 @@ public abstract class ContinuousTimeState<S> implements
     return i--;
   }
 
-  
   /**
    * 
    * @return i++ if this isn't this{@link #locked()} otherwise an

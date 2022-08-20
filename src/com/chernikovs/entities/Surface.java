@@ -21,22 +21,22 @@ public class Surface extends
                      Entity
 {
 
-  private ArrayList<Curve> grid;
-  private BivariateVectorFunction  function = new BivariateVectorFunction();
+  private ArrayList<Curve>        grid;
+  private BivariateVectorFunction function = new BivariateVectorFunction();
 
-  private BivariateVectorFunction  n;
-  private BivariateFunction        E;
-  private BivariateFunction        F;
-  private BivariateFunction        G;
-  private BivariateFunction        L;
-  private BivariateFunction        M;
-  private BivariateFunction        N;
+  private BivariateVectorFunction n;
+  private BivariateFunction       E;
+  private BivariateFunction       F;
+  private BivariateFunction       G;
+  private BivariateFunction       L;
+  private BivariateFunction       M;
+  private BivariateFunction       N;
 
-  private BivariateFunction        k1;
-  private BivariateFunction        k2;
-  private BivariateFunction        aPhi;
-  private BivariateFunction        bPhi;
-  private BivariateFunction        cPhi;
+  private BivariateFunction       k1;
+  private BivariateFunction       k2;
+  private BivariateFunction       aPhi;
+  private BivariateFunction       bPhi;
+  private BivariateFunction       cPhi;
 
   public Surface(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale)
   {
@@ -48,7 +48,13 @@ public class Surface extends
           scale);
   }
 
-  public Surface(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, Vector3f colour)
+  public Surface(TexturedModel model,
+                 Vector3f position,
+                 float rotX,
+                 float rotY,
+                 float rotZ,
+                 float scale,
+                 Vector3f colour)
   {
     super(model,
           position,
@@ -59,7 +65,13 @@ public class Surface extends
           colour);
   }
 
-  public Surface(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, BivariateVectorFunction f)
+  public Surface(TexturedModel model,
+                 Vector3f position,
+                 float rotX,
+                 float rotY,
+                 float rotZ,
+                 float scale,
+                 BivariateVectorFunction f)
   {
     super(model,
           position,
@@ -70,7 +82,14 @@ public class Surface extends
     function = f;
   }
 
-  public Surface(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, Vector3f colour, BivariateVectorFunction f)
+  public Surface(TexturedModel model,
+                 Vector3f position,
+                 float rotX,
+                 float rotY,
+                 float rotZ,
+                 float scale,
+                 Vector3f colour,
+                 BivariateVectorFunction f)
   {
     super(model,
           position,
@@ -129,12 +148,12 @@ public class Surface extends
     BivariateVectorFunction dFst      = function.diffByFst();
     BivariateVectorFunction dSnd      = function.diffBySnd();
     BivariateFunction[]     fns       = new BivariateFunction[3];
-    Vector3f        fstVector = new Vector3f((float) dFst.calc(fst, snd)[0],
-                                             (float) dFst.calc(fst, snd)[1],
-                                             (float) dFst.calc(fst, snd)[2]);
-    Vector3f        sndVector = new Vector3f((float) dSnd.calc(fst, snd)[0],
-                                             (float) dSnd.calc(fst, snd)[1],
-                                             (float) dSnd.calc(fst, snd)[2]);
+    Vector3f                fstVector = new Vector3f((float) dFst.calc(fst, snd)[0],
+                                                     (float) dFst.calc(fst, snd)[1],
+                                                     (float) dFst.calc(fst, snd)[2]);
+    Vector3f                sndVector = new Vector3f((float) dSnd.calc(fst, snd)[0],
+                                                     (float) dSnd.calc(fst, snd)[1],
+                                                     (float) dSnd.calc(fst, snd)[2]);
     if (fstVector.x != 0 || fstVector.y != 0 || fstVector.z != 0)
     {
       fstVector.normalize();
@@ -152,36 +171,48 @@ public class Surface extends
       sndVector.normalize();
     }
     fns[0] = new BivariateFunction(new ASTree("u*a1+v*a2").substitute(new String[]
-    { "u", "a1", "v", "a2" }, new ASTree(function.getFstVar()), new ASTree(String.valueOf(fstVector.x)), new ASTree(function.getSndVar()), new ASTree(String.valueOf(sndVector.x)))
-                                                  .reduce()
-                                                  .toPostfix(),
-                           function.getFstVar(),
-                           function.getSndVar());
+    { "u", "a1", "v", "a2" },
+                                                                      new ASTree(function.getFstVar()),
+                                                                      new ASTree(String.valueOf(fstVector.x)),
+                                                                      new ASTree(function.getSndVar()),
+                                                                      new ASTree(String.valueOf(sndVector.x)))
+                                                          .reduce()
+                                                          .toPostfix(),
+                                   function.getFstVar(),
+                                   function.getSndVar());
     fns[1] = new BivariateFunction(new ASTree("u*b1+v*b2").substitute(new String[]
-    { "u", "b1", "v", "b2" }, new ASTree(function.getFstVar()), new ASTree(String.valueOf(fstVector.y)), new ASTree(function.getSndVar()), new ASTree(String.valueOf(sndVector.y)))
-                                                  .reduce()
-                                                  .toPostfix(),
-                           function.getFstVar(),
-                           function.getSndVar());
+    { "u", "b1", "v", "b2" },
+                                                                      new ASTree(function.getFstVar()),
+                                                                      new ASTree(String.valueOf(fstVector.y)),
+                                                                      new ASTree(function.getSndVar()),
+                                                                      new ASTree(String.valueOf(sndVector.y)))
+                                                          .reduce()
+                                                          .toPostfix(),
+                                   function.getFstVar(),
+                                   function.getSndVar());
     fns[2] = new BivariateFunction(new ASTree("u*c1+v*c2").substitute(new String[]
-    { "u", "c1", "v", "c2" }, new ASTree(function.getFstVar()), new ASTree(String.valueOf(fstVector.z)), new ASTree(function.getSndVar()), new ASTree(String.valueOf(sndVector.z)))
-                                                  .reduce()
-                                                  .toPostfix(),
-                           function.getFstVar(),
-                           function.getSndVar());
+    { "u", "c1", "v", "c2" },
+                                                                      new ASTree(function.getFstVar()),
+                                                                      new ASTree(String.valueOf(fstVector.z)),
+                                                                      new ASTree(function.getSndVar()),
+                                                                      new ASTree(String.valueOf(sndVector.z)))
+                                                          .reduce()
+                                                          .toPostfix(),
+                                   function.getFstVar(),
+                                   function.getSndVar());
     BivariateVectorFunction f        = new BivariateVectorFunction(fns,
-                                                   function.getFstVar(),
-                                                   function.getSndVar());
-    Surface         plane    = FunctionHandler.createSurface(f, new float[]
+                                                                   function.getFstVar(),
+                                                                   function.getSndVar());
+    Surface                 plane    = FunctionHandler.createSurface(f, new float[]
     { -1, 1 }, new float[]
     { -1, 1 },
-                                                             1.0f,
-                                                             1.0f,
-                                                             new Vector3f(0.6f,
-                                                                          0.0f,
-                                                                          0.6f),
-                                                             MasterRenderer.getLoader());
-    double[]        position = function.calc(fst, snd);
+                                                                     1.0f,
+                                                                     1.0f,
+                                                                     new Vector3f(0.6f,
+                                                                                  0.0f,
+                                                                                  0.6f),
+                                                                     MasterRenderer.getLoader());
+    double[]                position = function.calc(fst, snd);
     plane.increasePosition((float) position[0], (float) position[1], (float) position[2]);
     return plane;
   }
@@ -207,10 +238,22 @@ public class Surface extends
     Vector3f          colourMax      = new Vector3f(1,
                                                     0,
                                                     0);
-    mainDirections.add(FunctionHandler.createVector(vecPosition, directions[0], colourMin, MasterRenderer.getLoader()));
-    mainDirections.add(FunctionHandler.createVector(vecPosition, directions[1], colourMax, MasterRenderer.getLoader()));
-    mainDirections.add(FunctionHandler.createVector(vecPosition, directions[2], colourMin, MasterRenderer.getLoader()));
-    mainDirections.add(FunctionHandler.createVector(vecPosition, directions[3], colourMax, MasterRenderer.getLoader()));
+    mainDirections.add(FunctionHandler.createVector(vecPosition,
+                                                    directions[0],
+                                                    colourMin,
+                                                    MasterRenderer.getLoader()));
+    mainDirections.add(FunctionHandler.createVector(vecPosition,
+                                                    directions[1],
+                                                    colourMax,
+                                                    MasterRenderer.getLoader()));
+    mainDirections.add(FunctionHandler.createVector(vecPosition,
+                                                    directions[2],
+                                                    colourMin,
+                                                    MasterRenderer.getLoader()));
+    mainDirections.add(FunctionHandler.createVector(vecPosition,
+                                                    directions[3],
+                                                    colourMax,
+                                                    MasterRenderer.getLoader()));
     return mainDirections;
   }
 
@@ -228,37 +271,51 @@ public class Surface extends
       if (Math.abs(bPhi.calc(fst, snd)) <= Maths.epsilon)
       {
         d = new BivariateFunction(new ASTree("0").toPostfix(),
-                          function.getFstVar(),
-                          function.getSndVar());
+                                  function.getFstVar(),
+                                  function.getSndVar());
       }
       else
       {
         d = new BivariateFunction(new ASTree("-c/b").substitute(new String[]
         { "b", "c" }, new ASTree(bPhi.getPostfix()), new ASTree(cPhi.getPostfix())).reduce().toPostfix(),
-                          function.getFstVar(),
-                          function.getSndVar());
+                                  function.getFstVar(),
+                                  function.getSndVar());
       }
     }
     else
     {
       d = new BivariateFunction(new ASTree("(-b+sqrt(b^2-4*a*c))/(2*a)").substitute(new String[]
-      { "a", "b", "c" }, new ASTree(aPhi.getPostfix()), new ASTree(bPhi.getPostfix()), new ASTree(cPhi.getPostfix())).reduce().toPostfix(),
-                        function.getFstVar(),
-                        function.getSndVar());
+      { "a", "b", "c" }, new ASTree(aPhi.getPostfix()), new ASTree(bPhi.getPostfix()), new ASTree(cPhi.getPostfix()))
+                                                                        .reduce()
+                                                                        .toPostfix(),
+                                function.getFstVar(),
+                                function.getSndVar());
     }
     Function                 arg1 = new Function(new ASTree("t").toPostfix(),
                                                  "t");
     Function                 arg2 = new Function(new ASTree("d*(t-fst)+snd").substitute(new String[]
-    { "d", "fst", "snd" }, new ASTree(String.valueOf(d.calc(fst, snd))), new ASTree(String.valueOf(fst)), new ASTree(String.valueOf(snd))).reduce().toPostfix(),
+    { "d", "fst", "snd" },
+                                                                                        new ASTree(String.valueOf(d.calc(fst,
+                                                                                                                         snd))),
+                                                                                        new ASTree(String.valueOf(fst)),
+                                                                                        new ASTree(String.valueOf(snd)))
+                                                                            .reduce()
+                                                                            .toPostfix(),
                                                  "t");
 
     List<ArrayDeque<String>> list = new ArrayList<>();
     list.add(new ASTree(function.getFns()[0].getPostfix()).substitute(new String[]
-    { function.getFstVar(), function.getSndVar() }, new ASTree(arg1.getPostfix()), new ASTree(arg2.getPostfix())).reduce().toPostfix());
+    { function.getFstVar(), function.getSndVar() }, new ASTree(arg1.getPostfix()), new ASTree(arg2.getPostfix()))
+                                                          .reduce()
+                                                          .toPostfix());
     list.add(new ASTree(function.getFns()[1].getPostfix()).substitute(new String[]
-    { function.getFstVar(), function.getSndVar() }, new ASTree(arg1.getPostfix()), new ASTree(arg2.getPostfix())).reduce().toPostfix());
+    { function.getFstVar(), function.getSndVar() }, new ASTree(arg1.getPostfix()), new ASTree(arg2.getPostfix()))
+                                                          .reduce()
+                                                          .toPostfix());
     list.add(new ASTree(function.getFns()[2].getPostfix()).substitute(new String[]
-    { function.getFstVar(), function.getSndVar() }, new ASTree(arg1.getPostfix()), new ASTree(arg2.getPostfix())).reduce().toPostfix());
+    { function.getFstVar(), function.getSndVar() }, new ASTree(arg1.getPostfix()), new ASTree(arg2.getPostfix()))
+                                                          .reduce()
+                                                          .toPostfix());
     VectorFunction phi        = new VectorFunction(list,
                                                    "t");
     double[]       dPhi       = phi.diff().calc(fst);
@@ -276,7 +333,8 @@ public class Surface extends
     float k  = (float) ((float) (L.calc(fst, snd) + 2 * M.calc(fst, snd) * dv + N.calc(fst, snd) * dv * dv)
                   / (E.calc(fst, snd) + 2 * F.calc(fst, snd) * dv + G.calc(fst, snd) * dv * dv));
 
-    if (Math.abs(k - k1.calc(fst, snd)) <= Maths.epsilon && k <= k2.calc(fst, snd) || Math.abs(k - k1.calc(fst, snd)) > Maths.epsilon && k <= k1.calc(fst, snd))
+    if (Math.abs(k - k1.calc(fst, snd)) <= Maths.epsilon && k <= k2.calc(fst, snd)
+                  || Math.abs(k - k1.calc(fst, snd)) > Maths.epsilon && k <= k1.calc(fst, snd))
     {
       result[0] = direction1;
       result[1] = direction2;
@@ -319,49 +377,75 @@ public class Surface extends
     N    = fvv.dot(n);
 
     aPhi = new BivariateFunction(new ASTree("F*N-M*G").substitute(new String[]
-    { "F", "G", "M", "N" }, new ASTree(F.getPostfix()), new ASTree(G.getPostfix()), new ASTree(M.getPostfix()), new ASTree(N.getPostfix())).reduce().toPostfix(),
-                         function.getFstVar(),
-                         function.getSndVar());
+    { "F", "G", "M", "N" },
+                                                                  new ASTree(F.getPostfix()),
+                                                                  new ASTree(G.getPostfix()),
+                                                                  new ASTree(M.getPostfix()),
+                                                                  new ASTree(N.getPostfix()))
+                                                      .reduce()
+                                                      .toPostfix(),
+                                 function.getFstVar(),
+                                 function.getSndVar());
     bPhi = new BivariateFunction(new ASTree("E*N-L*G").substitute(new String[]
-    { "E", "G", "L", "N" }, new ASTree(E.getPostfix()), new ASTree(G.getPostfix()), new ASTree(L.getPostfix()), new ASTree(N.getPostfix())).reduce().toPostfix(),
-                         function.getFstVar(),
-                         function.getSndVar());
+    { "E", "G", "L", "N" },
+                                                                  new ASTree(E.getPostfix()),
+                                                                  new ASTree(G.getPostfix()),
+                                                                  new ASTree(L.getPostfix()),
+                                                                  new ASTree(N.getPostfix()))
+                                                      .reduce()
+                                                      .toPostfix(),
+                                 function.getFstVar(),
+                                 function.getSndVar());
     cPhi = new BivariateFunction(new ASTree("E*M-L*F").substitute(new String[]
-    { "E", "F", "L", "M" }, new ASTree(E.getPostfix()), new ASTree(F.getPostfix()), new ASTree(L.getPostfix()), new ASTree(M.getPostfix())).reduce().toPostfix(),
-                         function.getFstVar(),
-                         function.getSndVar());
+    { "E", "F", "L", "M" },
+                                                                  new ASTree(E.getPostfix()),
+                                                                  new ASTree(F.getPostfix()),
+                                                                  new ASTree(L.getPostfix()),
+                                                                  new ASTree(M.getPostfix()))
+                                                      .reduce()
+                                                      .toPostfix(),
+                                 function.getFstVar(),
+                                 function.getSndVar());
   }
 
   private void countCurvatures()
   {
     BivariateFunction aK = new BivariateFunction(new ASTree("E*G-F^2").substitute(new String[]
-    { "E", "F", "G" }, new ASTree(E.getPostfix()), new ASTree(F.getPostfix()), new ASTree(G.getPostfix())).reduce().toPostfix(),
-                                 function.getFstVar(),
-                                 function.getSndVar());
+    { "E", "F", "G" }, new ASTree(E.getPostfix()), new ASTree(F.getPostfix()), new ASTree(G.getPostfix()))
+                                                                      .reduce()
+                                                                      .toPostfix(),
+                                                 function.getFstVar(),
+                                                 function.getSndVar());
     BivariateFunction bK = new BivariateFunction(new ASTree("2*M*F-G*L-N*E").substitute(new String[]
     { "E", "F", "G", "L", "M", "N" },
-                                                                        new ASTree(E.getPostfix()),
-                                                                        new ASTree(F.getPostfix()),
-                                                                        new ASTree(G.getPostfix()),
-                                                                        new ASTree(L.getPostfix()),
-                                                                        new ASTree(M.getPostfix()),
-                                                                        new ASTree(N.getPostfix()))
-                                                            .reduce()
-                                                            .toPostfix(),
-                                 function.getFstVar(),
-                                 function.getSndVar());
+                                                                                        new ASTree(E.getPostfix()),
+                                                                                        new ASTree(F.getPostfix()),
+                                                                                        new ASTree(G.getPostfix()),
+                                                                                        new ASTree(L.getPostfix()),
+                                                                                        new ASTree(M.getPostfix()),
+                                                                                        new ASTree(N.getPostfix()))
+                                                                            .reduce()
+                                                                            .toPostfix(),
+                                                 function.getFstVar(),
+                                                 function.getSndVar());
     BivariateFunction cK = new BivariateFunction(new ASTree("N*L-M^2").substitute(new String[]
-    { "L", "M", "N" }, new ASTree(L.getPostfix()), new ASTree(M.getPostfix()), new ASTree(N.getPostfix())).reduce().toPostfix(),
-                                 function.getFstVar(),
-                                 function.getSndVar());
+    { "L", "M", "N" }, new ASTree(L.getPostfix()), new ASTree(M.getPostfix()), new ASTree(N.getPostfix()))
+                                                                      .reduce()
+                                                                      .toPostfix(),
+                                                 function.getFstVar(),
+                                                 function.getSndVar());
     k1 = new BivariateFunction(new ASTree("(-b+sqrt(b^2-4*a*c))/(2*a)").substitute(new String[]
-    { "a", "b", "c" }, new ASTree(aK.getPostfix()), new ASTree(bK.getPostfix()), new ASTree(cK.getPostfix())).reduce().toPostfix(),
-                       function.getFstVar(),
-                       function.getSndVar());
+    { "a", "b", "c" }, new ASTree(aK.getPostfix()), new ASTree(bK.getPostfix()), new ASTree(cK.getPostfix()))
+                                                                       .reduce()
+                                                                       .toPostfix(),
+                               function.getFstVar(),
+                               function.getSndVar());
     k2 = new BivariateFunction(new ASTree("(-b-sqrt(b^2-4*a*c))/(2*a)").substitute(new String[]
-    { "a", "b", "c" }, new ASTree(aK.getPostfix()), new ASTree(bK.getPostfix()), new ASTree(cK.getPostfix())).reduce().toPostfix(),
-                       function.getFstVar(),
-                       function.getSndVar());
+    { "a", "b", "c" }, new ASTree(aK.getPostfix()), new ASTree(bK.getPostfix()), new ASTree(cK.getPostfix()))
+                                                                       .reduce()
+                                                                       .toPostfix(),
+                               function.getFstVar(),
+                               function.getSndVar());
   }
 
   /**
@@ -426,8 +510,8 @@ public class Surface extends
     }
 
     Surface  paraboloid = FunctionHandler.createSurface(new BivariateFunction(expression,
-                                                                      "x",
-                                                                      "y"),
+                                                                              "x",
+                                                                              "y"),
                                                         new float[]
                                                         { -1, 1 },
                                                         new float[]
@@ -513,7 +597,9 @@ public class Surface extends
       for (int i = 0; i < xSteps; i++)
       {
         result += triangleSquare(function.calc(x, y + step2), function.calc(x + step1, y), function.calc(x, y))
-                      + triangleSquare(function.calc(x, y + step2), function.calc(x + step1, y), function.calc(x + step1, y + step2));
+                      + triangleSquare(function.calc(x, y + step2),
+                                       function.calc(x + step1, y),
+                                       function.calc(x + step1, y + step2));
         x      += step1;
       }
       x  = u1;

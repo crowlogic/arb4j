@@ -52,7 +52,11 @@ public class Main
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-    window = LWJGUIUtil.createOpenGLCoreWindow("Harry Plotter", Display.getWidth(), Display.getHeight(), false, false);
+    window = LWJGUIUtil.createOpenGLCoreWindow("Harry Plotter",
+                                               Display.getWidth(),
+                                               Display.getHeight(),
+                                               false,
+                                               false);
     if (window == NULL)
       throw new RuntimeException("Failed to create the GLFW window");
 

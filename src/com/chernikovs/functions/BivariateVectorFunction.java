@@ -207,7 +207,10 @@ public class BivariateVectorFunction
   public BivariateFunction abs()
   {
     ASTree resTree = new ASTree("sqrt(x^2+y^2+z^2)").substitute(new String[]
-    { "x", "y", "z" }, new ASTree(fns[0].getPostfix()), new ASTree(fns[1].getPostfix()), new ASTree(fns[2].getPostfix()));
+    { "x", "y", "z" },
+                                                                new ASTree(fns[0].getPostfix()),
+                                                                new ASTree(fns[1].getPostfix()),
+                                                                new ASTree(fns[2].getPostfix()));
     return new BivariateFunction(resTree.reduce().toPostfix(),
                                  fstVar,
                                  sndVar);

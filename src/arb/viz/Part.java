@@ -1,6 +1,6 @@
 package arb.viz;
 
-public enum Part 
+public enum Part
 {
  Real,
  Imaginary,

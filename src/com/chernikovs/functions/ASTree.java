@@ -512,7 +512,8 @@ public class ASTree implements
         {
           return children[0];
         }
-        if (ExpressionHandler.isNumber(children[1].get()) && Double.parseDouble(children[1].get()) % 2 == 1 && children[0].get().equals("neg"))
+        if (ExpressionHandler.isNumber(children[1].get()) && Double.parseDouble(children[1].get()) % 2 == 1
+                      && children[0].get().equals("neg"))
         {
           return new Branch("^",
                             ((Branch) children[0]).children[0],
@@ -714,7 +715,8 @@ public class ASTree implements
         {
           Node   child = children[0].clone();
 
-          ASTree der   = new ASTree(ExpressionHandler.getInfixDerivative(operation)).substitute("x", new ASTree(child));
+          ASTree der   = new ASTree(ExpressionHandler.getInfixDerivative(operation)).substitute("x",
+                                                                                                new ASTree(child));
 
           return new Branch("*",
                             der.root,

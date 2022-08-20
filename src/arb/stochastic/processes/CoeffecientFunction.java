@@ -5,7 +5,7 @@ import arb.dynamical.systems.*;
 import arb.functions.Function;
 
 public interface CoeffecientFunction<S extends State> extends
-                                     Function<S, Real>
+                                    Function<S, Real>
 {
   default boolean dependsOnAbsoluteTime()
   {

@@ -119,8 +119,12 @@ public class SurfaceOptions extends
 
     GridPane vars = new GridPane();
     vars.setMinSize(width, height * 0.21875);
-    vars.add(createVariableOptions("First variable:", width, height * 0.21875 / 2, fvar, ffrom, fto, fstep, fpi), 1, 1);
-    vars.add(createVariableOptions("Second variable:", width, height * 0.21875 / 2, svar, sfrom, sto, sstep, spi), 1, 2);
+    vars.add(createVariableOptions("First variable:", width, height * 0.21875 / 2, fvar, ffrom, fto, fstep, fpi),
+             1,
+             1);
+    vars.add(createVariableOptions("Second variable:", width, height * 0.21875 / 2, svar, sfrom, sto, sstep, spi),
+             1,
+             2);
 
     analyse.setFontSize(20);
     analyse.setMinSize(100, 30);

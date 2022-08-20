@@ -5,7 +5,7 @@ import java.util.*;
 public class FloatIterator implements
                            Iterator<Float>
 {
-  int  i = 0;
+  int   i = 0;
   Float x = null;
 
   public FloatIterator(Float x)

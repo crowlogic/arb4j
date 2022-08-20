@@ -19,7 +19,8 @@ import arb.*;
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Relation_(mathematics)">Wikipedia</a>
  */
-public interface BinaryRelation<A, B> extends Comparable<Object>
+public interface BinaryRelation<A, B> extends
+                               Comparable<Object>
 {
 
 }

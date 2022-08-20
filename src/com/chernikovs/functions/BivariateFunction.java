@@ -77,7 +77,8 @@ public class BivariateFunction
     reduced.clear();
     for (String token : postfix)
     {
-      if (ExpressionHandler.isVariable(token) && !ExpressionHandler.isNumber(token) && !token.equals(newFstVar) && !token.equals(newSndVar))
+      if (ExpressionHandler.isVariable(token) && !ExpressionHandler.isNumber(token) && !token.equals(newFstVar)
+                    && !token.equals(newSndVar))
       {
         reduced.add("0");
       }
@@ -199,9 +200,9 @@ public class BivariateFunction
   public BivariateFunction diffByFst()
   {
     return new BivariateFunction((new Function(postfix.clone(),
-                                       fstVar)).diff().getPostfix(),
-                         fstVar,
-                         sndVar);
+                                               fstVar)).diff().getPostfix(),
+                                 fstVar,
+                                 sndVar);
   }
 
   /**
@@ -213,9 +214,9 @@ public class BivariateFunction
   public BivariateFunction diffBySnd()
   {
     return new BivariateFunction((new Function(postfix.clone(),
-                                       sndVar)).diff().getPostfix(),
-                         fstVar,
-                         sndVar);
+                                               sndVar)).diff().getPostfix(),
+                                 fstVar,
+                                 sndVar);
   }
 
   /**

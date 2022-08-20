@@ -9,6 +9,6 @@ public class FieldTest extends
   {
     Real real = new Real();
     real.add(RealConstants.one, 128);
-    assertEquals( RealConstants.one, real );
+    assertEquals(RealConstants.one, real);
   }
 }

@@ -4,8 +4,8 @@ import arb.Complex;
 
 /**
  * This function lops off the first element of the function, this is used to
- * implement the default {@link HolomorphicFunction#differential()}. If there is a
- * way to compute this shift without the first element then that would be more
+ * implement the default {@link HolomorphicFunction#differential()}. If there is
+ * a way to compute this shift without the first element then that would be more
  * efficient and should be used instead of this class
  * 
  *

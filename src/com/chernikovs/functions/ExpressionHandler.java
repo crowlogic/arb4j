@@ -90,9 +90,9 @@ public class ExpressionHandler
                                                                                                                                                         add("1");
                                                                                                                                                         add("sgn(x)");
                                                                                                                                                       }
-                                                                                                                                                    });                                     // x
-                                                                                                                                                                                            // !=
-                                                                                                                                                                                            // 0
+                                                                                                                                                    });                                          // x
+                                                                                                                                                                                                 // !=
+                                                                                                                                                                                                 // 0
                                                                              put("sgn", new ArrayList<String>()
                                                                                                                                                     {
                                                                                                                                                       {
@@ -365,39 +365,39 @@ public class ExpressionHandler
                                                                                                                                                         add("1");
                                                                                                                                                         add("1/(1-x^2)");
                                                                                                                                                       }
-                                                                                                                                                    });                                     // x
-                                                                                                                                                                                            // <-
-                                                                                                                                                                                            // (-1,
-                                                                                                                                                                                            // 1)
+                                                                                                                                                    });                                          // x
+                                                                                                                                                                                                 // <-
+                                                                                                                                                                                                 // (-1,
+                                                                                                                                                                                                 // 1)
                                                                              put("acoth", new ArrayList<String>()
                                                                                                                                                     {
                                                                                                                                                       {
                                                                                                                                                         add("1");
                                                                                                                                                         add("1/(1-x^2)");
                                                                                                                                                       }
-                                                                                                                                                    });                                     // x
-                                                                                                                                                                                            // <-
-                                                                                                                                                                                            // (-1,
-                                                                                                                                                                                            // 1)
+                                                                                                                                                    });                                          // x
+                                                                                                                                                                                                 // <-
+                                                                                                                                                                                                 // (-1,
+                                                                                                                                                                                                 // 1)
                                                                              put("asech", new ArrayList<String>()
                                                                                                                                                     {
                                                                                                                                                       {
                                                                                                                                                         add("1");
                                                                                                                                                         add("-1/(x*sqrt(1-x^2))");
                                                                                                                                                       }
-                                                                                                                                                    });                                     // x
-                                                                                                                                                                                            // <-
-                                                                                                                                                                                            // (0,
-                                                                                                                                                                                            // 1)
+                                                                                                                                                    });                                          // x
+                                                                                                                                                                                                 // <-
+                                                                                                                                                                                                 // (0,
+                                                                                                                                                                                                 // 1)
                                                                              put("acsch", new ArrayList<String>()
                                                                                                                                                     {
                                                                                                                                                       {
                                                                                                                                                         add("1");
                                                                                                                                                         add("-1/(x*sqrt(1+x^2))");
                                                                                                                                                       }
-                                                                                                                                                    });                                     // x
-                                                                                                                                                                                            // >
-                                                                                                                                                                                            // 0
+                                                                                                                                                    });                                          // x
+                                                                                                                                                                                                 // >
+                                                                                                                                                                                                 // 0
                                                                            }
                                                                          };
 
@@ -409,54 +409,122 @@ public class ExpressionHandler
                                                                              put("-", (vars) -> vars[0] - vars[1]);
                                                                              put("*", (vars) -> vars[0] * vars[1]);
                                                                              put("/", (vars) -> vars[0] / vars[1]);
-                                                                             put("^", (vars) -> Math.pow(vars[0], vars[1]));
+                                                                             put("^",
+                                                                                 (vars) -> Math.pow(vars[0],
+                                                                                                    vars[1]));
                                                                              put("neg", (vars) -> -vars[0]);
                                                                              put("abs", (vars) -> Math.abs(vars[0]));
-                                                                             put("sgn", (vars) -> Math.signum(vars[0]));
-                                                                             put("sqrt", (vars) -> Math.sqrt(vars[0]));
-                                                                             put("cbrt", (vars) -> Math.cbrt(vars[0]));
+                                                                             put("sgn",
+                                                                                 (vars) -> Math.signum(vars[0]));
+                                                                             put("sqrt",
+                                                                                 (vars) -> Math.sqrt(vars[0]));
+                                                                             put("cbrt",
+                                                                                 (vars) -> Math.cbrt(vars[0]));
                                                                              put("exp", (vars) -> Math.exp(vars[0]));
                                                                              put("ln", (vars) -> Math.log(vars[0]));
-                                                                             put("log", (vars) -> Math.log10(vars[0]));
-                                                                             put("lb", (vars) -> Math.log(vars[0]) / Math.log(2));
-                                                                             put("min", (vars) -> Math.min(vars[0], vars[1]));
-                                                                             put("max", (vars) -> Math.max(vars[0], vars[1]));
+                                                                             put("log",
+                                                                                 (vars) -> Math.log10(vars[0]));
+                                                                             put("lb",
+                                                                                 (vars) -> Math.log(vars[0])
+                                                                                               / Math.log(2));
+                                                                             put("min",
+                                                                                 (vars) -> Math.min(vars[0],
+                                                                                                    vars[1]));
+                                                                             put("max",
+                                                                                 (vars) -> Math.max(vars[0],
+                                                                                                    vars[1]));
                                                                              put("fact",
-                                                                                 (vars) -> (new com.chernikovs.functions.Function("exp(-t)*t^" + vars[0],
-                                                                                                                                  "t").integrate(0, 575)));
+                                                                                 (vars) -> (new com.chernikovs.functions.Function("exp(-t)*t^"
+                                                                                               + vars[0],
+                                                                                                                                  "t").integrate(0,
+                                                                                                                                                 575)));
                                                                              put("sin", (vars) -> Math.sin(vars[0]));
                                                                              put("cos", (vars) -> Math.cos(vars[0]));
                                                                              put("tan", (vars) -> Math.tan(vars[0]));
-                                                                             put("cot", (vars) -> 1.0 / Math.tan(vars[0]));
-                                                                             put("asin", (vars) -> Math.asin(vars[0]));
-                                                                             put("acos", (vars) -> Math.acos(vars[0]));
-                                                                             put("atan", (vars) -> Math.atan(vars[0]));
-                                                                             put("acot", (vars) -> Math.PI / 2 - Math.atan(vars[0]));
-                                                                             put("sind", (vars) -> Math.sin(vars[0] * Math.PI / 180.0));
-                                                                             put("cosd", (vars) -> Math.cos(vars[0] * Math.PI / 180.0));
-                                                                             put("tand", (vars) -> Math.tan(vars[0] * Math.PI / 180.0));
-                                                                             put("cotd", (vars) -> 1.0 / Math.tan(vars[0] * Math.PI / 180.0));
-                                                                             put("asind", (vars) -> Math.asin(vars[0]) * 180.0 / Math.PI);
-                                                                             put("acosd", (vars) -> Math.acos(vars[0]) * 180.0 / Math.PI);
-                                                                             put("atand", (vars) -> Math.atan(vars[0]) * 180.0 / Math.PI);
-                                                                             put("acotd", (vars) -> 90.0 - Math.atan(vars[0]) * 180.0 / Math.PI);
-                                                                             put("sec", (vars) -> 1.0 / Math.cos(vars[0]));
-                                                                             put("csc", (vars) -> 1.0 / Math.sin(vars[0]));
-                                                                             put("asec", (vars) -> Math.acos(1.0 / vars[0]));
-                                                                             put("acsc", (vars) -> Math.asin(1.0 / vars[0]));
-                                                                             put("sinh", (vars) -> Math.sinh(vars[0]));
-                                                                             put("cosh", (vars) -> Math.cosh(vars[0]));
-                                                                             put("tanh", (vars) -> Math.tanh(vars[0]));
-                                                                             put("coth", (vars) -> 1.0 / Math.tanh(vars[0]));
-                                                                             put("sech", (vars) -> 1.0 / Math.cosh(vars[0]));
-                                                                             put("csch", (vars) -> 1.0 / Math.sinh(vars[0]));
-                                                                             put("asinh", (vars) -> Math.log(vars[0] + Math.sqrt(vars[0] * vars[0] + 1.0)));
-                                                                             put("acosh", (vars) -> Math.log(vars[0] + Math.sqrt(vars[0] * vars[0] - 1.0)));
-                                                                             put("atanh", (vars) -> Math.log((1.0 + vars[0]) / (1.0 - vars[0])) / 2.0);
-                                                                             put("acoth", (vars) -> Math.log((1.0 + vars[0]) / (vars[0] - 1.0)) / 2.0);
-                                                                             put("asech", (vars) -> Math.log((1 + Math.sqrt(1.0 - vars[0] * vars[0])) / vars[0]));
+                                                                             put("cot",
+                                                                                 (vars) -> 1.0 / Math.tan(vars[0]));
+                                                                             put("asin",
+                                                                                 (vars) -> Math.asin(vars[0]));
+                                                                             put("acos",
+                                                                                 (vars) -> Math.acos(vars[0]));
+                                                                             put("atan",
+                                                                                 (vars) -> Math.atan(vars[0]));
+                                                                             put("acot",
+                                                                                 (vars) -> Math.PI / 2
+                                                                                               - Math.atan(vars[0]));
+                                                                             put("sind",
+                                                                                 (vars) -> Math.sin(vars[0] * Math.PI
+                                                                                               / 180.0));
+                                                                             put("cosd",
+                                                                                 (vars) -> Math.cos(vars[0] * Math.PI
+                                                                                               / 180.0));
+                                                                             put("tand",
+                                                                                 (vars) -> Math.tan(vars[0] * Math.PI
+                                                                                               / 180.0));
+                                                                             put("cotd",
+                                                                                 (vars) -> 1.0 / Math.tan(vars[0]
+                                                                                               * Math.PI / 180.0));
+                                                                             put("asind",
+                                                                                 (vars) -> Math.asin(vars[0]) * 180.0
+                                                                                               / Math.PI);
+                                                                             put("acosd",
+                                                                                 (vars) -> Math.acos(vars[0]) * 180.0
+                                                                                               / Math.PI);
+                                                                             put("atand",
+                                                                                 (vars) -> Math.atan(vars[0]) * 180.0
+                                                                                               / Math.PI);
+                                                                             put("acotd",
+                                                                                 (vars) -> 90.0 - Math.atan(vars[0])
+                                                                                               * 180.0 / Math.PI);
+                                                                             put("sec",
+                                                                                 (vars) -> 1.0 / Math.cos(vars[0]));
+                                                                             put("csc",
+                                                                                 (vars) -> 1.0 / Math.sin(vars[0]));
+                                                                             put("asec",
+                                                                                 (vars) -> Math.acos(1.0 / vars[0]));
+                                                                             put("acsc",
+                                                                                 (vars) -> Math.asin(1.0 / vars[0]));
+                                                                             put("sinh",
+                                                                                 (vars) -> Math.sinh(vars[0]));
+                                                                             put("cosh",
+                                                                                 (vars) -> Math.cosh(vars[0]));
+                                                                             put("tanh",
+                                                                                 (vars) -> Math.tanh(vars[0]));
+                                                                             put("coth",
+                                                                                 (vars) -> 1.0 / Math.tanh(vars[0]));
+                                                                             put("sech",
+                                                                                 (vars) -> 1.0 / Math.cosh(vars[0]));
+                                                                             put("csch",
+                                                                                 (vars) -> 1.0 / Math.sinh(vars[0]));
+                                                                             put("asinh",
+                                                                                 (vars) -> Math.log(vars[0]
+                                                                                               + Math.sqrt(vars[0]
+                                                                                                             * vars[0]
+                                                                                                             + 1.0)));
+                                                                             put("acosh",
+                                                                                 (vars) -> Math.log(vars[0]
+                                                                                               + Math.sqrt(vars[0]
+                                                                                                             * vars[0]
+                                                                                                             - 1.0)));
+                                                                             put("atanh",
+                                                                                 (vars) -> Math.log((1.0 + vars[0])
+                                                                                               / (1.0 - vars[0]))
+                                                                                               / 2.0);
+                                                                             put("acoth",
+                                                                                 (vars) -> Math.log((1.0 + vars[0])
+                                                                                               / (vars[0] - 1.0))
+                                                                                               / 2.0);
+                                                                             put("asech",
+                                                                                 (vars) -> Math.log((1
+                                                                                               + Math.sqrt(1.0
+                                                                                                             - vars[0] * vars[0]))
+                                                                                               / vars[0]));
                                                                              put("acsch",
-                                                                                 (vars) -> Math.log((1 + Math.signum(vars[0]) * Math.sqrt(1.0 + vars[0] * vars[0])) / vars[0]));
+                                                                                 (vars) -> Math.log((1 + Math
+                                                                                                             .signum(vars[0])
+                                                                                               * Math.sqrt(1.0
+                                                                                                             + vars[0] * vars[0]))
+                                                                                               / vars[0]));
                                                                            }
                                                                          };
 
@@ -512,7 +580,8 @@ public class ExpressionHandler
     while (!infix.isEmpty())
     {
       String token = infix.poll();
-      if ((token.equals("-") || token.equals("+")) && prev.charAt(prev.length() - 1) == 'E' && isNumber(prev.substring(0, prev.length() - 1)))
+      if ((token.equals("-") || token.equals("+")) && prev.charAt(prev.length() - 1) == 'E'
+                    && isNumber(prev.substring(0, prev.length() - 1)))
       {
         String next = infix.poll();
         if (isNumber(next))
@@ -669,9 +738,12 @@ public class ExpressionHandler
       {
         String  op       = "";
         boolean wasEmpty = false;
-        while (!(wasEmpty = stack.isEmpty()) && isOperator(op = stack.pop()) && Integer.parseInt(opAttribs.get(op).get(0)) >= Integer.parseInt(opAttribs.get(token).get(0)))
+        while (!(wasEmpty = stack.isEmpty()) && isOperator(op = stack.pop())
+                      && Integer.parseInt(opAttribs.get(op).get(0)) >= Integer.parseInt(opAttribs.get(token).get(0)))
         {
-          if (opAttribs.get(token).get(1).equals("R") && Integer.parseInt(opAttribs.get(op).get(0)) == Integer.parseInt(opAttribs.get(token).get(0)))
+          if (opAttribs.get(token).get(1).equals("R")
+                        && Integer.parseInt(opAttribs.get(op).get(0)) == Integer.parseInt(opAttribs.get(token)
+                                                                                                   .get(0)))
           {
             break;
           }
@@ -886,7 +958,8 @@ public class ExpressionHandler
    */
   public static boolean isVariable(String token)
   {
-    return !isOperator(token) && !isFunction(token) && !token.equals("(") && !token.equals(",") && !token.equals(")");
+    return !isOperator(token) && !isFunction(token) && !token.equals("(") && !token.equals(",")
+                  && !token.equals(")");
   }
 
   /**

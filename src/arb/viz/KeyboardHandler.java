@@ -95,7 +95,6 @@ public class KeyboardHandler implements
       plotter.switchToColorMode(6);
       break;
 
-
     case KeyEvent.VK_ESCAPE:
       plotter.hide();
       plotter.close();

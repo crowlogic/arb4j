@@ -20,16 +20,16 @@ public class CoshRenderer
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
 
-    Rectangle2D.Double domain   = new Rectangle2D.Double(-1.5,
-                                                         -2,
-                                                         20,
-                                                         4);
+    Rectangle2D.Double  domain   = new Rectangle2D.Double(-1.5,
+                                                          -2,
+                                                          20,
+                                                          4);
 
-    Dimension          screen   = new Dimension(1200,
-                                                600);
+    Dimension           screen   = new Dimension(1200,
+                                                 600);
 
-    HolomorphicFunction    function = new Composition(new HyperbolicCosine(),
-                                                  new WickRotation());
+    HolomorphicFunction function = new Composition(new HyperbolicCosine(),
+                                                   new WickRotation());
     // ComplexFunction function = new HyperbolicCosine();
 //    ComplexFunction function = (z, order, prec, w) ->
 //    {

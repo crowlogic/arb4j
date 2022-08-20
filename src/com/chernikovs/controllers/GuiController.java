@@ -392,7 +392,8 @@ public class GuiController
 
         if (getIsParametric(i))
         {
-          if (xyz.length != 3 || !ExpressionHandler.isValid(ExpressionHandler.getPostfix(xyz[0])) || !ExpressionHandler.isValid(ExpressionHandler.getPostfix(xyz[1]))
+          if (xyz.length != 3 || !ExpressionHandler.isValid(ExpressionHandler.getPostfix(xyz[0]))
+                        || !ExpressionHandler.isValid(ExpressionHandler.getPostfix(xyz[1]))
                         || !ExpressionHandler.isValid(ExpressionHandler.getPostfix(xyz[2])))
           {
             continue;
@@ -427,13 +428,17 @@ public class GuiController
         if (isSurface)
         {
           BivariateVectorFunction function = new BivariateVectorFunction(xyz,
-                                                         getFVar(i),
-                                                         getSVar(i));
-          float           k1       = getFPi(i) ? (float) Math.PI : 1.0f;
-          float           k2       = getSPi(i) ? (float) Math.PI : 1.0f;
-          Surface         surface  = FunctionHandler.createSurface(function, new float[]
+                                                                         getFVar(i),
+                                                                         getSVar(i));
+          float                   k1       = getFPi(i) ? (float) Math.PI : 1.0f;
+          float                   k2       = getSPi(i) ? (float) Math.PI : 1.0f;
+          Surface                 surface  = FunctionHandler.createSurface(function, new float[]
           { getFFrom(i) * k1, getFTo(i) * k1 }, new float[]
-          { getSFrom(i) * k2, getSTo(i) * k2 }, getFStep(i) * k1, getSStep(i) * k2, getColour(i), MasterRenderer.getLoader());
+          { getSFrom(i) * k2, getSTo(i) * k2 },
+                                                                           getFStep(i) * k1,
+                                                                           getSStep(i) * k2,
+                                                                           getColour(i),
+                                                                           MasterRenderer.getLoader());
           if (getMode(i).equals("Grid"))
           {
             renderer.addCurves(surface.getGrid());

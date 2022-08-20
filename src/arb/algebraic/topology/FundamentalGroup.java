@@ -8,8 +8,8 @@ import arb.topological.Space;
 
 /**
  * The fundamental group of a topological {@link Space} is the {@link Group} of
- * the {@link EquivalenceClass} under homotopy of the {@link Loop}s contained in the
- * space. It records information about the basic shape, or holes, of the
+ * the {@link EquivalenceClass} under homotopy of the {@link Loop}s contained in
+ * the space. It records information about the basic shape, or holes, of the
  * topological space. The fundamental group is the first and simplest
  * {@link Homotopy} group. The fundamental group is a homotopy
  * invariant—topological spaces that are homotopy equivalent (or the stronger

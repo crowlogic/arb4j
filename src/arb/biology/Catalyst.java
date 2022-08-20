@@ -7,7 +7,7 @@ package arb.biology;
  * 
  * 75 Moby Thesaurus words for "catalyst": agent, agent provocateur, agitator,
  * agitprop, alterant, alterative, alterer, author, begetter, beginner,
- * catalysis, catalytic agent, causer, creator, decay, demagogue, dialysis, 
+ * catalysis, catalytic agent, causer, creator, decay, demagogue, dialysis,
  * dissociation, effector, engenderer, exciter, father, ferment, firebrand,
  * fission, fomenter, generator, goad, hydrolysis, hydrolyst, impetus, impulse,
  * incendiary, incentive, incitation, incitement, inciter, inflamer,

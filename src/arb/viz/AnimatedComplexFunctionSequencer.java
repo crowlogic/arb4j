@@ -121,11 +121,12 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
     return image;
   }
 
-  public void
-         renderAnimatedSequence(String filename, double secondsLong, int framesPerSecond) throws AWTException,
-                                                                                   InterruptedException,
-                                                                                   IOException,
-                                                                                   NoninvertibleTransformException
+  public void renderAnimatedSequence(String filename,
+                                     double secondsLong,
+                                     int framesPerSecond) throws AWTException,
+                                                          InterruptedException,
+                                                          IOException,
+                                                          NoninvertibleTransformException
   {
     renderAnimatedSequence(filename, "avi", "ffv1", secondsLong, framesPerSecond);
   }
