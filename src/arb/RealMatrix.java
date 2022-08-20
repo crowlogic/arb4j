@@ -38,6 +38,7 @@ public class RealMatrix implements AutoCloseable {
   }
 
 
+
  /**
    * Accessor for the i,j-th element
    * 
@@ -77,11 +78,11 @@ public class RealMatrix implements AutoCloseable {
     }
     maxLength += 2;
     IntFunction<String>   func  = k -> k == 0 ? (name == null ? "" : name) + " " + k : "" + k;
-    TextTable             table = new TextTable((String[]) IntStream.range(0, this.getCols())
-                                                                    .mapToObj(func)
-                                                                    .collect(Collectors.toList())
-                                                                    .stream()
-                                                                    .toArray(size -> new String[size]),
+    TextTable             table = new TextTable( IntStream.range(0, this.getCols())
+                                                          .mapToObj(func)
+                                                          .collect(Collectors.toList())
+                                                          .stream()
+                                                          .toArray(size -> new String[size]),
                                                 strings);
     ByteArrayOutputStream os    = new ByteArrayOutputStream();
     PrintStream           ps    = new PrintStream(os);
