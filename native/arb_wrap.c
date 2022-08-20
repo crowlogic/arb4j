@@ -311,6 +311,20 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1mat_1printd(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  arb_mat_struct *arg1 ;
+  long arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(arb_mat_struct **)&jarg1; 
+  arg2 = (long)jarg2; 
+  arb_mat_printd((arb_mat_struct const (*))arg1,arg2);
+  
+}
+
+
 SWIGEXPORT jint JNICALL Java_arb_arbJNI_getpagesize(JNIEnv *jenv, jclass jcls) {
   jint jresult = 0 ;
   int result;

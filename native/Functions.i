@@ -1,5 +1,7 @@
 #define __off_t long int
 
+ void arb_mat_printd(const arb_mat_t mat, slong digits);
+ 
 int getpagesize(void);
 jlong alignedMalloc( int alignment, int size );
 void *memalign(size_t alignment, size_t size);

@@ -7,6 +7,25 @@ import static arb.RealConstants.*;
 
 %typemap(javacode) arb_mat_struct %{
 
+ /**
+   * Accessor for the i,j-th element
+   * 
+   * @param i
+   * @param j
+   * @return {@link arb#arb_mat_entry_ptr(RealMatrix, int, int)}
+   */
+  public Real get(int i, int j)
+  {
+    return arb.arb_mat_entry_ptr(this, i,j);
+  }
+  
+ public static RealMatrix newMatrix( int rows, int cols )
+  {
+    RealMatrix m = new RealMatrix();
+    m.init(rows, cols);
+    return m;
+  }
+  
   /**
    * Calls {@link arb#arb_mat_clear(RealMatrix)}
    * @return this

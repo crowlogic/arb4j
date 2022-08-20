@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void arb_mat_printd(RealMatrix mat, int digits) {
+    arbJNI.arb_mat_printd(RealMatrix.getCPtr(mat), mat, digits);
+  }
+
   public static int getpagesize() {
     return arbJNI.getpagesize();
   }
