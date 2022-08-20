@@ -1,5 +1,9 @@
 %typemap(javaimports) arb_mat_struct %{
-import static arb.RealConstants.*;
+import java.io.*;
+import java.util.function.*;
+import java.util.stream.*;
+
+import dnl.utils.text.table.*;
 %}
 
 %typemap(javafinalize) arb_mat_struct ""
@@ -17,6 +21,63 @@ import static arb.RealConstants.*;
   public Real get(int i, int j)
   {
     return arb.arb_mat_entry_ptr(this, i,j);
+  }
+
+  public String name;
+  
+  @Override
+  public String toString()
+  {
+    Object[][] strings    = new String[this.getRows()][this.getCols()];
+    int        maxLength  = 0;
+    int        maxDecimal = 0;
+    for (int i = 0; i < Math.min(100, this.getRows()); ++i)
+    {
+      for (int j = 0; j < this.getCols(); ++j)
+      {
+        String string  = get(i, j).toFixedString();
+        int    decimal = string.indexOf(46);
+        if (decimal > maxDecimal)
+        {
+          maxDecimal = decimal;
+        }
+        if (string.length() > maxLength)
+        {
+          maxLength = string.length();
+        }
+        strings[i][j] = string;
+      }
+    }
+    maxLength += 2;
+    IntFunction<String>   func  = k -> k == 0 ? (name == null ? "" : name) + " " + k : "" + k;
+    TextTable             table = new TextTable((String[]) IntStream.range(0, this.getCols())
+                                                                    .mapToObj(func)
+                                                                    .collect(Collectors.toList())
+                                                                    .stream()
+                                                                    .toArray(size -> new String[size]),
+                                                strings);
+    ByteArrayOutputStream os    = new ByteArrayOutputStream();
+    PrintStream           ps    = new PrintStream(os);
+    StringBuffer          sb    = new StringBuffer();
+    table.setAddRowNumbering(true);
+    table.printTable(ps, 0);
+    ps.close();
+    try
+    {
+      return os.toString("UTF8");
+    }
+    catch (UnsupportedEncodingException e)
+    {
+      e.printStackTrace(System.err);
+      throw new RuntimeException(e.getMessage(),
+                                 e);
+    }
+  }
+
+  private String getDimString()
+  {
+    String dimString = "(" + this.getRows() + "," + this.getCols() + ")";
+    return dimString;
   }
   
  public static RealMatrix newMatrix( int rows, int cols )

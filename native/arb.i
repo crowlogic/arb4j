@@ -20,6 +20,8 @@ SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %ignore rows; // ignore rows pointer to array of pointers in RealMatrix
+%rename (rows) r;
+%rename (cols) c;
 %rename (initialValue) gmp_init;
 %rename (algorithm) _mp_alg;
 %rename (seed) _mp_seed;

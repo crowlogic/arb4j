@@ -24,6 +24,7 @@ module arb4j
   requires transitive org.joml;
   requires transitive LWJGUI.pre.mt;
   requires transitive pngdecoder;
+  requires j.text.utils;
 
   exports arb;
   exports arb.algebraic.expressions;

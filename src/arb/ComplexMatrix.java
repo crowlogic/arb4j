@@ -70,20 +70,20 @@ public class ComplexMatrix implements AutoCloseable {
     return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public void setR(int value) {
-    arbJNI.ComplexMatrix_r_set(swigCPtr, this, value);
+  public void setRows(int value) {
+    arbJNI.ComplexMatrix_rows_set(swigCPtr, this, value);
   }
 
-  public int getR() {
-    return arbJNI.ComplexMatrix_r_get(swigCPtr, this);
+  public int getRows() {
+    return arbJNI.ComplexMatrix_rows_get(swigCPtr, this);
   }
 
-  public void setC(int value) {
-    arbJNI.ComplexMatrix_c_set(swigCPtr, this, value);
+  public void setCols(int value) {
+    arbJNI.ComplexMatrix_cols_set(swigCPtr, this, value);
   }
 
-  public int getC() {
-    return arbJNI.ComplexMatrix_c_get(swigCPtr, this);
+  public int getCols() {
+    return arbJNI.ComplexMatrix_cols_get(swigCPtr, this);
   }
 
   public ComplexMatrix() {

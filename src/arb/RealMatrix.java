@@ -8,7 +8,11 @@
 
 package arb;
 
-import static arb.RealConstants.*;
+import java.io.*;
+import java.util.function.*;
+import java.util.stream.*;
+
+import dnl.utils.text.table.*;
 
 public class RealMatrix implements AutoCloseable {
   private transient long swigCPtr;
@@ -34,6 +38,75 @@ public class RealMatrix implements AutoCloseable {
   }
 
 
+ /**
+   * Accessor for the i,j-th element
+   * 
+   * @param i
+   * @param j
+   * @return {@link arb#arb_mat_entry_ptr(RealMatrix, int, int)}
+   */
+  public Real get(int i, int j)
+  {
+    return arb.arb_mat_entry_ptr(this, i,j);
+  }
+
+  public String name;
+  
+  @Override
+  public String toString()
+  {
+    Object[][] strings    = new String[this.getRows()][this.getCols()];
+    int        maxLength  = 0;
+    int        maxDecimal = 0;
+    for (int i = 0; i < Math.min(100, this.getRows()); ++i)
+    {
+      for (int j = 0; j < this.getCols(); ++j)
+      {
+        String string  = get(i, j).toFixedString();
+        int    decimal = string.indexOf(46);
+        if (decimal > maxDecimal)
+        {
+          maxDecimal = decimal;
+        }
+        if (string.length() > maxLength)
+        {
+          maxLength = string.length();
+        }
+        strings[i][j] = string;
+      }
+    }
+    maxLength += 2;
+    IntFunction<String>   func  = k -> k == 0 ? (name == null ? "" : name) + " " + k : "" + k;
+    TextTable             table = new TextTable((String[]) IntStream.range(0, this.getCols())
+                                                                    .mapToObj(func)
+                                                                    .collect(Collectors.toList())
+                                                                    .stream()
+                                                                    .toArray(size -> new String[size]),
+                                                strings);
+    ByteArrayOutputStream os    = new ByteArrayOutputStream();
+    PrintStream           ps    = new PrintStream(os);
+    StringBuffer          sb    = new StringBuffer();
+    table.setAddRowNumbering(true);
+    table.printTable(ps, 0);
+    ps.close();
+    try
+    {
+      return os.toString("UTF8");
+    }
+    catch (UnsupportedEncodingException e)
+    {
+      e.printStackTrace(System.err);
+      throw new RuntimeException(e.getMessage(),
+                                 e);
+    }
+  }
+
+  private String getDimString()
+  {
+    String dimString = "(" + this.getRows() + "," + this.getCols() + ")";
+    return dimString;
+  }
+  
  public static RealMatrix newMatrix( int rows, int cols )
   {
     RealMatrix m = new RealMatrix();
@@ -105,36 +178,24 @@ public class RealMatrix implements AutoCloseable {
     return (cPtr == 0) ? null : new Real(cPtr, false);
   }
 
-  public void setR(int value) {
-    arbJNI.RealMatrix_r_set(swigCPtr, this, value);
+  public void setRows(int value) {
+    arbJNI.RealMatrix_rows_set(swigCPtr, this, value);
   }
 
-  public int getR() {
-    return arbJNI.RealMatrix_r_get(swigCPtr, this);
+  public int getRows() {
+    return arbJNI.RealMatrix_rows_get(swigCPtr, this);
   }
 
-  public void setC(int value) {
-    arbJNI.RealMatrix_c_set(swigCPtr, this, value);
+  public void setCols(int value) {
+    arbJNI.RealMatrix_cols_set(swigCPtr, this, value);
   }
 
-  public int getC() {
-    return arbJNI.RealMatrix_c_get(swigCPtr, this);
+  public int getCols() {
+    return arbJNI.RealMatrix_cols_get(swigCPtr, this);
   }
 
   public RealMatrix() {
     this(arbJNI.new_RealMatrix(), true);
-  }
-
-  /**
-   * Accessor for the i,j-th element
-   * 
-   * @param i
-   * @param j
-   * @return {@link arb#arb_mat_entry_ptr(RealMatrix, int, int)}
-   */
-  public Real get(int i, int j)
-  {
-    return arb.arb_mat_entry_ptr(this, i,j);
   }
 
 }

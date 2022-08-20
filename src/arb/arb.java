@@ -63,8 +63,8 @@ public class arb {
     return arbJNI.mprotect(SWIGTYPE_p_void.getCPtr(addr), len, prot);
   }
 
-  public static SWIGTYPE_p_void memset(SWIGTYPE_p_void s, int c, long n) {
-    long cPtr = arbJNI.memset(SWIGTYPE_p_void.getCPtr(s), c, n);
+  public static SWIGTYPE_p_void memset(SWIGTYPE_p_void s, int cols, long n) {
+    long cPtr = arbJNI.memset(SWIGTYPE_p_void.getCPtr(s), cols, n);
     return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 
@@ -164,16 +164,16 @@ public class arb {
     arbJNI.arb_sech(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
   }
 
-  public static void acb_sech(Complex r, Complex z, int prec) {
-    arbJNI.acb_sech(Complex.getCPtr(r), r, Complex.getCPtr(z), z, prec);
+  public static void acb_sech(Complex rows, Complex z, int prec) {
+    arbJNI.acb_sech(Complex.getCPtr(rows), rows, Complex.getCPtr(z), z, prec);
   }
 
   public static long bufferAddress(java.lang.Object buffer) {
     return arbJNI.bufferAddress(buffer);
   }
 
-  public static void acb_tan(Complex r, Complex z, int prec) {
-    arbJNI.acb_tan(Complex.getCPtr(r), r, Complex.getCPtr(z), z, prec);
+  public static void acb_tan(Complex rows, Complex z, int prec) {
+    arbJNI.acb_tan(Complex.getCPtr(rows), rows, Complex.getCPtr(z), z, prec);
   }
 
   public static void acb_sec(Complex y, Complex x, int prec) {
@@ -292,8 +292,8 @@ public class arb {
     arbJNI.acb_mat_clear(ComplexMatrix.getCPtr(mat), mat);
   }
 
-  public static void arb_mat_init(RealMatrix mat, int r, int c) {
-    arbJNI.arb_mat_init(RealMatrix.getCPtr(mat), mat, r, c);
+  public static void arb_mat_init(RealMatrix mat, int rows, int cols) {
+    arbJNI.arb_mat_init(RealMatrix.getCPtr(mat), mat, rows, cols);
   }
 
   public static void arb_mat_transpose(RealMatrix dest, RealMatrix src) {
@@ -353,8 +353,8 @@ public class arb {
     return arbJNI.acb_is_zero(Complex.getCPtr(z), z);
   }
 
-  public static void acb_div_si(Complex z, Complex x, int c, int prec) {
-    arbJNI.acb_div_si(Complex.getCPtr(z), z, Complex.getCPtr(x), x, c, prec);
+  public static void acb_div_si(Complex z, Complex x, int cols, int prec) {
+    arbJNI.acb_div_si(Complex.getCPtr(z), z, Complex.getCPtr(x), x, cols, prec);
   }
 
   public static void acb_neg(Complex z, Complex x) {
@@ -686,8 +686,8 @@ public class arb {
     arbJNI.acb_get_mag(Magnitude.getCPtr(u), u, Complex.getCPtr(z), z);
   }
 
-  public static void acb_mat_init(ComplexMatrix mat, int r, int c) {
-    arbJNI.acb_mat_init(ComplexMatrix.getCPtr(mat), mat, r, c);
+  public static void acb_mat_init(ComplexMatrix mat, int rows, int cols) {
+    arbJNI.acb_mat_init(ComplexMatrix.getCPtr(mat), mat, rows, cols);
   }
 
   public static void acb_dot(Complex res, Complex initial, int subtract, Complex x, int xstep, Complex y, int ystep, int len, int prec) {
@@ -741,8 +741,8 @@ public class arb {
     arbJNI.color_function(R, G, B, Complex.getCPtr(z), z, mode);
   }
 
-  public static void acb_set_d(Complex z, double c) {
-    arbJNI.acb_set_d(Complex.getCPtr(z), z, c);
+  public static void acb_set_d(Complex z, double cols) {
+    arbJNI.acb_set_d(Complex.getCPtr(z), z, cols);
   }
 
   public static void acb_dirichlet_zeta_jet(Complex res, Complex s, int deflate, int len, int prec) {
@@ -877,12 +877,12 @@ public class arb {
     arbJNI.acb_pow_ui(Complex.getCPtr(y), y, Complex.getCPtr(b), b, e, prec);
   }
 
-  public static void acb_add_ui(Complex z, Complex x, long c, int prec) {
-    arbJNI.acb_add_ui(Complex.getCPtr(z), z, Complex.getCPtr(x), x, c, prec);
+  public static void acb_add_ui(Complex z, Complex x, long cols, int prec) {
+    arbJNI.acb_add_ui(Complex.getCPtr(z), z, Complex.getCPtr(x), x, cols, prec);
   }
 
-  public static void acb_log(Complex r, Complex z, int prec) {
-    arbJNI.acb_log(Complex.getCPtr(r), r, Complex.getCPtr(z), z, prec);
+  public static void acb_log(Complex rows, Complex z, int prec) {
+    arbJNI.acb_log(Complex.getCPtr(rows), rows, Complex.getCPtr(z), z, prec);
   }
 
   public static void acb_tanh(Complex y, Complex x, int prec) {
@@ -905,12 +905,12 @@ public class arb {
     arbJNI.acb_mul(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
 
-  public static void acb_cos(Complex r, Complex z, int prec) {
-    arbJNI.acb_cos(Complex.getCPtr(r), r, Complex.getCPtr(z), z, prec);
+  public static void acb_cos(Complex rows, Complex z, int prec) {
+    arbJNI.acb_cos(Complex.getCPtr(rows), rows, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_sin(Complex r, Complex z, int prec) {
-    arbJNI.acb_sin(Complex.getCPtr(r), r, Complex.getCPtr(z), z, prec);
+  public static void acb_sin(Complex rows, Complex z, int prec) {
+    arbJNI.acb_sin(Complex.getCPtr(rows), rows, Complex.getCPtr(z), z, prec);
   }
 
   public static void acb_exp(Complex y, Complex z, int prec) {
@@ -925,12 +925,12 @@ public class arb {
     arbJNI.arb_sub(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void acb_arg(Real r, Complex z, int prec) {
-    arbJNI.acb_arg(Real.getCPtr(r), r, Complex.getCPtr(z), z, prec);
+  public static void acb_arg(Real rows, Complex z, int prec) {
+    arbJNI.acb_arg(Real.getCPtr(rows), rows, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_modular_eisenstein(Complex r, Complex tau, int len, int prec) {
-    arbJNI.acb_modular_eisenstein(Complex.getCPtr(r), r, Complex.getCPtr(tau), tau, len, prec);
+  public static void acb_modular_eisenstein(Complex rows, Complex tau, int len, int prec) {
+    arbJNI.acb_modular_eisenstein(Complex.getCPtr(rows), rows, Complex.getCPtr(tau), tau, len, prec);
   }
 
   public static void acb_pow_arb(Complex z, Complex x, Real y, int prec) {
@@ -1019,8 +1019,8 @@ public class arb {
     arbJNI.arb_pow_ui(Real.getCPtr(y), y, Real.getCPtr(b), b, e, prec);
   }
 
-  public static void acb_abs(Real r, Complex z, int prec) {
-    arbJNI.acb_abs(Real.getCPtr(r), r, Complex.getCPtr(z), z, prec);
+  public static void acb_abs(Real rows, Complex z, int prec) {
+    arbJNI.acb_abs(Real.getCPtr(rows), rows, Complex.getCPtr(z), z, prec);
   }
 
   public static void arb_sqrt(Real z, Real x, int prec) {
