@@ -52,7 +52,7 @@ import dnl.utils.text.table.*;
    */
   public boolean contains(RealMatrix other)
   {
-    return arb.arb_mat_overlaps(this, other) != 0;
+    return arb.arb_mat_contains(this, other) != 0;
   }
 
 
