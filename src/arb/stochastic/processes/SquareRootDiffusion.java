@@ -17,6 +17,12 @@ import arb.*;
 public class SquareRootDiffusion<S extends DiffusionProcessState> implements
                                 DiffusionProcess<S>
 {
+  /**
+   * 
+   * @param λ mean-reversion rate
+   * @param θ mean level around which process varies
+   * @param σ volatility of volatility
+   */
   public SquareRootDiffusion(Real λ, Real θ, Real σ)
   {
     this.λ = λ;
@@ -57,6 +63,7 @@ public class SquareRootDiffusion<S extends DiffusionProcessState> implements
       try ( Real σₜ = vₜ.sqrt(prec, new Real());)
       {
         // res=σ*√vₜ=σ*σₜ
+
         σ.mul(σₜ, prec, result);
 
         if (order == 2)
