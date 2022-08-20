@@ -6,7 +6,6 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 import arb.Real;
-import arb.functions.complex.dynamics.NewtonFlow;
 import arb.functions.complex.numbertheoretic.YFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
@@ -15,7 +14,7 @@ import arb.viz.Part;
  * Renders the {@link YFunction}
  */
 public class YRenderer extends
-                       ComplexFunctionRenderer<NewtonFlow<YFunction>>
+                       ComplexFunctionRenderer<YFunction>
 {
   @SuppressWarnings("resource")
   public static void main(String args[]) throws NoninvertibleTransformException, IOException
@@ -25,8 +24,8 @@ public class YRenderer extends
     renderer.render();
   }
 
-  public static final int height = (int) (1100.0);
-  public static final int width  = (int) height * 2;
+  public static final int height = (int) 1400;
+  public static final int width  = (int) 3400;
 
   public YRenderer(Real vscale) throws NoninvertibleTransformException
   {
@@ -34,9 +33,9 @@ public class YRenderer extends
                         height),
           new Rectangle2D.Double(-10,
                                  -24,
-                                 30 * 2,
+                                 30 * (double) ((double) width / (double) height),
                                  30),
-          new NewtonFlow<YFunction>(new YFunction(vscale)));
+          new YFunction(vscale));
 
     colorMode   = 4;
     displayMode = Part.Imaginary;

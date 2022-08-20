@@ -112,12 +112,12 @@ public class RealMatrix implements AutoCloseable {
   @Override
   public String toString()
   {
-    Object[][] strings    = new String[this.getRows()][this.getCols()];
+    Object[][] strings    = new String[getRows()][getCols()];
     int        maxLength  = 0;
     int        maxDecimal = 0;
-    for (int i = 0; i < Math.min(100, this.getRows()); ++i)
+    for (int i = 0; i < Math.min(100, getRows()); ++i)
     {
-      for (int j = 0; j < this.getCols(); ++j)
+      for (int j = 0; j < getCols(); ++j)
       {
         String string  = get(i, j).toFixedString();
         int    decimal = string.indexOf(46);
@@ -133,12 +133,12 @@ public class RealMatrix implements AutoCloseable {
       }
     }
     maxLength += 2;
-    IntFunction<String>   func  = k -> k == 0 ? (name == null ? "" : name) + " " + k : "" + k;
-    TextTable             table = new TextTable( IntStream.range(0, this.getCols())
-                                                          .mapToObj(func)
-                                                          .collect(Collectors.toList())
-                                                          .stream()
-                                                          .toArray(size -> new String[size]),
+    IntFunction<String>   func  = k -> "" + k;
+    TextTable             table = new TextTable(IntStream.rangeClosed(1, getCols())
+                                                         .mapToObj(func)
+                                                         .collect(Collectors.toList())
+                                                         .stream()
+                                                         .toArray(size -> new String[size]),
                                                 strings);
     ByteArrayOutputStream os    = new ByteArrayOutputStream();
     PrintStream           ps    = new PrintStream(os);
@@ -148,7 +148,7 @@ public class RealMatrix implements AutoCloseable {
     ps.close();
     try
     {
-      return os.toString("UTF8");
+      return (name != null ? name + "=\n" : "") + os.toString("UTF8");
     }
     catch (UnsupportedEncodingException e)
     {
@@ -244,10 +244,10 @@ public class RealMatrix implements AutoCloseable {
     }
     else
     {
+      result.name = "√" + ( name != null ? name : "");
       return result;
     }
-  }
-  
+  }  
     
       
 
