@@ -29,6 +29,7 @@
 				<version>3.4.0</version>
 				<configuration>
 					<show>public</show>
+					<stylesheetfile>stylesheet.css</stylesheetfile>
 				</configuration>
 			</plugin>
 
