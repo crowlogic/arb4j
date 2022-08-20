@@ -11,11 +11,8 @@ public class RealMatrixTest extends
   public void testChol()
   {
     int        prec        = 128;
-    RealMatrix correlation = RealMatrix.newMatrix(2, 2);
+    RealMatrix correlation = RealMatrix.newMatrix(2, 2).identity();
     correlation.name = "correlation";
-
-    correlation.get(0, 0).one();
-    correlation.get(1, 1).one();
     correlation.get(1, 0).set(-0.75);
     correlation.get(0, 1).set(-0.75);
     RealMatrix sqrtCorrelation          = correlation.chol(prec, RealMatrix.newMatrix(2, 2));
