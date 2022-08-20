@@ -19,7 +19,7 @@ typedef mag_struct * mag_ptr;
 SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
-%rename (RealVector) *arb_ptr;
+%ignore rows; // ignore rows pointer to array of pointers in RealMatrix
 %rename (initialValue) gmp_init;
 %rename (algorithm) _mp_alg;
 %rename (seed) _mp_seed;

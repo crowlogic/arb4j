@@ -124,7 +124,7 @@ void acb_mat_clear(acb_mat_t mat);
 void arb_mat_init(arb_mat_t mat, slong r, slong c);
 
 void arb_mat_clear(arb_mat_t mat);
-
+void arb_mat_transpose(arb_mat_t dest, const arb_mat_t src);
 void acb_poly_clear(acb_poly_t poly);
 
 arb_ptr arb_mat_entry_ptr(arb_mat_t mat, slong i, slong j);

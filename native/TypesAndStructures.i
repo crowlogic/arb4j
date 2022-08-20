@@ -96,7 +96,7 @@ typedef struct
     arb_ptr entries;
     slong r;
     slong c;
-    arb_t rows;
+    arb_ptr * rows;
 }
 arb_mat_struct;
 

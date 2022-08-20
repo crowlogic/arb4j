@@ -292,6 +292,10 @@ public class arb {
     arbJNI.arb_mat_init(RealMatrix.getCPtr(mat), mat, r, c);
   }
 
+  public static void arb_mat_transpose(RealMatrix dest, RealMatrix src) {
+    arbJNI.arb_mat_transpose(RealMatrix.getCPtr(dest), dest, RealMatrix.getCPtr(src), src);
+  }
+
   public static void acb_poly_clear(ComplexPolynomial poly) {
     arbJNI.acb_poly_clear(ComplexPolynomial.getCPtr(poly), poly);
   }

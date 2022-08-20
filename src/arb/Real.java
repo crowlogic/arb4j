@@ -979,7 +979,8 @@ public int relAccuracyBits()
     }
     return null;
   }
-    
+  
+  
 
   public void setMid(Float value) {
     arbJNI.Real_mid_set(swigCPtr, this, Float.getCPtr(value), value);

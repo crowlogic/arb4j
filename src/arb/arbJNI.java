@@ -79,6 +79,7 @@ public class arbJNI {
   public final static native void arb_mat_clear(long jarg1, RealMatrix jarg1_);
   public final static native void acb_mat_clear(long jarg1, ComplexMatrix jarg1_);
   public final static native void arb_mat_init(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
+  public final static native void arb_mat_transpose(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native void acb_poly_clear(long jarg1, ComplexPolynomial jarg1_);
   public final static native long arb_mat_entry_ptr(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
   public final static native void mpfr_clear(long jarg1, MultiplePrecisionFloat jarg1_);
@@ -337,8 +338,6 @@ public class arbJNI {
   public final static native int RealMatrix_r_get(long jarg1, RealMatrix jarg1_);
   public final static native void RealMatrix_c_set(long jarg1, RealMatrix jarg1_, int jarg2);
   public final static native int RealMatrix_c_get(long jarg1, RealMatrix jarg1_);
-  public final static native void RealMatrix_rows_set(long jarg1, RealMatrix jarg1_, long jarg2, Real jarg2_);
-  public final static native long RealMatrix_rows_get(long jarg1, RealMatrix jarg1_);
   public final static native long new_RealMatrix();
   public final static native void delete_RealMatrix(long jarg1);
   public final static native void ComplexMatrix_entries_set(long jarg1, ComplexMatrix jarg1_, long jarg2, Complex jarg2_);
@@ -347,8 +346,6 @@ public class arbJNI {
   public final static native int ComplexMatrix_r_get(long jarg1, ComplexMatrix jarg1_);
   public final static native void ComplexMatrix_c_set(long jarg1, ComplexMatrix jarg1_, int jarg2);
   public final static native int ComplexMatrix_c_get(long jarg1, ComplexMatrix jarg1_);
-  public final static native void ComplexMatrix_rows_set(long jarg1, ComplexMatrix jarg1_, long jarg2, Complex jarg2_);
-  public final static native long ComplexMatrix_rows_get(long jarg1, ComplexMatrix jarg1_);
   public final static native long new_ComplexMatrix();
   public final static native void delete_ComplexMatrix(long jarg1);
   public final static native void FloatInterval_a_set(long jarg1, FloatInterval jarg1_, long jarg2, Float jarg2_);
