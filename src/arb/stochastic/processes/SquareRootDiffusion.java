@@ -1,6 +1,6 @@
 package arb.stochastic.processes;
 
-import arb.*;
+import arb.Real;
 import arb.stochastic.RealProbabilityDensityFunction;
 
 /**
@@ -13,7 +13,7 @@ import arb.stochastic.RealProbabilityDensityFunction;
  * </pre>
  * 
  * @see <a href="doc-files/InterestRateTermStructureTheory.pdf">A Theory of the
- *      Term Structure of Interest Rates</a> Theorem 3
+ *      Term Structure of Interest Rates</a> Assumption 3
  */
 public class SquareRootDiffusion<S extends DiffusionProcessState> implements
                                 DiffusionProcess<S>
@@ -23,7 +23,7 @@ public class SquareRootDiffusion<S extends DiffusionProcessState> implements
   {
     assert false : "implement me, closed form density involving modified Bessel functions of the first kind";
     return null;
-    
+
   }
 
   /**
