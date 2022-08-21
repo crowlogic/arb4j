@@ -418,8 +418,6 @@ public class arbJNI {
   public final static native void delete_Real(long jarg1);
   public final static native long new_MantissaNoPointer();
   public final static native void delete_MantissaNoPointer(long jarg1);
-  public final static native void MantissaPointer_alloc_set(long jarg1, MantissaPointer jarg1_, long jarg2);
-  public final static native long MantissaPointer_alloc_get(long jarg1, MantissaPointer jarg1_);
   public final static native long new_MantissaPointer();
   public final static native void delete_MantissaPointer(long jarg1);
   public final static native void Mantissa_noptr_set(long jarg1, Mantissa jarg1_, long jarg2, MantissaNoPointer jarg2_);
@@ -430,16 +428,12 @@ public class arbJNI {
   public final static native void delete_Mantissa(long jarg1);
   public final static native void Float_exp_set(long jarg1, Float jarg1_, long jarg2);
   public final static native long Float_exp_get(long jarg1, Float jarg1_);
-  public final static native void Float_size_set(long jarg1, Float jarg1_, long jarg2);
-  public final static native long Float_size_get(long jarg1, Float jarg1_);
   public final static native long new_Float();
   public final static native void delete_Float(long jarg1);
   public final static native void ComplexPolynomial_coeffs_set(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_);
   public final static native long ComplexPolynomial_coeffs_get(long jarg1, ComplexPolynomial jarg1_);
   public final static native void ComplexPolynomial_length_set(long jarg1, ComplexPolynomial jarg1_, int jarg2);
   public final static native int ComplexPolynomial_length_get(long jarg1, ComplexPolynomial jarg1_);
-  public final static native void ComplexPolynomial_alloc_set(long jarg1, ComplexPolynomial jarg1_, int jarg2);
-  public final static native int ComplexPolynomial_alloc_get(long jarg1, ComplexPolynomial jarg1_);
   public final static native long new_ComplexPolynomial();
   public final static native void delete_ComplexPolynomial(long jarg1);
   public final static native void acb_dft_cyc_struct_n_set(long jarg1, acb_dft_cyc_struct jarg1_, int jarg2);

@@ -19,6 +19,9 @@ typedef unsigned long* unsigned_long_ptr;
 
 SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
+%ignore size;
+%ignore alloc;
+%ignore mp_lc;
 %ignore dlog_precomp_struct;
 %ignore dlog;
 %ignore log;

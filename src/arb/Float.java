@@ -342,14 +342,6 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     return arbJNI.Float_exp_get(swigCPtr, this);
   }
 
-  public void setSize(SWIGTYPE_p_mp_size_t value) {
-    arbJNI.Float_size_set(swigCPtr, this, SWIGTYPE_p_mp_size_t.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_mp_size_t getSize() {
-    return new SWIGTYPE_p_mp_size_t(arbJNI.Float_size_get(swigCPtr, this), true);
-  }
-
   public Float() {
     this(arbJNI.new_Float(), true);
   }
