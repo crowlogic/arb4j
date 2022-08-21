@@ -9,6 +9,62 @@
 package arb;
 
 public class arb {
+  public static void acb_hypgeom_bessel_j_0f1(Complex res, Complex nu, Complex z, int prec) {
+    arbJNI.acb_hypgeom_bessel_j_0f1(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_bessel_j_asymp(Complex res, Complex nu, Complex z, int prec) {
+    arbJNI.acb_hypgeom_bessel_j_asymp(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_bessel_j(Complex res, Complex nu, Complex z, int prec) {
+    arbJNI.acb_hypgeom_bessel_j(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_bessel_i_0f1(Complex res, Complex nu, Complex z, int scaled, int prec) {
+    arbJNI.acb_hypgeom_bessel_i_0f1(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, scaled, prec);
+  }
+
+  public static void acb_hypgeom_bessel_i_asymp(Complex res, Complex nu, Complex z, int scaled, int prec) {
+    arbJNI.acb_hypgeom_bessel_i_asymp(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, scaled, prec);
+  }
+
+  public static void acb_hypgeom_bessel_i(Complex res, Complex nu, Complex z, int prec) {
+    arbJNI.acb_hypgeom_bessel_i(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_bessel_i_scaled(Complex res, Complex nu, Complex z, int prec) {
+    arbJNI.acb_hypgeom_bessel_i_scaled(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_bessel_k_0f1(Complex res, Complex nu, Complex z, int scaled, int prec) {
+    arbJNI.acb_hypgeom_bessel_k_0f1(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, scaled, prec);
+  }
+
+  public static void acb_hypgeom_bessel_k_0f1_series(ComplexPolynomial res, ComplexPolynomial n, ComplexPolynomial z, int scaled, int len, int prec) {
+    arbJNI.acb_hypgeom_bessel_k_0f1_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(n), n, ComplexPolynomial.getCPtr(z), z, scaled, len, prec);
+  }
+
+  public static void acb_hypgeom_bessel_k_asymp(Complex res, Complex nu, Complex z, int scaled, int prec) {
+    arbJNI.acb_hypgeom_bessel_k_asymp(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, scaled, prec);
+  }
+
+  public static void acb_hypgeom_bessel_k(Complex res, Complex nu, Complex z, int prec) {
+    arbJNI.acb_hypgeom_bessel_k(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_bessel_k_scaled(Complex res, Complex nu, Complex z, int prec) {
+    arbJNI.acb_hypgeom_bessel_k_scaled(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_bessel_y(Complex res, Complex nu, Complex z, int prec) {
+    arbJNI.acb_hypgeom_bessel_y(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_bessel_jy(Complex res1, Complex res2, Complex nu, Complex z, int prec) {
+    arbJNI.acb_hypgeom_bessel_jy(Complex.getCPtr(res1), res1, Complex.getCPtr(res2), res2, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  }
+
   public static void acb_hypgeom_beta_lower_series(ComplexPolynomial res, Complex a, Complex b, ComplexPolynomial z, int regularized, int n, int prec) {
     arbJNI.acb_hypgeom_beta_lower_series(ComplexPolynomial.getCPtr(res), res, Complex.getCPtr(a), a, Complex.getCPtr(b), b, ComplexPolynomial.getCPtr(z), z, regularized, n, prec);
   }

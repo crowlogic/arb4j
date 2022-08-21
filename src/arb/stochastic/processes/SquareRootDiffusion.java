@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.*;
+import arb.stochastic.RealProbabilityDensityFunction;
 
 /**
  * Also known as a Cox-Ingersoll-Ross process. The CIR model specifies that the
@@ -12,11 +13,19 @@ import arb.*;
  * </pre>
  * 
  * @see <a href="doc-files/InterestRateTermStructureTheory.pdf">A Theory of the
- *      Term Structure of Interest Rates</a>
+ *      Term Structure of Interest Rates</a> Theorem 3
  */
 public class SquareRootDiffusion<S extends DiffusionProcessState> implements
                                 DiffusionProcess<S>
 {
+  @Override
+  public <P extends RealProbabilityDensityFunction> P getDensityFunction(Real t)
+  {
+    assert false : "implement me, closed form density involving modified Bessel functions of the first kind";
+    return null;
+    
+  }
+
   /**
    * 
    * @param λ mean-reversion rate

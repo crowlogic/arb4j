@@ -9,6 +9,20 @@
 package arb;
 
 public class arbJNI {
+  public final static native void acb_hypgeom_bessel_j_0f1(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_j_asymp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_j(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_i_0f1(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
+  public final static native void acb_hypgeom_bessel_i_asymp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
+  public final static native void acb_hypgeom_bessel_i(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_i_scaled(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_k_0f1(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
+  public final static native void acb_hypgeom_bessel_k_0f1_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, ComplexPolynomial jarg3_, int jarg4, int jarg5, int jarg6);
+  public final static native void acb_hypgeom_bessel_k_asymp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
+  public final static native void acb_hypgeom_bessel_k(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_k_scaled(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_y(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_jy(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, int jarg5);
   public final static native void acb_hypgeom_beta_lower_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, ComplexPolynomial jarg4_, int jarg5, int jarg6, int jarg7);
   public final static native void acb_hypgeom_beta_lower(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, int jarg5, int jarg6);
   public final static native void acb_hypgeom_gamma_upper(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
