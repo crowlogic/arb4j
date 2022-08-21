@@ -21,7 +21,7 @@ public class SNewtonKoenigsFunctionRenderer extends
   {
     super(screen,
           domain,
-          new IteratedFunction(new SNewtonMap(new Real().pi(256)),
+          new IteratedFunction(new SNewtonMap(new Real().π(256)),
                                7,
                                true));
   }

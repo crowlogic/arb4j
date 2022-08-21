@@ -93,7 +93,7 @@ public class LemniscateTest extends
     absErr.set(Math.pow(10, -75));
     Real a = new Real();
     Real b = new Real();
-    b.pi(prec).div(2, prec, b);
+    b.π(prec).div(2, prec, b);
     out.println("a=" + a);
     out.println("b=" + b);
     IntegrationOptions opts             = new IntegrationOptions();
@@ -111,7 +111,7 @@ public class LemniscateTest extends
     assertEquals(2.62205755429211981046483958989111941368275495,
                  integral.getReal().getMid().doubleValue(),
                  integralUncertainty);
-    Real arcLengthPiOverTwo = f.getArcLength(new Real().pi(prec).div(2, prec), prec, new Real());
+    Real arcLengthPiOverTwo = f.getArcLength(new Real().π(prec).div(2, prec), prec, new Real());
     arcLengthPiOverTwo.printPrecision = true;
     System.out.println("arcLengthPiOverTwo=" + arcLengthPiOverTwo.toString(100));
     integral.getReal().printPrecision = true;

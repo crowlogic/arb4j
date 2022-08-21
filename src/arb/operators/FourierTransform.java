@@ -40,7 +40,7 @@ public class FourierTransform<F extends Function<Real, Real>> implements
       try ( Complex exponent = new Complex(); Real y = new Real())
       {
         Real expi = exponent.getImag();
-        expi.pi(integrandPrec).mul(2, integrandPrec, expi);
+        expi.π(integrandPrec).mul(2, integrandPrec, expi);
         if (!inverse)
         {
           expi.negate(expi);

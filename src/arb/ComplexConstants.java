@@ -16,8 +16,8 @@ public class ComplexConstants
 
   static
   {
-    π.getReal().pi(prec);
-    iπ.getImag().pi(prec);
+    π.getReal().π(prec);
+    iπ.getImag().π(prec);
     ZERO.init().zero();
     negOne.one().neg();
     imaginaryUnit.init();
@@ -25,7 +25,7 @@ public class ComplexConstants
     complexHalf.getReal().set(RealConstants.half);
     complexOne.getReal().one();
     imaginaryUnit.getImag().one();
-    iπ.getImag().pi(prec);
+    iπ.getImag().π(prec);
     posInf.set(RealConstants.posInf, RealConstants.zero);
     posInf.neg(negInf);
   }

@@ -581,7 +581,7 @@ import arb.Lockable;
   
   public static final int BYTES = 48;
   
-  public Real pi( int prec )
+  public Real π( int prec )
   {
     arb.arb_const_pi(this, prec);
     return this;

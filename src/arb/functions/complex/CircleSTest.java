@@ -13,7 +13,7 @@ public class CircleSTest extends
                                        RealConstants.one))
     {
       Complex πOver2 = new Complex();
-      πOver2.getReal().pi(256).div(2, 256);
+      πOver2.getReal().π(256).div(2, 256);
       Complex z = cs.evaluate(πOver2, 3, 256, Complex.newVector(3));
       System.out.println("CircularS(π/2)=" + z);
       assertEquals(0.6, z.getReal().doubleValue(), Math.pow(10, -20));

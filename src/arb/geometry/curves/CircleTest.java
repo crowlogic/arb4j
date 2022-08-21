@@ -14,7 +14,7 @@ public class CircleTest extends
     Circle circle = new Circle(ComplexConstants.ZERO,
                                RealConstants.one);
     Real   halfpi = new Real();
-    halfpi.pi(256).div(2, 256);
+    halfpi.π(256).div(2, 256);
     Complex point = circle.evaluate(halfpi, 1, 128, new Complex());
     assertEquals(0, point.getReal().doubleValue(), pow(10, -17));
     assertEquals(1, point.getImag().getMid().doubleValue(RoundingMode.Near), pow(10, -17));
@@ -32,7 +32,7 @@ public class CircleTest extends
     Circle dr         = new Circle(basePoint,
                                    radius);
     Circle unitCircle = new Circle();
-    Real   perimeter  = unitCircle.getArcLength(new Real().pi(128), 128, new Real());
+    Real   perimeter  = unitCircle.getArcLength(new Real().π(128), 128, new Real());
     assertEquals(Math.PI, perimeter.getMid().doubleValue(), pow(10, -17));
     System.out.println("perimeter=" + perimeter);
     try ( Complex rotatedAndScaledPoint = dr.evaluate(Math.PI / 2, new Complex()))

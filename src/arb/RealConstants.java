@@ -29,7 +29,7 @@ public class RealConstants
     half.one().div(2, prec);
     posInf.posInf();
     sqrt2.set(2).sqrt(prec);
-    π.pi(prec);
+    π.π(prec);
     π.pow(2, prec, πsquared);
     π.sqrt(prec, sqrtπ);
     π.mul(2, prec, sqrt2π).sqrt(prec);
