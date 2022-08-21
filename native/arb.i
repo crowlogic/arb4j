@@ -12,6 +12,7 @@
 
 typedef mag_struct mag_t[1];
 typedef mag_struct * mag_ptr;
+typedef unsigned long* unsigned_long_ptr;
 
 %typemap(in) slong = long;
 
@@ -20,15 +21,22 @@ SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %ignore dlog_precomp_struct;
 %ignore dlog;
+%ignore log;
+%ignore generators;
+%ignore PHI;
+%ignore _mp_seed;
+%ignore _mp_alg;
 %ignore phi;
 %ignore pe;
+%ignore d;
 %ignore mod;
 %ignore rows; // ignore rows pointer to array of pointers in RealMatrix
 %rename (rows) r;
 %rename (cols) c;
+
+%rename (UnsignedLongPointer) unsigned_long_ptr;
+
 %rename (initialValue) gmp_init;
-%rename (algorithm) _mp_alg;
-%rename (seed) _mp_seed;
 %rename (randomState) gmp_state;
 %rename (algorithmData) _mp_algdata;
 %rename (randomValue) __randval;
@@ -43,7 +51,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %rename (FastDFTScheme) acb_dft_pre_struct;
 %rename (FastDFTChineseRemainder) acb_dft_crt_struct;
 %rename (FastDFTSchemeUnion) acb_dft_pre_struct_t;
-%rename (MultiplePrecisionInteger) __mpz_struct;
 %rename (FloatInterval) arf_interval_struct;
 %rename (Complex) acb_struct;
 %rename (Real) arb_struct;

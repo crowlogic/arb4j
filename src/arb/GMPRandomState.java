@@ -36,23 +36,6 @@ public class GMPRandomState {
     }
   }
 
-  public void setSeed(MultiplePrecisionInteger value) {
-    arbJNI.GMPRandomState_seed_set(swigCPtr, this, MultiplePrecisionInteger.getCPtr(value), value);
-  }
-
-  public MultiplePrecisionInteger getSeed() {
-    long cPtr = arbJNI.GMPRandomState_seed_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new MultiplePrecisionInteger(cPtr, false);
-  }
-
-  public void setAlgorithm(RandomAlgorithm value) {
-    arbJNI.GMPRandomState_algorithm_set(swigCPtr, this, value.swigValue());
-  }
-
-  public RandomAlgorithm getAlgorithm() {
-    return RandomAlgorithm.swigToEnum(arbJNI.GMPRandomState_algorithm_get(swigCPtr, this));
-  }
-
   public RandomAlgorithmData getAlgorithmData() {
     long cPtr = arbJNI.GMPRandomState_algorithmData_get(swigCPtr, this);
     return (cPtr == 0) ? null : new RandomAlgorithmData(cPtr, false);

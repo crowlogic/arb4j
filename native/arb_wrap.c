@@ -6196,174 +6196,6 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_GMP_1RAND_1ALG_1LC_1get(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1alloc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  __mpz_struct *arg1 = (__mpz_struct *) 0 ;
-  int arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(__mpz_struct **)&jarg1; 
-  arg2 = (int)jarg2; 
-  if (arg1) (arg1)->_mp_alloc = arg2;
-}
-
-
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1alloc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  __mpz_struct *arg1 = (__mpz_struct *) 0 ;
-  int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(__mpz_struct **)&jarg1; 
-  result = (int) ((arg1)->_mp_alloc);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  __mpz_struct *arg1 = (__mpz_struct *) 0 ;
-  int arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(__mpz_struct **)&jarg1; 
-  arg2 = (int)jarg2; 
-  if (arg1) (arg1)->_mp_size = arg2;
-}
-
-
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  __mpz_struct *arg1 = (__mpz_struct *) 0 ;
-  int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(__mpz_struct **)&jarg1; 
-  result = (int) ((arg1)->_mp_size);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  __mpz_struct *arg1 = (__mpz_struct *) 0 ;
-  mp_limb_t *arg2 = (mp_limb_t *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(__mpz_struct **)&jarg1; 
-  arg2 = *(mp_limb_t **)&jarg2; 
-  if (arg1) (arg1)->_mp_d = arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MultiplePrecisionInteger_1_1mp_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  __mpz_struct *arg1 = (__mpz_struct *) 0 ;
-  mp_limb_t *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(__mpz_struct **)&jarg1; 
-  result = (mp_limb_t *) ((arg1)->_mp_d);
-  *(mp_limb_t **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MultiplePrecisionInteger(JNIEnv *jenv, jclass jcls) {
-  jlong jresult = 0 ;
-  __mpz_struct *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  result = (__mpz_struct *)calloc(1, sizeof(__mpz_struct));
-  *(__mpz_struct **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1MultiplePrecisionInteger(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  __mpz_struct *arg1 = (__mpz_struct *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(__mpz_struct **)&jarg1; 
-  free((char *) arg1);
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_GMPRandomState_1seed_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
-  __mpz_struct *arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(__gmp_randstate_struct **)&jarg1; 
-  arg2 = *(__mpz_struct **)&jarg2; 
-  {
-    size_t ii;
-    __mpz_struct *b = (__mpz_struct *) arg1->_mp_seed;
-    for (ii = 0; ii < (size_t)1; ii++) b[ii] = *((__mpz_struct *) arg2 + ii);
-  }
-  
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_GMPRandomState_1seed_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
-  __mpz_struct *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(__gmp_randstate_struct **)&jarg1; 
-  result = (__mpz_struct *) ((arg1)->_mp_seed);
-  *(__mpz_struct **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_GMPRandomState_1algorithm_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
-  gmp_randalg_t arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(__gmp_randstate_struct **)&jarg1; 
-  arg2 = (gmp_randalg_t)jarg2; 
-  if (arg1) (arg1)->_mp_alg = arg2;
-}
-
-
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_GMPRandomState_1algorithm_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
-  gmp_randalg_t result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(__gmp_randstate_struct **)&jarg1; 
-  result = (gmp_randalg_t) ((arg1)->_mp_alg);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_arb_arbJNI_GMPRandomState_1algorithmData_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   __gmp_randstate_struct *arg1 = (__gmp_randstate_struct *) 0 ;
@@ -7268,62 +7100,6 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1P_1get(JNIEnv *jenv, jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1generators_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
-  unsigned long *arg2 = (unsigned long *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(dirichlet_group_struct **)&jarg1; 
-  arg2 = *(unsigned long **)&jarg2; 
-  if (arg1) (arg1)->generators = arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1generators_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
-  unsigned long *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(dirichlet_group_struct **)&jarg1; 
-  result = (unsigned long *) ((arg1)->generators);
-  *(unsigned long **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletGroup_1PHI_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
-  unsigned long *arg2 = (unsigned long *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(dirichlet_group_struct **)&jarg1; 
-  arg2 = *(unsigned long **)&jarg2; 
-  if (arg1) (arg1)->PHI = arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletGroup_1PHI_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  dirichlet_group_struct *arg1 = (dirichlet_group_struct *) 0 ;
-  unsigned long *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(dirichlet_group_struct **)&jarg1; 
-  result = (unsigned long *) ((arg1)->PHI);
-  *(unsigned long **)&jresult = result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1DirichletGroup(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   dirichlet_group_struct *result = 0 ;
@@ -7370,34 +7146,6 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletCharacter_1n_1get(JNIEnv *jenv
   arg1 = *(dirichlet_char_struct **)&jarg1; 
   result = (unsigned long) ((arg1)->n);
   jresult = (jlong)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletCharacter_1log_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  dirichlet_char_struct *arg1 = (dirichlet_char_struct *) 0 ;
-  unsigned long *arg2 = (unsigned long *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(dirichlet_char_struct **)&jarg1; 
-  arg2 = *(unsigned long **)&jarg2; 
-  if (arg1) (arg1)->log = arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletCharacter_1log_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  dirichlet_char_struct *arg1 = (dirichlet_char_struct *) 0 ;
-  unsigned long *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(dirichlet_char_struct **)&jarg1; 
-  result = (unsigned long *) ((arg1)->log);
-  *(unsigned long **)&jresult = result; 
   return jresult;
 }
 
@@ -7610,39 +7358,6 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1Real(JNIEnv *jenv, jclass jcls, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MantissaNoPointer_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  mantissa_noptr_struct *arg1 = (mantissa_noptr_struct *) 0 ;
-  mp_limb_t *arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mantissa_noptr_struct **)&jarg1; 
-  arg2 = *(mp_limb_t **)&jarg2; 
-  {
-    size_t ii;
-    mp_limb_t *b = (mp_limb_t *) arg1->d;
-    for (ii = 0; ii < (size_t)ARF_NOPTR_LIMBS; ii++) b[ii] = *((mp_limb_t *) arg2 + ii);
-  }
-  
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MantissaNoPointer_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  mantissa_noptr_struct *arg1 = (mantissa_noptr_struct *) 0 ;
-  mp_limb_t *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mantissa_noptr_struct **)&jarg1; 
-  result = (mp_limb_t *)(mp_limb_t *) ((arg1)->d);
-  *(mp_limb_t **)&jresult = result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MantissaNoPointer(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   mantissa_noptr_struct *result = 0 ;
@@ -7698,44 +7413,6 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MantissaPointer_1alloc_1get(JNIEnv *jen
     mp_size_t * resultptr = (mp_size_t *) malloc(sizeof(mp_size_t));
     memmove(resultptr, &result, sizeof(mp_size_t));
     *(mp_size_t **)&jresult = resultptr;
-  }
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MantissaPointer_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  mantissa_ptr_struct *arg1 = (mantissa_ptr_struct *) 0 ;
-  mp_ptr arg2 ;
-  mp_ptr *argp2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mantissa_ptr_struct **)&jarg1; 
-  argp2 = *(mp_ptr **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mp_ptr");
-    return ;
-  }
-  arg2 = *argp2; 
-  if (arg1) (arg1)->d = arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MantissaPointer_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  mantissa_ptr_struct *arg1 = (mantissa_ptr_struct *) 0 ;
-  mp_ptr result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mantissa_ptr_struct **)&jarg1; 
-  result =  ((arg1)->d);
-  {
-    mp_ptr * resultptr = (mp_ptr *) malloc(sizeof(mp_ptr));
-    memmove(resultptr, &result, sizeof(mp_ptr));
-    *(mp_ptr **)&jresult = resultptr;
   }
   return jresult;
 }
@@ -7905,35 +7582,6 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Float_1size_1get(JNIEnv *jenv, jclass j
     memmove(resultptr, &result, sizeof(mp_size_t));
     *(mp_size_t **)&jresult = resultptr;
   }
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_Float_1d_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  arf_struct *arg1 = (arf_struct *) 0 ;
-  mantissa_struct *arg2 = (mantissa_struct *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(arf_struct **)&jarg1; 
-  arg2 = *(mantissa_struct **)&jarg2; 
-  if (arg1) (arg1)->d = *arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Float_1d_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  arf_struct *arg1 = (arf_struct *) 0 ;
-  mantissa_struct *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(arf_struct **)&jarg1; 
-  result = (mantissa_struct *)& ((arg1)->d);
-  *(mantissa_struct **)&jresult = result; 
   return jresult;
 }
 

@@ -77,15 +77,6 @@ public class DirichletCharacter implements AutoCloseable {
     return arbJNI.DirichletCharacter_n_get(swigCPtr, this);
   }
 
-  public void setLog(SWIGTYPE_p_unsigned_long value) {
-    arbJNI.DirichletCharacter_log_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_unsigned_long getLog() {
-    long cPtr = arbJNI.DirichletCharacter_log_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
-  }
-
   public DirichletCharacter() {
     this(arbJNI.new_DirichletCharacter(), true);
   }

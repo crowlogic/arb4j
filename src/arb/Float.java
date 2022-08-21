@@ -350,15 +350,6 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     return new SWIGTYPE_p_mp_size_t(arbJNI.Float_size_get(swigCPtr, this), true);
   }
 
-  public void setD(Mantissa value) {
-    arbJNI.Float_d_set(swigCPtr, this, Mantissa.getCPtr(value), value);
-  }
-
-  public Mantissa getD() {
-    long cPtr = arbJNI.Float_d_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Mantissa(cPtr, false);
-  }
-
   public Float() {
     this(arbJNI.new_Float(), true);
   }

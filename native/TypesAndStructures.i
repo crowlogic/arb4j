@@ -1,3 +1,4 @@
+
 %{
 #include <flint/fmpz.h>
 #include <mpfr.h>
@@ -53,18 +54,6 @@ typedef enum
 
 
 typedef unsigned long int	mp_limb_t;
-
-typedef struct
-{
-  int _mp_alloc;		/* Number of *limbs* allocated and pointed to by the _mp_d field.  */
-  int _mp_size;			/**
-                         * abs(_mp_size) is the number of limbs the last field points to.  
-                         * If _mp_size is negative this is a negative number.  
-                         */ 
-  mp_limb_t *_mp_d;		/* Pointer to the limbs.  */
-} __mpz_struct;
-
-typedef __mpz_struct mpz_t[1];
 
 /* Random state struct.  */
 typedef struct
@@ -154,7 +143,7 @@ typedef struct
     slong num;              /* number of prime components (even + odd) */
     ulong expo;             /* exponent = largest order in G */
     dirichlet_prime_group_struct * P;
-    ulong * generators;     /* generators lifted mod q */
+    unsigned_long_ptr       generators;     /* generators lifted mod q */
     ulong * PHI;            /* PHI(k) = expo / phi(k)        */
 }
 dirichlet_group_struct;

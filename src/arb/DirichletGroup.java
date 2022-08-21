@@ -130,24 +130,6 @@ public class DirichletGroup implements AutoCloseable {
     return (cPtr == 0) ? null : new DirichletPrimeGroup(cPtr, false);
   }
 
-  public void setGenerators(SWIGTYPE_p_unsigned_long value) {
-    arbJNI.DirichletGroup_generators_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_unsigned_long getGenerators() {
-    long cPtr = arbJNI.DirichletGroup_generators_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
-  }
-
-  public void setPHI(SWIGTYPE_p_unsigned_long value) {
-    arbJNI.DirichletGroup_PHI_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_unsigned_long getPHI() {
-    long cPtr = arbJNI.DirichletGroup_PHI_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
-  }
-
   public DirichletGroup() {
     this(arbJNI.new_DirichletGroup(), true);
   }
