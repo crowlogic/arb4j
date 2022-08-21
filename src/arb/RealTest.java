@@ -2,35 +2,28 @@ package arb;
 
 import static java.lang.System.out;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import junit.framework.TestCase;
 
 public class RealTest extends
                       TestCase
 {
 
-  public void testLockAndUnlock()
+  public void testDotProduct()
   {
-    System.loadLibrary("arblib");
-    int pagesize = arb.getpagesize();
-    System.out.println("Pagesize=" + pagesize);
-    long pointer = SWIGTYPE_p_void.getCPtr(arb.memalign(pagesize, Real.BYTES));
-    System.out.format("pointer = 0x%x\n", pointer);
-    try ( Real a = new Real(pointer,
-                            true))
+    AtomicInteger a = new AtomicInteger(1);
+    Real x = Real.newVector(3);
+    x.name = "x";
+    Real y = Real.newVector(3);
+    y.name = "y";
+    for ( int i = 0; i < 3; i++ )
     {
-      a.init();
-      System.out.format("a=" + a + " at 0x%x \n swigCptrFromMalloc=0x%x \n", pointer, Real.getCPtr(a));
-      a.set("2.14", 128);
-      System.out.println("a=" + a);
-      a.lock();
-      a.unlock();
-      out.println("locked");
-      a.set("3.14", 128);
-      System.out.println("a=" + a);
-      a.unlock();
-      out.println("unlocked");
-
+      x.get(i).set( a.getAndIncrement());
+      y.get(i).set( a.getAndIncrement());
     }
+    Real dp = x.dotProduct(y, 128, new Real());
+    assertEquals( new Real("44",128), dp );
   }
 
 }

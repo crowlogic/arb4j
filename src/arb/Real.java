@@ -146,19 +146,18 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
   {
     try ( Real mean = new Real())
     {
-      return variance(prec, arithmeticMean(prec, mean), result);
+      return variance(prec, mean(prec, mean), result);
     }
   }
 
   public Real variance(int prec, Real mean, Real result)
   {
     result.zero();
-    try ( Real tmp = new Real(); Real elementMinusMeanSquared = new Real() )
+    try ( Real x = new Real(); )
     {
       for (Real element : this)
-      {
-        element.sub(mean, prec, tmp).pow(2, prec,elementMinusMeanSquared);
-        result.add( elementMinusMeanSquared, prec );
+      {	    
+        result.add( element.sub(mean, prec, x).pow(2, prec), prec );
       }
     }
     return result.div(dim, prec);
@@ -168,7 +167,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
   {
     try ( Real mean = new Real())
     {
-      return standardDeviation(prec, arithmeticMean(prec, mean), result);
+      return standardDeviation(prec, mean(prec, mean), result);
     }  
   }
   
@@ -177,7 +176,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
     return variance(prec, mean, result).sqrt(prec);
   }
   
-  
+ 
   @Override
   public int dim()
   {
@@ -665,11 +664,13 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
     return sb.toString();
   }
   
-  public String toString( )
+  public String toString()
   {
-    return toString(digits());
+    return ( name == null ? "" : name + " " ) + toString(digits());
   }
-  
+
+  public String name;
+    
   public int digits()
   {
     try ( Magnitude d = new Magnitude()  )

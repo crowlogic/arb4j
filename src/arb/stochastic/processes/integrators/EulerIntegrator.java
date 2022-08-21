@@ -77,7 +77,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
       print(integrator.getClass().getSimpleName(), data);
 
-      println("mean=" + path.values[0].arithmeticMean(128, new Real()));
+      println("mean=" + path.values[0].mean(128, new Real()));
     }
 
   }

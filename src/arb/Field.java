@@ -55,7 +55,7 @@ public interface Field<X extends Field<X>> extends
    * 
    * @return this{@link #Σ(int, Field)} / this{@link #dim()}
    */
-  public default X arithmeticMean(int prec, X result)
+  public default X mean(int prec, X result)
   {
     return Σ(prec, result).div(dim(), prec);
   }
