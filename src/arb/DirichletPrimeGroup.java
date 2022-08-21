@@ -52,22 +52,6 @@ public class DirichletPrimeGroup {
     return arbJNI.DirichletPrimeGroup_e_get(swigCPtr, this);
   }
 
-  public void setPe(SWIGTYPE_p_nmod_t value) {
-    arbJNI.DirichletPrimeGroup_pe_set(swigCPtr, this, SWIGTYPE_p_nmod_t.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_nmod_t getPe() {
-    return new SWIGTYPE_p_nmod_t(arbJNI.DirichletPrimeGroup_pe_get(swigCPtr, this), true);
-  }
-
-  public void setPhi(SWIGTYPE_p_nmod_t value) {
-    arbJNI.DirichletPrimeGroup_phi_set(swigCPtr, this, SWIGTYPE_p_nmod_t.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_nmod_t getPhi() {
-    return new SWIGTYPE_p_nmod_t(arbJNI.DirichletPrimeGroup_phi_get(swigCPtr, this), true);
-  }
-
   public void setG(long value) {
     arbJNI.DirichletPrimeGroup_g_set(swigCPtr, this, value);
   }

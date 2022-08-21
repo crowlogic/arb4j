@@ -54,10 +54,6 @@ typedef enum
 
 typedef unsigned long int	mp_limb_t;
 
-typedef __mpfr_struct mpfr_t[1];
-typedef __mpfr_struct *mpfr_ptr;
-typedef const __mpfr_struct *mpfr_srcptr;
-
 typedef struct
 {
   int _mp_alloc;		/* Number of *limbs* allocated and pointed to by the _mp_d field.  */
@@ -227,13 +223,6 @@ typedef struct
     mantissa_struct d;
 }
 arf_struct;
-
-typedef struct {
-  mpfr_prec_t  _mpfr_prec;
-  mpfr_sign_t  _mpfr_sign;
-  mpfr_exp_t   _mpfr_exp;
-  mp_limb_t   *_mpfr_d;
-} __mpfr_struct;
 
 typedef fmpz fmpz_t[1];
 

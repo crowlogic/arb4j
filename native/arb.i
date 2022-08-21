@@ -20,6 +20,9 @@ SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %ignore dlog_precomp_struct;
 %ignore dlog;
+%ignore phi;
+%ignore pe;
+%ignore mod;
 %ignore rows; // ignore rows pointer to array of pointers in RealMatrix
 %rename (rows) r;
 %rename (cols) c;
@@ -42,7 +45,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %rename (FastDFTSchemeUnion) acb_dft_pre_struct_t;
 %rename (MultiplePrecisionInteger) __mpz_struct;
 %rename (FloatInterval) arf_interval_struct;
-%rename (MultiplePrecisionFloat) __mpfr_struct;
 %rename (Complex) acb_struct;
 %rename (Real) arb_struct;
 %rename (Float) arf_struct;

@@ -417,10 +417,6 @@ public class arb {
     return (cPtr == 0) ? null : new Real(cPtr, false);
   }
 
-  public static void mpfr_clear(MultiplePrecisionFloat arg0) {
-    arbJNI.mpfr_clear(MultiplePrecisionFloat.getCPtr(arg0), arg0);
-  }
-
   public static void flint_cleanup() {
     arbJNI.flint_cleanup();
   }

@@ -169,10 +169,8 @@ void acb_poly_clear(acb_poly_t poly);
 
 arb_ptr arb_mat_entry_ptr(arb_mat_t mat, slong i, slong j);
 
-void mpfr_clear (mpfr_ptr);
-
- void flint_cleanup(void);
- void flint_cleanup_master(void);
+void flint_cleanup(void);
+void flint_cleanup_master(void);
 
 
 int f_lemniscate(acb_ptr res, const acb_t z, void * param, slong order, slong prec);

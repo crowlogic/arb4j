@@ -81,14 +81,6 @@ public class DirichletGroup implements AutoCloseable {
     return arbJNI.DirichletGroup_q_even_get(swigCPtr, this);
   }
 
-  public void setMod(SWIGTYPE_p_nmod_t value) {
-    arbJNI.DirichletGroup_mod_set(swigCPtr, this, SWIGTYPE_p_nmod_t.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_nmod_t getMod() {
-    return new SWIGTYPE_p_nmod_t(arbJNI.DirichletGroup_mod_get(swigCPtr, this), true);
-  }
-
   public void setRad_q(long value) {
     arbJNI.DirichletGroup_rad_q_set(swigCPtr, this, value);
   }

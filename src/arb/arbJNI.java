@@ -110,7 +110,6 @@ public class arbJNI {
   public final static native void arb_mat_init(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
   public final static native void acb_poly_clear(long jarg1, ComplexPolynomial jarg1_);
   public final static native long arb_mat_entry_ptr(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
-  public final static native void mpfr_clear(long jarg1, MultiplePrecisionFloat jarg1_);
   public final static native void flint_cleanup();
   public final static native void flint_cleanup_master();
   public final static native int f_lemniscate(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4, int jarg5);
@@ -397,8 +396,6 @@ public class arbJNI {
   public final static native long DirichletGroup_q_get(long jarg1, DirichletGroup jarg1_);
   public final static native void DirichletGroup_q_even_set(long jarg1, DirichletGroup jarg1_, long jarg2);
   public final static native long DirichletGroup_q_even_get(long jarg1, DirichletGroup jarg1_);
-  public final static native void DirichletGroup_mod_set(long jarg1, DirichletGroup jarg1_, long jarg2);
-  public final static native long DirichletGroup_mod_get(long jarg1, DirichletGroup jarg1_);
   public final static native void DirichletGroup_rad_q_set(long jarg1, DirichletGroup jarg1_, long jarg2);
   public final static native long DirichletGroup_rad_q_get(long jarg1, DirichletGroup jarg1_);
   public final static native void DirichletGroup_phi_q_set(long jarg1, DirichletGroup jarg1_, long jarg2);
@@ -427,10 +424,6 @@ public class arbJNI {
   public final static native long DirichletPrimeGroup_p_get(long jarg1, DirichletPrimeGroup jarg1_);
   public final static native void DirichletPrimeGroup_e_set(long jarg1, DirichletPrimeGroup jarg1_, int jarg2);
   public final static native int DirichletPrimeGroup_e_get(long jarg1, DirichletPrimeGroup jarg1_);
-  public final static native void DirichletPrimeGroup_pe_set(long jarg1, DirichletPrimeGroup jarg1_, long jarg2);
-  public final static native long DirichletPrimeGroup_pe_get(long jarg1, DirichletPrimeGroup jarg1_);
-  public final static native void DirichletPrimeGroup_phi_set(long jarg1, DirichletPrimeGroup jarg1_, long jarg2);
-  public final static native long DirichletPrimeGroup_phi_get(long jarg1, DirichletPrimeGroup jarg1_);
   public final static native void DirichletPrimeGroup_g_set(long jarg1, DirichletPrimeGroup jarg1_, long jarg2);
   public final static native long DirichletPrimeGroup_g_get(long jarg1, DirichletPrimeGroup jarg1_);
   public final static native long new_DirichletPrimeGroup();
@@ -465,16 +458,6 @@ public class arbJNI {
   public final static native long Float_d_get(long jarg1, Float jarg1_);
   public final static native long new_Float();
   public final static native void delete_Float(long jarg1);
-  public final static native void MultiplePrecisionFloat__mpfr_prec_set(long jarg1, MultiplePrecisionFloat jarg1_, long jarg2);
-  public final static native long MultiplePrecisionFloat__mpfr_prec_get(long jarg1, MultiplePrecisionFloat jarg1_);
-  public final static native void MultiplePrecisionFloat__mpfr_sign_set(long jarg1, MultiplePrecisionFloat jarg1_, long jarg2);
-  public final static native long MultiplePrecisionFloat__mpfr_sign_get(long jarg1, MultiplePrecisionFloat jarg1_);
-  public final static native void MultiplePrecisionFloat__mpfr_exp_set(long jarg1, MultiplePrecisionFloat jarg1_, long jarg2);
-  public final static native long MultiplePrecisionFloat__mpfr_exp_get(long jarg1, MultiplePrecisionFloat jarg1_);
-  public final static native void MultiplePrecisionFloat__mpfr_d_set(long jarg1, MultiplePrecisionFloat jarg1_, long jarg2);
-  public final static native long MultiplePrecisionFloat__mpfr_d_get(long jarg1, MultiplePrecisionFloat jarg1_);
-  public final static native long new_MultiplePrecisionFloat();
-  public final static native void delete_MultiplePrecisionFloat(long jarg1);
   public final static native void ComplexPolynomial_coeffs_set(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_);
   public final static native long ComplexPolynomial_coeffs_get(long jarg1, ComplexPolynomial jarg1_);
   public final static native void ComplexPolynomial_length_set(long jarg1, ComplexPolynomial jarg1_, int jarg2);
