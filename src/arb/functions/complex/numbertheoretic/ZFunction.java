@@ -19,20 +19,6 @@ public class ZFunction implements
 
   static int                           prec         = 128;
 
-  public static AutoArrayList<Real>    roots        = new AutoArrayList<>(i ->
-                                                    {
-                                                      Real root = new Real();
-                                                      nthHardyZero(root, i, prec);
-                                                      return root;
-                                                    });
-
-  public static AutoArrayList<Complex> complexRoots = new AutoArrayList<>(i ->
-                                                    {
-                                                      Complex root = new Complex();
-                                                      nthHardyZero(root.getReal(), i, prec);
-                                                      return root;
-                                                    });
-
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)
   {

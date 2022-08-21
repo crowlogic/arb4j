@@ -551,16 +551,11 @@ import arb.Lockable;
     return r;
   }
   
-  public Real nthHardyZero(int n, int prec) 
-  {    
-    arb.nthHardyZero(this, n, prec);
-    return this;
-  }
 
-public int relAccuracyBits()
-{
- return arb.arb_rel_accuracy_bits(this);
-}
+  public int relAccuracyBits()
+  {
+   return arb.arb_rel_accuracy_bits(this);
+  }
 
   public synchronized void relocateToPageBoundary()                                             
   {                                                                                           

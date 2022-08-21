@@ -4842,22 +4842,6 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1pow(JNIEnv *jenv, jclass jcls, jlon
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_nthHardyZero(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
-  arb_struct *arg1 ;
-  int arg2 ;
-  long arg3 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(arb_struct **)&jarg1; 
-  arg2 = (int)jarg2; 
-  arg3 = (long)jarg3; 
-  nthHardyZero(arg1,arg2,arg3);
-  
-}
-
-
 SWIGEXPORT jint JNICALL Java_arb_arbJNI_arb_1contains(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jint jresult = 0 ;
   arb_struct *arg1 ;

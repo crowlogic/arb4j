@@ -253,7 +253,6 @@ public class arbJNI {
   public final static native void acb_modular_eisenstein(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
   public final static native void acb_pow_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void acb_pow(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
-  public final static native void nthHardyZero(long jarg1, Real jarg1_, int jarg2, int jarg3);
   public final static native int arb_contains(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
   public final static native int arb_contains_zero(long jarg1, Real jarg1_);
   public final static native int arb_set_str(long jarg1, Real jarg1_, String jarg2, int jarg3);

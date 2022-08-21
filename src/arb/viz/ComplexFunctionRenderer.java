@@ -2,7 +2,6 @@ package arb.viz;
 
 import static java.lang.System.out;
 import static java.util.stream.IntStream.range;
-import static java.util.stream.IntStream.rangeClosed;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -48,7 +47,6 @@ import arb.ThreadLocalComplex;
 import arb.ThreadLocalReal;
 import arb.arb;
 import arb.functions.complex.HolomorphicFunction;
-import arb.functions.complex.numbertheoretic.ZFunction;
 import arb.utensils.Utilities;
 
 /**
@@ -193,10 +191,6 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
   boolean                      singleThreading                 = false;
 
   private long                 startTime;
-
-  public boolean               labelHardyZRoots                = true;
-
-  public boolean               showHardyZRootLocations         = false;
 
   Color                        clear                           = new Color(0,
                                                                            0,
@@ -519,11 +513,6 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     setStaticOverlayGraphicsFontSizeToHalfItsCurrentSize();
 
     renderCoordinateSystemAxes();
-    if (showHardyZRootLocations)
-    {
-      renderHardyZRootLocations();
-    }
-
   }
 
   void drawString(Graphics g, String text, int x, int y)
@@ -989,33 +978,6 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     markAxes();
     markHorizontalTicks();
     markVerticalTicks();
-  }
-
-  private void renderHardyZRootLocations()
-  {
-    // TODO: use estimated root number based on range
-    // TODO: draw text labelling the region so it matches with the notation in the
-    // paper
-    // TODO: button to toggle root labelling on or off
-    rangeClosed(1, 20).forEach(i ->
-    {
-      double rootp = ZFunction.roots.getOrCreate(i).doubleValue();
-
-      if (labelHardyZRoots)
-      {
-        drawTextInFunctionCoordinates(false, String.format("%2.3f", rootp), rootp, 0.1);
-      }
-      staticOverlayGraphics.draw(new Star(rootp,
-                                          0,
-                                          0.25,
-                                          0.5,
-                                          5));
-      staticOverlayGraphics.draw(new Star(-rootp,
-                                          0,
-                                          0.25,
-                                          0.5,
-                                          5));
-    });
   }
 
   private void reportRenderingRate()

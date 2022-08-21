@@ -42,28 +42,6 @@ public class ArblibTest extends
 
   }
 
-  public void testHardyZZero()
-  {
-    Real firstRoot = new Real();
-    firstRoot.init();
-    firstRoot.assign("14.134725141734693790457251983562470270784257115699243175685567460149", prec);
-
-    out.println("firstRoot=" + firstRoot);
-
-    Real   realRoots[] = new Real[10];
-
-    double roots[]     = new double[10];
-    for (int i = 0; i < roots.length; i++)
-    {
-      realRoots[i] = new Real();
-      realRoots[i].init();
-      nthHardyZero(realRoots[i], i + 1, prec);
-      roots[i] = realRoots[i].getMid().doubleValue();
-      System.out.println("root[" + i + "]=" + realRoots[i]);
-    }
-    assertTrue(realRoots[0].overlaps(firstRoot));
-  }
-
   public static void testHurwitzZeta()
   {
     // acb_dirichlet_hurwitz(res, z, v, prec);

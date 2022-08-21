@@ -993,10 +993,6 @@ public class arb {
     arbJNI.acb_pow(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
 
-  public static void nthHardyZero(Real res, int n, int prec) {
-    arbJNI.nthHardyZero(Real.getCPtr(res), res, n, prec);
-  }
-
   public static int arb_contains(Real x, Real y) {
     return arbJNI.arb_contains(Real.getCPtr(x), x, Real.getCPtr(y), y);
   }
