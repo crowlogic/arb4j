@@ -419,8 +419,6 @@ public class arbJNI {
   public final static native long DirichletPrimeGroup_phi_get(long jarg1, DirichletPrimeGroup jarg1_);
   public final static native void DirichletPrimeGroup_g_set(long jarg1, DirichletPrimeGroup jarg1_, long jarg2);
   public final static native long DirichletPrimeGroup_g_get(long jarg1, DirichletPrimeGroup jarg1_);
-  public final static native void DirichletPrimeGroup_dlog_set(long jarg1, DirichletPrimeGroup jarg1_, long jarg2);
-  public final static native long DirichletPrimeGroup_dlog_get(long jarg1, DirichletPrimeGroup jarg1_);
   public final static native long new_DirichletPrimeGroup();
   public final static native void delete_DirichletPrimeGroup(long jarg1);
   public final static native void Real_mid_set(long jarg1, Real jarg1_, long jarg2, Float jarg2_);

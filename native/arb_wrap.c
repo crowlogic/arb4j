@@ -7309,34 +7309,6 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1g_1get(JNIEnv *jen
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1dlog_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
-  dlog_precomp_struct *arg2 = (dlog_precomp_struct *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(dirichlet_prime_group_struct **)&jarg1; 
-  arg2 = *(dlog_precomp_struct **)&jarg2; 
-  if (arg1) (arg1)->dlog = arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_DirichletPrimeGroup_1dlog_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  dirichlet_prime_group_struct *arg1 = (dirichlet_prime_group_struct *) 0 ;
-  dlog_precomp_struct *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(dirichlet_prime_group_struct **)&jarg1; 
-  result = (dlog_precomp_struct *) ((arg1)->dlog);
-  *(dlog_precomp_struct **)&jresult = result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1DirichletPrimeGroup(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   dirichlet_prime_group_struct *result = 0 ;

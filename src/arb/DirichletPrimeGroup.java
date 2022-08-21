@@ -76,15 +76,6 @@ public class DirichletPrimeGroup {
     return arbJNI.DirichletPrimeGroup_g_get(swigCPtr, this);
   }
 
-  public void setDlog(SWIGTYPE_p_dlog_precomp_struct value) {
-    arbJNI.DirichletPrimeGroup_dlog_set(swigCPtr, this, SWIGTYPE_p_dlog_precomp_struct.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_dlog_precomp_struct getDlog() {
-    long cPtr = arbJNI.DirichletPrimeGroup_dlog_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_dlog_precomp_struct(cPtr, false);
-  }
-
   public DirichletPrimeGroup() {
     this(arbJNI.new_DirichletPrimeGroup(), true);
   }
