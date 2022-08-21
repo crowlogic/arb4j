@@ -7380,44 +7380,6 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1MantissaNoPointer(JNIEnv *jenv, 
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_MantissaPointer_1alloc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  mantissa_ptr_struct *arg1 = (mantissa_ptr_struct *) 0 ;
-  mp_size_t arg2 ;
-  mp_size_t *argp2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mantissa_ptr_struct **)&jarg1; 
-  argp2 = *(mp_size_t **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mp_size_t");
-    return ;
-  }
-  arg2 = *argp2; 
-  if (arg1) (arg1)->alloc = arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_MantissaPointer_1alloc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  mantissa_ptr_struct *arg1 = (mantissa_ptr_struct *) 0 ;
-  mp_size_t result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(mantissa_ptr_struct **)&jarg1; 
-  result =  ((arg1)->alloc);
-  {
-    mp_size_t * resultptr = (mp_size_t *) malloc(sizeof(mp_size_t));
-    memmove(resultptr, &result, sizeof(mp_size_t));
-    *(mp_size_t **)&jresult = resultptr;
-  }
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1MantissaPointer(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   mantissa_ptr_struct *result = 0 ;
@@ -7548,44 +7510,6 @@ SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Float_1exp_1get(JNIEnv *jenv, jclass jc
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_Float_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  arf_struct *arg1 = (arf_struct *) 0 ;
-  mp_size_t arg2 ;
-  mp_size_t *argp2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(arf_struct **)&jarg1; 
-  argp2 = *(mp_size_t **)&jarg2; 
-  if (!argp2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null mp_size_t");
-    return ;
-  }
-  arg2 = *argp2; 
-  if (arg1) (arg1)->size = arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_Float_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  arf_struct *arg1 = (arf_struct *) 0 ;
-  mp_size_t result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(arf_struct **)&jarg1; 
-  result =  ((arg1)->size);
-  {
-    mp_size_t * resultptr = (mp_size_t *) malloc(sizeof(mp_size_t));
-    memmove(resultptr, &result, sizeof(mp_size_t));
-    *(mp_size_t **)&jresult = resultptr;
-  }
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_arb_arbJNI_new_1Float(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   arf_struct *result = 0 ;
@@ -7660,34 +7584,6 @@ SWIGEXPORT jint JNICALL Java_arb_arbJNI_ComplexPolynomial_1length_1get(JNIEnv *j
   (void)jarg1_;
   arg1 = *(acb_poly_struct **)&jarg1; 
   result = (long) ((arg1)->length);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_arb_arbJNI_ComplexPolynomial_1alloc_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  acb_poly_struct *arg1 = (acb_poly_struct *) 0 ;
-  long arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(acb_poly_struct **)&jarg1; 
-  arg2 = (long)jarg2; 
-  if (arg1) (arg1)->alloc = arg2;
-}
-
-
-SWIGEXPORT jint JNICALL Java_arb_arbJNI_ComplexPolynomial_1alloc_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  acb_poly_struct *arg1 = (acb_poly_struct *) 0 ;
-  long result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(acb_poly_struct **)&jarg1; 
-  result = (long) ((arg1)->alloc);
   jresult = (jint)result; 
   return jresult;
 }

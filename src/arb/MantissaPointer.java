@@ -36,14 +36,6 @@ public class MantissaPointer {
     }
   }
 
-  public void setAlloc(SWIGTYPE_p_mp_size_t value) {
-    arbJNI.MantissaPointer_alloc_set(swigCPtr, this, SWIGTYPE_p_mp_size_t.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_mp_size_t getAlloc() {
-    return new SWIGTYPE_p_mp_size_t(arbJNI.MantissaPointer_alloc_get(swigCPtr, this), true);
-  }
-
   public MantissaPointer() {
     this(arbJNI.new_MantissaPointer(), true);
   }

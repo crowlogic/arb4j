@@ -112,14 +112,6 @@ public class ComplexPolynomial implements AutoCloseable,HolomorphicFunction {
     return arbJNI.ComplexPolynomial_length_get(swigCPtr, this);
   }
 
-  public void setAlloc(int value) {
-    arbJNI.ComplexPolynomial_alloc_set(swigCPtr, this, value);
-  }
-
-  public int getAlloc() {
-    return arbJNI.ComplexPolynomial_alloc_get(swigCPtr, this);
-  }
-
   public ComplexPolynomial() {
     this(arbJNI.new_ComplexPolynomial(), true);
   }
