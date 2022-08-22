@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static long openOrCreateMemoryMappedFile(java.lang.Object path, int bytes) {
+    return arbJNI.openOrCreateMemoryMappedFile(path, bytes);
+  }
+
   public static void acb_hypgeom_bessel_j_0f1(Complex res, Complex nu, Complex z, int prec) {
     arbJNI.acb_hypgeom_bessel_j_0f1(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
   }

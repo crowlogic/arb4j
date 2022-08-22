@@ -312,6 +312,22 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_openOrCreateMemoryMappedFile(JNIEnv *jenv, jclass jcls, jobject jarg1, jint jarg2) {
+  jlong jresult = 0 ;
+  jobject arg1 ;
+  int arg2 ;
+  jlong result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = jarg1; 
+  arg2 = (int)jarg2; 
+  result = openOrCreateMemoryMappedFile(arg1,arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1hypgeom_1bessel_1j_10f1(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;

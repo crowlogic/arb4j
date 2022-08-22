@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 public class PointCacheTest extends
                             TestCase
 {
-  public void testIt()
+  public void testCache()
   {
     try ( PointValueCache cache = new PointValueCache("test",
                                                       250,

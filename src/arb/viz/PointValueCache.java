@@ -17,13 +17,6 @@ import jdk.incubator.foreign.*;
  * things.. so we go with the rule-of-thumb that 128 bits is enough for
  * calculating RGB intensities anyway..
  * 
- * 
- * TODO: Clients requiring sophisticated, low-level control over mapped memory
- * segments, should consider writing custom mapped memory segment factories;
- * using CLinker, e.g. on Linux, it is possible to call mmap with the desired
- * parameters; the returned address can be easily wrapped into a memory segment,
- * using MemoryAddress.ofLong(long) and ofAddress(MemoryAddress, long,
- * ResourceScope).
  */
 public class PointValueCache implements
                              AutoCloseable
@@ -36,19 +29,11 @@ public class PointValueCache implements
   /**
    * TODO: this could represent a set of patches of {@link RiemannSurface} sheets
    */
-  Complex            points[][][];
+  Complex     points[][][];
 
-  private int        width;
+  private int width;
 
-  private int        height;
-
-  ByteBuffer         buffer;
-
-  private ByteBuffer buffer1;
-
-  private long       bufferAddress;
-
-  private long       buffer1Address;
+  private int height;
 
   public Complex pointAt(int n, int x, int y)
   {
@@ -71,6 +56,13 @@ public class PointValueCache implements
 
   ResourceScope        scope    = ResourceScope.newSharedScope();
 
+  /**
+   * TODO: replace 3d this{@link #points} with 2 {@link ComplexMatrix}s
+   * 
+   * @param id
+   * @param numXpoints
+   * @param numYpoints
+   */
   public PointValueCache(String id, int numXpoints, int numYpoints)
   {
     System.out.println("Opening " + id + ".arb" + " and .arb1");
@@ -80,34 +72,33 @@ public class PointValueCache implements
 
     try
     {
-      path           = Path.of(id + ".arb");
-      pointer0       = openOrCreateMemoryMappedFile(path, bytes);
-      path1          = Path.of(id + ".arb1");
-      pointer1       = openOrCreateMemoryMappedFile(path1, bytes);
+      path     = Path.of(id + ".arb");
+      pointer0 = openOrCreateMemoryMappedFile(path, bytes);
+      assert pointer0 != 0 : "openOrCreateMemoryMappedFile('" + path + "') failed";
+      path1    = Path.of(id + ".arb1");
+      pointer1 = openOrCreateMemoryMappedFile(path1, bytes);
+      assert pointer1 != 0 : "openOrCreateMemoryMappedFile('" + path1 + "') failed";
 
-      segment        = MemorySegment.ofAddress(MemoryAddress.ofLong(31337l), bytes, scope);
-      segment1       = MemorySegment.ofAddress(MemoryAddress.ofLong(31337l), bytes, scope);
-      buffer         = segment.asByteBuffer();
-      buffer1        = segment1.asByteBuffer();
+      segment  = MemorySegment.ofAddress(MemoryAddress.ofLong(pointer0), bytes, scope);
+      segment1 = MemorySegment.ofAddress(MemoryAddress.ofLong(pointer1), bytes, scope);
 
-      points         = new Complex[2][numXpoints][numYpoints];
-      bufferAddress  = arb.bufferAddress(buffer);
-      buffer1Address = arb.bufferAddress(buffer1);
+      points   = new Complex[2][numXpoints][numYpoints];
+      long bufferPointer  = pointer0;
+      long buffer1Pointer = pointer1;
 
       for (int x = 0; x < numXpoints; x++)
       {
         for (int y = 0; y < numYpoints; y++)
         {
-          Complex point0 = points[0][x][y] = new Complex(bufferAddress += Complex.BYTES,
+          Complex point0 = points[0][x][y] = new Complex(bufferPointer += Complex.BYTES,
                                                          false);
-          Complex point1 = points[1][x][y] = new Complex(buffer1Address += Complex.BYTES,
+          Complex point1 = points[1][x][y] = new Complex(buffer1Pointer += Complex.BYTES,
                                                          false);
           point0.dim      = 2;
           point0.elements = new Complex[]
           { point0, point1 };
         }
       }
-      assert bufferAddress - arb.bufferAddress(buffer) == bytes;
     }
     catch (IOException e)
     {
@@ -119,8 +110,12 @@ public class PointValueCache implements
 
   protected long openOrCreateMemoryMappedFile(Path path, int bytes) throws FileNotFoundException, IOException
   {
-    assert false : "TODO: call JNI method that does the open, mmap, etc, since the JDK 18 memory mapped file support fucking SUCKS or im just too dumb to figure it out";
-    return 31337;
+    return openOrCreateMemoryMappedFile(path.toAbsolutePath().toString(), bytes);
+  }
+
+  private long openOrCreateMemoryMappedFile(String string, int bytes)
+  {
+    return arb.openOrCreateMemoryMappedFile(string, bytes);
   }
 
   protected void createBlankFile(File file, int bytes)
@@ -144,13 +139,7 @@ public class PointValueCache implements
   @Override
   public void close()
   {
-    if (buffer == null)
-    {
-      return;
-    }
-    buffer  = null;
-
-    buffer1 = null;
+    assert false : "TODO: call the native code via SWIG that does the msync, munmap, close, calls, etc.";
 
     scope.close();
     System.out.println("Closing function image cache " + pointer0 + " and " + pointer1);
@@ -158,7 +147,6 @@ public class PointValueCache implements
     if (!complete)
     {
       System.err.println("Deleting incomplete files " + pointer0 + " and " + pointer1);
-      assert false : "TODO: call the native code via SWIG that does the msync, munmap, close, calls, etc.";
     }
     System.out.println("Finished closing cache..");
   }

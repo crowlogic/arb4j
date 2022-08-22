@@ -353,10 +353,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 //    this._z.remove();
 //    pixel.remove();
 //    pixel2.remove();
-    if (image.buffer != null)
-    {
-      image.close();
-    }
+
   }
 
   private Pixel colorizePixel(Complex w)

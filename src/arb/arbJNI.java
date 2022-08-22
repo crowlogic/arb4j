@@ -9,6 +9,7 @@
 package arb;
 
 public class arbJNI {
+  public final static native long openOrCreateMemoryMappedFile(java.lang.Object jarg1, int jarg2);
   public final static native void acb_hypgeom_bessel_j_0f1(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_hypgeom_bessel_j_asymp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_hypgeom_bessel_j(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);

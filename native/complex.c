@@ -28,11 +28,22 @@ int errorNumber()
   return errno;
 }
 
+jlong openOrCreateMemoryMappedFile(jobject path, int bytes)
+{
+  return 0;
+}
+
 jlong
 bufferAddress (jobject buffer)
 {
   return (jlong) (*env)->GetDirectBufferAddress(env, buffer);
 }
+
+
+
+
+
+
 
 int
 f_lemniscate (acb_ptr res, const acb_t z, void *param, slong order, slong prec)
