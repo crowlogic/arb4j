@@ -343,7 +343,7 @@ import arb.Lockable;
     {
       swigCMemOwn = false;    
       arb_clear(this);
-      for ( int i = 2; i < dim; i++ )
+      for ( int i = 0; i < dim; i++ )
       {
         get(i).clear();
       }

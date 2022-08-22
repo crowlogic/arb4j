@@ -73,7 +73,6 @@ public class SFunction implements
 
   private Real                 aSquared;
 
-  private Real                 aQuadrupoled;
 
   public SFunction()
   {
@@ -85,7 +84,6 @@ public class SFunction implements
     this.a            = a;
     this.sqrta        = a.sqrt(a.bits());
     this.aSquared     = a;
-    this.aQuadrupoled = a.pow(2, a.bits(), new Real());
   }
 
   @Override

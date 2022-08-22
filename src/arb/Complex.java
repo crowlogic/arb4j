@@ -678,8 +678,9 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
   {
     if ( swigCMemOwn )
     {
+      swigCMemOwn = false;
       acb_clear(this);
-      for ( int i = 2; i < dim; i++ )
+      for ( int i = 0; i < dim; i++ )
       {
         get(i).clear();
       }

@@ -215,7 +215,8 @@ public class ComplexFunctionAnimator<P extends ComplexFunctionRenderer>
   protected void renderAndEncodeFrame(int i) throws NoninvertibleTransformException, IOException
   {
     frameParameterAssigner.accept(i);
-    encodeFrame(i, renderFunction(i));
+    BufferedImage renderFunction = renderFunction(i);
+    //encodeFrame(i, renderFunction);
   }
 
   protected void encodeFrame(int i, final BufferedImage screen)
