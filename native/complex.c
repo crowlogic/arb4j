@@ -28,6 +28,15 @@ int errorNumber()
   return errno;
 }
 
+jboolean unmapAndCloseFile( int fd, jlong pointer, int size )
+{
+  void *addr = (void*)pointer;
+  int m = msync(addr,size,MS_SYNC);
+  int r = munmap( addr, size );
+  printf("unmapping fd %d @ 0x%lx\n", fd, pointer );
+  return close(fd) == 0 && r == 0 && m == 0;
+}
+
 jlong
 openOrCreateMemoryMappedFile (jobject path, int *fd, int bytes)
 {
@@ -43,7 +52,7 @@ openOrCreateMemoryMappedFile (jobject path, int *fd, int bytes)
     }
   }
 
-  int retval = 0;
+  jlong retval = 0;
 
   printf("Need to open %s\n ", filename);
   (*fd) = open( filename, O_RDWR | O_CREAT, 0666 );
@@ -60,8 +69,11 @@ openOrCreateMemoryMappedFile (jobject path, int *fd, int bytes)
       close((*fd));
     }
     retval = (jlong)mmap(0, bytes, PROT_READ | PROT_WRITE, MAP_SHARED, (*fd), 0);
-    printf("Mapped %d bytes of %s to 0x%x\n", bytes, filename, retval );
+    printf("Mapped %d bytes of %s to 0x%lx\n", bytes, filename, retval );
   }
+
+  fflush(stdout);
+  fflush(stderr);
 
   (*env)->ReleaseStringUTFChars(env, path, filename);
   return retval;

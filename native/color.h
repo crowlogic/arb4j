@@ -5,6 +5,8 @@
 
 typedef arb_ptr* arb_vec;
 
+jboolean unmapAndCloseFile( int fd, jlong pointer, int size );
+
 jlong openOrCreateMemoryMappedFile(jobject path, int *fd, int bytes);
 
 jlong alignedMalloc( int alignment, int size );

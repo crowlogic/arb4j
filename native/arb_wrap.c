@@ -228,6 +228,7 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include <unistd.h>
 #include <malloc.h>
 
+
 typedef signed long int fmpz;
 typedef fmpz fmpz_t[1];
 
@@ -311,6 +312,24 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
 
   return JNI_VERSION_10;
 }
+
+SWIGEXPORT jboolean JNICALL Java_arb_arbJNI_unmapAndCloseFile(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jint jarg3) {
+  jboolean jresult = 0 ;
+  int arg1 ;
+  jlong arg2 ;
+  int arg3 ;
+  jboolean result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (int)jarg1; 
+  arg2 = jarg2; 
+  arg3 = (int)jarg3; 
+  result = unmapAndCloseFile(arg1,arg2,arg3);
+  jresult = result; 
+  return jresult;
+}
+
 
 SWIGEXPORT jint JNICALL Java_arb_arbJNI_ftruncate(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2) {
   jint jresult = 0 ;

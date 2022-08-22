@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static boolean unmapAndCloseFile(int fd, long pointer, int size) {
+    return arbJNI.unmapAndCloseFile(fd, pointer, size);
+  }
+
   public static int ftruncate(int fd, SWIGTYPE_p_off_t length) {
     return arbJNI.ftruncate(fd, SWIGTYPE_p_off_t.getCPtr(length));
   }

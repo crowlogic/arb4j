@@ -2,14 +2,22 @@ package arb.viz;
 
 import static java.lang.System.out;
 
-import java.io.*;
-import java.nio.*;
-import java.nio.channels.FileChannel.*;
-import java.nio.file.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
+import java.nio.file.Path;
 
-import arb.*;
-import arb.geometry.surfaces.*;
-import jdk.incubator.foreign.*;
+import arb.Complex;
+import arb.ComplexMatrix;
+import arb.SWIGTYPE_p_int;
+import arb.arb;
+import arb.geometry.surfaces.RiemannSurface;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 
 /**
  * If the precision of the number is 128 bits or less then the only space
@@ -56,7 +64,10 @@ public class PointValueCache implements
 
   private long         pointer1;
 
-  ResourceScope        scope    = ResourceScope.newSharedScope();
+
+  int                  fd0, fd1;
+
+  private int          byteSize;
 
   /**
    * TODO: replace 3d this{@link #points} with 2 {@link ComplexMatrix}s
@@ -70,23 +81,21 @@ public class PointValueCache implements
     System.out.println("Opening " + id + ".arb" + " and .arb1");
     this.width  = numXpoints;
     this.height = numYpoints;
-    int bytes = Complex.BYTES * numXpoints * numYpoints;
+    byteSize    = Complex.BYTES * numXpoints * numYpoints;
 
     try
     {
+      int fd[] = new int[1];
       path     = Path.of(id + ".arb");
-      pointer0 = openOrCreateMemoryMappedFile(path, bytes);
+      pointer0 = openOrCreateMemoryMappedFile(path, byteSize, fd);
+      fd0      = fd[0];
       assert pointer0 != 0 : "openOrCreateMemoryMappedFile('" + path + "') failed";
       path1    = Path.of(id + ".arb1");
-      pointer1 = openOrCreateMemoryMappedFile(path1, bytes);
+      pointer1 = openOrCreateMemoryMappedFile(path1, byteSize, fd);
+      fd1      = fd[0];
       assert pointer1 != 0 : "openOrCreateMemoryMappedFile('" + path1 + "') failed";
 
-      // under construction, for this to work you must add the commandline parameter
-      // to the JVM runtime; --enable-native-access=arb4j
-      segment  = MemorySegment.ofAddress(MemoryAddress.ofLong(pointer0), bytes, scope);
-      segment1 = MemorySegment.ofAddress(MemoryAddress.ofLong(pointer1), bytes, scope);
-
-      points   = new Complex[2][numXpoints][numYpoints];
+      points = new Complex[2][numXpoints][numYpoints];
       long bufferPointer  = pointer0;
       long buffer1Pointer = pointer1;
 
@@ -112,22 +121,23 @@ public class PointValueCache implements
 
   }
 
-  protected long openOrCreateMemoryMappedFile(Path path, int bytes) throws FileNotFoundException, IOException
+  protected long openOrCreateMemoryMappedFile(Path path, int bytes, int fd[]) throws FileNotFoundException,
+                                                                              IOException
   {
-    return openOrCreateMemoryMappedFile(path.toAbsolutePath().toString(), bytes);
+    return openOrCreateMemoryMappedFile(path.toAbsolutePath().toString(), bytes, fd);
   }
 
-  private long openOrCreateMemoryMappedFile(String string, int bytes)
+  private long openOrCreateMemoryMappedFile(String string, int bytes, int fd[])
   {
-    ByteBuffer     directBuffer = ByteBuffer.allocateDirect(4);
+    ByteBuffer     directBuffer = ByteBuffer.allocateDirect(4).order(ByteOrder.LITTLE_ENDIAN);
     IntBuffer      fileHandle   = directBuffer.asIntBuffer();
 
     SWIGTYPE_p_int fdPointer    = new SWIGTYPE_p_int(arb.bufferAddress(directBuffer),
                                                      false);
     long           pointer      = arb.openOrCreateMemoryMappedFile(string, fdPointer, bytes);
     assert pointer != 0 : "openOrCreateMemoryMappedFile " + string + " byteSize=" + bytes + " didn't succed";
-    int fd = fileHandle.get();
-    out.printf("fd %d -> %d bytes@0x%x in %s\n", fd, bytes, pointer, string);
+    fd[0] = fileHandle.get();
+    out.printf("fd %d -> %d bytes@0x%x in %s\n", fd[0], bytes, pointer, string);
     return pointer;
   }
 
@@ -152,14 +162,16 @@ public class PointValueCache implements
   @Override
   public void close()
   {
-    assert false : "TODO: call the native code via SWIG that does the msync, munmap, close, calls, etc.";
+    arb.unmapAndCloseFile(fd0, pointer0, byteSize);
+    arb.unmapAndCloseFile(fd1, pointer1, byteSize);
 
-    scope.close();
     System.out.println("Closing function image cache " + pointer0 + " and " + pointer1);
 
     if (!complete)
     {
-      System.err.println("Deleting incomplete files " + pointer0 + " and " + pointer1);
+      System.err.println("Deleting incomplete files " + path + " and " + path1);
+      path.toFile().delete();
+      path1.toFile().delete();
     }
     System.out.println("Finished closing cache..");
   }

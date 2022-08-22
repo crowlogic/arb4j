@@ -59,8 +59,8 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
     int       framesPerSecond = 30;
     double    secondsLong     = 3.75;
     final int frameCount      = (int) (framesPerSecond * secondsLong);
-    TRenderer renderer        = new TRenderer();
-    // renderer.colorMode = 0;
+    XRenderer renderer        = new XRenderer();
+    renderer.colorMode = 0;
     renderer.displayMode = Part.Blend;
     Real                                        scaleStart             = half;
     Real                                        scaleStop              = new Real("2",
@@ -117,7 +117,6 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
     out.println("Rendering frame " + i + " of " + frameCount);
     BufferedImage image = plotter.render();
     image = convertToType(image, BufferedImage.TYPE_3BYTE_BGR);
-    System.gc();
     return image;
   }
 

@@ -1,5 +1,7 @@
 #define __off_t long int
 
+jboolean unmapAndCloseFile( int fd, jlong pointer, int size );
+
 int ftruncate (int fd, off_t length);
 jlong openOrCreateMemoryMappedFile(jobject path, int *fd, int bytes);
 
