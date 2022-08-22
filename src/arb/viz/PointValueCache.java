@@ -94,11 +94,12 @@ public class PointValueCache implements
       pointer1 = openOrCreateMemoryMappedFile(path1, byteSize, fd);
       fd1      = fd[0];
       assert pointer1 != 0 : "openOrCreateMemoryMappedFile('" + path1 + "') failed";
-
       points = new Complex[2][numXpoints][numYpoints];
       long bufferPointer  = pointer0;
       long buffer1Pointer = pointer1;
 
+      int nonzeroCount = 0;
+      
       for (int x = 0; x < numXpoints; x++)
       {
         for (int y = 0; y < numYpoints; y++)
@@ -110,7 +111,19 @@ public class PointValueCache implements
           point0.dim      = 2;
           point0.elements = new Complex[]
           { point0, point1 };
+          if ( !point0.isZero() )
+          {
+            nonzeroCount++;
+          }
+          if ( !point1.isZero() )
+          {
+            nonzeroCount++;
+          }
         }
+      }
+      if ( nonzeroCount > 100 )
+      {
+        complete = true;
       }
     }
     catch (IOException e)
