@@ -65,9 +65,9 @@ public class PointValueCache implements
 
   public Path          path1;
 
-  private File         file;
+  private long         pointer0;
 
-  private File         file1;
+  private long         pointer1;
 
   ResourceScope        scope    = ResourceScope.newSharedScope();
 
@@ -81,12 +81,12 @@ public class PointValueCache implements
     try
     {
       path           = Path.of(id + ".arb");
-      file           = openFileOrCreateNewOneIfNotExisting(path, bytes);
+      pointer0       = openOrCreateMemoryMappedFile(path, bytes);
       path1          = Path.of(id + ".arb1");
-      file1          = openFileOrCreateNewOneIfNotExisting(path1, bytes);
+      pointer1       = openOrCreateMemoryMappedFile(path1, bytes);
 
-      segment        = MemorySegment.mapFile(path, 0, bytes, MapMode.READ_WRITE, scope);
-      segment1       = MemorySegment.mapFile(path1, 0, bytes, MapMode.READ_WRITE, scope);
+      segment        = MemorySegment.ofAddress(MemoryAddress.ofLong(31337l), bytes, scope);
+      segment1       = MemorySegment.ofAddress(MemoryAddress.ofLong(31337l), bytes, scope);
       buffer         = segment.asByteBuffer();
       buffer1        = segment1.asByteBuffer();
 
@@ -117,16 +117,10 @@ public class PointValueCache implements
 
   }
 
-  protected File openFileOrCreateNewOneIfNotExisting(Path path, int bytes) throws FileNotFoundException, IOException
+  protected long openOrCreateMemoryMappedFile(Path path, int bytes) throws FileNotFoundException, IOException
   {
-    File file = path.toFile();
-    if (file.exists() && file.length() == bytes)
-    {
-      complete = true;
-      return file;
-    }
-    createBlankFile(file, bytes);
-    return file;
+    assert false : "TODO: call JNI method that does the open, mmap, etc, since the JDK 18 memory mapped file support fucking SUCKS or im just too dumb to figure it out";
+    return 31337;
   }
 
   protected void createBlankFile(File file, int bytes)
@@ -159,14 +153,12 @@ public class PointValueCache implements
     buffer1 = null;
 
     scope.close();
-    System.out.println("Closing function image cache " + file + " and " + file1);
+    System.out.println("Closing function image cache " + pointer0 + " and " + pointer1);
 
     if (!complete)
     {
-      System.err.println("Deleting incomplete files " + file + " and " + file1);
-      file.delete();
-      file1.delete();
-
+      System.err.println("Deleting incomplete files " + pointer0 + " and " + pointer1);
+      assert false : "TODO: call the native code via SWIG that does the msync, munmap, close, calls, etc.";
     }
     System.out.println("Finished closing cache..");
   }
