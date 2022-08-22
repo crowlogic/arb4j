@@ -12,7 +12,12 @@ import arb.functions.complex.numbertheoretic.ZFunction;
 
 public class RealFunctionTest
 {
-
+  public static void main( String args[] )
+  {
+    RealFunctionTest rft = new RealFunctionTest();
+    rft.testLocateRootsSine();
+    
+  }
   private static final int prec         = 256;
   private RealFunction     sineFunction = new RealSineFunction()
                                         {

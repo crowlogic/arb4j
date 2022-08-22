@@ -78,8 +78,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %include "Real.i"
 
-%include "MultiPrecFloat.i"
-
 %include "Functions.i"
 
 %rename (realObj) real;
