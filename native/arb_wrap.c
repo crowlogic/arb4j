@@ -312,17 +312,41 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
   return JNI_VERSION_10;
 }
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_openOrCreateMemoryMappedFile(JNIEnv *jenv, jclass jcls, jobject jarg1, jint jarg2) {
+SWIGEXPORT jint JNICALL Java_arb_arbJNI_ftruncate(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2) {
+  jint jresult = 0 ;
+  int arg1 ;
+  off_t arg2 ;
+  off_t *argp2 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (int)jarg1; 
+  argp2 = *(off_t **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null off_t");
+    return 0;
+  }
+  arg2 = *argp2; 
+  result = (int)ftruncate(arg1,arg2);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_openOrCreateMemoryMappedFile(JNIEnv *jenv, jclass jcls, jobject jarg1, jlong jarg2, jint jarg3) {
   jlong jresult = 0 ;
   jobject arg1 ;
-  int arg2 ;
+  int *arg2 = (int *) 0 ;
+  int arg3 ;
   jlong result;
   
   (void)jenv;
   (void)jcls;
   arg1 = jarg1; 
-  arg2 = (int)jarg2; 
-  result = openOrCreateMemoryMappedFile(arg1,arg2);
+  arg2 = *(int **)&jarg2; 
+  arg3 = (int)jarg3; 
+  result = openOrCreateMemoryMappedFile(arg1,arg2,arg3);
   jresult = result; 
   return jresult;
 }

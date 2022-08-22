@@ -1,5 +1,7 @@
 package arb.viz;
 
+import static java.lang.System.out;
+
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.FileChannel.*;
@@ -79,6 +81,8 @@ public class PointValueCache implements
       pointer1 = openOrCreateMemoryMappedFile(path1, bytes);
       assert pointer1 != 0 : "openOrCreateMemoryMappedFile('" + path1 + "') failed";
 
+      // under construction, for this to work you must add the commandline parameter
+      // to the JVM runtime; --enable-native-access=arb4j
       segment  = MemorySegment.ofAddress(MemoryAddress.ofLong(pointer0), bytes, scope);
       segment1 = MemorySegment.ofAddress(MemoryAddress.ofLong(pointer1), bytes, scope);
 
@@ -115,7 +119,16 @@ public class PointValueCache implements
 
   private long openOrCreateMemoryMappedFile(String string, int bytes)
   {
-    return arb.openOrCreateMemoryMappedFile(string, bytes);
+    ByteBuffer     directBuffer = ByteBuffer.allocateDirect(4);
+    IntBuffer      fileHandle   = directBuffer.asIntBuffer();
+
+    SWIGTYPE_p_int fdPointer    = new SWIGTYPE_p_int(arb.bufferAddress(directBuffer),
+                                                     false);
+    long           pointer      = arb.openOrCreateMemoryMappedFile(string, fdPointer, bytes);
+    assert pointer != 0 : "openOrCreateMemoryMappedFile " + string + " byteSize=" + bytes + " didn't succed";
+    int fd = fileHandle.get();
+    out.printf("fd %d -> %d bytes@0x%x in %s\n", fd, bytes, pointer, string);
+    return pointer;
   }
 
   protected void createBlankFile(File file, int bytes)

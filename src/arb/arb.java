@@ -9,8 +9,12 @@
 package arb;
 
 public class arb {
-  public static long openOrCreateMemoryMappedFile(java.lang.Object path, int bytes) {
-    return arbJNI.openOrCreateMemoryMappedFile(path, bytes);
+  public static int ftruncate(int fd, SWIGTYPE_p_off_t length) {
+    return arbJNI.ftruncate(fd, SWIGTYPE_p_off_t.getCPtr(length));
+  }
+
+  public static long openOrCreateMemoryMappedFile(java.lang.Object path, SWIGTYPE_p_int fd, int bytes) {
+    return arbJNI.openOrCreateMemoryMappedFile(path, SWIGTYPE_p_int.getCPtr(fd), bytes);
   }
 
   public static void acb_hypgeom_bessel_j_0f1(Complex res, Complex nu, Complex z, int prec) {

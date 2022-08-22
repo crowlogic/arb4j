@@ -28,9 +28,43 @@ int errorNumber()
   return errno;
 }
 
-jlong openOrCreateMemoryMappedFile(jobject path, int bytes)
+jlong
+openOrCreateMemoryMappedFile (jobject path, int *fd, int bytes)
 {
-  return 0;
+  char *filename = (char*) 0;
+
+  if (path)
+  {
+    filename = (char*) (*env)->GetStringUTFChars(env, path, 0);
+    if (!filename)
+    {
+      fprintf(stderr, "GetStringUTFChars failed\n");
+      return 0;
+    }
+  }
+
+  int retval = 0;
+
+  printf("Need to open %s\n ", filename);
+  (*fd) = open( filename, O_RDWR | O_CREAT, 0666 );
+  if ( (*fd) == -1 )
+  {
+    fprintf(stderr, "Failed to open %s\n", filename );
+  }
+  else
+  {
+    printf("Opened %s was assigned fd=%d\n", filename, (*fd) );
+    if ( ftruncate((*fd), bytes ) != 0 )
+    {
+      fprintf(stderr, "ftruncate %s size %d failed with errno=%d\n", filename, bytes, errno );
+      close((*fd));
+    }
+    retval = (jlong)mmap(0, bytes, PROT_READ | PROT_WRITE, MAP_SHARED, (*fd), 0);
+    printf("Mapped %d bytes of %s to 0x%x\n", bytes, filename, retval );
+  }
+
+  (*env)->ReleaseStringUTFChars(env, path, filename);
+  return retval;
 }
 
 jlong

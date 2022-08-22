@@ -5,7 +5,7 @@
 
 typedef arb_ptr* arb_vec;
 
-jlong openOrCreateMemoryMappedFile(jobject path, int bytes);
+jlong openOrCreateMemoryMappedFile(jobject path, int *fd, int bytes);
 
 jlong alignedMalloc( int alignment, int size );
 

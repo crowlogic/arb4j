@@ -1,6 +1,7 @@
 #define __off_t long int
 
-jlong openOrCreateMemoryMappedFile(jobject path, int bytes);
+int ftruncate (int fd, off_t length);
+jlong openOrCreateMemoryMappedFile(jobject path, int *fd, int bytes);
 
 void acb_hypgeom_bessel_j_0f1(acb_t res, const acb_t nu, const acb_t z, slong prec);
 void acb_hypgeom_bessel_j_asymp(acb_t res, const acb_t nu, const acb_t z, slong prec);

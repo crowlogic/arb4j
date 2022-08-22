@@ -8,18 +8,18 @@
 
 package arb;
 
-public class SWIGTYPE_p_void {
+public class SWIGTYPE_p_off_t {
   private transient long swigCPtr;
 
-  public SWIGTYPE_p_void(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
+  public SWIGTYPE_p_off_t(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
     swigCPtr = cPtr;
   }
 
-  public SWIGTYPE_p_void() {
+  public SWIGTYPE_p_off_t() {
     swigCPtr = 0;
   }
 
-  public static long getCPtr(SWIGTYPE_p_void obj) {
+  public static long getCPtr(SWIGTYPE_p_off_t obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 }
