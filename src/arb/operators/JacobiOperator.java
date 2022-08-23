@@ -1,6 +1,11 @@
 package arb.operators;
 
-public interface JacobiOperator
+/**
+ * 
+ *
+ */
+public interface JacobiOperator extends
+                                LinearOperator
 {
 
 }
