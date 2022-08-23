@@ -5,6 +5,7 @@ import arb.Field;
 import arb.OrthonormalBasis;
 import arb.Real;
 import arb.functions.Function;
+import arb.functions.FunctionSpace;
 import arb.topological.Space;
 
 /**
@@ -13,7 +14,7 @@ import arb.topological.Space;
  * to spaces that may be infinite-dimensional. A Hilbert space is a vector space
  * equipped with an inner product which defines a distance function for which it
  * is a complete metric space. Hilbert spaces arise naturally and frequently in
- * mathematics and physics, typically as function spaces.<br>
+ * mathematics and physics, typically as {@link FunctionSpace}.<br>
  * 
  * A Hilbert space H is a {@link Real} or {@link Complex} inner product space
  * that is also a complete {@link MetricSpace} with respect to the distance
@@ -24,11 +25,11 @@ import arb.topological.Space;
  * Cartesian coordinates in classical geometry.<br>
  * 
  * When this basis is countably infinite, it allows identifying the Hilbert
- * space with the space of the <b>infinite sequences<b> that are <b><i>square-summable</i></b>. The
- * latter space is often in the older literature referred to as *the* {@link HilbertSpace}.
+ * space with the space of the <b>infinite sequences<b> that are
+ * <b><i>square-summable</i></b>. The latter space is often in the older
+ * literature referred to as *the* {@link HilbertSpace}.
  */
 public interface HilbertSpace<D extends Field> extends
-                             VectorSpace
+                             InnerProductSpace<D>
 {
-  public <P extends Field> P innerProduct(D left, D right);
 }
