@@ -20,12 +20,6 @@ import arb.topological.spaces.*;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
-  @Override
-  public Field innerProduct(Field left, Field right)
-  {
-    assert false : "TODO";
-    return null;
-  }
 
  @Override
   public int dim()

@@ -45,12 +45,6 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
 
   static { System.loadLibrary( "arblib" ); }
 
-  @Override
-  public Field innerProduct(Field left, Field right)
-  {
-    assert false : "TODO";
-    return null;
-  }
 
  @Override
   public int dim()
