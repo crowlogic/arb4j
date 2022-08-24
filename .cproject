@@ -9,11 +9,8 @@
 				</macros>
 				<externalSettings>
 					<externalSetting>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/fastmath"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/arb4j"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/fastmath/sharedlib"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/arb4j"/>
-						<entry flags="RESOLVED" kind="libraryFile" name="fastmath" srcPrefixMapping="" srcRootPath=""/>
 						<entry flags="RESOLVED" kind="libraryFile" name="arb4j" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
@@ -80,18 +77,17 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="fastmath.org.eclipse.linuxtools.cdt.autotools.core.projectType.273357032" name="GNU Autotools"/>
+		<project id="arb4j.org.eclipse.linuxtools.cdt.autotools.core.projectType.273357032" name="GNU Autotools"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug (GNU)">
-			<resource resourceType="PROJECT" workspacePath="/fastmath"/>
+			<resource resourceType="PROJECT" workspacePath="/arb4j"/>
 		</configuration>
 		<configuration configurationName="lib"/>
 		<configuration configurationName="Build (GNU)">
-			<resource resourceType="PROJECT" workspacePath="/fastmath"/>
+			<resource resourceType="PROJECT" workspacePath="/arb4j"/>
 		</configuration>
-		<configuration configurationName="fuck"/>
 		<configuration configurationName="sharedlib">
 			<resource resourceType="PROJECT" workspacePath="/arb4j"/>
 		</configuration>
