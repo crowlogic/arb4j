@@ -668,23 +668,19 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
     getImag().set(imag);
   }
  
-   public Complex clear()
-   {
-     if (swigCMemOwn && swigCPtr != 0)
-     {
-       if (dim == 1)
-       {
-         arb.acb_clear(this);
-       }
-       else
-       {
-         arb._acb_vec_clear(this, dim);
-       }
-       swigCMemOwn = false;
-       swigCPtr    = 0;
-     }
-     return this;
-   }
+  public Complex clear()
+  {
+    if ( swigCMemOwn )
+    {
+      swigCMemOwn = false;
+      acb_clear(this);
+      for ( int i = 0; i < dim; i++ )
+      {
+        get(i).clear();
+      }
+    }
+    return this;
+  }
       
    /**
    * add an unsigned integer to this 
@@ -720,7 +716,9 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
   
  public static Complex newVector(int dim)
  {
-   return new Complex(dim);
+    Complex array = arb._acb_vec_init(dim);    
+    array.elements = new Complex[array.dim = dim];
+    return array;
  }
    
   @Override
@@ -808,14 +806,6 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
 
   public Complex() {
     this(arbJNI.new_Complex(), true);
-  }
-
-  @SuppressWarnings("resource")
-  public Complex(int dim2)
-  {
-    this(arb._acb_vec_init(dim2).swigCPtr, true);
-    this.dim = dim2;
-    this.elements = new Complex[this.dim = dim2];
   }
 
 }

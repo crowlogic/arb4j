@@ -20,6 +20,7 @@ public class XRenderer extends
   @SuppressWarnings("resource")
   public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
+    System.loadLibrary("arblib");
     XRenderer r = new XRenderer();
     r.displayMode = Part.Real;
     r.colorMode   = 4;

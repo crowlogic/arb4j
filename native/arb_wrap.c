@@ -263,7 +263,7 @@ extern "C" {
 
 
 
-//#include <jemalloc/jemalloc.h>
+#include <jemalloc/jemalloc.h>
 
 extern int errorNumber();
 
@@ -307,7 +307,7 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
     return -1;
   }
 
-  //__flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
+  __flint_set_memory_functions(&allocate, &callocate, &reallocate, &deallocate);
 
   return JNI_VERSION_10;
 }
