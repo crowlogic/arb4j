@@ -1,6 +1,5 @@
 package arb.stochastic.processes.integrators;
 
-import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatInterval;
 import arb.Verifiable;
@@ -8,6 +7,7 @@ import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 import arb.dynamical.systems.State;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.EvaluationSequence;
 
 public interface DiffusionProcessIntegrator<S extends State, D extends DiffusionProcess<S>> extends
                                            DiscreteTimeDynamicalSystem<S>,

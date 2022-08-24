@@ -716,7 +716,8 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
   
  public static Complex newVector(int dim)
  {
-    Complex array = arb._acb_vec_init(dim);    
+    Complex array = arb._acb_vec_init(dim);
+    array.swigCMemOwn = true;      
     array.elements = new Complex[array.dim = dim];
     return array;
  }

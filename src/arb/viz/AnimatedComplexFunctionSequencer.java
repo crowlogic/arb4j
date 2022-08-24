@@ -229,9 +229,9 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
 
   private static final long MEGABYTE = 1024L * 1024L;
 
-  public static long bytesToMegabytes(long bytes)
+  public static double bytesToMegabytes(long bytes)
   {
-    return bytes / MEGABYTE;
+    return (double)bytes / (double)MEGABYTE;
   }
 
   public static void printMemUsage()
@@ -239,10 +239,12 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
 
     // Get the Java runtime
     Runtime runtime = Runtime.getRuntime();
+    long memory = runtime.totalMemory() - runtime.freeMemory();
+    System.out.println("Used memory is megabytes: " + bytesToMegabytes(memory));
     // Run the garbage collector
     runtime.gc();
     // Calculate the used memory
-    long memory = runtime.totalMemory() - runtime.freeMemory();
+    memory = runtime.totalMemory() - runtime.freeMemory();
     System.out.println("Used memory is bytes: " + memory);
     System.out.println("Used memory is megabytes: " + bytesToMegabytes(memory));
   }

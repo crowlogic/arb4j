@@ -1,6 +1,5 @@
 package arb.stochastic.processes;
 
-import arb.EvaluationSequence;
 import arb.Real;
 import arb.RealConstants;
 import arb.Verifiable;

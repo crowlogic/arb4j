@@ -506,7 +506,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
   public Real slice( int startInclusive, int endExclusive )
   {
     int sliceDim = endExclusive - startInclusive;
-    Real array = new Real( swigCPtr + startInclusive * BYTES, false );
+    Real array = new Real( swigCPtr + startInclusive * BYTES, false );    
     array.elements = new Real[array.dim = sliceDim];
     return array;
   }
@@ -534,6 +534,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
   public static Real newVector( int dim )
   {
     Real array = arb._arb_vec_init(dim);    
+    array.swigCMemOwn = true;    
     array.dim = dim;
     array.elements = new Real[array.dim = dim];
     return array;

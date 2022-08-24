@@ -12,7 +12,6 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatConstants;
 import arb.FloatInterval;
@@ -62,8 +61,10 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     {
 
       // Generate data
-      DataTable data = new DataTable(Double.class,
+      DataTable spotPriceData = new DataTable(Double.class,
                                      Double.class);
+      DataTable varianceData = new DataTable(Double.class,
+                                              Double.class);
 
       var       path = integrator.integrate(new FloatInterval(0,
                                                               5),
@@ -72,10 +73,10 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
       for (OrderedPair<Real, Real> sample : path)
       {
-        data.add(sample.a.doubleValue(), sample.b.doubleValue());
+        spotPriceData.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
 
-      print(integrator.getClass().getSimpleName(), data);
+      print(integrator.getClass().getSimpleName(), spotPriceData);
 
       println("mean=" + path.values[0].mean(128, new Real()));
     }

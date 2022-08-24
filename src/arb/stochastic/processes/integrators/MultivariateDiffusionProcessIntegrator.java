@@ -9,6 +9,7 @@ import java.util.Arrays;
 import arb.*;
 import arb.stochastic.GaussianDistribution;
 import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.EvaluationSequence;
 import arb.stochastic.processes.MultivariateDiffusionProcess;
 
 public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffusionProcessState> implements

@@ -1,11 +1,14 @@
-package arb;
+package arb.stochastic.processes;
 
 import java.lang.ref.Cleaner.Cleanable;
 import java.util.Iterator;
 
+import arb.OrderedPair;
+import arb.RandomState;
+import arb.Real;
+import arb.RealPartition;
 import arb.stochastic.ProbabilityDistributionFunction;
 import arb.stochastic.RealProbabilityDensityFunction;
-import arb.stochastic.processes.CorrelatedWienerProcess;
 
 /**
  * TODO: how to implement {@link CorrelatedWienerProcess}

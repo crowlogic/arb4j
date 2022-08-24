@@ -1,6 +1,9 @@
-package arb;
+package arb.stochastic.processes;
 
 import java.util.Iterator;
+
+import arb.OrderedPair;
+import arb.Real;
 
 public class EvaluationSequenceIterator extends
                                         OrderedPair<Real, Real> implements

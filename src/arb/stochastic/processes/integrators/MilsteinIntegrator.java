@@ -3,7 +3,6 @@ package arb.stochastic.processes.integrators;
 import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.one;
 
-import arb.EvaluationSequence;
 import arb.Float;
 import arb.FloatInterval;
 import arb.OrderedPair;
@@ -13,6 +12,7 @@ import arb.RealOrderedPair;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.EvaluationSequence;
 import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
 import de.erichseifert.gral.data.DataTable;
 

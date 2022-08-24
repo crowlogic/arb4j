@@ -4,11 +4,11 @@ import static arb.utensils.Utilities.println;
 
 import java.util.stream.IntStream;
 
-import arb.EvaluationSequence;
 import arb.FloatInterval;
 import arb.RandomState;
 import arb.Real;
 import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.EvaluationSequence;
 import arb.stochastic.processes.WienerProcess;
 import junit.framework.TestCase;
 
