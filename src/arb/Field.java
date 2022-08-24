@@ -15,7 +15,7 @@ import arb.topological.*;
  */
 public interface Field<X extends Field<X>> extends
                       AutoCloseable,
-                      Space,
+                      Space<X>,
                       Iterable<X>
 {
   /**

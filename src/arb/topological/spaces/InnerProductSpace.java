@@ -35,5 +35,5 @@ import arb.topological.Topology;
 public interface InnerProductSpace<X> extends
                                   VectorSpace<X>
 {
-
+  public Real innerProduct( X that, int prec, Real result);
 }

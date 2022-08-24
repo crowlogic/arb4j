@@ -20,7 +20,7 @@ import arb.topological.spaces.*;
  * {@link EuclideanVectorSpace} of dimension two.
  */
 
-public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,EuclideanVectorSpace {
+public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,EuclideanVectorSpace<Complex> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -722,6 +722,13 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
     return array;
  }
    
+  @Override
+  public Real innerProduct(Complex that, int prec, Real result)
+  {
+    assert false : "implement me";
+    return null;
+  }
+     
   @Override
   public void close()
   {

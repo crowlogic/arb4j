@@ -1,7 +1,9 @@
 package arb.topological.spaces;
 
-public interface EuclideanSpace extends
-                                HilbertSpace
+import arb.Field;
+
+public interface EuclideanSpace<X extends Field> extends
+                                HilbertSpace<X>
 {
 
 }

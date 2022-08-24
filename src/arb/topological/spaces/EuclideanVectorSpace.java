@@ -2,9 +2,9 @@ package arb.topological.spaces;
 
 import arb.*;
 
-public interface EuclideanVectorSpace extends
-                                      VectorSpace,
-                                      EuclideanSpace
+public interface EuclideanVectorSpace<X extends Field> extends
+                                     VectorSpace<X>,
+                                     EuclideanSpace<X>
 {
   public int dimension();
 
