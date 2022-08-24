@@ -25,6 +25,14 @@ import arb.Lockable;
 %typemap(javacode) arb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  @SuppressWarnings("resource")
+  public Real(int dim)
+  {
+    this(arb._arb_vec_init(dim).swigCPtr,
+         true);    
+    this.elements = new Real[this.dim = dim];
+  }
+  
   @Override
   public void lock()
   {
@@ -342,7 +350,6 @@ import arb.Lockable;
     if ( swigCMemOwn )
     {
       swigCMemOwn = false;    
-      arb_clear(this);
       for ( int i = 0; i < dim; i++ )
       {
         get(i).clear();
@@ -350,7 +357,7 @@ import arb.Lockable;
     }
     return this;
   }
-  
+    
   /**
    * Compares the midpoint of this to another Real, disregarding the uncertainty
    * radius if they are not equal. If they are equal, then compare the radius

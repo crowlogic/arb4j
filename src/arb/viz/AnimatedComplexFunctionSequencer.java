@@ -59,8 +59,8 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
     int       framesPerSecond = 30;
     double    secondsLong     = 3.75;
     final int frameCount      = (int) (framesPerSecond * secondsLong);
-    XRenderer renderer        = new XRenderer();
-    renderer.colorMode = 0;
+    YRenderer renderer        = new YRenderer();
+    renderer.colorMode   = 0;
     renderer.displayMode = Part.Blend;
     Real                                        scaleStart             = half;
     Real                                        scaleStop              = new Real("2",
@@ -85,10 +85,10 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
                                                                                            scaleStop.toString(10),
                                                                                            percentComplete,
                                                                                            frame);
-                                                                         renderer.function.f.a.set(scale);
+                                                                         renderer.function.f.f.a.set(scale);
                                                                          renderer.initCache();
                                                                        };
-    AnimatedComplexFunctionSequencer<XRenderer> animator               = new AnimatedComplexFunctionSequencer(renderer,
+    AnimatedComplexFunctionSequencer<YRenderer> animator               = new AnimatedComplexFunctionSequencer(renderer,
                                                                                                               frameParameterAssigner,
                                                                                                               frameCount);
     animator.renderAnimatedSequence(renderer.function.toString() + ".avi", secondsLong, framesPerSecond);
@@ -223,6 +223,28 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
   {
     frameParameterAssigner.accept(i);
     encodeFrame(i, renderFunction(i));
+    printMemUsage();
+
+  }
+
+  private static final long MEGABYTE = 1024L * 1024L;
+
+  public static long bytesToMegabytes(long bytes)
+  {
+    return bytes / MEGABYTE;
+  }
+
+  public static void printMemUsage()
+  {
+
+    // Get the Java runtime
+    Runtime runtime = Runtime.getRuntime();
+    // Run the garbage collector
+    runtime.gc();
+    // Calculate the used memory
+    long memory = runtime.totalMemory() - runtime.freeMemory();
+    System.out.println("Used memory is bytes: " + memory);
+    System.out.println("Used memory is megabytes: " + bytesToMegabytes(memory));
   }
 
   protected void encodeFrame(int i, final BufferedImage screen)

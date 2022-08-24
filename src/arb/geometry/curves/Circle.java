@@ -1,11 +1,17 @@
 package arb.geometry.curves;
 
-import static java.lang.Math.*;
+import static java.lang.Math.max;
 
-import arb.*;
-import arb.functions.complex.*;
-import arb.functions.complex.dynamics.*;
-import arb.operators.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Real;
+import arb.RealConstants;
+import arb.ThreadLocalComplex;
+import arb.ThreadLocalReal;
+import arb.arb;
+import arb.functions.complex.SFunction;
+import arb.functions.complex.dynamics.NewtonMap;
+import arb.operators.Composition;
 
 /**
  * A circle coordinate function representing a circle having a basepoint and
@@ -36,8 +42,8 @@ public class Circle implements
   {
     assert t != null;
     assert h != null;
-    this.t = t;
-    this.h = h;
+    this.t.get().set(t);
+    this.h.get().set(h);
   }
 
   public Circle()
@@ -46,11 +52,9 @@ public class Circle implements
          RealConstants.one);
   }
 
-  Complex            t;
-
-  Real               h;
-
   ThreadLocalComplex s = new ThreadLocalComplex(1);
+  ThreadLocalComplex t = new ThreadLocalComplex(1);
+  ThreadLocalReal    h = new ThreadLocalReal();
 
   @Override
   public Complex evaluate(Real a, int order, int prec, Complex res)
@@ -59,6 +63,8 @@ public class Circle implements
     order = max(1, order);
     assert res.size() >= order;
     Complex s = this.s.get();
+    Complex t = this.t.get();
+    Real h = this.h.get();
     try ( Complex ca = new Complex())
     {
       ca.getReal().set(a);
@@ -78,8 +84,8 @@ public class Circle implements
   public void close() throws Exception
   {
     s.remove();
-    t.clear();
-    h.clear();
+    t.remove();
+    h.remove();
   }
 
   /**

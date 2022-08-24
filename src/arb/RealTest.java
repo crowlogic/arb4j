@@ -13,17 +13,20 @@ public class RealTest extends
   public void testDotProduct()
   {
     AtomicInteger a = new AtomicInteger(1);
-    Real x = Real.newVector(3);
-    x.name = "x";
-    Real y = Real.newVector(3);
-    y.name = "y";
-    for ( int i = 0; i < 3; i++ )
+    try ( Real x = new Real(3); Real y = new Real(3))
     {
-      x.get(i).set( a.getAndIncrement());
-      y.get(i).set( a.getAndIncrement());
+      x.name = "x";
+      y.name = "y";
+      for (int i = 0; i < 3; i++)
+      {
+        x.get(i).set(a.getAndIncrement());
+        y.get(i).set(a.getAndIncrement());
+      }
+      Real dp = x.dotProduct(y, 128, new Real());
+      assertEquals(new Real("44",
+                            128),
+                   dp);
     }
-    Real dp = x.dotProduct(y, 128, new Real());
-    assertEquals( new Real("44",128), dp );
   }
 
 }
