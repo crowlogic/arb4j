@@ -1,6 +1,6 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "Comparable<Real>, Iterable<Real>, Field<Real>, Lockable"
+%typemap(javainterfaces) arb_struct "Comparable<Real>, Iterable<Real>, Field<Real>, Lockable, EuclideanVectorSpace<Real>"
 
 %typemap(javaimports) arb_struct %{
 import org.lwjgl.system.*;
@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import arb.stochastic.ProbabilityDistributionFunction;
 import arb.Lockable;
+import arb.topological.spaces.EuclideanVectorSpace;
 
 /**
  * Real numbers are points on an infinitely long line known as the real number
@@ -436,6 +437,27 @@ import arb.Lockable;
     return res;
   }
   
+  @Override
+  public Real innerProduct(Real that, int prec, Real result)
+  {
+    assert false : "implement me";
+    return null;
+
+  }
+
+  @Override
+  public int dimension()
+  {
+    return 1;
+  }
+
+  @Override
+  public Real getCoordinate(int dim)
+  {
+    assert dim == 0;
+    return this;
+  }
+    
  public boolean isFinite()
  {
    return arb.arb_is_finite(this) != 0;
