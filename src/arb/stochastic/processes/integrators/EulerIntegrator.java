@@ -45,6 +45,33 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                             AbstractDiffusionProcessIntegrator<D, P>
 {
 
+  public static final class KeyHandler implements
+                                       KeyListener
+  {
+    @Override
+    public void keyTyped(KeyEvent e)
+    {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+      switch (e.getKeyCode())
+      {
+      case KeyEvent.VK_ESCAPE:
+        System.exit(1);
+      }
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+
+    }
+  }
+
   public static void main(String args[])
   {
 
@@ -246,49 +273,10 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
     // Add plot to Swing component
     InteractivePanel interactivePanel = new InteractivePanel(plot);
-    Utilities.openInJFrame(interactivePanel, 1900, 800, title, JFrame.EXIT_ON_CLOSE).addKeyListener(new KeyListener()
-    {
-
-      @Override
-      public void keyTyped(KeyEvent e)
-      {
-
-      }
-
-      @Override
-      public void keyPressed(KeyEvent e)
-      {
-        switch (e.getKeyCode())
-        {
-        case KeyEvent.VK_ESCAPE:
-          System.exit(1);
-        }
-
-      }
-
-      @Override
-      public void keyReleased(KeyEvent e)
-      {
-
-      }
-    });
-    ;
+    Utilities.openInJFrame(interactivePanel, 1900, 800, title, JFrame.EXIT_ON_CLOSE)
+             .addKeyListener(new KeyHandler());
+    
   }
 
-  @Override
-  public boolean verify()
-  {
-    int i = state.index();
-    assert i >= 0;
-    Real xi = evaluationSequence.values[dim].get(i);
-
-    xi.add(state.value(), prec);
-    if (!nonNegative || xi.isNegative())
-    {
-      return false;
-    }
-    return true;
-
-  }
 
 }

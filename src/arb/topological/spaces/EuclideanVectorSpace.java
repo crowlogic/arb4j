@@ -4,7 +4,8 @@ import arb.*;
 
 public interface EuclideanVectorSpace<X extends Field> extends
                                      VectorSpace<X>,
-                                     EuclideanSpace<X>
+                                     EuclideanSpace<X>,
+                                     InnerProductSpace<X>
 {
   public int dimension();
 

@@ -11,8 +11,7 @@ import arb.stochastic.processes.EvaluationSequence;
 
 public interface DiffusionProcessIntegrator<S extends State, D extends DiffusionProcess<S>> extends
                                            DiscreteTimeDynamicalSystem<S>,
-                                           AutoCloseable,
-                                           Verifiable
+                                           AutoCloseable
 {
 
   @Override

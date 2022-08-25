@@ -84,7 +84,7 @@ public class Circle implements
   public void close() throws Exception
   {
     s.remove();
-    t.remove();
+    t.remove(); 
     h.remove();
   }
 
