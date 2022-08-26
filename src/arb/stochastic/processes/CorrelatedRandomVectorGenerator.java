@@ -69,13 +69,12 @@ public class CorrelatedRandomVectorGenerator implements
    * @param generator  underlying generator for uncorrelated normalized
    *                   components. @
    */
-  public CorrelatedRandomVectorGenerator(Real mean, RealMatrix covariance, RandomState randomState)
+  public CorrelatedRandomVectorGenerator(Real mean, RealMatrix covariance, int prec, RandomState randomState)
   {
     int order = covariance.getRows();
     assert mean.dim == order;
-    this.mean        = mean;
-    this.root        = RealMatrix.newMatrix(order, order);
-
+    this.mean = mean;
+    covariance.chol(prec, root = RealMatrix.newMatrix(order, order));
     this.randomState = randomState;
     normalized       = Real.newVector(order);
 
@@ -149,11 +148,11 @@ public class CorrelatedRandomVectorGenerator implements
 
   /**
    * 
-   * @param prec precision
-   * @param x    result
+   * @param prec   precision
+   * @param result result
    * @return result
    */
-  public Real nextVector(int prec, Real x)
+  public Real nextElement(int prec, Real result)
   {
 
     // generate uncorrelated vector
@@ -163,7 +162,7 @@ public class CorrelatedRandomVectorGenerator implements
     }
 
     // compute correlated vector
-    Real correlated = Real.newVector(mean.dim);
+    Real correlated = result.zero();
     try ( Real t = new Real();)
     {
       for (int i = 0; i < correlated.dim; ++i)
@@ -177,8 +176,8 @@ public class CorrelatedRandomVectorGenerator implements
       }
 
     }
-    return correlated;
 
+    return result;
   }
 
   @Override
