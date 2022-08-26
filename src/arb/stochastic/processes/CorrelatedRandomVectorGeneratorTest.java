@@ -13,7 +13,7 @@ public class CorrelatedRandomVectorGeneratorTest extends
 
   private Real x;
 
-  public void testNextVector()
+  public void testNextVector() throws Exception
   {
     RandomState randomState      = new RandomState(31337);
     RealMatrix  covarianceMatrix = RealMatrix.newMatrix(2, 2);
@@ -30,12 +30,7 @@ public class CorrelatedRandomVectorGeneratorTest extends
     {
       rvgen.nextElement(128, x = new Real(2));
       println("sqrt correlation=" + rvgen.getRootMatrix());
-    }
-    catch (Exception e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    }   
     println("drew sample " + x);
   }
 

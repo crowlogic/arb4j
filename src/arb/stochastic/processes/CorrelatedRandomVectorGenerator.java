@@ -181,7 +181,7 @@ public class CorrelatedRandomVectorGenerator implements
   }
 
   @Override
-  public void close() throws Exception
+  public void close()
   {
     mean.close();
     normalized.close();
