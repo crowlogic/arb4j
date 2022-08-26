@@ -20,15 +20,21 @@ public class CorrelatedRandomVectorGeneratorTest extends
     Real        meanVector       = new Real(2);
     covarianceMatrix.get(0, 0).one();
     covarianceMatrix.get(1, 1).one();
-    covarianceMatrix.get(0, 1).set("-0.75", 128);
-    covarianceMatrix.get(1, 0).set("-0.75", 128);
+    int prec = 128;
+    covarianceMatrix.get(0, 1).set("-0.75", prec);
+    covarianceMatrix.get(1, 0).set("-0.75", prec);
 
     try ( CorrelatedRandomVectorGenerator rvgen = new CorrelatedRandomVectorGenerator(meanVector,
                                                                                       covarianceMatrix,
-                                                                                      128,
+                                                                                      prec,
                                                                                       randomState))
     {
-      rvgen.nextElement(128, x = new Real(2));
+      RealMatrix x = RealMatrix.newMatrix(10000, 2);
+      
+      for ( Real element : x )
+      {
+        rvgen.nextElement(prec, element );
+      }
       println("sqrt correlation=" + rvgen.getRootMatrix());
     }   
     println("drew sample " + x);

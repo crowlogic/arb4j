@@ -19,6 +19,7 @@ typedef unsigned long* unsigned_long_ptr;
 
 SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
 SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
+
 %ignore size;
 %ignore alloc;
 %ignore mp_lc;
@@ -33,12 +34,12 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %ignore pe;
 %ignore d;
 %ignore mod;
-%ignore rows; // ignore rows pointer to array of pointers in RealMatrix
-%rename (rows) r;
-%rename (cols) c;
+%ignore entries;
 
-%rename (UnsignedLongPointer) unsigned_long_ptr;
+%rename (numRows) r;
+%rename (numCols) c;
 
+%rename (rowPointers) rows;
 %rename (initialValue) gmp_init;
 %rename (randomState) gmp_state;
 %rename (algorithmData) _mp_algdata;

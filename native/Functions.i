@@ -1,4 +1,9 @@
 #define __off_t long int
+#define off_t long int
+
+void arb_mat_det_lu(arb_t det, const arb_mat_t A, slong prec);
+void arb_mat_det_precond(arb_t det, const arb_mat_t A, slong prec);
+void arb_mat_det(arb_t det, const arb_mat_t A, slong prec);
 
 jboolean unmapAndCloseFile( int fd, jlong pointer, int size );
 

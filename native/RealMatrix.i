@@ -2,15 +2,52 @@
 import java.io.*;
 import java.util.function.*;
 import java.util.stream.*;
-
+import java.util.Iterator;
+import java.nio.LongBuffer;
 import dnl.utils.text.table.*;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import jdk.incubator.foreign.ResourceScope;
 %}
 
 %typemap(javafinalize) arb_mat_struct ""
-%typemap(javainterfaces) arb_mat_struct "AutoCloseable"
+%typemap(javainterfaces) arb_mat_struct "AutoCloseable,Iterable<Real>"
 
 %typemap(javacode) arb_mat_struct %{
   static { System.loadLibrary( "arblib" ); }
+
+  protected Real getRow(int i)
+  {
+    long rowPointer = rowPointers.get(i);
+    assert false : "implement me: rowPointerAddress=" + String.format("0x%s\n", rowPointer );
+    return null;  
+  }  
+  
+  private LongBuffer rowPointers;
+
+  
+  @Override
+  public Iterator<Real> iterator()
+  {
+    int       i        = 0;
+    final int rowCount = getNumRows();
+
+    return new Iterator<Real>()
+    {
+      @Override
+      public boolean hasNext()
+      {
+        return i < rowCount;
+      }
+
+      @Override
+      public Real next()
+      {
+        return RealMatrix.this.getRow(i);
+      }
+    };
+  }
+  
   /**
    * @see arb#arb_mat_zero(RealMatrix)
    * 
@@ -85,12 +122,12 @@ import dnl.utils.text.table.*;
   @Override
   public String toString()
   {
-    Object[][] strings    = new String[getRows()][getCols()];
+    Object[][] strings    = new String[getNumRows()][getNumCols()];
     int        maxLength  = 0;
     int        maxDecimal = 0;
-    for (int i = 0; i < Math.min(100, getRows()); ++i)
+    for (int i = 0; i < Math.min(100, getNumRows()); ++i)
     {
-      for (int j = 0; j < getCols(); ++j)
+      for (int j = 0; j < getNumCols(); ++j)
       {
         String string  = get(i, j).toFixedString();
         int    decimal = string.indexOf(46);
@@ -107,7 +144,7 @@ import dnl.utils.text.table.*;
     }
     maxLength += 2;
     IntFunction<String>   func  = k -> "" + k;
-    TextTable             table = new TextTable(IntStream.rangeClosed(1, getCols())
+    TextTable             table = new TextTable(IntStream.rangeClosed(1, getNumCols())
                                                          .mapToObj(func)
                                                          .collect(Collectors.toList())
                                                          .stream()
@@ -133,17 +170,20 @@ import dnl.utils.text.table.*;
 
   private String getDimString()
   {
-    String dimString = "(" + this.getRows() + "," + this.getCols() + ")";
+    String dimString = "(" + this.getNumRows() + "," + this.getNumCols() + ")";
     return dimString;
   }
   
- public static RealMatrix newMatrix( int rows, int cols )
+  public static RealMatrix newMatrix(int rows, int cols)
   {
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
+    MemoryAddress ma = MemoryAddress.ofLong(m.getRowPointers());
+    MemorySegment ms = MemorySegment.ofAddress(ma, cols * 8, ResourceScope.globalScope());
+    m.rowPointers = ms.asByteBuffer().asLongBuffer();
     return m;
   }
-
+  
   /**
    * @see arb#arb_mat_transpose(RealMatrix, RealMatrix)
    * 

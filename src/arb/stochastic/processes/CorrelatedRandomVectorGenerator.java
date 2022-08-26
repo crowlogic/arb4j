@@ -71,7 +71,7 @@ public class CorrelatedRandomVectorGenerator implements
    */
   public CorrelatedRandomVectorGenerator(Real mean, RealMatrix covariance, int prec, RandomState randomState)
   {
-    int order = covariance.getRows();
+    int order = covariance.getNumRows();
     assert mean.dim == order;
     this.mean = mean;
     covariance.chol(prec, root = RealMatrix.newMatrix(order, order));
@@ -102,7 +102,7 @@ public class CorrelatedRandomVectorGenerator implements
    */
   public CorrelatedRandomVectorGenerator(RealMatrix covariance, int prec, RandomState randomState)
   {
-    int order = covariance.getRows();
+    int order = covariance.getNumRows();
     mean = new Real(order);
     covariance.chol(prec, root = RealMatrix.newMatrix(order, order));
     this.randomState = randomState;
@@ -169,7 +169,7 @@ public class CorrelatedRandomVectorGenerator implements
       {
         Real ci = correlated.get(i);
         ci.set(mean.get(i));
-        for (int j = 0; j < root.getCols(); ++j)
+        for (int j = 0; j < root.getNumCols(); ++j)
         {
           ci.add(root.get(i, j).mul(normalized.get(j), prec, t), prec);
         }

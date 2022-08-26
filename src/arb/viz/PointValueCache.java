@@ -16,8 +16,7 @@ import arb.ComplexMatrix;
 import arb.SWIGTYPE_p_int;
 import arb.arb;
 import arb.geometry.surfaces.RiemannSurface;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+
 
 /**
  * If the precision of the number is 128 bits or less then the only space
@@ -51,10 +50,6 @@ public class PointValueCache implements
   }
 
   public boolean       complete = false;
-
-  public MemorySegment segment;
-
-  public MemorySegment segment1;
 
   public Path          path;
 
@@ -159,7 +154,7 @@ public class PointValueCache implements
     System.out.println("Create file " + file + " of " + bytes + " bytes ");
     complete = false;
     try ( RandomAccessFile raf = new RandomAccessFile(file,
-                                                      "rw"))
+                                                      "rw"))  
     {
       raf.setLength(bytes);
 

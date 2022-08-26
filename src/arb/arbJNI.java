@@ -9,8 +9,11 @@
 package arb;
 
 public class arbJNI {
+  public final static native void arb_mat_det_lu(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
+  public final static native void arb_mat_det_precond(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
+  public final static native void arb_mat_det(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native boolean unmapAndCloseFile(int jarg1, long jarg2, int jarg3);
-  public final static native int ftruncate(int jarg1, long jarg2);
+  public final static native int ftruncate(int jarg1, int jarg2);
   public final static native long openOrCreateMemoryMappedFile(java.lang.Object jarg1, long jarg2, int jarg3);
   public final static native void acb_hypgeom_bessel_j_0f1(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_hypgeom_bessel_j_asymp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
@@ -349,20 +352,20 @@ public class arbJNI {
   public final static native long RandomState_randomValue2_get(long jarg1, RandomState jarg1_);
   public final static native long new_RandomState();
   public final static native void delete_RandomState(long jarg1);
-  public final static native void RealMatrix_entries_set(long jarg1, RealMatrix jarg1_, long jarg2, Real jarg2_);
-  public final static native long RealMatrix_entries_get(long jarg1, RealMatrix jarg1_);
-  public final static native void RealMatrix_rows_set(long jarg1, RealMatrix jarg1_, int jarg2);
-  public final static native int RealMatrix_rows_get(long jarg1, RealMatrix jarg1_);
-  public final static native void RealMatrix_cols_set(long jarg1, RealMatrix jarg1_, int jarg2);
-  public final static native int RealMatrix_cols_get(long jarg1, RealMatrix jarg1_);
+  public final static native void RealMatrix_numRows_set(long jarg1, RealMatrix jarg1_, int jarg2);
+  public final static native int RealMatrix_numRows_get(long jarg1, RealMatrix jarg1_);
+  public final static native void RealMatrix_numCols_set(long jarg1, RealMatrix jarg1_, int jarg2);
+  public final static native int RealMatrix_numCols_get(long jarg1, RealMatrix jarg1_);
+  public final static native void RealMatrix_rowPointers_set(long jarg1, RealMatrix jarg1_, long jarg2);
+  public final static native long RealMatrix_rowPointers_get(long jarg1, RealMatrix jarg1_);
   public final static native long new_RealMatrix();
   public final static native void delete_RealMatrix(long jarg1);
-  public final static native void ComplexMatrix_entries_set(long jarg1, ComplexMatrix jarg1_, long jarg2, Complex jarg2_);
-  public final static native long ComplexMatrix_entries_get(long jarg1, ComplexMatrix jarg1_);
-  public final static native void ComplexMatrix_rows_set(long jarg1, ComplexMatrix jarg1_, int jarg2);
-  public final static native int ComplexMatrix_rows_get(long jarg1, ComplexMatrix jarg1_);
-  public final static native void ComplexMatrix_cols_set(long jarg1, ComplexMatrix jarg1_, int jarg2);
-  public final static native int ComplexMatrix_cols_get(long jarg1, ComplexMatrix jarg1_);
+  public final static native void ComplexMatrix_numRows_set(long jarg1, ComplexMatrix jarg1_, int jarg2);
+  public final static native int ComplexMatrix_numRows_get(long jarg1, ComplexMatrix jarg1_);
+  public final static native void ComplexMatrix_numCols_set(long jarg1, ComplexMatrix jarg1_, int jarg2);
+  public final static native int ComplexMatrix_numCols_get(long jarg1, ComplexMatrix jarg1_);
+  public final static native void ComplexMatrix_rowPointers_set(long jarg1, ComplexMatrix jarg1_, long jarg2);
+  public final static native long ComplexMatrix_rowPointers_get(long jarg1, ComplexMatrix jarg1_);
   public final static native long new_ComplexMatrix();
   public final static native void delete_ComplexMatrix(long jarg1);
   public final static native void FloatInterval_a_set(long jarg1, FloatInterval jarg1_, long jarg2, Float jarg2_);

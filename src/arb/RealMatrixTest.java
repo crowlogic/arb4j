@@ -24,6 +24,11 @@ public class RealMatrixTest extends
     println("reconstructedCorrelation=\n" + reconstructedCorrelation);
     assertTrue(reconstructedCorrelation.contains(correlation));
     assertTrue(reconstructedCorrelation.overlaps(correlation));
+    
+    for ( Real row : correlation )
+    {
+      println(row);
+    }
   }
 
 }

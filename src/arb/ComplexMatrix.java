@@ -61,29 +61,28 @@ public class ComplexMatrix implements AutoCloseable {
   } 
   
 
-  public void setEntries(Complex value) {
-    arbJNI.ComplexMatrix_entries_set(swigCPtr, this, Complex.getCPtr(value), value);
+  public void setNumRows(int value) {
+    arbJNI.ComplexMatrix_numRows_set(swigCPtr, this, value);
   }
 
-  public Complex getEntries() {
-    long cPtr = arbJNI.ComplexMatrix_entries_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Complex(cPtr, false);
+  public int getNumRows() {
+    return arbJNI.ComplexMatrix_numRows_get(swigCPtr, this);
   }
 
-  public void setRows(int value) {
-    arbJNI.ComplexMatrix_rows_set(swigCPtr, this, value);
+  public void setNumCols(int value) {
+    arbJNI.ComplexMatrix_numCols_set(swigCPtr, this, value);
   }
 
-  public int getRows() {
-    return arbJNI.ComplexMatrix_rows_get(swigCPtr, this);
+  public int getNumCols() {
+    return arbJNI.ComplexMatrix_numCols_get(swigCPtr, this);
   }
 
-  public void setCols(int value) {
-    arbJNI.ComplexMatrix_cols_set(swigCPtr, this, value);
+  public void setRowPointers(long value) {
+    arbJNI.ComplexMatrix_rowPointers_set(swigCPtr, this, value);
   }
 
-  public int getCols() {
-    return arbJNI.ComplexMatrix_cols_get(swigCPtr, this);
+  public long getRowPointers() {
+    return arbJNI.ComplexMatrix_rowPointers_get(swigCPtr, this);
   }
 
   public ComplexMatrix() {

@@ -83,7 +83,7 @@ typedef struct
     arb_ptr entries;
     slong r;
     slong c;
-    arb_ptr * rows;
+    jlong rows;
 }
 arb_mat_struct;
 
@@ -94,7 +94,7 @@ typedef struct
     acb_ptr entries;
     slong r;
     slong c;
-    acb_t rows;
+    jlong rows;
 }
 acb_mat_struct;
 
