@@ -154,7 +154,7 @@ public class CorrelatedRandomVectorGenerator implements
    */
   public Real nextElement(int prec, Real result)
   {
-
+    assert result.dim == mean.dim : String.format("result.dim = %d != mean.dim = %d\n", result.dim, mean.dim );
     // generate uncorrelated vector
     for (int i = 0; i < normalized.dim; ++i)
     {

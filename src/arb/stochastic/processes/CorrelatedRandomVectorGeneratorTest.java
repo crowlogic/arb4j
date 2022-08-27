@@ -11,8 +11,6 @@ public class CorrelatedRandomVectorGeneratorTest extends
                                                  TestCase
 {
 
-  private Real x;
-
   public void testNextVector() throws Exception
   {
     RandomState randomState      = new RandomState(31337);
@@ -30,14 +28,17 @@ public class CorrelatedRandomVectorGeneratorTest extends
                                                                                       randomState))
     {
       RealMatrix x = RealMatrix.newMatrix(10000, 2);
-      
-      for ( Real element : x )
+
+      for (Real element : x)
       {
-        rvgen.nextElement(prec, element );
+        rvgen.nextElement(prec, element);
       }
       println("sqrt correlation=" + rvgen.getRootMatrix());
-    }   
-    println("drew sample " + x);
+      println("drew sample " + x);
+
+      // TODO: add correlation to Real and then check that its the same as the one
+      // that was used to generate the correlated pair of sample sequences
+    }
   }
 
 }

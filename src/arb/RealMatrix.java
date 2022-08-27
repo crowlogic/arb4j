@@ -150,10 +150,12 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   @Override
   public String toString()
   {
-    Object[][] strings    = new String[getNumRows()][getNumCols()];
+    int rowCount = Math.min(100, getNumRows());
+    int colCount = Math.min(100, getNumCols());
+    Object[][] strings    = new String[rowCount][colCount];
     int        maxLength  = 0;
     int        maxDecimal = 0;
-    for (int i = 0; i < Math.min(100, getNumRows()); ++i)
+    for (int i = 0; i < rowCount; ++i)
     {
       for (int j = 0; j < getNumCols(); ++j)
       {
@@ -180,22 +182,13 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
                                                 strings);
     ByteArrayOutputStream os    = new ByteArrayOutputStream();
     PrintStream           ps    = new PrintStream(os);
-    StringBuffer          sb    = new StringBuffer();
+
     table.setAddRowNumbering(true);
     table.printTable(ps, 0);
-    ps.close();
-    try
-    {
-      return (name != null ? name + "=\n" : "") + os.toString("UTF8");
-    }
-    catch (UnsupportedEncodingException e)
-    {
-      e.printStackTrace(System.err);
-      throw new RuntimeException(e.getMessage(),
-                                 e);
-    }
-  }
-
+    ps.flush();
+    String string = (name != null ? name + "=\n" : "") + os.toString();
+    return string;
+  }  
   private String getDimString()
   {
     String dimString = "(" + this.getNumRows() + "," + this.getNumCols() + ")";
@@ -209,7 +202,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
     MemoryAddress ma = MemoryAddress.ofLong(m.getRowPointers());
-    MemorySegment ms = MemorySegment.ofAddress(ma, cols * 8, ResourceScope.globalScope());
+    MemorySegment ms = MemorySegment.ofAddress(ma, rows * 8, ResourceScope.globalScope());
     m.rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
     m.rows        = new Real[rows];
     for (int i = 0; i < rows; i++)

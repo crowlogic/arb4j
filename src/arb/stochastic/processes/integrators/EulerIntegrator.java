@@ -89,14 +89,14 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
       // Generate data
       DataTable spotPriceData = new DataTable(Double.class,
-                                     Double.class);
-      DataTable varianceData = new DataTable(Double.class,
+                                              Double.class);
+      DataTable varianceData  = new DataTable(Double.class,
                                               Double.class);
 
-      var       path = integrator.integrate(new FloatInterval(0,
-                                                              5),
-                                            750,
-                                            prec);
+      var       path          = integrator.integrate(new FloatInterval(0,
+                                                                       5),
+                                                     750,
+                                                     prec);
 
       for (OrderedPair<Real, Real> sample : path)
       {
@@ -159,7 +159,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
       state.lock();
       step(state, prec, evaluationSequence);
       state.unlock();
-      jump((DiffusionProcessState) state, prec, evaluationSequence);
+      assert jump((DiffusionProcessState) state,
+                  prec,
+                  evaluationSequence) : "invalid jump, please try again with another sample";
     }
 
     return evaluationSequence;
@@ -209,7 +211,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     return true; // return false if variance went negative
   }
 
-  boolean                    nonNegative = true;
+  public boolean             nonNegative = false;
   private EvaluationSequence evaluationSequence;
 
   @Override
@@ -220,7 +222,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     Real xi = evaluationSequence.values[dim].get(i);
 
     xi.add(state.value(), prec);
-    if (!nonNegative || xi.isNegative())
+    if (nonNegative && xi.isNegative())
     {
       System.err.println("calculated variance = " + xi + " cannot be negative");
       return false;
@@ -275,8 +277,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     InteractivePanel interactivePanel = new InteractivePanel(plot);
     Utilities.openInJFrame(interactivePanel, 1900, 800, title, JFrame.EXIT_ON_CLOSE)
              .addKeyListener(new KeyHandler());
-    
-  }
 
+  }
 
 }
