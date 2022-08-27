@@ -4,6 +4,7 @@ import java.util.function.*;
 import java.util.stream.*;
 import java.util.Iterator;
 import java.nio.LongBuffer;
+import java.nio.ByteOrder;
 import dnl.utils.text.table.*;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
@@ -16,11 +17,9 @@ import jdk.incubator.foreign.ResourceScope;
 %typemap(javacode) arb_mat_struct %{
   static { System.loadLibrary( "arblib" ); }
 
-  protected Real getRow(int i)
+  public Real getRow(int i)
   {
-    long rowPointer = rowPointers.get(i);
-    assert false : "implement me: rowPointerAddress=" + String.format("0x%s\n", rowPointer );
-    return null;  
+    return rows[i];
   }  
   
   private LongBuffer rowPointers;
@@ -29,11 +28,12 @@ import jdk.incubator.foreign.ResourceScope;
   @Override
   public Iterator<Real> iterator()
   {
-    int       i        = 0;
     final int rowCount = getNumRows();
 
     return new Iterator<Real>()
     {
+      int       i        = 0;
+
       @Override
       public boolean hasNext()
       {
@@ -43,10 +43,11 @@ import jdk.incubator.foreign.ResourceScope;
       @Override
       public Real next()
       {
-        return RealMatrix.this.getRow(i);
+        return RealMatrix.this.getRow(i++);
       }
     };
   }
+  
   
   /**
    * @see arb#arb_mat_zero(RealMatrix)
@@ -174,13 +175,22 @@ import jdk.incubator.foreign.ResourceScope;
     return dimString;
   }
   
+  Real[] rows;
+  
   public static RealMatrix newMatrix(int rows, int cols)
   {
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
     MemoryAddress ma = MemoryAddress.ofLong(m.getRowPointers());
     MemorySegment ms = MemorySegment.ofAddress(ma, cols * 8, ResourceScope.globalScope());
-    m.rowPointers = ms.asByteBuffer().asLongBuffer();
+    m.rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
+    m.rows        = new Real[rows];
+    for (int i = 0; i < rows; i++)
+    {
+      m.rows[i]          = new Real(m.rowPointers.get(i),
+                                    false);
+      m.rows[i].elements = new Real[m.rows[i].dim = cols];
+    }
     return m;
   }
   
