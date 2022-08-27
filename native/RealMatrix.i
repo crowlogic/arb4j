@@ -188,6 +188,26 @@ import jdk.incubator.foreign.ResourceScope;
   }
   
   /**
+   * @see arb#arb_mat_inv(RealMatrix, RealMatrix, int)
+   * @param prec
+   * @param result
+   * @return result
+   */
+  public RealMatrix inv(int prec, RealMatrix result)
+  {
+    if (arb.arb_mat_inv(result, this, prec) == 0)
+    {
+      return null;
+    }
+    else
+    {
+      result.name = "inv" + (name != null ? name : "");
+      return result;
+    }
+  }
+
+  
+  /**
    * @see arb#arb_mat_transpose(RealMatrix, RealMatrix)
    * 
    * @param result
