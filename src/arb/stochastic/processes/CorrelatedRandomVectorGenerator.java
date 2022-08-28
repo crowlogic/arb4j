@@ -4,46 +4,6 @@ import arb.RandomState;
 import arb.Real;
 import arb.RealMatrix;
 
-/**
- * A {@link RandomVectorGenerator} that generates vectors with with correlated
- * components.
- * <p>
- * Random vectors with correlated components are built by combining the
- * uncorrelated components of another random vector in such a way that the
- * resulting correlations are the ones specified by a positive definite
- * covariance matrix.
- * </p>
- * <p>
- * The main use for correlated random vector generation is for Monte-Carlo
- * simulation of physical problems with several variables, for example to
- * generate error vectors to be added to a nominal vector. A particularly
- * interesting case is when the generated vector should be drawn from a
- * <a href="http://en.wikipedia.org/wiki/Multivariate_normal_distribution">
- * Multivariate Normal Distribution</a>. The approach using a Cholesky
- * decomposition is quite usual in this case. However, it can be extended to
- * other cases as long as the underlying random generator provides
- * {@link NormalizedRandomGenerator normalized values} like
- * {@link GaussianRandomGenerator} or {@link UniformRandomGenerator}.
- * </p>
- * <p>
- * Sometimes, the covariance matrix for a given simulation is not strictly
- * positive definite. This means that the correlations are not all independent
- * from each other. In this case, however, the non strictly positive elements
- * found during the Cholesky decomposition of the covariance matrix should not
- * be negative either, they should be null. Another non-conventional extension
- * handling this case is used here. Rather than computing
- * <code>C = U<sup>T</sup>.U</code> where <code>C</code> is the covariance
- * matrix and <code>U</code> is an upper-triangular matrix, we compute
- * <code>C = B.B<sup>T</sup></code> where <code>B</code> is a rectangular matrix
- * having more rows than columns. The number of columns of <code>B</code> is the
- * rank of the covariance matrix, and it is the dimension of the uncorrelated
- * random vector that is needed to compute the component of the correlated
- * vector. This class handles this situation automatically.
- * </p>
- *
- * @since 1.2
- */
-
 public class CorrelatedRandomVectorGenerator implements
                                              RandomVectorGenerator,
                                              AutoCloseable
@@ -154,7 +114,7 @@ public class CorrelatedRandomVectorGenerator implements
    */
   public Real nextElement(int prec, Real result)
   {
-    assert result.dim == mean.dim : String.format("result.dim = %d != mean.dim = %d\n", result.dim, mean.dim );
+    assert result.dim == mean.dim : String.format("result.dim = %d != mean.dim = %d\n", result.dim, mean.dim);
     // generate uncorrelated vector
     for (int i = 0; i < normalized.dim; ++i)
     {
@@ -171,7 +131,7 @@ public class CorrelatedRandomVectorGenerator implements
         ci.set(mean.get(i));
         for (int j = 0; j < root.getNumCols(); ++j)
         {
-          ci.add(root.get(i, j).mul(normalized.get(j), prec, t), prec);
+          root.get(i, j).addmul(normalized.get(j), prec, ci);
         }
       }
 

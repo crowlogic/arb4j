@@ -3,6 +3,7 @@ package arb;
 import arb.measures.*;
 import arb.theoretical.*;
 import arb.topological.*;
+import arb.topological.spaces.InnerProductSpace;
 
 /**
  * A field is a topological {@link Space}, itself defined as a {@link Set}, on
@@ -16,7 +17,8 @@ import arb.topological.*;
 public interface Field<X extends Field<X>> extends
                       AutoCloseable,
                       Space<X>,
-                      Iterable<X>
+                      Iterable<X>,
+                      InnerProductSpace<X>
 {
   /**
    * @return the number of X's available to this{@link #get(int)}

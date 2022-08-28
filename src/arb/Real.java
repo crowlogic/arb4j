@@ -466,11 +466,30 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
   @Override
   public Real innerProduct(Real that, int prec, Real result)
   {
+    assert dim == that.dim : String.format("this.dim = %d != that.dim = %d", dim, that.dim);
+    result.zero();
+    for (int i = 0; i < dim; i++)
+    {
+      this.get(i).addmul(that.get(i), prec, result );
+    }
     assert false : "implement me";
     return null;
 
   }
 
+  /**
+   * @see arb#arb_addmul(Real, Real, Real, int)
+   * @param that
+   * @param prec
+   * @param result
+   * @return result = result + this * that
+   */
+  public Real addmul(Real that, int prec, Real result)
+  {
+    arb.arb_addmul( result, this, that, prec );
+    return result;
+  }
+  
   @Override
   public int dimension()
   {

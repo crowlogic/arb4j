@@ -36,6 +36,9 @@ public class CorrelatedRandomVectorGeneratorTest extends
       println("sqrt correlation=" + rvgen.getRootMatrix());
       println("drew sample " + x);
 
+      /**
+       * transpose it here then calculate correlation
+       */
       // TODO: add correlation to Real and then check that its the same as the one
       // that was used to generate the correlated pair of sample sequences
     }

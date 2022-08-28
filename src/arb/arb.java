@@ -9,6 +9,10 @@
 package arb;
 
 public class arb {
+  public static void arb_addmul(Real z, Real x, Real y, int prec) {
+    arbJNI.arb_addmul(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(y), y, prec);
+  }
+
   public static void arb_mat_det_lu(Real det, RealMatrix A, int prec) {
     arbJNI.arb_mat_det_lu(Real.getCPtr(det), det, RealMatrix.getCPtr(A), A, prec);
   }

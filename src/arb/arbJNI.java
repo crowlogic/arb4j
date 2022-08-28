@@ -9,6 +9,7 @@
 package arb;
 
 public class arbJNI {
+  public final static native void arb_addmul(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_mat_det_lu(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native void arb_mat_det_precond(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native void arb_mat_det(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);

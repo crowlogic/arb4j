@@ -2,14 +2,16 @@ package arb.topological.spaces;
 
 import arb.Complex;
 import arb.Field;
+import arb.Metric;
 import arb.Real;
+import arb.Set;
 import arb.topological.Topology;
 
 /**
  * An inner product space (or, rarely, a Hausdorff pre-Hilbert space[1][2]) is a
  * {@link Real} {@link VectorSpace} or a {@link Complex} {@link VectorSpace}
- * with an operation called an inner product. The inner product of two vector
- * in the space is a scalar, often denoted with angle brackets such as in ⟨a,b⟩.
+ * with an operation called an inner product. The inner product of two vector in
+ * the space is a scalar, often denoted with angle brackets such as in ⟨a,b⟩.
  * Inner products allow formal definitions of intuitive geometric notions, such
  * as lengths, angles, and orthogonality (zero inner product) of vectors. Inner
  * product spaces generalize {@link EuclideanVectorSpace}, in which the inner
@@ -32,8 +34,18 @@ import arb.topological.Topology;
  *      "https://en.wikipedia.org/wiki/Inner_product_space">InnerProductSpace@Wikipedia</a>
  * @param <X>
  */
-public interface InnerProductSpace<X> extends
-                                  VectorSpace<X>
+public interface InnerProductSpace<X extends Field> extends
+                                  NormedVectorSpace<X>
 {
+
+  @Override
+  default Metric<X> metric()
+  {
+    return (P, order, prec, res) ->
+    {
+      return P.a.innerProduct(P.b, prec, res);
+    };
+  }
+
   public Real innerProduct(X that, int prec, Real result);
 }

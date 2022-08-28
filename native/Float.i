@@ -90,6 +90,13 @@ import jdk.incubator.foreign.*;
   }
 
   @Override
+  public Real innerProduct(Float that, int prec, Real result)
+  {
+    assert false : "implement me";
+    return null;
+  }
+  
+  @Override
   public Real abs(int prec, Real w)
   {
     assert false : "TODO";
