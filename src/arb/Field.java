@@ -1,5 +1,7 @@
 package arb;
 
+import java.util.Iterator;
+
 import arb.measures.*;
 import arb.theoretical.*;
 import arb.topological.*;
@@ -19,6 +21,28 @@ public interface Field<X extends Field<X>> extends
                       Iterable<X>,
                       InnerProductSpace<X>
 {
+  @Override
+  default X innerProduct(X that, int prec, X result)
+  {
+    assert false : "implement me";
+    return null;
+
+  }
+
+  @Override
+  default Iterator<X> iterator()
+  {
+    assert false : "implement me";
+    return null;
+
+  }
+
+  @Override
+  default void close()
+  {
+
+  }
+
   /**
    * @return the number of X's available to this{@link #get(int)}
    */
@@ -201,5 +225,15 @@ public interface Field<X extends Field<X>> extends
   public X zero();
 
   public Real abs(int prec, Real w);
+
+  public default Real distance(X b, int prec, Real result)
+  {
+    try ( X innerProduct = newFieldElement();)
+    {
+      return innerProduct(b, prec, innerProduct).abs(prec, result);
+    }
+  }
+
+  public X newFieldElement();
 
 }

@@ -1,5 +1,6 @@
 package arb.topological.spaces;
 
+import arb.Field;
 import arb.Metric;
 import arb.OpenSet;
 import arb.Set;
@@ -34,7 +35,7 @@ import arb.topological.Space;
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Metric_space">MetricSpace@Wikipedia</a>
  */
-public interface MetricSpace<X extends Set> extends
+public interface MetricSpace<X extends Field> extends
                             Space<X>
 {
   /**

@@ -972,6 +972,13 @@ import arb.topological.spaces.EuclideanVectorSpace;
     return res;
   }
 
+  @Override
+  public Real newFieldElement()
+  {
+    return new Real();
+  }
+
+
   /**
    * <pre>
    *                 n*Σ(this*that)-Σthis*Σthat 

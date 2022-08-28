@@ -1,5 +1,6 @@
 package arb.topological.spaces;
 
+import arb.Field;
 import arb.Set;
 
 /**
@@ -26,7 +27,7 @@ import arb.Set;
  *
  * @param <X>
  */
-public interface CompleteMetricSpace<X extends Set> extends
+public interface CompleteMetricSpace<X extends Field> extends
                                     MetricSpace<X>,
                                     CompleteSpace<X>
 {

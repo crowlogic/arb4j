@@ -998,6 +998,13 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
     return res;
   }
 
+  @Override
+  public Real newFieldElement()
+  {
+    return new Real();
+  }
+
+
   /**
    * <pre>
    *                 n*Σ(this*that)-Σthis*Σthat 

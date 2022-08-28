@@ -290,7 +290,13 @@ import arb.topological.spaces.*;
   {
     return dotProduct(that, null, 0, 1, 1, dim, prec, result);
   }
-  
+
+  @Override
+  public Complex newFieldElement()
+  {
+    return new Complex();
+  }
+    
   public Stream<Complex> stream()
   {
     return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),

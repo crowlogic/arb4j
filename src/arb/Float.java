@@ -118,7 +118,13 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     arb.arf_div(result, this, j, prec, RoundingMode.Near.ordinal());
     return this;
   }
-  
+ 
+  @Override
+  public Float newFieldElement()
+  {
+    return new Float();
+  }
+ 
   @Override
   public Real abs(int prec, Real w)
   {

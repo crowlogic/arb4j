@@ -27,8 +27,8 @@ import arb.topological.spaces.*;
  * @see <a href="https://encyclopediaofmath.org/wiki/Metric">The Encyclopedia of
  *      Mathematics wiki</a>
  */
-public interface Metric<X extends Set> extends
-                       Function<CartesianProduct<X, X>, Real>
+public interface Metric<X extends Field> extends
+                       Function<X, Real>
 {
 
 }

@@ -41,8 +41,13 @@ public interface InnerProductSpace<X extends Field<?>> extends
   @Override
   default Metric<X> metric()
   {
-    assert false : "TODO";
-    return null;
+    return (P, order, prec, result) ->
+    {
+      try ( X x = (X) P.newFieldElement();)
+      {
+        return innerProduct(P, prec, x).abs(prec, result);
+      }
+    };
   }
 
   public X innerProduct(X that, int prec, X result);

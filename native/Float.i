@@ -95,7 +95,13 @@ import jdk.incubator.foreign.*;
     arb.arf_div(result, this, j, prec, RoundingMode.Near.ordinal());
     return this;
   }
-  
+ 
+  @Override
+  public Float newFieldElement()
+  {
+    return new Float();
+  }
+ 
   @Override
   public Real abs(int prec, Real w)
   {
