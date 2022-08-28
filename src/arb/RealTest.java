@@ -34,7 +34,7 @@ public class RealTest extends
     p.get(0).set("4", prec);
     p.get(1).set("5", prec);
     p.get(2).set("6", prec);
-    Real sumOfrSquares = r.cov(r, prec, new Real() );
+    Real sumOfrSquares = r.covariance(r, prec, new Real() );
     assertEquals( 2, sumOfrSquares.doubleValue() );
   }
   
