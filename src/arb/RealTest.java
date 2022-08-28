@@ -6,6 +6,7 @@ import static java.lang.System.out;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import arb.stochastic.StandardGaussianDistribution;
 import junit.framework.TestCase;
 
 public class RealTest extends
@@ -21,8 +22,7 @@ public class RealTest extends
     r.get(1).set("2.3", prec);
     r.get(2).set("3.3", prec);
     Real sumOfrSquares = r.covariance(r, prec, new Real());
-    assertTrue(sumOfrSquares.contains(new Real("2",
-                                               128)));
+    assertEquals(0.66666666666666666667, sumOfrSquares.doubleValue(), Math.pow(10, -20));
   }
 
   public static void testCovariance2()
@@ -35,9 +35,19 @@ public class RealTest extends
     p.get(0).set("4", prec);
     p.get(1).set("5", prec);
     p.get(2).set("6", prec);
-    Real sumOfrSquares = r.covariance(r, prec, new Real());
-    assertTrue(sumOfrSquares.contains(new Real("2",
-                                               128)));
+    Real sumOfrSquares = r.covariance(p, prec, new Real());
+    assertEquals(0.66666666666666666667, sumOfrSquares.doubleValue(), Math.pow(10, -20));
+
+  }
+
+  public static void testCovariance3()
+  {
+    Real r = Real.newVector(100000);
+    r.randomlyGenerate(new StandardGaussianDistribution(), new RandomState(2022), prec);
+    Real p = Real.newVector(100000);
+    p.randomlyGenerate(new StandardGaussianDistribution(), new RandomState(31337), prec);
+    Real rpCorrelation = r.covariance(p, prec, new Real());
+    assertEquals(0, rpCorrelation.doubleValue(), Math.pow(10, -4));
   }
 
   public static void testVecScalarSub()
