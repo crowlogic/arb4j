@@ -1,7 +1,11 @@
 #define __off_t long int
 #define off_t long int
 
- void arb_addmul(arb_t z, const arb_t x, const arb_t y, slong prec);
+void acb_addmul(acb_t z, const acb_t x, const acb_t y, slong prec);
+
+void acb_submul(acb_t z, const acb_t x, const acb_t y, slong prec);
+
+void arb_addmul(arb_t z, const arb_t x, const arb_t y, slong prec);
  
 void arb_mat_det_lu(arb_t det, const arb_mat_t A, slong prec);
 void arb_mat_det_precond(arb_t det, const arb_mat_t A, slong prec);

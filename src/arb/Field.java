@@ -12,8 +12,8 @@ import arb.topological.spaces.InnerProductSpace;
  * do. A field is thus a fundamental algebraic structure which is widely used in
  * algebra, {@link NumberTheory}, and many other areas such as physics where
  * fields potentially represent actually existing physical fields and forces and
- * {@link Measure}ments on them, conserved quantities, etc
  */
+* {@link Measure}ments on them, conserved quantities, etc
 public interface Field<X extends Field<X>> extends
                       AutoCloseable,
                       Space<X>,

@@ -34,18 +34,16 @@ import arb.topological.Topology;
  *      "https://en.wikipedia.org/wiki/Inner_product_space">InnerProductSpace@Wikipedia</a>
  * @param <X>
  */
-public interface InnerProductSpace<X extends Field> extends
+public interface InnerProductSpace<X extends Field<?>> extends
                                   NormedVectorSpace<X>
 {
 
   @Override
   default Metric<X> metric()
   {
-    return (P, order, prec, res) ->
-    {
-      return P.a.innerProduct(P.b, prec, res);
-    };
+    assert false : "TODO";
+    return null;
   }
 
-  public Real innerProduct(X that, int prec, Real result);
+  public X innerProduct(X that, int prec, X result);
 }

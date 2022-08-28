@@ -16,7 +16,7 @@ public class HardySpace<D extends Field> implements
 {
 
   @Override
-  public Real innerProduct(D that, int prec, Real result)
+  public D innerProduct(D that, int prec, D result)
   {
     throw new UnsupportedOperationException("TODO: return (𝑓|𝑔)=sup{0<𝑟<1}(∫(𝑓(𝑟*exp(𝑖*𝜃))*conj(𝑔(𝑟*exp(𝑖*𝜃)))d𝜃=0..2π))");
 

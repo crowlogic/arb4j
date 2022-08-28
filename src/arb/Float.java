@@ -113,7 +113,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   }
 
   @Override
-  public Real innerProduct(Float that, int prec, Real result)
+  public Float innerProduct(Float that, int prec, Float result)
   {
     assert false : "implement me";
     return null;

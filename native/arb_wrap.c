@@ -314,6 +314,50 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
 
 
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1addmul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  acb_struct *arg1 ;
+  acb_struct *arg2 ;
+  acb_struct *arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(acb_struct **)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(acb_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  acb_addmul(arg1,(acb_struct const (*))arg2,(acb_struct const (*))arg3,arg4);
+  
+  
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1submul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
+  acb_struct *arg1 ;
+  acb_struct *arg2 ;
+  acb_struct *arg3 ;
+  long arg4 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(acb_struct **)&jarg1; 
+  arg2 = *(acb_struct **)&jarg2; 
+  arg3 = *(acb_struct **)&jarg3; 
+  arg4 = (long)jarg4; 
+  acb_submul(arg1,(acb_struct const (*))arg2,(acb_struct const (*))arg3,arg4);
+  
+  
+  
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_arb_1addmul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   arb_struct *arg1 ;
   arb_struct *arg2 ;

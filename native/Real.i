@@ -446,10 +446,9 @@ import arb.topological.spaces.EuclideanVectorSpace;
     {
       this.get(i).addmul(that.get(i), prec, result );
     }
-    assert false : "implement me";
-    return null;
-
+    return result;
   }
+
 
   /**
    * @see arb#arb_addmul(Real, Real, Real, int)

@@ -242,6 +242,19 @@ import arb.topological.spaces.*;
     return getReal().getAllocatedBytes() + getImag().getAllocatedBytes();
   }
   
+ /**
+   * @see arb#acb_addmul(Real, Real, Real, int)
+   * @param that
+   * @param prec
+   * @param result
+   * @return result = result + this * that
+   */
+  public Complex addmul(Complex that, int prec, Complex result)
+  {
+    arb.acb_addmul(result, this, that, prec);
+    return result;
+  }
+    
   /**
    * Computes the dot product of the vectors x and y, setting res to
    * <code>s+(-1)^subtract+sum(this[i]*y[i],i=0..len-1)</code> The initial term s
@@ -264,10 +277,19 @@ import arb.topological.spaces.*;
    * @param res      variable which the result is to be stored in
    * @return res
    */
-  public Complex dot(Complex y, Complex initial, int subtract, int xstep, int ystep, int len, int prec, Complex res)
+  public Complex dotProduct( Complex y, Complex initial, int subtract, int xstep, int ystep, int len, int prec, Complex res )
   {
     arb.acb_dot(res, initial, subtract, this, xstep, y, ystep, len, prec);
     return res;
+  }
+
+  @Override
+  public Real innerProduct(Complex that, int prec, Real result)
+  {
+    try ( Complex c = new Complex(); )
+    {
+	  return dotProduct( that, null, 0, 1, 1, dim, prec, c ).abs( prec, result );
+    }   
   }
 
   public Stream<Complex> stream()
@@ -697,12 +719,6 @@ import arb.topological.spaces.*;
     return array;
  }
    
-  @Override
-  public Real innerProduct(Complex that, int prec, Real result)
-  {
-    assert false : "implement me";
-    return null;
-  }
      
   @Override
   public void close()

@@ -10,7 +10,7 @@ public class RealTest extends
                       TestCase
 {
 
-  public void testDotProduct()
+  public void testInnerProduct()
   {
     AtomicInteger a = new AtomicInteger(1);
     try ( Real x = new Real(3); Real y = new Real(3))
@@ -22,7 +22,7 @@ public class RealTest extends
         x.get(i).set(a.getAndIncrement());
         y.get(i).set(a.getAndIncrement());
       }
-      Real dp = x.dotProduct(y, 128, new Real());
+      Real dp = x.innerProduct(y, 128, new Real());
       assertEquals(new Real("44",
                             128),
                    dp);

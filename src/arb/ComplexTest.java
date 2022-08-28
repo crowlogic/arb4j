@@ -3,6 +3,7 @@ package arb;
 import static java.lang.Math.pow;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -57,6 +58,27 @@ public class ComplexTest extends
     coeffs.elements = new Complex[coeffs.dim];
     System.out.format("Coeffs=%s\n", coeffs);
     // TODO: make the Real class so that it can be constructed with a Stream<Real>
+  }
+
+  public void testInnerProduct()
+  {
+    AtomicInteger a = new AtomicInteger(1);
+    try ( Complex x = Complex.newVector(3); Complex y = Complex.newVector(3))
+    {
+      x.name = "x";
+      y.name = "y";
+      for (int i = 0; i < 3; i++)
+      {
+        x.get(i).getReal().set(a.getAndIncrement());
+        y.get(i).getImag().set(a.getAndIncrement());
+        y.get(i).getReal().set(a.getAndIncrement());
+        y.get(i).getImag().set(a.getAndIncrement());
+      }
+      Complex dp = x.innerProduct(y, 128, new Complex());
+      assertEquals(new Real("44",
+                            128),
+                   dp);
+    }
   }
 
 }

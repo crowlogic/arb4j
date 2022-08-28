@@ -9,6 +9,14 @@
 package arb;
 
 public class arb {
+  public static void acb_addmul(Complex z, Complex x, Complex y, int prec) {
+    arbJNI.acb_addmul(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
+  }
+
+  public static void acb_submul(Complex z, Complex x, Complex y, int prec) {
+    arbJNI.acb_submul(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
+  }
+
   public static void arb_addmul(Real z, Real x, Real y, int prec) {
     arbJNI.arb_addmul(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
