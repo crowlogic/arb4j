@@ -1,5 +1,7 @@
 package arb;
 
+import static arb.RealConstants.one;
+import static arb.utensils.Utilities.println;
 import static java.lang.System.out;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -9,6 +11,19 @@ import junit.framework.TestCase;
 public class RealTest extends
                       TestCase
 {
+
+  private static final int prec = 128;
+
+  public static void testVecScalarSub()
+  {
+    Real r = Real.newVector(3);
+    r.get(0).set("1.3", prec);
+    r.get(1).set("2.3", prec);
+    r.get(2).set("3.3", prec);
+    Real rMinusOne = r.vecScalarSub(one, 128, Real.newVector(3));
+    println(rMinusOne);
+    assertEquals(3.9, rMinusOne.Σ(128, new Real()).doubleValue());
+  }
 
   public void testInnerProduct()
   {

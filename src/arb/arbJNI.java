@@ -9,6 +9,9 @@
 package arb;
 
 public class arbJNI {
+  public final static native void _arb_vec_neg(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void _arb_vec_scalar_addmul(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, long jarg4, Real jarg4_, int jarg5);
+  public final static native void _arb_vec_sub(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4, int jarg5);
   public final static native void acb_addmul(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_submul(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void arb_addmul(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);

@@ -34,6 +34,50 @@ import arb.topological.spaces.EuclideanVectorSpace;
     this.elements = new Real[this.dim = dim];
   }
   
+  **
+   * The covariance of x and y is sum(x[i]-mean(x))*(y[i]-mean(y)),i=1..dim)
+   * 
+   * @param that
+   * @param prec
+   * @param res
+   * @return the covariance of this and that
+   */
+  public Real cov(Real that, int prec, Real res)
+  {
+    assert dim == that.dim;
+    try ( Real a = mean(prec, new Real()); Real b = that.mean(prec, new Real());
+          Real aCentered = vecScalarSub(a, prec, Real.newVector(dim));
+          Real bCentered = that.vecScalarSub(b, prec, Real.newVector(dim)))
+    {
+      return aCentered.innerProduct(bCentered, prec, res);
+    }
+  }
+  
+  /**
+   * 
+   * @param a      scalar (single real value, only element 0 is used, it is NOT
+   *               treated as a vector)
+   * @param prec
+   * @param result
+   * @return newVector=this-a where a is a scalar subtracted from each element of
+   *         this
+   */
+  public Real vecScalarSub(Real a, int prec, Real result)
+  {
+    assert dim == result.dim;
+    for (int i = 0; i < dim; i++)
+    {
+      get(i).sub(a, prec, result.get(i));
+    }
+    return result;
+  }
+
+  public Real vecNegate(Real res)
+  {
+    arb._arb_vec_neg(res, this, dim);
+    return res;
+  }
+    
   @Override
   public void lock()
   {

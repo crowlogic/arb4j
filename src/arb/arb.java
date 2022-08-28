@@ -9,6 +9,18 @@
 package arb;
 
 public class arb {
+  public static void _arb_vec_neg(Real B, Real A, int n) {
+    arbJNI._arb_vec_neg(Real.getCPtr(B), B, Real.getCPtr(A), A, n);
+  }
+
+  public static void _arb_vec_scalar_addmul(Real res, Real vec, int len, Real numCols, int prec) {
+    arbJNI._arb_vec_scalar_addmul(Real.getCPtr(res), res, Real.getCPtr(vec), vec, len, Real.getCPtr(numCols), numCols, prec);
+  }
+
+  public static void _arb_vec_sub(Real C, Real A, Real B, int n, int prec) {
+    arbJNI._arb_vec_sub(Real.getCPtr(C), C, Real.getCPtr(A), A, Real.getCPtr(B), B, n, prec);
+  }
+
   public static void acb_addmul(Complex z, Complex x, Complex y, int prec) {
     arbJNI.acb_addmul(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }

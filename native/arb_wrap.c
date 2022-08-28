@@ -314,6 +314,65 @@ jint JNI_OnLoad (JavaVM *vm, void *reserved)
 
 
 
+SWIGEXPORT void JNICALL Java_arb_arbJNI__1arb_1vec_1neg(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3) {
+  arb_ptr arg1 = (arb_ptr) 0 ;
+  arb_srcptr arg2 = (arb_srcptr) 0 ;
+  long arg3 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(arb_ptr *)&jarg1; 
+  arg2 = *(arb_srcptr *)&jarg2; 
+  arg3 = (long)jarg3; 
+  _arb_vec_neg(arg1,(arb_struct const *)arg2,arg3);
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI__1arb_1vec_1scalar_1addmul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jint jarg3, jlong jarg4, jobject jarg4_, jint jarg5) {
+  arb_ptr arg1 = (arb_ptr) 0 ;
+  arb_srcptr arg2 = (arb_srcptr) 0 ;
+  long arg3 ;
+  arb_struct *arg4 ;
+  long arg5 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg4_;
+  arg1 = *(arb_ptr *)&jarg1; 
+  arg2 = *(arb_srcptr *)&jarg2; 
+  arg3 = (long)jarg3; 
+  arg4 = *(arb_struct **)&jarg4; 
+  arg5 = (long)jarg5; 
+  _arb_vec_scalar_addmul(arg1,(arb_struct const *)arg2,arg3,(arb_struct const (*))arg4,arg5);
+  
+}
+
+
+SWIGEXPORT void JNICALL Java_arb_arbJNI__1arb_1vec_1sub(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4, jint jarg5) {
+  arb_ptr arg1 = (arb_ptr) 0 ;
+  arb_srcptr arg2 = (arb_srcptr) 0 ;
+  arb_srcptr arg3 = (arb_srcptr) 0 ;
+  long arg4 ;
+  long arg5 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  (void)jarg3_;
+  arg1 = *(arb_ptr *)&jarg1; 
+  arg2 = *(arb_srcptr *)&jarg2; 
+  arg3 = *(arb_srcptr *)&jarg3; 
+  arg4 = (long)jarg4; 
+  arg5 = (long)jarg5; 
+  _arb_vec_sub(arg1,(arb_struct const *)arg2,(arb_struct const *)arg3,arg4,arg5);
+}
+
+
 SWIGEXPORT void JNICALL Java_arb_arbJNI_acb_1addmul(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_, jint jarg4) {
   acb_struct *arg1 ;
   acb_struct *arg2 ;

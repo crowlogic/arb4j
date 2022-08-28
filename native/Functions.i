@@ -1,6 +1,12 @@
 #define __off_t long int
 #define off_t long int
 
+void _arb_vec_neg(arb_ptr B, arb_srcptr A, slong n);
+ 
+void _arb_vec_scalar_addmul(arb_ptr res, arb_srcptr vec, slong len, const arb_t c, slong prec);
+ 
+void _arb_vec_sub(arb_ptr C, arb_srcptr A, arb_srcptr B, slong n, slong prec);
+ 
 void acb_addmul(acb_t z, const acb_t x, const acb_t y, slong prec);
 
 void acb_submul(acb_t z, const acb_t x, const acb_t y, slong prec);
