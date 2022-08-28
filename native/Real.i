@@ -34,7 +34,7 @@ import arb.topological.spaces.EuclideanVectorSpace;
     this.elements = new Real[this.dim = dim];
   }
   
-  **
+  /*
    * The covariance of x and y is sum(x[i]-mean(x))*(y[i]-mean(y)),i=1..dim)
    * 
    * @param that
