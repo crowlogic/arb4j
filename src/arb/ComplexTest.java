@@ -1,5 +1,6 @@
 package arb;
 
+import static arb.utensils.Utilities.println;
 import static java.lang.Math.pow;
 
 import java.util.List;
@@ -70,13 +71,17 @@ public class ComplexTest extends
       for (int i = 0; i < 3; i++)
       {
         x.get(i).getReal().set(a.getAndIncrement());
-        y.get(i).getImag().set(a.getAndIncrement());
+        x.get(i).getImag().set(a.getAndIncrement());
         y.get(i).getReal().set(a.getAndIncrement());
         y.get(i).getImag().set(a.getAndIncrement());
       }
+      println(x);
+      println(y);
       Complex dp = x.innerProduct(y, 128, new Complex());
-      assertEquals(new Real("44",
-                            128),
+      assertEquals(new Complex(new Real("-39",
+                                        128),
+                               new Real("310",
+                                        128)),
                    dp);
     }
   }

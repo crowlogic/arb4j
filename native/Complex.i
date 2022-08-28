@@ -21,6 +21,8 @@ import arb.topological.spaces.*;
   static { System.loadLibrary( "arblib" ); }
 
 
+  public String name;
+
  @Override
   public int dim()
   {
@@ -284,14 +286,11 @@ import arb.topological.spaces.*;
   }
 
   @Override
-  public Real innerProduct(Complex that, int prec, Real result)
+  public Complex innerProduct(Complex that, int prec, Complex result)
   {
-    try ( Complex c = new Complex(); )
-    {
-	  return dotProduct( that, null, 0, 1, 1, dim, prec, c ).abs( prec, result );
-    }   
+    return dotProduct(that, null, 0, 1, 1, dim, prec, result);
   }
-
+  
   public Stream<Complex> stream()
   {
     return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),

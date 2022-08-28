@@ -74,6 +74,13 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     this.segment = segment;
   }
 
+  @Override
+  public Float innerProduct(Float that, int prec, Float result)
+  {
+    assert false : "implement me";
+    return null;
+  }
+
   public static Float newVector(int length)
   {
     ResourceScope scope = ResourceScope.newSharedScope();
@@ -110,13 +117,6 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   {
     arb.arf_div(result, this, j, prec, RoundingMode.Near.ordinal());
     return this;
-  }
-
-  @Override
-  public Float innerProduct(Float that, int prec, Float result)
-  {
-    assert false : "implement me";
-    return null;
   }
   
   @Override
