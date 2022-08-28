@@ -68,7 +68,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
    * @param res
    * @return the covariance of this and that
    */
-  public Real cov(Real that, int prec, Real res)
+  public Real covariance(Real that, int prec, Real res)
   {
     assert dim == that.dim;
     try ( Real a = mean(prec, new Real()); Real b = that.mean(prec, new Real());

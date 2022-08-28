@@ -35,7 +35,7 @@ import arb.topological.spaces.EuclideanVectorSpace;
   }
   
   /*
-   * The covariance of x and y is sum(x[i]-mean(x))*(y[i]-mean(y)),i=1..dim)
+   * The covariance of x and y is Σ(x[i]-mean(x))*(y[i]-mean(y)),i=1..dim)
    * 
    * @param that
    * @param prec
@@ -45,7 +45,8 @@ import arb.topological.spaces.EuclideanVectorSpace;
   public Real cov(Real that, int prec, Real res)
   {
     assert dim == that.dim;
-    try ( Real a = mean(prec, new Real()); Real b = that.mean(prec, new Real());
+    try ( Real a = mean(prec, new Real()); 
+          Real b = that.mean(prec, new Real());
           Real aCentered = vecScalarSub(a, prec, Real.newVector(dim));
           Real bCentered = that.vecScalarSub(b, prec, Real.newVector(dim)))
     {
