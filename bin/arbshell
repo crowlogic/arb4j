@@ -1,0 +1,10 @@
+#!/bin/sh 
+
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+CLASSPATH=`cat $BASEDIR/class.path`
+jshell -J-Djava.library.path=$BASEDIR -J-ea --class-path $CLASSPATH:$BASEDIR/target/classes 
+
+
+
+
