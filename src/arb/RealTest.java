@@ -20,10 +20,11 @@ public class RealTest extends
     r.get(0).set("1.3", prec);
     r.get(1).set("2.3", prec);
     r.get(2).set("3.3", prec);
-    Real sumOfrSquares = r.covariance(r, prec, new Real() );
-    assertEquals( 2, sumOfrSquares.doubleValue() );
+    Real sumOfrSquares = r.covariance(r, prec, new Real());
+    assertTrue(sumOfrSquares.contains(new Real("2",
+                                               128)));
   }
-  
+
   public static void testCovariance2()
   {
     Real r = Real.newVector(3);
@@ -34,10 +35,11 @@ public class RealTest extends
     p.get(0).set("4", prec);
     p.get(1).set("5", prec);
     p.get(2).set("6", prec);
-    Real sumOfrSquares = r.covariance(r, prec, new Real() );
-    assertEquals( 2, sumOfrSquares.doubleValue() );
+    Real sumOfrSquares = r.covariance(r, prec, new Real());
+    assertTrue(sumOfrSquares.contains(new Real("2",
+                                               128)));
   }
-  
+
   public static void testVecScalarSub()
   {
     Real r = Real.newVector(3);
