@@ -6,6 +6,7 @@ import static java.lang.System.out;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import arb.stochastic.GaussianDistribution;
 import arb.stochastic.StandardGaussianDistribution;
 import junit.framework.TestCase;
 
@@ -48,6 +49,19 @@ public class RealTest extends
     p.randomlyGenerate(new StandardGaussianDistribution(), new RandomState(31337), prec);
     Real rpCorrelation = r.covariance(p, prec, new Real());
     assertEquals(0, rpCorrelation.doubleValue(), Math.pow(10, -4));
+  }
+
+  public static void testNormalize()
+  {
+    Real r = Real.newVector(100000);
+    r.randomlyGenerate(new GaussianDistribution(RealConstants.zero,
+                                                new Real("2",
+                                                         128)),
+                       new RandomState(2022),
+                       prec);
+    assertEquals(2, r.standardDeviation(128, new Real()).doubleValue(), 0.01);
+    r.normalize(prec, r);
+    assertEquals(1, r.standardDeviation(128, new Real()).doubleValue(), Math.pow(10, -15));
   }
 
   public static void testVecScalarSub()

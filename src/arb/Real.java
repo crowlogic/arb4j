@@ -60,6 +60,25 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
     this.elements = new Real[this.dim = dim];
   }
   
+  /**
+   * Divides the elements of this by the standard deviation
+   * 
+   * @param prec
+   * @param result
+   * @return this / this{@link #standardDeviation(int, Real)}
+   */
+  public Real normalize(int prec, Real result)
+  {
+    try ( Real σ = standardDeviation(prec, new Real() ))
+    {
+      for (int i = 0; i < dim; i++)
+      {
+        get(i).div(σ, prec, result.get(i));
+      }
+      return result;
+    }
+  }
+
   /*
    * The covariance of x and y is Σ(x[i]-mean(x))*(y[i]-mean(y)),i=1..dim)
    * 
@@ -149,7 +168,7 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
    */
   public void randomlyGenerate(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
   {
-    forEach(element -> element.random(randomState, prec));
+    forEach(element -> pdf.sample(prec, randomState, element));
   }
   
   /**
