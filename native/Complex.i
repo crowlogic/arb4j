@@ -664,12 +664,13 @@ import arb.topological.spaces.*;
     return r;
   }
    
-   public Complex(Real norm, Real imag)  
+  public Complex(Real norm, Real imag)  
   {
+    this();
     getReal().set(norm);
     getImag().set(imag);
   }
- 
+   
   public Complex clear()
   {
     if ( swigCMemOwn )
