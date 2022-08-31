@@ -1,6 +1,3 @@
-* modify MultivariateDiffusionProcessIntegrator to use Real
-getCorrelation(int i, int j) to generate the white noises it uses to
-perform the integrations
   
 * harness reflection symmetry to accelerate rendering 
 

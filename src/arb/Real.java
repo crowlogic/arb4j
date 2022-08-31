@@ -52,6 +52,11 @@ public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lock
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Real normalize(int prec)
+  {
+    return normalize(prec,this);
+  }
+
   @SuppressWarnings("resource")
   public Real(int dim)
   {

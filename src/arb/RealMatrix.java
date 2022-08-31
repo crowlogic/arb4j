@@ -51,7 +51,16 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   
   private LongBuffer rowPointers;
 
-  
+  public Real copyCol(int j, Real result )
+  {
+    assert result.dim == getNumRows();
+    for ( int i = 0; i < getNumRows(); i++ )
+    {
+      result.get(i).set(get(i, j));
+    }
+   return result;   
+  }
+    
   @Override
   public Iterator<Real> iterator()
   {
