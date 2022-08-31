@@ -22,26 +22,6 @@ import arb.geometry.surfaces.RiemannSurface;
  * dynamical systems, the orbits are {@link Curve}s; and for holomorphic
  * dynamical systems, the orbits are {@link RiemannSurface}.<br>
  * 
- * Орбіта – це сукупність точок, пов’язаних функцією еволюції
- * {@link DynamicalSystem}. Його можна розуміти як підмножину {@link PhaseSpace}
- * охоплюється траєкторією динамічної системи за певного набору початкових умов
- * у міру розвитку системи. <br>
- * 
- * Оскільки траєкторія фазового простору однозначно визначається для будь-якого
- * даного набору координат фазового простору, різні орбіти не можуть
- * перетинатися у фазовому просторі, тому набір усіх орбіт динамічної системи є
- * розділом фазового простору. <br>
- * 
- * Розуміння властивостей орбіт за допомогою топологічних методів є одним із
- * завдань сучасної теорії динамічних систем.
- * 
- * Для динамічних систем з дискретним часом орбіти є послідовностями; для
- * реальних динамічних систем орбітами є {@link Curve}; а для голоморфних
- * динамічних систем орбіти {@link RiemannSurface}.
- * 
- * @see <a href=
- *      "https://en.wikipedia.org/wiki/Orbit_(dynamics)">Orbit@Wikipedia</a>
- *
  */
 public interface Orbit<DS extends DynamicalSystem> extends
                       SubSet<PhaseSpace<DS>>
