@@ -48,6 +48,8 @@ Press esc to exit zoom selection mode
 click selects point
 click selects the second point which causes the graph
 to be replotted from the specified coordinates.
+(Support scrolling/dragging with finger on laptops with touchscreen display)
+
 If esc is pressed after the 1st point is clicked, it goes
 back to selection mode, if esc is pressed again it exits
 zoom selection mode
