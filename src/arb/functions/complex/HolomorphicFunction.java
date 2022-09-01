@@ -30,10 +30,10 @@ import arb.utensils.*;
  * <br>
  * 
  * Holomorphic functions are also sometimes referred to as regular
- * functions.[2][3] A holomorphic function whose domain is the whole complex
+ * functions. A holomorphic function whose domain is the whole complex
  * plane is called an entire function. The phrase "holomorphic at a point z0"
  * means not just differentiable at z0, but differentiable everywhere within
- * some neighbourhood of z0 in the complex plane.<br>
+ * some neighborhood of z0 in the complex plane.<br>
  * <br>
  * 
  * @see <a href=
@@ -60,11 +60,7 @@ public interface HolomorphicFunction extends
       assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
       try ( Complex x = new Complex())
       {
-        HolomorphicFunction.this.evaluate(z, order, prec, x);
-        if (w.isFinite())
-        {
-          x.abs(prec, w);
-        }
+        HolomorphicFunction.this.evaluate(z, order, prec, x).abs(prec, w);
       }
       return w;
     };
@@ -142,16 +138,13 @@ public interface HolomorphicFunction extends
    * extended to include unbounded densely defined operators whose domain is
    * topologically dense in—but not necessarily equal to— to whole space H.
    * 
-   * @return this(t*) where t*=conj(t) is the complex conjugate transpose
+   * @return conj(this(t)) 
    */
   public default HolomorphicFunction adjoint()
   {
     HolomorphicFunction bump = (z, order, prec, w) ->
     {
-      try ( Complex a = z.conj(new Complex());)
-      {
-        return HolomorphicFunction.this.evaluate(a, order, prec, w);
-      }
+      return HolomorphicFunction.this.evaluate(z, order, prec, w).conj(w);    
     };
     return bump;
   }
