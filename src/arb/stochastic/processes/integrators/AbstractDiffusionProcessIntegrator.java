@@ -19,7 +19,9 @@ import de.erichseifert.gral.data.DataSeries;
 import de.erichseifert.gral.data.DataTable;
 import de.erichseifert.gral.graphics.Insets2D;
 import de.erichseifert.gral.graphics.Label;
+import de.erichseifert.gral.plots.Plot;
 import de.erichseifert.gral.plots.XYPlot;
+import de.erichseifert.gral.plots.axes.Axis;
 import de.erichseifert.gral.plots.axes.AxisRenderer;
 import de.erichseifert.gral.plots.axes.LinearRenderer2D;
 import de.erichseifert.gral.plots.lines.AbstractLineRenderer2D;
@@ -90,7 +92,9 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
 
   protected static void formatPlot(String title, XYPlot plot)
   {
-
+    Axis axisY = new Axis();
+    plot.setAxis(XYPlot.AXIS_Y2, axisY);
+    
     formatAxes(plot);
     // Format plot
     plot.setInsets(new Insets2D.Double(20.0,
@@ -100,6 +104,7 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     plot.setBackground(Color.GRAY);
     plot.getTitle().setText(title);
 
+    
     // Format plot area
     plot.getPlotArea()
         .setBackground(new RadialGradientPaint(new Point2D.Double(0.5,
@@ -142,17 +147,23 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
   {
     // Format axes
     AxisRenderer axisRendererY = plot.getAxisRenderer(XYPlot.AXIS_Y);
-    AxisRenderer axisRendererX = new LinearRenderer2D();
     axisRendererY.setTickColor(Color.WHITE);
     axisRendererY.setMinorTickColor(Color.white);
     axisRendererY.setShapeColor(Color.white);
-
+    AxisRenderer axisRendererX = new LinearRenderer2D();
     axisRendererX.setTickColor(Color.WHITE);
     axisRendererX.setMinorTickColor(Color.white);
-    axisRendererX.setShapeColor(Color.white);
+    axisRendererX.setShapeColor(Color.white);    
     axisRendererX.setLabel(new Label("Time t"));
+    AxisRenderer axisRendererY2 = new LinearRenderer2D();
+
+    axisRendererY2.setTickColor(Color.WHITE);
+    axisRendererY2.setMinorTickColor(Color.white);
+    axisRendererY2.setShapeColor(Color.white);    
+
+    
     plot.setAxisRenderer(XYPlot.AXIS_X, axisRendererX);
-    // plot.setAxisRenderer(XYPlot.AXIS_Y2, axisRendererY2);
+    plot.setAxisRenderer(XYPlot.AXIS_Y2, axisRendererY2);
     // Custom stroke for the x-axis
     BasicStroke stroke = new BasicStroke(0.2f);
     axisRendererX.setShapeStroke(stroke);
@@ -164,12 +175,11 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     varianceLabel.setRotation(90);
 
     axisRendererY.setLabel(spotPriceLabel);
-
     axisRendererY.setTicksAutoSpaced(true);
 
-//    axisRendererY2.setLabel(varianceLabel);
+    axisRendererY2.setLabel(varianceLabel);
 //
-//    axisRendererY2.setTicksAutoSpaced(true);
+    axisRendererY2.setTicksAutoSpaced(true);
 
     axisRendererX.setTicksAutoSpaced(false);
     // Change tick spacing

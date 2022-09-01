@@ -79,7 +79,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
 
     integrateProcess(false, process, state, data);
     integrateProcess(false, process2, state2, data2);
-    print(process.getClass().getSimpleName(), data, data2);
+    plot(process.getClass().getSimpleName(), data, data2);
 
   }
 

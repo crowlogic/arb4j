@@ -253,7 +253,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     return half;
   }
 
-  public static void print(String title, DataTable data, DataTable data2)
+  public static void plot(String title, DataTable data, DataTable data2)
   {
     DataSeries linearSeries  = new DataSeries(data,
                                               0,
