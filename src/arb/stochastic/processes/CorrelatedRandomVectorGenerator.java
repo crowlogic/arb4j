@@ -40,26 +40,6 @@ public class CorrelatedRandomVectorGenerator implements
 
   }
 
-  /**
-   * Builds a null mean random correlated vector generator from its covariance
-   * matrix.
-   *
-   * @param covariance Covariance matrix.
-   * @param small      Diagonal elements threshold under which column are
-   *                   considered to be dependent on previous ones and are
-   *                   discarded.
-   * @param generator  Underlying generator for uncorrelated normalized
-   *                   components.
-   * @throws org.apache.commons.math3.linear.NonPositiveDefiniteMatrixException if
-   *                                                                            the
-   *                                                                            covariance
-   *                                                                            matrix
-   *                                                                            is
-   *                                                                            not
-   *                                                                            strictly
-   *                                                                            positive
-   *                                                                            definite.
-   */
   public CorrelatedRandomVectorGenerator(RealMatrix covariance, int prec, RandomState randomState)
   {
     int order = covariance.getNumRows();
@@ -70,11 +50,6 @@ public class CorrelatedRandomVectorGenerator implements
 
   }
 
-  /**
-   * Get the underlying normalized components generator.
-   * 
-   * @return underlying uncorrelated components generator
-   */
   public RandomState getRandomState()
   {
     return randomState;
@@ -123,18 +98,14 @@ public class CorrelatedRandomVectorGenerator implements
 
     // compute correlated vector
     Real correlated = result.zero();
-    try ( Real t = new Real();)
+    for (int i = 0; i < correlated.dim; ++i)
     {
-      for (int i = 0; i < correlated.dim; ++i)
+      Real ci = correlated.get(i);
+      ci.set(mean.get(i));
+      for (int j = 0; j < root.getNumCols(); ++j)
       {
-        Real ci = correlated.get(i);
-        ci.set(mean.get(i));
-        for (int j = 0; j < root.getNumCols(); ++j)
-        {
-          root.get(i, j).addmul(normalized.get(j), prec, ci);
-        }
+        root.get(i, j).addmul(normalized.get(j), prec, ci);
       }
-
     }
 
     return result;
