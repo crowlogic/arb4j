@@ -93,6 +93,10 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
   protected static void formatPlot(String title, XYPlot plot)
   {
     Axis axisY = new Axis();
+    axisY.setMin(0.0);
+    axisY.setMax(10.0);
+    axisY.setAutoscaled(true);
+    
     plot.setAxis(XYPlot.AXIS_Y2, axisY);
     
     formatAxes(plot);
