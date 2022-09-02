@@ -74,13 +74,6 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     this.segment = segment;
   }
 
-  @Override
-  public Float innerProduct(Float that, int prec, Float result)
-  {
-    assert false : "implement me";
-    return null;
-  }
-
   public static Float newVector(int length)
   {
     ResourceScope scope = ResourceScope.newSharedScope();

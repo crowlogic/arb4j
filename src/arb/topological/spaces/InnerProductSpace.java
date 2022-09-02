@@ -34,7 +34,7 @@ import arb.topological.Topology;
  *      "https://en.wikipedia.org/wiki/Inner_product_space">InnerProductSpace@Wikipedia</a>
  * @param <X>
  */
-public interface InnerProductSpace<X extends Field<?>> extends
+public interface InnerProductSpace<X extends Field> extends
                                   NormedVectorSpace<X>
 {
 

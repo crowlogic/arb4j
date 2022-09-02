@@ -18,16 +18,8 @@ import arb.topological.spaces.InnerProductSpace;
 public interface Field<X extends Field<X>> extends
                       AutoCloseable,
                       Space<X>,
-                      Iterable<X>,
-                      InnerProductSpace<X>
+                      Iterable<X>
 {
-  @Override
-  default X innerProduct(X that, int prec, X result)
-  {
-    assert false : "implement me";
-    return null;
-
-  }
 
   @Override
   default Iterator<X> iterator()
@@ -225,14 +217,6 @@ public interface Field<X extends Field<X>> extends
   public X zero();
 
   public Real abs(int prec, Real w);
-
-  public default Real distance(X b, int prec, Real result)
-  {
-    try ( X innerProduct = newFieldElement();)
-    {
-      return innerProduct(b, prec, innerProduct).abs(prec, result);
-    }
-  }
 
   public X newFieldElement();
 
