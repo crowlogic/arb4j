@@ -1,11 +1,8 @@
 package arb.stochastic.processes.integrators;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.RadialGradientPaint;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Point2D;
 import java.lang.ref.Cleaner.Cleanable;
 
 import javax.swing.JFrame;
@@ -15,18 +12,6 @@ import arb.Real;
 import arb.stochastic.processes.ContinuousTimeState;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.utensils.Utilities;
-import de.erichseifert.gral.data.DataSeries;
-import de.erichseifert.gral.data.DataTable;
-import de.erichseifert.gral.graphics.Insets2D;
-import de.erichseifert.gral.graphics.Label;
-import de.erichseifert.gral.plots.Plot;
-import de.erichseifert.gral.plots.XYPlot;
-import de.erichseifert.gral.plots.axes.Axis;
-import de.erichseifert.gral.plots.axes.AxisRenderer;
-import de.erichseifert.gral.plots.axes.LinearRenderer2D;
-import de.erichseifert.gral.plots.lines.AbstractLineRenderer2D;
-import de.erichseifert.gral.plots.lines.SmoothLineRenderer2D;
-import de.erichseifert.gral.ui.InteractivePanel;
 
 public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTimeState, D extends DiffusionProcess<S>>
                                                         implements
@@ -69,126 +54,6 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
                                                   80,
                                                   75);
 
-  public static void print(String title, DataTable data)
-  {
-    DataSeries linearSeries = new DataSeries(data,
-                                             0,
-                                             1);
-
-    // Create new xy-plot
-    XYPlot     plot         = new XYPlot(linearSeries);
-
-    formatPlot(title, plot);
-
-    formatAxes(plot);
-
-    formatDataLines(linearSeries, plot, COLOR1);
-
-    // Add plot to Swing component
-    Utilities.openInJFrame(new InteractivePanel(plot), 1900, 800, title, JFrame.EXIT_ON_CLOSE)
-             .addKeyListener(new KeyHandler());
-
-  }
-
-  protected static void formatPlot(String title, XYPlot plot)
-  {
-    Axis axisY = new Axis();
-    axisY.setMin(0.0);
-    axisY.setMax(10.0);
-    axisY.setAutoscaled(true);
-    
-    plot.setAxis(XYPlot.AXIS_Y2, axisY);
-    
-    formatAxes(plot);
-    // Format plot
-    plot.setInsets(new Insets2D.Double(20.0,
-                                       40.0,
-                                       40.0,
-                                       40.0));
-    plot.setBackground(Color.GRAY);
-    plot.getTitle().setText(title);
-
-    
-    // Format plot area
-    plot.getPlotArea()
-        .setBackground(new RadialGradientPaint(new Point2D.Double(0.5,
-                                                                  0.5),
-                                               0.75f,
-                                               new float[]
-                                               { 0.6f, 0.8f, 1.0f },
-                                               new Color[]
-                                               { new Color(0,
-                                                           0,
-                                                           0,
-                                                           0),
-                                                 new Color(0,
-                                                           0,
-                                                           0,
-                                                           32),
-                                                 new Color(0,
-                                                           0,
-                                                           0,
-                                                           128) }));
-    plot.getPlotArea().setBorderStroke(null);
-  }
-
-  protected static void formatDataLines(DataSeries seriesLin, XYPlot plot, Color color)
-  {
-    // Format data lines
-    AbstractLineRenderer2D discreteRenderer = new SmoothLineRenderer2D();
-    discreteRenderer.setColor(color);
-    discreteRenderer.setGap(0);
-
-    discreteRenderer.setStroke(new BasicStroke(3.5f,
-                                               BasicStroke.CAP_BUTT,
-                                               BasicStroke.JOIN_MITER));
-
-    plot.setLineRenderers(seriesLin, discreteRenderer);
-
-  }
-
-  protected static void formatAxes(XYPlot plot)
-  {
-    // Format axes
-    AxisRenderer axisRendererY = plot.getAxisRenderer(XYPlot.AXIS_Y);
-    axisRendererY.setTickColor(Color.WHITE);
-    axisRendererY.setMinorTickColor(Color.white);
-    axisRendererY.setShapeColor(Color.white);
-    AxisRenderer axisRendererX = new LinearRenderer2D();
-    axisRendererX.setTickColor(Color.WHITE);
-    axisRendererX.setMinorTickColor(Color.white);
-    axisRendererX.setShapeColor(Color.white);    
-    axisRendererX.setLabel(new Label("Time t"));
-    AxisRenderer axisRendererY2 = new LinearRenderer2D();
-
-    axisRendererY2.setTickColor(Color.WHITE);
-    axisRendererY2.setMinorTickColor(Color.white);
-    axisRendererY2.setShapeColor(Color.white);    
-
-    
-    plot.setAxisRenderer(XYPlot.AXIS_X, axisRendererX);
-    plot.setAxisRenderer(XYPlot.AXIS_Y2, axisRendererY2);
-    // Custom stroke for the x-axis
-    BasicStroke stroke = new BasicStroke(0.2f);
-    axisRendererX.setShapeStroke(stroke);
-
-    Label spotPriceLabel = new Label("Value Sₜ");
-    spotPriceLabel.setRotation(90);
-
-    Label varianceLabel = new Label("Variance Vₜ");
-    varianceLabel.setRotation(90);
-
-    axisRendererY.setLabel(spotPriceLabel);
-    axisRendererY.setTicksAutoSpaced(true);
-
-    axisRendererY2.setLabel(varianceLabel);
-//
-    axisRendererY2.setTicksAutoSpaced(true);
-
-    axisRendererX.setTicksAutoSpaced(false);
-    // Change tick spacing
-    axisRendererX.setTickSpacing(0.1);
-  }
 
   public S        state;
   public D        diffusionProcess;

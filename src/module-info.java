@@ -16,7 +16,6 @@ module arb4j
   requires transitive junit;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
-  requires transitive gral.core;
   requires transitive humble.video.noarch;
   requires transitive org.lwjgl;
   requires transitive org.lwjgl.opengl;

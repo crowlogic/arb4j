@@ -8,13 +8,11 @@ import arb.FloatInterval;
 import arb.OrderedPair;
 import arb.RandomState;
 import arb.Real;
-import arb.RealOrderedPair;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.EvaluationSequence;
 import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
-import de.erichseifert.gral.data.DataTable;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -65,10 +63,6 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     int                      seed     = 31337;
 
     // Generate data
-    DataTable                data     = new DataTable(Double.class,
-                                                      Double.class);
-    DataTable                data2    = new DataTable(Double.class,
-                                                      Double.class);
 
     DiffusionProcessState    state    = new DiffusionProcessState(new Real("3",
                                                                            128),
@@ -77,16 +71,12 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                                            128),
                                                                   new RandomState(seed + 1));
 
-    integrateProcess(false, process, state, data);
-    integrateProcess(false, process2, state2, data2);
-    plot(process.getClass().getSimpleName(), data, data2);
-
+    integrateProcess(false, process, state);
+    integrateProcess(false, process2, state2);
+    assert false : "TODO: plot this with chart-fx";
   }
 
-  protected static void integrateProcess(boolean useMilstein,
-                                         DiffusionProcess process,
-                                         DiffusionProcessState state,
-                                         DataTable data)
+  protected static void integrateProcess(boolean useMilstein, DiffusionProcess process, DiffusionProcessState state)
   {
     try ( var integrator = useMilstein ? new MilsteinIntegrator(process,
                                                                 state) : new EulerIntegrator(process,
@@ -100,7 +90,8 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
 
       for (OrderedPair<Real, Real> sample : path)
       {
-        data.add(sample.a.doubleValue(), sample.b.doubleValue());
+        assert false : "TODO: use chart-fx instead of gral";
+        // data.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
 
     }

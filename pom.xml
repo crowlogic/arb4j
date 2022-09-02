@@ -68,7 +68,7 @@
 			<artifactId>j-text-utils</artifactId>
 			<version>0.3.3</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm</artifactId>
@@ -89,13 +89,11 @@
 			<artifactId>pngdecoder</artifactId>
 			<version>1.0</version>
 		</dependency>
-
 		<dependency>
-			<groupId>de.erichseifert.gral</groupId>
-			<artifactId>gral-core</artifactId>
-			<version>0.11</version>
+			<groupId>de.gsi.chart</groupId>
+			<artifactId>chartfx-chart</artifactId>
+			<version>11.2.7</version>
 		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

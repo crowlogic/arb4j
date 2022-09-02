@@ -4,13 +4,9 @@ import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.half;
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
-import static java.lang.String.format;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import javax.swing.JFrame;
 
 import arb.Float;
 import arb.FloatConstants;
@@ -18,17 +14,14 @@ import arb.FloatInterval;
 import arb.OrderedPair;
 import arb.RandomState;
 import arb.Real;
-import arb.RealOrderedPair;
 import arb.RealPartition;
-import arb.dynamical.systems.*;
-import arb.stochastic.*;
-import arb.stochastic.processes.*;
-import arb.utensils.Utilities;
-import de.erichseifert.gral.data.DataSeries;
-import de.erichseifert.gral.data.DataTable;
-import de.erichseifert.gral.plots.XYPlot;
-import de.erichseifert.gral.plots.points.DefaultPointRenderer2D;
-import de.erichseifert.gral.ui.InteractivePanel;
+import arb.stochastic.GaussianDistribution;
+import arb.stochastic.processes.DiffusionCoeffecientFunction;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.DriftCoeffecientFunction;
+import arb.stochastic.processes.EvaluationSequence;
+import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method
@@ -87,23 +80,17 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                                                                          new RandomState(31337))))
     {
 
-      // Generate data
-      DataTable spotPriceData = new DataTable(Double.class,
-                                              Double.class);
-      DataTable varianceData  = new DataTable(Double.class,
-                                              Double.class);
-
-      var       path          = integrator.integrate(new FloatInterval(0,
-                                                                       5),
-                                                     750,
-                                                     prec);
+      var path = integrator.integrate(new FloatInterval(0,
+                                                        5),
+                                      750,
+                                      prec);
 
       for (OrderedPair<Real, Real> sample : path)
       {
-        spotPriceData.add(sample.a.doubleValue(), sample.b.doubleValue());
+        //spotPriceData.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
 
-      print(integrator.getClass().getSimpleName(), spotPriceData);
+      //print(integrator.getClass().getSimpleName(), spotPriceData);
 
       println("mean=" + path.values[0].mean(128, new Real()));
     }
@@ -251,33 +238,6 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
   public Float strongConvergenceOrder(int dim)
   {
     return half;
-  }
-
-  public static void plot(String title, DataTable data, DataTable data2)
-  {
-    DataSeries linearSeries  = new DataSeries(data,
-                                              0,
-                                              1);
-    DataSeries linearSeries2 = new DataSeries(data2,
-                                              0,
-                                              1);
-
-    // Create new xy-plot
-    XYPlot     plot          = new XYPlot(linearSeries,
-                                          linearSeries2);
-
-    formatPlot(title, plot);
-    plot.setPointRenderers(data, new DefaultPointRenderer2D());
-    plot.setPointRenderers(data2, new DefaultPointRenderer2D());
-
-    formatDataLines(linearSeries, plot, Color.RED);
-    formatDataLines(linearSeries2, plot, Color.GREEN);
-
-    // Add plot to Swing component
-    InteractivePanel interactivePanel = new InteractivePanel(plot);
-    Utilities.openInJFrame(interactivePanel, 1900, 800, title, JFrame.EXIT_ON_CLOSE)
-             .addKeyListener(new KeyHandler());
-
   }
 
 }
