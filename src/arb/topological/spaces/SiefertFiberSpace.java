@@ -33,7 +33,7 @@ import arb.topological.Space;
  *      "https://en.wikipedia.org/wiki/Seifert_fiber_space">SiefertFiberSpace@Wikipedia</a>
  */
 public interface SiefertFiberSpace extends
-                                   Manifold
+                                    FiberSpace
 {
 
 }
