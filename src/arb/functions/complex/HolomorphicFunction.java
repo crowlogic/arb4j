@@ -29,11 +29,11 @@ import arb.utensils.*;
  * vice versa, is a major theorem in complex analysis.<br>
  * <br>
  * 
- * Holomorphic functions are also sometimes referred to as regular
- * functions. A holomorphic function whose domain is the whole complex
- * plane is called an entire function. The phrase "holomorphic at a point z0"
- * means not just differentiable at z0, but differentiable everywhere within
- * some neighborhood of z0 in the complex plane.<br>
+ * Holomorphic functions are also sometimes referred to as regular functions. A
+ * holomorphic function whose domain is the whole complex plane is called an
+ * entire function. The phrase "holomorphic at a point z0" means not just
+ * differentiable at z0, but differentiable everywhere within some neighborhood
+ * of z0 in the complex plane.<br>
  * <br>
  * 
  * @see <a href=
@@ -138,13 +138,13 @@ public interface HolomorphicFunction extends
    * extended to include unbounded densely defined operators whose domain is
    * topologically dense in—but not necessarily equal to— to whole space H.
    * 
-   * @return conj(this(t)) 
+   * @return conj(this(t))
    */
   public default HolomorphicFunction adjoint()
   {
     HolomorphicFunction bump = (z, order, prec, w) ->
     {
-      return HolomorphicFunction.this.evaluate(z, order, prec, w).conj(w);    
+      return HolomorphicFunction.this.evaluate(z, order, prec, w).conj(w);
     };
     return bump;
   }

@@ -8,17 +8,17 @@ import arb.topological.Space;
  * a disjoint union of circles (called fibers) such that each fiber has a
  * tubular neighborhood that forms a standard fibered torus.
  * 
- * A standard fibered torus corresponding to a pair of coprime integers (a,b) with a > 0 is the
- * surface bundle of the automorphism of a disk given by rotation by an angle of
- * 2 π b / a (with the natural fibering by circles). If a = 1 the middle fiber is
- * called ordinary, while if a > 1 the middle fiber is
+ * A standard fibered torus corresponding to a pair of coprime integers (a,b)
+ * with a > 0 is the surface bundle of the automorphism of a disk given by
+ * rotation by an angle of 2 π b / a (with the natural fibering by circles). If
+ * a = 1 the middle fiber is called ordinary, while if a > 1 the middle fiber is
  * called exceptional. A compact Seifert fiber space has only a finite number of
  * exceptional fibers.
  * 
  * The set of fibers forms a 2-dimensional orbifold, denoted by B and called the
  * base —also called the orbit surface— of the fibration. It has an underlying
- * 2-dimensional surface B_0  but may have some
- * special orbifold points corresponding to the exceptional fibers.
+ * 2-dimensional surface B_0 but may have some special orbifold points
+ * corresponding to the exceptional fibers.
  * 
  * The definition of Seifert fibration can be generalized in several ways. The
  * Seifert manifold is often allowed to have a boundary (also fibered by
@@ -33,7 +33,7 @@ import arb.topological.Space;
  *      "https://en.wikipedia.org/wiki/Seifert_fiber_space">SiefertFiberSpace@Wikipedia</a>
  */
 public interface SiefertFiberSpace extends
-                                    FiberSpace
+                                   FiberSpace
 {
 
 }

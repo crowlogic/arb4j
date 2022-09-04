@@ -73,7 +73,6 @@ public class SFunction implements
 
   private Real                 aSquared;
 
-
   public SFunction()
   {
     this(RealConstants.one);
@@ -81,9 +80,9 @@ public class SFunction implements
 
   public SFunction(Real a)
   {
-    this.a            = a;
-    this.sqrta        = a.sqrt(a.bits());
-    this.aSquared     = a;
+    this.a        = a;
+    this.sqrta    = a.sqrt(a.bits());
+    this.aSquared = a;
   }
 
   @Override

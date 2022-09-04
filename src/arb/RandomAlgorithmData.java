@@ -8,27 +8,34 @@
 
 package arb;
 
-public class RandomAlgorithmData {
-  private transient long swigCPtr;
+public class RandomAlgorithmData
+{
+  private transient long      swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public RandomAlgorithmData(long cPtr, boolean cMemoryOwn) {
+  public RandomAlgorithmData(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(RandomAlgorithmData obj) {
+  public static long getCPtr(RandomAlgorithmData obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
   @SuppressWarnings("deprecation")
-  protected void finalize() {
+  protected void finalize()
+  {
     delete();
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arbJNI.delete_RandomAlgorithmData(swigCPtr);
       }
@@ -36,17 +43,22 @@ public class RandomAlgorithmData {
     }
   }
 
-  public void set_mp_lc(SWIGTYPE_p_void value) {
+  public void set_mp_lc(SWIGTYPE_p_void value)
+  {
     arbJNI.RandomAlgorithmData__mp_lc_set(swigCPtr, this, SWIGTYPE_p_void.getCPtr(value));
   }
 
-  public SWIGTYPE_p_void get_mp_lc() {
+  public SWIGTYPE_p_void get_mp_lc()
+  {
     long cPtr = arbJNI.RandomAlgorithmData__mp_lc_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr,
+                                                    false);
   }
 
-  public RandomAlgorithmData() {
-    this(arbJNI.new_RandomAlgorithmData(), true);
+  public RandomAlgorithmData()
+  {
+    this(arbJNI.new_RandomAlgorithmData(),
+         true);
   }
 
 }

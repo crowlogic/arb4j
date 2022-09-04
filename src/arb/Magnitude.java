@@ -11,22 +11,30 @@ package arb;
 import java.util.concurrent.TimeUnit;
 import static arb.RealConstants.*;
 
-public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
-  private transient long swigCPtr;
+public class Magnitude implements
+                       AutoCloseable,
+                       Comparable<Magnitude>
+{
+  private transient long      swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public Magnitude(long cPtr, boolean cMemoryOwn) {
+  public Magnitude(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(Magnitude obj) {
+  public static long getCPtr(Magnitude obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arbJNI.delete_Magnitude(swigCPtr);
       }
@@ -34,51 +42,51 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
     }
   }
 
- 
- static
- {
-   System.loadLibrary("arblib");
- }
- 
- public static final int BYTES = 16;
- 
- int dim;
- 
+  static
+  {
+    System.loadLibrary("arblib");
+  }
+
+  public static final int BYTES = 16;
+
+  int                     dim;
+
   public Magnitude sub(Magnitude u, Magnitude res)
   {
     arb.mag_sub(res, this, u);
     return res;
   }
-   
-  public Magnitude set( double d )
+
+  public Magnitude set(double d)
   {
-    arb.mag_set_d(this, d );
+    arb.mag_set_d(this, d);
     return this;
   }
-  
+
   public Magnitude resize(int alloc)
   {
     swigCPtr = (SWIGTYPE_p_void.getCPtr(arb.flint_realloc(new SWIGTYPE_p_void(Magnitude.getCPtr(this),
-                                                                                        false),
-                                                                    2 * alloc * Magnitude.BYTES)));
+                                                                              false),
+                                                          2 * alloc * Magnitude.BYTES)));
     this.dim = alloc;
-    return this;    
+    return this;
   }
-     
-  public Magnitude get( int index )
+
+  public Magnitude get(int index)
   {
     assert index < dim;
-    return new Magnitude(swigCPtr + index * Magnitude.BYTES, false);  
-  } 
-  
- public static Magnitude newVector(int dim)
- {
-    Magnitude array = arb._mag_vec_init(dim);    
+    return new Magnitude(swigCPtr + index * Magnitude.BYTES,
+                         false);
+  }
+
+  public static Magnitude newVector(int dim)
+  {
+    Magnitude array = arb._mag_vec_init(dim);
     array.dim = dim;
     return array;
- }
+  }
 
-  public String toString( int digits )
+  public String toString(int digits)
   {
     try ( Float floatMag = new Float())
     {
@@ -86,7 +94,7 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
       return floatMag.toString(digits);
     }
   }
-  
+
   @Override
   public String toString()
   {
@@ -99,55 +107,55 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
 
   public Magnitude clear()
   {
-    if ( swigCMemOwn )
+    if (swigCMemOwn)
     {
       arb.mag_clear(this);
     }
     return this;
   }
-  
+
   @Override
   public void close()
-  { 
+  {
     clear();
   }
-  
+
   @Override
-  public int compareTo( Magnitude other )
+  public int compareTo(Magnitude other)
   {
-    return arb.mag_cmp( this, other );
+    return arb.mag_cmp(this, other);
   }
-  
+
   public double doubleValue()
   {
     return arb.mag_get_d(this);
   }
-  
-  public Magnitude pow( long y, Magnitude res )
+
+  public Magnitude pow(long y, Magnitude res)
   {
     arb.mag_pow_ui(res, this, y);
     return res;
   }
-  
+
   public Magnitude mul(Magnitude b, Magnitude res)
   {
-    arb.mag_mul(res, this, b );
-    return res;    
+    arb.mag_mul(res, this, b);
+    return res;
   }
-  
+
   public Magnitude add(Magnitude u, Magnitude res)
   {
     arb.mag_add(res, this, u);
     return res;
   }
-    
+
   public Magnitude zero()
   {
     arb.mag_zero(this);
     return this;
   }
-  
- /**
+
+  /**
    * @see arb#mag_swap(Magnitude, Magnitude)
    * @param that
    * @return
@@ -158,10 +166,9 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
     return this;
   }
 
-
   public Magnitude inv(Magnitude magnitude)
   {
-    arb.mag_inv(magnitude,this);
+    arb.mag_inv(magnitude, this);
     return this;
   }
 
@@ -176,27 +183,31 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
     arb.mag_div(d, this, a);
     return d;
   }
-  
-  
 
-  public void setExp(long value) {
+  public void setExp(long value)
+  {
     arbJNI.Magnitude_exp_set(swigCPtr, this, value);
   }
 
-  public long getExp() {
+  public long getExp()
+  {
     return arbJNI.Magnitude_exp_get(swigCPtr, this);
   }
 
-  public void setMan(long value) {
+  public void setMan(long value)
+  {
     arbJNI.Magnitude_man_set(swigCPtr, this, value);
   }
 
-  public long getMan() {
+  public long getMan()
+  {
     return arbJNI.Magnitude_man_get(swigCPtr, this);
   }
 
-  public Magnitude() {
-    this(arbJNI.new_Magnitude(), true);
+  public Magnitude()
+  {
+    this(arbJNI.new_Magnitude(),
+         true);
   }
 
 }

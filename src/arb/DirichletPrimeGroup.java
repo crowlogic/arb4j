@@ -8,27 +8,34 @@
 
 package arb;
 
-public class DirichletPrimeGroup {
-  private transient long swigCPtr;
+public class DirichletPrimeGroup
+{
+  private transient long      swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public DirichletPrimeGroup(long cPtr, boolean cMemoryOwn) {
+  public DirichletPrimeGroup(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(DirichletPrimeGroup obj) {
+  public static long getCPtr(DirichletPrimeGroup obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
   @SuppressWarnings("deprecation")
-  protected void finalize() {
+  protected void finalize()
+  {
     delete();
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arbJNI.delete_DirichletPrimeGroup(swigCPtr);
       }
@@ -36,32 +43,40 @@ public class DirichletPrimeGroup {
     }
   }
 
-  public void setP(long value) {
+  public void setP(long value)
+  {
     arbJNI.DirichletPrimeGroup_p_set(swigCPtr, this, value);
   }
 
-  public long getP() {
+  public long getP()
+  {
     return arbJNI.DirichletPrimeGroup_p_get(swigCPtr, this);
   }
 
-  public void setE(int value) {
+  public void setE(int value)
+  {
     arbJNI.DirichletPrimeGroup_e_set(swigCPtr, this, value);
   }
 
-  public int getE() {
+  public int getE()
+  {
     return arbJNI.DirichletPrimeGroup_e_get(swigCPtr, this);
   }
 
-  public void setG(long value) {
+  public void setG(long value)
+  {
     arbJNI.DirichletPrimeGroup_g_set(swigCPtr, this, value);
   }
 
-  public long getG() {
+  public long getG()
+  {
     return arbJNI.DirichletPrimeGroup_g_get(swigCPtr, this);
   }
 
-  public DirichletPrimeGroup() {
-    this(arbJNI.new_DirichletPrimeGroup(), true);
+  public DirichletPrimeGroup()
+  {
+    this(arbJNI.new_DirichletPrimeGroup(),
+         true);
   }
 
 }

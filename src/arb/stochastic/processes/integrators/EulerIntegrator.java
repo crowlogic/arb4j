@@ -87,10 +87,10 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
       for (OrderedPair<Real, Real> sample : path)
       {
-        //spotPriceData.add(sample.a.doubleValue(), sample.b.doubleValue());
+        // spotPriceData.add(sample.a.doubleValue(), sample.b.doubleValue());
       }
 
-      //print(integrator.getClass().getSimpleName(), spotPriceData);
+      // print(integrator.getClass().getSimpleName(), spotPriceData);
 
       println("mean=" + path.values[0].mean(128, new Real()));
     }

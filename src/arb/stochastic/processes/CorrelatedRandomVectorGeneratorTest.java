@@ -42,7 +42,7 @@ public class CorrelatedRandomVectorGeneratorTest extends
       cov.printPrecision = true;
       println("covariance " + cov);
 
-      assertEquals( covarianceMatrix.get(0, 1).doubleValue(), cov.doubleValue(), 0.006 );      
+      assertEquals(covarianceMatrix.get(0, 1).doubleValue(), cov.doubleValue(), 0.006);
     }
   }
 

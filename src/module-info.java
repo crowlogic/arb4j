@@ -35,8 +35,7 @@ module arb4j
   requires commons.math3;
   requires org.kordamp.ikonli.javafx;
   requires JTransforms;
- 
- 
+
   exports arb;
   exports arb.algebraic.expressions;
   exports arb.algebraic.geometry;

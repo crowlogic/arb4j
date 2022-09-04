@@ -17,7 +17,7 @@ public class ZFunction implements
     return "Z";
   }
 
-  static int                           prec         = 128;
+  static int prec = 128;
 
   @Override
   public Complex evaluate(Complex z, int order, int prec, Complex w)

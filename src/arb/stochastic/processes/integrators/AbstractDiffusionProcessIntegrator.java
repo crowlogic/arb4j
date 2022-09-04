@@ -46,23 +46,22 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
     }
   }
 
-  protected static final Color COLOR1 = new Color(55,
-                                                  170,
-                                                  200);
+  protected static final Color COLOR1  = new Color(55,
+                                                   170,
+                                                   200);
 
-  protected static final Color COLOR2 = new Color(200,
-                                                  80,
-                                                  75);
+  protected static final Color COLOR2  = new Color(200,
+                                                   80,
+                                                   75);
 
+  public S                     state;
+  public D                     diffusionProcess;
+  public boolean               verbose = false;
 
-  public S        state;
-  public D        diffusionProcess;
-  public boolean  verbose = false;
-
-  protected Float T       = new Float();
-  protected Real  μi      = new Real();
-  protected Real  σi      = Real.newVector(2);
-  protected Real  sqrtdt  = new Real();
+  protected Float              T       = new Float();
+  protected Real               μi      = new Real();
+  protected Real               σi      = Real.newVector(2);
+  protected Real               sqrtdt  = new Real();
 
   public AbstractDiffusionProcessIntegrator(D x)
   {

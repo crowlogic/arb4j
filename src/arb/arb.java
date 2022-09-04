@@ -8,1334 +8,2029 @@
 
 package arb;
 
-public class arb {
-  public static void _arb_vec_neg(Real B, Real A, int n) {
+public class arb
+{
+  public static void _arb_vec_neg(Real B, Real A, int n)
+  {
     arbJNI._arb_vec_neg(Real.getCPtr(B), B, Real.getCPtr(A), A, n);
   }
 
-  public static void _arb_vec_scalar_addmul(Real res, Real vec, int len, Real numCols, int prec) {
-    arbJNI._arb_vec_scalar_addmul(Real.getCPtr(res), res, Real.getCPtr(vec), vec, len, Real.getCPtr(numCols), numCols, prec);
+  public static void _arb_vec_scalar_addmul(Real res, Real vec, int len, Real numCols, int prec)
+  {
+    arbJNI._arb_vec_scalar_addmul(Real.getCPtr(res),
+                                  res,
+                                  Real.getCPtr(vec),
+                                  vec,
+                                  len,
+                                  Real.getCPtr(numCols),
+                                  numCols,
+                                  prec);
   }
 
-  public static void _arb_vec_sub(Real C, Real A, Real B, int n, int prec) {
+  public static void _arb_vec_sub(Real C, Real A, Real B, int n, int prec)
+  {
     arbJNI._arb_vec_sub(Real.getCPtr(C), C, Real.getCPtr(A), A, Real.getCPtr(B), B, n, prec);
   }
 
-  public static void acb_addmul(Complex z, Complex x, Complex y, int prec) {
+  public static void acb_addmul(Complex z, Complex x, Complex y, int prec)
+  {
     arbJNI.acb_addmul(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
 
-  public static void acb_submul(Complex z, Complex x, Complex y, int prec) {
+  public static void acb_submul(Complex z, Complex x, Complex y, int prec)
+  {
     arbJNI.acb_submul(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
 
-  public static void arb_addmul(Real z, Real x, Real y, int prec) {
+  public static void arb_addmul(Real z, Real x, Real y, int prec)
+  {
     arbJNI.arb_addmul(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void arb_mat_det_lu(Real det, RealMatrix A, int prec) {
+  public static void arb_mat_det_lu(Real det, RealMatrix A, int prec)
+  {
     arbJNI.arb_mat_det_lu(Real.getCPtr(det), det, RealMatrix.getCPtr(A), A, prec);
   }
 
-  public static void arb_mat_det_precond(Real det, RealMatrix A, int prec) {
+  public static void arb_mat_det_precond(Real det, RealMatrix A, int prec)
+  {
     arbJNI.arb_mat_det_precond(Real.getCPtr(det), det, RealMatrix.getCPtr(A), A, prec);
   }
 
-  public static void arb_mat_det(Real det, RealMatrix A, int prec) {
+  public static void arb_mat_det(Real det, RealMatrix A, int prec)
+  {
     arbJNI.arb_mat_det(Real.getCPtr(det), det, RealMatrix.getCPtr(A), A, prec);
   }
 
-  public static boolean unmapAndCloseFile(int fd, long pointer, int size) {
+  public static boolean unmapAndCloseFile(int fd, long pointer, int size)
+  {
     return arbJNI.unmapAndCloseFile(fd, pointer, size);
   }
 
-  public static int ftruncate(int fd, int length) {
+  public static int ftruncate(int fd, int length)
+  {
     return arbJNI.ftruncate(fd, length);
   }
 
-  public static long openOrCreateMemoryMappedFile(java.lang.Object path, SWIGTYPE_p_int fd, int bytes) {
+  public static long openOrCreateMemoryMappedFile(java.lang.Object path, SWIGTYPE_p_int fd, int bytes)
+  {
     return arbJNI.openOrCreateMemoryMappedFile(path, SWIGTYPE_p_int.getCPtr(fd), bytes);
   }
 
-  public static void acb_hypgeom_bessel_j_0f1(Complex res, Complex nu, Complex z, int prec) {
+  public static void acb_hypgeom_bessel_j_0f1(Complex res, Complex nu, Complex z, int prec)
+  {
     arbJNI.acb_hypgeom_bessel_j_0f1(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_hypgeom_bessel_j_asymp(Complex res, Complex nu, Complex z, int prec) {
-    arbJNI.acb_hypgeom_bessel_j_asymp(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  public static void acb_hypgeom_bessel_j_asymp(Complex res, Complex nu, Complex z, int prec)
+  {
+    arbJNI.acb_hypgeom_bessel_j_asymp(Complex.getCPtr(res),
+                                      res,
+                                      Complex.getCPtr(nu),
+                                      nu,
+                                      Complex.getCPtr(z),
+                                      z,
+                                      prec);
   }
 
-  public static void acb_hypgeom_bessel_j(Complex res, Complex nu, Complex z, int prec) {
+  public static void acb_hypgeom_bessel_j(Complex res, Complex nu, Complex z, int prec)
+  {
     arbJNI.acb_hypgeom_bessel_j(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_hypgeom_bessel_i_0f1(Complex res, Complex nu, Complex z, int scaled, int prec) {
-    arbJNI.acb_hypgeom_bessel_i_0f1(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, scaled, prec);
+  public static void acb_hypgeom_bessel_i_0f1(Complex res, Complex nu, Complex z, int scaled, int prec)
+  {
+    arbJNI.acb_hypgeom_bessel_i_0f1(Complex.getCPtr(res),
+                                    res,
+                                    Complex.getCPtr(nu),
+                                    nu,
+                                    Complex.getCPtr(z),
+                                    z,
+                                    scaled,
+                                    prec);
   }
 
-  public static void acb_hypgeom_bessel_i_asymp(Complex res, Complex nu, Complex z, int scaled, int prec) {
-    arbJNI.acb_hypgeom_bessel_i_asymp(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, scaled, prec);
+  public static void acb_hypgeom_bessel_i_asymp(Complex res, Complex nu, Complex z, int scaled, int prec)
+  {
+    arbJNI.acb_hypgeom_bessel_i_asymp(Complex.getCPtr(res),
+                                      res,
+                                      Complex.getCPtr(nu),
+                                      nu,
+                                      Complex.getCPtr(z),
+                                      z,
+                                      scaled,
+                                      prec);
   }
 
-  public static void acb_hypgeom_bessel_i(Complex res, Complex nu, Complex z, int prec) {
+  public static void acb_hypgeom_bessel_i(Complex res, Complex nu, Complex z, int prec)
+  {
     arbJNI.acb_hypgeom_bessel_i(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_hypgeom_bessel_i_scaled(Complex res, Complex nu, Complex z, int prec) {
-    arbJNI.acb_hypgeom_bessel_i_scaled(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  public static void acb_hypgeom_bessel_i_scaled(Complex res, Complex nu, Complex z, int prec)
+  {
+    arbJNI.acb_hypgeom_bessel_i_scaled(Complex.getCPtr(res),
+                                       res,
+                                       Complex.getCPtr(nu),
+                                       nu,
+                                       Complex.getCPtr(z),
+                                       z,
+                                       prec);
   }
 
-  public static void acb_hypgeom_bessel_k_0f1(Complex res, Complex nu, Complex z, int scaled, int prec) {
-    arbJNI.acb_hypgeom_bessel_k_0f1(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, scaled, prec);
+  public static void acb_hypgeom_bessel_k_0f1(Complex res, Complex nu, Complex z, int scaled, int prec)
+  {
+    arbJNI.acb_hypgeom_bessel_k_0f1(Complex.getCPtr(res),
+                                    res,
+                                    Complex.getCPtr(nu),
+                                    nu,
+                                    Complex.getCPtr(z),
+                                    z,
+                                    scaled,
+                                    prec);
   }
 
-  public static void acb_hypgeom_bessel_k_0f1_series(ComplexPolynomial res, ComplexPolynomial n, ComplexPolynomial z, int scaled, int len, int prec) {
-    arbJNI.acb_hypgeom_bessel_k_0f1_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(n), n, ComplexPolynomial.getCPtr(z), z, scaled, len, prec);
+  public static void acb_hypgeom_bessel_k_0f1_series(ComplexPolynomial res,
+                                                     ComplexPolynomial n,
+                                                     ComplexPolynomial z,
+                                                     int scaled,
+                                                     int len,
+                                                     int prec)
+  {
+    arbJNI.acb_hypgeom_bessel_k_0f1_series(ComplexPolynomial.getCPtr(res),
+                                           res,
+                                           ComplexPolynomial.getCPtr(n),
+                                           n,
+                                           ComplexPolynomial.getCPtr(z),
+                                           z,
+                                           scaled,
+                                           len,
+                                           prec);
   }
 
-  public static void acb_hypgeom_bessel_k_asymp(Complex res, Complex nu, Complex z, int scaled, int prec) {
-    arbJNI.acb_hypgeom_bessel_k_asymp(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, scaled, prec);
+  public static void acb_hypgeom_bessel_k_asymp(Complex res, Complex nu, Complex z, int scaled, int prec)
+  {
+    arbJNI.acb_hypgeom_bessel_k_asymp(Complex.getCPtr(res),
+                                      res,
+                                      Complex.getCPtr(nu),
+                                      nu,
+                                      Complex.getCPtr(z),
+                                      z,
+                                      scaled,
+                                      prec);
   }
 
-  public static void acb_hypgeom_bessel_k(Complex res, Complex nu, Complex z, int prec) {
+  public static void acb_hypgeom_bessel_k(Complex res, Complex nu, Complex z, int prec)
+  {
     arbJNI.acb_hypgeom_bessel_k(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_hypgeom_bessel_k_scaled(Complex res, Complex nu, Complex z, int prec) {
-    arbJNI.acb_hypgeom_bessel_k_scaled(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  public static void acb_hypgeom_bessel_k_scaled(Complex res, Complex nu, Complex z, int prec)
+  {
+    arbJNI.acb_hypgeom_bessel_k_scaled(Complex.getCPtr(res),
+                                       res,
+                                       Complex.getCPtr(nu),
+                                       nu,
+                                       Complex.getCPtr(z),
+                                       z,
+                                       prec);
   }
 
-  public static void acb_hypgeom_bessel_y(Complex res, Complex nu, Complex z, int prec) {
+  public static void acb_hypgeom_bessel_y(Complex res, Complex nu, Complex z, int prec)
+  {
     arbJNI.acb_hypgeom_bessel_y(Complex.getCPtr(res), res, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_hypgeom_bessel_jy(Complex res1, Complex res2, Complex nu, Complex z, int prec) {
-    arbJNI.acb_hypgeom_bessel_jy(Complex.getCPtr(res1), res1, Complex.getCPtr(res2), res2, Complex.getCPtr(nu), nu, Complex.getCPtr(z), z, prec);
+  public static void acb_hypgeom_bessel_jy(Complex res1, Complex res2, Complex nu, Complex z, int prec)
+  {
+    arbJNI.acb_hypgeom_bessel_jy(Complex.getCPtr(res1),
+                                 res1,
+                                 Complex.getCPtr(res2),
+                                 res2,
+                                 Complex.getCPtr(nu),
+                                 nu,
+                                 Complex.getCPtr(z),
+                                 z,
+                                 prec);
   }
 
-  public static void acb_hypgeom_beta_lower_series(ComplexPolynomial res, Complex a, Complex b, ComplexPolynomial z, int regularized, int n, int prec) {
-    arbJNI.acb_hypgeom_beta_lower_series(ComplexPolynomial.getCPtr(res), res, Complex.getCPtr(a), a, Complex.getCPtr(b), b, ComplexPolynomial.getCPtr(z), z, regularized, n, prec);
+  public static void acb_hypgeom_beta_lower_series(ComplexPolynomial res,
+                                                   Complex a,
+                                                   Complex b,
+                                                   ComplexPolynomial z,
+                                                   int regularized,
+                                                   int n,
+                                                   int prec)
+  {
+    arbJNI.acb_hypgeom_beta_lower_series(ComplexPolynomial.getCPtr(res),
+                                         res,
+                                         Complex.getCPtr(a),
+                                         a,
+                                         Complex.getCPtr(b),
+                                         b,
+                                         ComplexPolynomial.getCPtr(z),
+                                         z,
+                                         regularized,
+                                         n,
+                                         prec);
   }
 
-  public static void acb_hypgeom_beta_lower(Complex res, Complex a, Complex b, Complex z, int regularized, int prec) {
-    arbJNI.acb_hypgeom_beta_lower(Complex.getCPtr(res), res, Complex.getCPtr(a), a, Complex.getCPtr(b), b, Complex.getCPtr(z), z, regularized, prec);
+  public static void acb_hypgeom_beta_lower(Complex res, Complex a, Complex b, Complex z, int regularized, int prec)
+  {
+    arbJNI.acb_hypgeom_beta_lower(Complex.getCPtr(res),
+                                  res,
+                                  Complex.getCPtr(a),
+                                  a,
+                                  Complex.getCPtr(b),
+                                  b,
+                                  Complex.getCPtr(z),
+                                  z,
+                                  regularized,
+                                  prec);
   }
 
-  public static void acb_hypgeom_gamma_upper(Complex res, Complex s, Complex z, int regularized, int prec) {
-    arbJNI.acb_hypgeom_gamma_upper(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(z), z, regularized, prec);
+  public static void acb_hypgeom_gamma_upper(Complex res, Complex s, Complex z, int regularized, int prec)
+  {
+    arbJNI.acb_hypgeom_gamma_upper(Complex.getCPtr(res),
+                                   res,
+                                   Complex.getCPtr(s),
+                                   s,
+                                   Complex.getCPtr(z),
+                                   z,
+                                   regularized,
+                                   prec);
   }
 
-  public static void acb_hypgeom_gamma_lower(Complex res, Complex s, Complex z, int regularized, int prec) {
-    arbJNI.acb_hypgeom_gamma_lower(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(z), z, regularized, prec);
+  public static void acb_hypgeom_gamma_lower(Complex res, Complex s, Complex z, int regularized, int prec)
+  {
+    arbJNI.acb_hypgeom_gamma_lower(Complex.getCPtr(res),
+                                   res,
+                                   Complex.getCPtr(s),
+                                   s,
+                                   Complex.getCPtr(z),
+                                   z,
+                                   regularized,
+                                   prec);
   }
 
-  public static int arb_mat_overlaps(RealMatrix mat1, RealMatrix mat2) {
+  public static int arb_mat_overlaps(RealMatrix mat1, RealMatrix mat2)
+  {
     return arbJNI.arb_mat_overlaps(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
   }
 
-  public static int arb_mat_contains(RealMatrix mat1, RealMatrix mat2) {
+  public static int arb_mat_contains(RealMatrix mat1, RealMatrix mat2)
+  {
     return arbJNI.arb_mat_contains(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
   }
 
-  public static void arb_mat_set(RealMatrix dest, RealMatrix src) {
+  public static void arb_mat_set(RealMatrix dest, RealMatrix src)
+  {
     arbJNI.arb_mat_set(RealMatrix.getCPtr(dest), dest, RealMatrix.getCPtr(src), src);
   }
 
-  public static int arb_mat_eq(RealMatrix mat1, RealMatrix mat2) {
+  public static int arb_mat_eq(RealMatrix mat1, RealMatrix mat2)
+  {
     return arbJNI.arb_mat_eq(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
   }
 
-  public static int arb_mat_ne(RealMatrix mat1, RealMatrix mat2) {
+  public static int arb_mat_ne(RealMatrix mat1, RealMatrix mat2)
+  {
     return arbJNI.arb_mat_ne(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
   }
 
-  public static void arb_mat_zero(RealMatrix mat) {
+  public static void arb_mat_zero(RealMatrix mat)
+  {
     arbJNI.arb_mat_zero(RealMatrix.getCPtr(mat), mat);
   }
 
-  public static void arb_mat_one(RealMatrix mat) {
+  public static void arb_mat_one(RealMatrix mat)
+  {
     arbJNI.arb_mat_one(RealMatrix.getCPtr(mat), mat);
   }
 
-  public static void arb_mat_transpose(RealMatrix mat1, RealMatrix mat2) {
+  public static void arb_mat_transpose(RealMatrix mat1, RealMatrix mat2)
+  {
     arbJNI.arb_mat_transpose(RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2);
   }
 
-  public static void arb_mat_mul(RealMatrix res, RealMatrix mat1, RealMatrix mat2, int prec) {
-    arbJNI.arb_mat_mul(RealMatrix.getCPtr(res), res, RealMatrix.getCPtr(mat1), mat1, RealMatrix.getCPtr(mat2), mat2, prec);
+  public static void arb_mat_mul(RealMatrix res, RealMatrix mat1, RealMatrix mat2, int prec)
+  {
+    arbJNI.arb_mat_mul(RealMatrix.getCPtr(res),
+                       res,
+                       RealMatrix.getCPtr(mat1),
+                       mat1,
+                       RealMatrix.getCPtr(mat2),
+                       mat2,
+                       prec);
   }
 
-  public static void arb_mat_printd(RealMatrix mat, int digits) {
+  public static void arb_mat_printd(RealMatrix mat, int digits)
+  {
     arbJNI.arb_mat_printd(RealMatrix.getCPtr(mat), mat, digits);
   }
 
-  public static int arb_mat_inv(RealMatrix X, RealMatrix A, int prec) {
+  public static int arb_mat_inv(RealMatrix X, RealMatrix A, int prec)
+  {
     return arbJNI.arb_mat_inv(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, prec);
   }
 
-  public static int getpagesize() {
+  public static int getpagesize()
+  {
     return arbJNI.getpagesize();
   }
 
-  public static long alignedMalloc(int alignment, int size) {
+  public static long alignedMalloc(int alignment, int size)
+  {
     return arbJNI.alignedMalloc(alignment, size);
   }
 
-  public static SWIGTYPE_p_void memalign(long alignment, long size) {
+  public static SWIGTYPE_p_void memalign(long alignment, long size)
+  {
     long cPtr = arbJNI.memalign(alignment, size);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr,
+                                                    false);
   }
 
-  public static int errorNumber() {
+  public static int errorNumber()
+  {
     return arbJNI.errorNumber();
   }
 
-  public static int close(int __fd) {
+  public static int close(int __fd)
+  {
     return arbJNI.close(__fd);
   }
 
-  public static int open(String file, int oflag) {
+  public static int open(String file, int oflag)
+  {
     return arbJNI.open__SWIG_0(file, oflag);
   }
 
-  public static int creat(String pathname, long mode) {
+  public static int creat(String pathname, long mode)
+  {
     return arbJNI.creat(pathname, mode);
   }
 
-  public static int open(String pathname, int flags, long mode) {
+  public static int open(String pathname, int flags, long mode)
+  {
     return arbJNI.open__SWIG_1(pathname, flags, mode);
   }
 
-  public static int msync(SWIGTYPE_p_void addr, long length, int flags) {
+  public static int msync(SWIGTYPE_p_void addr, long length, int flags)
+  {
     return arbJNI.msync(SWIGTYPE_p_void.getCPtr(addr), length, flags);
   }
 
-  public static int munmap(SWIGTYPE_p_void addr, long length) {
+  public static int munmap(SWIGTYPE_p_void addr, long length)
+  {
     return arbJNI.munmap(SWIGTYPE_p_void.getCPtr(addr), length);
   }
 
-  public static SWIGTYPE_p_void mmap(SWIGTYPE_p_void addr, long len, int prot, int flags, int fd, int offset) {
+  public static SWIGTYPE_p_void mmap(SWIGTYPE_p_void addr, long len, int prot, int flags, int fd, int offset)
+  {
     long cPtr = arbJNI.mmap(SWIGTYPE_p_void.getCPtr(addr), len, prot, flags, fd, offset);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr,
+                                                    false);
   }
 
-  public static int mprotect(SWIGTYPE_p_void addr, long len, int prot) {
+  public static int mprotect(SWIGTYPE_p_void addr, long len, int prot)
+  {
     return arbJNI.mprotect(SWIGTYPE_p_void.getCPtr(addr), len, prot);
   }
 
-  public static SWIGTYPE_p_void memset(SWIGTYPE_p_void s, int numCols, long n) {
+  public static SWIGTYPE_p_void memset(SWIGTYPE_p_void s, int numCols, long n)
+  {
     long cPtr = arbJNI.memset(SWIGTYPE_p_void.getCPtr(s), numCols, n);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr,
+                                                    false);
   }
 
-  public static void arb_dot_simple(Real res, Real initial, int subtract, Real x, int xstep, Real y, int ystep, int len, int prec) {
-    arbJNI.arb_dot_simple(Real.getCPtr(res), res, Real.getCPtr(initial), initial, subtract, Real.getCPtr(x), x, xstep, Real.getCPtr(y), y, ystep, len, prec);
+  public static void arb_dot_simple(Real res,
+                                    Real initial,
+                                    int subtract,
+                                    Real x,
+                                    int xstep,
+                                    Real y,
+                                    int ystep,
+                                    int len,
+                                    int prec)
+  {
+    arbJNI.arb_dot_simple(Real.getCPtr(res),
+                          res,
+                          Real.getCPtr(initial),
+                          initial,
+                          subtract,
+                          Real.getCPtr(x),
+                          x,
+                          xstep,
+                          Real.getCPtr(y),
+                          y,
+                          ystep,
+                          len,
+                          prec);
   }
 
-  public static void arb_dot_precise(Real res, Real initial, int subtract, Real x, int xstep, Real y, int ystep, int len, int prec) {
-    arbJNI.arb_dot_precise(Real.getCPtr(res), res, Real.getCPtr(initial), initial, subtract, Real.getCPtr(x), x, xstep, Real.getCPtr(y), y, ystep, len, prec);
+  public static void arb_dot_precise(Real res,
+                                     Real initial,
+                                     int subtract,
+                                     Real x,
+                                     int xstep,
+                                     Real y,
+                                     int ystep,
+                                     int len,
+                                     int prec)
+  {
+    arbJNI.arb_dot_precise(Real.getCPtr(res),
+                           res,
+                           Real.getCPtr(initial),
+                           initial,
+                           subtract,
+                           Real.getCPtr(x),
+                           x,
+                           xstep,
+                           Real.getCPtr(y),
+                           y,
+                           ystep,
+                           len,
+                           prec);
   }
 
-  public static void arb_dot(Real res, Real initial, int subtract, Real x, int xstep, Real y, int ystep, int len, int prec) {
-    arbJNI.arb_dot(Real.getCPtr(res), res, Real.getCPtr(initial), initial, subtract, Real.getCPtr(x), x, xstep, Real.getCPtr(y), y, ystep, len, prec);
+  public static void
+         arb_dot(Real res, Real initial, int subtract, Real x, int xstep, Real y, int ystep, int len, int prec)
+  {
+    arbJNI.arb_dot(Real.getCPtr(res),
+                   res,
+                   Real.getCPtr(initial),
+                   initial,
+                   subtract,
+                   Real.getCPtr(x),
+                   x,
+                   xstep,
+                   Real.getCPtr(y),
+                   y,
+                   ystep,
+                   len,
+                   prec);
   }
 
-  public static void acb_dft_rad2_precomp(Complex w, Complex v, FastDFTRadix2Scheme t, int prec) {
-    arbJNI.acb_dft_rad2_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTRadix2Scheme.getCPtr(t), t, prec);
+  public static void acb_dft_rad2_precomp(Complex w, Complex v, FastDFTRadix2Scheme t, int prec)
+  {
+    arbJNI.acb_dft_rad2_precomp(Complex.getCPtr(w),
+                                w,
+                                Complex.getCPtr(v),
+                                v,
+                                FastDFTRadix2Scheme.getCPtr(t),
+                                t,
+                                prec);
   }
 
-  public static void arb_hypgeom_hermite_h(Real res, Real nu, Real z, int prec) {
+  public static void arb_hypgeom_hermite_h(Real res, Real nu, Real z, int prec)
+  {
     arbJNI.arb_hypgeom_hermite_h(Real.getCPtr(res), res, Real.getCPtr(nu), nu, Real.getCPtr(z), z, prec);
   }
 
-  public static void acb_dirichlet_xi(Complex res, Complex s, int prec) {
+  public static void acb_dirichlet_xi(Complex res, Complex s, int prec)
+  {
     arbJNI.acb_dirichlet_xi(Complex.getCPtr(res), res, Complex.getCPtr(s), s, prec);
   }
 
-  public static void arb_hypgeom_erfinv(Real res, Real z, int prec) {
+  public static void arb_hypgeom_erfinv(Real res, Real z, int prec)
+  {
     arbJNI.arb_hypgeom_erfinv(Real.getCPtr(res), res, Real.getCPtr(z), z, prec);
   }
 
-  public static void arb_hypgeom_erfcinv(Real res, Real z, int prec) {
+  public static void arb_hypgeom_erfcinv(Real res, Real z, int prec)
+  {
     arbJNI.arb_hypgeom_erfcinv(Real.getCPtr(res), res, Real.getCPtr(z), z, prec);
   }
 
-  public static void arb_hypgeom_erf(Real res, Real z, int prec) {
+  public static void arb_hypgeom_erf(Real res, Real z, int prec)
+  {
     arbJNI.arb_hypgeom_erf(Real.getCPtr(res), res, Real.getCPtr(z), z, prec);
   }
 
-  public static void arb_hypgeom_erfc(Real res, Real z, int prec) {
+  public static void arb_hypgeom_erfc(Real res, Real z, int prec)
+  {
     arbJNI.arb_hypgeom_erfc(Real.getCPtr(res), res, Real.getCPtr(z), z, prec);
   }
 
-  public static void arb_hypgeom_m(Real res, Real a, Real b, Real z, int regularized, int prec) {
-    arbJNI.arb_hypgeom_m(Real.getCPtr(res), res, Real.getCPtr(a), a, Real.getCPtr(b), b, Real.getCPtr(z), z, regularized, prec);
+  public static void arb_hypgeom_m(Real res, Real a, Real b, Real z, int regularized, int prec)
+  {
+    arbJNI.arb_hypgeom_m(Real.getCPtr(res),
+                         res,
+                         Real.getCPtr(a),
+                         a,
+                         Real.getCPtr(b),
+                         b,
+                         Real.getCPtr(z),
+                         z,
+                         regularized,
+                         prec);
   }
 
-  public static int arf_div(Float z, Float x, Float y, int prec, int rnd) {
+  public static int arf_div(Float z, Float x, Float y, int prec, int rnd)
+  {
     return arbJNI.arf_div(Float.getCPtr(z), z, Float.getCPtr(x), x, Float.getCPtr(y), y, prec, rnd);
   }
 
-  public static void gmp_randclear(GMPRandomState state) {
+  public static void gmp_randclear(GMPRandomState state)
+  {
     arbJNI.gmp_randclear(GMPRandomState.getCPtr(state), state);
   }
 
-  public static void gmp_randinit_mt(GMPRandomState state) {
+  public static void gmp_randinit_mt(GMPRandomState state)
+  {
     arbJNI.gmp_randinit_mt(GMPRandomState.getCPtr(state), state);
   }
 
-  public static void gmp_randinit_default(GMPRandomState arg0) {
+  public static void gmp_randinit_default(GMPRandomState arg0)
+  {
     arbJNI.gmp_randinit_default(GMPRandomState.getCPtr(arg0), arg0);
   }
 
-  public static void gmp_randseed_ui(GMPRandomState arg0, long arg1) {
+  public static void gmp_randseed_ui(GMPRandomState arg0, long arg1)
+  {
     arbJNI.gmp_randseed_ui(GMPRandomState.getCPtr(arg0), arg0, arg1);
   }
 
-  public static void arb_urandom(Real x, RandomState state, int prec) {
+  public static void arb_urandom(Real x, RandomState state, int prec)
+  {
     arbJNI.arb_urandom(Real.getCPtr(x), x, RandomState.getCPtr(state), state, prec);
   }
 
-  public static void arb_log(Real z, Real x, int prec) {
+  public static void arb_log(Real z, Real x, int prec)
+  {
     arbJNI.arb_log(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_exp(Real z, Real x, int prec) {
+  public static void arb_exp(Real z, Real x, int prec)
+  {
     arbJNI.arb_exp(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
-  public static void _acb_dirichlet_hardy_z_series(Complex res, Complex s, int slen, DirichletGroup G, DirichletCharacter chi, int len, int prec) {
-    arbJNI._acb_dirichlet_hardy_z_series(Complex.getCPtr(res), res, Complex.getCPtr(s), s, slen, DirichletGroup.getCPtr(G), G, DirichletCharacter.getCPtr(chi), chi, len, prec);
+  public static void _acb_dirichlet_hardy_z_series(Complex res,
+                                                   Complex s,
+                                                   int slen,
+                                                   DirichletGroup G,
+                                                   DirichletCharacter chi,
+                                                   int len,
+                                                   int prec)
+  {
+    arbJNI._acb_dirichlet_hardy_z_series(Complex.getCPtr(res),
+                                         res,
+                                         Complex.getCPtr(s),
+                                         s,
+                                         slen,
+                                         DirichletGroup.getCPtr(G),
+                                         G,
+                                         DirichletCharacter.getCPtr(chi),
+                                         chi,
+                                         len,
+                                         prec);
   }
 
-  public static void acb_dirichlet_hardy_z_series(ComplexPolynomial res, ComplexPolynomial s, DirichletGroup G, DirichletCharacter chi, int len, int prec) {
-    arbJNI.acb_dirichlet_hardy_z_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(s), s, DirichletGroup.getCPtr(G), G, DirichletCharacter.getCPtr(chi), chi, len, prec);
+  public static void acb_dirichlet_hardy_z_series(ComplexPolynomial res,
+                                                  ComplexPolynomial s,
+                                                  DirichletGroup G,
+                                                  DirichletCharacter chi,
+                                                  int len,
+                                                  int prec)
+  {
+    arbJNI.acb_dirichlet_hardy_z_series(ComplexPolynomial.getCPtr(res),
+                                        res,
+                                        ComplexPolynomial.getCPtr(s),
+                                        s,
+                                        DirichletGroup.getCPtr(G),
+                                        G,
+                                        DirichletCharacter.getCPtr(chi),
+                                        chi,
+                                        len,
+                                        prec);
   }
 
-  public static void acb_sinh(Complex y, Complex x, int prec) {
+  public static void acb_sinh(Complex y, Complex x, int prec)
+  {
     arbJNI.acb_sinh(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
 
-  public static void acb_elliptic_f(Complex res, Complex phi, Complex m, int times_pi, int prec) {
-    arbJNI.acb_elliptic_f(Complex.getCPtr(res), res, Complex.getCPtr(phi), phi, Complex.getCPtr(m), m, times_pi, prec);
+  public static void acb_elliptic_f(Complex res, Complex phi, Complex m, int times_pi, int prec)
+  {
+    arbJNI.acb_elliptic_f(Complex.getCPtr(res),
+                          res,
+                          Complex.getCPtr(phi),
+                          phi,
+                          Complex.getCPtr(m),
+                          m,
+                          times_pi,
+                          prec);
   }
 
-  public static void arb_sech(Real res, Real x, int prec) {
+  public static void arb_sech(Real res, Real x, int prec)
+  {
     arbJNI.arb_sech(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
   }
 
-  public static void acb_sech(Complex numRows, Complex z, int prec) {
+  public static void acb_sech(Complex numRows, Complex z, int prec)
+  {
     arbJNI.acb_sech(Complex.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }
 
-  public static long bufferAddress(java.lang.Object buffer) {
+  public static long bufferAddress(java.lang.Object buffer)
+  {
     return arbJNI.bufferAddress(buffer);
   }
 
-  public static void acb_tan(Complex numRows, Complex z, int prec) {
+  public static void acb_tan(Complex numRows, Complex z, int prec)
+  {
     arbJNI.acb_tan(Complex.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_sec(Complex y, Complex x, int prec) {
+  public static void acb_sec(Complex y, Complex x, int prec)
+  {
     arbJNI.acb_sec(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
 
-  public static void arb_add_ui(Real z, Real x, long y, int prec) {
+  public static void arb_add_ui(Real z, Real x, long y, int prec)
+  {
     arbJNI.arb_add_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
-  public static void arb_sub_si(Real z, Real x, int y, int prec) {
+  public static void arb_sub_si(Real z, Real x, int y, int prec)
+  {
     arbJNI.arb_sub_si(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
-  public static void arb_sub_ui(Real z, Real x, long y, int prec) {
+  public static void arb_sub_ui(Real z, Real x, long y, int prec)
+  {
     arbJNI.arb_sub_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
-  public static void mag_div(Magnitude z, Magnitude x, Magnitude y) {
+  public static void mag_div(Magnitude z, Magnitude x, Magnitude y)
+  {
     arbJNI.mag_div(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void mag_log(Magnitude z, Magnitude x) {
+  public static void mag_log(Magnitude z, Magnitude x)
+  {
     arbJNI.mag_log(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x);
   }
 
-  public static void mag_inv(Magnitude res, Magnitude x) {
+  public static void mag_inv(Magnitude res, Magnitude x)
+  {
     arbJNI.mag_inv(Magnitude.getCPtr(res), res, Magnitude.getCPtr(x), x);
   }
 
-  public static int arf_is_zero(Float x) {
+  public static int arf_is_zero(Float x)
+  {
     return arbJNI.arf_is_zero(Float.getCPtr(x), x);
   }
 
-  public static void acb_add_arb(Complex z, Complex x, Real y, int prec) {
+  public static void acb_add_arb(Complex z, Complex x, Real y, int prec)
+  {
     arbJNI.acb_add_arb(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void arb_mul_ui(Real z, Real x, long y, int prec) {
+  public static void arb_mul_ui(Real z, Real x, long y, int prec)
+  {
     arbJNI.arb_mul_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
-  public static void arb_mul_si(Real z, Real x, long y, int prec) {
+  public static void arb_mul_si(Real z, Real x, long y, int prec)
+  {
     arbJNI.arb_mul_si__SWIG_0(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
-  public static void arb_mul_si(Real z, Real x, int y, int prec) {
+  public static void arb_mul_si(Real z, Real x, int y, int prec)
+  {
     arbJNI.arb_mul_si__SWIG_1(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
-  public static void dirichlet_group_init(DirichletGroup G, long q) {
+  public static void dirichlet_group_init(DirichletGroup G, long q)
+  {
     arbJNI.dirichlet_group_init(DirichletGroup.getCPtr(G), G, q);
   }
 
-  public static void dirichlet_subgroup_init(DirichletGroup H, DirichletGroup G, long h) {
+  public static void dirichlet_subgroup_init(DirichletGroup H, DirichletGroup G, long h)
+  {
     arbJNI.dirichlet_subgroup_init(DirichletGroup.getCPtr(H), H, DirichletGroup.getCPtr(G), G, h);
   }
 
-  public static void dirichlet_group_clear(DirichletGroup G) {
+  public static void dirichlet_group_clear(DirichletGroup G)
+  {
     arbJNI.dirichlet_group_clear(DirichletGroup.getCPtr(G), G);
   }
 
-  public static void dirichlet_char_init(DirichletCharacter x, DirichletGroup G) {
+  public static void dirichlet_char_init(DirichletCharacter x, DirichletGroup G)
+  {
     arbJNI.dirichlet_char_init(DirichletCharacter.getCPtr(x), x, DirichletGroup.getCPtr(G), G);
   }
 
-  public static void dirichlet_char_clear(DirichletCharacter x) {
+  public static void dirichlet_char_clear(DirichletCharacter x)
+  {
     arbJNI.dirichlet_char_clear(DirichletCharacter.getCPtr(x), x);
   }
 
-  public static int arb_mat_cho(RealMatrix L, RealMatrix A, int prec) {
+  public static int arb_mat_cho(RealMatrix L, RealMatrix A, int prec)
+  {
     return arbJNI.arb_mat_cho(RealMatrix.getCPtr(L), L, RealMatrix.getCPtr(A), A, prec);
   }
 
-  public static void arb_mat_solve_cho_precomp(RealMatrix X, RealMatrix L, RealMatrix B, int prec) {
-    arbJNI.arb_mat_solve_cho_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, RealMatrix.getCPtr(B), B, prec);
+  public static void arb_mat_solve_cho_precomp(RealMatrix X, RealMatrix L, RealMatrix B, int prec)
+  {
+    arbJNI.arb_mat_solve_cho_precomp(RealMatrix.getCPtr(X),
+                                     X,
+                                     RealMatrix.getCPtr(L),
+                                     L,
+                                     RealMatrix.getCPtr(B),
+                                     B,
+                                     prec);
   }
 
-  public static int arb_mat_spd_solve(RealMatrix X, RealMatrix A, RealMatrix B, int prec) {
-    return arbJNI.arb_mat_spd_solve(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, RealMatrix.getCPtr(B), B, prec);
+  public static int arb_mat_spd_solve(RealMatrix X, RealMatrix A, RealMatrix B, int prec)
+  {
+    return arbJNI.arb_mat_spd_solve(RealMatrix.getCPtr(X),
+                                    X,
+                                    RealMatrix.getCPtr(A),
+                                    A,
+                                    RealMatrix.getCPtr(B),
+                                    B,
+                                    prec);
   }
 
-  public static void arb_mat_inv_cho_precomp(RealMatrix X, RealMatrix L, int prec) {
+  public static void arb_mat_inv_cho_precomp(RealMatrix X, RealMatrix L, int prec)
+  {
     arbJNI.arb_mat_inv_cho_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, prec);
   }
 
-  public static int arb_mat_spd_inv(RealMatrix X, RealMatrix A, int prec) {
+  public static int arb_mat_spd_inv(RealMatrix X, RealMatrix A, int prec)
+  {
     return arbJNI.arb_mat_spd_inv(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, prec);
   }
 
-  public static int arb_mat_ldl(RealMatrix res, RealMatrix A, int prec) {
+  public static int arb_mat_ldl(RealMatrix res, RealMatrix A, int prec)
+  {
     return arbJNI.arb_mat_ldl(RealMatrix.getCPtr(res), res, RealMatrix.getCPtr(A), A, prec);
   }
 
-  public static void arb_mat_solve_ldl_precomp(RealMatrix X, RealMatrix L, RealMatrix B, int prec) {
-    arbJNI.arb_mat_solve_ldl_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, RealMatrix.getCPtr(B), B, prec);
+  public static void arb_mat_solve_ldl_precomp(RealMatrix X, RealMatrix L, RealMatrix B, int prec)
+  {
+    arbJNI.arb_mat_solve_ldl_precomp(RealMatrix.getCPtr(X),
+                                     X,
+                                     RealMatrix.getCPtr(L),
+                                     L,
+                                     RealMatrix.getCPtr(B),
+                                     B,
+                                     prec);
   }
 
-  public static void arb_mat_inv_ldl_precomp(RealMatrix X, RealMatrix L, int prec) {
+  public static void arb_mat_inv_ldl_precomp(RealMatrix X, RealMatrix L, int prec)
+  {
     arbJNI.arb_mat_inv_ldl_precomp(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(L), L, prec);
   }
 
-  public static void acb_mat_dft(ComplexMatrix mat, int type, int prec) {
+  public static void acb_mat_dft(ComplexMatrix mat, int type, int prec)
+  {
     arbJNI.acb_mat_dft(ComplexMatrix.getCPtr(mat), mat, type, prec);
   }
 
-  public static int acb_mat_eig_multiple(Complex E, ComplexMatrix A, Complex E_approx, ComplexMatrix R_approx, int prec) {
-    return arbJNI.acb_mat_eig_multiple(Complex.getCPtr(E), E, ComplexMatrix.getCPtr(A), A, Complex.getCPtr(E_approx), E_approx, ComplexMatrix.getCPtr(R_approx), R_approx, prec);
+  public static int
+         acb_mat_eig_multiple(Complex E, ComplexMatrix A, Complex E_approx, ComplexMatrix R_approx, int prec)
+  {
+    return arbJNI.acb_mat_eig_multiple(Complex.getCPtr(E),
+                                       E,
+                                       ComplexMatrix.getCPtr(A),
+                                       A,
+                                       Complex.getCPtr(E_approx),
+                                       E_approx,
+                                       ComplexMatrix.getCPtr(R_approx),
+                                       R_approx,
+                                       prec);
   }
 
-  public static void arb_mat_clear(RealMatrix mat) {
+  public static void arb_mat_clear(RealMatrix mat)
+  {
     arbJNI.arb_mat_clear(RealMatrix.getCPtr(mat), mat);
   }
 
-  public static void acb_mat_clear(ComplexMatrix mat) {
+  public static void acb_mat_clear(ComplexMatrix mat)
+  {
     arbJNI.acb_mat_clear(ComplexMatrix.getCPtr(mat), mat);
   }
 
-  public static void arb_mat_init(RealMatrix mat, int numRows, int numCols) {
+  public static void arb_mat_init(RealMatrix mat, int numRows, int numCols)
+  {
     arbJNI.arb_mat_init(RealMatrix.getCPtr(mat), mat, numRows, numCols);
   }
 
-  public static void acb_poly_clear(ComplexPolynomial poly) {
+  public static void acb_poly_clear(ComplexPolynomial poly)
+  {
     arbJNI.acb_poly_clear(ComplexPolynomial.getCPtr(poly), poly);
   }
 
-  public static Real arb_mat_entry_ptr(RealMatrix mat, int i, int j) {
+  public static Real arb_mat_entry_ptr(RealMatrix mat, int i, int j)
+  {
     long cPtr = arbJNI.arb_mat_entry_ptr(RealMatrix.getCPtr(mat), mat, i, j);
-    return (cPtr == 0) ? null : new Real(cPtr, false);
+    return (cPtr == 0) ? null : new Real(cPtr,
+                                         false);
   }
 
-  public static void flint_cleanup() {
+  public static void flint_cleanup()
+  {
     arbJNI.flint_cleanup();
   }
 
-  public static void flint_cleanup_master() {
+  public static void flint_cleanup_master()
+  {
     arbJNI.flint_cleanup_master();
   }
 
-  public static int f_lemniscate(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec) {
-    return arbJNI.f_lemniscate(Complex.getCPtr(res), res, Complex.getCPtr(z), z, SWIGTYPE_p_void.getCPtr(param), order, prec);
+  public static int f_lemniscate(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec)
+  {
+    return arbJNI.f_lemniscate(Complex.getCPtr(res),
+                               res,
+                               Complex.getCPtr(z),
+                               z,
+                               SWIGTYPE_p_void.getCPtr(param),
+                               order,
+                               prec);
   }
 
-  public static int f_lemniscate_derivative(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec) {
-    return arbJNI.f_lemniscate_derivative(Complex.getCPtr(res), res, Complex.getCPtr(z), z, SWIGTYPE_p_void.getCPtr(param), order, prec);
+  public static int f_lemniscate_derivative(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec)
+  {
+    return arbJNI.f_lemniscate_derivative(Complex.getCPtr(res),
+                                          res,
+                                          Complex.getCPtr(z),
+                                          z,
+                                          SWIGTYPE_p_void.getCPtr(param),
+                                          order,
+                                          prec);
   }
 
-  public static int f_lemniscate_derivative_abs(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec) {
-    return arbJNI.f_lemniscate_derivative_abs(Complex.getCPtr(res), res, Complex.getCPtr(z), z, SWIGTYPE_p_void.getCPtr(param), order, prec);
+  public static int f_lemniscate_derivative_abs(Complex res, Complex z, SWIGTYPE_p_void param, int order, int prec)
+  {
+    return arbJNI.f_lemniscate_derivative_abs(Complex.getCPtr(res),
+                                              res,
+                                              Complex.getCPtr(z),
+                                              z,
+                                              SWIGTYPE_p_void.getCPtr(param),
+                                              order,
+                                              prec);
   }
 
-  public static void acb_calc_gl_node(Real x, Real w, int i, int k, int prec) {
+  public static void acb_calc_gl_node(Real x, Real w, int i, int k, int prec)
+  {
     arbJNI.acb_calc_gl_node(Real.getCPtr(x), x, Real.getCPtr(w), w, i, k, prec);
   }
 
-  public static int arf_cmp(Float x, Float y) {
+  public static int arf_cmp(Float x, Float y)
+  {
     return arbJNI.arf_cmp(Float.getCPtr(x), x, Float.getCPtr(y), y);
   }
 
-  public static void acb_one(Complex z) {
+  public static void acb_one(Complex z)
+  {
     arbJNI.acb_one(Complex.getCPtr(z), z);
   }
 
-  public static int arb_is_zero(Real z) {
+  public static int arb_is_zero(Real z)
+  {
     return arbJNI.arb_is_zero(Real.getCPtr(z), z);
   }
 
-  public static int acb_is_zero(Complex z) {
+  public static int acb_is_zero(Complex z)
+  {
     return arbJNI.acb_is_zero(Complex.getCPtr(z), z);
   }
 
-  public static void acb_div_si(Complex z, Complex x, int numCols, int prec) {
+  public static void acb_div_si(Complex z, Complex x, int numCols, int prec)
+  {
     arbJNI.acb_div_si(Complex.getCPtr(z), z, Complex.getCPtr(x), x, numCols, prec);
   }
 
-  public static void acb_neg(Complex z, Complex x) {
+  public static void acb_neg(Complex z, Complex x)
+  {
     arbJNI.acb_neg(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
   }
 
-  public static int acb_equal(Complex x, Complex y) {
+  public static int acb_equal(Complex x, Complex y)
+  {
     return arbJNI.acb_equal(Complex.getCPtr(x), x, Complex.getCPtr(y), y);
   }
 
-  public static int arb_equal(Real x, Real y) {
+  public static int arb_equal(Real x, Real y)
+  {
     return arbJNI.arb_equal(Real.getCPtr(x), x, Real.getCPtr(y), y);
   }
 
-  public static void arb_set_si(Real x, int y) {
+  public static void arb_set_si(Real x, int y)
+  {
     arbJNI.arb_set_si(Real.getCPtr(x), x, y);
   }
 
-  public static void mag_set_d(Magnitude res, double x) {
+  public static void mag_set_d(Magnitude res, double x)
+  {
     arbJNI.mag_set_d(Magnitude.getCPtr(res), res, x);
   }
 
-  public static void acb_dft_inverse_precomp(Complex w, Complex v, FastDFTScheme pre, int prec) {
-    arbJNI.acb_dft_inverse_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTScheme.getCPtr(pre), pre, prec);
+  public static void acb_dft_inverse_precomp(Complex w, Complex v, FastDFTScheme pre, int prec)
+  {
+    arbJNI.acb_dft_inverse_precomp(Complex.getCPtr(w),
+                                   w,
+                                   Complex.getCPtr(v),
+                                   v,
+                                   FastDFTScheme.getCPtr(pre),
+                                   pre,
+                                   prec);
   }
 
-  public static void acb_dft_precomp(Complex w, Complex v, FastDFTScheme pre, int prec) {
+  public static void acb_dft_precomp(Complex w, Complex v, FastDFTScheme pre, int prec)
+  {
     arbJNI.acb_dft_precomp(Complex.getCPtr(w), w, Complex.getCPtr(v), v, FastDFTScheme.getCPtr(pre), pre, prec);
   }
 
-  public static void acb_dft_precomp_clear(FastDFTScheme pre) {
+  public static void acb_dft_precomp_clear(FastDFTScheme pre)
+  {
     arbJNI.acb_dft_precomp_clear(FastDFTScheme.getCPtr(pre), pre);
   }
 
-  public static void acb_dft_precomp_init(FastDFTScheme pre, int len, int prec) {
+  public static void acb_dft_precomp_init(FastDFTScheme pre, int len, int prec)
+  {
     arbJNI.acb_dft_precomp_init(FastDFTScheme.getCPtr(pre), pre, len, prec);
   }
 
-  public static void acb_dft_inverse(Complex w, Complex v, int n, int prec) {
+  public static void acb_dft_inverse(Complex w, Complex v, int n, int prec)
+  {
     arbJNI.acb_dft_inverse(Complex.getCPtr(w), w, Complex.getCPtr(v), v, n, prec);
   }
 
-  public static void acb_dft(Complex w, Complex v, int n, int prec) {
+  public static void acb_dft(Complex w, Complex v, int n, int prec)
+  {
     arbJNI.acb_dft(Complex.getCPtr(w), w, Complex.getCPtr(v), v, n, prec);
   }
 
-  public static int acb_is_real(Complex x) {
+  public static int acb_is_real(Complex x)
+  {
     return arbJNI.acb_is_real(Complex.getCPtr(x), x);
   }
 
-  public static void mag_swap(Magnitude x, Magnitude y) {
+  public static void mag_swap(Magnitude x, Magnitude y)
+  {
     arbJNI.mag_swap(Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void acb_swap(Complex z, Complex x) {
+  public static void acb_swap(Complex z, Complex x)
+  {
     arbJNI.acb_swap(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
   }
 
-  public static void mag_max(Magnitude z, Magnitude x, Magnitude y) {
+  public static void mag_max(Magnitude z, Magnitude x, Magnitude y)
+  {
     arbJNI.mag_max(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void mag_mul_2exp_si(Magnitude z, Magnitude x, int y) {
+  public static void mag_mul_2exp_si(Magnitude z, Magnitude x, int y)
+  {
     arbJNI.mag_mul_2exp_si(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, y);
   }
 
-  public static void acb_get_mag_lower(Magnitude z, Complex x) {
+  public static void acb_get_mag_lower(Magnitude z, Complex x)
+  {
     arbJNI.acb_get_mag_lower(Magnitude.getCPtr(z), z, Complex.getCPtr(x), x);
   }
 
-  public static void arb_get_mag_lower(Magnitude z, Real x) {
+  public static void arb_get_mag_lower(Magnitude z, Real x)
+  {
     arbJNI.arb_get_mag_lower(Magnitude.getCPtr(z), z, Real.getCPtr(x), x);
   }
 
-  public static Magnitude _mag_vec_init(int n) {
+  public static Magnitude _mag_vec_init(int n)
+  {
     long cPtr = arbJNI._mag_vec_init(n);
-    return (cPtr == 0) ? null : new Magnitude(cPtr, false);
+    return (cPtr == 0) ? null : new Magnitude(cPtr,
+                                              false);
   }
 
-  public static void arb_get_interval_arf(Float a, Float b, Real x, int prec) {
+  public static void arb_get_interval_arf(Float a, Float b, Real x, int prec)
+  {
     arbJNI.arb_get_interval_arf(Float.getCPtr(a), a, Float.getCPtr(b), b, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_tan(Real y, Real x, int prec) {
+  public static void arb_tan(Real y, Real x, int prec)
+  {
     arbJNI.arb_tan(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
   }
 
-  public static void acb_inv(Complex res, Complex z, int prec) {
+  public static void acb_inv(Complex res, Complex z, int prec)
+  {
     arbJNI.acb_inv(Complex.getCPtr(res), res, Complex.getCPtr(z), z, prec);
   }
 
-  public static void arb_inv(Real z, Real x, int prec) {
+  public static void arb_inv(Real z, Real x, int prec)
+  {
     arbJNI.arb_inv(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
-  public static int arb_allocated_bytes(Real x) {
+  public static int arb_allocated_bytes(Real x)
+  {
     return arbJNI.arb_allocated_bytes(Real.getCPtr(x), x);
   }
 
-  public static void arf_set_mag(Float y, Magnitude x) {
+  public static void arf_set_mag(Float y, Magnitude x)
+  {
     arbJNI.arf_set_mag(Float.getCPtr(y), y, Magnitude.getCPtr(x), x);
   }
 
-  public static void arf_mag_add_ulp(Magnitude z, Magnitude x, Float y, int prec) {
+  public static void arf_mag_add_ulp(Magnitude z, Magnitude x, Float y, int prec)
+  {
     arbJNI.arf_mag_add_ulp(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Float.getCPtr(y), y, prec);
   }
 
-  public static void arb_printd(Real x, int digits) {
+  public static void arb_printd(Real x, int digits)
+  {
     arbJNI.arb_printd(Real.getCPtr(x), x, digits);
   }
 
-  public static int arf_is_pos_inf(Float x) {
+  public static int arf_is_pos_inf(Float x)
+  {
     return arbJNI.arf_is_pos_inf(Float.getCPtr(x), x);
   }
 
-  public static int arf_is_neg_inf(Float x) {
+  public static int arf_is_neg_inf(Float x)
+  {
     return arbJNI.arf_is_neg_inf(Float.getCPtr(x), x);
   }
 
-  public static int arf_sgn(Float x) {
+  public static int arf_sgn(Float x)
+  {
     return arbJNI.arf_sgn(Float.getCPtr(x), x);
   }
 
-  public static int arf_is_nan(Float x) {
+  public static int arf_is_nan(Float x)
+  {
     return arbJNI.arf_is_nan(Float.getCPtr(x), x);
   }
 
-  public static int arf_equal(Float x, Float y) {
+  public static int arf_equal(Float x, Float y)
+  {
     return arbJNI.arf_equal(Float.getCPtr(x), x, Float.getCPtr(y), y);
   }
 
-  public static int arf_is_inf(Float x) {
+  public static int arf_is_inf(Float x)
+  {
     return arbJNI.arf_is_inf(Float.getCPtr(x), x);
   }
 
-  public static void arb_get_mag(Magnitude z, Real x) {
+  public static void arb_get_mag(Magnitude z, Real x)
+  {
     arbJNI.arb_get_mag(Magnitude.getCPtr(z), z, Real.getCPtr(x), x);
   }
 
-  public static void mag_sub_lower(Magnitude z, Magnitude x, Magnitude y) {
+  public static void mag_sub_lower(Magnitude z, Magnitude x, Magnitude y)
+  {
     arbJNI.mag_sub_lower(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void arb_add_error_mag(Real x, Magnitude err) {
+  public static void arb_add_error_mag(Real x, Magnitude err)
+  {
     arbJNI.arb_add_error_mag(Real.getCPtr(x), x, Magnitude.getCPtr(err), err);
   }
 
-  public static void mag_mul_ui_lower(Magnitude z, Magnitude x, long y) {
+  public static void mag_mul_ui_lower(Magnitude z, Magnitude x, long y)
+  {
     arbJNI.mag_mul_ui_lower(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, y);
   }
 
-  public static void mag_sub(Magnitude z, Magnitude x, Magnitude y) {
+  public static void mag_sub(Magnitude z, Magnitude x, Magnitude y)
+  {
     arbJNI.mag_sub(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static double mag_get_d(Magnitude z) {
+  public static double mag_get_d(Magnitude z)
+  {
     return arbJNI.mag_get_d(Magnitude.getCPtr(z), z);
   }
 
-  public static void acb_zero(Complex z) {
+  public static void acb_zero(Complex z)
+  {
     arbJNI.acb_zero(Complex.getCPtr(z), z);
   }
 
-  public static void acb_sub(Complex z, Complex x, Complex y, int prec) {
+  public static void acb_sub(Complex z, Complex x, Complex y, int prec)
+  {
     arbJNI.acb_sub(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
 
-  public static void acb_addmul_arb(Complex z, Complex x, Real y, int prec) {
+  public static void acb_addmul_arb(Complex z, Complex x, Real y, int prec)
+  {
     arbJNI.acb_addmul_arb(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void mag_add_lower(Magnitude z, Magnitude x, Magnitude y) {
+  public static void mag_add_lower(Magnitude z, Magnitude x, Magnitude y)
+  {
     arbJNI.mag_add_lower(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void mag_mul_lower(Magnitude z, Magnitude x, Magnitude y) {
+  public static void mag_mul_lower(Magnitude z, Magnitude x, Magnitude y)
+  {
     arbJNI.mag_mul_lower(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void acb_add_error_mag(Complex x, Magnitude err) {
+  public static void acb_add_error_mag(Complex x, Magnitude err)
+  {
     arbJNI.acb_add_error_mag(Complex.getCPtr(x), x, Magnitude.getCPtr(err), err);
   }
 
-  public static void arb_neg(Real y, Real x) {
+  public static void arb_neg(Real y, Real x)
+  {
     arbJNI.arb_neg(Real.getCPtr(y), y, Real.getCPtr(x), x);
   }
 
-  public static void arf_interval_swap(FloatInterval v, FloatInterval u) {
+  public static void arf_interval_swap(FloatInterval v, FloatInterval u)
+  {
     arbJNI.arf_interval_swap(FloatInterval.getCPtr(v), v, FloatInterval.getCPtr(u), u);
   }
 
-  public static void arb_set_arf(Real x, Float y) {
+  public static void arb_set_arf(Real x, Float y)
+  {
     arbJNI.arb_set_arf(Real.getCPtr(x), x, Float.getCPtr(y), y);
   }
 
-  public static void mag_one(Magnitude x) {
+  public static void mag_one(Magnitude x)
+  {
     arbJNI.mag_one(Magnitude.getCPtr(x), x);
   }
 
-  public static void mag_clear(Magnitude x) {
+  public static void mag_clear(Magnitude x)
+  {
     arbJNI.mag_clear(Magnitude.getCPtr(x), x);
   }
 
-  public static void mag_inf(Magnitude x) {
+  public static void mag_inf(Magnitude x)
+  {
     arbJNI.mag_inf(Magnitude.getCPtr(x), x);
   }
 
-  public static void acb_mul_2exp_si(Complex z, Complex x, int e) {
+  public static void acb_mul_2exp_si(Complex z, Complex x, int e)
+  {
     arbJNI.acb_mul_2exp_si(Complex.getCPtr(z), z, Complex.getCPtr(x), x, e);
   }
 
-  public static void acb_indeterminate(Complex x) {
+  public static void acb_indeterminate(Complex x)
+  {
     arbJNI.acb_indeterminate(Complex.getCPtr(x), x);
   }
 
-  public static int arb_is_positive(Real x) {
+  public static int arb_is_positive(Real x)
+  {
     return arbJNI.arb_is_positive(Real.getCPtr(x), x);
   }
 
-  public static int arb_is_negative(Real x) {
+  public static int arb_is_negative(Real x)
+  {
     return arbJNI.arb_is_negative(Real.getCPtr(x), x);
   }
 
-  public static int arb_is_nonnegative(Real x) {
+  public static int arb_is_nonnegative(Real x)
+  {
     return arbJNI.arb_is_nonnegative(Real.getCPtr(x), x);
   }
 
-  public static int arb_is_nonpositive(Real x) {
+  public static int arb_is_nonpositive(Real x)
+  {
     return arbJNI.arb_is_nonpositive(Real.getCPtr(x), x);
   }
 
-  public static void mag_sqrt(Magnitude y, Magnitude x) {
+  public static void mag_sqrt(Magnitude y, Magnitude x)
+  {
     arbJNI.mag_sqrt(Magnitude.getCPtr(y), y, Magnitude.getCPtr(x), x);
   }
 
-  public static void mag_sqrt_lower(Magnitude y, Magnitude x) {
+  public static void mag_sqrt_lower(Magnitude y, Magnitude x)
+  {
     arbJNI.mag_sqrt_lower(Magnitude.getCPtr(y), y, Magnitude.getCPtr(x), x);
   }
 
-  public static void mag_rsqrt(Magnitude y, Magnitude x) {
+  public static void mag_rsqrt(Magnitude y, Magnitude x)
+  {
     arbJNI.mag_rsqrt(Magnitude.getCPtr(y), y, Magnitude.getCPtr(x), x);
   }
 
-  public static void mag_rsqrt_lower(Magnitude y, Magnitude x) {
+  public static void mag_rsqrt_lower(Magnitude y, Magnitude x)
+  {
     arbJNI.mag_rsqrt_lower(Magnitude.getCPtr(y), y, Magnitude.getCPtr(x), x);
   }
 
-  public static void mag_root(Magnitude y, Magnitude x, long n) {
+  public static void mag_root(Magnitude y, Magnitude x, long n)
+  {
     arbJNI.mag_root(Magnitude.getCPtr(y), y, Magnitude.getCPtr(x), x, n);
   }
 
-  public static void mag_hypot(Magnitude z, Magnitude x, Magnitude y) {
+  public static void mag_hypot(Magnitude z, Magnitude x, Magnitude y)
+  {
     arbJNI.mag_hypot(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void mag_binpow_uiui(Magnitude b, long m, long n) {
+  public static void mag_binpow_uiui(Magnitude b, long m, long n)
+  {
     arbJNI.mag_binpow_uiui(Magnitude.getCPtr(b), b, m, n);
   }
 
-  public static void mag_polylog_tail(Magnitude u, Magnitude z, int sigma, long d, long N) {
+  public static void mag_polylog_tail(Magnitude u, Magnitude z, int sigma, long d, long N)
+  {
     arbJNI.mag_polylog_tail(Magnitude.getCPtr(u), u, Magnitude.getCPtr(z), z, sigma, d, N);
   }
 
-  public static void mag_geom_series(Magnitude res, Magnitude x, long n) {
+  public static void mag_geom_series(Magnitude res, Magnitude x, long n)
+  {
     arbJNI.mag_geom_series(Magnitude.getCPtr(res), res, Magnitude.getCPtr(x), x, n);
   }
 
-  public static void mag_hurwitz_zeta_uiui(Magnitude res, long s, long a) {
+  public static void mag_hurwitz_zeta_uiui(Magnitude res, long s, long a)
+  {
     arbJNI.mag_hurwitz_zeta_uiui(Magnitude.getCPtr(res), res, s, a);
   }
 
-  public static void mag_set_ui(Magnitude z, long x) {
+  public static void mag_set_ui(Magnitude z, long x)
+  {
     arbJNI.mag_set_ui(Magnitude.getCPtr(z), z, x);
   }
 
-  public static void mag_set_ui_lower(Magnitude z, long x) {
+  public static void mag_set_ui_lower(Magnitude z, long x)
+  {
     arbJNI.mag_set_ui_lower(Magnitude.getCPtr(z), z, x);
   }
 
-  public static void mag_set(Magnitude x, Magnitude y) {
+  public static void mag_set(Magnitude x, Magnitude y)
+  {
     arbJNI.mag_set(Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void mag_pow_ui_lower(Magnitude z, Magnitude x, long e) {
+  public static void mag_pow_ui_lower(Magnitude z, Magnitude x, long e)
+  {
     arbJNI.mag_pow_ui_lower(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, e);
   }
 
-  public static void arf_mul_2exp_si(Float y, Float x, int e) {
+  public static void arf_mul_2exp_si(Float y, Float x, int e)
+  {
     arbJNI.arf_mul_2exp_si(Float.getCPtr(y), y, Float.getCPtr(x), x, e);
   }
 
-  public static void arf_interval_set(FloatInterval v, FloatInterval u) {
+  public static void arf_interval_set(FloatInterval v, FloatInterval u)
+  {
     arbJNI.arf_interval_set(FloatInterval.getCPtr(v), v, FloatInterval.getCPtr(u), u);
   }
 
-  public static void arf_interval_get_arb(Real x, FloatInterval v, int prec) {
+  public static void arf_interval_get_arb(Real x, FloatInterval v, int prec)
+  {
     arbJNI.arf_interval_get_arb(Real.getCPtr(x), x, FloatInterval.getCPtr(v), v, prec);
   }
 
-  public static int arb_sgn_nonzero(Real x) {
+  public static int arb_sgn_nonzero(Real x)
+  {
     return arbJNI.arb_sgn_nonzero(Real.getCPtr(x), x);
   }
 
-  public static void acb_poly_derivative(ComplexPolynomial res, ComplexPolynomial poly, int prec) {
+  public static void acb_poly_derivative(ComplexPolynomial res, ComplexPolynomial poly, int prec)
+  {
     arbJNI.acb_poly_derivative(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly), poly, prec);
   }
 
-  public static void acb_poly_integral(ComplexPolynomial res, ComplexPolynomial poly, int prec) {
+  public static void acb_poly_integral(ComplexPolynomial res, ComplexPolynomial poly, int prec)
+  {
     arbJNI.acb_poly_integral(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(poly), poly, prec);
   }
 
-  public static void acb_poly_product_roots(ComplexPolynomial poly, Complex xs, int n, int prec) {
+  public static void acb_poly_product_roots(ComplexPolynomial poly, Complex xs, int n, int prec)
+  {
     arbJNI.acb_poly_product_roots(ComplexPolynomial.getCPtr(poly), poly, Complex.getCPtr(xs), xs, n, prec);
   }
 
-  public static void acb_poly_evaluate(Complex y, ComplexPolynomial f, Complex x, int prec) {
+  public static void acb_poly_evaluate(Complex y, ComplexPolynomial f, Complex x, int prec)
+  {
     arbJNI.acb_poly_evaluate(Complex.getCPtr(y), y, ComplexPolynomial.getCPtr(f), f, Complex.getCPtr(x), x, prec);
   }
 
-  public static void acb_poly_evaluate2(Complex y, Complex z, ComplexPolynomial f, Complex x, int prec) {
-    arbJNI.acb_poly_evaluate2(Complex.getCPtr(y), y, Complex.getCPtr(z), z, ComplexPolynomial.getCPtr(f), f, Complex.getCPtr(x), x, prec);
+  public static void acb_poly_evaluate2(Complex y, Complex z, ComplexPolynomial f, Complex x, int prec)
+  {
+    arbJNI.acb_poly_evaluate2(Complex.getCPtr(y),
+                              y,
+                              Complex.getCPtr(z),
+                              z,
+                              ComplexPolynomial.getCPtr(f),
+                              f,
+                              Complex.getCPtr(x),
+                              x,
+                              prec);
   }
 
-  public static void flint_free(SWIGTYPE_p_void ptr) {
+  public static void flint_free(SWIGTYPE_p_void ptr)
+  {
     arbJNI.flint_free(SWIGTYPE_p_void.getCPtr(ptr));
   }
 
-  public static void acb_get_mag(Magnitude u, Complex z) {
+  public static void acb_get_mag(Magnitude u, Complex z)
+  {
     arbJNI.acb_get_mag(Magnitude.getCPtr(u), u, Complex.getCPtr(z), z);
   }
 
-  public static void acb_mat_init(ComplexMatrix mat, int numRows, int numCols) {
+  public static void acb_mat_init(ComplexMatrix mat, int numRows, int numCols)
+  {
     arbJNI.acb_mat_init(ComplexMatrix.getCPtr(mat), mat, numRows, numCols);
   }
 
-  public static void acb_dot(Complex res, Complex initial, int subtract, Complex x, int xstep, Complex y, int ystep, int len, int prec) {
-    arbJNI.acb_dot(Complex.getCPtr(res), res, Complex.getCPtr(initial), initial, subtract, Complex.getCPtr(x), x, xstep, Complex.getCPtr(y), y, ystep, len, prec);
+  public static void acb_dot(Complex res,
+                             Complex initial,
+                             int subtract,
+                             Complex x,
+                             int xstep,
+                             Complex y,
+                             int ystep,
+                             int len,
+                             int prec)
+  {
+    arbJNI.acb_dot(Complex.getCPtr(res),
+                   res,
+                   Complex.getCPtr(initial),
+                   initial,
+                   subtract,
+                   Complex.getCPtr(x),
+                   x,
+                   xstep,
+                   Complex.getCPtr(y),
+                   y,
+                   ystep,
+                   len,
+                   prec);
   }
 
-  public static void acb_poly_interpolate_newton(ComplexPolynomial poly, Complex xs, Complex ys, int n, int prec) {
-    arbJNI.acb_poly_interpolate_newton(ComplexPolynomial.getCPtr(poly), poly, Complex.getCPtr(xs), xs, Complex.getCPtr(ys), ys, n, prec);
+  public static void acb_poly_interpolate_newton(ComplexPolynomial poly, Complex xs, Complex ys, int n, int prec)
+  {
+    arbJNI.acb_poly_interpolate_newton(ComplexPolynomial.getCPtr(poly),
+                                       poly,
+                                       Complex.getCPtr(xs),
+                                       xs,
+                                       Complex.getCPtr(ys),
+                                       ys,
+                                       n,
+                                       prec);
   }
 
-  public static void arf_zero(Float x) {
+  public static void arf_zero(Float x)
+  {
     arbJNI.arf_zero(Float.getCPtr(x), x);
   }
 
-  public static void acb_cosh(Complex y, Complex x, int prec) {
+  public static void acb_cosh(Complex y, Complex x, int prec)
+  {
     arbJNI.acb_cosh(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
 
-  public static void arf_neg(Float y, Float x) {
+  public static void arf_neg(Float y, Float x)
+  {
     arbJNI.arf_neg(Float.getCPtr(y), y, Float.getCPtr(x), x);
   }
 
-  public static int arf_mul_si(Float z, Float x, int y, int prec, int rnd) {
+  public static int arf_mul_si(Float z, Float x, int y, int prec, int rnd)
+  {
     return arbJNI.arf_mul_si(Float.getCPtr(z), z, Float.getCPtr(x), x, y, prec, rnd);
   }
 
-  public static int arf_mul_rnd_any(Float z, Float x, Float y, int prec, int rnd) {
+  public static int arf_mul_rnd_any(Float z, Float x, Float y, int prec, int rnd)
+  {
     return arbJNI.arf_mul_rnd_any(Float.getCPtr(z), z, Float.getCPtr(x), x, Float.getCPtr(y), y, prec, rnd);
   }
 
-  public static int arf_mul_rnd_down(Float z, Float x, Float y, int prec) {
+  public static int arf_mul_rnd_down(Float z, Float x, Float y, int prec)
+  {
     return arbJNI.arf_mul_rnd_down(Float.getCPtr(z), z, Float.getCPtr(x), x, Float.getCPtr(y), y, prec);
   }
 
-  public static SWIGTYPE_p_void flint_malloc(long size) {
+  public static SWIGTYPE_p_void flint_malloc(long size)
+  {
     long cPtr = arbJNI.flint_malloc(size);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr,
+                                                    false);
   }
 
-  public static SWIGTYPE_p_void flint_realloc(SWIGTYPE_p_void ptr, long size) {
+  public static SWIGTYPE_p_void flint_realloc(SWIGTYPE_p_void ptr, long size)
+  {
     long cPtr = arbJNI.flint_realloc(SWIGTYPE_p_void.getCPtr(ptr), size);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr,
+                                                    false);
   }
 
-  public static SWIGTYPE_p_void flint_calloc(long num, long size) {
+  public static SWIGTYPE_p_void flint_calloc(long num, long size)
+  {
     long cPtr = arbJNI.flint_calloc(num, size);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr,
+                                                    false);
   }
 
-  public static void color_function(double[] R, double[] G, double[] B, Complex z, int mode) {
+  public static void color_function(double[] R, double[] G, double[] B, Complex z, int mode)
+  {
     arbJNI.color_function(R, G, B, Complex.getCPtr(z), z, mode);
   }
 
-  public static void acb_set_d(Complex z, double numCols) {
+  public static void acb_set_d(Complex z, double numCols)
+  {
     arbJNI.acb_set_d(Complex.getCPtr(z), z, numCols);
   }
 
-  public static void acb_dirichlet_zeta_jet(Complex res, Complex s, int deflate, int len, int prec) {
+  public static void acb_dirichlet_zeta_jet(Complex res, Complex s, int deflate, int len, int prec)
+  {
     arbJNI.acb_dirichlet_zeta_jet(Complex.getCPtr(res), res, Complex.getCPtr(s), s, deflate, len, prec);
   }
 
-  public static void acb_dirichlet_hardy_z(Complex res, Complex t, DirichletGroup G, DirichletCharacter chi, int len, int prec) {
-    arbJNI.acb_dirichlet_hardy_z(Complex.getCPtr(res), res, Complex.getCPtr(t), t, DirichletGroup.getCPtr(G), G, DirichletCharacter.getCPtr(chi), chi, len, prec);
+  public static void
+         acb_dirichlet_hardy_z(Complex res, Complex t, DirichletGroup G, DirichletCharacter chi, int len, int prec)
+  {
+    arbJNI.acb_dirichlet_hardy_z(Complex.getCPtr(res),
+                                 res,
+                                 Complex.getCPtr(t),
+                                 t,
+                                 DirichletGroup.getCPtr(G),
+                                 G,
+                                 DirichletCharacter.getCPtr(chi),
+                                 chi,
+                                 len,
+                                 prec);
   }
 
-  public static void acb_print(Complex x) {
+  public static void acb_print(Complex x)
+  {
     arbJNI.acb_print(Complex.getCPtr(x), x);
   }
 
-  public static String arb_get_str(Real x, int n, long flags) {
+  public static String arb_get_str(Real x, int n, long flags)
+  {
     return arbJNI.arb_get_str(Real.getCPtr(x), x, n, flags);
   }
 
-  public static String arf_get_str(Float x, int d) {
+  public static String arf_get_str(Float x, int d)
+  {
     return arbJNI.arf_get_str(Float.getCPtr(x), x, d);
   }
 
-  public static double arf_get_d(Float x, int rnd) {
+  public static double arf_get_d(Float x, int rnd)
+  {
     return arbJNI.arf_get_d(Float.getCPtr(x), x, rnd);
   }
 
-  public static void arf_set_d(Float x, double v) {
+  public static void arf_set_d(Float x, double v)
+  {
     arbJNI.arf_set_d(Float.getCPtr(x), x, v);
   }
 
-  public static int arf_sub(Float z, Float x, Float y, int prec, int rnd) {
+  public static int arf_sub(Float z, Float x, Float y, int prec, int rnd)
+  {
     return arbJNI.arf_sub(Float.getCPtr(z), z, Float.getCPtr(x), x, Float.getCPtr(y), y, prec, rnd);
   }
 
-  public static void acb_conj(Complex z, Complex x) {
+  public static void acb_conj(Complex z, Complex x)
+  {
     arbJNI.acb_conj(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
   }
 
-  public static void arb_floor(Real y, Real x, int prec) {
+  public static void arb_floor(Real y, Real x, int prec)
+  {
     arbJNI.arb_floor(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_ceil(Real y, Real x, int prec) {
+  public static void arb_ceil(Real y, Real x, int prec)
+  {
     arbJNI.arb_ceil(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_div(Real z, Real x, Real y, int prec) {
+  public static void arb_div(Real z, Real x, Real y, int prec)
+  {
     arbJNI.arb_div(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void arb_sin(Real s, Real x, int prec) {
+  public static void arb_sin(Real s, Real x, int prec)
+  {
     arbJNI.arb_sin(Real.getCPtr(s), s, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_cos(Real s, Real x, int prec) {
+  public static void arb_cos(Real s, Real x, int prec)
+  {
     arbJNI.arb_cos(Real.getCPtr(s), s, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_mul(Real z, Real x, Real y, int prec) {
+  public static void arb_mul(Real z, Real x, Real y, int prec)
+  {
     arbJNI.arb_mul(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static int arf_abs_bound_lt_2exp_si(Float x) {
+  public static int arf_abs_bound_lt_2exp_si(Float x)
+  {
     return arbJNI.arf_abs_bound_lt_2exp_si(Float.getCPtr(x), x);
   }
 
-  public static void arb_mul_2exp_si(Real y, Real x, int e) {
+  public static void arb_mul_2exp_si(Real y, Real x, int e)
+  {
     arbJNI.arb_mul_2exp_si(Real.getCPtr(y), y, Real.getCPtr(x), x, e);
   }
 
-  public static void arb_get_abs_ubound_arf(Float u, Real x, int prec) {
+  public static void arb_get_abs_ubound_arf(Float u, Real x, int prec)
+  {
     arbJNI.arb_get_abs_ubound_arf(Float.getCPtr(u), u, Real.getCPtr(x), x, prec);
   }
 
-  public static void acb_mul_si(Complex z, Complex x, int y, int prec) {
+  public static void acb_mul_si(Complex z, Complex x, int y, int prec)
+  {
     arbJNI.acb_mul_si(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
   }
 
-  public static int arf_mul_ui(Float z, Float x, long y, int prec, int rnd) {
+  public static int arf_mul_ui(Float z, Float x, long y, int prec, int rnd)
+  {
     return arbJNI.arf_mul_ui(Float.getCPtr(z), z, Float.getCPtr(x), x, y, prec, rnd);
   }
 
-  public static int arf_div_ui(Float z, Float x, long y, int prec, int rnd) {
+  public static int arf_div_ui(Float z, Float x, long y, int prec, int rnd)
+  {
     return arbJNI.arf_div_ui(Float.getCPtr(z), z, Float.getCPtr(x), x, y, prec, rnd);
   }
 
-  public static int mag_cmp(Magnitude x, Magnitude y) {
+  public static int mag_cmp(Magnitude x, Magnitude y)
+  {
     return arbJNI.mag_cmp(Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void arb_swap(Real x, Real y) {
+  public static void arb_swap(Real x, Real y)
+  {
     arbJNI.arb_swap(Real.getCPtr(x), x, Real.getCPtr(y), y);
   }
 
-  public static void mag_init(Magnitude x) {
+  public static void mag_init(Magnitude x)
+  {
     arbJNI.mag_init(Magnitude.getCPtr(x), x);
   }
 
-  public static void mag_add(Magnitude z, Magnitude x, Magnitude y) {
+  public static void mag_add(Magnitude z, Magnitude x, Magnitude y)
+  {
     arbJNI.mag_add(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void arf_set(Float y, Float x) {
+  public static void arf_set(Float y, Float x)
+  {
     arbJNI.arf_set(Float.getCPtr(y), y, Float.getCPtr(x), x);
   }
 
-  public static void mag_pow_ui(Magnitude res, Magnitude x, long e) {
+  public static void mag_pow_ui(Magnitude res, Magnitude x, long e)
+  {
     arbJNI.mag_pow_ui(Magnitude.getCPtr(res), res, Magnitude.getCPtr(x), x, e);
   }
 
-  public static void mag_mul(Magnitude z, Magnitude x, Magnitude y) {
+  public static void mag_mul(Magnitude z, Magnitude x, Magnitude y)
+  {
     arbJNI.mag_mul(Magnitude.getCPtr(z), z, Magnitude.getCPtr(x), x, Magnitude.getCPtr(y), y);
   }
 
-  public static void arf_get_mag(Magnitude y, Float x) {
+  public static void arf_get_mag(Magnitude y, Float x)
+  {
     arbJNI.arf_get_mag(Magnitude.getCPtr(y), y, Float.getCPtr(x), x);
   }
 
-  public static int arf_add(Float z, Float x, Float y, int prec, int rnd) {
+  public static int arf_add(Float z, Float x, Float y, int prec, int rnd)
+  {
     return arbJNI.arf_add(Float.getCPtr(z), z, Float.getCPtr(x), x, Float.getCPtr(y), y, prec, rnd);
   }
 
-  public static int acb_rel_accuracy_bits(Complex x) {
+  public static int acb_rel_accuracy_bits(Complex x)
+  {
     return arbJNI.acb_rel_accuracy_bits(Complex.getCPtr(x), x);
   }
 
-  public static int arb_bits(Real x) {
+  public static int arb_bits(Real x)
+  {
     return arbJNI.arb_bits(Real.getCPtr(x), x);
   }
 
-  public static void acb_pow_ui(Complex y, Complex b, long e, int prec) {
+  public static void acb_pow_ui(Complex y, Complex b, long e, int prec)
+  {
     arbJNI.acb_pow_ui(Complex.getCPtr(y), y, Complex.getCPtr(b), b, e, prec);
   }
 
-  public static void acb_add_ui(Complex z, Complex x, long numCols, int prec) {
+  public static void acb_add_ui(Complex z, Complex x, long numCols, int prec)
+  {
     arbJNI.acb_add_ui(Complex.getCPtr(z), z, Complex.getCPtr(x), x, numCols, prec);
   }
 
-  public static void acb_log(Complex numRows, Complex z, int prec) {
+  public static void acb_log(Complex numRows, Complex z, int prec)
+  {
     arbJNI.acb_log(Complex.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_tanh(Complex y, Complex x, int prec) {
+  public static void acb_tanh(Complex y, Complex x, int prec)
+  {
     arbJNI.acb_tanh(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
 
-  public static void arb_set_d(Real x, double y) {
+  public static void arb_set_d(Real x, double y)
+  {
     arbJNI.arb_set_d(Real.getCPtr(x), x, y);
   }
 
-  public static void acb_dirichlet_hurwitz(Complex res, Complex s, Complex a, int prec) {
+  public static void acb_dirichlet_hurwitz(Complex res, Complex s, Complex a, int prec)
+  {
     arbJNI.acb_dirichlet_hurwitz(Complex.getCPtr(res), res, Complex.getCPtr(s), s, Complex.getCPtr(a), a, prec);
   }
 
-  public static void acb_dirichlet_hardy_theta(Complex res, Complex t, DirichletGroup G, DirichletCharacter chi, int len, int prec) {
-    arbJNI.acb_dirichlet_hardy_theta(Complex.getCPtr(res), res, Complex.getCPtr(t), t, DirichletGroup.getCPtr(G), G, DirichletCharacter.getCPtr(chi), chi, len, prec);
+  public static void acb_dirichlet_hardy_theta(Complex res,
+                                               Complex t,
+                                               DirichletGroup G,
+                                               DirichletCharacter chi,
+                                               int len,
+                                               int prec)
+  {
+    arbJNI.acb_dirichlet_hardy_theta(Complex.getCPtr(res),
+                                     res,
+                                     Complex.getCPtr(t),
+                                     t,
+                                     DirichletGroup.getCPtr(G),
+                                     G,
+                                     DirichletCharacter.getCPtr(chi),
+                                     chi,
+                                     len,
+                                     prec);
   }
 
-  public static void acb_mul(Complex z, Complex x, Complex y, int prec) {
+  public static void acb_mul(Complex z, Complex x, Complex y, int prec)
+  {
     arbJNI.acb_mul(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
 
-  public static void acb_cos(Complex numRows, Complex z, int prec) {
+  public static void acb_cos(Complex numRows, Complex z, int prec)
+  {
     arbJNI.acb_cos(Complex.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_sin(Complex numRows, Complex z, int prec) {
+  public static void acb_sin(Complex numRows, Complex z, int prec)
+  {
     arbJNI.acb_sin(Complex.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_exp(Complex y, Complex z, int prec) {
+  public static void acb_exp(Complex y, Complex z, int prec)
+  {
     arbJNI.acb_exp(Complex.getCPtr(y), y, Complex.getCPtr(z), z, prec);
   }
 
-  public static void arb_add(Real z, Real x, Real y, int prec) {
+  public static void arb_add(Real z, Real x, Real y, int prec)
+  {
     arbJNI.arb_add(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void arb_sub(Real z, Real x, Real y, int prec) {
+  public static void arb_sub(Real z, Real x, Real y, int prec)
+  {
     arbJNI.arb_sub(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void acb_arg(Real numRows, Complex z, int prec) {
+  public static void acb_arg(Real numRows, Complex z, int prec)
+  {
     arbJNI.acb_arg(Real.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }
 
-  public static void acb_modular_eisenstein(Complex numRows, Complex tau, int len, int prec) {
+  public static void acb_modular_eisenstein(Complex numRows, Complex tau, int len, int prec)
+  {
     arbJNI.acb_modular_eisenstein(Complex.getCPtr(numRows), numRows, Complex.getCPtr(tau), tau, len, prec);
   }
 
-  public static void acb_pow_arb(Complex z, Complex x, Real y, int prec) {
+  public static void acb_pow_arb(Complex z, Complex x, Real y, int prec)
+  {
     arbJNI.acb_pow_arb(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void acb_pow(Complex z, Complex x, Complex y, int prec) {
+  public static void acb_pow(Complex z, Complex x, Complex y, int prec)
+  {
     arbJNI.acb_pow(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
 
-  public static int arb_contains(Real x, Real y) {
+  public static int arb_contains(Real x, Real y)
+  {
     return arbJNI.arb_contains(Real.getCPtr(x), x, Real.getCPtr(y), y);
   }
 
-  public static int arb_contains_zero(Real x) {
+  public static int arb_contains_zero(Real x)
+  {
     return arbJNI.arb_contains_zero(Real.getCPtr(x), x);
   }
 
-  public static int arb_set_str(Real res, String inp, int prec) {
+  public static int arb_set_str(Real res, String inp, int prec)
+  {
     return arbJNI.arb_set_str(Real.getCPtr(res), res, inp, prec);
   }
 
-  public static int arb_overlaps(Real x, Real y) {
+  public static int arb_overlaps(Real x, Real y)
+  {
     return arbJNI.arb_overlaps(Real.getCPtr(x), x, Real.getCPtr(y), y);
   }
 
-  public static Complex _acb_vec_init(int n) {
+  public static Complex _acb_vec_init(int n)
+  {
     long cPtr = arbJNI._acb_vec_init(n);
-    return (cPtr == 0) ? null : new Complex(cPtr, false);
+    return (cPtr == 0) ? null : new Complex(cPtr,
+                                            false);
   }
 
-  public static Real _arb_vec_init(int n) {
+  public static Real _arb_vec_init(int n)
+  {
     long cPtr = arbJNI._arb_vec_init(n);
-    return (cPtr == 0) ? null : new Real(cPtr, false);
+    return (cPtr == 0) ? null : new Real(cPtr,
+                                         false);
   }
 
-  public static void _acb_vec_clear(Complex v, int n) {
+  public static void _acb_vec_clear(Complex v, int n)
+  {
     arbJNI._acb_vec_clear(Complex.getCPtr(v), v, n);
   }
 
-  public static void acb_mul_ui(Complex z, Complex x, long y, int prec) {
+  public static void acb_mul_ui(Complex z, Complex x, long y, int prec)
+  {
     arbJNI.acb_mul_ui(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
   }
 
-  public static void acb_set(Complex z, Complex x) {
+  public static void acb_set(Complex z, Complex x)
+  {
     arbJNI.acb_set(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
   }
 
-  public static void acb_clear(Complex x) {
+  public static void acb_clear(Complex x)
+  {
     arbJNI.acb_clear(Complex.getCPtr(x), x);
   }
 
-  public static void arb_clear(Real x) {
+  public static void arb_clear(Real x)
+  {
     arbJNI.arb_clear(Real.getCPtr(x), x);
   }
 
-  public static void acb_add(Complex z, Complex x, Complex y, int prec) {
+  public static void acb_add(Complex z, Complex x, Complex y, int prec)
+  {
     arbJNI.acb_add(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
 
-  public static void acb_sub_ui(Complex z, Complex x, long y, int prec) {
+  public static void acb_sub_ui(Complex z, Complex x, long y, int prec)
+  {
     arbJNI.acb_sub_ui(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
   }
 
-  public static void acb_div(Complex z, Complex x, Complex y, int prec) {
+  public static void acb_div(Complex z, Complex x, Complex y, int prec)
+  {
     arbJNI.acb_div(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Complex.getCPtr(y), y, prec);
   }
 
-  public static void _arb_vec_clear(Real v, int n) {
+  public static void _arb_vec_clear(Real v, int n)
+  {
     arbJNI._arb_vec_clear(Real.getCPtr(v), v, n);
   }
 
-  public static void acb_mul_onei(Complex z, Complex x) {
+  public static void acb_mul_onei(Complex z, Complex x)
+  {
     arbJNI.acb_mul_onei(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
   }
 
-  public static void acb_div_onei(Complex z, Complex x) {
+  public static void acb_div_onei(Complex z, Complex x)
+  {
     arbJNI.acb_div_onei(Complex.getCPtr(z), z, Complex.getCPtr(x), x);
   }
 
-  public static void arb_pow_ui(Real y, Real b, long e, int prec) {
+  public static void arb_pow_ui(Real y, Real b, long e, int prec)
+  {
     arbJNI.arb_pow_ui(Real.getCPtr(y), y, Real.getCPtr(b), b, e, prec);
   }
 
-  public static void acb_abs(Real numRows, Complex z, int prec) {
+  public static void acb_abs(Real numRows, Complex z, int prec)
+  {
     arbJNI.acb_abs(Real.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }
 
-  public static void arb_sqrt(Real z, Real x, int prec) {
+  public static void arb_sqrt(Real z, Real x, int prec)
+  {
     arbJNI.arb_sqrt(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
-  public static void acb_sqr(Complex z, Complex x, int prec) {
+  public static void acb_sqr(Complex z, Complex x, int prec)
+  {
     arbJNI.acb_sqr(Complex.getCPtr(z), z, Complex.getCPtr(x), x, prec);
   }
 
-  public static int acb_contains(Complex x, Complex y) {
+  public static int acb_contains(Complex x, Complex y)
+  {
     return arbJNI.acb_contains(Complex.getCPtr(x), x, Complex.getCPtr(y), y);
   }
 
-  public static int acb_overlaps(Complex x, Complex y) {
+  public static int acb_overlaps(Complex x, Complex y)
+  {
     return arbJNI.acb_overlaps(Complex.getCPtr(x), x, Complex.getCPtr(y), y);
   }
 
-  public static int acb_contains_zero(Complex x) {
+  public static int acb_contains_zero(Complex x)
+  {
     return arbJNI.acb_contains_zero(Complex.getCPtr(x), x);
   }
 
-  public static int acb_allocated_bytes(Complex x) {
+  public static int acb_allocated_bytes(Complex x)
+  {
     return arbJNI.acb_allocated_bytes(Complex.getCPtr(x), x);
   }
 
-  public static void acb_mul_arb(Complex z, Complex x, Real y, int prec) {
+  public static void acb_mul_arb(Complex z, Complex x, Real y, int prec)
+  {
     arbJNI.acb_mul_arb(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void acb_div_arb(Complex z, Complex x, Real y, int prec) {
+  public static void acb_div_arb(Complex z, Complex x, Real y, int prec)
+  {
     arbJNI.acb_div_arb(Complex.getCPtr(z), z, Complex.getCPtr(x), x, Real.getCPtr(y), y, prec);
   }
 
-  public static void arb_set(Real z, Real x) {
+  public static void arb_set(Real z, Real x)
+  {
     arbJNI.arb_set(Real.getCPtr(z), z, Real.getCPtr(x), x);
   }
 
-  public static void acb_elliptic_k(Complex res, Complex m, int prec) {
+  public static void acb_elliptic_k(Complex res, Complex m, int prec)
+  {
     arbJNI.acb_elliptic_k(Complex.getCPtr(res), res, Complex.getCPtr(m), m, prec);
   }
 
-  public static void acb_get_mid(Complex m, Complex x) {
+  public static void acb_get_mid(Complex m, Complex x)
+  {
     arbJNI.acb_get_mid(Complex.getCPtr(m), m, Complex.getCPtr(x), x);
   }
 
-  public static void arb_const_pi(Real z, int prec) {
+  public static void arb_const_pi(Real z, int prec)
+  {
     arbJNI.arb_const_pi(Real.getCPtr(z), z, prec);
   }
 
-  public static int arb_is_finite(Real z) {
+  public static int arb_is_finite(Real z)
+  {
     return arbJNI.arb_is_finite(Real.getCPtr(z), z);
   }
 
-  public static int acb_is_finite(Complex z) {
+  public static int acb_is_finite(Complex z)
+  {
     return arbJNI.acb_is_finite(Complex.getCPtr(z), z);
   }
 
-  public static void arb_abs(Real y, Real x) {
+  public static void arb_abs(Real y, Real x)
+  {
     arbJNI.arb_abs(Real.getCPtr(y), y, Real.getCPtr(x), x);
   }
 
-  public static void arb_zero(Real x) {
+  public static void arb_zero(Real x)
+  {
     arbJNI.arb_zero(Real.getCPtr(x), x);
   }
 
-  public static void arb_one(Real f) {
+  public static void arb_one(Real f)
+  {
     arbJNI.arb_one(Real.getCPtr(f), f);
   }
 
-  public static void arb_pos_inf(Real x) {
+  public static void arb_pos_inf(Real x)
+  {
     arbJNI.arb_pos_inf(Real.getCPtr(x), x);
   }
 
-  public static void arb_neg_inf(Real x) {
+  public static void arb_neg_inf(Real x)
+  {
     arbJNI.arb_neg_inf(Real.getCPtr(x), x);
   }
 
-  public static void arb_zero_pm_inf(Real x) {
+  public static void arb_zero_pm_inf(Real x)
+  {
     arbJNI.arb_zero_pm_inf(Real.getCPtr(x), x);
   }
 
-  public static void arb_indeterminate(Real x) {
+  public static void arb_indeterminate(Real x)
+  {
     arbJNI.arb_indeterminate(Real.getCPtr(x), x);
   }
 
-  public static void arb_zero_pm_one(Real x) {
+  public static void arb_zero_pm_one(Real x)
+  {
     arbJNI.arb_zero_pm_one(Real.getCPtr(x), x);
   }
 
-  public static int arb_rel_accuracy_bits(Real x) {
+  public static int arb_rel_accuracy_bits(Real x)
+  {
     return arbJNI.arb_rel_accuracy_bits(Real.getCPtr(x), x);
   }
 
-  public static void arb_unit_interval(Real x) {
+  public static void arb_unit_interval(Real x)
+  {
     arbJNI.arb_unit_interval(Real.getCPtr(x), x);
   }
 
-  public static void mag_zero(Magnitude res) {
+  public static void mag_zero(Magnitude res)
+  {
     arbJNI.mag_zero(Magnitude.getCPtr(res), res);
   }
 
-  public static void arb_div_si(Real z, Real x, int y, int prec) {
+  public static void arb_div_si(Real z, Real x, int y, int prec)
+  {
     arbJNI.arb_div_si(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
-  public static void arb_trim(Real y, Real x) {
+  public static void arb_trim(Real y, Real x)
+  {
     arbJNI.arb_trim(Real.getCPtr(y), y, Real.getCPtr(x), x);
   }
 
-  public static void arb_set_interval_mag(Real x, Magnitude a, Magnitude b, int prec) {
+  public static void arb_set_interval_mag(Real x, Magnitude a, Magnitude b, int prec)
+  {
     arbJNI.arb_set_interval_mag(Real.getCPtr(x), x, Magnitude.getCPtr(a), a, Magnitude.getCPtr(b), b, prec);
   }
 
-  public static void acb_modular_theta_series(ComplexPolynomial theta1, ComplexPolynomial theta2, ComplexPolynomial theta3, ComplexPolynomial theta4, ComplexPolynomial z, Complex tau, int len, int prec) {
-    arbJNI.acb_modular_theta_series(ComplexPolynomial.getCPtr(theta1), theta1, ComplexPolynomial.getCPtr(theta2), theta2, ComplexPolynomial.getCPtr(theta3), theta3, ComplexPolynomial.getCPtr(theta4), theta4, ComplexPolynomial.getCPtr(z), z, Complex.getCPtr(tau), tau, len, prec);
+  public static void acb_modular_theta_series(ComplexPolynomial theta1,
+                                              ComplexPolynomial theta2,
+                                              ComplexPolynomial theta3,
+                                              ComplexPolynomial theta4,
+                                              ComplexPolynomial z,
+                                              Complex tau,
+                                              int len,
+                                              int prec)
+  {
+    arbJNI.acb_modular_theta_series(ComplexPolynomial.getCPtr(theta1),
+                                    theta1,
+                                    ComplexPolynomial.getCPtr(theta2),
+                                    theta2,
+                                    ComplexPolynomial.getCPtr(theta3),
+                                    theta3,
+                                    ComplexPolynomial.getCPtr(theta4),
+                                    theta4,
+                                    ComplexPolynomial.getCPtr(z),
+                                    z,
+                                    Complex.getCPtr(tau),
+                                    tau,
+                                    len,
+                                    prec);
   }
 
-  public static void acb_poly_init(ComplexPolynomial poly) {
+  public static void acb_poly_init(ComplexPolynomial poly)
+  {
     arbJNI.acb_poly_init(ComplexPolynomial.getCPtr(poly), poly);
   }
 
-  public static void arf_clear(Float x) {
+  public static void arf_clear(Float x)
+  {
     arbJNI.arf_clear(Float.getCPtr(x), x);
   }
 
-  public static void arb_init(Real x) {
+  public static void arb_init(Real x)
+  {
     arbJNI.arb_init(Real.getCPtr(x), x);
   }
 
-  public static void arf_init(Float x) {
+  public static void arf_init(Float x)
+  {
     arbJNI.arf_init(Float.getCPtr(x), x);
   }
 
-  public static void acb_init(Complex x) {
+  public static void acb_init(Complex x)
+  {
     arbJNI.acb_init(Complex.getCPtr(x), x);
   }
 
-  public static void arb_tanh(Real y, Real x, int prec) {
+  public static void arb_tanh(Real y, Real x, int prec)
+  {
     arbJNI.arb_tanh(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_asinh(Real z, Real x, int prec) {
+  public static void arb_asinh(Real z, Real x, int prec)
+  {
     arbJNI.arb_asinh(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_acosh(Real z, Real x, int prec) {
+  public static void arb_acosh(Real z, Real x, int prec)
+  {
     arbJNI.arb_acosh(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_lambertw(Real res, Real x, int flags, int prec) {
+  public static void arb_lambertw(Real res, Real x, int flags, int prec)
+  {
     arbJNI.arb_lambertw(Real.getCPtr(res), res, Real.getCPtr(x), x, flags, prec);
   }
 
-  public static void arb_gamma(Real z, Real x, int prec) {
+  public static void arb_gamma(Real z, Real x, int prec)
+  {
     arbJNI.arb_gamma(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_lgamma(Real z, Real x, int prec) {
+  public static void arb_lgamma(Real z, Real x, int prec)
+  {
     arbJNI.arb_lgamma(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
   }
 
-  public static void arb_sqr(Real y, Real x, int prec) {
+  public static void arb_sqr(Real y, Real x, int prec)
+  {
     arbJNI.arb_sqr(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
   }
 
-  public static void acb_sqrt(Complex y, Complex x, int prec) {
+  public static void acb_sqrt(Complex y, Complex x, int prec)
+  {
     arbJNI.acb_sqrt(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
 

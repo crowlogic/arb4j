@@ -40,7 +40,7 @@ import arb.topological.Space;
  * @see <a href="https://en.wikipedia.org/wiki/Vector_space">Wikipedia</a>
  */
 public interface VectorSpace<X> extends
-                             Space<X>
+                            Space<X>
 {
 
 }

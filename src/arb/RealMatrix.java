@@ -19,22 +19,30 @@ import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
 import jdk.incubator.foreign.ResourceScope;
 
-public class RealMatrix implements AutoCloseable,Iterable<Real> {
-  private transient long swigCPtr;
+public class RealMatrix implements
+                        AutoCloseable,
+                        Iterable<Real>
+{
+  private transient long      swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public RealMatrix(long cPtr, boolean cMemoryOwn) {
+  public RealMatrix(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(RealMatrix obj) {
+  public static long getCPtr(RealMatrix obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arbJNI.delete_RealMatrix(swigCPtr);
       }
@@ -42,25 +50,28 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     }
   }
 
-  static { System.loadLibrary( "arblib" ); }
+  static
+  {
+    System.loadLibrary("arblib");
+  }
 
   public Real getRow(int i)
   {
     return rows[i];
-  }  
-  
+  }
+
   private LongBuffer rowPointers;
 
-  public Real copyCol(int j, Real result )
+  public Real copyCol(int j, Real result)
   {
     assert result.dim == getNumRows();
-    for ( int i = 0; i < getNumRows(); i++ )
+    for (int i = 0; i < getNumRows(); i++)
     {
       result.get(i).set(get(i, j));
     }
-   return result;   
+    return result;
   }
-    
+
   @Override
   public Iterator<Real> iterator()
   {
@@ -68,7 +79,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
 
     return new Iterator<Real>()
     {
-      int       i        = 0;
+      int i = 0;
 
       @Override
       public boolean hasNext()
@@ -83,8 +94,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
       }
     };
   }
-  
-  
+
   /**
    * @see arb#arb_mat_zero(RealMatrix)
    * 
@@ -129,7 +139,6 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     return arb.arb_mat_contains(this, other) != 0;
   }
 
-
   @Override
   public boolean equals(Object obj)
   {
@@ -137,12 +146,11 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     {
       return false;
     }
-    RealMatrix other = (RealMatrix)obj;
-    return arb.arb_mat_eq(this, other) != 0;    
+    RealMatrix other = (RealMatrix) obj;
+    return arb.arb_mat_eq(this, other) != 0;
   }
 
-
- /**
+  /**
    * Accessor for the i,j-th element
    * 
    * @param i
@@ -151,16 +159,16 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
    */
   public Real get(int i, int j)
   {
-    return arb.arb_mat_entry_ptr(this, i,j);
+    return arb.arb_mat_entry_ptr(this, i, j);
   }
 
   public String name;
-  
+
   @Override
   public String toString()
   {
-    int rowCount = Math.min(100, getNumRows());
-    int colCount = Math.min(100, getNumCols());
+    int        rowCount   = Math.min(100, getNumRows());
+    int        colCount   = Math.min(100, getNumCols());
     Object[][] strings    = new String[rowCount][colCount];
     int        maxLength  = 0;
     int        maxDecimal = 0;
@@ -197,15 +205,16 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     ps.flush();
     String string = (name != null ? name + "=\n" : "") + os.toString();
     return string;
-  }  
+  }
+
   private String getDimString()
   {
     String dimString = "(" + this.getNumRows() + "," + this.getNumCols() + ")";
     return dimString;
   }
-  
+
   Real[] rows;
-  
+
   public static RealMatrix newMatrix(int rows, int cols)
   {
     RealMatrix m = new RealMatrix();
@@ -222,7 +231,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     }
     return m;
   }
-  
+
   /**
    * @see arb#arb_mat_inv(RealMatrix, RealMatrix, int)
    * @param prec
@@ -242,27 +251,27 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     }
   }
 
-  
   /**
    * @see arb#arb_mat_transpose(RealMatrix, RealMatrix)
    * 
    * @param result
    * @return result
-   */  
+   */
   public RealMatrix transpose(RealMatrix result)
   {
     arb.arb_mat_transpose(result, this);
     return result;
   }
-  
+
   /**
    * Calls {@link arb#arb_mat_clear(RealMatrix)}
+   * 
    * @return this
    */
   public RealMatrix clear()
   {
-    if ( swigCMemOwn )
-    {      
+    if (swigCMemOwn)
+    {
       arb.arb_mat_clear(this);
     }
     return this;
@@ -283,17 +292,15 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
 
   @Override
   public void close()
-  { 
-      clear();
+  {
+    clear();
   }
-  
-  
+
   public RealMatrix init(int rows, int cols)
   {
     arb.arb_mat_init(this, rows, cols);
     return this;
-  } 
-
+  }
 
   /**
    * Computes the Cholesky decomposition of A. Returning the factor matrix iff the
@@ -316,39 +323,45 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     }
     else
     {
-      result.name = "√" + ( name != null ? name : "");
+      result.name = "√" + (name != null ? name : "");
       return result;
     }
-  }  
-    
-      
+  }
 
-  public void setNumRows(int value) {
+  public void setNumRows(int value)
+  {
     arbJNI.RealMatrix_numRows_set(swigCPtr, this, value);
   }
 
-  public int getNumRows() {
+  public int getNumRows()
+  {
     return arbJNI.RealMatrix_numRows_get(swigCPtr, this);
   }
 
-  public void setNumCols(int value) {
+  public void setNumCols(int value)
+  {
     arbJNI.RealMatrix_numCols_set(swigCPtr, this, value);
   }
 
-  public int getNumCols() {
+  public int getNumCols()
+  {
     return arbJNI.RealMatrix_numCols_get(swigCPtr, this);
   }
 
-  public void setRowPointers(long value) {
+  public void setRowPointers(long value)
+  {
     arbJNI.RealMatrix_rowPointers_set(swigCPtr, this, value);
   }
 
-  public long getRowPointers() {
+  public long getRowPointers()
+  {
     return arbJNI.RealMatrix_rowPointers_get(swigCPtr, this);
   }
 
-  public RealMatrix() {
-    this(arbJNI.new_RealMatrix(), true);
+  public RealMatrix()
+  {
+    this(arbJNI.new_RealMatrix(),
+         true);
   }
 
 }

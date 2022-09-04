@@ -17,7 +17,6 @@ import arb.SWIGTYPE_p_int;
 import arb.arb;
 import arb.geometry.surfaces.RiemannSurface;
 
-
 /**
  * If the precision of the number is 128 bits or less then the only space
  * required to allocate the pair of Real(arb_t) structures to constitute the
@@ -49,20 +48,19 @@ public class PointValueCache implements
     return points[n][x][y];
   }
 
-  public boolean       complete = false;
+  public boolean complete = false;
 
-  public Path          path;
+  public Path    path;
 
-  public Path          path1;
+  public Path    path1;
 
-  private long         pointer0;
+  private long   pointer0;
 
-  private long         pointer1;
+  private long   pointer1;
 
+  int            fd0, fd1;
 
-  int                  fd0, fd1;
-
-  private int          byteSize;
+  private int    byteSize;
 
   /**
    * TODO: replace 3d this{@link #points} with 2 {@link ComplexMatrix}s
@@ -93,8 +91,8 @@ public class PointValueCache implements
       long bufferPointer  = pointer0;
       long buffer1Pointer = pointer1;
 
-      int nonzeroCount = 0;
-      
+      int  nonzeroCount   = 0;
+
       for (int x = 0; x < numXpoints; x++)
       {
         for (int y = 0; y < numYpoints; y++)
@@ -106,17 +104,17 @@ public class PointValueCache implements
           point0.dim      = 2;
           point0.elements = new Complex[]
           { point0, point1 };
-          if ( !point0.isZero() )
+          if (!point0.isZero())
           {
             nonzeroCount++;
           }
-          if ( !point1.isZero() )
+          if (!point1.isZero())
           {
             nonzeroCount++;
           }
         }
       }
-      if ( nonzeroCount > 100 )
+      if (nonzeroCount > 100)
       {
         complete = true;
       }
@@ -154,7 +152,7 @@ public class PointValueCache implements
     System.out.println("Create file " + file + " of " + bytes + " bytes ");
     complete = false;
     try ( RandomAccessFile raf = new RandomAccessFile(file,
-                                                      "rw"))  
+                                                      "rw"))
     {
       raf.setLength(bytes);
 

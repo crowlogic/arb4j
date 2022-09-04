@@ -8,27 +8,34 @@
 
 package arb;
 
-public class FastDFTScheme {
-  private transient long swigCPtr;
+public class FastDFTScheme
+{
+  private transient long      swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public FastDFTScheme(long cPtr, boolean cMemoryOwn) {
+  public FastDFTScheme(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(FastDFTScheme obj) {
+  public static long getCPtr(FastDFTScheme obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
   @SuppressWarnings("deprecation")
-  protected void finalize() {
+  protected void finalize()
+  {
     delete();
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arbJNI.delete_FastDFTScheme(swigCPtr);
       }
@@ -36,29 +43,37 @@ public class FastDFTScheme {
     }
   }
 
-  public void setN(int value) {
+  public void setN(int value)
+  {
     arbJNI.FastDFTScheme_n_set(swigCPtr, this, value);
   }
 
-  public int getN() {
+  public int getN()
+  {
     return arbJNI.FastDFTScheme_n_get(swigCPtr, this);
   }
 
-  public void setType(int value) {
+  public void setType(int value)
+  {
     arbJNI.FastDFTScheme_type_set(swigCPtr, this, value);
   }
 
-  public int getType() {
+  public int getType()
+  {
     return arbJNI.FastDFTScheme_type_get(swigCPtr, this);
   }
 
-  public FastDFTSchemeUnion getT() {
+  public FastDFTSchemeUnion getT()
+  {
     long cPtr = arbJNI.FastDFTScheme_t_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new FastDFTSchemeUnion(cPtr, false);
+    return (cPtr == 0) ? null : new FastDFTSchemeUnion(cPtr,
+                                                       false);
   }
 
-  public FastDFTScheme() {
-    this(arbJNI.new_FastDFTScheme(), true);
+  public FastDFTScheme()
+  {
+    this(arbJNI.new_FastDFTScheme(),
+         true);
   }
 
 }

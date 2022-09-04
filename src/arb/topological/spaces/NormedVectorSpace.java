@@ -47,5 +47,4 @@ public interface NormedVectorSpace<X extends Field> extends
                                   MetricSpace<X>
 {
 
-
 }

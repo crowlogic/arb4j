@@ -64,7 +64,7 @@ public class Circle implements
     assert res.size() >= order;
     Complex s = this.s.get();
     Complex t = this.t.get();
-    Real h = this.h.get();
+    Real    h = this.h.get();
     try ( Complex ca = new Complex())
     {
       ca.getReal().set(a);
@@ -84,7 +84,7 @@ public class Circle implements
   public void close() throws Exception
   {
     s.remove();
-    t.remove(); 
+    t.remove();
     h.remove();
   }
 

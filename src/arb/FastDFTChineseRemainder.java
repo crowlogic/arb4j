@@ -8,27 +8,34 @@
 
 package arb;
 
-public class FastDFTChineseRemainder {
-  private transient long swigCPtr;
+public class FastDFTChineseRemainder
+{
+  private transient long      swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public FastDFTChineseRemainder(long cPtr, boolean cMemoryOwn) {
+  public FastDFTChineseRemainder(long cPtr, boolean cMemoryOwn)
+  {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr = cPtr;
+    swigCPtr    = cPtr;
   }
 
-  public static long getCPtr(FastDFTChineseRemainder obj) {
+  public static long getCPtr(FastDFTChineseRemainder obj)
+  {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
   @SuppressWarnings("deprecation")
-  protected void finalize() {
+  protected void finalize()
+  {
     delete();
   }
 
-  public synchronized void delete() {
-    if (swigCPtr != 0) {
-      if (swigCMemOwn) {
+  public synchronized void delete()
+  {
+    if (swigCPtr != 0)
+    {
+      if (swigCMemOwn)
+      {
         swigCMemOwn = false;
         arbJNI.delete_FastDFTChineseRemainder(swigCPtr);
       }
@@ -36,33 +43,42 @@ public class FastDFTChineseRemainder {
     }
   }
 
-  public void setN(int value) {
+  public void setN(int value)
+  {
     arbJNI.FastDFTChineseRemainder_n_set(swigCPtr, this, value);
   }
 
-  public int getN() {
+  public int getN()
+  {
     return arbJNI.FastDFTChineseRemainder_n_get(swigCPtr, this);
   }
 
-  public void setDv(int value) {
+  public void setDv(int value)
+  {
     arbJNI.FastDFTChineseRemainder_dv_set(swigCPtr, this, value);
   }
 
-  public int getDv() {
+  public int getDv()
+  {
     return arbJNI.FastDFTChineseRemainder_dv_get(swigCPtr, this);
   }
 
-  public void setCyc(acb_dft_step_struct value) {
+  public void setCyc(acb_dft_step_struct value)
+  {
     arbJNI.FastDFTChineseRemainder_cyc_set(swigCPtr, this, acb_dft_step_struct.getCPtr(value), value);
   }
 
-  public acb_dft_step_struct getCyc() {
+  public acb_dft_step_struct getCyc()
+  {
     long cPtr = arbJNI.FastDFTChineseRemainder_cyc_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new acb_dft_step_struct(cPtr, false);
+    return (cPtr == 0) ? null : new acb_dft_step_struct(cPtr,
+                                                        false);
   }
 
-  public FastDFTChineseRemainder() {
-    this(arbJNI.new_FastDFTChineseRemainder(), true);
+  public FastDFTChineseRemainder()
+  {
+    this(arbJNI.new_FastDFTChineseRemainder(),
+         true);
   }
 
 }

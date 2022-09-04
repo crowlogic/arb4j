@@ -59,7 +59,7 @@ public class GaussianDistribution implements
   {
     order = Math.max(order, 1);
     assert order < 2;
-    System.out.println( "Fuck " + order);
+    System.out.println("Fuck " + order);
     assert false : "TODO: implement 'error' function erf";
     // e^(-(((x-μ)/σ)^2)/2)/(σ*√(2π))
     try ( Real t = new Real())
