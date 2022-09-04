@@ -1,9 +1,10 @@
-arb4j is a Java wrapper around the fantastic and amazing arb library for ball arithmetic found at http://arblib.org
+arb4j is a Java wrapper around the fantastic and amazing arb library for 
+ball arithmetic found at http://arblib.org
 
 ========================================================================
 There is a project wiki at 
 https://github.com/crowlogic/arb4j/wiki 
-and a gallery of some renderings (including some fluidly animated sequences implying motion of some underlying dynamical system) produced with arb4j at
+and gallery at
 https://github.com/crowlogic/arb4j/wiki/Gallery 
 
 and Javadocs can be found at 
@@ -25,3 +26,21 @@ parsed with SWIG and the corresponding java and C source files are generated.
 After that happens, the script then calls the bin/caw which stands for
 "compile arb wrapper" which, if all goes well, should leave a file
 named libarblib.so in root directory of the project
+
+One should generally add "-ea" to  the JVM commandline to enable assertion 
+checking but it can be turned off to slightly improve performance.
+
+To run anything depending on chartfx the following commandline arguments needed to 
+be added as well:
+
+--add-modules=javafx.graphics
+--add-reads javafx.graphics=ALL-UNNAMED
+--add-opens javafx.controls/com.sun.javafx.charts=ALL-UNNAMED
+--add-opens javafx.controls/com.sun.javafx.scene.control.inputmap=ALL-UNNAMED
+--add-opens javafx.graphics/com.sun.javafx.iio=ALL-UNNAMED
+--add-opens javafx.graphics/com.sun.javafx.iio.common=ALL-UNNAMED
+--add-opens javafx.graphics/com.sun.javafx.css=ALL-UNNAMED
+--add-opens javafx.base/com.sun.javafx.runtime=ALL-UNNAMED
+--add-exports javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED
+--add-exports javafx.graphics/com.sun.javafx.scene.traversal=ALL-UNNAMED
+

@@ -1,3 +1,4 @@
+ * chartfx implementation of multivariate stochastic process plotter
   
 * harness reflection symmetry to accelerate rendering 
 
