@@ -8,1569 +8,541 @@
 
 package arb;
 
-public class arbJNI
-{
+public class arbJNI {
   public final static native void _arb_vec_neg(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
-  public final static native void _arb_vec_scalar_addmul(long jarg1,
-                                                         Real jarg1_,
-                                                         long jarg2,
-                                                         Real jarg2_,
-                                                         int jarg3,
-                                                         long jarg4,
-                                                         Real jarg4_,
-                                                         int jarg5);
-
-  public final static native void _arb_vec_sub(long jarg1,
-                                               Real jarg1_,
-                                               long jarg2,
-                                               Real jarg2_,
-                                               long jarg3,
-                                               Real jarg3_,
-                                               int jarg4,
-                                               int jarg5);
-
-  public final static native void
-         acb_addmul(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
-
-  public final static native void
-         acb_submul(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
-
-  public final static native void
-         arb_addmul(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
-
+  public final static native void _arb_vec_scalar_addmul(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, long jarg4, Real jarg4_, int jarg5);
+  public final static native void _arb_vec_sub(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4, int jarg5);
+  public final static native void acb_addmul(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_submul(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void arb_addmul(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_mat_det_lu(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
-
-  public final static native void
-         arb_mat_det_precond(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
-
+  public final static native void arb_mat_det_precond(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native void arb_mat_det(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
-
   public final static native boolean unmapAndCloseFile(int jarg1, long jarg2, int jarg3);
-
   public final static native int ftruncate(int jarg1, int jarg2);
-
   public final static native long openOrCreateMemoryMappedFile(java.lang.Object jarg1, long jarg2, int jarg3);
-
-  public final static native void acb_hypgeom_bessel_j_0f1(long jarg1,
-                                                           Complex jarg1_,
-                                                           long jarg2,
-                                                           Complex jarg2_,
-                                                           long jarg3,
-                                                           Complex jarg3_,
-                                                           int jarg4);
-
-  public final static native void acb_hypgeom_bessel_j_asymp(long jarg1,
-                                                             Complex jarg1_,
-                                                             long jarg2,
-                                                             Complex jarg2_,
-                                                             long jarg3,
-                                                             Complex jarg3_,
-                                                             int jarg4);
-
-  public final static native void acb_hypgeom_bessel_j(long jarg1,
-                                                       Complex jarg1_,
-                                                       long jarg2,
-                                                       Complex jarg2_,
-                                                       long jarg3,
-                                                       Complex jarg3_,
-                                                       int jarg4);
-
-  public final static native void acb_hypgeom_bessel_i_0f1(long jarg1,
-                                                           Complex jarg1_,
-                                                           long jarg2,
-                                                           Complex jarg2_,
-                                                           long jarg3,
-                                                           Complex jarg3_,
-                                                           int jarg4,
-                                                           int jarg5);
-
-  public final static native void acb_hypgeom_bessel_i_asymp(long jarg1,
-                                                             Complex jarg1_,
-                                                             long jarg2,
-                                                             Complex jarg2_,
-                                                             long jarg3,
-                                                             Complex jarg3_,
-                                                             int jarg4,
-                                                             int jarg5);
-
-  public final static native void acb_hypgeom_bessel_i(long jarg1,
-                                                       Complex jarg1_,
-                                                       long jarg2,
-                                                       Complex jarg2_,
-                                                       long jarg3,
-                                                       Complex jarg3_,
-                                                       int jarg4);
-
-  public final static native void acb_hypgeom_bessel_i_scaled(long jarg1,
-                                                              Complex jarg1_,
-                                                              long jarg2,
-                                                              Complex jarg2_,
-                                                              long jarg3,
-                                                              Complex jarg3_,
-                                                              int jarg4);
-
-  public final static native void acb_hypgeom_bessel_k_0f1(long jarg1,
-                                                           Complex jarg1_,
-                                                           long jarg2,
-                                                           Complex jarg2_,
-                                                           long jarg3,
-                                                           Complex jarg3_,
-                                                           int jarg4,
-                                                           int jarg5);
-
-  public final static native void acb_hypgeom_bessel_k_0f1_series(long jarg1,
-                                                                  ComplexPolynomial jarg1_,
-                                                                  long jarg2,
-                                                                  ComplexPolynomial jarg2_,
-                                                                  long jarg3,
-                                                                  ComplexPolynomial jarg3_,
-                                                                  int jarg4,
-                                                                  int jarg5,
-                                                                  int jarg6);
-
-  public final static native void acb_hypgeom_bessel_k_asymp(long jarg1,
-                                                             Complex jarg1_,
-                                                             long jarg2,
-                                                             Complex jarg2_,
-                                                             long jarg3,
-                                                             Complex jarg3_,
-                                                             int jarg4,
-                                                             int jarg5);
-
-  public final static native void acb_hypgeom_bessel_k(long jarg1,
-                                                       Complex jarg1_,
-                                                       long jarg2,
-                                                       Complex jarg2_,
-                                                       long jarg3,
-                                                       Complex jarg3_,
-                                                       int jarg4);
-
-  public final static native void acb_hypgeom_bessel_k_scaled(long jarg1,
-                                                              Complex jarg1_,
-                                                              long jarg2,
-                                                              Complex jarg2_,
-                                                              long jarg3,
-                                                              Complex jarg3_,
-                                                              int jarg4);
-
-  public final static native void acb_hypgeom_bessel_y(long jarg1,
-                                                       Complex jarg1_,
-                                                       long jarg2,
-                                                       Complex jarg2_,
-                                                       long jarg3,
-                                                       Complex jarg3_,
-                                                       int jarg4);
-
-  public final static native void acb_hypgeom_bessel_jy(long jarg1,
-                                                        Complex jarg1_,
-                                                        long jarg2,
-                                                        Complex jarg2_,
-                                                        long jarg3,
-                                                        Complex jarg3_,
-                                                        long jarg4,
-                                                        Complex jarg4_,
-                                                        int jarg5);
-
-  public final static native void acb_hypgeom_beta_lower_series(long jarg1,
-                                                                ComplexPolynomial jarg1_,
-                                                                long jarg2,
-                                                                Complex jarg2_,
-                                                                long jarg3,
-                                                                Complex jarg3_,
-                                                                long jarg4,
-                                                                ComplexPolynomial jarg4_,
-                                                                int jarg5,
-                                                                int jarg6,
-                                                                int jarg7);
-
-  public final static native void acb_hypgeom_beta_lower(long jarg1,
-                                                         Complex jarg1_,
-                                                         long jarg2,
-                                                         Complex jarg2_,
-                                                         long jarg3,
-                                                         Complex jarg3_,
-                                                         long jarg4,
-                                                         Complex jarg4_,
-                                                         int jarg5,
-                                                         int jarg6);
-
-  public final static native void acb_hypgeom_gamma_upper(long jarg1,
-                                                          Complex jarg1_,
-                                                          long jarg2,
-                                                          Complex jarg2_,
-                                                          long jarg3,
-                                                          Complex jarg3_,
-                                                          int jarg4,
-                                                          int jarg5);
-
-  public final static native void acb_hypgeom_gamma_lower(long jarg1,
-                                                          Complex jarg1_,
-                                                          long jarg2,
-                                                          Complex jarg2_,
-                                                          long jarg3,
-                                                          Complex jarg3_,
-                                                          int jarg4,
-                                                          int jarg5);
-
+  public final static native void acb_hypgeom_bessel_j_0f1(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_j_asymp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_j(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_i_0f1(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
+  public final static native void acb_hypgeom_bessel_i_asymp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
+  public final static native void acb_hypgeom_bessel_i(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_i_scaled(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_k_0f1(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
+  public final static native void acb_hypgeom_bessel_k_0f1_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, ComplexPolynomial jarg3_, int jarg4, int jarg5, int jarg6);
+  public final static native void acb_hypgeom_bessel_k_asymp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
+  public final static native void acb_hypgeom_bessel_k(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_k_scaled(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_y(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_bessel_jy(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, int jarg5);
+  public final static native void acb_hypgeom_beta_lower_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, ComplexPolynomial jarg4_, int jarg5, int jarg6, int jarg7);
+  public final static native void acb_hypgeom_beta_lower(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, int jarg5, int jarg6);
+  public final static native void acb_hypgeom_gamma_upper(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
+  public final static native void acb_hypgeom_gamma_lower(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
   public final static native int arb_mat_overlaps(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
-
   public final static native int arb_mat_contains(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
-
   public final static native void arb_mat_set(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
-
   public final static native int arb_mat_eq(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
-
   public final static native int arb_mat_ne(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
-
   public final static native void arb_mat_zero(long jarg1, RealMatrix jarg1_);
-
   public final static native void arb_mat_one(long jarg1, RealMatrix jarg1_);
-
   public final static native void arb_mat_transpose(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
-
-  public final static native void arb_mat_mul(long jarg1,
-                                              RealMatrix jarg1_,
-                                              long jarg2,
-                                              RealMatrix jarg2_,
-                                              long jarg3,
-                                              RealMatrix jarg3_,
-                                              int jarg4);
-
+  public final static native void arb_mat_mul(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);
   public final static native void arb_mat_printd(long jarg1, RealMatrix jarg1_, int jarg2);
-
-  public final static native int
-         arb_mat_inv(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
-
+  public final static native int arb_mat_inv(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native int getpagesize();
-
   public final static native long alignedMalloc(int jarg1, int jarg2);
-
   public final static native long memalign(long jarg1, long jarg2);
-
   public final static native int errorNumber();
-
   public final static native int close(int jarg1);
-
   public final static native int open__SWIG_0(String jarg1, int jarg2);
-
   public final static native int creat(String jarg1, long jarg2);
-
   public final static native int open__SWIG_1(String jarg1, int jarg2, long jarg3);
-
   public final static native int msync(long jarg1, long jarg2, int jarg3);
-
   public final static native int munmap(long jarg1, long jarg2);
-
   public final static native long mmap(long jarg1, long jarg2, int jarg3, int jarg4, int jarg5, int jarg6);
-
   public final static native int mprotect(long jarg1, long jarg2, int jarg3);
-
   public final static native long memset(long jarg1, int jarg2, long jarg3);
-
-  public final static native void arb_dot_simple(long jarg1,
-                                                 Real jarg1_,
-                                                 long jarg2,
-                                                 Real jarg2_,
-                                                 int jarg3,
-                                                 long jarg4,
-                                                 Real jarg4_,
-                                                 int jarg5,
-                                                 long jarg6,
-                                                 Real jarg6_,
-                                                 int jarg7,
-                                                 int jarg8,
-                                                 int jarg9);
-
-  public final static native void arb_dot_precise(long jarg1,
-                                                  Real jarg1_,
-                                                  long jarg2,
-                                                  Real jarg2_,
-                                                  int jarg3,
-                                                  long jarg4,
-                                                  Real jarg4_,
-                                                  int jarg5,
-                                                  long jarg6,
-                                                  Real jarg6_,
-                                                  int jarg7,
-                                                  int jarg8,
-                                                  int jarg9);
-
-  public final static native void arb_dot(long jarg1,
-                                          Real jarg1_,
-                                          long jarg2,
-                                          Real jarg2_,
-                                          int jarg3,
-                                          long jarg4,
-                                          Real jarg4_,
-                                          int jarg5,
-                                          long jarg6,
-                                          Real jarg6_,
-                                          int jarg7,
-                                          int jarg8,
-                                          int jarg9);
-
-  public final static native void acb_dft_rad2_precomp(long jarg1,
-                                                       Complex jarg1_,
-                                                       long jarg2,
-                                                       Complex jarg2_,
-                                                       long jarg3,
-                                                       FastDFTRadix2Scheme jarg3_,
-                                                       int jarg4);
-
-  public final static native void
-         arb_hypgeom_hermite_h(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
-
-  public final static native void
-         acb_dirichlet_xi(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
+  public final static native void arb_dot_simple(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, long jarg4, Real jarg4_, int jarg5, long jarg6, Real jarg6_, int jarg7, int jarg8, int jarg9);
+  public final static native void arb_dot_precise(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, long jarg4, Real jarg4_, int jarg5, long jarg6, Real jarg6_, int jarg7, int jarg8, int jarg9);
+  public final static native void arb_dot(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, long jarg4, Real jarg4_, int jarg5, long jarg6, Real jarg6_, int jarg7, int jarg8, int jarg9);
+  public final static native void acb_dft_rad2_precomp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, FastDFTRadix2Scheme jarg3_, int jarg4);
+  public final static native void arb_hypgeom_hermite_h(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
+  public final static native void acb_dirichlet_xi(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_hypgeom_erfinv(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_hypgeom_erfcinv(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_hypgeom_erf(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_hypgeom_erfc(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
-  public final static native void arb_hypgeom_m(long jarg1,
-                                                Real jarg1_,
-                                                long jarg2,
-                                                Real jarg2_,
-                                                long jarg3,
-                                                Real jarg3_,
-                                                long jarg4,
-                                                Real jarg4_,
-                                                int jarg5,
-                                                int jarg6);
-
-  public final static native int
-         arf_div(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4, int jarg5);
-
+  public final static native void arb_hypgeom_m(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, long jarg4, Real jarg4_, int jarg5, int jarg6);
+  public final static native int arf_div(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4, int jarg5);
   public final static native void gmp_randclear(long jarg1, GMPRandomState jarg1_);
-
   public final static native void gmp_randinit_mt(long jarg1, GMPRandomState jarg1_);
-
   public final static native void gmp_randinit_default(long jarg1, GMPRandomState jarg1_);
-
   public final static native void gmp_randseed_ui(long jarg1, GMPRandomState jarg1_, long jarg2);
-
   public final static native void arb_urandom(long jarg1, Real jarg1_, long jarg2, RandomState jarg2_, int jarg3);
-
   public final static native void arb_log(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_exp(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
-  public final static native void _acb_dirichlet_hardy_z_series(long jarg1,
-                                                                Complex jarg1_,
-                                                                long jarg2,
-                                                                Complex jarg2_,
-                                                                int jarg3,
-                                                                long jarg4,
-                                                                DirichletGroup jarg4_,
-                                                                long jarg5,
-                                                                DirichletCharacter jarg5_,
-                                                                int jarg6,
-                                                                int jarg7);
-
-  public final static native void acb_dirichlet_hardy_z_series(long jarg1,
-                                                               ComplexPolynomial jarg1_,
-                                                               long jarg2,
-                                                               ComplexPolynomial jarg2_,
-                                                               long jarg3,
-                                                               DirichletGroup jarg3_,
-                                                               long jarg4,
-                                                               DirichletCharacter jarg4_,
-                                                               int jarg5,
-                                                               int jarg6);
-
+  public final static native void _acb_dirichlet_hardy_z_series(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, long jarg4, DirichletGroup jarg4_, long jarg5, DirichletCharacter jarg5_, int jarg6, int jarg7);
+  public final static native void acb_dirichlet_hardy_z_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, DirichletGroup jarg3_, long jarg4, DirichletCharacter jarg4_, int jarg5, int jarg6);
   public final static native void acb_sinh(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
-  public final static native void acb_elliptic_f(long jarg1,
-                                                 Complex jarg1_,
-                                                 long jarg2,
-                                                 Complex jarg2_,
-                                                 long jarg3,
-                                                 Complex jarg3_,
-                                                 int jarg4,
-                                                 int jarg5);
-
+  public final static native void acb_elliptic_f(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
   public final static native void arb_sech(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void acb_sech(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native long bufferAddress(java.lang.Object jarg1);
-
   public final static native void acb_tan(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void acb_sec(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
-  public final static native void
-         arb_add_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
-
+  public final static native void arb_add_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void arb_sub_si(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
-
-  public final static native void
-         arb_sub_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
-
-  public final static native void
-         mag_div(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
-
+  public final static native void arb_sub_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
+  public final static native void mag_div(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void mag_log(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native void mag_inv(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native int arf_is_zero(long jarg1, Float jarg1_);
-
-  public final static native void
-         acb_add_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
-
-  public final static native void
-         arb_mul_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
-
-  public final static native void
-         arb_mul_si__SWIG_0(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
-
-  public final static native void
-         arb_mul_si__SWIG_1(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
-
+  public final static native void acb_add_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
+  public final static native void arb_mul_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
+  public final static native void arb_mul_si__SWIG_0(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
+  public final static native void arb_mul_si__SWIG_1(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
   public final static native void dirichlet_group_init(long jarg1, DirichletGroup jarg1_, long jarg2);
-
-  public final static native void
-         dirichlet_subgroup_init(long jarg1, DirichletGroup jarg1_, long jarg2, DirichletGroup jarg2_, long jarg3);
-
+  public final static native void dirichlet_subgroup_init(long jarg1, DirichletGroup jarg1_, long jarg2, DirichletGroup jarg2_, long jarg3);
   public final static native void dirichlet_group_clear(long jarg1, DirichletGroup jarg1_);
-
-  public final static native void
-         dirichlet_char_init(long jarg1, DirichletCharacter jarg1_, long jarg2, DirichletGroup jarg2_);
-
+  public final static native void dirichlet_char_init(long jarg1, DirichletCharacter jarg1_, long jarg2, DirichletGroup jarg2_);
   public final static native void dirichlet_char_clear(long jarg1, DirichletCharacter jarg1_);
-
-  public final static native int
-         arb_mat_cho(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
-
-  public final static native void arb_mat_solve_cho_precomp(long jarg1,
-                                                            RealMatrix jarg1_,
-                                                            long jarg2,
-                                                            RealMatrix jarg2_,
-                                                            long jarg3,
-                                                            RealMatrix jarg3_,
-                                                            int jarg4);
-
-  public final static native int arb_mat_spd_solve(long jarg1,
-                                                   RealMatrix jarg1_,
-                                                   long jarg2,
-                                                   RealMatrix jarg2_,
-                                                   long jarg3,
-                                                   RealMatrix jarg3_,
-                                                   int jarg4);
-
-  public final static native void
-         arb_mat_inv_cho_precomp(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
-
-  public final static native int
-         arb_mat_spd_inv(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
-
-  public final static native int
-         arb_mat_ldl(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
-
-  public final static native void arb_mat_solve_ldl_precomp(long jarg1,
-                                                            RealMatrix jarg1_,
-                                                            long jarg2,
-                                                            RealMatrix jarg2_,
-                                                            long jarg3,
-                                                            RealMatrix jarg3_,
-                                                            int jarg4);
-
-  public final static native void
-         arb_mat_inv_ldl_precomp(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
-
+  public final static native int arb_mat_cho(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
+  public final static native void arb_mat_solve_cho_precomp(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);
+  public final static native int arb_mat_spd_solve(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);
+  public final static native void arb_mat_inv_cho_precomp(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
+  public final static native int arb_mat_spd_inv(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
+  public final static native int arb_mat_ldl(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
+  public final static native void arb_mat_solve_ldl_precomp(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);
+  public final static native void arb_mat_inv_ldl_precomp(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native void acb_mat_dft(long jarg1, ComplexMatrix jarg1_, int jarg2, int jarg3);
-
-  public final static native int acb_mat_eig_multiple(long jarg1,
-                                                      Complex jarg1_,
-                                                      long jarg2,
-                                                      ComplexMatrix jarg2_,
-                                                      long jarg3,
-                                                      Complex jarg3_,
-                                                      long jarg4,
-                                                      ComplexMatrix jarg4_,
-                                                      int jarg5);
-
+  public final static native int acb_mat_eig_multiple(long jarg1, Complex jarg1_, long jarg2, ComplexMatrix jarg2_, long jarg3, Complex jarg3_, long jarg4, ComplexMatrix jarg4_, int jarg5);
   public final static native void arb_mat_clear(long jarg1, RealMatrix jarg1_);
-
   public final static native void acb_mat_clear(long jarg1, ComplexMatrix jarg1_);
-
   public final static native void arb_mat_init(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
-
   public final static native void acb_poly_clear(long jarg1, ComplexPolynomial jarg1_);
-
   public final static native long arb_mat_entry_ptr(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
-
   public final static native void flint_cleanup();
-
   public final static native void flint_cleanup_master();
-
-  public final static native int
-         f_lemniscate(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4, int jarg5);
-
-  public final static native int f_lemniscate_derivative(long jarg1,
-                                                         Complex jarg1_,
-                                                         long jarg2,
-                                                         Complex jarg2_,
-                                                         long jarg3,
-                                                         int jarg4,
-                                                         int jarg5);
-
-  public final static native int f_lemniscate_derivative_abs(long jarg1,
-                                                             Complex jarg1_,
-                                                             long jarg2,
-                                                             Complex jarg2_,
-                                                             long jarg3,
-                                                             int jarg4,
-                                                             int jarg5);
-
-  public final static native void
-         acb_calc_gl_node(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4, int jarg5);
-
+  public final static native int f_lemniscate(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4, int jarg5);
+  public final static native int f_lemniscate_derivative(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4, int jarg5);
+  public final static native int f_lemniscate_derivative_abs(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4, int jarg5);
+  public final static native void acb_calc_gl_node(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4, int jarg5);
   public final static native int arf_cmp(long jarg1, Float jarg1_, long jarg2, Float jarg2_);
-
   public final static native void acb_one(long jarg1, Complex jarg1_);
-
   public final static native int arb_is_zero(long jarg1, Real jarg1_);
-
   public final static native int acb_is_zero(long jarg1, Complex jarg1_);
-
-  public final static native void
-         acb_div_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
-
+  public final static native void acb_div_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
   public final static native void acb_neg(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
   public final static native int acb_equal(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
   public final static native int arb_equal(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
-
   public final static native void arb_set_si(long jarg1, Real jarg1_, int jarg2);
-
   public final static native void mag_set_d(long jarg1, Magnitude jarg1_, double jarg2);
-
-  public final static native void acb_dft_inverse_precomp(long jarg1,
-                                                          Complex jarg1_,
-                                                          long jarg2,
-                                                          Complex jarg2_,
-                                                          long jarg3,
-                                                          FastDFTScheme jarg3_,
-                                                          int jarg4);
-
-  public final static native void acb_dft_precomp(long jarg1,
-                                                  Complex jarg1_,
-                                                  long jarg2,
-                                                  Complex jarg2_,
-                                                  long jarg3,
-                                                  FastDFTScheme jarg3_,
-                                                  int jarg4);
-
+  public final static native void acb_dft_inverse_precomp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, FastDFTScheme jarg3_, int jarg4);
+  public final static native void acb_dft_precomp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, FastDFTScheme jarg3_, int jarg4);
   public final static native void acb_dft_precomp_clear(long jarg1, FastDFTScheme jarg1_);
-
   public final static native void acb_dft_precomp_init(long jarg1, FastDFTScheme jarg1_, int jarg2, int jarg3);
-
-  public final static native void
-         acb_dft_inverse(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
-
-  public final static native void
-         acb_dft(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
-
+  public final static native void acb_dft_inverse(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
+  public final static native void acb_dft(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
   public final static native int acb_is_real(long jarg1, Complex jarg1_);
-
   public final static native void mag_swap(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native void acb_swap(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
-  public final static native void
-         mag_max(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
-
-  public final static native void
-         mag_mul_2exp_si(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, int jarg3);
-
+  public final static native void mag_max(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
+  public final static native void mag_mul_2exp_si(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, int jarg3);
   public final static native void acb_get_mag_lower(long jarg1, Magnitude jarg1_, long jarg2, Complex jarg2_);
-
   public final static native void arb_get_mag_lower(long jarg1, Magnitude jarg1_, long jarg2, Real jarg2_);
-
   public final static native long _mag_vec_init(int jarg1);
-
-  public final static native void arb_get_interval_arf(long jarg1,
-                                                       Float jarg1_,
-                                                       long jarg2,
-                                                       Float jarg2_,
-                                                       long jarg3,
-                                                       Real jarg3_,
-                                                       int jarg4);
-
+  public final static native void arb_get_interval_arf(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_tan(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void acb_inv(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void arb_inv(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native int arb_allocated_bytes(long jarg1, Real jarg1_);
-
   public final static native void arf_set_mag(long jarg1, Float jarg1_, long jarg2, Magnitude jarg2_);
-
-  public final static native void arf_mag_add_ulp(long jarg1,
-                                                  Magnitude jarg1_,
-                                                  long jarg2,
-                                                  Magnitude jarg2_,
-                                                  long jarg3,
-                                                  Float jarg3_,
-                                                  int jarg4);
-
+  public final static native void arf_mag_add_ulp(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Float jarg3_, int jarg4);
   public final static native void arb_printd(long jarg1, Real jarg1_, int jarg2);
-
   public final static native int arf_is_pos_inf(long jarg1, Float jarg1_);
-
   public final static native int arf_is_neg_inf(long jarg1, Float jarg1_);
-
   public final static native int arf_sgn(long jarg1, Float jarg1_);
-
   public final static native int arf_is_nan(long jarg1, Float jarg1_);
-
   public final static native int arf_equal(long jarg1, Float jarg1_, long jarg2, Float jarg2_);
-
   public final static native int arf_is_inf(long jarg1, Float jarg1_);
-
   public final static native void arb_get_mag(long jarg1, Magnitude jarg1_, long jarg2, Real jarg2_);
-
-  public final static native void
-         mag_sub_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
-
+  public final static native void mag_sub_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void arb_add_error_mag(long jarg1, Real jarg1_, long jarg2, Magnitude jarg2_);
-
-  public final static native void
-         mag_mul_ui_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3);
-
-  public final static native void
-         mag_sub(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
-
+  public final static native void mag_mul_ui_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3);
+  public final static native void mag_sub(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native double mag_get_d(long jarg1, Magnitude jarg1_);
-
   public final static native void acb_zero(long jarg1, Complex jarg1_);
-
-  public final static native void
-         acb_sub(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
-
-  public final static native void
-         acb_addmul_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
-
-  public final static native void
-         mag_add_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
-
-  public final static native void
-         mag_mul_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
-
+  public final static native void acb_sub(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_addmul_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
+  public final static native void mag_add_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
+  public final static native void mag_mul_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void acb_add_error_mag(long jarg1, Complex jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native void arb_neg(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
-
-  public final static native void
-         arf_interval_swap(long jarg1, FloatInterval jarg1_, long jarg2, FloatInterval jarg2_);
-
+  public final static native void arf_interval_swap(long jarg1, FloatInterval jarg1_, long jarg2, FloatInterval jarg2_);
   public final static native void arb_set_arf(long jarg1, Real jarg1_, long jarg2, Float jarg2_);
-
   public final static native void mag_one(long jarg1, Magnitude jarg1_);
-
   public final static native void mag_clear(long jarg1, Magnitude jarg1_);
-
   public final static native void mag_inf(long jarg1, Magnitude jarg1_);
-
   public final static native void acb_mul_2exp_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void acb_indeterminate(long jarg1, Complex jarg1_);
-
   public final static native int arb_is_positive(long jarg1, Real jarg1_);
-
   public final static native int arb_is_negative(long jarg1, Real jarg1_);
-
   public final static native int arb_is_nonnegative(long jarg1, Real jarg1_);
-
   public final static native int arb_is_nonpositive(long jarg1, Real jarg1_);
-
   public final static native void mag_sqrt(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native void mag_sqrt_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native void mag_rsqrt(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native void mag_rsqrt_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native void mag_root(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3);
-
-  public final static native void
-         mag_hypot(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
-
+  public final static native void mag_hypot(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void mag_binpow_uiui(long jarg1, Magnitude jarg1_, long jarg2, long jarg3);
-
-  public final static native void mag_polylog_tail(long jarg1,
-                                                   Magnitude jarg1_,
-                                                   long jarg2,
-                                                   Magnitude jarg2_,
-                                                   int jarg3,
-                                                   long jarg4,
-                                                   long jarg5);
-
-  public final static native void
-         mag_geom_series(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3);
-
+  public final static native void mag_polylog_tail(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, int jarg3, long jarg4, long jarg5);
+  public final static native void mag_geom_series(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3);
   public final static native void mag_hurwitz_zeta_uiui(long jarg1, Magnitude jarg1_, long jarg2, long jarg3);
-
   public final static native void mag_set_ui(long jarg1, Magnitude jarg1_, long jarg2);
-
   public final static native void mag_set_ui_lower(long jarg1, Magnitude jarg1_, long jarg2);
-
   public final static native void mag_set(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
-
-  public final static native void
-         mag_pow_ui_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3);
-
+  public final static native void mag_pow_ui_lower(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3);
   public final static native void arf_mul_2exp_si(long jarg1, Float jarg1_, long jarg2, Float jarg2_, int jarg3);
-
-  public final static native void
-         arf_interval_set(long jarg1, FloatInterval jarg1_, long jarg2, FloatInterval jarg2_);
-
-  public final static native void
-         arf_interval_get_arb(long jarg1, Real jarg1_, long jarg2, FloatInterval jarg2_, int jarg3);
-
+  public final static native void arf_interval_set(long jarg1, FloatInterval jarg1_, long jarg2, FloatInterval jarg2_);
+  public final static native void arf_interval_get_arb(long jarg1, Real jarg1_, long jarg2, FloatInterval jarg2_, int jarg3);
   public final static native int arb_sgn_nonzero(long jarg1, Real jarg1_);
-
-  public final static native void
-         acb_poly_derivative(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3);
-
-  public final static native void
-         acb_poly_integral(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3);
-
-  public final static native void acb_poly_product_roots(long jarg1,
-                                                         ComplexPolynomial jarg1_,
-                                                         long jarg2,
-                                                         Complex jarg2_,
-                                                         int jarg3,
-                                                         int jarg4);
-
-  public final static native void acb_poly_evaluate(long jarg1,
-                                                    Complex jarg1_,
-                                                    long jarg2,
-                                                    ComplexPolynomial jarg2_,
-                                                    long jarg3,
-                                                    Complex jarg3_,
-                                                    int jarg4);
-
-  public final static native void acb_poly_evaluate2(long jarg1,
-                                                     Complex jarg1_,
-                                                     long jarg2,
-                                                     Complex jarg2_,
-                                                     long jarg3,
-                                                     ComplexPolynomial jarg3_,
-                                                     long jarg4,
-                                                     Complex jarg4_,
-                                                     int jarg5);
-
+  public final static native void acb_poly_derivative(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3);
+  public final static native void acb_poly_integral(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, int jarg3);
+  public final static native void acb_poly_product_roots(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
+  public final static native void acb_poly_evaluate(long jarg1, Complex jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_poly_evaluate2(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, ComplexPolynomial jarg3_, long jarg4, Complex jarg4_, int jarg5);
   public final static native void flint_free(long jarg1);
-
   public final static native void acb_get_mag(long jarg1, Magnitude jarg1_, long jarg2, Complex jarg2_);
-
   public final static native void acb_mat_init(long jarg1, ComplexMatrix jarg1_, int jarg2, int jarg3);
-
-  public final static native void acb_dot(long jarg1,
-                                          Complex jarg1_,
-                                          long jarg2,
-                                          Complex jarg2_,
-                                          int jarg3,
-                                          long jarg4,
-                                          Complex jarg4_,
-                                          int jarg5,
-                                          long jarg6,
-                                          Complex jarg6_,
-                                          int jarg7,
-                                          int jarg8,
-                                          int jarg9);
-
-  public final static native void acb_poly_interpolate_newton(long jarg1,
-                                                              ComplexPolynomial jarg1_,
-                                                              long jarg2,
-                                                              Complex jarg2_,
-                                                              long jarg3,
-                                                              Complex jarg3_,
-                                                              int jarg4,
-                                                              int jarg5);
-
+  public final static native void acb_dot(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, long jarg4, Complex jarg4_, int jarg5, long jarg6, Complex jarg6_, int jarg7, int jarg8, int jarg9);
+  public final static native void acb_poly_interpolate_newton(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
   public final static native void arf_zero(long jarg1, Float jarg1_);
-
   public final static native void acb_cosh(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void arf_neg(long jarg1, Float jarg1_, long jarg2, Float jarg2_);
-
-  public final static native int
-         arf_mul_si(long jarg1, Float jarg1_, long jarg2, Float jarg2_, int jarg3, int jarg4, int jarg5);
-
-  public final static native int arf_mul_rnd_any(long jarg1,
-                                                 Float jarg1_,
-                                                 long jarg2,
-                                                 Float jarg2_,
-                                                 long jarg3,
-                                                 Float jarg3_,
-                                                 int jarg4,
-                                                 int jarg5);
-
-  public final static native int
-         arf_mul_rnd_down(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4);
-
+  public final static native int arf_mul_si(long jarg1, Float jarg1_, long jarg2, Float jarg2_, int jarg3, int jarg4, int jarg5);
+  public final static native int arf_mul_rnd_any(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4, int jarg5);
+  public final static native int arf_mul_rnd_down(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4);
   public final static native long flint_malloc(long jarg1);
-
   public final static native long flint_realloc(long jarg1, long jarg2);
-
   public final static native long flint_calloc(long jarg1, long jarg2);
-
-  public final static native void
-         color_function(double[] jarg1, double[] jarg2, double[] jarg3, long jarg4, Complex jarg4_, int jarg5);
-
+  public final static native void color_function(double[] jarg1, double[] jarg2, double[] jarg3, long jarg4, Complex jarg4_, int jarg5);
   public final static native void acb_set_d(long jarg1, Complex jarg1_, double jarg2);
-
-  public final static native void acb_dirichlet_zeta_jet(long jarg1,
-                                                         Complex jarg1_,
-                                                         long jarg2,
-                                                         Complex jarg2_,
-                                                         int jarg3,
-                                                         int jarg4,
-                                                         int jarg5);
-
-  public final static native void acb_dirichlet_hardy_z(long jarg1,
-                                                        Complex jarg1_,
-                                                        long jarg2,
-                                                        Complex jarg2_,
-                                                        long jarg3,
-                                                        DirichletGroup jarg3_,
-                                                        long jarg4,
-                                                        DirichletCharacter jarg4_,
-                                                        int jarg5,
-                                                        int jarg6);
-
+  public final static native void acb_dirichlet_zeta_jet(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4, int jarg5);
+  public final static native void acb_dirichlet_hardy_z(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, DirichletGroup jarg3_, long jarg4, DirichletCharacter jarg4_, int jarg5, int jarg6);
   public final static native void acb_print(long jarg1, Complex jarg1_);
-
   public final static native String arb_get_str(long jarg1, Real jarg1_, int jarg2, long jarg3);
-
   public final static native String arf_get_str(long jarg1, Float jarg1_, int jarg2);
-
   public final static native double arf_get_d(long jarg1, Float jarg1_, int jarg2);
-
   public final static native void arf_set_d(long jarg1, Float jarg1_, double jarg2);
-
-  public final static native int
-         arf_sub(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4, int jarg5);
-
+  public final static native int arf_sub(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4, int jarg5);
   public final static native void acb_conj(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
   public final static native void arb_floor(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_ceil(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
-  public final static native void
-         arb_div(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
-
+  public final static native void arb_div(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_sin(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_cos(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
-  public final static native void
-         arb_mul(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
-
+  public final static native void arb_mul(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native int arf_abs_bound_lt_2exp_si(long jarg1, Float jarg1_);
-
   public final static native void arb_mul_2exp_si(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
-  public final static native void
-         arb_get_abs_ubound_arf(long jarg1, Float jarg1_, long jarg2, Real jarg2_, int jarg3);
-
-  public final static native void
-         acb_mul_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
-
-  public final static native int
-         arf_mul_ui(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, int jarg4, int jarg5);
-
-  public final static native int
-         arf_div_ui(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, int jarg4, int jarg5);
-
+  public final static native void arb_get_abs_ubound_arf(long jarg1, Float jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void acb_mul_si(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
+  public final static native int arf_mul_ui(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, int jarg4, int jarg5);
+  public final static native int arf_div_ui(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, int jarg4, int jarg5);
   public final static native int mag_cmp(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native void arb_swap(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
-
   public final static native void mag_init(long jarg1, Magnitude jarg1_);
-
-  public final static native void
-         mag_add(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
-
+  public final static native void mag_add(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void arf_set(long jarg1, Float jarg1_, long jarg2, Float jarg2_);
-
   public final static native void mag_pow_ui(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3);
-
-  public final static native void
-         mag_mul(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
-
+  public final static native void mag_mul(long jarg1, Magnitude jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_);
   public final static native void arf_get_mag(long jarg1, Magnitude jarg1_, long jarg2, Float jarg2_);
-
-  public final static native int
-         arf_add(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4, int jarg5);
-
+  public final static native int arf_add(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4, int jarg5);
   public final static native int acb_rel_accuracy_bits(long jarg1, Complex jarg1_);
-
   public final static native int arb_bits(long jarg1, Real jarg1_);
-
-  public final static native void
-         acb_pow_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
-
-  public final static native void
-         acb_add_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
-
+  public final static native void acb_pow_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
+  public final static native void acb_add_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
   public final static native void acb_log(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void acb_tanh(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void arb_set_d(long jarg1, Real jarg1_, double jarg2);
-
-  public final static native void acb_dirichlet_hurwitz(long jarg1,
-                                                        Complex jarg1_,
-                                                        long jarg2,
-                                                        Complex jarg2_,
-                                                        long jarg3,
-                                                        Complex jarg3_,
-                                                        int jarg4);
-
-  public final static native void acb_dirichlet_hardy_theta(long jarg1,
-                                                            Complex jarg1_,
-                                                            long jarg2,
-                                                            Complex jarg2_,
-                                                            long jarg3,
-                                                            DirichletGroup jarg3_,
-                                                            long jarg4,
-                                                            DirichletCharacter jarg4_,
-                                                            int jarg5,
-                                                            int jarg6);
-
-  public final static native void
-         acb_mul(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
-
+  public final static native void acb_dirichlet_hurwitz(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_dirichlet_hardy_theta(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, DirichletGroup jarg3_, long jarg4, DirichletCharacter jarg4_, int jarg5, int jarg6);
+  public final static native void acb_mul(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_cos(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void acb_sin(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void acb_exp(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
-  public final static native void
-         arb_add(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
-
-  public final static native void
-         arb_sub(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
-
+  public final static native void arb_add(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
+  public final static native void arb_sub(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void acb_arg(long jarg1, Real jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
-  public final static native void
-         acb_modular_eisenstein(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
-
-  public final static native void
-         acb_pow_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
-
-  public final static native void
-         acb_pow(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
-
+  public final static native void acb_modular_eisenstein(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4);
+  public final static native void acb_pow_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
+  public final static native void acb_pow(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native int arb_contains(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
-
   public final static native int arb_contains_zero(long jarg1, Real jarg1_);
-
   public final static native int arb_set_str(long jarg1, Real jarg1_, String jarg2, int jarg3);
-
   public final static native int arb_overlaps(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
-
   public final static native long _acb_vec_init(int jarg1);
-
   public final static native long _arb_vec_init(int jarg1);
-
   public final static native void _acb_vec_clear(long jarg1, Complex jarg1_, int jarg2);
-
-  public final static native void
-         acb_mul_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
-
+  public final static native void acb_mul_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
   public final static native void acb_set(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
   public final static native void acb_clear(long jarg1, Complex jarg1_);
-
   public final static native void arb_clear(long jarg1, Real jarg1_);
-
-  public final static native void
-         acb_add(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
-
-  public final static native void
-         acb_sub_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
-
-  public final static native void
-         acb_div(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
-
+  public final static native void acb_add(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_sub_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
+  public final static native void acb_div(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void _arb_vec_clear(long jarg1, Real jarg1_, int jarg2);
-
   public final static native void acb_mul_onei(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
   public final static native void acb_div_onei(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
-  public final static native void
-         arb_pow_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
-
+  public final static native void arb_pow_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void acb_abs(long jarg1, Real jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void arb_sqrt(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void acb_sqr(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native int acb_contains(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
   public final static native int acb_overlaps(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
   public final static native int acb_contains_zero(long jarg1, Complex jarg1_);
-
   public final static native int acb_allocated_bytes(long jarg1, Complex jarg1_);
-
-  public final static native void
-         acb_mul_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
-
-  public final static native void
-         acb_div_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
-
+  public final static native void acb_mul_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
+  public final static native void acb_div_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_set(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
-
   public final static native void acb_elliptic_k(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native void acb_get_mid(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
-
   public final static native void arb_const_pi(long jarg1, Real jarg1_, int jarg2);
-
   public final static native int arb_is_finite(long jarg1, Real jarg1_);
-
   public final static native int acb_is_finite(long jarg1, Complex jarg1_);
-
   public final static native void arb_abs(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
-
   public final static native void arb_zero(long jarg1, Real jarg1_);
-
   public final static native void arb_one(long jarg1, Real jarg1_);
-
   public final static native void arb_pos_inf(long jarg1, Real jarg1_);
-
   public final static native void arb_neg_inf(long jarg1, Real jarg1_);
-
   public final static native void arb_zero_pm_inf(long jarg1, Real jarg1_);
-
   public final static native void arb_indeterminate(long jarg1, Real jarg1_);
-
   public final static native void arb_zero_pm_one(long jarg1, Real jarg1_);
-
   public final static native int arb_rel_accuracy_bits(long jarg1, Real jarg1_);
-
   public final static native void arb_unit_interval(long jarg1, Real jarg1_);
-
   public final static native void mag_zero(long jarg1, Magnitude jarg1_);
-
   public final static native void arb_div_si(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
-
   public final static native void arb_trim(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
-
-  public final static native void arb_set_interval_mag(long jarg1,
-                                                       Real jarg1_,
-                                                       long jarg2,
-                                                       Magnitude jarg2_,
-                                                       long jarg3,
-                                                       Magnitude jarg3_,
-                                                       int jarg4);
-
-  public final static native void acb_modular_theta_series(long jarg1,
-                                                           ComplexPolynomial jarg1_,
-                                                           long jarg2,
-                                                           ComplexPolynomial jarg2_,
-                                                           long jarg3,
-                                                           ComplexPolynomial jarg3_,
-                                                           long jarg4,
-                                                           ComplexPolynomial jarg4_,
-                                                           long jarg5,
-                                                           ComplexPolynomial jarg5_,
-                                                           long jarg6,
-                                                           Complex jarg6_,
-                                                           int jarg7,
-                                                           int jarg8);
-
+  public final static native void arb_set_interval_mag(long jarg1, Real jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_, int jarg4);
+  public final static native void acb_modular_theta_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, ComplexPolynomial jarg3_, long jarg4, ComplexPolynomial jarg4_, long jarg5, ComplexPolynomial jarg5_, long jarg6, Complex jarg6_, int jarg7, int jarg8);
   public final static native void acb_poly_init(long jarg1, ComplexPolynomial jarg1_);
-
   public final static native void arf_clear(long jarg1, Float jarg1_);
-
   public final static native void arb_init(long jarg1, Real jarg1_);
-
   public final static native void arf_init(long jarg1, Float jarg1_);
-
   public final static native void acb_init(long jarg1, Complex jarg1_);
-
   public final static native void arb_tanh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_asinh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_acosh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
-  public final static native void
-         arb_lambertw(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
-
+  public final static native void arb_lambertw(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
   public final static native void arb_gamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_lgamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void arb_sqr(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-
   public final static native void acb_sqrt(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
-
   public final static native int GMP_RAND_ALG_DEFAULT_get();
-
   public final static native int GMP_RAND_ALG_LC_get();
-
   public final static native long GMPRandomState_algorithmData_get(long jarg1, GMPRandomState jarg1_);
-
   public final static native long new_GMPRandomState();
-
   public final static native void delete_GMPRandomState(long jarg1);
-
   public final static native void RandomAlgorithmData__mp_lc_set(long jarg1, RandomAlgorithmData jarg1_, long jarg2);
-
   public final static native long RandomAlgorithmData__mp_lc_get(long jarg1, RandomAlgorithmData jarg1_);
-
   public final static native long new_RandomAlgorithmData();
-
   public final static native void delete_RandomAlgorithmData(long jarg1);
-
-  public final static native void
-         RandomState_randomState_set(long jarg1, RandomState jarg1_, long jarg2, GMPRandomState jarg2_);
-
+  public final static native void RandomState_randomState_set(long jarg1, RandomState jarg1_, long jarg2, GMPRandomState jarg2_);
   public final static native long RandomState_randomState_get(long jarg1, RandomState jarg1_);
-
   public final static native void RandomState_initialValue_set(long jarg1, RandomState jarg1_, int jarg2);
-
   public final static native int RandomState_initialValue_get(long jarg1, RandomState jarg1_);
-
   public final static native void RandomState_randomValue_set(long jarg1, RandomState jarg1_, long jarg2);
-
   public final static native long RandomState_randomValue_get(long jarg1, RandomState jarg1_);
-
   public final static native void RandomState_randomValue2_set(long jarg1, RandomState jarg1_, long jarg2);
-
   public final static native long RandomState_randomValue2_get(long jarg1, RandomState jarg1_);
-
   public final static native long new_RandomState();
-
   public final static native void delete_RandomState(long jarg1);
-
   public final static native void RealMatrix_numRows_set(long jarg1, RealMatrix jarg1_, int jarg2);
-
   public final static native int RealMatrix_numRows_get(long jarg1, RealMatrix jarg1_);
-
   public final static native void RealMatrix_numCols_set(long jarg1, RealMatrix jarg1_, int jarg2);
-
   public final static native int RealMatrix_numCols_get(long jarg1, RealMatrix jarg1_);
-
   public final static native void RealMatrix_rowPointers_set(long jarg1, RealMatrix jarg1_, long jarg2);
-
   public final static native long RealMatrix_rowPointers_get(long jarg1, RealMatrix jarg1_);
-
   public final static native long new_RealMatrix();
-
   public final static native void delete_RealMatrix(long jarg1);
-
   public final static native void ComplexMatrix_numRows_set(long jarg1, ComplexMatrix jarg1_, int jarg2);
-
   public final static native int ComplexMatrix_numRows_get(long jarg1, ComplexMatrix jarg1_);
-
   public final static native void ComplexMatrix_numCols_set(long jarg1, ComplexMatrix jarg1_, int jarg2);
-
   public final static native int ComplexMatrix_numCols_get(long jarg1, ComplexMatrix jarg1_);
-
   public final static native void ComplexMatrix_rowPointers_set(long jarg1, ComplexMatrix jarg1_, long jarg2);
-
   public final static native long ComplexMatrix_rowPointers_get(long jarg1, ComplexMatrix jarg1_);
-
   public final static native long new_ComplexMatrix();
-
   public final static native void delete_ComplexMatrix(long jarg1);
-
   public final static native void FloatInterval_a_set(long jarg1, FloatInterval jarg1_, long jarg2, Float jarg2_);
-
   public final static native long FloatInterval_a_get(long jarg1, FloatInterval jarg1_);
-
   public final static native void FloatInterval_b_set(long jarg1, FloatInterval jarg1_, long jarg2, Float jarg2_);
-
   public final static native long FloatInterval_b_get(long jarg1, FloatInterval jarg1_);
-
   public final static native long new_FloatInterval();
-
   public final static native void delete_FloatInterval(long jarg1);
-
   public final static native void Magnitude_exp_set(long jarg1, Magnitude jarg1_, long jarg2);
-
   public final static native long Magnitude_exp_get(long jarg1, Magnitude jarg1_);
-
   public final static native void Magnitude_man_set(long jarg1, Magnitude jarg1_, long jarg2);
-
   public final static native long Magnitude_man_get(long jarg1, Magnitude jarg1_);
-
   public final static native long new_Magnitude();
-
   public final static native void delete_Magnitude(long jarg1);
-
   public final static native void Complex_realObj_set(long jarg1, Complex jarg1_, long jarg2, Real jarg2_);
-
   public final static native long Complex_realObj_get(long jarg1, Complex jarg1_);
-
   public final static native void Complex_imagObj_set(long jarg1, Complex jarg1_, long jarg2, Real jarg2_);
-
   public final static native long Complex_imagObj_get(long jarg1, Complex jarg1_);
-
   public final static native long new_Complex();
-
   public final static native void delete_Complex(long jarg1);
-
   public final static native void DirichletGroup_q_set(long jarg1, DirichletGroup jarg1_, long jarg2);
-
   public final static native long DirichletGroup_q_get(long jarg1, DirichletGroup jarg1_);
-
   public final static native void DirichletGroup_q_even_set(long jarg1, DirichletGroup jarg1_, long jarg2);
-
   public final static native long DirichletGroup_q_even_get(long jarg1, DirichletGroup jarg1_);
-
   public final static native void DirichletGroup_rad_q_set(long jarg1, DirichletGroup jarg1_, long jarg2);
-
   public final static native long DirichletGroup_rad_q_get(long jarg1, DirichletGroup jarg1_);
-
   public final static native void DirichletGroup_phi_q_set(long jarg1, DirichletGroup jarg1_, long jarg2);
-
   public final static native long DirichletGroup_phi_q_get(long jarg1, DirichletGroup jarg1_);
-
   public final static native void DirichletGroup_neven_set(long jarg1, DirichletGroup jarg1_, int jarg2);
-
   public final static native int DirichletGroup_neven_get(long jarg1, DirichletGroup jarg1_);
-
   public final static native void DirichletGroup_num_set(long jarg1, DirichletGroup jarg1_, int jarg2);
-
   public final static native int DirichletGroup_num_get(long jarg1, DirichletGroup jarg1_);
-
   public final static native void DirichletGroup_expo_set(long jarg1, DirichletGroup jarg1_, long jarg2);
-
   public final static native long DirichletGroup_expo_get(long jarg1, DirichletGroup jarg1_);
-
-  public final static native void
-         DirichletGroup_P_set(long jarg1, DirichletGroup jarg1_, long jarg2, DirichletPrimeGroup jarg2_);
-
+  public final static native void DirichletGroup_P_set(long jarg1, DirichletGroup jarg1_, long jarg2, DirichletPrimeGroup jarg2_);
   public final static native long DirichletGroup_P_get(long jarg1, DirichletGroup jarg1_);
-
   public final static native long new_DirichletGroup();
-
   public final static native void delete_DirichletGroup(long jarg1);
-
   public final static native void DirichletCharacter_n_set(long jarg1, DirichletCharacter jarg1_, long jarg2);
-
   public final static native long DirichletCharacter_n_get(long jarg1, DirichletCharacter jarg1_);
-
   public final static native long new_DirichletCharacter();
-
   public final static native void delete_DirichletCharacter(long jarg1);
-
   public final static native void DirichletPrimeGroup_p_set(long jarg1, DirichletPrimeGroup jarg1_, long jarg2);
-
   public final static native long DirichletPrimeGroup_p_get(long jarg1, DirichletPrimeGroup jarg1_);
-
   public final static native void DirichletPrimeGroup_e_set(long jarg1, DirichletPrimeGroup jarg1_, int jarg2);
-
   public final static native int DirichletPrimeGroup_e_get(long jarg1, DirichletPrimeGroup jarg1_);
-
   public final static native void DirichletPrimeGroup_g_set(long jarg1, DirichletPrimeGroup jarg1_, long jarg2);
-
   public final static native long DirichletPrimeGroup_g_get(long jarg1, DirichletPrimeGroup jarg1_);
-
   public final static native long new_DirichletPrimeGroup();
-
   public final static native void delete_DirichletPrimeGroup(long jarg1);
-
   public final static native void Real_mid_set(long jarg1, Real jarg1_, long jarg2, Float jarg2_);
-
   public final static native long Real_mid_get(long jarg1, Real jarg1_);
-
   public final static native void Real_rad_set(long jarg1, Real jarg1_, long jarg2, Magnitude jarg2_);
-
   public final static native long Real_rad_get(long jarg1, Real jarg1_);
-
   public final static native long new_Real();
-
   public final static native void delete_Real(long jarg1);
-
   public final static native long new_MantissaNoPointer();
-
   public final static native void delete_MantissaNoPointer(long jarg1);
-
   public final static native long new_MantissaPointer();
-
   public final static native void delete_MantissaPointer(long jarg1);
-
-  public final static native void
-         Mantissa_noptr_set(long jarg1, Mantissa jarg1_, long jarg2, MantissaNoPointer jarg2_);
-
+  public final static native void Mantissa_noptr_set(long jarg1, Mantissa jarg1_, long jarg2, MantissaNoPointer jarg2_);
   public final static native long Mantissa_noptr_get(long jarg1, Mantissa jarg1_);
-
   public final static native void Mantissa_ptr_set(long jarg1, Mantissa jarg1_, long jarg2, MantissaPointer jarg2_);
-
   public final static native long Mantissa_ptr_get(long jarg1, Mantissa jarg1_);
-
   public final static native long new_Mantissa();
-
   public final static native void delete_Mantissa(long jarg1);
-
   public final static native void Float_exp_set(long jarg1, Float jarg1_, long jarg2);
-
   public final static native long Float_exp_get(long jarg1, Float jarg1_);
-
   public final static native long new_Float();
-
   public final static native void delete_Float(long jarg1);
-
-  public final static native void
-         ComplexPolynomial_coeffs_set(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_);
-
+  public final static native void ComplexPolynomial_coeffs_set(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_);
   public final static native long ComplexPolynomial_coeffs_get(long jarg1, ComplexPolynomial jarg1_);
-
   public final static native void ComplexPolynomial_length_set(long jarg1, ComplexPolynomial jarg1_, int jarg2);
-
   public final static native int ComplexPolynomial_length_get(long jarg1, ComplexPolynomial jarg1_);
-
   public final static native long new_ComplexPolynomial();
-
   public final static native void delete_ComplexPolynomial(long jarg1);
-
   public final static native void acb_dft_cyc_struct_n_set(long jarg1, acb_dft_cyc_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_cyc_struct_n_get(long jarg1, acb_dft_cyc_struct jarg1_);
-
-  public final static native void
-         acb_dft_cyc_struct_z_set(long jarg1, acb_dft_cyc_struct jarg1_, long jarg2, Complex jarg2_);
-
+  public final static native void acb_dft_cyc_struct_z_set(long jarg1, acb_dft_cyc_struct jarg1_, long jarg2, Complex jarg2_);
   public final static native long acb_dft_cyc_struct_z_get(long jarg1, acb_dft_cyc_struct jarg1_);
-
   public final static native void acb_dft_cyc_struct_zclear_set(long jarg1, acb_dft_cyc_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_cyc_struct_zclear_get(long jarg1, acb_dft_cyc_struct jarg1_);
-
   public final static native void acb_dft_cyc_struct_num_set(long jarg1, acb_dft_cyc_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_cyc_struct_num_get(long jarg1, acb_dft_cyc_struct jarg1_);
-
-  public final static native void
-         acb_dft_cyc_struct_cyc_set(long jarg1, acb_dft_cyc_struct jarg1_, long jarg2, acb_dft_step_struct jarg2_);
-
+  public final static native void acb_dft_cyc_struct_cyc_set(long jarg1, acb_dft_cyc_struct jarg1_, long jarg2, acb_dft_step_struct jarg2_);
   public final static native long acb_dft_cyc_struct_cyc_get(long jarg1, acb_dft_cyc_struct jarg1_);
-
   public final static native long new_acb_dft_cyc_struct();
-
   public final static native void delete_acb_dft_cyc_struct(long jarg1);
-
   public final static native void FastDFTRadix2Scheme_e_set(long jarg1, FastDFTRadix2Scheme jarg1_, int jarg2);
-
   public final static native int FastDFTRadix2Scheme_e_get(long jarg1, FastDFTRadix2Scheme jarg1_);
-
   public final static native void FastDFTRadix2Scheme_n_set(long jarg1, FastDFTRadix2Scheme jarg1_, int jarg2);
-
   public final static native int FastDFTRadix2Scheme_n_get(long jarg1, FastDFTRadix2Scheme jarg1_);
-
   public final static native void FastDFTRadix2Scheme_dv_set(long jarg1, FastDFTRadix2Scheme jarg1_, int jarg2);
-
   public final static native int FastDFTRadix2Scheme_dv_get(long jarg1, FastDFTRadix2Scheme jarg1_);
-
   public final static native void FastDFTRadix2Scheme_nz_set(long jarg1, FastDFTRadix2Scheme jarg1_, int jarg2);
-
   public final static native int FastDFTRadix2Scheme_nz_get(long jarg1, FastDFTRadix2Scheme jarg1_);
-
-  public final static native void
-         FastDFTRadix2Scheme_z_set(long jarg1, FastDFTRadix2Scheme jarg1_, long jarg2, Complex jarg2_);
-
+  public final static native void FastDFTRadix2Scheme_z_set(long jarg1, FastDFTRadix2Scheme jarg1_, long jarg2, Complex jarg2_);
   public final static native long FastDFTRadix2Scheme_z_get(long jarg1, FastDFTRadix2Scheme jarg1_);
-
   public final static native long new_FastDFTRadix2Scheme();
-
   public final static native void delete_FastDFTRadix2Scheme(long jarg1);
-
   public final static native void FastDFTBluesteinScheme_n_set(long jarg1, FastDFTBluesteinScheme jarg1_, int jarg2);
-
   public final static native int FastDFTBluesteinScheme_n_get(long jarg1, FastDFTBluesteinScheme jarg1_);
-
-  public final static native void
-         FastDFTBluesteinScheme_dv_set(long jarg1, FastDFTBluesteinScheme jarg1_, int jarg2);
-
+  public final static native void FastDFTBluesteinScheme_dv_set(long jarg1, FastDFTBluesteinScheme jarg1_, int jarg2);
   public final static native int FastDFTBluesteinScheme_dv_get(long jarg1, FastDFTBluesteinScheme jarg1_);
-
-  public final static native void
-         FastDFTBluesteinScheme_z_set(long jarg1, FastDFTBluesteinScheme jarg1_, long jarg2, Complex jarg2_);
-
+  public final static native void FastDFTBluesteinScheme_z_set(long jarg1, FastDFTBluesteinScheme jarg1_, long jarg2, Complex jarg2_);
   public final static native long FastDFTBluesteinScheme_z_get(long jarg1, FastDFTBluesteinScheme jarg1_);
-
-  public final static native void
-         FastDFTBluesteinScheme_g_set(long jarg1, FastDFTBluesteinScheme jarg1_, long jarg2, Complex jarg2_);
-
+  public final static native void FastDFTBluesteinScheme_g_set(long jarg1, FastDFTBluesteinScheme jarg1_, long jarg2, Complex jarg2_);
   public final static native long FastDFTBluesteinScheme_g_get(long jarg1, FastDFTBluesteinScheme jarg1_);
-
-  public final static native void FastDFTBluesteinScheme_rad2_set(long jarg1,
-                                                                  FastDFTBluesteinScheme jarg1_,
-                                                                  long jarg2,
-                                                                  FastDFTRadix2Scheme jarg2_);
-
+  public final static native void FastDFTBluesteinScheme_rad2_set(long jarg1, FastDFTBluesteinScheme jarg1_, long jarg2, FastDFTRadix2Scheme jarg2_);
   public final static native long FastDFTBluesteinScheme_rad2_get(long jarg1, FastDFTBluesteinScheme jarg1_);
-
   public final static native long new_FastDFTBluesteinScheme();
-
   public final static native void delete_FastDFTBluesteinScheme(long jarg1);
-
   public final static native void acb_dft_prod_struct_n_set(long jarg1, acb_dft_prod_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_prod_struct_n_get(long jarg1, acb_dft_prod_struct jarg1_);
-
   public final static native void acb_dft_prod_struct_num_set(long jarg1, acb_dft_prod_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_prod_struct_num_get(long jarg1, acb_dft_prod_struct jarg1_);
-
-  public final static native void
-         acb_dft_prod_struct_cyc_set(long jarg1, acb_dft_prod_struct jarg1_, long jarg2, acb_dft_step_struct jarg2_);
-
+  public final static native void acb_dft_prod_struct_cyc_set(long jarg1, acb_dft_prod_struct jarg1_, long jarg2, acb_dft_step_struct jarg2_);
   public final static native long acb_dft_prod_struct_cyc_get(long jarg1, acb_dft_prod_struct jarg1_);
-
   public final static native long new_acb_dft_prod_struct();
-
   public final static native void delete_acb_dft_prod_struct(long jarg1);
-
-  public final static native void
-         FastDFTChineseRemainder_n_set(long jarg1, FastDFTChineseRemainder jarg1_, int jarg2);
-
+  public final static native void FastDFTChineseRemainder_n_set(long jarg1, FastDFTChineseRemainder jarg1_, int jarg2);
   public final static native int FastDFTChineseRemainder_n_get(long jarg1, FastDFTChineseRemainder jarg1_);
-
-  public final static native void
-         FastDFTChineseRemainder_dv_set(long jarg1, FastDFTChineseRemainder jarg1_, int jarg2);
-
+  public final static native void FastDFTChineseRemainder_dv_set(long jarg1, FastDFTChineseRemainder jarg1_, int jarg2);
   public final static native int FastDFTChineseRemainder_dv_get(long jarg1, FastDFTChineseRemainder jarg1_);
-
-  public final static native void FastDFTChineseRemainder_cyc_set(long jarg1,
-                                                                  FastDFTChineseRemainder jarg1_,
-                                                                  long jarg2,
-                                                                  acb_dft_step_struct jarg2_);
-
+  public final static native void FastDFTChineseRemainder_cyc_set(long jarg1, FastDFTChineseRemainder jarg1_, long jarg2, acb_dft_step_struct jarg2_);
   public final static native long FastDFTChineseRemainder_cyc_get(long jarg1, FastDFTChineseRemainder jarg1_);
-
   public final static native long new_FastDFTChineseRemainder();
-
   public final static native void delete_FastDFTChineseRemainder(long jarg1);
-
   public final static native void acb_dft_naive_struct_n_set(long jarg1, acb_dft_naive_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_naive_struct_n_get(long jarg1, acb_dft_naive_struct jarg1_);
-
   public final static native void acb_dft_naive_struct_dv_set(long jarg1, acb_dft_naive_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_naive_struct_dv_get(long jarg1, acb_dft_naive_struct jarg1_);
-
-  public final static native void
-         acb_dft_naive_struct_zclear_set(long jarg1, acb_dft_naive_struct jarg1_, int jarg2);
-
+  public final static native void acb_dft_naive_struct_zclear_set(long jarg1, acb_dft_naive_struct jarg1_, int jarg2);
   public final static native int acb_dft_naive_struct_zclear_get(long jarg1, acb_dft_naive_struct jarg1_);
-
-  public final static native void
-         acb_dft_naive_struct_z_set(long jarg1, acb_dft_naive_struct jarg1_, long jarg2, Complex jarg2_);
-
+  public final static native void acb_dft_naive_struct_z_set(long jarg1, acb_dft_naive_struct jarg1_, long jarg2, Complex jarg2_);
   public final static native long acb_dft_naive_struct_z_get(long jarg1, acb_dft_naive_struct jarg1_);
-
   public final static native void acb_dft_naive_struct_dz_set(long jarg1, acb_dft_naive_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_naive_struct_dz_get(long jarg1, acb_dft_naive_struct jarg1_);
-
   public final static native long new_acb_dft_naive_struct();
-
   public final static native void delete_acb_dft_naive_struct(long jarg1);
-
   public final static native void FastDFTScheme_n_set(long jarg1, FastDFTScheme jarg1_, int jarg2);
-
   public final static native int FastDFTScheme_n_get(long jarg1, FastDFTScheme jarg1_);
-
   public final static native void FastDFTScheme_type_set(long jarg1, FastDFTScheme jarg1_, int jarg2);
-
   public final static native int FastDFTScheme_type_get(long jarg1, FastDFTScheme jarg1_);
-
   public final static native long FastDFTScheme_t_get(long jarg1, FastDFTScheme jarg1_);
-
   public final static native long new_FastDFTScheme();
-
   public final static native void delete_FastDFTScheme(long jarg1);
-
-  public final static native void
-         FastDFTSchemeUnion_rad2_set(long jarg1, FastDFTSchemeUnion jarg1_, long jarg2, FastDFTRadix2Scheme jarg2_);
-
+  public final static native void FastDFTSchemeUnion_rad2_set(long jarg1, FastDFTSchemeUnion jarg1_, long jarg2, FastDFTRadix2Scheme jarg2_);
   public final static native long FastDFTSchemeUnion_rad2_get(long jarg1, FastDFTSchemeUnion jarg1_);
-
-  public final static native void
-         FastDFTSchemeUnion_cyc_set(long jarg1, FastDFTSchemeUnion jarg1_, long jarg2, acb_dft_cyc_struct jarg2_);
-
+  public final static native void FastDFTSchemeUnion_cyc_set(long jarg1, FastDFTSchemeUnion jarg1_, long jarg2, acb_dft_cyc_struct jarg2_);
   public final static native long FastDFTSchemeUnion_cyc_get(long jarg1, FastDFTSchemeUnion jarg1_);
-
-  public final static native void
-         FastDFTSchemeUnion_prod_set(long jarg1, FastDFTSchemeUnion jarg1_, long jarg2, acb_dft_prod_struct jarg2_);
-
+  public final static native void FastDFTSchemeUnion_prod_set(long jarg1, FastDFTSchemeUnion jarg1_, long jarg2, acb_dft_prod_struct jarg2_);
   public final static native long FastDFTSchemeUnion_prod_get(long jarg1, FastDFTSchemeUnion jarg1_);
-
-  public final static native void FastDFTSchemeUnion_crt_set(long jarg1,
-                                                             FastDFTSchemeUnion jarg1_,
-                                                             long jarg2,
-                                                             FastDFTChineseRemainder jarg2_);
-
+  public final static native void FastDFTSchemeUnion_crt_set(long jarg1, FastDFTSchemeUnion jarg1_, long jarg2, FastDFTChineseRemainder jarg2_);
   public final static native long FastDFTSchemeUnion_crt_get(long jarg1, FastDFTSchemeUnion jarg1_);
-
-  public final static native void FastDFTSchemeUnion_naive_set(long jarg1,
-                                                               FastDFTSchemeUnion jarg1_,
-                                                               long jarg2,
-                                                               acb_dft_naive_struct jarg2_);
-
+  public final static native void FastDFTSchemeUnion_naive_set(long jarg1, FastDFTSchemeUnion jarg1_, long jarg2, acb_dft_naive_struct jarg2_);
   public final static native long FastDFTSchemeUnion_naive_get(long jarg1, FastDFTSchemeUnion jarg1_);
-
-  public final static native void FastDFTSchemeUnion_bluestein_set(long jarg1,
-                                                                   FastDFTSchemeUnion jarg1_,
-                                                                   long jarg2,
-                                                                   FastDFTBluesteinScheme jarg2_);
-
+  public final static native void FastDFTSchemeUnion_bluestein_set(long jarg1, FastDFTSchemeUnion jarg1_, long jarg2, FastDFTBluesteinScheme jarg2_);
   public final static native long FastDFTSchemeUnion_bluestein_get(long jarg1, FastDFTSchemeUnion jarg1_);
-
   public final static native long new_FastDFTSchemeUnion();
-
   public final static native void delete_FastDFTSchemeUnion(long jarg1);
-
   public final static native void acb_dft_step_struct_m_set(long jarg1, acb_dft_step_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_step_struct_m_get(long jarg1, acb_dft_step_struct jarg1_);
-
   public final static native void acb_dft_step_struct_dv_set(long jarg1, acb_dft_step_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_step_struct_dv_get(long jarg1, acb_dft_step_struct jarg1_);
-
-  public final static native void
-         acb_dft_step_struct_z_set(long jarg1, acb_dft_step_struct jarg1_, long jarg2, Complex jarg2_);
-
+  public final static native void acb_dft_step_struct_z_set(long jarg1, acb_dft_step_struct jarg1_, long jarg2, Complex jarg2_);
   public final static native long acb_dft_step_struct_z_get(long jarg1, acb_dft_step_struct jarg1_);
-
   public final static native void acb_dft_step_struct_dz_set(long jarg1, acb_dft_step_struct jarg1_, int jarg2);
-
   public final static native int acb_dft_step_struct_dz_get(long jarg1, acb_dft_step_struct jarg1_);
-
-  public final static native void
-         acb_dft_step_struct_pre_set(long jarg1, acb_dft_step_struct jarg1_, long jarg2, FastDFTScheme jarg2_);
-
+  public final static native void acb_dft_step_struct_pre_set(long jarg1, acb_dft_step_struct jarg1_, long jarg2, FastDFTScheme jarg2_);
   public final static native long acb_dft_step_struct_pre_get(long jarg1, acb_dft_step_struct jarg1_);
-
   public final static native long new_acb_dft_step_struct();
-
   public final static native void delete_acb_dft_step_struct(long jarg1);
 }

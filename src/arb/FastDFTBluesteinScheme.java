@@ -8,34 +8,27 @@
 
 package arb;
 
-public class FastDFTBluesteinScheme
-{
-  private transient long      swigCPtr;
+public class FastDFTBluesteinScheme {
+  private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public FastDFTBluesteinScheme(long cPtr, boolean cMemoryOwn)
-  {
+  public FastDFTBluesteinScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(FastDFTBluesteinScheme obj)
-  {
+  public static long getCPtr(FastDFTBluesteinScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
   @SuppressWarnings("deprecation")
-  protected void finalize()
-  {
+  protected void finalize() {
     delete();
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arbJNI.delete_FastDFTBluesteinScheme(swigCPtr);
       }
@@ -43,66 +36,51 @@ public class FastDFTBluesteinScheme
     }
   }
 
-  public void setN(int value)
-  {
+  public void setN(int value) {
     arbJNI.FastDFTBluesteinScheme_n_set(swigCPtr, this, value);
   }
 
-  public int getN()
-  {
+  public int getN() {
     return arbJNI.FastDFTBluesteinScheme_n_get(swigCPtr, this);
   }
 
-  public void setDv(int value)
-  {
+  public void setDv(int value) {
     arbJNI.FastDFTBluesteinScheme_dv_set(swigCPtr, this, value);
   }
 
-  public int getDv()
-  {
+  public int getDv() {
     return arbJNI.FastDFTBluesteinScheme_dv_get(swigCPtr, this);
   }
 
-  public void setZ(Complex value)
-  {
+  public void setZ(Complex value) {
     arbJNI.FastDFTBluesteinScheme_z_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getZ()
-  {
+  public Complex getZ() {
     long cPtr = arbJNI.FastDFTBluesteinScheme_z_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Complex(cPtr,
-                                            false);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public void setG(Complex value)
-  {
+  public void setG(Complex value) {
     arbJNI.FastDFTBluesteinScheme_g_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getG()
-  {
+  public Complex getG() {
     long cPtr = arbJNI.FastDFTBluesteinScheme_g_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Complex(cPtr,
-                                            false);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public void setRad2(FastDFTRadix2Scheme value)
-  {
+  public void setRad2(FastDFTRadix2Scheme value) {
     arbJNI.FastDFTBluesteinScheme_rad2_set(swigCPtr, this, FastDFTRadix2Scheme.getCPtr(value), value);
   }
 
-  public FastDFTRadix2Scheme getRad2()
-  {
+  public FastDFTRadix2Scheme getRad2() {
     long cPtr = arbJNI.FastDFTBluesteinScheme_rad2_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new FastDFTRadix2Scheme(cPtr,
-                                                        false);
+    return (cPtr == 0) ? null : new FastDFTRadix2Scheme(cPtr, false);
   }
 
-  public FastDFTBluesteinScheme()
-  {
-    this(arbJNI.new_FastDFTBluesteinScheme(),
-         true);
+  public FastDFTBluesteinScheme() {
+    this(arbJNI.new_FastDFTBluesteinScheme(), true);
   }
 
 }

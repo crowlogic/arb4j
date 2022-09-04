@@ -24,7 +24,7 @@ public class CircularS extends
   public CircularS(Complex t, Real sFuncScale, Real h)
   {
     this(new SFunction(sFuncScale),
-         new ComplexCircle(ComplexConstants.ZERO,
+         new ComplexCircle(t,
                            h));
   }
 

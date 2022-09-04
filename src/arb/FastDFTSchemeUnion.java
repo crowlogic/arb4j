@@ -8,34 +8,27 @@
 
 package arb;
 
-public class FastDFTSchemeUnion
-{
-  private transient long      swigCPtr;
+public class FastDFTSchemeUnion {
+  private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public FastDFTSchemeUnion(long cPtr, boolean cMemoryOwn)
-  {
+  public FastDFTSchemeUnion(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(FastDFTSchemeUnion obj)
-  {
+  public static long getCPtr(FastDFTSchemeUnion obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
   @SuppressWarnings("deprecation")
-  protected void finalize()
-  {
+  protected void finalize() {
     delete();
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arbJNI.delete_FastDFTSchemeUnion(swigCPtr);
       }
@@ -43,82 +36,62 @@ public class FastDFTSchemeUnion
     }
   }
 
-  public void setRad2(FastDFTRadix2Scheme value)
-  {
+  public void setRad2(FastDFTRadix2Scheme value) {
     arbJNI.FastDFTSchemeUnion_rad2_set(swigCPtr, this, FastDFTRadix2Scheme.getCPtr(value), value);
   }
 
-  public FastDFTRadix2Scheme getRad2()
-  {
+  public FastDFTRadix2Scheme getRad2() {
     long cPtr = arbJNI.FastDFTSchemeUnion_rad2_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new FastDFTRadix2Scheme(cPtr,
-                                                        false);
+    return (cPtr == 0) ? null : new FastDFTRadix2Scheme(cPtr, false);
   }
 
-  public void setCyc(acb_dft_cyc_struct value)
-  {
+  public void setCyc(acb_dft_cyc_struct value) {
     arbJNI.FastDFTSchemeUnion_cyc_set(swigCPtr, this, acb_dft_cyc_struct.getCPtr(value), value);
   }
 
-  public acb_dft_cyc_struct getCyc()
-  {
+  public acb_dft_cyc_struct getCyc() {
     long cPtr = arbJNI.FastDFTSchemeUnion_cyc_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new acb_dft_cyc_struct(cPtr,
-                                                       false);
+    return (cPtr == 0) ? null : new acb_dft_cyc_struct(cPtr, false);
   }
 
-  public void setProd(acb_dft_prod_struct value)
-  {
+  public void setProd(acb_dft_prod_struct value) {
     arbJNI.FastDFTSchemeUnion_prod_set(swigCPtr, this, acb_dft_prod_struct.getCPtr(value), value);
   }
 
-  public acb_dft_prod_struct getProd()
-  {
+  public acb_dft_prod_struct getProd() {
     long cPtr = arbJNI.FastDFTSchemeUnion_prod_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new acb_dft_prod_struct(cPtr,
-                                                        false);
+    return (cPtr == 0) ? null : new acb_dft_prod_struct(cPtr, false);
   }
 
-  public void setCrt(FastDFTChineseRemainder value)
-  {
+  public void setCrt(FastDFTChineseRemainder value) {
     arbJNI.FastDFTSchemeUnion_crt_set(swigCPtr, this, FastDFTChineseRemainder.getCPtr(value), value);
   }
 
-  public FastDFTChineseRemainder getCrt()
-  {
+  public FastDFTChineseRemainder getCrt() {
     long cPtr = arbJNI.FastDFTSchemeUnion_crt_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new FastDFTChineseRemainder(cPtr,
-                                                            false);
+    return (cPtr == 0) ? null : new FastDFTChineseRemainder(cPtr, false);
   }
 
-  public void setNaive(acb_dft_naive_struct value)
-  {
+  public void setNaive(acb_dft_naive_struct value) {
     arbJNI.FastDFTSchemeUnion_naive_set(swigCPtr, this, acb_dft_naive_struct.getCPtr(value), value);
   }
 
-  public acb_dft_naive_struct getNaive()
-  {
+  public acb_dft_naive_struct getNaive() {
     long cPtr = arbJNI.FastDFTSchemeUnion_naive_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new acb_dft_naive_struct(cPtr,
-                                                         false);
+    return (cPtr == 0) ? null : new acb_dft_naive_struct(cPtr, false);
   }
 
-  public void setBluestein(FastDFTBluesteinScheme value)
-  {
+  public void setBluestein(FastDFTBluesteinScheme value) {
     arbJNI.FastDFTSchemeUnion_bluestein_set(swigCPtr, this, FastDFTBluesteinScheme.getCPtr(value), value);
   }
 
-  public FastDFTBluesteinScheme getBluestein()
-  {
+  public FastDFTBluesteinScheme getBluestein() {
     long cPtr = arbJNI.FastDFTSchemeUnion_bluestein_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new FastDFTBluesteinScheme(cPtr,
-                                                           false);
+    return (cPtr == 0) ? null : new FastDFTBluesteinScheme(cPtr, false);
   }
 
-  public FastDFTSchemeUnion()
-  {
-    this(arbJNI.new_FastDFTSchemeUnion(),
-         true);
+  public FastDFTSchemeUnion() {
+    this(arbJNI.new_FastDFTSchemeUnion(), true);
   }
 
 }

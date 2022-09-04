@@ -8,34 +8,27 @@
 
 package arb;
 
-public class acb_dft_cyc_struct
-{
-  private transient long      swigCPtr;
+public class acb_dft_cyc_struct {
+  private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public acb_dft_cyc_struct(long cPtr, boolean cMemoryOwn)
-  {
+  public acb_dft_cyc_struct(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(acb_dft_cyc_struct obj)
-  {
+  public static long getCPtr(acb_dft_cyc_struct obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
   @SuppressWarnings("deprecation")
-  protected void finalize()
-  {
+  protected void finalize() {
     delete();
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arbJNI.delete_acb_dft_cyc_struct(swigCPtr);
       }
@@ -43,64 +36,50 @@ public class acb_dft_cyc_struct
     }
   }
 
-  public void setN(int value)
-  {
+  public void setN(int value) {
     arbJNI.acb_dft_cyc_struct_n_set(swigCPtr, this, value);
   }
 
-  public int getN()
-  {
+  public int getN() {
     return arbJNI.acb_dft_cyc_struct_n_get(swigCPtr, this);
   }
 
-  public void setZ(Complex value)
-  {
+  public void setZ(Complex value) {
     arbJNI.acb_dft_cyc_struct_z_set(swigCPtr, this, Complex.getCPtr(value), value);
   }
 
-  public Complex getZ()
-  {
+  public Complex getZ() {
     long cPtr = arbJNI.acb_dft_cyc_struct_z_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Complex(cPtr,
-                                            false);
+    return (cPtr == 0) ? null : new Complex(cPtr, false);
   }
 
-  public void setZclear(int value)
-  {
+  public void setZclear(int value) {
     arbJNI.acb_dft_cyc_struct_zclear_set(swigCPtr, this, value);
   }
 
-  public int getZclear()
-  {
+  public int getZclear() {
     return arbJNI.acb_dft_cyc_struct_zclear_get(swigCPtr, this);
   }
 
-  public void setNum(int value)
-  {
+  public void setNum(int value) {
     arbJNI.acb_dft_cyc_struct_num_set(swigCPtr, this, value);
   }
 
-  public int getNum()
-  {
+  public int getNum() {
     return arbJNI.acb_dft_cyc_struct_num_get(swigCPtr, this);
   }
 
-  public void setCyc(acb_dft_step_struct value)
-  {
+  public void setCyc(acb_dft_step_struct value) {
     arbJNI.acb_dft_cyc_struct_cyc_set(swigCPtr, this, acb_dft_step_struct.getCPtr(value), value);
   }
 
-  public acb_dft_step_struct getCyc()
-  {
+  public acb_dft_step_struct getCyc() {
     long cPtr = arbJNI.acb_dft_cyc_struct_cyc_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new acb_dft_step_struct(cPtr,
-                                                        false);
+    return (cPtr == 0) ? null : new acb_dft_step_struct(cPtr, false);
   }
 
-  public acb_dft_cyc_struct()
-  {
-    this(arbJNI.new_acb_dft_cyc_struct(),
-         true);
+  public acb_dft_cyc_struct() {
+    this(arbJNI.new_acb_dft_cyc_struct(), true);
   }
 
 }

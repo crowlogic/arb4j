@@ -8,35 +8,27 @@
 
 package arb;
 
-public class RandomState implements
-                         AutoCloseable
-{
-  private transient long      swigCPtr;
+public class RandomState implements AutoCloseable {
+  private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public RandomState(long cPtr, boolean cMemoryOwn)
-  {
+  public RandomState(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(RandomState obj)
-  {
+  public static long getCPtr(RandomState obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
   @SuppressWarnings("deprecation")
-  protected void finalize()
-  {
+  protected void finalize() {
     delete();
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arbJNI.delete_RandomState(swigCPtr);
       }
@@ -44,17 +36,14 @@ public class RandomState implements
     }
   }
 
-  static
-  {
-    System.loadLibrary("arblib");
-  }
+  static { System.loadLibrary( "arblib" ); }
 
   @Override
   public String toString()
   {
     return String.format("RandomState[initialValueSeed=%s]", getInitialValue());
   }
-
+  
   public RandomState(int seed)
   {
     this();
@@ -76,64 +65,54 @@ public class RandomState implements
     setInitialValue(seed);
     return this;
   }
-
+  
   public void clear()
   {
-    arb.gmp_randclear(getRandomState());
+    arb.gmp_randclear(getRandomState());    
   }
-
+  
   @Override
   public void close()
   {
     clear();
   }
+  
 
-  public void setRandomState(GMPRandomState value)
-  {
+  public void setRandomState(GMPRandomState value) {
     arbJNI.RandomState_randomState_set(swigCPtr, this, GMPRandomState.getCPtr(value), value);
   }
 
-  public GMPRandomState getRandomState()
-  {
+  public GMPRandomState getRandomState() {
     long cPtr = arbJNI.RandomState_randomState_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new GMPRandomState(cPtr,
-                                                   false);
+    return (cPtr == 0) ? null : new GMPRandomState(cPtr, false);
   }
 
-  public void setInitialValue(int value)
-  {
+  public void setInitialValue(int value) {
     arbJNI.RandomState_initialValue_set(swigCPtr, this, value);
   }
 
-  public int getInitialValue()
-  {
+  public int getInitialValue() {
     return arbJNI.RandomState_initialValue_get(swigCPtr, this);
   }
 
-  public void setRandomValue(long value)
-  {
+  public void setRandomValue(long value) {
     arbJNI.RandomState_randomValue_set(swigCPtr, this, value);
   }
 
-  public long getRandomValue()
-  {
+  public long getRandomValue() {
     return arbJNI.RandomState_randomValue_get(swigCPtr, this);
   }
 
-  public void setRandomValue2(long value)
-  {
+  public void setRandomValue2(long value) {
     arbJNI.RandomState_randomValue2_set(swigCPtr, this, value);
   }
 
-  public long getRandomValue2()
-  {
+  public long getRandomValue2() {
     return arbJNI.RandomState_randomValue2_get(swigCPtr, this);
   }
 
-  public RandomState()
-  {
-    this(arbJNI.new_RandomState(),
-         true);
+  public RandomState() {
+    this(arbJNI.new_RandomState(), true);
   }
 
 }

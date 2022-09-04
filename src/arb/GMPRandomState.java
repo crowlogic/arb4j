@@ -8,34 +8,27 @@
 
 package arb;
 
-public class GMPRandomState
-{
-  private transient long      swigCPtr;
+public class GMPRandomState {
+  private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public GMPRandomState(long cPtr, boolean cMemoryOwn)
-  {
+  public GMPRandomState(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(GMPRandomState obj)
-  {
+  public static long getCPtr(GMPRandomState obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
   @SuppressWarnings("deprecation")
-  protected void finalize()
-  {
+  protected void finalize() {
     delete();
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arbJNI.delete_GMPRandomState(swigCPtr);
       }
@@ -43,17 +36,13 @@ public class GMPRandomState
     }
   }
 
-  public RandomAlgorithmData getAlgorithmData()
-  {
+  public RandomAlgorithmData getAlgorithmData() {
     long cPtr = arbJNI.GMPRandomState_algorithmData_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new RandomAlgorithmData(cPtr,
-                                                        false);
+    return (cPtr == 0) ? null : new RandomAlgorithmData(cPtr, false);
   }
 
-  public GMPRandomState()
-  {
-    this(arbJNI.new_GMPRandomState(),
-         true);
+  public GMPRandomState() {
+    this(arbJNI.new_GMPRandomState(), true);
   }
 
 }

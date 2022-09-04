@@ -8,25 +8,19 @@
 
 package arb;
 
-public final class RandomAlgorithm
-{
-  public final static RandomAlgorithm GMP_RAND_ALG_DEFAULT = new RandomAlgorithm("GMP_RAND_ALG_DEFAULT",
-                                                                                 arbJNI.GMP_RAND_ALG_DEFAULT_get());
-  public final static RandomAlgorithm GMP_RAND_ALG_LC      = new RandomAlgorithm("GMP_RAND_ALG_LC",
-                                                                                 arbJNI.GMP_RAND_ALG_LC_get());
+public final class RandomAlgorithm {
+  public final static RandomAlgorithm GMP_RAND_ALG_DEFAULT = new RandomAlgorithm("GMP_RAND_ALG_DEFAULT", arbJNI.GMP_RAND_ALG_DEFAULT_get());
+  public final static RandomAlgorithm GMP_RAND_ALG_LC = new RandomAlgorithm("GMP_RAND_ALG_LC", arbJNI.GMP_RAND_ALG_LC_get());
 
-  public final int swigValue()
-  {
+  public final int swigValue() {
     return swigValue;
   }
 
-  public String toString()
-  {
+  public String toString() {
     return swigName;
   }
 
-  public static RandomAlgorithm swigToEnum(int swigValue)
-  {
+  public static RandomAlgorithm swigToEnum(int swigValue) {
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
     for (int i = 0; i < swigValues.length; i++)
@@ -35,29 +29,26 @@ public final class RandomAlgorithm
     throw new IllegalArgumentException("No enum " + RandomAlgorithm.class + " with value " + swigValue);
   }
 
-  private RandomAlgorithm(String swigName)
-  {
-    this.swigName  = swigName;
+  private RandomAlgorithm(String swigName) {
+    this.swigName = swigName;
     this.swigValue = swigNext++;
   }
 
-  private RandomAlgorithm(String swigName, int swigValue)
-  {
-    this.swigName  = swigName;
+  private RandomAlgorithm(String swigName, int swigValue) {
+    this.swigName = swigName;
     this.swigValue = swigValue;
-    swigNext       = swigValue + 1;
+    swigNext = swigValue+1;
   }
 
-  private RandomAlgorithm(String swigName, RandomAlgorithm swigEnum)
-  {
-    this.swigName  = swigName;
+  private RandomAlgorithm(String swigName, RandomAlgorithm swigEnum) {
+    this.swigName = swigName;
     this.swigValue = swigEnum.swigValue;
-    swigNext       = this.swigValue + 1;
+    swigNext = this.swigValue+1;
   }
 
-  private static RandomAlgorithm[] swigValues =
-  { GMP_RAND_ALG_DEFAULT, GMP_RAND_ALG_LC };
-  private static int               swigNext   = 0;
-  private final int                swigValue;
-  private final String             swigName;
+  private static RandomAlgorithm[] swigValues = { GMP_RAND_ALG_DEFAULT, GMP_RAND_ALG_LC };
+  private static int swigNext = 0;
+  private final int swigValue;
+  private final String swigName;
 }
+

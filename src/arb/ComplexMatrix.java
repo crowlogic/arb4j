@@ -10,29 +10,22 @@ package arb;
 
 import static arb.RealConstants.*;
 
-public class ComplexMatrix implements
-                           AutoCloseable
-{
-  private transient long      swigCPtr;
+public class ComplexMatrix implements AutoCloseable {
+  private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public ComplexMatrix(long cPtr, boolean cMemoryOwn)
-  {
+  public ComplexMatrix(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(ComplexMatrix obj)
-  {
+  public static long getCPtr(ComplexMatrix obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arbJNI.delete_ComplexMatrix(swigCPtr);
       }
@@ -40,67 +33,60 @@ public class ComplexMatrix implements
     }
   }
 
+
   /**
    * Calls {@link arb#acb_mat_clear(ComplexMatrix)}
-   * 
    * @return this
    */
   public ComplexMatrix clear()
   {
-    if (swigCMemOwn)
+    if ( swigCMemOwn )
     {
       arb.acb_mat_clear(this);
     }
-
+    
     return this;
   }
 
   @Override
   public void close()
-  {
-    clear();
+  { 
+      clear();
   }
-
+  
   public ComplexMatrix init(int rows, int cols)
   {
     arb.acb_mat_init(this, rows, cols);
     return this;
-  }
+  } 
+  
 
-  public void setNumRows(int value)
-  {
+  public void setNumRows(int value) {
     arbJNI.ComplexMatrix_numRows_set(swigCPtr, this, value);
   }
 
-  public int getNumRows()
-  {
+  public int getNumRows() {
     return arbJNI.ComplexMatrix_numRows_get(swigCPtr, this);
   }
 
-  public void setNumCols(int value)
-  {
+  public void setNumCols(int value) {
     arbJNI.ComplexMatrix_numCols_set(swigCPtr, this, value);
   }
 
-  public int getNumCols()
-  {
+  public int getNumCols() {
     return arbJNI.ComplexMatrix_numCols_get(swigCPtr, this);
   }
 
-  public void setRowPointers(long value)
-  {
+  public void setRowPointers(long value) {
     arbJNI.ComplexMatrix_rowPointers_set(swigCPtr, this, value);
   }
 
-  public long getRowPointers()
-  {
+  public long getRowPointers() {
     return arbJNI.ComplexMatrix_rowPointers_get(swigCPtr, this);
   }
 
-  public ComplexMatrix()
-  {
-    this(arbJNI.new_ComplexMatrix(),
-         true);
+  public ComplexMatrix() {
+    this(arbJNI.new_ComplexMatrix(), true);
   }
 
 }

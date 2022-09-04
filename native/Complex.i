@@ -36,6 +36,28 @@ import arb.topological.spaces.*;
     return 2;
   }
 
+  /**
+   * Self-assigned this{@link #mul(Real, int, Complex)}
+   * @param h
+   * @param prec
+   * @return this=this*h
+   */
+  public Complex mul(Real h, int prec)
+  {
+    return mul(h,prec,this);
+  }
+
+
+  /**
+   * Self-assigned this{@link #exp(int, Complex)} 
+   * @param prec
+   * @return this=exp(this)
+   */
+  public Complex exp(int prec)
+  {
+    return exp(prec,this);
+  }
+
   @Override
   public Real getCoordinate(int dim)
   {
