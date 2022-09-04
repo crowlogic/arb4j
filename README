@@ -22,13 +22,15 @@ JDK (Tested with jdk-17 from Oracle)
 Once you have acquired these, run the bash script in the bin/
 subdirectory called "gaw" which stands for "generate arb wrapper",
 which will then cause the .i files in the native/ subdirectory to be
-parsed with SWIG and the corresponding java and C source files are generated.
-After that happens, the script then calls the bin/caw which stands for
-"compile arb wrapper" which, if all goes well, should leave a file
-named libarblib.so in root directory of the project
+parsed with SWIG and the corresponding java and C source files are 
+generated. After that happens, the script then calls the bin/caw which 
+stands for "compile arb wrapper" which, if all goes well, should leave 
+a file named libarblib.so in root directory of the project.
 
-One should generally add "-ea" to  the JVM commandline to enable assertion 
-checking but it can be turned off to slightly improve performance.
+=======================================================================
+
+Also, "-ea" should usually be to the JVM commandline to enable assertion 
+checking at runtime but it can be turned off to marginally improve performance
 
 =======================================================================
 
