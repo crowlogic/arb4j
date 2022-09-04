@@ -8,16 +8,42 @@ import junit.framework.TestCase;
 public class RealNewtonMapTest extends
                                TestCase
 {
+  Real z = Real.newVector(2);
+  Real w = Real.newVector(2);
+
   @SuppressWarnings("resource")
-  public static void testS()
+  public void testS()
   {
-    CircularS     angle     = new CircularS(RealConstants.one,
-                                            new Real().set("0.1", 512));
+    CircularS angle = new CircularS(RealConstants.one,
+                                    new Real().set("0.1", 512));
+    testIteratedNewtonMap(angle);
+    assertEquals(w.get(0).doubleValue(), testRootLocator(angle).getReal().doubleValue());
+
+  }
+
+  public Complex testRootLocator(CircularS angle)
+  {
+    RealPart realAngle = new RealPart(angle);
+    Roots    root      = realAngle.locateRoots(new RootLocatorOptions(new RealRootInterval(-.8,
+                                                                                           -0.7),
+                                                                      150,
+                                                                      50000,
+                                                                      1,
+                                                                      512));
+    root.refine(realAngle, 256, 100, true);
+    System.out.println("root=" + root);
+    Complex hmm = new Complex(root.get(0).getReal(new Real(), 128));
+
+    System.out.println("angle(w)=" + angle.evaluate(hmm, 1, 512, new Complex()));
+    return hmm;
+  }
+
+  public RealPart testIteratedNewtonMap(CircularS angle)
+  {
     RealPart      realAngle = new RealPart(angle);
     RealNewtonMap func      = new RealNewtonMap(realAngle,
                                                 new Real().set("1", 52));
-    Real          z         = Real.newVector(2);
-    Real          w         = Real.newVector(2);
+
     z.set("-0.75", 128);
     for (int i = 0; i < 20; i++)
     {
@@ -30,18 +56,6 @@ public class RealNewtonMapTest extends
     }
     System.out.println("w=" + w);
     System.out.println("angle(w)=" + angle.evaluate(new Complex(w), 1, 512, new Complex()));
-    Roots root = realAngle.locateRoots(new RootLocatorOptions(new RealRootInterval(-.8,
-                                                                                   -0.7),
-                                                              150,
-                                                              50000,
-                                                              1,
-                                                              512));
-    root.refine(realAngle, 256, 100, true);
-    System.out.println("root=" + root);
-    Complex hmm = new Complex(root.get(0).getReal(new Real(), 128));
-
-    System.out.println("angle(w)=" + angle.evaluate(hmm, 1, 512, new Complex()));
-    assertEquals(w.get(0).doubleValue(), hmm.getReal().doubleValue());
-
+    return realAngle;
   }
 }
