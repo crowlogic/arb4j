@@ -23,8 +23,20 @@ module arb4j
   requires transitive org.joml;
   requires transitive LWJGUI.pre.mt;
   requires transitive pngdecoder;
-  requires j.text.utils;
-
+  requires transitive j.text.utils;
+  requires transitive org.jetbrains.annotations;
+  requires transitive org.slf4j;
+  requires transitive de.gsi.chartfx.dataset;
+  requires transitive de.gsi.chartfx.math;
+  requires transitive it.unimi.dsi.fastutil;
+  requires transitive javafx.graphics;
+  requires transitive javafx.controls;
+  requires transitive de.gsi.chartfx.chart;
+  requires commons.math3;
+  requires org.kordamp.ikonli.javafx;
+  requires JTransforms;
+ 
+ 
   exports arb;
   exports arb.algebraic.expressions;
   exports arb.algebraic.geometry;
