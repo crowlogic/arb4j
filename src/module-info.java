@@ -12,6 +12,8 @@ module arb4j
   requires transitive java.desktop;
   requires transitive java.instrument;
   requires transitive java.logging;
+  requires transitive javafx.graphics;
+  requires transitive javafx.controls;
   requires transitive jdk.incubator.foreign;
   requires transitive junit;
   requires transitive org.objectweb.asm;
@@ -26,12 +28,10 @@ module arb4j
   requires transitive j.text.utils;
   requires transitive org.jetbrains.annotations;
   requires transitive org.slf4j;
+  requires transitive de.gsi.chartfx.chart;
   requires transitive de.gsi.chartfx.dataset;
   requires transitive de.gsi.chartfx.math;
   requires transitive it.unimi.dsi.fastutil;
-  requires transitive javafx.graphics;
-  requires transitive javafx.controls;
-  requires transitive de.gsi.chartfx.chart;
   requires transitive commons.math3;
   requires transitive org.kordamp.ikonli.javafx;
   requires transitive JTransforms;
