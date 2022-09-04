@@ -30,6 +30,8 @@ named libarblib.so in root directory of the project
 One should generally add "-ea" to  the JVM commandline to enable assertion 
 checking but it can be turned off to slightly improve performance.
 
+=======================================================================
+
 To run anything depending on chartfx the following commandline arguments needed to 
 be added as well:
 
