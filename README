@@ -1,7 +1,7 @@
 arb4j is a Java wrapper around the fantastic and amazing arb library for 
 ball arithmetic found at http://arblib.org
 
-========================================================================
+==================================================================================
 There is a project wiki at 
 https://github.com/crowlogic/arb4j/wiki 
 and gallery at
@@ -11,7 +11,7 @@ and Javadocs can be found at
 
 https://crowlogic.github.io/
 
-=======================================================================
+==================================================================================
  
 To build this library you will need the following:
 
@@ -27,15 +27,16 @@ generated. After that happens, the script then calls the bin/caw which
 stands for "compile arb wrapper" which, if all goes well, should leave 
 a file named libarblib.so in root directory of the project.
 
-=======================================================================
+==================================================================================
 
-Also, "-ea" should usually be to the JVM commandline to enable assertion 
-checking at runtime but it can be turned off to marginally improve performance
+Also, "-ea" should usually be to the JVM commandline to enable 
+assertion checking at runtime but it can be turned off to marginally 
+improve performance
 
-=======================================================================
+==================================================================================
 
-To run anything depending on chartfx the following commandline arguments needed to 
-be added as well:
+To run anything depending on chartfx the following commandline 
+arguments needed to be added as well:
 
 --add-modules=javafx.graphics
 --add-reads javafx.graphics=ALL-UNNAMED
