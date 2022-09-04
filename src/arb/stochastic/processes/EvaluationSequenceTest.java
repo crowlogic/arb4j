@@ -22,7 +22,7 @@ public class EvaluationSequenceTest extends
       EvaluationSequence es        = new EvaluationSequence(partition,
                                                             1);
 
-      es.generateRandomSamples(new StandardGaussianDistribution(), new RandomState(31337), 128);
+      es.generateRandomSamples(new StandardGaussianDistribution(), null, new RandomState(31337), 128);
       Real   var      = es.values[0].variance(128, new Real());
       double vardelta = Math.abs(var.doubleValue() - 1);
       println("vardelta=" + vardelta);

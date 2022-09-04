@@ -136,6 +136,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
     evaluationSequence.generateRandomSamples(new GaussianDistribution(zero,
                                                                       state.sqrtdt(prec, sqrtdt)),
+                                             null,
                                              state.getRandomState(),
                                              prec);
 

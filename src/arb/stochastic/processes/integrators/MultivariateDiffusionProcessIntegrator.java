@@ -89,7 +89,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
     gaussian = new GaussianDistribution(zero,
                                         state.getdt(sqrtδt).sqrt(prec));
-    evaluationSequence.generateRandomSamples(gaussian, state.getRandomState(), prec);
+    evaluationSequence.generateRandomSamples(gaussian, correlationMatrix, state.getRandomState(), prec);
     state.verify();
 
     for (Real t : partition)

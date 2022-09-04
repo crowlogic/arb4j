@@ -2,10 +2,6 @@ package de.gsi.math.samples;
 
 import java.util.Arrays;
 
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.layout.VBox;
-
 import org.jtransforms.fft.DoubleFFT_1D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +15,9 @@ import de.gsi.math.samples.utils.DemoChart;
 import de.gsi.math.spectra.SpectrumTools;
 import de.gsi.math.spectra.dtft.DiscreteTimeFourierTransform;
 import de.gsi.math.spectra.lomb.LombPeriodogram;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.layout.VBox;
 
 /**
  * example illustrating the discrete time fourier transform and Fast-Fourier
@@ -42,7 +41,7 @@ public class FourierSample extends
   private double computeSignal(final double t)
   {
     double       val   = 0.0;
-    final double error = rnd.Gaus(0.0, 0.2);
+    final double error = TRandom.Gaus(0.0, 0.2);
     val += Math.sin(Math.TWO_PI * 0.22 * t);
     val += Math.sin(Math.TWO_PI * 3e-4 * t * t);
     val += Math.sin(Math.TWO_PI * 0.05 * t);

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import arb.OrderedPair;
 import arb.RandomState;
 import arb.Real;
+import arb.RealMatrix;
 import arb.RealPartition;
 import arb.stochastic.ProbabilityDistributionFunction;
 import arb.stochastic.RealProbabilityDensityFunction;
@@ -44,21 +45,30 @@ public class EvaluationSequence implements
    * 
    * TODO: handle correlation matrix
    * 
-   * @param pdf         the {@link RealProbabilityDensityFunction} to populate
-   *                    this{@link #values} with
-   *                    {@link ProbabilityDistributionFunction#sample(int, RandomState, Real)}s
-   *                    from
-   * @param randomState the {@link RandomState} to use for (pseudo) random number
-   *                    sequence generation
+   * @param pdf                   the {@link RealProbabilityDensityFunction} to
+   *                              populate this{@link #values} with
+   *                              {@link ProbabilityDistributionFunction#sample(int, RandomState, Real)}s
+   *                              from
+   * @param correlationRootMatrix TODO
+   * @param randomState           the {@link RandomState} to use for (pseudo)
+   *                              random number sequence generation
    * @param prec
    * @return this
    */
-  public EvaluationSequence
-         generateRandomSamples(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
+  public EvaluationSequence generateRandomSamples(ProbabilityDistributionFunction pdf,
+                                                            RealMatrix correlationRootMatrix,
+                                                            RandomState randomState,
+                                                            int prec)
   {
-    for (Real valueSequence : values)
+    assert false : "TODO: finish implementating";
+    try ( CorrelatedRandomVectorGenerator generator = new CorrelatedRandomVectorGenerator(correlationRootMatrix,
+                                                                                          prec,
+                                                                                          randomState))
     {
-      pdf.sample(valueSequence, randomState, prec);
+      for (Real valueSequence : values)
+      {
+        pdf.sample(valueSequence, randomState, prec);
+      }
     }
     return this;
   }
