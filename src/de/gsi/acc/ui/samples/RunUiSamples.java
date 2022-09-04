@@ -40,8 +40,6 @@ public class RunUiSamples extends Application {
         root.setCenter(buttons);
         root.setBottom(makeScreenShot);
 
-        buttons.getChildren().add(new MyButton("AcqButtonTests", new AcqButtonTests()));
-
         final Scene scene = new Scene(root);
 
         primaryStage.setTitle(this.getClass().getSimpleName());

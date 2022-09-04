@@ -51,12 +51,6 @@ import jdk.incubator.foreign.*;
     this.segment = segment;
   }
 
-  @Override
-  public Float innerProduct(Float that, int prec, Float result)
-  {
-    assert false : "implement me";
-    return null;
-  }
 
   public static Float newVector(int length)
   {
@@ -94,12 +88,6 @@ import jdk.incubator.foreign.*;
   {
     arb.arf_div(result, this, j, prec, RoundingMode.Near.ordinal());
     return this;
-  }
- 
-  @Override
-  public Float newFieldElement()
-  {
-    return new Float();
   }
  
   @Override
@@ -323,4 +311,11 @@ import jdk.incubator.foreign.*;
     arb.arf_mul_2exp_si(res, this, -1);
     return res;
   }    
+  
+  @Override
+  public Float newFieldElement()
+  {
+    return new Float();
+  }
+  
 %};

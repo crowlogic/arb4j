@@ -74,12 +74,6 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     this.segment = segment;
   }
 
-  @Override
-  public Float innerProduct(Float that, int prec, Float result)
-  {
-    assert false : "implement me";
-    return null;
-  }
 
   public static Float newVector(int length)
   {
@@ -117,12 +111,6 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   {
     arb.arf_div(result, this, j, prec, RoundingMode.Near.ordinal());
     return this;
-  }
- 
-  @Override
-  public Float newFieldElement()
-  {
-    return new Float();
   }
  
   @Override
@@ -346,6 +334,13 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     arb.arf_mul_2exp_si(res, this, -1);
     return res;
   }    
+  
+  @Override
+  public Float newFieldElement()
+  {
+    return new Float();
+  }
+  
 
   public void setExp(long value) {
     arbJNI.Float_exp_set(swigCPtr, this, value);
