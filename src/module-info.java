@@ -32,10 +32,11 @@ module arb4j
   requires transitive javafx.graphics;
   requires transitive javafx.controls;
   requires transitive de.gsi.chartfx.chart;
-  requires commons.math3;
-  requires org.kordamp.ikonli.javafx;
-  requires JTransforms;
+  requires transitive commons.math3;
+  requires transitive org.kordamp.ikonli.javafx;
+  requires transitive JTransforms;
 
+  exports de.gsi.math.samples;
   exports arb;
   exports arb.algebraic.expressions;
   exports arb.algebraic.geometry;

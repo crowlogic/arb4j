@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+        <listEntry value="/arb4j/src/de/gsi/math/samples/ComplexFourierSample.java"/>
+    </listAttribute>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+        <listEntry value="1"/>
+    </listAttribute>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_EXCLUDE_TEST_CODE" value="true"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="de.gsi.math.samples.ComplexFourierSample"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="arb4j"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="arb4j"/>
+    <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea --add-modules=javafx.graphics&#10;--add-reads javafx.graphics=ALL-UNNAMED&#10;--add-opens javafx.controls/com.sun.javafx.charts=ALL-UNNAMED&#10;--add-opens javafx.controls/com.sun.javafx.scene.control.inputmap=ALL-UNNAMED&#10;--add-opens javafx.graphics/com.sun.javafx.iio=ALL-UNNAMED&#10;--add-opens javafx.graphics/com.sun.javafx.iio.common=ALL-UNNAMED&#10;--add-opens javafx.graphics/com.sun.javafx.css=ALL-UNNAMED&#10;--add-opens javafx.base/com.sun.javafx.runtime=ALL-UNNAMED&#10;--add-exports javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED&#10;--add-exports javafx.graphics/com.sun.javafx.scene.traversal=ALL-UNNAMED"/>
+</launchConfiguration>
