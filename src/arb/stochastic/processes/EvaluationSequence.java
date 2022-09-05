@@ -12,9 +12,8 @@ import arb.stochastic.ProbabilityDistributionFunction;
 import arb.stochastic.RealProbabilityDensityFunction;
 
 /**
- * TODO: how to implement {@link CorrelatedWienerProcess}
- * 
- *
+ * @see <a href=
+ *      "../../functions/doc-files/IntegrationNotes.pdf">IntegrationNotes</a>
  */
 public class EvaluationSequence implements
                                 Cleanable,
@@ -43,8 +42,6 @@ public class EvaluationSequence implements
    * Populates the this{@link #values} of this {@link EvaluationSequence} with
    * random {@link Real} numbers sampled from some density function
    * 
-   * TODO: handle correlation matrix
-   * 
    * @param pdf                   the {@link RealProbabilityDensityFunction} to
    *                              populate this{@link #values} with
    *                              {@link ProbabilityDistributionFunction#sample(int, RandomState, Real)}s
@@ -56,11 +53,11 @@ public class EvaluationSequence implements
    * @return this
    */
   public EvaluationSequence generateRandomSamples(ProbabilityDistributionFunction pdf,
-                                                            RealMatrix correlationRootMatrix,
-                                                            RandomState randomState,
-                                                            int prec)
+                                                  RealMatrix correlationRootMatrix,
+                                                  RandomState randomState,
+                                                  int prec)
   {
-    assert false : "TODO: finish implementating";
+    assert false : "TODO: finish implementating correlation";
     try ( CorrelatedRandomVectorGenerator generator = new CorrelatedRandomVectorGenerator(correlationRootMatrix,
                                                                                           prec,
                                                                                           randomState))
