@@ -19,30 +19,21 @@ public abstract class MultivariateDiffusionProcessState extends
   public void lock()
   {
     super.lock();
-    for (Lockable x : this)
-    {
-      x.lock();
-    }
+    forEach(x -> x.lock());
   }
 
   @Override
   public void unlock()
   {
     super.unlock();
-    for (Lockable x : this)
-    {
-      x.unlock();
-    }
+    forEach(x -> x.unlock());
   }
 
   @Override
   public MultivariateDiffusionProcessState setdt(Real dt)
   {
     super.setdt(dt);
-    for (DiffusionProcessState state : this)
-    {
-      state.setdt(dt);
-    }
+    forEach(state -> state.setdt(dt));
     return this;
 
   }
@@ -56,10 +47,7 @@ public abstract class MultivariateDiffusionProcessState extends
   public ContinuousTimeState setTime(Real t)
   {
     super.setTime(t);
-    for (DiffusionProcessState state : this)
-    {
-      state.setTime(t);
-    }
+    forEach(state -> state.setTime(t));
     return this;
   }
 
