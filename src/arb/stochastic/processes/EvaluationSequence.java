@@ -44,7 +44,7 @@ public class EvaluationSequence implements
    * 
    * @param pdf                   the {@link RealProbabilityDensityFunction} to
    *                              populate this{@link #values} with
-   *                              {@link ProbabilityDistributionFunction#sample(int, RandomState, Real)}s
+   *                              {@link ProbabilityDistributionFunction#sample(RandomState, int, Real)}s
    *                              from
    * @param correlationRootMatrix TODO
    * @param randomState           the {@link RandomState} to use for (pseudo)
@@ -64,7 +64,7 @@ public class EvaluationSequence implements
     {
       for (Real valueSequence : values)
       {
-        pdf.sample(valueSequence, randomState, prec);
+        pdf.sample(generator, prec, valueSequence);
       }
     }
     return this;

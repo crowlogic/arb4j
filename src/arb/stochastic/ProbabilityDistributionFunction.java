@@ -3,6 +3,7 @@ package arb.stochastic;
 import arb.RandomState;
 import arb.Real;
 import arb.functions.real.RealFunction;
+import arb.stochastic.processes.CorrelatedRandomVectorGenerator;
 
 /**
  * The distribution function of a random variable is the integral of the
@@ -16,12 +17,12 @@ public interface ProbabilityDistributionFunction<P extends RealProbabilityDensit
    * Calls {@link Real#random(RandomState, int)} on each element of this
    * 
    * @param elements
-   * @param randomState
+   * @param generator
    * @param prec
    */
-  default void sample(Real elements, RandomState randomState, int prec)
+  default void sample(Real elements, CorrelatedRandomVectorGenerator generator, int prec)
   {
-    elements.forEach(element -> sample(prec, randomState, element));
+    elements.forEach(element -> sample(generator, prec, element));
   }
 
   /**
@@ -30,9 +31,9 @@ public interface ProbabilityDistributionFunction<P extends RealProbabilityDensit
    * 
    * @return
    */
-  public default Real sample(int prec, RandomState randomState, Real result)
+  public default Real sample(CorrelatedRandomVectorGenerator generator, int prec, Real result)
   {
     RealFunction inverse = inverse();
-    return inverse.evaluate(result.random(randomState, prec), 1, prec, result);
+    return inverse.evaluate(result.random(generator.getRandomState(), prec), 1, prec, result);
   }
 }

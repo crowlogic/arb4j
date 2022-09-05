@@ -26,9 +26,9 @@ public class CorrelatedWienerProcess extends
   private Real ρ⃰ = new Real();
 
   @Override
-  public Real sample(Real t, int prec, RandomState randomState, Real x)
+  public Real sample(Real t, int prec, CorrelatedRandomVectorGenerator generator, Real x)
   {
-    Real sample = super.sample(t, prec, randomState, x).mul(ρ, prec);
+    Real sample = super.sample(t, prec, generator, x).mul(ρ, prec);
 
     return sample;
   }

@@ -39,9 +39,9 @@ public interface StochasticProcess extends
     return arb.utensils.Utilities.TODO("implement me");
   }
 
-  public default Real sample(Real t, int prec, RandomState randomState, Real x)
+  public default Real sample(Real t, int prec, CorrelatedRandomVectorGenerator generator, Real x)
   {
-    return getDistributionFunction(t).sample(prec, randomState, x);
+    return getDistributionFunction(t).sample(generator, prec, x);
   }
 
 }
