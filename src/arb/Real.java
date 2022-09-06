@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import arb.stochastic.ProbabilityDistributionFunction;
 import arb.stochastic.processes.CorrelatedRandomVectorGenerator;
+import arb.stochastic.processes.RandomVectorGenerator;
 import arb.Lockable;
 import arb.topological.spaces.EuclideanVectorSpace;
 
@@ -191,7 +192,7 @@ public class Real implements
    * @param prec
    */
   public void
-         randomlyGenerate(ProbabilityDistributionFunction pdf, CorrelatedRandomVectorGenerator generator, int prec)
+         randomlyGenerate(ProbabilityDistributionFunction pdf, RandomVectorGenerator generator, int prec)
   {
     forEach(element -> pdf.sample(generator, prec, element));
   }
