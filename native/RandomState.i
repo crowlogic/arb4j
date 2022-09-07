@@ -25,15 +25,15 @@
    */
   public RandomState seed(int seed)
   {
-    arb.gmp_randinit_mt(getRandomState());
-    arb.gmp_randseed_ui(getRandomState(), seed);
+    arb.gmp_randinit_mt(getGmpRandgomState());
+    arb.gmp_randseed_ui(getGmpRandomState(), seed);
     setInitialValue(seed);
     return this;
   }
   
   public void clear()
   {
-    arb.gmp_randclear(getRandomState());    
+    arb.gmp_randclear(getGmpRandomState());    
   }
   
   @Override

@@ -41,7 +41,7 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %rename (rowPointers) rows;
 %rename (initialValue) gmp_init;
-%rename (randomState) gmp_state;
+%rename (gmpRandomState) gmp_state;
 %rename (algorithmData) _mp_algdata;
 %rename (randomValue) __randval;
 %rename (randomValue2) __randval2;

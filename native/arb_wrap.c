@@ -6516,7 +6516,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_delete_1RandomAlgorithmData(JNIEnv *jenv
 }
 
 
-SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1randomState_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1gmpRandomState_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   __gmp_randstate_struct *arg2 ;
   
@@ -6535,7 +6535,7 @@ SWIGEXPORT void JNICALL Java_arb_arbJNI_RandomState_1randomState_1set(JNIEnv *je
 }
 
 
-SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1randomState_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_arb_arbJNI_RandomState_1gmpRandomState_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   flint_rand_s *arg1 = (flint_rand_s *) 0 ;
   __gmp_randstate_struct *result = 0 ;

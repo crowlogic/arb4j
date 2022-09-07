@@ -8,7 +8,9 @@
 
 package arb;
 
-public class RandomState implements AutoCloseable {
+import arb.stochastic.processes.RandomVectorGenerator;
+
+public class RandomState implements AutoCloseable,RandomVectorGenerator {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -60,15 +62,15 @@ public class RandomState implements AutoCloseable {
    */
   public RandomState seed(int seed)
   {
-    arb.gmp_randinit_mt(getRandomState());
-    arb.gmp_randseed_ui(getRandomState(), seed);
+    arb.gmp_randinit_mt(getGmpRandomState());
+    arb.gmp_randseed_ui(getGmpRandomState(), seed);
     setInitialValue(seed);
     return this;
   }
   
   public void clear()
   {
-    arb.gmp_randclear(getRandomState());    
+    arb.gmp_randclear(getGmpRandomState());    
   }
   
   @Override
@@ -78,12 +80,12 @@ public class RandomState implements AutoCloseable {
   }
   
 
-  public void setRandomState(GMPRandomState value) {
-    arbJNI.RandomState_randomState_set(swigCPtr, this, GMPRandomState.getCPtr(value), value);
+  public void setGmpRandomState(GMPRandomState value) {
+    arbJNI.RandomState_gmpRandomState_set(swigCPtr, this, GMPRandomState.getCPtr(value), value);
   }
 
-  public GMPRandomState getRandomState() {
-    long cPtr = arbJNI.RandomState_randomState_get(swigCPtr, this);
+  public GMPRandomState getGmpRandomState() {
+    long cPtr = arbJNI.RandomState_gmpRandomState_get(swigCPtr, this);
     return (cPtr == 0) ? null : new GMPRandomState(cPtr, false);
   }
 
@@ -113,6 +115,19 @@ public class RandomState implements AutoCloseable {
 
   public RandomState() {
     this(arbJNI.new_RandomState(), true);
+  }
+
+  @Override
+  public RandomState getRandomState()
+  {
+    return this;
+  }
+
+  @Override
+  public Real nextElement(int prec, Real result)
+  {
+    assert false : "TODO: implement";
+    return null;
   }
 
 }

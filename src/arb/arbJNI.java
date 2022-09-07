@@ -348,8 +348,8 @@ public class arbJNI {
   public final static native long RandomAlgorithmData__mp_lc_get(long jarg1, RandomAlgorithmData jarg1_);
   public final static native long new_RandomAlgorithmData();
   public final static native void delete_RandomAlgorithmData(long jarg1);
-  public final static native void RandomState_randomState_set(long jarg1, RandomState jarg1_, long jarg2, GMPRandomState jarg2_);
-  public final static native long RandomState_randomState_get(long jarg1, RandomState jarg1_);
+  public final static native void RandomState_gmpRandomState_set(long jarg1, RandomState jarg1_, long jarg2, GMPRandomState jarg2_);
+  public final static native long RandomState_gmpRandomState_get(long jarg1, RandomState jarg1_);
   public final static native void RandomState_initialValue_set(long jarg1, RandomState jarg1_, int jarg2);
   public final static native int RandomState_initialValue_get(long jarg1, RandomState jarg1_);
   public final static native void RandomState_randomValue_set(long jarg1, RandomState jarg1_, long jarg2);
