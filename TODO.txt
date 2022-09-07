@@ -1,19 +1,23 @@
- * chartfx implementation of multivariate stochastic process plotter
-  
+* finish correlated stochastic integrator implementation
+
+* chartfx implementation of multivariate stochastic process plotter
+
+* check for leaks/run mem leak tracer
+
 * harness reflection symmetry to accelerate rendering 
 
 * implement Lemniscate elliptic functions 
 
 * algebraic expression parser, evaluator and compiler
 
-* use ErrorFunction to correct the numerically integrated Fourier transforms
+* Koenig linearization - SchroederFunctional And InverseSeries
 
+* use ErrorFunction to correct the numerically integrated Fourier transforms
 
 * parallelize ComplexFunction.integrate
 
 * fullscreen mode for ComplexFunctionRenderer
 
-* replace usage of Utilities#heapUp and heapDown with MemoryStack
 
 * homotopy API 
 
@@ -27,15 +31,12 @@
 
 * orthogonal polynomial API
 
-* implement (inter-host) distributed processing 
-
 * Shape Operator
 
 * API for plane curve Curvature
 
-* Koenig linearization - SchroederFunctional And InverseSeries
 
-* Add color-wheel legend to ComplexFunctionPlotter by adding another BufferedImage to be blended, and allow the ability to move them about dynamically via the mouse
+* replace usage of Utilities#heapUp and heapDown with MemoryStack
 
 
 

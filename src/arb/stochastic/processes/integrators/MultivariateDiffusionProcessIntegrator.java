@@ -56,7 +56,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   }
 
-  public boolean jump(int prec, EvaluationSequence evalSeq)
+  public synchronized boolean jump(int prec, EvaluationSequence evalSeq)
   {
     boolean jumped = true;
     for (int i = 0; i < dim && jumped; i++)
@@ -107,7 +107,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
           err.println("Jump failed: " + state + " regenerating ");
           Arrays.asList(evaluationSequence.values)
                 .forEach(sample -> sample.get(state.index())
-                                         .randomlyGenerate(gaussian, state, prec));
+                                         .randomlyGenerate(gaussian, state.getRandomState(), prec));
 
         }
       }

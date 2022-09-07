@@ -57,7 +57,6 @@ public class EvaluationSequence implements
                                                   RandomState randomState,
                                                   int prec)
   {
-    assert false : "TODO: finish implementating correlation";
     try ( CorrelatedRandomVectorGenerator generator = new CorrelatedRandomVectorGenerator(correlationRootMatrix,
                                                                                           prec,
                                                                                           randomState))
