@@ -39,14 +39,16 @@ public class EvaluationSequence implements
   public final Real[]        values;
 
   /**
-   * Populates the this{@link #values} of this {@link EvaluationSequence} with
-   * random {@link Real} numbers sampled from some density function
+   * Populates the {@link #values} of this {@link EvaluationSequence} with random
+   * {@link Real} numbers sampled from some
+   * {@link ProbabilityDistributionFunction}
    * 
-   * @param pdf                   the {@link RealProbabilityDensityFunction} to
-   *                              populate this{@link #values} with
+   * @param pdf                   the {@link ProbabilityDistributionFunction} to
+   *                              populate {@link #values} with
    *                              {@link ProbabilityDistributionFunction#sample(RandomState, int, Real)}s
    *                              from
-   * @param correlationRootMatrix TODO
+   * @param correlationRootMatrix the Cholesky factorization of the correlation
+   *                              matrix or null to specify uncorrelated variables
    * @param randomState           the {@link RandomState} to use for (pseudo)
    *                              random number sequence generation
    * @param prec
@@ -57,9 +59,9 @@ public class EvaluationSequence implements
                                                   RandomState randomState,
                                                   int prec)
   {
-    try ( CorrelatedRandomVectorGenerator generator = new CorrelatedRandomVectorGenerator(correlationRootMatrix,
-                                                                                          prec,
-                                                                                          randomState))
+    try ( RandomVectorGenerator generator = correlationRootMatrix == null ? randomState : new CorrelatedRandomVectorGenerator(correlationRootMatrix,
+                                                                                                                              prec,
+                                                                                                                              randomState))
     {
       for (Real valueSequence : values)
       {
