@@ -126,6 +126,7 @@ public class RandomState implements AutoCloseable,RandomVectorGenerator {
   @Override
   public Real nextElement(int prec, Real result)
   {
+    System.out.println( "RandomState::nextElement");
     assert false : "TODO: implement";
     return null;
   }
