@@ -1,5 +1,4 @@
-
-* finish correlated stochastic integrator implementation
+* Fast Fourier Transform API
 
 * chartfx implementation of multivariate stochastic process plotter
 
@@ -16,8 +15,6 @@
 * use ErrorFunction to correct the numerically integrated Fourier transforms
 
 * parallelize ComplexFunction.integrate
-
-* fullscreen mode for ComplexFunctionRenderer
 
 
 * homotopy API 
@@ -38,6 +35,8 @@
 
 
 * replace usage of Utilities#heapUp and heapDown with MemoryStack
+
+* monte-carlo has been superceded by integral transform methods: but the correlated stochastic integrator implementation should be finished anyway 
 
 
 
