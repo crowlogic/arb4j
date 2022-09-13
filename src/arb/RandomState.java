@@ -8,9 +8,7 @@
 
 package arb;
 
-import arb.stochastic.processes.RandomVectorGenerator;
-
-public class RandomState implements AutoCloseable,RandomVectorGenerator {
+public class RandomState implements AutoCloseable {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -62,7 +60,7 @@ public class RandomState implements AutoCloseable,RandomVectorGenerator {
    */
   public RandomState seed(int seed)
   {
-    arb.gmp_randinit_mt(getGmpRandomState());
+	arb.gmp_randinit_mt(getGmpRandomState());
     arb.gmp_randseed_ui(getGmpRandomState(), seed);
     setInitialValue(seed);
     return this;
@@ -115,20 +113,6 @@ public class RandomState implements AutoCloseable,RandomVectorGenerator {
 
   public RandomState() {
     this(arbJNI.new_RandomState(), true);
-  }
-
-  @Override
-  public RandomState getRandomState()
-  {
-    return this;
-  }
-
-  @Override
-  public Real nextElement(int prec, Real result)
-  {
-    System.out.println( "RandomState::nextElement");
-    assert false : "TODO: implement";
-    return null;
   }
 
 }

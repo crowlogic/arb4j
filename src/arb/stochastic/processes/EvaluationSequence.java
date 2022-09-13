@@ -49,25 +49,22 @@ public class EvaluationSequence implements
    *                              from
    * @param correlationRootMatrix the Cholesky factorization of the correlation
    *                              matrix or null to specify uncorrelated variables
-   * @param randomState           the {@link RandomState} to use for (pseudo)
+   * @param generator             the {@link RandomState} to use for (pseudo)
    *                              random number sequence generation
    * @param prec
    * @return this
    */
   public EvaluationSequence generateRandomSamples(ProbabilityDistributionFunction pdf,
                                                   RealMatrix correlationRootMatrix,
-                                                  RandomState randomState,
+                                                  RandomVectorGenerator generator,
                                                   int prec)
   {
-    try ( RandomVectorGenerator generator = correlationRootMatrix == null ? randomState : new CorrelatedRandomVectorGenerator(correlationRootMatrix,
-                                                                                                                              prec,
-                                                                                                                              randomState))
+
+    for (Real valueSequence : values)
     {
-      for (Real valueSequence : values)
-      {
-        pdf.sample(generator, prec, valueSequence);
-      }
+      pdf.sample(generator, prec, valueSequence);
     }
+
     return this;
   }
 

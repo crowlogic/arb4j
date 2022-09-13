@@ -25,7 +25,7 @@
    */
   public RandomState seed(int seed)
   {
-    arb.gmp_randinit_mt(getGmpRandgomState());
+	arb.gmp_randinit_mt(getGmpRandomState());
     arb.gmp_randseed_ui(getGmpRandomState(), seed);
     setInitialValue(seed);
     return this;

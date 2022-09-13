@@ -18,10 +18,10 @@ public interface ProbabilityDistributionFunction<P extends RealProbabilityDensit
    * Calls this{@link #sample(CorrelatedRandomVectorGenerator, int, Real)} on each element of this
    * 
    * @param elements
-   * @param generator
    * @param prec
+   * @param generator
    */
-  default void sample(Real elements, RandomVectorGenerator generator, int prec)
+  default void sample(Real elements, int prec, RandomVectorGenerator generator)
   {
     elements.forEach(element -> sample(generator, prec, element));
   }

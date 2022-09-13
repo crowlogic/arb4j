@@ -24,8 +24,8 @@ public class YRenderer extends
     renderer.render();
   }
 
-  public static final int height = (int) 1400 / 3;
-  public static final int width  = (int) 3400 / 3;
+  public static final int height = (int) 1400 / 2;
+  public static final int width  = (int) 3400 / 2;
 
   public YRenderer(Real vscale) throws NoninvertibleTransformException
   {
