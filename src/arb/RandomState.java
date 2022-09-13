@@ -8,7 +8,9 @@
 
 package arb;
 
-public class RandomState implements AutoCloseable {
+import arb.stochastic.processes.RandomVectorGenerator;
+
+public class RandomState implements RandomVectorGenerator {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
@@ -19,11 +21,6 @@ public class RandomState implements AutoCloseable {
 
   public static long getCPtr(RandomState obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  @SuppressWarnings("deprecation")
-  protected void finalize() {
-    delete();
   }
 
   public synchronized void delete() {
@@ -37,6 +34,19 @@ public class RandomState implements AutoCloseable {
   }
 
   static { System.loadLibrary( "arblib" ); }
+
+
+  @Override
+  public RandomState getRandomState()
+  {
+    return this;
+  }
+
+  @Override
+  public Real nextElement(int prec, Real result)
+  {
+    return result.random(this, prec);
+  }
 
   @Override
   public String toString()

@@ -147,9 +147,9 @@ import arb.topological.spaces.EuclideanVectorSpace;
    */
   public void randomlyGenerate(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
   {
-    forEach(element -> pdf.sample(prec, randomState, element));
+    forEach(element -> pdf.sample(randomState, prec, element));
   }
-  
+    
   /**
    * Self-referencing this{@link #add(int, int, Real)}
    * 

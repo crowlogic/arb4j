@@ -1,7 +1,28 @@
 %typemap(javainterfaces) flint_rand_s "AutoCloseable"
 
+%typemap(javafinalize) flint_rand_s ""
+
+%typemap(javainterfaces) flint_rand_s "RandomVectorGenerator"
+
+%typemap(javaimports) flint_rand_s %{
+import arb.stochastic.processes.RandomVectorGenerator;
+%}
+
 %typemap(javacode) flint_rand_s %{
   static { System.loadLibrary( "arblib" ); }
+
+
+  @Override
+  public RandomState getRandomState()
+  {
+    return this;
+  }
+
+  @Override
+  public Real nextElement(int prec, Real result)
+  {
+    return result.random(this, prec);
+  }
 
   @Override
   public String toString()

@@ -15,13 +15,14 @@ public interface ProbabilityDistributionFunction<P extends RealProbabilityDensit
 {
 
   /**
-   * Calls this{@link #sample(CorrelatedRandomVectorGenerator, int, Real)} on each element of this
+   * Calls this{@link #sample(CorrelatedRandomVectorGenerator, int, Real)} on each
+   * element of this via {@link Real#forEach(java.util.function.Consumer)}
    * 
    * @param elements
    * @param prec
    * @param generator
    */
-  default void sample(Real elements, int prec, RandomVectorGenerator generator)
+  default void sampleEach(Real elements, int prec, RandomVectorGenerator generator)
   {
     elements.forEach(element -> sample(generator, prec, element));
   }
@@ -35,7 +36,7 @@ public interface ProbabilityDistributionFunction<P extends RealProbabilityDensit
   public default Real sample(RandomVectorGenerator generator, int prec, Real result)
   {
     RealFunction inverse = inverse();
-    Real u = result.random(generator.getRandomState(), prec);
+    Real         u       = result.random(generator.getRandomState(), prec);
     return inverse.evaluate(u, 1, prec, result);
   }
 }
