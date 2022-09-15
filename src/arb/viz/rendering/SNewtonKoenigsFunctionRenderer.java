@@ -31,10 +31,10 @@ public class SNewtonKoenigsFunctionRenderer extends
 
     this(new Dimension(2500,
                        1250),
-         new Rectangle2D.Double(-2,
-                                -0.5,
-                                1.5,
-                                1));
+         new Rectangle2D.Double(-3,
+                                -3.5,
+                                6,
+                                7));
   }
 
   @SuppressWarnings("resource")
