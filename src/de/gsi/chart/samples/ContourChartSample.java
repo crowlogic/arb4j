@@ -160,6 +160,7 @@ public class ContourChartSample extends
 
   public DataSet readImage()
   {
+    System.out.println( "FUCK ");
     try ( BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(ContourChartSample.class.getResourceAsStream("./testdata/image.txt")))))
     {
       // final BufferedReader reader = new BufferedReader(new
