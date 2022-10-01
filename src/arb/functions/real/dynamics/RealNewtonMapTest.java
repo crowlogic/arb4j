@@ -19,6 +19,7 @@ public class RealNewtonMapTest extends
     CircularS angle = new CircularS(RealConstants.one,
                                     new Real().set("0.1", 512));
     testIteratedNewtonMap(angle);
+    System.out.println( "awesome. 1/3rd of time needs to be spent sleeping");
     assertEquals(w.get(0).doubleValue(), locateRoot(angle).getReal().doubleValue());
 
   }
