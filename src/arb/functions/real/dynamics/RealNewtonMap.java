@@ -104,7 +104,7 @@ public class RealNewtonMap<F extends RealFunction> implements
   @Override
   public RealFunction inverse()
   {
-    // TODO Auto-generated method stub
+    assert false : "todo";
     return null;
   }
 
