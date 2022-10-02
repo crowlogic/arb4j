@@ -77,6 +77,8 @@ public class RealNewtonMapTest extends
       w.printPrecision = true;
       System.out.println("w=" + w);
       z.set(w);
+      
+      assert false : "TODO: finish early after sufficient number of iterations";
     }
     System.out.println("w=" + w);
     System.out.println("angle(w)=" + angle.evaluate(new Complex(w), 1, 512, new Complex()));
