@@ -9,9 +9,12 @@ import arb.*;
  * somewhat unified analysis of arithmetic objects through their automorphic
  * functions
  * 
- * https://mathworld.wolfram.com/LanglandsProgram.html
- * https://en.wikipedia.org/wiki/Langlands_program
- * https://www.ias.edu/ideas/modern-mathematics-and-langlands-program
+ * <a href=
+ * "https://mathworld.wolfram.com/LanglandsProgram.html">LanglandsProgram@Mathworld</a>
+ * <a href=
+ * "https://en.wikipedia.org/wiki/Langlands_program">LanglandsProgram@Wikipedia</a>
+ * <a href=
+ * "https://www.ias.edu/ideas/modern-mathematics-and-langlands-program">ModernMathematicsAndTheLanglandsProgram@TheInstituteForAdvancedStudy</a>
  * 
  * @see {@link ArtinReciprocity} as well as Automorphic Forms
  * @see {@link LanglandsReciprocity}
