@@ -19,32 +19,6 @@ public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTim
                                                         AutoCloseable,
                                                         Cleanable
 {
-  public static final class KeyHandler implements
-                                       KeyListener
-  {
-    @Override
-    public void keyTyped(KeyEvent e)
-    {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e)
-    {
-      switch (e.getKeyCode())
-      {
-      case KeyEvent.VK_ESCAPE:
-        System.exit(1);
-      }
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e)
-    {
-
-    }
-  }
 
   protected static final Color COLOR1  = new Color(55,
                                                    170,
