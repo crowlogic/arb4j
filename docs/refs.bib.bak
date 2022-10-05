@@ -259,16 +259,4 @@ journal = {Journal of Geometry and Physics},
 doi = {10.1016/j.geomphys.2015.03.010}
 }
 
-@Book{HilbertPrimer,
-  title         = {A Primer on Hilbert Space Theory: Linear Spaces, Topological Spaces, Metric Spaces, Normed Spaces, and Topological Groups},
-  publisher     = {Springer International Publishing},
-  year          = {2014},
-  author        = {Alabiso, C. and Weiss, I.},
-  series        = {UNITEXT for Physics},
-  isbn          = {9783319037127},
-  __markedentry = {[crow:6]},
-  lccn          = {2014947139},
-  url           = {https://books.google.com/books?id=Kr7engEACAAJ},
-}
-
 @Comment{jabref-meta: databaseType:bibtex;}

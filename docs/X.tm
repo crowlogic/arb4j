@@ -1,4 +1,4 @@
-<TeXmacs|2.1.1>
+<TeXmacs|1.99.18>
 
 <style|<tuple|article|alt-colors|framed-theorems>>
 
@@ -145,6 +145,12 @@
   </table-of-contents>
 
   <section|Introduction>
+
+  TODO: Hilbert space stuff
+
+  See <cite-detail|HilbertPrimer|Chapter 6> and define Banach spaces.
+
+  \;
 
   There are many functions such as the Hardy <math|Z<around*|(|t|)>>
   function, Riemann xi <math|\<xi\><around*|(|t|)>> function, and the
@@ -983,88 +989,94 @@
   </theorem>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|16>
-      <bibitem*|1><label|bib-edcd>D.S.<nbsp>Alexander,
+    <\bib-list|17>
+      <bibitem*|1><label|bib-HilbertPrimer>C.<nbsp>Alabiso<localize| and
+      >I.<nbsp>Weiss. <newblock><with|font-shape|italic|A Primer on Hilbert
+      Space Theory: Linear Spaces, Topological Spaces, Metric Spaces, Normed
+      Spaces, and Topological Groups>. <newblock>UNITEXT for Physics.
+      Springer International Publishing, 2014.<newblock>
+
+      <bibitem*|2><label|bib-edcd>D.S.<nbsp>Alexander,
       F.<nbsp>Iavernaro<localize|, and >A.<nbsp>Rosa.
       <newblock><with|font-shape|italic|Early Days in Complex Dynamics: A
       History of Complex Dynamics in One Variable During 1906-1942>.
       <newblock>History of mathematics. American Mathematical Society,
       2012.<newblock>
 
-      <bibitem*|2><label|bib-cowen1994spectra>Carl<nbsp>C Cowen<localize| and
+      <bibitem*|3><label|bib-cowen1994spectra>Carl<nbsp>C Cowen<localize| and
       >Barbara<nbsp>D MacCluer. <newblock>Spectra of some composition
       operators. <newblock><with|font-shape|italic|Journal of Functional
       Analysis>, 125(1):223\U251, 1994.<newblock>
 
-      <bibitem*|3><label|bib-coxeter1989introduction>H.S.M.<nbsp>Coxeter<localize|
+      <bibitem*|4><label|bib-coxeter1989introduction>H.S.M.<nbsp>Coxeter<localize|
       and >H.S.M.<nbsp>Coxeter. <newblock><with|font-shape|italic|Introduction
       to Geometry>. <newblock>Wiley Classics Library. Wiley, 1989.<newblock>
 
-      <bibitem*|4><label|bib-MonsterMoonshine>Terry Gannon.
+      <bibitem*|5><label|bib-MonsterMoonshine>Terry Gannon.
       <newblock><with|font-shape|italic|Moonshine Beyond the Monster: The
       Bridge Connecting Algebra, Modular Forms, and Physics>.
       <newblock>Cambridge University Press, Cambridge Monographs on
       Mathematical Physics, 2006.<newblock>
 
-      <bibitem*|5><label|bib-jongen1988continuous>H<nbsp>Th Jongen, Peter
+      <bibitem*|6><label|bib-jongen1988continuous>H<nbsp>Th Jongen, Peter
       Jonker<localize|, and >Frank Twilt. <newblock>The continuous,
       desingularized newton method for meromorphic functions.
       <newblock><localize|In ><with|font-shape|italic|Newton's Method and
       Dynamical Systems>, <localize|pages >81\U121. Springer, 1988.<newblock>
 
-      <bibitem*|6><label|bib-klein2018riemann>Felix Klein.
+      <bibitem*|7><label|bib-klein2018riemann>Felix Klein.
       <newblock><with|font-shape|italic|On Riemann's theory of algebraic
       functions and their integrals>. <newblock>Cambridge: Macmillan and
       Bowes, 1893.<newblock>
 
-      <bibitem*|7><label|bib-Koopman1931>B.<nbsp>O.<nbsp>Koopman.
+      <bibitem*|8><label|bib-Koopman1931>B.<nbsp>O.<nbsp>Koopman.
       <newblock>Hamiltonian systems and transformation in hilbert space.
       <newblock><with|font-shape|italic|Proceedings of the National Academy
       of Sciences>, 17(5):315\U318, 1931.<newblock>
 
-      <bibitem*|8><label|bib-krantz2012handbook>S.G.<nbsp>Krantz.
+      <bibitem*|9><label|bib-krantz2012handbook>S.G.<nbsp>Krantz.
       <newblock><with|font-shape|italic|Handbook of Complex Variables>.
       <newblock>Birkhauser Boston, 2012.<newblock>
 
-      <bibitem*|9><label|bib-lawrence1972catalog>J.D.<nbsp>Lawrence<localize|
+      <bibitem*|10><label|bib-lawrence1972catalog>J.D.<nbsp>Lawrence<localize|
       and >D.L.<nbsp>Lawrence. <newblock><with|font-shape|italic|A Catalog of
       Special Plane Curves>. <newblock>Dover Books on Mathematics. Dover
       Publications, 1972.<newblock>
 
-      <bibitem*|10><label|bib-Milnor2006>John Milnor.
+      <bibitem*|11><label|bib-Milnor2006>John Milnor.
       <newblock><with|font-shape|italic|Dynamics in One Complex Variable>.
       <newblock>Annals of Mathematics Studies 160. Princeton University
       Press, 2nd<localize| edition>, 2006.<newblock>
 
-      <bibitem*|11><label|bib-Peitgen1988GlobalAO>Heinz-Otto Peitgen, Michael
+      <bibitem*|12><label|bib-Peitgen1988GlobalAO>Heinz-Otto Peitgen, Michael
       Prufer<localize|, and >Klaus Schmitt. <newblock>Global aspects of the
       continuous and discrete newton method: a case study.
       <newblock><with|font-shape|italic|Acta Applicandae Mathematicae>,
       13:123\U202, 1988.<newblock>
 
-      <bibitem*|12><label|bib-riemann>Berhhard Riemann. <newblock>Ueber die
+      <bibitem*|13><label|bib-riemann>Berhhard Riemann. <newblock>Ueber die
       anzahl der primzahlen unter einer gegebenen grosse (on the number of
       prime numbers below a given size). <newblock><with|font-shape|italic|Monatsberichte
       der Berliner Akademie>, R1:145, 1859.<newblock>
 
-      <bibitem*|13><label|bib-constantPhaseRH>Wolfgang<nbsp>P Schleich, Iva
+      <bibitem*|14><label|bib-constantPhaseRH>Wolfgang<nbsp>P Schleich, Iva
       Bezd¥ková, Moochan<nbsp>B Kim, Paul<nbsp>C Abbott, Helmut Maier,
       Hugh<nbsp>L Montgomery<localize|, and >John<nbsp>W Neuberger.
       <newblock>Equivalent formulations of the riemann hypothesis based on
       lines of constant phase. <newblock><with|font-shape|italic|Physica
       Scripta>, 93(6):65201, 2018.<newblock>
 
-      <bibitem*|14><label|bib-Shapiro1998CompositionOA>J.<nbsp>H.<nbsp>Shapiro.
+      <bibitem*|15><label|bib-Shapiro1998CompositionOA>J.<nbsp>H.<nbsp>Shapiro.
       <newblock>Composition operators and schroder's functional equation.
       <newblock><with|font-shape|italic|Contemporary Mathematics>,
       (213):213\U228, 1998.<newblock>
 
-      <bibitem*|15><label|bib-shapiro1993composition>J.H.<nbsp>Shapiro.
+      <bibitem*|16><label|bib-shapiro1993composition>J.H.<nbsp>Shapiro.
       <newblock><with|font-shape|italic|Composition Operators and Classical
       Function Theory>. <newblock>Universitext (Berlin. Print).
       Springer-Verlag, 1993.<newblock>
 
-      <bibitem*|16><label|bib-ds2>Yakov Sinai.
+      <bibitem*|17><label|bib-ds2>Yakov Sinai.
       <newblock><with|font-shape|italic|Dynamical Systems II: Ergodic Theory
       with Applications to Dynamical Systems and Statistical Mechanics>.
       <newblock>Springer-Verlag, 1989.<newblock>
@@ -1150,28 +1162,29 @@
     <associate|auto-40|<tuple|5|8>>
     <associate|auto-41|<tuple|5.1|8>>
     <associate|auto-42|<tuple|52|9>>
-    <associate|auto-43|<tuple|16|9>>
+    <associate|auto-43|<tuple|17|9>>
     <associate|auto-5|<tuple|Koenig's function|2>>
     <associate|auto-6|<tuple|1.2|2>>
     <associate|auto-7|<tuple|1.2.1|2>>
     <associate|auto-8|<tuple|transfer operator|2>>
     <associate|auto-9|<tuple|transfer operator|2>>
-    <associate|bib-Koopman1931|<tuple|7|9>>
-    <associate|bib-Milnor2006|<tuple|10|9>>
-    <associate|bib-MonsterMoonshine|<tuple|4|9>>
-    <associate|bib-Peitgen1988GlobalAO|<tuple|11|9>>
-    <associate|bib-Shapiro1998CompositionOA|<tuple|14|9>>
-    <associate|bib-constantPhaseRH|<tuple|13|9>>
-    <associate|bib-cowen1994spectra|<tuple|2|9>>
-    <associate|bib-coxeter1989introduction|<tuple|3|9>>
-    <associate|bib-ds2|<tuple|16|9>>
-    <associate|bib-edcd|<tuple|1|9>>
-    <associate|bib-jongen1988continuous|<tuple|5|9>>
-    <associate|bib-klein2018riemann|<tuple|6|9>>
-    <associate|bib-krantz2012handbook|<tuple|8|9>>
-    <associate|bib-lawrence1972catalog|<tuple|9|9>>
-    <associate|bib-riemann|<tuple|12|9>>
-    <associate|bib-shapiro1993composition|<tuple|15|9>>
+    <associate|bib-HilbertPrimer|<tuple|1|9>>
+    <associate|bib-Koopman1931|<tuple|8|9>>
+    <associate|bib-Milnor2006|<tuple|11|9>>
+    <associate|bib-MonsterMoonshine|<tuple|5|9>>
+    <associate|bib-Peitgen1988GlobalAO|<tuple|12|9>>
+    <associate|bib-Shapiro1998CompositionOA|<tuple|15|9>>
+    <associate|bib-constantPhaseRH|<tuple|14|9>>
+    <associate|bib-cowen1994spectra|<tuple|3|9>>
+    <associate|bib-coxeter1989introduction|<tuple|4|9>>
+    <associate|bib-ds2|<tuple|17|9>>
+    <associate|bib-edcd|<tuple|2|9>>
+    <associate|bib-jongen1988continuous|<tuple|6|9>>
+    <associate|bib-klein2018riemann|<tuple|7|9>>
+    <associate|bib-krantz2012handbook|<tuple|9|9>>
+    <associate|bib-lawrence1972catalog|<tuple|10|9>>
+    <associate|bib-riemann|<tuple|13|9>>
+    <associate|bib-shapiro1993composition|<tuple|16|9>>
     <associate|dl|<tuple|15|6>>
     <associate|ds|<tuple|30|5>>
     <associate|footnote-1|<tuple|1|2>>
@@ -1186,6 +1199,8 @@
 <\auxiliary>
   <\collection>
     <\associate|bib>
+      HilbertPrimer
+
       Milnor2006
 
       Milnor2006
