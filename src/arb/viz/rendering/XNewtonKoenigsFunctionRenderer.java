@@ -8,20 +8,21 @@ import java.io.IOException;
 
 import arb.Complex;
 import arb.Real;
-import arb.functions.complex.dynamics.*;
-import arb.functions.complex.numbertheoretic.YFunction;
+import arb.functions.complex.dynamics.IteratedFunction;
+import arb.functions.complex.dynamics.NewtonMap;
+import arb.functions.complex.numbertheoretic.XFunction;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
 public class XNewtonKoenigsFunctionRenderer extends
-                                            ComplexFunctionRenderer<IteratedFunction<SNewtonMap>>
+                                            ComplexFunctionRenderer<IteratedFunction<NewtonMap<XFunction>>>
 {
 
   public XNewtonKoenigsFunctionRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
   {
     super(screen,
           domain,
-          new IteratedFunction(new NewtonMap(new YFunction(new Real("1",
+          new IteratedFunction(new NewtonMap(new XFunction(new Real("1",
                                                                     128))),
                                3,
                                true)
