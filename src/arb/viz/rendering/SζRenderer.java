@@ -27,12 +27,12 @@ public class SζRenderer extends
   @SuppressWarnings("resource")
   public SζRenderer() throws NoninvertibleTransformException
   {
-    super(new Dimension(5000,
-                        2500),
+    super(new Dimension(2000,
+                        1000),
           new Rectangle2D.Double(-10,
-                                 20,
+                                 -20,
                                  80,
-                                 -40),
+                                 40),
           new Composition(new Composition(new SFunction(new Real().set("5", 128)),
                                           (new RiemannζFunction())),
                           new WickRotation()));

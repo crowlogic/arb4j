@@ -16,12 +16,12 @@ public class SRenderer extends
                        ComplexFunctionRenderer<SFunction>
 {
 
-  private static final Double    domain     = new Rectangle2D.Double(-Math.PI,
-                                                                     -1.5,
-                                                                     Math.PI * 2,
-                                                                     3);
-  private static final Dimension dimensions = new Dimension(2000 / 2,
-                                                            1000 / 2);
+  private static final Double    domain     = new Rectangle2D.Double(-2,
+                                                                     -1,
+                                                                     4,
+                                                                     2);
+  private static final Dimension dimensions = new Dimension(2000,
+                                                            1000);
 
   public SRenderer(Dimension screen, Double domain, Real scale) throws NoninvertibleTransformException
   {
