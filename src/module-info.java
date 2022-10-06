@@ -42,6 +42,7 @@ module arb4j
   exports arb.algebraic.expressions;
   exports arb.algebraic.geometry;
   exports arb.biology;
+  exports arb.chemistry;
   exports arb.geometry;
   exports arb.geometry.curves;
   exports arb.geometry.surfaces;
