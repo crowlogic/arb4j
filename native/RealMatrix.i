@@ -6,9 +6,9 @@ import java.util.Iterator;
 import java.nio.LongBuffer;
 import java.nio.ByteOrder;
 import dnl.utils.text.table.*;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 %}
 
 %typemap(javafinalize) arb_mat_struct ""
@@ -184,7 +184,7 @@ import jdk.incubator.foreign.ResourceScope;
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
     MemoryAddress ma = MemoryAddress.ofLong(m.getRowPointers());
-    MemorySegment ms = MemorySegment.ofAddress(ma, rows * 8, ResourceScope.globalScope());
+    MemorySegment ms = MemorySegment.ofAddress(ma, rows * 8, MemorySession.global());
     m.rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
     m.rows        = new Real[rows];
     for (int i = 0; i < rows; i++)

@@ -14,7 +14,6 @@ module arb4j
   requires transitive java.logging;
   requires transitive javafx.graphics;
   requires transitive javafx.controls;
-  requires transitive jdk.incubator.foreign;
   requires transitive junit;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
