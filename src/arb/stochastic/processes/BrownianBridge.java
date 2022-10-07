@@ -1,6 +1,5 @@
 package arb.stochastic.processes;
 
-import arb.Real;
 import arb.RealConstants;
 import arb.stochastic.*;
 
@@ -36,14 +35,14 @@ public class BrownianBridge implements
 {
 
   @Override
-  public RealProbabilityDensityFunction getDensityFunction(Real t)
+  public RealProbabilityDensityFunction getDensityFunction()
   {
     assert false : "TODO";
     return null;
   }
 
   @Override
-  public ProbabilityDistributionFunction getDistributionFunction(Real t)
+  public ProbabilityDistributionFunction getDistributionFunction()
   {
     assert false : "TODO";
     return null;

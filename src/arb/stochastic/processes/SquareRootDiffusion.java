@@ -19,7 +19,7 @@ public class SquareRootDiffusion<S extends DiffusionProcessState> implements
                                 DiffusionProcess<S>
 {
   @Override
-  public <P extends RealProbabilityDensityFunction> P getDensityFunction(Real t)
+  public <P extends RealProbabilityDensityFunction> P getDensityFunction()
   {
     assert false : "implement me, closed form density involving modified Bessel functions of the first kind";
     return null;

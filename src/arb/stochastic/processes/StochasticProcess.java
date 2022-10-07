@@ -22,13 +22,13 @@ public interface StochasticProcess extends
     return 1;
   }
 
-  public default <P extends RealProbabilityDensityFunction> P getDensityFunction(Real t)
+  public default <P extends RealProbabilityDensityFunction> P getDensityFunction()
   {
     return arb.utensils.Utilities.TODO("implement me");
 
   }
 
-  public default <F extends ProbabilityDistributionFunction> F getDistributionFunction(Real t)
+  public default <F extends ProbabilityDistributionFunction> F getDistributionFunction()
   {
     return arb.utensils.Utilities.TODO("implement me");
 
@@ -41,7 +41,7 @@ public interface StochasticProcess extends
 
   public default Real sample(Real t, int prec, CorrelatedRandomVectorGenerator generator, Real x)
   {
-    return getDistributionFunction(t).sample(generator, prec, x);
+    return getDistributionFunction().sample(generator, prec, x);
   }
 
 }

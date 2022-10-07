@@ -35,7 +35,7 @@ public class StandardGaussianProcess implements
   public StandardGaussianDistribution           f;
 
   @Override
-  public StandardGaussianDensityFunction getDensityFunction(Real t)
+  public StandardGaussianDensityFunction getDensityFunction()
   {
     return p;
   }
@@ -47,7 +47,7 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public StandardGaussianDistribution getDistributionFunction(Real t)
+  public StandardGaussianDistribution getDistributionFunction()
   {
     return f;
   }

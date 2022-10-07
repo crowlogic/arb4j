@@ -44,7 +44,7 @@ public class WhiteNoise implements
   public GaussianDistribution           f;
 
   @Override
-  public GaussianDensityFunction getDensityFunction(Real t)
+  public GaussianDensityFunction getDensityFunction()
   {
     return p;
   }
@@ -56,7 +56,7 @@ public class WhiteNoise implements
   }
 
   @Override
-  public GaussianDistribution getDistributionFunction(Real t)
+  public GaussianDistribution getDistributionFunction()
   {
     return f;
   }
