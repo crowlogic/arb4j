@@ -1,3 +1,5 @@
+* Killing form
+
 * Fast Fourier Transform API
 
 * chartfx implementation of multivariate stochastic process plotter
