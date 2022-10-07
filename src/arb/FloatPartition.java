@@ -1,13 +1,13 @@
 package arb;
 
 import java.io.Closeable;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.lang.ref.Cleaner.Cleanable;
 import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
 
 /**
  * A {@link FloatPartition} denoted P of ...
@@ -30,7 +30,7 @@ public class FloatPartition implements
   private int     prec;
   private Float[] elements;
 
-  ResourceScope   scope = ResourceScope.newSharedScope();
+  MemorySession   scope = MemorySession.openShared();
 
   MemorySegment   segment;
 
