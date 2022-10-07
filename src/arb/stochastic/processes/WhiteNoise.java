@@ -50,7 +50,7 @@ public class WhiteNoise implements
   }
 
   @Override
-  public GaussianCharacteristicFunction getCharacteristicFunction(Real t)
+  public GaussianCharacteristicFunction getCharacteristicFunction()
   {
     return φ;
   }

@@ -34,7 +34,7 @@ public interface StochasticProcess extends
 
   }
 
-  public default <C extends CharacteristicFunction> C getCharacteristicFunction(Real t)
+  public default <C extends CharacteristicFunction> C getCharacteristicFunction()
   {
     return arb.utensils.Utilities.TODO("implement me");
   }

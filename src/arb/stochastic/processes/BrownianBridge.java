@@ -50,7 +50,7 @@ public class BrownianBridge implements
   }
 
   @Override
-  public CharacteristicFunction getCharacteristicFunction(Real t)
+  public CharacteristicFunction getCharacteristicFunction()
   {
     assert false : "TODO";
     return null;
