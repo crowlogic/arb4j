@@ -1,9 +1,10 @@
 %typemap(javaimports) arf_struct %{
 import arb.Field;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.util.Iterator;
 import static arb.RealConstants.*;
 import static arb.IntegerConstants.*;
-import jdk.incubator.foreign.*;
 
 /**
  * A {@link Float} contains four words: <br>
@@ -41,7 +42,7 @@ import jdk.incubator.foreign.*;
   public static final int BYTES = 32;
 
   MemorySegment               segment;
-  private ResourceScope       scope;
+  private MemorySession       scope;
   public int dim;
 
   protected Float(MemorySegment segment, int length)
@@ -54,7 +55,7 @@ import jdk.incubator.foreign.*;
 
   public static Float newVector(int length)
   {
-    ResourceScope scope = ResourceScope.newSharedScope();
+    MemorySession scope = MemorySession.openShared();
     Float         array = new Float(MemorySegment.allocateNative(Float.BYTES * length, scope),
                                     length);
     array.scope = scope;
