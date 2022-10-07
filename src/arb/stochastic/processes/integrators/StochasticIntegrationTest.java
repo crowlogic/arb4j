@@ -60,6 +60,7 @@ public class StochasticIntegrationTest extends
     println("state=" + state);
     Real μ               = samplePath.values[0].mean(prec, new Real());
     Real sampleStdev     = samplePath.values[0].standardDeviation(prec, μ, new Real());
+    assert sampleStdev.isFinite();
     Real populationStdev = integrator.diffusionProcess.σ().evaluate(state, 1, prec, new Real());
     populationStdev.printPrecision = true;
     sampleStdev.printPrecision     = true;
