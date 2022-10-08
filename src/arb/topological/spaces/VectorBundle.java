@@ -29,7 +29,6 @@ package arb.topological.spaces;
  * structure. In the following, we focus on real vector bundles in the category
  * of topological spaces.
  * 
- * @author crow
  *
  */
 public interface VectorBundle extends
