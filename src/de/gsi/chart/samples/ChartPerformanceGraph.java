@@ -33,9 +33,9 @@ public class ChartPerformanceGraph extends
                                    Application
 {
   private static final Logger LOGGER = LoggerFactory.getLogger(ChartPerformanceGraph.class);
-  private static final String FILE1  = "./testdata/ChartPerformanceBenchmark25Hz_V8.1.1_JDK8u112.csv";
-  private static final String FILE2  = "./testdata/ChartPerformanceBenchmark25Hz_V11.1.1_JDK11_JFX13.csv";
-  private static final String FILE3  = "./testdata/ChartPerformanceBenchmark25Hz_V11.1.2_JDK11_JFX13.csv";
+  private static final String FILE1  = "ChartPerformanceBenchmark25Hz_V8.1.1_JDK8u112.csv";
+  private static final String FILE2  = "ChartPerformanceBenchmark25Hz_V11.1.1_JDK11_JFX13.csv";
+  private static final String FILE3  = "ChartPerformanceBenchmark25Hz_V11.1.2_JDK11_JFX13.csv";
 
   @Override
   public void start(final Stage primaryStage)
@@ -77,6 +77,7 @@ public class ChartPerformanceGraph extends
 
   private static DataSet loadData(final String fileName)
   {
+    System.out.println( "Looking for " + fileName );
     String        pathToCsv   = Objects.requireNonNull(ChartPerformanceGraph.class.getResource(fileName))
                                        .toExternalForm();
     InputStream   inputStream = ChartPerformanceGraph.class.getResourceAsStream(fileName);

@@ -16,8 +16,8 @@ public class StaticShader extends
 
   private static final int    MAX_LIGHTS    = 5;
 
-  private static final String VERTEX_FILE   = "src/main/java/com/chernikovs/shaders/vertexShader.txt";
-  private static final String FRAGMENT_FILE = "src/main/java/com/chernikovs/shaders/fragmentShader.txt";
+  private static final String VERTEX_FILE   = "vertexShader.txt";
+  private static final String FRAGMENT_FILE = "fragmentShader.txt";
 
   private int                 location_transformationMatrix;
   private int                 location_projectionMatrix;
