@@ -24,17 +24,17 @@ public class YRenderer extends
     renderer.render();
   }
 
-  public static final int height = (int) 1400 / 2;
-  public static final int width  = (int) 3400 / 2;
+  public static final int width  = (int) 2560;
+  public static final int height = (int) 1280;
 
   public YRenderer(Real vscale) throws NoninvertibleTransformException
   {
     super(new Dimension(width,
                         height),
           new Rectangle2D.Double(-10,
-                                 -24,
-                                 30 * (double) ((double) width / (double) height),
-                                 30),
+                                 -20,
+                                 80,
+                                 40),
           new YFunction(vscale));
 
     colorMode   = 4;
