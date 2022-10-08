@@ -27,7 +27,9 @@ import arb.topological.Space;
  * @param <F> fiber
  * @param <π> the projection map (also known as bundle projection)
  */
-public interface FiberBundle<E extends Space, B extends Space, F extends Space, π extends SurjectiveFunction<E, B>> extends Bundle
+public interface FiberBundle<E extends Space, B extends Space, F extends Space, π extends SurjectiveFunction<E, B>>
+                            extends
+                            Bundle<E, B, π>
 {
 
 }

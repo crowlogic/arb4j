@@ -1,5 +1,8 @@
 package arb.topological.spaces;
 
+import arb.functions.Function;
+import arb.topological.Space;
+
 /**
  * a bundle is a generalization of a fiber bundle dropping the condition of a
  * local product structure. The requirement of a local product structure rests
@@ -10,10 +13,19 @@ package arb.topological.spaces;
  * alike, unlike fiber bundles where the fibers must all be isomorphic (in the
  * case of vector bundles) and homeomorphic.
  * 
- * @see <a href="https://en.wikipedia.org/wiki/Bundle_(mathematics)">Bundle@Wikipedia</a>
- *
+ * @see <a href=
+ *      "https://en.wikipedia.org/wiki/Bundle_(mathematics)">Bundle@Wikipedia</a>
  */
-public interface Bundle
+
+/**
+ * 
+ * @author crow
+ *
+ * @param <E> total space 
+ * @param <B> base space 
+ * @param <P> projection map (function)
+ */
+public interface Bundle<E extends Space, B extends Space, P extends Function>
 {
 
 }
