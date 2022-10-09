@@ -1,6 +1,6 @@
-<TeXmacs|1.99.18>
+<TeXmacs|2.1.1>
 
-<style|<tuple|article|alt-colors|framed-theorems>>
+<style|<tuple|article|alt-colors|parchment|framed-theorems>>
 
 <\body>
   \ 
@@ -1146,7 +1146,7 @@
     <associate|auto-26|<tuple|Riemann zeta function|6>>
     <associate|auto-27|<tuple|3.1|6>>
     <associate|auto-28|<tuple|critical line|6>>
-    <associate|auto-29|<tuple|3.1.1|6>>
+    <associate|auto-29|<tuple|3.1.1|7>>
     <associate|auto-3|<tuple|1.1|2>>
     <associate|auto-30|<tuple|3.2|7>>
     <associate|auto-31|<tuple|gamma function|7>>
@@ -1154,13 +1154,13 @@
     <associate|auto-33|<tuple|Riemann-Siegel (var)theta function|7>>
     <associate|auto-34|<tuple|Hardy Z function|7>>
     <associate|auto-35|<tuple|2|7>>
-    <associate|auto-36|<tuple|3.3|7>>
-    <associate|auto-37|<tuple|3.3.1|7>>
+    <associate|auto-36|<tuple|3.3|8>>
+    <associate|auto-37|<tuple|3.3.1|8>>
     <associate|auto-38|<tuple|3.3.2|8>>
     <associate|auto-39|<tuple|4|8>>
     <associate|auto-4|<tuple|1.1.1|2>>
-    <associate|auto-40|<tuple|5|8>>
-    <associate|auto-41|<tuple|5.1|8>>
+    <associate|auto-40|<tuple|5|9>>
+    <associate|auto-41|<tuple|5.1|9>>
     <associate|auto-42|<tuple|52|9>>
     <associate|auto-43|<tuple|17|9>>
     <associate|auto-5|<tuple|Koenig's function|2>>
@@ -1187,8 +1187,8 @@
     <associate|bib-shapiro1993composition|<tuple|16|9>>
     <associate|dl|<tuple|15|6>>
     <associate|ds|<tuple|30|5>>
-    <associate|footnote-1|<tuple|1|2>>
-    <associate|footnr-1|<tuple|1|2>>
+    <associate|footnote-1|<tuple|1|3>>
+    <associate|footnr-1|<tuple|1|3>>
     <associate|kc|<tuple|3|2>>
     <associate|nm|<tuple|37|6>>
     <associate|rh|<tuple|17|6>>

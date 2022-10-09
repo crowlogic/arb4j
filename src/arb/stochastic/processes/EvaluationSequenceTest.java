@@ -12,18 +12,23 @@ import junit.framework.TestCase;
 public class EvaluationSequenceTest extends
                                     TestCase
 {
+  final static int prec = 128;
 
   public void testIntervalPartitionEvalSequence()
   {
     try ( FloatInterval fi = new FloatInterval(0,
                                                5))
     {
-      RealPartition      partition = fi.realPartition(50000, 128);
-      EvaluationSequence es        = new EvaluationSequence(partition,
-                                                            1);
+      RealPartition                partition      = fi.realPartition(50000, prec);
+      EvaluationSequence           es             = new EvaluationSequence(partition,
+                                                                           1);
 
-      es.generateRandomSamples(new StandardGaussianDistribution(), null, new RandomState(31337), 128);
-      Real   var      = es.values[0].variance(128, new Real());
+      StandardGaussianDistribution standardNormal = new StandardGaussianDistribution();
+      RandomState                  generator      = new RandomState(31337);
+      es.generateRandomSamples(standardNormal, null, generator, prec);
+
+      Real   real     = es.values[0];
+      Real   var      = real.variance(prec, new Real());
       double vardelta = Math.abs(var.doubleValue() - 1);
       println("vardelta=" + vardelta);
       assertTrue(vardelta < 0.0035);
