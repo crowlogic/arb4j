@@ -1,2 +1,1 @@
-* EvaluationSequence.generateRandomSamples is only populating the
-first element instead of all
+* memory leak in ComplexFunctionRenderer or AnimatedComplexFunctionSequencer

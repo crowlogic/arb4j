@@ -1,23 +1,23 @@
+* Fast Fourier Transform API
+
+* implement Lemniscate elliptic functions 
+
+* use ErrorFunction to correct the numerically integrated Fourier transforms
+
 * Killing form
 
-* Fast Fourier Transform API
 
 * chartfx implementation of multivariate stochastic process plotter
 
-* check for leaks/run mem leak tracer
-
 * harness reflection symmetry to accelerate rendering 
 
-* implement Lemniscate elliptic functions 
 
 * algebraic expression parser, evaluator and compiler
 
 * Koenig linearization - SchroederFunctional And InverseSeries
 
-* use ErrorFunction to correct the numerically integrated Fourier transforms
 
 * parallelize ComplexFunction.integrate
-
 
 * homotopy API 
 
@@ -27,37 +27,11 @@
 
 * port Real root-finding API to Complex values
 
-* Scale/Rotate/Translate as Part of JPlotter/OpenGL renovation 
+* Scale/Rotate/Translate as Part of ChartFX renovation 
 
 * orthogonal polynomial API
 
 * Shape Operator
 
 * API for plane curve Curvature
-
-
-* replace usage of Utilities#heapUp and heapDown with MemoryStack
-
-* monte-carlo has been superceded by integral transform methods: but the correlated stochastic integrator implementation should be finished anyway 
-
-
-
-Zoom/Magnify - OpenGL 3d surface rendering
--------------
-
-When Z is pressed there is an indicator that zoom box
-selection mode has been activated.
-
-Press esc to exit zoom selection mode
-click selects point
-click selects the second point which causes the graph
-to be replotted from the specified coordinates.
-(Support scrolling/dragging with finger on laptops with touchscreen display)
-
-If esc is pressed after the 1st point is clicked, it goes
-back to selection mode, if esc is pressed again it exits
-zoom selection mode
-
-
- 
 
