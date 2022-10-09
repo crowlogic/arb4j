@@ -19,7 +19,7 @@ public class RealNewtonMapTest extends
     CircularS angle = new CircularS(RealConstants.one,
                                     new Real().set("0.1", 512));
     testIteratedNewtonMap(angle);
-    System.out.println( "awesome. 1/3rd of time needs to be spent sleeping");
+    System.out.println("awesome. 1/3rd of time needs to be spent sleeping");
     assertEquals(w.get(0).doubleValue(), locateRoot(angle).getReal().doubleValue());
 
   }
@@ -64,21 +64,24 @@ public class RealNewtonMapTest extends
 
   public RealPart testIteratedNewtonMap(CircularS angle)
   {
-    RealPart      realAngle = new RealPart(angle);
-    RealNewtonMap func      = new RealNewtonMap(realAngle,
-                                                new Real().set("1", 52));
-
-    z.set("-0.75", 128);
-    for (int i = 0; i < 20; i++)
+    RealPart realAngle = new RealPart(angle);
+    try ( Real real = new Real())
     {
-      System.out.println("w=" + w);
+      RealNewtonMap func = new RealNewtonMap(realAngle,
+                                             real.set("1", 52));
 
-      func.evaluate(z, 2, 128 * (i + 1), w);
-      w.printPrecision = true;
-      System.out.println("w=" + w);
-      z.set(w);
-      
-      assert false : "TODO: finish early after sufficient number of iterations";
+      z.set("-0.75", 128);
+      for (int i = 0; i < 20; i++)
+      {
+        System.out.println("w=" + w);
+
+        func.evaluate(z, 2, 128 * (i + 1), w);
+        w.printPrecision = true;
+        System.out.println("w=" + w);
+        z.set(w);
+
+        assert false : "TODO: finish early after sufficient number of iterations";
+      }
     }
     System.out.println("w=" + w);
     System.out.println("angle(w)=" + angle.evaluate(new Complex(w), 1, 512, new Complex()));
