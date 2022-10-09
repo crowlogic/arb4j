@@ -59,10 +59,12 @@ public class EvaluationSequence implements
                                                   RandomVectorGenerator generator,
                                                   int prec)
   {
-
-    for (Real valueSequence : values)
+    for (int i = 0; i < dim; i++)
     {
-      pdf.sample(generator, prec, valueSequence);
+      for (Real value : values[i])
+      {
+        pdf.sample(generator, prec, value);
+      }
     }
 
     return this;

@@ -35,8 +35,9 @@ public interface ProbabilityDistributionFunction<P extends RealProbabilityDensit
    */
   public default Real sample(RandomVectorGenerator generator, int prec, Real result)
   {
-    RealFunction inverse = inverse();
-    Real         u       = result.random(generator.getRandomState(), prec);
-    return inverse.evaluate(u, 1, prec, result);
+    RealFunction inverse  = inverse();
+    Real         u        = result.random(generator.getRandomState(), prec);
+    Real         evaluate = inverse.evaluate(u, 1, prec, result);
+    return evaluate;
   }
 }
