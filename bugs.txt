@@ -1,1 +1,7 @@
+* Caused by: java.lang.IllegalAccessException: class
+com.sun.javafx.application.LauncherImpl (in module javafx.graphics)
+cannot access class de.gsi.acc.ui.samples.RunUiSamples (in module
+arb4j) because module arb4j does not export de.gsi.acc.ui.samples to
+module javafx.graphics
+
 * memory leak in ComplexFunctionRenderer or AnimatedComplexFunctionSequencer
