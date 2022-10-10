@@ -1,5 +1,7 @@
 package arb.functions.real.dynamics;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.pow;
 import static java.lang.System.out;
 
 import arb.*;
@@ -65,7 +67,7 @@ public class RealNewtonMapTest extends
   public RealPart testIteratedNewtonMap(CircularS angle)
   {
     RealPart realAngle = new RealPart(angle);
-    try ( Real real = new Real())
+    try ( Real real = new Real(); Real sb = new Real();)
     {
       RealNewtonMap func = new RealNewtonMap(realAngle,
                                              real.set("1", 52));
@@ -73,17 +75,18 @@ public class RealNewtonMapTest extends
       z.set("-0.75", 128);
       for (int i = 0; i < 20; i++)
       {
-        System.out.println("w=" + w);
 
         func.evaluate(z, 2, 128 * (i + 1), w);
         w.printPrecision = true;
         System.out.println("w=" + w);
         z.set(w);
-
-        assert false : "TODO: finish early after sufficient number of iterations";
+        if (abs(w.get(1).doubleValue()) < pow(10, -30))
+        {
+          System.out.println("Converged in " + (i + 1) + " steps...");
+          break;
+        }
       }
     }
-    System.out.println("w=" + w);
     System.out.println("angle(w)=" + angle.evaluate(new Complex(w), 1, 512, new Complex()));
     return realAngle;
   }
