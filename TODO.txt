@@ -1,3 +1,6 @@
+* chartfx implementation of multivariate stochastic process plotter
+
+
 * Fast Fourier Transform API
 
 * implement Lemniscate elliptic functions 
@@ -6,8 +9,6 @@
 
 * Killing form
 
-
-* chartfx implementation of multivariate stochastic process plotter
 
 * harness reflection symmetry to accelerate rendering 
 

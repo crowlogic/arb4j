@@ -67,7 +67,7 @@ public class RealNewtonMapTest extends
   public RealPart testIteratedNewtonMap(CircularS angle)
   {
     RealPart realAngle = new RealPart(angle);
-    try ( Real real = new Real(); Real sb = new Real();)
+    try ( Real real = new Real(); )
     {
       RealNewtonMap func = new RealNewtonMap(realAngle,
                                              real.set("1", 52));
