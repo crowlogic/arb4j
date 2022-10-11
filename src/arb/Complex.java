@@ -154,10 +154,6 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
     return s;
   }
   
-  /**
-   * @see this{@link #mul(int, int, Complex)}
-   * @return this 
-   */
   public Complex muli()
   {
     return muli(this);
@@ -174,12 +170,13 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
     return neg(this);
   }
 
- public Complex conj()
+  public Complex conj()
   {
     return conj(this);
   }
+  
   /**
-   * @see {@link arb#acb_swap(Complex, Complex)}
+   * @see arb#acb_swap(Complex, Complex)
    * 
    * @param that
    * @return this
@@ -228,16 +225,16 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
   }
 
   /**
-   * @return {@link arb#acb_equal(Real, Real)} != 0
+   * @return {@link arb#acb_equal(Complex, Complex)}
    */
   @Override
   public boolean equals(Object obj)
   {
-    if ( !(obj instanceof Complex))
+    if (!(obj instanceof Complex))
     {
       return false;
     }
-    Complex that = (Complex)obj;
+    Complex that = (Complex) obj;
     return arb.acb_equal(this, that) != 0;
   }
   
@@ -291,8 +288,8 @@ public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,Eu
     return getReal().getAllocatedBytes() + getImag().getAllocatedBytes();
   }
   
- /**
-   * @see arb#acb_addmul(Real, Real, Real, int)
+  /**
+   * @see arb#acb_addmul(Complex, Complex, Complex, int)
    * @param that
    * @param prec
    * @param result

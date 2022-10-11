@@ -247,7 +247,7 @@ public interface RealToComplexFunction extends
 
   /**
    * Calculate the simple quadrature f([a,b])*(b-a) where
-   * f=this{@link #evaluate(Complex, int, int, Complex)} with a single function
+   * f=this{@link #evaluate(Real, int, int, Complex)} with a single function
    * evaluation
    * 
    * @param a

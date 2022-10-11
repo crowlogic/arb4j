@@ -72,7 +72,6 @@ public class LemniscateTest extends
    * test integration 2
    * 
    * @throws NotDifferentiableException
-   * @throws LackOfConvergenceException
    */
   @SuppressWarnings("resource")
   public static void testIntegration() throws NotDifferentiableException

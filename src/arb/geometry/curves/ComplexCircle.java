@@ -79,7 +79,7 @@ public class ComplexCircle implements
   }
 
   /**
-   * double-wrapper for this{@link #evaluate(Real, int, int, Complex)}
+   * {@link Double}-wrapper for this{@link #evaluate(Complex, int, int, Complex)}
    * 
    * @param angle
    * @param complex

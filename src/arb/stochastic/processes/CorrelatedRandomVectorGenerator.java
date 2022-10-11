@@ -21,13 +21,11 @@ public class CorrelatedRandomVectorGenerator implements
    * Builds a correlated random vector generator from its mean vector and
    * covariance matrix.
    *
-   * @param mean       Expected mean values for all components.
-   * @param covariance Covariance matrix.
-   * @param small      Diagonal elements threshold under which column are
-   *                   considered to be dependent on previous ones and are
-   *                   discarded
-   * @param generator  underlying generator for uncorrelated normalized
-   *                   components. @
+   * @param mean        Expected mean values for all components.
+   * @param covariance  Covariance matrix.
+   * @param prec        bits of precision used to calculate the square-root of the
+   *                    covariacne matrix
+   * @param randomState {@link RandomState} used for sample generation
    */
   public CorrelatedRandomVectorGenerator(Real mean, RealMatrix covariance, int prec, RandomState randomState)
   {

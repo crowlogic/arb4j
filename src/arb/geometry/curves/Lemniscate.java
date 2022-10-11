@@ -56,7 +56,6 @@ public class Lemniscate implements
 
   /**
    * @param z
-   * @param int
    * @param order
    * @param w
    * @return scale*cos(t))/(1-i*sin(t)
