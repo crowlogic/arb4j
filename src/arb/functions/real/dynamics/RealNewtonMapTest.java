@@ -76,7 +76,7 @@ public class RealNewtonMapTest extends
       for (int i = 0; i < 20; i++)
       {
 
-        func.evaluate(z, 2, 128 * (i + 1), w);
+        func.evaluate(z, 2, 128 , w);
         w.printPrecision = true;
         System.out.println("w=" + w);
         z.set(w);

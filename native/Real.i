@@ -772,17 +772,24 @@ import arb.topological.spaces.EuclideanVectorSpace;
       return (int) d.doubleValue() + 2;
     }
   }  
-    public boolean  printPrecision = false;
+  
+  public boolean  printPrecision = false;
     
   public String toString(int digits)
   {
+    return toString(digits, printPrecision);
+  }
+
+  public String toString(int digits, boolean precise)
+  {
     digits = Math.min(20, Math.max(7, digits));
-    
+
     if (dim == 1)
     {
       return arb.arb_get_str(this,
                              digits,
-                             printPrecision ? IntegerConstants.ARB_STR_MORE : IntegerConstants.ARB_STR_NO_RADIUS);
+                             (printPrecision
+                                           || precise) ? IntegerConstants.ARB_STR_MORE : IntegerConstants.ARB_STR_NO_RADIUS);
     }
     else
     {
@@ -794,7 +801,7 @@ import arb.topological.spaces.EuclideanVectorSpace;
         {
           sb.append(",\n ");
         }
-        sb.append(String.format("%s", get(i).toString(digits)));
+        sb.append(String.format("%s", get(i).toString(digits, printPrecision)));
       }
       sb.append("]");
       return sb.toString();
