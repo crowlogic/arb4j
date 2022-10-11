@@ -63,6 +63,9 @@ module arb4j
   exports arb.functions.complex.trigonometric;
   exports arb.groups;
   exports arb.topological;
+  exports arb.topological.spaces;
+  exports arb.topology;
+  exports arb.topology.transformations;
   exports arb.measures;
   exports arb.mechanics;
   exports arb.mechanics.classical;
@@ -77,7 +80,6 @@ module arb4j
   exports arb.stochastic.processes.integrators;
   exports arb.theoretical;
   exports arb.theoretical.physics;
-  exports arb.topological.spaces;
   exports arb.utensils;
   exports arb.viz;
   exports arb.viz.gl;
