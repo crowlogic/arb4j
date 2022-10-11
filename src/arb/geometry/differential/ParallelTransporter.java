@@ -1,25 +1,21 @@
-/**
- * Copyright ©2022 Stephen Crowley
- * 
- * This file is part of Arb4j which is free software: you can redistribute it
- * and/or modify it under the terms of the GNU Lesser General Public License
- * (LGPL) as published by the Free Software Foundation; either version 2.1 of
- * the License, or (at your option) any later version. See *
- * <http://www.gnu.org/licenses/>
- */
-package arb.viz;
+
+package arb.geometry.differential;
 
 import java.awt.Graphics2D;
 
-import arb.*;
+import arb.Complex;
+import arb.Real;
+import arb.RealRootInterval;
+import arb.RootLocatorOptions;
+import arb.Roots;
 import arb.functions.complex.CircularComposition;
 import arb.functions.complex.HolomorphicFunction;
-import arb.functions.real.*;
+import arb.functions.real.ImaginaryPart;
+import arb.functions.real.RealComplexPart;
+import arb.functions.real.RealPart;
 import arb.geometry.Manifold;
 import arb.geometry.curves.ComplexCircle;
 import arb.geometry.curves.Curve;
-import arb.geometry.differential.AffineConnection;
-import arb.geometry.differential.Connection;
 
 /**
  * Parallel transport (or parallel translation) is a way of transporting
@@ -42,14 +38,7 @@ import arb.geometry.differential.Connection;
  * supplies a local realization of the curvature known as holonomy. The
  * Ambrose–Singer theorem makes explicit this relationship between curvature and
  * holonomy.
- * 
- * Other notions of connection come equipped with their own parallel
- * transportation systems as well. For instance, a Koszul connection in a vector
- * bundle also allows for the parallel transport of vectors in much the same way
- * as with a covariant derivative. An Ehresmann or Cartan connection supplies a
- * lifting of curves from the manifold to the total space of a principal bundle.
- * Such curve lifting may sometimes be thought of as the parallel transport of
- * reference frames.
+ *
  * 
  * @param <P> the function class to flow thru
  */
