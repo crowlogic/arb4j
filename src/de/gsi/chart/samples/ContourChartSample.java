@@ -1,6 +1,8 @@
 package de.gsi.chart.samples;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -31,9 +33,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- * @author rstein
- */
 public class ContourChartSample extends
                                 Application
 {
@@ -92,8 +91,10 @@ public class ContourChartSample extends
                                             .build();
   }
 
-  private XYChart
-          getChartPane(final Slider slider1, final Slider slider2, final Slider slider3, final ContourType colorMap)
+  private XYChart getChartPane(final Slider slider1,
+                               final Slider slider2,
+                               final Slider slider3,
+                               final ContourType colorMap) throws FileNotFoundException
   {
     final DefaultNumericAxis xAxis = new DefaultNumericAxis();
     xAxis.setAnimated(false);
@@ -157,11 +158,10 @@ public class ContourChartSample extends
     return chart;
   }
 
-  public DataSet readImage()
+  public DataSet readImage() throws FileNotFoundException
   {
-    System.out.println("FUCK ");
-    String      filename  = "./testdata/image.txt";
-    InputStream damnThing = ContourChartSample.class.getResourceAsStream(filename);
+    String      filename  = "image.txt";
+    InputStream damnThing = new FileInputStream(filename);
     assert damnThing != null : "the damn fucking thing is null, couldnt find '" + filename + "'";
     try ( BufferedReader reader = new BufferedReader(new InputStreamReader(damnThing)))
     {
@@ -209,7 +209,7 @@ public class ContourChartSample extends
   }
 
   @Override
-  public void start(final Stage primaryStage)
+  public void start(final Stage primaryStage) throws FileNotFoundException
   {
     primaryStage.setTitle("ContourChart Sample");
     final Slider  nCountourLevelSlider = new Slider(0,

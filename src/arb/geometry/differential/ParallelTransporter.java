@@ -89,49 +89,40 @@ public class ParallelTransporter<P extends HolomorphicFunction> implements
     this.what      = what;
     this.θ.set(θ0);
     this.ρ.set(ρ);
+    direction = new CircularComposition<P>(surface,
+                                           new ComplexCircle(basepoint,
+                                                             dt));
+    switch (what)
+    {
+    case Real:
+      field = new RealPart(direction);
+      break;
+    case Imag:
+      field = new ImaginaryPart(direction);
+      break;
+//    case Magnitude:
+//      //field = new ComplexMagnitude(direction);
+    default:
+
+      throw new UnsupportedOperationException("TODO: implement " + what);
+    }
+
   }
 
-  P surface;
+  P                      surface;
+
+  CircularComposition<P> direction;
+
+  final RealComplexPart  field;
 
   public void flow() throws InterruptedException
   {
-    try ( CircularComposition<P> direction = new CircularComposition<P>(surface,
-                                                                        new ComplexCircle(basepoint,
-                                                                                          dt));)
     {
-
-      /**
-       * ρ controls the (angular) width of the sector that is searched over for a
-       * minimum of the specified part of the function
-       */
-      RealComplexPart field;
-      switch (what)
-      {
-      case Real:
-        field = new RealPart(direction);
-        break;
-      case Imag:
-        field = new ImaginaryPart(direction);
-        break;
-//      case Magnitude:
-//        //field = new ComplexMagnitude(direction);
-      default:
-
-        throw new UnsupportedOperationException("TODO: implement " + what);
-      }
 
       RealRootInterval zeroPointInterval = new RealRootInterval();
       θ.getMid().sub(ρ.getMid(), 128, zeroPointInterval.getA());
       θ.getMid().add(ρ.getMid(), 128, zeroPointInterval.getB());
 
-//      try ( RealFunctionPlotter plotter = new RealFunctionPlotter(field,
-//                                                                  zeroPointInterval,
-//                                                                  new RealRootInterval(-0.001,
-//                                                                                       0.001),
-//                                                                  500))
-//      {
-//        plotter.plot();
-//      }
       System.out.println("Locating over " + zeroPointInterval);
 
       Roots root = field.locateRoots(new RootLocatorOptions(zeroPointInterval,
