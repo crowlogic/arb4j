@@ -25,22 +25,8 @@ import arb.geometry.curves.Curve;
  * transport vectors of the manifold along curves so that they stay parallel
  * with respect to the connection.
  * 
- * The parallel transport for a {@link Connection} thus supplies a way of, in
- * some sense, moving the local geometry of a {@link Manifold} along a
- * {@link Curve}: that is, of connecting the geometries of nearby points. There
- * may be many notions of parallel transport available, but a specification of
- * one — one way of connecting up the geometries of points on a {@link Curve} —
- * is tantamount to providing a {@link Connection}. In fact, the usual notion of
- * connection is the infinitesimal analog of parallel transport. Or, vice versa,
- * parallel transport is the local realization of a {@link Connection}.
  * 
- * As parallel transport supplies a local realization of the connection, it also
- * supplies a local realization of the curvature known as holonomy. The
- * Ambrose–Singer theorem makes explicit this relationship between curvature and
- * holonomy.
- *
- * 
- * @param <P> the function class to flow thru
+ * @param <P> the class of function representing the manifold
  */
 public class ParallelTransporter<P extends HolomorphicFunction> implements
                                 AutoCloseable
@@ -48,9 +34,7 @@ public class ParallelTransporter<P extends HolomorphicFunction> implements
   public static enum What
   {
    Real,
-   Imag,
-   Phase,
-   Magnitude
+   Imag
   }
 
   public Real    dt;
@@ -78,17 +62,18 @@ public class ParallelTransporter<P extends HolomorphicFunction> implements
    * @param t0      base-point from which to start flowing from
    * @param dt      the step-size which must be small enough not to miss any
    *                important features of the surface
-   * @param what    specifies what part of the scalar function of the surface to
-   *                minimize
+   * @param what    specifies what part of the complex-valued function to minimize
+   * @param θ0      initial angle
+   * @param θradius angular radius
    */
-  public ParallelTransporter(P surface, Complex t0, Real dt, What what, Real θ0, Real ρ)
+  public ParallelTransporter(P surface, Complex t0, Real dt, What what, Real θ0, Real θwidth)
   {
     this.surface   = surface;
     this.dt        = dt;
     this.basepoint = t0;
     this.what      = what;
     this.θ.set(θ0);
-    this.ρ.set(ρ);
+    this.ρ.set(θwidth);
     direction = new CircularComposition<P>(surface,
                                            new ComplexCircle(basepoint,
                                                              dt));
@@ -100,8 +85,7 @@ public class ParallelTransporter<P extends HolomorphicFunction> implements
     case Imag:
       field = new ImaginaryPart(direction);
       break;
-//    case Magnitude:
-//      //field = new ComplexMagnitude(direction);
+
     default:
 
       throw new UnsupportedOperationException("TODO: implement " + what);
