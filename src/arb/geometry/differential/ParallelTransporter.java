@@ -11,11 +11,14 @@ import arb.Roots;
 import arb.functions.complex.CircularComposition;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.ImaginaryPart;
+import arb.functions.real.LevelSet;
 import arb.functions.real.RealComplexPart;
 import arb.functions.real.RealPart;
 import arb.geometry.Manifold;
 import arb.geometry.curves.ComplexCircle;
 import arb.geometry.curves.Curve;
+import arb.geometry.curves.LevelCurve;
+import arb.geometry.surfaces.LevelSurface;
 
 /**
  * Parallel transport (or parallel translation) is a way of transporting
@@ -25,6 +28,8 @@ import arb.geometry.curves.Curve;
  * transport vectors of the manifold along curves so that they stay parallel
  * with respect to the connection.
  * 
+ * TODO: morph into something that will serve as a {@link LevelSet},
+ * {@link LevelCurve}, {@link LevelSurface} ...
  * 
  * @param <P> the class of function representing the manifold
  */
