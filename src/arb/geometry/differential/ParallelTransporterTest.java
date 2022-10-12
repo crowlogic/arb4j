@@ -11,12 +11,25 @@ public class ParallelTransporterTest extends
 {
   public static void testFlow()
   {
-    Real dt = new Real("0.01", 128);
-    ParallelTransporter<SFunction> transporter = new ParallelTransporter<SFunction>(new SFunction(),
-                                                                                    ComplexConstants.ZERO,
-                                                                                    dt,
-                                                                                    What.Real,
-                                                                                    null,
-                                                                                    null);
+    if (System.currentTimeMillis() == 0)
+    {
+
+      try ( SFunction surface = new SFunction(); Real dt = new Real("0.01",
+                                                                    128);
+            ParallelTransporter<SFunction> transporter = new ParallelTransporter<SFunction>(surface,
+                                                                                            ComplexConstants.ZERO,
+                                                                                            dt,
+                                                                                            What.Real,
+                                                                                            null,
+
+                                                                                            null))
+      {
+      }
+      catch (Exception e)
+      {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
   }
 }
