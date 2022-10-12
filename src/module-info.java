@@ -35,6 +35,7 @@ module arb4j
   requires transitive org.kordamp.ikonli.javafx;
   requires transitive JTransforms;
 
+  exports de.gsi.acc.ui.samples;
   exports de.gsi.chart.samples;
   exports de.gsi.math.samples;
   exports arb;

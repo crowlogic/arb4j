@@ -1,20 +1,9 @@
 package de.gsi.chart.samples;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Objects;
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +20,16 @@ import de.gsi.chart.ui.geometry.Side;
 import de.gsi.dataset.DataSet;
 import de.gsi.dataset.spi.DataSetBuilder;
 import de.gsi.dataset.utils.ProcessingProfiler;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * @author rstein
@@ -160,8 +159,11 @@ public class ContourChartSample extends
 
   public DataSet readImage()
   {
-    System.out.println( "FUCK ");
-    try ( BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(ContourChartSample.class.getResourceAsStream("./testdata/image.txt")))))
+    System.out.println("FUCK ");
+    String      filename  = "./testdata/image.txt";
+    InputStream damnThing = ContourChartSample.class.getResourceAsStream(filename);
+    assert damnThing != null : "the damn fucking thing is null, couldnt find '" + filename + "'";
+    try ( BufferedReader reader = new BufferedReader(new InputStreamReader(damnThing)))
     {
       // final BufferedReader reader = new BufferedReader(new
       // InputStreamReader(
