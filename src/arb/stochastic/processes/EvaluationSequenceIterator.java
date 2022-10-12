@@ -10,9 +10,9 @@ public class EvaluationSequenceIterator extends
                                         Iterator<OrderedPair<Real, Real>>
 
 {
-  int                        i;
-  private EvaluationSequence evalseq;
-  private int                dim;
+  int                      i;
+  final EvaluationSequence evalseq;
+  final int                dim;
 
   public EvaluationSequenceIterator(EvaluationSequence evalseq, int dim)
   {

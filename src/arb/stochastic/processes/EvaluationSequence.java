@@ -29,9 +29,7 @@ public class EvaluationSequence implements
     this.dim       = dim;
     for (int i = 0; i < dim; i++)
     {
-      int n = partition.count();
-      System.out.println("n=" + n);
-      values[i] = Real.newVector(n);
+      values[i] = Real.newVector(partition.count());
     }
   }
 
@@ -73,9 +71,12 @@ public class EvaluationSequence implements
   @Override
   public void clean()
   {
-    for (Real array : values)
+    for (int i = 0; i < dim; i++)
     {
-      array.close();
+      for (Real array : values[i])
+      {
+        array.close();
+      }
     }
   }
 
