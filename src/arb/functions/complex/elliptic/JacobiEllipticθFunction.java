@@ -15,7 +15,8 @@ public class JacobiEllipticθFunction implements
   @Override
   public Complex evaluate(Complex t, int order, int prec, Complex res)
   {
-    return Utilities.TODO("implement");
+    assert false : "do it";
+    return null;
   }
 
 }

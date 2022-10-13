@@ -2,10 +2,10 @@ package arb.functions.complex;
 
 import arb.Complex;
 
-public class Translation implements
+public class ShiftOperator implements
                          HolomorphicFunction
 {
-  public Translation(Complex t0)
+  public ShiftOperator(Complex t0)
   {
     this.t0 = t0;
   }

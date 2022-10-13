@@ -6,16 +6,40 @@ import java.awt.Color;
 import java.awt.Container;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 import org.junit.runner.JUnitCore;
 import org.lwjgl.system.MemoryStack;
+import org.scilab.forge.jlatexmath.TeXConstants;
+import org.scilab.forge.jlatexmath.TeXFormula;
+import org.scilab.forge.jlatexmath.TeXIcon;
+import org.scilab.forge.jlatexmath.TeXFormula.TeXIconBuilder;
 
 import arb.*;
 
 public class Utilities
 {
 
+  public static TeXIcon renderFormula(String latex)
+  {
+    return renderFormula(latex, 16);
+  }
+
+  public static TeXIcon renderFormula(String latex, int size)
+  {
+    TeXFormula formula       = new TeXFormula(latex);
+    TeXIcon    spreadFormula = formula.new TeXIconBuilder().setStyle(TeXConstants.STYLE_DISPLAY)
+                                                           .setSize(size)
+                                                           .setWidth(TeXConstants.UNIT_PIXEL,
+                                                                     350f,
+                                                                     TeXConstants.ALIGN_RIGHT)
+                                                           .setIsMaxWidth(true)
+                                                           .setInterLineSpacing(TeXConstants.UNIT_PIXEL, 20f)
+                                                           .build();
+
+    return spreadFormula;
+  }
+  
   public static double convertTimeUnits(double from, TimeUnit fromUnit, TimeUnit toUnit)
   {
     double ratio = fromUnit.convert(1L, toUnit);
@@ -217,12 +241,6 @@ public class Utilities
     System.out.println(s);
   }
 
-  public static <F> F TODO(String string)
-  {
-    new Throwable("TODO: " + string).printStackTrace();
 
-    JOptionPane.showConfirmDialog(null, "TODO: " + string + " !!! ");
-    return null;
-  }
 
 }

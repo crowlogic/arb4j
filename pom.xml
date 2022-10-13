@@ -88,6 +88,11 @@
 			<version>0.3.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.scilab.forge</groupId>
+			<artifactId>jlatexmath</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+		<dependency>
 			<groupId>org.l33tlabs.twl</groupId>
 			<artifactId>pngdecoder</artifactId>
 			<version>1.0</version>
@@ -200,11 +205,11 @@
 
 	</repositories>
 	<distributionManagement>
-	<repository>
-		<id>crowsgithub</id>
-		<name>Stephen Crowley's Apache Maven Packages</name>
-		<url>https://maven.pkg.github.com/crowlogic/arb4j</url>
-	</repository>
+		<repository>
+			<id>crowsgithub</id>
+			<name>Stephen Crowley's Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/crowlogic/arb4j</url>
+		</repository>
 	</distributionManagement>
 
 </project>

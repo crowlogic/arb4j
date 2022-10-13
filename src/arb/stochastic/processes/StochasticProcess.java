@@ -24,20 +24,20 @@ public interface StochasticProcess extends
 
   public default <P extends RealProbabilityDensityFunction> P getDensityFunction()
   {
-    return arb.utensils.Utilities.TODO("implement me");
-
+    assert false : "do this";
+    return null;
   }
 
   public default <F extends ProbabilityDistributionFunction> F getDistributionFunction()
   {
-    return arb.utensils.Utilities.TODO("implement me");
-
+    assert false : "do this";
+    return null;
   }
 
   public default <C extends CharacteristicFunction> C getCharacteristicFunction()
   {
     assert false : "todo";
-    return arb.utensils.Utilities.TODO("implement me");
+    return null;
   }
 
   public default Real sample(Real t, int prec, CorrelatedRandomVectorGenerator generator, Real x)

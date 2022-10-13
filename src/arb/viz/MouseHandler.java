@@ -34,7 +34,6 @@ public final class MouseHandler implements
     try ( Complex clicked = new Complex())
     {
       clicked.set(point.x, point.y);
-      Utilities.TODO("Adapt JPlotter to work with arb4j");
     }
   }
 
