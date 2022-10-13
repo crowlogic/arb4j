@@ -40,6 +40,7 @@ import de.gsi.dataset.spi.utils.DoublePoint;
 import de.gsi.math.ArrayMath;
 import de.gsi.math.DataSetMath;
 import de.gsi.math.MathDataSet;
+import de.gsi.math.MathDataSet.DataSetValueFunction;
 import de.gsi.math.spectra.TSpectrum;
 import de.gsi.math.spectra.TSpectrum.Direction;
 import de.gsi.math.spectra.TSpectrum.FilterOrder;
@@ -250,26 +251,30 @@ public class TSpectrumSample extends
     root.setTop(getTopToolBar());
     root.setBottom(getBottomControls());
 
-    MathDataSet dsBackground = new MathDataSet("background",
-                                               (final double[] input, final double[] output, final int length) ->
-                                               {
-                                                 LOGGER.atInfo().log("trigger background update");
-                                                 final int nIter = nIterations.getValue();
-                                                 final Direction direction = cbxDirection.getSelectionModel().getSelectedItem();
-                                                 final FilterOrder filterOrder = cbxFilterOrder.getSelectionModel().getSelectedItem();
-                                                 final SmoothWindow smoothing = cbxSmoothWindow.getSelectionModel().getSelectedItem();
-                                                 boolean compton = cbCompton
-                                                .isSelected();
-                                                 TSpectrum.background(input,
-                                                                      output,
-                                                                      length,
-                                                                      nIter,
-                                                                      direction,
-                                                                      filterOrder,
-                                                                      smoothing,
-                                                                      compton);
-                                               },
-                                               demoDataSet);
+    DataSetValueFunction func         = (final double[] input, final double[] output, final int length) ->
+                                      {
+                                        LOGGER.atInfo().log("trigger background update");
+                                        final int          nIter       = nIterations.getValue();
+                                        final Direction    direction   = cbxDirection.getSelectionModel()
+                                                                                     .getSelectedItem();
+                                        final FilterOrder  filterOrder = cbxFilterOrder.getSelectionModel()
+                                                                                       .getSelectedItem();
+                                        final SmoothWindow smoothing   = cbxSmoothWindow.getSelectionModel()
+                                                                                        .getSelectedItem();
+                                        boolean            compton     = cbCompton.isSelected();
+                                        assert input.length > 0 : "input is empty";
+                                        TSpectrum.background(input,
+                                                             output,
+                                                             length,
+                                                             nIter,
+                                                             direction,
+                                                             filterOrder,
+                                                             smoothing,
+                                                             compton);
+                                      };
+    MathDataSet          dsBackground = new MathDataSet("background",
+                                                        func,
+                                                        demoDataSet);
     backgroundRenderer.getDatasets().addAll(dsBackground);
 
     MathDataSet dsMarkov = new MathDataSet("bgMarkov",
