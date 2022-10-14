@@ -41,11 +41,11 @@ public class XNewtonKoenigsFunctionRenderer extends
   public XNewtonKoenigsFunctionRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension((int) (2500 / 1.5),
-                       (int) (1250 / 1.5)),
+    this(new Dimension((int) (1250 ),
+                       (int) (1250 )),
          new Rectangle2D.Double(-5,
                                 -20,
-                                25,
+                                40,
                                 40));
   }
 

@@ -1,3 +1,6 @@
+* incomplete renders not being deleted if render is cancelled before
+complete
+
 * lock and unlock using mprotect doesnt quite work..
 
 * memory leak in ComplexFunctionRenderer or AnimatedComplexFunctionSequencer
