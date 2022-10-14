@@ -4,9 +4,11 @@ import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 import static java.lang.System.err;
 
-import java.util.Arrays;
-
-import arb.*;
+import arb.FloatInterval;
+import arb.RandomState;
+import arb.Real;
+import arb.RealMatrix;
+import arb.RealPartition;
 import arb.stochastic.GaussianDistribution;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.EvaluationSequence;
@@ -34,12 +36,8 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
                                                 RealMatrix correlationMatrix,
                                                 DiffusionProcessIntegrator<M, DiffusionProcess<M>>... integrators)
   {
-    dim              = process.dim();
-    this.integrators = new DiffusionProcessIntegrator[dim];
-    for (int i = 0; i < dim; i++)
-    {
-      this.integrators[i] = integrators[i];
-    }
+    dim                    = process.dim();
+    this.integrators       = integrators;
     this.correlationMatrix = correlationMatrix;
     this.process           = process;
     this.state             = state;
@@ -85,11 +83,12 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     partition.dt.sqrt(prec, sqrtδt);
 
     EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
-                                                                   process.dim() );
+                                                                   process.dim());
 
     gaussian = new GaussianDistribution(zero,
                                         state.getdt(sqrtδt).sqrt(prec));
-    evaluationSequence.generateRandomSamples(gaussian, correlationMatrix, state.getRandomState(), prec);
+    RandomState randomState = state.getRandomState();
+    evaluationSequence.generateRandomSamples(gaussian, correlationMatrix, randomState, prec);
     state.verify();
 
     for (Real t : partition)
@@ -105,9 +104,10 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
         if (!(jumped = jump(prec, evaluationSequence)))
         {
           err.println("Jump failed: " + state + " regenerating ");
-          Arrays.asList(evaluationSequence.values)
-                .forEach(sample -> sample.get(state.index())
-                                         .randomlyGenerate(gaussian, state.getRandomState(), prec));
+          for (Real sample : evaluationSequence.values)
+          {
+            sample.get(state.index()).randomlyGenerate(gaussian, randomState, prec);
+          }
 
         }
       }
@@ -127,10 +127,11 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
   @Override
   public void close()
   {
-    for (int i = 0; i < dim; i++)
+    for (var integrator : integrators)
     {
-      integrators[i].close();
+      integrator.close();
     }
+
     sqrtδt.close();
   }
 
