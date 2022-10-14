@@ -63,16 +63,16 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   static class Pixel
   {
-    double R[] = new double[1];
-    double G[] = new double[1];
-    double B[] = new double[1];
+    double[] R = new double[1];
+    double[] G = new double[1];
+    double[] B = new double[1];
   }
 
   /**
    * do not set to greater than 128, see {@link PointValueCache} for the
    * explanation
    */
-  protected final static int precisionBits = 128;
+  protected static final int precisionBits = 128;
 
   public static void drawLine(Graphics2D g, Point2D.Double A, Point2D.Double B)
   {
@@ -101,134 +101,131 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     return res;
   }
 
-  protected Complex            w;
+  protected Complex                   w;
 
-  protected Complex            N                               = Complex.newVector(2);                      // Newton
+  protected Complex                   N                               = Complex.newVector(2);               // Newton
                                                                                                             // step.
                                                                                                             // w/dw
 
-  ThreadLocalComplex           _z                              = new ThreadLocalComplex(2);
+  transient ThreadLocalComplex        _z                              = new ThreadLocalComplex(2);
 
-  ThreadLocal<Pixel>           pixel                           = ThreadLocal.withInitial(() -> new Pixel());
+  transient ThreadLocal<Pixel>        pixel                           = ThreadLocal.withInitial(Pixel::new);
 
-  ThreadLocal<Pixel>           pixel2                          = ThreadLocal.withInitial(() -> new Pixel());
+  transient ThreadLocal<Pixel>        pixel2                          = ThreadLocal.withInitial(Pixel::new);
 
-  public int                   colorMode                       = 0;
+  public int                          colorMode                       = 0;
 
-  int                          width;
+  int                                 windowWidth;
 
-  int                          height;
+  int                                 windowHeight;
 
-  public Float                 ax                              = new Float();
+  public transient Float              ax                              = new Float();
 
-  public Float                 bx                              = new Float();
+  public transient Float              bx                              = new Float();
 
-  public Float                 ay                              = new Float();
+  public transient Float              ay                              = new Float();
 
-  public Float                 by                              = new Float();
+  public transient Float              by                              = new Float();
 
-  BufferedImage                functionImage;
+  transient BufferedImage             functionImage;
 
-  BufferedImage                staticOverlayImage;
+  transient BufferedImage             staticOverlayImage;
 
-  BufferedImage                dynamicOverlayImage;
+  transient BufferedImage             dynamicOverlayImage;
 
-  private Timer                repaintTimer;
+  private transient Timer             repaintTimer;
 
-  private Graphics2D           functionImageGraphics;
+  private transient Graphics2D        functionImageGraphics;
 
-  boolean                      headless                        = false;
+  boolean                             headless                        = false;
 
-  protected Dimension          resolution;
+  protected Dimension                 resolution;
 
-  protected Rectangle2D.Double domain;
+  protected Rectangle2D.Double        domain;
 
-  AffineTransform              screenToFunctionMapping;
+  AffineTransform                     screenToFunctionMapping;
 
-  AffineTransform              functionToScreenMapping;
+  AffineTransform                     functionToScreenMapping;
 
-  boolean                      selection                       = false;
+  boolean                             selection                       = false;
 
-  public Double                cursorInFunctionSpace;
+  public Double                       cursorInFunctionSpace;
 
-  Complex                      tangent;
-  private double               xtick                           = 1;
+  Complex                             tangent;
+  private double                      xtick                           = 1;
 
-  private double               ytick                           = 1;
+  private double                      ytick                           = 1;
 
-  private AlphaComposite       alphaComposite;
+  private transient AlphaComposite    alphaComposite;
 
-  private AlphaComposite       brightAlphaComposite;
-  private Graphics2D           staticOverlayGraphics;
+  private transient Graphics2D        staticOverlayGraphics;
 
-  private Graphics2D           dynamicOverlayGraphics;
+  private transient Graphics2D        dynamicOverlayGraphics;
 
-  public JFrame                frame;
+  public transient JFrame             frame;
 
-  private Font                 newFont;
+  private transient Font              newFont;
 
-  public BufferedImage         outputImage;
+  public transient BufferedImage      outputImage;
 
-  private Graphics2D           outputGraphics;
+  private transient Graphics2D        outputGraphics;
 
-  private Composite            originalComposite;
+  private transient AffineTransform   originalTransform;
 
-  private AffineTransform      originalTransform;
+  volatile boolean                    anythingChanged                 = false;
 
-  volatile boolean             anythingChanged                 = false;
+  ThreadLocalReal                     r                               = new ThreadLocalReal();
 
-  ThreadLocalReal              r                               = new ThreadLocalReal();
+  public Part                         displayMode                     = Part.Imaginary;
 
-  public Part                  displayMode                     = Part.Imaginary;
+  transient ThreadLocal<Complex[][]>  cells                           = newCell();
 
-  ThreadLocal<Complex[][]>     cells                           = newCell();
+  transient ThreadLocal<Complex[][]>  zcells                          = newCell();
 
-  ThreadLocal<Complex[][]>     zcells                          = newCell();
+  transient ThreadLocal<Complex[][]>  wcells                          = newCell();
+  protected transient PointValueCache image;
 
-  ThreadLocal<Complex[][]>     wcells                          = newCell();
-  protected PointValueCache    image;
+  boolean                             singleThreading                 = false;
 
-  boolean                      singleThreading                 = false;
+  private long                        startTime;
 
-  private long                 startTime;
+  Color                               clear                           = new Color(0,
+                                                                                  0,
+                                                                                  0,
+                                                                                  255);
 
-  Color                        clear                           = new Color(0,
-                                                                           0,
-                                                                           0,
-                                                                           255);
+  private RenderingHints              renderingHints;
 
-  private RenderingHints       renderingHints;
-
-  public Point2D.Double        cursorInScreenSpace;
-  Color                        cursorColor                     = Color.BLACK;
+  public Point2D.Double               cursorInScreenSpace;
+  Color                               cursorColor                     = Color.BLACK;
 
   /**
    * cursor is analogous to coordinate
    */
 
-  Double                       tangentRayEndpointInScreenSpace = new Point2D.Double();
+  Double                              tangentRayEndpointInScreenSpace = new Point2D.Double();
 
-  protected F                  function;
+  protected F                         function;
 
-  boolean                      disableNewton                   = true;
+  boolean                             disableNewton                   = true;
 
-  Real                         phase;
+  Real                                phase;
 
-  Complex                      damping                         = new Complex().set(0.1, 0);
+  Complex                             damping                         = new Complex().set(0.1, 0);
 
-  boolean                      debug                           = false;
+  boolean                             debug                           = false;
 
-  public Complex               trajectory;
+  public Complex                      trajectory;
 
-  private boolean              showHelp                        = false;
+  private boolean                     showHelp                        = false;
 
-  private Float                dx                              = new Float();
+  private Float                       dx                              = new Float();
 
-  private Float                dy                              = new Float();
+  private Float                       dy                              = new Float();
 
-  Mode                         mode                            = Mode.Translate;
+  Mode                                mode                            = Mode.Translate;
 
-  public boolean               keepRunning                     = false;
+  public boolean                      keepRunning                     = false;
 
   public ComplexFunctionRenderer()
   {
@@ -269,9 +266,8 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   private void blendLayers(Graphics g, boolean dynamic)
   {
-    Graphics2D g2d = (Graphics2D) g;
-
-    originalComposite = g2d.getComposite();
+    Graphics2D g2d               = (Graphics2D) g;
+    Composite  originalComposite = g2d.getComposite();
     super.paintComponent(g);
     if (dynamic)
     {
@@ -324,6 +320,8 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   }
 
+  @Deprecated
+  @Override
   public void hide()
   {
     if (frame != null && frame.isVisible())
@@ -338,6 +336,11 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
   @Override
   public void close()
   {
+    if (repaintTimer != null)
+    {
+      repaintTimer.stop();
+    }
+
     System.out.println("Renderer closing. complete=" + image.complete);
     // unassignInputHandlers();
     System.out.println("Disengaged input handlers...");
@@ -394,11 +397,11 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   private void colorizePixel(int x, int y, Complex w)
   {
-    Pixel pixel = colorizePixel(w);
+    Pixel dot   = colorizePixel(w);
 //
-    int   red   = (int) Math.min(255, Math.floor(pixel.R[0] * 255));
-    int   green = (int) Math.min(255, Math.floor(pixel.G[0] * 255));
-    int   blue  = (int) Math.min(255, Math.floor(pixel.B[0] * 255));
+    int   red   = (int) Math.min(255, Math.floor(dot.R[0] * 255));
+    int   green = (int) Math.min(255, Math.floor(dot.G[0] * 255));
+    int   blue  = (int) Math.min(255, Math.floor(dot.B[0] * 255));
     functionImage.setRGB(x, y, red | green << 8 | blue << 16);
 
     // double v =
@@ -601,7 +604,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
   @SuppressWarnings("resource")
   public void evaluateFunctionOnGrid()
   {
-    AtomicInteger counter     = new AtomicInteger(width * height);
+    AtomicInteger counter     = new AtomicInteger(windowWidth * windowHeight);
 
     IntStream     pixelStream = image.complete ? linearEvaluationOrder() : shuffledEvaluationOrder();
     if (!singleThreading)
@@ -615,8 +618,8 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
      */
     pixelStream.forEach(pixel ->
     {
-      int y = pixel / width;
-      int x = pixel % width;
+      int y = pixel / windowWidth;
+      int x = pixel % windowWidth;
       try ( Complex z = image.pointAt(0, x, y))
       {
         if (!image.complete)
@@ -703,22 +706,20 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
   {
     setPreferredSize(this.resolution);
     setSize(this.resolution);
-    renderingHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
-                                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-    // setBorder(BorderFactory.createTitledBorder("Node"));
-    out.format("screen=%s\ndomain=%s\n", this.resolution, this.domain);
-    this.width         = this.resolution.width;
-    this.height        = this.resolution.height;
+    renderingHints     = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+                                            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    windowWidth        = resolution.width;
+    windowHeight       = resolution.height;
     phase              = new Real();
     w                  = Complex.newVector(2);
-    functionImage      = new BufferedImage(width,
-                                           height,
+    functionImage      = new BufferedImage(windowWidth,
+                                           windowHeight,
                                            BufferedImage.TYPE_INT_RGB);
-    staticOverlayImage = new BufferedImage(width,
-                                           height,
+    staticOverlayImage = new BufferedImage(windowWidth,
+                                           windowHeight,
                                            BufferedImage.TYPE_INT_ARGB);
-    outputImage        = new BufferedImage(width,
-                                           height,
+    outputImage        = new BufferedImage(windowWidth,
+                                           windowHeight,
                                            BufferedImage.TYPE_INT_ARGB);
     newDynamicOverlay();
 
@@ -729,13 +730,12 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     Font currentFont = new Font("Monospaced",
                                 Font.BOLD,
                                 8);
-    newFont              = currentFont.deriveFont(currentFont.getSize() * 2F);
-    alphaComposite       = makeComposite(0.69f);
-    brightAlphaComposite = makeComposite(0.95f);
+    newFont        = currentFont.deriveFont(currentFont.getSize() * 2F);
+    alphaComposite = makeComposite(0.69f);
 
-    colorMode            = 0;
-    N                    = new Complex();
-    tangent              = new Complex();
+    colorMode      = 0;
+    N              = new Complex();
+    tangent        = new Complex();
     ax.init();
     bx.init();
     ay.init();
@@ -744,8 +744,8 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     ay.assign(this.domain.getMinY());
     bx.assign(this.domain.getMaxX());
     by.assign(this.domain.getMaxY());
-    bx.sub(ax, precisionBits, RoundingMode.Down, dx).div(width * 2, precisionBits, dx);
-    by.sub(ay, precisionBits, RoundingMode.Down, dy).div(height * 2, precisionBits, dy);
+    bx.sub(ax, precisionBits, RoundingMode.Down, dx).div(windowWidth * 2, precisionBits, dx);
+    by.sub(ay, precisionBits, RoundingMode.Down, dy).div(windowHeight * 2, precisionBits, dy);
 
     // System.out.format("dx=%s\n dy=%s\n", dx, dy);
 
@@ -774,7 +774,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   private IntStream linearEvaluationOrder()
   {
-    List<Integer> integers = range(0, width * height).boxed().collect(Collectors.toList());
+    List<Integer> integers = range(0, windowWidth * windowHeight).boxed().collect(Collectors.toList());
     return integers.stream().mapToInt(x -> x);
   }
 
@@ -900,8 +900,8 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   private synchronized void newDynamicOverlay() throws NoninvertibleTransformException
   {
-    dynamicOverlayImage    = new BufferedImage(width,
-                                               height,
+    dynamicOverlayImage    = new BufferedImage(windowWidth,
+                                               windowHeight,
                                                BufferedImage.TYPE_INT_ARGB);
     dynamicOverlayGraphics = dynamicOverlayImage.createGraphics();
     setScreenCoordinateSpaceGraphicsProperties(dynamicOverlayGraphics);
@@ -909,7 +909,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   private IntStream orderedEvaluationOrder()
   {
-    List<Integer> integers = range(0, width * height).boxed().collect(Collectors.toList());
+    List<Integer> integers = range(0, windowWidth * windowHeight).boxed().collect(Collectors.toList());
     return integers.stream().mapToInt(x -> x);
   }
 
@@ -927,13 +927,13 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     // zi = ( (by - ay) * y ) / ( ynum - 1 )
     by.sub(ay, prec, zi);
     zi.mul(y, prec, zi);
-    zi.div(height - 1, prec, zi);
+    zi.div(windowHeight - 1, prec, zi);
     zi.add(ay, prec, zi);
 
     // zr = ( (bx - ax) * x ) / ( xnum - 1 )
     bx.sub(ax, prec, zr);
     zr.mul(x, prec, zr);
-    zr.div(width - 1, prec, zr);
+    zr.div(windowWidth - 1, prec, zr);
     zr.add(ax, prec, zr);
 
     evalFunction(z, w);
@@ -980,8 +980,10 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
   private void reportRenderingRate()
   {
     long   stopTime = System.currentTimeMillis();
-    double seconds  = Utilities.convertTimeUnits(stopTime - startTime, TimeUnit.MILLISECONDS, TimeUnit.SECONDS);
-    double rate     = (width * height) / seconds;
+    double seconds  = Utilities.convertTimeUnits((double) stopTime - startTime,
+                                                 TimeUnit.MILLISECONDS,
+                                                 TimeUnit.SECONDS);
+    double rate     = (windowWidth * windowHeight) / seconds;
     System.out.format("Rendered in " + seconds + " seconds at a rate of %.0f pixels/sec\n", rate);
   }
 
@@ -1048,7 +1050,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   private IntStream shuffledEvaluationOrder()
   {
-    List<Integer> integers = range(0, width * height).boxed().collect(Collectors.toList());
+    List<Integer> integers = range(0, windowWidth * windowHeight).boxed().collect(Collectors.toList());
     Collections.shuffle(integers);
     return integers.stream().mapToInt(x -> x);
   }

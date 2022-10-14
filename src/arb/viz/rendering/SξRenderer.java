@@ -6,14 +6,15 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 import arb.Real;
-import arb.functions.complex.*;
-import arb.functions.complex.numbertheoretic.*;
+import arb.functions.complex.SFunction;
+import arb.functions.complex.numbertheoretic.RiemannξFunction;
 import arb.operators.Composition;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
 /**
- * Renders the {@link YFunction}
+ * Renders the {@link Composition} of the {@link SFunction} and the
+ * {@link RiemannξFunction}
  */
 public class SξRenderer extends
                         ComplexFunctionRenderer<Composition<SFunction, RiemannξFunction>>
@@ -25,18 +26,15 @@ public class SξRenderer extends
     renderer.render();
   }
 
-  public static final int width  = 1900;
-  public static final int height = 950;
-
   public SξRenderer(Real vscale) throws NoninvertibleTransformException
   {
-    super(new Dimension(width,
-                        height),
+    super(new Dimension(1900,
+                        950),
           new Rectangle2D.Double(-20,
                                  -30,
                                  40,
                                  60),
-          Composition.compose(new SFunction(), new RiemannξFunction()));
+          Composition.compose(new SFunction(vscale), new RiemannξFunction()));
 
     colorMode   = 5;
     displayMode = Part.Real;

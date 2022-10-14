@@ -2,7 +2,10 @@ package arb.functions.complex;
 
 import static java.lang.String.format;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Real;
+import arb.RealConstants;
 import arb.exceptions.NotDifferentiableException;
 
 /**
@@ -69,8 +72,6 @@ public class SFunction implements
 
   public Real                  a;
 
-  private Real                 sqrta;
-
   private Real                 aSquared;
 
   public SFunction()
@@ -81,7 +82,6 @@ public class SFunction implements
   public SFunction(Real a)
   {
     this.a        = a;
-    this.sqrta    = a.sqrt(a.bits());
     this.aSquared = a;
   }
 
@@ -157,15 +157,15 @@ public class SFunction implements
    */
   protected Complex evaluate2ndDerivative(Complex t, int prec, Complex res)
   {
-    try ( Complex numer = new Complex(); Complex denom = new Complex(); Complex a = new Complex();)
+    try ( Complex numer = new Complex(); Complex denom = new Complex(); Complex x = new Complex();)
     {
       denom.getReal().set(2);
-      denom.sub(t.pow(2, prec, a).mul(2, prec, a), prec, denom);
-      denom.add(t.pow(4, prec, a), prec, denom).pow(3, prec, denom);
+      denom.sub(t.pow(2, prec, x).mul(2, prec, x), prec, denom);
+      denom.add(t.pow(4, prec, x), prec, denom).pow(3, prec, denom);
 
       numer.getReal().set(2);
-      numer.sub(a.mul(9, prec, a), prec, numer);
-      numer.add(t.pow(6, prec, a).mul(5, prec, a), prec, numer).neg(numer).mul(8, prec, numer);
+      numer.sub(x.mul(9, prec, x), prec, numer);
+      numer.add(t.pow(6, prec, x).mul(5, prec, x), prec, numer).neg(numer).mul(8, prec, numer);
 
       return numer.div(denom, prec, res);
     }

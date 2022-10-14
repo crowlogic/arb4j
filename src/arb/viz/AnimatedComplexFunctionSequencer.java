@@ -32,8 +32,8 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
     frameEncodingThread         = Executors.newSingleThreadExecutor();
     this.frameParameterAssigner = frameParameterAssigner;
     this.frameCount             = frameCount;
-    this.width                  = plotter.width;
-    this.height                 = plotter.height;
+    this.width                  = plotter.windowWidth;
+    this.height                 = plotter.windowHeight;
   }
 
   private JFrame                frame;

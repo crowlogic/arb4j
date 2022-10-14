@@ -13,9 +13,9 @@ import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
 public class SζRenderer extends
-                        ComplexFunctionRenderer
+                        ComplexFunctionRenderer<Composition<Composition<SFunction, RiemannζFunction>, WickRotation>>
 {
-  public static void main(String args[]) throws IOException, NoninvertibleTransformException
+  public static void main(String[] args) throws IOException, NoninvertibleTransformException
   {
     try ( SζRenderer plotter = new SζRenderer())
     {
@@ -30,15 +30,15 @@ public class SζRenderer extends
     super(new Dimension(2500,
                         1250),
           new Rectangle2D.Double(-10,
-                                 30,
-                                 80,
-                                 -40),
-          new Composition(new Composition(new SFunction(new Real().set("1", 128)),
-                                          (new RiemannζFunction())),
-                          new WickRotation()));
+                                 20,
+                                 60,
+                                 -30),
+          new Composition<>(new Composition<>(new SFunction(new Real().set("1", 128)),
+                                              new RiemannζFunction()),
+                            new WickRotation()));
 
-    colorMode   = 2;
-    displayMode = Part.Imaginary;
+    colorMode   = 0;
+    displayMode = Part.Real;
   }
 
 }
