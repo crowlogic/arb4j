@@ -28,13 +28,10 @@ public class XRenderer extends
     r.saveToFile("X-Real.png");
   }
 
-  public static final int width  = (int) (2400 * 1.1);
-  public static final int height = (int) (1200 * 1.1);
-
-  public XRenderer(Real vscale) throws NoninvertibleTransformException
+  public XRenderer(Real vscale)
   {
-    super(new Dimension(width,
-                        height),
+    super(new Dimension((int) (2400 * 1.1),
+                        (int) (1200 * 1.1)),
           new Rectangle2D.Double(-15,
                                  -12.5,
                                  50 * 1.4,
