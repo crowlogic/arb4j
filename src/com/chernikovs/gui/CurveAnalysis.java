@@ -3,7 +3,7 @@ package com.chernikovs.gui;
 import static com.chernikovs.controllers.Attribs.*;
 
 import com.chernikovs.controllers.GuiController;
-import com.chernikovs.renderEngine.Display;
+import com.chernikovs.render.Display;
 import com.chernikovs.toolbox.Maths;
 
 import lwjgui.geometry.Insets;

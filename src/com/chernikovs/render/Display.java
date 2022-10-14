@@ -1,4 +1,4 @@
-package com.chernikovs.renderEngine;
+package com.chernikovs.render;
 
 public class Display
 {

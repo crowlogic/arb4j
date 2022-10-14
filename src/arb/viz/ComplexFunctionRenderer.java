@@ -232,9 +232,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   }
 
-  public ComplexFunctionRenderer(Dimension resolution,
-                                 Rectangle2D.Double domain,
-                                 F function) throws NoninvertibleTransformException
+  public ComplexFunctionRenderer(Dimension resolution, Rectangle2D.Double domain, F function)
   {
     this.resolution = resolution;
     this.domain     = domain;
@@ -271,18 +269,11 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     super.paintComponent(g);
     if (dynamic)
     {
-      try
-      {
-        if (anythingChanged)
-        {
-          drawDynamicMarkups();
-          anythingChanged = false;
-        }
 
-      }
-      catch (NoninvertibleTransformException e)
+      if (anythingChanged)
       {
-        e.printStackTrace();
+        drawDynamicMarkups();
+        anythingChanged = false;
       }
     }
 
@@ -300,15 +291,6 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
   {
     assert N != null;
 
-    Complex unnormalizedN = w.div(w.get(1), precisionBits, N).neg(N);
-    // Complex dt = unnormalizedN.normalize(N).neg(N);
-
-    // acb_div(N, w, w.get(1), prec);
-
-    // the orthogonal complement of the newton derivative should be the normal
-    // vector, i think
-    // acb_mul_onei(N, N);
-    // acb_neg(N, N);
     N.arg(precisionBits, phase);
 
   }
@@ -342,20 +324,15 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     }
 
     System.out.println("Renderer closing. complete=" + image.complete);
-    // unassignInputHandlers();
     System.out.println("Disengaged input handlers...");
     if (!image.complete && !closing)
     {
       closing = true;
       System.out.println("Dispatching WINDOW_CLOSING event to frame..");
-      // hide();
       frame.dispatchEvent(new WindowEvent(frame,
                                           WindowEvent.WINDOW_CLOSING));
       System.out.println("Dispatched WINDOW_CLOSING event to frame..");
     }
-//    this._z.remove();
-//    pixel.remove();
-//    pixel2.remove();
 
   }
 
@@ -398,49 +375,14 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
   private void colorizePixel(int x, int y, Complex w)
   {
     Pixel dot   = colorizePixel(w);
-//
     int   red   = (int) Math.min(255, Math.floor(dot.R[0] * 255));
     int   green = (int) Math.min(255, Math.floor(dot.G[0] * 255));
     int   blue  = (int) Math.min(255, Math.floor(dot.B[0] * 255));
     functionImage.setRGB(x, y, red | green << 8 | blue << 16);
 
-    // double v =
-    // tanh(sqrt(pow(w.getImag().doubleValue(),2)+pow(w.getReal().doubleValue(),2)));
-    // double v = tanh(w.getImag().doubleValue()+w.getReal().doubleValue()/2);
-    // double v = w.arg(128, r.get()).doubleValue()/Math.PI;
-//    switch (displayMode)
-//    {
-//    case Real:
-//      double v = tanh(w.getReal().doubleValue());
-//      if (!java.lang.Double.isFinite(v))
-//      {
-//        v = 0;
-//      }
-//      functionImage.setRGB(x, y, v < 0 ? colorMapB.interpolate(-v) : colorMap.interpolate(v));
-//      break;
-//    case Imag:
-//      v = tanh(w.getImag().doubleValue());
-//      if (!java.lang.Double.isFinite(v))
-//      {
-//        v = 0;
-//      }
-//      functionImage.setRGB(x, y, v < 0 ? colorMapB.interpolate(-v) : colorMap.interpolate(v));
-//      break;
-//    case Phase:
-//      Real r = this.r.get();
-//      v = w.arg(128, r).div(RealConstants.π, 128, r).doubleValue();
-//      if (!java.lang.Double.isFinite(v))
-//      {
-//        v = 0;
-//      }
-//      functionImage.setRGB(x, y, v < 0 ? colorMapB.interpolate(-v) : colorMap.interpolate(v));
-//      break;
-//    case Blend:
-
-    // }
   }
 
-  private void drawCursor() throws NoninvertibleTransformException
+  private void drawCursor()
   {
     if (cursorInFunctionSpace == null)
     {
@@ -454,7 +396,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   }
 
-  private void drawDynamicMarkups() throws NoninvertibleTransformException
+  private void drawDynamicMarkups()
   {
     newDynamicOverlay();
 
@@ -702,7 +644,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     return screenToFunctionMapping;
   }
 
-  public void init() throws NoninvertibleTransformException
+  public void init()
   {
     setPreferredSize(this.resolution);
     setSize(this.resolution);
@@ -747,8 +689,6 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     bx.sub(ax, precisionBits, RoundingMode.Down, dx).div(windowWidth * 2, precisionBits, dx);
     by.sub(ay, precisionBits, RoundingMode.Down, dy).div(windowHeight * 2, precisionBits, dy);
 
-    // System.out.format("dx=%s\n dy=%s\n", dx, dy);
-
     assignKeyBoardAndMouseHandler();
   }
 
@@ -764,7 +704,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
                                      this.resolution.height);
   }
 
-  private void initializeCoordinateSystem() throws NoninvertibleTransformException
+  private void initializeCoordinateSystem()
   {
     setFunctionCoordinateSpaceGraphicsProperties(functionImageGraphics);
     setFunctionCoordinateSpaceGraphicsProperties(staticOverlayGraphics);
@@ -898,7 +838,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   }
 
-  private synchronized void newDynamicOverlay() throws NoninvertibleTransformException
+  private synchronized void newDynamicOverlay()
   {
     dynamicOverlayImage    = new BufferedImage(windowWidth,
                                                windowHeight,
@@ -907,16 +847,9 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     setScreenCoordinateSpaceGraphicsProperties(dynamicOverlayGraphics);
   }
 
-  private IntStream orderedEvaluationOrder()
-  {
-    List<Integer> integers = range(0, windowWidth * windowHeight).boxed().collect(Collectors.toList());
-    return integers.stream().mapToInt(x -> x);
-  }
-
   @Override
   public synchronized void paintComponent(Graphics g)
   {
-    // System.out.println( "Painting");
     blendLayers(g, true);
 
   }
@@ -939,7 +872,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     evalFunction(z, w);
   }
 
-  public BufferedImage render() throws IOException, NoninvertibleTransformException
+  public BufferedImage render() throws IOException
   {
 
     if (!headless && frame == null)
@@ -1003,7 +936,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     System.out.println("Saved " + f);
   }
 
-  private void setFunctionCoordinateSpaceGraphicsProperties(Graphics2D g) throws NoninvertibleTransformException
+  private void setFunctionCoordinateSpaceGraphicsProperties(Graphics2D g)
   {
     g.setColor(Color.BLACK);
     g.setStroke(new BasicStroke(0.008f));
@@ -1013,7 +946,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   }
 
-  private void setScreenCoordinateSpaceGraphicsProperties(Graphics2D g) throws NoninvertibleTransformException
+  private void setScreenCoordinateSpaceGraphicsProperties(Graphics2D g)
   {
     g.setColor(Color.WHITE);
     g.setStroke(new BasicStroke(2f));
@@ -1063,7 +996,6 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
                                e ->
                                {
                                  repaint();
-                                 // renderMarkups();
                                });
       repaintTimer.start();
 
@@ -1110,25 +1042,6 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
   {
     out.format("zoomTo(%s, %s )\n", upperLeft, lowerRight);
 
-    // screenToFunctionCoordinateMapping = null;
-
-//    ax.assign(upperLeft.x);
-//    ay.assign(upperLeft.y);
-//    bx.assign(lowerRight.x);
-//    bx.assign(lowerRight.y);
-//    out.format("ZOOMING TO ax=%s bx=%s ay=%s by=%s\n", ax, bx, ay, by);
-//
-//    SwingUtilities.invokeLater(() ->
-//    {
-//      try
-//      {
-//        plot();
-//      }
-//      catch (IOException | NoninvertibleTransformException e)
-//      {
-//        e.printStackTrace();
-//      }
-//    });
   }
 
   protected void zoomTo(java.awt.geom.Rectangle2D.Double domain2)

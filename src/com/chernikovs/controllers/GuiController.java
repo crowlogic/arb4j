@@ -16,8 +16,8 @@ import com.chernikovs.gui.CurveOptions;
 import com.chernikovs.gui.Options;
 import com.chernikovs.gui.SurfaceAnalysis;
 import com.chernikovs.gui.SurfaceOptions;
-import com.chernikovs.renderEngine.Display;
-import com.chernikovs.renderEngine.MasterRenderer;
+import com.chernikovs.render.Display;
+import com.chernikovs.render.MasterRenderer;
 
 import lwjgui.paint.Color;
 import lwjgui.scene.Node;

@@ -13,7 +13,7 @@ import com.chernikovs.functions.FunctionHandler;
 import com.chernikovs.functions.VectorFunction;
 import com.chernikovs.functions.BivariateVectorFunction;
 import com.chernikovs.models.TexturedModel;
-import com.chernikovs.renderEngine.MasterRenderer;
+import com.chernikovs.render.MasterRenderer;
 import com.chernikovs.toolbox.Maths;
 
 /** A class describing surface */

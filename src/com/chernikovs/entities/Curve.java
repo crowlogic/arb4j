@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 import com.chernikovs.functions.FunctionHandler;
 import com.chernikovs.functions.VectorFunction;
 import com.chernikovs.models.TexturedModel;
-import com.chernikovs.renderEngine.MasterRenderer;
+import com.chernikovs.render.MasterRenderer;
 
 /** A class describing curve */
 public class Curve extends

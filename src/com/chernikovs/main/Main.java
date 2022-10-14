@@ -15,8 +15,8 @@ import com.chernikovs.controllers.Controller;
 import com.chernikovs.controllers.GuiController;
 import com.chernikovs.entities.Camera;
 import com.chernikovs.entities.Light;
-import com.chernikovs.renderEngine.Display;
-import com.chernikovs.renderEngine.MasterRenderer;
+import com.chernikovs.render.Display;
+import com.chernikovs.render.MasterRenderer;
 
 import lwjgui.LWJGUI;
 import lwjgui.LWJGUIUtil;

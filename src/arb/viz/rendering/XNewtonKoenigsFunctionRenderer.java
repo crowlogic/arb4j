@@ -32,7 +32,6 @@ public class XNewtonKoenigsFunctionRenderer extends
             public Complex evaluate(Complex z, int order, int prec, Complex w)
             {
               super.evaluate(z, order, prec, w);
-              // w.sub(z, prec, w);
               return w;
             }
           });
@@ -41,8 +40,8 @@ public class XNewtonKoenigsFunctionRenderer extends
   public XNewtonKoenigsFunctionRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension((int) (1250 ),
-                       (int) (1250 )),
+    this(new Dimension((int) (1000 ),
+                       (int) (1000 )),
          new Rectangle2D.Double(-5,
                                 -20,
                                 40,
@@ -50,7 +49,7 @@ public class XNewtonKoenigsFunctionRenderer extends
   }
 
   @SuppressWarnings("resource")
-  public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
+  public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
 
     XNewtonKoenigsFunctionRenderer renderer = new XNewtonKoenigsFunctionRenderer();

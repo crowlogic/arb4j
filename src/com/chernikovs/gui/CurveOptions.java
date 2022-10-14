@@ -1,6 +1,25 @@
 package com.chernikovs.gui;
 
-import static com.chernikovs.controllers.Attribs.*;
+import static com.chernikovs.controllers.Attribs.change;
+import static com.chernikovs.controllers.Attribs.getColour;
+import static com.chernikovs.controllers.Attribs.getFFrom;
+import static com.chernikovs.controllers.Attribs.getFPi;
+import static com.chernikovs.controllers.Attribs.getFStep;
+import static com.chernikovs.controllers.Attribs.getFTo;
+import static com.chernikovs.controllers.Attribs.getFVar;
+import static com.chernikovs.controllers.Attribs.getField;
+import static com.chernikovs.controllers.Attribs.getFrame;
+import static com.chernikovs.controllers.Attribs.getFrenet;
+import static com.chernikovs.controllers.Attribs.getFunction;
+import static com.chernikovs.controllers.Attribs.putColour;
+import static com.chernikovs.controllers.Attribs.putFFrom;
+import static com.chernikovs.controllers.Attribs.putFPi;
+import static com.chernikovs.controllers.Attribs.putFStep;
+import static com.chernikovs.controllers.Attribs.putFTo;
+import static com.chernikovs.controllers.Attribs.putFVar;
+import static com.chernikovs.controllers.Attribs.putFrenet;
+import static com.chernikovs.controllers.Attribs.putFunction;
+import static com.chernikovs.controllers.Attribs.redraw;
 
 import org.joml.Vector3f;
 

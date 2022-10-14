@@ -11,7 +11,7 @@ import com.chernikovs.entities.Surface;
 import com.chernikovs.entities.Vector;
 import com.chernikovs.models.RawModel;
 import com.chernikovs.models.TexturedModel;
-import com.chernikovs.renderEngine.Loader;
+import com.chernikovs.render.Loader;
 import com.chernikovs.textures.ModelTexture;
 
 /** A class that processes functions */
