@@ -1,0 +1,9 @@
+#!/bin/sh
+
+FMDIR=$(dirname $(readlink -f $0))/..
+cd $FMDIR
+
+gaw
+mvn install
+updateJavadocs
+updateClasspath
