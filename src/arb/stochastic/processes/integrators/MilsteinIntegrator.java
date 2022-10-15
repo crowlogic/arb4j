@@ -89,12 +89,6 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                  1);
       var           path     = integrator.integrate(interval, 10, prec);
 
-      RealMatrix path = new RealMatrix();
-      for (OrderedPair<Real, Real> sample : path)
-      {
-        assert false : "TODO: use chart-fx instead of gral";
-        data.add(sample.a.doubleValue(), sample.b.doubleValue());
-      }
 
     }
   }
