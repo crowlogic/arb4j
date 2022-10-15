@@ -2,6 +2,7 @@ package arb.geometry.surfaces;
 
 import arb.Real;
 import arb.exceptions.ArbException;
+import arb.functions.ComplexToRealFunction;
 
 public class Sphere implements
                     RiemannSurface
@@ -30,5 +31,7 @@ public class Sphere implements
       throw new ArbException("a sphere only has two sheets, one for each hemisphere");
     }
   }
+  
+
 
 }

@@ -56,6 +56,7 @@ public class MultipleAxesSample extends
     final Scene              scene  = new Scene(root,
                                                 800,
                                                 600);
+    scene.getStylesheets().add("dark-theme.css");
 
     final DefaultNumericAxis xAxis1 = new DefaultNumericAxis("x axis");
     xAxis1.setAnimated(false);

@@ -133,9 +133,7 @@ public class RunChartSamples extends
     buttons.getChildren()
            .add(new MyButton("ValueIndicatorSample",
                              new ValueIndicatorSample()));
-    buttons.getChildren()
-           .add(new MyButton("VisibiltiyToggleSample",
-                             new VisibilityToggleSample()));
+
     buttons.getChildren()
            .add(new MyButton("YWatchValueIndicatorSample",
                              new YWatchValueIndicatorSample()));

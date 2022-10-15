@@ -1,5 +1,6 @@
 package arb.geometry.surfaces;
 
+import arb.functions.ComplexToRealFunction;
 import arb.geometry.Manifold;
 import arb.topological.spaces.EuclideanSpace;
 
@@ -23,5 +24,4 @@ import arb.topological.spaces.EuclideanSpace;
 public interface Surface extends
                          Manifold
 {
-
 }
