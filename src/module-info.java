@@ -36,9 +36,6 @@ module arb4j
   requires transitive JTransforms;
   requires transitive jlatexmath;
 
-  exports de.gsi.acc.ui.samples;
-  exports de.gsi.chart.samples;
-  exports de.gsi.math.samples;
   exports arb;
   exports arb.algebraic.expressions;
   exports arb.algebraic.geometry;

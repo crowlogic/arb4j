@@ -18,7 +18,7 @@ public class XRenderer extends
 {
 
   @SuppressWarnings("resource")
-  public static void main(String args[]) throws IOException, NoninvertibleTransformException
+  public static void main(String[] args) throws IOException, NoninvertibleTransformException
   {
     System.loadLibrary("arblib");
     XRenderer r = new XRenderer();
