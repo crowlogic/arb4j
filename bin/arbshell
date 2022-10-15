@@ -3,7 +3,8 @@
 
 BASEDIR=$(dirname $(readlink -f $0))/..
 CLASSPATH=`cat $BASEDIR/class.path`
-jshell -J-Djava.library.path=$BASEDIR -J-ea --class-path $CLASSPATH:$BASEDIR/target/classes 
+jshell --enable-native-access --enable-preview -J-Djava.library.path=$BASEDIR -J-ea --class-path $CLASSPATH:$BASEDIR/target/classes --startup $BASEDIR/shell.start
+
 
 
 
