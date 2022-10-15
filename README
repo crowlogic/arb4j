@@ -16,10 +16,10 @@ https://crowlogic.github.io/
 To build this library you will need the following:
 
 SWIG (Tested with Versions 4.0.1 and 4.0.2)
-libflint-arb-dev along with its dependencies (Tested with 2.19.0)
-JDK (Tested with jdk-17 from Oracle)
+libflint-arb-dev along with its dependencies (Tested with 2.23.0)
+JDK (Tested with jdk-19 from Oracle)
 
-Once you have acquired these, run the bash script in the bin/
+Once you have these packages, run the bash script in the bin/
 subdirectory called "gaw" which stands for "generate arb wrapper",
 which will then cause the .i files in the native/ subdirectory to be
 parsed with SWIG and the corresponding java and C source files are 
@@ -31,7 +31,14 @@ a file named libarblib.so in root directory of the project.
 
 Also, "-ea" should usually be to the JVM commandline to enable 
 assertion checking at runtime but it can be turned off to marginally 
-improve performance
+improve performance.
+
+
+The arguments 
+
+"--enable-native-accesss --enable-preview -Djava.library.path=." 
+
+should also be used
 
 =============================================================================
 
