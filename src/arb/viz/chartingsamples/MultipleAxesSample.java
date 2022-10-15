@@ -40,6 +40,7 @@ public class MultipleAxesSample extends
   {
     // setAll in order to implicitly clear previous list of
     // 'old' data sets
+
     renderer1.getDatasets()
              .setAll(new RandomWalkFunction("random walk",
                                             MultipleAxesSample.N_SAMPLES));
@@ -59,11 +60,7 @@ public class MultipleAxesSample extends
                                                          final Renderer renderer2,
                                                          final Renderer renderer3)
   {
-    return () ->
-    Platform.runLater(() ->
-    {
-      configureDatasets(renderer1, renderer2, renderer3);
-    });
+    return () -> Platform.runLater(() -> configureDatasets(renderer1, renderer2, renderer3));
   };
 
   /**
@@ -130,10 +127,7 @@ public class MultipleAxesSample extends
     // alternatively (uncomment):
     Zoomer.setOmitZoom(xAxis2, true);
     chart.getPlugins().add(zoom);
-    chart.getToolBar()
-         .getChildren()
-         .add(new MyZoomCheckBox(zoom,
-                                 yAxis3));
+
     chart.getPlugins().add(new EditAxis());
 
     final Button newDataSet = new Button("new DataSet");

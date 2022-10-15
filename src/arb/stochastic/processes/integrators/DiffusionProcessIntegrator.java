@@ -2,7 +2,6 @@ package arb.stochastic.processes.integrators;
 
 import arb.Float;
 import arb.FloatInterval;
-import arb.Verifiable;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 import arb.dynamical.systems.State;
 import arb.stochastic.processes.DiffusionProcess;
@@ -59,7 +58,7 @@ public interface DiffusionProcessIntegrator<S extends State, D extends Diffusion
    * @param interval the interval over which to integrate
    * @param n        number of pieces to split the interval into
    * @param prec     the number of bits of precision to use for the calculations
-   * @param result TODO
+   * @param result   TODO
    * @return
    */
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec);
