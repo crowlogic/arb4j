@@ -65,7 +65,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     }
   }
 
-  public static void main(String args[])
+  public static void main(String[] args)
   {
 
     OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(new Real("1.5",
@@ -131,8 +131,8 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     RealPartition partition = interval.realPartition(n, prec);
     state.setdt(partition.dt);
 
-    evaluationSequence = new EvaluationSequence(partition,
-                                                1);
+    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
+                                                                   1);
 
     evaluationSequence.generateRandomSamples(new GaussianDistribution(zero,
                                                                       state.sqrtdt(prec, sqrtdt)),
@@ -199,8 +199,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     return true; // return false if variance went negative
   }
 
-  public boolean             nonNegative = false;
-  private EvaluationSequence evaluationSequence;
+  public boolean nonNegative = false;
 
   @Override
   public final boolean jump(DiffusionProcessState state, int prec, EvaluationSequence evaluationSequence)

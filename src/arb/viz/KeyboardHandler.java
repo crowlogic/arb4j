@@ -107,7 +107,6 @@ public class KeyboardHandler implements
       }
       catch (InterruptedException e1)
       {
-        // TODO Auto-generated catch block
         e1.printStackTrace();
       }
       System.out.println("Halting ...");

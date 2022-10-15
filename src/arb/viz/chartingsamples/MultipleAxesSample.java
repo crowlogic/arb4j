@@ -5,9 +5,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.gsi.chart.XYChart;
 import de.gsi.chart.axes.spi.DefaultNumericAxis;
 import de.gsi.chart.plugins.DataPointTooltip;
@@ -34,10 +31,11 @@ public class MultipleAxesSample extends
                                 Application
 {
 
-  private static final int               N_SAMPLES     = 10_000;                             // default:
+  private static final int  N_SAMPLES     = 10_000; // default:
   // 10000
-  private static final long              UPDATE_DELAY  = 1000;                               // [ms]
-  private static final long              UPDATE_PERIOD = 1000;                               // [ms]
+  private static final long UPDATE_DELAY  = 1000;   // [ms]
+  private static final long UPDATE_PERIOD = 1000;   // [ms]
+
   private static void configureDatasets(final Renderer renderer1, final Renderer renderer2, final Renderer renderer3)
   {
     // setAll in order to implicitly clear previous list of
@@ -62,15 +60,11 @@ public class MultipleAxesSample extends
                                                          final Renderer renderer3)
   {
     return () ->
+    Platform.runLater(() ->
     {
-      Platform.runLater(() ->
-      {
-        configureDatasets(renderer1, renderer2, renderer3);
-
-      });
-    };
-
-  }
+      configureDatasets(renderer1, renderer2, renderer3);
+    });
+  };
 
   /**
    * @param args the command line arguments
@@ -80,7 +74,7 @@ public class MultipleAxesSample extends
     Application.launch(args);
   }
 
-  private final ScheduledExecutorService timer         = Executors.newScheduledThreadPool(1);
+  private final ScheduledExecutorService timer = Executors.newScheduledThreadPool(1);
 
   private ScheduledFuture<?>             scheduledFuture;
 
