@@ -37,11 +37,85 @@ public class MultipleAxesSample extends
                                 Application
 {
 
-  private static final int               N_SAMPLES     = 10_000;                             // default:
-                                                                                             // 10000
+  public static class MyZoomCheckBox extends
+                                     CheckBox
+  {
+    /**
+     * @param zoom the zoom interactor
+     * @param axis to be synchronised
+     */
+    public MyZoomCheckBox(Zoomer zoom, Axis axis)
+    {
+      super("enable zoom for axis '" + axis.getName() + "'");
+      this.setSelected(!zoom.omitAxisZoomList().contains(axis) || Zoomer.isOmitZoom(axis));
+      ChangeListener<? super Boolean> listener = (obj, o, n) ->
+      {
+        if (n.equals(o))
+        {
+          return;
+        }
+        if (Boolean.TRUE.equals(n))
+        {
+          zoom.omitAxisZoomList().remove(axis);
+          Zoomer.setOmitZoom(axis, false); // alternative implementation
+        }
+        else
+        {
+          zoom.omitAxisZoomList().add(axis);
+          Zoomer.setOmitZoom(axis, true); // alternative implementation
+        }
+      };
+      this.selectedProperty().addListener(listener);
+    }
+  }
+                                                                                             private static final int               N_SAMPLES     = 10_000;                             // default:
+  // 10000
   private static final long              UPDATE_DELAY  = 1000;                               // [ms]
   private static final long              UPDATE_PERIOD = 1000;                               // [ms]
+  private static void configureDatasets(final Renderer renderer1, final Renderer renderer2, final Renderer renderer3)
+  {
+    // setAll in order to implicitly clear previous list of
+    // 'old' data sets
+    renderer1.getDatasets()
+             .setAll(new RandomWalkFunction("random walk",
+                                            MultipleAxesSample.N_SAMPLES));
+    renderer2.getDatasets()
+             .setAll(new CosineFunction("cosy",
+                                        MultipleAxesSample.N_SAMPLES,
+                                        true),
+                     new SineFunction("siny",
+                                      MultipleAxesSample.N_SAMPLES,
+                                      true));
+    renderer3.getDatasets()
+             .setAll(new GaussFunction("gaussy",
+                                       MultipleAxesSample.N_SAMPLES));
+  }
+
+  public static Runnable getDatasetConfigurationRunnable(final Renderer renderer1,
+                                                         final Renderer renderer2,
+                                                         final Renderer renderer3)
+  {
+    return () ->
+    {
+      Platform.runLater(() ->
+      {
+        configureDatasets(renderer1, renderer2, renderer3);
+
+      });
+    };
+
+  }
+
+  /**
+   * @param args the command line arguments
+   */
+  public static void main(final String[] args)
+  {
+    Application.launch(args);
+  }
+
   private final ScheduledExecutorService timer         = Executors.newScheduledThreadPool(1);
+
   private ScheduledFuture<?>             scheduledFuture;
 
   @Override
@@ -103,15 +177,17 @@ public class MultipleAxesSample extends
     chart.getPlugins().add(new EditAxis());
 
     final Button newDataSet = new Button("new DataSet");
-    newDataSet.setOnAction(evt -> Platform.runLater(getTask(errorRenderer1, errorRenderer2, errorRenderer3)));
+    newDataSet.setOnAction(evt -> Platform.runLater(getDatasetConfigurationRunnable(errorRenderer1,
+                                                                                    errorRenderer2,
+                                                                                    errorRenderer3)));
     final Button startTimer = new Button("timer");
     startTimer.setOnAction(evt ->
     {
       if (scheduledFuture == null || scheduledFuture.isCancelled())
       {
-        scheduledFuture = timer.scheduleAtFixedRate(getTask(chart.getRenderers().get(0),
-                                                            errorRenderer2,
-                                                            errorRenderer3),
+        scheduledFuture = timer.scheduleAtFixedRate(getDatasetConfigurationRunnable(chart.getRenderers().get(0),
+                                                                                    errorRenderer2,
+                                                                                    errorRenderer3),
                                                     MultipleAxesSample.UPDATE_DELAY,
                                                     MultipleAxesSample.UPDATE_PERIOD,
                                                     TimeUnit.MILLISECONDS);
@@ -126,7 +202,7 @@ public class MultipleAxesSample extends
                          startTimer));
 
     // generate the first set of data
-    getTask(chart.getRenderers().get(0), errorRenderer2, errorRenderer3).run();
+    getDatasetConfigurationRunnable(chart.getRenderers().get(0), errorRenderer2, errorRenderer3).run();
 
     long startTime = ProcessingProfiler.getTimeStamp();
 
@@ -142,72 +218,5 @@ public class MultipleAxesSample extends
     primaryStage.setOnCloseRequest(evt -> Platform.exit());
     primaryStage.show();
     ProcessingProfiler.getTimeDiff(startTime, "for showing");
-  }
-
-  public static Runnable getTask(final Renderer renderer1, final Renderer renderer2, final Renderer renderer3)
-  {
-    return () ->
-    {
-      Platform.runLater(() ->
-      {
-        // setAll in order to implicitly clear previous list of
-        // 'old' data sets
-        renderer1.getDatasets()
-                 .setAll(new RandomWalkFunction("random walk",
-                                                MultipleAxesSample.N_SAMPLES));
-        renderer2.getDatasets()
-                 .setAll(new CosineFunction("cosy",
-                                            MultipleAxesSample.N_SAMPLES,
-                                            true),
-                         new SineFunction("siny",
-                                          MultipleAxesSample.N_SAMPLES,
-                                          true));
-        renderer3.getDatasets()
-                 .setAll(new GaussFunction("gaussy",
-                                           MultipleAxesSample.N_SAMPLES));
-
-      });
-    };
-
-  }
-
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(final String[] args)
-  {
-    Application.launch(args);
-  }
-
-  public static class MyZoomCheckBox extends
-                                      CheckBox
-  {
-    /**
-     * @param zoom the zoom interactor
-     * @param axis to be synchronised
-     */
-    public MyZoomCheckBox(Zoomer zoom, Axis axis)
-    {
-      super("enable zoom for axis '" + axis.getName() + "'");
-      this.setSelected(!zoom.omitAxisZoomList().contains(axis) || Zoomer.isOmitZoom(axis));
-      ChangeListener<? super Boolean> listener = (obj, o, n) ->
-      {
-        if (n.equals(o))
-        {
-          return;
-        }
-        if (Boolean.TRUE.equals(n))
-        {
-          zoom.omitAxisZoomList().remove(axis);
-          Zoomer.setOmitZoom(axis, false); // alternative implementation
-        }
-        else
-        {
-          zoom.omitAxisZoomList().add(axis);
-          Zoomer.setOmitZoom(axis, true); // alternative implementation
-        }
-      };
-      this.selectedProperty().addListener(listener);
-    }
   }
 }

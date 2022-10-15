@@ -81,6 +81,7 @@ module arb4j
   exports arb.theoretical.physics;
   exports arb.utensils;
   exports arb.viz;
+  exports arb.viz.chartingsamples;
   exports arb.viz.gl;
   exports arb.viz.rendering;
 }
