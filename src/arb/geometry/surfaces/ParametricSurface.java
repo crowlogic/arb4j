@@ -3,20 +3,20 @@ package arb.geometry.surfaces;
 import arb.Complex;
 import arb.Real;
 import arb.functions.Function;
+import arb.geometry.curves.ArcLengthFunction;
+import arb.topological.spaces.EuclideanSpace;
 
 /**
- * A parametric surface is a surface in the Euclidean space R^3 which is defined
- * by a parametric equation with two parameters (x,y) . Parametric
- * representation is a very general way to specify a surface, as well as
- * <b>implicit representation</b>. Surfaces that occur in two of the main
- * theorems of vector calculus, Stokes' theorem and the divergence theorem, are
- * frequently given in a parametric form. The <b>curvature</b> and arc length of
- * curves on the surface, surface area, differential geometric invariants such
- * as the first and second fundamental forms, Gaussian, mean, and principal
- * curvatures can all be computed from a given parametrization.
+ * A {@link ParametricSurface} is a {@link Surface} in the 3-dimensional
+ * {@link EuclideanSpace} which is defined by the
+ * {@link ParametricSurface}{@link #evaluate(Complex, int, int, Real)} method.
+ * <br>
  * 
- * @author crow
- *
+ * The <b>curvature</b> and {@link ArcLengthFunction}s of curves on the surface,
+ * surface area, and differential geometric invariants such as the <b>first and
+ * second fundamental forms</b>, <b>Gaussian, mean, and principal curvatures can
+ * all be computed from a given parameterization supplied by the
+ * {@link ParametricSurface}{@link #evaluate(Complex, int, int, Real)} method
  */
 public interface ParametricSurface extends
                                    Function<Complex, Real>,

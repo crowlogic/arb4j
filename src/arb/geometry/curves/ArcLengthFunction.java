@@ -40,7 +40,7 @@ public final class ArcLengthFunction implements
   @Override
   public RealFunction inverse()
   {
-    // TODO Auto-generated method stub
+    assert false : "TODO";
     return null;
   }
 }
