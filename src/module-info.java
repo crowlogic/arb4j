@@ -68,7 +68,6 @@ module arb4j
   exports arb.measures;
   exports arb.mechanics;
   exports arb.mechanics.classical;
-  exports arb.mechanics.quantum;
   exports arb.mechanics.relativistic;
   exports arb.mechanics.relativistic.general;
   exports arb.mechanics.relativistic.special;
