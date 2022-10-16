@@ -40,8 +40,8 @@ public class XNewtonKoenigsFunctionRenderer extends
   public XNewtonKoenigsFunctionRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension((int) (1000 ),
-                       (int) (1000 )),
+    this(new Dimension((int) (1000),
+                       (int) (1000)),
          new Rectangle2D.Double(-5,
                                 -20,
                                 40,

@@ -21,8 +21,8 @@ import arb.topological.Space;
  * 
  * @author crow
  *
- * @param <E> total space 
- * @param <B> base space 
+ * @param <E> total space
+ * @param <B> base space
  * @param <P> projection map (function)
  */
 public interface Bundle<E extends Space, B extends Space, P extends Function>

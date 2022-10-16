@@ -31,7 +31,5 @@ public class Sphere implements
       throw new ArbException("a sphere only has two sheets, one for each hemisphere");
     }
   }
-  
-
 
 }

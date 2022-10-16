@@ -3,7 +3,7 @@ package arb.functions.complex;
 import arb.Complex;
 
 public class ShiftOperator implements
-                         HolomorphicFunction
+                           HolomorphicFunction
 {
   public ShiftOperator(Complex t0)
   {

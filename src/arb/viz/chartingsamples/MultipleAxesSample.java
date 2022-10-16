@@ -1,14 +1,9 @@
 package arb.viz.chartingsamples;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-
 import de.gsi.chart.XYChart;
 import de.gsi.chart.axes.spi.DefaultNumericAxis;
 import de.gsi.chart.plugins.DataPointTooltip;
 import de.gsi.chart.plugins.EditAxis;
-import de.gsi.chart.plugins.ParameterMeasurements;
 import de.gsi.chart.plugins.Zoomer;
 import de.gsi.chart.renderer.Renderer;
 import de.gsi.chart.renderer.spi.ErrorDataSetRenderer;
@@ -28,10 +23,7 @@ public class MultipleAxesSample extends
                                 Application
 {
 
-  private static final int  N_SAMPLES     = 10_000; // default:
-  // 10000
-  private static final long UPDATE_DELAY  = 1000;   // [ms]
-  private static final long UPDATE_PERIOD = 1000;   // [ms]
+  private static final int sampleCount = 10000; // default:
 
   private static void configureDatasets(final Renderer renderer1, final Renderer renderer2, final Renderer renderer3)
   {
@@ -40,17 +32,17 @@ public class MultipleAxesSample extends
 
     renderer1.getDatasets()
              .setAll(new RandomWalkFunction("random walk",
-                                            MultipleAxesSample.N_SAMPLES));
+                                            MultipleAxesSample.sampleCount));
     renderer2.getDatasets()
              .setAll(new CosineFunction("cosy",
-                                        MultipleAxesSample.N_SAMPLES,
+                                        MultipleAxesSample.sampleCount,
                                         true),
                      new SineFunction("siny",
-                                      MultipleAxesSample.N_SAMPLES,
+                                      MultipleAxesSample.sampleCount,
                                       true));
     renderer3.getDatasets()
              .setAll(new GaussFunction("gaussy",
-                                       MultipleAxesSample.N_SAMPLES));
+                                       MultipleAxesSample.sampleCount));
   }
 
   public static Runnable getDatasetConfigurationRunnable(final Renderer renderer1,
@@ -58,19 +50,12 @@ public class MultipleAxesSample extends
                                                          final Renderer renderer3)
   {
     return () -> Platform.runLater(() -> configureDatasets(renderer1, renderer2, renderer3));
-  };
+  }
 
-  /**
-   * @param args the command line arguments
-   */
   public static void main(final String[] args)
   {
     Application.launch(args);
   }
-
-  private final ScheduledExecutorService timer = Executors.newScheduledThreadPool(1);
-
-  private ScheduledFuture<?>             scheduledFuture;
 
   @Override
   public void start(final Stage primaryStage)
@@ -106,17 +91,12 @@ public class MultipleAxesSample extends
     final XYChart              chart          = new XYChart(xAxis1,
                                                             yAxis1);
 
-    // N.B. it's important to set secondary axis on the 2nd renderer before
-    // adding the renderer to the chart
-    final ErrorDataSetRenderer errorRenderer1 = new ErrorDataSetRenderer();
-    errorRenderer1.getAxes().add(yAxis1);
     final ErrorDataSetRenderer errorRenderer2 = new ErrorDataSetRenderer();
     errorRenderer2.getAxes().add(yAxis2);
     final ErrorDataSetRenderer errorRenderer3 = new ErrorDataSetRenderer();
     errorRenderer3.getAxes().addAll(xAxis2, yAxis3);
     chart.getRenderers().addAll(errorRenderer2, errorRenderer3);
 
-    chart.getPlugins().add(new ParameterMeasurements());
     chart.getPlugins().add(new DataPointTooltip());
     final Zoomer zoom = new Zoomer();
     // add axes that shall be excluded from the zoom action

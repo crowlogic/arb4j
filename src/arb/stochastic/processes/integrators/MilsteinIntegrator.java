@@ -89,7 +89,6 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                                  1);
       var           path     = integrator.integrate(interval, 10, prec);
 
-
     }
   }
 

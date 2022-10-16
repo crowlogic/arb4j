@@ -34,8 +34,8 @@ From Moby Thesaurus II by Grady Ward, 1.0 [moby-thesaurus]:
      pseudoisomer, radical, reagent, resin plastic, sulfacid, synthetic,
      synthetic fabric, synthetic rubber, thermoplastic,
      thermosetting plastic, trimer
- </pre>
-*/
+ * </pre>
+ */
 public interface Polymer
 {
   Stream<Monomer> contents();

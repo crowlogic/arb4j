@@ -39,7 +39,7 @@ public class Utilities
 
     return spreadFormula;
   }
-  
+
   public static double convertTimeUnits(double from, TimeUnit fromUnit, TimeUnit toUnit)
   {
     double ratio = fromUnit.convert(1L, toUnit);
@@ -240,7 +240,5 @@ public class Utilities
   {
     System.out.println(s);
   }
-
-
 
 }

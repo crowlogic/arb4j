@@ -8,7 +8,6 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-
 /**
  * A {@link FloatPartition} denoted P of ...
  * 

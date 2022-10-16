@@ -7,9 +7,9 @@ public interface RandomVectorGenerator extends
                                        AutoCloseable
 {
   @Override
-  default void close() 
+  default void close()
   {
-    
+
   }
 
   public RandomState getRandomState();

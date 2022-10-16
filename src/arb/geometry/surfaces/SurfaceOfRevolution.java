@@ -27,12 +27,11 @@ public class SurfaceOfRevolution implements
 
   public final PlaneCurve curve;
 
-
   @Override
   public Real evaluate(Complex t, int order, int prec, Real res)
   {
     assert false : "rotate the curve";
     return null;
   }
-  
+
 }

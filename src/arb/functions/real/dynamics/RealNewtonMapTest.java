@@ -67,7 +67,7 @@ public class RealNewtonMapTest extends
   public RealPart testIteratedNewtonMap(CircularS angle)
   {
     RealPart realAngle = new RealPart(angle);
-    try ( Real real = new Real(); )
+    try ( Real real = new Real();)
     {
       RealNewtonMap func = new RealNewtonMap(realAngle,
                                              real.set("1", 52));
@@ -76,7 +76,7 @@ public class RealNewtonMapTest extends
       for (int i = 0; i < 20; i++)
       {
 
-        func.evaluate(z, 2, 128 , w);
+        func.evaluate(z, 2, 128, w);
         w.printPrecision = true;
         System.out.println("w=" + w);
         z.set(w);
