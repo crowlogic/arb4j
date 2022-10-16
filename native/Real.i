@@ -1,8 +1,9 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "Comparable<Real>, Iterable<Real>, Field<Real>, Lockable, EuclideanVectorSpace<Real>"
+%typemap(javainterfaces) arb_struct "Serializable, Comparable<Real>, Iterable<Real>, Field<Real>, Lockable, EuclideanVectorSpace<Real>"
 
 %typemap(javaimports) arb_struct %{
+import java.io.Serializable; 
 import org.lwjgl.system.*;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
@@ -10,7 +11,6 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import arb.stochastic.ProbabilityDistributionFunction;
-import arb.Lockable;
 import arb.topological.spaces.EuclideanVectorSpace;
 
 /**

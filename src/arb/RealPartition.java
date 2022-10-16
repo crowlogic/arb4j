@@ -1,6 +1,7 @@
 package arb;
 
 import java.io.Closeable;
+import java.io.Serializable;
 import java.lang.ref.Cleaner.Cleanable;
 import java.util.Iterator;
 
@@ -8,7 +9,8 @@ public class RealPartition implements
                            AutoCloseable,
                            Closeable,
                            Cleanable,
-                           Partition<Real>
+                           Partition<Real>,
+                           Serializable
 {
   public final Real T;
 

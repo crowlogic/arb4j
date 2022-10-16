@@ -8,6 +8,7 @@
 
 package arb;
 
+import java.io.Serializable; 
 import org.lwjgl.system.*;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
@@ -15,7 +16,6 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import arb.stochastic.ProbabilityDistributionFunction;
-import arb.Lockable;
 import arb.topological.spaces.EuclideanVectorSpace;
 
 /**
@@ -27,7 +27,7 @@ import arb.topological.spaces.EuclideanVectorSpace;
  * 
  */
 
-public class Real implements Comparable<Real>, Iterable<Real>, Field<Real>, Lockable, EuclideanVectorSpace<Real> {
+public class Real implements Serializable, Comparable<Real>, Iterable<Real>, Field<Real>, Lockable, EuclideanVectorSpace<Real> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 

@@ -9,20 +9,26 @@ import arb.Real;
 import arb.RealMatrix;
 import arb.RealPartition;
 import arb.stochastic.ProbabilityDistributionFunction;
-import arb.stochastic.RealProbabilityDensityFunction;
+import de.gsi.dataset.DataSet;
+import de.gsi.dataset.DataSet2D;
+import de.gsi.dataset.spi.AbstractDataSet;
 
 /**
  * @see <a href=
  *      "../../functions/doc-files/IntegrationNotes.pdf">IntegrationNotes</a>
  */
-public class EvaluationSequence implements
+public class EvaluationSequence extends
+                                AbstractDataSet<EvaluationSequence> implements
                                 Cleanable,
-                                Iterable<OrderedPair<Real, Real>>
+                                Iterable<OrderedPair<Real, Real>>,
+                                DataSet2D
 {
   private int dim;
 
   public EvaluationSequence(RealPartition partition, int dim)
   {
+    super("EvaluationSequence",
+          dim);
     assert dim > 0;
     this.partition = partition;
     this.values    = new Real[dim];
@@ -84,6 +90,25 @@ public class EvaluationSequence implements
   {
     return new EvaluationSequenceIterator(this,
                                           dim);
+  }
+
+  @Override
+  public double get(int dimIndex, int index)
+  {
+    return values[dimIndex].get(index).doubleValue();
+  }
+
+  @Override
+  public int getDataCount()
+  {
+    return values[0].size();
+  }
+
+  @Override
+  public DataSet set(DataSet other, boolean copy)
+  {
+    assert false : "todo";
+    return null;
   }
 
 }
