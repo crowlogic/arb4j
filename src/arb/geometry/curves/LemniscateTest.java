@@ -29,17 +29,16 @@ public class LemniscateTest extends
     }
     catch (Exception e)
     {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
 
   public static void testDerivative() throws NotDifferentiableException
   {
-    try ( Lemniscate l = new Lemniscate())
+    try ( Lemniscate l = new Lemniscate(); Complex tmp = new Complex())
     {
       RealToComplexFunction dl     = l.differential();
-      Complex               tmp    = new Complex();
+
       RealToComplexFunction absdl  = (t, order, prec, w) ->
                                    {
                                      dl.evaluate(t, order, prec, tmp).abs(prec, w.getReal());
@@ -62,7 +61,6 @@ public class LemniscateTest extends
     }
     catch (Exception e)
     {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
