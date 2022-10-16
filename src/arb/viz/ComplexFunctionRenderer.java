@@ -48,7 +48,6 @@ import arb.ThreadLocalReal;
 import arb.arb;
 import arb.functions.complex.HolomorphicFunction;
 import arb.utensils.Utilities;
-import arb.viz.chartingsamples.Mode;
 
 /**
  * creates a rendering of a patch of a complex valued function of a complex
