@@ -12,7 +12,6 @@ import de.gsi.dataset.testdata.spi.CosineFunction;
 import de.gsi.dataset.testdata.spi.GaussFunction;
 import de.gsi.dataset.testdata.spi.RandomWalkFunction;
 import de.gsi.dataset.testdata.spi.SineFunction;
-import de.gsi.dataset.utils.ProcessingProfiler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -22,14 +21,43 @@ import javafx.stage.Stage;
 public class MultipleAxesSample extends
                                 Application
 {
+  public static void main(final String[] args)
+  {
+    Application.launch(args);
+  }
+
+  @Override
+  public void start(final Stage primaryStage)
+  {
+
+    final BorderPane           root           = new BorderPane();
+    final Scene                scene          = new Scene(root,
+                                                          800,
+                                                          600);
+    final ErrorDataSetRenderer errorRenderer2 = new ErrorDataSetRenderer();
+    final ErrorDataSetRenderer errorRenderer3 = new ErrorDataSetRenderer();
+
+    final XYChart              chart          = configureChart(errorRenderer2, errorRenderer3);
+
+    configureDatasets(chart.getRenderers().get(0), errorRenderer2, errorRenderer3);
+
+    setTheScene(primaryStage, root, scene, chart);
+  }
+
+  private void setTheScene(final Stage primaryStage, final BorderPane root, final Scene scene, final XYChart chart)
+  {
+    scene.getStylesheets().add("dark-theme.css");
+    root.setCenter(chart);
+    primaryStage.setTitle(this.getClass().getSimpleName());
+    primaryStage.setScene(scene);
+    primaryStage.setOnCloseRequest(evt -> Platform.exit());
+    primaryStage.show();
+  }
 
   private static final int sampleCount = 10000; // default:
 
   private static void configureDatasets(final Renderer renderer1, final Renderer renderer2, final Renderer renderer3)
   {
-    // setAll in order to implicitly clear previous list of
-    // 'old' data sets
-
     renderer1.getDatasets()
              .setAll(new RandomWalkFunction("random walk",
                                             MultipleAxesSample.sampleCount));
@@ -45,31 +73,9 @@ public class MultipleAxesSample extends
                                        MultipleAxesSample.sampleCount));
   }
 
-  public static Runnable getDatasetConfigurationRunnable(final Renderer renderer1,
-                                                         final Renderer renderer2,
-                                                         final Renderer renderer3)
+  private XYChart configureChart(final ErrorDataSetRenderer errorRenderer2,
+                                 final ErrorDataSetRenderer errorRenderer3)
   {
-    return () -> Platform.runLater(() -> configureDatasets(renderer1, renderer2, renderer3));
-  }
-
-  public static void main(final String[] args)
-  {
-    Application.launch(args);
-  }
-
-  @Override
-  public void start(final Stage primaryStage)
-  {
-    ProcessingProfiler.setVerboseOutputState(true);
-    ProcessingProfiler.setLoggerOutputState(true);
-    ProcessingProfiler.setDebugState(false);
-
-    final BorderPane root  = new BorderPane();
-    final Scene      scene = new Scene(root,
-                                       800,
-                                       600);
-    scene.getStylesheets().add("dark-theme.css");
-
     final DefaultNumericAxis xAxis1 = new DefaultNumericAxis("x axis");
     xAxis1.setAnimated(false);
     final DefaultNumericAxis xAxis2 = new DefaultNumericAxis("x axis2");
@@ -88,12 +94,10 @@ public class MultipleAxesSample extends
     yAxis3.setSide(Side.RIGHT);
     yAxis3.invertAxis(true);
     yAxis3.setAnimated(false);
-    final XYChart              chart          = new XYChart(xAxis1,
-                                                            yAxis1);
+    final XYChart chart = new XYChart(xAxis1,
+                                      yAxis1);
 
-    final ErrorDataSetRenderer errorRenderer2 = new ErrorDataSetRenderer();
     errorRenderer2.getAxes().add(yAxis2);
-    final ErrorDataSetRenderer errorRenderer3 = new ErrorDataSetRenderer();
     errorRenderer3.getAxes().addAll(xAxis2, yAxis3);
     chart.getRenderers().addAll(errorRenderer2, errorRenderer3);
 
@@ -106,23 +110,6 @@ public class MultipleAxesSample extends
     chart.getPlugins().add(zoom);
 
     chart.getPlugins().add(new EditAxis());
-
-    // generate the first set of data
-    getDatasetConfigurationRunnable(chart.getRenderers().get(0), errorRenderer2, errorRenderer3).run();
-
-    long startTime = ProcessingProfiler.getTimeStamp();
-
-    ProcessingProfiler.getTimeDiff(startTime, "adding data to chart");
-
-    startTime = ProcessingProfiler.getTimeStamp();
-    root.setCenter(chart);
-    ProcessingProfiler.getTimeDiff(startTime, "adding chart into StackPane");
-
-    startTime = ProcessingProfiler.getTimeStamp();
-    primaryStage.setTitle(this.getClass().getSimpleName());
-    primaryStage.setScene(scene);
-    primaryStage.setOnCloseRequest(evt -> Platform.exit());
-    primaryStage.show();
-    ProcessingProfiler.getTimeDiff(startTime, "for showing");
+    return chart;
   }
 }
