@@ -9,14 +9,19 @@ import static arb.RealConstants.*;
 
 %typemap(javacode) mag_struct %{
  
- static
- {
+  public Magnitude log()
+  {
+    return log(this);
+  }
+   
+  static
+  {
    System.loadLibrary("arblib");
- }
+  }
  
- public static final int BYTES = 16;
+  public static final int BYTES = 16;
  
- int dim;
+  int dim;
  
   public Magnitude sub(Magnitude u, Magnitude res)
   {
