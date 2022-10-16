@@ -808,8 +808,6 @@ public class Real implements Serializable, Comparable<Real>, Iterable<Real>, Fie
 
   public String toString(int digits, boolean precise)
   {
-    digits = Math.min(20, Math.max(7, digits));
-
     if (dim == 1)
     {
       return arb.arb_get_str(this,
