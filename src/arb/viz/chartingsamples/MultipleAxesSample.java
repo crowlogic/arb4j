@@ -3,7 +3,6 @@ package arb.viz.chartingsamples;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import de.gsi.chart.XYChart;
 import de.gsi.chart.axes.spi.DefaultNumericAxis;
@@ -22,9 +21,7 @@ import de.gsi.dataset.utils.ProcessingProfiler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class MultipleAxesSample extends
@@ -129,31 +126,6 @@ public class MultipleAxesSample extends
     chart.getPlugins().add(zoom);
 
     chart.getPlugins().add(new EditAxis());
-
-    final Button newDataSet = new Button("new DataSet");
-    newDataSet.setOnAction(evt -> Platform.runLater(getDatasetConfigurationRunnable(errorRenderer1,
-                                                                                    errorRenderer2,
-                                                                                    errorRenderer3)));
-    final Button startTimer = new Button("timer");
-    startTimer.setOnAction(evt ->
-    {
-      if (scheduledFuture == null || scheduledFuture.isCancelled())
-      {
-        scheduledFuture = timer.scheduleAtFixedRate(getDatasetConfigurationRunnable(chart.getRenderers().get(0),
-                                                                                    errorRenderer2,
-                                                                                    errorRenderer3),
-                                                    MultipleAxesSample.UPDATE_DELAY,
-                                                    MultipleAxesSample.UPDATE_PERIOD,
-                                                    TimeUnit.MILLISECONDS);
-      }
-      else
-      {
-        scheduledFuture.cancel(false);
-      }
-    });
-
-    root.setTop(new HBox(newDataSet,
-                         startTimer));
 
     // generate the first set of data
     getDatasetConfigurationRunnable(chart.getRenderers().get(0), errorRenderer2, errorRenderer3).run();

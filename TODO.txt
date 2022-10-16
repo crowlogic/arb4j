@@ -1,8 +1,10 @@
+* chartfx implementation of multivariate stochastic process plotter
+
+
 * Now that the angular Newton iteration works well, re-implement
 tracecurve.mpl as a LociTracer class that implicitly defines the curve
 which is being traced. 
 
-* chartfx implementation of multivariate stochastic process plotter
 
 
 * Fast Fourier Transform API
