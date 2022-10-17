@@ -8,12 +8,10 @@ import arb.topological.*;
 import arb.topological.spaces.InnerProductSpace;
 
 /**
- * A field is a topological {@link Space}, itself defined as a {@link Set}, on
- * which addition, subtraction, multiplication, and division are defined and
- * behave as the corresponding operations on rational and {@link Real} numbers
- * do. A field is thus a fundamental algebraic structure which is widely used in
- * algebra, {@link NumberTheory}, and many other areas such as physics where
- * fields potentially represent actually existing physical fields and forces and
+ * a set of elements such that addition and multiplication are commutative and
+ * associative and multiplication is distributive over addition and there are
+ * two elements 0 and 1; "the set of all rational numbers is a field"
+ * 
  */
 public interface Field<X extends Field<X>> extends
                       AutoCloseable,
