@@ -81,5 +81,9 @@ module arb4j
   exports arb.utensils;
   exports arb.viz;
   exports arb.viz.gl;
+  exports arb.viz.gl.entities;
+  exports arb.viz.gl.models;
+  exports arb.viz.gl.shaders;
+  exports arb.viz.gl.functions;
   exports arb.viz.rendering;
 }
