@@ -37,6 +37,7 @@ module arb4j
   requires transitive jlatexmath;
 
   exports arb;
+  exports arb.algebra;
   exports arb.algebraic.expressions;
   exports arb.algebraic.geometry;
   exports arb.biology;

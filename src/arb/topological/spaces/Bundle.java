@@ -4,6 +4,8 @@ import arb.functions.Function;
 import arb.topological.Space;
 
 /**
+ * TODO: implement
+ * 
  * a bundle is a generalization of a fiber bundle dropping the condition of a
  * local product structure. The requirement of a local product structure rests
  * on the bundle having a topology. Without this requirement, more general
@@ -15,12 +17,7 @@ import arb.topological.Space;
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Bundle_(mathematics)">Bundle@Wikipedia</a>
- */
-
-/**
  * 
- * @author crow
- *
  * @param <E> total space
  * @param <B> base space
  * @param <P> projection map (function)
