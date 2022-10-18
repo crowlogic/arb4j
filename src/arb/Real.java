@@ -792,7 +792,7 @@ public class Real implements Serializable, Comparable<Real>, Iterable<Real>, Fie
   {
     try ( Magnitude d = new Magnitude())
     {
-      return (int) getRad().inv(d).log().div(MagnitudeConstants.log10mag, d).doubleValue() + 2;
+      return Math.max(10, (int) getRad().inv(d).log().div(MagnitudeConstants.log10mag, d).doubleValue() + 2);
     }
   }
   

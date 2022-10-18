@@ -3,8 +3,8 @@ package arb.viz.gl;
 public class Display
 {
 
-  private int    WIDTH      = 3200;
-  private int    HEIGHT     = 1400;
+  private int    WIDTH      = 2400;
+  private int    HEIGHT     = 1200;
 
   private double renderPart = 0.75;
 
