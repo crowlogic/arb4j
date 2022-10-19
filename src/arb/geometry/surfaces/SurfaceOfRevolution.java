@@ -2,9 +2,9 @@ package arb.geometry.surfaces;
 
 import arb.Complex;
 import arb.Real;
-import arb.functions.ComplexToRealFunction;
 import arb.geometry.Line;
 import arb.geometry.curves.PlaneCurve;
+import arb.geometry.differential.TangentBundle;
 import arb.topological.spaces.EuclideanSpace;
 
 /**
@@ -31,6 +31,19 @@ public class SurfaceOfRevolution implements
   public Real evaluate(Complex t, int order, int prec, Real res)
   {
     assert false : "rotate the curve";
+    return null;
+  }
+
+  @Override
+  public int dim()
+  {
+    return 3;
+  }
+
+  @Override
+  public TangentBundle tangentBundle()
+  {
+    assert false : "TODO Auto-generated method stub";
     return null;
   }
 

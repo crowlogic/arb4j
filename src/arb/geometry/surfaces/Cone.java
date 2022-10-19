@@ -2,6 +2,7 @@ package arb.geometry.surfaces;
 
 import arb.Complex;
 import arb.Real;
+import arb.geometry.differential.TangentBundle;
 
 public class Cone implements
                   ParametricSurface
@@ -11,6 +12,18 @@ public class Cone implements
   public Real evaluate(Complex t, int order, int prec, Real res)
   {
     throw new UnsupportedOperationException("TODO");
+  }
+
+  @Override
+  public int dim()
+  {
+    return 3;
+  }
+
+  @Override
+  public TangentBundle tangentBundle()
+  {
+    return null;
   }
 
 }

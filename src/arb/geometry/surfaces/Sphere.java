@@ -3,6 +3,7 @@ package arb.geometry.surfaces;
 import arb.Real;
 import arb.exceptions.ArbException;
 import arb.functions.ComplexToRealFunction;
+import arb.geometry.differential.TangentBundle;
 
 public class Sphere implements
                     RiemannSurface
@@ -30,6 +31,19 @@ public class Sphere implements
     default:
       throw new ArbException("a sphere only has two sheets, one for each hemisphere");
     }
+  }
+
+  @Override
+  public int dim()
+  {
+    return 3;
+  }
+
+  @Override
+  public TangentBundle tangentBundle()
+  {
+    assert false : "todo";
+    return null;
   }
 
 }

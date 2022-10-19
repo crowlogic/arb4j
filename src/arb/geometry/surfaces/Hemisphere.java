@@ -3,6 +3,7 @@ package arb.geometry.surfaces;
 import arb.Complex;
 import arb.Real;
 import arb.functions.ComplexToRealFunction;
+import arb.geometry.differential.TangentBundle;
 
 public class Hemisphere implements
                         ParametricSurface
@@ -33,6 +34,19 @@ public class Hemisphere implements
       }
       return res;
     }
+  }
+
+  @Override
+  public int dim()
+  {
+    return 3;
+  }
+
+  @Override
+  public TangentBundle tangentBundle()
+  {
+    assert false : "TODO Auto-generated method stub";
+    return null;
   }
 
 }

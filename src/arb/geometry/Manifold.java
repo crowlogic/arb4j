@@ -2,6 +2,7 @@ package arb.geometry;
 
 import arb.geometry.curves.Circle;
 import arb.geometry.curves.Lemniscate;
+import arb.geometry.differential.TangentBundle;
 import arb.geometry.surfaces.*;
 import arb.topological.Space;
 import arb.topological.spaces.*;
@@ -22,5 +23,14 @@ import arb.topological.spaces.*;
 public interface Manifold extends
                           Space
 {
-
+  public int dim();
+  
+  /**
+   * a manifold M M is parallelizable if and only if the tangent bundle is
+   * trivial.
+   * 
+   * @return a {@link TangentBundle} or null if this manifold is not
+   *         parallelizable
+   */
+  TangentBundle tangentBundle();
 }
