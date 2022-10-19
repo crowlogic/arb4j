@@ -12,7 +12,7 @@ package arb.operators;
  * arguments, should be straight-forward to create a generic test that tests the
  * linearness of the implementing class
  */
-public interface LinearOperator
+public interface LinearOperator extends Operator
 {
 
 }
