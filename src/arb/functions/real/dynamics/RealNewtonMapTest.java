@@ -9,6 +9,11 @@ import arb.functions.complex.CircularS;
 import arb.functions.real.RealPart;
 import junit.framework.TestCase;
 
+/**
+ * TODO: define something that traces out Equipotential curves where the real part of the function defines the potential and the imaginary part defines the 
+ * @author crow
+ *
+ */
 public class RealNewtonMapTest extends
                                TestCase
 {
@@ -22,14 +27,20 @@ public class RealNewtonMapTest extends
                                     new Real().set("0.1", 512));
     testIteratedNewtonMap(angle);
     System.out.println("awesome. 1/3rd of time needs to be spent sleeping");
-    assertEquals(w.get(0).doubleValue(), locateRoot(angle).getReal().doubleValue());
+    Complex locatedRoot  = locateRoot(angle);
+    Real    locatedAngle = locatedRoot.getReal();
+    System.out.println("locatedAngle=" + locatedAngle);
+    out.printf("locatedAngle=%s locatedRoot=%s", locatedAngle, locatedRoot);
+
+    Real θ = w.get(0);
+    assertEquals(θ.doubleValue(), locatedAngle.doubleValue());
 
   }
 
   @SuppressWarnings("resource")
   public void testSOrbit()
   {
-    int       prec   = 128;
+    int       prec   = 512;
     Real      h      = new Real().set("0.1", prec);
     CircularS angle  = new CircularS(RealConstants.one,
                                      h);
@@ -47,20 +58,22 @@ public class RealNewtonMapTest extends
     out.println("θ2=" + θ2);
   }
 
-  public Complex locateRoot(CircularS angle)
+  public Complex locateRoot(CircularS radialVector)
   {
-    RealPart realAngle = new RealPart(angle);
-    Roots    root      = realAngle.locateRoots(new RootLocatorOptions(new RealRootInterval(-.8,
-                                                                                           -0.7),
-                                                                      150,
-                                                                      50000,
-                                                                      1,
-                                                                      512));
+    RealPart           realAngle = new RealPart(radialVector);
+    RealRootInterval   interval  = new RealRootInterval(-.8,
+                                                        -0.7);
+    RootLocatorOptions config    = new RootLocatorOptions(interval,
+                                                          1500,
+                                                          50000,
+                                                          1,
+                                                          512);
+    Roots              root      = realAngle.locateRoots(config);
     root.refine(realAngle, 256, 100, true);
     System.out.println("root=" + root);
-    Complex hmm = new Complex(root.get(0).getReal(new Real(), 128));
+    Complex hmm = new Complex(root.get(0).getReal(new Real(), 512));
 
-    System.out.println("angle(w)=" + angle.evaluate(hmm, 1, 512, new Complex()));
+    System.out.println("angle(w)=" + radialVector.evaluate(hmm, 1, 512, new Complex()));
     return hmm;
   }
 

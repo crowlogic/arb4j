@@ -796,7 +796,7 @@ public class Real implements Serializable, Comparable<Real>, Iterable<Real>, Fie
     }
   }
   
-  public boolean  printPrecision = false;
+  public boolean  printPrecision = true;
     
   public String toString(int digits)
   {

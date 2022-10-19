@@ -770,7 +770,7 @@ import arb.topological.spaces.EuclideanVectorSpace;
     }
   }
   
-  public boolean  printPrecision = false;
+  public boolean  printPrecision = true;
     
   public String toString(int digits)
   {
