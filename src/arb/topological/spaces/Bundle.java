@@ -1,7 +1,7 @@
 package arb.topological.spaces;
 
 import arb.functions.Function;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * TODO: implement
@@ -22,7 +22,7 @@ import arb.topological.Space;
  * @param <B> base space
  * @param <P> projection map (function)
  */
-public interface Bundle<E extends Space, B extends Space, P extends Function>
+public interface Bundle<E extends TopologicalSpace, B extends TopologicalSpace, P extends Function>
 {
 
 }

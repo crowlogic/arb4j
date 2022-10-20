@@ -1,7 +1,7 @@
 package arb.topological;
 
 /**
- * Points x,y∈X in a (topological) {@link Space} X can be separated by
+ * Points x,y∈X in a (topological) {@link TopologicalSpace} X can be separated by
  * neighbourhoods if there exists a neighbourhood U of x and a neighbourhood V
  * of y such that U and V are disjoint ( U ∩ V = ∅ ) . X is a Hausdorff space if
  * all distinct points in X X are pairwise neighbourhood-separable. This
@@ -25,7 +25,7 @@ package arb.topological;
  * @param <X>
  */
 public interface HausdorffSpace<X> extends
-                               Space<X>
+                               TopologicalSpace<X>
 {
 
 }

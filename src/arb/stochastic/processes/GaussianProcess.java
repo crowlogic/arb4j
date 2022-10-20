@@ -8,7 +8,7 @@ import arb.topological.*;
 /**
  * In {@link ProbabilityTheory} and statistics, a {@link GaussianProcess} is a
  * {@link StochasticProcess} (a collection of random variables indexed by time
- * or {@link Space}), such that every finite collection of those random
+ * or {@link TopologicalSpace}), such that every finite collection of those random
  * variables has a multivariate normal distribution, i.e. every finite linear
  * combination of them is normally distributed. The distribution of a Gaussian
  * process is the joint distribution of all those (infinitely many) random

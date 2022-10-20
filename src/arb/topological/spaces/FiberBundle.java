@@ -1,7 +1,7 @@
 package arb.topological.spaces;
 
 import arb.functions.SurjectiveFunction;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * A fiber bundle is a structure ( E , B , π , F ) , where E , B , and F are
@@ -27,7 +27,7 @@ import arb.topological.Space;
  * @param <F> fiber
  * @param <π> the projection map (also known as bundle projection)
  */
-public interface FiberBundle<E extends Space, B extends Space, F extends Space, π extends SurjectiveFunction<E, B>>
+public interface FiberBundle<E extends TopologicalSpace, B extends TopologicalSpace, F extends TopologicalSpace, π extends SurjectiveFunction<E, B>>
                             extends
                             Bundle<E, B, π>
 {

@@ -3,7 +3,7 @@ package arb.domains;
 import static arb.RealConstants.*;
 
 import arb.Real;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 import arb.Float;
 import arb.FloatConstants;
 

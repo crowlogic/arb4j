@@ -1,6 +1,6 @@
 package arb.topological.spaces;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * 
@@ -8,7 +8,7 @@ import arb.topological.Space;
  * @param <X>
  */
 public interface MetrizableSpace<X> extends
-                                Space<X>
+                                TopologicalSpace<X>
 {
 
 }

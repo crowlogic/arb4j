@@ -2,7 +2,7 @@ package arb.topological.spaces;
 
 import arb.Set;
 import arb.measures.MeasurableSpace;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * The sample space (or <b>possibility</b> space) of an experiment or random
@@ -20,7 +20,7 @@ import arb.topological.Space;
  *
  * @see <a href="https://en.wikipedia.org/wiki/Sample_space">Wikipedia</a>
  * 
- * @param <E> the type of events that occur in the {@link Space}
+ * @param <E> the type of events that occur in the {@link TopologicalSpace}
  */
 public interface SampleSpace<E> extends
                             MeasurableSpace<E>

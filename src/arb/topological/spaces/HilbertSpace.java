@@ -6,7 +6,7 @@ import arb.OrthonormalBasis;
 import arb.Real;
 import arb.functions.Function;
 import arb.functions.FunctionSpace;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * Hilbert spaces (named after David Hilbert) allow generalizing the methods of

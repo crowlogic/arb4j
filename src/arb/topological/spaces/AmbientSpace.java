@@ -1,6 +1,6 @@
 package arb.topological.spaces;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * An ambient space is the space surrounding a mathematical object along with
@@ -8,7 +8,7 @@ import arb.topological.Space;
  *
  */
 public interface AmbientSpace extends
-                              Space
+                              TopologicalSpace
 {
 
 }

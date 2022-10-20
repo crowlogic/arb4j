@@ -2,7 +2,7 @@ package arb.geometry.differential;
 
 import arb.functions.SurjectiveFunction;
 import arb.theoretical.physics.GaugeTheory;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 import arb.topological.spaces.FiberBundle;
 import arb.topological.spaces.VectorSpace;
 
@@ -18,7 +18,7 @@ import arb.topological.spaces.VectorSpace;
  * @see Shiing-Shen Chern, 1987. Vector bundles with a connection. Mathematical
  *      Sciences Research Institute
  */
-public interface VectorBundle<E extends Space, B extends Space, C extends Connection, π extends SurjectiveFunction<E, B>>
+public interface VectorBundle<E extends TopologicalSpace, B extends TopologicalSpace, C extends Connection, π extends SurjectiveFunction<E, B>>
                              extends
                              FiberBundle<E, B, VectorSpace<C>, π>
 {

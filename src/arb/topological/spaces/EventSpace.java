@@ -1,6 +1,6 @@
 package arb.topological.spaces;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * An event is a set of outcomes of an experiment (a subset of the sample space)
@@ -29,7 +29,7 @@ import arb.topological.Space;
  *      "https://en.wikipedia.org/wiki/Event_(probability_theory)">Wikipedia</a>
  */
 public interface EventSpace<X> extends
-                           Space<X>
+                           TopologicalSpace<X>
 {
 
 }

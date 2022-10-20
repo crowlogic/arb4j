@@ -4,7 +4,7 @@ import arb.*;
 import arb.topological.*;
 
 public interface Domain<X extends Field> extends
-                       Space<X>
+                       TopologicalSpace<X>
 {
 
 }

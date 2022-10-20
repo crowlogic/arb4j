@@ -2,7 +2,7 @@ package arb.domains;
 
 import arb.MarkedPoint;
 import arb.geometry.Point;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 import arb.topological.spaces.*;
 
 /**
@@ -13,7 +13,7 @@ import arb.topological.spaces.*;
  * @param <F>
  */
 public interface Interval<F> extends
-                         Space<F>
+                         TopologicalSpace<F>
 {
   public F left();
 

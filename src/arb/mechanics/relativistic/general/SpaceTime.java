@@ -1,6 +1,6 @@
 package arb.mechanics.relativistic.general;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * In physics, spacetime is a mathematical model that combines the three
@@ -14,7 +14,7 @@ import arb.topological.Space;
  * @see <a href="https://en.wikipedia.org/wiki/Spacetime">Wikipedia</a>
  */
 public interface SpaceTime<X> extends
-                          Space<X>
+                          TopologicalSpace<X>
 {
 
 }

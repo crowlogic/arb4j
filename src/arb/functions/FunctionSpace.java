@@ -3,7 +3,7 @@ package arb.functions;
 import arb.Metric;
 import arb.Set;
 import arb.domains.Domain;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 import arb.topological.spaces.VectorSpace;
 
 /**
@@ -22,7 +22,7 @@ import arb.topological.spaces.VectorSpace;
  *      "https://en.wikipedia.org/wiki/Function_space">FunctionSpace@Wikipedia</a>
  */
 public interface FunctionSpace<X, Y> extends
-                              Space<Function<X, Y>>
+                              TopologicalSpace<Function<X, Y>>
 {
 
 }

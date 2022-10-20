@@ -2,7 +2,7 @@ package arb.mechanics.relativistic.special;
 
 import arb.domains.Interval;
 import arb.geometry.Manifold;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * In mathematical physics, Minkowski space (or Minkowski spacetime)
@@ -28,7 +28,7 @@ import arb.topological.Space;
  * @param <X>
  */
 public interface MinkowskiSpace<X> extends
-                               Space<X>
+                               TopologicalSpace<X>
 {
 
 }

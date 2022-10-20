@@ -2,7 +2,7 @@ package arb.topological.spaces;
 
 import arb.OrderedPair;
 import arb.Set;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 import arb.topological.Topology;
 
 /**
@@ -26,7 +26,7 @@ import arb.topological.Topology;
  */
 public class CartesianProduct<A extends Set, B extends Set> extends
                              OrderedPair<A, B> implements
-                             Space<CartesianProduct<A, B>>
+                             TopologicalSpace<CartesianProduct<A, B>>
 {
 
   public CartesianProduct(A a, B b)

@@ -15,7 +15,7 @@ import arb.topological.spaces.InnerProductSpace;
  */
 public interface Field<X extends Field<X>> extends
                       AutoCloseable,
-                      Space<X>,
+                      TopologicalSpace<X>,
                       Iterable<X>
 {
 

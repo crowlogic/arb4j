@@ -4,7 +4,7 @@ import arb.geometry.curves.Circle;
 import arb.geometry.curves.Lemniscate;
 import arb.geometry.differential.TangentBundle;
 import arb.geometry.surfaces.*;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 import arb.topological.spaces.*;
 
 /**
@@ -21,7 +21,7 @@ import arb.topological.spaces.*;
  * 
  */
 public interface Manifold extends
-                          Space
+                          TopologicalSpace
 {
   public int dim();
   

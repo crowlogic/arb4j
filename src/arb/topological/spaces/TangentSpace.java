@@ -1,9 +1,9 @@
 package arb.topological.spaces;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 public interface TangentSpace<X> extends
-                             Space<X>
+                             TopologicalSpace<X>
 {
 
 }

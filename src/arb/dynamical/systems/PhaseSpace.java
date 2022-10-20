@@ -1,9 +1,9 @@
 package arb.dynamical.systems;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 public interface PhaseSpace<X> extends
-                           Space<X>
+                           TopologicalSpace<X>
 {
 
 }

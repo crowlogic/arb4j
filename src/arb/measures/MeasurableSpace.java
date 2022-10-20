@@ -1,6 +1,6 @@
 package arb.measures;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * 
@@ -9,7 +9,7 @@ import arb.topological.Space;
  * @param <X>
  */
 public interface MeasurableSpace<X> extends
-                                Space<X>
+                                TopologicalSpace<X>
 {
 
 }

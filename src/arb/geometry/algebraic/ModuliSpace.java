@@ -1,6 +1,6 @@
 package arb.geometry.algebraic;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * a moduli space is a geometric space (usually a scheme or an algebraic stack)
@@ -15,7 +15,7 @@ import arb.topological.Space;
  * @param <X> the type of points of this moduli space
  */
 public interface ModuliSpace<X> extends
-                            Space<X>
+                            TopologicalSpace<X>
 {
 
 }

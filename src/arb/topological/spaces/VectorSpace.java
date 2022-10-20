@@ -1,6 +1,6 @@
 package arb.topological.spaces;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * A vector space (also called a linear space) is a set whose elements, often
@@ -40,7 +40,7 @@ import arb.topological.Space;
  * @see <a href="https://en.wikipedia.org/wiki/Vector_space">Wikipedia</a>
  */
 public interface VectorSpace<X> extends
-                            Space<X>
+                            TopologicalSpace<X>
 {
 
 }

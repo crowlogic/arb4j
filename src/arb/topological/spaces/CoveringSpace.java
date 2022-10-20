@@ -1,6 +1,6 @@
 package arb.topological.spaces;
 
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * Let X be a topological space. A covering of X X is a continuous map
@@ -35,7 +35,7 @@ import arb.topological.Space;
  * @param <X>
  */
 public interface CoveringSpace<X> extends
-                              Space<X>
+                              TopologicalSpace<X>
 {
 
 }

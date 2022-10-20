@@ -1,7 +1,7 @@
 package arb.geometry;
 
 import arb.geometry.surfaces.Plane;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * Point
@@ -19,7 +19,7 @@ import arb.topological.Space;
  * no part."
  * 
  * The basic geometric structures of higher dimensional geometry--the
- * {@link Line}, {@link Plane}, {@link Space}, and hyperspace--are all built up
+ * {@link Line}, {@link Plane}, {@link TopologicalSpace}, and hyperspace--are all built up
  * of infinite numbers of points arranged in particular ways.
  * 
  * These facts lead to the mathematical pun, "without geometry, life is

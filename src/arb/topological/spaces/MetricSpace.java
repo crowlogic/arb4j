@@ -4,7 +4,7 @@ import arb.Field;
 import arb.Metric;
 import arb.OpenSet;
 import arb.Set;
-import arb.topological.Space;
+import arb.topological.TopologicalSpace;
 
 /**
  * A metric space is a {@link Set} together with a notion of distance between
@@ -30,13 +30,13 @@ import arb.topological.Space;
  * defined in the setting of metric spaces. Other notions, such as continuity,
  * compactness, and {@link OpenSet} and ClosedSet, can be defined for metric
  * spaces, but also in the even more general setting of topological
- * {@link Space}s.
+ * {@link TopologicalSpace}s.
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Metric_space">MetricSpace@Wikipedia</a>
  */
 public interface MetricSpace<X extends Field> extends
-                            Space<X>
+                            TopologicalSpace<X>
 {
   /**
    * @return the distance function metric
