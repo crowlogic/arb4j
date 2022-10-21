@@ -199,6 +199,12 @@ import arb.topological.spaces.*;
     return this;
   }
 
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(getReal().doubleValue(), getImag().doubleValue() );
+  }
+  
   /**
    * @return {@link arb#acb_equal(Complex, Complex)}
    */
@@ -216,24 +222,24 @@ import arb.topological.spaces.*;
   public Complex resize(int alloc)
   {
     swigCPtr = SWIGTYPE_p_void.getCPtr(arb.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
-                                                                                false),
-                                                            2 * alloc * Complex.BYTES));
-    this.dim = alloc;                                                            
+                                                                             false),
+                                                         2 * (long)alloc * Complex.BYTES));
+    this.dim = alloc;
     return this;
   }
     
   private static final long serialVersionUID = 1L;
     
-  private void writeObject(java.io.ObjectOutputStream stream)
-                throws IOException {
-                // TODO implement
-        }
+  private void writeObject(java.io.ObjectOutputStream stream) throws IOException
+  {
+    assert false : "TODO";
+  }
 
-        private void readObject(java.io.ObjectInputStream stream)
-                throws IOException, ClassNotFoundException {
-                // TODO implement
-        }
-        
+  private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException
+  {
+    assert false : "TODO";
+  }
+    
   public Iterator<Real> realIterator()
   {
     return new ComplexRealPartIterator(this);
@@ -631,6 +637,7 @@ import arb.topological.spaces.*;
     return arb.acb_contains_zero(this) != 0;
   }
   
+  @Override
   public boolean contains( Complex x )
   {
     return arb.acb_contains(this, x) != 0;

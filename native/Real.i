@@ -26,6 +26,12 @@ import arb.topological.spaces.EuclideanVectorSpace;
 %typemap(javacode) arb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(doubleValue());
+  }
+  
   public Real normalize(int prec)
   {
     return normalize(prec,this);

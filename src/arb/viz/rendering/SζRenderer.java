@@ -27,8 +27,8 @@ public class SζRenderer extends
   @SuppressWarnings("resource")
   public SζRenderer() throws NoninvertibleTransformException
   {
-    super(new Dimension(2500,
-                        1250),
+    super(new Dimension(3600,
+                        1800),
           new Rectangle2D.Double(-10,
                                  20,
                                  60,
