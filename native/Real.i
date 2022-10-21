@@ -764,11 +764,14 @@ import arb.topological.spaces.EuclideanVectorSpace;
     
   public int digits()
   {
-    try ( Magnitude d = new Magnitude())
+    try ( Magnitude d = new Magnitude()  )
     {
-      return Math.max(10, (int) getRad().inv(d).log().div(MagnitudeConstants.log10mag, d).doubleValue() + 2);
+      getRad().inv(d);
+      d.log(d);
+      d.div(MagnitudeConstants.log10mag, d);
+      return (int) d.doubleValue() + 2;
     }
-  }
+  }  
   
   public boolean  printPrecision = true;
     
