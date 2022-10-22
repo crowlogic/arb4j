@@ -11,6 +11,7 @@ import arb.ThreadLocalReal;
 import arb.arb;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.dynamics.NewtonMap;
+import arb.geometry.Manifold;
 import arb.operators.Composition;
 
 /**
@@ -29,7 +30,7 @@ import arb.operators.Composition;
  */
 public class Circle implements
                     PlaneCurve,
-                    AutoCloseable
+                    AutoCloseable,Manifold
 {
   /**
    * Construct a rotation of a circle as a complex-valued function of a real
@@ -102,6 +103,12 @@ public class Circle implements
       Θ.set(angle);
       return evaluate(Θ, 1, 64, complex);
     }
+  }
+
+  @Override
+  public int dim()
+  {
+    return 1;
   }
 
 }

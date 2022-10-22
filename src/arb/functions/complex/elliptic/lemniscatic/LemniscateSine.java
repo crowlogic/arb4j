@@ -4,14 +4,14 @@ import arb.Complex;
 import arb.functions.complex.HolomorphicFunction;
 
 /**
- * Lemniscate Sine: sl(z)=∫(1/(1-t^4),t=0..z) <br>
+ * Lemniscate Sine: sl(z)=∫(1/(1-t⁴),t=0..z) <br>
  * 
  * sl(x) = q(1,x)/q(3,x) <br>
  * where <br>
- * q(k,x) = theta[k](G*x;exp(-x))<br>
+ * q(k,x) = θ[k](G*x;e^(-x))<br>
  * and <br>
  * G = M(1,√2) = Gauss's constant <br>
- * where M(a,b) is the arithmetic-geometric-mean of 1 and the √2
+ * where M(a,b) is the arithmetic-geometric-mean of 1 and √2
  * 
  * @param t
  * @param prec

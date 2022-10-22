@@ -1,9 +1,12 @@
 package arb.topological.spaces;
 
 import arb.Field;
+import arb.SubSet;
+import arb.geometry.Manifold;
 
 public interface EuclideanSpace<X extends Field> extends
-                               HilbertSpace<X>
+                               HilbertSpace<X>,
+                               Manifold<X>
 {
 
 }

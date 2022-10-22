@@ -13,11 +13,6 @@ public class Torus implements
    return 3;
   }
 
-  @Override
-  public TangentBundle tangentBundle()
-  {
-    assert false : "todo";
-    return null;
-  }
+
 
 }

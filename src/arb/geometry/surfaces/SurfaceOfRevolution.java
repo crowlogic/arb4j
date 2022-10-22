@@ -40,11 +40,5 @@ public class SurfaceOfRevolution implements
     return 3;
   }
 
-  @Override
-  public TangentBundle tangentBundle()
-  {
-    assert false : "TODO Auto-generated method stub";
-    return null;
-  }
 
 }
