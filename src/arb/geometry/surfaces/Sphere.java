@@ -39,11 +39,5 @@ public class Sphere implements
     return 3;
   }
 
-  @Override
-  public TangentBundle tangentBundle()
-  {
-    assert false : "todo";
-    return null;
-  }
 
 }

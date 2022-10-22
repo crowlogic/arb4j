@@ -20,10 +20,4 @@ public class Cone implements
     return 3;
   }
 
-  @Override
-  public TangentBundle tangentBundle()
-  {
-    return null;
-  }
-
 }

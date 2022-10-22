@@ -20,17 +20,9 @@ import arb.topological.spaces.*;
  * the {@link Torus}, and also the Klein bottle and real projective plane.
  * 
  */
-public interface Manifold extends
-                          TopologicalSpace
+public interface Manifold<X> extends
+                          TopologicalSpace<X>
 {
   public int dim();
-  
-  /**
-   * a manifold M M is parallelizable if and only if the tangent bundle is
-   * trivial.
-   * 
-   * @return a {@link TangentBundle} or null if this manifold is not
-   *         parallelizable
-   */
-  TangentBundle tangentBundle();
+
 }
