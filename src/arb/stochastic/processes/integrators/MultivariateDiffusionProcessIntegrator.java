@@ -43,10 +43,9 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
   {
-
-    for (int i = 0; i < dim; i++)
+    for (var integrator : integrators)
     {
-      integrators[i].step(state, prec, evalSeq);
+      integrator.step(state, prec, evalSeq);
     }
     return evalSeq;
 
@@ -75,7 +74,10 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec)
   {
-    println("Partitioning " + interval + " into " + n + " pieces at " + prec + " bits of precision");
+    if (verbose)
+    {
+      println("Partitioning " + interval + " into " + n + " pieces at " + prec + " bits of precision");
+    }
     RealPartition partition = interval.realPartition(n, prec);
     state.setdt(partition.dt);
     partition.dt.sqrt(prec, sqrtδt);
