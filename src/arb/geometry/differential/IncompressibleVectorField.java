@@ -10,9 +10,15 @@ import arb.geometry.DifferentiableManifold;
  * circular currents. When traversed by a current the solenoid exhibits polarity
  * and attraction or repulsion, like a magnet.
  *
+ *
+ * a solenoidal vector field (also known as an incompressible vector field, a
+ * divergence-free vector field, or a transverse vector field) is a vector field
+ * v with divergence zero at all points in the field: ∇⋅v=0. A common way of
+ * expressing this property is to say that the field has no sources or sinks
+ * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Solenoidal_vector_field">SolenoidalVectorField@Wikipedia</a>
- *      
+ * 
  * @param <M>
  */
 public interface IncompressibleVectorField<M extends DifferentiableManifold> extends
