@@ -18,4 +18,5 @@ public interface DifferentiableManifold extends
    *         parallelizable
    */
   TangentBundle tangentBundle();
+ 
 }
