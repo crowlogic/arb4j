@@ -276,7 +276,7 @@ import arb.topological.spaces.EuclideanVectorSpace;
   public Real(String string, int prec)
   {
     this();
-    assign(string, prec);
+    set(string, prec);
   }
   
   public Real log(int prec, Real res)
@@ -866,18 +866,12 @@ import arb.topological.spaces.EuclideanVectorSpace;
     return arb.arb_overlaps(this, interval) != 0;
   }
   
+  @Override  
   public boolean contains( Real interval )
   {
     return arb.arb_contains(this, interval) != 0;
   }
-  
-  
-  public Real assign( String string, int prec )
-  {
-    arb.arb_set_str(this, string, prec);
-    return this;
-  }
-  
+    
   public Real set(double d)
   {
     arb.arb_set_d(this, d);

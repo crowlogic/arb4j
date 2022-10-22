@@ -19,7 +19,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 {
   final int                                                       dim;
 
-  public final DiffusionProcessIntegrator<M, DiffusionProcess<M>> integrators[];
+  public final DiffusionProcessIntegrator<M, DiffusionProcess<M>>[] integrators;
 
   M                                                               state;
 

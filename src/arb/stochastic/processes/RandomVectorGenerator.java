@@ -6,11 +6,7 @@ import arb.Real;
 public interface RandomVectorGenerator extends
                                        AutoCloseable
 {
-  @Override
-  default void close()
-  {
 
-  }
 
   public RandomState getRandomState();
 

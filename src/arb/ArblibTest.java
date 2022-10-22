@@ -20,7 +20,7 @@ public class ArblibTest extends
   {
     try ( Real a = new Real())
     {
-      a.assign("12.123456789", 128);
+      a.set("12.123456789", 128);
       Real bee = a.frac(prec, new Real());
       System.out.println("bee " + bee);
       double b = bee.doubleValue();
