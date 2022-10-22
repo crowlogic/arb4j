@@ -17,21 +17,19 @@ import arb.stochastic.processes.MultivariateDiffusionProcess;
 public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffusionProcessState> implements
                                                    AutoCloseable
 {
-  final int                                                       dim;
+  final int                                                         dim;
 
   public final DiffusionProcessIntegrator<M, DiffusionProcess<M>>[] integrators;
 
-  M                                                               state;
+  M                                                                 state;
 
-  Real                                                            sqrtδt = new Real();
+  Real                                                              sqrtδt = new Real();
 
-  private MultivariateDiffusionProcess                            process;
+  private MultivariateDiffusionProcess<M>                           process;
 
-  private GaussianDistribution                                    gaussian;
+  private RealMatrix                                                correlationMatrix;
 
-  private RealMatrix                                              correlationMatrix;
-
-  public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess process,
+  public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess<M> process,
                                                 M state,
                                                 RealMatrix correlationMatrix,
                                                 DiffusionProcessIntegrator<M, DiffusionProcess<M>>... integrators)
@@ -82,12 +80,12 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     state.setdt(partition.dt);
     partition.dt.sqrt(prec, sqrtδt);
 
-    EvaluationSequence evaluationSequence = new EvaluationSequence(partition,
-                                                                   process.dim());
+    EvaluationSequence   evaluationSequence = new EvaluationSequence(partition,
+                                                                     process.dim());
 
-    gaussian = new GaussianDistribution(zero,
-                                        state.getdt(sqrtδt).sqrt(prec));
-    RandomState randomState = state.getRandomState();
+    GaussianDistribution gaussian           = new GaussianDistribution(zero,
+                                                                       state.getdt(sqrtδt).sqrt(prec));
+    RandomState          randomState        = state.getRandomState();
     evaluationSequence.generateRandomSamples(gaussian, correlationMatrix, randomState, prec);
     state.verify();
 
