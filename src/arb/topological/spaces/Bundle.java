@@ -22,7 +22,7 @@ import arb.topological.TopologicalSpace;
  * @param <B> base space
  * @param <P> projection map (function)
  */
-public interface Bundle<E extends TopologicalSpace, B extends TopologicalSpace, P extends Function>
+public interface Bundle<E extends TopologicalSpace, B extends TopologicalSpace, P extends Function<E, B>>
 {
 
 }
