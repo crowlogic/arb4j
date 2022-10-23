@@ -26,7 +26,8 @@ import arb.functions.Function;
  * 
  *
  */
-public interface BilinearForm<V extends VectorSpace, K extends Field>
+public interface BilinearForm<V extends VectorSpace<K>, K extends Field<?>> extends
+                             Function<CartesianProduct<V, V>, K>
 {
 
 }
