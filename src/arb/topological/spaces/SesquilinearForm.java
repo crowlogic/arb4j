@@ -9,15 +9,15 @@ import arb.Field;
  * 
  * A bilinear form is linear in each of its arguments, but a sesquilinear form
  * allows one of the arguments to be "twisted" in a semilinear manner, thus the
- * name; which originates from the Latin numerical prefix sesqui- meaning "one
- * and a half".
+ * name; which originates from the Latin numerical prefix sesqui- meaning
+ * <b>"one and a half"</b>
  * 
  * The basic concept of the dot product – producing a scalar from a pair of
  * vectors – can be generalized by allowing a broader range of scalar values
  * and, perhaps simultaneously, by widening the definition of a vector.
  * 
- * A motivating special case is a sesquilinear form on a complex vector space,
- * V.
+ * A motivating special case is a sesquilinear form on a
+ * {@link ComplexVectorSpace}, V.
  * 
  * This is a map V × V → C that is linear in one argument and "twists" the
  * linearity of the other argument by complex conjugation (referred to as being
