@@ -19,14 +19,14 @@ public abstract class MultivariateDiffusionProcessState extends
   public void lock()
   {
     super.lock();
-    forEach(x -> x.lock());
+    forEach(DiffusionProcessState::lock);
   }
 
   @Override
   public void unlock()
   {
     super.unlock();
-    forEach(x -> x.unlock());
+    forEach(DiffusionProcessState::unlock);
   }
 
   @Override
@@ -44,7 +44,7 @@ public abstract class MultivariateDiffusionProcessState extends
    * keep the time variable in lock-step between state transitions
    */
   @Override
-  public ContinuousTimeState setTime(Real t)
+  public synchronized ContinuousTimeState setTime(Real t)
   {
     super.setTime(t);
     forEach(state -> state.setTime(t));
@@ -76,17 +76,16 @@ public abstract class MultivariateDiffusionProcessState extends
 
   }
 
-  @Override
-  public abstract DiffusionProcessState getState(int i);
-
   /**
    * Sets each of the dimensions indices to this{@link #index()}
    */
   public void resetIndices()
   {
+    final int index = index();
+    
     for (int i = 0; i < dim(); i++)
     {
-      getState(i).setIndex(index());
+      getState(i).setIndex(index);
     }
   }
 
