@@ -1,10 +1,11 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "Serializable, Comparable<Real>, Iterable<Real>, Field<Real>, Lockable, EuclideanVectorSpace<Real>"
+%typemap(javainterfaces) arb_struct "VectorSpace<Real>, Serializable, Comparable<Real>, Iterable<Real>, Field<Real>, Lockable, EuclideanVectorSpace<Real>"
 
 %typemap(javaimports) arb_struct %{
 import java.io.Serializable; 
 import org.lwjgl.system.*;
+import arb.topological.spaces.VectorSpace;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
 import java.util.*;

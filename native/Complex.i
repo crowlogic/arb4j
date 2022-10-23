@@ -15,7 +15,7 @@ import arb.topological.spaces.*;
 
 %typemap(javafinalize) acb_struct ""
 
-%typemap(javainterfaces) acb_struct "Field<Complex>,Iterable<Complex>,Serializable,EuclideanVectorSpace<Complex>"
+%typemap(javainterfaces) acb_struct "VectorSpace<Complex>, Field<Complex>,Iterable<Complex>,Serializable,EuclideanVectorSpace<Complex>"
 
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }

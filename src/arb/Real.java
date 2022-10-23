@@ -10,6 +10,7 @@ package arb;
 
 import java.io.Serializable; 
 import org.lwjgl.system.*;
+import arb.topological.spaces.VectorSpace;
 import static arb.IntegerConstants.*;
 import static arb.arb.*;
 import java.util.*;
@@ -27,7 +28,7 @@ import arb.topological.spaces.EuclideanVectorSpace;
  * 
  */
 
-public class Real implements Serializable, Comparable<Real>, Iterable<Real>, Field<Real>, Lockable, EuclideanVectorSpace<Real> {
+public class Real implements VectorSpace<Real>, Serializable, Comparable<Real>, Iterable<Real>, Field<Real>, Lockable, EuclideanVectorSpace<Real> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 

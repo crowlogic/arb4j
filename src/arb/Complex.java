@@ -20,7 +20,7 @@ import arb.topological.spaces.*;
  * {@link EuclideanVectorSpace} of dimension two.
  */
 
-public class Complex implements Field<Complex>,Iterable<Complex>,Serializable,EuclideanVectorSpace<Complex> {
+public class Complex implements VectorSpace<Complex>, Field<Complex>,Iterable<Complex>,Serializable,EuclideanVectorSpace<Complex> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
