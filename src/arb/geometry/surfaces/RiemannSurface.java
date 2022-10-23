@@ -23,8 +23,8 @@ import arb.topological.spaces.MetrizableSpace;
  * orientable and a {@link MetrizableSpace}.
  * 
  */
-public interface RiemannSurface extends
-                                Surface
+public interface RiemannSurface<X> extends
+                                Surface<X>
 {
   public int getNumberOfSheets();
 
