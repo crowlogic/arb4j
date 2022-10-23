@@ -68,6 +68,7 @@ module arb4j
   exports arb.topology.transformations;
   exports arb.measures;
   exports arb.mechanics;
+  exports arb.mechanics.fluid;
   exports arb.mechanics.classical;
   exports arb.mechanics.relativistic;
   exports arb.mechanics.relativistic.general;
