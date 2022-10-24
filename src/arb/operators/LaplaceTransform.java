@@ -29,10 +29,11 @@ public class LaplaceTransform<F extends RealToComplexFunction> implements
   F f;
 
   @Override
-  public Complex evaluate(Real ξ, int order, int prec, Complex res)
+  public Complex evaluate(Complex ξ, int order, int prec, Complex res)
   {
     order = Math.max(1, order);
     assert order < 2;
+    assert ξ.getImag().isZero();
 
     /**
      * f(x)e^(-i2πξx)
@@ -42,7 +43,7 @@ public class LaplaceTransform<F extends RealToComplexFunction> implements
                                       try ( Complex exponent = new Complex(); Complex y = new Complex())
                                       {
                                         Real expr = exponent.getReal().one();
-                                        expr.negate(expr).mul(ξ, integrandPrec, expr).mul(x, integrandPrec, expr);
+                                        expr.negate(expr).mul(ξ.getReal(), integrandPrec, expr).mul(x, integrandPrec, expr);
                                         expr.exp(integrandPrec, expr);
                                         exponent.mul(f.evaluate(x, integrandOrder, integrandPrec, y),
                                                      integrandPrec,

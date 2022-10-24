@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import arb.Complex;
 import arb.Real;
+import arb.RealConstants;
 
 public class LaplaceTransformTest
 {
@@ -18,8 +19,9 @@ public class LaplaceTransformTest
                                         r.getReal().set(z);
                                         return r;
                                       });
-    Complex          evaluate         = laplaceTransform.evaluate(new Real("0.5",
-                                                                           128),
+    Complex          evaluate         = laplaceTransform.evaluate(new Complex(new Real("0.5",
+                                                                                       128),
+                                                                              RealConstants.zero),
                                                                   1,
                                                                   128,
                                                                   new Complex());

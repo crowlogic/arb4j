@@ -2,6 +2,7 @@ package arb.stochastic;
 
 import static arb.RealConstants.*;
 
+import arb.Complex;
 import arb.Real;
 
 public class StandardGaussianCharacteristicFunction implements
@@ -9,7 +10,7 @@ public class StandardGaussianCharacteristicFunction implements
 {
 
   @Override
-  public Real evaluate(Real z, int order, int prec, Real res)
+  public Complex evaluate(Complex z, int order, int prec, Complex res)
   {
     order = Math.max(order, 1);
     assert order < 2;

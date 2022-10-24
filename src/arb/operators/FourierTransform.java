@@ -27,17 +27,18 @@ public class FourierTransform<F extends Function<Real, Real>> implements
   F f;
 
   @Override
-  public Complex evaluate(Real ξ, int order, int prec, Complex res)
+  public Complex evaluate(Complex ξ, int order, int prec, Complex res)
   {
     order = Math.max(1, order);
     assert order < 2;
-
+    assert ξ.getImag().isZero();
+    
     /**
      * f(x)*e^(-i*2*π*ξ*x) or if inverse then f(x)*e^(i*2*π*ξ*x)
      */
     RealToComplexFunction integrand = (x, integrandOrder, integrandPrec, result) ->
     {
-      try ( Complex exponent = new Complex(); Real y = new Real())
+      try ( Complex exponent = new Complex(); Real y = new Real(); Real q = new Real(); )
       {
         Real expi = exponent.getImag();
         expi.π(integrandPrec).mul(2, integrandPrec, expi);
@@ -45,9 +46,11 @@ public class FourierTransform<F extends Function<Real, Real>> implements
         {
           expi.negate(expi);
         }
-        expi.mul(ξ, integrandPrec, expi).mul(x, integrandPrec, expi);
+        expi.mul(ξ.getReal(), integrandPrec, expi).mul(x, integrandPrec, expi);
+        q.set(x);
+        Real tmp = f.evaluate(q, integrandOrder, integrandPrec, y);
         exponent.exp(integrandPrec, result)
-                .mul(f.evaluate(x, integrandOrder, integrandPrec, y), integrandPrec, result);
+                .mul(tmp, integrandPrec, result);
         return result;
       }
     };

@@ -3,6 +3,7 @@ package arb.operators;
 import static arb.utensils.Utilities.println;
 
 import arb.*;
+import arb.functions.RealToComplexFunction;
 import arb.functions.real.ErrorFunction;
 import arb.functions.real.RealPart;
 import arb.stochastic.StandardGaussianCharacteristicFunction;
@@ -29,8 +30,9 @@ public class FourierTransformTest extends
                                                                                       false);
 
     φnumeric.integrationOptions.verbose = false;
-    try ( Real point = new Real("0.75",
-                                prec))
+    try ( Complex point = new Complex(new Real("0.75",
+                                               prec),
+                                      RealConstants.zero))
     {
       System.out.println("point=" + point);
 
@@ -46,7 +48,7 @@ public class FourierTransformTest extends
                    Math.pow(10, -17));
 
       val.getImag().zero();
-      φexact.evaluate(point, 1, prec, val.getReal());
+      φexact.evaluate(point, 1, prec, val);
 
       System.out.println("input=" + point);
       val.printPrecision = true;

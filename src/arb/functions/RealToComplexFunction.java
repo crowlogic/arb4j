@@ -15,29 +15,7 @@ import arb.utensils.Utilities;
 public interface RealToComplexFunction extends
                                        Function<Real, Complex>
 {
-  public class Complexification implements
-                                HolomorphicFunction
-  {
-    public Complexification(RealToComplexFunction func)
-    {
-      this.func = func;
-    }
-
-    RealToComplexFunction func;
-
-    @Override
-    public Complex evaluate(Complex t, int order, int prec, Complex res)
-    {
-      assert t.getImag().isZero() : "the underlying function accepts real-valued variables only";
-      return func.evaluate(t.getReal(), order, prec, res);
-    }
-
-  }
-
-  public default Complexification complexify()
-  {
-    return new Complexification(this);
-  }
+  
 
   public default RealPart realPart()
   {
