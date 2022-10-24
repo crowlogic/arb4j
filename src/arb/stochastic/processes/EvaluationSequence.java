@@ -95,6 +95,14 @@ public class EvaluationSequence extends
   @Override
   public double get(int dimIndex, int index)
   {
+    if (dimIndex == 0)
+    {
+      dimIndex = 1;
+    }
+    else
+    {
+      dimIndex = 0;
+    }
     return values[dimIndex].get(index).doubleValue();
   }
 
