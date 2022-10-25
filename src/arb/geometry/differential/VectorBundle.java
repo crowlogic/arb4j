@@ -10,7 +10,7 @@ import arb.topological.spaces.VectorSpace;
  * @param <E> total space
  * @param <B> base space
  * @param <c> the {@link Connection}
- * @param <π> the projection map (also known as bundle projection)
+ * @param <π> the projection map from E to B (also known as bundle projection)
  * 
  * @see {@link GaugeTheory}
  * 

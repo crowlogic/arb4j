@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.joml.Matrix4f;
@@ -33,7 +34,6 @@ public class Renderer implements
                       lwjgui.gl.Renderer
 {
 
-  private StaticShader        shader;
   private static Loader       loader   = new Loader();
   private static final Vector zAxis    = FunctionHandler.createVector(new Vector3f(0,
                                                                                    0,
@@ -65,21 +65,10 @@ public class Renderer implements
                                                                                    1,
                                                                                    1),
                                                                       loader);
-
-  private ArrayList<Surface>  surfaces = new ArrayList<>();
-  private ArrayList<Curve>    curves   = new ArrayList<>();
-  private ArrayList<Vector>   vectors  = new ArrayList<>();
-  private ArrayList<Vector>   axis     = new ArrayList<Vector>()
-                                       {
-                                         {
-                                           add(xAxis);
-                                           add(yAxis);
-                                           add(zAxis);
-                                         }
-                                       };
-  private List<Light>         lights   = new ArrayList<>();
   static final float          FOV      = 70;
 
+  private static final float NEAR_PLANE = 0.1f;
+  private static final float FAR_PLANE  = 1000;
   /**
    * Get loader
    * 
@@ -89,55 +78,26 @@ public class Renderer implements
   {
     return loader;
   }
+  private StaticShader        shader;
+  private ArrayList<Surface>  surfaces = new ArrayList<>();
+  private ArrayList<Curve>    curves   = new ArrayList<>();
 
-  /**
-   * Put surfaces to render
-   * 
-   * @param surfaces surfaces to render
-   */
-  public void putSurfaces(ArrayList<Surface> surfaces)
-  {
-    this.surfaces = surfaces;
-  }
+  private ArrayList<Vector>   vectors  = new ArrayList<>();
 
-  /**
-   * Put curves to render
-   * 
-   * @param curves curves to render
-   */
-  public void putCurves(ArrayList<Curve> curves)
-  {
-    this.curves = curves;
-  }
+  private List<Vector>   axis     = Arrays.asList(xAxis, yAxis, zAxis);
 
-  /**
-   * Put vectors to render
-   * 
-   * @param vectors vectors to render
-   */
-  public void putVectors(ArrayList<Vector> vectors)
-  {
-    this.vectors = vectors;
-  }
 
-  /**
-   * Put lights to render
-   * 
-   * @param lights lights to render
-   */
-  public void putLights(List<Light> lights)
-  {
-    this.lights = lights;
-  }
+  private List<Light>         lights   = new ArrayList<>();
 
-  /**
-   * Add a surface to render
-   * 
-   * @param surface surface to render
-   */
-  public void add(Surface surface)
+  private Matrix4f           projectionMatrix;
+
+  public Renderer( Display display ) throws IOException
   {
-    surfaces.add(surface);
+    shader = new StaticShader();
+    createProjectionMatrix( display );
+    shader.start();
+    shader.loadProjectionMatrix(projectionMatrix);
+    shader.stop();
   }
 
   /**
@@ -151,16 +111,6 @@ public class Renderer implements
   }
 
   /**
-   * Add a vector to render
-   * 
-   * @param vector vector to render
-   */
-  public void add(Vector vector)
-  {
-    vectors.add(vector);
-  }
-
-  /**
    * Add a light to render
    * 
    * @param light light to render
@@ -171,13 +121,23 @@ public class Renderer implements
   }
 
   /**
-   * Add surfaces to render
+   * Add a surface to render
    * 
-   * @param surfaces surfaces to render
+   * @param surface surface to render
    */
-  public void addSurfaces(ArrayList<Surface> surfaces)
+  public void add(Surface surface)
   {
-    this.surfaces.addAll(surfaces);
+    surfaces.add(surface);
+  }
+
+  /**
+   * Add a vector to render
+   * 
+   * @param vector vector to render
+   */
+  public void add(Vector vector)
+  {
+    vectors.add(vector);
   }
 
   /**
@@ -191,16 +151,6 @@ public class Renderer implements
   }
 
   /**
-   * Add vectors to render
-   * 
-   * @param vectors vectors to render
-   */
-  public void addVectors(ArrayList<Vector> vectors)
-  {
-    this.vectors.addAll(vectors);
-  }
-
-  /**
    * Add lights to render
    * 
    * @param lights lights to render
@@ -211,13 +161,103 @@ public class Renderer implements
   }
 
   /**
-   * Remove surface from rendering
+   * Add surfaces to render
    * 
-   * @param surface surface to remove
+   * @param surfaces surfaces to render
    */
-  public void remove(Surface surface)
+  public void addSurfaces(ArrayList<Surface> surfaces)
   {
-    surfaces.remove(surface);
+    this.surfaces.addAll(surfaces);
+  }
+
+  /**
+   * Add vectors to render
+   * 
+   * @param vectors vectors to render
+   */
+  public void addVectors(ArrayList<Vector> vectors)
+  {
+    this.vectors.addAll(vectors);
+  }
+
+  /** Remove all from rendering */
+  public void cleanUp()
+  {
+    surfaces = new ArrayList<>();
+    curves   = new ArrayList<>();
+    vectors  = new ArrayList<>();
+  }
+
+  private void createProjectionMatrix( Display display )
+  {
+    float aspectRatio    = display.getWidth() * (float) display.getRenderPart() / display.getHeight();
+    float y_scale        = (float) ((1f / Math.tan(Math.toRadians(Renderer.FOV / 2f))) * aspectRatio);
+    float x_scale        = y_scale / aspectRatio;
+    float frustum_length = FAR_PLANE - NEAR_PLANE;
+
+    projectionMatrix = new Matrix4f();
+    projectionMatrix.set(0, 0, x_scale);
+    projectionMatrix.set(1, 1, y_scale);
+    projectionMatrix.set(2, 2, -((FAR_PLANE + NEAR_PLANE) / frustum_length));
+    projectionMatrix.set(2, 3, -1);
+    projectionMatrix.set(3, 2, -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length));
+    projectionMatrix.set(3, 3, 0);
+  }
+
+  /** Finish working */
+  public void finish()
+  {
+    loader.cleanUp();
+    shader.cleanUp();
+  }
+
+  /** Prepare to rendering */
+  public void prepare()
+  {
+    GL11.glEnable(GL_TEXTURE_2D);
+    GL11.glEnable(GL11.GL_DEPTH_TEST);
+    GL11.glClearColor(0.0f, 0.0f, 0.0f, 1);
+    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+  }
+
+  /**
+   * Put curves to render
+   * 
+   * @param curves curves to render
+   */
+  public void putCurves(ArrayList<Curve> curves)
+  {
+    this.curves = curves;
+  }
+
+  /**
+   * Put lights to render
+   * 
+   * @param lights lights to render
+   */
+  public void putLights(List<Light> lights)
+  {
+    this.lights = lights;
+  }
+
+  /**
+   * Put surfaces to render
+   * 
+   * @param surfaces surfaces to render
+   */
+  public void putSurfaces(ArrayList<Surface> surfaces)
+  {
+    this.surfaces = surfaces;
+  }
+
+  /**
+   * Put vectors to render
+   * 
+   * @param vectors vectors to render
+   */
+  public void putVectors(ArrayList<Vector> vectors)
+  {
+    this.vectors = vectors;
   }
 
   /**
@@ -231,6 +271,26 @@ public class Renderer implements
   }
 
   /**
+   * Remove light from rendering
+   * 
+   * @param light light to remove
+   */
+  public void remove(Light light)
+  {
+    lights.remove(light);
+  }
+
+  /**
+   * Remove surface from rendering
+   * 
+   * @param surface surface to remove
+   */
+  public void remove(Surface surface)
+  {
+    surfaces.remove(surface);
+  }
+
+  /**
    * Remove vector from rendering
    * 
    * @param vector vector to remove
@@ -241,13 +301,22 @@ public class Renderer implements
   }
 
   /**
-   * Remove light from rendering
+   * Remove curves from rendering
    * 
-   * @param light light to remove
+   * @param curves curves to remove
    */
-  public void remove(Light light)
+  public void removeCurves(ArrayList<Curve> curves)
   {
-    lights.remove(light);
+    this.curves.removeAll(curves);
+  }
+  /**
+   * Remove lights from rendering
+   * 
+   * @param lights lights to remove
+   */
+  public void removeLights(ArrayList<Light> lights)
+  {
+    this.lights.removeAll(lights);
   }
 
   /**
@@ -261,16 +330,6 @@ public class Renderer implements
   }
 
   /**
-   * Remove curves from rendering
-   * 
-   * @param curves curves to remove
-   */
-  public void removeCurves(ArrayList<Curve> curves)
-  {
-    this.curves.removeAll(curves);
-  }
-
-  /**
    * Remove vectors from rendering
    * 
    * @param vectors vectors to remove
@@ -278,44 +337,6 @@ public class Renderer implements
   public void removeVectors(ArrayList<Vector> vectors)
   {
     this.vectors.removeAll(vectors);
-  }
-
-  /**
-   * Remove lights from rendering
-   * 
-   * @param lights lights to remove
-   */
-  public void removeLights(ArrayList<Light> lights)
-  {
-    this.lights.removeAll(lights);
-  }
-
-  /** Finish working */
-  public void finish()
-  {
-    loader.cleanUp();
-    shader.cleanUp();
-  }
-
-  /** Remove all from rendering */
-  public void cleanUp()
-  {
-    surfaces = new ArrayList<>();
-    curves   = new ArrayList<>();
-    vectors  = new ArrayList<>();
-  }
-
-  private ArrayList<Vector> updateVectors(ArrayList<Vector> vectors)
-  {
-    ArrayList<Vector> result = new ArrayList<>();
-    for (Vector vector : vectors)
-    {
-      result.add(FunctionHandler.createVector(vector.getPosition(),
-                                              vector.getDirection(),
-                                              vector.getColour(),
-                                              loader));
-    }
-    return result;
   }
 
   /**
@@ -336,106 +357,6 @@ public class Renderer implements
     renderVectors(vectors, shader);
     renderVectors(axis, shader);
     shader.stop();
-  }
-
-  private static final float NEAR_PLANE = 0.1f;
-  private static final float FAR_PLANE  = 1000;
-
-  private Matrix4f           projectionMatrix;
-
-  public Renderer( Display display ) throws IOException
-  {
-    shader = new StaticShader();
-    createProjectionMatrix( display );
-    shader.start();
-    shader.loadProjectionMatrix(projectionMatrix);
-    shader.stop();
-  }
-
-  /** Prepare to rendering */
-  public void prepare()
-  {
-    GL11.glEnable(GL_TEXTURE_2D);
-    GL11.glEnable(GL11.GL_DEPTH_TEST);
-    GL11.glClearColor(0.0f, 0.0f, 0.0f, 1);
-    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-  }
-
-  /**
-   * Render surfaces with shader
-   * 
-   * @param surfaces surfaces to render
-   * @param shader   shader to render with
-   */
-  public void renderSurfaces(List<Surface> surfaces, StaticShader shader)
-  {
-    for (Surface surface : surfaces)
-    {
-      render(surface, shader);
-    }
-  }
-
-  /**
-   * Render curves with shader
-   * 
-   * @param curves curves to render
-   * @param shader shader to render with
-   */
-  public void renderCurves(List<Curve> curves, StaticShader shader)
-  {
-    for (Curve curve : curves)
-    {
-      render(curve, shader);
-    }
-  }
-
-  /**
-   * Render vectors with shader
-   * 
-   * @param vectors vectors to render
-   * @param shader  shader to render with
-   */
-  public void renderVectors(List<Vector> vectors, StaticShader shader)
-  {
-    for (Vector vector : vectors)
-    {
-      render(vector, shader);
-    }
-  }
-
-  /**
-   * Render a vector with shader
-   * 
-   * @param vector vector to render
-   * @param shader shader to render with
-   */
-  public void render(Vector vector, StaticShader shader)
-  {
-    TexturedModel model    = vector.getModel();
-    RawModel      rawModel = model.getRawModel();
-    GL30.glBindVertexArray(rawModel.getVaoID());
-    GL20.glEnableVertexAttribArray(0);
-    // GL20.glEnableVertexAttribArray(1);
-    // GL20.glEnableVertexAttribArray(2);
-    Matrix4f transformationMatrix = Transformations.createTransformationMatrix(vector.getPosition(),
-                                                                     vector.getRotX(),
-                                                                     vector.getRotY(),
-                                                                     vector.getRotZ(),
-                                                                     vector.getScale());
-    shader.loadTransformationMatrix(transformationMatrix);
-    shader.loadColour(vector.getColour());
-    // ModelTexture texture = model.getTexture();
-    // shader.loadShineVariables(texture.getShineDamper(),
-    // texture.getReflectivity());
-    // GL13.glActiveTexture(GL13.GL_TEXTURE0);
-    // GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
-    // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER,
-    // GL11.GL_NEAREST);
-    GL11.glDrawArrays(GL11.GL_LINES, 0, rawModel.getVertexCount());
-    GL20.glDisableVertexAttribArray(0);
-    // GL20.glDisableVertexAttribArray(1);
-    // GL20.glDisableVertexAttribArray(2);
-    GL30.glBindVertexArray(0);
   }
 
   /**
@@ -507,20 +428,94 @@ public class Renderer implements
     GL30.glBindVertexArray(0);
   }
 
-  private void createProjectionMatrix( Display display )
+  /**
+   * Render a vector with shader
+   * 
+   * @param vector vector to render
+   * @param shader shader to render with
+   */
+  public void render(Vector vector, StaticShader shader)
   {
-    float aspectRatio    = display.getWidth() * (float) display.getRenderPart() / display.getHeight();
-    float y_scale        = (float) ((1f / Math.tan(Math.toRadians(Renderer.FOV / 2f))) * aspectRatio);
-    float x_scale        = y_scale / aspectRatio;
-    float frustum_length = FAR_PLANE - NEAR_PLANE;
+    TexturedModel model    = vector.getModel();
+    RawModel      rawModel = model.getRawModel();
+    GL30.glBindVertexArray(rawModel.getVaoID());
+    GL20.glEnableVertexAttribArray(0);
+    // GL20.glEnableVertexAttribArray(1);
+    // GL20.glEnableVertexAttribArray(2);
+    Matrix4f transformationMatrix = Transformations.createTransformationMatrix(vector.getPosition(),
+                                                                     vector.getRotX(),
+                                                                     vector.getRotY(),
+                                                                     vector.getRotZ(),
+                                                                     vector.getScale());
+    shader.loadTransformationMatrix(transformationMatrix);
+    shader.loadColour(vector.getColour());
+    // ModelTexture texture = model.getTexture();
+    // shader.loadShineVariables(texture.getShineDamper(),
+    // texture.getReflectivity());
+    // GL13.glActiveTexture(GL13.GL_TEXTURE0);
+    // GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
+    // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER,
+    // GL11.GL_NEAREST);
+    GL11.glDrawArrays(GL11.GL_LINES, 0, rawModel.getVertexCount());
+    GL20.glDisableVertexAttribArray(0);
+    // GL20.glDisableVertexAttribArray(1);
+    // GL20.glDisableVertexAttribArray(2);
+    GL30.glBindVertexArray(0);
+  }
 
-    projectionMatrix = new Matrix4f();
-    projectionMatrix.set(0, 0, x_scale);
-    projectionMatrix.set(1, 1, y_scale);
-    projectionMatrix.set(2, 2, -((FAR_PLANE + NEAR_PLANE) / frustum_length));
-    projectionMatrix.set(2, 3, -1);
-    projectionMatrix.set(3, 2, -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length));
-    projectionMatrix.set(3, 3, 0);
+  /**
+   * Render curves with shader
+   * 
+   * @param curves curves to render
+   * @param shader shader to render with
+   */
+  public void renderCurves(List<Curve> curves, StaticShader shader)
+  {
+    for (Curve curve : curves)
+    {
+      render(curve, shader);
+    }
+  }
+
+  /**
+   * Render surfaces with shader
+   * 
+   * @param surfaces surfaces to render
+   * @param shader   shader to render with
+   */
+  public void renderSurfaces(List<Surface> surfaces, StaticShader shader)
+  {
+    for (Surface surface : surfaces)
+    {
+      render(surface, shader);
+    }
+  }
+
+  /**
+   * Render vectors with shader
+   * 
+   * @param vectors vectors to render
+   * @param shader  shader to render with
+   */
+  public void renderVectors(List<Vector> vectors, StaticShader shader)
+  {
+    for (Vector vector : vectors)
+    {
+      render(vector, shader);
+    }
+  }
+
+  private ArrayList<Vector> updateVectors(List<Vector> axis2)
+  {
+    ArrayList<Vector> result = new ArrayList<>();
+    for (Vector vector : axis2)
+    {
+      result.add(FunctionHandler.createVector(vector.getPosition(),
+                                              vector.getDirection(),
+                                              vector.getColour(),
+                                              loader));
+    }
+    return result;
   }
 
 }

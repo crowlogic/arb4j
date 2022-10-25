@@ -34,7 +34,7 @@ import lwjgui.LWJGUIUtil;
 import lwjgui.scene.Window;
 import lwjgui.scene.layout.StackPane;
 
-public class Surfacer
+public class SurfaceRenderer
 {
 
   private long          window;
@@ -135,7 +135,7 @@ public class Surfacer
 
   public static void main(String[] args) throws IOException
   {
-    new Surfacer().run();
+    new SurfaceRenderer().run();
   }
 
 }

@@ -1,4 +1,4 @@
-package arb.viz;
+package arb.viz.gl.samples;
 
 import java.util.List;
 

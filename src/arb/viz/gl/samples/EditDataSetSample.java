@@ -1,4 +1,4 @@
-package arb.viz;
+package arb.viz.gl.samples;
 
 import static de.gsi.dataset.DataSet.DIM_X;
 import static de.gsi.dataset.DataSet.DIM_Y;

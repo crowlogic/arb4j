@@ -1,4 +1,4 @@
-package arb.viz;
+package arb.viz.gl.samples;
 
 import javafx.application.Application;
 import javafx.application.Platform;

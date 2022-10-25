@@ -23,9 +23,9 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 public class Loader
 {
 
-  private List<Integer> vaos     = new ArrayList<Integer>();
-  private List<Integer> vbos     = new ArrayList<Integer>();
-  private List<Integer> textures = new ArrayList<Integer>();
+  private List<Integer> vaos     = new ArrayList<>();
+  private List<Integer> vbos     = new ArrayList<>();
+  private List<Integer> textures = new ArrayList<>();
 
   /**
    * Load array to VAO
@@ -74,11 +74,7 @@ public class Loader
     int id = 0;
     try
     {
-      // load png file
-      // PNGDecoder decoder = new
-      // PNGDecoder(Texture.class.getResourceAsStream("src/main/resources/" + fileName
-      // + ".png"));
-      PNGDecoder decoder = new PNGDecoder(new FileInputStream("src/main/resources/" + fileName + ".png"));
+      PNGDecoder decoder = new PNGDecoder(new FileInputStream(fileName));
 
       ByteBuffer buf     = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
       decoder.decode(buf, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
@@ -117,17 +113,6 @@ public class Loader
     }
 
     return id;
-//		Texture texture = null;
-//		try {
-//			texture = TextureLoader.getTexture("PNG",
-//					new FileInputStream("src/main/resources/" + fileName + ".png"));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			System.err.println("Tried to load texture " + fileName + ".png , didn't work");
-//			System.exit(-1);
-//		}
-//		textures.add(texture.getTextureID());
-//		return texture.getTextureID();
   }
 
   /**
