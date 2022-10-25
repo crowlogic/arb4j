@@ -41,7 +41,7 @@ public class StandardGaussianProcess implements
   }
 
   @Override
-  public StandardGaussianCharacteristicFunction getCharacteristicFunction()
+  public CharacteristicFunction getCharacteristicFunction()
   {
     return φ;
   }

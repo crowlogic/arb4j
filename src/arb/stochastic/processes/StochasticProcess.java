@@ -34,7 +34,7 @@ public interface StochasticProcess extends
     return null;
   }
 
-  public default <C extends CharacteristicFunction> C getCharacteristicFunction()
+  public default CharacteristicFunction getCharacteristicFunction()
   {
     assert false : "todo";
     return null;

@@ -4,7 +4,7 @@ import arb.Complex;
 import arb.Real;
 
 public class GaussianCharacteristicFunction implements
-                                            CharacteristicFunction<GaussianDensityFunction>
+                                            CharacteristicFunction
 {
   @Override
   public String toString()

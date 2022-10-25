@@ -6,7 +6,7 @@ import arb.Complex;
 import arb.Real;
 
 public class StandardGaussianCharacteristicFunction implements
-                                                    CharacteristicFunction<StandardGaussianDensityFunction>
+                                                    CharacteristicFunction
 {
 
   @Override

@@ -19,7 +19,7 @@ import arb.operators.FourierTransform;
  * @param <P> the type of {@link RealProbabilityDensityFunction} this
  *            characteristic function corresponds to
  */
-public interface CharacteristicFunction<P extends RealProbabilityDensityFunction> extends
+public interface CharacteristicFunction extends
                                        HolomorphicFunction
 {
 

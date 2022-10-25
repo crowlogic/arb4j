@@ -1,4 +1,4 @@
-package arb.viz;
+package arb.viz.gl;
 
 import de.gsi.chart.XYChart;
 import de.gsi.chart.axes.spi.DefaultNumericAxis;
