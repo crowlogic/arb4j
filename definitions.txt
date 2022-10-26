@@ -1,0 +1,1 @@
+The radius of curvature of a surface is the radius of the osculating (which means kissing or touching) circle of the surface.
