@@ -89,9 +89,9 @@ public class EvaluationSequence extends
                                                   RandomVectorGenerator generator,
                                                   int prec)
   {
-    for (int i = 0; i < dim; i++)
+    for (Real dimension : values)
     {
-      for (Real value : values[i])
+      for (Real value : dimension)
       {
         pdf.sample(generator, prec, value);
       }
