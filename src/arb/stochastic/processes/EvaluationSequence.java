@@ -26,14 +26,39 @@ public class EvaluationSequence extends
                                 Iterable<RealOrderedPair>,
                                 DataSet2D
 {
-  @Override
-  public int hashCode()
+  private final int          dim;
+
+  private final int          length;
+
+  public final RealPartition partition;
+
+  public final Real[]        values;
+
+  public EvaluationSequence(RealPartition partition, int dim)
   {
-    final int prime  = 41;
-    int       result = super.hashCode();
-    result = prime * result + Arrays.hashCode(values);
-    result = prime * result + Objects.hash(dim, partition);
-    return result;
+    super("EvaluationSequence",
+          dim);
+    assert dim > 0;
+    this.partition = partition;
+    this.length    = partition.count();
+    this.values    = new Real[dim];
+    this.dim       = dim;
+    for (int i = 0; i < dim; i++)
+    {
+      values[i] = Real.newVector(length);
+    }
+  }
+
+  @Override
+  public void clean()
+  {
+    for (int i = 0; i < dim; i++)
+    {
+      for (Real array : values[i])
+      {
+        array.close();
+      }
+    }
   }
 
   @Override
@@ -48,25 +73,6 @@ public class EvaluationSequence extends
     EvaluationSequence other = (EvaluationSequence) obj;
     return dim == other.dim && Objects.equals(partition, other.partition) && Arrays.equals(values, other.values);
   }
-
-  private int dim;
-
-  public EvaluationSequence(RealPartition partition, int dim)
-  {
-    super("EvaluationSequence",
-          dim);
-    assert dim > 0;
-    this.partition = partition;
-    this.values    = new Real[dim];
-    this.dim       = dim;
-    for (int i = 0; i < dim; i++)
-    {
-      values[i] = Real.newVector(partition.count());
-    }
-  }
-
-  public final RealPartition partition;
-  public final Real[]        values;
 
   /**
    * Populates the {@link #values} of this {@link EvaluationSequence} with random
@@ -101,41 +107,39 @@ public class EvaluationSequence extends
   }
 
   @Override
-  public void clean()
+  public double get(int dimension, int index)
   {
-    for (int i = 0; i < dim; i++)
+    if (dimension == 0)
     {
-      for (Real array : values[i])
-      {
-        array.close();
-      }
+      dimension = 1;
     }
+    else
+    {
+      dimension = 0;
+    }
+    return values[dimension].get(index).doubleValue();
+  }
+
+  @Override
+  public int getDataCount()
+  {
+    return length;
+  }
+
+  @Override
+  public int hashCode()
+  {
+    final int prime  = 41;
+    int       result = super.hashCode();
+    result = prime * result + Arrays.hashCode(values);
+    result = prime * result + Objects.hash(dim, partition);
+    return result;
   }
 
   public Iterator<RealOrderedPair> iterator()
   {
     return new EvaluationSequenceIterator(this,
                                           dim);
-  }
-
-  @Override
-  public double get(int dimIndex, int index)
-  {
-    if (dimIndex == 0)
-    {
-      dimIndex = 1;
-    }
-    else
-    {
-      dimIndex = 0;
-    }
-    return values[dimIndex].get(index).doubleValue();
-  }
-
-  @Override
-  public int getDataCount()
-  {
-    return values[0].size();
   }
 
   @Override
