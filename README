@@ -28,24 +28,12 @@ stands for "compile arb wrapper" which, if all goes well, should leave
 a file named libarblib.so in root directory of the project.
 
 =============================================================================
+The following JVM options should be used
 
-Also, "-ea" should usually be to the JVM commandline to enable 
-assertion checking at runtime but it can be turned off to marginally 
-improve performance.
-
-
-The arguments 
-
-"--enable-native-accesss --enable-preview -Djava.library.path=." 
-
-should also be used
-
-=============================================================================
-
-To run anything depending on chartfx the following commandline 
-arguments needed to be added as well:
-
---enable-preview
+-ea
+--enable-native-accesss 
+--enable-preview 
+-Djava.library.path=.
 --add-modules=javafx.graphics
 --add-reads javafx.graphics=ALL-UNNAMED
 --add-opens javafx.controls/com.sun.javafx.charts=ALL-UNNAMED
