@@ -2,12 +2,12 @@ package arb.stochastic.processes;
 
 import java.util.Iterator;
 
-import arb.OrderedPair;
 import arb.Real;
+import arb.RealOrderedPair;
 
 public class EvaluationSequenceIterator extends
-                                        OrderedPair<Real, Real> implements
-                                        Iterator<OrderedPair<Real, Real>>
+                                        RealOrderedPair implements
+                                        Iterator<RealOrderedPair>
 
 {
   int                      i;
@@ -24,7 +24,7 @@ public class EvaluationSequenceIterator extends
   }
 
   @Override
-  public OrderedPair<Real, Real> next()
+  public RealOrderedPair next()
   {
     a.set(evalseq.partition.get(i));
     for (int j = 0; j < dim; j++)

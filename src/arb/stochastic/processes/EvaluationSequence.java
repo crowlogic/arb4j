@@ -1,12 +1,15 @@
 package arb.stochastic.processes;
 
 import java.lang.ref.Cleaner.Cleanable;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Objects;
 
 import arb.OrderedPair;
 import arb.RandomState;
 import arb.Real;
 import arb.RealMatrix;
+import arb.RealOrderedPair;
 import arb.RealPartition;
 import arb.stochastic.ProbabilityDistributionFunction;
 import de.gsi.dataset.DataSet;
@@ -20,9 +23,32 @@ import de.gsi.dataset.spi.AbstractDataSet;
 public class EvaluationSequence extends
                                 AbstractDataSet<EvaluationSequence> implements
                                 Cleanable,
-                                Iterable<OrderedPair<Real, Real>>,
+                                Iterable<RealOrderedPair>,
                                 DataSet2D
 {
+  @Override
+  public int hashCode()
+  {
+    final int prime  = 41;
+    int       result = super.hashCode();
+    result = prime * result + Arrays.hashCode(values);
+    result = prime * result + Objects.hash(dim, partition);
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    EvaluationSequence other = (EvaluationSequence) obj;
+    return dim == other.dim && Objects.equals(partition, other.partition) && Arrays.equals(values, other.values);
+  }
+
   private int dim;
 
   public EvaluationSequence(RealPartition partition, int dim)
@@ -86,7 +112,7 @@ public class EvaluationSequence extends
     }
   }
 
-  public Iterator<OrderedPair<Real, Real>> iterator()
+  public Iterator<RealOrderedPair> iterator()
   {
     return new EvaluationSequenceIterator(this,
                                           dim);
