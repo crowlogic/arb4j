@@ -75,7 +75,7 @@ public class RealNewtonMap<F extends RealFunction> implements
       if (order >= 1)
       {
         f.evaluate(z, 2, prec, y).div(y.get(1), prec, w);
-        evaluatePole(z, prec, w, false).tanh(w, prec);
+        evaluatePole(z, prec, w, false).tanh(prec, w);
         if (r != null)
         {
           w.mul(r, prec, w);

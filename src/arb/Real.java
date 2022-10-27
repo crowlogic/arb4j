@@ -681,7 +681,7 @@ public class Real implements VectorSpace<Real>, Serializable, Comparable<Real>, 
     return r;
   }
   
-  public Real tanh(Real result, int prec )
+  public Real tanh(int prec, Real result )
   {   
     arb.arb_tanh(result, this, prec );
     return result;
