@@ -46,7 +46,8 @@ public class XRenderer extends
   @SuppressWarnings("resource")
   public XRenderer() throws NoninvertibleTransformException
   {
-    this(new Real().set("1", 128));
+    this(new Real("1",
+                  128));
   }
 
 }

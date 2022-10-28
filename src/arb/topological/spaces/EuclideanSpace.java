@@ -5,8 +5,7 @@ import arb.SubSet;
 import arb.geometry.Manifold;
 
 public interface EuclideanSpace<X extends Field> extends
-                               HilbertSpace<X>,
-                               Manifold<X>
+                               Space<X>
 {
 
 }
