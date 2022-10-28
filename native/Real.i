@@ -1080,6 +1080,15 @@ import arb.topological.spaces.EuclideanVectorSpace;
     return null;
   }
   
+  public Real negate()
+  {
+    return negate(this);
+  }
+
+  public Real exp(int prec)
+  {
+    return exp(prec,this);
+  }
   
 %};
 

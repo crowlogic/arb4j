@@ -9,15 +9,9 @@ public class StandardGaussianDensityFunction implements
                                              RealProbabilityDensityFunction
 {
 
-  public static RealFunction inv = new RealFunction()
-  {
-    @Override
-    public Real evaluate(Real t, int order, int prec, Real res)
-    {
-      return RealConstants.one.div(t, prec, res).log(prec, res).sqrt(prec, res);
-    }
-  };
-
+  public static final RealFunction inv = (t, order, prec, res) -> RealConstants.one.div(t, prec, res)
+                                                                                   .log(prec)
+                                                                                   .sqrt(prec);
 
   @Override
   public RealFunction inverse(int branch)
@@ -30,13 +24,13 @@ public class StandardGaussianDensityFunction implements
   {
     order = Math.max(order, 1);
     assert order < 2;
-    return z.pow(2, prec, res).negate(res).exp(prec, res);
+    return z.pow(2, prec, res).negate().exp(prec);
   }
 
   public Real evaluate(Complex point, int order, int prec, Real real)
   {
-    return evaluate(point.getReal(),order,prec,real);
-    
+    return evaluate(point.getReal(), order, prec, real);
+
   }
 
 }

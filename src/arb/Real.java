@@ -1106,6 +1106,15 @@ public class Real implements VectorSpace<Real>, Serializable, Comparable<Real>, 
     return null;
   }
   
+  public Real negate()
+  {
+    return negate(this);
+  }
+
+  public Real exp(int prec)
+  {
+    return exp(prec,this);
+  }
   
 
   public void setMid(Float value) {

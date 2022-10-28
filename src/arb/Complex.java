@@ -45,6 +45,10 @@ public class Complex implements VectorSpace<Complex>, Field<Complex>,Iterable<Co
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex negate()
+  {
+    return negate(this);
+  }
 
   public String name;
 
@@ -862,11 +866,6 @@ public class Complex implements VectorSpace<Complex>, Field<Complex>,Iterable<Co
 
   public Complex() {
     this(arbJNI.new_Complex(), true);
-  }
-
-  public Complex negate()
-  {
-    return negate(this);
   }
 
 }
