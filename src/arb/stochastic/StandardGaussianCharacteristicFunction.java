@@ -14,7 +14,7 @@ public class StandardGaussianCharacteristicFunction implements
   {
     order = Math.max(order, 1);
     assert order < 2;
-    return z.pow(2, prec, res).mul(πsquared, prec, res).negate(res).exp(prec, res).mul(sqrtπ, prec, res);
+    return z.pow(2, prec, res).mul(πsquared, prec).negate().exp(prec).mul(sqrtπ, prec);
   }
 
 }

@@ -20,6 +20,10 @@ import arb.topological.spaces.*;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex negate()
+  {
+    return negate(this);
+  }
 
   public String name;
 

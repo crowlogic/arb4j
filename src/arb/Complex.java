@@ -864,4 +864,9 @@ public class Complex implements VectorSpace<Complex>, Field<Complex>,Iterable<Co
     this(arbJNI.new_Complex(), true);
   }
 
+  public Complex negate()
+  {
+    return negate(this);
+  }
+
 }
