@@ -1,4 +1,4 @@
-package arb.mechanics.relativistic.special;
+package arb.physics.relativity.special;
 
 import arb.domains.Interval;
 import arb.geometry.Manifold;

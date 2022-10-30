@@ -1,5 +1,7 @@
 package arb;
 
+import arb.topological.spaces.Space;
+
 /**
  * basis
  * <ul>
@@ -21,7 +23,7 @@ package arb;
  * @see The Collaborative International Dictionary of English v.0.48
  *
  */
-public interface Basis
+public interface Basis<S extends Space>
 {
 
 }

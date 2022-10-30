@@ -6,6 +6,7 @@ import arb.measures.*;
 import arb.theoretical.*;
 import arb.topological.*;
 import arb.topological.spaces.InnerProductSpace;
+import arb.topological.spaces.VectorSpace;
 
 /**
  * a set of elements such that addition and multiplication are commutative and
@@ -16,7 +17,8 @@ import arb.topological.spaces.InnerProductSpace;
 public interface Field<X extends Field<X>> extends
                       AutoCloseable,
                       TopologicalSpace<X>,
-                      Iterable<X>
+                      Iterable<X>,
+                      VectorSpace<X>
 {
 
   @Override

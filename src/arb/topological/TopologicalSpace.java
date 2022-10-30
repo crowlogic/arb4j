@@ -5,19 +5,20 @@ import arb.Set;
 import arb.topological.spaces.EuclideanSpace;
 
 /**
- * A topological {@link TopologicalSpace} is a geometrical space in which closeness is
- * defined but cannot necessarily be measured by a numeric distance. More
- * specifically, a topological {@link TopologicalSpace} is a {@link Set} whose elements are
- * called points, along with an additional structure called a {@link Topology}
- * that can be defined as a set of neighbourhoods for each point, that satisfy
- * some axioms formalizing the concept of closeness. There are several
- * equivalent definitions of a topology, the most commonly used is the
- * definition through {@link OpenSet}, which is easier to work with.
+ * A topological {@link TopologicalSpace} is a geometrical space in which
+ * closeness is defined but cannot necessarily be measured by a numeric
+ * distance. More specifically, a topological {@link TopologicalSpace} is a
+ * {@link Set} whose elements are called points, along with an additional
+ * structure called a {@link Topology} that can be defined as a set of
+ * neighbourhoods for each point, that satisfy some axioms formalizing the
+ * concept of closeness. There are several equivalent definitions of a topology,
+ * the most commonly used is the definition through {@link OpenSet}, which is
+ * easier to work with.
  * 
- * A topological space is the most general type of a mathematical {@link TopologicalSpace}
- * that allows for the definition of limits, continuity, and connectedness.
- * Common types of topological spaces include {@link EuclideanSpace}, metric
- * spaces and manifolds.
+ * A topological space is the most general type of a mathematical
+ * {@link TopologicalSpace} that allows for the definition of limits,
+ * continuity, and connectedness. Common types of topological spaces include
+ * {@link EuclideanSpace}, metric spaces and manifolds.
  * 
  * Although very general, the concept of topological spaces is a fundamental and
  * used in virtually every branch of modern mathematics. The study of
@@ -29,7 +30,8 @@ import arb.topological.spaces.EuclideanSpace;
  * @param <X>
  */
 public interface TopologicalSpace<X> extends
-                      Set<X>
+                                 Set<X>
+
 {
   public default Topology topology()
   {

@@ -1,4 +1,4 @@
-package arb.mechanics.relativistic;
+package arb.physics.relativity;
 
 /**
  * In physics, motion is the phenomenon in which an object changes its position

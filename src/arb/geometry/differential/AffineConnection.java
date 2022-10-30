@@ -20,5 +20,5 @@ import arb.topological.spaces.VectorSpace;
 public interface AffineConnection<M extends Manifold> extends
                                  Connection
 {
-  public CurvatureTensor getCurvatureTensor();
+  public RiemannCurvatureTensor getCurvatureTensor();
 }
