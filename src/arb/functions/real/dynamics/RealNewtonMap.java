@@ -16,11 +16,6 @@ public class RealNewtonMap<F extends RealFunction> implements
 
   public Real r;
 
-  public static void main(String args[])
-  {
-
-  }
-
   public RealNewtonMap(F f)
   {
     this.f = f;
@@ -39,8 +34,11 @@ public class RealNewtonMap<F extends RealFunction> implements
                             try ( Real s = Real.newVector(3);)
                             {
                               f.evaluate(t, 3, prec, s);
+                              // w = f(t)*f''(t)
                               Real numerator   = s.mul(s.get(2), prec, w);
+                              // s[0] = f'(t)²
                               Real denominator = s.get(1).pow(2, prec, s.get(0));
+                              // w = (f(t)*f''(t)) / (f'(t))²
                               numerator.div(denominator, prec, w);
                               evaluatePole(t, prec, w, true);
                               return w;
