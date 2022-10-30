@@ -32,10 +32,10 @@ public class XRenderer extends
   {
     super(new Dimension((int) (2400 * 1.1),
                         (int) (1200 * 1.1)),
-          new Rectangle2D.Double(-15,
-                                 -12.5,
-                                 50 * 1.4,
-                                 25 * 1.4),
+          new Rectangle2D.Double(0,
+                                 -5,
+                                 30,
+                                 15),
           new XFunction(vscale));
 
     colorMode   = 0;
