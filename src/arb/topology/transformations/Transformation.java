@@ -1,6 +1,8 @@
 package arb.topology.transformations;
 
-public interface Transformation
-{
+import arb.groups.AutomorphismGroup;
 
+public interface Transformation<A extends AutomorphismGroup>
+{
+  public A getAutomorphismGroup();
 }

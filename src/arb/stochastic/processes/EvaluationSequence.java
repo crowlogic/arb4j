@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-import arb.OrderedPair;
 import arb.RandomState;
 import arb.Real;
 import arb.RealMatrix;
