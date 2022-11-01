@@ -39,6 +39,7 @@ public abstract class ChartFXApplication extends
     final Scene      scene = new Scene(root,
                                        sceneWidth,
                                        sceneHeight);
+    scene.getStylesheets().add("dark-theme.css");
 
     root.setCenter(getContent());
     primaryStage.setTitle(this.getClass().getSimpleName());
