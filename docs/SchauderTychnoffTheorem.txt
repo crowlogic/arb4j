@@ -1,0 +1,3 @@
+(Schauder-Tychonoff) Let X be a locally convex space, let K⊂X
+be nonempty and convex (not necessarily closed), and let K₀⊂K be a compact set.
+Given a continuous map f : K→K₀ , there exists x̄∈K₀ such that f(x̄)=x̄.
