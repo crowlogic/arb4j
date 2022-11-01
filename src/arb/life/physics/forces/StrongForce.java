@@ -1,4 +1,4 @@
-package arb.physics.forces;
+package arb.life.physics.forces;
 
 public interface StrongForce extends
                              Force

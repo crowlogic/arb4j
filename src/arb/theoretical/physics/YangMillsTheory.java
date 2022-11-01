@@ -2,8 +2,8 @@ package arb.theoretical.physics;
 
 import arb.groups.LieGroup;
 import arb.groups.SpecialUnitaryGroup;
-import arb.physics.*;
-import arb.physics.forces.*;
+import arb.life.physics.*;
+import arb.life.physics.forces.*;
 
 /**
  * Yang–Mills theory is a {@link GaugeTheory} based on the

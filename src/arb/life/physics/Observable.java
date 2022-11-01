@@ -1,4 +1,4 @@
-package arb.physics;
+package arb.life.physics;
 
 /**
  * In physics, an observable is a physical quantity that can be measured.

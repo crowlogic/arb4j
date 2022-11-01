@@ -33,4 +33,4 @@
  * 
  * @see <a href="https://en.wikipedia.org/wiki/General_relativity">Wikipedia</a>
  */
-package arb.physics.relativity.general;
+package arb.life.physics.relativity.general;

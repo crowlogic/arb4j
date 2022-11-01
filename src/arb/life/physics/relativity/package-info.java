@@ -12,4 +12,4 @@
  * For high-energy processes, quantum mechanics must be adjusted to account for
  * special relativity; this has led to the development of quantum field theory.[
  */
-package arb.physics.relativity;
+package arb.life.physics.relativity;

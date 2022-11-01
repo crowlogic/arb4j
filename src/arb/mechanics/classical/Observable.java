@@ -6,7 +6,7 @@ import arb.functions.Function;
 
 public interface Observable extends
                             Function<State, Real>,
-                            arb.physics.Observable
+                            arb.life.physics.Observable
 {
 
 }

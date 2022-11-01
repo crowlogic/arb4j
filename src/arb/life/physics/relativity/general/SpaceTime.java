@@ -1,4 +1,4 @@
-package arb.physics.relativity.general;
+package arb.life.physics.relativity.general;
 
 import arb.topological.TopologicalSpace;
 

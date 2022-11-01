@@ -68,11 +68,11 @@ module arb4j
   exports arb.mechanics;
   exports arb.mechanics.fluid;
   exports arb.mechanics.classical;
-  exports arb.physics.relativity;
-  exports arb.physics.relativity.general;
-  exports arb.physics.relativity.special;
+  exports arb.life.physics.relativity;
+  exports arb.life.physics.relativity.general;
+  exports arb.life.physics.relativity.special;
   exports arb.operators;
-  exports arb.physics.forces;
+  exports arb.life.physics.forces;
   exports arb.stochastic;
   exports arb.stochastic.processes;
   exports arb.stochastic.processes.integrators;
