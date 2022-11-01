@@ -16,5 +16,5 @@ public interface TransformationGroup<A extends AutomorphismGroup> extends
                                     Group,
                                     Transformation<A>
 {
-
+  public A getAutomorphismGroup();
 }
