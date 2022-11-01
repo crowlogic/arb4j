@@ -35,7 +35,7 @@ public class XRenderer extends
           new Rectangle2D.Double(0,
                                  -5,
                                  30,
-                                 15),
+                                 10),
           new XFunction(vscale));
 
     colorMode   = 0;
