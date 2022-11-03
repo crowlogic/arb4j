@@ -29,6 +29,10 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   private RealMatrix                                                correlationMatrix;
 
+  boolean verbose = true;
+
+
+
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess<M> process,
                                                 M state,
                                                 RealMatrix correlationMatrix,
@@ -41,37 +45,15 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     this.state             = state;
   }
 
-
-
-  public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
+  @Override
+  public void close()
   {
     for (var integrator : integrators)
     {
-      integrator.step(state, prec, evalSeq);
+      integrator.close();
     }
-    return evalSeq;
 
-  }
-
-  public synchronized boolean jump(int prec, EvaluationSequence evalSeq)
-  {
-    boolean jumped = true;
-    for (int i = 0; i < dim && jumped; i++)
-    {
-      if (!integrators[i].jump(state.getState(i), prec, evalSeq))
-      {
-        jumped = false;
-      }
-    }
-    if (jumped)
-    {
-      state.nextIndex();
-    }
-    else
-    {
-      state.resetIndices();
-    }
-    return jumped;
+    sqrtδt.close();
   }
 
   public EvaluationSequence integrate(FloatInterval interval, int n, int prec)
@@ -124,17 +106,35 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
     return evaluationSequence;
   }
 
-  boolean verbose = false;
+  public synchronized boolean jump(int prec, EvaluationSequence evalSeq)
+  {
+    boolean jumped = true;
+    for (int i = 0; i < dim && jumped; i++)
+    {
+      if (!integrators[i].jump(state.getState(i), prec, evalSeq))
+      {
+        jumped = false;
+      }
+    }
+    if (jumped)
+    {
+      state.nextIndex();
+    }
+    else
+    {
+      state.resetIndices();
+    }
+    return jumped;
+  }
 
-  @Override
-  public void close()
+  public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
   {
     for (var integrator : integrators)
     {
-      integrator.close();
+      integrator.step(state, prec, evalSeq);
     }
+    return evalSeq;
 
-    sqrtδt.close();
   }
 
 }
