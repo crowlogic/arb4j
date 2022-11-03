@@ -5,6 +5,8 @@ import arb.functions.complex.HolomorphicFunction;
 import arb.geometry.curves.PlaneCurve;
 
 /**
+ * cl(z)=LemniscateCosine(z)
+ * 
  * TODO: implement and use to provide the {@link PlaneCurve#getArcLength()}
  * function
  * 
