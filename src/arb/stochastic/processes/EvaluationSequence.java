@@ -108,6 +108,14 @@ public class EvaluationSequence extends
   @Override
   public double get(int dimension, int index)
   {
+    if (dimension == 0)
+    {
+      dimension = 1;
+    }
+    else
+    {
+      dimension = 0;
+    }
     return values[dimension].get(index).doubleValue();
   }
 
