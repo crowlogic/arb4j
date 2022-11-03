@@ -22,9 +22,6 @@ public class Camera
   private float    yaw      = 0;
   private float    roll     = 0;
 
-  public Camera()
-  {
-  }
 
   /**
    * Move the camera according to input data

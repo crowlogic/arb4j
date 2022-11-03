@@ -53,7 +53,6 @@ public class UnitInterval implements
   public Float right()
   {
     return FloatConstants.one;
-
   }
 
 }

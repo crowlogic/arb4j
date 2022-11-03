@@ -27,17 +27,11 @@ package arb.life.physics.landscape;
  * 
  * @author crow
  *
- */
-
-/**
- * 
- * @author crow
- *
  * @param <S> the {@link Sea} in which the {@link Archipeligo} is located
  * 
  */
 public interface Archipeligo<S extends Sea> extends
-                            Formation
+                            Formation<S>
 {
 
 }
