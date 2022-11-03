@@ -1,5 +1,6 @@
-* chartfx implementation of multivariate stochastic process plotter
+* Ring and CommutativeRing interfaces
 
+* chartfx implementation of multivariate stochastic process plotter
 
 * Now that the angular Newton iteration works well, re-implement
 tracecurve.mpl as a LociTracer class that implicitly defines the curve
