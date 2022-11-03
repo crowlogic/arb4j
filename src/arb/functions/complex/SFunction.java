@@ -68,7 +68,7 @@ public class SFunction implements
     };
   }
 
-  private static final Complex ONE = ComplexConstants.complexOne;
+  private static final Complex ONE = ComplexConstants.one;
 
   public Real                  a;
 

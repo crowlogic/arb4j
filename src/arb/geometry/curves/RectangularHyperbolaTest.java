@@ -16,7 +16,7 @@ public class RectangularHyperbolaTest extends
   public static void testHyperbola()
   {
     RectangularHyperbola hyperbola = new RectangularHyperbola();
-    Complex              w         = hyperbola.evaluate(ComplexConstants.complexOne.getReal(),
+    Complex              w         = hyperbola.evaluate(ComplexConstants.one.getReal(),
                                                         2,
                                                         256,
                                                         Complex.newVector(2));

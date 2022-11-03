@@ -15,7 +15,7 @@ public class LemniscateTest extends
   {
     try ( Lemniscate lem = new Lemniscate())
     {
-      Complex w = lem.evaluate(ComplexConstants.complexOne.getReal(), 2, 555, Complex.newVector(2));
+      Complex w = lem.evaluate(ComplexConstants.one.getReal(), 2, 555, Complex.newVector(2));
       assertEquals(0.6326452950883671, w.getReal().doubleValue(), 4.31E-21);
       assertEquals(0.5323526594920905, w.getImag().doubleValue(), 3.53E-22);
       assertEquals(-1.3220770748926536, w.get(1).getReal().doubleValue(), 2.02E-21);
@@ -45,12 +45,12 @@ public class LemniscateTest extends
                                      return w;
                                    };
 
-      Complex               l1     = l.evaluate(ComplexConstants.complexOne.getReal(), 2, 256, Complex.newVector(2));
-      Complex               dl1    = dl.evaluate(ComplexConstants.complexOne.getReal(),
+      Complex               l1     = l.evaluate(ComplexConstants.one.getReal(), 2, 256, Complex.newVector(2));
+      Complex               dl1    = dl.evaluate(ComplexConstants.one.getReal(),
                                                  1,
                                                  256,
                                                  Complex.newVector(1));
-      Complex               absdl1 = absdl.evaluate(ComplexConstants.complexOne.getReal(), 1, 256, new Complex());
+      Complex               absdl1 = absdl.evaluate(ComplexConstants.one.getReal(), 1, 256, new Complex());
       System.out.println("l'(1)=" + dl1);
       System.out.println("|l'(1)|=" + absdl1);
       assertTrue(l1.get(1).sub(dl1, 256, new Complex()).containsZero());

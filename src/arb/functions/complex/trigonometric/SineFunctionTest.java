@@ -12,7 +12,7 @@ public class SineFunctionTest extends
   public void testEval()
   {
     SineFunction sin = new SineFunction();
-    Complex      y   = sin.evaluate(ComplexConstants.complexOne, 1, 128, new Complex());
+    Complex      y   = sin.evaluate(ComplexConstants.one, 1, 128, new Complex());
     y.printPrecision = true;
     assertEquals(0.841470984807896506652502321630298999620980106, y.getReal().doubleValue(), pow(10, -20));
     assertTrue(y.getImag().isZero());

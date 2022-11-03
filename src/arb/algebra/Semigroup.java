@@ -5,7 +5,7 @@ import java.util.function.BinaryOperator;
 import arb.Associative;
 
 /**
- * A {@link Semigroup} is an {@link Associative}
+ * A {@link Semigroup} is an {@link Associative} {@link Magma}
  *
  * @param <X>
  */

@@ -50,7 +50,7 @@ public class Lemniscate implements
 
   private static final Complex imaginaryUnit = ComplexConstants.imaginaryUnit;
 
-  private static final Complex ONE           = ComplexConstants.complexOne;
+  private static final Complex ONE           = ComplexConstants.one;
 
   Real                         scale;
 

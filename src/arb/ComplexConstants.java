@@ -6,7 +6,7 @@ public class ComplexConstants
   public static final Complex iπ            = new Complex();
   public static final Complex ZERO          = new Complex();
   public static final Complex negOne        = new Complex();
-  public static final Complex complexOne    = new Complex();
+  public static final Complex one    = new Complex();
   public static final Complex complexHalf   = new Complex();
   public static final Complex imaginaryUnit = new Complex();
   public static final Complex posInf        = new Complex();
@@ -23,7 +23,7 @@ public class ComplexConstants
     imaginaryUnit.init();
     iπ.init();
     complexHalf.getReal().set(RealConstants.half);
-    complexOne.getReal().one();
+    one.getReal().one();
     imaginaryUnit.getImag().one();
     iπ.getImag().π(prec);
     posInf.set(RealConstants.posInf, RealConstants.zero);
