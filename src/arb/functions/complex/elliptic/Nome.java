@@ -17,9 +17,10 @@ import arb.Complex;
  * Each of them uniquely determines the others when 0<q<1. That is, when 0<q<1
  * the mappings between these various functions are both 1-to-1 and onto, and so
  * can be inverted: the quarter periods, the half-periods and the half-period
- * ratio can be explicitly written as functions of the {@link Nome}. For general
- * {@link Complex} q ∈ C with 0 < | q | < 1, τ is not a single-valued function
- * of q.
+ * ratio can be explicitly written as functions of the {@link Nome}.
+ * 
+ * For general {@link Complex} q ∈ C with 0 < | q | < 1, τ is not a
+ * single-valued function of q.
  */
 public interface Nome extends
                       EllipticFunction

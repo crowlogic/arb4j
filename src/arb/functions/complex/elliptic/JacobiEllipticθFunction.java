@@ -2,11 +2,9 @@ package arb.functions.complex.elliptic;
 
 import arb.Complex;
 import arb.functions.complex.HolomorphicFunction;
-import arb.utensils.Utilities;
 
 /**
- * @see <a href="elliptic/doc-files/ThetaFunctionVocabulary1.pdf">Theta Vocab
- *      1</a>
+ * @see <a href="doc-files/ThetaFunctionVocabulary1.pdf">Theta Vocab 1</a>
  */
 public class JacobiEllipticθFunction implements
                                      HolomorphicFunction

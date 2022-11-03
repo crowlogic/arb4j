@@ -1,0 +1,17 @@
+regarding automatic differentation, 
+from https://github.com/fredrik-johansson/arb/issues/23:
+
+
+argriffing commented on Oct 5, 2014
+ 
+Speaking of differentiation and arb, what about 'automatic' or
+'algorithmic' differentiation? If it is implemented it could be better
+than finite differences but worse than custom coded derivatives of
+functions.
+
+fredrik-johansson commented on Oct 5, 2014
+
+Automatic differentiation is just power series arithmetic, which Arb
+already supports for most of its functions. Theta function derivatives
+will be done the same way.
+
