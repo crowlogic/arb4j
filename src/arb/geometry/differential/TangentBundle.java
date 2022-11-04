@@ -11,7 +11,7 @@ import arb.topological.spaces.TangentSpace;
  * TM which assembles all the tangent vectors in M. As a set, it is given by the
  * disjoint union of the tangent spaces of M
  * 
- * TODO: also {@link CotangentBundle}
+ * TODO: also {@link CotangentBundle} 
  */
 public interface TangentBundle<M extends DifferentiableManifold> extends
                               Bundle<M,TangentSpace<M>,Function<M,TangentSpace<M>>>
