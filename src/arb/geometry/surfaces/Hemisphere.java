@@ -4,7 +4,14 @@ import arb.Complex;
 import arb.Real;
 import arb.functions.ComplexToRealFunction;
 import arb.geometry.differential.TangentBundle;
+import arb.viz.InteractiveSurfaceRenderer;
 
+/**
+ * TODO: adapt this to work with the {@link InteractiveSurfaceRenderer}
+ * 
+ * @author crow
+ *
+ */
 public class Hemisphere implements
                         ParametricSurface
 {
@@ -41,6 +48,5 @@ public class Hemisphere implements
   {
     return 3;
   }
-
 
 }

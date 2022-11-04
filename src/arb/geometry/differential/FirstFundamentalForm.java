@@ -28,6 +28,7 @@ public class FirstFundamentalForm<S extends Surface> implements
   @Override
   public TangentSpace<S> apply(TangentSpace<S> t, TangentSpace<S> u)
   {
+    
     assert false : "TODO";
     return null;
   }

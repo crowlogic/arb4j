@@ -25,6 +25,8 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import arb.geometry.surfaces.ParametricSurface;
+import arb.geometry.surfaces.Surface;
 import arb.viz.gl.Display;
 import arb.viz.gl.Renderer;
 import arb.viz.gl.entities.Camera;
@@ -34,7 +36,13 @@ import lwjgui.LWJGUIUtil;
 import lwjgui.scene.Window;
 import lwjgui.scene.layout.StackPane;
 
-public class SurfaceRenderer
+/**
+ * TODO: adapt this to render {@link Surface}s , {@link ParametricSurface}s etc
+ * 
+ * @author crow
+ *
+ */
+public class InteractiveSurfaceRenderer
 {
 
   private long          window;
@@ -135,7 +143,7 @@ public class SurfaceRenderer
 
   public static void main(String[] args) throws IOException
   {
-    new SurfaceRenderer().run();
+    new InteractiveSurfaceRenderer().run();
   }
 
 }
