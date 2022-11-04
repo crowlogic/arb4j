@@ -1,4 +1,4 @@
-package arb.algebraic.topology;
+package arb.topological;
 
 import arb.Field;
 import arb.geometry.differential.homotopy.Homotopy;

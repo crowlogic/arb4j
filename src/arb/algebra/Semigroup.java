@@ -2,7 +2,7 @@ package arb.algebra;
 
 import java.util.function.BinaryOperator;
 
-import arb.Associative;
+import arb.annotations.Associative;
 
 /**
  * A {@link Semigroup} is an {@link Associative} {@link Magma}

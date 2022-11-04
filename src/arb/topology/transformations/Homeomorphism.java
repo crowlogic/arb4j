@@ -1,5 +1,7 @@
 package arb.topology.transformations;
 
+import arb.annotations.Homeomorphic;
+
 /**
  * A homeomorphism, topological isomorphism, or bicontinuous function is a
  * continuous function between topological spaces that has a continuous inverse
@@ -28,6 +30,7 @@ package arb.topology.transformations;
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Homeomorphism">Homeomorphism@Wikipedia</a>
  */
+@Homeomorphic
 public interface Homeomorphism extends
                                Transformation
 {

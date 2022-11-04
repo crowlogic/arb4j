@@ -1,4 +1,6 @@
-package arb.algebraic.topology;
+package arb.topological;
+
+import java.util.function.BinaryOperator;
 
 import arb.groups.Group;
 import arb.topological.spaces.VectorSpace;
@@ -10,7 +12,8 @@ import arb.topological.spaces.VectorSpace;
  * 
  *
  */
-public interface Homomorphism
+public interface Homomorphism<X> extends
+                             BinaryOperator<X>
 {
 
 }

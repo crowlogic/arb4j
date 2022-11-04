@@ -4,7 +4,7 @@ package arb.groups;
  * FIXME: todo
  *
  */
-public interface Group
+public interface Group<X>
 {
 
 }

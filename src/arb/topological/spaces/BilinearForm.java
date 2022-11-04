@@ -2,8 +2,8 @@ package arb.topological.spaces;
 
 import arb.Complex;
 import arb.Field;
-import arb.algebraic.topology.Homomorphism;
 import arb.functions.Function;
+import arb.topological.Homomorphism;
 
 /**
  * A {@link BilinearForm} is a bilinear map V × V → K on a {@link VectorSpace} V

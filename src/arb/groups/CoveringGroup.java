@@ -1,6 +1,6 @@
 package arb.groups;
 
-import arb.algebraic.topology.Homomorphism;
+import arb.topological.Homomorphism;
 
 /**
  * a covering group of a topological group H is a covering space G of H such
