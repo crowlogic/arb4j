@@ -33,9 +33,9 @@ public class XRenderer extends
     super(new Dimension((int) (2400 * 1.1),
                         (int) (1200 * 1.1)),
           new Rectangle2D.Double(0,
-                                 -5,
+                                 -25,
                                  30,
-                                 10),
+                                 50),
           new XFunction(vscale));
 
     colorMode   = 0;
