@@ -4,7 +4,6 @@ import static arb.ComplexConstants.one;
 import static java.lang.String.format;
 
 import arb.Complex;
-import arb.ComplexConstants;
 import arb.Real;
 import arb.RealConstants;
 import arb.exceptions.NotDifferentiableException;
@@ -13,7 +12,7 @@ import arb.exceptions.NotDifferentiableException;
  * The rational meromorphic quartic
  * <code>S(t)=tanh(ln(1-t^2)))=((1 - t^2)^2 - 1)/((1 - t^2)^2 + 1)</code>
  * 
- * @author Stephen Androw Crowley <crowlogic@proton.me>
+ * @author Stephen Andrew Crowley <crowlogic@proton.me>
  */
 public class SFunction implements
                        HolomorphicFunction,
@@ -98,12 +97,12 @@ public class SFunction implements
     try ( Complex numer = new Complex(); Complex denom = new Complex(); Complex x = new Complex();)
     {
       denom.getReal().set(2);
-      denom.sub(t.pow(2, prec, x).mul(2, prec, x), prec, denom);
-      denom.add(t.pow(4, prec, x), prec, denom).pow(3, prec, denom);
+      denom.sub(t.pow(2, prec, x).mul(2, prec), prec, denom);
+      denom.add(t.pow(4, prec, x), prec, denom).pow(3, prec);
 
       numer.getReal().set(2);
       numer.sub(x.mul(9, prec, x), prec, numer);
-      numer.add(t.pow(6, prec, x).mul(5, prec, x), prec, numer).neg(numer).mul(8, prec, numer);
+      numer.add(t.pow(6, prec, x).mul(5, prec), prec, numer).neg().mul(8, prec);
 
       return numer.div(denom, prec, res);
     }
