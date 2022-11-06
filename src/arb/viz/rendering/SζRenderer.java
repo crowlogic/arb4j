@@ -15,9 +15,10 @@ import arb.viz.Part;
 public class SζRenderer extends
                         ComplexFunctionRenderer<Composition<Composition<SFunction, RiemannζFunction>, WickRotation>>
 {
+  @SuppressWarnings("resource")
   public static void main(String[] args) throws IOException, NoninvertibleTransformException
   {
-    try ( SζRenderer plotter = new SζRenderer())
+    SζRenderer plotter = new SζRenderer();
     {
       plotter.render();
       plotter.saveToFile();

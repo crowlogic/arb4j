@@ -14,7 +14,7 @@ public class ComplexFunctionTest extends
     try ( Complex a = new Complex();)
     {
       a.set(one, one);
-      Function<Complex, Real> absoluteValueOfAConstantFunction = new ComplexConstant(a).abs();
+      Function<Complex, Real> absoluteValueOfAConstantFunction = new ConstantComplexFunction(a).abs();
 
       Real                    sqrt2                            = a.abs(128, new Real());
       Real                    b                                = absoluteValueOfAConstantFunction.evaluate(ComplexConstants.ZERO,

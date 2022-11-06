@@ -1,5 +1,6 @@
 package arb.functions.complex;
 
+import static arb.ComplexConstants.one;
 import static java.lang.String.format;
 
 import arb.Complex;
@@ -12,41 +13,27 @@ import arb.exceptions.NotDifferentiableException;
  * The rational meromorphic quartic
  * <code>S(t)=tanh(ln(1-t^2)))=((1 - t^2)^2 - 1)/((1 - t^2)^2 + 1)</code>
  * 
- * @author Stephen Crowley
+ * @author Stephen Androw Crowley <crowlogic@proton.me>
  */
 public class SFunction implements
                        HolomorphicFunction,
                        AutoCloseable
 {
+  SFunctionInverse[] inverses = new SFunctionInverse[SFunctionInverse.BRANCH_COUNT];
 
-  @Override
-  public int getInverseBranchCount()
+  public Real  a;
+
+  private Real aSquared;
+
+  public SFunction()
   {
-    return SFunctionInverse.BRANCH_COUNT;
+    this(RealConstants.one);
   }
 
-  @Override
-  public HolomorphicFunction inverse(int branch)
+  public SFunction(Real a)
   {
-    return new SFunctionInverse(a,
-                                branch);
-  }
-
-  @Override
-  public String toString()
-  {
-    return String.format("S(a=%s)", a.toString(5));
-  }
-
-  @Override
-  public int multiplicityOfRoot(Complex z)
-  {
-    if (z.isZero() || (!z.isFinite()))
-    {
-      return 2;
-    }
-    // TODO: account for the the other roots
-    return 1;
+    this.a        = a;
+    this.aSquared = a;
   }
 
   /**
@@ -59,6 +46,12 @@ public class SFunction implements
   }
 
   @Override
+  public void close()
+  {
+    a.clear();
+  }
+
+  @Override
   public HolomorphicFunction differential() throws NotDifferentiableException
   {
     return (z, order, prec, w) ->
@@ -66,23 +59,6 @@ public class SFunction implements
       assert order <= 1;
       return evaluateDerivative(z, prec, w);
     };
-  }
-
-  private static final Complex ONE = ComplexConstants.one;
-
-  public Real                  a;
-
-  private Real                 aSquared;
-
-  public SFunction()
-  {
-    this(RealConstants.one);
-  }
-
-  public SFunction(Real a)
-  {
-    this.a        = a;
-    this.aSquared = a;
   }
 
   @Override
@@ -106,6 +82,30 @@ public class SFunction implements
         evaluate2ndDerivative(t, prec, res.get(2));
       }
       return res;
+    }
+  }
+
+  /**
+   * Evaluate the 2nd derivative of S(t)
+   * 
+   * @param t
+   * @param prec
+   * @param res
+   * @return -8*(2 - 9t^4 + 5t^6 ) / (2 - 2t^2 +t^4)^3
+   */
+  protected Complex evaluate2ndDerivative(Complex t, int prec, Complex res)
+  {
+    try ( Complex numer = new Complex(); Complex denom = new Complex(); Complex x = new Complex();)
+    {
+      denom.getReal().set(2);
+      denom.sub(t.pow(2, prec, x).mul(2, prec, x), prec, denom);
+      denom.add(t.pow(4, prec, x), prec, denom).pow(3, prec, denom);
+
+      numer.getReal().set(2);
+      numer.sub(x.mul(9, prec, x), prec, numer);
+      numer.add(t.pow(6, prec, x).mul(5, prec, x), prec, numer).neg(numer).mul(8, prec, numer);
+
+      return numer.div(denom, prec, res);
     }
   }
 
@@ -138,7 +138,7 @@ public class SFunction implements
       e.pow(2, prec, g);
       g.add(1, prec, h);
       h.pow(2, prec, g);
-      ONE.div(g, prec, h);
+      one.div(g, prec, h);
       b.mul(8, prec, g);
       g.mul(e, prec, g);
       g.mul(h, prec, g);
@@ -147,34 +147,39 @@ public class SFunction implements
     return res1;
   }
 
-  /**
-   * Evaluate the 2nd derivative of S(t)
-   * 
-   * @param t
-   * @param prec
-   * @param res
-   * @return -8*(2 - 9t^4 + 5t^6 ) / (2 - 2t^2 +t^4)^3
-   */
-  protected Complex evaluate2ndDerivative(Complex t, int prec, Complex res)
+  @Override
+  public int getInverseBranchCount()
   {
-    try ( Complex numer = new Complex(); Complex denom = new Complex(); Complex x = new Complex();)
-    {
-      denom.getReal().set(2);
-      denom.sub(t.pow(2, prec, x).mul(2, prec, x), prec, denom);
-      denom.add(t.pow(4, prec, x), prec, denom).pow(3, prec, denom);
-
-      numer.getReal().set(2);
-      numer.sub(x.mul(9, prec, x), prec, numer);
-      numer.add(t.pow(6, prec, x).mul(5, prec, x), prec, numer).neg(numer).mul(8, prec, numer);
-
-      return numer.div(denom, prec, res);
-    }
+    return SFunctionInverse.BRANCH_COUNT;
   }
 
   @Override
-  public void close()
+  public synchronized HolomorphicFunction inverse(int branch)
   {
-    a.clear();
+    SFunctionInverse inverse = inverses[branch];
+    if (inverse == null)
+    {
+      inverse = inverses[branch] = new SFunctionInverse(a,
+                                                        branch);
+    }
+    return inverse;
+  }
+
+  @Override
+  public int multiplicityOfRoot(Complex z)
+  {
+    if (z.isZero() || (!z.isFinite()))
+    {
+      return 2;
+    }
+    // TODO: account for the the other roots
+    return 1;
+  }
+
+  @Override
+  public String toString()
+  {
+    return String.format("S(a=%s)", a.toString(5));
   }
 
 }

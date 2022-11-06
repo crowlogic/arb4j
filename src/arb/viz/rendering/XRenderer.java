@@ -32,9 +32,9 @@ public class XRenderer extends
   {
     super(new Dimension((int) (2400 * 1.1),
                         (int) (1200 * 1.1)),
-          new Rectangle2D.Double(0,
+          new Rectangle2D.Double(-50,
                                  -25,
-                                 30,
+                                 100,
                                  50),
           new XFunction(vscale));
 
