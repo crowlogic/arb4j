@@ -179,6 +179,7 @@ public class SFunction implements
   @Override
   public String toString()
   {
+    a.printPrecision = false;
     return String.format("S(a=%s)", a.toString(5));
   }
 

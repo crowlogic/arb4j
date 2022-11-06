@@ -130,7 +130,9 @@ public class PointValueCache implements
   protected long openOrCreateMemoryMappedFile(Path path, int bytes, int fd[]) throws FileNotFoundException,
                                                                               IOException
   {
-    return openOrCreateMemoryMappedFile(path.toAbsolutePath().toString(), bytes, fd);
+    String filename = path.toAbsolutePath().toString();
+                                                                  
+    return openOrCreateMemoryMappedFile(filename, bytes, fd);
   }
 
   private long openOrCreateMemoryMappedFile(String string, int bytes, int fd[])
