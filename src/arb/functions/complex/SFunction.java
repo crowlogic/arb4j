@@ -155,6 +155,7 @@ public class SFunction implements
   @Override
   public synchronized HolomorphicFunction inverse(int branch)
   {
+    assert 0 <= branch && branch <= 4 : branch + " must be in {0,1,2,3}";
     SFunctionInverse inverse = inverses[branch];
     if (inverse == null)
     {
