@@ -21,9 +21,9 @@ public class SFunction implements
 {
   SFunctionInverse[] inverses = new SFunctionInverse[SFunctionInverse.BRANCH_COUNT];
 
-  public Real  a;
+  public Real        a;
 
-  private Real aSquared;
+  private Real       aSquared;
 
   public SFunction()
   {
@@ -71,7 +71,7 @@ public class SFunction implements
     {
       if (order >= 1)
       {
-        t.div(aSquared, prec, r).pow(2, prec, r).neg(r).add(1, prec, r).log(prec, r).tanh(prec, res);
+        t.div(aSquared, prec, r).pow(2, prec).neg().add(1, prec).log(prec).tanh(prec, res);
       }
       if (order >= 2)
       {

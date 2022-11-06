@@ -45,6 +45,21 @@ public class Complex implements VectorSpace<Complex>, Field<Complex>,Iterable<Co
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex log(int prec)
+  {
+    return log(prec,this);
+  }
+
+  public Complex add(int i, int prec)
+  {
+    return add(i,prec,this);
+  }
+  
+  public Complex pow(int i, int prec)
+  {
+    return pow(i,prec,this);
+  }
+
   public Complex negate()
   {
     return negate(this);
