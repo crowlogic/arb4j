@@ -21,8 +21,8 @@ public class SNewtonKoenigsFunctionRenderer extends
   {
     super(screen,
           domain,
-          new IteratedFunction(new SNewtonMap(new Real().π(256)),
-                               7,
+          new IteratedFunction(new SNewtonMap(),
+                               4,
                                true));
   }
 
@@ -31,10 +31,10 @@ public class SNewtonKoenigsFunctionRenderer extends
 
     this(new Dimension(2500,
                        1250),
-         new Rectangle2D.Double(-3,
-                                -3.5,
-                                6,
-                                7));
+         new Rectangle2D.Double(-4,
+                                -2,
+                                8,
+                                4));
   }
 
   @SuppressWarnings("resource")

@@ -1,5 +1,6 @@
 package arb.functions.complex.elliptic;
 
+import static arb.ComplexConstants.one;
 import static java.lang.System.out;
 import static org.junit.Assert.*;
 
@@ -16,7 +17,7 @@ public class JacobiEllipticθFunctionTest
   public void testEvaluate()
   {
     var     θfunc = new JacobiEllipticθFunction();
-    Complex w     = θfunc.evaluate(ComplexConstants.one, 1, prec, new Complex());
+    Complex w     = θfunc.evaluate(one, 1, prec, new Complex());
     out.println( "JacobiEllipticθFunction(1)=" + w );
   }
 
