@@ -7,7 +7,7 @@ import arb.theoretical.Theory;
 
 /**
  * Morse theory enables one to analyze the topology of a {@link Manifold} by
- * studying differentiable {@link Function}s on that manifold.
+ * studying differentiable {@link Function}s on that {@link Manifold}.
  * 
  * According to the basic insights of Marston Morse, a typical differentiable
  * function on a manifold will reflect the topology quite directly.
