@@ -15,9 +15,9 @@ package arb.topology.transformations;
  * An isomorphism from a set of elements onto itself is called an automorphism.
  *
  */
-public interface Isomorphism extends
+public interface Isomorphism<A,B> extends
                              Transformation,
-                             Morphism
+                             Morphism<A,B,B>
 {
 
 }
