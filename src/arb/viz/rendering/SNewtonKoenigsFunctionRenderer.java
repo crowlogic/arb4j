@@ -17,28 +17,28 @@ public class SNewtonKoenigsFunctionRenderer extends
 {
 
   @SuppressWarnings("resource")
-  public SNewtonKoenigsFunctionRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
+  public SNewtonKoenigsFunctionRenderer(Dimension screen, Double domain)
   {
     super(screen,
           domain,
           new IteratedFunction(new SNewtonMap(),
-                               4,
+                               6,
                                true));
   }
 
   public SNewtonKoenigsFunctionRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension(2500,
-                       1250),
-         new Rectangle2D.Double(-4,
+    this(new Dimension(1500,
+                       1500),
+         new Rectangle2D.Double(-2,
                                 -2,
-                                8,
+                                4,
                                 4));
   }
 
   @SuppressWarnings("resource")
-  public static void main(String args[]) throws IOException, NoninvertibleTransformException, InterruptedException
+  public static void main(String args[]) throws IOException, NoninvertibleTransformException
   {
 
     SNewtonKoenigsFunctionRenderer renderer = new SNewtonKoenigsFunctionRenderer();

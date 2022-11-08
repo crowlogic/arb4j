@@ -25,7 +25,6 @@ public class KeyboardHandler implements
   @Override
   public void keyTyped(KeyEvent e)
   {
-
   }
 
   public void toggleCursorColor()

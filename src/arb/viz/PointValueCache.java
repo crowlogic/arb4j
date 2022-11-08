@@ -37,11 +37,11 @@ public class PointValueCache implements
   /**
    * TODO: this could represent a set of patches of {@link RiemannSurface} sheets
    */
-  Complex     points[][][];
+  Complex[][][]     points;
 
-  private int width;
+  transient private int width;
 
-  private int height;
+  transient private int height;
 
   public Complex pointAt(int n, int x, int y)
   {
@@ -78,7 +78,7 @@ public class PointValueCache implements
 
     try
     {
-      int fd[] = new int[1];
+      int[] fd = new int[1];
       path     = Path.of(id + ".arb");
       pointer0 = openOrCreateMemoryMappedFile(path, byteSize, fd);
       fd0      = fd[0];

@@ -174,7 +174,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   volatile boolean                    anythingChanged                 = false;
 
-  ThreadLocalReal                     r                               = new ThreadLocalReal();
+  transient ThreadLocalReal           r                               = new ThreadLocalReal();
 
   public Part                         displayMode                     = Part.Imaginary;
 
@@ -183,6 +183,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
   transient ThreadLocal<Complex[][]>  zcells                          = newCell();
 
   transient ThreadLocal<Complex[][]>  wcells                          = newCell();
+
   protected transient PointValueCache image;
 
   boolean                             singleThreading                 = false;
@@ -205,7 +206,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   Double                              tangentRayEndpointInScreenSpace = new Point2D.Double();
 
-  protected F                         function;
+  transient protected F               function;
 
   boolean                             disableNewton                   = true;
 
@@ -241,9 +242,9 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
     init();
   }
 
-  MouseHandler    mouseHandler    = new MouseHandler(this);
+  transient MouseHandler    mouseHandler    = new MouseHandler(this);
 
-  KeyboardHandler keyboardHandler = new KeyboardHandler(this);
+  transient KeyboardHandler keyboardHandler = new KeyboardHandler(this);
 
   protected boolean assignKeyBoardAndMouseHandler()
   {
@@ -302,7 +303,6 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   }
 
-  @Deprecated
   @Override
   public void hide()
   {
@@ -411,16 +411,18 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
 
   private void drawHelp()
   {
-    drawTextInScreenCoordinates(true,
-                                "Press\n" + "F1     Toggle program help screen (what you're looking at)\n"
-                                              + "F2     Toggle overlay color between black and white\n"
-                                              + "F3     Cycle display modes thru Real, Imaginary, Blend, and Phase\n"
-                                              + "1-7    Set color mode\n" + "P      Show Phase (Argument)\n"
-                                              + "B      Show Blend of Both Real and Imaginary Parts\n"
-                                              + "R      Show Real part only\n" + "I      Show Imaginary part only\n"
-                                              + "S      Save image\n" + "ESC    Exit progam\n",
-                                20,
-                                20);
+    drawTextInScreenCoordinates(true, """
+                  Press
+                  F1     Toggle program help screen display (what you're looking at)
+                  F2     Toggle overlay color between black and white
+                  F3     Cycle display modes thru Real, Imaginary, Blend, and Phase
+                  1-7    Set color mode
+                  P      Show Phase (Argument)
+                  B      Show Blend of Both Real and Imaginary Parts
+                  R      Show Real part only
+                  I      Show Imaginary part only
+                  S      Save image
+                  ESC    Exit program""", 20, 20);
 
   }
 
@@ -434,7 +436,7 @@ public class ComplexFunctionRenderer<F extends HolomorphicFunction> extends
       return;
     }
 
-    Double points[] = new Double[trajectory.dim];
+    Double[] points = new Double[trajectory.dim];
     for (int i = 0; i < trajectory.dim; i++)
     {
       Complex x = trajectory.get(i);
