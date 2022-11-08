@@ -1,7 +1,7 @@
 package arb.topology;
 
+import arb.differential.geometry.VectorBundle;
 import arb.functions.Preimage;
-import arb.geometry.differential.VectorBundle;
 import arb.topological.spaces.FiberBundle;
 
 /**

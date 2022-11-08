@@ -1,6 +1,6 @@
 package arb;
 
-import arb.geometry.differential.homotopy.Path;
+import arb.differential.geometry.homotopy.Path;
 
 public interface Contour extends
                          Path

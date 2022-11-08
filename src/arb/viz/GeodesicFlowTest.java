@@ -2,9 +2,9 @@ package arb.viz;
 
 import arb.ComplexConstants;
 import arb.Real;
+import arb.differential.geometry.ParallelTransporter;
+import arb.differential.geometry.ParallelTransporter.What;
 import arb.functions.complex.SFunction;
-import arb.geometry.differential.ParallelTransporter;
-import arb.geometry.differential.ParallelTransporter.What;
 
 public class GeodesicFlowTest
 {

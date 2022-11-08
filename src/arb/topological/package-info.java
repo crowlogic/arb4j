@@ -17,7 +17,7 @@
  * {@link arb.spaces.TopologicalSpace}, as any distance or metric defines a
  * {@link arb.topological.Topology}. The transformations that are considered in
  * topology are {@link arb.topology.transformations.Homeomorphism} and
- * {@link arb.geometry.differential.homotopy.Homotopy}s. A property that is
+ * {@link arb.differential.geometry.homotopy.Homotopy}s. A property that is
  * invariant under such transformations is a topological property. Basic
  * examples of topological properties are: the {@link arb.measures.Dimension},
  * which allows distinguishing between a {@link arb.geometry.Line} and a

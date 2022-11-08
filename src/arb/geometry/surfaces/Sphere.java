@@ -1,9 +1,9 @@
 package arb.geometry.surfaces;
 
 import arb.Real;
+import arb.differential.geometry.TangentBundle;
 import arb.exceptions.ArbException;
 import arb.functions.ComplexToRealFunction;
-import arb.geometry.differential.TangentBundle;
 
 public class Sphere implements
                     RiemannSurface

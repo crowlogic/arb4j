@@ -1,8 +1,8 @@
 package arb.theoretical;
 
+import arb.differential.geometry.RiemannianManifold;
+import arb.differential.geometry.RiemannianMetric;
 import arb.geometry.DifferentiableManifold;
-import arb.geometry.differential.RiemannianManifold;
-import arb.geometry.differential.RiemannianMetric;
 
 /**
  * Hodge theory, named after W. V. D. Hodge, is a method for studying the

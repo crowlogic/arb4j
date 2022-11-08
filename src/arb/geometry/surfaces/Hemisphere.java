@@ -2,8 +2,8 @@ package arb.geometry.surfaces;
 
 import arb.Complex;
 import arb.Real;
+import arb.differential.geometry.TangentBundle;
 import arb.functions.ComplexToRealFunction;
-import arb.geometry.differential.TangentBundle;
 import arb.viz.InteractiveSurfaceRenderer;
 
 /**

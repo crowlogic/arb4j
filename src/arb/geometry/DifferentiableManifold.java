@@ -1,6 +1,6 @@
 package arb.geometry;
 
-import arb.geometry.differential.TangentBundle;
+import arb.differential.geometry.TangentBundle;
 
 /**
  * Also called a smooth {@link Manifold}

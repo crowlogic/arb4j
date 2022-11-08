@@ -1,8 +1,8 @@
 package arb.topological;
 
 import arb.EquivalenceClass;
-import arb.geometry.differential.homotopy.Homotopy;
-import arb.geometry.differential.homotopy.Loop;
+import arb.differential.geometry.homotopy.Homotopy;
+import arb.differential.geometry.homotopy.Loop;
 import arb.groups.Group;
 
 /**

@@ -44,8 +44,8 @@ module arb4j
   exports arb.geometry;
   exports arb.geometry.curves;
   exports arb.geometry.surfaces;
-  exports arb.geometry.differential;
-  exports arb.geometry.differential.homotopy;
+  exports arb.differential.geometry;
+  exports arb.differential.geometry.homotopy;
   exports arb.domains;
   exports arb.dynamical.systems;
   exports arb.exceptions;

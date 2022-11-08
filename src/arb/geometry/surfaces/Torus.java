@@ -1,7 +1,7 @@
 package arb.geometry.surfaces;
 
+import arb.differential.geometry.TangentBundle;
 import arb.functions.ComplexToRealFunction;
-import arb.geometry.differential.TangentBundle;
 
 public class Torus implements
                    Surface

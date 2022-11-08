@@ -1,8 +1,8 @@
 package arb.geometry;
 
+import arb.differential.geometry.TangentBundle;
 import arb.geometry.curves.Circle;
 import arb.geometry.curves.Lemniscate;
-import arb.geometry.differential.TangentBundle;
 import arb.geometry.surfaces.*;
 import arb.topological.TopologicalSpace;
 import arb.topological.spaces.*;

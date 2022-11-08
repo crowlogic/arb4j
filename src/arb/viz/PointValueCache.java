@@ -145,7 +145,7 @@ public class PointValueCache implements
     long           pointer      = arb.openOrCreateMemoryMappedFile(string, fdPointer, bytes);
     assert pointer != 0 : "openOrCreateMemoryMappedFile " + string + " byteSize=" + bytes + " didn't succed";
     fd[0] = fileHandle.get();
-    out.printf("fd %d -> %d bytes@0x%x in %s\n", fd[0], bytes, pointer, string);
+    //out.printf("fd %d -> %d bytes@0x%x in %s\n", fd[0], bytes, pointer, string);
     return pointer;
   }
 
