@@ -22,7 +22,7 @@ public class SNewtonKoenigsFunctionRenderer extends
     super(screen,
           domain,
           new IteratedFunction(new SNewtonMap(),
-                               6,
+                               8,
                                true));
   }
 
