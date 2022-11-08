@@ -1,7 +1,8 @@
 package arb;
 
 public interface Integer extends
-                         Field<Integer>
+                         Field<Integer>,
+                         IndexSet<Integer>
 {
 
 }

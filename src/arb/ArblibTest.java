@@ -42,12 +42,6 @@ public class ArblibTest extends
 
   }
 
-  public static void testHurwitzZeta()
-  {
-    // acb_dirichlet_hurwitz(res, z, v, prec);
-
-  }
-
   public static void testHardyTheta()
   {
     Complex z    = new Complex();
