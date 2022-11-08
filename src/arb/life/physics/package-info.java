@@ -1,4 +1,0 @@
-/**
- * 
- */
-package arb.life.physics;

@@ -1,1 +1,0 @@
-package arb.life.physics.quantum.mechanics.supersymmetric;

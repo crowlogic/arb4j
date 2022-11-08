@@ -44,7 +44,7 @@ import arb.Real;
  */
 public interface NormedVectorSpace<X extends Field> extends
                                   VectorSpace<X>,
-                                  MetricSpace<X>
+                                  NormedSpace<X>
 {
 
 }
