@@ -1,10 +1,10 @@
 package arb.functions.complex;
 
 import arb.Real;
-import arb.operators.Composition;
+import arb.operators.CompositionOperator;
 
 public class TFunction extends
-                       Composition<SFunction, WickRotation>
+                       CompositionOperator<SFunction, WickRotation>
 {
   @Override
   public String toString()

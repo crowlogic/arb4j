@@ -10,14 +10,15 @@ import arb.functions.complex.HolomorphicFunction;
  * the Koopman operator
  *
  */
-public class Composition<F extends HolomorphicFunction, G extends HolomorphicFunction> implements
-                        HolomorphicFunction,
-                        AutoCloseable
+public class CompositionOperator<F extends HolomorphicFunction, G extends HolomorphicFunction> implements
+                                HolomorphicFunction,
+                                AutoCloseable
 {
-  public static <F extends HolomorphicFunction, G extends HolomorphicFunction> Composition<F, G> compose(F f, G g)
+  public static <F extends HolomorphicFunction, G extends HolomorphicFunction> CompositionOperator<F, G> compose(F f,
+                                                                                                                 G g)
   {
-    return new Composition(f,
-                           g);
+    return new CompositionOperator(f,
+                                   g);
   }
 
   @Override
@@ -34,7 +35,7 @@ public class Composition<F extends HolomorphicFunction, G extends HolomorphicFun
     return new TransferOperator<HolomorphicFunction>(f);
   }
 
-  public Composition(F f, G g)
+  public CompositionOperator(F f, G g)
   {
     this.f = f;
     this.g = g;
@@ -43,6 +44,7 @@ public class Composition<F extends HolomorphicFunction, G extends HolomorphicFun
 
   public F           f;
   public G           g;
+  
   ThreadLocalComplex y = new ThreadLocalComplex(3);
 
   @Override

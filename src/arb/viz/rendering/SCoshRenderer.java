@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import arb.RealConstants;
 import arb.functions.complex.*;
 import arb.functions.complex.hyperbolic.HyperbolicCosine;
-import arb.operators.Composition;
+import arb.operators.CompositionOperator;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
@@ -34,8 +34,8 @@ public class SCoshRenderer
 
     SFunction               sFunction = new SFunction();
 
-    HolomorphicFunction     function  = (new Composition(sFunction,
-                                                         new Composition(new HyperbolicCosine(),
+    HolomorphicFunction     function  = (new CompositionOperator(sFunction,
+                                                         new CompositionOperator(new HyperbolicCosine(),
                                                                          new WickRotation())));
 
     ComplexFunctionRenderer plotter   = new ComplexFunctionRenderer(screen,

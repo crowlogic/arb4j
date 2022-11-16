@@ -8,16 +8,16 @@ import java.io.IOException;
 import arb.Real;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.numbertheoretic.RiemannξFunction;
-import arb.operators.Composition;
+import arb.operators.CompositionOperator;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
 /**
- * Renders the {@link Composition} of the {@link SFunction} and the
+ * Renders the {@link CompositionOperator} of the {@link SFunction} and the
  * {@link RiemannξFunction}
  */
 public class SξRenderer extends
-                        ComplexFunctionRenderer<Composition<SFunction, RiemannξFunction>>
+                        ComplexFunctionRenderer<CompositionOperator<SFunction, RiemannξFunction>>
 {
   @SuppressWarnings("resource")
   public static void main(String args[]) throws NoninvertibleTransformException, IOException
@@ -34,7 +34,7 @@ public class SξRenderer extends
                                  -30,
                                  40,
                                  60),
-          Composition.compose(new SFunction(vscale), new RiemannξFunction()));
+          CompositionOperator.compose(new SFunction(vscale), new RiemannξFunction()));
 
     colorMode   = 5;
     displayMode = Part.Real;

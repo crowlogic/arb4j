@@ -8,12 +8,12 @@ import java.io.IOException;
 import arb.Real;
 import arb.functions.complex.*;
 import arb.functions.complex.numbertheoretic.RiemannζFunction;
-import arb.operators.Composition;
+import arb.operators.CompositionOperator;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
 public class SζRenderer extends
-                        ComplexFunctionRenderer<Composition<Composition<SFunction, RiemannζFunction>, WickRotation>>
+                        ComplexFunctionRenderer<CompositionOperator<CompositionOperator<SFunction, RiemannζFunction>, WickRotation>>
 {
   @SuppressWarnings("resource")
   public static void main(String[] args) throws IOException, NoninvertibleTransformException
@@ -34,7 +34,7 @@ public class SζRenderer extends
                                  20,
                                  60,
                                  -30),
-          new Composition<>(new Composition<>(new SFunction(new Real().set("1", 128)),
+          new CompositionOperator<>(new CompositionOperator<>(new SFunction(new Real().set("1", 128)),
                                               new RiemannζFunction()),
                             new WickRotation()));
 

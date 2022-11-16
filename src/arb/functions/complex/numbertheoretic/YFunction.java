@@ -3,10 +3,10 @@ package arb.functions.complex.numbertheoretic;
 import arb.Real;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.complex.TFunction;
-import arb.operators.Composition;
+import arb.operators.CompositionOperator;
 
 public class YFunction extends
-                       Composition<TFunction, ZFunction>
+                       CompositionOperator<TFunction, ZFunction>
 {
   @Override
   public String toString()

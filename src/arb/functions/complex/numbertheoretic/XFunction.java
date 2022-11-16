@@ -4,7 +4,7 @@ import arb.Real;
 import arb.functions.*;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.complex.SFunction;
-import arb.operators.Composition;
+import arb.operators.CompositionOperator;
 
 /**
  * The conjugate of this function is {@link YFunction}
@@ -12,7 +12,7 @@ import arb.operators.Composition;
  * @author crow
  */
 public class XFunction extends
-                       Composition<SFunction, ZFunction> implements
+                       CompositionOperator<SFunction, ZFunction> implements
                        SymmetricFunction
 {
 

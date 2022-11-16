@@ -33,7 +33,7 @@ public class TransferOperator<F extends HolomorphicFunction> implements
   {
     // FIXME: does this need to be split into a left-adjoint and a right-adjoint
     // that takes an argument? probably a rhetorical question
-    return new Composition(f,
+    return new CompositionOperator(f,
                            null);
   }
 

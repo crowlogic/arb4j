@@ -12,12 +12,12 @@ import arb.arb;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.dynamics.NewtonMap;
 import arb.geometry.Manifold;
-import arb.operators.Composition;
+import arb.operators.CompositionOperator;
 
 /**
  * A circle coordinate function representing a circle having a basepoint and
  * radius that goes well with the {@link NewtonMap} of the
- * {@link ComplexRealPart} of the {@link Composition} applied as the composition
+ * {@link ComplexRealPart} of the {@link CompositionOperator} applied as the composition
  * of the {@link SFunction} with the {@link ComplexCircle} for instance
  * 
  * <code>

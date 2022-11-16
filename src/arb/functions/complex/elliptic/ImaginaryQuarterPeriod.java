@@ -2,7 +2,7 @@ package arb.functions.complex.elliptic;
 
 import arb.functions.complex.TaylorShift;
 import arb.functions.complex.WickRotation;
-import arb.operators.Composition;
+import arb.operators.CompositionOperator;
 
 /**
  * The imaginary quarter perioid i*K'(s) is the Wick rotation of the derivative
@@ -12,12 +12,12 @@ import arb.operators.Composition;
  * @author crow
  */
 public class ImaginaryQuarterPeriod extends
-                                    TaylorShift<Composition<RealQuarterPeriod, WickRotation>>
+                                    TaylorShift<CompositionOperator<RealQuarterPeriod, WickRotation>>
 {
 
   public ImaginaryQuarterPeriod()
   {
-    super(new Composition(new RealQuarterPeriod(),
+    super(new CompositionOperator(new RealQuarterPeriod(),
                           new WickRotation(false)));
   }
 
