@@ -10,7 +10,9 @@ import arb.functions.real.RealPart;
 import junit.framework.TestCase;
 
 /**
- * TODO: define something that traces out Equipotential curves where the real part of the function defines the potential and the imaginary part defines the 
+ * TODO: define something that traces out Equipotential curves where the real
+ * part of the function defines the potential and the imaginary part defines the
+ * 
  * @author crow
  *
  */
@@ -77,30 +79,18 @@ public class RealNewtonMapTest extends
     return hmm;
   }
 
-  public RealPart testIteratedNewtonMap(CircularS angle)
+  public RealPart testIteratedNewtonMap(CircularS radialPressure)
   {
-    RealPart realAngle = new RealPart(angle);
-    try ( Real real = new Real();)
-    {
-      RealNewtonMap func = new RealNewtonMap(realAngle,
-                                             real.set("1", 52));
+    RealPart<CircularS> realRadialPressure            = new RealPart<>(radialPressure);
+    Real                angle                         = w;
 
-      z.set("-0.75", 128);
-      for (int i = 0; i < 20; i++)
-      {
+    RealNewtonMap       newtonMapOfRealRadialPressure = new RealNewtonMap(realRadialPressure,
+                                                                          RealConstants.one);
+    z.set("-0.75", 128);
+    newtonMapOfRealRadialPressure.iterate(z, 20, 128, angle);
+    System.out.println("angle(w)=" + radialPressure.evaluate(new Complex(w), 1, 512, new Complex()));
+    return realRadialPressure;
 
-        func.evaluate(z, 2, 128, w);
-        w.printPrecision = true;
-        System.out.println("w=" + w);
-        z.set(w);
-        if (abs(w.get(1).doubleValue()) < pow(10, -30))
-        {
-          System.out.println("Converged in " + (i + 1) + " steps...");
-          break;
-        }
-      }
-    }
-    System.out.println("angle(w)=" + angle.evaluate(new Complex(w), 1, 512, new Complex()));
-    return realAngle;
   }
+
 }

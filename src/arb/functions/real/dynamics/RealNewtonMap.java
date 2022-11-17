@@ -1,5 +1,8 @@
 package arb.functions.real.dynamics;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.pow;
+
 import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.real.RealFunction;
@@ -13,6 +16,40 @@ import arb.functions.real.RealFunction;
 public class RealNewtonMap<F extends RealFunction> implements
                           RealDynamicalSystem
 {
+  public boolean verbose = false;
+
+  /**
+   * Iteratively invokes this{@link #evaluate(Real, int, int, Real)} specific
+   * number of times
+   * 
+   * @param z
+   * @param n
+   * @param prec
+   * @param w
+   * @return the number to which the iteration converged, regardless of whether it
+   *         converged or not
+   */
+  public Real iterate(Real z, int n, int prec, Real w)
+  {
+    for (int i = 0; i < n; i++)
+    {
+
+      evaluate(z, 2, prec, w);
+      w.printPrecision = true;
+      if (verbose)
+      {
+        System.out.println("w=" + w);
+      }
+      z.set(w);
+      if (abs(w.get(1).doubleValue()) < pow(10, -30))
+      {
+        System.out.println("Converged in " + (i + 1) + " steps...");
+        break;
+      }
+    }
+
+    return w;
+  }
 
   public Real r;
 
