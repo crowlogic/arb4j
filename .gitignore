@@ -38,3 +38,5 @@
 /shell.start~
 /build.log
 /*.png
+/#todo.txt#
+/.#todo.txt
