@@ -28,22 +28,20 @@ public class CircularCompositionS extends
    * @param nextAngle
    * @return
    */
-  public Real converge(Real presentAngle, Real nextAngle)
+  public Real converge(Real presentAngle, Real angle)
   {
     RealPart<CircularCompositionS> realRadialPressure            = new RealPart<>(this);
-    Real                           angle                         = nextAngle;
 
     RealNewtonMap                  newtonMapOfRealRadialPressure = new RealNewtonMap(realRadialPressure,
                                                                                      RealConstants.one);
-    presentAngle.set("-0.75", 128);
     newtonMapOfRealRadialPressure.iterate(presentAngle, 20, 128, angle);
-    out.println("angle=" + angle);
-    Complex vectorAtPoint = evaluate(new Complex(nextAngle), 1, 512, new Complex());
-    System.out.println("f(angle)=" + vectorAtPoint);
+    //out.println("angle=" + angle);
+    Complex vectorAtPoint = evaluate(new Complex(angle), 1, 512, new Complex());
+    //System.out.println("f(angle)=" + vectorAtPoint);
     assertEquals(0, vectorAtPoint.getReal().doubleValue(), pow(10, -39));
     // assertEquals(0.01, vectorAtPoint.getImag().doubleValue(), pow(10, -6));
 
-    return nextAngle;
+    return angle;
 
   }
 

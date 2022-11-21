@@ -27,6 +27,12 @@ import arb.topological.spaces.EuclideanVectorSpace;
 %typemap(javacode) arb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Real(Real _z)
+  {
+    this();
+    set(_z);
+  }
+
   @Override
   public int hashCode()
   {

@@ -3,7 +3,6 @@ package arb.functions.real.dynamics;
 import static java.lang.System.out;
 
 import arb.Complex;
-import arb.ComplexConstants;
 import arb.Real;
 import arb.RealConstants;
 import arb.RealRootInterval;
@@ -31,7 +30,9 @@ public class RealNewtonMapTest extends
     CircularCompositionS angle = new CircularCompositionS(RealConstants.one,
                                                           new Real().set("0.1", 512));
     Real                 a     = Real.newVector(2);
-    Real                 w     = angle.converge(a, Real.newVector(2));
+    a.set("-0.75", 128);
+
+    Real w = angle.converge(a, Real.newVector(2));
 
     System.out.println("awesome. 1/3rd of time needs to be spent sleeping");
     Complex locatedRoot  = locateRoot(angle);
@@ -48,22 +49,15 @@ public class RealNewtonMapTest extends
   @SuppressWarnings("resource")
   public void testSOrbit()
   {
-    int                  prec   = 512;
-    Real                 h      = new Real().set("0.1", prec);
-    CircularCompositionS angle  = new CircularCompositionS(RealConstants.one,
-                                                           h);
+    Real                 h    = new Real().set("0.1", 256);
+    CircularCompositionS disc = new CircularCompositionS(RealConstants.one,
+                                                         h);
+    Real                 a    = Real.newVector(2);
+    a.set("-0.75", 128);
+    Real w = disc.converge(a, Real.newVector(2));
 
-    Complex              θ      = locateRoot(angle);
+    out.format("started out at %s and converged to %s", a, w);
 
-    // t = h*e^(i*θ)
-    Complex              t      = θ.mul(ComplexConstants.i, prec, new Complex()).exp(prec).mul(h, prec);
-    CircularCompositionS angle2 = new CircularCompositionS(t,
-                                                           RealConstants.one,
-                                                           h);
-    Complex              θ2     = locateRoot(angle2);
-    out.println("θ=" + θ);
-    out.println("t=" + t);
-    out.println("θ2=" + θ2);
   }
 
   public Complex locateRoot(CircularCompositionS radialVector)

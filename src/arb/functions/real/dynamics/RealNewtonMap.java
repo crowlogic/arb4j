@@ -29,22 +29,28 @@ public class RealNewtonMap<F extends RealFunction> implements
    * @return the number to which the iteration converged, regardless of whether it
    *         converged or not
    */
-  public Real iterate(Real z, int n, int prec, Real w)
+  public Real iterate(Real _z, int n, int prec, Real w)
   {
-    for (int i = 0; i < n; i++)
+    try ( Real z = new Real(_z))
     {
+      for (int i = 0; i < n; i++)
+      {
 
-      evaluate(z, 2, prec, w);
-      w.printPrecision = true;
-      if (verbose)
-      {
-        System.out.println("w=" + w);
-      }
-      z.set(w);
-      if (abs(w.get(1).doubleValue()) < pow(10, -30))
-      {
-        System.out.println("Converged in " + (i + 1) + " steps...");
-        break;
+        evaluate(z, 2, prec, w);
+        w.printPrecision = true;
+        if (verbose)
+        {
+          System.out.println("w=" + w);
+        }
+        z.set(w);
+        if (abs(w.get(1).doubleValue()) < pow(10, -30))
+        {
+          if (verbose)
+          {
+            System.out.println("Converged in " + (i + 1) + " steps...");
+            break;
+          }
+        }
       }
     }
 
