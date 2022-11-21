@@ -10,6 +10,7 @@ import arb.Real;
 import arb.RealMatrix;
 import arb.RealOrderedPair;
 import arb.RealPartition;
+import arb.RoundingMode;
 import arb.stochastic.ProbabilityDistributionFunction;
 import de.gsi.dataset.DataSet;
 import de.gsi.dataset.DataSet2D;
@@ -36,7 +37,7 @@ public class EvaluationSequence extends
   public EvaluationSequence(RealPartition partition, int dim)
   {
     super("EvaluationSequence",
-          dim);
+          dim+1);
     assert dim > 0;
     this.partition = partition;
     this.length    = partition.count();
@@ -110,13 +111,13 @@ public class EvaluationSequence extends
   {
     if (dimension == 0)
     {
-      dimension = 1;
+      return partition.get(index).doubleValue(RoundingMode.Near);
     }
     else
     {
-      dimension = 0;
+      dimension--;      
+      return values[dimension].get(index).doubleValue(RoundingMode.Near);
     }
-    return values[dimension].get(index).doubleValue();
   }
 
   @Override
