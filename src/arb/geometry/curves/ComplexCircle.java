@@ -131,7 +131,7 @@ public class ComplexCircle implements
     direction.get(0).printPrecision = true;
     try ( Real degrees = new Real())
     {
-      System.out.println(this + " in the direction " + Math.toDegrees(direction.get(0).doubleValue()) + "°\n");
+      System.out.println(this + " in the direction " + Math.toDegrees(direction.get(0).doubleValue()) + "°");
     }
     evaluate(direction, 1, prec, t);
 
