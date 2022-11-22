@@ -1,5 +1,6 @@
 package arb.functions.real.dynamics;
 
+import static arb.MagnitudeConstants.zeroMag;
 import static java.lang.System.out;
 
 import arb.Complex;
@@ -10,6 +11,7 @@ import arb.RootLocatorOptions;
 import arb.Roots;
 import arb.functions.complex.CircularCompositionS;
 import arb.functions.real.RealPart;
+import arb.geometry.curves.ComplexCircle;
 import junit.framework.TestCase;
 
 /**
@@ -39,24 +41,45 @@ public class RealNewtonMapTest extends
     Real    locatedAngle = locatedRoot.getReal();
 
     System.out.println("locatedAngle=" + locatedAngle);
-    out.printf("locatedAngle=%s locatedRoot=%s", locatedAngle, locatedRoot);
+    out.printf("locatedAngle=%s locatedRoot=%s\n", locatedAngle, locatedRoot);
 
     Real θ = w.get(0);
     assertEquals(θ.doubleValue(), locatedAngle.doubleValue());
 
   }
 
+  final static int prec = 128;
+
   @SuppressWarnings("resource")
   public void testSOrbit()
   {
-    Real                 h    = new Real().set("0.1", 256);
+    out.println("===========testSOrbit===============");
+    Real h = new Real().set("0.1", 128);
+    h.printPrecision = true;
     CircularCompositionS disc = new CircularCompositionS(RealConstants.one,
                                                          h);
     Real                 a    = Real.newVector(2);
-    a.set("-0.75", 128);
-    Real w = disc.converge(a, Real.newVector(2));
+    a.printPrecision = true;
+    a.π(prec).div(4, prec).neg();
+    ComplexCircle circle = disc.g;
+    try ( Real c = Real.newVector(2))
+    {
+      for (int i = 0; i < 10; i++)
+      {
+        String  initialAngle = Double.toString(Math.toDegrees(a.doubleValue()));
+        Real    w            = disc.converge(a, c);
+        Complex damn         = new Complex();
+        damn.setRealObj(c.get(0));
+        damn.setImagObj(c.get(1));
 
-    out.format("started out at %s and converged to %s", a, w);
+        out.format("started out at %s° and converged to %s°\n",
+                   initialAngle,
+                   Math.toDegrees(damn.getReal().doubleValue()));
+        damn.getReal().setRad(zeroMag);
+        a.set(damn.getReal());
+        circle.translate(a, prec, h);
+      }
+    }
 
   }
 

@@ -1,9 +1,6 @@
 package arb.functions.complex;
 
 import static arb.RealConstants.one;
-import static java.lang.Math.pow;
-import static java.lang.System.out;
-import static org.junit.Assert.assertEquals;
 
 import arb.Complex;
 import arb.ComplexConstants;
@@ -30,19 +27,11 @@ public class CircularCompositionS extends
    */
   public Real converge(Real presentAngle, Real angle)
   {
-    RealPart<CircularCompositionS> realRadialPressure            = new RealPart<>(this);
+    RealPart<CircularCompositionS> realPart            = new RealPart<>(this);
 
-    RealNewtonMap                  newtonMapOfRealRadialPressure = new RealNewtonMap(realRadialPressure,
-                                                                                     RealConstants.one);
-    newtonMapOfRealRadialPressure.iterate(presentAngle, 20, 128, angle);
-    //out.println("angle=" + angle);
-    Complex vectorAtPoint = evaluate(new Complex(angle), 1, 512, new Complex());
-    //System.out.println("f(angle)=" + vectorAtPoint);
-    assertEquals(0, vectorAtPoint.getReal().doubleValue(), pow(10, -39));
-    // assertEquals(0.01, vectorAtPoint.getImag().doubleValue(), pow(10, -6));
-
-    return angle;
-
+    RealNewtonMap                  newtonMapOfRealPart = new RealNewtonMap(realPart,
+                                                                           RealConstants.one);
+    return newtonMapOfRealPart.iterate(presentAngle, 20, 128, angle);
   }
 
   public CircularCompositionS()

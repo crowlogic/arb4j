@@ -1,6 +1,7 @@
 package arb.geometry.curves;
 
 import static java.lang.Math.max;
+import static java.lang.System.out;
 
 import arb.*;
 import arb.functions.complex.*;
@@ -10,8 +11,9 @@ import arb.operators.CompositionOperator;
 /**
  * A circle coordinate function representing a circle having a basepoint and
  * radius that goes well with the {@link NewtonMap} of the
- * {@link ComplexRealPart} of the {@link CompositionOperator} applied as the composition
- * of the {@link SFunction} with the {@link ComplexCircle} for instance
+ * {@link ComplexRealPart} of the {@link CompositionOperator} applied as the
+ * composition of the {@link SFunction} with the {@link ComplexCircle} for
+ * instance
  * 
  * <pre>
  *       /   Re(S(circle(0,0.01,θ)))    \
@@ -82,6 +84,23 @@ public class ComplexCircle implements
    * {@link Double}-wrapper for this{@link #evaluate(Complex, int, int, Complex)}
    * 
    * @param angle
+   * @param dist
+   * @param result
+   * @return
+   */ 
+  public Complex evaluate(Real angle, int order, int prec, Complex result)
+  {
+    try ( Complex Θ = new Complex())
+    {
+      Θ.getReal().set(angle);
+      return evaluate(Θ, 1, prec, result);
+    }
+  }
+
+  /**
+   * {@link Double}-wrapper for this{@link #evaluate(Complex, int, int, Complex)}
+   * 
+   * @param angle   in radians
    * @param complex
    * @return
    */
@@ -92,6 +111,28 @@ public class ComplexCircle implements
       Θ.getReal().set(angle);
       return evaluate(Θ, 1, 64, complex);
     }
+  }
+
+  /**
+   * 
+   * @param angle    specified in radians which is an arc of a circle which is
+   *                 equal to the radius, or the angle measured by such an arc.
+   * @param distance how far in the specified direction to move
+   * 
+   * @return
+   */
+  public ComplexCircle translate(Real angle, int prec, Real distance)
+  {
+    angle.get(0).printPrecision = true;
+    try ( Real degrees = new Real())
+    {
+      System.out.println("Translating " + this + "\n a distance of " + distance.toString(6) + "\n in the direction "
+                    + Math.toDegrees(angle.get(0).doubleValue()) + "°\n");
+    }
+    evaluate( angle, 1, prec, t );
+    out.println( "After translation:  " + this + "\n\n"); 
+    
+    return this;
   }
 
 }
