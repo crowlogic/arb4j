@@ -10,8 +10,9 @@ import arb.operators.CompositionOperator;
 /**
  * A circle coordinate function representing a circle having a basepoint and
  * radius that goes well with the {@link NewtonMap} of the
- * {@link ComplexRealPart} of the {@link CompositionOperator} applied as the composition
- * of the {@link SFunction} with the {@link ComplexCircle} for instance
+ * {@link ComplexRealPart} of the {@link CompositionOperator} applied as the
+ * composition of the {@link SFunction} with the {@link ComplexCircle} for
+ * instance
  * 
  * <pre>
  *       /   Re(S(circle(0,0.01,θ)))    \
@@ -82,6 +83,23 @@ public class ComplexCircle implements
    * {@link Double}-wrapper for this{@link #evaluate(Complex, int, int, Complex)}
    * 
    * @param angle
+   * @param dist
+   * @param result
+   * @return
+   */
+  public Complex evaluate(Real angle, Real dist, int prec, Complex result)
+  {
+    try ( Complex Θ = new Complex())
+    {
+      Θ.getReal().set(angle);
+      return evaluate(Θ, 1, prec, result);
+    }
+  }
+
+  /**
+   * {@link Double}-wrapper for this{@link #evaluate(Complex, int, int, Complex)}
+   * 
+   * @param angle
    * @param complex
    * @return
    */
@@ -92,6 +110,13 @@ public class ComplexCircle implements
       Θ.getReal().set(angle);
       return evaluate(Θ, 1, 64, complex);
     }
+  }
+
+  public Complex translate(Real angle, Real distance)
+  {
+    System.out.println("Translating " + this + "\n a distance of " + distance + "\n in the direction " + angle.get(0) + "\n" );
+    assert false : "todo: t+=h*exp(i*angle)";
+    return t;
   }
 
 }
