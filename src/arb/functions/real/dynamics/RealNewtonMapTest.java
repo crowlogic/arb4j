@@ -1,6 +1,8 @@
 package arb.functions.real.dynamics;
 
 import static arb.MagnitudeConstants.zeroMag;
+import static arb.RealConstants.one;
+import static java.lang.System.err;
 import static java.lang.System.out;
 
 import arb.Complex;
@@ -50,35 +52,36 @@ public class RealNewtonMapTest extends
 
   final static int prec = 128;
 
-  @SuppressWarnings("resource")
   public void testSOrbit()
   {
     out.println("===========testSOrbit===============");
-    Real h = new Real().set("0.1", 128);
-    h.printPrecision = true;
-    CircularCompositionS disc = new CircularCompositionS(RealConstants.one,
-                                                         h);
-    Real                 a    = Real.newVector(2);
-    a.printPrecision = true;
-    a.π(prec).div(4, prec).neg();
-    ComplexCircle circle = disc.g;
-    try ( Real c = Real.newVector(2))
+
+    try ( Real c = Real.newVector(2); Real h = new Real("0.1",
+                                                        128);
+          CircularCompositionS disc = new CircularCompositionS(one,
+                                                               h);
+          Complex damn = new Complex();)
     {
-      for (int i = 0; i < 10; i++)
+      h.printPrecision = true;
+      Real a = Real.newVector(2);
+      a.printPrecision = true;
+      a.π(prec).div(4, prec).neg(); // a=-π/4=-45°
+      ComplexCircle circle = disc.g;
+
+      for (int i = 0; i < 42; i++)
       {
-        String  initialAngle = Double.toString(Math.toDegrees(a.doubleValue()));
-        Real    w            = disc.converge(a, c);
-        Complex damn         = new Complex();
+        String initialAngle = Double.toString(Math.toDegrees(a.doubleValue()));
+        Real   w            = disc.converge(a, c);
+
         damn.setRealObj(c.get(0));
         damn.setImagObj(c.get(1));
-
-        out.format("started out at %s° and converged to %s°\n",
-                   initialAngle,
-                   Math.toDegrees(damn.getReal().doubleValue()));
+        out.format("direction %s° converged towards ", initialAngle);
         damn.getReal().setRad(zeroMag);
         a.set(damn.getReal());
-        circle.translate(a, prec, h);
+        circle.shift(a, prec, h);
+        // TODO: check for divergence
       }
+      err.println("TODO: check for divergence and enforce modulo π" );
     }
 
   }

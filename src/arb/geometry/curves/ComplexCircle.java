@@ -1,10 +1,13 @@
 package arb.geometry.curves;
 
 import static java.lang.Math.max;
-import static java.lang.System.out;
 
-import arb.*;
-import arb.functions.complex.*;
+import arb.Complex;
+import arb.Real;
+import arb.ThreadLocalComplex;
+import arb.arb;
+import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.SFunction;
 import arb.functions.complex.dynamics.NewtonMap;
 import arb.operators.CompositionOperator;
 
@@ -87,7 +90,7 @@ public class ComplexCircle implements
    * @param dist
    * @param result
    * @return
-   */ 
+   */
   public Complex evaluate(Real angle, int order, int prec, Complex result)
   {
     try ( Complex Θ = new Complex())
@@ -114,24 +117,24 @@ public class ComplexCircle implements
   }
 
   /**
+   * Perform an (infinitesimal) shift of length this{@link #h} in the specified
+   * direction
    * 
-   * @param angle    specified in radians which is an arc of a circle which is
-   *                 equal to the radius, or the angle measured by such an arc.
-   * @param distance how far in the specified direction to move
+   * @param direction specified in radians which is an arc of a circle which is
+   *                  equal to the radius, or the angle measured by such an arc.
+   * @param distance  how far in the specified direction to move
    * 
    * @return
    */
-  public ComplexCircle translate(Real angle, int prec, Real distance)
+  public ComplexCircle shift(Real direction, int prec, Real distance)
   {
-    angle.get(0).printPrecision = true;
+    direction.get(0).printPrecision = true;
     try ( Real degrees = new Real())
     {
-      System.out.println("Translating " + this + "\n a distance of " + distance.toString(6) + "\n in the direction "
-                    + Math.toDegrees(angle.get(0).doubleValue()) + "°\n");
+      System.out.println(this + " in the direction " + Math.toDegrees(direction.get(0).doubleValue()) + "°");
     }
-    evaluate( angle, 1, prec, t );
-    out.println( "After translation:  " + this + "\n\n"); 
-    
+    evaluate(direction, 1, prec, t);
+
     return this;
   }
 

@@ -765,7 +765,7 @@ public class Real implements VectorSpace<Real>, Serializable, Comparable<Real>, 
   public Real get(int index)
   {
     assert index < dim : String.format("index = %d >= dim = %d", index, dim);
-    if (index == 0 && dim == 1 )
+    if (index == 0 && dim == 1)
     {
       return this;
     }
