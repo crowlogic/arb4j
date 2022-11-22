@@ -24,7 +24,7 @@ public class XNewtonKoenigsFunctionRenderer extends
           domain,
           new IteratedFunction(new NewtonMap(new XFunction(new Real("1",
                                                                     128))),
-                               3,
+                               4,
                                true)
           {
 
