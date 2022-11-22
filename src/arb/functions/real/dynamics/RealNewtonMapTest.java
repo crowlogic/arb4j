@@ -60,15 +60,15 @@ public class RealNewtonMapTest extends
                                                          h);
     Real                 a    = Real.newVector(2);
     a.printPrecision = true;
-    a.set("-0.75", 128);
+    a.π(prec).div(4, prec).neg();
     ComplexCircle circle = disc.g;
     try ( Real c = Real.newVector(2))
     {
-      for (int i = 0; i < 4; i++)
+      for (int i = 0; i < 10; i++)
       {
-        String initialAngle = Double.toString( Math.toDegrees(a.doubleValue()) );
-        Real    w    = disc.converge(a, c);
-        Complex damn = new Complex();
+        String  initialAngle = Double.toString(Math.toDegrees(a.doubleValue()));
+        Real    w            = disc.converge(a, c);
+        Complex damn         = new Complex();
         damn.setRealObj(c.get(0));
         damn.setImagObj(c.get(1));
 
