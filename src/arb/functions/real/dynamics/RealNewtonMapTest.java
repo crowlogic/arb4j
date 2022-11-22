@@ -2,6 +2,7 @@ package arb.functions.real.dynamics;
 
 import static arb.MagnitudeConstants.zeroMag;
 import static arb.RealConstants.one;
+import static java.lang.System.err;
 import static java.lang.System.out;
 
 import arb.Complex;
@@ -67,7 +68,7 @@ public class RealNewtonMapTest extends
       a.π(prec).div(4, prec).neg(); // a=-π/4=-45°
       ComplexCircle circle = disc.g;
 
-      for (int i = 0; i < 10; i++)
+      for (int i = 0; i < 42; i++)
       {
         String initialAngle = Double.toString(Math.toDegrees(a.doubleValue()));
         Real   w            = disc.converge(a, c);
@@ -78,7 +79,9 @@ public class RealNewtonMapTest extends
         damn.getReal().setRad(zeroMag);
         a.set(damn.getReal());
         circle.shift(a, prec, h);
+        // TODO: check for divergence
       }
+      err.println("TODO: check for divergence and enforce modulo π" );
     }
 
   }
