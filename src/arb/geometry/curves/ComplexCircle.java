@@ -1,6 +1,7 @@
 package arb.geometry.curves;
 
 import static java.lang.Math.max;
+import static java.lang.System.out;
 
 import arb.*;
 import arb.functions.complex.*;
@@ -86,8 +87,8 @@ public class ComplexCircle implements
    * @param dist
    * @param result
    * @return
-   */
-  public Complex evaluate(Real angle, Real dist, int prec, Complex result)
+   */ 
+  public Complex evaluate(Real angle, int order, int prec, Complex result)
   {
     try ( Complex Θ = new Complex())
     {
@@ -99,7 +100,7 @@ public class ComplexCircle implements
   /**
    * {@link Double}-wrapper for this{@link #evaluate(Complex, int, int, Complex)}
    * 
-   * @param angle
+   * @param angle   in radians
    * @param complex
    * @return
    */
@@ -112,11 +113,26 @@ public class ComplexCircle implements
     }
   }
 
-  public Complex translate(Real angle, Real distance)
+  /**
+   * 
+   * @param angle    specified in radians which is an arc of a circle which is
+   *                 equal to the radius, or the angle measured by such an arc.
+   * @param distance how far in the specified direction to move
+   * 
+   * @return
+   */
+  public ComplexCircle translate(Real angle, int prec, Real distance)
   {
-    System.out.println("Translating " + this + "\n a distance of " + distance + "\n in the direction " + angle.get(0) + "\n" );
-    assert false : "todo: t+=h*exp(i*angle)";
-    return t;
+    angle.get(0).printPrecision = true;
+    try ( Real degrees = new Real())
+    {
+      System.out.println("Translating " + this + "\n a distance of " + distance.toString(6) + "\n in the direction "
+                    + Math.toDegrees(angle.get(0).doubleValue()) + "°\n");
+    }
+    evaluate( angle, 1, prec, t );
+    out.println( "After translation:  " + this + "\n\n"); 
+    
+    return this;
   }
 
 }

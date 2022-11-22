@@ -914,18 +914,5 @@ public class Complex implements
 
   Real realVec;
 
-  public synchronized Real realVector()
-  {
-    if (realVec == null)
-    {
-      realVec             = new Real(0,
-                                     false);
-      realVec.dim         = 2;
-      realVec.elements    = new Real[2];
-      realVec.elements[0] = getReal();
-      realVec.elements[1] = getImag();
-    }
-    return realVec;
-  }
-
+  
 }

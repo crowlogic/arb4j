@@ -16,6 +16,7 @@ public class RealConstants
   public static final Real zero     = new Real();
   public static final Real posInf   = new Real();
   public static final Real π        = new Real();
+
   public static final Real πsquared = new Real();
   public static final Real sqrtπ    = new Real();
   public static final Real sqrt2π   = new Real();

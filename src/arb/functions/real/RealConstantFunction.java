@@ -2,10 +2,10 @@ package arb.functions.real;
 
 import arb.Real;
 
-public class RealConstant implements
+public class RealConstantFunction implements
                           RealFunction
 {
-  public RealConstant(Real c)
+  public RealConstantFunction(Real c)
   {
     this.c = c;
   }

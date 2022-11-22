@@ -20,20 +20,6 @@ import arb.topological.spaces.*;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
-  public synchronized Real realVector()
-  {
-    if (realVec == null)
-    {
-      realVec             = new Real(0,
-                                     false);
-      realVec.dim         = 2;
-      realVec.elements    = new Real[2];
-      realVec.elements[0] = getReal();
-      realVec.elements[1] = getImag();
-    }
-    return realVec;
-  }
-
   public Complex log(int prec)
   {
     return log(prec,this);

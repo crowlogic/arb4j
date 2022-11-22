@@ -1,9 +1,9 @@
 package arb.functions.real.dynamics;
 
+import static arb.MagnitudeConstants.zeroMag;
 import static java.lang.System.out;
 
 import arb.Complex;
-import arb.MagnitudeConstants;
 import arb.Real;
 import arb.RealConstants;
 import arb.RealRootInterval;
@@ -48,6 +48,8 @@ public class RealNewtonMapTest extends
 
   }
 
+  final static int prec = 128;
+
   @SuppressWarnings("resource")
   public void testSOrbit()
   {
@@ -62,17 +64,20 @@ public class RealNewtonMapTest extends
     ComplexCircle circle = disc.g;
     try ( Real c = Real.newVector(2))
     {
-      for (int i = 0; i < 2; i++)
+      for (int i = 0; i < 4; i++)
       {
+        String initialAngle = Double.toString( Math.toDegrees(a.doubleValue()) );
         Real    w    = disc.converge(a, c);
         Complex damn = new Complex();
         damn.setRealObj(c.get(0));
         damn.setImagObj(c.get(1));
 
-        out.format("started out at %s and converged to %s\n", a.get(0), damn.getReal());
-        damn.getReal().setRad(MagnitudeConstants.zeroMag);
+        out.format("started out at %s° and converged to %s°\n",
+                   initialAngle,
+                   Math.toDegrees(damn.getReal().doubleValue()));
+        damn.getReal().setRad(zeroMag);
         a.set(damn.getReal());
-        circle.translate(a, h);
+        circle.translate(a, prec, h);
       }
     }
 
