@@ -53,6 +53,12 @@ public class Real implements VectorSpace<Real>, Serializable, Comparable<Real>, 
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Real(Real _z)
+  {
+    this();
+    set(_z);
+  }
+
   @Override
   public int hashCode()
   {
@@ -1137,12 +1143,6 @@ public class Real implements VectorSpace<Real>, Serializable, Comparable<Real>, 
 
   public Real() {
     this(arbJNI.new_Real(), true);
-  }
-
-  public Real(Real _z)
-  {
-    this();
-    set(_z);
   }
 
 }

@@ -186,9 +186,10 @@
   orthogonal when they intersect at \ 1 point at the root on the real axis
   for a total of 5 intersection points. This means that for every root of
   <math|Z<around*|(|t|)>> there are 5 roots of <math|X<around*|(|t|)>> where
-  the 4 \ roots consist of a pair of points and their mirror conjugates; that
-  is, if <math|\<rho\>=x+i y> is a root <math|X<around*|(|\<rho\>|)>=0> of
-  <math|X> then so is its complement <math|<wide|\<rho\>|\<bar\>>=x-i y>
+  the 4 \ roots consist of a \<cdot\>pair of points and their mirror
+  conjugates; that is, if <math|\<rho\>=x+i y> is a root
+  <math|X<around*|(|\<rho\>|)>=0> of <math|X> then so is its complement
+  <math|<wide|\<rho\>|\<bar\>>=x-i y>
 
   <subsection|The Schröder Equation>
 
@@ -229,14 +230,14 @@
 
   <\theorem>
     (<strong|Koenigs Linearization Theorem>) If the magnitude (absolute
-    value) of the multiplier <math|\<lambda\>=<wide|f|\<dot\>><around*|(|0|)>>
+    value) of the multiplier <math|\<lambda\>=<around*|\||<wide|f|\<dot\>><around*|(|0|)>|\|>>
     of a holomorphic map <math|f> is not strictly equal to 0 or 1, that is
-    <math|<around*|\||\<lambda\>|\|>\<nsubset\><around*|{|0,1|}>>,<space|1em>then
-    a local holomorphic change of coordinates
-    <math|w=\<phi\><around*|(|z|)>>, called the <samp|Koenig's
-    function><index|Koenig's function>, unique up to a scalar multiplication
-    by nonzero constant, exists, having a fixed-point at the origin
-    <math|\<phi\><around*|(|0|)>=0> such that Schröder's equation is true\ 
+    <math|\<lambda\>\<nsubset\><around*|{|0,1|}>>,<space|1em>then a local
+    holomorphic change of coordinates <math|w=\<phi\><around*|(|z|)>>, called
+    the <samp|Koenig's function><index|Koenig's function>, unique up to a
+    scalar multiplication by nonzero constant, exists, having a fixed-point
+    at the origin <math|\<phi\><around*|(|0|)>=0> such that Schröder's
+    equation is true\ 
 
     <\equation>
       \<phi\>*\<circ\>f\<circ\>\<phi\><rsup|-1>=\<lambda\>
@@ -244,7 +245,7 @@
     </equation>
 
     for some neighborhood <math|\<varepsilon\><rsub|0>> of the origin
-    0<math|>.<cite|Milnor2006> <cite-detail|Milnor2006|Theorem
+    0<math|>. <cite-detail|Milnor2006|Theorem
     8.2><cite-detail|Shapiro1998CompositionOA|2. Koenig's Theorem, Part
     I.><cite-detail|edcd|1.7>
   </theorem>
@@ -258,10 +259,10 @@
 
   <subsection|Eigenfunctions of Compact Composition Operators>
 
-  Compactness of a composition operator can be determined by determining how
-  it maps the unit disc, and somehow the action of the operator is conjugate
-  to a dilation of a Mobius transform acting on this \PKoenig domain\Q
-  <math|S<around*|(|U|)>> where <math|U> is the unit disc.
+  Compactness of a composition operator can be determined by understanding
+  how it maps the unit disc, and somehow the action of the operator is
+  conjugate to a dilation of a Mobius transform acting on this \PKoenig
+  domain\Q <math|S<around*|(|U|)>> where <math|U> is the unit disc.
   <cite-detail|shapiro1993composition|Ch.6 Compactness and Eigenfunctions>
 
   <\equation>
@@ -282,9 +283,9 @@
       \<cal-K\> f<around*|(|x|)>=<big|sum><rsub|y\<in\>f<rsup|-1><around*|(|x|)>><frac|f<around*|(|y|)>|<around*|\||<wide|f|\<dot\>><around*|(|y|)>|\|>>
     </equation>
 
-    which is a linear operator which determines how densities evolve under
-    the action of <math|f<around*|(|x|)>>; There exists an invariant measure
-    <math|\<varphi\>> of the map is the measure which is unchanged by the
+    which is a linear operator that determines how densities evolve under the
+    action of <math|f<around*|(|x|)>>; There exists an invariant measure
+    <math|\<varphi\>> of the transfer operator which is unchanged by the
     action of <math|f> and satisifies
 
     <\equation>
@@ -337,17 +338,17 @@
   </equation>
 
   going back to Riemann's work on function theory<rsup|>
-  <cite|klein2018riemann> is that the real part of an analytic function
-  <math|f> is the velocity potential of an incompressible fluid flow in the
-  complex plane and the its imaginary part is the corresponding stream
-  function.\ 
+  <cite|klein2018riemann> is that the real part <math|Re<around*|(|f|)>> of
+  an analytic function <math|f> is the <strong|velocity potential> of an
+  <em|incompressible fluid flow> in a plane and its imaginary part
+  <math|Im<around*|(|f|)>> is the corresponding <strong|stream function>.\ 
 
   When the pair of twice continuously differentiable functions
   <math|<around*|{|Re<around*|(|f<around*|(|x+i
   y|)>|)>,Im<around*|(|f<around*|(|x+i y|)>|)>|}>> of <math|f> satisfies the
-  Cauchy\URiemann equations its real part <math|Re<around*|(|f|)>> is its
-  velocity potential and the gradient of the real part <math|\<nabla\>Re> is
-  its velocity vector defined by
+  Cauchy\URiemann equations then <math|Re<around*|(|f|)>> is its
+  <strong|velocity potential> and the gradient of the real part
+  <math|\<nabla\>Re> is its <strong|velocity vector> defined by
 
   <\equation>
     \<nabla\>Re=<frac|\<partial\>Re<around*|(|f<around*|(|x+i
@@ -379,9 +380,17 @@
   </equation>
 
   which indicates that the gradient of the real part must point along the
-  streamlines of the flow where the imaginary part is constant
+  streamlines of the flow where the stream function is constant
   <math|Im=const> and therefore the curves of constant real part
-  <math|Re=const> are the corresponding orthogonal equipotential curves.
+  <math|Re=const> are the corresponding orthogonal <strong|equipotential
+  curves>.
+
+  <\definition>
+    <with|font-series|bold|A line along which stream function (\<psi\>) is
+    constant is known as streamline>. Equipotential line: A line along which
+    velocity potential function (\<phi\>) is constant is known as the
+    equipotential line. They are orthogonal to each line other.
+  </definition>
 
   <section|The Operator <math|S<rsup|a><rsub|f><around*|(|t|)>=tanh<around*|(|ln<around*|(|1-<around*|(|<frac|f<around*|(|t|)>|a>|)><rsup|2>|)>|)>>>
 
@@ -1187,13 +1196,13 @@
     <associate|bib-lawrence1972catalog|<tuple|10|9>>
     <associate|bib-riemann|<tuple|13|9>>
     <associate|bib-shapiro1993composition|<tuple|16|9>>
-    <associate|dl|<tuple|15|6>>
+    <associate|dl|<tuple|16|6>>
     <associate|ds|<tuple|30|5>>
     <associate|footnote-1|<tuple|1|2>>
     <associate|footnr-1|<tuple|1|2>>
     <associate|kc|<tuple|3|2>>
     <associate|nm|<tuple|37|6>>
-    <associate|rh|<tuple|17|6>>
+    <associate|rh|<tuple|18|6>>
     <associate|rnm|<tuple|34|5>>
   </collection>
 </references>
