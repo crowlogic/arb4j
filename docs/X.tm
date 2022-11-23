@@ -420,9 +420,9 @@
   curves>.
 
   <\definition>
-    <with|font-series|bold|A line along which stream function (\<psi\>) is
-    constant is known as streamline>. Equipotential line: A line along which
-    velocity potential function (\<phi\>) is constant is known as the
+    <with|font-series|bold|A line along which the stream function (\<psi\>)
+    is constant is known as streamline>. Equipotential line: A line along
+    which velocity potential function (\<phi\>) is constant is known as the
     equipotential line. They are orthogonal to each line other.
   </definition>
 
@@ -459,6 +459,8 @@
     Hardy class <math|H<rsup|2>>
 
     <\proof>
+      \;
+
       Recall that a function is in the Hardy class <math|H<rsup|p>> if\ 
 
       <\equation*>
@@ -510,9 +512,7 @@
         sin<around*|(|t|)>>>>>>
       </equation>
 
-      Let us combine the coordinate functions
-      <math|<around*|(|x<around*|(|t|)>,y<around*|(|t|)>|)>\<in\>\<bbb-R\><rsup|2>>
-      into an equivalent function <math|z<around*|(|t|)>\<in\><wide|\<bbb-C\>|\<bar\>>>
+      or equivalently
 
       <\equation>
         <tabular|<tformat|<table|<row|<cell|z<around*|(|t|)>>|<cell|=x<around*|(|t|)>+i
