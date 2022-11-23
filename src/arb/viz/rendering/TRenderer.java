@@ -23,12 +23,12 @@ public class TRenderer extends
 
   public TRenderer() throws NoninvertibleTransformException
   {
-    this(new Dimension(2000,
+    this(new Dimension(1000,
                        1000),
-         new Rectangle2D.Double(-Math.PI * 2,
-                                -1.5 * 2,
-                                Math.PI * 2 * 2,
-                                3 * 2));
+         new Rectangle2D.Double(-1.5,
+                                -1.5 ,
+                                3,
+                                3));
   }
 
   @SuppressWarnings("resource")

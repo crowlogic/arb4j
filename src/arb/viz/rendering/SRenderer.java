@@ -16,11 +16,11 @@ public class SRenderer extends
                        ComplexFunctionRenderer<SFunction>
 {
 
-  private static final Double    domain     = new Rectangle2D.Double(-2,
-                                                                     -1,
-                                                                     4,
-                                                                     2);
-  private static final Dimension dimensions = new Dimension(2000,
+  private static final Double    domain     = new Rectangle2D.Double(-1.5,
+                                                                     -1.5,
+                                                                     3,
+                                                                     3);
+  private static final Dimension dimensions = new Dimension(1000,
                                                             1000);
 
   public SRenderer(Dimension screen, Double domain, Real scale) throws NoninvertibleTransformException
@@ -48,6 +48,7 @@ public class SRenderer extends
     plotter.colorMode   = 2;
     plotter.displayMode = Part.Real;
     plotter.render();
+    plotter.saveToFile();
 
   }
 
