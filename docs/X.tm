@@ -162,18 +162,18 @@
   too abstract, to finally recognizing its suitability(despite its initially
   unnatural appearance), to its eventual eleveation to the status of a
   rudimentary and indespensible implement in the repertoire of the
-  mathematician who wishes to understand how nature accomplishes so many
-  purposes. This pattern may or may not recur in this instance where the
-  concept is a composite function whose effect is to provide a way to
-  linearize the flow in the vicinity of super-attractive and indifferent
-  fixed-points by transforming them to geometrically-attracting fixed-points
-  and thus rendering them linearizable via Koenig's theorem of iteratively
-  renormaized function composition and also proving that the roots of the
-  <math|\<zeta\>> function are indeed simple due to the \Pmultiplicity one\Q
-  lemma of Koenig's eigenfunctions , thus proving the crucial fact needed to
-  transform the problem back into the domain of the lines-of-constant-phase
-  reformulation of the Riemann hypothesis by Montgomery, et, al. by forming
-  the desingularized Newton flow of the <math|X> funtion to be defined below.
+  mathematician who wishes to understand nature. This pattern may or may not
+  recur in this instance where the concept is a composite function whose
+  effect is to provide a way to linearize the flow in the vicinity of
+  super-attractive and indifferent fixed-points by transforming them to
+  geometrically-attracting fixed-points and thus rendering them linearizable
+  via Koenig's theorem of iteratively renormaized function composition and
+  also proving that the roots of the <math|\<zeta\>> function are indeed
+  simple due to the \Pmultiplicity one\Q lemma of Koenig's eigenfunctions ,
+  thus proving the crucial fact needed to transform the problem back into the
+  domain of the lines-of-constant-phase reformulation of the Riemann
+  hypothesis by Montgomery, et, al. by forming the desingularized Newton flow
+  of the <math|X> funtion to be defined below.
 
   \ <subsection|The Riemann <math|\<zeta\>> And Related Function>
 
@@ -1178,7 +1178,7 @@
     <associate|auto-17|<tuple|2.2|5>>
     <associate|auto-18|<tuple|2.3|5>>
     <associate|auto-19|<tuple|Newton map|5>>
-    <associate|auto-2|<tuple|1.1|1>>
+    <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-20|<tuple|functional derivative|5>>
     <associate|auto-21|<tuple|2.3.1|6>>
     <associate|auto-22|<tuple|2.3.2|6>>
