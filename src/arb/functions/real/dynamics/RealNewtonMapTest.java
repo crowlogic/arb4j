@@ -36,7 +36,7 @@ public class RealNewtonMapTest extends
     Real                 a     = Real.newVector(2);
     a.set("-0.75", 128);
 
-    Real w = angle.converge(a, Real.newVector(2));
+    Real w = angle.converge(true, a, Real.newVector(2));
 
     System.out.println("awesome. 1/3rd of time needs to be spent sleeping");
     Complex locatedRoot  = locateRoot(angle);
@@ -60,7 +60,7 @@ public class RealNewtonMapTest extends
                                                         128);
           CircularCompositionS disc = new CircularCompositionS(one,
                                                                h);
-          Complex damn = new Complex();)
+          Complex value = Complex.newVector(2);)
     {
       h.printPrecision = true;
       Real a = Real.newVector(2);
@@ -71,17 +71,21 @@ public class RealNewtonMapTest extends
       for (int i = 0; i < 42; i++)
       {
         String initialAngle = Double.toString(Math.toDegrees(a.doubleValue()));
-        Real   w            = disc.converge(a, c);
+        Real   w            = disc.converge(true, a, c);                       // a=initial angle, c=angle to step
+                                                                               // towards
 
-        damn.setRealObj(c.get(0));
-        damn.setImagObj(c.get(1));
-        out.format("direction %s° converged towards ", initialAngle);
-        damn.getReal().setRad(zeroMag);
-        a.set(damn.getReal());
+        value.setRealObj(c.get(0));
+        value.setImagObj(c.get(1));
+        out.format("initial direction %s° converged towards ", initialAngle);
+        value.getReal().setRad(zeroMag);
+        a.set(value.getReal());
         circle.shift(a, prec, h);
-        // TODO: check for divergence
+        disc.f.evaluate(circle.t, 2, prec, value);
+        out.println(value.get(0));
+        assert Math.abs(value.get(0).getReal().doubleValue()) < Math.pow(10, -5);
+        // TODO: check for divergence of real part
       }
-      err.println("TODO: check for divergence and enforce modulo π" );
+      err.println("TODO: check for divergence and enforce modulo π");
     }
 
   }

@@ -6,6 +6,7 @@ import arb.Complex;
 import arb.ComplexConstants;
 import arb.Real;
 import arb.RealConstants;
+import arb.functions.real.ImaginaryPart;
 import arb.functions.real.RealPart;
 import arb.functions.real.dynamics.RealNewtonMap;
 import arb.geometry.curves.ComplexCircle;
@@ -21,16 +22,16 @@ public class CircularCompositionS extends
 
   /**
    * 
+   * @param real         if true then converge to the root of the real part,
+   *                     otherwise converge to the root of the imaginary part
    * @param presentAngle
    * @param nextAngle
    * @return
    */
-  public Real converge(Real presentAngle, Real angle)
+  public Real converge(boolean real, Real presentAngle, Real angle)
   {
-    RealPart<CircularCompositionS> realPart            = new RealPart<>(this);
-
-    RealNewtonMap                  newtonMapOfRealPart = new RealNewtonMap(realPart,
-                                                                           RealConstants.one);
+    RealNewtonMap newtonMapOfRealPart = new RealNewtonMap(real ? new RealPart<>(this) : new ImaginaryPart<>(this),
+                                                          RealConstants.one);
     return newtonMapOfRealPart.iterate(presentAngle, 20, 128, angle);
   }
 
