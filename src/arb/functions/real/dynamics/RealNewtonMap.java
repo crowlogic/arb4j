@@ -48,8 +48,9 @@ public class RealNewtonMap<F extends RealFunction> implements
           if (verbose)
           {
             System.out.println("Converged in " + (i + 1) + " steps...");
-            break;
           }
+          break;
+
         }
       }
     }

@@ -82,7 +82,7 @@ public class RealNewtonMapTest extends
         circle.shift(a, prec, h);
         disc.f.evaluate(circle.t, 2, prec, value);
         out.println(value.get(0));
-        assert Math.abs(value.get(0).getReal().doubleValue()) < Math.pow(10, -5);
+        assertEquals(0, Math.abs(value.get(0).getReal().doubleValue()), Math.pow(10, -5));
         // TODO: check for divergence of real part
       }
       err.println("TODO: check for divergence and enforce modulo π");
