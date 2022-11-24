@@ -12,9 +12,15 @@ import arb.topological.spaces.*;
  * 
  * @param <F>
  */
-public interface Interval<F> extends
+public interface Interval<F extends Comparable<F>> extends
                          TopologicalSpace<F>
 {
+  @Override
+  default boolean contains(F element)
+  {
+    return left().compareTo(element) <= 0 && right().compareTo(element) >= 0;
+  }
+
   public F left();
 
   public F right();
