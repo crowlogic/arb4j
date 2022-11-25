@@ -160,37 +160,39 @@
   Osserman points out that one recurring them in the history of mathematics
   is how a new concept gradually evolves from its initial rejection as being
   too abstract, to finally recognizing its suitability(despite its initially
-  unnatural appearance), to its eventual eleveation to the status of a
+  unnatural appearance), to its eventual elevation to the status of a
   rudimentary and indespensible implement in the repertoire of the
   mathematician who wishes to understand nature. This pattern may or may not
-  recur in this instance where the concept is a composite function whose
-  effect is to provide a way to linearize the flow in the vicinity of
-  super-attractive and indifferent fixed-points by transforming them to
-  geometrically-attracting fixed-points and thus rendering them linearizable
-  via Koenig's theorem of iteratively renormaized function composition and
-  also proving that the roots of the <math|\<zeta\>> function are indeed
-  simple due to the \Pmultiplicity one\Q lemma of Koenig's eigenfunctions ,
-  thus proving the crucial fact needed to transform the problem back into the
-  domain of the lines-of-constant-phase reformulation of the Riemann
-  hypothesis by Montgomery, et, al. by forming the desingularized Newton flow
-  of the <math|X> funtion to be defined below.
+  recur in this instance where the concept is a function whose effect when
+  composed with another function is to provide a way to linearize the Newton
+  flow in the vicinity of super-attractive and indifferent fixed-points by
+  transforming them to geometrically-attracting fixed-points and thus
+  rendering them linearizable via Koenig's theorem of iteratively renormaized
+  function composition and also proving that the roots of the <math|\<zeta\>>
+  function are indeed simple due to the \Pmultiplicity one\Q lemma of
+  Koenig's eigenfunctions , thus proving the crucial fact needed to transform
+  the problem back into the domain of the lines-of-constant-phase
+  reformulation of the Riemann hypothesis by Montgomery, et, al. by forming
+  the desingularized Newton flow of the <math|X> funtion to be defined below.
 
   \ <subsection|The Riemann <math|\<zeta\>> And Related Function>
 
-  There are many functions such as the Hardy <math|Z<around*|(|t|)>>
-  function, Riemann <math|\<xi\><around*|(|t|)>> function, and the Dirichlet
+  There are many several such as the Hardy <math|Z<around*|(|t|)>> function,
+  Riemann <math|\<xi\><around*|(|t|)>> function, and the Dirichlet
   <math|\<eta\><around*|(|t|)>> function which are equivalent to the Riemann
   zeta <math|\<zeta\><around*|(|t|)>> function in the sense that they have a
   set of roots which coincides with those of <math|\<zeta\><around*|(|t|)>>
-  up to an affine transform. <cite-detail|ds2|<text-dots>> Another function
-  which has some intriguing properties and shares the same roots can be
-  defined by \ <math|X<around*|(|t|)>=S<around*|(|Z<around*|(|t|)>|)>=C<rsub|Z><around*|(|S|)>>
+  up to an affine (Mobius) transform. <cite-detail|ds2|<text-dots>> Another
+  function which has some intriguing properties and shares the same roots can
+  be defined by \ <math|X<around*|(|t|)>=S<around*|(|Z<around*|(|t|)>|)>=C<rsub|Z><around*|(|S|)>>
   where <math|C<rsub|g><around*|(|f|)>=f<around*|(|g<around*|(|t|)>|)>> is
   the Koopman composition operator<cite|Koopman1931> and
   <math|><math|S<around*|(|t|)>=tanh<around*|(|ln<around*|(|1-t<rsup|2>|)>|)>=<frac|<around*|(|1-t<rsup|2>|)><rsup|2>-1|<around*|(|1-t<rsup|2>|)><rsup|2>+1>>
-  is a ratioanl quartic function
-
-  \;
+  is a rational meromorphic quartic function which has 4 poles at
+  <math|\<pm\><sqrt|1\<pm\>i>> and a double-root (a root of multiplicity 2)
+  at the origin where <math|S<around*|(|t|)>=0>. There is also a
+  conjugate-pair of simple roots (of multiplicity 1) where
+  <math|S<around*|(|\<pm\><sqrt|i>|)>=0>.
 
   <\big-figure|TODO: depict <math|\<zeta\>> <math|\<xi\>> <math|\<eta\>>
   <math|Z> and <math|X> and S by itself in another figure>
