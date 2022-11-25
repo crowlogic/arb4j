@@ -18,7 +18,7 @@ public interface Interval<F extends Comparable<F>> extends
   @Override
   default boolean contains(F element)
   {
-    return left().compareTo(element) <= 0 && right().compareTo(element) > 0;
+    return left().compareTo(element) <= 0 && right().compareTo(element) >= 0;
   }
 
   public F left();
