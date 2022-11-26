@@ -3,6 +3,7 @@ package arb.stochastic.processes.integrators;
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 import static java.lang.System.err;
+import static java.lang.System.out;
 
 import arb.FloatInterval;
 import arb.RandomState;
@@ -23,15 +24,13 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   M                                                                 state;
 
-  Real                                                              sqrtδt = new Real();
+  Real                                                              sqrtδt  = new Real();
 
   private MultivariateDiffusionProcess<M>                           process;
 
   private RealMatrix                                                correlationMatrix;
 
-  boolean verbose = true;
-
-
+  boolean                                                           verbose = true;
 
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess<M> process,
                                                 M state,
@@ -129,6 +128,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
   {
+    out.println(MultivariateDiffusionProcessIntegrator.class.getSimpleName() + " state=" + state);
     for (var integrator : integrators)
     {
       integrator.step(state, prec, evalSeq);

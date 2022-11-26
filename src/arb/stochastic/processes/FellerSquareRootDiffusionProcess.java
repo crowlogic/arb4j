@@ -69,6 +69,7 @@ public class FellerSquareRootDiffusionProcess<S extends DiffusionProcessState> i
       assert order <= 2 : "TODO: implement order " + order + " . Only order=1,2 supported currently";
 
       Real vₜ = state.value();
+      assert vₜ.isPositive() : "vₜ=" + vₜ + " is not positive";
       try ( Real σₜ = vₜ.sqrt(prec, new Real());)
       {
         // res=σ*√vₜ=σ*σₜ
