@@ -1,5 +1,7 @@
 package arb.domains;
 
+import java.time.Duration;
+
 import arb.MarkedPoint;
 import arb.geometry.Point;
 import arb.topological.TopologicalSpace;
@@ -24,4 +26,10 @@ public interface Interval<F extends Comparable<F>> extends
   public F left();
 
   public F right();
+  
+  default Duration length()
+  {
+    assert false : "TODO: implement";
+    return null;
+  }
 }
