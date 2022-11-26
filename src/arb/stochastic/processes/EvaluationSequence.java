@@ -13,18 +13,15 @@ import arb.RealPartition;
 import arb.RoundingMode;
 import arb.stochastic.ProbabilityDistributionFunction;
 import de.gsi.dataset.DataSet;
-import de.gsi.dataset.DataSet2D;
 import de.gsi.dataset.spi.AbstractDataSet;
 
 /**
  * @see <a href=
  *      "../../functions/doc-files/IntegrationNotes.pdf">IntegrationNotes</a>
  */
-public class EvaluationSequence extends
-                                AbstractDataSet<EvaluationSequence> implements
+public class EvaluationSequence implements
                                 Cleanable,
-                                Iterable<RealOrderedPair>,
-                                DataSet2D
+                                Iterable<RealOrderedPair>
 {
   private final int          dim;
 
@@ -32,20 +29,86 @@ public class EvaluationSequence extends
 
   public final RealPartition partition;
 
-  public final Real[]        values;
+  public final Real[]        dimensions;
+
+  public DataSet getPriceDataSet()
+  {
+    return new AbstractDataSet("Price",
+                               2)
+    {
+
+      @Override
+      public double get(int dimension, int index)
+      {
+        if (dimension == 0)
+        {
+          return partition.get(index).doubleValue(RoundingMode.Near);
+        }
+        else
+        {
+          return dimensions[0].get(index).doubleValue(RoundingMode.Near);
+        }
+      }
+
+      @Override
+      public int getDataCount()
+      {
+        return length;
+      }
+
+      @Override
+      public DataSet set(DataSet other, boolean copy)
+      {
+        assert false : "ShitPissFuckCuntCockSuckerMotherFuckerTitsFartTurdAndTwat";
+        return null;
+      }
+    };
+  }
+
+  public DataSet getVarianceDataSet()
+  {
+    return new AbstractDataSet("Price",
+                               2)
+    {
+
+      @Override
+      public double get(int dimension, int index)
+      {
+        if (dimension == 0)
+        {
+          return partition.get(index).doubleValue(RoundingMode.Near);
+        }
+        else
+        {
+          return dimensions[1].get(index).doubleValue(RoundingMode.Near);
+        }
+      }
+
+      @Override
+      public int getDataCount()
+      {
+        return length;
+      }
+
+      @Override
+      public DataSet set(DataSet other, boolean copy)
+      {
+        assert false : "ShitPissFuckCuntCockSuckerMotherFuckerTitsFartTurdAndTwat";
+        return null;
+      }
+    };
+  }
 
   public EvaluationSequence(RealPartition partition, int dim)
   {
-    super("EvaluationSequence",
-          dim+1);
     assert dim > 0;
-    this.partition = partition;
-    this.length    = partition.count();
-    this.values    = new Real[dim];
-    this.dim       = dim;
+    this.partition  = partition;
+    this.length     = partition.count();
+    this.dimensions = new Real[dim];
+    this.dim        = dim;
     for (int i = 0; i < dim; i++)
     {
-      values[i] = Real.newVector(length);
+      dimensions[i] = Real.newVector(length);
     }
   }
 
@@ -54,7 +117,7 @@ public class EvaluationSequence extends
   {
     for (int i = 0; i < dim; i++)
     {
-      for (Real array : values[i])
+      for (Real array : dimensions[i])
       {
         array.close();
       }
@@ -71,16 +134,17 @@ public class EvaluationSequence extends
     if (getClass() != obj.getClass())
       return false;
     EvaluationSequence other = (EvaluationSequence) obj;
-    return dim == other.dim && Objects.equals(partition, other.partition) && Arrays.equals(values, other.values);
+    return dim == other.dim && Objects.equals(partition, other.partition)
+                  && Arrays.equals(dimensions, other.dimensions);
   }
 
   /**
-   * Populates the {@link #values} of this {@link EvaluationSequence} with random
-   * {@link Real} numbers sampled from some
+   * Populates the {@link #dimensions} of this {@link EvaluationSequence} with
+   * random {@link Real} numbers sampled from some
    * {@link ProbabilityDistributionFunction}
    * 
    * @param pdf                   the {@link ProbabilityDistributionFunction} to
-   *                              populate {@link #values} with
+   *                              populate {@link #dimensions} with
    *                              {@link ProbabilityDistributionFunction#sample(RandomState, int, Real)}s
    *                              from
    * @param correlationRootMatrix the Cholesky factorization of the correlation
@@ -95,7 +159,7 @@ public class EvaluationSequence extends
                                                   RandomVectorGenerator generator,
                                                   int prec)
   {
-    for (Real dimension : values)
+    for (Real dimension : dimensions)
     {
       for (Real value : dimension)
       {
@@ -107,31 +171,11 @@ public class EvaluationSequence extends
   }
 
   @Override
-  public double get(int dimension, int index)
-  {
-    if (dimension == 0)
-    {
-      return partition.get(index).doubleValue(RoundingMode.Near);
-    }
-    else
-    {
-      dimension--;      
-      return values[dimension].get(index).doubleValue(RoundingMode.Near);
-    }
-  }
-
-  @Override
-  public int getDataCount()
-  {
-    return length;
-  }
-
-  @Override
   public int hashCode()
   {
     final int prime  = 41;
     int       result = super.hashCode();
-    result = prime * result + Arrays.hashCode(values);
+    result = prime * result + Arrays.hashCode(dimensions);
     result = prime * result + Objects.hash(dim, partition);
     return result;
   }
@@ -142,11 +186,5 @@ public class EvaluationSequence extends
                                           dim);
   }
 
-  @Override
-  public DataSet set(DataSet other, boolean copy)
-  {
-    assert false : "todo";
-    return null;
-  }
 
 }

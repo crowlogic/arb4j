@@ -121,7 +121,6 @@ public class MultipleAxesSample extends
     configurePlugins();
     renderer1 = chart.getRenderers().get(0);
     configureDatasets();
-
     setStage(primaryStage, root, scene, chart);
   }
 }

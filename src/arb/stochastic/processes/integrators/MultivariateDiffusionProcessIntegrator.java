@@ -88,7 +88,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
         if (!(jumped = jump(prec, evaluationSequence)))
         {
           err.println("Jump failed: " + state + " regenerating ");
-          for (Real sample : evaluationSequence.values)
+          for (Real sample : evaluationSequence.dimensions)
           {
             sample.get(state.index()).randomlyGenerate(gaussian, randomState, prec);
           }

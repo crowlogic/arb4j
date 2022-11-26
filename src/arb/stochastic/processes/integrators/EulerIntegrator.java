@@ -92,7 +92,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
       // print(integrator.getClass().getSimpleName(), spotPriceData);
 
-      println("mean=" + path.values[0].mean(128, new Real()));
+      println("mean=" + path.dimensions[0].mean(128, new Real()));
     }
 
   }
@@ -175,7 +175,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
   protected boolean step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
   {
     int  i  = state.index();
-    Real xi = evaluationSequence.values[dim].get(i);
+    Real xi = evaluationSequence.dimensions[dim].get(i);
     xi.printPrecision = true;
 
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
@@ -183,7 +183,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     assert μi.isFinite();
 
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
-    assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. state=" + state;
+    assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. σi=" + σi + " state=" + state;
 
     if (verbose)
     {
@@ -206,7 +206,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
   {
     int i = state.index();
     assert i >= 0;
-    Real xi = evaluationSequence.values[dim].get(i);
+    Real xi = evaluationSequence.dimensions[dim].get(i);
 
     xi.add(state.value(), prec);
     if (nonNegative && xi.isNegative())

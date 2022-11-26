@@ -75,7 +75,7 @@ public class FellerSquareRootDiffusionProcess<S extends DiffusionProcessState> i
 
         σ.mul(σₜ, prec, result);
 
-        if (order == 2)
+        if (order >= 2)
         { // res[1]=σ/(2*√vₜ)
           σ.div(σₜ.mul(2, prec, result.get(1)), prec);
         }

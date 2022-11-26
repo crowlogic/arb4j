@@ -29,7 +29,9 @@ public class EvaluationSequenceIterator extends
     a.set(evalseq.partition.get(i));
     for (int j = 0; j < dim; j++)
     {
-      b.get(j).set(evalseq.values[j].get(i));
+      Real dimension = evalseq.dimensions[j];
+      Real val       = dimension.get(i);
+      b.get(j).set(val);
     }
     i++;
     return this;

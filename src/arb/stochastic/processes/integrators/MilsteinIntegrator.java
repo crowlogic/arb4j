@@ -109,7 +109,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   {
     step(state, prec, evalSequence, 2);
 
-    Real xi = evalSequence.values[0].get(state.index());
+    Real xi = evalSequence.dimensions[0].get(state.index());
 
     // 2nd order correction
     σi.mul(σi.get(1), prec, σσi);

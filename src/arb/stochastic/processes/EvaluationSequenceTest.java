@@ -27,7 +27,7 @@ public class EvaluationSequenceTest extends
       RandomState                  generator      = new RandomState(31337);
       es.generateRandomSamples(standardNormal, null, generator, prec);
 
-      Real   real     = es.values[0];
+      Real   real     = es.dimensions[0];
       Real   var      = real.variance(prec, new Real());
       double vardelta = Math.abs(var.doubleValue() - 1);
       println("vardelta=" + vardelta);
