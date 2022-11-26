@@ -1,10 +1,10 @@
 package arb.viz.gl.gui;
 
-import static arb.viz.Attributes.*;
+import static arb.viz.gl.Attributes.*;
 
 import org.joml.Vector3f;
 
-import arb.viz.GuiController;
+import arb.viz.gl.GuiController;
 import lwjgui.geometry.Insets;
 import lwjgui.paint.Color;
 import lwjgui.scene.Window;
@@ -281,7 +281,7 @@ public class SurfaceOptions extends
       putFStep(index, value);
       redraw(index);
     });
-    fstep.setText(String.valueOf(getFStep(index)));
+    fstep.setText(String.valueOf(getXStep(index)));
 
     svar.setOnTextChange(event ->
     {
@@ -342,7 +342,7 @@ public class SurfaceOptions extends
       putSStep(index, value);
       redraw(index);
     });
-    sstep.setText(String.valueOf(getSStep(index)));
+    sstep.setText(String.valueOf(getYStep(index)));
 
     fpi.setOnAction(event ->
     {

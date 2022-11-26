@@ -4,10 +4,10 @@ import arb.Complex;
 import arb.Real;
 import arb.differential.geometry.TangentBundle;
 import arb.functions.ComplexToRealFunction;
-import arb.viz.InteractiveSurfaceRenderer;
+import arb.viz.SurfacePlotter;
 
 /**
- * TODO: adapt this to work with the {@link InteractiveSurfaceRenderer}
+ * TODO: adapt this to work with the {@link SurfacePlotter}
  * 
  * @author crow
  *

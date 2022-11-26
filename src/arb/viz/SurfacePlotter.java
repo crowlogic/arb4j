@@ -28,6 +28,7 @@ import org.lwjgl.opengl.GL;
 import arb.geometry.surfaces.ParametricSurface;
 import arb.geometry.surfaces.Surface;
 import arb.viz.gl.Display;
+import arb.viz.gl.GuiController;
 import arb.viz.gl.Renderer;
 import arb.viz.gl.entities.Camera;
 import arb.viz.gl.entities.Light;
@@ -42,7 +43,7 @@ import lwjgui.scene.layout.StackPane;
  * @author crow
  *
  */
-public class InteractiveSurfaceRenderer
+public class SurfacePlotter
 {
 
   private long          window;
@@ -143,7 +144,7 @@ public class InteractiveSurfaceRenderer
 
   public static void main(String[] args) throws IOException
   {
-    new InteractiveSurfaceRenderer().run();
+    new SurfacePlotter().run();
   }
 
 }

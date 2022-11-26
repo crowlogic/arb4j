@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.joml.Vector3f;
 
+import arb.Complex;
 import arb.utensils.Transformations;
+import arb.viz.gl.Loader;
 import arb.viz.gl.Renderer;
 import arb.viz.gl.functions.ASTree;
 import arb.viz.gl.functions.BivariateFunction;
@@ -14,11 +16,14 @@ import arb.viz.gl.functions.BivariateVectorFunction;
 import arb.viz.gl.functions.Function;
 import arb.viz.gl.functions.FunctionHandler;
 import arb.viz.gl.functions.VectorFunction;
+import arb.viz.gl.models.ModelTexture;
+import arb.viz.gl.models.RawModel;
 import arb.viz.gl.models.TexturedModel;
 
 /** A class describing surface */
 public class Surface extends
-                     Entity
+                     Entity implements
+                     arb.geometry.surfaces.Surface<Complex>
 {
 
   private ArrayList<Curve>        grid;
@@ -37,50 +42,6 @@ public class Surface extends
   private BivariateFunction       aPhi;
   private BivariateFunction       bPhi;
   private BivariateFunction       cPhi;
-
-  public Surface(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale)
-  {
-    super(model,
-          position,
-          rotX,
-          rotY,
-          rotZ,
-          scale);
-  }
-
-  public Surface(TexturedModel model,
-                 Vector3f position,
-                 float rotX,
-                 float rotY,
-                 float rotZ,
-                 float scale,
-                 Vector3f colour)
-  {
-    super(model,
-          position,
-          rotX,
-          rotY,
-          rotZ,
-          scale,
-          colour);
-  }
-
-  public Surface(TexturedModel model,
-                 Vector3f position,
-                 float rotX,
-                 float rotY,
-                 float rotZ,
-                 float scale,
-                 BivariateVectorFunction f)
-  {
-    super(model,
-          position,
-          rotX,
-          rotY,
-          rotZ,
-          scale);
-    function = f;
-  }
 
   public Surface(TexturedModel model,
                  Vector3f position,
@@ -203,15 +164,15 @@ public class Surface extends
     BivariateVectorFunction f        = new BivariateVectorFunction(fns,
                                                                    function.getFstVar(),
                                                                    function.getSndVar());
-    Surface                 plane    = FunctionHandler.createSurface(f, new float[]
+    Surface                 plane    = Surface.createSurface(f, new float[]
     { -1, 1 }, new float[]
     { -1, 1 },
-                                                                     1.0f,
-                                                                     1.0f,
-                                                                     new Vector3f(0.6f,
-                                                                                  0.0f,
-                                                                                  0.6f),
-                                                                     Renderer.getLoader());
+                                                             1.0f,
+                                                             1.0f,
+                                                             new Vector3f(0.6f,
+                                                                          0.0f,
+                                                                          0.6f),
+                                                             Renderer.getLoader());
     double[]                position = function.calc(fst, snd);
     plane.increasePosition((float) position[0], (float) position[1], (float) position[2]);
     return plane;
@@ -238,22 +199,10 @@ public class Surface extends
     Vector3f          colourMax      = new Vector3f(1,
                                                     0,
                                                     0);
-    mainDirections.add(FunctionHandler.createVector(vecPosition,
-                                                    directions[0],
-                                                    colourMin,
-                                                    Renderer.getLoader()));
-    mainDirections.add(FunctionHandler.createVector(vecPosition,
-                                                    directions[1],
-                                                    colourMax,
-                                                    Renderer.getLoader()));
-    mainDirections.add(FunctionHandler.createVector(vecPosition,
-                                                    directions[2],
-                                                    colourMin,
-                                                    Renderer.getLoader()));
-    mainDirections.add(FunctionHandler.createVector(vecPosition,
-                                                    directions[3],
-                                                    colourMax,
-                                                    Renderer.getLoader()));
+    mainDirections.add(FunctionHandler.createVector(vecPosition, directions[0], colourMin, Renderer.getLoader()));
+    mainDirections.add(FunctionHandler.createVector(vecPosition, directions[1], colourMax, Renderer.getLoader()));
+    mainDirections.add(FunctionHandler.createVector(vecPosition, directions[2], colourMin, Renderer.getLoader()));
+    mainDirections.add(FunctionHandler.createVector(vecPosition, directions[3], colourMax, Renderer.getLoader()));
     return mainDirections;
   }
 
@@ -509,19 +458,19 @@ public class Surface extends
       theta3 = 360 - theta3;
     }
 
-    Surface  paraboloid = FunctionHandler.createSurface(new BivariateFunction(expression,
-                                                                              "x",
-                                                                              "y"),
-                                                        new float[]
-                                                        { -1, 1 },
-                                                        new float[]
-                                                        { -1, 1 },
-                                                        0.1f,
-                                                        0.1f,
-                                                        new Vector3f(1.0f,
-                                                                     0.5f,
-                                                                     0.0f),
-                                                        Renderer.getLoader());
+    Surface  paraboloid = Surface.createSurface(new BivariateFunction(expression,
+                                                                      "x",
+                                                                      "y"),
+                                                new float[]
+                                                { -1, 1 },
+                                                new float[]
+                                                { -1, 1 },
+                                                0.1f,
+                                                0.1f,
+                                                new Vector3f(1.0f,
+                                                             0.5f,
+                                                             0.0f),
+                                                Renderer.getLoader());
     double[] position   = function.calc(fst, snd);
     paraboloid.increasePosition((float) position[0], (float) position[1], (float) position[2]);
     paraboloid.increaseRotation(theta1, theta2, theta3);
@@ -630,6 +579,95 @@ public class Surface extends
   {
     return new double[]
     { k1.calc(fst, snd), k2.calc(fst, snd) };
+  }
+
+  /**
+   * A surface is 1-Complex dimensional
+   */
+  @Override
+  public int dim()
+  {
+    return 1;
+  }
+
+  /**
+   * Get surface by two argument function
+   * 
+   * @param f      two argument function
+   * @param gap1   function setting interval by the first argument
+   * @param gap2   function setting interval by the second argument
+   * @param step1  thickness of grid by the first argument
+   * @param step2  thickness of grid by the second argument
+   * @param colour colour of the surface
+   * @param loader loader to load model
+   * @return created surface
+   */
+  public static Surface createSurface(BivariateFunction f,
+                                      float[] gap1,
+                                      float[] gap2,
+                                      float step1,
+                                      float step2,
+                                      Vector3f colour,
+                                      Loader loader)
+  {
+    ArrayDeque<String> x = new ArrayDeque<>();
+    x.add("x");
+    ArrayDeque<String> y = new ArrayDeque<>();
+    y.add("y");
+    ArrayList<ArrayDeque<String>> postfixes = new ArrayList<>();
+    postfixes.add(x);
+    postfixes.add(y);
+    postfixes.add(f.getPostfix());
+    BivariateVectorFunction newF = new BivariateVectorFunction(postfixes,
+                                                               "x",
+                                                               "y");
+    return createSurface(newF, gap1, gap2, step1, step2, colour, loader);
+  }
+
+  /**
+   * Get surface by two argument vector function
+   * 
+   * @param f      two argument vector function
+   * @param gap1   function setting interval by the first argument
+   * @param gap2   function setting interval by the second argument
+   * @param step1  thickness of grid by the first argument
+   * @param step2  thickness of grid by the second argument
+   * @param colour colour of the surface
+   * @param loader loader to load model
+   * @return created surface
+   */
+  public static Surface createSurface(BivariateVectorFunction f,
+                                      float[] gap1,
+                                      float[] gap2,
+                                      float step1,
+                                      float step2,
+                                      Vector3f colour,
+                                      Loader loader)
+  {
+    int[]         indices       = FunctionHandler.getIndices(gap1, gap2, step1, step2);
+    float[]       vertices      = FunctionHandler.getVertices(f, gap1, gap2, step1, step2);
+    float[]       normals       = FunctionHandler.getNormals(f, gap1, gap2, step1, step2);
+    float[]       textureCoords = FunctionHandler.getTextureCoords(gap1, gap2, step1, step2);
+    RawModel      model         = loader.loadToVAO(vertices, textureCoords, normals, indices);
+    // ModelTexture texture = new
+    // ModelTexture(MasterRenderer.getLoader().loadTexture("earth2"));
+    ModelTexture  texture       = new ModelTexture(1);
+    TexturedModel texturedModel = new TexturedModel(model,
+                                                    texture);
+    texture.setShineDamper(20); // 20
+    texture.setReflectivity(1); // 1
+    Surface surface = new Surface(texturedModel,
+                                  new Vector3f(0,
+                                               0,
+                                               0),
+                                  0,
+                                  0,
+                                  0,
+                                  1,
+                                  colour,
+                                  f);
+    surface.setGrid(FunctionHandler.getGrid(f, gap1, gap2, step1, step2, colour, loader));
+    return surface;
   }
 
 }

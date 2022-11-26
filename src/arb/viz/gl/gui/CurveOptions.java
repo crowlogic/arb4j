@@ -1,29 +1,29 @@
 package arb.viz.gl.gui;
 
-import static arb.viz.Attributes.change;
-import static arb.viz.Attributes.getColour;
-import static arb.viz.Attributes.getFFrom;
-import static arb.viz.Attributes.getFPi;
-import static arb.viz.Attributes.getFStep;
-import static arb.viz.Attributes.getFTo;
-import static arb.viz.Attributes.getFVar;
-import static arb.viz.Attributes.getField;
-import static arb.viz.Attributes.getFrame;
-import static arb.viz.Attributes.getFrenet;
-import static arb.viz.Attributes.getFunction;
-import static arb.viz.Attributes.putColour;
-import static arb.viz.Attributes.putFFrom;
-import static arb.viz.Attributes.putFPi;
-import static arb.viz.Attributes.putFStep;
-import static arb.viz.Attributes.putFTo;
-import static arb.viz.Attributes.putFVar;
-import static arb.viz.Attributes.putFrenet;
-import static arb.viz.Attributes.putFunction;
-import static arb.viz.Attributes.redraw;
+import static arb.viz.gl.Attributes.change;
+import static arb.viz.gl.Attributes.getColour;
+import static arb.viz.gl.Attributes.getFFrom;
+import static arb.viz.gl.Attributes.getFPi;
+import static arb.viz.gl.Attributes.getXStep;
+import static arb.viz.gl.Attributes.getFTo;
+import static arb.viz.gl.Attributes.getFVar;
+import static arb.viz.gl.Attributes.getField;
+import static arb.viz.gl.Attributes.getFrame;
+import static arb.viz.gl.Attributes.getFrenet;
+import static arb.viz.gl.Attributes.getFunction;
+import static arb.viz.gl.Attributes.putColour;
+import static arb.viz.gl.Attributes.putFFrom;
+import static arb.viz.gl.Attributes.putFPi;
+import static arb.viz.gl.Attributes.putFStep;
+import static arb.viz.gl.Attributes.putFTo;
+import static arb.viz.gl.Attributes.putFVar;
+import static arb.viz.gl.Attributes.putFrenet;
+import static arb.viz.gl.Attributes.putFunction;
+import static arb.viz.gl.Attributes.redraw;
 
 import org.joml.Vector3f;
 
-import arb.viz.GuiController;
+import arb.viz.gl.GuiController;
 import lwjgui.geometry.Insets;
 import lwjgui.paint.Color;
 import lwjgui.scene.Window;
@@ -212,7 +212,7 @@ public class CurveOptions extends
       putFStep(index, value);
       redraw(index);
     });
-    step.setText(String.valueOf(getFStep(index)));
+    step.setText(String.valueOf(getXStep(index)));
 
     π.setOnAction(event ->
     {

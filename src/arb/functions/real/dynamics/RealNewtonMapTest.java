@@ -77,9 +77,10 @@ public class RealNewtonMapTest extends
         value.setRealObj(c.get(0));
         value.setImagObj(c.get(1));
         out.format("initial direction %s° converged towards ", initialAngle);
-        value.getReal().setRad(zeroMag);
         a.set(value.getReal());
         circle.shift(a, prec, h);
+       // value.getReal().setRad(zeroMag);
+
         disc.f.evaluate(circle.t, 2, prec, value);
         out.println(value.get(0));
         assertEquals(0, Math.abs(value.get(0).getReal().doubleValue()), Math.pow(10, -5));

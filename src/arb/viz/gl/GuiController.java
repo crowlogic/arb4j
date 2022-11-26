@@ -1,56 +1,55 @@
-package arb.viz;
+package arb.viz.gl;
 
-import static arb.viz.Attributes.addCurveUnit;
-import static arb.viz.Attributes.addSurfaceUnit;
-import static arb.viz.Attributes.getColour;
-import static arb.viz.Attributes.getCurve;
-import static arb.viz.Attributes.getFFrom;
-import static arb.viz.Attributes.getFPi;
-import static arb.viz.Attributes.getFStep;
-import static arb.viz.Attributes.getFTo;
-import static arb.viz.Attributes.getFVar;
-import static arb.viz.Attributes.getFrenet;
-import static arb.viz.Attributes.getFunction;
-import static arb.viz.Attributes.getIndices;
-import static arb.viz.Attributes.getIsParametric;
-import static arb.viz.Attributes.isSurface;
-import static arb.viz.Attributes.getMainDir;
-import static arb.viz.Attributes.getMode;
-import static arb.viz.Attributes.getNeedsChanging;
-import static arb.viz.Attributes.getNeedsRedrawing;
-import static arb.viz.Attributes.getNeedsUpdate;
-import static arb.viz.Attributes.getNextIndex;
-import static arb.viz.Attributes.getParaboloid;
-import static arb.viz.Attributes.getPlane;
-import static arb.viz.Attributes.getSFrom;
-import static arb.viz.Attributes.getSPi;
-import static arb.viz.Attributes.getSStep;
-import static arb.viz.Attributes.getSTo;
-import static arb.viz.Attributes.getSVar;
-import static arb.viz.Attributes.getSurface;
-import static arb.viz.Attributes.getT0;
-import static arb.viz.Attributes.getu0v0MainDir;
-import static arb.viz.Attributes.getu0v0Paraboloid;
-import static arb.viz.Attributes.getu0v0Plane;
-import static arb.viz.Attributes.putCurve;
-import static arb.viz.Attributes.putFVar;
-import static arb.viz.Attributes.putField;
-import static arb.viz.Attributes.putFrame;
-import static arb.viz.Attributes.putFunction;
-import static arb.viz.Attributes.putIsParametric;
-import static arb.viz.Attributes.putNeedsChanging;
-import static arb.viz.Attributes.putNeedsRedrawing;
-import static arb.viz.Attributes.putNeedsUpdate;
-import static arb.viz.Attributes.putSVar;
-import static arb.viz.Attributes.putSurface;
-import static arb.viz.Attributes.redraw;
-import static arb.viz.Attributes.removeCurveUnit;
-import static arb.viz.Attributes.removeSurfaceUnit;
+import static arb.viz.gl.Attributes.addCurveUnit;
+import static arb.viz.gl.Attributes.addSurfaceUnit;
+import static arb.viz.gl.Attributes.getColour;
+import static arb.viz.gl.Attributes.getCurve;
+import static arb.viz.gl.Attributes.getFFrom;
+import static arb.viz.gl.Attributes.getFPi;
+import static arb.viz.gl.Attributes.getXStep;
+import static arb.viz.gl.Attributes.getFTo;
+import static arb.viz.gl.Attributes.getFVar;
+import static arb.viz.gl.Attributes.getFrenet;
+import static arb.viz.gl.Attributes.getFunction;
+import static arb.viz.gl.Attributes.getIndices;
+import static arb.viz.gl.Attributes.getIsParametric;
+import static arb.viz.gl.Attributes.getMainDir;
+import static arb.viz.gl.Attributes.getMode;
+import static arb.viz.gl.Attributes.getNeedsChanging;
+import static arb.viz.gl.Attributes.getNeedsRedrawing;
+import static arb.viz.gl.Attributes.getNeedsUpdate;
+import static arb.viz.gl.Attributes.getNextIndex;
+import static arb.viz.gl.Attributes.getParaboloid;
+import static arb.viz.gl.Attributes.getPlane;
+import static arb.viz.gl.Attributes.getSFrom;
+import static arb.viz.gl.Attributes.getSPi;
+import static arb.viz.gl.Attributes.getYStep;
+import static arb.viz.gl.Attributes.getSTo;
+import static arb.viz.gl.Attributes.getSVar;
+import static arb.viz.gl.Attributes.getSurface;
+import static arb.viz.gl.Attributes.getT0;
+import static arb.viz.gl.Attributes.getu0v0MainDir;
+import static arb.viz.gl.Attributes.getu0v0Paraboloid;
+import static arb.viz.gl.Attributes.getu0v0Plane;
+import static arb.viz.gl.Attributes.isSurface;
+import static arb.viz.gl.Attributes.putCurve;
+import static arb.viz.gl.Attributes.putFVar;
+import static arb.viz.gl.Attributes.putField;
+import static arb.viz.gl.Attributes.putFrame;
+import static arb.viz.gl.Attributes.putFunction;
+import static arb.viz.gl.Attributes.putIsParametric;
+import static arb.viz.gl.Attributes.putNeedsChanging;
+import static arb.viz.gl.Attributes.putNeedsRedrawing;
+import static arb.viz.gl.Attributes.putNeedsUpdate;
+import static arb.viz.gl.Attributes.putSVar;
+import static arb.viz.gl.Attributes.putSurface;
+import static arb.viz.gl.Attributes.redraw;
+import static arb.viz.gl.Attributes.removeCurveUnit;
+import static arb.viz.gl.Attributes.removeSurfaceUnit;
 
 import org.joml.Vector3f;
 
-import arb.viz.gl.Display;
-import arb.viz.gl.Renderer;
+import arb.viz.Controller;
 import arb.viz.gl.entities.Curve;
 import arb.viz.gl.entities.Surface;
 import arb.viz.gl.functions.BivariateVectorFunction;
@@ -88,11 +87,11 @@ public class GuiController
   private static Renderer        renderer;
   private static Window          window;
 
-  private static OptionsMenu         currentOptions;
+  private static OptionsMenu     currentOptions;
   private static SurfaceOptions  surfaceOptions;
   private static CurveOptions    curveOptions;
 
-  private static AnalysisMenu        currentAnalysis;
+  private static AnalysisMenu    currentAnalysis;
   private static SurfaceAnalysis surfaceAnalysis;
   private static CurveAnalysis   curveAnalysis;
 
@@ -106,13 +105,12 @@ public class GuiController
     renderer = renderer_;
   }
 
-
   /**
    * Set window to handle
    * 
    * @param window_ new window to handle
    */
-  public static void setWindowAndDisplay(Window window_, Display display )
+  public static void setWindowAndDisplay(Window window_, Display display)
   {
     window          = window_;
     surfaceOptions  = new SurfaceOptions(window);
@@ -437,91 +435,37 @@ public class GuiController
         String   text = getFunction(i);
         String[] xyz  = text.split(";");
 
-        if (getIsParametric(i))
+        String   xyz0 = getFVar(i);
+        String   xyz1 = text;
+        String   xyz2 = "0";
+        if (isSurface)
         {
-          if (xyz.length != 3 || !ExpressionHandler.isValid(ExpressionHandler.getPostfix(xyz[0]))
-                        || !ExpressionHandler.isValid(ExpressionHandler.getPostfix(xyz[1]))
-                        || !ExpressionHandler.isValid(ExpressionHandler.getPostfix(xyz[2])))
-          {
-            continue;
-          }
+          xyz1 = getSVar(i);
+          xyz2 = text;
+        }
+        if (xyz.length == 1 && ExpressionHandler.isValid(ExpressionHandler.getPostfix(text)))
+        {
+          xyz    = new String[3];
+          xyz[0] = xyz0;
+          xyz[1] = xyz1;
+          xyz[2] = xyz2;
         }
         else
         {
-          String xyz0 = getFVar(i);
-          String xyz1 = text;
-          String xyz2 = "0";
-          if (isSurface)
-          {
-            xyz1 = getSVar(i);
-            xyz2 = text;
-          }
-          if (xyz.length == 1 && ExpressionHandler.isValid(ExpressionHandler.getPostfix(text)))
-          {
-            xyz    = new String[3];
-            xyz[0] = xyz0;
-            xyz[1] = xyz1;
-            xyz[2] = xyz2;
-          }
-          else
-          {
-            continue;
-          }
+          continue;
         }
+
         String buff = xyz[0];
         xyz[0] = xyz[1];
         xyz[1] = xyz[2];
         xyz[2] = buff;
         if (isSurface)
         {
-          BivariateVectorFunction function = new BivariateVectorFunction(xyz,
-                                                                         getFVar(i),
-                                                                         getSVar(i));
-          float                   k1       = getFPi(i) ? (float) Math.PI : 1.0f;
-          float                   k2       = getSPi(i) ? (float) Math.PI : 1.0f;
-          Surface                 surface  = FunctionHandler.createSurface(function, new float[]
-          { getFFrom(i) * k1, getFTo(i) * k1 }, new float[]
-          { getSFrom(i) * k2, getSTo(i) * k2 },
-                                                                           getFStep(i) * k1,
-                                                                           getSStep(i) * k2,
-                                                                           getColour(i),
-                                                                           Renderer.getLoader());
-          if (getMode(i).equals("Grid"))
-          {
-            renderer.addCurves(surface.getGrid());
-          }
-          else
-          {
-            renderer.add(surface);
-          }
-          if (getPlane(i))
-          {
-            renderer.add(surface.getTangentPlane(getu0v0Plane(i).x, getu0v0Plane(i).y));
-          }
-          if (getParaboloid(i))
-          {
-            renderer.add(surface.getOsculatingParaboloid(getu0v0Paraboloid(i).x, getu0v0Paraboloid(i).y));
-          }
-          if (getMainDir(i))
-          {
-            renderer.addVectors(surface.getMainDirections(getu0v0MainDir(i).x, getu0v0MainDir(i).y));
-          }
-          putSurface(i, surface);
+          addSurfaceToRenderer(i, xyz);
         }
         else
         {
-
-          VectorFunction function = new VectorFunction(xyz,
-                                                       getFVar(i));
-          float          k1       = getFPi(i) ? (float) Math.PI : 1.0f;
-          Curve          curve    = FunctionHandler.createCurve(function, new float[]
-          { getFFrom(i) * k1, getFTo(i) * k1 }, getFStep(i) * k1, getColour(i), Renderer.getLoader());
-          if (getFrenet(i))
-          {
-            renderer.addVectors(curve.getFrenetFrame(getT0(i)));
-          }
-          putCurve(i, curve);
-          renderer.add(curve);
+          addCurveToRenderer(i, xyz);
         }
         putNeedsRedrawing(i, false);
       }
@@ -548,6 +492,61 @@ public class GuiController
     putNeedsUpdate(false);
   }
 
+  public static void addCurveToRenderer(Integer i, String[] xyz)
+  {
+    VectorFunction function = new VectorFunction(xyz,
+                                                 getFVar(i));
+    float          k1       = getFPi(i) ? (float) Math.PI : 1.0f;
+    Curve          curve    = FunctionHandler.createCurve(function, new float[]
+    { getFFrom(i) * k1, getFTo(i) * k1 }, getXStep(i) * k1, getColour(i), Renderer.getLoader());
+    if (getFrenet(i))
+    {
+      renderer.addVectors(curve.getFrenetFrame(getT0(i)));
+    }
+    putCurve(i, curve);
+    renderer.add(curve);
+  }
+
+  public static void addSurfaceToRenderer(Integer i, String[] xyz)
+  {
+    BivariateVectorFunction function = new BivariateVectorFunction(xyz,
+                                                                   getFVar(i),
+                                                                   getSVar(i));
+    float                   k1       = getFPi(i) ? (float) Math.PI : 1.0f;
+    float                   k2       = getSPi(i) ? (float) Math.PI : 1.0f;
+    float[]                 gap1     = new float[]
+    { getFFrom(i) * k1, getFTo(i) * k1 };
+    float[]                 gap2     = new float[]
+    { getSFrom(i) * k2, getSTo(i) * k2 };
+    Surface                 surface  = arb.viz.gl.entities.Surface.createSurface(function,
+                                                                                 gap1,
+                                                                                 gap2,
+                                                                                 getXStep(i) * k1,
+                                                                                 getYStep(i) * k2,
+                                                                                 getColour(i),
+                                                                                 Renderer.getLoader());
+    if (getMode(i).equals("Grid"))
+    {
+      renderer.addCurves(surface.getGrid());
+    }
+    else
+    {
+      renderer.add(surface);
+    }
+    if (getPlane(i))
+    {
+      renderer.add(surface.getTangentPlane(getu0v0Plane(i).x, getu0v0Plane(i).y));
+    }
+    if (getParaboloid(i))
+    {
+      renderer.add(surface.getOsculatingParaboloid(getu0v0Paraboloid(i).x, getu0v0Paraboloid(i).y));
+    }
+    if (getMainDir(i))
+    {
+      renderer.addVectors(surface.getMainDirections(getu0v0MainDir(i).x, getu0v0MainDir(i).y));
+    }
+    putSurface(i, surface);
+  }
 
   private static void changeRenderer(Integer i, boolean isSurface)
   {
@@ -589,7 +588,6 @@ public class GuiController
     putNeedsChanging(i, false);
   }
 
-
   private static void prepareRendererForCurve(Integer i)
   {
     Curve curve = getCurve(i);
@@ -602,7 +600,6 @@ public class GuiController
       }
     }
   }
-
 
   private static void prepareRendererForGridSurface(Integer i)
   {

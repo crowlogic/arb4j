@@ -22,6 +22,6 @@ import arb.topological.spaces.EuclideanSpace;
  * @see <a href="https://en.wikipedia.org/wiki/Surface_(topology)">Wikipedia</a>
  */
 public interface Surface<X> extends
-                         Manifold<X>
+                        Manifold<X>
 {
 }

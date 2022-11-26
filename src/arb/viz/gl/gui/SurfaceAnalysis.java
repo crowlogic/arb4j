@@ -1,12 +1,12 @@
 package arb.viz.gl.gui;
 
-import static arb.viz.Attributes.*;
+import static arb.viz.gl.Attributes.*;
 
 import org.joml.Vector2f;
 
 import arb.utensils.Transformations;
-import arb.viz.GuiController;
 import arb.viz.gl.Display;
+import arb.viz.gl.GuiController;
 import lwjgui.geometry.Insets;
 import lwjgui.geometry.Orientation;
 import lwjgui.scene.Window;

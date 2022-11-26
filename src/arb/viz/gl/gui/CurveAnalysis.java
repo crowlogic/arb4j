@@ -1,16 +1,16 @@
 package arb.viz.gl.gui;
 
-import static arb.viz.Attributes.change;
-import static arb.viz.Attributes.getCurve;
-import static arb.viz.Attributes.getFFrom;
-import static arb.viz.Attributes.getFPi;
-import static arb.viz.Attributes.getFTo;
-import static arb.viz.Attributes.getT0;
-import static arb.viz.Attributes.putT0;
+import static arb.viz.gl.Attributes.change;
+import static arb.viz.gl.Attributes.getCurve;
+import static arb.viz.gl.Attributes.getFFrom;
+import static arb.viz.gl.Attributes.getFPi;
+import static arb.viz.gl.Attributes.getFTo;
+import static arb.viz.gl.Attributes.getT0;
+import static arb.viz.gl.Attributes.putT0;
 
 import arb.utensils.Transformations;
-import arb.viz.GuiController;
 import arb.viz.gl.Display;
+import arb.viz.gl.GuiController;
 import lwjgui.geometry.Insets;
 import lwjgui.scene.Window;
 import lwjgui.scene.control.Label;

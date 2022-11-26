@@ -3,6 +3,7 @@ package arb.geometry.curves;
 import static java.lang.Math.max;
 
 import arb.Complex;
+import arb.MagnitudeConstants;
 import arb.Real;
 import arb.ThreadLocalComplex;
 import arb.arb;
@@ -104,15 +105,16 @@ public class ComplexCircle implements
    * {@link Double}-wrapper for this{@link #evaluate(Complex, int, int, Complex)}
    * 
    * @param angle   in radians
-   * @param complex
+   * @param result
    * @return
    */
-  public Complex evaluate(double angle, Complex complex)
+  public Complex evaluate(double angle, Complex result)
   {
     try ( Complex Θ = new Complex())
     {
       Θ.getReal().set(angle);
-      return evaluate(Θ, 1, 64, complex);
+      evaluate(Θ, 1, 64, result);
+      return result;
     }
   }
 
@@ -134,7 +136,8 @@ public class ComplexCircle implements
       System.out.print(this + " in the direction " + Math.toDegrees(direction.get(0).doubleValue()) + "° having value ");
     }
     evaluate(direction, 1, prec, t);
-
+    t.printPrecision = true;
+    t.getReal().setRad(MagnitudeConstants.zeroMag);
     return this;
   }
 

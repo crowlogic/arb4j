@@ -8,9 +8,7 @@ import org.joml.Vector3f;
 import arb.viz.Controller;
 import arb.viz.gl.Loader;
 import arb.viz.gl.entities.Curve;
-import arb.viz.gl.entities.Surface;
 import arb.viz.gl.entities.Vector;
-import arb.viz.gl.models.ModelTexture;
 import arb.viz.gl.models.RawModel;
 import arb.viz.gl.models.TexturedModel;
 
@@ -147,86 +145,6 @@ public class FunctionHandler
   }
 
   /**
-   * Get surface by two argument function
-   * 
-   * @param f      two argument function
-   * @param gap1   function setting interval by the first argument
-   * @param gap2   function setting interval by the second argument
-   * @param step1  thickness of grid by the first argument
-   * @param step2  thickness of grid by the second argument
-   * @param colour colour of the surface
-   * @param loader loader to load model
-   * @return created surface
-   */
-  public static Surface createSurface(BivariateFunction f,
-                                      float[] gap1,
-                                      float[] gap2,
-                                      float step1,
-                                      float step2,
-                                      Vector3f colour,
-                                      Loader loader)
-  {
-    ArrayDeque<String> x = new ArrayDeque<>();
-    x.add("x");
-    ArrayDeque<String> y = new ArrayDeque<>();
-    y.add("y");
-    ArrayList<ArrayDeque<String>> postfixes = new ArrayList<>();
-    postfixes.add(x);
-    postfixes.add(y);
-    postfixes.add(f.getPostfix());
-    BivariateVectorFunction newF = new BivariateVectorFunction(postfixes,
-                                                               "x",
-                                                               "y");
-    return createSurface(newF, gap1, gap2, step1, step2, colour, loader);
-  }
-
-  /**
-   * Get surface by two argument vector function
-   * 
-   * @param f      two argument vector function
-   * @param gap1   function setting interval by the first argument
-   * @param gap2   function setting interval by the second argument
-   * @param step1  thickness of grid by the first argument
-   * @param step2  thickness of grid by the second argument
-   * @param colour colour of the surface
-   * @param loader loader to load model
-   * @return created surface
-   */
-  public static Surface createSurface(BivariateVectorFunction f,
-                                      float[] gap1,
-                                      float[] gap2,
-                                      float step1,
-                                      float step2,
-                                      Vector3f colour,
-                                      Loader loader)
-  {
-    int[]         indices       = getIndices(gap1, gap2, step1, step2);
-    float[]       vertices      = getVertices(f, gap1, gap2, step1, step2);
-    float[]       normals       = getNormals(f, gap1, gap2, step1, step2);
-    float[]       textureCoords = getTextureCoords(gap1, gap2, step1, step2);
-    RawModel      model         = loader.loadToVAO(vertices, textureCoords, normals, indices);
-    // ModelTexture texture = new
-    // ModelTexture(MasterRenderer.getLoader().loadTexture("earth2"));
-    ModelTexture  texture       = new ModelTexture(1);
-    TexturedModel texturedModel = new TexturedModel(model,
-                                                    texture);
-    texture.setShineDamper(20); // 20
-    texture.setReflectivity(1); // 1
-    Surface surface = new Surface(texturedModel,
-                                  new Vector3f(0,
-                                               0,
-                                               0),
-                                  0,
-                                  0,
-                                  0,
-                                  1,
-                                  colour,
-                                  f);
-    surface.setGrid(FunctionHandler.getGrid(f, gap1, gap2, step1, step2, colour, loader));
-    return surface;
-  }
-
-  /**
    * Get vertices by vector function
    * 
    * @param f    vector function
@@ -302,7 +220,7 @@ public class FunctionHandler
                      f);
   }
 
-  private static ArrayList<Curve> getGrid(BivariateVectorFunction f,
+  public static ArrayList<Curve> getGrid(BivariateVectorFunction f,
                                           float[] gap1,
                                           float[] gap2,
                                           float step1,

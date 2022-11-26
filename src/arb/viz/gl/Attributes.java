@@ -1,4 +1,4 @@
-package arb.viz;
+package arb.viz.gl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -627,7 +627,7 @@ public class Attributes
    * @param index the primary key of the object
    * @return the step for calculating the object's function by the first variable
    */
-  public static float getFStep(int index)
+  public static float getXStep(int index)
   {
     return fsteps.get(index);
   }
@@ -685,7 +685,7 @@ public class Attributes
    * @param index the primary key of the object
    * @return the step for calculating the object's function by the second variable
    */
-  public static float getSStep(int index)
+  public static float getYStep(int index)
   {
     return ssteps.get(index);
   }
