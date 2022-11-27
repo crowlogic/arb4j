@@ -67,7 +67,7 @@ public class EvaluationSequence implements
 
   public DataSet getVarianceDataSet()
   {
-    return new AbstractDataSet("Price",
+    return new AbstractDataSet("Instantaneous Variance",
                                2)
     {
 
