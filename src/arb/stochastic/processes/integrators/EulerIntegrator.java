@@ -164,7 +164,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
     if (verbose)
     {
-      println("i=" + " xi=" + xi + " μi=" + μi + " σi=" + σi);
+      println("i=" + "\n xi=" + xi + "\n μi=" + μi + "\n σi=" + σi);
     }
     σi.mul(xi, prec);
 

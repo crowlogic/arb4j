@@ -2,12 +2,19 @@ package arb.functions.real.dynamics;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
+import static java.lang.System.out;
 
+import arb.MagnitudeConstants;
 import arb.Real;
+import arb.RealRootInterval;
+import arb.RootLocatorOptions;
+import arb.Roots;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.real.RealFunction;
 
 /**
+ * todo: later
+ * 
  * <code>t-f(t)/f'(t)</code>
  *
  * @author Isaac Newton
@@ -16,7 +23,7 @@ import arb.functions.real.RealFunction;
 public class RealNewtonMap<F extends RealFunction> implements
                           RealDynamicalSystem
 {
-  public boolean verbose = false;
+  public boolean verbose = true;
 
   /**
    * Iteratively invokes this{@link #evaluate(Real, int, int, Real)} specific
@@ -31,6 +38,14 @@ public class RealNewtonMap<F extends RealFunction> implements
    */
   public Real iterate(Real _z, int n, int prec, Real w)
   {
+ 
+    naivelyIterateNewtonsMethod(_z, n, prec, w);
+
+    return w;
+  }
+
+  protected void naivelyIterateNewtonsMethod(Real _z, int n, int prec, Real w)
+  {
     try ( Real z = new Real(_z))
     {
       for (int i = 0; i < n; i++)
@@ -42,8 +57,9 @@ public class RealNewtonMap<F extends RealFunction> implements
         {
           System.out.println("w=" + w);
         }
+        w.setRad(MagnitudeConstants.zeroMag);
         z.set(w);
-        if (abs(w.get(1).doubleValue()) < pow(10, -30))
+        if (abs(w.get(1).doubleValue()) < pow(10, -15))
         {
           if (verbose)
           {
@@ -54,8 +70,6 @@ public class RealNewtonMap<F extends RealFunction> implements
         }
       }
     }
-
-    return w;
   }
 
   public Real r;

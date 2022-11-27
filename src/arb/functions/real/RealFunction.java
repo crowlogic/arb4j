@@ -368,8 +368,8 @@ public interface RealFunction extends
    */
   public default int multiplicityOfRoot(Real t)
   {
-    assert false : "TODO: implement me in " + getClass();
-    return 0;
+    //assert false : "TODO: implement me in " + getClass();
+    return 1;
   }
 
   /**

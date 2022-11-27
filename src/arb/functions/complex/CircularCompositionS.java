@@ -32,7 +32,7 @@ public class CircularCompositionS extends
   {
     RealNewtonMap newtonMapOfRealPart = new RealNewtonMap(real ? new RealPart<>(this) : new ImaginaryPart<>(this),
                                                           RealConstants.one);
-    return newtonMapOfRealPart.iterate(presentAngle, 20, 128, angle);
+    return newtonMapOfRealPart.iterate(presentAngle, 2000, 128, angle);
   }
 
   public CircularCompositionS()

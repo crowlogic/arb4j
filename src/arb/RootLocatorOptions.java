@@ -19,7 +19,7 @@ public class RootLocatorOptions
   {
     super();
     assert maxevals > 1 : "it makes no sense to set maxevals less than 1";
-    assert maxdepth > 1 : "its pointless to call this function if maxdepth>1";
+    assert maxdepth > 1 : "its pointless to call this function if maxdepth<1";
     this.interval = interval;
     this.maxDepth = maxdepth;
     this.maxEvals = maxevals;
