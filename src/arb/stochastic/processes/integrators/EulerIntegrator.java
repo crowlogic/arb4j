@@ -4,6 +4,7 @@ import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.half;
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
+import static java.lang.System.out;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -37,33 +38,6 @@ import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
 public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionProcessState> extends
                             AbstractDiffusionProcessIntegrator<D, P>
 {
-
-  public static final class KeyHandler implements
-                                       KeyListener
-  {
-    @Override
-    public void keyTyped(KeyEvent e)
-    {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e)
-    {
-      switch (e.getKeyCode())
-      {
-      case KeyEvent.VK_ESCAPE:
-        System.exit(1);
-      }
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e)
-    {
-
-    }
-  }
 
   public static void main(String[] args)
   {
@@ -177,11 +151,14 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     int  i  = state.index();
     Real xi = evaluationSequence.dimensions[dim].get(i);
     xi.printPrecision = true;
-
+    out.println( "state before evaluation drift function μ=" + state );
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt(), prec);
+    out.println( "state after evaluation drift function μ=" + state );
+
     assert μi.isFinite();
 
+    assert σorder > 0;
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
     assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. σi=" + σi + " state=" + state;
 
