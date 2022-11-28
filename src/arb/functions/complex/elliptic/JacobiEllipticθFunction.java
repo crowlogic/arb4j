@@ -4,7 +4,7 @@ import arb.Complex;
 import arb.functions.complex.HolomorphicFunction;
 
 /**
- * hmm
+ * TODO: implement this so the Ψ function can be implemented
  * 
  * @see <a href="doc-files/ThetaFunctionVocabulary1.pdf">Theta Vocab 1</a> and
  * @see <a href=
