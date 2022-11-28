@@ -3,7 +3,7 @@
 
 BASEDIR=$(dirname $(readlink -f $0))/..
 CLASSPATH=`cat $BASEDIR/class.path`
-LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 JEMALLOC_CONF="shit:fuck,stats_print:true,prof:true,prof_leak:true,lg_prof_sample:1,prof_accum:false,prof_prefix:jeprof.out" java -Djava.library.path=$BASEDIR -ea -classpath $CLASSPATH:$BASEDIR/target/classes $@
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 java --enable-preview -Djava.library.path=$BASEDIR -ea -classpath $CLASSPATH:$BASEDIR/target/classes $@
 
 
 
