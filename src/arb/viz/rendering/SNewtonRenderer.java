@@ -8,29 +8,30 @@ import java.io.IOException;
 
 import arb.functions.complex.SFunction;
 import arb.functions.complex.dynamics.NewtonFlow;
+import arb.functions.complex.dynamics.SNewtonMap;
 import arb.viz.ComplexFunctionRenderer;
 import arb.viz.Part;
 
 public class SNewtonRenderer extends
-                             ComplexFunctionRenderer<NewtonFlow<SFunction>>
+                             ComplexFunctionRenderer<SNewtonMap>
 {
 
   public SNewtonRenderer(Dimension screen, Double domain) throws NoninvertibleTransformException
   {
     super(screen,
           domain,
-          new NewtonFlow<>(new SFunction()));
+          new SNewtonMap());
   }
 
   public SNewtonRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension(2560 / 2,
-                       1440 / 2),
+    this(new Dimension(2560 / 4,
+                       1440 / 4),
          new Rectangle2D.Double(-3,
-                                -1.5 * 2,
+                                -3,
                                 6,
-                                3 * 2));
+                                6));
   }
 
   @SuppressWarnings("resource")

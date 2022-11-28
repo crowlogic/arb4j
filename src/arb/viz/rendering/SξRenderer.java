@@ -30,10 +30,10 @@ public class SξRenderer extends
   {
     super(new Dimension(1900,
                         950),
-          new Rectangle2D.Double(-20,
-                                 -30,
-                                 40,
-                                 60),
+          new Rectangle2D.Double(-20*2,
+                                 -30*2,
+                                 40*2,
+                                 60*2),
           CompositionOperator.compose(new SFunction(vscale), new RiemannξFunction()));
 
     colorMode   = 5;
