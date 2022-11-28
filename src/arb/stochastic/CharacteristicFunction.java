@@ -1,5 +1,6 @@
 package arb.stochastic;
 
+import arb.functions.RealToComplexFunction;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;
 import arb.operators.integraltransforms.FourierTransform;
@@ -20,7 +21,7 @@ import arb.operators.integraltransforms.FourierTransform;
  *            characteristic function corresponds to
  */
 public interface CharacteristicFunction extends
-                                       HolomorphicFunction
+                                       RealToComplexFunction
 {
 
 }

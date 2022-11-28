@@ -4,7 +4,12 @@ import arb.Complex;
 import arb.functions.complex.HolomorphicFunction;
 
 /**
- * @see <a href="doc-files/ThetaFunctionVocabulary1.pdf">Theta Vocab 1</a>
+ * hmm
+ * 
+ * @see <a href="doc-files/ThetaFunctionVocabulary1.pdf">Theta Vocab 1</a> and
+ * @see <a href=
+ *      "../../../stochastic/processes/doc-files/TheRiemannZetaFunctionAndProbabilityTheory.pdf">The
+ *      Riemann ζ Function and Probability Theory page 12</a>
  */
 public class JacobiEllipticθFunction implements
                                      HolomorphicFunction

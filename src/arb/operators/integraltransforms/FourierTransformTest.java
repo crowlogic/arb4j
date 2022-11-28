@@ -2,12 +2,14 @@ package arb.operators.integraltransforms;
 
 import static arb.utensils.Utilities.println;
 
-import arb.*;
-import arb.functions.RealToComplexFunction;
+import arb.Complex;
+import arb.Magnitude;
+import arb.Real;
 import arb.functions.real.ErrorFunction;
 import arb.functions.real.RealPart;
 import arb.stochastic.StandardGaussianCharacteristicFunction;
 import arb.stochastic.StandardGaussianDensityFunction;
+import arb.stochastic.StandardGaussianDensityFunction.ComplexVariable;
 import junit.framework.TestCase;
 
 public class FourierTransformTest extends
@@ -29,19 +31,15 @@ public class FourierTransformTest extends
     FourierTransform<StandardGaussianDensityFunction> φnumeric = new FourierTransform(f);
 
     φnumeric.integrationOptions.verbose = false;
-    try ( Complex point = new Complex(new Real("0.75",
-                                               prec),
-                                      RealConstants.zero))
+    try ( Real point = new Real("0.75",
+                                prec))
     {
       System.out.println("point=" + point);
 
-      StandardGaussianCharacteristicFunction                   φexact = new StandardGaussianCharacteristicFunction();
-      InverseFourierTransform<StandardGaussianDensityFunction> f2     = new InverseFourierTransform(φexact);
+      StandardGaussianCharacteristicFunction   φexact = new StandardGaussianCharacteristicFunction();
+      InverseFourierTransform<ComplexVariable> f2     = new InverseFourierTransform(φexact);
 
-      Complex                                                  val    = φnumeric.evaluate(point,
-                                                                                          1,
-                                                                                          prec,
-                                                                                          new Complex());
+      Complex                                  val    = φnumeric.evaluate(point, 1, prec, new Complex());
       val.printPrecision = true;
       System.out.println("val from numerically integrated truncated Fourier transform of Gaussian density " + val);
       assertEquals(0.0068789618474533993988662139429379749344661831855774,
