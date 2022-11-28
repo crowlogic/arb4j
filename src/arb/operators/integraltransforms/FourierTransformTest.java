@@ -1,4 +1,4 @@
-package arb.operators;
+package arb.operators.integraltransforms;
 
 import static arb.utensils.Utilities.println;
 
@@ -26,8 +26,7 @@ public class FourierTransformTest extends
   public static void testDuality()
   {
     StandardGaussianDensityFunction                   f        = new StandardGaussianDensityFunction();
-    FourierTransform<StandardGaussianDensityFunction> φnumeric = new FourierTransform(f,
-                                                                                      false);
+    FourierTransform<StandardGaussianDensityFunction> φnumeric = new FourierTransform(f);
 
     φnumeric.integrationOptions.verbose = false;
     try ( Complex point = new Complex(new Real("0.75",
@@ -36,11 +35,13 @@ public class FourierTransformTest extends
     {
       System.out.println("point=" + point);
 
-      StandardGaussianCharacteristicFunction            φexact = new StandardGaussianCharacteristicFunction();
-      FourierTransform<StandardGaussianDensityFunction> f2     = new FourierTransform(φexact,
-                                                                                      true);
+      StandardGaussianCharacteristicFunction                   φexact = new StandardGaussianCharacteristicFunction();
+      InverseFourierTransform<StandardGaussianDensityFunction> f2     = new InverseFourierTransform(φexact);
 
-      Complex                                           val    = φnumeric.evaluate(point, 1, prec, new Complex());
+      Complex                                                  val    = φnumeric.evaluate(point,
+                                                                                          1,
+                                                                                          prec,
+                                                                                          new Complex());
       val.printPrecision = true;
       System.out.println("val from numerically integrated truncated Fourier transform of Gaussian density " + val);
       assertEquals(0.0068789618474533993988662139429379749344661831855774,
@@ -57,8 +58,7 @@ public class FourierTransformTest extends
                    val.getReal().doubleValue(),
                    Math.pow(10, -17));
 
-      FourierTransform<RealPart<?>> f3 = new FourierTransform(new RealPart(φnumeric),
-                                                              true);
+      FourierTransform<RealPart<?>> f3 = new FourierTransform(new RealPart(φnumeric));
 
       try ( Complex value = new Complex(); Complex value2 = new Complex(); Complex value3 = new Complex();)
       {

@@ -2,7 +2,7 @@ package arb.stochastic;
 
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;
-import arb.operators.FourierTransform;
+import arb.operators.integraltransforms.FourierTransform;
 
 /**
  * The characteristic function of any real-valued random variable completely

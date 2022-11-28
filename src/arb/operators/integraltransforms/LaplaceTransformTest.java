@@ -1,4 +1,4 @@
-package arb.operators;
+package arb.operators.integraltransforms;
 
 import static org.junit.Assert.assertEquals;
 

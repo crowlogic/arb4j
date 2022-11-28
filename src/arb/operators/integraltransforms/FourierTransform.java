@@ -1,15 +1,14 @@
-package arb.operators;
+package arb.operators.integraltransforms;
 
 import arb.Complex;
 import arb.IntegrationOptions;
 import arb.Magnitude;
 import arb.Real;
-import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
 
-public class FourierTransform<F extends Function<Real, Real>> implements
-                             IntegralTransform
+public class FourierTransform<F extends RealFunction> implements
+                             RealToComplexFunction
 {
 
   public int                relativeAccuracyBitsGoal     = 128;
@@ -19,12 +18,10 @@ public class FourierTransform<F extends Function<Real, Real>> implements
   public final Real         left                         = new Real("-100",
                                                                     128);
   public IntegrationOptions integrationOptions           = new IntegrationOptions();
-  private boolean           inverse;
 
-  public FourierTransform(F f, boolean inverse)
+  public FourierTransform(F f)
   {
-    this.f       = f;
-    this.inverse = inverse;
+    this.f = f;
   }
 
   F f;
@@ -33,13 +30,13 @@ public class FourierTransform<F extends Function<Real, Real>> implements
                          RealToComplexFunction
   {
 
-    public Integrand(Complex ξ)
+    public Integrand(Real ξ)
     {
       super();
       this.ξ = ξ;
     }
 
-    private Complex ξ;
+    private Real ξ;
 
     @Override
     public Complex evaluate(Real x, int integrandOrder, int integrandPrec, Complex result)
@@ -48,11 +45,10 @@ public class FourierTransform<F extends Function<Real, Real>> implements
       {
         Real expi = exponent.getImag();
         expi.π(integrandPrec).mul(2, integrandPrec, expi);
-        if (!inverse)
-        {
-          expi.negate(expi);
-        }
-        expi.mul(ξ.getReal(), integrandPrec, expi).mul(x, integrandPrec, expi);
+
+        expi.negate(expi);
+
+        expi.mul(ξ, integrandPrec, expi).mul(x, integrandPrec, expi);
         q.set(x);
         Real tmp = f.evaluate(q, integrandOrder, integrandPrec, y);
         exponent.exp(integrandPrec, result).mul(tmp, integrandPrec, result);
@@ -63,14 +59,13 @@ public class FourierTransform<F extends Function<Real, Real>> implements
   }
 
   @Override
-  public Complex evaluate(Complex ξ, int order, int prec, Complex res)
+  public Complex evaluate(Real ξ, int order, int prec, Complex res)
   {
     order = Math.max(1, order);
     assert order < 2;
-    assert ξ.getImag().isZero();
 
     /**
-     * f(x)e^(-i2πξx) or if inverse then f(x)e^(i2πξx)
+     * f(x)e^(-i2πξx)
      */
     Integrand integrand = new Integrand(ξ);
 

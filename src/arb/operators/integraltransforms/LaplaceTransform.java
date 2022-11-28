@@ -1,7 +1,8 @@
-package arb.operators;
+package arb.operators.integraltransforms;
 
 import arb.*;
 import arb.functions.RealToComplexFunction;
+import arb.operators.IntegralTransform;
 
 /**
  * the Laplace transform is an integral transform that converts a function of a

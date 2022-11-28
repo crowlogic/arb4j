@@ -1,9 +1,9 @@
 package arb.stochastic;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.sqrtπ;
+import static arb.RealConstants.πsquared;
 
 import arb.Complex;
-import arb.Real;
 
 public class StandardGaussianCharacteristicFunction implements
                                                     CharacteristicFunction
