@@ -29,12 +29,12 @@ public class SNewtonKoenigsFunctionRenderer extends
   public SNewtonKoenigsFunctionRenderer() throws NoninvertibleTransformException
   {
 
-    this(new Dimension((int)(900*2),
-                       (int)(900*2)),
-         new Rectangle2D.Double(-1.4,
+    this(new Dimension((int)(850*2),
+                       (int)(850*1.4f)),
+         new Rectangle2D.Double(-1,
                                 -1.4,
-                                2.8,
-                                2.8));
+                                2,
+                                1.4));
   }
 
   @SuppressWarnings("resource")
