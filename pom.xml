@@ -68,6 +68,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-graphics</artifactId>
+			<version>20-ea+9</version>
+		</dependency>
+		<dependency>
 			<groupId>com.massisframework</groupId>
 			<artifactId>j-text-utils</artifactId>
 			<version>0.3.4</version>

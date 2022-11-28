@@ -1,0 +1,8 @@
+{ 
+   name
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   obj:/opt/java/jdk16/jre/lib/amd64/server/libjvm.so
+   ...
+}

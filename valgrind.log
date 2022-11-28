@@ -1,0 +1,1750 @@
+==3931819== Memcheck, a memory error detector
+==3931819== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3931819== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==3931819== Command: java -Djava.library.path=/home/crow/git/arb4j/bin/.. -da -classpath /home/crow/.m2/repository/com/massisframework/j-text-utils/0.3.4/j-text-utils-0.3.4.jar:/home/crow/.m2/repository/com/google/guava/guava/21.0/guava-21.0.jar:/home/crow/.m2/repository/commons-lang/commons-lang/2.6/commons-lang-2.6.jar:/home/crow/.m2/repository/au/com/bytecode/opencsv/2.4/opencsv-2.4.jar:/home/crow/.m2/repository/org/ow2/asm/asm/9.3/asm-9.3.jar:/home/crow/.m2/repository/org/ow2/asm/asm-util/9.3/asm-util-9.3.jar:/home/crow/.m2/repository/org/ow2/asm/asm-tree/9.3/asm-tree-9.3.jar:/home/crow/.m2/repository/org/ow2/asm/asm-analysis/9.3/asm-analysis-9.3.jar:/home/crow/.m2/repository/io/humble/humble-video-all/0.3.0/humble-video-all-0.3.0.jar:/home/crow/.m2/repository/io/humble/humble-video-noarch/0.3.0/humble-video-noarch-0.3.0.jar:/home/crow/.m2/repository/io/humble/humble-video-arch-x86_64-pc-linux-gnu6/0.3.0/humble-video-arch-x86_64-pc-linux-gnu6-0.3.0.jar:/home/crow/.m2/repository/org/scilab/forge/jlatexmath/1.0.5/jlatexmath-1.0.5.jar:/home/crow/.m2/repository/org/scilab/forge/jlatexmath-font-greek/1.0.5/jlatexmath-font-greek-1.0.5.jar:/home/crow/.m2/repository/org/scilab/forge/jlatexmath-font-cyrillic/1.0.5/jlatexmath-font-cyrillic-1.0.5.jar:/home/crow/.m2/repository/org/l33tlabs/twl/pngdecoder/1.0/pngdecoder-1.0.jar:/home/crow/.m2/repository/de/gsi/chart/chartfx-chart/11.2.7/chartfx-chart-11.2.7.jar:/home/crow/.m2/repository/org/openjfx/javafx-base/13.0.1/javafx-base-13.0.1.jar:/home/crow/.m2/repository/org/openjfx/javafx-base/13.0.1/javafx-base-13.0.1-linux.jar:/home/crow/.m2/repository/org/openjfx/javafx-controls/13.0.1/javafx-controls-13.0.1.jar:/home/crow/.m2/repository/org/openjfx/javafx-controls/13.0.1/javafx-controls-13.0.1-linux.jar:/home/crow/.m2/repository/org/openjfx/javafx-graphics/13.0.1/javafx-graphics-13.0.1.jar:/home/crow/.m2/repository/org/openjfx/javafx-graphics/13.0.1/javafx-graphics-13.0.1-linux.jar:/home/crow/.m2/repository/org/kordamp/ikonli/ikonli-javafx/11.5.0/ikonli-javafx-11.5.0.jar:/home/crow/.m2/repository/org/kordamp/ikonli/ikonli-core/11.5.0/ikonli-core-11.5.0.jar:/home/crow/.m2/repository/org/kordamp/ikonli/ikonli-fontawesome-pack/11.5.0/ikonli-fontawesome-pack-11.5.0.jar:/home/crow/.m2/repository/org/kordamp/ikonli/ikonli-fontawesome5-pack/11.5.0/ikonli-fontawesome5-pack-11.5.0.jar:/home/crow/.m2/repository/de/gsi/dataset/chartfx-dataset/11.2.7/chartfx-dataset-11.2.7.jar:/home/crow/.m2/repository/it/unimi/dsi/fastutil/8.3.1/fastutil-8.3.1.jar:/home/crow/.m2/repository/com/ibm/icu/icu4j/65.1/icu4j-65.1.jar:/home/crow/.m2/repository/ar/com/hjg/pngj/2.1.0/pngj-2.1.0.jar:/home/crow/.m2/repository/org/slf4j/slf4j-api/2.0.0-alpha0/slf4j-api-2.0.0-alpha0.jar:/home/crow/.m2/repository/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar:/home/crow/.m2/repository/org/jetbrains/annotations/21.0.1/annotations-21.0.1.jar:/home/crow/.m2/repository/de/gsi/math/chartfx-math/11.2.7/chartfx-math-11.2.7.jar:/home/crow/.m2/repository/com/github/wendykierp/JTransforms/3.1/JTransforms-3.1.jar:/home/crow/.m2/repository/pl/edu/icm/JLargeArrays/1.5/JLargeArrays-1.5.jar:/home/crow/.m2/repository/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar:/home/crow/.m2/repository/org/controlsfx/controlsfx/11.1.1/controlsfx-11.1.1.jar:/home/crow/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar:/home/crow/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/crow/.m2/repository/org/jogamp/jogl/jogl-all/2.3.1/jogl-all-2.3.1.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-stb/3.3.1/lwjgl-stb-3.3.1.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl/3.3.1/lwjgl-3.3.1-natives-linux.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-assimp/3.3.1/lwjgl-assimp-3.3.1-natives-linux.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-glfw/3.3.1/lwjgl-glfw-3.3.1-natives-linux.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-opengl/3.3.1/lwjgl-opengl-3.3.1-natives-linux.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-stb/3.3.1/lwjgl-stb-3.3.1-natives-linux.jar:/home/crow/.m2/repository/org/joml/joml/1.10.4/joml-1.10.4.jar:/home/crow/.m2/repository/com/github/orange451/LWJGUI/pre-mt/LWJGUI-pre-mt.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-glfw/3.3.1/lwjgl-glfw-3.3.1.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-jemalloc/3.3.1/lwjgl-jemalloc-3.3.1.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-opengl/3.3.1/lwjgl-opengl-3.3.1.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-tinyfd/3.3.1/lwjgl-tinyfd-3.3.1.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-jemalloc/3.3.1/lwjgl-jemalloc-3.3.1-natives-linux.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-nanovg/3.3.1/lwjgl-nanovg-3.3.1-natives-linux.jar:/home/crow/.m2/repository/org/lwjgl/lwjgl-tinyfd/3.3.1/lwjgl-tinyfd-3.3.1-natives-linux.jar:/home/crow/git/arb4j/bin/../target/classes -ea --enable-preview --enable-native-access=arb4j --add-modules=javafx.graphics --add-reads javafx.graphics=ALL-UNNAMED --add-opens javafx.controls/com.sun.javafx.charts=ALL-UNNAMED --add-opens javafx.controls/com.sun.javafx.scene.control.inputmap=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.iio=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.iio.common=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.css=ALL-UNNAMED --add-opens javafx.base/com.sun.javafx.runtime=ALL-UNNAMED --add-exports javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.scene.traversal=ALL-UNNAMED arb.viz.AnimatedComplexFunctionSequencer
+==3931819== Parent PID: 3931816
+==3931819== 
+--3931819-- 
+--3931819-- Valgrind options:
+--3931819--    --leak-check=full
+--3931819--    --show-leak-kinds=all
+--3931819--    --suppressions=valgrind.suppress
+--3931819--    --log-file=valgrind.log
+--3931819--    -v
+--3931819-- Contents of /proc/version:
+--3931819--   Linux version 5.19.0-23-generic (buildd@lcy02-amd64-076) (x86_64-linux-gnu-gcc-12 (Ubuntu 12.2.0-3ubuntu1) 12.2.0, GNU ld (GNU Binutils for Ubuntu) 2.39) #24-Ubuntu SMP PREEMPT_DYNAMIC Fri Oct 14 15:39:57 UTC 2022
+--3931819-- 
+--3931819-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--3931819-- Page sizes: currently 4096, max supported 4096
+--3931819-- Valgrind library directory: /usr/libexec/valgrind
+--3931819-- Reading syms from /usr/lib/jvm/jdk-19/bin/java
+--3931819-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--3931819--   Considering /usr/lib/debug/.build-id/29/2e105c0bb3ee8e8f5b917f8af764373d206659.debug ..
+--3931819--   .. build-id is valid
+--3931819-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--3931819--   Considering /usr/lib/debug/.build-id/84/fedd9a4c04941b8d123398ad0dd0ebc25c120c.debug ..
+--3931819--   .. build-id is valid
+--3931819--    object doesn't have a dynamic symbol table
+--3931819-- Scheduler: using generic scheduler lock implementation.
+--3931819-- Reading suppressions file: valgrind.suppress
+--3931819-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==3931819== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-3931819-by-crow-on-???
+==3931819== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-3931819-by-crow-on-???
+==3931819== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-3931819-by-crow-on-???
+==3931819== 
+==3931819== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==3931819== don't want to do, unless you know exactly what you're doing,
+==3931819== or are doing some strange experiment):
+==3931819==   /usr/bin/vgdb --pid=3931819 ...command...
+==3931819== 
+==3931819== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==3931819==   /path/to/gdb java
+==3931819== and then give GDB the following command
+==3931819==   target remote | /usr/bin/vgdb --pid=3931819
+==3931819== --pid is optional if only one valgrind process is running
+==3931819== 
+--3931819-- REDIR: 0x4026dd0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--3931819-- REDIR: 0x4025580 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (vgPlain_amd64_linux_REDIR_FOR_index)
+--3931819-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--3931819--   Considering /usr/lib/debug/.build-id/7b/e1c1588ba6713462a4091c80bbb78004f47ba6.debug ..
+--3931819--   .. build-id is valid
+--3931819-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--3931819--   Considering /usr/lib/debug/.build-id/ca/411cf3a4b32c9d21bbc464935b0f1af28fb2d8.debug ..
+--3931819--   .. build-id is valid
+==3931819== WARNING: new redirection conflicts with existing -- ignoring it
+--3931819--     old: 0x04026dd0 (strlen              ) R-> (0000.0) 0x580bcec2 vgPlain_amd64_linux_REDIR_FOR_strlen
+--3931819--     new: 0x04026dd0 (strlen              ) R-> (2007.0) 0x0484ae30 strlen
+--3931819-- REDIR: 0x40257b0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484bcd0 (strcmp)
+--3931819-- REDIR: 0x40249d0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x484f840 (mempcpy)
+--3931819-- Reading syms from /usr/lib/x86_64-linux-gnu/libz.so.1.2.11
+--3931819--    object doesn't have a symbol table
+--3931819-- Reading syms from /usr/lib/jvm/jdk-19/lib/libjli.so
+--3931819-- Reading syms from /usr/lib/x86_64-linux-gnu/libpthread.so.0
+--3931819-- Reading syms from /usr/lib/x86_64-linux-gnu/libdl.so.2
+--3931819--   Considering /usr/lib/debug/.build-id/bb/9bae4bb2a97b1c469b3fcf60b636982d448160.debug ..
+--3931819--   .. build-id is valid
+--3931819-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--3931819--   Considering /usr/lib/debug/.build-id/d1/704d25fbbb72fa95d517b883131828c0883fe9.debug ..
+--3931819--   .. build-id is valid
+==3931819== WARNING: new redirection conflicts with existing -- ignoring it
+--3931819--     old: 0x049601d0 (memalign            ) R-> (1011.0) 0x0484a080 memalign
+--3931819--     new: 0x049601d0 (memalign            ) R-> (1017.0) 0x0484a050 aligned_alloc
+==3931819== WARNING: new redirection conflicts with existing -- ignoring it
+--3931819--     old: 0x049601d0 (memalign            ) R-> (1011.0) 0x0484a080 memalign
+--3931819--     new: 0x049601d0 (memalign            ) R-> (1017.0) 0x0484a020 aligned_alloc
+--3931819-- REDIR: 0x4967040 (libc.so.6:strnlen) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x49670d0 (libc.so.6:strpbrk) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x49651a0 (libc.so.6:strcmp) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x497c660 (libc.so.6:wcsnlen) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x49642b0 (libc.so.6:memset) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x497ad30 (libc.so.6:wcslen) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4963790 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x497ab40 (libc.so.6:wcschr) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4965090 (libc.so.6:index) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4967100 (libc.so.6:rindex) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x497abd0 (libc.so.6:wcscmp) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4964500 (libc.so.6:stpncpy) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x497b180 (libc.so.6:wmemchr) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4966ee0 (libc.so.6:strncmp) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4964570 (libc.so.6:strcasecmp) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x49663f0 (libc.so.6:strcspn) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x497ac60 (libc.so.6:wcscpy) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4965010 (libc.so.6:strcat) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4966dd0 (libc.so.6:strncasecmp_l) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4963690 (libc.so.6:bcmp) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4964220 (libc.so.6:memrchr) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4965110 (libc.so.6:strchrnul) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4966370 (libc.so.6:strcpy) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4964610 (libc.so.6:strcasecmp_l) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4966ca0 (libc.so.6:strlen) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4966f80 (libc.so.6:strncpy) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4964480 (libc.so.6:stpcpy) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4963fe0 (libc.so.6:memmove) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+==3931819== Preferring higher priority redirection:
+--3931819--     old: 0x04a30c00 (__memcpy_avx_unalign) R-> (2018.0) 0x0484cf90 __memcpy_avx_unaligned_erms
+--3931819--     new: 0x04a30c00 (__memcpy_avx_unalign) R-> (2018.1) 0x0484e880 memmove
+--3931819-- REDIR: 0x4963600 (libc.so.6:memchr) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x49672c0 (libc.so.6:strspn) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4964100 (libc.so.6:mempcpy) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4966d30 (libc.so.6:strncasecmp) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x49643b0 (libc.so.6:rawmemchr) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4967af0 (libc.so.6:strstr) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4a36cf0 (libc.so.6:__strrchr_avx2) redirected to 0x484a810 (rindex)
+--3931819-- REDIR: 0x495f660 (libc.so.6:malloc) redirected to 0x4844820 (malloc)
+--3931819-- REDIR: 0x4a343a0 (libc.so.6:__strlen_avx2) redirected to 0x484ad10 (strlen)
+--3931819-- REDIR: 0x4a30c00 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x484e880 (memmove)
+--3931819-- REDIR: 0x4a35a70 (libc.so.6:__strncmp_avx2) redirected to 0x484b3e0 (strncmp)
+--3931819-- REDIR: 0x4a33ab0 (libc.so.6:__strcmp_avx2) redirected to 0x484bbd0 (strcmp)
+--3931819-- REDIR: 0x4a338c0 (libc.so.6:__strchrnul_avx2) redirected to 0x484f330 (strchrnul)
+--3931819-- REDIR: 0x4a30bc0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x484f440 (mempcpy)
+--3931819-- REDIR: 0x497a0b0 (libc.so.6:__strstr_sse2_unaligned) redirected to 0x484fa50 (strstr)
+--3931819-- REDIR: 0x4a33680 (libc.so.6:__strchr_avx2) redirected to 0x484a9f0 (index)
+--3931819-- REDIR: 0x4a30200 (libc.so.6:__memchr_avx2) redirected to 0x484bd50 (memchr)
+--3931819-- REDIR: 0x495f970 (libc.so.6:free) redirected to 0x4847210 (free)
+--3931819-- REDIR: 0x4a50740 (libc.so.6:__strcspn_sse42) redirected to 0x484fc70 (strcspn)
+--3931819-- REDIR: 0x4a533f0 (libc.so.6:__strspn_sse42) redirected to 0x484fd50 (strspn)
+--3931819-- REDIR: 0x4a360c0 (libc.so.6:__strncpy_avx2) redirected to 0x484afe0 (strncpy)
+--3931819-- REDIR: 0x4960a60 (libc.so.6:calloc) redirected to 0x48499d0 (calloc)
+--3931819-- Reading syms from /usr/lib/jvm/jdk-19/lib/server/libjvm.so
+--3931819-- Reading syms from /usr/lib/x86_64-linux-gnu/librt.so.1
+--3931819--   Considering /usr/lib/debug/.build-id/a7/e413886a78c7b9693488186f9193464909137a.debug ..
+--3931819--   .. build-id is valid
+--3931819-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--3931819--   Considering /usr/lib/debug/.build-id/69/c0f56e574b311a0d256e8ede640fab11c1407d.debug ..
+--3931819--   .. build-id is valid
+--3931819-- REDIR: 0x4966e70 (libc.so.6:strncat) redirected to 0x483b220 (_vgnU_ifunc_wrapper)
+--3931819-- REDIR: 0x4a31600 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x484e770 (memset)
+--3931819-- REDIR: 0x4a34010 (libc.so.6:__strcpy_avx2) redirected to 0x484ae60 (strcpy)
+--3931819-- REDIR: 0x496caf0 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x484be00 (memcpy@GLIBC_2.2.5)
+--3931819-- REDIR: 0x4a325f0 (libc.so.6:__strcasecmp_avx2) redirected to 0x484b560 (strcasecmp)
+--3931819-- REDIR: 0x4a304a0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x484e010 (bcmp)
+--3931819-- Reading syms from /usr/lib/jvm/jdk-19/lib/libjimage.so
+--3931819-- REDIR: 0x495fcd0 (libc.so.6:realloc) redirected to 0x4849c50 (realloc)
+--3931819-- REDIR: 0x4a31740 (libc.so.6:__rawmemchr_avx2) redirected to 0x484f360 (rawmemchr)
+--3931819-- REDIR: 0x4a35060 (libc.so.6:__strncat_avx2) redirected to 0x484abc0 (strncat)
+--3931819-- REDIR: 0x4a34520 (libc.so.6:__strncasecmp_avx2) redirected to 0x484b640 (strncasecmp)
+--3931819-- REDIR: 0x4a36a20 (libc.so.6:__strnlen_avx2) redirected to 0x484acb0 (strnlen)
+--3931819-- Reading syms from /usr/lib/jvm/jdk-19/lib/libjava.so
+==3931819== Warning: set address range perms: large range [0x417800000, 0x800000000) (noaccess)
+==3931819== Warning: set address range perms: large range [0x417800000, 0x456800000) (defined)
+==3931819== Warning: set address range perms: large range [0x800000000, 0x841000000) (noaccess)
+--3931819-- Reading syms from /usr/lib/jvm/jdk-19/lib/libjsvml.so
+==3931819== Thread 2:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0559: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6416548 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0560: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6415548 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0567: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6414548 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D056E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6413548 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0575: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6412548 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D057C: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6411548 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0559: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64164e0 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0560: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64154e0 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0567: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64144e0 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D056E: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64134e0 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0575: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64124e0 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D057C: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64114e0 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0559: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6416480 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0560: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6415480 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0567: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6414480 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D056E: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6413480 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0575: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6412480 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D057C: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6411480 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12C8: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6416460 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12CF: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6415460 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12D6: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6414460 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12DD: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6413460 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12E4: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6412460 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12EB: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6411460 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12C8: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6415ce0 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12CF: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6414ce0 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12D6: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6413ce0 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12DD: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6412ce0 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12E4: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6411ce0 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12EB: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6410ce0 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0559: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6414c50 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0560: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6413c50 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0567: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6412c50 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D056E: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6411c50 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0575: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6410c50 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12C8: ???
+==3931819==    by 0x158CD10E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==  Address 0x64142a8 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12CF: ???
+==3931819==    by 0x158CD10E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==  Address 0x64132a8 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12D6: ???
+==3931819==    by 0x158CD10E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==  Address 0x64122a8 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12DD: ???
+==3931819==    by 0x158CD10E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==  Address 0x64112a8 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== HEAP SUMMARY:
+==3931819==     in use at exit: 35,418,182 bytes in 5,355 blocks
+==3931819==   total heap usage: 7,561 allocs, 2,206 frees, 35,782,488 bytes allocated
+==3931819== 
+==3931819== Searching for pointers to 5,355 not-freed blocks
+==3931819== Checked 1,180,883,408 bytes
+==3931819== 
+==3931819== Thread 1:
+==3931819== 5 bytes in 1 blocks are still reachable in loss record 12 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x496643D: strdup (strdup.c:42)
+==3931819==    by 0x48AB1B8: JLI_StringDup (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x1089F5: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 16 bytes in 2 blocks are still reachable in loss record 117 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x496643D: strdup (strdup.c:42)
+==3931819==    by 0x48AB1B8: JLI_StringDup (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A73D6: ReadKnownVMs (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48AA2DD: CreateExecutionEnvironment (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A7D16: JLI_Launch (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AD7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 24 bytes in 1 blocks are still reachable in loss record 272 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x48AB168: JLI_MemAlloc (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48AB3A3: JLI_List_new (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x1089E9: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 29 bytes in 1 blocks are still reachable in loss record 417 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x496643D: strdup (strdup.c:42)
+==3931819==    by 0x48AB1B8: JLI_StringDup (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48AA241: SetExecname (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48AA298: CreateExecutionEnvironment (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A7D16: JLI_Launch (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AD7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 60 bytes in 1 blocks are still reachable in loss record 1,176 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x48AB168: JLI_MemAlloc (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A7248: SetJavaCommandLineProp (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A8EEC: JLI_Launch (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AD7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 64 bytes in 1 blocks are still reachable in loss record 1,177 of 2,076
+==3931819==    at 0x4849A83: calloc (vg_replace_malloc.c:1328)
+==3931819==    by 0x485B527: ImageFileReaderTable::ImageFileReaderTable() (in /usr/lib/jvm/jdk-19/lib/libjimage.so)
+==3931819==    by 0x485A70F: _GLOBAL__sub_I_imageFile.cpp (in /usr/lib/jvm/jdk-19/lib/libjimage.so)
+==3931819==    by 0x4004FBD: call_init.part.0 (dl-init.c:70)
+==3931819==    by 0x40050A7: call_init (dl-init.c:33)
+==3931819==    by 0x40050A7: _dl_init (dl-init.c:117)
+==3931819==    by 0x4A2C7F3: _dl_catch_exception (dl-error-skeleton.c:182)
+==3931819==    by 0x400BE95: dl_open_worker (dl-open.c:808)
+==3931819==    by 0x400BE95: dl_open_worker (dl-open.c:771)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819==    by 0x494AE6B: dlopen_doit (dlopen.c:56)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x4A2C852: _dl_catch_error (dl-error-skeleton.c:227)
+==3931819== 
+==3931819== 65 bytes in 2 blocks are still reachable in loss record 1,319 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x4026D8E: malloc (rtld-malloc.h:56)
+==3931819==    by 0x4026D8E: strdup (strdup.c:42)
+==3931819==    by 0x40144FD: _dl_load_cache_lookup (dl-cache.c:524)
+==3931819==    by 0x4008F99: _dl_map_object (dl-load.c:2142)
+==3931819==    by 0x4002504: openaux (dl-deps.c:64)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400293E: _dl_map_object_deps (dl-deps.c:232)
+==3931819==    by 0x400C98E: dl_open_worker_begin (dl-open.c:592)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400BE39: dl_open_worker (dl-open.c:782)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819== 
+==3931819== 65 bytes in 2 blocks are still reachable in loss record 1,320 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x400BB98: malloc (rtld-malloc.h:56)
+==3931819==    by 0x400BB98: _dl_new_object (dl-object.c:199)
+==3931819==    by 0x4006F9E: _dl_map_object_from_fd (dl-load.c:1063)
+==3931819==    by 0x4008A3F: _dl_map_object (dl-load.c:2275)
+==3931819==    by 0x4002504: openaux (dl-deps.c:64)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400293E: _dl_map_object_deps (dl-deps.c:232)
+==3931819==    by 0x400C98E: dl_open_worker_begin (dl-open.c:592)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400BE39: dl_open_worker (dl-open.c:782)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819== 
+==3931819== 149 bytes in 4 blocks are still reachable in loss record 1,654 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x4026D8E: malloc (rtld-malloc.h:56)
+==3931819==    by 0x4026D8E: strdup (strdup.c:42)
+==3931819==    by 0x40089BA: _dl_map_object (dl-load.c:2208)
+==3931819==    by 0x400C928: dl_open_worker_begin (dl-open.c:534)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400BE39: dl_open_worker (dl-open.c:782)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819==    by 0x494AE6B: dlopen_doit (dlopen.c:56)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x4A2C852: _dl_catch_error (dl-error-skeleton.c:227)
+==3931819==    by 0x494A93E: _dlerror_run (dlerror.c:138)
+==3931819== 
+==3931819== 149 bytes in 4 blocks are still reachable in loss record 1,655 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x400BB98: malloc (rtld-malloc.h:56)
+==3931819==    by 0x400BB98: _dl_new_object (dl-object.c:199)
+==3931819==    by 0x4006F9E: _dl_map_object_from_fd (dl-load.c:1063)
+==3931819==    by 0x4008A3F: _dl_map_object (dl-load.c:2275)
+==3931819==    by 0x400C928: dl_open_worker_begin (dl-open.c:534)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400BE39: dl_open_worker (dl-open.c:782)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819==    by 0x494AE6B: dlopen_doit (dlopen.c:56)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x4A2C852: _dl_catch_error (dl-error-skeleton.c:227)
+==3931819== 
+==3931819== 160 bytes in 1 blocks are still reachable in loss record 1,672 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x400BFEB: malloc (rtld-malloc.h:56)
+==3931819==    by 0x400BFEB: add_to_global_resize (dl-open.c:152)
+==3931819==    by 0x400CF97: dl_open_worker_begin (dl-open.c:716)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400BE39: dl_open_worker (dl-open.c:782)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819==    by 0x494AE6B: dlopen_doit (dlopen.c:56)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x4A2C852: _dl_catch_error (dl-error-skeleton.c:227)
+==3931819==    by 0x494A93E: _dlerror_run (dlerror.c:138)
+==3931819==    by 0x494AF20: dlopen_implementation (dlopen.c:71)
+==3931819==    by 0x494AF20: dlopen@@GLIBC_2.34 (dlopen.c:81)
+==3931819== 
+==3931819== 232 bytes in 1 blocks are still reachable in loss record 1,742 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x48AB168: JLI_MemAlloc (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48AB3B7: JLI_List_new (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x1089E9: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 232 bytes in 1 blocks are possibly lost in loss record 1,757 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x48AB168: JLI_MemAlloc (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A6985: CheckJvmType (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48AA2FB: CreateExecutionEnvironment (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A7D16: JLI_Launch (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AD7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 288 bytes in 1 blocks are possibly lost in loss record 1,813 of 2,076
+==3931819==    at 0x4849A83: calloc (vg_replace_malloc.c:1328)
+==3931819==    by 0x4012949: calloc (rtld-malloc.h:44)
+==3931819==    by 0x4012949: allocate_dtv (dl-tls.c:375)
+==3931819==    by 0x4012949: _dl_allocate_tls (dl-tls.c:634)
+==3931819==    by 0x494FF99: allocate_stack (allocatestack.c:423)
+==3931819==    by 0x494FF99: pthread_create@@GLIBC_2.34 (pthread_create.c:650)
+==3931819==    by 0x48AA81D: CallJavaMainInNewThread (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A794C: ContinueInNewThread (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A8F2F: JLI_Launch (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AD7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 320 bytes in 1 blocks are still reachable in loss record 1,834 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x48AB168: JLI_MemAlloc (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A7491: ReadKnownVMs (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48AA2DD: CreateExecutionEnvironment (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A7D16: JLI_Launch (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AD7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 512 bytes in 1 blocks are still reachable in loss record 1,875 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x48AB168: JLI_MemAlloc (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A6EC6: AddOption (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A8EEC: JLI_Launch (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AD7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 576 bytes in 9 blocks are still reachable in loss record 1,897 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x48AB168: JLI_MemAlloc (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A91A6: JLI_Launch (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AD7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 1,536 bytes in 6 blocks are still reachable in loss record 1,973 of 2,076
+==3931819==    at 0x4849A83: calloc (vg_replace_malloc.c:1328)
+==3931819==    by 0x4013CA3: calloc (rtld-malloc.h:44)
+==3931819==    by 0x4013CA3: _dl_check_map_versions (dl-version.c:280)
+==3931819==    by 0x400CB93: dl_open_worker_begin (dl-open.c:600)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400BE39: dl_open_worker (dl-open.c:782)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819==    by 0x494AE6B: dlopen_doit (dlopen.c:56)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x4A2C852: _dl_catch_error (dl-error-skeleton.c:227)
+==3931819==    by 0x494A93E: _dlerror_run (dlerror.c:138)
+==3931819==    by 0x494AF20: dlopen_implementation (dlopen.c:71)
+==3931819==    by 0x494AF20: dlopen@@GLIBC_2.34 (dlopen.c:81)
+==3931819== 
+==3931819== 2,453 bytes in 2 blocks are still reachable in loss record 1,993 of 2,076
+==3931819==    at 0x4849A83: calloc (vg_replace_malloc.c:1328)
+==3931819==    by 0x400B89C: calloc (rtld-malloc.h:44)
+==3931819==    by 0x400B89C: _dl_new_object (dl-object.c:92)
+==3931819==    by 0x4006F9E: _dl_map_object_from_fd (dl-load.c:1063)
+==3931819==    by 0x4008A3F: _dl_map_object (dl-load.c:2275)
+==3931819==    by 0x4002504: openaux (dl-deps.c:64)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400293E: _dl_map_object_deps (dl-deps.c:232)
+==3931819==    by 0x400C98E: dl_open_worker_begin (dl-open.c:592)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400BE39: dl_open_worker (dl-open.c:782)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819== 
+==3931819== 4,892 bytes in 1 blocks are still reachable in loss record 2,008 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x48AB168: JLI_MemAlloc (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A858A: JLI_Launch (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AD7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 5,013 bytes in 4 blocks are still reachable in loss record 2,010 of 2,076
+==3931819==    at 0x4849A83: calloc (vg_replace_malloc.c:1328)
+==3931819==    by 0x400B89C: calloc (rtld-malloc.h:44)
+==3931819==    by 0x400B89C: _dl_new_object (dl-object.c:92)
+==3931819==    by 0x4006F9E: _dl_map_object_from_fd (dl-load.c:1063)
+==3931819==    by 0x4008A3F: _dl_map_object (dl-load.c:2275)
+==3931819==    by 0x400C928: dl_open_worker_begin (dl-open.c:534)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400BE39: dl_open_worker (dl-open.c:782)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819==    by 0x494AE6B: dlopen_doit (dlopen.c:56)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x4A2C852: _dl_catch_error (dl-error-skeleton.c:227)
+==3931819== 
+==3931819== 5,634 bytes in 27 blocks are still reachable in loss record 2,019 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x496643D: strdup (strdup.c:42)
+==3931819==    by 0x48AB1B8: JLI_StringDup (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x108AF7: main (in /usr/lib/jvm/jdk-19/bin/java)
+==3931819== 
+==3931819== 72,704 bytes in 1 blocks are still reachable in loss record 2,067 of 2,076
+==3931819==    at 0x4844899: malloc (vg_replace_malloc.c:381)
+==3931819==    by 0x485A759: _GLOBAL__sub_I_eh_alloc.cc (in /usr/lib/jvm/jdk-19/lib/libjimage.so)
+==3931819==    by 0x4004FBD: call_init.part.0 (dl-init.c:70)
+==3931819==    by 0x40050A7: call_init (dl-init.c:33)
+==3931819==    by 0x40050A7: _dl_init (dl-init.c:117)
+==3931819==    by 0x4A2C7F3: _dl_catch_exception (dl-error-skeleton.c:182)
+==3931819==    by 0x400BE95: dl_open_worker (dl-open.c:808)
+==3931819==    by 0x400BE95: dl_open_worker (dl-open.c:771)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x400C20B: _dl_open (dl-open.c:886)
+==3931819==    by 0x494AE6B: dlopen_doit (dlopen.c:56)
+==3931819==    by 0x4A2C799: _dl_catch_exception (dl-error-skeleton.c:208)
+==3931819==    by 0x4A2C852: _dl_catch_error (dl-error-skeleton.c:227)
+==3931819==    by 0x494A93E: _dlerror_run (dlerror.c:138)
+==3931819== 
+==3931819== LEAK SUMMARY:
+==3931819==    definitely lost: 0 bytes in 0 blocks
+==3931819==    indirectly lost: 0 bytes in 0 blocks
+==3931819==      possibly lost: 520 bytes in 2 blocks
+==3931819==    still reachable: 94,658 bytes in 73 blocks
+==3931819==         suppressed: 35,323,004 bytes in 5,280 blocks
+==3931819== 
+==3931819== ERROR SUMMARY: 102 errors from 41 contexts (suppressed: 59 from 59)
+==3931819== 
+==3931819== 1 errors in context 1 of 41:
+==3931819== Thread 2:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12EB: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6410ce0 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 2 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12E4: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6411ce0 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 3 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12DD: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6412ce0 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 4 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12D6: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6413ce0 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 5 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12CF: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6414ce0 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 6 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12C8: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD842: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==  Address 0x6415ce0 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 7 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12EB: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6411460 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 8 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D057C: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6411480 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 9 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0575: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6412480 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 10 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D056E: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6413480 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 11 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0567: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6414480 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 12 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0560: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6415480 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 1 errors in context 13 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0559: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6416480 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 2 errors in context 14 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12DD: ???
+==3931819==    by 0x158CD10E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==  Address 0x64112a8 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 2 errors in context 15 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12D6: ???
+==3931819==    by 0x158CD10E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==  Address 0x64122a8 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 2 errors in context 16 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12CF: ???
+==3931819==    by 0x158CD10E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==  Address 0x64132a8 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 2 errors in context 17 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12C8: ???
+==3931819==    by 0x158CD10E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==  Address 0x64142a8 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 2 errors in context 18 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0575: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6410c50 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 2 errors in context 19 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D057C: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64114e0 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 2 errors in context 20 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0575: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64124e0 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 2 errors in context 21 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D056E: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64134e0 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 2 errors in context 22 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D057C: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6411548 is on thread 2's stack
+==3931819==  24576 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 3 errors in context 23 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0567: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64144e0 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 3 errors in context 24 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0560: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64154e0 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 3 errors in context 25 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0559: ???
+==3931819==    by 0x158CCFB5: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==  Address 0x64164e0 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 3 errors in context 26 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D056E: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6411c50 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 3 errors in context 27 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0567: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6412c50 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 3 errors in context 28 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0560: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6413c50 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 3 errors in context 29 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0559: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C80F9: LinkResolver::resolve_static_call(CallInfo&, LinkInfo const&, bool, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x59C8B2A: LinkResolver::resolve_invoke(CallInfo&, Handle, constantPoolHandle const&, int, Bytecodes::Code, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5742E56: InterpreterRuntime::resolve_invoke(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57433D6: InterpreterRuntime::resolve_from_cache(JavaThread*, Bytecodes::Code) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x158DD834: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==  Address 0x6414c50 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 3 errors in context 30 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12E4: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6412460 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 3 errors in context 31 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0575: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6412548 is on thread 2's stack
+==3931819==  20480 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 4 errors in context 32 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12DD: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6413460 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 4 errors in context 33 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12D6: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6414460 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 4 errors in context 34 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12CF: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6415460 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 4 errors in context 35 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D12C8: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158CD0C9: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09E2A: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==  Address 0x6416460 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 5 errors in context 36 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D056E: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6413548 is on thread 2's stack
+==3931819==  16384 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 7 errors in context 37 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0567: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6414548 is on thread 2's stack
+==3931819==  12288 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 7 errors in context 38 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0560: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6415548 is on thread 2's stack
+==3931819==  8192 bytes below stack pointer
+==3931819== 
+==3931819== 
+==3931819== 7 errors in context 39 of 41:
+==3931819== Invalid write of size 4
+==3931819==    at 0x158D0559: ???
+==3931819==    by 0x158B2CC5: ???
+==3931819==    by 0x5749924: JavaCalls::call_helper(JavaValue*, methodHandle const&, JavaCallArguments*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5724FB0: InstanceKlass::call_class_initializer(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x572618F: InstanceKlass::initialize_impl(JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D09D73: Threads::initialize_java_lang_classes(JavaThread*, JavaThread*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x5D0ABC8: Threads::create_vm(JavaVMInitArgs*, bool*) (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x57F4FB0: JNI_CreateJavaVM (in /usr/lib/jvm/jdk-19/lib/server/libjvm.so)
+==3931819==    by 0x48A59EA: JavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x48A9C48: ThreadJavaMain (in /usr/lib/jvm/jdk-19/lib/libjli.so)
+==3931819==    by 0x494F401: start_thread (pthread_create.c:442)
+==3931819==    by 0x49DD743: clone (clone.S:100)
+==3931819==  Address 0x6416548 is on thread 2's stack
+==3931819==  4096 bytes below stack pointer
+==3931819== 
+--3931819-- 
+--3931819-- used_suppression:   2053 name valgrind.suppress:2 suppressed: 35,323,004 bytes in 5,280 blocks
+==3931819== 
+==3931819== ERROR SUMMARY: 102 errors from 41 contexts (suppressed: 59 from 59)
