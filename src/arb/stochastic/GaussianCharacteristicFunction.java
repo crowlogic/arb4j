@@ -33,7 +33,7 @@ public class GaussianCharacteristicFunction implements
   public Real σ;
 
   @Override
-  public Complex evaluate(Complex z, int order, int prec, Complex res)
+  public Complex evaluate(Real z, int order, int prec, Complex res)
   {
     order = Math.max(order, 1);
     assert order < 2;

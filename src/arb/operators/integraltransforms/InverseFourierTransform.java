@@ -41,14 +41,14 @@ public class InverseFourierTransform<F extends RealToComplexFunction> implements
     @Override
     public Complex evaluate(Real x, int integrandOrder, int integrandPrec, Complex result)
     {
-      try ( Complex exponent = new Complex();)
+      try ( Complex y = new Complex(); Complex exponent = new Complex();)
       {
         exponent.getImag().π(integrandPrec);
         exponent.mul(2, integrandPrec);
 
         exponent.mul(ξ, integrandPrec).mul(x, integrandPrec);
-        f.evaluate(x, integrandOrder, integrandPrec, result);
-        exponent.exp(integrandPrec, result).mul(result, integrandPrec);
+        f.evaluate(x, integrandOrder, integrandPrec, y);
+        exponent.exp(integrandPrec).mul(y, integrandPrec, result);
 
         return result;
       }
@@ -78,8 +78,10 @@ public class InverseFourierTransform<F extends RealToComplexFunction> implements
                           integrationOptions,
                           prec,
                           complexResult);
-      assert complexResult.getImag().isZero() : "imaginary part of inverse fourier transform should be 0. inv="
-                    + complexResult;
+      assert Math.abs(complexResult.getImag()
+                                   .doubleValue()) < Math.pow(10,
+                                                              -30) : "imaginary part of inverse fourier transform should be 0. inv="
+                                                                            + complexResult;
       return complexResult.getReal();
     }
   }

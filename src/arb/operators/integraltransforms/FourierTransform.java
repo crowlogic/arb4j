@@ -50,8 +50,8 @@ public class FourierTransform<F extends RealFunction> implements
 
         expi.mul(ξ, integrandPrec, expi).mul(x, integrandPrec, expi);
         q.set(x);
-        Real tmp = f.evaluate(q, integrandOrder, integrandPrec, y);
-        exponent.exp(integrandPrec, result).mul(tmp, integrandPrec, result);
+        f.evaluate(q, integrandOrder, integrandPrec, y);
+        exponent.exp(integrandPrec, result).mul(y, integrandPrec, result);
         return result;
       }
     }
