@@ -90,9 +90,9 @@ public class ExpressionHandler
                                                                                                                                                         add("1");
                                                                                                                                                         add("sgn(x)");
                                                                                                                                                       }
-                                                                                                                                                    });                                                    // x
-                                                                                                                                                                                                           // !=
-                                                                                                                                                                                                           // 0
+                                                                                                                                                    });                                                         // x
+                                                                                                                                                                                                                // !=
+                                                                                                                                                                                                                // 0
                                                                              put("sgn", new ArrayList<String>()
                                                                                                                                                     {
                                                                                                                                                       {
@@ -365,39 +365,39 @@ public class ExpressionHandler
                                                                                                                                                         add("1");
                                                                                                                                                         add("1/(1-x^2)");
                                                                                                                                                       }
-                                                                                                                                                    });                                                    // x
-                                                                                                                                                                                                           // <-
-                                                                                                                                                                                                           // (-1,
-                                                                                                                                                                                                           // 1)
+                                                                                                                                                    });                                                         // x
+                                                                                                                                                                                                                // <-
+                                                                                                                                                                                                                // (-1,
+                                                                                                                                                                                                                // 1)
                                                                              put("acoth", new ArrayList<String>()
                                                                                                                                                     {
                                                                                                                                                       {
                                                                                                                                                         add("1");
                                                                                                                                                         add("1/(1-x^2)");
                                                                                                                                                       }
-                                                                                                                                                    });                                                    // x
-                                                                                                                                                                                                           // <-
-                                                                                                                                                                                                           // (-1,
-                                                                                                                                                                                                           // 1)
+                                                                                                                                                    });                                                         // x
+                                                                                                                                                                                                                // <-
+                                                                                                                                                                                                                // (-1,
+                                                                                                                                                                                                                // 1)
                                                                              put("asech", new ArrayList<String>()
                                                                                                                                                     {
                                                                                                                                                       {
                                                                                                                                                         add("1");
                                                                                                                                                         add("-1/(x*sqrt(1-x^2))");
                                                                                                                                                       }
-                                                                                                                                                    });                                                    // x
-                                                                                                                                                                                                           // <-
-                                                                                                                                                                                                           // (0,
-                                                                                                                                                                                                           // 1)
+                                                                                                                                                    });                                                         // x
+                                                                                                                                                                                                                // <-
+                                                                                                                                                                                                                // (0,
+                                                                                                                                                                                                                // 1)
                                                                              put("acsch", new ArrayList<String>()
                                                                                                                                                     {
                                                                                                                                                       {
                                                                                                                                                         add("1");
                                                                                                                                                         add("-1/(x*sqrt(1+x^2))");
                                                                                                                                                       }
-                                                                                                                                                    });                                                    // x
-                                                                                                                                                                                                           // >
-                                                                                                                                                                                                           // 0
+                                                                                                                                                    });                                                         // x
+                                                                                                                                                                                                                // >
+                                                                                                                                                                                                                // 0
                                                                            }
                                                                          };
 
@@ -436,8 +436,8 @@ public class ExpressionHandler
                                                                              put("fact",
                                                                                  (vars) -> (new arb.viz.gl.functions.Function("exp(-t)*t^"
                                                                                                + vars[0],
-                                                                                                                                  "t").integrate(0,
-                                                                                                                                                 575)));
+                                                                                                                              "t").integrate(0,
+                                                                                                                                             575)));
                                                                              put("sin", (vars) -> Math.sin(vars[0]));
                                                                              put("cos", (vars) -> Math.cos(vars[0]));
                                                                              put("tan", (vars) -> Math.tan(vars[0]));

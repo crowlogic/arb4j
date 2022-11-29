@@ -9,6 +9,7 @@ import arb.Real;
 import arb.RealRootInterval;
 import arb.RootLocatorOptions;
 import arb.Roots;
+import arb.RoundingMode;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.real.RealFunction;
 
@@ -38,7 +39,7 @@ public class RealNewtonMap<F extends RealFunction> implements
    */
   public Real iterate(Real _z, int n, int prec, Real w)
   {
- 
+
     naivelyIterateNewtonsMethod(_z, n, prec, w);
 
     return w;
@@ -57,8 +58,8 @@ public class RealNewtonMap<F extends RealFunction> implements
         {
           System.out.println("w=" + w);
         }
-        w.setRad(MagnitudeConstants.zeroMag);
-        z.set(w);
+        //w.setRad(MagnitudeConstants.zeroMag);
+        z.set(w.doubleValue(RoundingMode.Near));
         if (abs(w.get(1).doubleValue()) < pow(10, -15))
         {
           if (verbose)
@@ -72,6 +73,10 @@ public class RealNewtonMap<F extends RealFunction> implements
     }
   }
 
+  /**
+   * if not null then this is t-r*f(t)/f'(t) , its null then its a no-op treated
+   * like unity
+   */
   public Real r;
 
   public RealNewtonMap(F f)

@@ -11,6 +11,7 @@ import arb.RealConstants;
 import arb.RealRootInterval;
 import arb.RootLocatorOptions;
 import arb.Roots;
+import arb.RoundingMode;
 import arb.functions.complex.CircularCompositionS;
 import arb.functions.real.RealPart;
 import arb.geometry.curves.ComplexCircle;
@@ -36,7 +37,7 @@ public class RealNewtonMapTest extends
     Real                 a     = Real.newVector(2);
     a.set("-0.75", 128);
 
-    Real w = angle.converge(true, a, Real.newVector(2));
+    Real w = angle.converge(true, a, prec, Real.newVector(2));
 
     System.out.println("awesome. 1/3rd of time needs to be spent sleeping");
     Complex locatedRoot  = locateRoot(angle);
@@ -56,7 +57,7 @@ public class RealNewtonMapTest extends
   {
     out.println("===========testSOrbit===============");
 
-    try ( Real c = Real.newVector(2); Real h = new Real("0.1",
+    try ( Real c = Real.newVector(2); Real h = new Real("0.01",
                                                         128);
           CircularCompositionS disc = new CircularCompositionS(one,
                                                                h);
@@ -71,18 +72,18 @@ public class RealNewtonMapTest extends
       for (int i = 0; i < 42; i++)
       {
         String initialAngle = Double.toString(Math.toDegrees(a.doubleValue()));
-        Real   w            = disc.converge(true, a, c);                       // a=initial angle, c=angle to step
-                                                                               // towards
+        Real   w            = disc.converge(true, a, prec, c);                 // a=initial angle, c=angle to step
+        // towards
 
         value.setRealObj(c.get(0));
         value.setImagObj(c.get(1));
         out.format("initial direction %s° converged towards ", initialAngle);
         a.set(value.getReal());
         circle.shift(a, prec, h);
-       // value.getReal().setRad(zeroMag);
+        // value.getReal().set(value.getReal().doubleValue(RoundingMode.Near));
 
         disc.f.evaluate(circle.t, 2, prec, value);
-        out.println(value.get(0));
+        out.println("\n " + value.get(0) + " to " + circle);
         assertEquals(0, Math.abs(value.get(0).getReal().doubleValue()), Math.pow(10, -5));
         // TODO: check for divergence of real part
       }

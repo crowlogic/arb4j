@@ -137,7 +137,7 @@ public class ComplexCircle implements
     }
     evaluate(direction, 1, prec, t);
     t.printPrecision = true;
-    t.getReal().setRad(MagnitudeConstants.zeroMag);
+    //t.getReal().setRad(MagnitudeConstants.zeroMag);
     return this;
   }
 

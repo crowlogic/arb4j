@@ -28,11 +28,11 @@ public class CircularCompositionS extends
    * @param nextAngle
    * @return
    */
-  public Real converge(boolean real, Real presentAngle, Real angle)
+  public Real converge(boolean real, Real presentAngle, int prec, Real angle)
   {
-    RealNewtonMap newtonMapOfRealPart = new RealNewtonMap(real ? new RealPart<>(this) : new ImaginaryPart<>(this),
-                                                          RealConstants.one);
-    return newtonMapOfRealPart.iterate(presentAngle, 2000, 128, angle);
+    RealNewtonMap newtonMapOfPart = new RealNewtonMap(real ? new RealPart<>(this) : new ImaginaryPart<>(this),
+                                                      new Real("0.1", prec));
+    return newtonMapOfPart.iterate(presentAngle, 42, prec, angle);
   }
 
   public CircularCompositionS()
