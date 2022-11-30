@@ -27,10 +27,12 @@
 
   \;
 
-  The transfer operator of <math|S<around*|(|t|)>> is defined by\<cdot\>
+  The transfer operator of <math|S<around*|(|t|)>> is defined by
 
   <\equation>
-    <tabular|<tformat|<cwith|2|2|1|-1|font-base-size|8>|<table|<row|<cell|<around*|[|\<cal-T\><rsub|S>f|]><around*|(|y|)>>|<cell|=<big|sum><rsub|<around*|{|t:S<around*|(|t|)>=y|}>><frac|f<around*|(|t|)>|<around*|\||<wide|S|\<dot\>><around*|(|t|)>|\|>>>>|<row|<cell|>|<cell|=<frac|f<around*|(|<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||<wide|S|\<dot\>><around*|(|<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>|\|>>+<frac|f<around*|(|-<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||<wide|S|\<dot\>><around*|(|-<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>|\|>>+<frac|f<around*|(|<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||<wide|S|\<dot\>><around*|(|<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>|\|>>+<frac|f<around*|(|-<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||<wide|S|\<dot\>><around*|(|-<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>|\|>>>>|<row|<cell|>|<cell|>>>>>
+    <tabular|<tformat|<cwith|2|2|1|-1|font-base-size|8>|<cwith|2|3|2|2|font-base-size|8>|<table|<row|<cell|<around*|[|\<cal-T\><rsub|S>f|]><around*|(|y|)>>|<cell|=<big|sum><rsub|<around*|{|t:S<around*|(|t|)>=y|}>><frac|f<around*|(|t|)>|<around*|\||<wide|S|\<dot\>><around*|(|t|)>|\|>>>>|<row|<cell|>|<cell|=<frac|f<around*|(|<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||<wide|S|\<dot\>><around*|(|<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>|\|>>+<frac|f<around*|(|-<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||<wide|S|\<dot\>><around*|(|-<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>|\|>>+<frac|f<around*|(|<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||<wide|S|\<dot\>><around*|(|<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>|\|>>+<frac|f<around*|(|-<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||<wide|S|\<dot\>><around*|(|-<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>|\|>>>>|<row|<cell|>|<cell|<with|font-base-size|9|=<frac|f<around*|(|<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>+f<around*|(|-<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||2
+    <sqrt|y-1><sqrt|1-y<rsup|2>><sqrt|1-y+<sqrt|1-y<rsup|2>>>|\|>>+<frac|f<around*|(|<sqrt|<frac|y-1-<sqrt|1-y<rsup|2>>|y-1>>|)>+f<around*|(|-<sqrt|<frac|y-1+<sqrt|1-y<rsup|2>>|y-1>>|)>|<around*|\||2
+    <sqrt|y-1><sqrt|1-y<rsup|2>><sqrt|y-1+<sqrt|1-y<rsup|2>>>|\|>>>>>|<row|<cell|>|<cell|>>>>>
   </equation>
 </body>
 
@@ -45,7 +47,7 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../../.TeXmacs/texts/scratch/no_name_3.tm>>
+    <associate|auto-1|<tuple|1|1>>
   </collection>
 </references>
 

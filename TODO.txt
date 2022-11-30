@@ -1,3 +1,4 @@
+* implement numerically integrated Fourier transform
 * Fast Fourier Transform API
 * use ErrorFunction to correct the numerically integrated Fourier transforms
 * fix remaining memory leaks 
