@@ -30,7 +30,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   private RealMatrix                                                correlationMatrix;
 
-  boolean                                                           verbose = true;
+  boolean                                                           verbose = false;
 
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess<M> process,
                                                 M state,
@@ -128,7 +128,10 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   public EvaluationSequence step(int prec, EvaluationSequence evalSeq)
   {
-    out.println(MultivariateDiffusionProcessIntegrator.class.getSimpleName() + " state=" + state);
+    if (verbose)
+    {
+      out.println(MultivariateDiffusionProcessIntegrator.class.getSimpleName() + " state=" + state);
+    }
     for (var integrator : integrators)
     {
       integrator.step(state, prec, evalSeq);

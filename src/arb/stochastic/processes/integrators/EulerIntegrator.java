@@ -151,10 +151,10 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     int  i  = state.index();
     Real xi = evaluationSequence.dimensions[dim].get(i);
     xi.printPrecision = true;
-    out.println( "state before evaluation drift function μ=" + state );
+  
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt(), prec);
-    out.println( "state after evaluation drift function μ=" + state );
+ 
 
     assert μi.isFinite();
 
