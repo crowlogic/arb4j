@@ -24,7 +24,7 @@ import arb.functions.real.RealFunction;
 public class RealNewtonMap<F extends RealFunction> implements
                           RealDynamicalSystem
 {
-  public boolean verbose = true;
+  public boolean verbose = false;
 
   /**
    * Iteratively invokes this{@link #evaluate(Real, int, int, Real)} specific

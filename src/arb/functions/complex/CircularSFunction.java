@@ -16,8 +16,8 @@ import arb.geometry.curves.ComplexCircle;
  * complex types.. and letting the imaginary part of the independent variable be
  * nonzero might be useful as well
  */
-public class CircularCompositionS extends
-                                  CircularComposition<SFunction>
+public class CircularSFunction extends
+                               CircularComposition<SFunction>
 {
 
   /**
@@ -28,35 +28,35 @@ public class CircularCompositionS extends
    * @param nextAngle
    * @return
    */
-  public Real converge(boolean real, Real presentAngle, int prec, Real angle)
+  public Real converge(boolean real, Real h, Real presentAngle, int prec, Real angle)
   {
     RealNewtonMap newtonMapOfPart = new RealNewtonMap(real ? new RealPart<>(this) : new ImaginaryPart<>(this),
-                                                      new Real("0.1", prec));
+                                                      h);
     return newtonMapOfPart.iterate(presentAngle, 42, prec, angle);
   }
 
-  public CircularCompositionS()
+  public CircularSFunction()
   {
     this(new SFunction(),
          new ComplexCircle(ComplexConstants.ZERO,
                            one));
   }
 
-  public CircularCompositionS(Complex t, Real sFuncScale, Real h)
+  public CircularSFunction(Complex t, Real sFuncScale, Real h)
   {
     this(new SFunction(sFuncScale),
          new ComplexCircle(t,
                            h));
   }
 
-  public CircularCompositionS(Real sFuncScale, Real h)
+  public CircularSFunction(Real sFuncScale, Real h)
   {
     this(new SFunction(sFuncScale),
          new ComplexCircle(ComplexConstants.ZERO,
                            h));
   }
 
-  public CircularCompositionS(SFunction f, ComplexCircle g)
+  public CircularSFunction(SFunction f, ComplexCircle g)
   {
     super(f,
           g);

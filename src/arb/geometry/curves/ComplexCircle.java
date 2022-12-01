@@ -3,7 +3,6 @@ package arb.geometry.curves;
 import static java.lang.Math.max;
 
 import arb.Complex;
-import arb.MagnitudeConstants;
 import arb.Real;
 import arb.ThreadLocalComplex;
 import arb.arb;
@@ -34,7 +33,7 @@ public class ComplexCircle implements
   @Override
   public String toString()
   {
-    return String.format("ComplexCircle[t=%s, h=%s]", t, h.toString(6));
+    return String.format("ComplexCircle[t=%s, h=%s]", center, h.toString(6));
   }
 
   /**
@@ -48,11 +47,11 @@ public class ComplexCircle implements
   {
     assert t != null;
     assert h != null;
-    this.t = t;
+    this.center = t;
     this.h = h;
   }
 
-  public Complex     t;
+  public Complex     center;
 
   public Real        h;
 
@@ -68,7 +67,7 @@ public class ComplexCircle implements
     a.muli(s);
     s.exp(prec, s);
     s.mul(h, prec, s);
-    s.add(t, prec, res);
+    s.add(center, prec, res);
     for (int i = 1; i < order; i++)
     {
       arb.acb_mul_onei(res.get(i), res.get(i - 1));
@@ -80,7 +79,7 @@ public class ComplexCircle implements
   public void close() throws Exception
   {
     s.remove();
-    t.clear();
+    center.clear();
     h.clear();
   }
 
@@ -104,7 +103,7 @@ public class ComplexCircle implements
   /**
    * {@link Double}-wrapper for this{@link #evaluate(Complex, int, int, Complex)}
    * 
-   * @param angle   in radians
+   * @param angle  in radians
    * @param result
    * @return
    */
@@ -113,7 +112,7 @@ public class ComplexCircle implements
     try ( Complex Θ = new Complex())
     {
       Θ.getReal().set(angle);
-      evaluate(Θ, 1, 64, result);
+      evaluate(Θ, 1, Double.SIZE, result);
       return result;
     }
   }
@@ -130,14 +129,7 @@ public class ComplexCircle implements
    */
   public ComplexCircle shift(Real direction, int prec, Real distance)
   {
-    direction.get(0).printPrecision = true;
-    try ( Real degrees = new Real())
-    {
-      System.out.print(this + " in the direction " + Math.toDegrees(direction.get(0).doubleValue()) + "° having value ");
-    }
-    evaluate(direction, 1, prec, t);
-    t.printPrecision = true;
-    //t.getReal().setRad(MagnitudeConstants.zeroMag);
+    evaluate(direction, 1, prec, center);
     return this;
   }
 

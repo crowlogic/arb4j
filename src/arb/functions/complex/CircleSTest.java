@@ -9,8 +9,8 @@ public class CircleSTest extends
 {
   public void testCircleS()
   {
-    try ( CircularS cs = new CircularS(RealConstants.one,
-                                       RealConstants.one))
+    try ( CircularSFunction cs = new CircularSFunction(RealConstants.one,
+                                                             RealConstants.one))
     {
       Complex πOver2 = new Complex();
       πOver2.getReal().π(256).div(2, 256);

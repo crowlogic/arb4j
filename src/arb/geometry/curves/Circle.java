@@ -17,24 +17,29 @@ import arb.operators.CompositionOperator;
 /**
  * A circle coordinate function representing a circle having a basepoint and
  * radius that goes well with the {@link NewtonMap} of the
- * {@link ComplexRealPart} of the {@link CompositionOperator} applied as the composition
- * of the {@link SFunction} with the {@link ComplexCircle} for instance
+ * {@link ComplexRealPart} of the {@link CompositionOperator} applied as the
+ * composition of the {@link SFunction} with the {@link ComplexCircle} for
+ * instance
  * 
  * <code>
- *       /   Re(S(circle(0,0.01,θ)))    \
- *  θ -  | ---------------------------- |
- *       \ d/dθ(Re(S(circle(0,0.01,θ))) /
+ *       /   Re(S(circle(t,h,θ)))    \
+ *  θ -  | --------------------------|
+ *       \ d/dθ(Re(S(circle(t,h,θ))) /
  * </code>
  *
  *
  */
 public class Circle implements
                     PlaneCurve,
-                    AutoCloseable,Manifold
+                    AutoCloseable,
+                    Manifold
 {
   /**
    * Construct a rotation of a circle as a complex-valued function of a real
    * argument representing the angle
+   * 
+   * The arguments to this function are copied into class-local variables which
+   * are freed via the this{@link #close()} method
    * 
    * @param t basepoint
    * @param h radius
@@ -43,8 +48,8 @@ public class Circle implements
   {
     assert t != null;
     assert h != null;
-    this.t.get().set(t);
-    this.h.get().set(h);
+    this.t.set(t);
+    this.h.set(h);
   }
 
   public Circle()
@@ -53,9 +58,9 @@ public class Circle implements
          RealConstants.one);
   }
 
-  ThreadLocalComplex s = new ThreadLocalComplex(1);
-  ThreadLocalComplex t = new ThreadLocalComplex(1);
-  ThreadLocalReal    h = new ThreadLocalReal();
+  Complex s = new Complex();
+  Complex t = new Complex();
+  Real    h = new Real();
 
   @Override
   public Complex evaluate(Real a, int order, int prec, Complex res)
@@ -63,9 +68,7 @@ public class Circle implements
     assert prec > 0;
     order = max(1, order);
     assert res.size() >= order;
-    Complex s = this.s.get();
-    Complex t = this.t.get();
-    Real    h = this.h.get();
+
     try ( Complex ca = new Complex())
     {
       ca.getReal().set(a);
@@ -84,9 +87,9 @@ public class Circle implements
   @Override
   public void close() throws Exception
   {
-    s.remove();
-    t.remove();
-    h.remove();
+    s.close();
+    t.close();
+    h.close();
   }
 
   /**
@@ -101,7 +104,7 @@ public class Circle implements
     try ( Real Θ = new Real())
     {
       Θ.set(angle);
-      return evaluate(Θ, 1, 64, complex);
+      return evaluate(Θ, 1, Double.SIZE, complex);
     }
   }
 

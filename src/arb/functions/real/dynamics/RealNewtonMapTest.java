@@ -1,6 +1,5 @@
 package arb.functions.real.dynamics;
 
-import static arb.MagnitudeConstants.zeroMag;
 import static arb.RealConstants.one;
 import static java.lang.System.err;
 import static java.lang.System.out;
@@ -11,8 +10,7 @@ import arb.RealConstants;
 import arb.RealRootInterval;
 import arb.RootLocatorOptions;
 import arb.Roots;
-import arb.RoundingMode;
-import arb.functions.complex.CircularCompositionS;
+import arb.functions.complex.CircularSFunction;
 import arb.functions.real.RealPart;
 import arb.geometry.curves.ComplexCircle;
 import junit.framework.TestCase;
@@ -32,12 +30,17 @@ public class RealNewtonMapTest extends
   @SuppressWarnings("resource")
   public void testS()
   {
-    CircularCompositionS angle = new CircularCompositionS(RealConstants.one,
-                                                          new Real().set("0.1", 512));
-    Real                 a     = Real.newVector(2);
+    CircularSFunction angle = new CircularSFunction(RealConstants.one,
+                                                    new Real().set("0.1", 512));
+    Real              a     = Real.newVector(2);
     a.set("-0.75", 128);
 
-    Real w = angle.converge(true, a, prec, Real.newVector(2));
+    Real w = angle.converge(true,
+                            new Real("0.1",
+                                     prec),
+                            a,
+                            prec,
+                            Real.newVector(2));
 
     System.out.println("awesome. 1/3rd of time needs to be spent sleeping");
     Complex locatedRoot  = locateRoot(angle);
@@ -59,8 +62,8 @@ public class RealNewtonMapTest extends
 
     try ( Real c = Real.newVector(2); Real h = new Real("0.01",
                                                         128);
-          CircularCompositionS disc = new CircularCompositionS(one,
-                                                               h);
+          CircularSFunction disc = new CircularSFunction(one,
+                                                         h);
           Complex value = Complex.newVector(2);)
     {
       h.printPrecision = true;
@@ -68,22 +71,30 @@ public class RealNewtonMapTest extends
       a.printPrecision = true;
       a.π(prec).div(4, prec).neg(); // a=-π/4=-45°
       ComplexCircle circle = disc.g;
-
-      for (int i = 0; i < 42; i++)
+      for (int i = 0; i < 16; i++)
       {
-        String initialAngle = Double.toString(Math.toDegrees(a.doubleValue()));
-        Real   w            = disc.converge(true, a, prec, c);                 // a=initial angle, c=angle to step
+        String initialAngle    = Double.toString(Math.toDegrees(a.doubleValue()));
+        String initialPosition = circle.center.toString();
+        Real   w               = disc.converge(true,
+                                               new Real("0.1",
+                                                        prec),
+                                               a,
+                                               prec,
+                                               c);                                       // a=initial angle, c=angle
+                                                                                         // to step
         // towards
+        String newAngle        = Double.toString(Math.toDegrees(c.get(0).doubleValue()));
 
         value.setRealObj(c.get(0));
         value.setImagObj(c.get(1));
-        out.format("initial direction %s° converged towards ", initialAngle);
         a.set(value.getReal());
-        circle.shift(a, prec, h);
+        disc.g.shift(a, prec, h);
+        out.format("Shifted position to %s ", circle.center.toString() );
+
         // value.getReal().set(value.getReal().doubleValue(RoundingMode.Near));
 
-        disc.f.evaluate(circle.t, 2, prec, value);
-        out.println("\n " + value.get(0) + " to " + circle);
+        disc.f.evaluate(circle.center, 2, prec, value);
+        out.println("in the direction of " + newAngle + " from " + initialAngle + "@" + initialPosition);
         assertEquals(0, Math.abs(value.get(0).getReal().doubleValue()), Math.pow(10, -5));
         // TODO: check for divergence of real part
       }
@@ -92,7 +103,7 @@ public class RealNewtonMapTest extends
 
   }
 
-  public Complex locateRoot(CircularCompositionS radialVector)
+  public Complex locateRoot(CircularSFunction radialVector)
   {
     RealPart           realAngle = new RealPart(radialVector);
     RealRootInterval   interval  = new RealRootInterval(-.8,
