@@ -11,7 +11,7 @@ public class Division<Ω extends Field<Ω>> implements
   @Override
   public Ω evaluate(OrderedPair<Ω, Ω> t, int order, int prec, Ω res)
   {
-    return t.a.mul(t.b, prec, res);
+    return t.a.div(t.b, prec, res);
   }
 
 }
