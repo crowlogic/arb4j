@@ -36,7 +36,7 @@ public class CircularSFunction extends
   {
     RealNewtonMap newtonMapOfPart = new RealNewtonMap(real ? new RealPart<>(this) : new ImaginaryPart<>(this),
                                                       h);
-    Real          iterate         = newtonMapOfPart.iterate(presentAngle, 42, prec, angle);
+    Real          iterate         = newtonMapOfPart.iterate(presentAngle, 1000, prec, angle);
 
   
     return iterate;

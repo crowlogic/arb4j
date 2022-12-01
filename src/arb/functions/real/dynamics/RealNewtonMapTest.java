@@ -77,7 +77,7 @@ public class RealNewtonMapTest extends
         String initialAngle    = Double.toString(Math.toDegrees(a.doubleValue()));
         String initialPosition = circle.center.toString();
         Real   w               = disc.converge(true,
-                                               new Real("0.1",
+                                               new Real("0.025",
                                                         prec),
                                                a,
                                                prec,
@@ -99,7 +99,7 @@ public class RealNewtonMapTest extends
 
         disc.f.evaluate(circle.center, 2, prec, value);
         out.println("in the direction of " + newAngle + " from " + initialAngle + "@" + initialPosition);
-        assertEquals(0, Math.abs(value.get(0).getReal().doubleValue()), Math.pow(10, -5));
+        assertEquals(0, Math.abs(value.get(0).getReal().doubleValue()), Math.pow(10, -3));
         // TODO: check for divergence of real part
       }
       err.println("TODO: check for divergence and enforce modulo π");
