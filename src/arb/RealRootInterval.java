@@ -39,6 +39,12 @@ public class RealRootInterval extends
     assert left.compareTo(right) <= 0;
   }
 
+  public RealRootInterval(FloatInterval interval)
+  {
+    this(interval.getA(),
+         interval.getB());
+  }
+
   public RealRootInterval swap(RealRootInterval u)
   {
     RealRootInterval r      = (RealRootInterval) super.swap(u);

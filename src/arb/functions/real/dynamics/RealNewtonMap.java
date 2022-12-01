@@ -59,7 +59,7 @@ public class RealNewtonMap<F extends RealFunction> implements
           System.out.println("w=" + w);
         }
         //w.setRad(MagnitudeConstants.zeroMag);
-        z.set(w.doubleValue(RoundingMode.Near));
+        z.set(w.getMid() ); //(RoundingMode.Near));
         if (abs(w.get(1).doubleValue()) < pow(10, -15))
         {
           if (verbose)

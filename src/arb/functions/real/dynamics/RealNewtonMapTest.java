@@ -5,6 +5,7 @@ import static java.lang.System.err;
 import static java.lang.System.out;
 
 import arb.Complex;
+import arb.FloatInterval;
 import arb.Real;
 import arb.RealConstants;
 import arb.RealRootInterval;
@@ -60,11 +61,11 @@ public class RealNewtonMapTest extends
   {
     out.println("===========testSOrbit===============");
 
-    try ( Real c = Real.newVector(2); Real h = new Real("0.01",
+    try ( Real c = Real.newVector(2); Real h = new Real("0.05",
                                                         128);
           CircularSFunction disc = new CircularSFunction(one,
                                                          h);
-          Complex value = Complex.newVector(2);)
+          Complex value = Complex.newVector(2); FloatInterval location = new FloatInterval())
     {
       h.printPrecision = true;
       Real a = Real.newVector(2);
@@ -88,8 +89,11 @@ public class RealNewtonMapTest extends
         value.setRealObj(c.get(0));
         value.setImagObj(c.get(1));
         a.set(value.getReal());
+
+
+        
         disc.g.shift(a, prec, h);
-        out.format("Shifted position to %s ", circle.center.toString() );
+        out.format("Shifted position to %s ", circle.center.toString());
 
         // value.getReal().set(value.getReal().doubleValue(RoundingMode.Near));
 
