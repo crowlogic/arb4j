@@ -44,7 +44,9 @@ public class RealNewtonMapTest extends
                             Real.newVector(2));
 
     System.out.println("awesome. 1/3rd of time needs to be spent sleeping");
-    Complex locatedRoot  = locateRoot(angle);
+    RealRootInterval   interval  = new RealRootInterval(-.8,
+                                                        -0.7);
+    Complex locatedRoot  = locateRoot(interval,angle);
     Real    locatedAngle = locatedRoot.getReal();
 
     System.out.println("locatedAngle=" + locatedAngle);
@@ -107,11 +109,10 @@ public class RealNewtonMapTest extends
 
   }
 
-  public Complex locateRoot(CircularSFunction radialVector)
+  public Complex locateRoot(RealRootInterval interval, CircularSFunction radialVector)
   {
     RealPart           realAngle = new RealPart(radialVector);
-    RealRootInterval   interval  = new RealRootInterval(-.8,
-                                                        -0.7);
+    
     RootLocatorOptions config    = new RootLocatorOptions(interval,
                                                           1500,
                                                           50000,

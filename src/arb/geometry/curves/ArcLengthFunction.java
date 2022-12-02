@@ -5,7 +5,8 @@ import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
 
 public final class ArcLengthFunction implements
-                                     RealFunction
+                                     RealFunction,
+                                     AutoCloseable
 {
   final PlaneCurve curve;
 
@@ -42,5 +43,11 @@ public final class ArcLengthFunction implements
   {
     assert false : "TODO";
     return null;
+  }
+
+  @Override
+  public void close() throws Exception
+  {
+    absErr.close();
   }
 }
