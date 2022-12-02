@@ -15,7 +15,6 @@ import arb.utensils.Utilities;
 public interface RealToComplexFunction extends
                                        Function<Real, Complex>
 {
-  
 
   public default RealPart realPart()
   {
@@ -257,7 +256,7 @@ public interface RealToComplexFunction extends
       {
         widePoint.printPrecision = true;
         res.printPrecision       = true;
-        println(format("f[%s]=%s\n", widePoint, res));
+        println(format("f[%s]=%s\n", widePoint.toFixedString(), res.toFixedString()));
       }
       return res;
     }
@@ -402,7 +401,11 @@ public interface RealToComplexFunction extends
         {
           wide.printPrecision = true;
           v.printPrecision    = true;
-          println(format("f[%s]=%s\n", wide, v));
+          println(format("f[%s]=%s+i%s\n",
+                         wide.doubleValue(),
+                         v.getReal().doubleValue(),
+                         v.getImag().doubleValue()
+                         ));
         }
         evalCount.incrementAndGet();
 

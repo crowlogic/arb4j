@@ -22,7 +22,7 @@ public interface RealFunction extends
 {
 
   public static final int FLINT_BITS = 64;
-  public boolean          verbose    = false;
+  public boolean          verbose    = true;
 
   /**
    * Performs one step of Newton's method. Should not usually be called directly

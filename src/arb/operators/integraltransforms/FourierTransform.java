@@ -71,13 +71,15 @@ public class FourierTransform<F extends RealFunction> implements
 
     integrationOptions.verbose = RealFunction.verbose;
 
-    return integrand.integrate(left,
-                               right,
-                               relativeAccuracyBitsGoal,
-                               absoluteUncertaintyTolerance,
-                               integrationOptions,
-                               prec,
-                               res);
+    Complex integrate = integrand.integrate(left,
+                                            right,
+                                            relativeAccuracyBitsGoal,
+                                            absoluteUncertaintyTolerance,
+                                            integrationOptions,
+                                            prec,
+                                            res);
+    assert !integrate.getReal().isZero() : "real part of fourier transform at " + ξ + " is zero";
+    return integrate;
   }
 
 }
