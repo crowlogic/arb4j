@@ -65,7 +65,7 @@ public class FourierTransformTest extends
         println(String.format("original f[%s]=%s", point, value));
         f2.evaluate(point, 1, prec, value2);
         println(String.format("numerically inverted exact f[%s]=%s", point, value2));
-        assertEquals(value2.doubleValue(), value.getReal().doubleValue(), 0);
+        assertEquals(value.getReal().doubleValue(), value2.doubleValue(), Math.pow(10, -10));
         f3.evaluate(point, 1, prec, value3);
         println(String.format("numerically inverted numericlly transformed (this one needs work) f[%s]=%s",
                               point,
