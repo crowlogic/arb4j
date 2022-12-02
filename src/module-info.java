@@ -66,8 +66,6 @@ module arb4j
   exports arb.topology;
   exports arb.topology.transformations;
   exports arb.measures;
-  exports arb.mechanics;
-  exports arb.mechanics.fluid;
   exports arb.operators;
   exports arb.stochastic;
   exports arb.stochastic.processes;
