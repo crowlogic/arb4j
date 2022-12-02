@@ -1,1 +1,0 @@
-package arb.mechanics.classical;
