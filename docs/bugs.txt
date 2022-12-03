@@ -1,8 +1,3 @@
-* chartfx interface in EvaluationSequence returns a range of 0.1 and
-0.2 rather than 0 to 1 as expected
-
-* incomplete renders not being deleted if render is cancelled before
-complete
 
 * lock and unlock using mprotect doesnt quite work..
 
