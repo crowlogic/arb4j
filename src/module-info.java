@@ -12,6 +12,8 @@ module arb4j
   requires transitive java.desktop;
   requires transitive java.instrument;
   requires transitive java.logging;
+  requires transitive javafx.swing;
+
   requires transitive javafx.graphics;
   requires transitive javafx.controls;
   requires transitive junit;
@@ -36,6 +38,7 @@ module arb4j
   requires transitive JTransforms;
   requires transitive jlatexmath;
 
+  
   exports arb;
   exports arb.annotations;
   exports arb.algebra;
