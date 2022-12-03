@@ -1,5 +1,14 @@
 package arb.viz;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import arb.Complex;
+import arb.Real;
+import arb.geometry.curves.Lemniscate;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -9,23 +18,12 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import static java.lang.Math.*;
-
-/**
- * @author Almas Baimagambetov (AlmasB) (almaslvl@gmail.com)
- */
 public class CurveRenderer extends
-                        Application
+                           Application
 {
 
   private static final int W     = 1280;
@@ -88,23 +86,19 @@ public class CurveRenderer extends
     oldY = newY;
   }
 
-//  private Point2D curveFunction()
-//  {
-//    // pow(cos(t/8), 3) is the important bit, where 8 to change
-//
-//    double x = sin(t) + pow(cos(t / 35), 3) * cos(8 * t) * 55 / t;
-//    double y = cos(t) * 2 + cos(2 * t) + pow(sin(t / 2), 4);
-//
-//    return new Point2D(x,
-//                       -y).multiply(100);
-//  }
-//
-    private Point2D curveFunction() {
-        double x = sin(t) * (pow(E, cos(t)) - 2 * cos(4*t) - pow(sin(t/12), 5));
-        double y = cos(t) * (pow(E, cos(t)) - 2 * cos(4*t) - pow(sin(t/12), 5));
+  Lemniscate lemniscate = new Lemniscate();
 
-        return new Point2D(x, -y).multiply(85);
-    }
+  Real       realt      = new Real();
+
+  Complex    z          = new Complex();
+
+  private Point2D curveFunction()
+  {
+    lemniscate.evaluate(realt.set(t), 1, 128, z).mul(200, 128);
+
+    return new Point2D(z.getReal().doubleValue(),
+                       z.getImag().doubleValue());
+  }
 
   private void saveScreenshot(Scene scene)
   {
@@ -126,7 +120,7 @@ public class CurveRenderer extends
   public void start(Stage stage) throws Exception
   {
     Scene scene = new Scene(createContent());
-    
+
     stage.setScene(scene);
     stage.show();
   }
