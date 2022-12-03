@@ -23,9 +23,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class CurveRenderer extends
-                           Application
+                           Application implements
+                           AutoCloseable
 {
 
+  private static final int prec = 128;
   private static final int W     = 1280;
   private static final int H     = 720;
 
@@ -44,7 +46,8 @@ public class CurveRenderer extends
     Canvas canvas = new Canvas(W,
                                H);
     g = canvas.getGraphicsContext2D();
-
+    g.setLineWidth(3);
+    
     AnimationTimer timer = new AnimationTimer()
     {
       @Override
@@ -55,7 +58,7 @@ public class CurveRenderer extends
 
         for (int i = 0; i < 80; i++)
         {
-          t += 0.017;
+          t += 0.01;
           draw();
         }
       }
@@ -94,26 +97,20 @@ public class CurveRenderer extends
 
   private Point2D curveFunction()
   {
-    lemniscate.evaluate(realt.set(t), 1, 128, z).mul(200, 128);
+    lemniscate.evaluate(realt.set(t), 1, prec, z).mul(200, prec);
 
     return new Point2D(z.getReal().doubleValue(),
                        z.getImag().doubleValue());
   }
 
-  private void saveScreenshot(Scene scene)
+  private void saveScreenshot(Scene scene) throws IOException
   {
     WritableImage fxImage  = scene.snapshot(null);
 
     BufferedImage awtImage = SwingFXUtils.fromFXImage(fxImage, null);
 
-    try
-    {
-      ImageIO.write(awtImage, "png", new File("screenshot.png"));
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
+    ImageIO.write(awtImage, "png", new File("screenshot.png"));
+
   }
 
   @Override
@@ -128,5 +125,12 @@ public class CurveRenderer extends
   public static void main(String[] args)
   {
     launch(args);
+  }
+
+  @Override
+  public void close() throws Exception
+  {
+    realt.close();
+    z.close();
   }
 }
