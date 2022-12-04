@@ -3,6 +3,7 @@ package arb.stochastic.processes.integrators;
 import java.util.Iterator;
 
 import arb.Lockable;
+import arb.RandomState;
 import arb.Real;
 import arb.Verifiable;
 import arb.stochastic.processes.ContinuousTimeState;
@@ -14,6 +15,11 @@ public abstract class MultivariateDiffusionProcessState extends
                                                         Iterable<DiffusionProcessState>,
                                                         Verifiable
 {
+
+  public MultivariateDiffusionProcessState(RandomState randomState)
+  {
+    super(randomState);
+  }
 
   @Override
   public void lock()

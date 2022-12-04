@@ -1,6 +1,7 @@
 package arb.functions.real.dynamics;
 
 import static arb.RealConstants.one;
+import static java.lang.Math.pow;
 import static java.lang.System.err;
 import static java.lang.System.out;
 
@@ -36,24 +37,23 @@ public class RealNewtonMapTest extends
     Real              a     = Real.newVector(2);
     a.set("-0.75", 128);
 
-    Real w = angle.converge(true,
-                            new Real("0.1",
-                                     prec),
-                            a,
-                            prec,
-                            Real.newVector(2));
+    Real             w            = angle.converge(true,
+                                                   new Real("0.1",
+                                                            prec),
+                                                   a,
+                                                   prec,
+                                                   Real.newVector(2));
 
-    System.out.println("awesome. 1/3rd of time needs to be spent sleeping");
-    RealRootInterval   interval  = new RealRootInterval(-.8,
-                                                        -0.7);
-    Complex locatedRoot  = locateRoot(interval,angle);
-    Real    locatedAngle = locatedRoot.getReal();
+    RealRootInterval interval     = new RealRootInterval(-.8,
+                                                         -0.7);
+    Complex          locatedRoot  = locateRoot(interval, angle);
+    Real             locatedAngle = locatedRoot.getReal();
 
     System.out.println("locatedAngle=" + locatedAngle);
     out.printf("locatedAngle=%s locatedRoot=%s\n", locatedAngle, locatedRoot);
 
     Real θ = w.get(0);
-    assertEquals(θ.doubleValue(), locatedAngle.doubleValue());
+    assertEquals(θ.doubleValue(), locatedAngle.doubleValue(), pow(10, -13));
 
   }
 
@@ -92,8 +92,6 @@ public class RealNewtonMapTest extends
         value.setImagObj(c.get(1));
         a.set(value.getReal());
 
-
-        
         disc.g.shift(a, prec, h);
         out.format("Shifted position to %s ", circle.center.toString());
 
@@ -112,7 +110,7 @@ public class RealNewtonMapTest extends
   public Complex locateRoot(RealRootInterval interval, CircularSFunction radialVector)
   {
     RealPart           realAngle = new RealPart(radialVector);
-    
+
     RootLocatorOptions config    = new RootLocatorOptions(interval,
                                                           1500,
                                                           50000,

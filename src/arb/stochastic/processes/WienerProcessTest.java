@@ -1,9 +1,12 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.half;
+import static arb.RealConstants.one;
+import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 
 import arb.Magnitude;
+import arb.RandomState;
 import arb.Real;
 import junit.framework.TestCase;
 
@@ -27,7 +30,7 @@ public class WienerProcessTest extends
   {
     try ( WienerProcess wienerProcess = new WienerProcess(three))
     {
-      DiffusionProcessState state = new DiffusionProcessState();
+      DiffusionProcessState state = new DiffusionProcessState(new RandomState(41));
       state.setTime(zero);
       state.setTime(half);
       Real drift = wienerProcess.μ().evaluate(state, 1, prec, new Real());

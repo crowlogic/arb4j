@@ -22,22 +22,10 @@ public class DiffusionProcessState extends
                                    Lockable
 {
 
-  protected static int randomInteger()
-  {
-    return (int) (Math.random() * Integer.MAX_VALUE);
-  }
-
   public RandomState randomState;
 
   public final Real  value = new Real();
 
-  /**
-   * initialize with a randomly generated initial value seed
-   */
-  public DiffusionProcessState()
-  {
-    this(new RandomState(randomInteger()));
-  }
 
   public DiffusionProcessState(RandomState randomState)
   {
@@ -45,15 +33,6 @@ public class DiffusionProcessState extends
     value.printPrecision = true;
   }
 
-  /**
-   * initialize with a randomly generated initial value seed and call
-   * this{@link #setValue(Real)} to set the initial value of the process
-   */
-  public DiffusionProcessState(Real S0)
-  {
-    this(new RandomState(randomInteger()));
-    setValue(S0);
-  }
 
   /**
    * initialize with a specified {@link RandomState} and call

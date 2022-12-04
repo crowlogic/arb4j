@@ -3,6 +3,7 @@ package arb.stochastic.processes;
 import static arb.RealConstants.*;
 import static arb.utensils.Utilities.println;
 
+import arb.RandomState;
 import arb.Real;
 import junit.framework.TestCase;
 
@@ -25,7 +26,8 @@ public class OrnsteinUhlenbeckProcessTest extends
     try ( OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(θ,
                                                                           μ,
                                                                           σ);
-          DiffusionProcessState state = new DiffusionProcessState(); Real μi = new Real(); Real σi = new Real())
+          DiffusionProcessState state = new DiffusionProcessState(new RandomState(4200)); Real μi = new Real();
+          Real σi = new Real())
     {
       μi.printPrecision = true;
       σi.printPrecision = true;

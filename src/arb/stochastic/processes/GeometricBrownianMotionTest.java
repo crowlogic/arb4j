@@ -15,7 +15,7 @@ public class GeometricBrownianMotionTest extends
   public void testEulerIntegration()
   {
     GeometricBrownianMotion gbm   = new GeometricBrownianMotion();
-    DiffusionProcessState   state = new DiffusionProcessState();
+    DiffusionProcessState   state = new DiffusionProcessState(new RandomState(420));
     state.setValue(one);
     try ( AbstractDiffusionProcessIntegrator<DiffusionProcessState, GeometricBrownianMotion> integrator = new EulerIntegrator(gbm,
                                                                                                                               state))

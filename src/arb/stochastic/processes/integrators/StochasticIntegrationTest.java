@@ -23,7 +23,7 @@ public class StochasticIntegrationTest extends
     {
       WienerProcess         B          = new WienerProcess(new Real("1",
                                                                     128));
-      DiffusionProcessState state      = new DiffusionProcessState();
+      DiffusionProcessState state      = new DiffusionProcessState(new RandomState(i));
 
       MilsteinIntegrator    integrator = new MilsteinIntegrator(B,
                                                                 state);
