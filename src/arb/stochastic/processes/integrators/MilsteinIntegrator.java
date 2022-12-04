@@ -1,19 +1,13 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.one;
 
 import arb.Float;
-import arb.FloatInterval;
-import arb.OrderedPair;
-import arb.RandomState;
 import arb.Real;
-import arb.RealMatrix;
 import arb.dynamical.systems.DiscreteTimeDynamicalSystem;
 import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.EvaluationSequence;
-import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
 
 /**
  * Integrates a {@link DiffusionProcess} via Milstein's method
@@ -44,52 +38,6 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   public String toString()
   {
     return String.format("MilsteinIntegrator[X=%s, sqrtδt=%s, state=%s]", diffusionProcess, sqrtdt, state);
-  }
-
-  public static void main(String args[])
-  {
-
-    OrnsteinUhlenbeckProcess process  = new OrnsteinUhlenbeckProcess(new Real("1.5",
-                                                                              128),
-                                                                     new Real("2",
-                                                                              128),
-                                                                     new Real("0.1",
-                                                                              128));
-    OrnsteinUhlenbeckProcess process2 = new OrnsteinUhlenbeckProcess(new Real("1.5",
-                                                                              128),
-                                                                     new Real("2",
-                                                                              128),
-                                                                     new Real("0.1",
-                                                                              128));
-    int                      seed     = 31337;
-
-    // Generate data
-
-    DiffusionProcessState    state    = new DiffusionProcessState(new Real("3",
-                                                                           128),
-                                                                  new RandomState(seed));
-    DiffusionProcessState    state2   = new DiffusionProcessState(new Real("3",
-                                                                           128),
-                                                                  new RandomState(seed + 1));
-
-    integrateProcess(false, process, state);
-    integrateProcess(false, process2, state2);
-    assert false : "TODO: plot this with chart-fx";
-  }
-
-  protected static void integrateProcess(boolean useMilstein, DiffusionProcess process, DiffusionProcessState state)
-  {
-    try ( var integrator = useMilstein ? new MilsteinIntegrator(process,
-                                                                state) : new EulerIntegrator(process,
-                                                                                             state);)
-
-    {
-
-      FloatInterval interval = new FloatInterval(0,
-                                                 1);
-      var           path     = integrator.integrate(interval, 10, prec);
-
-    }
   }
 
   @Override

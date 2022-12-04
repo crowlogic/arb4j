@@ -1,19 +1,12 @@
 package arb.stochastic.processes.integrators;
 
-import static arb.ComplexConstants.prec;
 import static arb.FloatConstants.half;
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
-import static java.lang.System.out;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import arb.Float;
 import arb.FloatConstants;
 import arb.FloatInterval;
-import arb.OrderedPair;
-import arb.RandomState;
 import arb.Real;
 import arb.RealPartition;
 import arb.stochastic.GaussianDistribution;
@@ -22,7 +15,6 @@ import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.DriftCoeffecientFunction;
 import arb.stochastic.processes.EvaluationSequence;
-import arb.stochastic.processes.OrnsteinUhlenbeckProcess;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method
@@ -39,38 +31,6 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
                             AbstractDiffusionProcessIntegrator<D, P>
 {
 
-  public static void main(String[] args)
-  {
-
-    OrnsteinUhlenbeckProcess process = new OrnsteinUhlenbeckProcess(new Real("1.5",
-                                                                             128),
-                                                                    new Real("2",
-                                                                             128),
-                                                                    new Real("0.1",
-                                                                             128));
-    try ( var integrator = new EulerIntegrator(process,
-                                               new DiffusionProcessState(new Real("3",
-                                                                                  128),
-                                                                         new RandomState(31337))))
-    {
-
-      var path = integrator.integrate(new FloatInterval(0,
-                                                        5),
-                                      750,
-                                      prec);
-
-      for (OrderedPair<Real, Real> sample : path)
-      {
-        // spotPriceData.add(sample.a.doubleValue(), sample.b.doubleValue());
-      }
-
-      // print(integrator.getClass().getSimpleName(), spotPriceData);
-
-      println("mean=" + path.dimensions[0].mean(128, new Real()));
-    }
-
-  }
-
   private int dim;
 
   public EulerIntegrator(P x, D diffusionProcessState)
@@ -82,6 +42,13 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     this.dim = 0;
   }
 
+  /**
+   * 
+   * @param x
+   * @param diffusionProcessState
+   * @param dim                   the dimension index of this process in the
+   *                              {@link MultivariateDiffusionProcessIntegrator}
+   */
   public EulerIntegrator(P x, D diffusionProcessState, int dim)
   {
     super(x);
@@ -160,7 +127,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     assert σorder > 0;
     String stateBefore = state.toString();
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
-    
+
     assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. σi=" + σi + " state=" + state
                   + " stateBefore=" + stateBefore;
 
