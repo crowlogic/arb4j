@@ -91,6 +91,7 @@ public class CurveRenderer extends
   Real                    realt      = new Real();
 
   Complex                 z          = new Complex();
+  
   private AnimationTimer  curveAnimationRoutine;
 
   @Override

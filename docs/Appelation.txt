@@ -1,0 +1,42 @@
+crow@levity:~$ lookup appellation
+3 definitions found
+
+From The Collaborative International Dictionary of English v.0.48 [gcide]:
+
+  Appellation \Ap`pel*la"tion\, n. [L. appellatio, fr. appellare:
+     cf. F. appellation. See {Appeal}.]
+     1. The act of appealing; appeal. [Obs.] --Spenser.
+        [1913 Webster]
+  
+     2. The act of calling by a name.
+        [1913 Webster]
+  
+     3. The word by which a particular person or thing is called
+        and known; name; title; designation.
+        [1913 Webster]
+  
+              They must institute some persons under the
+              appellation of magistrates.           --Hume.
+        [1913 Webster]
+  
+     Syn: See {Name}.
+          [1913 Webster]
+
+From WordNet (r) 3.0 (2006) [wn]:
+
+  appellation
+      n 1: identifying word or words by which someone or something is
+           called and classified or distinguished from others [syn:
+           {appellation}, {denomination}, {designation},
+           {appellative}]
+
+From Moby Thesaurus II by Grady Ward, 1.0 [moby-thesaurus]:
+
+  40 Moby Thesaurus words for "appellation":
+     appellative, baptism, binomen, binomial name, byword, calling,
+     christening, cognomen, cryptonym, definition, denomination,
+     designation, empty title, epithet, eponym, euonym, handle,
+     honorific, hyponym, identification, label, moniker, name, namesake,
+     naming, nicknaming, nomen, nomen nudum, proper name, proper noun,
+     scientific name, secret name, style, styling, tag, tautonym,
+     terming, title, trinomen, trinomial name
