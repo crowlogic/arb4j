@@ -34,6 +34,8 @@ public class CurveRenderer extends
     int tick  = 0;
     int tickR = 0, tickG = 0, tickB = 0;
 
+    int inc   = 1;
+
     @Override
     public void handle(long now)
     {
@@ -42,7 +44,7 @@ public class CurveRenderer extends
 
       for (int i = 0; i < 15; i++)
       {
-        t += 0.01;
+        t += 0.001;
         draw();
       }
       g.setStroke(Color.rgb(randomEightBitInteger(tickR),
@@ -50,20 +52,21 @@ public class CurveRenderer extends
                             randomEightBitInteger(tickB)));
 
       System.out.format("%d,%d,%d\n", tickR, tickG, tickB);
-      if ((tickR + tickG + tickB) % 69 == 6)
+      if ((tickR + tickG + tickB) % 42 == 6)
       {
         tick++;
+        inc = (int) (Math.random() * 4);
       }
       switch (tick % 3)
       {
       case 0:
-        tickR++;
+        tickR += inc;
         return;
       case 1:
-        tickG++;
+        tickG += inc;
         return;
       case 2:
-        tickB++;
+        tickB += inc;
         return;
       }
     }
