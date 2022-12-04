@@ -1,11 +1,6 @@
 package arb.functions;
 
-import java.util.function.BinaryOperator;
-
-import arb.Field;
-import arb.Real;
 import arb.exceptions.NotDifferentiableException;
-import arb.geometry.DifferentiableManifold;
 
 public interface Function<D, R> 
 {

@@ -1,15 +1,20 @@
 package arb.functions.real;
 
 import static arb.utensils.Utilities.println;
-import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import java.lang.Integer;
 
-import arb.*;
 import arb.Float;
+import arb.FloatInterval;
 import arb.FloatInterval.RootStatus;
+import arb.IntegerConstants;
+import arb.Magnitude;
+import arb.Real;
+import arb.RealRootInterval;
 import arb.RealRootInterval.RefinementResult;
+import arb.RootLocatorOptions;
+import arb.Roots;
+import arb.arb;
 import arb.functions.Function;
 
 /**

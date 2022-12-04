@@ -1,5 +1,7 @@
 package arb.stochastic;
 
+import static arb.ComplexConstants.prec;
+
 import arb.Complex;
 import arb.Real;
 import arb.RealConstants;

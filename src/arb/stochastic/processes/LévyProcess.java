@@ -1,7 +1,5 @@
 package arb.stochastic.processes;
 
-import arb.stochastic.*;
-
 /**
  * A {@link LévyProcess}, named after Paul Lévy, is a stochastic process with
  * <b>independent, stationary increments</b>: it represents the motion of a

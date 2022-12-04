@@ -1,7 +1,5 @@
 package arb.groups;
 
-import arb.theoretical.MonstrousMoonshineTheory;
-
 /**
  * Part of {@link MonstrousMoonshineTheory}
  * 

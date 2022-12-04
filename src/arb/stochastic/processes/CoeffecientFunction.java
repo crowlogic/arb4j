@@ -1,7 +1,7 @@
 package arb.stochastic.processes;
 
 import arb.Real;
-import arb.dynamical.systems.*;
+import arb.dynamical.systems.State;
 import arb.functions.Function;
 
 public interface CoeffecientFunction<S extends State> extends

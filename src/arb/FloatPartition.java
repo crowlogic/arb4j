@@ -4,9 +4,7 @@ import java.io.Closeable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.ref.Cleaner.Cleanable;
-import java.util.*;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.util.Iterator;
 
 /**
  * A {@link FloatPartition} denoted P of ...

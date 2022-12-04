@@ -1,6 +1,6 @@
 package arb.stochastic.processes;
 
-import arb.stochastic.*;
+import arb.stochastic.ProbabiltiyDensityFunction;
 
 /**
  * Markov process is a stochastic model describing a sequence of possible events

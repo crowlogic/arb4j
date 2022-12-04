@@ -2,10 +2,7 @@ package arb;
 
 import java.util.Iterator;
 
-import arb.measures.*;
-import arb.theoretical.*;
-import arb.topological.*;
-import arb.topological.spaces.InnerProductSpace;
+import arb.topological.TopologicalSpace;
 import arb.topological.spaces.VectorSpace;
 
 /**

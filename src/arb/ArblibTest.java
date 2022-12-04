@@ -1,6 +1,10 @@
 package arb;
 
-import static arb.arb.*;
+import static arb.arb.acb_dirichlet_hardy_theta;
+import static arb.arb.acb_dirichlet_hardy_z;
+import static arb.arb.acb_exp;
+import static arb.arb.acb_set_d;
+import static arb.arb.arb_set_d;
 import static java.lang.Math.pow;
 import static java.lang.System.out;
 

@@ -6,8 +6,6 @@ import arb.Complex;
 import arb.ComplexConstants;
 import arb.Real;
 import arb.RealConstants;
-import arb.ThreadLocalComplex;
-import arb.ThreadLocalReal;
 import arb.arb;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.dynamics.NewtonMap;

@@ -1,10 +1,9 @@
 package arb.viz;
 
-import lwjgui.scene.layout.OpenGLPane;
-
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 
 import arb.viz.gl.entities.Camera;
+import lwjgui.scene.layout.OpenGLPane;
 
 /** A class describing tools that handle input signals */
 public class SurfacePlotController

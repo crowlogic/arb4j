@@ -2,7 +2,9 @@ package arb.geometry.surfaces;
 
 import static java.lang.Math.pow;
 
-import arb.*;
+import arb.Complex;
+import arb.Real;
+import arb.RealConstants;
 import junit.framework.TestCase;
 
 public class HemisphereTest extends

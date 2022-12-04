@@ -1,6 +1,41 @@
 package arb.viz.gl.gui;
 
-import static arb.viz.gl.Attributes.*;
+import static arb.viz.gl.Attributes.change;
+import static arb.viz.gl.Attributes.getColour;
+import static arb.viz.gl.Attributes.getFFrom;
+import static arb.viz.gl.Attributes.getFPi;
+import static arb.viz.gl.Attributes.getFTo;
+import static arb.viz.gl.Attributes.getFVar;
+import static arb.viz.gl.Attributes.getField;
+import static arb.viz.gl.Attributes.getFrame;
+import static arb.viz.gl.Attributes.getFunction;
+import static arb.viz.gl.Attributes.getMainDir;
+import static arb.viz.gl.Attributes.getMode;
+import static arb.viz.gl.Attributes.getParaboloid;
+import static arb.viz.gl.Attributes.getPlane;
+import static arb.viz.gl.Attributes.getSFrom;
+import static arb.viz.gl.Attributes.getSPi;
+import static arb.viz.gl.Attributes.getSTo;
+import static arb.viz.gl.Attributes.getSVar;
+import static arb.viz.gl.Attributes.getXStep;
+import static arb.viz.gl.Attributes.getYStep;
+import static arb.viz.gl.Attributes.putColour;
+import static arb.viz.gl.Attributes.putFFrom;
+import static arb.viz.gl.Attributes.putFPi;
+import static arb.viz.gl.Attributes.putFStep;
+import static arb.viz.gl.Attributes.putFTo;
+import static arb.viz.gl.Attributes.putFVar;
+import static arb.viz.gl.Attributes.putFunction;
+import static arb.viz.gl.Attributes.putMainDir;
+import static arb.viz.gl.Attributes.putMode;
+import static arb.viz.gl.Attributes.putParaboloid;
+import static arb.viz.gl.Attributes.putPlane;
+import static arb.viz.gl.Attributes.putSFrom;
+import static arb.viz.gl.Attributes.putSPi;
+import static arb.viz.gl.Attributes.putSStep;
+import static arb.viz.gl.Attributes.putSTo;
+import static arb.viz.gl.Attributes.putSVar;
+import static arb.viz.gl.Attributes.redraw;
 
 import org.joml.Vector3f;
 

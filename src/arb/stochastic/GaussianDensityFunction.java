@@ -1,10 +1,9 @@
 package arb.stochastic;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.sqrt2π;
 
-import arb.*;
-import arb.functions.real.*;
-import arb.stochastic.processes.*;
+import arb.Real;
+import arb.functions.real.RealFunction;
 
 /**
  * The Gaussian distribution's probability density is a very important density

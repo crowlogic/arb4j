@@ -1,7 +1,7 @@
 package arb.domains;
 
-import arb.*;
-import arb.topological.*;
+import arb.Field;
+import arb.topological.TopologicalSpace;
 
 public interface Domain<X extends Field> extends
                        TopologicalSpace<X>

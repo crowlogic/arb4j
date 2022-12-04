@@ -1,6 +1,9 @@
 package arb.geometry.curves;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Real;
+import arb.arb;
 import arb.functions.real.RealFunction;
 
 public class LemniscateArcLength implements

@@ -1,6 +1,8 @@
 package arb.topological;
 
-import arb.*;
+import arb.OrderedPair;
+import arb.Set;
+import arb.SubSet;
 
 /**
  * A {@link BinaryRelation} is {@link SubSet} of the {product} of an

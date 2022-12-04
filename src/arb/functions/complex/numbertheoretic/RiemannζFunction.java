@@ -1,6 +1,8 @@
 package arb.functions.complex.numbertheoretic;
 
-import arb.*;
+import arb.Complex;
+import arb.Real;
+import arb.arb;
 import arb.functions.complex.HolomorphicFunction;
 
 /**

@@ -1,6 +1,9 @@
 package arb.geometry.curves;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Magnitude;
+import arb.Real;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;
 

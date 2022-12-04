@@ -1,8 +1,5 @@
 package arb.topological.spaces;
 
-import arb.geometry.Manifold;
-import arb.topological.TopologicalSpace;
-
 /**
  * A Seifert manifold is a closed 3-manifold together with a decomposition into
  * a disjoint union of circles (called fibers) such that each fiber has a

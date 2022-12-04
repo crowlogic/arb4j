@@ -1,17 +1,12 @@
 package arb.stochastic.processes.integrators;
 
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.lang.ref.Cleaner.Cleanable;
-
-import javax.swing.JFrame;
 
 import arb.Float;
 import arb.Real;
 import arb.stochastic.processes.ContinuousTimeState;
 import arb.stochastic.processes.DiffusionProcess;
-import arb.utensils.Utilities;
 
 public abstract class AbstractDiffusionProcessIntegrator<S extends ContinuousTimeState, D extends DiffusionProcess<S>>
                                                         implements

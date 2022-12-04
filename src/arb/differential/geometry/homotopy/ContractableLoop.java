@@ -1,6 +1,6 @@
 package arb.differential.geometry.homotopy;
 
-import arb.topological.*;
+import arb.topological.ContractableSpace;
 
 /**
  * A contractable loop is one that can be continuously shrunk to a point without

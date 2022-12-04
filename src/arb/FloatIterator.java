@@ -1,6 +1,6 @@
 package arb;
 
-import java.util.*;
+import java.util.Iterator;
 
 public class FloatIterator implements
                            Iterator<Float>

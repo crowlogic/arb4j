@@ -2,7 +2,6 @@ package arb.stochastic.processes.integrators;
 
 import java.util.Iterator;
 
-import arb.Lockable;
 import arb.RandomState;
 import arb.Real;
 import arb.Verifiable;

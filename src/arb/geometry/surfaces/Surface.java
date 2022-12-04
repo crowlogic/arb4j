@@ -1,6 +1,5 @@
 package arb.geometry.surfaces;
 
-import arb.functions.ComplexToRealFunction;
 import arb.geometry.Manifold;
 import arb.topological.spaces.EuclideanSpace;
 

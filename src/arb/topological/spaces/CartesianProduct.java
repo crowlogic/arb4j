@@ -3,7 +3,6 @@ package arb.topological.spaces;
 import arb.OrderedPair;
 import arb.Set;
 import arb.topological.TopologicalSpace;
-import arb.topological.Topology;
 
 /**
  * The Cartesian product of two {@link Set} A and B (also called the product

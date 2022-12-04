@@ -1,6 +1,19 @@
 package arb.viz.gl.gui;
 
-import static arb.viz.gl.Attributes.*;
+import static arb.viz.gl.Attributes.change;
+import static arb.viz.gl.Attributes.getFFrom;
+import static arb.viz.gl.Attributes.getFPi;
+import static arb.viz.gl.Attributes.getFTo;
+import static arb.viz.gl.Attributes.getSFrom;
+import static arb.viz.gl.Attributes.getSPi;
+import static arb.viz.gl.Attributes.getSTo;
+import static arb.viz.gl.Attributes.getSurface;
+import static arb.viz.gl.Attributes.getu0v0MainDir;
+import static arb.viz.gl.Attributes.getu0v0Paraboloid;
+import static arb.viz.gl.Attributes.getu0v0Plane;
+import static arb.viz.gl.Attributes.putu0v0MainDir;
+import static arb.viz.gl.Attributes.putu0v0Paraboloid;
+import static arb.viz.gl.Attributes.putu0v0Plane;
 
 import org.joml.Vector2f;
 

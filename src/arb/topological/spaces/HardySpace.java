@@ -1,8 +1,6 @@
 package arb.topological.spaces;
 
 import arb.Field;
-import arb.Real;
-import arb.functions.Function;
 
 /**
  * A Hardy space is a {@link HilbertSpace} with inner product given by<br>

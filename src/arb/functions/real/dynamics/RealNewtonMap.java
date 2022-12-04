@@ -1,15 +1,10 @@
 package arb.functions.real.dynamics;
 
+import static arb.ComplexConstants.prec;
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
-import static java.lang.System.out;
 
-import arb.MagnitudeConstants;
 import arb.Real;
-import arb.RealRootInterval;
-import arb.RootLocatorOptions;
-import arb.Roots;
-import arb.RoundingMode;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.real.RealFunction;
 

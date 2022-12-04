@@ -70,7 +70,6 @@ module arb4j
   exports arb.stochastic;
   exports arb.stochastic.processes;
   exports arb.stochastic.processes.integrators;
-  exports arb.theoretical;
   exports arb.utensils;
   exports arb.viz;
   exports arb.viz.gl;

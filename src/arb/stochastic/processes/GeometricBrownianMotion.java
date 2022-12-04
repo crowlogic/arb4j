@@ -1,7 +1,7 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.zero;
 import static arb.RealConstants.one;
+import static arb.RealConstants.zero;
 
 import arb.Real;
 

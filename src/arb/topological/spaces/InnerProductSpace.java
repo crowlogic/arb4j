@@ -4,7 +4,6 @@ import arb.Complex;
 import arb.Field;
 import arb.Metric;
 import arb.Real;
-import arb.Set;
 import arb.topological.Topology;
 
 /**

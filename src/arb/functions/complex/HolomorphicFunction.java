@@ -1,15 +1,48 @@
 package arb.functions.complex;
 
-import static arb.arb.*;
-import static java.lang.Math.*;
+import static arb.arb.acb_add_error_mag;
+import static arb.arb.acb_addmul_arb;
+import static arb.arb.acb_calc_gl_node;
+import static arb.arb.acb_get_mag;
+import static arb.arb.acb_get_mag_lower;
+import static arb.arb.acb_init;
+import static arb.arb.acb_mul_2exp_si;
+import static arb.arb.acb_swap;
+import static arb.arb.arb_get_mag;
+import static arb.arb.mag_add_lower;
+import static arb.arb.mag_cmp;
+import static arb.arb.mag_div;
+import static arb.arb.mag_hypot;
+import static arb.arb.mag_inf;
+import static arb.arb.mag_init;
+import static arb.arb.mag_max;
+import static arb.arb.mag_mul;
+import static arb.arb.mag_mul_2exp_si;
+import static arb.arb.mag_mul_lower;
+import static arb.arb.mag_mul_ui_lower;
+import static arb.arb.mag_one;
+import static arb.arb.mag_pow_ui_lower;
+import static arb.arb.mag_set;
+import static arb.arb.mag_sqrt;
+import static arb.arb.mag_sqrt_lower;
+import static arb.arb.mag_sub;
+import static arb.arb.mag_sub_lower;
+import static arb.arb.mag_swap;
+import static java.lang.Math.max;
 
-import java.util.concurrent.atomic.*;
+import java.util.concurrent.atomic.AtomicLong;
 
-import arb.*;
-import arb.exceptions.*;
-import arb.functions.*;
-import arb.functions.real.*;
-import arb.utensils.*;
+import arb.Complex;
+import arb.IntegrationOptions;
+import arb.Magnitude;
+import arb.Real;
+import arb.exceptions.NotDifferentiableException;
+import arb.exceptions.NotIntegrableException;
+import arb.functions.Function;
+import arb.functions.real.ComplexMagnitude;
+import arb.functions.real.ImaginaryPart;
+import arb.functions.real.RealPart;
+import arb.utensils.Utilities;
 
 /**
  * A holomorphic function is a {@link Complex}-valued function of one or more

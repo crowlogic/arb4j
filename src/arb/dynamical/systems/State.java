@@ -1,6 +1,8 @@
 package arb.dynamical.systems;
 
-import arb.*;
+import arb.RandomState;
+import arb.Real;
+import arb.Set;
 import arb.Float;
 
 public interface State<X> extends

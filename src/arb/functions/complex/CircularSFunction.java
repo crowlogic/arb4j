@@ -4,12 +4,7 @@ import static arb.RealConstants.one;
 
 import arb.Complex;
 import arb.ComplexConstants;
-import arb.FloatInterval;
 import arb.Real;
-import arb.RealConstants;
-import arb.RealRootInterval;
-import arb.RootLocatorOptions;
-import arb.Roots;
 import arb.functions.real.ImaginaryPart;
 import arb.functions.real.RealPart;
 import arb.functions.real.dynamics.RealNewtonMap;

@@ -1,11 +1,12 @@
 package arb.viz;
 
-import lwjgui.scene.layout.OpenGLPane;
-import org.joml.Vector2f;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.joml.Vector2f;
+
+import lwjgui.scene.layout.OpenGLPane;
 
 /** A class simulating mouse */
 public class Mouse

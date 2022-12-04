@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.one;
+import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 
 import arb.RandomState;

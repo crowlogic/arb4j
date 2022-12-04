@@ -2,7 +2,9 @@ package arb.geometry.curves;
 
 import static java.lang.Math.max;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Real;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;
 

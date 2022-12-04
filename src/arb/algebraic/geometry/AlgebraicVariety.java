@@ -1,6 +1,6 @@
 package arb.algebraic.geometry;
 
-import arb.*;
+import arb.ComplexPolynomial;
 
 /**
  * An <b>algebraic variety</b> is the set of solutions of a system of polynomial

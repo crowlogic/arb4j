@@ -1,6 +1,5 @@
 package arb.differential.geometry;
 
-import arb.Basis;
 import arb.topological.spaces.VectorSpace;
 
 /**

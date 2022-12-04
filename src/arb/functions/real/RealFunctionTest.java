@@ -6,9 +6,14 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import arb.*;
-import arb.Float;
+import arb.FloatInterval;
+import arb.Real;
+import arb.RealRootInterval;
+import arb.RootLocatorOptions;
+import arb.Roots;
+import arb.RoundingMode;
 import arb.functions.complex.numbertheoretic.ZFunction;
+import arb.Float;
 
 public class RealFunctionTest
 {

@@ -2,9 +2,8 @@ package arb.stochastic;
 
 import static arb.RealConstants.sqrt2π;
 
-import arb.*;
+import arb.Real;
 import arb.functions.real.RealFunction;
-import arb.utensils.*;
 
 public class StandardGaussianDistribution implements
                                           ProbabilityDistributionFunction<StandardGaussianDensityFunction>

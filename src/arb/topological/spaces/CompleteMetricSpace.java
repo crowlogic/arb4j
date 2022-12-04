@@ -1,7 +1,6 @@
 package arb.topological.spaces;
 
 import arb.Field;
-import arb.Set;
 
 /**
  * sequence x 1 , x 2 , x 3 , … (X,d) is called Cauchy if for every positive

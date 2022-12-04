@@ -2,7 +2,6 @@ package arb.geometry.surfaces;
 
 import arb.Complex;
 import arb.Real;
-import arb.differential.geometry.TangentBundle;
 
 public class Cone implements
                   ParametricSurface

@@ -1,8 +1,7 @@
 package arb.domains;
 
-import arb.*;
-import arb.topological.TopologicalSpace;
-import arb.topological.spaces.*;
+import arb.Complex;
+import arb.Real;
 
 /**
  * The complex plane is the plane formed by the {@link Complex} numbers, with a

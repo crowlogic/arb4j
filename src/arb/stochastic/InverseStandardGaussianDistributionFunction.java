@@ -1,8 +1,10 @@
 package arb.stochastic;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.one;
+import static arb.RealConstants.sqrt2;
 
-import arb.*;
+import arb.Real;
+import arb.arb;
 import arb.functions.real.RealFunction;
 
 public class InverseStandardGaussianDistributionFunction implements

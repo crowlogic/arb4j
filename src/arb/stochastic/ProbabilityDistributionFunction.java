@@ -1,6 +1,5 @@
 package arb.stochastic;
 
-import arb.RandomState;
 import arb.Real;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.CorrelatedRandomVectorGenerator;

@@ -1,6 +1,7 @@
 package arb.topological.spaces;
 
-import arb.*;
+import arb.Field;
+import arb.Real;
 
 public interface EuclideanVectorSpace<X extends Field> extends
                                      VectorSpace<X>,

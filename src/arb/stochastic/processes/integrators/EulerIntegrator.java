@@ -4,7 +4,6 @@ import static arb.FloatConstants.half;
 import static arb.RealConstants.zero;
 import static arb.utensils.Utilities.println;
 
-import arb.Float;
 import arb.FloatConstants;
 import arb.FloatInterval;
 import arb.Real;
@@ -15,6 +14,7 @@ import arb.stochastic.processes.DiffusionProcess;
 import arb.stochastic.processes.DiffusionProcessState;
 import arb.stochastic.processes.DriftCoeffecientFunction;
 import arb.stochastic.processes.EvaluationSequence;
+import arb.Float;
 
 /**
  * Integrates a {@link DiffusionProcess} via Euler's method

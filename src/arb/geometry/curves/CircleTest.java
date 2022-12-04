@@ -2,7 +2,11 @@ package arb.geometry.curves;
 
 import static java.lang.Math.pow;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Real;
+import arb.RealConstants;
+import arb.RoundingMode;
 import junit.framework.TestCase;
 
 public class CircleTest extends

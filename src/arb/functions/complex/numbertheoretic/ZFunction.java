@@ -1,12 +1,10 @@
 package arb.functions.complex.numbertheoretic;
 
-import static arb.arb.*;
 import static java.lang.Math.max;
 
 import arb.Complex;
-import arb.Real;
+import arb.arb;
 import arb.functions.complex.HolomorphicFunction;
-import arb.utensils.AutoArrayList;
 
 public class ZFunction implements
                        HolomorphicFunction
@@ -32,7 +30,7 @@ public class ZFunction implements
       // we have to do this, because the C code expects the vectors
       // to be contiguous in memory, but this is not done because the memory
       // mapped files are seperate files for each order
-      acb_dirichlet_hardy_z(q, z, null, null, order, prec);
+      arb.acb_dirichlet_hardy_z(q, z, null, null, order, prec);
       return w.set(q);
     }
 

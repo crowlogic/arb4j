@@ -1,6 +1,6 @@
 package arb.stochastic.processes;
 
-import arb.dynamical.systems.*;
+import arb.dynamical.systems.State;
 
 public interface DiffusionCoeffecientFunction<S extends State> extends
                                              CoeffecientFunction<S>

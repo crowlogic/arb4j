@@ -1,7 +1,6 @@
 package arb.differential.geometry.homotopy;
 
 import arb.geometry.curves.PlaneCurve;
-import arb.topological.*;
 
 /**
  * Let X be a topological space. A {@link Path} in X is a continuous map

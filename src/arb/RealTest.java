@@ -2,7 +2,6 @@ package arb;
 
 import static arb.RealConstants.one;
 import static arb.utensils.Utilities.println;
-import static java.lang.System.out;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -1,12 +1,15 @@
 package arb.functions;
 
-import static arb.arb.*;
+import static arb.ComplexConstants.prec;
 import static arb.utensils.Utilities.println;
 import static java.lang.String.format;
 
 import java.util.concurrent.atomic.AtomicLong;
-
-import arb.*;
+import static arb.arb.*;
+import arb.Complex;
+import arb.IntegrationOptions;
+import arb.Magnitude;
+import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealPart;

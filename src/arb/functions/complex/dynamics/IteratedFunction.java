@@ -2,7 +2,9 @@ package arb.functions.complex.dynamics;
 
 import static java.lang.Math.max;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Real;
 import arb.functions.complex.HolomorphicFunction;
 
 /**

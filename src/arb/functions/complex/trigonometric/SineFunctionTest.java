@@ -3,7 +3,12 @@ package arb.functions.complex.trigonometric;
 import static arb.ComplexConstants.π;
 import static java.lang.Math.pow;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.IntegrationOptions;
+import arb.Magnitude;
+import arb.Real;
+import arb.RoundingMode;
 import junit.framework.TestCase;
 
 public class SineFunctionTest extends

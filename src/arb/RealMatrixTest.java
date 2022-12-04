@@ -1,8 +1,8 @@
 package arb;
 
-import static arb.utensils.Utilities.*;
+import static arb.utensils.Utilities.println;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
 public class RealMatrixTest extends
                             TestCase

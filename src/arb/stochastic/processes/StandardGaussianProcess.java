@@ -1,10 +1,12 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.one;
+import static arb.RealConstants.zero;
 
-import arb.*;
-import arb.functions.real.*;
-import arb.stochastic.*;
+import arb.stochastic.CharacteristicFunction;
+import arb.stochastic.StandardGaussianCharacteristicFunction;
+import arb.stochastic.StandardGaussianDensityFunction;
+import arb.stochastic.StandardGaussianDistribution;
 
 /**
  * A Gaussian "white noise" process of zero mean and unit standard deviation and

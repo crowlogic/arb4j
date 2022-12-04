@@ -1,8 +1,6 @@
 package arb.stochastic;
 
 import arb.functions.RealToComplexFunction;
-import arb.functions.complex.HolomorphicFunction;
-import arb.functions.real.RealFunction;
 import arb.operators.integraltransforms.FourierTransform;
 
 /**

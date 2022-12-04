@@ -2,7 +2,9 @@ package arb.functions.complex;
 
 import static arb.RealConstants.one;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Real;
 import arb.functions.Function;
 import junit.framework.TestCase;
 

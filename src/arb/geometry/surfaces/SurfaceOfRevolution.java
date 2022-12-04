@@ -2,7 +2,6 @@ package arb.geometry.surfaces;
 
 import arb.Complex;
 import arb.Real;
-import arb.differential.geometry.TangentBundle;
 import arb.geometry.Line;
 import arb.geometry.curves.PlaneCurve;
 import arb.topological.spaces.EuclideanSpace;

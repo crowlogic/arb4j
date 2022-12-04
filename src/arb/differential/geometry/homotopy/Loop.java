@@ -1,6 +1,5 @@
 package arb.differential.geometry.homotopy;
 
-import arb.geometry.curves.*;
 import arb.topological.TopologicalSpace;
 
 /**

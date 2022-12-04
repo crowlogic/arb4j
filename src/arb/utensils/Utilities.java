@@ -1,21 +1,20 @@
 package arb.utensils;
 
 import static arb.arb.*;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 
-import org.junit.runner.JUnitCore;
 import org.lwjgl.system.MemoryStack;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
-import org.scilab.forge.jlatexmath.TeXFormula.TeXIconBuilder;
 
-import arb.*;
+import arb.Complex;
+import arb.Magnitude;
+import arb.Real;
 
 public class Utilities
 {

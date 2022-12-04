@@ -2,7 +2,6 @@ package arb.stochastic.processes;
 
 import static arb.RealConstants.one;
 
-import arb.RandomState;
 import arb.Real;
 
 /**

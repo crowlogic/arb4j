@@ -1,9 +1,8 @@
 package arb.domains;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.one;
+import static arb.RealConstants.zero;
 
-import arb.Real;
-import arb.topological.TopologicalSpace;
 import arb.Float;
 import arb.FloatConstants;
 

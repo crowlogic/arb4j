@@ -1,9 +1,8 @@
 package arb.stochastic.processes;
 
-import arb.functions.real.*;
-import arb.stochastic.*;
-import arb.theoretical.*;
-import arb.topological.*;
+import arb.functions.real.ErrorFunction;
+import arb.stochastic.GaussianDistribution;
+import arb.topological.TopologicalSpace;
 
 /**
  * In {@link ProbabilityTheory} and statistics, a {@link GaussianProcess} is a

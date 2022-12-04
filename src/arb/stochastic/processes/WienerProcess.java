@@ -1,10 +1,10 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.zero;
 
-import java.lang.ref.Cleaner.*;
+import java.lang.ref.Cleaner.Cleanable;
 
-import arb.*;
+import arb.Real;
 
 /**
  * 

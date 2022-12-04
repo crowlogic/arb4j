@@ -3,12 +3,12 @@ package arb.viz.gl.shaders;
 import java.io.IOException;
 import java.util.List;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
 import arb.utensils.Transformations;
 import arb.viz.gl.entities.Camera;
 import arb.viz.gl.entities.Light;
-
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 /** A class describing static shader */
 public class StaticShader extends

@@ -1,7 +1,10 @@
 package arb.functions.complex.numbertheoretic;
 
 import arb.Real;
-import arb.functions.*;
+import arb.functions.ImaginaryAxisSymmetry;
+import arb.functions.RealAxisSymmetry;
+import arb.functions.SymmetricFunction;
+import arb.functions.Symmetry;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.complex.SFunction;
 import arb.operators.CompositionOperator;

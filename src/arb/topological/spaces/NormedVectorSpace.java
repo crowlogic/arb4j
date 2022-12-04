@@ -2,7 +2,6 @@ package arb.topological.spaces;
 
 import arb.Complex;
 import arb.Field;
-import arb.Metric;
 import arb.Real;
 
 /**

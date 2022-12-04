@@ -3,7 +3,11 @@ package arb.geometry.curves;
 import static arb.RealConstants.half;
 import static java.lang.System.out;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.IntegrationOptions;
+import arb.Magnitude;
+import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.RealToComplexFunction;
 import junit.framework.TestCase;

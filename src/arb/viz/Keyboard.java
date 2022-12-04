@@ -1,9 +1,9 @@
 package arb.viz;
 
-import lwjgui.scene.layout.OpenGLPane;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import lwjgui.scene.layout.OpenGLPane;
 
 /** A class simulating keyboard */
 public class Keyboard

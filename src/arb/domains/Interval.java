@@ -3,9 +3,7 @@ package arb.domains;
 import java.time.Duration;
 
 import arb.MarkedPoint;
-import arb.geometry.Point;
 import arb.topological.TopologicalSpace;
-import arb.topological.spaces.*;
 
 /**
  * Two {@link MarkedPoint}s on a rigid body form an {@link Interval}

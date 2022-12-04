@@ -6,6 +6,7 @@ import arb.Lockable;
 import arb.RandomState;
 import arb.Real;
 import arb.dynamical.systems.State;
+import arb.Float;
 
 /**
  * The arguments passed to the functions representing the drift rate

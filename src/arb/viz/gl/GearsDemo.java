@@ -1,7 +1,5 @@
 package arb.viz.gl;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import lwjgui.LWJGUIApplication;
 import lwjgui.paint.Color;
 import lwjgui.scene.Scene;

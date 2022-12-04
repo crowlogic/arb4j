@@ -3,8 +3,7 @@ package arb.functions.polynomials.orthogonal;
 import java.util.Iterator;
 
 import arb.ComplexPolynomial;
-import arb.Real;
-import arb.domains.*;
+import arb.domains.Domain;
 import arb.functions.complex.HolomorphicFunction;
 
 /**

@@ -1,10 +1,12 @@
 package arb.functions.polynomials.orthogonal;
 
-import java.util.*;
+import java.util.Iterator;
 
-import arb.*;
-import arb.domains.*;
-import arb.functions.complex.*;
+import arb.ComplexPolynomial;
+import arb.Real;
+import arb.arb;
+import arb.domains.Domain;
+import arb.functions.complex.HolomorphicFunction;
 
 public class HermitePolynomials implements
                                 OrthogonalPolynomials

@@ -1,11 +1,13 @@
 package arb.geometry;
 
-import arb.differential.geometry.TangentBundle;
 import arb.geometry.curves.Circle;
 import arb.geometry.curves.Lemniscate;
-import arb.geometry.surfaces.*;
+import arb.geometry.surfaces.Plane;
+import arb.geometry.surfaces.Sphere;
+import arb.geometry.surfaces.Surface;
+import arb.geometry.surfaces.Torus;
 import arb.topological.TopologicalSpace;
-import arb.topological.spaces.*;
+import arb.topological.spaces.EuclideanSpace;
 
 /**
  * A {@link Manifold} is a {@link TopologicalSpace} that locally resembles

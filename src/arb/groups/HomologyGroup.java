@@ -1,6 +1,5 @@
 package arb.groups;
 
-import arb.theoretical.HomologyTheory;
 
 /**
  * @see HomologyTheory

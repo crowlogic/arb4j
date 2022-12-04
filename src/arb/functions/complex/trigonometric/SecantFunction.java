@@ -3,7 +3,6 @@ package arb.functions.complex.trigonometric;
 import static java.lang.Math.max;
 
 import arb.Complex;
-import arb.functions.complex.HolomorphicFunction;
 import arb.functions.complex.EvenFunction;
 
 /**

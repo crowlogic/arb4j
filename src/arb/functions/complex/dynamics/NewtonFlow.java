@@ -1,5 +1,7 @@
 package arb.functions.complex.dynamics;
 
+import static arb.ComplexConstants.prec;
+
 import arb.Complex;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.HolomorphicFunction;

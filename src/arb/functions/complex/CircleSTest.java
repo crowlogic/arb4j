@@ -1,7 +1,12 @@
 package arb.functions.complex;
 
-import arb.*;
-import arb.functions.real.*;
+import arb.Complex;
+import arb.Real;
+import arb.RealConstants;
+import arb.RealRootInterval;
+import arb.RootLocatorOptions;
+import arb.Roots;
+import arb.RoundingMode;
 import junit.framework.TestCase;
 
 public class CircleSTest extends
