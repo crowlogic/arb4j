@@ -31,6 +31,9 @@ public class CurveRenderer extends
   private final class AnimatedCurveRoutine extends
                                            AnimationTimer
   {
+    int tick  = 0;
+    int tickR = 0, tickG = 0, tickB = 0;
+
     @Override
     public void handle(long now)
     {
@@ -42,7 +45,27 @@ public class CurveRenderer extends
         t += 0.01;
         draw();
       }
-      g.setStroke(Color.rgb(randomEightBitInteger(), randomEightBitInteger(), randomEightBitInteger()));
+      g.setStroke(Color.rgb(randomEightBitInteger(tickR),
+                            randomEightBitInteger(tickG),
+                            randomEightBitInteger(tickB)));
+
+      System.out.format("%d,%d,%d\n", tickR, tickG, tickB);
+      if ((tickR + tickG + tickB) % 69 == 6)
+      {
+        tick++;
+      }
+      switch (tick % 3)
+      {
+      case 0:
+        tickR++;
+        return;
+      case 1:
+        tickG++;
+        return;
+      case 2:
+        tickB++;
+        return;
+      }
     }
   }
 
@@ -67,7 +90,7 @@ public class CurveRenderer extends
   Real                    realt      = new Real();
 
   Complex                 z          = new Complex();
-  private AnimationTimer curveAnimationRoutine;
+  private AnimationTimer  curveAnimationRoutine;
 
   @Override
   public void close() throws Exception
@@ -76,12 +99,13 @@ public class CurveRenderer extends
     z.close();
   }
 
-  private static int randomEightBitInteger()
+  private static int randomEightBitInteger(int tick)
   {
-    return (int) (Math.random() * 255);
+    return tick % 255;
+    // return (int) (Math.random() * 255);
   }
 
-  private Parent createContent()
+  private Parent setTheScene()
   {
     Pane root = new Pane();
     root.setPrefSize(W, H);
@@ -89,7 +113,7 @@ public class CurveRenderer extends
     Canvas canvas = new Canvas(W,
                                H);
     g = canvas.getGraphicsContext2D();
-    g.setLineWidth(3);
+    g.setLineWidth(20);
     root.setBackground(Background.fill(Color.BLACK));
 
     curveAnimationRoutine = new AnimatedCurveRoutine();
@@ -130,7 +154,7 @@ public class CurveRenderer extends
   @Override
   public void start(Stage stage) throws Exception
   {
-    Scene scene = new Scene(createContent());
+    Scene scene = new Scene(setTheScene());
 
     stage.setScene(scene);
     stage.show();
