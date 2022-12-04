@@ -28,6 +28,24 @@ public class CurveRenderer extends
                            AutoCloseable
 {
 
+  private final class AnimatedCurveRoutine extends
+                                           AnimationTimer
+  {
+    @Override
+    public void handle(long now)
+    {
+      if (!start)
+        return;
+
+      for (int i = 0; i < 15; i++)
+      {
+        t += 0.01;
+        draw();
+      }
+      g.setStroke(Color.rgb(randomEightBitInteger(), randomEightBitInteger(), randomEightBitInteger()));
+    }
+  }
+
   private static final int prec = 128;
   private static final int W    = 1280;
   private static final int H    = 720;
@@ -49,6 +67,7 @@ public class CurveRenderer extends
   Real                    realt      = new Real();
 
   Complex                 z          = new Complex();
+  private AnimationTimer curveAnimationRoutine;
 
   @Override
   public void close() throws Exception
@@ -73,24 +92,8 @@ public class CurveRenderer extends
     g.setLineWidth(3);
     root.setBackground(Background.fill(Color.BLACK));
 
-    AnimationTimer timer = new AnimationTimer()
-    {
-      @Override
-      public void handle(long now)
-      {
-        if (!start)
-          return;
-
-        for (int i = 0; i < 5; i++)
-        {
-          t += 0.01;
-          draw();
-        }
-        g.setStroke(Color.rgb(randomEightBitInteger(), randomEightBitInteger(), randomEightBitInteger()));
-      }
-
-    };
-    timer.start();
+    curveAnimationRoutine = new AnimatedCurveRoutine();
+    curveAnimationRoutine.start();
 
     root.getChildren().add(canvas);
     return root;
