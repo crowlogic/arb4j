@@ -38,7 +38,6 @@ module arb4j
   requires transitive JTransforms;
   requires transitive jlatexmath;
 
-  
   exports arb;
   exports arb.annotations;
   exports arb.algebra;
@@ -66,7 +65,6 @@ module arb4j
   exports arb.topological;
   exports arb.topological.spaces;
   exports arb.topology;
-  exports arb.topology.transformations;
   exports arb.measures;
   exports arb.operators;
   exports arb.stochastic;
