@@ -155,9 +155,7 @@ public abstract class ContinuousTimeState<S> implements
   public ContinuousTimeState<S> setdt(Real dt)
   {
     checkLock();
-    dt.printPrecision = true;
-    println("Setting " + this.getClass().getSimpleName() + ".dt to " + dt.toString(10));
-
+  
     this.dt.set(dt);
     return this;
   }
