@@ -47,9 +47,7 @@ public class CurveRenderer extends
         t += 0.001;
         draw();
       }
-      g.setStroke(Color.rgb(randomEightBitInteger(tickR),
-                            randomEightBitInteger(tickG),
-                            randomEightBitInteger(tickB)));
+      g.setStroke(Color.rgb(moduloEight(tickR), moduloEight(tickG), moduloEight(tickB)));
 
       System.out.format("%d,%d,%d\n", tickR, tickG, tickB);
       if ((tickR + tickG + tickB) % 42 == 6)
@@ -102,7 +100,7 @@ public class CurveRenderer extends
     z.close();
   }
 
-  private static int randomEightBitInteger(int tick)
+  private static int moduloEight(int tick)
   {
     return tick % 255;
     // return (int) (Math.random() * 255);
