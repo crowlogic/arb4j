@@ -7,7 +7,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import arb.viz.gl.entities.Camera;
 
 /** A class describing tools that handle input signals */
-public class Controller
+public class SurfacePlotController
 {
 
   private static Camera camera;

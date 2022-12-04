@@ -49,7 +49,7 @@ import static arb.viz.gl.Attributes.removeSurfaceUnit;
 
 import org.joml.Vector3f;
 
-import arb.viz.Controller;
+import arb.viz.SurfacePlotController;
 import arb.viz.gl.entities.Curve;
 import arb.viz.gl.entities.Surface;
 import arb.viz.gl.functions.BivariateVectorFunction;
@@ -375,7 +375,7 @@ public class GuiController
     OpenGLPane image = new OpenGLPane();
     image.setMinSize((double) display.getWidth() * display.getRenderPart(), display.getHeight());
     image.setRendererCallback(renderer);
-    Controller.initialize(image);
+    SurfacePlotController.initialize(image);
 
     root.add(image, 1, 1);
 

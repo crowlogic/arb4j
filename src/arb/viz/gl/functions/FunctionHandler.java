@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector3f;
 
-import arb.viz.Controller;
+import arb.viz.SurfacePlotController;
 import arb.viz.gl.Loader;
 import arb.viz.gl.entities.Curve;
 import arb.viz.gl.entities.Vector;
@@ -263,7 +263,7 @@ public class FunctionHandler
     {
       direction.normalize();
     }
-    Vector3f cameraPos = Controller.getCamera().getPosition();
+    Vector3f cameraPos = SurfacePlotController.getCamera().getPosition();
     Vector3f distance  = new Vector3f(cameraPos.x,
                                       cameraPos.y,
                                       cameraPos.z);

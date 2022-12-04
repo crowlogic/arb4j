@@ -151,16 +151,18 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     int  i  = state.index();
     Real xi = evaluationSequence.dimensions[dim].get(i);
     xi.printPrecision = true;
-  
+
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
     μi.mul(state.dt(), prec);
- 
 
     assert μi.isFinite();
 
     assert σorder > 0;
+    String stateBefore = state.toString();
     diffusionProcess.σ().evaluate(state, σorder, prec, σi);
-    assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. σi=" + σi + " state=" + state;
+    
+    assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. σi=" + σi + " state=" + state
+                  + " stateBefore=" + stateBefore;
 
     if (verbose)
     {

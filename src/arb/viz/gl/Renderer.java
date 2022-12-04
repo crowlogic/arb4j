@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import arb.utensils.Transformations;
-import arb.viz.Controller;
+import arb.viz.SurfacePlotController;
 import arb.viz.gl.entities.Curve;
 import arb.viz.gl.entities.Entity;
 import arb.viz.gl.entities.Light;
@@ -351,7 +351,7 @@ public class Renderer implements
     prepare();
     shader.start();
     shader.loadLights(lights);
-    shader.loadViewMatrix(Controller.getCamera());
+    shader.loadViewMatrix(SurfacePlotController.getCamera());
     renderSurfaces(surfaces, shader);
     renderCurves(curves, shader);
     renderVectors(vectors, shader);

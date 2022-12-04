@@ -43,7 +43,7 @@ import lwjgui.scene.layout.StackPane;
  * @author crow
  *
  */
-public class SurfacePlotter
+public class SurfaceRenderer
 {
 
   private long          window;
@@ -92,7 +92,7 @@ public class SurfacePlotter
   {
     GL.createCapabilities();
 
-    Controller.setCamera(new Camera());
+    SurfacePlotController.setCamera(new Camera());
     Renderer    renderer = new Renderer(display);
 
     List<Light> lights   = new ArrayList<>();
@@ -133,7 +133,7 @@ public class SurfacePlotter
     while (!glfwWindowShouldClose(window))
     {
       GuiController.update();
-      Controller.update();
+      SurfacePlotController.update();
 
       glfwPollEvents();
       LWJGUI.render();
@@ -144,7 +144,7 @@ public class SurfacePlotter
 
   public static void main(String[] args) throws IOException
   {
-    new SurfacePlotter().run();
+    new SurfaceRenderer().run();
   }
 
 }
