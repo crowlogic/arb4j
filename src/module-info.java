@@ -61,7 +61,6 @@ module arb4j
   exports arb.functions.complex.elliptic;
   exports arb.functions.complex.hyperbolic;
   exports arb.functions.complex.dynamics;
-  exports arb.functions.complex.elliptic.lemniscatic;
   exports arb.functions.complex.trigonometric;
   exports arb.groups;
   exports arb.topological;
