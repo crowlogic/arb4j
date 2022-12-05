@@ -120,9 +120,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     xi.printPrecision = true;
 
     diffusionProcess.μ().evaluate(state, 1, prec, μi);
+    assert μi.isFinite();
     μi.mul(state.dt(), prec);
 
-    assert μi.isFinite();
 
     assert σorder > 0;
     String stateBefore = state.toString();
