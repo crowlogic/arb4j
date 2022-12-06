@@ -20,6 +20,12 @@ import arb.topological.spaces.*;
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public Complex(Complex center)
+  {
+   this();
+   set(center);
+  }
+  
   public Complex log(int prec)
   {
     return log(prec,this);

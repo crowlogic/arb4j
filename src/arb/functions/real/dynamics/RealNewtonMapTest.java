@@ -5,6 +5,8 @@ import static java.lang.Math.pow;
 import static java.lang.System.err;
 import static java.lang.System.out;
 
+import java.util.ArrayList;
+
 import arb.Complex;
 import arb.FloatInterval;
 import arb.Real;
@@ -63,6 +65,9 @@ public class RealNewtonMapTest extends
   {
     out.println("===========testSOrbit===============");
 
+    ArrayList<Complex> coordinates = new ArrayList<>();
+    coordinates.add(new Complex());
+
     try ( Real c = Real.newVector(2); Real h = new Real("0.05",
                                                         128);
           CircularSFunction disc = new CircularSFunction(one,
@@ -94,7 +99,7 @@ public class RealNewtonMapTest extends
 
         disc.g.shift(a, prec, h);
         out.format("Shifted position to %s ", circle.center.toString());
-
+        coordinates.add(new Complex(circle.center));
         // value.getReal().set(value.getReal().doubleValue(RoundingMode.Near));
 
         disc.f.evaluate(circle.center, 2, prec, value);
@@ -105,6 +110,7 @@ public class RealNewtonMapTest extends
       err.println("TODO: check for divergence and enforce modulo π");
     }
 
+    out.println("coordinates= " + coordinates);
   }
 
   public Complex locateRoot(RealRootInterval interval, CircularSFunction radialVector)

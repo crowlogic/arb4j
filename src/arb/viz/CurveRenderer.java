@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import arb.Complex;
 import arb.Real;
 import arb.geometry.curves.Lemniscate;
+import arb.geometry.curves.PlaneCurve;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -28,13 +29,26 @@ public class CurveRenderer extends
                            AutoCloseable
 {
 
+  public CurveRenderer()
+  {
+    super();
+  }
+
+  public CurveRenderer(PlaneCurve curve)
+  {
+    super();
+    this.curve = curve;
+  }
+
   private final class AnimatedCurveRoutine extends
                                            AnimationTimer
   {
-    int tick  = 0;
-    int tickR = 0, tickG = 0, tickB = 0;
+    int         tick               = 0;
+    int         tock               = 0;
+    int         tickR              = 0, tickG = 0, tickB = 0;
 
-    int inc   = 1;
+    int         inc                = 1;
+    private int lineWidthDirection = 1;
 
     @Override
     public void handle(long now)
@@ -49,11 +63,28 @@ public class CurveRenderer extends
       }
       g.setStroke(Color.rgb(moduloEight(tickR), moduloEight(tickG), moduloEight(tickB)));
 
-      System.out.format("%d,%d,%d\n", tickR, tickG, tickB);
+      System.out.format("%d,%d,%d,%d\n", tickR, tickG, tickB, lineWidth);
+      tock++;
       if ((tickR + tickG + tickB) % 42 == 6)
       {
         tick++;
         inc = (int) (Math.random() * 4);
+      }
+      if (tock % 75 == 0)
+      {
+        lineWidth += lineWidthDirection;
+        if (lineWidth > 75)
+        {
+          lineWidthDirection *= -1;
+          lineWidth           = 40;
+        }
+        else if (lineWidth < 1)
+        {
+          lineWidthDirection *= -1;
+          lineWidth           = 1;
+        }
+        g.setLineWidth(lineWidth);
+
       }
       switch (tick % 3)
       {
@@ -80,18 +111,18 @@ public class CurveRenderer extends
   }
 
   private GraphicsContext g;
-  private double          t          = 0.0;
+  private double          t     = 0.0;
 
-  private double          oldX       = W / 2, oldY = H / 2;
+  private double          oldX  = W / 2, oldY = H / 2;
 
-  private boolean         start      = true;
+  private boolean         start = true;
 
-  Lemniscate              lemniscate = new Lemniscate();
+  PlaneCurve              curve = new Lemniscate();
 
-  Real                    realt      = new Real();
+  Real                    realt = new Real();
 
-  Complex                 z          = new Complex();
-  
+  Complex                 z     = new Complex();
+
   private AnimationTimer  curveAnimationRoutine;
 
   @Override
@@ -107,6 +138,8 @@ public class CurveRenderer extends
     // return (int) (Math.random() * 255);
   }
 
+  int lineWidth = 20;
+
   private Parent setTheScene()
   {
     Pane root = new Pane();
@@ -115,7 +148,7 @@ public class CurveRenderer extends
     Canvas canvas = new Canvas(W,
                                H);
     g = canvas.getGraphicsContext2D();
-    g.setLineWidth(20);
+    g.setLineWidth(lineWidth);
     root.setBackground(Background.fill(Color.BLACK));
 
     curveAnimationRoutine = new AnimatedCurveRoutine();
@@ -147,7 +180,7 @@ public class CurveRenderer extends
 
   private Point2D evaluateCurvePosition()
   {
-    lemniscate.evaluate(realt.set(t), 1, prec, z).mul(200, prec);
+    curve.evaluate(realt.set(t), 1, prec, z).mul(200, prec);
 
     return new Point2D(z.getReal().doubleValue(),
                        z.getImag().doubleValue());
