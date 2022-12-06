@@ -43,6 +43,7 @@ public class CurveRenderer extends
   private final class AnimatedCurveRoutine extends
                                            AnimationTimer
   {
+    private static final int maximumLineWidth = 75;
     int         tick               = 0;
     int         tock               = 0;
     int         tickR              = 0, tickG = 0, tickB = 0;
@@ -70,13 +71,13 @@ public class CurveRenderer extends
         tick++;
         inc = (int) (Math.random() * 4);
       }
-      if (tock % 75 == 0)
+      if (tock % ( lineWidthDirection == 1 ? 10 : 100 ) == 0)
       {
         lineWidth += lineWidthDirection;
-        if (lineWidth > 75)
+        if (lineWidth > maximumLineWidth)
         {
           lineWidthDirection *= -1;
-          lineWidth           = 40;
+          lineWidth           = 75;
         }
         else if (lineWidth < 1)
         {
@@ -180,7 +181,7 @@ public class CurveRenderer extends
 
   private Point2D evaluateCurvePosition()
   {
-    curve.evaluate(realt.set(t), 1, prec, z).mul(200, prec);
+    curve.evaluate(realt.set(t), 1, prec, z).mul(250, prec);
 
     return new Point2D(z.getReal().doubleValue(),
                        z.getImag().doubleValue());
