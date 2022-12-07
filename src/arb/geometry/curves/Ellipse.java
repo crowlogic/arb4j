@@ -32,7 +32,7 @@ public class Ellipse implements
   @Override
   public Complex evaluate(Real t, int order, int prec, Complex y)
   {
-    assert false : "implement y = a*cos(t)+ i*b*sin(t)";
+    assert false : "implement y = a*cos(t)+ i*b*sin(t) after the ExpressionCompiler is implemented";
     return null;
   }
 

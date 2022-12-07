@@ -32,7 +32,7 @@ public class LemniscateArcLength implements
   @Override
   public RealFunction inverse()
   {
-    assert false : "todo";
+    // TODO Auto-generated method stub
     return null;
   };
 
