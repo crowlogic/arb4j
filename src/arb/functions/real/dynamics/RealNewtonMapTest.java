@@ -79,7 +79,7 @@ public class RealNewtonMapTest extends
       a.printPrecision = true;
       a.π(prec).div(4, prec).neg(); // a=-π/4=-45°
       ComplexCircle circle = disc.g;
-      for (int i = 0; i < 14; i++)
+      for (int i = 0; i < 16; i++)
       {
         String initialAngle    = Double.toString(Math.toDegrees(a.doubleValue()));
         String initialPosition = circle.center.toString();
