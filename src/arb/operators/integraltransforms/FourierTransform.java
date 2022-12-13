@@ -43,16 +43,15 @@ public class FourierTransform<F extends RealFunction> implements
     {
       try ( Complex exponent = new Complex(); Real y = new Real(); Real q = new Real();)
       {
-        Real expi = exponent.getImag();
-        expi.π(integrandPrec).mul(2, integrandPrec, expi);
+        exponent.getImag()
+                .π(integrandPrec)
+                .mul(2, integrandPrec)
+                .negate()
+                .mul(ξ, integrandPrec)
+                .mul(x, integrandPrec);
 
-        expi.negate(expi);
-
-        expi.mul(ξ, integrandPrec, expi).mul(x, integrandPrec, expi);
-        q.set(x);
-        f.evaluate(q, integrandOrder, integrandPrec, y);
-        exponent.exp(integrandPrec, result).mul(y, integrandPrec, result);
-        return result;
+        return exponent.exp(integrandPrec, result)
+                       .mul(f.evaluate(q.set(x), integrandOrder, integrandPrec, y), integrandPrec);
       }
     }
 
