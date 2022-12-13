@@ -1,6 +1,15 @@
 * implement numerically integrated Fourier transform
-* intermittent SineFunctionTest failure.. one of the constants is
-getting over-written... implement lock() method with mprotect()
+
+* intermittent SineFunctionTest failure..  when running all unit tests but no failure when running single test
+
+junit.framework.AssertionFailedError: expected:<2.0> but was:<1.9130563965417182>
+	at junit@4.13.2/junit.framework.Assert.fail(Assert.java:57)
+	at junit@4.13.2/junit.framework.Assert.failNotEquals(Assert.java:329)
+	at junit@4.13.2/junit.framework.Assert.assertEquals(Assert.java:120)
+	at junit@4.13.2/junit.framework.Assert.assertEquals(Assert.java:129)
+	at junit@4.13.2/junit.framework.TestCase.assertEquals(TestCase.java:277)
+	at arb4j/arb.functions.complex.trigonometric.SineFunctionTest.testIntegration(SineFunctionTest.java:47)
+
 
 * Fast Fourier Transform API
 * use ErrorFunction to correct the numerically integrated Fourier transforms

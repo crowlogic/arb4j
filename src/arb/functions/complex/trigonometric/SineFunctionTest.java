@@ -24,7 +24,7 @@ public class SineFunctionTest extends
   }
 
   @SuppressWarnings("resource")
-  public void testIntegration()
+  public synchronized void testIntegration()
   {
     SineFunction       sine                       = new SineFunction();
     Magnitude          absoluteErrorToleranceGoal = new Magnitude().set(Math.pow(2, -77));
@@ -32,6 +32,8 @@ public class SineFunctionTest extends
     int                relativeAccuracyBitsGoal   = 80;
     int                precisionBits              = 160;
     options.verbose = true;
+    assertEquals(3.14,π.getReal().doubleValue(), 0.01 );
+    System.out.println( "fucking " + π );
     Complex two      = sine.integrate(ComplexConstants.ZERO,
                                       π,
                                       relativeAccuracyBitsGoal,
@@ -41,6 +43,7 @@ public class SineFunctionTest extends
                                       new Complex());
     Real    realPart = two.getReal();
     Real    imagPart = two.getImag();
+    System.out.println( "fucking " + two + " should equal 2");
     assertEquals(2, realPart.getMid().doubleValue(RoundingMode.Near), realPart.getRad().doubleValue());
     assertEquals(0, imagPart.getMid().doubleValue(), imagPart.getRad().doubleValue());
 

@@ -66,9 +66,10 @@ public class Complex implements VectorSpace<Complex>, Field<Complex>,Iterable<Co
     return pow(i,prec,this);
   }
 
-  public Complex negate()
+  public Complex negate(Complex res)
   {
-    return negate(this);
+    arb.acb_neg(res, this);
+    return res;
   }
 
   public String name;
@@ -237,10 +238,9 @@ public class Complex implements VectorSpace<Complex>, Field<Complex>,Iterable<Co
     return res; 
   }
   
-  public Complex negate(Complex res)
+  public Complex negate()
   {
-    arb.acb_neg(res, this);
-    return this;
+    return negate(this);
   }
   
   public Complex setIndeterminate()

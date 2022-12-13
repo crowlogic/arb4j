@@ -41,9 +41,10 @@ import arb.topological.spaces.*;
     return pow(i,prec,this);
   }
 
-  public Complex negate()
+  public Complex negate(Complex res)
   {
-    return negate(this);
+    arb.acb_neg(res, this);
+    return res;
   }
 
   public String name;
@@ -212,10 +213,9 @@ import arb.topological.spaces.*;
     return res; 
   }
   
-  public Complex negate(Complex res)
+  public Complex negate()
   {
-    arb.acb_neg(res, this);
-    return this;
+    return negate(this);
   }
   
   public Complex setIndeterminate()
