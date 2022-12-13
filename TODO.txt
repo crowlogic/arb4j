@@ -1,4 +1,7 @@
 * implement numerically integrated Fourier transform
+* intermittent SineFunctionTest failure.. one of the constants is
+getting over-written... implement lock() method with mprotect()
+
 * Fast Fourier Transform API
 * use ErrorFunction to correct the numerically integrated Fourier transforms
 * fix remaining memory leaks 
