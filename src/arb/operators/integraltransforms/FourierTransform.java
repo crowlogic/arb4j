@@ -41,7 +41,7 @@ public class FourierTransform<F extends RealFunction> implements
     @Override
     public Complex evaluate(Real x, int integrandOrder, int integrandPrec, Complex result)
     {
-      try ( Complex exponent = new Complex(); Real y = new Real(); Real q = new Real();)
+      try ( Complex exponent = new Complex(); Real y = new Real())
       {
         exponent.getImag()
                 .π(integrandPrec)
@@ -51,7 +51,7 @@ public class FourierTransform<F extends RealFunction> implements
                 .mul(x, integrandPrec);
 
         return exponent.exp(integrandPrec, result)
-                       .mul(f.evaluate(q.set(x), integrandOrder, integrandPrec, y), integrandPrec);
+                       .mul(f.evaluate(x, integrandOrder, integrandPrec, y), integrandPrec);
       }
     }
 
