@@ -64,7 +64,7 @@ public class CurveRenderer extends
       }
       g.setStroke(Color.rgb(moduloEight(tickR), moduloEight(tickG), moduloEight(tickB)));
 
-      System.out.format("%d,%d,%d,%d\n", tickR, tickG, tickB, lineWidth);
+     // System.out.format("%d,%d,%d,%d\n", tickR, tickG, tickB, lineWidth);
       tock++;
       if ((tickR + tickG + tickB) % 42 == 6)
       {
