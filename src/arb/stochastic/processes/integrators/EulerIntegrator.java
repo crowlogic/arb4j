@@ -152,22 +152,22 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
   {
     int i = state.index();
     assert i >= 0;
-    Real xi = evaluationSequence.dimensions[dim].get(i);
+    Real ξ = evaluationSequence.dimensions[dim].get(i);
 
-    xi.add(state.value(), prec);
-    if (nonNegative && xi.isNegative())
+    ξ.add(state.value(), prec);
+    if (nonNegative && ξ.isNegative())
     {
-      System.err.println("calculated variance = " + xi + " cannot be negative");
+      System.err.println("calculated variance = " + ξ + " cannot be negative");
       return false;
     }
     else
     {
       state.nextIndex();
-      state.setValue(xi);
+      state.setValue(ξ);
 
       if (verbose)
       {
-        System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n", i, state.time(), μi, σi, xi, state);
+        System.out.format("i=%s time=%s μi=%s σi=%s xi=%s\n state=%s\n", i, state.time(), μi, σi, ξ, state);
       }
 
       return true;
