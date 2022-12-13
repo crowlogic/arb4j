@@ -59,7 +59,7 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
     int       framesPerSecond = 30;
     double    secondsLong     = 3.75;
     final int frameCount      = (int) (framesPerSecond * secondsLong);
-    YRenderer renderer        = new YRenderer();
+    SRenderer renderer        = new SRenderer();
     renderer.colorMode   = 0;
     renderer.displayMode = Part.Blend;
     Real                                        scaleStart             = half;
@@ -85,10 +85,10 @@ public class AnimatedComplexFunctionSequencer<P extends ComplexFunctionRenderer>
                                                                                            scaleStop.toString(10),
                                                                                            percentComplete,
                                                                                            frame);
-                                                                         renderer.function.f.f.a.set(scale);
+                                                                         renderer.function.a.set(scale);
                                                                          renderer.initCache();
                                                                        };
-    AnimatedComplexFunctionSequencer<YRenderer> animator               = new AnimatedComplexFunctionSequencer(renderer,
+    AnimatedComplexFunctionSequencer<SRenderer> animator               = new AnimatedComplexFunctionSequencer(renderer,
                                                                                                               frameParameterAssigner,
                                                                                                               frameCount);
     animator.renderAnimatedSequence(renderer.function.toString() + ".avi", secondsLong, framesPerSecond);
