@@ -1,6 +1,6 @@
 #!/bin/sh -x
 
-export BASEDIR=$(dirname $(readlink -f $0))/..
+export BASEDIR=$(dirname $(realpath $0))/..
 
 cd $BASEDIR
 
