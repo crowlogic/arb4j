@@ -2,7 +2,7 @@
 
 basedir=$(dirname "$(dirname "$(realpath "$0")")")
 
-cd "$basedir"
+cd "$basedir" || exit
 
 export JAVA_HOME=${JAVA_HOME:-$(dirname "$(dirname "$(readlink -f "$(command -v javac)")")")}
 
