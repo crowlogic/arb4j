@@ -4,4 +4,6 @@ export BASEDIR=$(dirname $(readlink -f $0))/..
 
 cd $BASEDIR
 
+export JAVA_HOME=${JAVA_HOME:-$(dirname "$(dirname "$(readlink -f "$(command -v javac)")")")}
+
 make
