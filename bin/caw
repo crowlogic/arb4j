@@ -1,8 +1,8 @@
 #!/bin/sh -x
 
-export BASEDIR=$(dirname $(realpath $0))/..
+export BASEDIR=$(dirname "$(dirname "$(realpath "$0")")")
 
-cd $BASEDIR
+cd "$BASEDIR"
 
 export JAVA_HOME=${JAVA_HOME:-$(dirname "$(dirname "$(readlink -f "$(command -v javac)")")")}
 
