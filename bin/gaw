@@ -1,9 +1,12 @@
 #!/bin/sh -x
 
 basedir=$(dirname "$(dirname "$(realpath "$0")")")
+
 cd "$basedir" || exit
+
 includes="-I/usr/include/x86_64-linux-gnu -I/usr/include/linux -I/usr/include/flint -I/usr/include -I/usr/include/i386-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/11/include/"
+
 swig -v -java -package arb -outdir src/arb $includes native/arb.i
 #swig -debug-classes -v -java -package arb -outdir src/arb $includes native/arb.i
-"$basedir"/bin/caw
 
+"$basedir"/bin/caw
