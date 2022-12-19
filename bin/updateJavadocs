@@ -6,7 +6,7 @@ cd "$fmdir" || exit
 
 mvn javadoc:javadoc
 
-cp -vr target/site/apidocs/. ../arb4j-pages/
+cp -R target/site/apidocs ../arb4j-pages/
 
 cd ../arb4j-pages || exit
 
