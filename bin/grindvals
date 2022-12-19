@@ -1,7 +1,7 @@
 #!/bin/sh -x
 
-BASEDIR=$(dirname $(dirname $(realpath $0)))
+BASEDIR=$(dirname "$(dirname "$(realpath "$0")")")
 
-cd $BASEDIR
+cd "$BASEDIR"
 
-valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.suppress --log-file=valgrind.log -v $@
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.suppress --log-file=valgrind.log -v "$@"
