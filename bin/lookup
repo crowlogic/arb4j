@@ -1,3 +1,6 @@
 #!/bin/sh
 
-dict "$@" 2>&1 | tee ~/words/"$@".txt
+for word in "$@"
+do
+    dict "$word" 2>&1 | tee ~/words/"$word".txt
+done
