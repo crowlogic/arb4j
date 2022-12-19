@@ -2,6 +2,6 @@
 
 fmdir=$(dirname "$(dirname "$(realpath "$0")")")
 
-cd "$fmdir"
+cd "$fmdir" || exit
 
 mvn dependency:build-classpath

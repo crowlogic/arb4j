@@ -2,13 +2,13 @@
 
 fmdir=$(dirname "$(dirname "$(realpath "$0")")")
 
-cd "$fmdir"
+cd "$fmdir" || exit
 
 mvn javadoc:javadoc
 
 cp -vr target/site/apidocs/. ../arb4j-pages/
 
-cd ../arb4j-pages
+cd ../arb4j-pages || exit
 
 git add .
 

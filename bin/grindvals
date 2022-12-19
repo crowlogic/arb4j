@@ -2,6 +2,6 @@
 
 basedir=$(dirname "$(dirname "$(realpath "$0")")")
 
-cd "$basedir"
+cd "$basedir" || exit
 
 valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.suppress --log-file=valgrind.log -v "$@"

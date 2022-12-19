@@ -2,7 +2,7 @@
 
 basedir=$(dirname "$(dirname "$(realpath "$0")")")
 
-cd "$basedir"
+cd "$basedir" || exit
 
 gaw
 
