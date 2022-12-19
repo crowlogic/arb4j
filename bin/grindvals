@@ -1,6 +1,6 @@
 #!/bin/sh -x
 
-BASEDIR=$(dirname $(dirname $(readlink -f $0)))
+BASEDIR=$(dirname $(dirname $(realpath $0)))
 
 cd $BASEDIR
 
