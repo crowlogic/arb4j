@@ -1,8 +1,8 @@
 #!/bin/sh -x
 
-FMDIR=$(dirname "$(dirname "$(realpath "$0")")")
+fmdir=$(dirname "$(dirname "$(realpath "$0")")")
 
-cd "$FMDIR"
+cd "$fmdir"
 
 mvn javadoc:javadoc
 

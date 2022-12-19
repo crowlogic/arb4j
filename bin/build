@@ -1,8 +1,8 @@
 #!/bin/sh
 
-BASEDIR=$(dirname "$(dirname "$(realpath "$0")")")
+basedir=$(dirname "$(dirname "$(realpath "$0")")")
 
-cd "$BASEDIR"
+cd "$basedir"
 
 gaw
 

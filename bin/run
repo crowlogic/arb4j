@@ -1,7 +1,7 @@
 #!/bin/sh 
 
-BASEDIR=$(dirname "$(dirname "$(realpath "$0")")")
+basedir=$(dirname "$(dirname "$(realpath "$0")")")
 
-CLASSPATH=$(cat "$BASEDIR"/class.path)
+classpath=$(cat "$basedir"/class.path)
 
-LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 java --enable-preview -Djava.library.path="$BASEDIR" -ea -classpath "$CLASSPATH":"$BASEDIR"/target/classes "$@"
+ld_preload=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 java --enable-preview -Djava.library.path="$basedir" -ea -classpath "$classpath":"$basedir"/target/classes "$@"

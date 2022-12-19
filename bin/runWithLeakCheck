@@ -1,9 +1,9 @@
 #!/bin/sh -x
 
-BASEDIR=$(dirname "$(dirname "$(realpath "$0")")")
+basedir=$(dirname "$(dirname "$(realpath "$0")")")
 
-CLASSPATH=$(cat "$BASEDIR"/class.path)
+classpath=$(cat "$basedir"/class.path)
 
-ARGS='-ea --enable-preview --enable-native-access=arb4j --add-modules=javafx.graphics --add-reads javafx.graphics=ALL-UNNAMED --add-opens javafx.controls/com.sun.javafx.charts=ALL-UNNAMED --add-opens javafx.controls/com.sun.javafx.scene.control.inputmap=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.iio=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.iio.common=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.css=ALL-UNNAMED --add-opens javafx.base/com.sun.javafx.runtime=ALL-UNNAMED --add-exports javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.scene.traversal=ALL-UNNAMED'
+args='-ea --enable-preview --enable-native-access=arb4j --add-modules=javafx.graphics --add-reads javafx.graphics=ALL-UNNAMED --add-opens javafx.controls/com.sun.javafx.charts=ALL-UNNAMED --add-opens javafx.controls/com.sun.javafx.scene.control.inputmap=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.iio=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.iio.common=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.css=ALL-UNNAMED --add-opens javafx.base/com.sun.javafx.runtime=ALL-UNNAMED --add-exports javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED --add-exports javafx.graphics/com.sun.javafx.scene.traversal=ALL-UNNAMED'
 
-grindvals $ARGS -Djava.library.path="$BASEDIR" -classpath "$CLASSPATH":"$BASEDIR"/target/classes "$@"
+grindvals $args -Djava.library.path="$basedir" -classpath "$classpath":"$basedir"/target/classes "$@"
