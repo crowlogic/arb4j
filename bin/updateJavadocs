@@ -1,6 +1,6 @@
 #!/bin/sh -x
 
-FMDIR=$(dirname $(readlink -f $0))/..
+FMDIR=$(dirname $(dirname $(readlink -f $0)))
 
 cd $FMDIR
 
