@@ -1,9 +1,7 @@
 #!/bin/sh 
 
-
 BASEDIR=$(dirname $(readlink -f $0))/..
+
 CLASSPATH=`cat $BASEDIR/class.path`
+
 LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2 java --enable-preview -Djava.library.path=$BASEDIR -ea -classpath $CLASSPATH:$BASEDIR/target/classes $@
-
-
-

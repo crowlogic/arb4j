@@ -1,9 +1,13 @@
 #!/bin/sh
 
 BASEDIR=$(dirname $(readlink -f $0))/..
+
 cd $BASEDIR
 
 gaw
+
 mvn install
+
 updateJavadocs
+
 updateClasspath
