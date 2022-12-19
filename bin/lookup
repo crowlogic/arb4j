@@ -1,6 +1,10 @@
 #!/bin/sh
 
+d=${HOME}/words
+
+mkdir -p "$d"
+
 for word in "$@"
 do
-    dict "$word" 2>&1 | tee ~/words/"$word".txt
+    2>&1 dict "$word" | tee "$d"/"$word".txt
 done
