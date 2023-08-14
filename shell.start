@@ -1,0 +1,18 @@
+import arb.Real;
+import static arb.RealConstants.*;
+import static arb.ComplexConstants.*;
+import arb.RealConstants;
+import arb.ComplexConstants;
+import arb.Magnitude;
+import arb.Float;
+import arb.Complex;
+import arb.functions.real.RealFunction;
+import arb.functions.complex.numbertheoretic.ZFunction;
+import static arb.utensils.ShellCommands.plot;
+import static arb.utensils.ShellCommands.eval;
+import arb.IntegrationOptions;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import static arb.expressions.Expression.express;
+
+ZFunction Z = new ZFunction();

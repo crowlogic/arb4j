@@ -1,0 +1,10 @@
+#!/bin/sh 
+
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+CLASSPATH=`cat $BASEDIR/class.path`:$BASEDIR/target/classes
+java --enable-preview -Djava.library.path=$BASEDIR -ea --module-path $CLASSPATH --add-modules javafx.controls -classpath $CLASSPATH $@
+# --enable-native-access=arb4j  is only required if using the java.incubator.foreign module
+
+
+

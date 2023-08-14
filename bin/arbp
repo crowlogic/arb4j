@@ -1,0 +1,10 @@
+#!/bin/sh 
+
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+CLASSPATH=`cat $BASEDIR/class.path`:$BASEDIR/target/classes
+javap --module-path $CLASSPATH -classpath $CLASSPATH $@ | colorit -c $BASEDIR/javap.colorit.conf
+
+
+
+

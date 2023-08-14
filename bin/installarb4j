@@ -1,0 +1,11 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+cd $BASEDIR
+
+make
+updateJavadocs &
+updateClasspath &
+mvn install -Dmaven.test.skip=true
+
+

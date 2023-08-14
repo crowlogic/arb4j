@@ -1,0 +1,5 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+
+find $BASEDIR/src -name "*Test.java" | xargs -I X grep -H println X

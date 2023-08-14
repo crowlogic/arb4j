@@ -1,0 +1,46 @@
+package arb.stochastic.processes;
+
+import static arb.RealConstants.*;
+import static arb.utensils.Utensils.println;
+
+import arb.*;
+import junit.framework.TestCase;
+
+public class WienerProcessTest extends
+                               TestCase
+{
+  public static final int prec = 128;
+
+  public void testunitσ()
+  {
+    testσ(one);
+  }
+
+  public void testσ()
+  {
+    testσ(new Real("3",
+                   128));
+  }
+
+  protected static void testσ(Real three)
+  {
+    try ( BrownianMotion wienerProcess = new BrownianMotion(three))
+    {
+      DiffusionProcessState state = new DiffusionProcessState(new RandomState(41));
+      state.setTime(zero);
+      state.setTime(half);
+      Real drift = wienerProcess.μ().evaluate(state, 1, prec, new Real());
+      assertTrue(drift.isZero());
+      Real diffusion      = wienerProcess.σ().evaluate(state, 1, prec, new Real());
+      Real sqrtHalfTimesσ = half.sqrt(prec, new Real()).mul(three, prec);
+      diffusion.printPrecision      = true;
+      sqrtHalfTimesσ.printPrecision = true;
+      println("sqrtHalfTimesσ=" + sqrtHalfTimesσ.toString() + "\n     diffusion=" + diffusion.toString());
+      assertTrue(diffusion.getRad().sub(sqrtHalfTimesσ.getRad(), new Magnitude()).doubleValue() < Math.pow(10, -45));
+      assertTrue(diffusion.getMid().toString(80) + " != " + sqrtHalfTimesσ.getMid().toString(80),
+                 diffusion.getMid().equals(sqrtHalfTimesσ.getMid()));
+      assertTrue(diffusion.toString(80) + " != " + sqrtHalfTimesσ.toString(80), diffusion.equals(sqrtHalfTimesσ));
+    }
+  }
+
+}

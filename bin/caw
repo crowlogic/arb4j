@@ -1,0 +1,7 @@
+#!/bin/sh -x
+
+export BASEDIR=$(dirname $(readlink -f $0))/..
+
+cd $BASEDIR
+
+make

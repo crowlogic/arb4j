@@ -1,0 +1,29 @@
+PRIORITIES
+
+1. don't generate fields for variables that aren't accessed, that way set of 
+variables can be however big without cluttering up the generated code
+
+2. constant expressions that dont have an input can be automatically evaluated 
+to the field type instead of a function
+
+3. Real types
+
+4. Complex types
+
+5. Mixed Real -> Complex and Complex -> Real types 
+
+6. Other Fields like the Field of Rationals, which will require swig 
+   mappings for the corresponding flint structures... it's not a big 
+   priority right now
+
+
+
+
+
+
+
+   
+   
+   
+   
+   	

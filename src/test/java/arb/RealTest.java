@@ -1,0 +1,229 @@
+package arb;
+
+import static arb.RealConstants.one;
+import static arb.utensils.Utensils.println;
+import static java.lang.System.out;
+
+import arb.stochastic.GaussianDistribution;
+import arb.stochastic.processes.CorrelatedRandomVectorGenerator;
+import junit.framework.TestCase;
+
+public class RealTest extends
+                      TestCase
+{
+
+  private static final int prec = 128;
+
+  public void testOneIsExact()
+  {
+    assertTrue(RealConstants.one.isExact());
+  }
+
+  public void testVarianceStructure()
+  {
+    int        N            = 10;
+    final Real realInstance = Real.newVector(N, "testInstance");
+    for (int i = 0; i < N; i++)
+    {
+      realInstance.get(i).set(i);
+    }
+    Real varianceStructure = realInstance.varianceStructure(5, 128, new Real());
+    varianceStructure.printPrecision = true;
+
+    // Actual expected calculations
+    Real expected = Real.newVector(N, "expected");
+    for (int i = 1; i <= N; i++)
+    {
+      expected.get(i - 1).set(i * i); // Squared values
+    }
+
+    for (int i = 0; i < N / 2; i++)
+    {
+      Real   gammaVarianceResult = varianceStructure.get(i);
+      double expectation         = expected.get(i).doubleValue();
+      double gammaVariance       = gammaVarianceResult.doubleValue();
+      assertEquals(expectation, gammaVariance, 0.0001);
+    }
+
+  }
+
+  public void testGammaVariance()
+  {
+    int        N            = 10;
+    int        prec         = 128;
+
+    final Real realInstance = Real.newVector(N, "testInstance");
+    for (int i = 0; i < N; i++)
+    {
+      realInstance.get(i).set(i);
+    }
+
+    // Actual expected calculations
+    Real expected = Real.newVector(N, "expected");
+    for (int i = 0; i < N; i++)
+    {
+      expected.get(i).set(i * i); // Squared values
+    }
+
+    // Initialize result outside of loop to prevent memory leaks
+    Real result = new Real();
+
+    // Call gammaVariance for each element and check the result
+    for (int i = 0; i < N / 2; i++)
+    {
+      Real   gammaVarianceResult = realInstance.gammaVariance(i, prec, result);
+      double expectation         = expected.get(i).doubleValue();
+      double gammaVariance       = gammaVarianceResult.doubleValue();
+      assertEquals(expectation, gammaVariance, 0.0001);
+    }
+  }
+
+  public void testSub()
+  {
+    final int bits = 128;
+    try ( // Test case for a positive subtrahend
+          Real real1 = new Real(5.0))
+    {
+      Real result1 = new Real();
+      real1.sub(3, bits, result1);
+      assertEquals(2.0, result1.doubleValue(), 0.01);
+    }
+    try ( // Test case for a negative subtrahend
+          Real real2 = new Real(5.0))
+    {
+      Real result2 = new Real();
+      real2.sub(-3, bits, result2);
+      assertEquals(8.0, result2.doubleValue(), 0.01);
+    }
+  }
+
+  public void testAdd()
+  {
+    final int bits = 128;
+    try ( // Test case for a positive addend
+          Real real1 = new Real(5.0))
+    {
+      Real result = new Real();
+      real1.add(3, bits, result);
+      assertEquals(8.0, result.doubleValue(), 0.01);
+    }
+    try ( // Test case for a negative addend
+          Real real2 = new Real(5.0))
+    {
+      Real result2 = new Real();
+      real2.add(-3, bits, result2);
+      assertEquals(2.0, result2.doubleValue(), 0.01);
+    }
+  }
+
+  public void testDotProduct()
+  {
+    try ( Real real1 = Real.newVector(3); Real real2 = Real.newVector(3);)
+    {
+      for (int i = 0; i < 3; i++)
+      {
+        real1.get(i).set(i + 1);
+        real2.get(i).set(i + 4);
+      }
+
+      out.println("real1=" + real1);
+      out.println("real2=" + real2);
+
+      // as per calculation, 1*4 + 2*5 + 3*6 = 32
+      try ( Real expectedDotProduct = new Real(); Real result = new Real();)
+      {
+        expectedDotProduct.set(32);
+        real1.dotProduct(real2, prec, result);
+
+        assertEquals(expectedDotProduct, result);
+      }
+    }
+  }
+
+  public static void testCorrelation()
+  {
+    RandomState randomState      = new RandomState(777);
+    RealMatrix  covarianceMatrix = RealMatrix.newMatrix(2, 2);
+    Real        meanVector       = Real.newVector(2);
+    covarianceMatrix.get(0, 0).set(covarianceMatrix.get(1, 1).one());
+    covarianceMatrix.get(1, 0).set(covarianceMatrix.get(0, 1).set("-0.75", prec));
+
+    try ( CorrelatedRandomVectorGenerator rvgen = new CorrelatedRandomVectorGenerator(meanVector,
+                                                                                      covarianceMatrix,
+                                                                                      prec,
+                                                                                      randomState))
+    {
+      RealMatrix x = RealMatrix.newMatrix(1000, 2);
+
+      for (Real element : x)
+      {
+        rvgen.nextElement(prec, element);
+      }
+      println("sqrt correlation=" + rvgen.getRootMatrix());
+
+      Real dW1 = x.copyCol(0, Real.newVector(x.getNumRows())).normalize(prec);
+      Real dW2 = x.copyCol(1, Real.newVector(x.getNumRows())).normalize(prec);
+
+      Real cov = dW1.covariance(dW2, prec, new Real());
+      cov.printPrecision = true;
+      println("covariance " + cov);
+
+      assertEquals(covarianceMatrix.get(0, 1).doubleValue(), cov.doubleValue(), 0.006);
+    }
+  }
+
+  public static void testCovariance()
+  {
+    Real r = Real.newVector(3);
+    r.get(0).set("1.3", prec);
+    r.get(1).set("2.3", prec);
+    r.get(2).set("3.3", prec);
+    Real sumOfrSquares = r.covariance(r, prec, new Real());
+    assertEquals(0.66666666666666666667, sumOfrSquares.doubleValue(), Math.pow(10, -20));
+  }
+
+  public static void testCovariance2()
+  {
+    Real r = Real.newVector(3);
+    r.get(0).set("1", prec);
+    r.get(1).set("2", prec);
+    r.get(2).set("3", prec);
+    Real p = Real.newVector(3);
+    p.get(0).set("4", prec);
+    p.get(1).set("5", prec);
+    p.get(2).set("6", prec);
+    Real sumOfrSquares = r.covariance(p, prec, new Real());
+    assertEquals(0.66666666666666666667, sumOfrSquares.doubleValue(), Math.pow(10, -20));
+
+  }
+
+  public static void testNormalize()
+  {
+    Real r = Real.newVector(100000);
+    r.randomlyGenerate(new GaussianDistribution(RealConstants.zero,
+                                                new Real("2",
+                                                         128)),
+                       new RandomState(2022),
+                       prec);
+    assertEquals(2, r.standardDeviation(128, new Real()).doubleValue(), 0.01);
+    r.normalize(prec, r);
+    assertEquals(1, r.standardDeviation(128, new Real()).doubleValue(), Math.pow(10, -15));
+  }
+
+  public static void testVecScalarSub()
+  {
+    Real r = Real.newVector(3);
+    r.get(0).set("1.3", prec);
+    r.get(1).set("2.3", prec);
+    r.get(2).set("3.3", prec);
+    Real rMinusOne = r.vecScalarSub(one, 128, Real.newVector(3));
+    println(rMinusOne);
+    assertEquals(3.9, rMinusOne.Σ(128, new Real()).doubleValue());
+  }
+
+  public void testLinearRegression()
+  {
+
+  }
+
+}

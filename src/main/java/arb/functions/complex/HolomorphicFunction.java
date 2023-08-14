@@ -1,0 +1,239 @@
+package arb.functions.complex;
+
+import static java.lang.Math.max;
+
+import arb.*;
+import arb.exceptions.NotDifferentiableException;
+import arb.exceptions.NotIntegrableException;
+import arb.functions.Function;
+import arb.functions.RealToComplexFunction;
+import arb.functions.real.*;
+import arb.utensils.Utensils;
+
+/**
+ * <pre>
+ * A HolomorphicFunction is a complex-valued function that is holomorphic, i.e.
+ * complex differentiable at every point within its domain. This interface
+ * provides methods for computing line integrals along curves, computing the
+ * absolute value of this function, computing the adjoint of this function,
+ * computing its imaginary part, and computing its antiderivative. It also
+ * provides a method for checking if this function is invertible with a unique
+ * inverse.
+ * 
+ * The Cauchy-Riemann equations are a set of necessary conditions for a function
+ * to be analytic in a region of the complex plane. They are expressed in terms
+ * of the partial derivatives of the function with respect to the real and
+ * imaginary parts of the input variable.
+ * 
+ * Specifically, if a function f(z) = u(x, y) + iv(x, y) is analytic in a region
+ * of the complex plane, then it satisfies the Cauchy-Riemann equations:
+ * 
+ * ∂u/∂x = +∂v/∂y 
+ * ∂u/∂y = -∂v/∂x
+ * 
+ * where z = x + iy and ∂/∂x and ∂/∂y denote the partial derivatives with
+ * respect to x and y, respectively.
+ * 
+ * These equations are important because they provide a way to check if a given
+ * function is analytic in a region of the complex plane. In particular, if the
+ * partial derivatives of a function satisfy the Cauchy-Riemann equations, then
+ * the function is analytic in that region.
+ * </pre>
+ */
+public interface HolomorphicFunction extends
+                                     Function<Complex, Complex>
+{
+  /**
+   * The proper term to describe a function that maps from the set of real numbers
+   * (R) to the set of complex numbers (C) is a "real-valued function" or a
+   * "real-to-complex function." This indicates that the function takes a real
+   * number as input and produces a complex number as output.
+   * 
+   * If you're referring to a specific type of function that maps from the real
+   * part of a complex number to another complex number, you could describe it as
+   * a "real part mapping function" or a "real part to complex mapping function."
+   * This would emphasize that the input is the real component of a complex number
+   * and the output is a complex number.
+   * 
+   * However, it's important to note that the terminology used can vary depending
+   * on the context and the specific field of study. Different disciplines may
+   * have their own conventions and terminology for describing functions with
+   * specific input and output types.
+   * 
+   * @return new instance of {@link RealPartOfHolomorphicMapping} which converts
+   *         the function from C->C to a function from R->C where R is the real
+   *         part of this functionF
+   */
+  public default RealToComplexFunction asRealToComplexFunction()
+  {
+    return new RealPartOfHolomorphicMapping(this);
+  }
+
+  /**
+   * *
+   * 
+   * @return this{@link #asRealToComplexFunction()}{@link #realPart()}
+   */
+  public default RealFunction asRealToRealFunction()
+  {
+    return asRealToComplexFunction().realPart();
+  }
+
+  /**
+   * *
+   * 
+   * @return this{@link #asRealToComplexFunction()}{@link #imagPart()}
+   */
+  public default RealFunction asRealToImaginaryPart()
+  {
+    return asRealToComplexFunction().imagPart();
+  }
+
+  /**
+   * Calculates the line integral of this holomorphic function along a given curve
+   * using numerical integration with Gauss-Kronrod quadrature via
+   * {@link RealToComplexFunction#integrate(Real, Real, int, Magnitude, IntegrationOptions, int, Complex)}
+   * 
+   * @param curve                      the curve of integration represented as a
+   *                                   Function<Real, Complex>
+   * @param left                       the left endpoint of the interval of
+   *                                   integration along the curve
+   * @param right                      the right endpoint of the interval of
+   *                                   integration along the curve
+   * @param relativeAccuracyBitsGoal   the desired relative accuracy in bits of
+   *                                   the numerical integration
+   * @param absoluteErrorToleranceGoal the desired absolute error tolerance of the
+   *                                   numerical integration
+   * @param options                    additional options for the numerical
+   *                                   integration
+   * @param bits                       the number of bits of working precision to
+   *                                   use during the integration
+   * @param res                        a Complex object to store the result of the
+   *                                   integration
+   * @return the value of the line integral
+   * @throws NotIntegrableException if the function is not integrable
+   */
+  public default Complex integrateAlongLine(Function<Real, Complex> curve,
+                                            Real left,
+                                            Real right,
+                                            int relativeAccuracyBitsGoal,
+                                            Magnitude absoluteErrorToleranceGoal,
+                                            IntegrationOptions options,
+                                            int bits,
+                                            Complex res)
+  {
+
+    RealToComplexFunction integrand = (t, order, prec, w) -> evaluate(curve.evaluate(t, 0, prec, w), order, prec, w);
+
+    return integrand.integrate(left,
+                               right,
+                               relativeAccuracyBitsGoal,
+                               absoluteErrorToleranceGoal,
+                               options,
+                               bits,
+                               res);
+
+  }
+
+  /**
+   * @return function which returns the absolute value of this function
+   */
+  public default Function<Complex, Real> abs()
+  {
+    Function<Complex, Real> function = (z, order, prec, w) ->
+    {
+      order = max(1, order);
+      assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
+      try ( Complex x = new Complex())
+      {
+        HolomorphicFunction.this.evaluate(z, order, prec, x).abs(prec, w);
+      }
+      return w;
+    };
+    return function;
+  }
+
+  public default HolomorphicFunction differential() throws NotDifferentiableException
+  {
+    return new TaylorShift(this);
+  }
+
+  /**
+   * 
+   * @return 1 if this function is invertible with a unique inverse
+   */
+  public default int getInverseBranchCount()
+  {
+    return 1;
+  }
+
+  public default ImaginaryHolomorphicPart imaginaryPart()
+  {
+    return new ImaginaryHolomorphicPart(this);
+  }
+
+  /**
+   * An <b>antiderivative<b>, <b>inverse derivative</b>, <b>primitive
+   * function</b>, <b>primitive integral</b> or <b>indefinite integral</b> of a
+   * function f is a differentiable function F whose derivative is equal to the
+   * original function f. This can be stated symbolically as F' = f.
+   * 
+   * @return ∫this which should satisfy
+   *         this{@link #integral()}{@link #differential()} == this ==
+   *         this{@link #differential()}{@link #integral()}
+   */
+  public default HolomorphicFunction integral() throws NotIntegrableException
+  {
+    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
+  }
+
+  /**
+   * get an inverse branch. TODO: how to specify the domain of the n-th branch?
+   * 
+   * @param branch starting at 0 which is the principal and only branch for
+   *               properly invertible functions
+   * 
+   * @return the n-th branch of the inverse function f^-1(x)={y:f(y)=x}
+   */
+  public default HolomorphicFunction inverse(int branch)
+  {
+    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
+  }
+
+  /**
+   * 
+   * @param z
+   * @return the multiplicity of the root at the point z, or 0 if there is no root
+   *         there
+   */
+  public default int multiplicityOfRoot(Complex z)
+  {
+    return 1;
+    // throw new UnsupportedOperationException(getClass() + "TODO: return the
+    // multiplicity of the root at the point " + z + " here, or throw an exception
+    // or something if there isn't a root at the requested point within whatever
+    // uncertainty radius is there");
+  }
+
+  public default RealHolomorphicPart realPart()
+  {
+    return new RealHolomorphicPart(this);
+  }
+
+  /**
+   * Calculate the simple quadrature f([a,b])*(b-a) where
+   * f=this{@link #evaluate(Complex, int, int, Complex)} with a single function
+   * evaluation
+   * 
+   * @param a
+   * @param b
+   * @param prec
+   * @param res
+   * @return res
+   */
+  public default Complex simpleQuadrature(Complex a, Complex b, int prec, Complex res)
+  {
+    return Utensils.calculateSimpleQuadrature(this, a, b, prec, res);
+  }
+
+}
