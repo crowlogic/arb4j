@@ -7,9 +7,14 @@ public class BesselFunctionOfTheFirstKind implements
                                           RealFunction
 {
 
+  /**
+   * Copy constructor
+   * 
+   * @param ν
+   */
   public BesselFunctionOfTheFirstKind(Real ν)
   {
-    this.ν = ν;
+    this.ν.set(ν);
   }
 
   public BesselFunctionOfTheFirstKind(int ν)
