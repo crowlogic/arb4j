@@ -6,6 +6,15 @@ import static arb.arblib.*;
 %typemap(javafinalize) acb_mat_struct ""
 %typemap(javainterfaces) acb_mat_struct "AutoCloseable"
 
+/**
+ * <pre>
+ * Copyright ©2023 Stephen Crowley
+ *  
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre>
+ */
 %typemap(javacode) acb_mat_struct %{
 
   /**

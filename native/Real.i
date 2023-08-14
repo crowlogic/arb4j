@@ -54,6 +54,14 @@ import arb.stochastic.ProbabilityDistributionFunction;
  * Finally, it includes methods to get the size of the memory allocated for the
  * object and clean up the resources used by the instance.
  * </pre>
+ *
+ * <pre>
+ * Copyright ©2023 Stephen Crowley
+ *  
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre> 
  */
 %}
 %typemap(javacode) arb_struct %{
