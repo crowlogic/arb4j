@@ -124,9 +124,7 @@ public class Utensils
                                                             boolean verbose)
   {
     int precs[] = new int[FLINT_BITS];
-    int i, iters, workingPrecision, startPrec;
-
-    startPrec = root.relAccuracyBits();
+    int iters, startPrec = root.relAccuracyBits();
 
     if (verbose)
     {
@@ -247,115 +245,6 @@ public class Utensils
     }
   }
 
-  /**
-   * Performs a bisection operation on a given interval of a holomorphic function,
-   * refining the integration by dividing the interval into two subintervals and
-   * evaluating the function on each subinterval using simple quadrature.
-   * 
-   * @param f                   The holomorphic function to be bisected.
-   * @param relAccuracyGoalBits The desired relative accuracy in bits.
-   * @param prec                The precision to be used in calculations.
-   * @param tmpMag              Temporary magnitude used for calculations.
-   * @param newTol              New tolerance magnitude updated during the
-   *                            bisection.
-   * @param depth               The current depth of bisection.
-   * @param top                 The top element in the interval stack.
-   * @param evalCount           An AtomicLong counter for function evaluations.
-   * @param left                Complex array storing the left endpoints of
-   *                            intervals.
-   * @param right               Complex array storing the right endpoints of
-   *                            intervals.
-   * @param values              Complex array storing function values.
-   * @param errors              Magnitude array storing error magnitudes.
-   * @param topErrors           Magnitude array storing the top error magnitudes.
-   * @param debug
-   */
-  public static void bisect(HolomorphicFunction f,
-                            int relAccuracyGoalBits,
-                            int prec,
-                            Magnitude tmpMag,
-                            Magnitude newTol,
-                            int depth,
-                            int top,
-                            AtomicLong evalCount,
-                            Complex left,
-                            Complex right,
-                            Complex values,
-                            Magnitude errors,
-                            Magnitude topErrors,
-                            boolean debug)
-  {
-
-    Complex lefttop  = left.get(top);
-    Complex righttop = right.get(top);
-    if (debug)
-    {
-      System.out.format("Bisecting on function %s at depth %d (interval top at %d).\n",
-                        f.getClass().getSimpleName(),
-                        depth,
-                        top);
-      System.out.format("Current interval: [%s, %s].\n", lefttop, righttop);
-    }
-
-    Complex rightdepth = right.get(depth);
-    Complex leftdepth  = left.get(depth);
-    rightdepth.set(righttop).set(lefttop.add(righttop, prec, leftdepth).mul2e(-1));
-
-    /* Evaluate on [a, mid] */
-    Complex topVal = values.get(top);
-    f.simpleQuadrature(lefttop, righttop, prec, topVal);
-    if (!topVal.isFinite())
-    {
-      throw new IllegalArgumentException("Evaluated function is not finite at [" + lefttop + "," + righttop + "]");
-    }
-
-    topVal.hypotenuseLength(topErrors);
-
-    evalCount.incrementAndGet();
-    /* Adjust absolute tolerance based on new information. */
-    topVal.absLowerBound(tmpMag);
-    mag_mul_2exp_si(tmpMag, tmpMag, -relAccuracyGoalBits);
-    newTol.max(tmpMag, tmpMag);
-
-    if (debug)
-    {
-      System.out.format("Evaluated function at mid-point: %s.\n", topVal);
-      System.out.format("Updated tolerance after first half: %s.\n", newTol);
-    }
-
-    /* Evaluate on [mid, b] */
-    Complex val = values.get(depth);
-    f.simpleQuadrature(leftdepth, rightdepth, prec, val);
-    evalCount.incrementAndGet();
-
-    Magnitude error = errors.get(depth);
-    val.hypotenuseLength(error);
-    /* Adjust absolute tolerance based on new information. */
-    val.absLowerBound(tmpMag);
-    mag_mul_2exp_si(tmpMag, tmpMag, -relAccuracyGoalBits);
-    newTol.max(tmpMag, tmpMag);
-
-    if (debug)
-    {
-      System.out.format("Evaluated function at mid-point: %s.\n", val);
-      System.out.format("Updated tolerance after second half: %s.\n", newTol);
-    }
-
-    /* Make the interval with the larger error the priority. */
-    if (topErrors.compareTo(error) < 0)
-    {
-      if (debug)
-      {
-        System.out.format("Swapping intervals %s and %s due to larger error on the second half.", left, right);
-      }
-      left.swap(top, depth);
-      right.swap(top, depth);
-      topVal.swap(val);
-      topErrors.swap(error);
-
-    }
-  }
-
   public static Complex calculateSimpleQuadrature(HolomorphicFunction f, Complex a, Complex b, int prec, Complex res)
   {
     try ( Magnitude magδ = new Magnitude();
@@ -408,7 +297,7 @@ public class Utensils
           Magnitude t = new Magnitude();
           Magnitude bestRho = new Magnitude();)
     {
-      int k, Xexp;
+      int Xexp;
       int i, n, best_n;
 
       if (degreeLimit <= 0)

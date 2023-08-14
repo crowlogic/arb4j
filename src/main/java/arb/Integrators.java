@@ -123,18 +123,12 @@ public class Integrators
       options = new IntegrationOptions();
     }
 
-    try ( Complex s = new Complex();
-          Complex t = new Complex();
-          Complex u = new Complex();
-          Magnitude tmpm = new Magnitude();
-          Magnitude tmpn = new Magnitude();
-          Magnitude newTol = new Magnitude();)
+    try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex();
+          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
     {
       int        depthLimit = options.getDepthLimit(prec);
       int        evalLimit  = options.getEvaluationLimit(prec) * 10;
       int        degLimit   = options.getDegreeLimit(relAccuracyBitsGoal, prec);
-      int        depth, maxDepth, top;
-      long       leafIntervalCount;
       int        allocation;
       boolean    useHeap    = options.useHeap;
       boolean    debug      = options.verbose;
@@ -146,10 +140,8 @@ public class Integrators
       }
       allocation = 4;
       // TODO: take as,bs,vs,ms and put them in their own (static) class
-      try ( Complex as = Complex.newVector(2 * allocation);
-            Complex bs = Complex.newVector(2 * allocation);
-            Complex vs = Complex.newVector(2 * allocation);
-            Magnitude ms = Magnitude.newVector(2 * allocation);)
+      try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
+            Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);)
       {
         as.set(a);
         bs.set(b);
@@ -197,19 +189,13 @@ public class Integrators
       options = new IntegrationOptions();
     }
 
-    try ( Complex s = new Complex();
-          Complex t = new Complex();
-          Complex u = new Complex();
-          Magnitude tmpm = new Magnitude();
-          Magnitude tmpn = new Magnitude();
-          Magnitude newTol = new Magnitude();)
+    try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex();
+          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
     {
       int        depthLimit, evalLimit, degLimit;
-      int        depth, maxDepth, top;
-      long       leafIntervalCount;
+
       int        allocation;
       boolean    useHeap;
-      boolean    realError;
       AtomicLong evalCount;
 
       evalCount           = new AtomicLong();
@@ -225,10 +211,8 @@ public class Integrators
       }
       allocation = 4;
       // TODO: take as,bs,vs,ms and put them in their own (static) class
-      try ( Complex as = Complex.newVector(2 * allocation);
-            Complex bs = Complex.newVector(2 * allocation);
-            Complex vs = Complex.newVector(2 * allocation);
-            Magnitude ms = Magnitude.newVector(2 * allocation);)
+      try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
+            Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);)
       {
 
         /* Compute initial crude estimate for the whole interval. */
@@ -258,6 +242,78 @@ public class Integrators
     }
 
     return res;
+  }
+
+  /**
+   * Performs a bisection operation on a given interval of a holomorphic function,
+   * refining the integration by dividing the interval into two subintervals and
+   * evaluating the function on each subinterval using simple quadrature.
+   * 
+   * @param f                   The holomorphic function to be bisected.
+   * @param relAccuracyGoalBits The desired relative accuracy in bits.
+   * @param prec                The precision to be used in calculations.
+   * @param tmpMag              Temporary magnitude used for calculations.
+   * @param newTol              New tolerance magnitude updated during the
+   *                            bisection.
+   * @param depth               The current depth of bisection.
+   * @param top                 The top element in the interval stack.
+   * @param evalCount           An AtomicLong counter for function evaluations.
+   * @param left                Complex array storing the left endpoints of
+   *                            intervals.
+   * @param right               Complex array storing the right endpoints of
+   *                            intervals.
+   * @param values              Complex array storing function values.
+   * @param errors              Magnitude array storing error magnitudes.
+   * @param topErrors           Magnitude array storing the top error magnitudes.
+   */
+  public static void bisect(HolomorphicFunction f,
+                            int relAccuracyGoalBits,
+                            int prec,
+                            Magnitude tmpMag,
+                            Magnitude newTol,
+                            int depth,
+                            int top,
+                            AtomicLong evalCount,
+                            Complex left,
+                            Complex right,
+                            Complex values,
+                            Magnitude errors,
+                            Magnitude topErrors)
+  {
+
+    right.get(depth).set(right.get(top)).set(left.get(top).add(right.get(top), prec, left.get(depth)).mul2e(-1));
+
+    /* Evaluate on [a, mid] */
+    Complex topVal = values.get(top);
+    f.simpleQuadrature(left.get(top), right.get(top), prec, topVal);
+
+    mag_hypot(topErrors, topVal.getReal().getRad(), topVal.getImag().getRad());
+    evalCount.incrementAndGet();
+    /* Adjust absolute tolerance based on new information. */
+    acb_get_mag_lower(tmpMag, topVal);
+    mag_mul_2exp_si(tmpMag, tmpMag, -relAccuracyGoalBits);
+    mag_max(newTol, newTol, tmpMag);
+
+    /* Evaluate on [mid, b] */
+    Complex val = values.get(depth);
+    f.simpleQuadrature(left.get(depth), right.get(depth), prec, val);
+
+    Magnitude error = errors.get(depth);
+    mag_hypot(error, val.getReal().getRad(), val.getImag().getRad());
+    evalCount.incrementAndGet();
+    /* Adjust absolute tolerance based on new information. */
+    acb_get_mag_lower(tmpMag, val);
+    mag_mul_2exp_si(tmpMag, tmpMag, -relAccuracyGoalBits);
+    mag_max(newTol, newTol, tmpMag);
+
+    /* Make the interval with the larger error the priority. */
+    if (topErrors.compareTo(error) < 0)
+    {
+      left.swap(top, depth);
+      right.swap(top, depth);
+      topVal.swap(val);
+      topErrors.swap(error);
+    }
   }
 
   static void integrate(HolomorphicFunction f,
@@ -394,20 +450,7 @@ public class Integrators
         Utensils.resizeVectors(allocation, as, bs, vs, ms);
       }
 
-      Utensils.bisect(f,
-                      relAccuracyBitsGoal,
-                      prec,
-                      tmpm,
-                      newTol,
-                      depth,
-                      top,
-                      evalCount,
-                      as,
-                      bs,
-                      vs,
-                      ms,
-                      topm,
-                      debug);
+      bisect(f, relAccuracyBitsGoal, prec, tmpm, newTol, depth, top, evalCount, as, bs, vs, ms, topm);
 
       if (debug)
       {
@@ -559,19 +602,12 @@ public class Integrators
       options = new IntegrationOptions();
     }
 
-    try ( Complex s = new Complex();
-          Complex t = new Complex();
-          Complex u = new Complex();
-          Magnitude tmpm = new Magnitude();
-          Magnitude tmpn = new Magnitude();
-          Magnitude newTol = new Magnitude();)
+    try ( Complex s = new Complex(); Complex t = new Complex(); Complex u = new Complex();
+          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
     {
       int        depthLimit, evalLimit, degLimit;
-      int        depth, maxDepth, top;
-      long       leafIntervalCount;
       int        allocation;
       boolean    useHeap;
-      boolean    realError;
       AtomicLong evalCount;
 
       evalCount           = new AtomicLong();
@@ -588,10 +624,8 @@ public class Integrators
       }
       allocation = 4;
       // TODO: take as,bs,vs,ms and put them in their own (static) class
-      try ( Complex as = Complex.newVector(2 * allocation);
-            Complex bs = Complex.newVector(2 * allocation);
-            Complex vs = Complex.newVector(2 * allocation);
-            Magnitude ms = Magnitude.newVector(2 * allocation);
+      try ( Complex as = Complex.newVector(2 * allocation); Complex bs = Complex.newVector(2 * allocation);
+            Complex vs = Complex.newVector(2 * allocation); Magnitude ms = Magnitude.newVector(2 * allocation);
             Complex value = new Complex();)
       {
         as.re().set(left);
