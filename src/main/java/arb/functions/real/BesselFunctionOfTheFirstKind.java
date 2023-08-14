@@ -22,7 +22,7 @@ public class BesselFunctionOfTheFirstKind implements
     this.ν.set(ν);
   }
 
-  Real ν = new Real();
+  final Real ν = new Real();
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
