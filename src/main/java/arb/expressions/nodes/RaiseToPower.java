@@ -10,11 +10,9 @@ import arb.functions.Function;
  * expected to be higher-performance than string parser
  */
 public class RaiseToPower<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
-                         BinaryOperation
+                         BinaryOperation<D, R, F>
 {
-  public RaiseToPower(Expression<D, R, F> expression,
-                      Node base,
-                      Node exponent)
+  public RaiseToPower(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent)
   {
     super(expression,
           base,

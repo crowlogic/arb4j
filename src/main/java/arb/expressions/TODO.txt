@@ -1,5 +1,7 @@
 PRIORITIES
 
+* fix parenthesis
+
 1. don't generate fields for variables that aren't accessed, that way set of 
 variables can be however big without cluttering up the generated code
 

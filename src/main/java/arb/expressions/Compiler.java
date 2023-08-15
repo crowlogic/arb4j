@@ -4,8 +4,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import org.objectweb.asm.*;
 
@@ -28,14 +27,14 @@ public class Compiler
 
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          Expression<Real, Real, RealFunction>
-         compile(String className, String expression, Variables variables, boolean verbose)
+         compile(String className, String expression, Variables<Real> variables, boolean verbose)
   {
     return compile(className, expression, variables, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          Expression<Real, Real, RealFunction>
-         compile(String className, String expression, Variables variables)
+         compile(String className, String expression, Variables<Real> variables)
   {
     return compile(className, expression, variables, Real.class, Real.class, RealFunction.class, false);
   }
@@ -61,7 +60,7 @@ public class Compiler
          Expression<D, R, F>
          compile(String className,
                  String expressionString,
-                 Variables variables,
+                 Variables<D> variables,
                  Class<D> domainClass,
                  Class<R> rangeClass,
                  Class<F> functionClass,
@@ -88,17 +87,17 @@ public class Compiler
          Expression<D, R, F>
          construct(String className,
                    String expression,
-                   Variables variables,
+                   Variables<D> variables,
                    Class<D> domainClass,
                    Class<R> rangeClass,
                    Class<F> functionClass)
   {
-    return new Expression(className,
-                          domainClass,
-                          rangeClass,
-                          functionClass,
-                          expression,
-                          variables);
+    return new Expression<D, R, F>(className,
+                                   domainClass,
+                                   rangeClass,
+                                   functionClass,
+                                   expression,
+                                   variables);
   }
 
   /**
@@ -111,6 +110,7 @@ public class Compiler
    * @param bytecodes
    * @return a {@link Class} ready to be instantiated and evaluated
    */
+  @SuppressWarnings("unchecked")
   static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          Class<F>
          defineFunctionClass(byte[] bytecodes)
@@ -136,16 +136,18 @@ public class Compiler
    * 
    * @param cw             The ClassVisitor for the class being generated
    * @param typeDescriptor the type of the fields
-   * @param constants      An Iterable of Literal objects representing the
+   * @param literals       An Iterable of Literal objects representing the
    *                       constants to be declared
    * @return
    */
-  static ClassVisitor declareConstants(ClassVisitor cw, String typeDescriptor, List<Literal> constants)
+  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+         ClassVisitor
+         declareConstants(ClassVisitor cw, String typeDescriptor, ArrayList<Literal<D, R, F>> literals)
   {
-    if (!constants.isEmpty())
+    if (!literals.isEmpty())
     {
 
-      for (Literal constant : constants)
+      for (Literal<?, ?, ?> constant : literals)
       {
         cw.visitField(ACC_PUBLIC, constant.fieldName, typeDescriptor, null, null);
       }
@@ -161,7 +163,9 @@ public class Compiler
    *                  fields
    * @return
    */
-  static ClassVisitor declareVariables(Expression expression, ClassVisitor cw, Collection<String> variables)
+  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+         ClassVisitor
+         declareVariables(Expression<D, R, F> expression, ClassVisitor cw, Collection<String> variables)
   {
     if (!variables.isEmpty())
     {
@@ -227,7 +231,7 @@ public class Compiler
          initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor mv)
   {
 
-    for (Literal literal : expression.literals)
+    for (Literal<D, R, F> literal : expression.literals)
     {
       initializeLiteralConstantWithString(expression, mv, literal);
     }
@@ -245,15 +249,18 @@ public class Compiler
     return mv;
   }
 
-  static ClassVisitor generateFunctionInterface(Expression expression, String className, ClassVisitor cw)
+  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+         ClassVisitor
+         generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor cw)
   {
-    String classDesc = "L" + className + ";";
     cw.visit(V20 | V_PREVIEW, ACC_PUBLIC, className, null, objectDesc, new String[]
     { expression.functionClassInternalName });
     return cw;
   }
 
-  static MethodVisitor initializeField(Expression expression, MethodVisitor mv, String intermediateVariable)
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         initializeField(Expression<D, R, F> expression, MethodVisitor mv, String intermediateVariable)
   {
     mv.visitVarInsn(ALOAD, 0);
     mv.visitTypeInsn(NEW, expression.domainClassInternalName);
@@ -263,7 +270,11 @@ public class Compiler
     return mv;
   }
 
-  static MethodVisitor initializeLiteralConstantWithString(Expression expression, MethodVisitor mv, Literal constant)
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         initializeLiteralConstantWithString(Expression<D, R, F> expression,
+                                             MethodVisitor mv,
+                                             Literal<D, R, F> constant)
   {
     mv.visitVarInsn(ALOAD, 0);
     mv.visitTypeInsn(NEW, expression.domainClassInternalName);

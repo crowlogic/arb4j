@@ -34,7 +34,7 @@ public class ExpressionTest extends
     vars.lock();
   }
 
-  Variables variables = new Variables();
+  Variables<Real> variables = new Variables();
 
   public void testOnePlusNOver2()
   {

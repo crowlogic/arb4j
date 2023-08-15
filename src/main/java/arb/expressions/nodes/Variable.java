@@ -8,17 +8,17 @@ import org.objectweb.asm.Opcodes;
 
 import arb.expressions.Expression;
 import arb.expressions.Variables;
+import arb.functions.Function;
 
-public class Variable extends
-                      Node
+public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
+                     Node<D, R, F>
 {
-  private final String    name;
-  private final Variables namespace;
-  private Expression      expression;
-  boolean                 isInput = false;
+  private final String        name;
+  private final Variables<D>  namespace;
+  private Expression<D, R, F> expression;
+  boolean                     isInput = false;
 
-  public Variable(Expression expression,
-                  String variableName)
+  public Variable(Expression<D, R, F> expression, String variableName)
   {
     super(expression);
     this.expression = expression;
@@ -29,7 +29,7 @@ public class Variable extends
       if (expression.inputNode == null)
       {
         expression.inputNode = this;
-        isInput          = true;
+        isInput              = true;
       }
       else
       {
@@ -71,7 +71,7 @@ public class Variable extends
     }
 
     if (isLast)
-    {      
+    {
       expression.checkClassCast(loadResult(mv), false);
       mv.visitInsn(Opcodes.SWAP);
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,

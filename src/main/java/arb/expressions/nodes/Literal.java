@@ -6,7 +6,6 @@ import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import arb.expressions.Expression;
 import arb.functions.Function;
@@ -28,13 +27,12 @@ import arb.functions.Function;
  * advantage of their use.
  */
 public class Literal<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
-                    Node
+                    Node<D, R, F>
 {
   public final String value;
   public final String fieldName;
 
-  public Literal(Expression parser,
-                 String constantValueString)
+  public Literal(Expression<D, R, F> parser, String constantValueString)
   {
     super(parser);
     this.value     = constantValueString;

@@ -24,69 +24,69 @@ import arb.functions.real.RealFunction;
 
 public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
 {
-  protected int             position                  = -1;
+  protected int                      position                  = -1;
 
-  public int                ch                        = 0;
+  public int                         ch                        = 0;
 
-  protected final String    expression;
+  protected final String             expression;
 
-  public Variables<D>       variables;
+  public Variables<D>                variables;
 
-  public String             className;
+  public String                      className;
 
-  final public Class<D>     domainClass;
+  final public Class<D>              domainClass;
 
-  final public Class<R>     rangeClass;
+  final public Class<R>              rangeClass;
 
-  final public String       domainClassDescriptor;
+  final public String                domainClassDescriptor;
 
-  final public String       rangeClassDescriptor;
+  final public String                rangeClassDescriptor;
 
-  final public String       functionClassInternalName;
+  final public String                functionClassInternalName;
 
-  public ArrayList<String>  intermediateVariables     = new ArrayList<>();
+  public ArrayList<String>           intermediateVariables     = new ArrayList<>();
 
-  int                       intermediateVariableCount = 0;
+  int                                intermediateVariableCount = 0;
 
-  int                       constantCount;
+  int                                constantCount;
 
-  public ArrayList<Literal> literals                  = new ArrayList<Literal>();
+  public ArrayList<Literal<D, R, F>> literals                  = new ArrayList<Literal<D, R, F>>();
 
-  public Variable           inputNode;
+  public Variable<D, R, F>           inputNode;
 
-  protected Method          evaluateMethod;
+  protected Method                   evaluateMethod;
 
-  protected byte[]          instructions;
+  protected byte[]                   instructions;
 
-  protected String          shortClassName;
+  protected String                   shortClassName;
 
-  public boolean            verbose                   = false;
+  public boolean                     verbose                   = false;
 
-  Class<F>                  compiledClass;
+  Class<F>                           compiledClass;
 
-  F                         instance;
+  F                                  instance;
 
-  public final String       rangeClassInternalName;
+  public final String                rangeClassInternalName;
 
-  public final String       domainClassInternalName;
+  public final String                domainClassInternalName;
 
   /**
    * if this is false then the result variable ( the last parameter to the
    * evaluate method at index 4) is available to be reused as an intermediate
    * variable
    **/
-  public boolean            resultAllocated           = false;
+  public boolean                     resultAllocated           = false;
 
-  public Node               rootNode;
+  public Node<D, R, F>               rootNode;
 
-  public Class<F>           functionClass;
+  public Class<F>                    functionClass;
 
   public Expression(String className,
                     Class<D> domainClass,
                     Class<R> rangeClass,
                     Class<F> functionClass,
                     String expression,
-                    Variables nameSpace)
+                    Variables<D> nameSpace)
   {
     this.rangeClassDescriptor      = Type.getDescriptor(rangeClass);
     this.domainClassDescriptor     = Type.getDescriptor(domainClass);
@@ -218,7 +218,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         System.err.println("Declaring constants: " + literals);
       }
-      declareConstants(cw, domainClassDescriptor, literals);
+      Compiler.declareConstants(cw, domainClassDescriptor, literals);
 
       if (variables != null)
       {
@@ -315,7 +315,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   public void generateLiteralClosingInstructions(MethodVisitor methodVisitor)
   {
 
-    for (Literal constant : literals)
+    for (Literal<D,R,F> constant : literals)
     {
       generateCloseMethodCall(this, loadThis(methodVisitor), constant.fieldName);
     }
@@ -363,7 +363,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     mv.visitEnd();
   }
 
-  public Node eatRootNode()
+  public Node<D, R, F> eatRootNode()
   {
     rootNode = eatFirst();
     assert rootNode != null : "parseFirst() returned null, expression='" + expression + "'";
@@ -393,31 +393,29 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
   }
 
-  private Node newFunctionCall(String name, Node arg)
+  private Node<D, R, F> newFunctionCall(String name, Node<D, R, F> arg)
   {
 
     if (verbose)
     {
       System.err.println("newFunctionCall name=" + name + " arg=" + arg);
     }
-    Node node;
+    Node<D, R, F> node;
     if (arg == null)
     {
       throw new RuntimeException("Parsed expression is null, name=" + name);
     }
-    node = new FunctionCall(this,
-                            name,
-                            arg,
-                            arg.depth + 1);
+    node = new FunctionCall<D, R, F>(this,
+                                     name,
+                                     arg,
+                                     arg.depth + 1);
     return node;
   }
 
-  private Node newVariable(String identifier)
+  private Node<D, R, F> newVariable(String identifier)
   {
-    Node node;
-    node = new Variable(this,
-                        identifier);
-    return node;
+    return new Variable<D, R, F>(this,
+                                 identifier);
   }
 
   public void nextChar()
@@ -425,14 +423,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     ch = (++position < expression.length()) ? expression.charAt(position) : -1;
   }
 
-  private Node eat()
+  private Node<D, R, F> eat()
   {
     if (verbose)
     {
       System.err.format("parse: ch=%c position=%d\n", ch, this.position);
     }
 
-    Node node = null;
+    Node<D, R, F> node = null;
 
     skipSpaces();
 
@@ -465,30 +463,30 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return node;
   }
 
-  public Node eatFirst()
+  public Node<D, R, F> eatFirst()
   {
     if (verbose)
     {
       System.err.format("parseFirst: ch=%c position=%d\n", ch, this.position);
     }
 
-    Node node = eatSecond();
+    Node<D, R, F> node = eatSecond();
 
     for (;;)
     {
       if (eat('+'))
       {
         assert node != null : "node before + cannot be null";
-        node = new Add(this,
-                       node,
-                       eatSecond());
+        node = new Add<D, R, F>(this,
+                                node,
+                                eatSecond());
       }
       else if (eat('-'))
       {
         assert node != null : "node before - cannot be null";
-        node = new Subtract(this,
-                            node,
-                            eatSecond());
+        node = new Subtract<D, R, F>(this,
+                                     node,
+                                     eatSecond());
       }
       else
       {
@@ -507,7 +505,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param startPos
    * @return
    */
-  private Node eatFunctionInvocationOrVariableReference(int startPos)
+  private Node<D, R, F> eatFunctionInvocationOrVariableReference(int startPos)
   {
     String functionOrVariableName = eatName(startPos);
     skipSpaces();
@@ -527,14 +525,22 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     if (isFunction)
     {
-      return newFunctionCall(functionOrVariableName, eatFirst());
+      Node<D, R, F> arg = eatFirst();
+      if (!eat(')'))
+      {
+        assert false : String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
+                                     startPos,
+                                     position,
+                                     functionOrVariableName,
+                                     isFunction);
+      }
+      return newFunctionCall(functionOrVariableName, arg);
     }
     else// if (ch == -1 || isPowerCharacter(ch) || eat(')'))
     {
       return newVariable(functionOrVariableName);
     }
-//    assert false : "todo: parse nested expressions";
-//    return null;
+
 ////
 //    // Create a new SubExpression instance
 //    SubExpression subExpr = new SubExpression(this);
@@ -545,14 +551,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     // return subExpr;
   }
 
-  private Node eatLast()
+  private Node<D, R, F> eatLast()
   {
     if (verbose)
     {
       System.err.format("parseLast: ch=%c position=%d\n", ch, this.position);
     }
 
-    Node node = eat();
+    Node<D, R, F> node = eat();
 
     node = eatPower(node);
 
@@ -575,31 +581,31 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return identifier;
   }
 
-  private Node eatNumber(int startPos)
+  private Node<D, R, F> eatNumber(int startPos)
   {
-    Node node;
+    Node<D, R, F> node;
     while (isDigitOrDot(ch))
       nextChar();
 
     String num = expression.substring(startPos, this.position);
-    node = new Literal(this,
-                       num);
+    node = new Literal<D, R, F>(this,
+                                num);
     return node;
   }
 
-  Node eatSubscript(Node node, int superscript, String digit)
+  Node<D, R, F> eatSuperscript(Node<D, R, F> node, int superscript, String digit)
   {
     if (eat(superscript))
     {
-      node = new RaiseToPower(this,
-                              node,
-                              new Literal<>(this,
-                                            digit));
+      node = new RaiseToPower<D, R, F>(this,
+                                       node,
+                                       new Literal<>(this,
+                                                     digit));
     }
     return node;
   }
 
-  private Node eatPower(Node node)
+  private Node<D, R, F> eatPower(Node<D, R, F> node)
   {
     if (eat('^'))
     {
@@ -609,43 +615,59 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         parenthetical = true;
       }
-      node = new RaiseToPower(this,
-                              node,
-                              parenthetical ? eatFirst() : eat());
+      node = new RaiseToPower<D, R, F>(this,
+                                       node,
+
+                                       parenthetical ? eatFirst() : eat());
+      if (parenthetical)
+      {
+        if (!eat(')'))
+        {
+          throw new RuntimeException(String.format("eatPower expected closing paranthesis at: position=%d, ch='%c'\n",
+                                                   position,
+                                                   ch == -1 ? '?' : ch));
+        }
+      }
     }
-    node = eatSubscript(node, '²', "2");
-    node = eatSubscript(node, '³', "3");
-    node = eatSubscript(node, '⁴', "4");
-    node = eatSubscript(node, '⁵', "5");
-    node = eatSubscript(node, '⁶', "6");
-    node = eatSubscript(node, '⁷', "7");
-    node = eatSubscript(node, '⁸', "8");
-    node = eatSubscript(node, '⁹', "9");
+    node = eatSuperscripts(node);
     return node;
   }
 
-  private Node eatSecond()
+  public Node<D, R, F> eatSuperscripts(Node<D, R, F> node)
+  {
+    node = eatSuperscript(node, '²', "2");
+    node = eatSuperscript(node, '³', "3");
+    node = eatSuperscript(node, '⁴', "4");
+    node = eatSuperscript(node, '⁵', "5");
+    node = eatSuperscript(node, '⁶', "6");
+    node = eatSuperscript(node, '⁷', "7");
+    node = eatSuperscript(node, '⁸', "8");
+    node = eatSuperscript(node, '⁹', "9");
+    return node;
+  }
+
+  private Node<D, R, F> eatSecond()
   {
     if (verbose)
     {
       System.err.format("parseSecond: ch=%c position=%d\n", ch, this.position);
     }
 
-    Node node = eatLast();
+    Node<D, R, F> node = eatLast();
 
     for (;;)
     {
       if (eat('*'))
       {
-        node = new Multiply(this,
-                            node,
-                            eatLast());
+        node = new Multiply<D, R, F>(this,
+                                     node,
+                                     eatLast());
       }
       else if (eat('/'))
       {
-        node = new Divide(this,
-                          node,
-                          eatLast());
+        node = new Divide<D, R, F>(this,
+                                   node,
+                                   eatLast());
       }
       else
       {
@@ -720,21 +742,21 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          RealFunction
-         express(String expression, Variables variables)
+         express(String expression, Variables<Real> variables)
   {
     return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, false);
   }
 
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          RealFunction
-         express(String className, String expression, Variables variables, boolean verbose)
+         express(String className, String expression, Variables<Real> variables, boolean verbose)
   {
     return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          RealFunction
-         express(String expression, Variables variables, boolean verbose)
+         express(String expression, Variables<Real> variables, boolean verbose)
   {
     return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, verbose);
   }
@@ -743,7 +765,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
          F
          instantiate(String className,
                      String expression,
-                     Variables variables,
+                     Variables<D> variables,
                      Class<D> domainClass,
                      Class<R> rangeClass,
                      Class<F> functionClass,
@@ -756,7 +778,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          F
          instantiate(String expression,
-                     Variables variables,
+                     Variables<D> variables,
                      Class<D> domainClass,
                      Class<R> rangeClass,
                      Class<F> functionClass,
@@ -769,7 +791,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   private static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
           Expression<D, R, F>
           compile(String expression,
-                  Variables variables,
+                  Variables<D> variables,
                   Class<D> domainClass,
                   Class<R> rangeClass,
                   Class<F> functionClass,
@@ -788,8 +810,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                      .replace("*", "Times")
                      .replace("/", "DividedBy")
                      .replace("^", "ToThePowerOf")
-                     .replace("(", "")
-                     .replace(")", "")
+                     .replace("(", "Open")
+                     .replace(")", "Close")
                      .replace("1", "One")
                      .replace("2", "Two")
                      .replace("3", "Three")
