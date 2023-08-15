@@ -3,8 +3,7 @@ package arb.algebra;
 import java.util.function.BinaryOperator;
 
 import arb.Set;
-import arb.annotations.Associative;
-import arb.annotations.Distributive;
+
 import arb.groups.CommutativeGroup;
 
 /**

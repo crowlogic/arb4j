@@ -1,7 +1,6 @@
 package arb.geometry;
 
 import arb.OpenSet;
-import arb.annotations.Homeomorphic;
 import arb.space.topological.BanachSpace;
 import arb.space.topological.TopologicalSpace;
 

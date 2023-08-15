@@ -1,7 +1,6 @@
 package arb.operators;
 
 import arb.Field;
-import arb.annotations.Commutative;
 import arb.space.topological.VectorSpace;
 
 /**
@@ -40,6 +39,5 @@ public interface NormalOperator<F extends Field<F>, VE1, V1 extends VectorSpace<
    *
    * @return the adjoint of this operator
    */
-  @Commutative(adjoint = NormalOperator.class)
   BoundedLinearOperator<F, VE2, V2, VE1, V1> adjointOperator();
 }

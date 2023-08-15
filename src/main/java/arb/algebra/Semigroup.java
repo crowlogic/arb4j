@@ -2,7 +2,6 @@ package arb.algebra;
 
 import java.util.function.BinaryOperator;
 
-import arb.annotations.Associative;
 
 /**
  * A {@link Semigroup} is an {@link Associative} {@link Magma}
@@ -26,7 +25,6 @@ public interface Semigroup<X> extends
    * @return The associative {@link BinaryOperator} representing the binary
    *         operation of this {@link Semigroup}.
    */
-  @Associative
   public BinaryOperator<X> operator();
 
 }
