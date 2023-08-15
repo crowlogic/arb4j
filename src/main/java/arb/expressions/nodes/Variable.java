@@ -24,6 +24,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     this.expression = expression;
     this.name       = variableName;
     this.namespace  = expression.variables;
+    expression.referencedVariables.put(variableName, this);
     if (namespace == null || namespace.get(variableName) == null)
     {
       if (expression.inputNode == null)

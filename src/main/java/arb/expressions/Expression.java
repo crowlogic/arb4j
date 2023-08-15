@@ -9,8 +9,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
@@ -24,62 +25,64 @@ import arb.functions.real.RealFunction;
 
 public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
 {
-  protected int                      position                  = -1;
+  protected int                             position                  = -1;
 
-  public int                         ch                        = 0;
+  public int                                ch                        = 0;
 
-  protected final String             expression;
+  protected final String                    expression;
 
-  public Variables<D>                variables;
+  public Variables<D>                       variables;
 
-  public String                      className;
+  public String                             className;
 
-  final public Class<D>              domainClass;
+  final public Class<D>                     domainClass;
 
-  final public Class<R>              rangeClass;
+  final public Class<R>                     rangeClass;
 
-  final public String                domainClassDescriptor;
+  final public String                       domainClassDescriptor;
 
-  final public String                rangeClassDescriptor;
+  final public String                       rangeClassDescriptor;
 
-  final public String                functionClassInternalName;
+  final public String                       functionClassInternalName;
 
-  public ArrayList<String>           intermediateVariables     = new ArrayList<>();
+  public ArrayList<String>                  intermediateVariables     = new ArrayList<>();
 
-  int                                intermediateVariableCount = 0;
+  int                                       intermediateVariableCount = 0;
 
-  int                                constantCount;
+  int                                       constantCount;
 
-  public ArrayList<Literal<D, R, F>> literals                  = new ArrayList<Literal<D, R, F>>();
+  public ArrayList<Literal<D, R, F>>        literals                  = new ArrayList<Literal<D, R, F>>();
 
-  public Variable<D, R, F>           inputNode;
+  public Variable<D, R, F>                  inputNode;
 
-  protected Method                   evaluateMethod;
+  protected Method                          evaluateMethod;
 
-  protected byte[]                   instructions;
+  protected byte[]                          instructions;
 
-  protected String                   shortClassName;
+  protected String                          shortClassName;
 
-  public boolean                     verbose                   = false;
+  public boolean                            verbose                   = false;
 
-  Class<F>                           compiledClass;
+  Class<F>                                  compiledClass;
 
-  F                                  instance;
+  F                                         instance;
 
-  public final String                rangeClassInternalName;
+  public final String                       rangeClassInternalName;
 
-  public final String                domainClassInternalName;
+  public final String                       domainClassInternalName;
 
   /**
    * if this is false then the result variable ( the last parameter to the
    * evaluate method at index 4) is available to be reused as an intermediate
    * variable
    **/
-  public boolean                     resultAllocated           = false;
+  public boolean                            resultAllocated           = false;
 
-  public Node<D, R, F>               rootNode;
+  public Node<D, R, F>                      rootNode;
 
-  public Class<F>                    functionClass;
+  public Class<F>                           functionClass;
+
+  public HashMap<String, Variable<D, R, F>> referencedVariables       = new HashMap<>();
 
   public Expression(String className,
                     Class<D> domainClass,
@@ -226,7 +229,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         {
           System.err.println("Declaring variables: " + variables);
         }
-        declareVariables(this, cw, variables.keySet());
+        declareVariables(this, cw, referencedVariables.keySet());
       }
 
       declareVariables(this, cw, intermediateVariables);
@@ -315,7 +318,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   public void generateLiteralClosingInstructions(MethodVisitor methodVisitor)
   {
 
-    for (Literal<D,R,F> constant : literals)
+    for (Literal<D, R, F> constant : literals)
     {
       generateCloseMethodCall(this, loadThis(methodVisitor), constant.fieldName);
     }
@@ -385,10 +388,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (variables != null)
     {
-      for (Map.Entry<String, D> entry : variables.entrySet())
+      for (Entry<String, Variable<D, R, F>> entry : referencedVariables.entrySet())
       {
         Field field = compiledClass.getField(entry.getKey());
-        field.set(instance, entry.getValue());
+        field.set(instance, variables.get(entry.getKey()));
       }
     }
   }
