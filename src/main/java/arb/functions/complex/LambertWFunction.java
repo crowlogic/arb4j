@@ -1,7 +1,8 @@
 package arb.functions.complex;
 
+import static arb.arblib.acb_lambertw;
+
 import arb.Complex;
-import static arb.arblib.*;
 
 /**
  * <pre>

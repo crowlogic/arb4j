@@ -7,7 +7,8 @@ import java.util.Collections;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.expressions.*;
+import arb.expressions.Expression;
+import arb.expressions.Variables;
 import arb.functions.Function;
 
 public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>

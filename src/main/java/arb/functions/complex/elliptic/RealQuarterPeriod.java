@@ -1,7 +1,8 @@
 package arb.functions.complex.elliptic;
 
+import static arb.arblib.acb_elliptic_k;
+
 import arb.Complex;
-import static arb.arblib.*;
 import arb.functions.complex.HolomorphicFunction;
 
 /**

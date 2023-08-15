@@ -1,7 +1,6 @@
 package arb;
 
 import java.io.Closeable;
-import java.io.IOException;
 
 import de.gsi.dataset.DataSet;
 import de.gsi.dataset.DataSet2D;

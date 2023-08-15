@@ -1,6 +1,7 @@
 package arb.geometry.surfaces;
 
-import arb.*;
+import arb.Complex;
+import arb.RealMatrix;
 import arb.functions.ComplexToRealFunction;
 import arb.space.topological.EuclideanSpace;
 

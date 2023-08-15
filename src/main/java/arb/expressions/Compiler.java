@@ -4,7 +4,8 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.objectweb.asm.*;
 

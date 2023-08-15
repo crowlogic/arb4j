@@ -1,6 +1,5 @@
 package arb.functions.polynomials.orthogonal;
 
-import arb.ComplexPolynomial;
 import arb.OrthogonalBasis;
 import arb.domains.Domain;
 import arb.functions.complex.HolomorphicFunction;

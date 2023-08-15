@@ -2,10 +2,10 @@ package arb.functions.polynomials.orthogonal;
 
 import java.util.Iterator;
 
-import arb.*;
+import arb.Real;
+import arb.RealConstants;
 import arb.domains.Domain;
 import arb.domains.ExtendedRealLine;
-import arb.expressions.Expression;
 import arb.expressions.Variables;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;

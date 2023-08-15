@@ -1,6 +1,5 @@
 package arb.functions.complex.numbertheoretic;
 
-import arb.FloatInterval;
 import arb.utensils.ShellCommands;
 import javafx.application.Application;
 import javafx.stage.Stage;
