@@ -54,6 +54,8 @@ public interface WaveFunction extends
    * quantum mechanics, observables correspond to physical quantities that can be
    * measured, and they are represented by self-adjoint operators.
    *
+   * FIXME: there are many observables
+   * 
    * @return The SelfAdjointOperator instance representing the quantum observable
    *         associated with this wave function.
    */
