@@ -23,8 +23,7 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
 
   public interface Generator
   {
-    void generate(MethodVisitor mv, Node node);
-
+    void generate(MethodVisitor mv, Node<?, ?, ?> node);
   }
 
   private final String                       name;
@@ -85,10 +84,7 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
     }
   }
 
-  public FunctionCall(Expression<D, R, F> parser,
-                      String functionName,
-                      Node argument,
-                      int depth)
+  public FunctionCall(Expression<D, R, F> parser, String functionName, Node<D, R, F> argument, int depth)
   {
     super(argument,
           parser);
@@ -132,8 +128,9 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
    * @param lastCall
    * @return
    */
-  public static MethodVisitor
-         generationFunctionCall(MethodVisitor mv, String functionName, Node argument, boolean lastCall)
+  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         generationFunctionCall(MethodVisitor mv, String functionName, Node<D, R, F> argument, boolean lastCall)
   {
     if (verbose)
     {
@@ -171,7 +168,9 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
     return invokeFunction(argument.expression.checkClassCast(mv, false), functionName, argument);
   }
 
-  public static MethodVisitor invokeFunction(MethodVisitor mv, String functionName, Node node)
+  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         invokeFunction(MethodVisitor mv, String functionName, Node<D, R, F> node)
   {
     String dcd = node.expression.domainClassDescriptor;
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,

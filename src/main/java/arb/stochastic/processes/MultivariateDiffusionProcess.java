@@ -14,7 +14,7 @@ import arb.stochastic.processes.integrators.MultivariateState;
  * 
  * @param <D> The type of {@link MultivariateState} for the process
  */
-public interface MultivariateDiffusionProcess<D extends MultivariateState> extends
+public interface MultivariateDiffusionProcess<D extends MultivariateState<?>> extends
                                              ContinuousTimeDynamicalSystem<D>,
                                              Verifiable
 
@@ -22,7 +22,7 @@ public interface MultivariateDiffusionProcess<D extends MultivariateState> exten
 
   int dim();
 
-  public DiffusionProcess get(int i);
+  public DiffusionProcess<D> get(int i);
 
   boolean verbose = false;
 

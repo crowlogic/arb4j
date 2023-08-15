@@ -7,8 +7,8 @@ public class Add<D extends arb.Field<D>, R extends arb.Field<R>, F extends Funct
                 BinaryOperation<D, R, F>
 {
   public Add(Expression<D, R, F> expression,
-             Node left,
-             Node right)
+             Node<D,R,F> left,
+             Node<D,R,F> right)
   {
     super(expression,
           left,

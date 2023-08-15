@@ -9,7 +9,7 @@ public class Conjugate<D extends arb.Field<D>, R extends arb.Field<R>, F extends
 
   public Conjugate(Expression<D, R, F> parser,
                    String functionName,
-                   Node argument,
+                   Node<D,R,F> argument,
                    int depth)
   {
     super(parser,

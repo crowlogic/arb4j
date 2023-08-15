@@ -19,7 +19,7 @@ public class CompositionOperator<F extends HolomorphicFunction, G extends Holomo
   public static <F extends HolomorphicFunction, G extends HolomorphicFunction> CompositionOperator<F, G> compose(F f,
                                                                                                                  G g)
   {
-    return new CompositionOperator(f,
+    return new CompositionOperator<F, G>(f,
                                    g);
   }
 
@@ -62,7 +62,6 @@ public class CompositionOperator<F extends HolomorphicFunction, G extends Holomo
       // res[2]= g'(t)^2*f''(g(t)) + f'(g(t))*g''(t)
       try ( Complex tmp = new Complex())
       {
-        Complex df2 = res.get(1); // df2=f'(g(t)
         y.get(1).pow(2, prec, tmp); // tmp=g'(t)^2
         tmp.mul(res.get(2), prec, res.get(2)); // tmp=tmp*res[2]=g'(t)^2*f''(g(t))
 

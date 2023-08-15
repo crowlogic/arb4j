@@ -13,11 +13,11 @@ import arb.functions.Function;
 
 public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
 {
-  public static boolean verbose = false;
+  public static boolean      verbose = false;
 
-  public Expression     expression;
+  public Expression<D, R, F> expression;
 
-  public boolean        isLast  = false;
+  public boolean             isLast  = false;
 
   public Node(Expression<D, R, F> parser)
   {
@@ -25,7 +25,7 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
     this.namespace  = parser.variables;
   }
 
-  final Variables namespace;
+  final Variables<D> namespace;
 
   public abstract void generate(MethodVisitor mv);
 

@@ -32,14 +32,11 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
     return null;
   }
 
-  protected final Node right, left;
+  protected final Node<D, R, F> right, left;
 
-  private String       operation;
+  private String                operation;
 
-  public BinaryOperation(Expression<D, R, F> parser,
-                         Node left,
-                         String operation,
-                         Node right)
+  public BinaryOperation(Expression<D, R, F> parser, Node<D, R, F> left, String operation, Node<D, R, F> right)
   {
     super(parser);
 
@@ -72,7 +69,7 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
   public MethodVisitor generateInvocation(MethodVisitor mv, String operator, String resultClassInternalName)
   {
     loadBits(mv);
-    Node reusableNode;
+    Node<D, R, F> reusableNode;
     if (isLast)
     {
       expression.checkClassCast(loadResult(mv), false);
@@ -112,7 +109,7 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
    * Returns a reusable node if it exists, it will either be this{@link #left} or
    * this{@link #right} or null if neither are reusable
    */
-  public Node getAReusableNode()
+  public Node<D, R, F> getAReusableNode()
   {
     if (right.isReusable())
     {
