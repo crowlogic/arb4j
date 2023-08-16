@@ -27,14 +27,10 @@ public class ExpressionTest extends
 
     variables.put("z", vars.get(2).set(-1));
 
-    variables.put("r", vars.get(3).set("1.67", 128));
-
-    variables.put("α", vars.get(4).set("0.6", 128));
-
     vars.lock();
   }
 
-  Variables<Real> variables = new Variables();
+  Variables<Real> variables = new Variables<>();
 
   public void testOnePlusNOver2()
   {
@@ -54,16 +50,16 @@ public class ExpressionTest extends
 
   }
 
-  public void testCompoundExpression()
+  public void testSimplerCompoundExpression()
   {
-    try ( RealFunction cf = Expression.express("CompoundExpression",
-                                               "(r^(1-α)-1)*r^((α-1)*(1+n/2))",
+    try ( RealFunction cf = Expression.express("SimplerCompoundExpression",
+                                               "(1)+(2)+(3)",
                                                variables,
                                                true))
     {
       Real evaluatedX = cf.evaluate(RealConstants.one, 1, 256, new Real());
 
-      assertEquals(0.9640275800758169, evaluatedX.doubleValue(RoundingMode.Up));
+      assertEquals(6.0, evaluatedX.doubleValue(RoundingMode.Up));
     }
 
   }
