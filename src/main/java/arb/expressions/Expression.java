@@ -676,8 +676,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
 
     Node<D, R, F> node = eatLast();
-
-    for (;;)
+    while (true)
     {
       if (eat('*'))
       {
