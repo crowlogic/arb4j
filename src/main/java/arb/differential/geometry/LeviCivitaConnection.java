@@ -1,6 +1,8 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.geometry.Manifold;
+import arb.space.topological.TopologicalSpace;
 
 /**
  * the Levi-Civita connection is the unique {@link AffineConnection} on the
@@ -15,11 +17,18 @@ import arb.geometry.Manifold;
  * components (structure coefficients) of this connection with respect to a
  * system of local coordinates are called Christoffel symbols.
  * 
- * @author crow
- *
+ * <pre>
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre>
+ * 
+ * @author ©2023 Stephen Crowley
+ * 
  */
-public interface LeviCivitaConnection<M extends Manifold> extends
-                                     AffineConnection<M>
+public interface LeviCivitaConnection<X extends Field<X>, B extends TopologicalSpace<X>, M extends Manifold<X>>
+                                     extends
+                                     AffineConnection<X, B, M>
 {
 
 }

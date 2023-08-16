@@ -18,8 +18,8 @@ import arb.dynamical.systems.State;
  * @param <S> The type of {@link State} that the multivariate state contains for
  *            each dimension.
  */
-public interface MultivariateState<S extends State<S>> extends
-                                  State<S>
+public interface MultivariateState<S extends State> extends
+                                  State
 {
   /**
    * 

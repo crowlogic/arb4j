@@ -1,9 +1,9 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.functions.Function;
 import arb.geometry.Manifold;
-import arb.space.topological.TangentSpace;
-import arb.space.topological.VectorSpace;
+import arb.space.topological.*;
 
 /**
  * An {@link AffineConnection} is a geometric object on a smooth
@@ -17,8 +17,8 @@ import arb.space.topological.VectorSpace;
  *      "https://en.wikipedia.org/wiki/Affine_connection">AffineConnection@Wikipedia</a>
  *
  */
-public interface AffineConnection<M extends Manifold> extends
-                                 Connection
+public interface AffineConnection<X extends Field<X>, B extends TopologicalSpace<X>, M extends Manifold<X>> extends
+                                 Connection<X, B>
 {
   public RiemannCurvatureTensor getCurvatureTensor();
 }

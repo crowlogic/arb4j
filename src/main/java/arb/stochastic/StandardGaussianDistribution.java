@@ -6,7 +6,7 @@ import arb.Real;
 import arb.functions.real.RealFunction;
 
 public class StandardGaussianDistribution implements
-                                          ProbabilityDistributionFunction<StandardGaussianDensityFunction>
+                                          ProbabilityDistributionFunction
 {
   @Override
   public String toString()

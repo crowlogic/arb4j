@@ -35,7 +35,7 @@ import arb.dynamical.systems.State;
  *
  */
 public interface DiffusionProcess<S extends State> extends
-                                 StochasticProcess
+                                 StochasticProcess<S>
 {
   public default S getState()
   {

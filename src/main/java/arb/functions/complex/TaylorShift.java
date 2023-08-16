@@ -14,6 +14,7 @@ import arb.Complex;
 public class TaylorShift<F extends HolomorphicFunction> implements
                         HolomorphicFunction
 {
+
   @Override
   public String toString()
   {

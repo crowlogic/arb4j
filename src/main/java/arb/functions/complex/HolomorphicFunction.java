@@ -155,7 +155,7 @@ public interface HolomorphicFunction extends
 
   public default HolomorphicFunction differential() throws NotDifferentiableException
   {
-    return new TaylorShift(this);
+    return new TaylorShift<HolomorphicFunction>(this);
   }
 
   /**
@@ -167,9 +167,9 @@ public interface HolomorphicFunction extends
     return 1;
   }
 
-  public default ImaginaryHolomorphicPart imaginaryPart()
+  public default ImaginaryHolomorphicPart<HolomorphicFunction> imaginaryPart()
   {
-    return new ImaginaryHolomorphicPart(this);
+    return new ImaginaryHolomorphicPart<HolomorphicFunction>(this);
   }
 
   /**
@@ -183,19 +183,6 @@ public interface HolomorphicFunction extends
    *         this{@link #differential()}{@link #integral()}
    */
   public default HolomorphicFunction integral() throws NotIntegrableException
-  {
-    throw new UnsupportedOperationException(getClass() + " needs to implement this method");
-  }
-
-  /**
-   * get an inverse branch. TODO: how to specify the domain of the n-th branch?
-   * 
-   * @param branch starting at 0 which is the principal and only branch for
-   *               properly invertible functions
-   * 
-   * @return the n-th branch of the inverse function f^-1(x)={y:f(y)=x}
-   */
-  public default HolomorphicFunction inverse(int branch)
   {
     throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }
@@ -215,9 +202,9 @@ public interface HolomorphicFunction extends
     // uncertainty radius is there");
   }
 
-  public default RealHolomorphicPart realPart()
+  public default RealHolomorphicPart<HolomorphicFunction> realPart()
   {
-    return new RealHolomorphicPart(this);
+    return new RealHolomorphicPart<HolomorphicFunction>(this);
   }
 
   /**

@@ -13,7 +13,7 @@ import arb.space.topological.TangentSpace;
  * {@link AffineConnection}:
  * 
  * R(X,Y)Z = ∇X∇YZ − ∇Y∇XZ − ∇[X,Y]Z
- * 
+ * pb
  * or equivalently
  * 
  * R(X,Y)=[∇X,∇Y] − ∇[X,Y]

@@ -41,7 +41,7 @@ import arb.stochastic.*;
  */
 public class OrnsteinUhlenbeckProcess implements
                                       DiffusionProcess<DiffusionProcessState>,
-                                      StationaryProcess,
+                                      StationaryProcess<DiffusionProcessState>,
                                       AutoCloseable,
                                       Cleanable
 {

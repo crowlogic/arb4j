@@ -1,6 +1,7 @@
 package arb.stochastic.processes;
 
-import arb.stochastic.ProbabiltiyDensityFunction;
+import arb.dynamical.systems.State;
+import arb.stochastic.ProbabilityDensityFunction;
 
 /**
  * Markov process is a stochastic model describing a sequence of possible events
@@ -14,8 +15,8 @@ import arb.stochastic.ProbabiltiyDensityFunction;
  * @param <F>
  * @param <C>
  */
-public interface MarkovProcess<X> extends
-                              StochasticProcess
+public interface MarkovProcess<S extends State> extends
+                              StochasticProcess<S>
 {
-  public ProbabiltiyDensityFunction<X> getTransitionProbabilityDensity();
+  public ProbabilityDensityFunction getTransitionProbabilityDensity();
 }

@@ -77,7 +77,7 @@ public interface Function<D, R>
     return 0;
   }
 
-  public default <F extends Function> F inverse(int branch)
+  public default <F extends Function<R, D>> F inverse(int branch)
   {
     assert false : "TODO: implement in " + getClass();
     return null;

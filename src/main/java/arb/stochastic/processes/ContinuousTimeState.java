@@ -17,9 +17,9 @@ import arb.dynamical.systems.State;
  * 
  * @param <S> The type of the state for the continuous-time dynamical system
  */
-public abstract class ContinuousTimeState<S> implements
+public abstract class ContinuousTimeState implements
                                          AutoCloseable,
-                                         State<S>,
+                                         State,
                                          Lockable
 {
   @Override
@@ -31,7 +31,7 @@ public abstract class ContinuousTimeState<S> implements
   private boolean locked = false;
 
   @Override
-  public ContinuousTimeState<S> lock()
+  public ContinuousTimeState lock()
   {
     assert !locked : "this " + getClass().getSimpleName() + " is already locked";
     locked = true;
@@ -39,7 +39,7 @@ public abstract class ContinuousTimeState<S> implements
   }
 
   @Override
-  public ContinuousTimeState<S> unlock()
+  public ContinuousTimeState unlock()
   {
     assert locked : "this " + getClass().getSimpleName() + " isn't locked";
     locked = false;

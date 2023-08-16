@@ -9,7 +9,7 @@ import arb.space.topological.TopologicalSpace;
  * @see Chern, S.S., 1987. Vector bundles with a connection. Mathematical
  *      Sciences Research Institute.
  */
-public interface Connection<X extends Field, B extends TopologicalSpace<X>>
+public interface Connection<X extends Field<X>, B extends TopologicalSpace<X>>
 {
   // Methods related to connections in vector bundles
 

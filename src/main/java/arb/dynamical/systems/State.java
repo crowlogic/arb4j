@@ -1,15 +1,15 @@
 package arb.dynamical.systems;
 
-import arb.*;
 import arb.Float;
+import arb.RandomState;
+import arb.Real;
 
-public interface State<X> extends
-                      Set<X>
+public interface State
 {
 
-  State<X> setTime(Real t);
+  State setTime(Real t);
 
-  State<X> setTime(Float a);
+  State setTime(Float a);
 
   Real getdt(Real dt);
 

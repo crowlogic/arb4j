@@ -13,8 +13,8 @@ import arb.dynamical.systems.State;
  * 
  */
 public class DiffusionProcessState extends
-                                   ContinuousTimeState<DiffusionProcessState> implements
-                                   State<DiffusionProcessState>,
+                                   ContinuousTimeState implements
+                                   State,
                                    AutoCloseable,
                                    Cleanable,
                                    Lockable

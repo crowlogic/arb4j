@@ -26,7 +26,6 @@ module arb4j
   exports arb;
   exports arb.expressions;
   exports arb.expressions.nodes;
-  exports arb.annotations;
   exports arb.algebra;
   exports arb.algebraic.geometry;
   exports arb.geometry;

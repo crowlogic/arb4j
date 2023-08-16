@@ -1,5 +1,7 @@
 package arb.stochastic.processes;
 
+import arb.dynamical.systems.State;
+
 /**
  * A stationary process (or a strict/strictly stationary process or
  * strong/strongly stationary process) is a stochastic process whose
@@ -9,8 +11,8 @@ package arb.stochastic.processes;
  * 
  *
  */
-public interface StationaryProcess extends
-                                   StochasticProcess
+public interface StationaryProcess<S extends State> extends
+                                  StochasticProcess<S>
 {
 
 }

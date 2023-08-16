@@ -2,6 +2,7 @@ package arb.stochastic.processes;
 
 import arb.Real;
 import arb.dynamical.systems.ContinuousTimeDynamicalSystem;
+import arb.dynamical.systems.State;
 import arb.stochastic.*;
 
 /**
@@ -53,13 +54,13 @@ import arb.stochastic.*;
  * uncertainty, randomness, or noise.
  * </pre>
  */
-public interface StochasticProcess<P extends RealProbabilityDensityFunction, F extends ProbabilityDistributionFunction>
+public interface StochasticProcess<S extends State>
                                   extends
-                                  ContinuousTimeDynamicalSystem
+                                  ContinuousTimeDynamicalSystem<S>
 {
-  public P getDensityFunction();
+  public ProbabilityDensityFunction getDensityFunction();
 
-  public F getDistributionFunction();
+  public ProbabilityDistributionFunction getDistributionFunction();
 
   /**
    * 
