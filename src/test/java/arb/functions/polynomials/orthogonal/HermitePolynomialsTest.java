@@ -5,12 +5,14 @@ import static java.lang.System.out;
 import java.util.Iterator;
 
 import arb.ComplexPolynomial;
+import arb.domains.ExtendedRealLine;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 public class HermitePolynomialsTest extends
                                     TestCase
 {
+  HermitePolynomials H = new HermitePolynomials();
 
   protected void setUp() throws Exception
   {
@@ -23,15 +25,14 @@ public class HermitePolynomialsTest extends
     super.tearDown();
   }
 
-
-  public void testGetOrthogonalMeasure()
+  public void testOrthogonality()
   {
-    fail("Not yet implemented");
+    assert false : "todo: numerically integrate and verify orthogonality";
   }
 
   public void testGetDomain()
   {
-    fail("Not yet implemented");
+    assertTrue(H.getDomain().getClass().equals(ExtendedRealLine.class));
   }
 
 }
