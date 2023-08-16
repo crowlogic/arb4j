@@ -197,7 +197,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return false;
   }
 
-  Expression<D, R, F> generateClass()
+  Expression<D, R, F> generate()
   {
     if (verbose)
     {
@@ -256,6 +256,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
 
     instructions = ((ClassWriter) cw.getDelegate()).toByteArray();
+
+    if (verbose)
+    {
+      File file = new File(shortClassName + ".class");
+      writeBytecodes(file);
+    }
     return this;
   }
 
@@ -684,11 +690,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       nextChar();
   }
 
-  public Expression<D, R, F> storeClassFileToDisk()
+  public Expression<D, R, F> writeBytecodes(File file)
   {
     try
     {
-      File file = new File(shortClassName + ".class");
       Files.write(Paths.get(file.toURI()), instructions);
       out.println("Wrote " + file.getAbsolutePath());
     }
@@ -787,24 +792,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                      boolean verbose)
   {
 
-    return compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
+    return Compiler.compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
-  private static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
-          Expression<D, R, F>
-          compile(String expression,
-                  Variables<D> variables,
-                  Class<D> domainClass,
-                  Class<R> rangeClass,
-                  Class<F> functionClass,
-                  boolean verbose)
-  {
-    String className = expressionToUniqueClassname(expression);
-
-    return Compiler.compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose);
-  }
-
-  private static String expressionToUniqueClassname(String expression)
+  static String expressionToUniqueClassname(String expression)
   {
     return expression.replace(" ", "")
                      .replace("+", "Plus")
@@ -812,8 +803,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                      .replace("*", "Times")
                      .replace("/", "DividedBy")
                      .replace("^", "ToThePowerOf")
-                     .replace("(", "Open")
-                     .replace(")", "Close")
+                     .replace("(", "")
+                     .replace(")", "")
                      .replace("1", "One")
                      .replace("2", "Two")
                      .replace("3", "Three")
@@ -830,12 +821,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   /**
    * 
-   * @return the {@link Class} defined by
-   *         {@link #generateClass()}{@link #define()}
+   * @return the {@link Class} defined by {@link #generate()}{@link #define()}
    */
   public Class<F> compile()
   {
-    return generateClass().define();
+    return generate().define();
 
   }
 

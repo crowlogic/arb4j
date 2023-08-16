@@ -437,4 +437,18 @@ public class Compiler
     return ch == '^' || ch == '²' || ch == '³' || (ch >= '⁴' && ch <= '⁹');
   }
 
+  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+          Expression<D, R, F>
+          compile(String expression,
+                  Variables<D> variables,
+                  Class<D> domainClass,
+                  Class<R> rangeClass,
+                  Class<F> functionClass,
+                  boolean verbose)
+  {
+    String className = Expression.expressionToUniqueClassname(expression);
+  
+    return compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose);
+  }
+
 }

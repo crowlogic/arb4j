@@ -27,6 +27,10 @@ public class ExpressionTest extends
 
     variables.put("z", vars.get(2).set(-1));
 
+    variables.put("r", vars.get(3).set("1.67", 128));
+
+    variables.put("α", vars.get(4).set("0.6", 128));
+
     vars.lock();
   }
 
