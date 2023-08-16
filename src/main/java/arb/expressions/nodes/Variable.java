@@ -73,7 +73,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
 
     if (isLast)
     {
-      expression.generateSetMethodCall(mv);
+      expression.generateSetResultMethodCall(mv);
     }
   }
 

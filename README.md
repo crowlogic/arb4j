@@ -68,7 +68,7 @@ import org.objectweb.asm.*;
 
 import arb.Field;
 import arb.Real;
-import arb.expressions.nodes.Literal;
+import arb.expressions.nodes.LiteralConstant;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 

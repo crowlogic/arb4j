@@ -56,8 +56,9 @@ public class ExpressionTest extends
 
   public void testSimplerCompoundExpression()
   {
+    // its the parenthesis that throws it
     try ( RealFunction cf = Expression.express("SimplerCompoundExpression",
-                                               "(1)+(2)+(3)",
+                                               "1+(2)+(3)",
                                                variables,
                                                true))
     {

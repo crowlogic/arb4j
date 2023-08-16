@@ -11,7 +11,7 @@ import org.objectweb.asm.*;
 
 import arb.Field;
 import arb.Real;
-import arb.expressions.nodes.Literal;
+import arb.expressions.nodes.LiteralConstant;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -137,18 +137,18 @@ public class Compiler
    * 
    * @param cw             The ClassVisitor for the class being generated
    * @param typeDescriptor the type of the fields
-   * @param literals       An Iterable of Literal objects representing the
+   * @param literalConstants       An Iterable of LiteralConstant objects representing the
    *                       constants to be declared
    * @return
    */
   static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          ClassVisitor
-         declareConstants(ClassVisitor cw, String typeDescriptor, ArrayList<Literal<D, R, F>> literals)
+         declareConstants(ClassVisitor cw, String typeDescriptor, ArrayList<LiteralConstant<D, R, F>> literals)
   {
     if (!literals.isEmpty())
     {
 
-      for (Literal<?, ?, ?> constant : literals)
+      for (LiteralConstant<?, ?, ?> constant : literals)
       {
         cw.visitField(ACC_PUBLIC, constant.fieldName, typeDescriptor, null, null);
       }
@@ -202,11 +202,11 @@ public class Compiler
     mv.visitVarInsn(ALOAD, 0);
     mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
 
-    if (!expression.literals.isEmpty())
+    if (!expression.literalConstants.isEmpty())
     {
       if (expression.verbose)
       {
-        System.out.println("Preparing literal constants: " + expression.literals);
+        System.out.println("Preparing literal constants: " + expression.literalConstants);
       }
 
       initializeLiteralConstants(expression, mv);
@@ -232,7 +232,7 @@ public class Compiler
          initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor mv)
   {
 
-    for (Literal<D, R, F> literal : expression.literals)
+    for (LiteralConstant<D, R, F> literal : expression.literalConstants)
     {
       initializeLiteralConstantWithString(expression, mv, literal);
     }
@@ -275,7 +275,7 @@ public class Compiler
          MethodVisitor
          initializeLiteralConstantWithString(Expression<D, R, F> expression,
                                              MethodVisitor mv,
-                                             Literal<D, R, F> constant)
+                                             LiteralConstant<D, R, F> constant)
   {
     mv.visitVarInsn(ALOAD, 0);
     mv.visitTypeInsn(NEW, expression.domainClassInternalName);

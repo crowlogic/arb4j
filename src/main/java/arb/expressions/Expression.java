@@ -1,6 +1,7 @@
 package arb.expressions;
 
 import static arb.expressions.Compiler.*;
+import static java.lang.String.format;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 
@@ -9,9 +10,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
@@ -25,64 +26,64 @@ import arb.functions.real.RealFunction;
 
 public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
 {
-  protected int                             position                  = -1;
+  protected int                              position                  = -1;
 
-  public int                                ch                        = 0;
+  public int                                 ch                        = 0;
 
-  protected final String                    expression;
+  protected final String                     expression;
 
-  public Variables<D>                       variables;
+  public Variables<D>                        variables;
 
-  public String                             className;
+  public String                              className;
 
-  final public Class<D>                     domainClass;
+  final public Class<D>                      domainClass;
 
-  final public Class<R>                     rangeClass;
+  final public Class<R>                      rangeClass;
 
-  final public String                       domainClassDescriptor;
+  final public String                        domainClassDescriptor;
 
-  final public String                       rangeClassDescriptor;
+  final public String                        rangeClassDescriptor;
 
-  final public String                       functionClassInternalName;
+  final public String                        functionClassInternalName;
 
-  public ArrayList<String>                  intermediateVariables     = new ArrayList<>();
+  public ArrayList<String>                   intermediateVariables     = new ArrayList<>();
 
-  int                                       intermediateVariableCount = 0;
+  int                                        intermediateVariableCount = 0;
 
-  int                                       constantCount;
+  int                                        constantCount;
 
-  public ArrayList<Literal<D, R, F>>        literals                  = new ArrayList<Literal<D, R, F>>();
+  public ArrayList<LiteralConstant<D, R, F>> literalConstants          = new ArrayList<LiteralConstant<D, R, F>>();
 
-  public Variable<D, R, F>                  inputNode;
+  public Variable<D, R, F>                   inputNode;
 
-  protected Method                          evaluateMethod;
+  protected Method                           evaluateMethod;
 
-  protected byte[]                          instructions;
+  protected byte[]                           instructions;
 
-  protected String                          shortClassName;
+  protected String                           shortClassName;
 
-  public boolean                            verbose                   = false;
+  public boolean                             verbose                   = false;
 
-  Class<F>                                  compiledClass;
+  Class<F>                                   compiledClass;
 
-  F                                         instance;
+  F                                          instance;
 
-  public final String                       rangeClassInternalName;
+  public final String                        rangeClassInternalName;
 
-  public final String                       domainClassInternalName;
+  public final String                        domainClassInternalName;
 
   /**
    * if this is false then the result variable ( the last parameter to the
    * evaluate method at index 4) is available to be reused as an intermediate
    * variable
    **/
-  public boolean                            resultAllocated           = false;
+  public boolean                             resultAllocated           = false;
 
-  public Node<D, R, F>                      rootNode;
+  public Node<D, R, F>                       rootNode;
 
-  public Class<F>                           functionClass;
+  public Class<F>                            functionClass;
 
-  public HashMap<String, Variable<D, R, F>> referencedVariables       = new HashMap<>();
+  public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
 
   public Expression(String className,
                     Class<D> domainClass,
@@ -167,24 +168,24 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return instance;
   }
 
-  public MethodVisitor generateSetMethodCall(MethodVisitor mv)
+  public MethodVisitor generateSetResultMethodCall(MethodVisitor mv)
   {
     checkClassCast(loadResult(mv), false);
     mv.visitInsn(Opcodes.SWAP);
-    String dcd = domainClassDescriptor;
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        domainClassInternalName,
                        "set",
-                       String.format("(%s)%s", dcd, dcd),
+                       format("(%s)%s", domainClassDescriptor, domainClassDescriptor),
                        false);
     return mv;
   }
 
   /**
    * Passes this{@link #instructions} to
-   * {@link Compiler#defineFunctionClass(byte[])}
+   * {@link Compiler#defineFunctionClass(byte[])} and assigns the result to
+   * this{@link #compiledClass}
    * 
-   * @return
+   * @return this{@link #compiledClass} after it has been set
    */
   protected Class<F> define()
   {
@@ -232,9 +233,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
       if (verbose)
       {
-        System.err.println("Declaring constants: " + literals);
+        System.err.println("Declaring constants: " + literalConstants);
       }
-      Compiler.declareConstants(cw, domainClassDescriptor, literals);
+      declareConstants(cw, domainClassDescriptor, literalConstants);
 
       if (variables != null)
       {
@@ -279,12 +280,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * @return true if either this{@link #literals} or
+   * @return true if either this{@link #literalConstants} or
    *         this{@link #intermediateVariables} is populated
    */
   public boolean needsCloseMethod()
   {
-    return !literals.isEmpty() | intermediateVariableCount > 0;
+    return !literalConstants.isEmpty() | intermediateVariableCount > 0;
   }
 
   protected void generateCloseMethod(ClassVisitor classVisitor)
@@ -294,11 +295,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     {
       methodVisitor.visitCode();
 
-      if (!literals.isEmpty())
+      if (!literalConstants.isEmpty())
       {
         if (verbose)
         {
-          System.err.println("Closing literal constants : " + literals.stream().map(c -> c.fieldName).toList());
+          System.err.println("Closing literal constants : "
+                        + literalConstants.stream().map(c -> c.fieldName).toList());
           System.err.flush();
         }
 
@@ -337,7 +339,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   public void generateLiteralClosingInstructions(MethodVisitor methodVisitor)
   {
 
-    for (Literal<D, R, F> constant : literals)
+    for (LiteralConstant<D, R, F> constant : literalConstants)
     {
       generateCloseMethodCall(this, loadThis(methodVisitor), constant.fieldName);
     }
@@ -610,8 +612,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       nextChar();
 
     String num = expression.substring(startPos, this.position);
-    node = new Literal<D, R, F>(this,
-                                num);
+    node = new LiteralConstant<D, R, F>(this,
+                                        num);
     return node;
   }
 
@@ -621,8 +623,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     {
       node = new RaiseToPower<D, R, F>(this,
                                        node,
-                                       new Literal<>(this,
-                                                     digit));
+                                       new LiteralConstant<>(this,
+                                                             digit));
     }
     return node;
   }
@@ -791,8 +793,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                      Class<F> functionClass,
                      boolean verbose)
   {
-    return Compiler.compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose)
-                   .instantiate();
+    return compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
@@ -805,7 +806,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                      boolean verbose)
   {
 
-    return Compiler.compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
+    return compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
   static String expressionToUniqueClassname(String expression)
