@@ -39,6 +39,8 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
     registerFunctionHandlers("Z",
                              "J0",
                              "sec",
+                             "sin",
+                             "cos",
                              "sech",
                              "floor",
                              "ceil",

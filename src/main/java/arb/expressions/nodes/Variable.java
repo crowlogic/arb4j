@@ -27,7 +27,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     expression.referencedVariables.put(variableName, this);
     if (namespace == null || namespace.get(variableName) == null)
     {
-      if (expression.inputNode == null)
+      if (expression.inputNode == null || expression.inputNode.name.equals(variableName))
       {
         expression.inputNode = this;
         isInput              = true;
@@ -73,13 +73,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
 
     if (isLast)
     {
-      expression.checkClassCast(loadResult(mv), false);
-      mv.visitInsn(Opcodes.SWAP);
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         expression.domainClassInternalName,
-                         "set",
-                         String.format("(%s)%s", expression.domainClassDescriptor, expression.domainClassDescriptor),
-                         false);
+      expression.generateSetMethodCall(mv);
     }
   }
 

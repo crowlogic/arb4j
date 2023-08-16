@@ -167,6 +167,19 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return instance;
   }
 
+  public MethodVisitor generateSetMethodCall(MethodVisitor mv)
+  {
+    checkClassCast(loadResult(mv), false);
+    mv.visitInsn(Opcodes.SWAP);
+    String dcd = domainClassDescriptor;
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       domainClassInternalName,
+                       "set",
+                       String.format("(%s)%s", dcd, dcd),
+                       false);
+    return mv;
+  }
+
   /**
    * Passes this{@link #instructions} to
    * {@link Compiler#defineFunctionClass(byte[])}

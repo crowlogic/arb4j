@@ -1,9 +1,8 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
-import static java.lang.String.format;
+import static arb.expressions.Compiler.loadThis;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.DUP;
 
 import org.objectweb.asm.MethodVisitor;
 
@@ -64,24 +63,11 @@ public class Literal<D extends arb.Field<D>, R extends arb.Field<R>, F extends F
       out.println(this);
     }
 
-    loadThis(mv);
-    expression.loadField(mv, fieldName, false);
+    expression.loadField(loadThis(mv), fieldName, false);
 
     if (isLast)
     {
-      loadResult(mv);
-
-      expression.checkClassCast(mv, false);
-
-      mv.visitInsn(SWAP);
-
-      String dcd = expression.domainClassDescriptor;
-      mv.visitMethodInsn(INVOKEVIRTUAL,
-                         expression.domainClassInternalName,
-                         "set",
-                         format("(%s)%s", dcd, dcd),
-                         false);
-      mv.visitInsn(DUP);
+      expression.generateSetMethodCall(mv);
     }
 
   }
