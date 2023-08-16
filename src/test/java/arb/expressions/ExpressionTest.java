@@ -428,7 +428,7 @@ public class ExpressionTest extends
   public void testDivideConstants()
   {
 
-    try ( RealFunction expression = express("42 / 6", variables))
+    try ( RealFunction expression = express("42 ÷ 6", variables))
     {
       Real func = expression.evaluate(RealConstants.one, 1, 256, new Real());
       assertEquals(7.0, func.doubleValue(RoundingMode.Up));

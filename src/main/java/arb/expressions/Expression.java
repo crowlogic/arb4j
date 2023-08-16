@@ -227,7 +227,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         if (verbose)
         {
-          System.err.println("Declaring variables: " + variables);
+          System.err.println("Declaring variables: " + referencedVariables.keySet());
         }
         declareVariables(this, cw, referencedVariables.keySet());
       }
@@ -632,8 +632,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         }
       }
     }
-    node = eatSuperscripts(node);
-    return node;
+    return eatSuperscripts(node);
   }
 
   public Node<D, R, F> eatSuperscripts(Node<D, R, F> node)
@@ -653,7 +652,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.err.format("parseSecond: ch=%c position=%d\n", ch, this.position);
+      System.err.format("eatSecond: ch=%c position=%d\n", ch, this.position);
     }
 
     Node<D, R, F> node = eatLast();
@@ -666,7 +665,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                      node,
                                      eatLast());
       }
-      else if (eat('/'))
+      else if (eat('/') || eat('÷'))
       {
         node = new Divide<D, R, F>(this,
                                    node,
