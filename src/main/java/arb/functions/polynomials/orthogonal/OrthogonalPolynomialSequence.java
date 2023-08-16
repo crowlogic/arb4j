@@ -1,13 +1,16 @@
 package arb.functions.polynomials.orthogonal;
 
+import arb.Field;
 import arb.OrthogonalBasis;
 import arb.domains.Domain;
+import arb.functions.Function;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;
 
-public interface OrthogonalPolynomialSequence<R extends RealFunction> extends
-                                             Iterable<RealFunction>,
-                                             OrthogonalBasis
+public interface OrthogonalPolynomialSequence<X extends Field<X>, R extends Function<X, X>, O extends OrthogonalBasis<X, R>>
+                                             extends
+                                             Iterable<RealFunction>
+
 {
   /**
    * The weighting function that this set of polynomials is orthogonal to
@@ -22,5 +25,5 @@ public interface OrthogonalPolynomialSequence<R extends RealFunction> extends
    *         polynomials are orthogonal over with respect to the measure given by
    *         this{@link #getOrthogonalMeasure()}
    */
-  public Domain getDomain();
+  public Domain<X> getDomain();
 }

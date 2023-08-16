@@ -23,7 +23,7 @@ import arb.Field;
 public interface EuclideanVectorSpace<X extends Field<X>> extends
                                      VectorSpace<X, X>,
                                      EuclideanSpace<X>,
-                                     InnerProductSpace<X, X, EuclideanVectorSpace<X>>
+                                     InnerProductSpace<X, X>
 {
 
   /**

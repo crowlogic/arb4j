@@ -1,6 +1,7 @@
 package arb.operators;
 
 import arb.Field;
+import arb.OrthogonalBasis;
 import arb.space.topological.HilbertSpace;
 
 /**
@@ -27,9 +28,11 @@ import arb.space.topological.HilbertSpace;
  * 
  * @param <F>  The type of the field over which the vector spaces are defined.
  * @param <VE> The type of the elements in the Hilbert space.
+ * @param <O>  the type of {@link OrthogonalBasis}
  * @param <V>  The type of the Hilbert space itself.
  */
-public interface HilbertSchmidtOperator<F extends Field<F>, VE, V extends HilbertSpace<F, VE, V>> extends
+public interface HilbertSchmidtOperator<F extends Field<F>, VE, O extends OrthogonalBasis<F, VE>, V extends HilbertSpace<F, VE, O>>
+                                       extends
                                        CompactOperator<F, VE, V, VE, V>
 {
   /**

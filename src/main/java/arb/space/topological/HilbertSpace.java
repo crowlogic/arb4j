@@ -1,7 +1,7 @@
 package arb.space.topological;
 
 import arb.Field;
-import arb.OrthonormalBasis;
+import arb.OrthogonalBasis;
 
 /**
  * A Hilbert space is a special kind of vector space equipped with an inner
@@ -21,9 +21,9 @@ import arb.OrthonormalBasis;
  * @param <VE> The type of the elements in the vector space.
  * @param <S>  The type of the Hilbert space itself.
  */
-public interface HilbertSpace<F extends Field<F>, VE, S extends HilbertSpace<F, VE, S>> extends
-                             BanachSpace<F, VE, S>,
-                             InnerProductSpace<F, VE, S>
+public interface HilbertSpace<F extends Field<F>, VE, O extends OrthogonalBasis<F, VE>> extends
+                             BanachSpace<F, VE>,
+                             InnerProductSpace<F, VE>
 {
   /**
    * Returns an orthonormal basis for this space.
@@ -31,7 +31,7 @@ public interface HilbertSpace<F extends Field<F>, VE, S extends HilbertSpace<F, 
    * @return an OrthonormalBasis instance representing an orthonormal basis for
    *         this Hilbert space
    */
-  OrthonormalBasis<F, VE, S> basis();
+  OrthogonalBasis<F, VE> basis();
 
   /**
    * Given a vector described in terms of the basis provided, this method computes
@@ -44,7 +44,7 @@ public interface HilbertSpace<F extends Field<F>, VE, S extends HilbertSpace<F, 
    * @return the representation of the vector in the default basis of this Hilbert
    *         space, returned as an instance of the field F
    */
-  F changeTo(F vectorInBasis, S basis);
+  F changeTo(F vectorInBasis, O basis);
 
   /**
    * Given a vector described in terms of the default basis of this space (as
@@ -58,5 +58,5 @@ public interface HilbertSpace<F extends Field<F>, VE, S extends HilbertSpace<F, 
    * @return the representation of the vector in the provided basis, returned as
    *         an instance of the field F
    */
-  F changeFrom(F vectorInDefaultBasis, S basis);
+  F changeFrom(F vectorInDefaultBasis, O basis);
 }

@@ -23,7 +23,7 @@ import arb.Field;
  * @see <a href="https://en.wikipedia.org/wiki/Banach_space">Banach Space
  *      (Wikipedia)</a>
  */
-public interface BanachSpace<F extends Field<F>, VE, V extends VectorSpace<F, VE>> extends
-                            NormedVectorSpace<F, VE, V>
+public interface BanachSpace<F extends Field<F>, VE> extends
+                            NormedVectorSpace<F, VE, BanachSpace<F, VE>>
 {
 }

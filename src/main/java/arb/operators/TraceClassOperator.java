@@ -1,6 +1,7 @@
 package arb.operators;
 
 import arb.Field;
+import arb.OrthogonalBasis;
 import arb.space.topological.HilbertSpace;
 
 /**
@@ -13,7 +14,8 @@ import arb.space.topological.HilbertSpace;
  * @param <VE> The type of the elements in the Hilbert space.
  * @param <V>  The type of the Hilbert space itself.
  */
-public interface TraceClassOperator<F extends Field<F>, VE, V extends HilbertSpace<F, VE, V>> extends
+public interface TraceClassOperator<F extends Field<F>, VE, O extends OrthogonalBasis<F, VE>, V extends HilbertSpace<F, VE, O>>
+                                   extends
                                    NuclearOperator<F, VE, V, VE, V>
 {
   /**

@@ -2,12 +2,10 @@ package arb.functions.polynomials.orthogonal;
 
 import java.util.Iterator;
 
-import arb.Real;
-import arb.RealConstants;
+import arb.*;
 import arb.domains.Domain;
 import arb.domains.ExtendedRealLine;
 import arb.expressions.Variables;
-import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;
 import arb.utensils.ShellCommands;
 
@@ -31,7 +29,7 @@ import arb.utensils.ShellCommands;
  * {@link ExtendedRealLine}
  */
 public class HermitePolynomials implements
-                                OrthogonalPolynomialSequence<HermitePolynomial>
+                                OrthogonalBasis<Real, HermitePolynomial>
 {
 
   final static int bits = 128;
@@ -39,10 +37,8 @@ public class HermitePolynomials implements
   public static void main(String arg[]) throws InterruptedException
   {
 
-    try ( HermitePolynomial h1 = new HermitePolynomial(1);
-          HermitePolynomial h2 = new HermitePolynomial(2);
-          HermitePolynomial h3 = new HermitePolynomial(3);
-          HermitePolynomial h4 = new HermitePolynomial(4))
+    try ( HermitePolynomial h1 = new HermitePolynomial(1); HermitePolynomial h2 = new HermitePolynomial(2);
+          HermitePolynomial h3 = new HermitePolynomial(3); HermitePolynomial h4 = new HermitePolynomial(4))
     {
       ShellCommands.plot(-1, 1, h1, h2, h3, h4);
 
@@ -58,9 +54,9 @@ public class HermitePolynomials implements
   }
 
   @Override
-  public Iterator<RealFunction> iterator()
+  public Iterator<HermitePolynomial> iterator()
   {
-    return new Iterator<RealFunction>()
+    return new Iterator<HermitePolynomial>()
     {
       int i = 0;
 
@@ -83,26 +79,13 @@ public class HermitePolynomials implements
   RealFunction    standardNormal = (t, order, bits, result) -> t.pow(2, bits, result).neg().exp(bits);
 
   @Override
-  public HolomorphicFunction getOrthogonalMeasure()
+  public RealFunction getOrthogonalMeasure()
   {
-    return (t, order, bits, result) ->
-    {
-      if (!t.im().isZero())
-      {
-        throw new UnsupportedOperationException("nonzero imaginary not allowed here, the solution is to properly generify this class and method so that we can just use the real type instead of passing around a complex and only using the real part of it");
-      }
-      else
-      {
-        standardNormal.evaluate(t.re(), order, bits, result.re());
-      }
-      return result;
-    };
-    // "todo: change getDistribution()s return value to be generic instead of
-    // specificlally Complex->Complex";
+    return standardNormal;
   }
 
   @Override
-  public Domain getDomain()
+  public Domain<Real> getDomain()
   {
     return ExtendedRealLine.instance;
   }

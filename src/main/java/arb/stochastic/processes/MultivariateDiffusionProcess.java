@@ -22,7 +22,9 @@ public interface MultivariateDiffusionProcess<D extends MultivariateState<?>> ex
 
   int dim();
 
-  public DiffusionProcess<D> get(int i);
+  public <G extends DiffusionProcess<?>> G get(int i);
+
+//  public DiffusionProcess<D> get(int i);
 
   boolean verbose = false;
 
