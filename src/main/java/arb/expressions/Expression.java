@@ -6,7 +6,6 @@ import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -411,7 +410,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     {
       for (Entry<String, Variable<D, R, F>> entry : referencedVariables.entrySet())
       {
-        Field field = compiledClass.getField(entry.getKey());
+        java.lang.reflect.Field field = compiledClass.getField(entry.getKey());
         field.set(instance, variables.get(entry.getKey()));
       }
     }
@@ -831,6 +830,16 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                      .replace("0", "Zero")
                      .replace(".", "Point")
                   + System.nanoTime();
+  }
+
+  public MethodVisitor generateFunctionInvocation(MethodVisitor mv, String functionName)
+  {
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       domainClassInternalName,
+                       functionName,
+                       format("(I%s)%s", domainClassDescriptor, domainClassDescriptor),
+                       false);
+    return mv;
   }
 
 }

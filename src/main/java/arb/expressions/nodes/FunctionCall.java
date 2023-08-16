@@ -1,18 +1,17 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.*;
-import static java.lang.String.format;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
+import arb.Field;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
-public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
+public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
 {
   @Override
@@ -65,7 +64,6 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
     {
       registerFunctionHandler(function);
     }
-    // register functions with aliases separately
     registerFunctionHandler("log", "ln");
     // FIXME: todo, add support for √25 with no parenthesis
     registerFunctionHandler("sqrt", "√");
@@ -131,7 +129,7 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
    * @param lastCall
    * @return
    */
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
          generationFunctionCall(MethodVisitor mv,
                                 String functionName,
@@ -172,22 +170,8 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
       }
     }
 
-    return invokeFunction(independentVariable.expression.checkClassCast(mv, false),
-                          functionName,
-                          independentVariable);
-  }
-
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
-         MethodVisitor
-         invokeFunction(MethodVisitor mv, String functionName, Node<D, R, F> node)
-  {
-    String dcd = node.expression.domainClassDescriptor;
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       node.expression.domainClassInternalName,
-                       functionName,
-                       format("(I%s)%s", dcd, dcd),
-                       false);
-    return mv;
+    Expression<D, R, F> expression = independentVariable.expression;
+    return expression.generateFunctionInvocation(expression.checkClassCast(mv, false), functionName);
   }
 
 }
