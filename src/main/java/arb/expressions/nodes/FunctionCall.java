@@ -133,11 +133,14 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
    */
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          MethodVisitor
-         generationFunctionCall(MethodVisitor mv, String functionName, Node<D, R, F> independentVariable, boolean lastCall)
+         generationFunctionCall(MethodVisitor mv,
+                                String functionName,
+                                Node<D, R, F> independentVariable,
+                                boolean lastCall)
   {
     if (verbose)
     {
-      System.err.format("generateFunctionCall(mv=%s, functionName=%s, argument=%s, lastCall=%s)\n",
+      System.err.format("generateFunctionCall(mv=%s, functionName=%s, independentVariable=%s, lastCall=%s)\n",
                         mv,
                         functionName,
                         independentVariable,
@@ -157,7 +160,8 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
       {
         if (verbose)
         {
-          System.err.println("Preparing function call stack to reuse its argument " + independentVariable.toString(-1));
+          System.err.println("Preparing function call stack to reuse its argument "
+                        + independentVariable.toString(-1));
         }
 
         independentVariable.prepareStackForReuse(mv);
@@ -168,7 +172,9 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
       }
     }
 
-    return invokeFunction(independentVariable.expression.checkClassCast(mv, false), functionName, independentVariable);
+    return invokeFunction(independentVariable.expression.checkClassCast(mv, false),
+                          functionName,
+                          independentVariable);
   }
 
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
