@@ -127,23 +127,23 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
    * 
    * @param mv
    * @param functionName
-   * @param argument
+   * @param independentVariable
    * @param lastCall
    * @return
    */
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          MethodVisitor
-         generationFunctionCall(MethodVisitor mv, String functionName, Node<D, R, F> argument, boolean lastCall)
+         generationFunctionCall(MethodVisitor mv, String functionName, Node<D, R, F> independentVariable, boolean lastCall)
   {
     if (verbose)
     {
       System.err.format("generateFunctionCall(mv=%s, functionName=%s, argument=%s, lastCall=%s)\n",
                         mv,
                         functionName,
-                        argument,
+                        independentVariable,
                         lastCall);
     }
-    argument.generate(mv);
+    independentVariable.generate(mv);
 
     loadBits(mv);
 
@@ -153,22 +153,22 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
     }
     else
     {
-      if (argument.isReusable())
+      if (independentVariable.isReusable())
       {
         if (verbose)
         {
-          System.err.println("Preparing function call stack to reuse its argument " + argument.toString(-1));
+          System.err.println("Preparing function call stack to reuse its argument " + independentVariable.toString(-1));
         }
 
-        argument.prepareStackForReuse(mv);
+        independentVariable.prepareStackForReuse(mv);
       }
       else
       {
-        argument.allocateIntermediateVariable(mv);
+        independentVariable.allocateIntermediateVariable(mv);
       }
     }
 
-    return invokeFunction(argument.expression.checkClassCast(mv, false), functionName, argument);
+    return invokeFunction(independentVariable.expression.checkClassCast(mv, false), functionName, independentVariable);
   }
 
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
