@@ -38,9 +38,8 @@ public class ExpressionTest extends
 
   public void testOnePlusNOver2()
   {
-    try ( RealFunction cf = Expression.express("1+n/2+0", variables, true);
-          Real x = new Real("2",
-                            128);)
+    try ( RealFunction cf = Expression.express("1+n/2+0", variables, true); Real x = new Real("2",
+                                                                                              128);)
     {
 
       Real evaluatedX = cf.evaluate(x, 1, 256, x);
@@ -57,10 +56,7 @@ public class ExpressionTest extends
   public void testSimplerCompoundExpression()
   {
     // its the parenthesis that throws it
-    try ( RealFunction cf = Expression.express("SimplerCompoundExpression",
-                                               "1+(2)+(3)",
-                                               variables,
-                                               true))
+    try ( RealFunction cf = express("SimplerCompoundExpression", "1+(2)+(3)", variables, true))
     {
       Real evaluatedX = cf.evaluate(RealConstants.one, 1, 256, new Real());
 
