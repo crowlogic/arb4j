@@ -36,7 +36,8 @@ public class FunctionCall<D extends arb.Field<D>, R extends arb.Field<R>, F exte
   {
     // todo: add support for |x|=abs(x)
 
-    registerFunctionHandlers("J0",
+    registerFunctionHandlers("Z",
+                             "J0",
                              "sec",
                              "sech",
                              "floor",

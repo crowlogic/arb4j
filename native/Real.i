@@ -75,6 +75,24 @@ import arb.stochastic.ProbabilityDistributionFunction;
   }
 
   /**
+   * @see arblib#acb_dirichlet_hardy_z(Complex, Complex, DirichletGroup,
+   *      DirichletCharacter, int, int)
+   *      
+   * @param bits
+   * @param result
+   * @return
+   */
+  public Real Z(int bits, Real result)
+  {
+    try ( Complex z = new Complex())
+    {
+      z.re().set(this);
+      arblib.acb_dirichlet_hardy_z(z, z, null, null, 1, bits);
+      return result.set(z.re());
+    }
+  }
+  
+  /**
    * 
    * @return {@link arb#arb_is_exact(Real)} != 0
    */

@@ -819,14 +819,4 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                   + System.nanoTime();
   }
 
-  /**
-   * 
-   * @return the {@link Class} defined by {@link #generate()}{@link #define()}
-   */
-  public Class<F> compile()
-  {
-    return generate().define();
-
-  }
-
 }

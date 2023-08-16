@@ -79,7 +79,7 @@ public class Compiler
       expression.verbose = true;
     }
 
-    expression.compile();
+    expression.generate().define();
 
     return expression;
   }
@@ -438,16 +438,16 @@ public class Compiler
   }
 
   static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
-          Expression<D, R, F>
-          compile(String expression,
-                  Variables<D> variables,
-                  Class<D> domainClass,
-                  Class<R> rangeClass,
-                  Class<F> functionClass,
-                  boolean verbose)
+         Expression<D, R, F>
+         compile(String expression,
+                 Variables<D> variables,
+                 Class<D> domainClass,
+                 Class<R> rangeClass,
+                 Class<F> functionClass,
+                 boolean verbose)
   {
     String className = Expression.expressionToUniqueClassname(expression);
-  
+
     return compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose);
   }
 
