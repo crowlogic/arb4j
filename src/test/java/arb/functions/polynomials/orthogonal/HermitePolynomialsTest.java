@@ -1,12 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
-import static java.lang.System.out;
-
-import java.util.Iterator;
-
-import arb.ComplexPolynomial;
 import arb.domains.ExtendedRealLine;
-import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 public class HermitePolynomialsTest extends

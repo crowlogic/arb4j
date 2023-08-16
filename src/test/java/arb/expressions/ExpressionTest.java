@@ -38,8 +38,8 @@ public class ExpressionTest extends
 
   public void testOnePlusNOver2()
   {
-    try ( RealFunction cf = Expression.express("1+n/2+0", variables, true); Real x = new Real("2",
-                                                                                              128);)
+    try ( RealFunction cf = Expression.express("1+n/2+0", variables); Real x = new Real("2",
+                                                                                        128);)
     {
 
       Real evaluatedX = cf.evaluate(x, 1, 256, x);
