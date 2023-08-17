@@ -12,7 +12,7 @@ import arb.geometry.Manifold;
 public class Circle implements
                     PlaneCurve,
                     AutoCloseable,
-                    Manifold<Field>
+                    Manifold<Real>
 {
   /**
    * Construct a rotation of a circle as a complex-valued function of a real

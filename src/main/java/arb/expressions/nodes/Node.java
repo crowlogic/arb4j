@@ -38,7 +38,6 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
 
   public int bits = 128;
 
-  public int depth;
 
   /**
    * Determines whether this ExpressionNode is reusable. If it's reusable, it
@@ -59,7 +58,7 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
   {
     if (!expression.resultAllocated)
     {
-      expression.checkClassCast(loadResult(mv), true);
+      expression.generateClassCastCheck(loadResult(mv), true);
       expression.resultAllocated = true;
     }
     else

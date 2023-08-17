@@ -1,5 +1,6 @@
 package arb.geometry;
 
+import arb.Field;
 import arb.OpenSet;
 import arb.space.topological.BanachSpace;
 import arb.space.topological.TopologicalSpace;
@@ -14,7 +15,7 @@ import arb.space.topological.TopologicalSpace;
  * 
  * @param <X>
  */
-public interface BanachManifold<X> extends
+public interface BanachManifold<X extends Field<X>> extends
                                Manifold<X>
 {
 

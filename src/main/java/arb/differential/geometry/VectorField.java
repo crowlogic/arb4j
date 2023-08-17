@@ -1,5 +1,6 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.functions.Function;
 import arb.geometry.DifferentiableManifold;
 import arb.space.topological.EuclideanSpace;
@@ -24,8 +25,8 @@ import arb.space.topological.EuclideanSpace;
  * 
  * @param <M>
  */
-public interface VectorField<M extends DifferentiableManifold> extends
-                            Function<M, EuclideanSpace>
+public interface VectorField<X extends Field<X>, M extends DifferentiableManifold> extends
+                            Function<M, EuclideanSpace<X>>
 {
 
 }

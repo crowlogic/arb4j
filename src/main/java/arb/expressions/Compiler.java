@@ -446,9 +446,33 @@ public class Compiler
                  Class<F> functionClass,
                  boolean verbose)
   {
-    String className = Expression.expressionToUniqueClassname(expression);
+    String className = Compiler.expressionToUniqueClassname(expression);
 
     return compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose);
+  }
+
+  static String expressionToUniqueClassname(String expression)
+  {
+    return expression.replace(" ", "")
+                     .replace("+", "Plus")
+                     .replace("-", "Minus")
+                     .replace("*", "Times")
+                     .replace("/", "DividedBy")
+                     .replace("^", "ToThePowerOf")
+                     .replace("(", "")
+                     .replace(")", "")
+                     .replace("1", "One")
+                     .replace("2", "Two")
+                     .replace("3", "Three")
+                     .replace("4", "Four")
+                     .replace("5", "Five")
+                     .replace("6", "Six")
+                     .replace("7", "Seven")
+                     .replace("8", "Eight")
+                     .replace("9", "Nine")
+                     .replace("0", "Zero")
+                     .replace(".", "Point")
+                  + System.nanoTime();
   }
 
 }

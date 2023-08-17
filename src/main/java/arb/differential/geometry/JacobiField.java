@@ -1,5 +1,6 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.space.topological.TangentSpace;
 
 /**
@@ -11,8 +12,8 @@ import arb.space.topological.TangentSpace;
  * 
  * @param <M>
  */
-public interface JacobiField<M extends RiemannianManifold> extends
-                            VectorField<M>
+public interface JacobiField<X extends Field<X>, M extends RiemannianManifold> extends
+                            VectorField<X, M>
 {
 
 }

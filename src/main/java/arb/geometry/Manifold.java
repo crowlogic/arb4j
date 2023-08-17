@@ -2,6 +2,7 @@ package arb.geometry;
 
 import java.util.Set;
 
+import arb.Field;
 import arb.geometry.curves.Circle;
 import arb.geometry.curves.Lemniscate;
 import arb.geometry.surfaces.*;
@@ -26,7 +27,7 @@ import arb.space.topological.TopologicalSpace;
  * an open subset of the one-dimensional Euclidean space.
  * 
  */
-public interface Manifold<X> extends
+public interface Manifold<X extends Field<X>> extends
                          TopologicalSpace<X>
 {
 
@@ -42,7 +43,7 @@ public interface Manifold<X> extends
    * @param point A point on the manifold.
    * @return The tangent space at the given point.
    */
-  default EuclideanSpace tangentSpace(X point)
+  default EuclideanSpace<X> tangentSpace(X point)
   {
     assert false : "TODO: have " + getClass() + " implement this";
     return null;

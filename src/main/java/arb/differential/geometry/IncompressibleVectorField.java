@@ -1,5 +1,6 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.geometry.DifferentiableManifold;
 
 /**
@@ -21,8 +22,8 @@ import arb.geometry.DifferentiableManifold;
  * 
  * @param <M>
  */
-public interface IncompressibleVectorField<M extends DifferentiableManifold> extends
-                                          VectorField<M>
+public interface IncompressibleVectorField<X extends Field<X>, M extends DifferentiableManifold> extends
+                                          VectorField<X, M>
 {
 
 }

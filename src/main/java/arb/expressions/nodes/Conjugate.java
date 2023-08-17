@@ -14,8 +14,7 @@ public class Conjugate<D extends arb.Field<D>, R extends arb.Field<R>, F extends
   {
     super(parser,
           "neg",
-          argument,
-          depth + 1);
+          argument);
   }
 
   @Override

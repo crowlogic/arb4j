@@ -163,7 +163,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public MethodVisitor generateSetResultMethodCall(MethodVisitor mv)
   {
-    checkClassCast(loadResult(mv), false);
+    generateClassCastCheck(loadResult(mv), false);
     mv.visitInsn(Opcodes.SWAP);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        domainClassInternalName,
@@ -404,36 +404,61 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
   }
 
+  /**
+   * 
+   * @param name
+   * @param arg
+   * @return
+   */
   private Node<D, R, F> newFunctionCall(String name, Node<D, R, F> arg)
   {
+    assert arg != null : "arg is null in function call named '" + name + "'";
+
+    if (arg == null)
+    {
+      throw new RuntimeException("Parsed expression is null, name=" + name);
+    }
 
     if (verbose)
     {
       System.err.println("newFunctionCall name=" + name + " arg=" + arg);
     }
-    Node<D, R, F> node;
-    if (arg == null)
-    {
-      throw new RuntimeException("Parsed expression is null, name=" + name);
-    }
-    node = new FunctionCall<>(this,
+
+    return new FunctionCall<>(this,
                               name,
-                              arg,
-                              arg.depth + 1);
-    return node;
+                              arg);
   }
 
-  private Node<D, R, F> newVariable(String identifier)
+  /**
+   * instantiate a new {@link Variable}
+   * 
+   * @param name
+   * @return a new {@link Variable}
+   */
+  private Node<D, R, F> newVariable(String name)
   {
     return new Variable<>(this,
-                          identifier);
+                          name);
   }
 
+  /**
+   * Increment this{@link #position} and set this{@link #ch} to the character at
+   * offset this{@link #position} in the expressing {@link String}
+   */
   public void nextChar()
   {
     ch = (++position < expression.length()) ? expression.charAt(position) : -1;
   }
 
+  /**
+   * Consumes characters, calling this{@link #eatFirst()} to process paranthesis
+   * and calling this{@link #eatNumber(int)} if this{@link #ch} indicates a number
+   * a the current position or
+   * this{@link #eatFunctionInvocationOrVariableReference(int)} if this{@link #ch}
+   * indicates the name of either a function or variable reference
+   * 
+   * @return the next node in the syntax tree
+   */
   private Node<D, R, F> eat()
   {
     if (verbose)
@@ -469,8 +494,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       assert node != null : "eatFunctionInvocationOrVariableReference returned null";
     }
 
-    node = eatPower(node);
-
     if (verbose)
     {
       System.err.println("parse returning " + node);
@@ -479,6 +502,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return node;
   }
 
+  /**
+   * Loop which instantiates {@link Add} and {@link Subtract} nodes
+   * 
+   * @return new {@link Add} or {@link Subtract} node or result from
+   *         this{@link #eatSecond()}
+   */
   public Node<D, R, F> eatFirst()
   {
     if (verbose)
@@ -558,6 +587,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
   }
 
+  /**
+   * Calls this{@link #eat()} and if this{@link #ch} indicates a power-raising
+   * operation then a new {@link RaiseToPower} node is instantiated
+   * 
+   * @return either a new {@link RaiseToPower} node from
+   *         this{@link #eatPower(Node)} or a node from this{@link #eat()}
+   */
   private Node<D, R, F> eatLast()
   {
     if (verbose)
@@ -568,6 +604,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return eatPower(eat());
   }
 
+  /**
+   * Upon entrance, this{@link #ch} should already be known to be a latin or greek
+   * character
+   * 
+   * @param startPos
+   * 
+   * @return the name at startPos
+   */
   private String eatName(int startPos)
   {
     while (isLatinOrGreek(ch, true))
@@ -586,6 +630,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return identifier;
   }
 
+  /**
+   * On entrance it should already be known that this{@link #ch} is a digit or a
+   * dot
+   * 
+   * @param startPos
+   * @return a new {@link LiteralConstant} representing the base-10 number
+   */
   private Node<D, R, F> eatNumber(int startPos)
   {
     while (isDigitOrDot(ch))
@@ -597,6 +648,18 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                  expression.substring(startPos, position));
   }
 
+  /**
+   * Checks if this{@link #ch} is a ^ numerical superscript and generates the
+   * corresponding {@link RaiseToPower} node if so
+   * 
+   * TODO: support numbers greater than 9 so something like "x²⁴" would mean
+   * "x^(24)"
+   * 
+   * @param node
+   * @return node if this{@link #ch} does not indicate the specific power raising
+   *         operation, otherwise returns a new {@link RaiseToPower} operator with
+   *         node as its parent node
+   */
   Node<D, R, F> eatSuperscript(Node<D, R, F> node, int superscript, String digit)
   {
     if (eat(superscript))
@@ -609,6 +672,15 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return node;
   }
 
+  /**
+   * Checks if this{@link #ch} is a ^ character or a numerical superscript and
+   * generates the corresponding {@link RaiseToPower} node if so
+   * 
+   * @param node
+   * @return node if this{@link #ch} does not indicate a power raising operation,
+   *         otherwise returns a new {@link RaiseToPower} operator with node as
+   *         its parent node
+   */
   private Node<D, R, F> eatPower(Node<D, R, F> node)
   {
     if (eat('^'))
@@ -631,10 +703,22 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                                    ch == -1 ? '?' : ch));
         }
       }
+
+      return node;
     }
-    return eatSuperscripts(node);
+    else
+    {
+      return eatSuperscripts(node);
+    }
   }
 
+  /**
+   * Calls this{@link #eatSuperscript(Node, int, String)} for each digit of the
+   * base 10 numeral system
+   * 
+   * @param node
+   * @return
+   */
   public Node<D, R, F> eatSuperscripts(Node<D, R, F> node)
   {
     node = eatSuperscript(node, '⁰', "0");
@@ -650,6 +734,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return node;
   }
 
+  /**
+   * Loop which instantiates new {@link Multiply} and {@link Divide} nodes
+   * 
+   * @return new {@link Multiply} or {@link Divide} node or result from
+   *         this{@link #eatLast()}
+   */
   private Node<D, R, F> eatSecond()
   {
     if (verbose)
@@ -680,6 +770,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
   }
 
+  /**
+   * Calls this{@link #nextChar()} until ch != ' '
+   */
   void skipSpaces()
   {
     while (ch == ' ')
@@ -688,6 +781,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
   }
 
+  /**
+   * Writes the contents of this{@link #instructions} to a file
+   * 
+   * @param file
+   * @return
+   */
   public Expression<D, R, F> writeBytecodes(File file)
   {
     try
@@ -710,7 +809,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * emits an {@link Opcodes#CHECKCAST}
+   * emits an {@link Opcodes#CHECKCAST} instruction
    * 
    * @param mv
    * @param range if true then emits an instruction to check if the top element on
@@ -718,7 +817,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    *              tests if its a this{@link #domainClassInternalName}
    * @return mv
    */
-  public MethodVisitor checkClassCast(MethodVisitor mv, boolean range)
+  public MethodVisitor generateClassCastCheck(MethodVisitor mv, boolean range)
   {
     mv.visitTypeInsn(Opcodes.CHECKCAST, range ? rangeClassInternalName : domainClassInternalName);
     return mv;
@@ -790,31 +889,15 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
-  static String expressionToUniqueClassname(String expression)
-  {
-    return expression.replace(" ", "")
-                     .replace("+", "Plus")
-                     .replace("-", "Minus")
-                     .replace("*", "Times")
-                     .replace("/", "DividedBy")
-                     .replace("^", "ToThePowerOf")
-                     .replace("(", "")
-                     .replace(")", "")
-                     .replace("1", "One")
-                     .replace("2", "Two")
-                     .replace("3", "Three")
-                     .replace("4", "Four")
-                     .replace("5", "Five")
-                     .replace("6", "Six")
-                     .replace("7", "Seven")
-                     .replace("8", "Eight")
-                     .replace("9", "Nine")
-                     .replace("0", "Zero")
-                     .replace(".", "Point")
-                  + System.nanoTime();
-  }
-
-  public MethodVisitor generateFunctionCall(MethodVisitor mv, String functionName)
+  /**
+   * Emit an instruction to invoke a unary function on the field type. The unary
+   * function has the signature D functionName( int bits, D result)
+   * 
+   * @param mv
+   * @param functionName
+   * @return mv
+   */
+  public MethodVisitor generateUnaryFunctionCall(MethodVisitor mv, String functionName)
   {
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        domainClassInternalName,

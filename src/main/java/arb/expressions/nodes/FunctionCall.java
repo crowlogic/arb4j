@@ -85,14 +85,12 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     }
   }
 
-  public FunctionCall(Expression<D, R, F> parser, String functionName, Node<D, R, F> argument, int depth)
+  public FunctionCall(Expression<D, R, F> parser, String functionName, Node<D, R, F> argument)
   {
     super(argument,
           parser);
     this.name = functionName.replace('₀', '0');
     assert argument != null;
-    this.depth     = depth;
-    argument.depth = depth + 1;
   }
 
   @Override
@@ -171,7 +169,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     }
 
     Expression<D, R, F> expression = independentVariable.expression;
-    return expression.generateFunctionCall(expression.checkClassCast(mv, false), functionName);
+    return expression.generateUnaryFunctionCall(expression.generateClassCastCheck(mv, false), functionName);
   }
 
 }
