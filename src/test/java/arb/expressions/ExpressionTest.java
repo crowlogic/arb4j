@@ -264,7 +264,7 @@ public class ExpressionTest extends
 
   public void testMultiplyConstants()
   {
-    try ( RealFunction expression = express("6 * 7", variables))
+    try ( RealFunction expression = express("6 × 7", variables))
     {
       Real func = expression.evaluate(one, 1, 256, new Real());
       assertEquals(42.0, func.doubleValue(RoundingMode.Up));

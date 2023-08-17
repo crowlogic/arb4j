@@ -185,20 +185,23 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return compiledClass = defineFunctionClass(instructions);
   }
 
-  public boolean eat(int charToEat)
+  public boolean eat(int... charsToEat)
   {
     skipSpaces();
-    if (ch == charToEat)
+    for (int charToEat : charsToEat)
     {
-      nextChar();
-      if (verbose)
+      if (ch == charToEat)
       {
-        System.err.format("Ate expected '%c' and advanced to char '%c' at pos %d\n",
-                          charToEat,
-                          ch == -1 ? '?' : ch,
-                          position);
+        nextChar();
+        if (verbose)
+        {
+          System.err.format("Ate expected '%c' and advanced to char '%c' at pos %d\n",
+                            charToEat,
+                            ch == -1 ? '?' : ch,
+                            position);
+        }
+        return true;
       }
-      return true;
     }
 
     return false;
@@ -634,6 +637,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public Node<D, R, F> eatSuperscripts(Node<D, R, F> node)
   {
+    node = eatSuperscript(node, '⁰', "0");
+    node = eatSuperscript(node, '¹', "1");
     node = eatSuperscript(node, '²', "2");
     node = eatSuperscript(node, '³', "3");
     node = eatSuperscript(node, '⁴', "4");
@@ -656,13 +661,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     while (true)
     {
-      if (eat('*'))
+      if (eat('*', '×'))
       {
         node = new Multiply<>(this,
                               node,
                               eatLast());
       }
-      else if (eat('/') || eat('÷'))
+      else if (eat('/', '÷'))
       {
         node = new Divide<>(this,
                             node,
