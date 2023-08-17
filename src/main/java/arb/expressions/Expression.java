@@ -451,6 +451,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     if (eat('('))
     {
       node = eatFirst();
+      /**
+       * FIXME: this is where the parenthesis closing bug needs to be fixed
+       */
     }
     else if (isDigitOrDot(ch))
     {
