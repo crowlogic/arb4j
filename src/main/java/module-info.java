@@ -52,6 +52,7 @@ module arb4j
   exports arb.space.topological;
   exports arb.topology;
   exports arb.measures;
+  exports arb.music;
   exports arb.stochastic;
   exports arb.stochastic.processes;
   exports arb.stochastic.processes.integrators;
