@@ -54,7 +54,7 @@ public class FastThreadLocalTest extends
 
     // Release the cache index associated with the current thread.
     int index = (int) (threadId % 1024);
-    fastThreadLocal.releaseIndex(index);
+    fastThreadLocal.releasecCache(index);
 
     // After releasing, the data should be null.
     assertNull(fastThreadLocal.get());

@@ -3,10 +3,10 @@ package arb.utensils;
 import java.util.HashMap;
 
 /**
- * A thread-local data structure that provides fast access to data for a given
- * thread. It internally uses a cache array for storing data. it is faster than
- * {@link ThreadLocal} because it avoids the use of {@link HashMap}s or any maps
- * besides array indexing
+ * A thread-local caches structure that provides fast access to caches for a
+ * given thread. It internally uses a cache array for storing caches. it is
+ * faster than {@link ThreadLocal} because it avoids the use of {@link HashMap}s
+ * or any maps besides array indexing
  * 
  * @param <T> The type of object to be stored in the thread-local.
  */
@@ -19,11 +19,12 @@ public class FastThreadLocal<T>
     return String.format("FastThreadLocal [firstFreeIndex=%s]", firstFreeIndex);
   }
 
-  private final Cache[] data;
-  private volatile int  firstFreeIndex;
+  private final Cache<T>[] caches;
+  private volatile int     firstFreeIndex;
 
   /**
-   * The class represents a cache data structure for storing thread-specific data.
+   * The class represents a cache caches structure for storing thread-specific
+   * caches.
    * 
    * @param <S> The type of object to be stored in the cache.
    */
@@ -32,7 +33,7 @@ public class FastThreadLocal<T>
     @Override
     public String toString()
     {
-      return String.format("Cache [owner=%s, data=%s]", owner, data);
+      return String.format("Cache [owner=%s, caches=%s]", owner, data);
     }
 
     long owner;
@@ -54,17 +55,18 @@ public class FastThreadLocal<T>
    * 
    * @param size The size of the cache array.
    */
+  @SuppressWarnings("unchecked")
   public FastThreadLocal(int size)
   {
-    data           = new Cache[size];
+    caches         = new Cache[size];
     firstFreeIndex = 0;
   }
 
   /**
-   * Sets the thread-specific data for the current thread.
+   * Sets the thread-specific caches for the current thread.
    * 
-   * @param data The data to be set for the current thread.
-   * @return The data that was set.
+   * @param caches The caches to be set for the current thread.
+   * @return The caches that was set.
    */
   public T set(T data)
   {
@@ -75,9 +77,9 @@ public class FastThreadLocal<T>
   }
 
   /**
-   * Gets the thread-specific data for the current thread.
+   * Gets the thread-specific caches for the current thread.
    * 
-   * @return The data for the current thread.
+   * @return The caches for the current thread.
    */
   public T get()
   {
@@ -93,10 +95,10 @@ public class FastThreadLocal<T>
    * @param threadId The ID of the thread.
    * @return The cache for the given thread ID.
    */
-  public Cache getForThread(long threadId)
+  public Cache<T> getForThread(long threadId)
   {
-    int index = getThreadIndex(threadId);
-    Cache cache = data[index];
+    int      index = getThreadIndex(threadId);
+    Cache<T> cache = caches[index];
     if (cache != null)
     {
       if (cache.owner == threadId)
@@ -110,22 +112,22 @@ public class FastThreadLocal<T>
         {
           throw new RuntimeException("cache full");
         }
-        cache       = data[index];
+        cache       = caches[index];
         cache.owner = threadId;
       }
     }
     else
     {
-      cache       = new Cache();
-      cache.owner = threadId;
-      data[index] = cache;
+      cache         = new Cache<T>();
+      cache.owner   = threadId;
+      caches[index] = cache;
     }
     return cache;
   }
 
   public int getThreadIndex(long threadId)
   {
-    int   index = (int) (threadId % data.length);
+    int index = (int) (threadId % caches.length);
     return index;
   }
 
@@ -137,12 +139,11 @@ public class FastThreadLocal<T>
   private synchronized int getAndIncrementFirstFreeIndex()
   {
     int i = firstFreeIndex;
-    for (; i < data.length; i++)
+    for (; i < caches.length; i++)
     {
-      if (data[i] == null)
+      if (caches[i] == null)
       {
-        firstFreeIndex = i;
-        return firstFreeIndex++;
+        return firstFreeIndex = i + 1;
       }
     }
     return -1;
@@ -153,9 +154,9 @@ public class FastThreadLocal<T>
    * 
    * @param index The index to be released.
    */
-  public void releaseIndex(int index)
+  public void releasecCache(int index)
   {
-    data[index] = null;
+    caches[index] = null;
     updateFirstFreeIndex(index);
   }
 
