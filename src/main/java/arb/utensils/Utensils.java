@@ -3,6 +3,7 @@ package arb.utensils;
 import static arb.IntegerConstants.FLINT_BITS;
 import static arb.arblib.*;
 
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 
@@ -18,33 +19,39 @@ import javafx.stage.Stage;
 
 public class Utensils
 {
-  static boolean       javafxRunning       = false;
 
-  private static Stage stage;
+  private static Stage        stage;
 
-  static Object        chartStartSemaphore = new Object();
+  static BlockingQueue<Stage> stageQueue    = new LinkedBlockingQueue<>();
+
+  static boolean              javaFxStarted = false;
 
   public static Stage startChart()
   {
     System.out.println("Launching...");
 
-    Thread.startVirtualThread(() -> Application.launch(ChartApplication.class));
-
-    while (stage == null)
+    if (!javaFxStarted)
     {
+      Thread.startVirtualThread(() -> Application.launch(ChartApplication.class));
+      javaFxStarted = true;
+
       try
       {
-        Thread.sleep(100);
+        Stage newStage = stageQueue.poll(30, TimeUnit.SECONDS);
+        System.out.println("javafx initialized, stage=" + newStage);
+        return newStage;
       }
       catch (InterruptedException e)
       {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        throw new UnsupportedOperationException(e.getMessage(),
+                                                e);
       }
     }
-    System.out.println("javafx initialized, stage=" + stage );
-    return stage;
-
+    else
+    {
+      stage.toFront();
+      return stage;
+    }
   }
 
   private static ChartApplication newChart;
@@ -58,8 +65,9 @@ public class Utensils
     {
       System.out.println("Start called on " + this + " primaryStage=" + primaryStage);
       newChart      = this;
-      javafxRunning = true;
+      javaFxStarted = true;
       stage         = primaryStage;
+      stageQueue.add(stage);
     }
 
   }
@@ -214,9 +222,7 @@ public class Utensils
                                           int prec,
                                           Real nextPoint)
   {
-    try ( Magnitude err = new Magnitude();
-          Magnitude v = new Magnitude();
-          Real t = new Real();
+    try ( Magnitude err = new Magnitude(); Magnitude v = new Magnitude(); Real t = new Real();
           Real u = Real.newVector(2))
     {
       Magnitude xRadius = point.getRad();
@@ -247,9 +253,7 @@ public class Utensils
 
   public static Complex calculateSimpleQuadrature(HolomorphicFunction f, Complex a, Complex b, int prec, Complex res)
   {
-    try ( Magnitude magδ = new Magnitude();
-          Complex midpoint = new Complex();
-          Complex δ = new Complex();
+    try ( Magnitude magδ = new Magnitude(); Complex midpoint = new Complex(); Complex δ = new Complex();
           Complex widePoint = new Complex();)
     {
       /* δ = (b-a)/2 */
@@ -283,18 +287,10 @@ public class Utensils
                                                       Complex res)
   {
     boolean converged = false;
-    try ( Complex mid = new Complex();
-          Complex δ = new Complex();
-          Complex wide = new Complex();
-          Magnitude tmpm = new Magnitude();
-          Complex s = new Complex();
-          Complex v = new Complex();
-          Magnitude M = new Magnitude();
-          Magnitude X = new Magnitude();
-          Magnitude Y = new Magnitude();
-          Magnitude rho = new Magnitude();
-          Magnitude err = new Magnitude();
-          Magnitude t = new Magnitude();
+    try ( Complex mid = new Complex(); Complex δ = new Complex(); Complex wide = new Complex();
+          Magnitude tmpm = new Magnitude(); Complex s = new Complex(); Complex v = new Complex();
+          Magnitude M = new Magnitude(); Magnitude X = new Magnitude(); Magnitude Y = new Magnitude();
+          Magnitude rho = new Magnitude(); Magnitude err = new Magnitude(); Magnitude t = new Magnitude();
           Magnitude bestRho = new Magnitude();)
     {
       int Xexp;

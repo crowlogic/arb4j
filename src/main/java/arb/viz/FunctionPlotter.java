@@ -1,6 +1,7 @@
 package arb.viz;
 
 import arb.functions.real.FunctionSampler;
+import arb.utensils.ShellCommands;
 import de.gsi.chart.XYChart;
 import de.gsi.chart.axes.AxisMode;
 import de.gsi.chart.axes.spi.DefaultNumericAxis;
@@ -42,7 +43,12 @@ public class FunctionPlotter extends
     {
       set(primaryStage, evt ->
       {
-        System.out.println("onCloseRequest: todo: rest");
+        if ( ShellCommands.stage == primaryStage )
+        {
+          System.out.println( "Closing " + ShellCommands.stage );
+          stage = null;
+          ShellCommands.stage = null;
+        }
       });
     });
     return primaryStage;

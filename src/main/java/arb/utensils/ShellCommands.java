@@ -16,7 +16,7 @@ public class ShellCommands
     return func.evaluate(y, 1, 128, y);
   }
 
-  static Stage stage = null;
+  public static Stage stage = null;
 
   public static void plot(double left, double right, RealFunction... functions)
   {
@@ -27,7 +27,15 @@ public class ShellCommands
   {
     if (primaryStage == null)
     {
-      primaryStage = Utensils.startChart();
+      if (stage != null)
+      {
+        stage.toFront();
+        primaryStage = stage;
+      }
+      else
+      {
+        primaryStage = Utensils.startChart();
+      }
     }
 
     stage = primaryStage;
