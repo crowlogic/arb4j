@@ -70,7 +70,17 @@ public interface HolomorphicFunction extends
   }
 
   /**
-   * *
+   * Convenience method for this{@link #asRealToRealFunction()}
+   * 
+   * @return this{@link #asRealToRealFunction()}
+   */
+  public default RealFunction re()
+  {
+    return asRealToRealFunction();
+  }
+
+  /**
+   *
    * 
    * @return this{@link #asRealToComplexFunction()}{@link #realPart()}
    */
