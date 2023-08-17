@@ -324,7 +324,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     for (String intermediateVariable : intermediateVariables)
     {
-      generateCloseMethodCall(this, loadThis(methodVisitor), intermediateVariable);
+      generateCloseMethodCall(this, generateLoadThis(methodVisitor), intermediateVariable);
     }
   }
 
@@ -729,7 +729,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    *                  this{@link #rangeClassDescriptor}
    * @return
    */
-  public MethodVisitor loadField(MethodVisitor mv, String fieldName, boolean range)
+  public MethodVisitor generateLoadField(MethodVisitor mv, String fieldName, boolean range)
   {
     mv.visitFieldInsn(GETFIELD, className, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
     return mv;

@@ -75,7 +75,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     }
     else
     {
-      expression.loadField(loadThis(mv), name, true);
+      expression.generateLoadField(generateLoadThis(mv), name, true);
     }
 
     if (isLast)

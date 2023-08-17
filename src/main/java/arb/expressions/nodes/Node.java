@@ -65,7 +65,7 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
     else
     {
       String fieldName = expression.allocateNewIntermediateVariable();
-      loadThis(mv).visitFieldInsn(GETFIELD, expression.className, fieldName, expression.rangeClassDescriptor);
+      generateLoadThis(mv).visitFieldInsn(GETFIELD, expression.className, fieldName, expression.rangeClassDescriptor);
     }
 
   }

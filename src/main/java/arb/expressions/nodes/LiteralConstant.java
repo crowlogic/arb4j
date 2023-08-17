@@ -1,6 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.loadThis;
+import static arb.expressions.Compiler.generateLoadThis;
 import static java.lang.System.out;
 
 import org.objectweb.asm.MethodVisitor;
@@ -54,7 +54,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
       out.println(this);
     }
 
-    expression.loadField(loadThis(mv), fieldName, false);
+    expression.generateLoadField(generateLoadThis(mv), fieldName, false);
 
     if (isLast)
     {

@@ -355,7 +355,7 @@ public class Compiler
    * @param mv The MethodVisitor to be used for adding the `this` reference
    * @return
    */
-  public static MethodVisitor loadThis(MethodVisitor mv)
+  public static MethodVisitor generateLoadThis(MethodVisitor mv)
   {
     mv.visitVarInsn(ALOAD, 0); // Load `this` onto the stack
     return mv;
