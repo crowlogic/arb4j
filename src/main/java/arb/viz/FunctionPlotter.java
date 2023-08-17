@@ -20,7 +20,10 @@ public class FunctionPlotter extends
   public void close()
   {
     super.close();
-    stage.close();
+    if (stage != null)
+    {
+      stage.close();
+    }
   }
 
   private Stage              stage;
