@@ -52,7 +52,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public ArrayList<LiteralConstant<D, R, F>> literalConstants          = new ArrayList<LiteralConstant<D, R, F>>();
 
-  public Variable<D, R, F>                   inputNode;
+  public Variable<D, R, F>                   independentVariableNode;
 
   protected Method                           evaluateMethod;
 

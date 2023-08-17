@@ -1,10 +1,10 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.*;
+import static java.lang.String.format;
 import static java.lang.System.out;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import arb.expressions.Expression;
 import arb.expressions.Variables;
@@ -16,7 +16,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
   private final String        name;
   private final Variables<D>  namespace;
   private Expression<D, R, F> expression;
-  boolean                     isInput = false;
+  boolean                     isIndependent = false;
 
   public Variable(Expression<D, R, F> expression, String variableName)
   {
@@ -27,14 +27,21 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     expression.referencedVariables.put(variableName, this);
     if (namespace == null || namespace.get(variableName) == null)
     {
-      if (expression.inputNode == null || expression.inputNode.name.equals(variableName))
+      if (expression.independentVariableNode == null || expression.independentVariableNode.name.equals(variableName))
       {
-        expression.inputNode = this;
-        isInput              = true;
+        expression.independentVariableNode = this;
+        isIndependent                      = true;
+        if (verbose)
+        {
+          out.println("Independent Variable declared to be: " + this);
+        }
       }
       else
       {
-        throw new RuntimeException("Undefined reference to variable '" + variableName + "' in " + expression,
+        throw new RuntimeException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
+                                          variableName,
+                                          expression,
+                                          expression.independentVariableNode),
                                    new NoSuchFieldException(variableName));
       }
     }
@@ -51,7 +58,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     return String.format("%s%s[name=%s]",
                          depth < 0 ? "" : indent(depth),
                          getClass().getSimpleName(),
-                         isInput ? "INPUT" : name);
+                         isIndependent ? "INPUT" : name);
   }
 
   @Override
@@ -62,7 +69,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
       out.println(this);
     }
 
-    if (isInput)
+    if (isIndependent)
     {
       expression.checkClassCast(loadInput(mv), false);
     }
