@@ -23,15 +23,13 @@ public class XFunction extends
 
   public XFunction()
   {
-    super(
-          new SFunction(),
+    super(new SFunction(),
           new ZFunction());
   }
 
   public XFunction(Real scale)
   {
-    super(
-          new SFunction(scale),
+    super(new SFunction(scale),
           new ZFunction());
   }
 

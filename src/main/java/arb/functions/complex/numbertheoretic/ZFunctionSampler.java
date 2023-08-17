@@ -15,11 +15,11 @@ public class ZFunctionSampler
   {
 
     // Instantiate ZFunction
-    RealFunction zFunction = new ZFunction().asRealToComplexFunction().realPart();
+    RealFunction    zFunction = new ZFunction().asRealToComplexFunction().realPart();
 
     // Instantiate FunctionSampler with the required domain
-    FunctionSampler sampler = new FunctionSampler(new FloatInterval(new Float(0),
-                                                                    new Float(10000)));
+    FunctionSampler sampler   = new FunctionSampler(new FloatInterval(new Float(0),
+                                                                      new Float(10000)));
 
     // Set the sample rate per unit
     sampler.samplesPerUnit = 100; // For spacing of 0.01

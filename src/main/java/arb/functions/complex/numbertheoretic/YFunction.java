@@ -13,18 +13,15 @@ public class YFunction extends
     return "Y=" + super.toString();
   }
 
-
   public YFunction()
   {
-    super(
-          new TFunction(),
+    super(new TFunction(),
           new ZFunction());
   }
 
   public YFunction(Real vscale)
   {
-    super(
-          new TFunction(vscale),
+    super(new TFunction(vscale),
           new ZFunction());
   }
 }

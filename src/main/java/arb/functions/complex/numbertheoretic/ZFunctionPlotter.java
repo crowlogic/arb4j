@@ -28,7 +28,7 @@ public class ZFunctionPlotter extends
 //    ;
 
 //    ShellCommands.plot(primaryStage, 0, 125, func.asRealToComplexFunction().realPart());
-    ZVarianceStructure zvs    = new ZVarianceStructure();
+    ZVarianceStructure zvs = new ZVarianceStructure();
     ShellCommands.plot(stage, 0, 42, zvs);
 
   }

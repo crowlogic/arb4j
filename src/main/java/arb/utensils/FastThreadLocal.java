@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 /**
  * A thread-local caches structure that provides fast access to caches for a
- * given thread. It internally uses a cache array for storing caches. it is
+ * given thread. It internally uses a integer array for storing caches. it is
  * faster than {@link ThreadLocal} because it avoids the use of {@link HashMap}s
  * or any maps besides array indexing
  * 
