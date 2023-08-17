@@ -541,11 +541,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       Node<D, R, F> independentVariable = eatFirst();
       if (!eat(')'))
       {
-        assert false : String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
-                                     startPos,
-                                     position,
-                                     functionOrVariableName,
-                                     isFunction);
+        throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
+                                                 startPos,
+                                                 position,
+                                                 functionOrVariableName,
+                                                 isFunction));
       }
       return newFunctionCall(functionOrVariableName, independentVariable);
     }
