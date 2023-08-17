@@ -324,6 +324,17 @@ public interface RealFunction extends
     return inverse(0);
   }
 
+  public default double integrate(double left, double right)
+  {
+    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-13); Real l = new Real(left);
+          Real r = new Real(right); Real result = new Real())
+    {
+      IntegrationOptions opts = new IntegrationOptions();
+      opts.verbose = true;
+      return integrate(l, r, 64, acceptableUncertainty, opts,128, result).doubleValue(RoundingMode.Up);
+    }
+  }
+
   public default Real integrate(Real left,
                                 Real right,
                                 int relativeAccuracyBitsGoal,
