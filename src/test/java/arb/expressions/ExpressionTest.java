@@ -408,8 +408,7 @@ public class ExpressionTest extends
 
   public void testSimplerCompoundExpression()
   {
-    // its the parenthesis that throws it
-    try ( RealFunction cf = express("SimplerCompoundExpression", "1+(2)+(3)", variables, true))
+    try ( RealFunction cf = express("SimplerCompoundExpression", "1+(2)+(3)", variables))
     {
       Real evaluatedX = cf.evaluate(one, 1, 256, new Real());
 

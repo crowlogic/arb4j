@@ -17,6 +17,7 @@ public class ShellCommands
   }
 
   public static Stage stage = null;
+  private static FunctionPlotter plotter;
 
   public static void plot(double left, double right, RealFunction... functions)
   {
@@ -41,7 +42,11 @@ public class ShellCommands
     stage = primaryStage;
     Platform.runLater(() ->
     {
-      FunctionPlotter plotter = new FunctionPlotter();
+      if ( plotter != null )
+      {
+        plotter.close();
+      }
+      plotter = new FunctionPlotter();
       for (RealFunction function : functions)
       {
         plotter.functions.add(function);

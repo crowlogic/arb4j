@@ -40,7 +40,6 @@
  * 
  * <h1>PRIORITIES</h1>
  * <ul>
- * <li>fix parenthesis</li>
  * <li>Complex types</li>
  * <li>Mixed Real -> Complex and Complex -> Real types</li>
  * <li>Other Fields like the Field of Rationals, which will require swig

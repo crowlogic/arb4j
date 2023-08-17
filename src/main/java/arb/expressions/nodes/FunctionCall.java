@@ -171,7 +171,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     }
 
     Expression<D, R, F> expression = independentVariable.expression;
-    return expression.generateFunctionInvocation(expression.checkClassCast(mv, false), functionName);
+    return expression.generateFunctionCall(expression.checkClassCast(mv, false), functionName);
   }
 
 }

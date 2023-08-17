@@ -128,7 +128,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public String allocateNewIntermediateVariable()
   {
-    String intermediateVarName = getNextIntermediatevarialbeFieldName();
+    String intermediateVarName = getNextIntermediatevariableFieldName();
     intermediateVariables.add(intermediateVarName);
     if (verbose)
     {
@@ -139,17 +139,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   /**
    * 1. Calls this{@link #define()} if this{@link #compiledClass} is NULL<br>
-   * 2. Instantiates the class and assigns it to this{@link #instance}
+   * 2. Instantiates the class and assigns it to this{@link #instance} 3. Calls
+   * this{@link #injectVariableReferences()}
    * 
-   * @param verbose
-   * @param class3
-   * @param class2
-   * @param class1
-   * @param variables2
-   * @param expression2
-   * 
-   * @return this{@link #instance} after it has been compiled if necessary thenx
-   *         instantiated
+   * @return this{@link #instance} after it has been compiled (if necessary),
+   *         instantiated and injected with references to {@link Variable}s in
+   *         {@link Variables}
    */
   protected F instantiate()
   {
@@ -160,8 +155,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
     catch (Exception e)
     {
-      throw new UnsupportedOperationException(e.getMessage(),
-                                              e);
+      throw new RuntimeException(e.getMessage(),
+                                 e);
     }
     return instance;
   }
@@ -354,9 +349,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     mv.visitCode();
     mv.visitLabel(startLabel);
-    nextChar();
     eatRootNode();
     rootNode.generate(mv);
+
     if (verbose)
     {
       System.out.println("Returning from evaluate method...\n");
@@ -377,8 +372,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public Node<D, R, F> eatRootNode()
   {
+    nextChar();
     rootNode = eatFirst();
-    assert rootNode != null : "parseFirst() returned null, expression='" + expression + "'";
+    assert rootNode != null : "eatRootNode: eatFirst() returned null, expression='" + expression + "'";
     rootNode.isLast = true;
     return rootNode;
   }
@@ -388,7 +384,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return "c" + constantCount++;
   }
 
-  public String getNextIntermediatevarialbeFieldName()
+  public String getNextIntermediatevariableFieldName()
   {
     return "l" + intermediateVariableCount++;
   }
@@ -417,17 +413,17 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     {
       throw new RuntimeException("Parsed expression is null, name=" + name);
     }
-    node = new FunctionCall<D, R, F>(this,
-                                     name,
-                                     arg,
-                                     arg.depth + 1);
+    node = new FunctionCall<>(this,
+                              name,
+                              arg,
+                              arg.depth + 1);
     return node;
   }
 
   private Node<D, R, F> newVariable(String identifier)
   {
-    return new Variable<D, R, F>(this,
-                                 identifier);
+    return new Variable<>(this,
+                          identifier);
   }
 
   public void nextChar()
@@ -439,7 +435,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.err.format("parse: ch=%c position=%d\n", ch, this.position);
+      System.err.format("eat: ch=%c position=%d\n", ch, this.position);
     }
 
     Node<D, R, F> node = null;
@@ -451,9 +447,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     if (eat('('))
     {
       node = eatFirst();
-      /**
-       * FIXME: this is where the parenthesis closing bug needs to be fixed
-       */
+      if (!eat(')'))
+      {
+        assert false : String.format("expected closing paranthesis at: startPos=%s, position=%s, node=%s\n",
+                                     startPos,
+                                     position,
+                                     node.toString(-1));
+      }
     }
     else if (isDigitOrDot(ch))
     {
@@ -473,8 +473,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       System.err.println("parse returning " + node);
     }
 
-    // assert node != null : "parse tried to return null";
-
     return node;
   }
 
@@ -482,26 +480,26 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.err.format("parseFirst: ch=%c position=%d\n", ch, this.position);
+      System.err.format("eatFirst: ch=%c position=%d\n", ch, this.position);
     }
 
     Node<D, R, F> node = eatSecond();
 
-    for (;;)
+    while (true)
     {
       if (eat('+'))
       {
         assert node != null : "node before + cannot be null";
-        node = new Add<D, R, F>(this,
-                                node,
-                                eatSecond());
+        node = new Add<>(this,
+                         node,
+                         eatSecond());
       }
       else if (eat('-'))
       {
         assert node != null : "node before - cannot be null";
-        node = new Subtract<D, R, F>(this,
-                                     node,
-                                     eatSecond());
+        node = new Subtract<>(this,
+                              node,
+                              eatSecond());
       }
       else
       {
@@ -514,7 +512,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * At this point it is only known that the present character this{@link #ch} at
    * this{@link #position} is a {@link Compiler#isLatinOrGreek(int, boolean)} so
    * that it is the name of something, but unknown if its the name of a function
-   * invocation or a variable or a
+   * invocation or a variable reference
    * 
    * @param node
    * @param startPos
@@ -531,7 +529,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
     if (verbose)
     {
-      System.err.format("parseFunctionOrVariable: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
+      System.err.format("eatFunctionInvocationOrVariableReference: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
                         startPos,
                         position,
                         functionOrVariableName,
@@ -540,7 +538,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     if (isFunction)
     {
-      Node<D, R, F> arg = eatFirst();
+      Node<D, R, F> independentVariable = eatFirst();
       if (!eat(')'))
       {
         assert false : String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
@@ -549,45 +547,34 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                      functionOrVariableName,
                                      isFunction);
       }
-      return newFunctionCall(functionOrVariableName, arg);
+      return newFunctionCall(functionOrVariableName, independentVariable);
     }
-    else// if (ch == -1 || isPowerCharacter(ch) || eat(')'))
+    else
     {
       return newVariable(functionOrVariableName);
     }
-
-////
-//    // Create a new SubExpression instance
-//    SubExpression subExpr = new SubExpression(this);
-//    // Parse the contents of the parentheses as a new expression
-//    subExpr.parseUntil(')');
-//    // Use the SubExpression instance as the argument of the function
-
-    // return subExpr;
   }
 
   private Node<D, R, F> eatLast()
   {
     if (verbose)
     {
-      System.err.format("parseLast: ch=%c position=%d\n", ch, this.position);
+      System.err.format("eatLast: ch=%c position=%d\n", ch, this.position);
     }
 
-    Node<D, R, F> node = eat();
-
-    node = eatPower(node);
-
-    return node;
+    return eatPower(eat());
   }
 
   private String eatName(int startPos)
   {
     while (isLatinOrGreek(ch, true))
+    {
       nextChar();
-    String identifier = expression.substring(startPos, this.position);
+    }
+    String identifier = expression.substring(startPos, position);
     if (verbose)
     {
-      System.err.format("parseName: startPos=%d, position=%d, identifier='%s' ch='%c'\n",
+      System.err.format("eatName: startPos=%d, position=%d, identifier='%s' ch='%c'\n",
                         startPos,
                         position,
                         identifier,
@@ -598,24 +585,23 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   private Node<D, R, F> eatNumber(int startPos)
   {
-    Node<D, R, F> node;
     while (isDigitOrDot(ch))
+    {
       nextChar();
+    }
 
-    String num = expression.substring(startPos, this.position);
-    node = new LiteralConstant<D, R, F>(this,
-                                        num);
-    return node;
+    return new LiteralConstant<>(this,
+                                 expression.substring(startPos, position));
   }
 
   Node<D, R, F> eatSuperscript(Node<D, R, F> node, int superscript, String digit)
   {
     if (eat(superscript))
     {
-      node = new RaiseToPower<D, R, F>(this,
-                                       node,
-                                       new LiteralConstant<>(this,
-                                                             digit));
+      node = new RaiseToPower<>(this,
+                                node,
+                                new LiteralConstant<>(this,
+                                                      digit));
     }
     return node;
   }
@@ -630,10 +616,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         parenthetical = true;
       }
-      node = new RaiseToPower<D, R, F>(this,
-                                       node,
-
-                                       parenthetical ? eatFirst() : eat());
+      node = new RaiseToPower<>(this,
+                                node,
+                                parenthetical ? eatFirst() : eat());
       if (parenthetical)
       {
         if (!eat(')'))
@@ -668,19 +653,20 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
 
     Node<D, R, F> node = eatLast();
+
     while (true)
     {
       if (eat('*'))
       {
-        node = new Multiply<D, R, F>(this,
-                                     node,
-                                     eatLast());
+        node = new Multiply<>(this,
+                              node,
+                              eatLast());
       }
       else if (eat('/') || eat('÷'))
       {
-        node = new Divide<D, R, F>(this,
-                                   node,
-                                   eatLast());
+        node = new Divide<>(this,
+                            node,
+                            eatLast());
       }
       else
       {
@@ -692,7 +678,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   void skipSpaces()
   {
     while (ch == ' ')
+    {
       nextChar();
+    }
   }
 
   public Expression<D, R, F> writeBytecodes(File file)
@@ -720,9 +708,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * emits an {@link Opcodes#CHECKCAST}
    * 
    * @param mv
-   * @param range if true then checks if the top element on the stack is a
-   *              this{@link #rangeClassInternalName} otherwise tests if its a
-   *              this{@link #domainClassInternalName}
+   * @param range if true then emits an instruction to check if the top element on
+   *              the stack is a this{@link #rangeClassInternalName} otherwise
+   *              tests if its a this{@link #domainClassInternalName}
    * @return mv
    */
   public MethodVisitor checkClassCast(MethodVisitor mv, boolean range)
@@ -752,23 +740,22 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return express(expression, null);
   }
 
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
-         RealFunction
-         express(String expression, Variables<Real> variables)
+  public static RealFunction express(String className, String expression, Variables<Real> variables)
+  {
+    return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, false);
+  }
+
+  public static RealFunction express(String expression, Variables<Real> variables)
   {
     return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, false);
   }
 
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
-         RealFunction
-         express(String className, String expression, Variables<Real> variables, boolean verbose)
+  public static RealFunction express(String className, String expression, Variables<Real> variables, boolean verbose)
   {
     return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, verbose);
   }
 
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
-         RealFunction
-         express(String expression, Variables<Real> variables, boolean verbose)
+  public static RealFunction express(String expression, Variables<Real> variables, boolean verbose)
   {
     return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, verbose);
   }
@@ -795,7 +782,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                      Class<F> functionClass,
                      boolean verbose)
   {
-
     return compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
@@ -823,7 +809,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                   + System.nanoTime();
   }
 
-  public MethodVisitor generateFunctionInvocation(MethodVisitor mv, String functionName)
+  public MethodVisitor generateFunctionCall(MethodVisitor mv, String functionName)
   {
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        domainClassInternalName,

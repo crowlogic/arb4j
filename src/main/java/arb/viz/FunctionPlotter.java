@@ -16,6 +16,13 @@ public class FunctionPlotter extends
                              FunctionSampler
 {
 
+  @Override
+  public void close()
+  {
+    super.close();
+    stage.close();
+  }
+
   private Stage              stage;
   private StackPane          root;
   private Scene              scene;
@@ -43,10 +50,10 @@ public class FunctionPlotter extends
     {
       set(primaryStage, evt ->
       {
-        if ( ShellCommands.stage == primaryStage )
+        if (ShellCommands.stage == primaryStage)
         {
-          System.out.println( "Closing " + ShellCommands.stage );
-          stage = null;
+          System.out.println("Closing " + ShellCommands.stage);
+          stage               = null;
           ShellCommands.stage = null;
         }
       });
