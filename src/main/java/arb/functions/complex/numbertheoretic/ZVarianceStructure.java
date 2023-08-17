@@ -1,9 +1,9 @@
 package arb.functions.complex.numbertheoretic;
 
+import static arb.RealConstants.one;
 import static arb.expressions.Expression.express;
 
 import arb.Real;
-import arb.RealConstants;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
@@ -20,14 +20,16 @@ public class ZVarianceStructure implements
 
   private Variables<Real> vars = new Variables<>();
 
-  public Real             a    = new Real(), b = new Real(), λ = new Real();
+  public Real             a    = new Real();
+  public Real             b    = new Real();
+  public Real             λ    = new Real();
 
   public ZVarianceStructure()
   {
     super();
-    vars.put("a", a.set(RealConstants.one));
-    vars.put("b", b.set(RealConstants.one));
-    vars.put("λ", λ.set(RealConstants.one));
+    vars.put("a", a.set(one));
+    vars.put("b", b.set(one));
+    vars.put("λ", λ.set(one));
     kernel = express(EXPRESSION, vars);
   }
 

@@ -54,7 +54,7 @@ public class Compiler
    * @param domainClass
    * @param rangeClass
    * @param functionClass
-   * @param verbose          TODO
+   * @param verbose
    * @return
    */
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
@@ -67,12 +67,12 @@ public class Compiler
                  Class<F> functionClass,
                  boolean verbose)
   {
-    Expression<D, R, F> expression = construct(className,
-                                               expressionString,
-                                               variables,
-                                               domainClass,
-                                               rangeClass,
-                                               functionClass);
+    Expression<D, R, F> expression = new Expression<>(className,
+                                                      domainClass,
+                                                      rangeClass,
+                                                      functionClass,
+                                                      expressionString,
+                                                      variables);
 
     if (verbose)
     {
@@ -82,23 +82,6 @@ public class Compiler
     expression.generate().define();
 
     return expression;
-  }
-
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         Expression<D, R, F>
-         construct(String className,
-                   String expression,
-                   Variables<D> variables,
-                   Class<D> domainClass,
-                   Class<R> rangeClass,
-                   Class<F> functionClass)
-  {
-    return new Expression<D, R, F>(className,
-                                   domainClass,
-                                   rangeClass,
-                                   functionClass,
-                                   expression,
-                                   variables);
   }
 
   /**
@@ -135,10 +118,10 @@ public class Compiler
   /**
    * Declares the given constants as fields in the class being generated.
    * 
-   * @param cw             The ClassVisitor for the class being generated
-   * @param typeDescriptor the type of the fields
-   * @param literalConstants       An Iterable of LiteralConstant objects representing the
-   *                       constants to be declared
+   * @param cw               The ClassVisitor for the class being generated
+   * @param typeDescriptor   the type of the fields
+   * @param literalConstants An Iterable of {@link LiteralConstant} objects
+   *                         representing the constants to be declared
    * @return
    */
   static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
@@ -147,7 +130,6 @@ public class Compiler
   {
     if (!literals.isEmpty())
     {
-
       for (LiteralConstant<?, ?, ?> constant : literals)
       {
         cw.visitField(ACC_PUBLIC, constant.fieldName, typeDescriptor, null, null);
@@ -434,7 +416,7 @@ public class Compiler
    */
   public static boolean isPowerCharacter(int ch)
   {
-    return ch == '^' || ch == '²' || ch == '³' || (ch >= '⁴' && ch <= '⁹');
+    return ch == '^' || ch == '⁰' || ch == '¹' || ch == '²' || ch == '³' || (ch >= '⁴' && ch <= '⁹');
   }
 
   static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
@@ -447,7 +429,6 @@ public class Compiler
                  boolean verbose)
   {
     String className = Compiler.expressionToUniqueClassname(expression);
-
     return compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose);
   }
 
