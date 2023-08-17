@@ -1,8 +1,9 @@
 /**
+ *
  * The arb.expression package provides classes and interfaces for representing,
- * manipulating, and evaluating mathematical expressions. It's currently
- * designed to handle real number expressions, but future updates will expand
- * its functionality to handle holomorphic functions as well.
+ * transforming, and evaluating mathematical expressions. It's currently
+ * designed to handle {@link arb.Real} numbered expressions, but future updates
+ * will have expanded functionality to handle holomorphic functions as well.
  *
  * <p>
  * The package primarily revolves around the {@link arb.expressions.Expression}
@@ -14,11 +15,11 @@
  * and function calls.
  *
  * <p>
- * The {@link arb.expressions.Expression} class uses the ASM library to generate
- * bytecode for the mathematical expression it represents. It dynamically
- * creates a class that implements the {@link arb.functions.real.RealFunction}
- * interface, with each instance of the class representing a specific
- * mathematical expression.
+ * The {@link arb.expressions.Expression} class uses the objectweb ASM library
+ * to generate bytecode for the mathematical expression it represents. It
+ * dynamically creates a class that implements the
+ * {@link arb.functions.real.RealFunction} interface, with each instance of the
+ * class representing a specific mathematical expression.
  *
  * <p>
  * The {@link arb.expressions.Expression} class also provides methods for
@@ -34,7 +35,17 @@
  *
  * <p>
  * The package also includes a suite of unit tests to ensure the correctness of
- * the expression parsing, manipulation, evaluation, and bytecode generation
+ * the expression parsing, transformation, evaluation, and bytecode generation
  * features.
+ * 
+ * <h1>PRIORITIES</h1>
+ * <ul>
+ * <li>fix parenthesis</li>
+ * <li>Complex types</li>
+ * <li>Mixed Real -> Complex and Complex -> Real types</li>
+ * <li>Other Fields like the Field of Rationals, which will require swig
+ * mappings for the corresponding flint structures...</li>
+ * </ul>
+ * 
  */
 package arb.expressions;
