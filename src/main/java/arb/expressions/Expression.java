@@ -9,8 +9,7 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.Map.Entry;
 
 import org.objectweb.asm.*;
@@ -296,14 +295,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
       if (!literalConstants.isEmpty())
       {
+        List<String> constantList = literalConstants.stream().map(c -> c.fieldName).toList();
         if (verbose)
         {
-          System.err.println("Closing literal constants : "
-                        + literalConstants.stream().map(c -> c.fieldName).toList());
+          System.err.println("Closing literal constants : " + constantList);
           System.err.flush();
         }
 
-        generateLiteralClosingInstructions(methodVisitor);
+        generateCloseMethodCalls(methodVisitor, constantList);
       }
 
       if (intermediateVariableCount > 0)
@@ -314,7 +313,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
           System.err.flush();
         }
 
-        generateIntermediateVariableClosingInstructions(methodVisitor);
+        generateCloseMethodCalls(methodVisitor, intermediateVariables);
       }
 
       methodVisitor.visitInsn(Opcodes.RETURN);
@@ -326,21 +325,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
   }
 
-  public void generateIntermediateVariableClosingInstructions(MethodVisitor methodVisitor)
+  public void generateCloseMethodCalls(MethodVisitor methodVisitor, Iterable<String> intermediateVariables)
   {
-
     for (String intermediateVariable : intermediateVariables)
     {
       generateCloseMethodCall(this, loadThis(methodVisitor), intermediateVariable);
-    }
-  }
-
-  public void generateLiteralClosingInstructions(MethodVisitor methodVisitor)
-  {
-
-    for (LiteralConstant<D, R, F> constant : literalConstants)
-    {
-      generateCloseMethodCall(this, loadThis(methodVisitor), constant.fieldName);
     }
   }
 
@@ -461,7 +450,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     if (eat('('))
     {
-      node = eatSecond();
+      node = eatFirst();
     }
     else if (isDigitOrDot(ch))
     {
