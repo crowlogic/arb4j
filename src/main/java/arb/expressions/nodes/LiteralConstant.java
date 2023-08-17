@@ -8,6 +8,14 @@ import org.objectweb.asm.MethodVisitor;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
+/**
+ * FIXME: if a constant has the same value as an already generated constant then
+ * re-use it rather than making a new one
+ * 
+ * @param <D>
+ * @param <R>
+ * @param <F>
+ */
 public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
                             Node<D, R, F>
 {
