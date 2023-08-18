@@ -28,6 +28,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
           out.println("Reusing " + existingConstant);
         }
         fieldName = existingConstant.fieldName;
+        break;
       }
     }
 
