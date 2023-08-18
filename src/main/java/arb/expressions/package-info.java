@@ -40,7 +40,6 @@
  * 
  * <h1>PRIORITIES</h1>
  * <ul>
- * <li>Merge duplicate constants</li>
  * <li>support symbolic constants such as π #219</li>
  * <li>expression compiler: integer-valued literal-constants should map to
  * integer-versions of arblib calls if they exist #222</li>

@@ -8,30 +8,42 @@ import org.objectweb.asm.MethodVisitor;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
-/**
- * FIXME: if a constant has the same value as an already generated constant then
- * re-use it rather than making a new one
- * 
- * @param <D>
- * @param <R>
- * @param <F>
- */
 public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
                             Node<D, R, F>
 {
   public final String value;
-  public final String fieldName;
+  public String       fieldName;
 
   public LiteralConstant(Expression<D, R, F> expression, String constantValueString)
   {
     super(expression);
-    this.value     = constantValueString;
-    this.fieldName = expression.getNextConstantFieldName();
-    if (verbose)
+    value = constantValueString;
+
+    /**
+     * FIXME: reuse existing constants if their values are equal
+     */
+    for (LiteralConstant<D, R, F> existingConstant : expression.literalConstants)
     {
-      out.println("Adding constant " + fieldName + " to " + expression + " with value " + value);
+      if (existingConstant.value.equals(constantValueString))
+      {
+        if (verbose)
+        {
+          out.println("Reusing " + existingConstant);
+        }
+        fieldName = existingConstant.fieldName;
+      }
     }
-    expression.literalConstants.add(this);
+
+    if (fieldName == null)
+    {
+      fieldName = expression.getNextConstantFieldName();
+      
+      if (verbose)
+      {
+        out.println("Adding constant " + fieldName + " to " + expression + " with value " + value);
+      }
+      expression.literalConstants.add(this);
+    }
 
   }
 

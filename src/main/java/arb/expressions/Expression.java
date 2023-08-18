@@ -238,7 +238,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.out.println("Generating " + className + " from expression '" + expression + "'");
+      System.out.println("Generating " + className + " from expression '" + expression );
       System.out.flush();
     }
 
@@ -264,7 +264,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         if (verbose)
         {
-          System.err.println("Declaring variables: " + referencedVariables.keySet());
+          System.err.println("Declaring variables: " + referencedVariables);
         }
         declareVariables(this, cw, referencedVariables.keySet());
       }

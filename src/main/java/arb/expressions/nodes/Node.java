@@ -23,6 +23,7 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
   {
     this.expression = parser;
     this.namespace  = parser.variables;
+    verbose = expression.verbose;
   }
 
   final Variables<D> namespace;
