@@ -18,10 +18,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   {
     super(expression);
     value = constantValueString;
-
-    /**
-     * FIXME: reuse existing constants if their values are equal
-     */
+    
     for (LiteralConstant<D, R, F> existingConstant : expression.literalConstants)
     {
       if (existingConstant.value.equals(constantValueString))
