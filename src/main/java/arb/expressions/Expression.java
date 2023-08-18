@@ -169,6 +169,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return instance;
   }
 
+  /**
+   * Calls {@link Compiler#loadResult(MethodVisitor)}, then this{@link #checkClassCast(MethodVisitor, boolean)} then generates an invocation of the "set" method whose only argument and return type is this{@link #domainClassDescriptor}
+   * @param mv
+   * @return mv
+   */
   public MethodVisitor setResult(MethodVisitor mv)
   {
     checkClassCast(loadResult(mv), false);
