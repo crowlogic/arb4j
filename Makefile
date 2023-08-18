@@ -6,7 +6,7 @@ JAVA_HOME=$(shell readlink -f /usr/bin/javac | sed "s:bin/javac::")
 all: libarblib.so
 
 native/arb_wrap.c: native/*.i
-	swig -small -v -java -package arb -outdir src/main/java/arb $(INCLUDES) $<
+	swig -small -v -java -package arb -outdir src/main/java/arb $(INCLUDES) native/arb.i
 
 libarblib.so: $(SOURCES)
 	clang -g -O3 -fPIC -shared -Wno-int-conversion $(SOURCES) -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -olibarblib.so -lflint-arb  
