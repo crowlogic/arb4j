@@ -8,4 +8,6 @@ public class Variables<X extends Field<X>> extends
                       HashMap<String, X>
 {
 
+  private static final long serialVersionUID = 1L;
+
 }

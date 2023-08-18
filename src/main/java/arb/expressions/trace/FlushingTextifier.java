@@ -1,5 +1,7 @@
 package arb.expressions.trace;
 
+import static org.objectweb.asm.Opcodes.ASM10_EXPERIMENTAL;
+
 import java.util.List;
 
 import org.objectweb.asm.*;
@@ -112,9 +114,10 @@ public class FlushingTextifier extends
     printAndFlush();
   }
 
+  @SuppressWarnings("deprecation")
   public FlushingTextifier()
   {
-    super(Opcodes.ASM10_EXPERIMENTAL);
+    super(ASM10_EXPERIMENTAL);
   }
 
   @Override
