@@ -72,7 +72,7 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
     Node<D, R, F> reusableNode;
     if (isLast)
     {
-      expression.generateClassCastCheck(loadResult(mv), false);
+      expression.checkClassCast(loadResult(mv), false);
     }
     else if ((reusableNode = getAReusableNode()) != null)
     {

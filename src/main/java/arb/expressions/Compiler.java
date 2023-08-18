@@ -162,7 +162,7 @@ public class Compiler
 
   static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          MethodVisitor
-         generateCloseMethodCall(Expression<D, R, F> expression, MethodVisitor mv, String fieldNameToBeClosed)
+         closeField(Expression<D, R, F> expression, MethodVisitor mv, String fieldNameToBeClosed)
   {
     mv.visitFieldInsn(GETFIELD, expression.className, fieldNameToBeClosed, expression.domainClassDescriptor);
     mv.visitMethodInsn(INVOKEVIRTUAL, expression.domainClassInternalName, "close", "()V", false);
@@ -337,7 +337,7 @@ public class Compiler
    * @param mv The MethodVisitor to be used for adding the `this` reference
    * @return
    */
-  public static MethodVisitor generateLoadThis(MethodVisitor mv)
+  public static MethodVisitor loadThis(MethodVisitor mv)
   {
     mv.visitVarInsn(ALOAD, 0); // Load `this` onto the stack
     return mv;

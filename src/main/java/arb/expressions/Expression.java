@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
+import arb.Field;
 import arb.Real;
 import arb.expressions.nodes.*;
 import arb.expressions.trace.FlushingTraceClassVisitor;
@@ -126,6 +127,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                      .replace('₉', '9');
   }
 
+  /**
+   * Calls this{@link #getNextIntermediatevariableFieldName()} and adds it to
+   * this{@link #intermediateVariables}
+   * 
+   * @return the field name returned by
+   *         this{@link #getNextIntermediatevariableFieldName()}
+   */
   public String allocateNewIntermediateVariable()
   {
     String intermediateVarName = getNextIntermediatevariableFieldName();
@@ -161,9 +169,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return instance;
   }
 
-  public MethodVisitor generateSetResultMethodCall(MethodVisitor mv)
+  public MethodVisitor setResult(MethodVisitor mv)
   {
-    generateClassCastCheck(loadResult(mv), false);
+    checkClassCast(loadResult(mv), false);
     mv.visitInsn(Opcodes.SWAP);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        domainClassInternalName,
@@ -185,6 +193,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return compiledClass = defineFunctionClass(instructions);
   }
 
+  /**
+   * Calls this{@link #skipSpaces()} and checks if the current this{@link #ch} is
+   * equal to one of the charsToEat
+   * 
+   * @param charsToEat
+   * @return true if the next non-space character is one of the characters in
+   *         charsToEat
+   */
   public boolean eat(int... charsToEat)
   {
     skipSpaces();
@@ -207,6 +223,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return false;
   }
 
+  /**
+   * Generates the {@link Class} containing a {@link RealFunction} implementation
+   * which evaluates this{@link #expression}
+   * 
+   * @return this
+   */
   Expression<D, R, F> generate()
   {
     if (verbose)
@@ -284,7 +306,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return !literalConstants.isEmpty() | intermediateVariableCount > 0;
   }
 
-  protected void generateCloseMethod(ClassVisitor classVisitor)
+  /**
+   * Generates the {@link RealFunction#close()} method
+   * 
+   * @param classVisitor
+   * @return
+   */
+  protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
   {
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "close", "()V", null, null);
     try
@@ -300,7 +328,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
           System.err.flush();
         }
 
-        generateCloseMethodCalls(methodVisitor, constantList);
+        closeFields(methodVisitor, constantList);
       }
 
       if (intermediateVariableCount > 0)
@@ -311,7 +339,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
           System.err.flush();
         }
 
-        generateCloseMethodCalls(methodVisitor, intermediateVariables);
+        closeFields(methodVisitor, intermediateVariables);
       }
 
       methodVisitor.visitInsn(Opcodes.RETURN);
@@ -321,17 +349,33 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     {
       methodVisitor.visitEnd();
     }
+
+    return classVisitor;
   }
 
-  public void generateCloseMethodCalls(MethodVisitor methodVisitor, Iterable<String> intermediateVariables)
+  /**
+   * Calls this{@link #closeField(ClassVisitor)} for each named {@link Field}
+   * whether it be a {@link LiteralConstant} or a {@link Variable}
+   * 
+   * @param methodVisitor
+   * @param fields        an {@link Iterable} of {@link String}s naming the
+   *                      {@link Field}s to be closed
+   */
+  public void closeFields(MethodVisitor methodVisitor, Iterable<String> fields)
   {
-    for (String intermediateVariable : intermediateVariables)
+    for (String variables : fields)
     {
-      generateCloseMethodCall(this, generateLoadThis(methodVisitor), intermediateVariable);
+      closeField(this, loadThis(methodVisitor), variables);
     }
   }
 
-  private void generateEvaluationMethod(ClassVisitor cw)
+  /**
+   * Generates the {@link RealFunction#evaluate(Real, int, int, Real)} method
+   * 
+   * @param cv
+   * @return cw
+   */
+  private ClassVisitor generateEvaluationMethod(ClassVisitor cv)
   {
 
     String methodDesc      = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
@@ -348,7 +392,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       System.out.format("Generating evaluate with methodDesc='%s' signature='%s'\n", methodDesc, methodSignature);
     }
 
-    MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "evaluate", methodDesc, methodSignature, null);
+    MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PUBLIC, "evaluate", methodDesc, methodSignature, null);
 
     mv.visitCode();
     mv.visitLabel(startLabel);
@@ -371,6 +415,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     mv.visitMaxs(0, 0);
 
     mv.visitEnd();
+
+    return cv;
   }
 
   public Node<D, R, F> eatRootNode()
@@ -466,11 +512,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       System.err.format("eat: ch=%c position=%d\n", ch, this.position);
     }
 
-    Node<D, R, F> node = null;
+    Node<D, R, F> node     = null;
 
-    skipSpaces();
-
-    int startPos = this.position;
+    int           startPos = this.position;
 
     if (eat('('))
     {
@@ -552,13 +596,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   private Node<D, R, F> eatFunctionInvocationOrVariableReference(int startPos)
   {
-    String functionOrVariableName = eatName(startPos);
-    skipSpaces();
-    boolean isFunction = false;
-    if (eat('('))
-    {
-      isFunction = true;
-    }
+    String  functionOrVariableName = eatName(startPos);
+    boolean isFunction             = eat('(');
     if (verbose)
     {
       System.err.format("eatFunctionInvocationOrVariableReference: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
@@ -570,7 +609,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     if (isFunction)
     {
-      Node<D, R, F> independentVariable = eatFirst();
+      Node<D, R, F> arg = eatFirst();
       if (!eat(')'))
       {
         throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
@@ -579,7 +618,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                                  functionOrVariableName,
                                                  isFunction));
       }
-      return newFunctionCall(functionOrVariableName, independentVariable);
+      return newFunctionCall(functionOrVariableName, arg);
     }
     else
     {
@@ -605,7 +644,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * Upon entrance, this{@link #ch} should already be known to be a latin or greek
+   * Upon entrance, this{@link #ch} should already be known to be a Latin or Greek
    * character
    * 
    * @param startPos
@@ -686,7 +725,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     if (eat('^'))
     {
       boolean parenthetical = false;
-      skipSpaces();
       if (eat('('))
       {
         parenthetical = true;
@@ -817,14 +855,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    *              tests if its a this{@link #domainClassInternalName}
    * @return mv
    */
-  public MethodVisitor generateClassCastCheck(MethodVisitor mv, boolean range)
+  public MethodVisitor checkClassCast(MethodVisitor mv, boolean range)
   {
     mv.visitTypeInsn(Opcodes.CHECKCAST, range ? rangeClassInternalName : domainClassInternalName);
     return mv;
   }
 
   /**
-   * Emit an {@link Opcodes#GETFIELD} instruction
+   * Emit a {@link Opcodes#GETFIELD} instruction
    * 
    * @param mv
    * @param fieldName
@@ -833,7 +871,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    *                  this{@link #rangeClassDescriptor}
    * @return
    */
-  public MethodVisitor generateLoadField(MethodVisitor mv, String fieldName, boolean range)
+  public MethodVisitor loadField(MethodVisitor mv, String fieldName, boolean range)
   {
     mv.visitFieldInsn(GETFIELD, className, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
     return mv;
@@ -890,14 +928,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * Emit an instruction to invoke a unary function on the field type. The unary
-   * function has the signature D functionName( int bits, D result)
+   * Emit an instruction to invoke a unary function on a field. The unary function
+   * has the signature D functionName( int bits, D result)
    * 
    * @param mv
    * @param functionName
    * @return mv
    */
-  public MethodVisitor generateUnaryFunctionCall(MethodVisitor mv, String functionName)
+  public MethodVisitor callUnaryFunction(MethodVisitor mv, String functionName)
   {
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        domainClassInternalName,

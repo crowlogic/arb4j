@@ -169,7 +169,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     }
 
     Expression<D, R, F> expression = independentVariable.expression;
-    return expression.generateUnaryFunctionCall(expression.generateClassCastCheck(mv, false), functionName);
+    return expression.callUnaryFunction(expression.checkClassCast(mv, false), functionName);
   }
 
 }

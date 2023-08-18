@@ -58,13 +58,13 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
   {
     if (!expression.resultAllocated)
     {
-      expression.generateClassCastCheck(loadResult(mv), true);
+      expression.checkClassCast(loadResult(mv), true);
       expression.resultAllocated = true;
     }
     else
     {
       String fieldName = expression.allocateNewIntermediateVariable();
-      generateLoadThis(mv).visitFieldInsn(GETFIELD, expression.className, fieldName, expression.rangeClassDescriptor);
+      loadThis(mv).visitFieldInsn(GETFIELD, expression.className, fieldName, expression.rangeClassDescriptor);
     }
 
   }

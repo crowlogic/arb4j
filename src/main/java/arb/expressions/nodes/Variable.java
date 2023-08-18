@@ -71,16 +71,16 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
 
     if (isIndependent)
     {
-      expression.generateClassCastCheck(loadInput(mv), false);
+      expression.checkClassCast(loadInput(mv), false);
     }
     else
     {
-      expression.generateLoadField(generateLoadThis(mv), name, true);
+      expression.loadField(loadThis(mv), name, true);
     }
 
     if (isLast)
     {
-      expression.generateSetResultMethodCall(mv);
+      expression.setResult(mv);
     }
   }
 

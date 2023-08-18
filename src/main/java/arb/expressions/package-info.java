@@ -40,6 +40,9 @@
  * 
  * <h1>PRIORITIES</h1>
  * <ul>
+ * <ul>Merge duplicate constants</ul>
+ * <ul>support symbolic constants such as π #219</ul>
+ * <ul> expression compiler: integer-valued literal-constants should map to integer-versions of arblib calls if they exist #222</ul>
  * <li>Complex types</li>
  * <li>Mixed Real -> Complex and Complex -> Real types</li>
  * <li>Other Fields like the Field of Rationals, which will require swig
