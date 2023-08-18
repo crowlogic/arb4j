@@ -47,7 +47,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   }
 
   @Override
-  public void generate(MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv)
   {
     if (verbose)
     {
@@ -61,6 +61,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
       expression.setResult(mv);
     }
 
+    return mv;
   }
 
   @Override

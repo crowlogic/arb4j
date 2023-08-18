@@ -47,11 +47,12 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
   }
 
   @Override
-  public final void generate(MethodVisitor mv)
+  public final MethodVisitor generate(MethodVisitor mv)
   {
     left.generate(mv);
     right.generate(mv);
     generateInvocation(mv, operation, expression.rangeClassInternalName);
+    return mv;
   }
 
   /**

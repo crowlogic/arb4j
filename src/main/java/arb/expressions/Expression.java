@@ -378,7 +378,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Generates the {@link RealFunction#evaluate(Real, int, int, Real)} method
    * 
    * @param cv
-   * @return cw
+   * @return cv
    */
   private ClassVisitor generateEvaluationMethod(ClassVisitor cv)
   {

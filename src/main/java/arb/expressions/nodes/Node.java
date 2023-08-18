@@ -27,7 +27,7 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
 
   final Variables<D> namespace;
 
-  public abstract void generate(MethodVisitor mv);
+  public abstract MethodVisitor generate(MethodVisitor mv);
 
   protected static String indent(int depth)
   {

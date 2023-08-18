@@ -62,7 +62,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
   }
 
   @Override
-  public void generate(MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv)
   {
     if (verbose)
     {
@@ -82,6 +82,8 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     {
       expression.setResult(mv);
     }
+    
+    return mv;
   }
 
   @Override

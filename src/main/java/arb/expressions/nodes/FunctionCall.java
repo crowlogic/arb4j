@@ -94,7 +94,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
   }
 
   @Override
-  public void generate(MethodVisitor methodVisitor)
+  public MethodVisitor generate(MethodVisitor methodVisitor)
   {
     Generator handler = (isLast ? lastCallFunctionHandlers : functionHandlers).get(name);
     if (handler == null)
@@ -102,6 +102,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
       throw new RuntimeException("No handler for function '" + name + "'");
     }
     handler.generate(methodVisitor, node);
+    return methodVisitor;
   }
 
   public static Generator registerFunctionHandler(String functionName, String alias, boolean lastCall)
