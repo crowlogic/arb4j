@@ -2,7 +2,7 @@ package arb.expressions;
 
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
-import static java.lang.System.out;
+import static java.lang.System.*;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 
 import java.io.*;
@@ -220,10 +220,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         nextChar();
         if (verbose)
         {
-          System.err.format("Ate expected '%c' and advanced to char '%c' at pos %d\n",
+          err.format("Ate expected '%c' and advanced to char '%c' at pos %d\n",
                             charToEat,
                             ch == -1 ? '?' : ch,
                             position);
+          err.flush();
         }
         return true;
       }

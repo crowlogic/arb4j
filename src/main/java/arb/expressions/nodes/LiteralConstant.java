@@ -18,7 +18,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   {
     super(expression);
     value = constantValueString;
-    
+
     for (LiteralConstant<D, R, F> existingConstant : expression.literalConstants)
     {
       if (existingConstant.value.equals(constantValueString))
@@ -35,7 +35,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
     if (fieldName == null)
     {
       fieldName = expression.getNextConstantFieldName();
-      
+
       if (verbose)
       {
         out.println("Adding constant " + fieldName + " to " + expression + " with value " + value);
@@ -53,7 +53,11 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
 
   public String toString(int depth)
   {
-    return String.format("%s%s[value=%s]", depth < 0 ? "" : indent(depth), getClass().getSimpleName(), value);
+    return String.format("%s%s[fieldName=%s, value=%s]",
+                         depth < 0 ? "" : indent(depth),
+                         getClass().getSimpleName(),
+                         fieldName,
+                         value);
   }
 
   @Override

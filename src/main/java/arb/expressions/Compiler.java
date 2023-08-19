@@ -477,8 +477,7 @@ public class Compiler
 
     if (verbose)
     {
-      System.err.format("generateFunctionCall(mv=%s, functionName=%s, arg=%s, lastCall=%s)\n",
-                        mv,
+      System.err.format("generateFunctionCall(functionName=%s, arg=%s, lastCall=%s)\n",
                         functionName,
                         arg,
                         lastCall);
