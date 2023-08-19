@@ -503,7 +503,7 @@ public class Compiler
       }
       else
       {
-        expression.allocateIntermediateVariable(mv);
+        expression.declareNewIntermediateVariable(mv);
       }
     }
 

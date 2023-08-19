@@ -134,7 +134,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @return the field name returned by
    *         this{@link #getNextIntermediatevariableFieldName()}
    */
-  public String allocateNewIntermediateVariable()
+  public String newIntermediateVariable()
   {
     String intermediateVarName = getNextIntermediatevariableFieldName();
     intermediateVariables.add(intermediateVarName);
@@ -926,13 +926,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return mv;
   }
 
-  public void allocateIntermediateVariable(MethodVisitor mv)
+  public void declareNewIntermediateVariable(MethodVisitor mv)
   {
-    /**
-     * FIXME: most of the time the result should be reusable. See
-     * https://github.com/crowlogic/arb4j/issues/221
-     */
-
     if (!resultAllocated)
     {
       checkClassCast(loadResult(mv), true);
@@ -940,7 +935,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
     else
     {
-      String fieldName = allocateNewIntermediateVariable();
+      String fieldName = newIntermediateVariable();
       loadThis(mv).visitFieldInsn(GETFIELD, className, fieldName, rangeClassDescriptor);
     }
   }
