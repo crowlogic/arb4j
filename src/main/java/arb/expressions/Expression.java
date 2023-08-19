@@ -907,6 +907,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, verbose);
   }
 
+  public static RealFunction express(String expression, boolean verbose)
+  {
+    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
+  }
+
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          F
          instantiate(String className,

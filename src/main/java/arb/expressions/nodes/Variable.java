@@ -58,7 +58,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     return String.format("%s%s[name=%s]",
                          depth < 0 ? "" : indent(depth),
                          getClass().getSimpleName(),
-                         isIndependent ? "INPUT" : name);
+                         isIndependent ? format("INPUT(%s)", name) : name);
   }
 
   @Override
@@ -82,7 +82,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     {
       expression.setResult(mv);
     }
-    
+
     return mv;
   }
 
