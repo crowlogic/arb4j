@@ -170,7 +170,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * Calls {@link Compiler#loadResult(MethodVisitor)}, then this{@link #checkClassCast(MethodVisitor, boolean)} then generates an invocation of the "set" method whose only argument and return type is this{@link #domainClassDescriptor}
+   * Calls {@link Compiler#loadResult(MethodVisitor)}, then
+   * this{@link #checkClassCast(MethodVisitor, boolean)} then generates an
+   * invocation of the "set" method whose only argument and return type is
+   * this{@link #domainClassDescriptor}
+   * 
    * @param mv
    * @return mv
    */
@@ -238,7 +242,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.out.println("Generating " + className + " from expression '" + expression );
+      System.out.println("Generating " + className + " from expression '" + expression);
       System.out.flush();
     }
 
@@ -953,6 +957,25 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                        format("(I%s)%s", domainClassDescriptor, domainClassDescriptor),
                        false);
     return mv;
+  }
+
+  public void allocateIntermediateVariable(MethodVisitor mv)
+  {
+    /**
+     * FIXME: most of the time the result should be reusable. See
+     * https://github.com/crowlogic/arb4j/issues/221
+     */
+
+    if (!resultAllocated)
+    {
+      checkClassCast(loadResult(mv), true);
+      resultAllocated = true;
+    }
+    else
+    {
+      String fieldName = allocateNewIntermediateVariable();
+      loadThis(mv).visitFieldInsn(GETFIELD, className, fieldName, rangeClassDescriptor);
+    }
   }
 
 }

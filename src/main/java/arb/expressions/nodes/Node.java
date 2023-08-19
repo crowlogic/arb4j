@@ -1,8 +1,5 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-
 import java.util.Collections;
 
 import org.objectweb.asm.MethodVisitor;
@@ -23,7 +20,7 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
   {
     this.expression = parser;
     this.namespace  = parser.variables;
-    verbose = expression.verbose;
+    verbose         = expression.verbose;
   }
 
   final Variables<D> namespace;
@@ -38,7 +35,6 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
   public abstract String toString(int depth);
 
   public int bits = 128;
-
 
   /**
    * Determines whether this ExpressionNode is reusable. If it's reusable, it
@@ -55,20 +51,6 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
    */
   public abstract boolean isReusable();
 
-  protected void allocateIntermediateVariable(MethodVisitor mv)
-  {
-    if (!expression.resultAllocated)
-    {
-      expression.checkClassCast(loadResult(mv), true);
-      expression.resultAllocated = true;
-    }
-    else
-    {
-      String fieldName = expression.allocateNewIntermediateVariable();
-      loadThis(mv).visitFieldInsn(GETFIELD, expression.className, fieldName, expression.rangeClassDescriptor);
-    }
-
-  }
 
   public abstract MethodVisitor prepareStackForReuse(MethodVisitor mv);
 

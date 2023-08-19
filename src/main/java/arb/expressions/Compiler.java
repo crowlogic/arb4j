@@ -12,6 +12,7 @@ import org.objectweb.asm.*;
 import arb.Field;
 import arb.Real;
 import arb.expressions.nodes.LiteralConstant;
+import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -454,6 +455,60 @@ public class Compiler
                      .replace("0", "Zero")
                      .replace(".", "Point")
                   + System.nanoTime();
+  }
+
+  /**
+   * Generate an invocation of a function specified by its name and the Node whose
+   * evaluated result is the independent variable, also known as the argument, to
+   * be passed to the function represented by this node
+   * 
+   * @param mv
+   * @param functionName
+   * @param arg
+   * @param lastCall
+   * @return
+   */
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         callFunction(MethodVisitor mv, String functionName, Node<D, R, F> arg, boolean lastCall)
+  {
+    var     expression = arg.expression;
+    boolean verbose    = expression.verbose;
+
+    if (verbose)
+    {
+      System.err.format("generateFunctionCall(mv=%s, functionName=%s, arg=%s, lastCall=%s)\n",
+                        mv,
+                        functionName,
+                        arg,
+                        lastCall);
+    }
+    arg.generate(mv);
+
+    loadBits(mv);
+
+    if (lastCall)
+    {
+      loadResult(mv);
+    }
+    else
+    {
+      if (arg.isReusable())
+      {
+        if (verbose)
+        {
+          System.err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+        }
+
+        arg.prepareStackForReuse(mv);
+      }
+      else
+      {
+        expression.allocateIntermediateVariable(mv);
+      }
+    }
+
+    return expression.callUnaryFunction(expression.checkClassCast(mv, false), functionName);
   }
 
 }

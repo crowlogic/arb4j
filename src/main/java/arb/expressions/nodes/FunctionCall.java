@@ -1,6 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.callFunction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,68 +109,12 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
   {
     Generator handler = (mv, node) ->
     {
-      generationFunctionCall(mv, functionName, node, lastCall);
+      callFunction(mv, functionName, node, lastCall);
     };
 
     (lastCall ? lastCallFunctionHandlers : functionHandlers).put(alias != null ? alias : functionName, handler);
 
     return handler;
-  }
-
-  /**
-   * Generate an invocation of a function specified by its name and the Node whose
-   * evaluated result is the independent variable, also known as the argument, to
-   * be passed to the function represented by this node
-   * 
-   * @param mv
-   * @param functionName
-   * @param arg
-   * @param lastCall
-   * @return
-   */
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         MethodVisitor
-         generationFunctionCall(MethodVisitor mv,
-                                String functionName,
-                                Node<D, R, F> arg,
-                                boolean lastCall)
-  {
-    if (verbose)
-    {
-      System.err.format("generateFunctionCall(mv=%s, functionName=%s, arg=%s, lastCall=%s)\n",
-                        mv,
-                        functionName,
-                        arg,
-                        lastCall);
-    }
-    arg.generate(mv);
-
-    loadBits(mv);
-
-    if (lastCall)
-    {
-      loadResult(mv);
-    }
-    else
-    {
-      if (arg.isReusable())
-      {
-        if (verbose)
-        {
-          System.err.println("Preparing function call stack to reuse its argument "
-                        + arg.toString(-1));
-        }
-
-        arg.prepareStackForReuse(mv);
-      }
-      else
-      {
-        arg.allocateIntermediateVariable(mv);
-      }
-    }
-
-    Expression<D, R, F> expression = arg.expression;
-    return expression.callUnaryFunction(expression.checkClassCast(mv, false), functionName);
   }
 
 }

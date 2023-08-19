@@ -89,7 +89,7 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
     }
     else
     {
-      allocateIntermediateVariable(mv);
+      expression.allocateIntermediateVariable(mv);
     }
 
     return invokeOperator(mv, operator);
