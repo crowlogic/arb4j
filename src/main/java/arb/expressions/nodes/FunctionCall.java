@@ -124,7 +124,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
    * 
    * @param mv
    * @param functionName
-   * @param independentVariable
+   * @param arg
    * @param lastCall
    * @return
    */
@@ -132,18 +132,18 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
          MethodVisitor
          generationFunctionCall(MethodVisitor mv,
                                 String functionName,
-                                Node<D, R, F> independentVariable,
+                                Node<D, R, F> arg,
                                 boolean lastCall)
   {
     if (verbose)
     {
-      System.err.format("generateFunctionCall(mv=%s, functionName=%s, independentVariable=%s, lastCall=%s)\n",
+      System.err.format("generateFunctionCall(mv=%s, functionName=%s, arg=%s, lastCall=%s)\n",
                         mv,
                         functionName,
-                        independentVariable,
+                        arg,
                         lastCall);
     }
-    independentVariable.generate(mv);
+    arg.generate(mv);
 
     loadBits(mv);
 
@@ -153,23 +153,23 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     }
     else
     {
-      if (independentVariable.isReusable())
+      if (arg.isReusable())
       {
         if (verbose)
         {
           System.err.println("Preparing function call stack to reuse its argument "
-                        + independentVariable.toString(-1));
+                        + arg.toString(-1));
         }
 
-        independentVariable.prepareStackForReuse(mv);
+        arg.prepareStackForReuse(mv);
       }
       else
       {
-        independentVariable.allocateIntermediateVariable(mv);
+        arg.allocateIntermediateVariable(mv);
       }
     }
 
-    Expression<D, R, F> expression = independentVariable.expression;
+    Expression<D, R, F> expression = arg.expression;
     return expression.callUnaryFunction(expression.checkClassCast(mv, false), functionName);
   }
 

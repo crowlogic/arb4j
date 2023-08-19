@@ -41,9 +41,7 @@ public class Compiler
   }
 
   /**
-   * this{@link #construct(String, String, Variables, Class, Class, Class)}s and
-   * {@link Expression#compile()}s a given expression and corresponding
-   * specifications of types and variables
+   * Constructs and compiles an {@link Expression}
    * 
    * @param <D>
    * @param <R>
@@ -54,8 +52,10 @@ public class Compiler
    * @param domainClass
    * @param rangeClass
    * @param functionClass
-   * @param verbose
-   * @return
+   * @param verbose          if true then information about the parsing and code
+   *                         generating is printed to {@link System#out} and
+   *                         {@link System#err}
+   * @return compiled {@link Expression}
    */
   public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          Expression<D, R, F>
