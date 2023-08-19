@@ -271,34 +271,6 @@ public class Compiler
   }
 
   /**
-   * Injects code to cause an AnalyzerException by attempting to pass a string as
-   * an argument to a method that expects an integer. The method used here is
-   * System.exit(int), which is intended to terminate the JVM with an exit code
-   * provided as an integer. By passing a string instead, this causes an
-   * AnalyzerException, which can be used to debug bytecode generation.
-   *
-   * This code is intended to trigger an exception in the CheckClassAdapter, which
-   * checks the correctness of the Java bytecode produced by a MethodVisitor. The
-   * CheckClassAdapter will dump the state of the stack in response to this
-   * exception. This includes the bytecode instructions along with the state of
-   * the operand stack and local variable array after each instruction, allowing
-   * detailed insight into the state of the JVM at the time of the exception.
-   *
-   * Note: As of the time of this writing, this method is guaranteed to crash in
-   * all conditions, since the System.exit method universally expects an integer
-   * as an argument, and we're intentionally providing a string.
-   * 
-   * @param mv the MethodVisitor to which the crash code is to be added
-   * @return
-   */
-  static MethodVisitor causeStacktrace(MethodVisitor mv)
-  {
-    mv.visitLdcInsn("intentional bogus instruction to halt program and print the stack");
-    mv.visitMethodInsn(INVOKESTATIC, "java/lang/Thread", "sleep", "(I)V", false);
-    return mv;
-  }
-
-  /**
    * Checks whether a given character is a digit or a decimal point.
    * 
    * @param ch The character to check
@@ -477,10 +449,7 @@ public class Compiler
 
     if (verbose)
     {
-      System.err.format("generateFunctionCall(functionName=%s, arg=%s, lastCall=%s)\n",
-                        functionName,
-                        arg,
-                        lastCall);
+      System.err.format("generateFunctionCall(functionName=%s, arg=%s, lastCall=%s)\n", functionName, arg, lastCall);
     }
     arg.generate(mv);
 
