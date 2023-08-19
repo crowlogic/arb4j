@@ -92,17 +92,13 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
       expression.allocateIntermediateVariable(mv);
     }
 
-    return invokeOperator(mv, operator);
-  }
-
-  public MethodVisitor invokeOperator(MethodVisitor mv, String operator)
-  {
     String rcd = expression.rangeClassDescriptor;
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        expression.rangeClassInternalName,
                        operator,
                        String.format("(%sI%s)%s", rcd, rcd, rcd),
                        false);
+
     return mv;
   }
 
