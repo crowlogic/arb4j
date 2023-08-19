@@ -51,7 +51,7 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
   {
     left.generate(mv);
     right.generate(mv);
-    generateInvocation(mv, operation, expression.rangeClassInternalName);
+    invokeMethod(mv, operation, expression.rangeClassInternalName);
     return mv;
   }
 
@@ -67,7 +67,7 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
    * 
    * @return
    */
-  public MethodVisitor generateInvocation(MethodVisitor mv, String operator, String resultClassInternalName)
+  public MethodVisitor invokeMethod(MethodVisitor mv, String operator, String resultClassInternalName)
   {
     loadBits(mv);
     Node<D, R, F> reusableNode;
