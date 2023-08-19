@@ -221,9 +221,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         if (verbose)
         {
           err.format("Ate expected '%c' and advanced to char '%c' at pos %d\n",
-                            charToEat,
-                            ch == -1 ? '?' : ch,
-                            position);
+                     charToEat,
+                     ch == -1 ? '?' : ch,
+                     position);
           err.flush();
         }
         return true;
@@ -406,8 +406,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     mv.visitCode();
     mv.visitLabel(startLabel);
-    eatRootNode();
-    rootNode.generate(mv);
+
+    eatRootNode().generate(mv);
 
     if (verbose)
     {
@@ -458,43 +458,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         field.set(instance, variables.get(entry.getKey()));
       }
     }
-  }
-
-  /**
-   * 
-   * @param name
-   * @param arg
-   * @return
-   */
-  private Node<D, R, F> newFunctionCall(String name, Node<D, R, F> arg)
-  {
-    assert arg != null : "arg is null in function call named '" + name + "'";
-
-    if (arg == null)
-    {
-      throw new RuntimeException("Parsed expression is null, name=" + name);
-    }
-
-    if (verbose)
-    {
-      System.err.println("newFunctionCall name=" + name + " arg=" + arg);
-    }
-
-    return new FunctionCall<>(this,
-                              name,
-                              arg);
-  }
-
-  /**
-   * instantiate a new {@link Variable}
-   * 
-   * @param name
-   * @return a new {@link Variable}
-   */
-  private Node<D, R, F> newVariable(String name)
-  {
-    return new Variable<>(this,
-                          name);
   }
 
   /**
@@ -550,7 +513,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     if (verbose)
     {
-      System.err.println("parse returning " + node);
+      System.out.println("eat() returning " + node);
     }
 
     return node;
@@ -628,11 +591,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                                  functionOrVariableName,
                                                  isFunction));
       }
-      return newFunctionCall(functionOrVariableName, arg);
+      return new FunctionCall<>(this,
+                                functionOrVariableName,
+                                arg);
     }
     else
     {
-      return newVariable(functionOrVariableName);
+      return new Variable<>(this,
+                            functionOrVariableName);
     }
   }
 

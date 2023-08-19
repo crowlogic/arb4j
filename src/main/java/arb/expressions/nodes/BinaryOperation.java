@@ -51,8 +51,7 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
   {
     left.generate(mv);
     right.generate(mv);
-    invokeMethod(mv, operation, expression.rangeClassInternalName);
-    return mv;
+    return invokeMethod(mv, operation, expression.rangeClassInternalName);    
   }
 
   /**
