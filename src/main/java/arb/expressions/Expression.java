@@ -712,7 +712,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         if (!eat(')'))
         {
-          throw new RuntimeException(String.format("eatPower expected closing paranthesis at: position=%d, ch='%c'\n",
+          throw new RuntimeException(String.format("eatPower expected closing parenthesis at: position=%d, ch='%c'\n",
                                                    position,
                                                    ch == -1 ? '?' : ch));
         }
