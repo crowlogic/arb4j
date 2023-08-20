@@ -472,7 +472,7 @@ public class Compiler
       }
       else
       {
-        expression.declareNewIntermediateVariable(mv);
+        expression.loadIntermediateVariable(mv);
       }
     }
 

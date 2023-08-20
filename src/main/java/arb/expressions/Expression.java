@@ -76,7 +76,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * evaluate method at index 4) is available to be reused as an intermediate
    * variable
    **/
-  public boolean                             resultAllocated           = false;
+  public boolean                             resultInUse               = false;
 
   public Node<D, R, F>                       rootNode;
 
@@ -926,17 +926,28 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return mv;
   }
 
-  public void declareNewIntermediateVariable(MethodVisitor mv)
+  /**
+   * DESIGN: this should return an object that when combined with something lets
+   * the object know its result or intermediate variable has been consumed and is
+   * therefore available to be reused thus obviating the need to allocate another
+   * field element
+   * 
+   * @param mv
+   * @return
+   */
+  public String loadIntermediateVariable(MethodVisitor mv)
   {
-    if (!resultAllocated)
+    if (!resultInUse)
     {
       checkClassCast(loadResult(mv), true);
-      resultAllocated = true;
+      resultInUse = true;
+      return "<RESULT>";
     }
     else
     {
-      String fieldName = newIntermediateVariable();
-      loadThis(mv).visitFieldInsn(GETFIELD, className, fieldName, rangeClassDescriptor);
+      String intermediateVariableName = newIntermediateVariable();
+      loadField(loadThis(mv), intermediateVariableName, true);
+      return intermediateVariableName;
     }
   }
 
