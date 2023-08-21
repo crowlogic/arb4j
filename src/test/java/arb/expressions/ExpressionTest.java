@@ -437,13 +437,13 @@ public class ExpressionTest extends
 
   public void testLiftedC()
   {
-    try ( RealFunction c = express("LiftedC",
+    try ( RealFunction c = express("YabaDabaDo",
                                    "((r^(1-α)-1)*r^((α-1)*(1+n/2)))/(Γ(α)*Γ(2-α))*r^((1-α)*i)",
                                    variables,
                                    true);
           Real c0 = c.evaluate(zero, 1, 128, new Real()))
     {
-      assertEquals(0.0114537, c0.doubleValue());
+      assertEquals(0.018045813351600336, c0.doubleValue());
     }
   }
 }

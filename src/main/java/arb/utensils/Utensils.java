@@ -71,12 +71,7 @@ public class Utensils
     }
 
   }
-
-  public static IntStream sequence(int startInclusive, int stopInclusive)
-  {
-    return IntStream.rangeClosed(startInclusive, stopInclusive);
-  }
-
+  
   public static Real
          add(java.util.function.IntFunction<Real> func, int startInclusive, int stopExclusive, int bits, Real value)
   {
