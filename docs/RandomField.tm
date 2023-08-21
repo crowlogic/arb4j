@@ -4,12 +4,12 @@
 
 <\body>
   <doc-data|<doc-title|The Variance Structure of Random
-  Fields>|<doc-author|<author-data|<author-name|Stephen
+  Fields>|<doc-author|<author-data|<author-name|Stephen A.
   Crowley>|<\author-affiliation>
     <date|>
   </author-affiliation>>>>
 
-  A random field is a collection <math|<around|{|Z<around|(|t|)>:t\<in\>T|}>>,
+  A random field is a collection <math|<around|{|Z<around|(|t|)>:t\<in\>T|}>>
   where each <math|Z<around|(|t|)>> is a random variable defined on a
   probability space <math|<around|(|\<Omega\>,\<cal-F\>,P|)>>. The
   topological space <math|T> represents spatial or spatio-temporal
@@ -45,31 +45,35 @@
 
   This integral condition is crucial for ensuring that the variance structure
   consistently represents spatial or spatio-temporal relationships. It is
-  intrinsically tied to the random field <math|<around|{|Z<around|(|t|)>,t\<in\>T|}>>,
+  intrinsically tied to the random field <math|<around|{|Z<around|(|t|)>:t\<in\>T|}>>,
   defined on the probability space <math|<around|(|\<Omega\>,\<cal-F\>,P|)>>.
 
-  To confirm that <math|C<around|(|h|)>> is a valid covariance function, it
-  must satisfy the condition of positive definiteness. In a discretized
-  setting with a mesh size <math|\<Delta\>*x>, we consider a set of
-  discretized points <math|<around|{|x<rsub|1>,x<rsub|2>,\<ldots\>,x<rsub|N<around|(|h|)>>|}>>,
-  where <math|x<rsub|i>=i*\<Delta\>*x> for
-  <math|i=1,2,\<ldots\>,N<around|(|h|)>>. We define a Gram matrix <math|G>,
-  where <math|G<rsub|i*j>=C*<around|(|x<rsub|i>-x<rsub|j>|)>>. This Gram
-  matrix must satisfy:
+  To prove the integral formula, let <math|x<rsub|i>=i*\<Delta\>*x\<forall\>i=1,2,\<ldots\>,N<around|(|h|)>>
+  be a discrete set of points evenly spaced with mesh size <math|\<Delta\>*x>
+  and form the <hlink|Gram matrix|GramMatrix> <math|G>
 
   <\equation>
-    x<rsup|T>*G*x\<geq\>0
+    G<rsub|i*j>=C*<around|(|x<rsub|i>-x<rsub|j>|)>
   </equation>
 
-  for all vectors <math|x=<around|(|x<rsub|1>,x<rsub|2>,\<ldots\>,x<rsub|N<around|(|h|)>>|)>\<in\>\<bbb-R\><rsup|N<around|(|h|)>>>.
+  where
 
-  In the limit as <math|\<Delta\>*x\<to\>0>, this condition is expected to
-  converge to an integral operator condition, providing a link between the
-  discrete and continuous formulations of positive definiteness.
+  <\equation>
+    x<rsup|T>*G*x\<geq\>0\<forall\>x=<around|(|x<rsub|1>,x<rsub|2>,\<ldots\>,x<rsub|N<around|(|h|)>>|)>\<in\>\<bbb-R\><rsup|N<around|(|h|)>>
+  </equation>
 
-  This condition is crucial for ensuring that the variance structure
-  consistently represents spatial or spatio-temporal relationships. It is
-  intrinsically tied to the random field <math|<around|{|Z<around|(|t|)>,t\<in\>T|}>>,
+  then observe that in the limit as <math|\<Delta\>*x\<to\>0>, the double sum
+  represented in the Gram matrix converges to the double integral:
+
+  <\equation>
+    lim<rsub|\<Delta\>*x\<to\>0> <big|sum><rsub|i=1><rsup|N<around|(|h|)>><big|sum><rsub|j=1><rsup|N<around|(|h|)>>x<rsub|i>*C*<around|(|x<rsub|i>-x<rsub|j>|)>*x<rsub|j>=<big|int><rsub|A><big|int><rsub|A>f<around|(|x|)><wide|\<gamma\>|\<ddot\>>*<around|(|x-y|)>*f<around|(|y|)>*d*x*d*y
+  </equation>
+
+  This provides a link between the discrete and continuous formulations of
+  <hlink|positive definiteness|PositiveDefinite>, thereby ensuring that the
+  <hlink|variance structure|VarianceStructure> consistently represents
+  spatial or spatio-temporal relationships. This condition is intrinsically
+  tied to the random field <math|<around|{|Z<around|(|t|)>:t\<in\>T|}>>
   defined on the probability space <math|<around|(|\<Omega\>,\<cal-F\>,P|)>>.
 </body>
 
