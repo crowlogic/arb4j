@@ -472,7 +472,11 @@ public class Compiler
       }
       else
       {
-        expression.loadIntermediateVariable(mv);
+        /**
+         * FIME: in principle there only needs to be 1 intermediate output field variable instance allocated per level of depth, isn't that
+         * right? My reasoning is that if for instance result is being used  like this  t.add( RealConstants.one, 128, result )
+         */
+        expression.loadExistingOrLocateNewIntermediateOutputVariable(mv);
       }
     }
 
