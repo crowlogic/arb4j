@@ -62,7 +62,7 @@ public class RealTest extends
     Real expected = Real.newVector(N, "expected");
     for (int i = 0; i < N; i++)
     {
-      expected.get(i).set(i * i); // Squared values
+      expected.get(i).set((i * i)/(double)N); // Squared values
     }
 
     // Initialize result outside of loop to prevent memory leaks

@@ -18,18 +18,81 @@ import arb.stochastic.ProbabilityDistributionFunction;
 
 /**
  * <pre>
- * This class represents a real number in the ARB library, a library for
- * rigorous real arithmetic. It implements multiple interfaces that give it
- * capabilities like being part of a vector space, being lockable, and having a
- * serializable representation.
+ * This class wraps the arb_t type from the arblib module of the FLINT library
+ * which represents a ball over the real numbers, that is, an interval m±r 
+ * equivalently [m-r, m+r] where the midpoint m and the radius r are (extended) real
+ * numbers and r is nonnegative (possibly infinite). The result of an
+ * (approximate) operation done on arb_t variables is a ball which contains the
+ * result of the (mathematically exact) operation applied to any choice of
+ * points in the input balls. In general, the output ball is not the smallest
+ * possible.
+ * 
+ * The precision parameter passed to each function roughly indicates the
+ * precision to which calculations on the midpoint are carried out (operations
+ * on the radius are always done using a fixed, small precision.)
+ * 
+ * For arithmetic operations, the precision parameter currently simply specifies
+ * the precision of the corresponding arf_t operation. In the future, the
+ * arithmetic might be made faster by incorporating sloppy rounding (typically
+ * equivalent to a loss of 1 or 2 bits of effective working precision) when the
+ * result is known to be inexact (while still propagating errors rigorously, of
+ * course). Arithmetic operations done on exact input with exactly representable
+ * output are always guaranteed to produce exact output.
+ * 
+ * For more complex operations, the precision parameter indicates a minimum
+ * working precision (algorithms might allocate extra internal precision to
+ * attempt to produce an output accurate to the requested number of bits,
+ * especially when the required precision can be estimated easily, but this is
+ * not generally required).
+ * 
+ * If the precision is increased and the inputs either are exact or are computed
+ * with increased accuracy as well, the output should converge proportionally,
+ * absent any bugs. The general intended strategy for using ball arithmetic is
+ * to add a few guard bits, and then repeat the calculation as necessary with an
+ * exponentially increasing number of guard bits (Ziv's strategy) until the
+ * result is exact enough for one's purposes (typically the first attempt will
+ * be successful).
+ * 
+ * The following balls with an infinite or NaN component are permitted, and may
+ * be returned as output from functions.
  *
- * The class also incorporates several mathematical operations like addition,
+ * The ball ∞±c, where c is finite, represents the point at positive
+ * infinity. Such a ball can always be replaced by ∞±0 while preserving
+ * mathematical correctness (this is currently not done automatically by the
+ * library). 
+ * 
+ * The ball -∞±c, where c is finite, represents the point at
+ * negative infinity. Such a ball can always be replaced by -∞±0 while
+ * preserving mathematical correctness (this is currently not done automatically
+ * by the library). 
+ * 
+ * The ball c±∞, where c is finite or infinite, represents
+ * the whole extended real line [-∞,+∞]. Such a ball can always be replaced by
+ * 0±∞ while preserving mathematical correctness (this is currently not
+ * done automatically by the library). 
+ * 
+ * Note that there is no way to represent a half-infinite interval such as [0,∞]. 
+ * 
+ * The ball NaN±c, where c is finite or infinite, represents an indeterminate 
+ * value (the value could be any extended real number, or it could represent 
+ * a function being evaluated outside its domain of definition, for example 
+ * where the result would be complex). Such an indeterminate ball can always 
+ * be replaced by NaN±∞ while preserving mathematical correctness (this is
+ * currently not done automatically by the library).
+ * </pre>
+ * 
+ * <pre>
+ * Besides inheriting this tremendous functionality from arb, this class 
+ * also implements multiple interfaces that give it capabilities like being 
+ * part of a vector space, being lockable, and having a serializable representation.
+ *
+ * It also incorporates several mathematical operations like addition,
  * subtraction, multiplication, division, trigonometric operations, and complex
  * operations, along with utility operations like hashing, comparison,
  * normalization, covariance calculations, etc. It also handles uncertainties
  * and precision.
  *
- * This class provides the ability to generate random real numbers based on a
+ * The {@link Real} class provides the ability to generate random real numbers based on a
  * probability distribution function, calculate logarithmic values, manage the
  * variance and standard deviation, among other operations. It allows operations
  * at different levels of precision controlled by integer values.
@@ -75,10 +138,12 @@ import arb.stochastic.ProbabilityDistributionFunction;
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre> 
+ * </pre>
  */
 %}
 %typemap(javacode) arb_struct %{
+  private static final long serialVersionUID = 1L;
+
   static { System.loadLibrary( "arblib" ); }
 
 
@@ -159,7 +224,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
   {
     try ( Real y = sub(shift(n), prec, Real.newVector(dim - n)))
     {
-      return y.pow(2, prec).sum(prec, result);
+      return y.pow(2, prec).sum(prec, result).div(dim-n,prec,result);
     }
   }
   

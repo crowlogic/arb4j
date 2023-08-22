@@ -7,6 +7,7 @@ import static arb.RealConstants.*;
 import static arb.IntegerConstants.*;
 import arb.utensils.Utensils;
 import static arb.arblib.*;
+import static arb.RoundingMode.*;
 
 /**
  * A {@link Float} contains four words: <br>
@@ -104,7 +105,7 @@ import static arb.arblib.*;
   @Override
   public Float div(Float j, int prec, Float result)
   {
-    arf_div(result, this, j, prec, RoundingMode.Near.ordinal());
+    arf_div(result, this, j, prec, RoundingMode.Up.ordinal());
     return this;
   }
  
@@ -267,7 +268,7 @@ import static arb.arblib.*;
   @Override
   public Float add(Float ay, int precision, Float result)
   {
-    arf_add(result, this, ay, precision, ARF_RND_DOWN);
+    arf_add(result, this, ay, precision, Up.ordinal() );
     return result;    
   }
     
@@ -285,7 +286,7 @@ import static arb.arblib.*;
   @Override
   public Float sub(Float ay, int thisprec, Float result)
   {
-    return sub(ay,thisprec,RoundingMode.Down,result);
+    return sub(ay,thisprec,Up,result);
   }
     
   public Float sub(Float ay, int thisprec, RoundingMode round, Float result)
@@ -296,11 +297,11 @@ import static arb.arblib.*;
   
   public Float mul(int ay, int thisprec, Float result)
   {
-    arf_mul_ui(result, this, ay, thisprec, ARF_RND_DOWN);
+    arf_mul_ui(result, this, ay, thisprec, Up.ordinal() );
     return result;    
   }
 
-  public Float div(int i, RoundingMode round, int thisprec, Float res)
+  public Float div(int i, int thisprec, RoundingMode round, Float res)
   {
    	arf_div_ui(res, this, i, thisprec, round.ordinal());
     return res;    
@@ -308,12 +309,12 @@ import static arb.arblib.*;
   
   public Float div(int i, int thisprec, Float res)
   {
-    return div(i, RoundingMode.Down, thisprec, res);
+    return div(i, thisprec, Up, res);
   }
 
   public double doubleValue()
   {
-    return doubleValue( RoundingMode.Down );
+    return doubleValue( Up );
   }
  
   /**
