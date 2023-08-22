@@ -10,7 +10,6 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.Map.Entry;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
@@ -425,15 +424,22 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return "l" + intermediateVariableCount++;
   }
 
-  private void injectVariableReferences() throws NoSuchFieldException, IllegalAccessException
+  public void injectVariableReferences() throws NoSuchFieldException, IllegalAccessException
   {
-    if (variables != null)
+    if (referencedVariables != null)
     {
-      for (Entry<String, Variable<D, R, F>> entry : referencedVariables.entrySet())
+      referencedVariables.entrySet().forEach(entry ->
       {
-        java.lang.reflect.Field field = compiledClass.getField(entry.getKey());
-        field.set(instance, variables.get(entry.getKey()));
-      }
+        try
+        {
+          compiledClass.getField(entry.getKey()).set(instance, variables.get(entry.getKey()));
+        }
+        catch (Exception e)
+        {
+          throw new RuntimeException(e.getMessage(),
+                                     e);
+        }
+      });
     }
   }
 
@@ -837,7 +843,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public static RealFunction express(String className, String expression, Variables<Real> variables)
   {
-    return instantiate(className+System.nanoTime(), expression, variables, Real.class, Real.class, RealFunction.class, false);
+    return instantiate(className
+                  + System.nanoTime(), expression, variables, Real.class, Real.class, RealFunction.class, false);
   }
 
   public static RealFunction express(String expression, Variables<Real> variables)
