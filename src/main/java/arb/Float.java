@@ -77,6 +77,8 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
    System.loadLibrary( "arblib" );
  }
  
+  public static RoundingMode defaultRoundingMode = RoundingMode.Down;
+  
   public static Float valueOf(String string, int bits)
   {
     try ( var x = new Real(string,
@@ -140,7 +142,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   @Override
   public Float div(Float j, int prec, Float result)
   {
-    arf_div(result, this, j, prec, RoundingMode.Up.ordinal());
+    arf_div(result, this, j, prec, defaultRoundingMode.ordinal());
     return this;
   }
  
@@ -303,7 +305,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   @Override
   public Float add(Float ay, int precision, Float result)
   {
-    arf_add(result, this, ay, precision, Up.ordinal() );
+    arf_add(result, this, ay, precision, defaultRoundingMode.ordinal() );
     return result;    
   }
     
@@ -321,7 +323,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   @Override
   public Float sub(Float ay, int thisprec, Float result)
   {
-    return sub(ay,thisprec,Up,result);
+    return sub(ay,thisprec,defaultRoundingMode,result);
   }
     
   public Float sub(Float ay, int thisprec, RoundingMode round, Float result)
@@ -332,7 +334,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   
   public Float mul(int ay, int thisprec, Float result)
   {
-    arf_mul_ui(result, this, ay, thisprec, Up.ordinal() );
+    arf_mul_ui(result, this, ay, thisprec, defaultRoundingMode.ordinal() );
     return result;    
   }
 
@@ -344,12 +346,12 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   
   public Float div(int i, int thisprec, Float res)
   {
-    return div(i, thisprec, Up, res);
+    return div(i, thisprec, defaultRoundingMode, res);
   }
 
   public double doubleValue()
   {
-    return doubleValue( Up );
+    return doubleValue( defaultRoundingMode );
   }
  
   /**
