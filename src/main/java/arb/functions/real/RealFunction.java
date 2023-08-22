@@ -16,11 +16,11 @@ import arb.utensils.Utensils;
 
 /**
  * The RealFunction interface, a part of the arb.functions.real package, is
- * designed for working with real-valued functions. It offers functionality for
- * performing root-related operations, such as root refinement, evaluating
- * convergence factors, and locating roots within intervals. The interface
- * extends {@link Function}<Real, Real> and includes default implementations for
- * various techniques, including Newton's method.
+ * designed for working with {@link Real}-valued functions. It offers
+ * functionality for performing root-related operations, such as root
+ * refinement, evaluating convergence factors, and locating roots within
+ * intervals. The interface extends {@link Function}<Real, Real> and includes
+ * default implementations for various techniques, including Newton's method.
  */
 public interface RealFunction extends
                               Function<Real, Real>,
@@ -29,16 +29,18 @@ public interface RealFunction extends
 {
 
   /**
-   * double wrapper for this{@link #evaluate(Real, int, int, Real)}
+   * double wrapper for this{@link #evaluate(Real, int, int, Real)} which is
+   * called with {@link Double#PRECISION} bits
    * 
    * @param t
-   * @return
+   * @return the {@link Real#doubleValue()} applied to the result of the
+   *         this{@link #evaluate(Real, int, int, Real)} method call
    */
   public default double eval(double t)
   {
     try ( var x = Real.valueOf(t);)
     {
-      return evaluate(x, 1, 128, x).doubleValue();
+      return evaluate(x, 1, Double.PRECISION, x).doubleValue();
     }
   }
 
@@ -331,7 +333,7 @@ public interface RealFunction extends
     {
       IntegrationOptions opts = new IntegrationOptions();
       opts.verbose = true;
-      return integrate(l, r, 64, acceptableUncertainty, opts,128, result).doubleValue(RoundingMode.Up);
+      return integrate(l, r, 64, acceptableUncertainty, opts, 128, result).doubleValue(RoundingMode.Up);
     }
   }
 
