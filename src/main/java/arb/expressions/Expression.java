@@ -837,7 +837,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public static RealFunction express(String className, String expression, Variables<Real> variables)
   {
-    return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, false);
+    return instantiate(className+System.nanoTime(), expression, variables, Real.class, Real.class, RealFunction.class, false);
   }
 
   public static RealFunction express(String expression, Variables<Real> variables)
