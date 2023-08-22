@@ -20,7 +20,6 @@ import arb.Real;
 import arb.expressions.nodes.*;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
-import arb.functions.real.BesselFunctionOfTheFirstKind;
 import arb.functions.real.RealFunction;
 
 public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
@@ -101,30 +100,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     this.rangeClassInternalName    = Type.getInternalName(rangeClass);
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
-    this.expression                = replaceSubscripts(expression);
+    this.expression                = Compiler.replaceSubscripts(expression);
     this.variables                 = nameSpace;
-  }
-
-  /**
-   * Replaces UTF subscripts ₀-₉ with 0-9, so that J₀ can be parsed as a
-   * {@link BesselFunctionOfTheFirstKind} and other similar expressions likewise
-   * 
-   * @param expression
-   * 
-   * @return expression with 0-9 substituted in place of ₀-₉
-   */
-  private String replaceSubscripts(String expression)
-  {
-    return expression.replace('₀', '0')
-                     .replace('₁', '1')
-                     .replace('₂', '2')
-                     .replace('₃', '3')
-                     .replace('₄', '4')
-                     .replace('₅', '5')
-                     .replace('₆', '6')
-                     .replace('₇', '7')
-                     .replace('₈', '8')
-                     .replace('₉', '9');
   }
 
   /**

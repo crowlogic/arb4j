@@ -14,6 +14,7 @@ import arb.Real;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
+import arb.functions.real.BesselFunctionOfTheFirstKind;
 import arb.functions.real.RealFunction;
 
 public class Compiler
@@ -481,6 +482,28 @@ public class Compiler
     }
 
     return expression.callUnaryFunction(expression.checkClassCast(mv, false), functionName);
+  }
+
+  /**
+   * Replaces UTF subscripts ₀-₉ with 0-9, so that J₀ can be parsed as a
+   * {@link BesselFunctionOfTheFirstKind} and other similar expressions likewise
+   * 
+   * @param expression
+   * 
+   * @return expression with 0-9 substituted in place of ₀-₉
+   */
+  public static String replaceSubscripts(String expression)
+  {
+    return expression.replace('₀', '0')
+                     .replace('₁', '1')
+                     .replace('₂', '2')
+                     .replace('₃', '3')
+                     .replace('₄', '4')
+                     .replace('₅', '5')
+                     .replace('₆', '6')
+                     .replace('₇', '7')
+                     .replace('₈', '8')
+                     .replace('₉', '9');
   }
 
 }

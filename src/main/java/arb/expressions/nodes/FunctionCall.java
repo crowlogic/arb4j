@@ -8,6 +8,7 @@ import java.util.Map;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Field;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
@@ -20,16 +21,16 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     return "FunctionCall[name=" + name + ", arg=" + node + ", isLast=" + isLast + "]";
   }
 
-  public interface Generator
+  public interface CodeGenerationHandler
   {
-    void generate(MethodVisitor mv, Node<?, ?, ?> node);
+    MethodVisitor generate(MethodVisitor mv, Node<?, ?, ?> node);
   }
 
-  private final String                       name;
+  private final String                                   name;
 
-  public static final Map<String, Generator> functionHandlers         = new HashMap<>();
+  public static final Map<String, CodeGenerationHandler> functionHandlers         = new HashMap<>();
 
-  public static final Map<String, Generator> lastCallFunctionHandlers = new HashMap<>();
+  public static final Map<String, CodeGenerationHandler> lastCallFunctionHandlers = new HashMap<>();
 
   static
   {
@@ -71,12 +72,19 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
 
   }
 
-  private static void registerFunctionHandler(String string, String... aliases)
+  private static void registerFunctionHandler(String functionName, String... aliases)
   {
-    registerFunctionHandler(string, true, aliases);
-    registerFunctionHandler(string, false, aliases);
+    registerFunctionHandler(functionName, true, aliases);
+    registerFunctionHandler(functionName, false, aliases);
   }
 
+  /**
+   * Registers a function along with its aliases
+   * 
+   * @param functionName
+   * @param lastCall     if true then this function invocation
+   * @param aliases
+   */
   private static void registerFunctionHandler(String functionName, boolean lastCall, String... aliases)
   {
     registerFunctionHandler(functionName, null, lastCall);
@@ -86,31 +94,48 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     }
   }
 
-  public FunctionCall(Expression<D, R, F> parser, String functionName, Node<D, R, F> argument)
+  public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
   {
     super(argument,
-          parser);
-    this.name = functionName.replace('₀', '0');
+          expression);
+    this.name = Compiler.replaceSubscripts(functionName);
     assert argument != null;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor methodVisitor)
   {
-    Generator handler = (isLast ? lastCallFunctionHandlers : functionHandlers).get(name);
+    CodeGenerationHandler handler = (isLast ? lastCallFunctionHandlers : functionHandlers).get(name);
     if (handler == null)
     {
       throw new RuntimeException("No handler for function '" + name + "'");
     }
-    handler.generate(methodVisitor, node);
-    return methodVisitor;
+    return handler.generate(methodVisitor, node);
   }
 
-  public static Generator registerFunctionHandler(String functionName, String alias, boolean lastCall)
+  /**
+   * Registers a {@link CodeGenerationHandler} that calls the function
+   * 
+   * @param functionName
+   * @param alias        if not null then the its handler its registered rather
+   *                     than the functionName itself, in that case the
+   *                     functionName is only used in the handler and not as part
+   *                     of the key to be put into
+   *                     this{@link #lastCallFunctionHandlers} or
+   *                     this{@link #functionHandlers}
+   * 
+   * @param lastCall     if true then the handler assigns its output to the result
+   *                     variable, otherwise it assigns it to an intermediate
+   *                     variable which could possibly be the result if its
+   *                     available to be used as such via
+   *                     {@link Expression#resultInUse}
+   * @return
+   */
+  public static CodeGenerationHandler registerFunctionHandler(String functionName, String alias, boolean lastCall)
   {
-    Generator handler = (mv, node) ->
+    CodeGenerationHandler handler = (mv, node) ->
     {
-      callFunction(mv, functionName, node, lastCall);
+      return callFunction(mv, functionName, node, lastCall);
     };
 
     (lastCall ? lastCallFunctionHandlers : functionHandlers).put(alias != null ? alias : functionName, handler);
