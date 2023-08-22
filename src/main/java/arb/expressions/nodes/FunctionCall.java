@@ -55,7 +55,8 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
                              "variance",
                              "standardDeviation",
                              "Γ",
-                             "lnΓ");
+                             "lnΓ",
+                             "tan");
   }
 
   private static void registerFunctionHandlers(String... functions)
