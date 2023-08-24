@@ -54,8 +54,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   {
     super.close();
     σσi.close();
-    xiSquared.close();
-    milsteinCorrection.close();
+    xiSquaredMinusDt.close();
 
   }
 
@@ -66,8 +65,11 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
   // Calculate the Milstein correction term
   Real    milsteinCorrection = Real.newVector(2); // Instantiate a new Real object to
 
-  Real    xiSquared          = new Real();
+  Real    xiSquaredMinusDt          = new Real();
 
+  /**
+   * dXt​=μ(Xt​)dt+σ(Xt​)dWt​+((​σ(Xt​)σ′(Xt​))/2)(dWt²​−dt)
+   */
   @Override
   protected boolean step(D state, int prec, EvaluationSequence evaluationSequence, int σorder)
   {
@@ -82,7 +84,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     μi.mul(state.dt(), prec);
 
     String stateBefore = state.toString();
-    diffusionProcess.σ().evaluate(state, σorder, prec, σi).setRad(MagnitudeConstants.zeroMag);
+    diffusionProcess.σ().evaluate(state, 2, prec, σi).setRad(MagnitudeConstants.zeroMag);
 
     assert !σi.isNegative() && σi.isFinite() : "X.σ is not finite and nonnegative. σi=" + σi + " state=" + state
                   + " stateBefore=" + stateBefore;
@@ -92,14 +94,10 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
       System.out.println("i=" + "\n xi=" + ξ + "\n μi=" + μi + "\n σi=" + σi);
     }
 
-    xiSquared.set(ξ).mul(ξ, prec).sub(state.dt(), prec);
+    xiSquaredMinusDt.set(ξ).pow(2, prec).sub(state.dt(), prec);
+    σi.mul(ξ, prec).mul(σi.get(1), prec).div(2, prec).mul(xiSquaredMinusDt, prec);
+    σi.mul(ξ, prec);
 
-    σi.mul(ξ, prec).div(2, prec).mul(xiSquared, prec);
-
-    if (σorder >= 0)
-    {
-      μi.add(σi, prec, ξ);
-    }
 
     return true; // return false if variance went negative
   }
