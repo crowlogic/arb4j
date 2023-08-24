@@ -253,10 +253,10 @@ public class ExpressionTest extends
       assertEquals(0.6931471805599453, evaluatedX.doubleValue());
 
       evaluatedX = expression.evaluate(new Real("0.5",
-                                               128),
-                                      1,
-                                      256,
-                                      result);
+                                                128),
+                                       1,
+                                       256,
+                                       result);
       assert result == evaluatedX;
       assertEquals(0.22314355131420976, evaluatedX.doubleValue(RoundingMode.Up));
     }
@@ -282,18 +282,18 @@ public class ExpressionTest extends
       assertEquals(2.0, evaluatedX.doubleValue());
 
       evaluatedX = expression.evaluate(new Real("2",
-                                               128),
-                                      1,
-                                      256,
-                                      result);
+                                                128),
+                                       1,
+                                       256,
+                                       result);
       assert result == evaluatedX;
       assertEquals(5.0, evaluatedX.doubleValue());
 
       evaluatedX = expression.evaluate(new Real("0.5",
-                                               128),
-                                      1,
-                                      256,
-                                      result);
+                                                128),
+                                       1,
+                                       256,
+                                       result);
       assert result == evaluatedX;
       assertEquals(1.25, evaluatedX.doubleValue(RoundingMode.Up));
     }
@@ -302,7 +302,7 @@ public class ExpressionTest extends
   public void testOnePlusInputOver2PlusZero()
   {
     try ( RealFunction expression = express("1+i/2+0", variables); Real x = new Real("2",
-                                                                             128);)
+                                                                                     128);)
     {
 
       Real evaluatedX = expression.evaluate(x, 1, 256, x);
@@ -438,9 +438,8 @@ public class ExpressionTest extends
   public void testYabaDabaDo()
   {
     try ( RealFunction expression = express("YabaDabaDo",
-                                   "((r^(1-α)-1)*r^((α-1)*(1+n/2)))/(Γ(α)*Γ(2-α))*r^((1-α)*i)",
-                                   variables,
-                                   true);
+                                            "((r^(1-α)-1)*r^((α-1)*(1+n/2)))/(Γ(α)*Γ(2-α))*r^((1-α)*i)",
+                                            variables);
           Real c0 = expression.evaluate(zero, 1, 128, new Real()))
     {
       assertEquals(0.018045813351600336, c0.doubleValue());
