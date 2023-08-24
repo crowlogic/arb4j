@@ -33,8 +33,7 @@ public abstract class MultivariateDiffusionProcessState extends
 
   public MultivariateDiffusionProcessState(RandomState randomState)
   {
-    super(
-          randomState);
+    super(randomState);
   }
 
   @Override

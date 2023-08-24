@@ -56,11 +56,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
 
   protected int dim;
 
-  public EulerIntegrator(P x,
-                         D diffusionProcessState)
+  public EulerIntegrator(P x, D diffusionProcessState)
   {
-    super(
-          x);
+    super(x);
     state    = diffusionProcessState;
     μ        = diffusionProcess.μ();
     σ        = diffusionProcess.σ();
@@ -74,12 +72,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
    * @param dim                   the dimension index of this process in the
    *                              {@link MultivariateDiffusionProcessIntegrator}
    */
-  public EulerIntegrator(P x,
-                         D diffusionProcessState,
-                         int dim)
+  public EulerIntegrator(P x, D diffusionProcessState, int dim)
   {
-    super(
-          x);
+    super(x);
     state    = diffusionProcessState;
     μ        = diffusionProcess.μ();
     σ        = diffusionProcess.σ();
@@ -95,13 +90,9 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
    * @param nonnegative           if true then an exception will be thrown if the
    *                              processes value tries to go below 0
    */
-  public EulerIntegrator(P x,
-                         D diffusionProcessState,
-                         int dim,
-                         boolean nonnegative)
+  public EulerIntegrator(P x, D diffusionProcessState, int dim, boolean nonnegative)
   {
-    super(
-          x);
+    super(x);
     state            = diffusionProcessState;
     μ                = diffusionProcess.μ();
     σ                = diffusionProcess.σ();
@@ -110,6 +101,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
   }
 
   DriftCoeffecientFunction<D>     μ;
+
   DiffusionCoeffecientFunction<D> σ;
 
   @Override
@@ -133,8 +125,7 @@ public class EulerIntegrator<P extends DiffusionProcess<D>, D extends DiffusionP
     state.setTime(interval.getA());
     for (Real t : partition)
     {
-      state.setTime(t);
-      state.lock();
+      state.setTime(t).lock();
       step(state, prec, evaluationSequence);
       state.unlock();
       assert jump((DiffusionProcessState) state,

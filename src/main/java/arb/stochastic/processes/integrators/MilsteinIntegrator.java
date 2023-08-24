@@ -35,13 +35,9 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
                                Verifiable
 {
 
-  public MilsteinIntegrator(P x,
-                            D diffusionProcessState,
-                            int dim,
-                            boolean nonnegative)
+  public MilsteinIntegrator(P x, D diffusionProcessState, int dim, boolean nonnegative)
   {
-    super(
-          x,
+    super(x,
           diffusionProcessState,
           dim,
           nonnegative);
@@ -114,22 +110,17 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
     return true; // return false if variance went negative
   }
 
-  public MilsteinIntegrator(P x,
-                            D state)
+  public MilsteinIntegrator(P x, D state)
   {
-    super(
-          x,
+    super(x,
           state);
     assert !μ.dependsOnAbsoluteTime()
                   && !σ.dependsOnAbsoluteTime() : "the Milstein method does not work for coeffecients that depend directly on the value of t";
   }
 
-  public MilsteinIntegrator(P p,
-                            D d,
-                            int i)
+  public MilsteinIntegrator(P p, D d, int i)
   {
-    super(
-          p,
+    super(p,
           d,
           i);
     assert !μ.dependsOnAbsoluteTime()
