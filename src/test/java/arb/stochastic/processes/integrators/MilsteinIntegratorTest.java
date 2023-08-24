@@ -11,9 +11,10 @@ public class MilsteinIntegratorTest extends
                                     TestCase
 {
 
-  private static final Float dt        = new Float(0.01);
-  private static final int   precision = 10;
-  private static final int   steps     = 100;
+  final double             dt        = 1e-4;
+
+  private static final int precision = 128;
+  private static final int steps     = 10000;
 
   public void testIntegration()
   {
@@ -25,17 +26,16 @@ public class MilsteinIntegratorTest extends
                                                                                                                                    state))
     {
       // Perform the integration
-      EvaluationSequence result        = integrator.integrate(new FloatInterval(0,
-                                                                                steps * dt.doubleValue()),
-                                                              steps,
-                                                              precision);
+      EvaluationSequence result     = integrator.integrate(new FloatInterval(0,
+                                                                             10),
+                                                           steps,
+                                                           precision);
 
       // Check the result
       // In this simple example, we expect the value after 'steps' steps to be close
       // to the initial value
-      Real               expectedValue = state.value();
-      Real               finalValue    = result.dimensions[0].get(steps - 1);
-      assertTrue(expectedValue.sub(finalValue, precision).abs().compareTo(new Real(0.1)) < 0);
+      Real               finalValue = result.dimensions[0].get(steps - 1);
+      assertTrue(finalValue.toString(), Math.abs(finalValue.doubleValue()) < 0.01);
     }
   }
 
@@ -97,8 +97,7 @@ public class MilsteinIntegratorTest extends
 
     public SimpleDiffusionProcessState(RandomState s)
     {
-      super(
-            s);
+      super(s);
       value = new Real();
     }
 

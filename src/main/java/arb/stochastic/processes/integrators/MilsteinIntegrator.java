@@ -94,7 +94,7 @@ public class MilsteinIntegrator<P extends DiffusionProcess<D>, D extends Diffusi
 
     xiSquared.set(ξ).mul(ξ, prec).sub(state.dt(), prec);
 
-    σi.mul(ξ, prec).div(2, prec).mul(xiSquared, prec).mul(ξ, prec);
+    σi.mul(ξ, prec).div(2, prec).mul(xiSquared, prec);
 
     if (σorder >= 0)
     {
