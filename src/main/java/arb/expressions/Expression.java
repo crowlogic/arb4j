@@ -920,7 +920,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param mv
    * @return
    */
-  public String loadExistingOrLocateNewIntermediateOutputVariable(MethodVisitor mv)
+  public String locateExistingOrInstantiateNewIntermediateOutputVariable(MethodVisitor mv)
   {
     if (!resultInUse)
     {

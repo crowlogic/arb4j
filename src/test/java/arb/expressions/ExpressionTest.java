@@ -435,7 +435,7 @@ public class ExpressionTest extends
     }
   }
 
-  public void testLiftedC()
+  public void testYabaDabaDo()
   {
     try ( RealFunction expression = express("YabaDabaDo",
                                    "((r^(1-α)-1)*r^((α-1)*(1+n/2)))/(Γ(α)*Γ(2-α))*r^((1-α)*i)",
