@@ -1388,6 +1388,18 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return r;
   }  
   
+  /**
+   * Sets this real number to its reciprocal, also known as its multiplicative
+   * inverse
+   * 
+   * @param prec
+   * @return 1/this
+   */
+  public Real recip(int prec, Real result)
+  {
+    return RealConstants.one.div(this, prec, result);
+  }
+    
   public Real pow(int i, int prec, Real r)
   {
     arblib.arb_pow_si(r, this, i, prec);

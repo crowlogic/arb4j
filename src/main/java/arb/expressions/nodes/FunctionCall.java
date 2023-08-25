@@ -57,7 +57,8 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
                              "standardDeviation",
                              "Γ",
                              "lnΓ",
-                             "tan");
+                             "tan",
+                             "recip");
   }
 
   private static void registerFunctionHandlers(String... functions)
@@ -72,6 +73,16 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
 
   }
 
+  /**
+   * Registers both the last-expression and non-last-expression handlers for a
+   * function.
+   * 
+   * TODO: When an expression is the last element its treated a little
+   * differently, but is that really necessary now?
+   * 
+   * @param functionName
+   * @param aliases
+   */
   private static void registerFunctionHandler(String functionName, String... aliases)
   {
     registerFunctionHandler(functionName, true, aliases);
@@ -98,8 +109,8 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
   {
     super(argument,
           expression);
-    this.name = Compiler.replaceSubscripts(functionName);
     assert argument != null;
+    this.name = Compiler.replaceSubscripts(functionName);
   }
 
   @Override
@@ -133,10 +144,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
    */
   public static CodeGenerationHandler registerFunctionHandler(String functionName, String alias, boolean lastCall)
   {
-    CodeGenerationHandler handler = (mv, node) ->
-    {
-      return callFunction(mv, functionName, node, lastCall);
-    };
+    CodeGenerationHandler handler = (mv, node) -> callFunction(mv, functionName, node, lastCall);
 
     (lastCall ? lastCallFunctionHandlers : functionHandlers).put(alias != null ? alias : functionName, handler);
 
