@@ -1384,8 +1384,9 @@ import arb.stochastic.ProbabilityDistributionFunction;
    */
   public Real sec(int prec, Real r)
   {
-    return cos(prec, r).inv(prec, r);
-  }
+    arblib.arb_sec(r, this, prec);
+    return r;
+  }  
   
   public Real pow(int i, int prec, Real r)
   {

@@ -9,6 +9,26 @@
 package arb;
 
 public class arblib {
+  public static void arb_sec(Real res, Real x, int prec) {
+    arblibJNI.arb_sec(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_csc(Real res, Real x, int prec) {
+    arblibJNI.arb_csc(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_csc_pi(Real res, Real x, int prec) {
+    arblibJNI.arb_csc_pi(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_sech(Real res, Real x, int prec) {
+    arblibJNI.arb_sech(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_csch(Real res, Real x, int prec) {
+    arblibJNI.arb_csch(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
+  }
+
   public static void acb_dft_convol(Complex w, Complex f, Complex g, int len, int prec) {
     arblibJNI.acb_dft_convol(Complex.getCPtr(w), w, Complex.getCPtr(f), f, Complex.getCPtr(g), g, len, prec);
   }
@@ -582,10 +602,6 @@ public class arblib {
 
   public static void acb_elliptic_f(Complex res, Complex phi, Complex m, int times_pi, int prec) {
     arblibJNI.acb_elliptic_f(Complex.getCPtr(res), res, Complex.getCPtr(phi), phi, Complex.getCPtr(m), m, times_pi, prec);
-  }
-
-  public static void arb_sech(Real res, Real x, int prec) {
-    arblibJNI.arb_sech(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
   }
 
   public static void acb_sech(Complex numRows, Complex z, int prec) {
