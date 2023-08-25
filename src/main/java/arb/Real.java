@@ -1117,6 +1117,9 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     return this;
   }
   
+  /**
+   * Return this field to the cycloid of non-existence from which it came by calling this{@link #clear()}
+   */
   @Override
   public void close() 
   { 
