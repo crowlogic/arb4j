@@ -3,6 +3,10 @@ package arb.functions.real;
 import arb.Real;
 import arb.arblib;
 
+/**
+ * todo: add some sort of root enumeration interface that this implements
+ * 
+ */
 public class BesselFunctionOfTheFirstKind implements
                                           RealFunction
 {

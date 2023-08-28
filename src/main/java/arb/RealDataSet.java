@@ -12,6 +12,8 @@ public class RealDataSet extends
                          AutoCloseable,
                          Closeable
 {
+  private static final long serialVersionUID = 1L;
+
   public RealDataSet(String name,
                      int length)
   {
