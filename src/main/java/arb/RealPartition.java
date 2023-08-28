@@ -12,6 +12,8 @@ public class RealPartition implements
                            Partition<Real>,
                            Serializable
 {
+  private static final long serialVersionUID = 1L;
+
   @Override
   public String toString()
   {

@@ -5,6 +5,7 @@ import static java.lang.String.format;
 import static java.lang.System.out;
 
 import java.io.Closeable;
+import java.util.stream.IntStream;
 
 import arb.*;
 import arb.Float;
@@ -27,6 +28,43 @@ public interface RealFunction extends
                               AutoCloseable,
                               Closeable
 {
+
+  /**
+   * Generate a {@link RealPartition} covering the specified interval and call
+   * this{@link #evaluate(Real, int, int, Real)} at each of the n points of the
+   * partition
+   * 
+   * @param interval
+   * @param bits
+   * @param n
+   * @return a {@link Real} of length n allocated with
+   *         {@link Real#newAlignedVector(int)} containing the sampled mesh points
+   */
+  public default Real sample(FloatInterval interval, int bits, int n)
+  {
+    return sample(interval, bits, n, Real.newAlignedVector(n));
+  }
+
+  /**
+   * Generate a {@link RealPartition} covering the specified interval and call
+   * this{@link #evaluate(Real, int, int, Real)} at each of the n points of the
+   * partition
+   * 
+   * @param interval
+   * @param bits
+   * @param n
+   * @param values
+   * @return values
+   */
+  public default Real sample(FloatInterval interval, int bits, int n, Real values)
+  {
+    try ( RealPartition mesh = interval.generateRealPartition(bits, false, Real.newAlignedVector(n)))
+    {
+      IntStream.range(0, n).parallel().forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
+
+      return values;
+    }
+  }
 
   /**
    * double wrapper for this{@link #evaluate(Real, int, int, Real)} which is
