@@ -5,13 +5,12 @@
 %typemap(javaimports) arb_struct %{
 import static arb.IntegerConstants.*;
 import static arb.arblib.*;
-
+import static arb.RealConstants.*;
 import java.io.Serializable;
 import java.lang.foreign.MemorySegment;
 import java.util.*;
 import java.util.function.IntFunction;
 import java.util.stream.*;
-
 import arb.domains.Domain;
 import arb.groups.CommutativeGroup;
 import arb.stochastic.ProbabilityDistributionFunction;
@@ -208,7 +207,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
    */
   public Real J0(int bits, Real result)
   {
-    return BesselJ(RealConstants.zero, bits, result);
+    return BesselJ(zero, bits, result);
   }
     
   /**
@@ -291,7 +290,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
   @Override
   public Real identity()
   {
-   return RealConstants.zero;
+    return zero;
   }  
 
   @Override
@@ -1393,11 +1392,11 @@ import arb.stochastic.ProbabilityDistributionFunction;
    * inverse
    * 
    * @param prec
-   * @return 1/this
+   * @return this=1/this
    */
-  public Real recip(int prec, Real result)
+  public Real recip(int prec)
   {
-    return RealConstants.one.div(this, prec, result);
+    return inv(prec, this);
   }
     
   public Real pow(int i, int prec, Real r)
@@ -1411,11 +1410,12 @@ import arb.stochastic.ProbabilityDistributionFunction;
    * inverse
    * 
    * @param prec
-   * @return 1/this
+   * @param result
+   * @return result=1/this
    */
-  public Real recip(int prec)
+  public Real recip(int prec, Real result)
   {
-    return RealConstants.one.div(this, prec,this);
+    return inv(prec,result);
   }
     
   public Real tan(int prec, Real r)

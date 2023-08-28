@@ -10,13 +10,12 @@ package arb;
 
 import static arb.IntegerConstants.*;
 import static arb.arblib.*;
-
+import static arb.RealConstants.*;
 import java.io.Serializable;
 import java.lang.foreign.MemorySegment;
 import java.util.*;
 import java.util.function.IntFunction;
 import java.util.stream.*;
-
 import arb.domains.Domain;
 import arb.groups.CommutativeGroup;
 import arb.stochastic.ProbabilityDistributionFunction;
@@ -153,7 +152,7 @@ public class Real implements
                   Comparable<Real>,
                   Iterable<Real>,
                   Field<Real>,
-                  Lockable,
+                  Lockable<Real>,
                   IntFunction<Real>
 {
   private transient long      swigCPtr;
@@ -265,7 +264,7 @@ public class Real implements
    */
   public Real J0(int bits, Real result)
   {
-    return BesselJ(RealConstants.zero, bits, result);
+    return BesselJ(zero, bits, result);
   }
 
   /**
@@ -348,7 +347,7 @@ public class Real implements
   @Override
   public Real identity()
   {
-    return RealConstants.zero;
+    return zero;
   }
 
   @Override
@@ -1441,6 +1440,18 @@ public class Real implements
     return r;
   }
 
+  /**
+   * Sets this real number to its reciprocal, also known as its multiplicative
+   * inverse
+   * 
+   * @param prec
+   * @return this=1/this
+   */
+  public Real recip(int prec)
+  {
+    return inv(prec, this);
+  }
+
   public Real pow(int i, int prec, Real r)
   {
     arblib.arb_pow_si(r, this, i, prec);
@@ -1452,23 +1463,12 @@ public class Real implements
    * inverse
    * 
    * @param prec
-   * @return 1/this
-   */
-  public Real recip(int prec)
-  {
-    return RealConstants.one.div(this, prec, this);
-  }
-
-  /**
-   * Sets this real number to its reciprocal, also known as its multiplicative
-   * inverse
-   * 
-   * @param prec
-   * @return 1/this
+   * @param result
+   * @return result=1/this
    */
   public Real recip(int prec, Real result)
   {
-    return RealConstants.one.div(this, prec, result);
+    return inv(prec, result);
   }
 
   public Real tan(int prec, Real r)

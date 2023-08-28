@@ -1,11 +1,11 @@
 package arb;
 
-public interface Lockable
+public interface Lockable<L>
 {
 
-  <L> L lock();
+  L lock();
 
-  <L> L unlock();
+  L unlock();
 
   boolean locked();
 
