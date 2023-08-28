@@ -1,5 +1,4 @@
-import static arb.utensils.ShellCommands.plot;
-import static arb.utensils.ShellCommands.eval;
+import static arb.utensils.ShellFunctions.plot;
 import static arb.expressions.Expression.express;
 import static arb.RoundingMode.*;
 import static arb.RealConstants.*;
@@ -10,6 +9,7 @@ import arb.Magnitude;
 import arb.Real;
 import arb.Complex;
 import arb.Float;
+import arb.FloatInterval;
 import arb.functions.real.RealFunction;
 import arb.functions.complex.numbertheoretic.ZFunction;
 import arb.IntegrationOptions;

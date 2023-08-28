@@ -7,7 +7,7 @@ import arb.viz.FunctionPlotter;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-public class ShellCommands
+public class ShellFunctions
 {
 
   public static Real eval(RealFunction func, double x)

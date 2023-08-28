@@ -7,7 +7,7 @@ import arb.domains.Domain;
 import arb.domains.ExtendedRealLine;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
-import arb.utensils.ShellCommands;
+import arb.utensils.ShellFunctions;
 
 /**
  * Represents the Hermite polynomials, a sequence of orthogonal polynomials. The
@@ -40,7 +40,7 @@ public class HermitePolynomials implements
     try ( HermitePolynomial h1 = new HermitePolynomial(1); HermitePolynomial h2 = new HermitePolynomial(2);
           HermitePolynomial h3 = new HermitePolynomial(3); HermitePolynomial h4 = new HermitePolynomial(4))
     {
-      ShellCommands.plot(-1, 1, h1, h2, h3, h4);
+      ShellFunctions.plot(-1, 1, h1, h2, h3, h4);
 
       Real v = h1.evaluate(RealConstants.one, 1, bits, new Real());
       System.out.println("h1(1)=" + v);

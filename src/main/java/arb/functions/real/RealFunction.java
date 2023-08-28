@@ -30,6 +30,44 @@ public interface RealFunction extends
 {
 
   /**
+   * double-convenience method for this{@link #sample(FloatInterval, int, int)}
+   * 
+   * @param left
+   * @param right
+   * @param bits
+   * @param n
+   * @return
+   */
+  public default Real sample(double left, double right, int bits, int n)
+  {
+    try ( FloatInterval I = new FloatInterval(left,
+                                              right);)
+    {
+      return sample(I, bits, n);
+    }
+  }
+
+  /**
+   * double-convenience method for
+   * this{@link #sample(FloatInterval, int, int, Real)}
+   * 
+   * @param left
+   * @param right
+   * @param bits
+   * @param n
+   * @param result
+   * @return
+   */
+  public default Real sample(double left, double right, int bits, int n, Real result)
+  {
+    try ( FloatInterval I = new FloatInterval(left,
+                                              right);)
+    {
+      return sample(I, bits, n, result);
+    }
+  }
+
+  /**
    * Generate a {@link RealPartition} covering the specified interval and call
    * this{@link #evaluate(Real, int, int, Real)} at each of the n points of the
    * partition
@@ -42,7 +80,7 @@ public interface RealFunction extends
    */
   public default Real sample(FloatInterval interval, int bits, int n)
   {
-    return sample(interval, bits, n, Real.newAlignedVector(n));
+    return sample(interval, bits, n, Real.newVector(n));
   }
 
   /**
@@ -58,7 +96,7 @@ public interface RealFunction extends
    */
   public default Real sample(FloatInterval interval, int bits, int n, Real values)
   {
-    try ( RealPartition mesh = interval.generateRealPartition(bits, false, Real.newAlignedVector(n)))
+    try ( RealPartition mesh = interval.generateRealPartition(bits, false, Real.newVector(n)))
     {
       IntStream.range(0, n).parallel().forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
 

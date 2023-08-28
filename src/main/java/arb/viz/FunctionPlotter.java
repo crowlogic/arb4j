@@ -1,7 +1,7 @@
 package arb.viz;
 
 import arb.functions.real.FunctionSampler;
-import arb.utensils.ShellCommands;
+import arb.utensils.ShellFunctions;
 import de.gsi.chart.XYChart;
 import de.gsi.chart.axes.AxisMode;
 import de.gsi.chart.axes.spi.DefaultNumericAxis;
@@ -26,7 +26,7 @@ public class FunctionPlotter extends
     }
   }
 
-  private Stage              stage;
+  public Stage              stage;
   private StackPane          root;
   private Scene              scene;
   public boolean             darkStyle = true;
@@ -53,11 +53,11 @@ public class FunctionPlotter extends
     {
       set(primaryStage, evt ->
       {
-        if (ShellCommands.stage == primaryStage)
+        if (ShellFunctions.stage == primaryStage)
         {
-          System.out.println("Closing " + ShellCommands.stage);
+          System.out.println("Closing " + ShellFunctions.stage);
           stage               = null;
-          ShellCommands.stage = null;
+          ShellFunctions.stage = null;
         }
       });
     });
