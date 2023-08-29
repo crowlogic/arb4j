@@ -16,10 +16,10 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
 
   public boolean             isLast  = false;
 
-  public Node(Expression<D, R, F> parser)
+  public Node(Expression<D, R, F> expression)
   {
-    this.expression = parser;
-    this.namespace  = parser.variables;
+    this.expression = expression;
+    this.namespace  = expression.variables;
     verbose         = expression.verbose;
   }
 
@@ -50,7 +50,6 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
    * @return true if the node this reusable, false otherwise.
    */
   public abstract boolean isReusable();
-
 
   public abstract MethodVisitor prepareStackForReuse(MethodVisitor mv);
 

@@ -186,7 +186,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @return true if the next non-space character is one of the characters in
    *         charsToEat
    */
-  public boolean eat(int... charsToEat)
+  public boolean eat(char... charsToEat)
   {
     skipSpaces();
     for (int charToEat : charsToEat)
@@ -658,7 +658,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    *         operation, otherwise returns a new {@link RaiseToPower} operator with
    *         node as its parent node
    */
-  Node<D, R, F> eatSuperscript(Node<D, R, F> node, int superscript, String digit)
+  Node<D, R, F> eatSuperscript(Node<D, R, F> node, char superscript, String digit)
   {
     if (eat(superscript))
     {
@@ -912,10 +912,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * DESIGN: this should return an object that when combined with something lets
-   * the object know its result or intermediate variable has been consumed and is
-   * therefore available to be reused thus obviating the need to allocate another
-   * field element
+   * DESIGN: only need a new intermediate variable for each level of depth, so
+   * first item is to add depth to {@link Node}
    * 
    * @param mv
    * @return
