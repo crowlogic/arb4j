@@ -182,11 +182,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Calls this{@link #skipSpaces()} and checks if the current this{@link #ch} is
    * equal to one of the charsToEat
    * 
+   * @param depth      TODO
    * @param charsToEat
+   * 
    * @return true if the next non-space character is one of the characters in
    *         charsToEat
    */
-  public boolean eat(char... charsToEat)
+  public boolean eat(int depth, char... charsToEat)
   {
     skipSpaces();
     for (int charToEat : charsToEat)
@@ -408,7 +410,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   public Node<D, R, F> eatRootNode()
   {
     nextChar();
-    rootNode = eatFirst();
+    rootNode = eatFirst(0);
     assert rootNode != null : "eatRootNode: eatFirst() returned null, expression='" + expression + "'";
     rootNode.isLast = true;
     return rootNode;
@@ -453,15 +455,17 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * Consumes characters, calling this{@link #eatFirst()} to process paranthesis
-   * and calling this{@link #eatNumber(int)} if this{@link #ch} indicates a number
-   * a the current position or
-   * this{@link #eatFunctionInvocationOrVariableReference(int)} if this{@link #ch}
-   * indicates the name of either a function or variable reference
+   * Consumes characters, calling this{@link #eatFirst(int)} to process
+   * paranthesis and calling this{@link #eatNumber(int)} if this{@link #ch}
+   * indicates a number a the current position or
+   * this{@link #eatFunctionInvocationOrVariableReference(int, int)} if
+   * this{@link #ch} indicates the name of either a function or variable reference
+   * 
+   * @param depth TODO
    * 
    * @return the next node in the syntax tree
    */
-  private Node<D, R, F> eat()
+  private Node<D, R, F> eat(int depth)
   {
     if (verbose)
     {
@@ -472,10 +476,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     int           startPos = this.position;
 
-    if (eat('('))
+    if (eat(depth + 1, '('))
     {
-      node = eatFirst();
-      if (!eat(')'))
+      node = eatFirst(depth + 1);
+      if (!eat(depth + 1, ')'))
       {
         assert false : String.format("expected closing paranthesis at: startPos=%s, position=%s, node=%s\n",
                                      startPos,
@@ -490,7 +494,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
     else if (isLatinOrGreek(ch, false))
     {
-      node = eatFunctionInvocationOrVariableReference(startPos);
+      node = eatFunctionInvocationOrVariableReference(depth + 1, startPos);
       assert node != null : "eatFunctionInvocationOrVariableReference returned null";
     }
 
@@ -505,33 +509,35 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * Loop which instantiates {@link Add} and {@link Subtract} nodes
    * 
+   * @param depth TODO
+   * 
    * @return new {@link Add} or {@link Subtract} node or result from
-   *         this{@link #eatSecond()}
+   *         this{@link #eatSecond(int)}
    */
-  public Node<D, R, F> eatFirst()
+  public Node<D, R, F> eatFirst(int depth)
   {
     if (verbose)
     {
       System.err.format("eatFirst: ch=%c position=%d\n", ch, this.position);
     }
 
-    Node<D, R, F> node = eatSecond();
+    Node<D, R, F> node = eatSecond(depth + 1);
 
     while (true)
     {
-      if (eat('+'))
+      if (eat(depth + 1, '+'))
       {
         assert node != null : "node before + cannot be null";
         node = new Add<>(this,
                          node,
-                         eatSecond());
+                         eatSecond(depth + 1));
       }
-      else if (eat('-'))
+      else if (eat(depth + 1, '-'))
       {
         assert node != null : "node before - cannot be null";
         node = new Subtract<>(this,
                               node,
-                              eatSecond());
+                              eatSecond(depth + 1));
       }
       else
       {
@@ -546,14 +552,16 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * that it is the name of something, but unknown if its the name of a function
    * invocation or a variable reference
    * 
-   * @param node
+   * @param depth    TODO
    * @param startPos
+   * @param node
+   * 
    * @return
    */
-  private Node<D, R, F> eatFunctionInvocationOrVariableReference(int startPos)
+  private Node<D, R, F> eatFunctionInvocationOrVariableReference(int depth, int startPos)
   {
     String  functionOrVariableName = eatName(startPos);
-    boolean isFunction             = eat('(');
+    boolean isFunction             = eat(depth + 1, '(');
     if (verbose)
     {
       System.err.format("eatFunctionInvocationOrVariableReference: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
@@ -565,8 +573,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     if (isFunction)
     {
-      Node<D, R, F> arg = eatFirst();
-      if (!eat(')'))
+      Node<D, R, F> arg = eatFirst(depth + 1);
+      if (!eat(depth + 1, ')'))
       {
         throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
                                                  startPos,
@@ -586,20 +594,22 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * Calls this{@link #eat()} and if this{@link #ch} indicates a power-raising
+   * Calls this{@link #eat(int)} and if this{@link #ch} indicates a power-raising
    * operation then a new {@link RaiseToPower} node is instantiated
    * 
+   * @param depth TODO
+   * 
    * @return either a new {@link RaiseToPower} node from
-   *         this{@link #eatPower(Node)} or a node from this{@link #eat()}
+   *         this{@link #eatPower(int, Node)} or a node from this{@link #eat(int)}
    */
-  private Node<D, R, F> eatLast()
+  private Node<D, R, F> eatLast(int depth)
   {
     if (verbose)
     {
       System.err.format("eatLast: ch=%c position=%d\n", ch, this.position);
     }
 
-    return eatPower(eat());
+    return eatPower(depth + 1, eat(depth + 1));
   }
 
   /**
@@ -654,13 +664,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * "x^(24)"
    * 
    * @param node
+   * @param depth TODO
    * @return node if this{@link #ch} does not indicate the specific power raising
    *         operation, otherwise returns a new {@link RaiseToPower} operator with
    *         node as its parent node
    */
-  Node<D, R, F> eatSuperscript(Node<D, R, F> node, char superscript, String digit)
+  Node<D, R, F> eatSuperscript(Node<D, R, F> node, char superscript, String digit, int depth)
   {
-    if (eat(superscript))
+    if (eat(depth + 1, superscript))
     {
       node = new RaiseToPower<>(this,
                                 node,
@@ -674,26 +685,28 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Checks if this{@link #ch} is a ^ character or a numerical superscript and
    * generates the corresponding {@link RaiseToPower} node if so
    * 
+   * @param depth TODO
    * @param node
+   * 
    * @return node if this{@link #ch} does not indicate a power raising operation,
    *         otherwise returns a new {@link RaiseToPower} operator with node as
    *         its parent node
    */
-  private Node<D, R, F> eatPower(Node<D, R, F> node)
+  private Node<D, R, F> eatPower(int depth, Node<D, R, F> node)
   {
-    if (eat('^'))
+    if (eat(depth + 1, '^'))
     {
       boolean parenthetical = false;
-      if (eat('('))
+      if (eat(depth + 1, '('))
       {
         parenthetical = true;
       }
       node = new RaiseToPower<>(this,
                                 node,
-                                parenthetical ? eatFirst() : eat());
+                                parenthetical ? eatFirst(depth + 1) : eat(depth + 1));
       if (parenthetical)
       {
-        if (!eat(')'))
+        if (!eat(depth + 1, ')'))
         {
           throw new RuntimeException(String.format("eatPower expected closing parenthesis at: position=%d, ch='%c'\n",
                                                    position,
@@ -705,60 +718,63 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
     else
     {
-      return eatSuperscripts(node);
+      return eatSuperscripts(node, depth + 1);
     }
   }
 
   /**
-   * Calls this{@link #eatSuperscript(Node, int, String)} for each digit of the
-   * base 10 numeral system
+   * Calls this{@link #eatSuperscript(Node, int, String, int)} for each digit of
+   * the base 10 numeral system
    * 
    * @param node
+   * @param depth TODO
    * @return
    */
-  public Node<D, R, F> eatSuperscripts(Node<D, R, F> node)
+  public Node<D, R, F> eatSuperscripts(Node<D, R, F> node, int depth)
   {
-    node = eatSuperscript(node, '⁰', "0");
-    node = eatSuperscript(node, '¹', "1");
-    node = eatSuperscript(node, '²', "2");
-    node = eatSuperscript(node, '³', "3");
-    node = eatSuperscript(node, '⁴', "4");
-    node = eatSuperscript(node, '⁵', "5");
-    node = eatSuperscript(node, '⁶', "6");
-    node = eatSuperscript(node, '⁷', "7");
-    node = eatSuperscript(node, '⁸', "8");
-    node = eatSuperscript(node, '⁹', "9");
+    node = eatSuperscript(node, '⁰', "0", depth + 1);
+    node = eatSuperscript(node, '¹', "1", depth + 1);
+    node = eatSuperscript(node, '²', "2", depth + 1);
+    node = eatSuperscript(node, '³', "3", depth + 1);
+    node = eatSuperscript(node, '⁴', "4", depth + 1);
+    node = eatSuperscript(node, '⁵', "5", depth + 1);
+    node = eatSuperscript(node, '⁶', "6", depth + 1);
+    node = eatSuperscript(node, '⁷', "7", depth + 1);
+    node = eatSuperscript(node, '⁸', "8", depth + 1);
+    node = eatSuperscript(node, '⁹', "9", depth + 1);
     return node;
   }
 
   /**
    * Loop which instantiates new {@link Multiply} and {@link Divide} nodes
    * 
+   * @param depth TODO
+   * 
    * @return new {@link Multiply} or {@link Divide} node or result from
-   *         this{@link #eatLast()}
+   *         this{@link #eatLast(int)}
    */
-  private Node<D, R, F> eatSecond()
+  private Node<D, R, F> eatSecond(int depth)
   {
     if (verbose)
     {
       System.err.format("eatSecond: ch=%c position=%d\n", ch, this.position);
     }
 
-    Node<D, R, F> node = eatLast();
+    Node<D, R, F> node = eatLast(depth + 1);
 
     while (true)
     {
-      if (eat('*', '×'))
+      if (eat(depth + 1, '*', '×'))
       {
         node = new Multiply<>(this,
                               node,
-                              eatLast());
+                              eatLast(depth + 1));
       }
-      else if (eat('/', '÷'))
+      else if (eat(depth + 1, '/', '÷'))
       {
         node = new Divide<>(this,
                             node,
-                            eatLast());
+                            eatLast(depth + 1));
       }
       else
       {
