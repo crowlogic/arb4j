@@ -105,12 +105,14 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     }
   }
 
-  public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
+  public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument, int depth)
   {
     super(argument,
-          expression);
+          expression,
+          depth);
     assert argument != null;
-    this.name = Compiler.replaceSubscripts(functionName);
+    this.name  = Compiler.replaceSubscripts(functionName);
+    this.depth = depth;
   }
 
   @Override

@@ -36,13 +36,18 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
 
   private String                operation;
 
-  public BinaryOperation(Expression<D, R, F> parser, Node<D, R, F> left, String operation, Node<D, R, F> right)
+  public BinaryOperation(Expression<D, R, F> parser,
+                         Node<D, R, F> left,
+                         String operation,
+                         Node<D, R, F> right,
+                         int depth)
   {
-    super(parser);
+    super(parser, depth+1);
 
     this.right     = right;
     this.operation = operation;
     this.left      = left;
+    this.depth     = depth;
     assert left != null && right != null : "one or more of the operands to this were missing: " + this;
   }
 
@@ -51,7 +56,7 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
   {
     left.generate(mv);
     right.generate(mv);
-    return invokeMethod(mv, operation, expression.rangeClassInternalName);    
+    return invokeMethod(mv, operation, expression.rangeClassInternalName);
   }
 
   /**
@@ -134,9 +139,10 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
   {
     String indent      = depth < 0 ? "" : indent(depth);
     String childIndent = depth < 0 ? "" : indent(depth + 1);
-    return String.format(depth < 0 ? "%s%s[%s left=%s,%s right=%s%s]" : "%s%s[\n%s left=\n %s,\n%s right=\n %s\n%s]",
+    return String.format(depth < 0 ? "%s%s[depth=%d %s left=%s,%s right=%s%s]" : "%s%s[\n%s left=\n %s,\n%s right=\n %s\n%s]",
                          indent,
                          getClass().getSimpleName(),
+                         depth,
                          childIndent,
                          left == null ? null : left.toString(depth < 0 ? depth : (depth + 2)),
                          childIndent,

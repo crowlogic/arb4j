@@ -16,7 +16,7 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
 
   public boolean             isLast  = false;
 
-  public Node(Expression<D, R, F> expression)
+  public Node(Expression<D, R, F> expression, int depth)
   {
     this.expression = expression;
     this.namespace  = expression.variables;
@@ -35,6 +35,8 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
   public abstract String toString(int depth);
 
   public int bits = 128;
+
+  public int depth;
 
   /**
    * Determines whether this ExpressionNode is reusable. If it's reusable, it

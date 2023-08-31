@@ -27,12 +27,14 @@ public class HermitePolynomial implements
 
   final Real nu;
 
+ 
+
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
-    if ( order > 1 )
+    if (order > 1)
     {
-      throw new UnsupportedOperationException( "TODO: derivatives");
+      throw new UnsupportedOperationException("TODO: derivatives");
     }
     assert res.size() >= order : "result size < order";
     arblib.arb_hypgeom_hermite_h(res, nu, t, bits);

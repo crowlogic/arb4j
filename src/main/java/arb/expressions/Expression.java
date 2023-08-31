@@ -481,15 +481,15 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       node = eatFirst(depth + 1);
       if (!eat(depth + 1, ')'))
       {
-        assert false : String.format("expected closing paranthesis at: startPos=%s, position=%s, node=%s\n",
+        assert false : String.format("expected closing parenthesis at: startPos=%s, position=%s, node=%s\n",
                                      startPos,
                                      position,
-                                     node.toString(-1));
+                                     node.toString());
       }
     }
     else if (isDigitOrDot(ch))
     {
-      node = eatNumber(startPos);
+      node = eatNumber(startPos, depth + 1);
       assert node != null : "eatNumber returned null";
     }
     else if (isLatinOrGreek(ch, false))
@@ -530,14 +530,16 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         assert node != null : "node before + cannot be null";
         node = new Add<>(this,
                          node,
-                         eatSecond(depth + 1));
+                         eatSecond(depth + 1),
+                         depth + 1);
       }
       else if (eat(depth + 1, '-'))
       {
         assert node != null : "node before - cannot be null";
         node = new Subtract<>(this,
                               node,
-                              eatSecond(depth + 1));
+                              eatSecond(depth + 1),
+                              depth + 1);
       }
       else
       {
@@ -584,12 +586,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       }
       return new FunctionCall<>(this,
                                 functionOrVariableName,
-                                arg);
+                                arg,
+                                depth);
     }
     else
     {
       return new Variable<>(this,
-                            functionOrVariableName);
+                            functionOrVariableName,
+                            depth);
     }
   }
 
@@ -600,7 +604,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param depth TODO
    * 
    * @return either a new {@link RaiseToPower} node from
-   *         this{@link #eatPower(int, Node)} or a node from this{@link #eat(int)}
+   *         this{@link #eatPower(Node, int)} or a node from this{@link #eat(int)}
    */
   private Node<D, R, F> eatLast(int depth)
   {
@@ -609,7 +613,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       System.err.format("eatLast: ch=%c position=%d\n", ch, this.position);
     }
 
-    return eatPower(depth + 1, eat(depth + 1));
+    return eatPower(eat(depth + 1), depth + 1);
   }
 
   /**
@@ -645,7 +649,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param startPos
    * @return a new {@link LiteralConstant} representing the base-10 number
    */
-  private Node<D, R, F> eatNumber(int startPos)
+  private Node<D, R, F> eatNumber(int startPos, int depth)
   {
     while (isDigitOrDot(ch))
     {
@@ -653,7 +657,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
 
     return new LiteralConstant<>(this,
-                                 expression.substring(startPos, position));
+                                 expression.substring(startPos, position),
+                                 depth);
   }
 
   /**
@@ -676,7 +681,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       node = new RaiseToPower<>(this,
                                 node,
                                 new LiteralConstant<>(this,
-                                                      digit));
+                                                      digit,
+                                                      depth + 2),
+                                depth + 1);
     }
     return node;
   }
@@ -685,14 +692,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Checks if this{@link #ch} is a ^ character or a numerical superscript and
    * generates the corresponding {@link RaiseToPower} node if so
    * 
-   * @param depth TODO
    * @param node
+   * @param depth TODO
    * 
    * @return node if this{@link #ch} does not indicate a power raising operation,
    *         otherwise returns a new {@link RaiseToPower} operator with node as
    *         its parent node
    */
-  private Node<D, R, F> eatPower(int depth, Node<D, R, F> node)
+  private Node<D, R, F> eatPower(Node<D, R, F> node, int depth)
   {
     if (eat(depth + 1, '^'))
     {
@@ -703,7 +710,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       }
       node = new RaiseToPower<>(this,
                                 node,
-                                parenthetical ? eatFirst(depth + 1) : eat(depth + 1));
+                                parenthetical ? eatFirst(depth + 1) : eat(depth + 1),
+                                depth + 1);
       if (parenthetical)
       {
         if (!eat(depth + 1, ')'))
@@ -768,13 +776,16 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         node = new Multiply<>(this,
                               node,
-                              eatLast(depth + 1));
+                              eatLast(depth + 1),
+                              depth + 1);
+
       }
       else if (eat(depth + 1, '/', '÷'))
       {
         node = new Divide<>(this,
                             node,
-                            eatLast(depth + 1));
+                            eatLast(depth + 1),
+                            depth + 1);
       }
       else
       {

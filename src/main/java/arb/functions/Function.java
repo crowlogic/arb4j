@@ -1,5 +1,6 @@
 package arb.functions;
 
+import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.HolomorphicFunction;
 
@@ -64,6 +65,20 @@ public interface Function<D, R>
    *         at t
    */
   public R evaluate(D t, int order, int bits, R res);
+
+  /**
+   * shortcut that maps to this{@link #evaluate(Object, int, int, Object)} with
+   * order=1
+   * 
+   * @param t
+   * @param bits
+   * @param res
+   * @return result
+   */
+  public default R evaluate(D t, int bits, R res)
+  {
+    return evaluate(t, 1, bits, res);
+  }
 
   public default Function<D, R> differential() throws NotDifferentiableException
   {

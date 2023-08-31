@@ -16,20 +16,20 @@ public abstract class UnaryOperation<D extends arb.Field<D>, R extends arb.Field
   {
     if (node.isReusable())
     {
-      return prepareStackForReusingLeftSide(mv); 
+      return prepareStackForReusingLeftSide(mv);
     }
     else
     {
       throw new RuntimeException("The node is not reusable");
-    }    
+    }
   }
 
-  protected final Node<D,R,F> node;
+  protected final Node<D, R, F> node;
 
-  public UnaryOperation(Node<D,R,F> node,
-                        Expression<D, R, F> expression)
+  public UnaryOperation(Node<D, R, F> node, Expression<D, R, F> expression, int depth)
   {
-    super(expression);
+    super(expression,
+          depth + 1);
     this.node = node;
   }
 
@@ -62,6 +62,6 @@ public abstract class UnaryOperation<D extends arb.Field<D>, R extends arb.Field
   @Override
   public MethodVisitor generate(MethodVisitor mv)
   {
-    return node.generate(mv);   
+    return node.generate(mv);
   }
 }

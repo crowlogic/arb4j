@@ -7,14 +7,12 @@ public class Conjugate<D extends arb.Field<D>, R extends arb.Field<R>, F extends
                       FunctionCall<D, R, F>
 {
 
-  public Conjugate(Expression<D, R, F> parser,
-                   String functionName,
-                   Node<D,R,F> argument,
-                   int depth)
+  public Conjugate(Expression<D, R, F> parser, String functionName, Node<D, R, F> argument, int depth)
   {
     super(parser,
           "neg",
-          argument);
+          argument,
+          depth);
   }
 
   @Override

@@ -14,9 +14,10 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   public final String value;
   public String       fieldName;
 
-  public LiteralConstant(Expression<D, R, F> expression, String constantValueString)
+  public LiteralConstant(Expression<D, R, F> expression, String constantValueString, int depth)
   {
-    super(expression);
+    super(expression,
+          depth + 1);
     value = constantValueString;
 
     for (LiteralConstant<D, R, F> existingConstant : expression.literalConstants)
@@ -48,16 +49,21 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   @Override
   public String toString()
   {
-    return String.format("%s[fieldName=%s, value=%s]", getClass().getSimpleName(), fieldName, value);
+    return String.format("%s[fieldName=%s, value=%s, depth=%s]",
+                         getClass().getSimpleName(),
+                         fieldName,
+                         value,
+                         depth);
   }
 
   public String toString(int depth)
   {
-    return String.format("%s%s[fieldName=%s, value=%s]",
+    return String.format("%s%s[fieldName=%s, value=%s, depth=%s]",
                          depth < 0 ? "" : indent(depth),
                          getClass().getSimpleName(),
                          fieldName,
-                         value);
+                         value,
+                         depth);
   }
 
   @Override

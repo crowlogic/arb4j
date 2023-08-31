@@ -18,9 +18,9 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
   private Expression<D, R, F> expression;
   boolean                     isIndependent = false;
 
-  public Variable(Expression<D, R, F> expression, String variableName)
+  public Variable(Expression<D, R, F> expression, String variableName, int depth)
   {
-    super(expression);
+    super(expression, depth+1);
     this.expression = expression;
     this.name       = variableName;
     this.namespace  = expression.variables;

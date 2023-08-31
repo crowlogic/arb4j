@@ -439,7 +439,8 @@ public class ExpressionTest extends
   {
     try ( RealFunction expression = express("YabaDabaDo",
                                             "((r^(1-α)-1)*r^((α-1)*(1+n/2)))/(Γ(α)*Γ(2-α))*r^((1-α)*i)",
-                                            variables);
+                                            variables,
+                                            true);
           Real c0 = expression.evaluate(zero, 1, 128, new Real()))
     {
       assertEquals(0.018045813351600336, c0.doubleValue());

@@ -4,15 +4,14 @@ import arb.expressions.Expression;
 import arb.functions.Function;
 
 public class Multiply<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
-                     BinaryOperation<D,R,F>
+                     BinaryOperation<D, R, F>
 {
-  public Multiply(Expression<D, R, F> expression,
-                  Node<D,R,F> left,
-                  Node<D,R,F> right)
+  public Multiply(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
   {
     super(expression,
           left,
           "mul",
-          right);
+          right,
+          depth);
   }
 }
