@@ -30,7 +30,7 @@ public interface RealFunction extends
 {
 
   /**
-   * double-convenience method for this{@link #sample(FloatInterval, int, int)}
+   * double-convenience method for this{@link #quantize(FloatInterval, int, int)}
    * 
    * @param left
    * @param right
@@ -38,18 +38,18 @@ public interface RealFunction extends
    * @param n
    * @return
    */
-  public default Real sample(double left, double right, int bits, int n)
+  public default Real quantize(double left, double right, int bits, int n)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
     {
-      return sample(I, bits, n);
+      return quantize(I, bits, n);
     }
   }
 
   /**
    * double-convenience method for
-   * this{@link #sample(FloatInterval, int, int, Real)}
+   * this{@link #quantize(FloatInterval, int, int, Real)}
    * 
    * @param left
    * @param right
@@ -58,12 +58,12 @@ public interface RealFunction extends
    * @param result
    * @return
    */
-  public default Real sample(double left, double right, int bits, int n, Real result)
+  public default Real quantize(double left, double right, int bits, int n, Real result)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
     {
-      return sample(I, bits, n, result);
+      return quantize(I, bits, n, result);
     }
   }
 
@@ -78,9 +78,9 @@ public interface RealFunction extends
    * @return a {@link Real} of length n allocated with
    *         {@link Real#newAlignedVector(int)} containing the sampled mesh points
    */
-  public default Real sample(FloatInterval interval, int bits, int n)
+  public default Real quantize(FloatInterval interval, int bits, int n)
   {
-    return sample(interval, bits, n, Real.newVector(n));
+    return quantize(interval, bits, n, Real.newVector(n));
   }
 
   /**
@@ -94,7 +94,7 @@ public interface RealFunction extends
    * @param values
    * @return values
    */
-  public default Real sample(FloatInterval interval, int bits, int n, Real values)
+  public default Real quantize(FloatInterval interval, int bits, int n, Real values)
   {
     try ( RealPartition mesh = interval.generateRealPartition(bits, false, Real.newVector(n)))
     {
