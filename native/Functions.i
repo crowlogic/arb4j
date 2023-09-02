@@ -249,6 +249,8 @@ void _acb_dirichlet_hardy_z_series(acb_ptr res, acb_srcptr s, slong slen, const 
 
 void acb_dirichlet_hardy_z_series(acb_poly_t res, const acb_poly_t s, const dirichlet_group_t G, const dirichlet_char_t chi, slong len, slong prec);
 
+void acb_dirichlet_hardy_z_zero(arb_t res, const fmpz_t n, slong prec);
+ 
 void acb_sinh(acb_t y, const acb_t x, slong prec);
 
 void acb_elliptic_f(acb_t res, const acb_t phi, const acb_t m, int times_pi, slong prec);

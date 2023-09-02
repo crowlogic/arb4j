@@ -155,6 +155,7 @@ public class arblibJNI {
   public final static native void arb_exp(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void _acb_dirichlet_hardy_z_series(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, long jarg4, DirichletGroup jarg4_, long jarg5, DirichletCharacter jarg5_, int jarg6, int jarg7);
   public final static native void acb_dirichlet_hardy_z_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, DirichletGroup jarg3_, long jarg4, DirichletCharacter jarg4_, int jarg5, int jarg6);
+  public final static native void acb_dirichlet_hardy_z_zero(long jarg1, Real jarg1_, long jarg2, int jarg3);
   public final static native void acb_sinh(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_elliptic_f(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
   public final static native void acb_sech(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
