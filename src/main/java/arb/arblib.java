@@ -596,6 +596,10 @@ public class arblib {
     arblibJNI.acb_dirichlet_hardy_z_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(s), s, DirichletGroup.getCPtr(G), G, DirichletCharacter.getCPtr(chi), chi, len, prec);
   }
 
+  public static void acb_dirichlet_hardy_z_zero(Real res, long n, int prec) {
+    arblibJNI.acb_dirichlet_hardy_z_zero(Real.getCPtr(res), res, n, prec);
+  }
+
   public static void acb_sinh(Complex y, Complex x, int prec) {
     arblibJNI.acb_sinh(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
