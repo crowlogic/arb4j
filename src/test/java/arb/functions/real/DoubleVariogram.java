@@ -4,8 +4,16 @@ public class DoubleVariogram
 {
   public static void main(String[] args)
   {
-    double[] vector          = new double[1000];                            // Assume this is filled with your data
-    int      maxH            = vector.length / 3;                           // Up to one-third the length of the data
+    int      vectorLen = 1000;                 // Length of the vector
+    double[] vector    = new double[vectorLen];
+    double   meshSize  = 20.0 / (double)vectorLen;
+
+    for (int i = 0; i < vectorLen; i++)
+    {
+      double x = i * meshSize;
+      vector[i] = Math.sin(x);
+    }
+    int      maxH            = 300;                           // Up to one-third the length of the data
 
     double[] variogramValues = calculateVariogramForMultipleH(vector, maxH);
 
