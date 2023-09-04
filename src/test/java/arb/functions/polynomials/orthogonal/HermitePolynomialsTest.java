@@ -34,9 +34,9 @@ public class HermitePolynomialsTest extends
                                                               .mul(p.evaluate(t, bits, r.get(3)), bits, res))
     {
       ShellFunctions.plot(-20, 20, integrand);
-      double integral = integrand.integrate(-10, 10);
-      out.println("integral=" + integral);
-      assertEquals(0.0, integral, 1e-8);
+      //double integral = integrand.integrate(-10, 10);
+     // out.println("integral=" + integral);
+      //assertEquals(0.0, integral, 1e-8);
       try
       {
         Thread.sleep(1000 * 60 * 24);

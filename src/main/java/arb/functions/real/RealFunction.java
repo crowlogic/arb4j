@@ -413,6 +413,20 @@ public interface RealFunction extends
     }
   }
 
+  /**
+   * FIXME: there needs to be a sleeker alternative to specifying so many
+   * parameters: create another integrate method that accepts a smaller set of
+   * arguments and calls this one with a reasonable set of values
+   * 
+   * @param left
+   * @param right
+   * @param relativeAccuracyBitsGoal
+   * @param absoluteErrorToleranceGoal
+   * @param options
+   * @param bits
+   * @param res
+   * @return
+   */
   public default Real integrate(Real left,
                                 Real right,
                                 int relativeAccuracyBitsGoal,
