@@ -612,6 +612,26 @@ public class arblib {
     arblibJNI.acb_sech(Complex.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }
 
+  public static void acb_hypgeom_jacobi_p(Complex res, Complex n, Complex a, Complex b, Complex z, int prec) {
+    arblibJNI.acb_hypgeom_jacobi_p(Complex.getCPtr(res), res, Complex.getCPtr(n), n, Complex.getCPtr(a), a, Complex.getCPtr(b), b, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_gegenbauer_c(Complex res, Complex n, Complex m, Complex z, int prec) {
+    arblibJNI.acb_hypgeom_gegenbauer_c(Complex.getCPtr(res), res, Complex.getCPtr(n), n, Complex.getCPtr(m), m, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_laguerre_l(Complex res, Complex n, Complex m, Complex z, int prec) {
+    arblibJNI.acb_hypgeom_laguerre_l(Complex.getCPtr(res), res, Complex.getCPtr(n), n, Complex.getCPtr(m), m, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_chebyshev_t(Complex res, Complex n, Complex z, int prec) {
+    arblibJNI.acb_hypgeom_chebyshev_t(Complex.getCPtr(res), res, Complex.getCPtr(n), n, Complex.getCPtr(z), z, prec);
+  }
+
+  public static void acb_hypgeom_chebyshev_u(Complex res, Complex n, Complex z, int prec) {
+    arblibJNI.acb_hypgeom_chebyshev_u(Complex.getCPtr(res), res, Complex.getCPtr(n), n, Complex.getCPtr(z), z, prec);
+  }
+
   public static void acb_tan(Complex numRows, Complex z, int prec) {
     arblibJNI.acb_tan(Complex.getCPtr(numRows), numRows, Complex.getCPtr(z), z, prec);
   }

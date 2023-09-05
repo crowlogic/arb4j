@@ -259,6 +259,16 @@ void arb_sech(arb_t res, const arb_t x, slong prec);
 
 void acb_sech(acb_t r, const acb_t z, slong prec);
 
+void acb_hypgeom_legendre_p_uiui_rec(acb_t res, ulong n, ulong m, const acb_t z, slong prec);
+void acb_hypgeom_legendre_p(acb_t res, const acb_t n, const acb_t m, const acb_t z, int type, slong prec);
+void acb_hypgeom_legendre_q(acb_t res, const acb_t n, const acb_t m, const acb_t z, int type, slong prec);
+void acb_hypgeom_jacobi_p(acb_t res, const acb_t n, const acb_t a, const acb_t b, const acb_t z, slong prec);
+void acb_hypgeom_gegenbauer_c(acb_t res, const acb_t n, const acb_t m, const acb_t z, slong prec);
+void acb_hypgeom_laguerre_l(acb_t res, const acb_t n, const acb_t m, const acb_t z, slong prec);
+void acb_hypgeom_hermite_h(acb_t res, const acb_t n, const acb_t z, slong prec);
+void acb_hypgeom_chebyshev_t(acb_t res, const acb_t n, const acb_t z, slong prec);
+void acb_hypgeom_chebyshev_u(acb_t res, const acb_t n, const acb_t z, slong prec);
+void acb_hypgeom_spherical_y(acb_t res, slong n, slong m, const acb_t theta, const acb_t phi, slong prec);
 
 void acb_tan(acb_t r, const acb_t z, slong prec);
 

@@ -159,6 +159,11 @@ public class arblibJNI {
   public final static native void acb_sinh(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_elliptic_f(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
   public final static native void acb_sech(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
+  public final static native void acb_hypgeom_jacobi_p(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, long jarg5, Complex jarg5_, int jarg6);
+  public final static native void acb_hypgeom_gegenbauer_c(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, int jarg5);
+  public final static native void acb_hypgeom_laguerre_l(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, int jarg5);
+  public final static native void acb_hypgeom_chebyshev_t(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
+  public final static native void acb_hypgeom_chebyshev_u(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_tan(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_sec(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void arb_add_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
