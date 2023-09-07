@@ -12,6 +12,24 @@ public class RealTest extends
                       TestCase
 {
 
+  public void testShift()
+  {
+    int N = 10;
+    try ( Real realInstance = Real.newVector(N, "testInstance"))
+    {
+      for (int i = 0; i < N; i++)
+      {
+        realInstance.get(i).set(i);
+      }
+
+      Real shifted = realInstance.shift(5);
+      assertEquals( 5, shifted.size() );
+      System.out.println("shifted=" + shifted);
+      System.out.println("orig=" + realInstance);
+
+    }
+  }
+
   private static final int prec = 128;
 
   public void testOneIsExact()
@@ -62,7 +80,7 @@ public class RealTest extends
     Real expected = Real.newVector(N, "expected");
     for (int i = 0; i < N; i++)
     {
-      expected.get(i).set((i * i)/(double)N); // Squared values
+      expected.get(i).set((i * i) / (double) N); // Squared values
     }
 
     // Initialize result outside of loop to prevent memory leaks

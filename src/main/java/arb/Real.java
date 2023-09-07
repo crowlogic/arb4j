@@ -260,7 +260,8 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    */
   public Real gammaVariance(int n, int prec, Real result)
   {
-    try ( Real y = sub(shift(n), prec, Real.newVector(dim - n)))
+    Real shiftedSlice = shift(n);
+    try ( Real y = sub(shiftedSlice, prec, Real.newVector(dim - n)))
     {
       return y.pow(2, prec).sum(prec, result).div(dim-n,prec,result);
     }
