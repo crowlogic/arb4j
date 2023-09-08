@@ -23,7 +23,7 @@ public class RealTest extends
       }
 
       Real shifted = realInstance.shift(5);
-      assertEquals( 5, shifted.size() );
+      assertEquals(5, shifted.size());
       System.out.println("shifted=" + shifted);
       System.out.println("orig=" + realInstance);
 
@@ -45,14 +45,14 @@ public class RealTest extends
     {
       realInstance.get(i).set(i);
     }
-    Real varianceStructure = realInstance.varianceStructure(5, 128, new Real());
+    Real varianceStructure = realInstance.structure(5, 128, new Real());
     varianceStructure.printPrecision = true;
 
     // Actual expected calculations
     Real expected = Real.newVector(N, "expected");
-    for (int i = 1; i <= N; i++)
+    for (int i = 0; i < N; i++)
     {
-      expected.get(i - 1).set(i * i); // Squared values
+      expected.get(i).set(i * i); // Squared values
     }
 
     for (int i = 0; i < N / 2; i++)
@@ -63,37 +63,6 @@ public class RealTest extends
       assertEquals(expectation, gammaVariance, 0.0001);
     }
 
-  }
-
-  public void testGammaVariance()
-  {
-    int        N            = 10;
-    int        prec         = 128;
-
-    final Real realInstance = Real.newVector(N, "testInstance");
-    for (int i = 0; i < N; i++)
-    {
-      realInstance.get(i).set(i);
-    }
-
-    // Actual expected calculations
-    Real expected = Real.newVector(N, "expected");
-    for (int i = 0; i < N; i++)
-    {
-      expected.get(i).set((i * i) / (double) N); // Squared values
-    }
-
-    // Initialize result outside of loop to prevent memory leaks
-    Real result = new Real();
-
-    // Call gammaVariance for each element and check the result
-    for (int i = 0; i < N / 2; i++)
-    {
-      Real   gammaVarianceResult = realInstance.gammaVariance(i, prec, result);
-      double expectation         = expected.get(i).doubleValue();
-      double gammaVariance       = gammaVarianceResult.doubleValue();
-      assertEquals(expectation, gammaVariance, 0.0001);
-    }
   }
 
   public void testSub()

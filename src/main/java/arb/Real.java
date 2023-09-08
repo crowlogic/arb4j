@@ -249,43 +249,43 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     return BesselJ(zero, bits, result);
   }
     
-  /**
-   * Calculate the n-th gamma-variance which is an element of a variance structure
-   * function whose graph is known as a variogram
-   * 
-   * @param n
-   * @param prec
-   * @param result
-   * @return
-   */
   public Real gammaVariance(int n, int prec, Real result)
   {
-    Real shiftedSlice = shift(n);
-    try ( Real y = sub(shiftedSlice, prec, Real.newVector(dim - n)))
+    if (n == 0)
     {
-      return y.pow(2, prec).sum(prec, result).div(dim-n,prec,result);
+      return result.zero();
+    }
+
+    try ( Real unshiftedSlice = slice(0, dim-n); Real shiftedSlice = shift(n);
+          Real y = unshiftedSlice.sub(shiftedSlice, prec, Real.newVector(dim - n)))
+    {
+      Real pow = y.pow(2, prec);
+      Real sum = pow.sum(prec, result);
+      Real div = sum.div(dim - n, prec, result);
+      return div;
     }
   }
   
  /**
-   * Calculate the empirical variance structure function. The returned vector
-   * starts indexing at shift 0 because it doesn't make sense to waste compute
-   * cycles and memory to compute the gammaVariance at shift 0 because it is 0
-   * since a variable does not vary with respect to itself
-   * 
-   * @param n
+   * Calculate the empirical (variance) structure function, also known as a variogram:
+   *
+   * <|Z(i+n)-Z(i)|^2>
+   *
+   * @param n number of shifts to calculate
+   
    * @param bits
    * @param Result
    * @return a vector of n {@link Real} γ-variances calculated via
-   *         this{@link #γVariance(int, int, Real)} for each finite shift from 1
-   *         to n
+   *         this{@link #γVariance(int, int, Real)} for each finite shift from 0
+   *         to n-1
    */
-  public Real varianceStructure(int n, int bits, Real Result)
+  public Real structure(int n, int bits, Real Result)
   {
-    Real vs = Real.newVector(n, name != null ? ("γ_" + name) : null);
-    IntStream.range(0, n).parallel().forEach(i -> gammaVariance(i + 1, bits, vs.get(i)));
+    Real vs = Real.newVector(n, name != null ? ("γ" + name) : null);
+    IntStream.range(0, n).forEach(i -> gammaVariance(i, bits, vs.get(i)));
     return vs;
   }
+  
   
   /**
    * A this{@link #slice(int, int)} of this array of {@link Real}s from the n-th
@@ -296,7 +296,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    */
   public Real shift(int n)
   {
-    return slice(n, dim - n);
+    return slice(n, dim );
   }
   
   /**
@@ -1093,8 +1093,17 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
 
   public Real sub(Real real, int prec, Real res)
   {
-    arblib.arb_sub(res, this, real, prec);
-    return res;
+    if (dim == 1)
+    {
+      arblib.arb_sub(res, this, real, prec);
+      return res;
+    }
+    else
+    {
+      assert dim == real.dim : String.format("this.dim=%d != dim=%d\n", this.dim, real.dim);
+      arblib._arb_vec_sub(res, this, real, dim, prec);
+      return res;
+    }
   }
 
   public static final int BYTES = Float.BYTES + Magnitude.BYTES;
@@ -1439,9 +1448,19 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     return inv(prec, this);
   }
     
-  public Real pow(int i, int prec, Real r)
+  public Real pow(int power, int prec, Real r)
   {
-    arblib.arb_pow_si(r, this, i, prec);
+    if (dim == 1)
+    {
+      arblib.arb_pow_si(r, this, power, prec);
+    }
+    else
+    {
+      IntStream.range(0, dim).forEach(i ->
+      {
+        get(i).pow(power, prec, r.get(i));
+      });
+    }
     return r;
   }
   
