@@ -98,7 +98,7 @@ public interface RealFunction extends
   {
     try ( RealPartition mesh = interval.generateRealPartition(bits, false, Real.newVector(n)))
     {
-      IntStream.range(0, n).parallel().forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
+      IntStream.range(0, n).forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
 
       return values;
     }

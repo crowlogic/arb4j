@@ -33,7 +33,7 @@ public class HermitePolynomialsTest extends
                                                               .mul(h2.evaluate(t, bits, r.get(1)), bits, r.get(2))
                                                               .mul(p.evaluate(t, bits, r.get(3)), bits, res))
     {
-      ShellFunctions.plot(-20, 20, integrand);
+      //ShellFunctions.plot(-20, 20, integrand);
       //double integral = integrand.integrate(-10, 10);
      // out.println("integral=" + integral);
       //assertEquals(0.0, integral, 1e-8);

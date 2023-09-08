@@ -235,7 +235,7 @@ public interface RealToComplexFunction extends
           Real widePoint = new Real();)
     {
       /* δ = (b-a)/2 */
-      b.sub(a, prec, δ).mul2e(-1, δ);
+      b.get(0).sub(a.get(0), prec, δ).mul2e(-1, δ);
 
       /* mid = (a+b)/2 */
       a.add(b, prec, midpoint).mul2e(-1, midpoint);
