@@ -246,7 +246,19 @@ import arb.stochastic.ProbabilityDistributionFunction;
     IntStream.range(0, n).forEach(i -> gammaVariance(i, bits, vs.get(i)));
     return vs;
   }
-  
+
+  /**
+   * Shortcut for this{@link #structure(int, int)} which allocates a new
+   * {@link Real} vector with {@link Real#newVector(int)}
+   * 
+   * @param n
+   * @param bits
+   * @return this{@link #structure(int, int)}
+   */
+  public Real structure(int n, int bits)
+  {
+    return structure(n, bits, Real.newVector(n, "γ"));
+  }  
   
   /**
    * A this{@link #slice(int, int)} of this array of {@link Real}s from the n-th
