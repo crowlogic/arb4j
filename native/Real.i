@@ -240,13 +240,12 @@ import arb.stochastic.ProbabilityDistributionFunction;
    *         this{@link #γVariance(int, int, Real)} for each finite shift from 0
    *         to n-1
    */
-  public Real structure(int n, int bits, Real Result)
+  public Real structure(int n, int bits, Real result)
   {
-    Real vs = Real.newVector(n, name != null ? ("γ" + name) : null);
-    IntStream.range(0, n).forEach(i -> gammaVariance(i, bits, vs.get(i)));
-    return vs;
+    IntStream.range(0, n).forEach(i -> gammaVariance(i, bits, result.get(i)));
+    return result;
   }
-
+  
   /**
    * Shortcut for this{@link #structure(int, int)} which allocates a new
    * {@link Real} vector with {@link Real#newVector(int)}
