@@ -28,7 +28,50 @@ public interface RealFunction extends
                               AutoCloseable,
                               Closeable
 {
+  public default RealFunction sub(RealFunction that)
+  {
+    return (x, order, bits, result) ->
+    {
+      try ( Real y = new Real();)
+      {
+        return this.evaluate(x, order, bits, result).sub(that.evaluate(x, order, bits, y), bits, result);
+      }
+    };
+  }
 
+  public default RealFunction add(RealFunction that)
+  {
+    return (x, order, bits, result) ->
+    {
+      try ( Real y = new Real();)
+      {
+        return this.evaluate(x, order, bits, result).add(that.evaluate(x, order, bits, y), bits, result);
+      }
+    };
+  }
+  
+  public default RealFunction mul(RealFunction that)
+  {
+    return (x, order, bits, result) ->
+    {
+      try ( Real y = new Real();)
+      {
+        return this.evaluate(x, order, bits, result).mul(that.evaluate(x, order, bits, y), bits, result);
+      }
+    };
+  }
+  
+  public default RealFunction div(RealFunction that)
+  {
+    return (x, order, bits, result) ->
+    {
+      try ( Real y = new Real();)
+      {
+        return this.evaluate(x, order, bits, result).div(that.evaluate(x, order, bits, y), bits, result);
+      }
+    };
+  }
+  
   /**
    * double-convenience method for this{@link #quantize(FloatInterval, int, int)}
    * 
