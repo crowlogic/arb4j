@@ -5,7 +5,8 @@ import arb.arblib;
 import arb.functions.real.RealFunction;
 
 public class ChebyshevPolynomial implements
-                                 RealFunction
+                                 RealFunction,
+                                 AutoCloseable
 {
 
   @Override

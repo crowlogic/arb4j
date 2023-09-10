@@ -5,7 +5,8 @@ import arb.arblib;
 import arb.functions.real.RealFunction;
 
 public class HermitePolynomial implements
-                               RealFunction
+                               RealFunction,
+                               AutoCloseable
 {
   @Override
   public String toString()
@@ -26,8 +27,6 @@ public class HermitePolynomial implements
   }
 
   final Real nu;
-
- 
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)

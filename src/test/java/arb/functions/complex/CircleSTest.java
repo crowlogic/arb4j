@@ -30,9 +30,11 @@ public class CircleSTest extends
                                                                      5000,
                                                                      5,
                                                                      256);
-      Roots              turningPoints      = cs.realPart().asRealFunction().locateRoots(rootLocatorOptions);
+      Roots              turningPoints      = cs.realPart()
+                                                .asRealFunction(new Complex())
+                                                .locateRoots(rootLocatorOptions);
       System.out.println("Located " + turningPoints);
-      turningPoints.refine(cs.realPart().asRealFunction(), 256, 50, true);
+      turningPoints.refine(cs.realPart().asRealFunction(new Complex()), 256, 50, true);
       System.out.println("Refined " + turningPoints);
     }
   }

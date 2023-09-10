@@ -2,20 +2,16 @@ package arb.functions.real;
 
 import static java.lang.Math.pow;
 import static java.lang.System.out;
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import arb.*;
 import arb.Float;
-import arb.FloatInterval;
-import arb.Real;
-import arb.RealRootInterval;
-import arb.RootLocatorOptions;
-import arb.Roots;
-import arb.RoundingMode;
 import arb.functions.complex.numbertheoretic.ZFunction;
+import junit.framework.TestCase;
 
-public class RealFunctionTest
+public class RealFunctionTest extends
+                              TestCase
 {
 
   public class Main
@@ -83,7 +79,66 @@ public class RealFunctionTest
                                           }
                                         };
 
-  @Test
+  public void testSubFunction()
+  {
+    RealFunction f1     = (x, order, bits, result) -> result.set(x);
+    RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
+
+    RealFunction fSub   = f1.sub(f2);
+
+    Real         x      = new Real("2",
+                                   128);
+    Real         result = new Real();
+
+    fSub.evaluate(x, 0, 64, result);
+    assertEquals(-2.0, result.doubleValue());
+  }
+
+  public void testDivFunction()
+  {
+    RealFunction f1     = (x, order, bits, result) -> result.set(x);
+    RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
+
+    RealFunction fDiv   = f1.div(f2);
+
+    Real         x      = new Real("2",
+                                   128);
+    Real         result = new Real();
+
+    fDiv.evaluate(x, 0, 64, result);
+    assertEquals(0.5, result.doubleValue());
+  }
+
+  public void testAddFunction()
+  {
+    RealFunction f1     = (x, order, bits, result) -> result.set(x);
+    RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
+
+    RealFunction fAdd   = f1.add(f2);
+
+    Real         x      = new Real("2",
+                                   128);
+    Real         result = new Real();
+
+    fAdd.evaluate(x, 0, 64, result);
+    assertEquals(6.0, result.doubleValue());
+  }
+
+  public void testMulFunction()
+  {
+    RealFunction f1     = (x, order, bits, result) -> result.set(x);
+    RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
+
+    RealFunction fMul   = f1.mul(f2);
+
+    Real         x      = new Real("2",
+                                   128);
+    Real         result = new Real();
+
+    fMul.evaluate(x, 0, 64, result);
+    assertEquals(8.0, result.doubleValue());
+  }
+
   public void testLocateRootsSine()
   {
     RealSineFunction   sineFunction = new RealSineFunction();
@@ -104,7 +159,7 @@ public class RealFunctionTest
   @Test
   public void testLocateRootsHardyZ()
   {
-    RealFunction       f               = new RealHolomorphicPart(new ZFunction()).asRealFunction();
+    RealFunction       f               = new RealHolomorphicPart(new ZFunction()).asRealFunction(new Complex());
     RealRootInterval   initialInterval = new RealRootInterval(14,
                                                               14.2);
     int                maxdepth        = 11;

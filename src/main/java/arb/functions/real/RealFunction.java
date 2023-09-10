@@ -24,9 +24,7 @@ import arb.utensils.Utensils;
  * default implementations for various techniques, including Newton's method.
  */
 public interface RealFunction extends
-                              Function<Real, Real>,
-                              AutoCloseable,
-                              Closeable
+                              Function<Real, Real>                              
 {
   public default RealFunction sub(RealFunction that)
   {
@@ -49,7 +47,7 @@ public interface RealFunction extends
       }
     };
   }
-  
+
   public default RealFunction mul(RealFunction that)
   {
     return (x, order, bits, result) ->
@@ -60,7 +58,7 @@ public interface RealFunction extends
       }
     };
   }
-  
+
   public default RealFunction div(RealFunction that)
   {
     return (x, order, bits, result) ->
@@ -71,7 +69,7 @@ public interface RealFunction extends
       }
     };
   }
-  
+
   /**
    * double-convenience method for this{@link #quantize(FloatInterval, int, int)}
    * 
@@ -172,12 +170,6 @@ public interface RealFunction extends
       RealFunction.this.evaluate(z.re(), order, prec, value.re());
       return value;
     };
-  }
-
-  @Override
-  default void close()
-  {
-
   }
 
   public boolean verbose = true;

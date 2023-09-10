@@ -42,7 +42,7 @@ public class InverseFourierTransformTest extends
   {
     StandardGaussianCharacteristicFunction φ           = new StandardGaussianCharacteristicFunction();
 
-    RealFunction                           realPartOfφ = φ.realPart().asRealFunction();
+    RealFunction                           realPartOfφ = φ.realPart().asRealFunction(new Complex());
     try ( var ift = new InverseFourierTransform(realPartOfφ);
           var interval = new FloatInterval(-10,
                                            10);

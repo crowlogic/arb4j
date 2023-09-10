@@ -27,16 +27,17 @@ public class HermitePolynomialsTest extends
 
   public void testOrthogonality()
   {
-    try ( var p = new StandardGaussianDensityFunction(); var h1 = new HermitePolynomial(1);
-          var h2 = new HermitePolynomial(2); Real r = Real.newVector(4);
-          RealFunction integrand = (t, order, bits, res) -> h1.evaluate(t, bits, r)
-                                                              .mul(h2.evaluate(t, bits, r.get(1)), bits, r.get(2))
-                                                              .mul(p.evaluate(t, bits, r.get(3)), bits, res))
+    var          p         = new StandardGaussianDensityFunction();
+ 
+    try ( var h1 = new HermitePolynomial(1); var h2 = new HermitePolynomial(2); Real r = Real.newVector(4))
     {
-      //ShellFunctions.plot(-20, 20, integrand);
-      //double integral = integrand.integrate(-10, 10);
-     // out.println("integral=" + integral);
-      //assertEquals(0.0, integral, 1e-8);
+      RealFunction integrand = (t, order, bits, res) -> h1.evaluate(t, bits, r)
+                                                          .mul(h2.evaluate(t, bits, r.get(1)), bits, r.get(2))
+                                                          .mul(p.evaluate(t, bits, r.get(3)), bits, res);
+      // ShellFunctions.plot(-20, 20, integrand);
+      // double integral = integrand.integrate(-10, 10);
+      // out.println("integral=" + integral);
+      // assertEquals(0.0, integral, 1e-8);
 //      try
 //      {
 //        Thread.sleep(1000 * 60 * 24);

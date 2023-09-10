@@ -8,7 +8,8 @@ import arb.arblib;
  * 
  */
 public class BesselFunctionOfTheFirstKind implements
-                                          RealFunction
+                                          RealFunction,
+                                          AutoCloseable
 {
 
   /**
