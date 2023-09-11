@@ -760,14 +760,15 @@ import arb.domains.Domain;
   
   public Complex set(Complex complex)
   {
+    assert dim == complex.dim : String.format("dim = %d != this.dim = %d\n", dim, complex.dim);
+
     if (dim == 1)
     {
       arblib.acb_set(this, complex);
     }
     else
     {
-      int N = Math.min(dim,complex.dim);
-      for (int i = 0; i < N; i++)
+      for (int i = 0; i < dim; i++)
       {
         arblib.acb_set(get(i), complex.get(i));
       }

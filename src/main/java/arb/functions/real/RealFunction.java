@@ -24,7 +24,7 @@ import arb.utensils.Utensils;
  * default implementations for various techniques, including Newton's method.
  */
 public interface RealFunction extends
-                              Function<Real, Real>                              
+                              Function<Real, Real>
 {
   public default RealFunction sub(RealFunction that)
   {
@@ -71,40 +71,43 @@ public interface RealFunction extends
   }
 
   /**
-   * double-convenience method for this{@link #quantize(FloatInterval, int, int)}
+   * double-convenience method for
+   * this{@link #quantize(FloatInterval, int, int, boolean)}
    * 
    * @param left
    * @param right
    * @param bits
    * @param n
+   * @param parallel TODO
    * @return
    */
-  public default Real quantize(double left, double right, int bits, int n)
+  public default Real quantize(double left, double right, int bits, int n, boolean parallel)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
     {
-      return quantize(I, bits, n);
+      return quantize(I, bits, n, parallel);
     }
   }
 
   /**
    * double-convenience method for
-   * this{@link #quantize(FloatInterval, int, int, Real)}
+   * this{@link #quantize(FloatInterval, int, int, Real, boolean)}
    * 
    * @param left
    * @param right
    * @param bits
    * @param n
    * @param result
+   * @param parallel if true then multiple threads are used
    * @return
    */
-  public default Real quantize(double left, double right, int bits, int n, Real result)
+  public default Real quantize(double left, double right, int bits, int n, Real result, boolean parallel)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
     {
-      return quantize(I, bits, n, result);
+      return quantize(I, bits, n, result, parallel);
     }
   }
 
@@ -116,12 +119,13 @@ public interface RealFunction extends
    * @param interval
    * @param bits
    * @param n
+   * @param parallel TODO
    * @return a {@link Real} of length n allocated with
    *         {@link Real#newAlignedVector(int)} containing the sampled mesh points
    */
-  public default Real quantize(FloatInterval interval, int bits, int n)
+  public default Real quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    return quantize(interval, bits, n, Real.newVector(n));
+    return quantize(interval, bits, n, Real.newVector(n), parallel);
   }
 
   /**
@@ -133,14 +137,19 @@ public interface RealFunction extends
    * @param bits
    * @param n
    * @param values
+   * @param parallel TODO
    * @return values
    */
-  public default Real quantize(FloatInterval interval, int bits, int n, Real values)
+  public default Real quantize(FloatInterval interval, int bits, int n, Real values, boolean parallel)
   {
     try ( RealPartition mesh = interval.generateRealPartition(bits, false, Real.newVector(n)))
     {
-      IntStream.range(0, n).forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
-
+      IntStream range = IntStream.range(0, n);
+      if (parallel)
+      {
+        range = range.parallel();
+      }
+      range.forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
       return values;
     }
   }
