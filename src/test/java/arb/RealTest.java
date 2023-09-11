@@ -45,24 +45,26 @@ public class RealTest extends
     {
       realInstance.get(i).set(i);
     }
-    Real varianceStructure = realInstance.structure(5, 128, new Real());
-    varianceStructure.printPrecision = true;
 
-    // Actual expected calculations
-    Real expected = Real.newVector(N, "expected");
-    for (int i = 0; i < N; i++)
+    try ( Real varianceStructure = realInstance.structure(5, 128))
     {
-      expected.get(i).set(i * i); // Squared values
-    }
+      varianceStructure.printPrecision = true;
 
-    for (int i = 0; i < N / 2; i++)
-    {
-      Real   gammaVarianceResult = varianceStructure.get(i);
-      double expectation         = expected.get(i).doubleValue();
-      double gammaVariance       = gammaVarianceResult.doubleValue();
-      assertEquals(expectation, gammaVariance, 0.0001);
-    }
+      // Actual expected calculations
+      Real expected = Real.newVector(N, "expected");
+      for (int i = 0; i < N; i++)
+      {
+        expected.get(i).set(i * i); // Squared values
+      }
 
+      for (int i = 0; i < N / 2; i++)
+      {
+        Real   gammaVarianceResult = varianceStructure.get(i);
+        double expectation         = expected.get(i).doubleValue();
+        double gammaVariance       = gammaVarianceResult.doubleValue();
+        assertEquals(expectation, gammaVariance, 0.0001);
+      }
+    }
   }
 
   public void testSub()
