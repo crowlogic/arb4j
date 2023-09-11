@@ -11,8 +11,8 @@ import arb.Field;
  *
  * @param <F>
  */
-public interface WittGroup<F extends Field> extends
-                          Group
+public interface WittGroup<F extends Field<F>> extends
+                          Group<F>
 {
 
 }

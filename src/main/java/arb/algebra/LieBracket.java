@@ -21,7 +21,7 @@ import arb.Field;
  *
  * @param <F> the type of the elements in the associated Lie algebra
  */
-public interface LieBracket<F extends Field> extends
+public interface LieBracket<F extends Field<F>> extends
                            BiFunction<F, F, F>
 {
 }

@@ -14,64 +14,10 @@ import arb.Float;
 import arb.RealRootInterval.RefinementResult;
 import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 public class Utensils
 {
 
-  private static Stage        stage;
-
-  static BlockingQueue<Stage> stageQueue    = new LinkedBlockingQueue<>();
-
-  static boolean              javaFxStarted = false;
-
-  public static Stage startChart()
-  {
-    System.out.println("Launching...");
-
-    if (!javaFxStarted)
-    {
-      Thread.startVirtualThread(() -> Application.launch(ChartApplication.class));
-      javaFxStarted = true;
-
-      try
-      {
-        Stage newStage = stageQueue.poll(30, TimeUnit.SECONDS);
-        System.out.println("javafx initialized, stage=" + newStage);
-        return newStage;
-      }
-      catch (InterruptedException e)
-      {
-        throw new UnsupportedOperationException(e.getMessage(),
-                                                e);
-      }
-    }
-    else
-    {
-      stage.toFront();
-      return stage;
-    }
-  }
-
-  private static ChartApplication newChart;
-
-  public static class ChartApplication extends
-                                       Application
-  {
-
-    @Override
-    public void start(Stage primaryStage) throws Exception
-    {
-      System.out.println("Start called on " + this + " primaryStage=" + primaryStage);
-      newChart      = this;
-      javaFxStarted = true;
-      stage         = primaryStage;
-      stageQueue.add(stage);
-    }
-
-  }
-  
   public static Real
          add(java.util.function.IntFunction<Real> func, int startInclusive, int stopExclusive, int bits, Real value)
   {

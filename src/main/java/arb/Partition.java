@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public interface Partition<F extends Field> extends
+public interface Partition<F extends Field<F>> extends
                           Iterable<F>,
                           AutoCloseable
 {

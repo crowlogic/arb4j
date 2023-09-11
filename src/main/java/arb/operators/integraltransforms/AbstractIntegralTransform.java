@@ -11,7 +11,7 @@ import arb.functions.Function;
  * @param <F> Function type, it should return a Complex number.
  * @param <X> Field type in which the function is defined.
  */
-public abstract class AbstractIntegralTransform<F extends Function<X, Complex>, X extends Field>
+public abstract class AbstractIntegralTransform<F extends Function<X, Complex>, X extends Field<X>>
 {
 
   /**
@@ -74,8 +74,7 @@ public abstract class AbstractIntegralTransform<F extends Function<X, Complex>, 
    * @param f      Function to which the integral transform will be applied.
    * @param domain Domain over which the function will be evaluated.
    */
-  public AbstractIntegralTransform(F f,
-                                   FloatInterval domain)
+  public AbstractIntegralTransform(F f, FloatInterval domain)
   {
     this.f      = f;
     this.domain = domain;

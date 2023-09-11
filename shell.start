@@ -1,5 +1,5 @@
-import static arb.utensils.ShellFunctions.plot;
-import static arb.expressions.Expression.express;
+import static arb.utensils.ShellFunctions.*;
+import static arb.expressions.Expression.*;
 import static arb.RoundingMode.*;
 import static arb.RealConstants.*;
 import static arb.ComplexConstants.*;

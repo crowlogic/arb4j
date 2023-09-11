@@ -15,12 +15,12 @@ public class StochasticIntegrationTest extends
   {
     IntStream.range(0, 1).forEach(i ->
     {
-      BrownianMotion        B          = new BrownianMotion(new Real("1",
-                                                                     128));
-      DiffusionProcessState state      = new DiffusionProcessState(new RandomState(i));
+      BrownianMotion                                            B          = new BrownianMotion(new Real("1",
+                                                                                                         128));
+      DiffusionProcessState                                     state      = new DiffusionProcessState(new RandomState(i));
 
-      MilsteinIntegrator    integrator = new MilsteinIntegrator(B,
-                                                                state);
+      MilsteinIntegrator<BrownianMotion, DiffusionProcessState> integrator = new MilsteinIntegrator<BrownianMotion, DiffusionProcessState>(B,
+                                                                                                                                           state);
       testStochasticIntegrator(integrator);
     });
   }
@@ -31,8 +31,8 @@ public class StochasticIntegrationTest extends
     {
       BrownianMotion B = new BrownianMotion(new Real("1",
                                                      128));
-      try ( EulerIntegrator integrator = new EulerIntegrator(B,
-                                                             new DiffusionProcessState(new RandomState(31337))))
+      try ( var integrator = new EulerIntegrator<BrownianMotion, DiffusionProcessState>(B,
+                                                                                        new DiffusionProcessState(new RandomState(31337))))
       {
         testStochasticIntegrator(integrator);
 

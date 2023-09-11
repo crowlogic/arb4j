@@ -1,35 +1,16 @@
 package arb.functions.complex.numbertheoretic;
 
 import arb.utensils.ShellFunctions;
-import javafx.application.Application;
-import javafx.stage.Stage;
 
-public class ZFunctionPlotter extends
-                              Application
+public class ZFunctionPlotter
 {
 
   public static void main(String[] args)
   {
-    launch(args);
-  }
-
-  @Override
-  public void start(Stage stage)
-  {
-//    ZFunction          func   = new ZFunction();
-//    FloatInterval      domain = new FloatInterval(0,
-//                                                  1000);
-//    try ( EmpiricalVarianceStructure γ = new EmpiricalVarianceStructure(func.asRealToRealFunction(),
-//                                                                        domain,
-//                                                                        Float.valueOf("0.001", 128)))
-//    {
-//      plot(stage, domain.left().doubleValue(), domain.right().doubleValue());
-//    }
-//    ;
 
 //    ShellFunctions.plot(primaryStage, 0, 125, func.asRealToComplexFunction().realPart());
     ZVarianceStructure zvs = new ZVarianceStructure();
-    ShellFunctions.plot(stage, 0, 42, zvs);
+    ShellFunctions.plot(0, 42, zvs);
 
   }
 }

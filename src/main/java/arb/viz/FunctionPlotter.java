@@ -1,5 +1,7 @@
 package arb.viz;
 
+import static java.lang.System.out;
+
 import arb.functions.real.FunctionSampler;
 import arb.utensils.ShellFunctions;
 import de.gsi.chart.XYChart;
@@ -36,8 +38,9 @@ public class FunctionPlotter extends
   public final XYChart       chart     = new XYChart(xAxis,
                                                      yAxis);
 
-  public Stage createScene(Stage primaryStage)
+  public Stage createScene()
   {
+    stage = new Stage();
     initialize();
     root = new StackPane();
     configureChartPlugins();
@@ -51,17 +54,12 @@ public class FunctionPlotter extends
     }
     Platform.runLater(() ->
     {
-      set(primaryStage, evt ->
+      set(stage, evt ->
       {
-        if (ShellFunctions.stage == primaryStage)
-        {
-          System.out.println("Closing " + ShellFunctions.stage);
-          stage               = null;
-          ShellFunctions.stage = null;
-        }
+       out.println( "Closing " + evt );
       });
     });
-    return primaryStage;
+    return stage;
   }
 
   public void configureChartPlugins()
