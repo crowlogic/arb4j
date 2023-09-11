@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void acb_dirichlet_lerch_phi(Complex res, Complex z, Complex s, Complex a, int prec) {
+    arblibJNI.acb_dirichlet_lerch_phi(Complex.getCPtr(res), res, Complex.getCPtr(z), z, Complex.getCPtr(s), s, Complex.getCPtr(a), a, prec);
+  }
+
   public static void arb_sec(Real res, Real x, int prec) {
     arblibJNI.arb_sec(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
   }

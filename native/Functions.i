@@ -1,6 +1,8 @@
 #define __off_t long int
 #define off_t long int
 
+ void acb_dirichlet_lerch_phi(acb_t res, const acb_t z, const acb_t s, const acb_t a, slong prec);
+ 
 void arb_sec(arb_t res, const arb_t x, slong prec);
 void arb_csc(arb_t res, const arb_t x, slong prec);
 void arb_csc_pi(arb_t res, const arb_t x, slong prec);
