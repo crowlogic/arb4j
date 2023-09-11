@@ -23,7 +23,7 @@ public class RealDataSet extends
     data = RealMatrix.newMatrix(2, length);
   }
 
-  public RealMatrix data;
+  public final RealMatrix data;
 
   public Real getRealXValues()
   {
@@ -65,6 +65,5 @@ public class RealDataSet extends
       return;
     }
     data.close();
-    data = null;
   }
 }

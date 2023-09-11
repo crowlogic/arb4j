@@ -7,7 +7,7 @@ import arb.Real;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
-public class ZVarianceStructure implements
+public class ZStructureFunction implements
                                 RealFunction
 {
   private static final String EXPRESSION = "a-b*J₀(λ*t)";
@@ -24,7 +24,7 @@ public class ZVarianceStructure implements
   public Real             b    = new Real();
   public Real             λ    = new Real();
 
-  public ZVarianceStructure()
+  public ZStructureFunction()
   {
     super();
     vars.put("a", a.set(one));

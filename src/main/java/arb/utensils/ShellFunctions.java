@@ -62,21 +62,8 @@ public class ShellFunctions
   public static void plot(double left, double right, RealFunction... functions)
   {
     initializeJavaFxIfNecessary();
+    assert false : "todo: redo using RealFunction.quantize and change quantize to return a 2 column matrix and return the domain in one col and the range in the other col";
 
-    Platform.runLater(() ->
-    {
-
-      try ( FunctionPlotter plotter = new FunctionPlotter())
-      {
-        for (RealFunction function : functions)
-        {
-          plotter.functions.add(function);
-        }
-        plotter.domain = new FloatInterval(left,
-                                           right);
-        plotter.createScene().toFront();
-      }
-    });
   }
 
 }
