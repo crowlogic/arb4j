@@ -105,7 +105,7 @@ public class RealRootInterval extends
     status = RootStatus.RootUnknown;
     try ( Real t = Real.newVector(2); Real x = new Real())
     {
-      func.evaluate(getReal(x, prec), 1, prec, t);
+      func.evaluate(getReal(x, prec), 1, prec, t.get(0));
       found.evals++;
 
       if (t.isPositive() || t.isNegative())

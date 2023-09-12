@@ -20,7 +20,7 @@ public class CompositionOperator<F extends HolomorphicFunction, G extends Holomo
                                                                                                                  G g)
   {
     return new CompositionOperator<F, G>(f,
-                                   g);
+                                         g);
   }
 
   @Override
@@ -29,8 +29,7 @@ public class CompositionOperator<F extends HolomorphicFunction, G extends Holomo
     return String.format("%s(%s)", f, g);
   }
 
-  public CompositionOperator(F f,
-                             G g)
+  public CompositionOperator(F f, G g)
   {
     this.f = f;
     this.g = g;
@@ -50,7 +49,7 @@ public class CompositionOperator<F extends HolomorphicFunction, G extends Holomo
     }
 
     // y=[g(t), g'(t), g''(t)]
-    g.evaluate(t, order, prec, y);
+    g.evaluate(t, order, prec, y.slice(0, order));
     // res=[f(g(t)),f'(g(t)),f''(g(t)]
     f.evaluate(y, order, prec, res);
 

@@ -27,7 +27,8 @@ public interface RealToComplexFunction extends
       assert w.size() >= order;
       try ( Complex x = Complex.newVector(order + 1))
       {
-        return w.set(RealToComplexFunction.this.evaluate(z, order + 1, prec, x).slice(1, order + 1));
+        RealToComplexFunction.this.evaluate(z, order + 1, prec, x);
+        return w.slice(0, order + 1).set(x);
       }
     };
   }
@@ -79,13 +80,8 @@ public interface RealToComplexFunction extends
       options = new IntegrationOptions();
     }
 
-    try ( Complex s = new Complex();
-          Complex t = new Complex();
-          Real u = new Real();
-          Complex u2 = new Complex();
-          Magnitude tmpm = new Magnitude();
-          Magnitude tmpn = new Magnitude();
-          Magnitude newTol = new Magnitude();)
+    try ( Complex s = new Complex(); Complex t = new Complex(); Real u = new Real(); Complex u2 = new Complex();
+          Magnitude tmpm = new Magnitude(); Magnitude tmpn = new Magnitude(); Magnitude newTol = new Magnitude();)
     {
       int        depthLimit, evalLimit, degLimit, depth, maxDepth, top, allocation;
       long       leafIntervalCount;
@@ -102,8 +98,7 @@ public interface RealToComplexFunction extends
 
       allocation          = 4;
       // TODO: take as,bs,vs,ms and put them in their own (static) class
-      try ( Real as = Real.newVector(2 * allocation, "as");
-            Real bs = Real.newVector(2 * allocation, "bs");
+      try ( Real as = Real.newVector(2 * allocation, "as"); Real bs = Real.newVector(2 * allocation, "bs");
             Complex vs = Complex.newVector(2 * allocation, "vs");
             Magnitude ms = Magnitude.newVector(2 * allocation, "ms");)
       {
@@ -229,9 +224,7 @@ public interface RealToComplexFunction extends
    */
   public default Complex calculateSimpleQuadrature(Real a, Real b, int prec, Complex res, boolean verbose)
   {
-    try ( Magnitude magδ = new Magnitude();
-          Real midpoint = new Real();
-          Real δ = new Real();
+    try ( Magnitude magδ = new Magnitude(); Real midpoint = new Real(); Real δ = new Real();
           Real widePoint = new Real();)
     {
       /* δ = (b-a)/2 */
@@ -328,19 +321,10 @@ public interface RealToComplexFunction extends
                                                         Complex value)
   {
     boolean converged = false;
-    try ( Real y = new Real();
-          Real δ = new Real();
-          Real wide = new Real();
-          Magnitude τ = new Magnitude();
-          Complex s = new Complex();
-          Complex v = new Complex();
-          Magnitude M = new Magnitude();
-          Magnitude X = new Magnitude();
-          Magnitude Y = new Magnitude();
-          Magnitude ρ = new Magnitude();
-          Magnitude err = new Magnitude();
-          Magnitude t = new Magnitude();
-          Magnitude bestρ = new Magnitude();)
+    try ( Real y = new Real(); Real δ = new Real(); Real wide = new Real(); Magnitude τ = new Magnitude();
+          Complex s = new Complex(); Complex v = new Complex(); Magnitude M = new Magnitude();
+          Magnitude X = new Magnitude(); Magnitude Y = new Magnitude(); Magnitude ρ = new Magnitude();
+          Magnitude err = new Magnitude(); Magnitude t = new Magnitude(); Magnitude bestρ = new Magnitude();)
     {
       int k, Xexp;
       int i, n;
