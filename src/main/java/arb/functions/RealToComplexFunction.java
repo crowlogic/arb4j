@@ -28,7 +28,7 @@ public interface RealToComplexFunction extends
       try ( Complex x = Complex.newVector(order + 1))
       {
         RealToComplexFunction.this.evaluate(z, order + 1, prec, x);
-        return w.slice(0, order + 1).set(x);
+        return w.slice(0, order).set(x.slice(1, order + 1));
       }
     };
   }

@@ -697,7 +697,7 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
   {
     assert startInclusive >= 0 : "startInclusive must be >= 0";
     assert endExclusive <= dim : "endExclusive must be <= dim=" + dim;
-    assert startInclusive < endExclusive : "startInclusive must be < endExclusive";
+    assert startInclusive < endExclusive : "startInclusive must be < endExclusive";  
     int sliceDim = endExclusive - startInclusive;
     Complex array = new Complex( swigCPtr + startInclusive * BYTES, false );
     array.elements = new Complex[array.dim = sliceDim];
