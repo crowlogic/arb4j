@@ -456,7 +456,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   /**
    * Consumes characters, calling this{@link #eatFirst(int)} to process
-   * paranthesis and calling this{@link #eatNumber(int)} if this{@link #ch}
+   * parenthesis and calling this{@link #eatNumber(int)} if this{@link #ch}
    * indicates a number a the current position or
    * this{@link #eatFunctionInvocationOrVariableReference(int, int)} if
    * this{@link #ch} indicates the name of either a function or variable reference
@@ -562,11 +562,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   private Node<D, R, F> eatFunctionInvocationOrVariableReference(int depth, int startPos)
   {
-    String  functionOrVariableName = eatName(startPos);
+    String  functionOrVariableName = eatName(startPos, depth + 1);
     boolean isFunction             = eat(depth + 1, '(');
     if (verbose)
     {
-      System.err.format("eatFunctionInvocationOrVariableReference: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
+      System.err.format("eatFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
+                        depth,
                         startPos,
                         position,
                         functionOrVariableName,
@@ -610,7 +611,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.err.format("eatLast: ch=%c position=%d\n", ch, this.position);
+      System.err.format("eatLast(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
     }
 
     return eatPower(eat(depth + 1), depth + 1);
@@ -621,10 +622,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * character
    * 
    * @param startPos
+   * @param depth    TODO
    * 
    * @return the name at startPos
    */
-  private String eatName(int startPos)
+  private String eatName(int startPos, int depth)
   {
     while (isLatinOrGreek(ch, true))
     {
@@ -633,7 +635,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     String identifier = expression.substring(startPos, position);
     if (verbose)
     {
-      System.err.format("eatName: startPos=%d, position=%d, identifier='%s' ch='%c'\n",
+      System.err.format("eatName(depth=%d): startPos=%d, position=%d, identifier='%s' ch='%c'\n",
+                        depth,
                         startPos,
                         position,
                         identifier,
@@ -711,7 +714,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       node = new RaiseToPower<>(this,
                                 node,
                                 parenthetical ? eatFirst(depth + 1) : eat(depth + 1),
-                                depth + 1);
+                                depth + 2);
       if (parenthetical)
       {
         if (!eat(depth + 1, ')'))
@@ -765,7 +768,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.err.format("eatSecond: ch=%c position=%d\n", ch, this.position);
+      System.err.format("eatSecond(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
     }
 
     Node<D, R, F> node = eatLast(depth + 1);
