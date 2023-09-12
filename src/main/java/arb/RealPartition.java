@@ -27,10 +27,7 @@ public class RealPartition implements
 
   private FloatInterval interval;
 
-  public RealPartition(FloatInterval interval,
-                       int prec,
-                       Real T,
-                       boolean includeError)
+  public RealPartition(FloatInterval interval, int prec, Real T, boolean includeError)
   {
     final int n = T.size();
     this.T = T;
@@ -38,10 +35,10 @@ public class RealPartition implements
     T.printPrecision = true;
     dt.div(2, prec, halfdt);
 
-    generate( prec, includeError);
+    generate(prec, includeError);
   }
 
-  private Real generate( int prec, boolean includeError)
+  private Real generate(int prec, boolean includeError)
   {
     final int n = T.size();
 
@@ -59,7 +56,7 @@ public class RealPartition implements
         }
       }
     }
-    
+
     return T;
   }
 
@@ -73,13 +70,9 @@ public class RealPartition implements
    *                     otherwise it is set to 0
    * 
    */
-  public RealPartition(FloatInterval interval,
-                       int prec,
-                       int n,
-                       boolean includeError)
+  public RealPartition(FloatInterval interval, int prec, int n, boolean includeError)
   {
-    this(
-         interval,
+    this(interval,
          prec,
          Real.newVector(n),
          includeError);
