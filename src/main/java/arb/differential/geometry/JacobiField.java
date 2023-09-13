@@ -12,7 +12,7 @@ import arb.space.topological.TangentSpace;
  * 
  * @param <M>
  */
-public interface JacobiField<X extends Field<X>, M extends RiemannianManifold> extends
+public interface JacobiField<X extends Field<X>, M extends RiemannianManifold<X>> extends
                             VectorField<X, M>
 {
 

@@ -1,7 +1,7 @@
 package arb.groups;
 
-public interface ModularGroup extends
-                              Group
+public interface ModularGroup<X> extends
+                              Group<X>
 {
 
 }

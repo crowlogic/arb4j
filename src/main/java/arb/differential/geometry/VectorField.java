@@ -25,7 +25,7 @@ import arb.space.topological.EuclideanSpace;
  * 
  * @param <M>
  */
-public interface VectorField<X extends Field<X>, M extends DifferentiableManifold> extends
+public interface VectorField<X extends Field<X>, M extends DifferentiableManifold<X>> extends
                             Function<M, EuclideanSpace<X>>
 {
 

@@ -9,8 +9,8 @@ import arb.operators.integraltransforms.FourierTransform;
  * @author crow
  *
  */
-public interface HeisenbergGroup extends
-                                 Group
+public interface HeisenbergGroup<X> extends
+                                 Group<X>
 {
 
 }

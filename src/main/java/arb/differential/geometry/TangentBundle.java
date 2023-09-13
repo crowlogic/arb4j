@@ -1,5 +1,6 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.functions.Function;
 import arb.geometry.DifferentiableManifold;
 import arb.geometry.Manifold;
@@ -13,7 +14,7 @@ import arb.space.topological.TangentSpace;
  * 
  * TODO: also {@link CotangentBundle}
  */
-public interface TangentBundle<M extends DifferentiableManifold> extends
+public interface TangentBundle<X extends Field<X>, M extends DifferentiableManifold<X>> extends
                               Bundle<M, TangentSpace<M>, Function<M, TangentSpace<M>>>
 {
 

@@ -1,11 +1,12 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.functions.Function;
 import arb.geometry.DifferentiableManifold;
 import arb.space.topological.Bundle;
 import arb.space.topological.CotangentSpace;
 
-public interface CotangentBundle<M extends DifferentiableManifold> extends
+public interface CotangentBundle<X extends Field<X>, M extends DifferentiableManifold<X>> extends
                                 Bundle<M, CotangentSpace<M>, Function<M, CotangentSpace<M>>>
 {
 

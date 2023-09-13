@@ -5,8 +5,8 @@ package arb.groups;
  * 
  *
  */
-public interface MonsterGroup extends
-                              Group
+public interface MonsterGroup<X> extends
+                              Group<X>
 {
 
 }

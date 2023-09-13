@@ -1,10 +1,11 @@
 package arb.groups;
 
 import arb.Complex;
+import arb.Field;
 import arb.geometry.DifferentiableManifold;
 
-public interface ParallelizableManifold extends
-                                        DifferentiableManifold
+public interface ParallelizableManifold<X extends Field<X>> extends
+                                       DifferentiableManifold<X>
 {
   /**
    * 

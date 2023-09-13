@@ -22,7 +22,7 @@ import arb.geometry.DifferentiableManifold;
  * 
  * @param <M>
  */
-public interface IncompressibleVectorField<X extends Field<X>, M extends DifferentiableManifold> extends
+public interface IncompressibleVectorField<X extends Field<X>, M extends DifferentiableManifold<X>> extends
                                           VectorField<X, M>
 {
 

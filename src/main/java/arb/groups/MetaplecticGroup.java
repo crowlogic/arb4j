@@ -18,8 +18,8 @@ package arb.groups;
  * for instance
  *
  */
-public interface MetaplecticGroup extends
-                                  Group
+public interface MetaplecticGroup<X> extends
+                                  Group<X>
 {
 
 }

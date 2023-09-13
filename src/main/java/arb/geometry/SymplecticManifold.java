@@ -1,5 +1,6 @@
 package arb.geometry;
 
+import arb.Field;
 import arb.dynamical.systems.PhaseSpace;
 
 /**
@@ -37,8 +38,8 @@ import arb.dynamical.systems.PhaseSpace;
  * dynamics of the system.
  * </pre>
  */
-public interface SymplecticManifold extends
-                                    DifferentiableManifold
+public interface SymplecticManifold<X extends Field<X>> extends
+                                   DifferentiableManifold<X>
 {
 
 }

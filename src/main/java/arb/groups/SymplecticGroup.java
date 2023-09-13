@@ -9,8 +9,8 @@ package arb.groups;
  * 
  * 
  */
-public interface SymplecticGroup extends
-                                 Group
+public interface SymplecticGroup<X> extends
+                                 Group<X>
 {
 
 }
