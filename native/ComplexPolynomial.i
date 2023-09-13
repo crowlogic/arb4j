@@ -66,7 +66,7 @@ import static arb.arblib.*;
 
   }
   
-  public double evaluateDouble(double d)
+  public double eval(double d)
   {
     try ( Complex t = new Complex(); Complex s = new Complex() )
     {

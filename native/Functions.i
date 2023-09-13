@@ -1,8 +1,13 @@
 #define __off_t long int
 #define off_t long int
 
- void acb_dirichlet_lerch_phi(acb_t res, const acb_t z, const acb_t s, const acb_t a, slong prec);
- 
+void acb_dirichlet_lerch_phi(acb_t res, const acb_t z, const acb_t s, const acb_t a, slong prec);
+
+void arb_poly_product_roots(arb_poly_t poly, arb_srcptr xs, slong n, slong prec);
+void arb_poly_clear(arb_poly_t poly);
+void arb_poly_evaluate2(arb_t y, arb_t z, const arb_poly_t f, const arb_t x, slong prec);
+void arb_poly_fit_length(arb_poly_t poly, slong len);
+void arb_poly_evaluate(arb_t res, const arb_poly_t f, const arb_t a, slong prec); 
 void arb_sec(arb_t res, const arb_t x, slong prec);
 void arb_csc(arb_t res, const arb_t x, slong prec);
 void arb_csc_pi(arb_t res, const arb_t x, slong prec);

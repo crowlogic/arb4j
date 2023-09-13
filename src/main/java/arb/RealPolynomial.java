@@ -8,24 +8,23 @@
 
 package arb;
 
-import static arb.RealConstants.*;
-import arb.functions.complex.HolomorphicFunction;
 import static arb.arblib.*;
+import arb.functions.real.RealFunction;
 
-public class ComplexPolynomial implements AutoCloseable,HolomorphicFunction {
+public class RealPolynomial implements AutoCloseable,RealFunction {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  public ComplexPolynomial(long cPtr, boolean cMemoryOwn) {
+  public RealPolynomial(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  public static long getCPtr(ComplexPolynomial obj) {
+  public static long getCPtr(RealPolynomial obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public static long swigRelease(ComplexPolynomial obj) {
+  public static long swigRelease(RealPolynomial obj) {
     long ptr = 0;
     if (obj != null) {
       if (!obj.swigCMemOwn)
@@ -41,7 +40,7 @@ public class ComplexPolynomial implements AutoCloseable,HolomorphicFunction {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        arblibJNI.delete_ComplexPolynomial(swigCPtr);
+        arblibJNI.delete_RealPolynomial(swigCPtr);
       }
       swigCPtr = 0;
     }
@@ -51,20 +50,20 @@ public class ComplexPolynomial implements AutoCloseable,HolomorphicFunction {
   @Override
   public String toString()
   {
-    return String.format("ComplexPolynomial[length=%d, coeffs=%s]", getLength(), getCoeffs());
+    return String.format("RealPolynomial[length=%d, coeffs=%s]", getLength(), getCoeffs());
   }
 
 
   /**
-   * Calls {@link arb#acb_clear(Complex)}
+   * Calls {@link arb#arb_clear(Real)}
    * 
    * @return this
    */
-  public ComplexPolynomial clear()
+  public RealPolynomial clear()
   {
     if ( swigCMemOwn )
     {
-      acb_poly_clear(this);
+      arb_poly_clear(this);
     }
     return this;
   }
@@ -76,28 +75,28 @@ public class ComplexPolynomial implements AutoCloseable,HolomorphicFunction {
   }
   
  /**
-   * @see arb#acb_poly_product_roots(ComplexPolynomial, Complex, int, int)
+   * @see arb#arb_poly_product_roots(RealPolynomial, Real, int, int)
    * 
    * @param xs
    * @param prec
    * @return
    */
-  public ComplexPolynomial productRoots(Complex xs, int prec)
+  public RealPolynomial productRoots(Real xs, int prec)
   {
-    acb_poly_product_roots(this, xs, xs.dim, prec);
+    arb_poly_product_roots(this, xs, xs.dim, prec);
     return this;
   }
   
   @Override
-  public Complex evaluate(Complex z, int order, int prec, Complex w)
+  public Real evaluate(Real z, int order, int prec, Real w)
   {
     switch (order)
     {
     case 1:
-      acb_poly_evaluate(w, this, z, prec);
+      arb_poly_evaluate(w, this, z, prec);
       return w;
     case 2:
-      acb_poly_evaluate2(w, w.get(1), this, z, prec);
+      arb_poly_evaluate2(w, w.get(1), this, z, prec);
       return w;
     default:
       throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented");
@@ -107,46 +106,47 @@ public class ComplexPolynomial implements AutoCloseable,HolomorphicFunction {
   
   public double eval(double d)
   {
-    try ( Complex t = new Complex(); Complex s = new Complex() )
+    try ( Real t = new Real(); Real s = new Real() )
     {
-      t.getReal().set(d);
-      return evaluate(t, 1, 70, s).getReal().doubleValue();
+      t.set(d);
+      return evaluate(t, 1, 70, s).doubleValue();
     }
   }
   
-  public void setCoeffs(Complex value)
+  
+  public void setCoeffs(Real value)
   {
     setCoeffsNative(value);
     setLength(value.size());
   }
 
-  public Complex getCoeffs()
+  public Real getCoeffs()
   {
-    Complex coeffsNative = getCoeffsNative();
+    Real coeffsNative = getCoeffsNative();
     coeffsNative.dim = getLength();
-    coeffsNative.elements = new Complex[coeffsNative.dim];
+    coeffsNative.elements = new Real[coeffsNative.dim];
     return coeffsNative;
   }  
 
-  public void setCoeffsNative(Complex value) {
-    arblibJNI.ComplexPolynomial_coeffsNative_set(swigCPtr, this, Complex.getCPtr(value), value);
+  public void setCoeffsNative(Real value) {
+    arblibJNI.RealPolynomial_coeffsNative_set(swigCPtr, this, Real.getCPtr(value), value);
   }
 
-  public Complex getCoeffsNative() {
-    long cPtr = arblibJNI.ComplexPolynomial_coeffsNative_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Complex(cPtr, false);
+  public Real getCoeffsNative() {
+    long cPtr = arblibJNI.RealPolynomial_coeffsNative_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new Real(cPtr, false);
   }
 
   public void setLength(int value) {
-    arblibJNI.ComplexPolynomial_length_set(swigCPtr, this, value);
+    arblibJNI.RealPolynomial_length_set(swigCPtr, this, value);
   }
 
   public int getLength() {
-    return arblibJNI.ComplexPolynomial_length_get(swigCPtr, this);
+    return arblibJNI.RealPolynomial_length_get(swigCPtr, this);
   }
 
-  public ComplexPolynomial() {
-    this(arblibJNI.new_ComplexPolynomial(), true);
+  public RealPolynomial() {
+    this(arblibJNI.new_RealPolynomial(), true);
   }
 
 }

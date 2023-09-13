@@ -10,6 +10,11 @@ package arb;
 
 public class arblibJNI {
   public final static native void acb_dirichlet_lerch_phi(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, int jarg5);
+  public final static native void arb_poly_product_roots(long jarg1, RealPolynomial jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
+  public final static native void arb_poly_clear(long jarg1, RealPolynomial jarg1_);
+  public final static native void arb_poly_evaluate2(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, RealPolynomial jarg3_, long jarg4, Real jarg4_, int jarg5);
+  public final static native void arb_poly_fit_length(long jarg1, RealPolynomial jarg1_, int jarg2);
+  public final static native void arb_poly_evaluate(long jarg1, Real jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_sec(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_csc(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_csc_pi(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
@@ -522,6 +527,12 @@ public class arblibJNI {
   public final static native int ComplexPolynomial_length_get(long jarg1, ComplexPolynomial jarg1_);
   public final static native long new_ComplexPolynomial();
   public final static native void delete_ComplexPolynomial(long jarg1);
+  public final static native void RealPolynomial_coeffsNative_set(long jarg1, RealPolynomial jarg1_, long jarg2, Real jarg2_);
+  public final static native long RealPolynomial_coeffsNative_get(long jarg1, RealPolynomial jarg1_);
+  public final static native void RealPolynomial_length_set(long jarg1, RealPolynomial jarg1_, int jarg2);
+  public final static native int RealPolynomial_length_get(long jarg1, RealPolynomial jarg1_);
+  public final static native long new_RealPolynomial();
+  public final static native void delete_RealPolynomial(long jarg1);
   public final static native void FastDFTCyclicScheme_n_set(long jarg1, FastDFTCyclicScheme jarg1_, int jarg2);
   public final static native int FastDFTCyclicScheme_n_get(long jarg1, FastDFTCyclicScheme jarg1_);
   public final static native void FastDFTCyclicScheme_z_set(long jarg1, FastDFTCyclicScheme jarg1_, long jarg2, Complex jarg2_);

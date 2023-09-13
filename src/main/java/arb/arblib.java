@@ -13,6 +13,26 @@ public class arblib {
     arblibJNI.acb_dirichlet_lerch_phi(Complex.getCPtr(res), res, Complex.getCPtr(z), z, Complex.getCPtr(s), s, Complex.getCPtr(a), a, prec);
   }
 
+  public static void arb_poly_product_roots(RealPolynomial poly, Real xs, int n, int prec) {
+    arblibJNI.arb_poly_product_roots(RealPolynomial.getCPtr(poly), poly, Real.getCPtr(xs), xs, n, prec);
+  }
+
+  public static void arb_poly_clear(RealPolynomial poly) {
+    arblibJNI.arb_poly_clear(RealPolynomial.getCPtr(poly), poly);
+  }
+
+  public static void arb_poly_evaluate2(Real y, Real z, RealPolynomial f, Real x, int prec) {
+    arblibJNI.arb_poly_evaluate2(Real.getCPtr(y), y, Real.getCPtr(z), z, RealPolynomial.getCPtr(f), f, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_poly_fit_length(RealPolynomial poly, int len) {
+    arblibJNI.arb_poly_fit_length(RealPolynomial.getCPtr(poly), poly, len);
+  }
+
+  public static void arb_poly_evaluate(Real res, RealPolynomial f, Real a, int prec) {
+    arblibJNI.arb_poly_evaluate(Real.getCPtr(res), res, RealPolynomial.getCPtr(f), f, Real.getCPtr(a), a, prec);
+  }
+
   public static void arb_sec(Real res, Real x, int prec) {
     arblibJNI.arb_sec(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
   }

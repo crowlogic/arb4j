@@ -227,6 +227,16 @@ acb_poly_struct;
 
 typedef acb_poly_struct acb_poly_t[1];
 
+typedef struct
+{
+    arb_ptr coeffs;
+    slong length;
+    slong alloc;
+}
+arb_poly_struct;
+
+typedef arb_poly_struct arb_poly_t[1];
+
 // DFT stuff
 
 typedef struct acb_dft_step_struct acb_dft_step_struct;
