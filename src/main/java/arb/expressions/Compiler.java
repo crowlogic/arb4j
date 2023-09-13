@@ -439,22 +439,26 @@ public class Compiler
    * @param functionName
    * @param arg
    * @param lastCall
+   * @param depth        TODO
    * @return
    */
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
-         callFunction(MethodVisitor mv, String functionName, Node<D, R, F> arg, boolean lastCall)
+         callFunction(MethodVisitor mv, String functionName, Node<D, R, F> arg, boolean lastCall, int depth)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
 
     if (verbose)
     {
-      System.err.format("generateFunctionCall(functionName=%s, arg=%s, lastCall=%s)\n", functionName, arg, lastCall);
+      System.err.format("callFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
+                        functionName,
+                        arg,
+                        lastCall,
+                        depth);
     }
-    arg.generate(mv);
 
-    loadBits(mv);
+    loadBits(arg.generate(mv));
 
     if (lastCall)
     {
@@ -474,10 +478,10 @@ public class Compiler
       else
       {
         /**
-         * FIME: in principle there only needs to be 1 intermediate output field variable instance allocated per level of depth, isn't that
-         * right? My reasoning is that if for instance result is being used  like this  t.add( RealConstants.one, 128, result )
+         * FIME: in principle there only needs to be 1 intermediate output field
+         * variable instance allocated per level of depth, isn't that right?
          */
-        expression.locateExistingOrInstantiateNewIntermediateOutputVariable(mv);
+        expression.locateExistingOrInstantiateNewIntermediateOutputVariable(mv, depth);
       }
     }
 

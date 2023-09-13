@@ -2,7 +2,8 @@ package arb.expressions;
 
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
-import static java.lang.System.*;
+import static java.lang.System.err;
+import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 
 import java.io.*;
@@ -942,13 +943,15 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * DESIGN: only need a new intermediate variable for each level of depth, so
-   * first item is to add depth to {@link Node}
+   * DESIGN: only need a new intermediate variable for each level of depth
    * 
    * @param mv
+   * @param depth the depth this intermediate variable is needed for. "x" would be
+   *              depth 0, "sin(x)" would be sin at depth 0 and x at depth 1 for
+   *              example
    * @return name of the intermediate variable
    */
-  public String locateExistingOrInstantiateNewIntermediateOutputVariable(MethodVisitor mv)
+  public String locateExistingOrInstantiateNewIntermediateOutputVariable(MethodVisitor mv, int depth)
   {
     if (!resultInUse)
     {

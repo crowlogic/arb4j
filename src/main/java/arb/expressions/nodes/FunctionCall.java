@@ -21,16 +21,16 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     return "FunctionCall[name=" + name + ", arg=" + node + ", isLast=" + isLast + "]";
   }
 
-  public interface CodeGenerationHandler
+  public interface CodeGenerator
   {
-    MethodVisitor generate(MethodVisitor mv, Node<?, ?, ?> node);
+    MethodVisitor generate(MethodVisitor mv, Node<?, ?, ?> node, int depth);
   }
 
   private final String                                   name;
 
-  public static final Map<String, CodeGenerationHandler> functionHandlers         = new HashMap<>();
+  public static final Map<String, CodeGenerator> functionHandlers         = new HashMap<>();
 
-  public static final Map<String, CodeGenerationHandler> lastCallFunctionHandlers = new HashMap<>();
+  public static final Map<String, CodeGenerator> lastCallFunctionHandlers = new HashMap<>();
 
   static
   {
@@ -118,16 +118,16 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
   @Override
   public MethodVisitor generate(MethodVisitor methodVisitor)
   {
-    CodeGenerationHandler handler = (isLast ? lastCallFunctionHandlers : functionHandlers).get(name);
+    CodeGenerator handler = (isLast ? lastCallFunctionHandlers : functionHandlers).get(name);
     if (handler == null)
     {
       throw new RuntimeException("No handler for function '" + name + "'");
     }
-    return handler.generate(methodVisitor, node);
+    return handler.generate(methodVisitor, node, depth);
   }
 
   /**
-   * Registers a {@link CodeGenerationHandler} that calls the function
+   * Registers a {@link CodeGenerator} that calls the function
    * 
    * @param functionName
    * @param alias        if not null then the its handler its registered rather
@@ -144,9 +144,9 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
    *                     {@link Expression#resultInUse}
    * @return
    */
-  public static CodeGenerationHandler registerFunctionHandler(String functionName, String alias, boolean lastCall)
+  public static CodeGenerator registerFunctionHandler(String functionName, String alias, boolean lastCall)
   {
-    CodeGenerationHandler handler = (mv, node) -> callFunction(mv, functionName, node, lastCall);
+    CodeGenerator handler = (mv, node, depth) -> callFunction(mv, functionName, node, lastCall, depth);
 
     (lastCall ? lastCallFunctionHandlers : functionHandlers).put(alias != null ? alias : functionName, handler);
 
