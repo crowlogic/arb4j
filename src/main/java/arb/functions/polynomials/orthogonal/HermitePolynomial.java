@@ -7,6 +7,11 @@ public class HermitePolynomial extends
                                RealPolynomial implements
                                AutoCloseable
 {
+  static
+  {
+    System.loadLibrary("arblib");
+  }
+
   @Override
   public String toString()
   {
