@@ -19,8 +19,6 @@ try { Real five = x.sqrt(128,new Real() ); } { doSomething(five); } which would 
 happens between the braces specifying the code block. The close() method just calls the clear() method which maps to arblib's arb_clear or acb_clear methods.
 </p>
 
-**Plato found his permanences in a static, spiritual heaven, and his flux in the entanglement of his forms amid the fluent imperfections of the physical world. --Alfred North Whitehead, Process & Reality(Ch X Sec I, p.209)**
-
 # Expression Compiler
 You can avoid writing code such as that above by harnessing this awesome piece of code I wrote that compiles mathematical expressions directly
 into Java bytecodes, obviating the necessity to write long strands of Java code to implement non-trivial function evaluation
