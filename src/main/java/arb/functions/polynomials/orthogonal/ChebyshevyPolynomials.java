@@ -7,8 +7,8 @@ import arb.Real;
 import arb.domains.Domain;
 import arb.functions.real.RealFunction;
 
-public class ChebyshevyPolynomials implements
-                                   OrthogonalBasis<Real, ChebyshevPolynomial>
+public class ChebyshevyPolynomials extends
+                                   JacobiPolynomials<ChebyshevPolynomial>
 
 {
 

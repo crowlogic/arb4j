@@ -1,11 +1,10 @@
 package arb.functions.polynomials.orthogonal;
 
-import arb.Real;
-import arb.arblib;
+import arb.*;
 import arb.functions.real.RealFunction;
 
-public class ChebyshevPolynomial implements
-                                 RealFunction,
+public class ChebyshevPolynomial extends
+                                 RealPolynomial implements
                                  AutoCloseable
 {
 

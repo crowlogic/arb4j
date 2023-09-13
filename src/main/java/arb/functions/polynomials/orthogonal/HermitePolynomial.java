@@ -1,11 +1,10 @@
 package arb.functions.polynomials.orthogonal;
 
-import arb.Real;
-import arb.arblib;
+import arb.*;
 import arb.functions.real.RealFunction;
 
-public class HermitePolynomial implements
-                               RealFunction,
+public class HermitePolynomial extends
+                               RealPolynomial implements
                                AutoCloseable
 {
   @Override
