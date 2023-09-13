@@ -1,5 +1,7 @@
 package arb.groups;
 
+import arb.Field;
+
 /**
  * the {@link UnitaryGroup} of degree n, denoted U(n), is the group of n × n
  * unitary matrices, with the group operation of matrix multiplication. The
@@ -19,8 +21,8 @@ package arb.groups;
  * @author crow
  *
  */
-public interface UnitaryGroup extends
-                              LieGroup
+public interface UnitaryGroup<X extends Field<X>> extends
+                             LieGroup<X>
 {
 
 }

@@ -16,7 +16,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
  *            assigns each event in the {@link EventSpace} a probability, which
  *            is a number between 0 and 1.
  */
-public interface ProbabilitySpace<Ω extends SampleSpace, F extends EventSpace<Ω>, P extends ProbabilityDistributionFunction>
+public interface ProbabilitySpace<Ω extends SampleSpace<?>, F extends EventSpace<Ω>, P extends ProbabilityDistributionFunction>
                                  extends
                                  MeasureSpace<Ω>
 {

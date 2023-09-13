@@ -1,13 +1,11 @@
 %typemap(javaimports) arf_struct %{
-import arb.Field;
+import static arb.arblib.*;
+
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentScope;
 import java.util.Iterator;
-import static arb.RealConstants.*;
-import static arb.IntegerConstants.*;
+
 import arb.utensils.Utensils;
-import static arb.arblib.*;
-import static arb.RoundingMode.*;
 
 /**
  * A {@link Float} contains four words: <br>

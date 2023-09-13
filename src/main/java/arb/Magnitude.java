@@ -8,8 +8,6 @@
 
 package arb;
 
-import java.util.concurrent.TimeUnit;
-import static arb.RealConstants.*;
 import static arb.arblib.*;
 
 public class Magnitude implements AutoCloseable,Comparable<Magnitude> {

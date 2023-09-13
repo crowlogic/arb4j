@@ -30,7 +30,7 @@ import arb.domains.Domain;
  * </pre> 
  */
 
-public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>,Serializable,Lockable,IntFunction<Complex> {
+public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 

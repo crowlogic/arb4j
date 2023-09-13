@@ -1,5 +1,6 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.operators.LinearOperator;
 
 /**
@@ -33,8 +34,8 @@ import arb.operators.LinearOperator;
  * @see <a href=
  *      "https://en.m.wikipedia.org/wiki/Hodge_star_operator">HodgeStarOperator@Wikipedia</a>
  */
-public interface HodgeStar extends
-                           LinearOperator
+public interface HodgeStarOperator<F extends Field<F>, VE> extends
+                                  LinearOperator<F, VE>
 {
 
 }

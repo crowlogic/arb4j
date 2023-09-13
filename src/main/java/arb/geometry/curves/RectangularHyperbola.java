@@ -22,7 +22,6 @@ import arb.*;
 public class RectangularHyperbola implements
                                   PlaneCurve
 {
-  private static final Complex i = ComplexConstants.imaginaryUnit;
 
   @Override
   public Complex evaluate(Real x, int order, int prec, Complex w)

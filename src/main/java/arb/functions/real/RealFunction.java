@@ -313,7 +313,6 @@ public interface RealFunction extends
     assert config.maxDepth > 1 : "you probably dont really want the max recursion limit to be less than 2";
     Roots            roots    = new Roots();
     int              asign, bsign;
-    long             length   = 0, alloc = 0;
     RealRootInterval interval = config.interval;
     int              prec     = config.prec;
 

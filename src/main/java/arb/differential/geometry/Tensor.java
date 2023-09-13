@@ -1,5 +1,6 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.space.topological.VectorSpace;
 
 /**
@@ -42,7 +43,7 @@ import arb.space.topological.VectorSpace;
  * @author crow
  *
  */
-public interface Tensor<V extends VectorSpace>
+public interface Tensor<X extends Field<X>, Y, V extends VectorSpace<X, Y>>
 {
 
 }

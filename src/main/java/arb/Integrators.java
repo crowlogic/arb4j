@@ -352,14 +352,12 @@ public class Integrators
     int  depth;
     int  maxDepth;
     int  top;
-    long leafIntervalCount;
 
     f.simpleQuadrature(as, bs, prec, vs);
     mag_hypot(ms, vs.getReal().getRad(), vs.getImag().getRad());
 
     depth = maxDepth = 1;
     evalCount.set(1);
-    leafIntervalCount = 0;
 
     acb_get_mag_lower(tmpm, vs);
     mag_mul_2exp_si(tmpm, tmpm, -relAccuracyBitsGoal);
@@ -384,7 +382,6 @@ public class Integrators
           System.out.println("Finished evaluating subinterval, preparing to accumulate.");
         }
 
-        leafIntervalCount++;
         depth--;
         Integrators.accumulateIntegrand(prec, s, depth, top, useHeap, as, bs, vs, ms);
 
@@ -411,7 +408,6 @@ public class Integrators
             System.out.println("Gauss-Legendre integral used.");
           }
 
-          leafIntervalCount++;
           depth--;
 
           if (debug)

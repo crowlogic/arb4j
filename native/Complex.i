@@ -25,7 +25,7 @@ import arb.domains.Domain;
 
 %typemap(javafinalize) acb_struct ""
 
-%typemap(javainterfaces) acb_struct "Domain<Complex>,Field<Complex>,Iterable<Complex>,Serializable,Lockable,IntFunction<Complex>"
+%typemap(javainterfaces) acb_struct "Domain<Complex>,Field<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex>"
 
 %typemap(javacode) acb_struct %{
   static { System.loadLibrary( "arblib" ); }

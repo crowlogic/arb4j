@@ -1,5 +1,6 @@
 package arb.differential.geometry;
 
+import arb.Field;
 import arb.functions.Function;
 import arb.geometry.Manifold;
 import arb.space.topological.TangentSpace;
@@ -24,7 +25,7 @@ import arb.space.topological.TangentSpace;
  * {@link Manifold}. It is linear in u and v, and so defines a tensor.
  *
  */
-public interface RiemannCurvatureTensor<M extends RiemannianManifold> extends
+public interface RiemannCurvatureTensor<X extends Field<X>, M extends RiemannianManifold<X>> extends
                                        TidalTensor
 {
 

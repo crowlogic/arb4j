@@ -17,7 +17,7 @@ public class DiffusionProcessState extends
                                    State,
                                    AutoCloseable,
                                    Cleanable,
-                                   Lockable
+                                   Lockable<ContinuousTimeState>
 {
 
   public RandomState randomState;

@@ -16,8 +16,8 @@ import arb.space.topological.EuclideanSpace;
  * year by his description of the Lebesgue integral. Both were published as part
  * of his dissertation in 1902.
  */
-public interface LebesgueMeasure extends
-                                 Measure
+public interface LebesgueMeasure<X> extends
+                                 Measure<X>
 {
 
 }

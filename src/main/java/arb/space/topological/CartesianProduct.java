@@ -22,7 +22,7 @@ import arb.Set;
  * @param <A>
  * @param <B>
  */
-public class CartesianProduct<A extends Set, B extends Set> extends
+public class CartesianProduct<A extends Set<?>, B extends Set<?>> extends
                              OrderedPair<A, B> implements
                              TopologicalSpace<CartesianProduct<A, B>>
 {

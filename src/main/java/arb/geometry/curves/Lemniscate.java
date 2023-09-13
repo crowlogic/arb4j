@@ -51,8 +51,6 @@ public class Lemniscate implements
 
   private static final Complex imaginaryUnit = ComplexConstants.imaginaryUnit;
 
-  private static final Complex ONE           = ComplexConstants.one;
-
   Real                         scale;
 
   /**
@@ -91,6 +89,7 @@ public class Lemniscate implements
     return 4;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public HolomorphicFunction inverse(int branch)
   {

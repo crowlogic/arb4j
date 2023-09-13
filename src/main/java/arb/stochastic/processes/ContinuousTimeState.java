@@ -20,7 +20,7 @@ import arb.dynamical.systems.State;
 public abstract class ContinuousTimeState implements
                                          AutoCloseable,
                                          State,
-                                         Lockable
+                                         Lockable<ContinuousTimeState>
 {
   @Override
   public boolean locked()

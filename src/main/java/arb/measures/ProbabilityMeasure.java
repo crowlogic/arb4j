@@ -1,5 +1,6 @@
 package arb.measures;
 
+import arb.Field;
 import arb.domains.Domain;
 import arb.space.topological.ProbabilitySpace;
 
@@ -13,8 +14,8 @@ import arb.space.topological.ProbabilitySpace;
  * @see <a href=
  *      "https://mathworld.wolfram.com/ProbabilityMeasure.html">ProbabilityMeasure@WolframMathwortd</a>
  */
-public interface ProbabilityMeasure extends
-                                    Measure
+public interface ProbabilityMeasure<X extends Field<X>> extends
+                                   Measure<X>
 {
 
 }

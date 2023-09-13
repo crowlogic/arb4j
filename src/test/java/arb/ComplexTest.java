@@ -1,10 +1,8 @@
 package arb;
 
-import static arb.utensils.Utensils.println;
 import static java.lang.Math.pow;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 

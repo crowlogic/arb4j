@@ -145,7 +145,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
  * </pre>
  */
 
-public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable,IntFunction<Real> {
+public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real> {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 

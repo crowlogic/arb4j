@@ -1,7 +1,9 @@
 package arb.groups;
 
-public interface SpecialLinearGroup extends
-                                    LinearGroup
+import arb.Field;
+
+public interface SpecialLinearGroup<F extends Field<F>, VE> extends
+                                   LinearGroup<F>
 {
 
 }

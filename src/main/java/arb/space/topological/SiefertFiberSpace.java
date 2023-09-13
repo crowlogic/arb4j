@@ -1,5 +1,7 @@
 package arb.space.topological;
 
+import arb.Field;
+
 /**
  * <pre>
  * A Seifert manifold is a closed 3-manifold together with a decomposition into
@@ -42,8 +44,8 @@ package arb.space.topological;
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Seifert_fiber_space">SiefertFiberSpace@Wikipedia</a>
  */
-public interface SiefertFiberSpace extends
-                                   Fibration
+public interface SiefertFiberSpace<X extends Field<X>> extends
+                                   Fibration<X>
 {
 
 }

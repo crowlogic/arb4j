@@ -1,8 +1,6 @@
 %typemap(javafinalize) mag_struct ""
 
 %typemap(javaimports) mag_struct %{
-import java.util.concurrent.TimeUnit;
-import static arb.RealConstants.*;
 import static arb.arblib.*;
 %}
 

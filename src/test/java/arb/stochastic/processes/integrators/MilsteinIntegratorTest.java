@@ -1,7 +1,5 @@
 package arb.stochastic.processes.integrators;
 
-import java.lang.Float;
-
 import arb.*;
 import arb.stochastic.*;
 import arb.stochastic.processes.*;

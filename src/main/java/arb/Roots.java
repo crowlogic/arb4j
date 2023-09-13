@@ -13,6 +13,8 @@ public class Roots extends
                    ArrayList<RealRootInterval>
 {
 
+  private static final long serialVersionUID = 1L;
+
   @Override
   public boolean add(RealRootInterval e)
   {

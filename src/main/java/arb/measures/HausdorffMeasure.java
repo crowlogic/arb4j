@@ -20,8 +20,8 @@ package arb.measures;
  * 
  *
  */
-public interface HausdorffMeasure extends
-                                  Measure
+public interface HausdorffMeasure<X> extends
+                                  Measure<X>
 {
 
 }

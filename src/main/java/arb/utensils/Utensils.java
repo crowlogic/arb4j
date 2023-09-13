@@ -3,9 +3,7 @@ package arb.utensils;
 import static arb.IntegerConstants.FLINT_BITS;
 import static arb.arblib.*;
 
-import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.IntStream;
 
 import org.scilab.forge.jlatexmath.*;
 

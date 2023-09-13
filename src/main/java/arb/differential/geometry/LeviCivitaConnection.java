@@ -26,7 +26,7 @@ import arb.space.topological.TopologicalSpace;
  * @author ©2023 Stephen Crowley
  * 
  */
-public interface LeviCivitaConnection<X extends Field<X>, B extends TopologicalSpace<X>, M extends Manifold<X>>
+public interface LeviCivitaConnection<X extends Field<X>, B extends TopologicalSpace<X>, M extends RiemannianManifold<X>>
                                      extends
                                      AffineConnection<X, B, M>
 {

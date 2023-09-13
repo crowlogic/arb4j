@@ -34,7 +34,7 @@ import arb.groups.CommutativeGroup;
  * @param <A> the addition operator
  * @param <M> the multiplication operator
  */
-public interface Ring<X extends Set, A extends BinaryOperator<X>, M extends BinaryOperator<X>> extends
+public interface Ring<X extends Set<X>, A extends BinaryOperator<X>, M extends BinaryOperator<X>> extends
                      Set<X>
 {
 

@@ -1,7 +1,8 @@
 %typemap(javaimports) arf_interval_struct %{
-import java.util.ArrayList;
+import static arb.arblib.arf_interval_get_arb;
+import static arb.arblib.arf_interval_swap;
+
 import arb.domains.Interval;
-import static arb.arblib.*;
 %}
 
 %typemap(javafinalize) arf_interval_struct ""

@@ -1,5 +1,6 @@
 package arb.space.topological;
 
+import arb.Field;
 import arb.geometry.Manifold;
 
 /**
@@ -53,8 +54,8 @@ import arb.geometry.Manifold;
  *      "https://encyclopediaofmath.org/wiki/Fibre_space">FibreSpace@Wikipedia</a>
  *
  */
-public interface Fibration extends
-                           Manifold
+public interface Fibration<X extends Field<X>> extends
+                          Manifold<X>
 {
 
 }

@@ -1,5 +1,6 @@
 package arb.geometry;
 
+import arb.Complex;
 import arb.functions.complex.HolomorphicFunction;
 
 /**
@@ -11,6 +12,6 @@ import arb.functions.complex.HolomorphicFunction;
  *      "https://en.wikipedia.org/wiki/Complex_manifold">ComplexManifold@Wikipedia</a>
  */
 public interface ComplexManifold extends
-                                 Manifold
+                                 Manifold<Complex>
 {
 }

@@ -75,8 +75,7 @@ public class RealHolomorphicPart<F extends HolomorphicFunction> extends
    */
   public RealHolomorphicPart(F func)
   {
-    super(
-          func);
+    super(func);
 
   }
 
@@ -86,10 +85,10 @@ public class RealHolomorphicPart<F extends HolomorphicFunction> extends
    *
    * @param realToComplexFunction A {@link RealToComplexFunction} to be wrapped
    */
+  @SuppressWarnings("unchecked")
   public RealHolomorphicPart(RealToComplexFunction realToComplexFunction)
   {
-    super(
-          (F) new Wrapper(realToComplexFunction));
+    super((F) new Wrapper(realToComplexFunction));
   }
 
   /**

@@ -8,9 +8,10 @@
 
 package arb;
 
-import java.util.ArrayList;
+import static arb.arblib.arf_interval_get_arb;
+import static arb.arblib.arf_interval_swap;
+
 import arb.domains.Interval;
-import static arb.arblib.*;
 
 public class FloatInterval implements AutoCloseable, Interval<Float> {
 

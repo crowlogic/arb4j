@@ -1,12 +1,9 @@
 package arb.functions.polynomials.orthogonal;
 
-import static java.lang.System.out;
-
 import arb.Real;
 import arb.domains.ExtendedRealLine;
 import arb.functions.real.RealFunction;
 import arb.stochastic.StandardGaussianDensityFunction;
-import arb.utensils.ShellFunctions;
 import junit.framework.TestCase;
 
 public class HermitePolynomialsTest extends

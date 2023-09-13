@@ -90,6 +90,7 @@ public interface Field<X extends Field<X>> extends
    * @param prec
    * @return this after it has been populated with the result
    */
+  @SuppressWarnings("unchecked")
   public default X mul(int x, int prec)
   {
     X result = (X) this;
@@ -115,6 +116,7 @@ public interface Field<X extends Field<X>> extends
    * @param prec
    * @return this after it has been populated with the result
    */
+  @SuppressWarnings("unchecked")
   public default X mul(X x, int prec)
   {
     X result = (X) this;
@@ -128,6 +130,7 @@ public interface Field<X extends Field<X>> extends
    * @param prec precision
    * @return this
    */
+  @SuppressWarnings("unchecked")
   public default X div(int j, int prec)
   {
     return div(j, prec, (X) this);
@@ -160,6 +163,7 @@ public interface Field<X extends Field<X>> extends
    * @param prec precision
    * @return this after the resulting calculation has been assigned to it
    */
+  @SuppressWarnings("unchecked")
   public default X div(X j, int prec)
   {
     return div(j, prec, (X) this);
@@ -172,6 +176,7 @@ public interface Field<X extends Field<X>> extends
    * @param prec
    * @return this after it has been assigned the result
    */
+  @SuppressWarnings("unchecked")
   public default X add(X element, int prec)
   {
     return add(element, prec, (X) this);
@@ -184,6 +189,7 @@ public interface Field<X extends Field<X>> extends
    * @param prec
    * @return this after the result has been assigned to it
    */
+  @SuppressWarnings("unchecked")
   public default X sub(X element, int prec)
   {
     return sub(element, prec, (X) this);

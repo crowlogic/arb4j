@@ -17,8 +17,9 @@ import arb.space.topological.*;
  *      "https://en.wikipedia.org/wiki/Affine_connection">AffineConnection@Wikipedia</a>
  *
  */
-public interface AffineConnection<X extends Field<X>, B extends TopologicalSpace<X>, M extends Manifold<X>> extends
+public interface AffineConnection<X extends Field<X>, B extends TopologicalSpace<X>, M extends RiemannianManifold<X>>
+                                 extends
                                  Connection<X, B>
 {
-  public RiemannCurvatureTensor getCurvatureTensor();
+  public RiemannCurvatureTensor<X, M> getCurvatureTensor();
 }

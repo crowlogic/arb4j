@@ -6,6 +6,8 @@ public class RealInterval extends
                           Real implements
                           Interval<Real>
 {
+  private static final long serialVersionUID = 1L;
+
   public RealInterval(long cPtr,
                       boolean cMemoryOwn,
                       Real left,

@@ -2,7 +2,7 @@ package arb.functions;
 
 import arb.measures.MeasurableSpace;
 
-public interface MeasurableFunction<A extends MeasurableSpace, B extends MeasurableSpace> extends
+public interface MeasurableFunction<X, A extends MeasurableSpace<X>, B extends MeasurableSpace<X>> extends
                                    Function<A, B>
 {
 
