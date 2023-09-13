@@ -108,16 +108,18 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Calls this{@link #getNextIntermediatevariableFieldName()} and adds it to
    * this{@link #intermediateVariables}
    * 
+   * @param depth
+   * 
    * @return the field name returned by
    *         this{@link #getNextIntermediatevariableFieldName()}
    */
-  public String newIntermediateVariable()
+  public String newIntermediateVariable(int depth)
   {
     String intermediateVarName = getNextIntermediatevariableFieldName();
     intermediateVariables.add(intermediateVarName);
     if (verbose)
     {
-      System.out.println("Allocating intermediate variable " + intermediateVarName);
+      System.out.println("Allocating intermediate variable " + intermediateVarName + " at depth " + depth);
     }
     return intermediateVarName;
   }
@@ -462,7 +464,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * this{@link #eatFunctionInvocationOrVariableReference(int, int)} if
    * this{@link #ch} indicates the name of either a function or variable reference
    * 
-   * @param depth TODO
+   * @param depth
    * 
    * @return the next node in the syntax tree
    */
@@ -510,7 +512,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * Loop which instantiates {@link Add} and {@link Subtract} nodes
    * 
-   * @param depth TODO
+   * @param depth
    * 
    * @return new {@link Add} or {@link Subtract} node or result from
    *         this{@link #eatSecond(int)}
@@ -555,7 +557,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * that it is the name of something, but unknown if its the name of a function
    * invocation or a variable reference
    * 
-   * @param depth    TODO
+   * @param depth
    * @param startPos
    * @param node
    * 
@@ -603,7 +605,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Calls this{@link #eat(int)} and if this{@link #ch} indicates a power-raising
    * operation then a new {@link RaiseToPower} node is instantiated
    * 
-   * @param depth TODO
+   * @param depth
    * 
    * @return either a new {@link RaiseToPower} node from
    *         this{@link #eatPower(Node, int)} or a node from this{@link #eat(int)}
@@ -961,7 +963,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
     else
     {
-      String intermediateVariableName = newIntermediateVariable();
+      String intermediateVariableName = newIntermediateVariable(depth);
       loadField(loadThis(mv), intermediateVariableName, true);
       return intermediateVariableName;
     }
