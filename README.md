@@ -23,31 +23,7 @@ happens between the braces specifying the code block. The close() method just ca
 
 # Expression Compiler
 You can avoid writing code such as that above by harnessing this awesome piece of code I wrote that compiles mathematical expressions directly
-into Java bytecodes, obviating the necessity to write long strands of Java code to implement non-trivial function evaluation.
-
-```Java
-package arb.expressions;
-
-import static arb.expressions.Compiler.instantiate;
-
-import arb.*;
-import arb.functions.real.RealFunction;
-public class ExpressionTest extends
-                            TestCase
-{
-  public void testSFunctionWithGreekInput()
-  {
-    try ( RealFunction express = instantiate("GreekS", "tanh(ln(1+ρ^2))", variables))
-    {
-      Real result     = new Real();
-      Real evaluatedX = express.evaluate(RealConstants.one, 1, 256, result);
-      assert result == evaluatedX;
-      assertEquals(0.6, evaluatedX.doubleValue());
-    }
-  }
-}
-```
-
+into Java bytecodes, obviating the necessity to write long strands of Java code to implement non-trivial function evaluation
 
 # Coming Soon
 ### Automatic Differentiation of Expressions (doable now that symbolic parser and compiler works)
