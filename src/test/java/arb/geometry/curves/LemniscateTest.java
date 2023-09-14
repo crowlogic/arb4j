@@ -18,8 +18,8 @@ public class LemniscateTest extends
       Complex w = lem.evaluate(ComplexConstants.one.getReal(), 2, 555, Complex.newVector(2));
       assertEquals(0.6326452950883671, w.getReal().doubleValue(), 4.31E-21);
       assertEquals(0.5323526594920905, w.getImag().doubleValue(), 3.53E-22);
-      assertEquals(-1.3220770748926536, w.get(1).getReal().doubleValue(), 2.02E-21);
-      assertEquals(-0.77066978646899, w.get(1).getImag().doubleValue(), 1.23E-21);
+      assertEquals(-1.3220770748926538, w.get(1).getReal().doubleValue(), 2.02E-21);
+      assertEquals(-0.7706697864689901, w.get(1).getImag().doubleValue(), 1.23E-21);
       /**
        * l(1)=[[+0.44734777824274882640 +/- 4.31e-21] [+0.37643017550955035312 +/-
        * 3.53e-22]i, l'(1)=[-0.93484966490787055089 +/- 2.02e-21]

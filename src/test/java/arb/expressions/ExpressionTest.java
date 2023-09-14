@@ -137,14 +137,8 @@ public class ExpressionTest extends
 
   public void testFunctionOfVariablePlusAConstant()
   {
-
     RealFunction express = express("tanh(y+1)", variables);
-    {
-      Real evaluatedX = express.evaluate(one, 1, 256, new Real());
-      assertEquals(0.9950547536867305, evaluatedX.doubleValue(RoundingMode.Up));
-
-    }
-
+    assertEquals(0.9950547536867304, express.eval(1.0));
   }
 
   public void testFunctionOfVariablePlusAVariable()

@@ -18,7 +18,7 @@ public class TFunctionTest extends
       assertEquals(0.9272321871063991, result.getReal().doubleValue());
       assertEquals(0.0231349498078495, result.getImag().doubleValue());
       assertEquals(0.11036812556099569, result.get(1).getReal().doubleValue());
-      assertEquals(-0.04104757711323205, result.get(1).getImag().doubleValue());
+      assertEquals(-0.04104757711323206, result.get(1).getImag().doubleValue());
     }
   }
 }

@@ -40,7 +40,7 @@ import arb.utensils.Utensils;
    System.loadLibrary( "arblib" );
  }
  
-  public static RoundingMode defaultRoundingMode = RoundingMode.Down;
+  public static RoundingMode defaultRoundingMode = RoundingMode.Floor;
   
   public static Float valueOf(String string, int bits)
   {
