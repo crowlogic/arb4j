@@ -420,6 +420,11 @@ public class arblibJNI {
   public final static native void arb_lgamma(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_sqr(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void acb_sqrt(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
+  public final static native void arb_atan(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void arb_atan2(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
+  public final static native void arb_asin(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void arb_acos(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void arb_atanh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native long GMPRandomState_algorithmData_get(long jarg1, GMPRandomState jarg1_);
   public final static native long new_GMPRandomState();
   public final static native void delete_GMPRandomState(long jarg1);

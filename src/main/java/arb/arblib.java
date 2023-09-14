@@ -1663,4 +1663,24 @@ public class arblib {
     arblibJNI.acb_sqrt(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
 
+  public static void arb_atan(Real z, Real x, int prec) {
+    arblibJNI.arb_atan(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_atan2(Real z, Real b, Real a, int prec) {
+    arblibJNI.arb_atan2(Real.getCPtr(z), z, Real.getCPtr(b), b, Real.getCPtr(a), a, prec);
+  }
+
+  public static void arb_asin(Real z, Real x, int prec) {
+    arblibJNI.arb_asin(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_acos(Real z, Real x, int prec) {
+    arblibJNI.arb_acos(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
+  }
+
+  public static void arb_atanh(Real z, Real x, int prec) {
+    arblibJNI.arb_atanh(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
+  }
+
 }

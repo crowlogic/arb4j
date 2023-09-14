@@ -826,5 +826,11 @@ void acb_init(acb_t x);
   
   void acb_sqrt(acb_t y, const acb_t x, slong prec);
   
- // TODO: add https://arb.org/acb_modular.html#c.psl2z_t
+void arb_atan(arb_t z, const arb_t x, slong prec);
+void arb_atan2(arb_t z, const arb_t b, const arb_t a, slong prec);
+void arb_asin(arb_t z, const arb_t x, slong prec);
+void arb_acos(arb_t z, const arb_t x, slong prec);
+void arb_atanh(arb_t z, const arb_t x, slong prec);
+void arb_asinh(arb_t z, const arb_t x, slong prec);
+void arb_acosh(arb_t z, const arb_t x, slong prec);
 }

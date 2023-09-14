@@ -19,10 +19,13 @@ public class ChebyshevPolynomialOfTheFirstKind extends
     n.close();
   }
 
+  /**
+   * 
+   * @param n the real order of the Chebyshev poly
+   */
   public ChebyshevPolynomialOfTheFirstKind(Real n)
   {
-    this.n = new Real();
-    this.n.set(n);
+    this.n = n;
   }
 
   final Real n;
