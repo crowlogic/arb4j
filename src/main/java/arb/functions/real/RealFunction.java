@@ -164,9 +164,9 @@ public interface RealFunction extends
    */
   public default double eval(double t)
   {
-    try ( var x = Real.valueOf(t);)
+    try ( var x = new Real(t))
     {
-      return evaluate(x, 1, Double.PRECISION, x).doubleValue();
+      return evaluate(x, 1, Double.PRECISION+5, x).doubleValue();
     }
   }
 

@@ -115,7 +115,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   public String newIntermediateVariable(int depth)
   {
-    String intermediateVarName = getNextIntermediatevariableFieldName();
+    String intermediateVarName = getNextIntermediatevariableFieldName(depth);
     intermediateVariables.add(intermediateVarName);
     if (verbose)
     {
@@ -424,7 +424,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return "c" + constantCount++;
   }
 
-  public String getNextIntermediatevariableFieldName()
+  public String getNextIntermediatevariableFieldName(int depth)
   {
     return "l" + intermediateVariableCount++;
   }
