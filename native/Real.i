@@ -152,6 +152,19 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return get(value);
   }
 
+ 
+ /**
+   * @see arblib#arb_asin(Real, Real, int)
+   * @param prec
+   * @param result
+   * @return
+   */
+  public Real arcsin(int prec, Real result )
+  {
+    arblib.arb_asin(result, this, prec );
+    return result;
+  }
+  
   /**
    * @see arblib#acb_dirichlet_hardy_z(Complex, Complex, DirichletGroup,
    *      DirichletCharacter, int, int)
