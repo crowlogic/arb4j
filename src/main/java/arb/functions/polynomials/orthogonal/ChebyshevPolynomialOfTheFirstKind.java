@@ -2,7 +2,7 @@ package arb.functions.polynomials.orthogonal;
 
 import arb.*;
 
-public class ChebyshevPolynomial extends
+public class ChebyshevPolynomialOfTheFirstKind extends
                                  RealPolynomial implements
                                  AutoCloseable
 {
@@ -10,7 +10,7 @@ public class ChebyshevPolynomial extends
   @Override
   public String toString()
   {
-    return String.format("ChebyshevPolynomial[ν=%s]", n);
+    return String.format("ChebyshevPolynomialOfTheFirstKind[ν=%s]", n);
   }
 
   @Override
@@ -19,7 +19,7 @@ public class ChebyshevPolynomial extends
     n.close();
   }
 
-  public ChebyshevPolynomial(Real n)
+  public ChebyshevPolynomialOfTheFirstKind(Real n)
   {
     this.n = new Real();
     this.n.set(n);

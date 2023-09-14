@@ -8,12 +8,12 @@ import arb.domains.Domain;
 import arb.functions.real.RealFunction;
 
 public class ChebyshevyPolynomials extends
-                                   JacobiPolynomials<ChebyshevPolynomial>
+                                   JacobiPolynomials<ChebyshevPolynomialOfTheFirstKind>
 
 {
 
   @Override
-  public Iterator<ChebyshevPolynomial> iterator()
+  public Iterator<ChebyshevPolynomialOfTheFirstKind> iterator()
   {
     // TODO Auto-generated method stub
     return null;
