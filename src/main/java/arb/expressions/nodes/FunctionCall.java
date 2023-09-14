@@ -40,6 +40,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
                              "J0",
                              "sec",
                              "sin",
+                             "arcsin",
                              "cos",
                              "sech",
                              "floor",
