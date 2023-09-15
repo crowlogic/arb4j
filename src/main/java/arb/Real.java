@@ -232,6 +232,37 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   }
   
   /**
+   * Binomial coefficient. 
+   * 
+   * this choose k
+   * 
+   * @param k
+   * @param bits
+   * @return this
+   */
+  public Real choose( int k, int bits )
+  {
+    arblib.arb_bin_ui(this, this, k, bits);
+    return this;
+  }
+  
+  /**
+   * Binomial coefficient. 
+   * 
+   * this choose k
+   * 
+   * @param k
+   * @param bits
+   * @param result
+   * @return
+   */
+  public Real choose( int k, int bits, Real result )
+  {
+    arblib.arb_bin_ui(result, this, k, bits);
+    return result;
+  }
+    
+  /**
    * Bessel function of the first kind
    * 
    * @see arb#arb_hypgeom_bessel_j(Real, Real, Real, int)
