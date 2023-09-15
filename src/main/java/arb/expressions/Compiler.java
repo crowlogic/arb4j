@@ -9,8 +9,7 @@ import java.util.Collection;
 
 import org.objectweb.asm.*;
 
-import arb.Field;
-import arb.Real;
+import arb.*;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -256,17 +255,37 @@ public class Compiler
   }
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+  MethodVisitor
+  initializeLiteralConstantWithPi(Expression<D, R, F> expression,
+                                      MethodVisitor mv,
+                                      LiteralConstant<D, R, F> constant)
+{
+
+mv.visitVarInsn(ALOAD, 0);
+mv.visitTypeInsn(NEW, expression.domainClassInternalName);
+mv.visitInsn(DUP);
+mv.visitLdcInsn(constant.value);
+mv.visitIntInsn(SIPUSH, constant.bits);
+mv.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "(Ljava/lang/String;I)V", false);
+
+mv.visitFieldInsn(PUTFIELD, expression.className, constant.fieldName, expression.domainClassDescriptor);
+return mv;
+}
+  
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
          initializeLiteralConstantWithString(Expression<D, R, F> expression,
                                              MethodVisitor mv,
                                              LiteralConstant<D, R, F> constant)
   {
+
     mv.visitVarInsn(ALOAD, 0);
     mv.visitTypeInsn(NEW, expression.domainClassInternalName);
     mv.visitInsn(DUP);
     mv.visitLdcInsn(constant.value);
     mv.visitIntInsn(SIPUSH, constant.bits);
     mv.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "(Ljava/lang/String;I)V", false);
+
     mv.visitFieldInsn(PUTFIELD, expression.className, constant.fieldName, expression.domainClassDescriptor);
     return mv;
   }

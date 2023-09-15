@@ -3,8 +3,9 @@ package arb.expressions.nodes;
 import static arb.expressions.Compiler.loadThis;
 import static java.lang.System.out;
 
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
+import arb.RealConstants;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
@@ -14,11 +15,19 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   public final String value;
   public String       fieldName;
 
+  String              π = "π";
+
   public LiteralConstant(Expression<D, R, F> expression, String constantValueString, int depth)
   {
     super(expression,
           depth + 1);
     value = constantValueString;
+
+    if (π.equals(constantValueString))
+    {
+      fieldName = π;
+      return;
+    }
 
     for (LiteralConstant<D, R, F> existingConstant : expression.literalConstants)
     {
@@ -29,21 +38,20 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
           out.println("Reusing " + existingConstant);
         }
         fieldName = existingConstant.fieldName;
-        break;
+        return;
       }
     }
 
     if (fieldName == null)
     {
       fieldName = expression.getNextConstantFieldName();
-
-      if (verbose)
-      {
-        out.println("Adding constant " + fieldName + " to " + expression + " with value " + value);
-      }
-      expression.literalConstants.add(this);
     }
 
+    if (verbose)
+    {
+      out.println("Adding constant " + fieldName + " to " + expression + " with value " + value);
+    }
+    expression.literalConstants.add(this);
   }
 
   @Override
@@ -74,7 +82,17 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
       out.println(this);
     }
 
-    expression.loadField(loadThis(mv), fieldName, false);
+    if (π.equals(fieldName))
+    {
+      mv.visitFieldInsn(Opcodes.GETSTATIC,
+                        Type.getInternalName(RealConstants.class),
+                        fieldName,
+                        expression.domainClassDescriptor);
+    }
+    else
+    {
+      expression.loadField(loadThis(mv), fieldName, false);
+    }
 
     if (isLast)
     {

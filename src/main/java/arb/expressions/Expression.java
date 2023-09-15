@@ -492,7 +492,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
     else if (isDigitOrDot(ch))
     {
-      node = eatNumber(startPos, depth + 1);
+      node = eatNumber(depth + 1, startPos);
       assert node != null : "eatNumber returned null";
     }
     else if (isLatinOrGreek(ch, false))
@@ -565,7 +565,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   private Node<D, R, F> eatFunctionInvocationOrVariableReference(int depth, int startPos)
   {
-    String  functionOrVariableName = eatName(startPos, depth + 1);
+    String  functionOrVariableName = eatName(depth + 1, startPos);
     boolean isFunction             = eat(depth + 1, '(');
     if (verbose)
     {
@@ -582,22 +582,29 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       Node<D, R, F> arg = eatFirst(depth + 1);
       if (!eat(depth + 1, ')'))
       {
-        throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
+        throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n",
                                                  startPos,
                                                  position,
                                                  functionOrVariableName,
-                                                 isFunction));
+                                                 isFunction,
+                                                 depth));
       }
       return new FunctionCall<>(this,
                                 functionOrVariableName,
                                 arg,
-                                depth);
+                                depth + 1);
+    }
+    else if ("π".equals(functionOrVariableName))
+    {
+      return new LiteralConstant<>(this,
+                                   functionOrVariableName,
+                                   depth + 1);
     }
     else
     {
       return new Variable<>(this,
                             functionOrVariableName,
-                            depth);
+                            depth + 1);
     }
   }
 
@@ -608,7 +615,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param depth
    * 
    * @return either a new {@link RaiseToPower} node from
-   *         this{@link #eatPower(Node, int)} or a node from this{@link #eat(int)}
+   *         this{@link #eatPower(int, Node)} or a node from this{@link #eat(int)}
    */
   private Node<D, R, F> eatLast(int depth)
   {
@@ -617,19 +624,19 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       System.err.format("eatLast(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
     }
 
-    return eatPower(eat(depth + 1), depth + 1);
+    return eatPower(depth + 1, eat(depth + 1));
   }
 
   /**
    * Upon entrance, this{@link #ch} should already be known to be a Latin or Greek
    * character
    * 
-   * @param startPos
    * @param depth    TODO
+   * @param startPos
    * 
    * @return the name at startPos
    */
-  private String eatName(int startPos, int depth)
+  private String eatName(int depth, int startPos)
   {
     while (isLatinOrGreek(ch, true))
     {
@@ -651,11 +658,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * On entrance it should already be known that this{@link #ch} is a digit or a
    * dot
-   * 
    * @param startPos
+   * 
    * @return a new {@link LiteralConstant} representing the base-10 number
    */
-  private Node<D, R, F> eatNumber(int startPos, int depth)
+  private Node<D, R, F> eatNumber(int depth, int startPos)
   {
     while (isDigitOrDot(ch))
     {
@@ -673,14 +680,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * 
    * TODO: support numbers greater than 9 so something like "x²⁴" would mean
    * "x^(24)"
-   * 
-   * @param node
    * @param depth TODO
+   * @param node
+   * 
    * @return node if this{@link #ch} does not indicate the specific power raising
    *         operation, otherwise returns a new {@link RaiseToPower} operator with
    *         node as its parent node
    */
-  Node<D, R, F> eatSuperscript(Node<D, R, F> node, char superscript, String digit, int depth)
+  Node<D, R, F> eatSuperscript(int depth, Node<D, R, F> node, char superscript, String digit)
   {
     if (eat(depth + 1, superscript))
     {
@@ -697,15 +704,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * Checks if this{@link #ch} is a ^ character or a numerical superscript and
    * generates the corresponding {@link RaiseToPower} node if so
-   * 
-   * @param node
    * @param depth TODO
+   * @param node
    * 
    * @return node if this{@link #ch} does not indicate a power raising operation,
    *         otherwise returns a new {@link RaiseToPower} operator with node as
    *         its parent node
    */
-  private Node<D, R, F> eatPower(Node<D, R, F> node, int depth)
+  private Node<D, R, F> eatPower(int depth, Node<D, R, F> node)
   {
     if (eat(depth + 1, '^'))
     {
@@ -732,30 +738,30 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
     else
     {
-      return eatSuperscripts(node, depth + 1);
+      return eatSuperscripts(depth + 1, node);
     }
   }
 
   /**
-   * Calls this{@link #eatSuperscript(Node, int, String, int)} for each digit of
+   * Calls this{@link #eatSuperscript(int, Node, int, String)} for each digit of
    * the base 10 numeral system
-   * 
-   * @param node
    * @param depth TODO
+   * @param node
+   * 
    * @return
    */
-  public Node<D, R, F> eatSuperscripts(Node<D, R, F> node, int depth)
+  public Node<D, R, F> eatSuperscripts(int depth, Node<D, R, F> node)
   {
-    node = eatSuperscript(node, '⁰', "0", depth + 1);
-    node = eatSuperscript(node, '¹', "1", depth + 1);
-    node = eatSuperscript(node, '²', "2", depth + 1);
-    node = eatSuperscript(node, '³', "3", depth + 1);
-    node = eatSuperscript(node, '⁴', "4", depth + 1);
-    node = eatSuperscript(node, '⁵', "5", depth + 1);
-    node = eatSuperscript(node, '⁶', "6", depth + 1);
-    node = eatSuperscript(node, '⁷', "7", depth + 1);
-    node = eatSuperscript(node, '⁸', "8", depth + 1);
-    node = eatSuperscript(node, '⁹', "9", depth + 1);
+    node = eatSuperscript(depth + 1, node, '⁰', "0");
+    node = eatSuperscript(depth + 1, node, '¹', "1");
+    node = eatSuperscript(depth + 1, node, '²', "2");
+    node = eatSuperscript(depth + 1, node, '³', "3");
+    node = eatSuperscript(depth + 1, node, '⁴', "4");
+    node = eatSuperscript(depth + 1, node, '⁵', "5");
+    node = eatSuperscript(depth + 1, node, '⁶', "6");
+    node = eatSuperscript(depth + 1, node, '⁷', "7");
+    node = eatSuperscript(depth + 1, node, '⁸', "8");
+    node = eatSuperscript(depth + 1, node, '⁹', "9");
     return node;
   }
 
