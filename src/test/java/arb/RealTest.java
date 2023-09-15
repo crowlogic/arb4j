@@ -12,6 +12,15 @@ public class RealTest extends
                       TestCase
 {
 
+  public void testChoose()
+  {
+    try ( Real ten = Real.valueOf(10))
+    {
+      double twoTen = ten.choose(6, 128).doubleValue();
+      assertEquals(210.0, twoTen);
+    }
+  }
+
   public void testShift()
   {
     int N = 10;
