@@ -56,7 +56,7 @@ public class FunctionPlotter extends
     {
       set(stage, evt ->
       {
-       out.println( "Closing " + evt );
+       //out.println( "Closing " + evt );
       });
     });
     return stage;
