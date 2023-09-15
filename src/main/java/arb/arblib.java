@@ -1603,6 +1603,14 @@ public class arblib {
     arblibJNI.arb_trim(Real.getCPtr(y), y, Real.getCPtr(x), x);
   }
 
+  public static void arb_bin_ui(Real z, Real n, long k, int prec) {
+    arblibJNI.arb_bin_ui(Real.getCPtr(z), z, Real.getCPtr(n), n, k, prec);
+  }
+
+  public static void arb_bin_uiui(Real z, long n, long k, int prec) {
+    arblibJNI.arb_bin_uiui(Real.getCPtr(z), z, n, k, prec);
+  }
+
   public static void arb_set_interval_mag(Real x, Magnitude a, Magnitude b, int prec) {
     arblibJNI.arb_set_interval_mag(Real.getCPtr(x), x, Magnitude.getCPtr(a), a, Magnitude.getCPtr(b), b, prec);
   }

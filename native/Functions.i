@@ -793,6 +793,11 @@ int acb_is_finite(const acb_t z);
    void arb_div_si(arb_t z, const arb_t x, slong y, slong prec);
    
   void arb_trim(arb_t y, const arb_t x);
+
+
+void arb_bin_ui(arb_t z, const arb_t n, ulong k, slong prec);
+
+void arb_bin_uiui(arb_t z, ulong n, ulong k, slong prec);
   
    void arb_set_interval_mag(arb_t x, const mag_t a, const mag_t b, slong prec);
 

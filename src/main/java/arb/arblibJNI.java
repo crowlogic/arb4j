@@ -405,6 +405,8 @@ public class arblibJNI {
   public final static native void mag_zero(long jarg1, Magnitude jarg1_);
   public final static native void arb_div_si(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
   public final static native void arb_trim(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
+  public final static native void arb_bin_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
+  public final static native void arb_bin_uiui(long jarg1, Real jarg1_, long jarg2, long jarg3, int jarg4);
   public final static native void arb_set_interval_mag(long jarg1, Real jarg1_, long jarg2, Magnitude jarg2_, long jarg3, Magnitude jarg3_, int jarg4);
   public final static native void acb_modular_theta_series(long jarg1, ComplexPolynomial jarg1_, long jarg2, ComplexPolynomial jarg2_, long jarg3, ComplexPolynomial jarg3_, long jarg4, ComplexPolynomial jarg4_, long jarg5, ComplexPolynomial jarg5_, long jarg6, Complex jarg6_, int jarg7, int jarg8);
   public final static native void acb_poly_init(long jarg1, ComplexPolynomial jarg1_);
