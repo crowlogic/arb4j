@@ -5,7 +5,7 @@ import arb.Real;
 import arb.functions.RealToComplexFunction;
 
 public class RealPartOfHolomorphicMapping implements
-                                      RealToComplexFunction
+                                          RealToComplexFunction
 {
   @Override
   public String toString()
@@ -23,11 +23,9 @@ public class RealPartOfHolomorphicMapping implements
   @Override
   public Complex evaluate(Real x, int order, int prec, Complex res)
   {
-    try ( Complex y = new Complex();)
-    {
-      y.re().set(x);
-      return f.evaluate(y, order, prec, res);
-    }
+
+    res.re().set(x);
+    return f.evaluate(res, order, prec, res);
   }
 
 }
