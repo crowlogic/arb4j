@@ -1,10 +1,10 @@
 package arb.functions.complex;
 
 import arb.*;
+import arb.expressions.Expression;
 
 /**
- * 
- * @author Stephen Crowley ©LGPL 2022 *
+ * TODO: redo with {@link Expression}
  */
 public class SFunctionInverse implements
                               HolomorphicFunction

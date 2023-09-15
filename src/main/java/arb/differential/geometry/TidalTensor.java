@@ -1,15 +1,10 @@
 package arb.differential.geometry;
 
-/**
- * 
- * @author crow
- * 
- *         TODO: elaborate upon this after reading
- * @see <a href="doc-files/TidalForcesAndCurvature.pdf">Tidal Forces and
- *      Curvature</a>
- */
-public interface TidalTensor extends
-                             Tensor
+import arb.Field;
+import arb.space.topological.VectorSpace;
+
+public interface TidalTensor<X extends Field<X>, Y, V extends VectorSpace<X, Y>> extends
+                            Tensor<X, Y, V>
 {
 
 }

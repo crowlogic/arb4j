@@ -4,6 +4,7 @@ import arb.Field;
 import arb.functions.Function;
 import arb.geometry.Manifold;
 import arb.space.topological.TangentSpace;
+import arb.space.topological.VectorSpace;
 
 /**
  * Let (M, g) be a {@link RiemannianManifold} and X(M) be the space of all
@@ -13,9 +14,7 @@ import arb.space.topological.TangentSpace;
  * R : X(M) × X(M) × X(M)→X(M) by the following formula where ∇ is an
  * {@link AffineConnection}:
  * 
- * R(X,Y)Z = ∇X∇YZ − ∇Y∇XZ − ∇[X,Y]Z
- * pb
- * or equivalently
+ * R(X,Y)Z = ∇X∇YZ − ∇Y∇XZ − ∇[X,Y]Z pb or equivalently
  * 
  * R(X,Y)=[∇X,∇Y] − ∇[X,Y]
  * 
@@ -26,7 +25,7 @@ import arb.space.topological.TangentSpace;
  *
  */
 public interface RiemannCurvatureTensor<X extends Field<X>, M extends RiemannianManifold<X>> extends
-                                       TidalTensor
+                                       TidalTensor<X, M, VectorSpace<X, M>>
 {
 
 }

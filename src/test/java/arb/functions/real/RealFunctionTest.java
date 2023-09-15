@@ -159,7 +159,7 @@ public class RealFunctionTest extends
   @Test
   public void testLocateRootsHardyZ()
   {
-    RealFunction       f               = new RealHolomorphicPart(new ZFunction()).asRealFunction(new Complex());
+    RealFunction       f               = new RealHolomorphicPart<>(new ZFunction()).asRealFunction(new Complex());
     RealRootInterval   initialInterval = new RealRootInterval(14,
                                                               14.2);
     int                maxdepth        = 11;

@@ -44,6 +44,7 @@ public class MultivariateDiffusionProcessIntegrator<M extends MultivariateDiffus
 
   boolean                                                           verbose = false;
 
+  @SafeVarargs
   public MultivariateDiffusionProcessIntegrator(MultivariateDiffusionProcess<M> process,
                                                 M state,
                                                 RealMatrix correlationMatrix,

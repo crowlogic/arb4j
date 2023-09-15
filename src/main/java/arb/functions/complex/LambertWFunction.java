@@ -31,8 +31,7 @@ public class LambertWFunction implements
 {
   // TOOD: make javadocs for flags param instead of referring elsewhere
 
-  public LambertWFunction(long branch,
-                          int flags)
+  public LambertWFunction(long branch, int flags)
   {
     this.branch = branch;
     this.flags  = flags;
@@ -46,8 +45,7 @@ public class LambertWFunction implements
 
   public LambertWFunction()
   {
-    this(
-         0);
+    this(0);
   }
 
   long branch;

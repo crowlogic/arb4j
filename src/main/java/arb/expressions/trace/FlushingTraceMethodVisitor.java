@@ -58,6 +58,7 @@ public final class FlushingTraceMethodVisitor extends
     flush();
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public void visitMethodInsn(int opcode, String owner, String name, String descriptor)
   {
