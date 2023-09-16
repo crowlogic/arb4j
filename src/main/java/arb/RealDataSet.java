@@ -14,11 +14,9 @@ public class RealDataSet extends
 {
   private static final long serialVersionUID = 1L;
 
-  public RealDataSet(String name,
-                     int length)
+  public RealDataSet(String name, int length)
   {
-    super(
-          name,
+    super(name,
           2);
     data = RealMatrix.newMatrix(2, length);
   }

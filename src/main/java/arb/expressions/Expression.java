@@ -228,12 +228,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       System.out.flush();
     }
 
-    ClassVisitor cw = new CheckClassAdapter(new ClassWriter(ClassWriter.COMPUTE_FRAMES));
-    if (verbose)
-    {
-      cw = new FlushingTraceClassVisitor(cw,
-                                         new PrintWriter(System.err));
-    }
+    ClassVisitor cw = constructClassVisitor();
+
     try
     {
       generateFunctionInterface(this, className, cw);
@@ -272,10 +268,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     finally
     {
       cw.visitEnd();
-    }
-    if (verbose)
-    {
-      cw = ((FlushingTraceClassVisitor) cw).getDelegate();
+      if (verbose)
+      {
+        cw = ((FlushingTraceClassVisitor) cw).getDelegate();
+      }
     }
 
     instructions = ((ClassWriter) cw.getDelegate()).toByteArray();
@@ -286,6 +282,17 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       writeBytecodes(file);
     }
     return this;
+  }
+
+  private ClassVisitor constructClassVisitor()
+  {
+    ClassVisitor cw = new CheckClassAdapter(new ClassWriter(ClassWriter.COMPUTE_FRAMES));
+    if (verbose)
+    {
+      cw = new FlushingTraceClassVisitor(cw,
+                                         new PrintWriter(System.err));
+    }
+    return cw;
   }
 
   /**
@@ -658,6 +665,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * On entrance it should already be known that this{@link #ch} is a digit or a
    * dot
+   * 
    * @param startPos
    * 
    * @return a new {@link LiteralConstant} representing the base-10 number
@@ -680,6 +688,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * 
    * TODO: support numbers greater than 9 so something like "x²⁴" would mean
    * "x^(24)"
+   * 
    * @param depth TODO
    * @param node
    * 
@@ -704,6 +713,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * Checks if this{@link #ch} is a ^ character or a numerical superscript and
    * generates the corresponding {@link RaiseToPower} node if so
+   * 
    * @param depth TODO
    * @param node
    * 
@@ -745,6 +755,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * Calls this{@link #eatSuperscript(int, Node, int, String)} for each digit of
    * the base 10 numeral system
+   * 
    * @param depth TODO
    * @param node
    * 
@@ -768,7 +779,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * Loop which instantiates new {@link Multiply} and {@link Divide} nodes
    * 
-   * @param depth TODO
+   * @param depth 
    * 
    * @return new {@link Multiply} or {@link Divide} node or result from
    *         this{@link #eatLast(int)}

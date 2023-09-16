@@ -14,6 +14,7 @@ import arb.RealRootInterval.RefinementResult;
 import arb.functions.Function;
 import arb.functions.complex.HolomorphicFunction;
 import arb.utensils.Utensils;
+import de.gsi.chart.Chart;
 
 /**
  * The RealFunction interface, a part of the arb.functions.real package, is
@@ -131,7 +132,11 @@ public interface RealFunction extends
   /**
    * Generate a {@link RealPartition} covering the specified interval and call
    * this{@link #evaluate(Real, int, int, Real)} at each of the n points of the
-   * partition
+   * partition.
+   * 
+   * TODO: modify this to return a {@link RealDataSet} instead, it contains a 2
+   * row {@link RealMatrix} with the x and y values and is also suitable for use
+   * with {@link Chart}
    * 
    * @param interval
    * @param bits
@@ -166,7 +171,7 @@ public interface RealFunction extends
   {
     try ( var x = new Real(t))
     {
-      return evaluate(x, 1, Double.PRECISION+5, x).doubleValue();
+      return evaluate(x, 1, Double.PRECISION + 5, x).doubleValue();
     }
   }
 
