@@ -72,23 +72,31 @@ public interface RealFunction extends
   }
 
   /**
-   * double-convenience method for
-   * this{@link #quantize(FloatInterval, int, int, boolean)}
+   * Default to 128 bits for this{@link #quantize(double, double, int, int)}
+   * 
+   * @param left
+   * @param right
+   * @param n
+   * @return
+   */
+  public default RealDataSet quantize(double left, double right, int n)
+  {
+    return quantize(left, right, Double.SIZE, n, false);
+  }
+
+  /**
+   * Default to parallel=false for
+   * this{@link #quantize(double, double, int, int, boolean)}
    * 
    * @param left
    * @param right
    * @param bits
    * @param n
-   * @param parallel TODO
    * @return
    */
-  public default Real quantize(double left, double right, int bits, int n, boolean parallel)
+  public default RealDataSet quantize(double left, double right, int bits, int n)
   {
-    try ( FloatInterval I = new FloatInterval(left,
-                                              right);)
-    {
-      return quantize(I, bits, n, parallel);
-    }
+    return quantize(left, right, bits, n, false);
   }
 
   /**
@@ -99,34 +107,16 @@ public interface RealFunction extends
    * @param right
    * @param bits
    * @param n
-   * @param result
    * @param parallel if true then multiple threads are used
    * @return
    */
-  public default Real quantize(double left, double right, int bits, int n, Real result, boolean parallel)
+  public default RealDataSet quantize(double left, double right, int bits, int n, boolean parallel)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
     {
-      return quantize(I, bits, n, result, parallel);
+      return quantize(I, bits, n, parallel);
     }
-  }
-
-  /**
-   * Generate a {@link RealPartition} covering the specified interval and call
-   * this{@link #evaluate(Real, int, int, Real)} at each of the n points of the
-   * partition
-   * 
-   * @param interval
-   * @param bits
-   * @param n
-   * @param parallel TODO
-   * @return a {@link Real} of length n allocated with
-   *         {@link Real#newAlignedVector(int)} containing the sampled mesh points
-   */
-  public default Real quantize(FloatInterval interval, int bits, int n, boolean parallel)
-  {
-    return quantize(interval, bits, n, Real.newVector(n), parallel);
   }
 
   /**
@@ -134,9 +124,6 @@ public interface RealFunction extends
    * this{@link #evaluate(Real, int, int, Real)} at each of the n points of the
    * partition.
    * 
-   * TODO: modify this to return a {@link RealDataSet} instead, it contains a 2
-   * row {@link RealMatrix} with the x and y values and is also suitable for use
-   * with {@link Chart}
    * 
    * @param interval
    * @param bits
@@ -145,9 +132,14 @@ public interface RealFunction extends
    * @param parallel TODO
    * @return values
    */
-  public default Real quantize(FloatInterval interval, int bits, int n, Real values, boolean parallel)
+  public default RealDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    try ( RealPartition mesh = interval.generateRealPartition(bits, false, Real.newVector(n)))
+    RealDataSet sample = new RealDataSet(toString() + " over " + interval.left().toString(5) + ".."
+                  + interval.right().toString(5),
+                                         n);
+    Real        values = sample.getRealYValues();
+
+    try ( RealPartition mesh = interval.generateRealPartition(bits, false, sample.getRealXValues()))
     {
       IntStream range = IntStream.range(0, n);
       if (parallel)
@@ -155,7 +147,7 @@ public interface RealFunction extends
         range = range.parallel();
       }
       range.forEach(i -> evaluate(mesh.get(i), 1, bits, values.get(i)));
-      return values;
+      return sample;
     }
   }
 
@@ -452,12 +444,12 @@ public interface RealFunction extends
 
   public default double integrate(double left, double right)
   {
-    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-13); Real l = new Real(left);
+    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17); Real l = new Real(left);
           Real r = new Real(right); Real result = new Real())
     {
       IntegrationOptions opts = new IntegrationOptions();
       opts.verbose = true;
-      return integrate(l, r, 64, acceptableUncertainty, opts, 128, result).doubleValue(RoundingMode.Up);
+      return integrate(l, r, 64, acceptableUncertainty, opts, 128, result).doubleValue();
     }
   }
 

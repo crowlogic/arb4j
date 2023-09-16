@@ -8,6 +8,38 @@ import javafx.application.Platform;
 public class ShellFunctions
 {
 
+  public static void plot(RealDataSet sequence)
+  {
+    initializeJavaFxIfNecessary();
+    Platform.runLater(() ->
+    { // Create a SequenceDataSet from the Real sequence
+      RealDataSet dataSet = sequence;
+
+      try ( FunctionPlotter plotter = new FunctionPlotter())
+      {
+        plotter.createScene();
+
+        // Clear existing datasets if needed
+        plotter.chart.getDatasets().clear();
+
+        // Add the new dataset to FunctionPlotter's internal list
+        plotter.chart.getDatasets().add(dataSet);
+
+        // Create and show the scene if not already displayed
+        if (plotter.stage == null)
+        {
+          plotter.stage.show();
+        }
+        else
+        {
+          plotter.stage.show();
+
+          plotter.stage.toFront();
+        }
+      }
+    });
+  }
+
   /**
    * Plots the given SequenceDataSet
    *
@@ -59,11 +91,38 @@ public class ShellFunctions
     }
   }
 
-  public static void plot(double left, double right, RealFunction... functions)
+  public static void plot(double left, double right, int n, RealFunction... functions)
   {
     initializeJavaFxIfNecessary();
-    assert false : "todo: redo using RealFunction.quantize and change quantize to return a 2 column matrix and return the domain in one col and the range in the other col";
+    Platform.runLater(() ->
+    { // Create a SequenceDataSet from the Real sequence
 
+      try ( FunctionPlotter plotter = new FunctionPlotter())
+      {
+        plotter.createScene();
+
+        // Clear existing datasets if needed
+        plotter.chart.getDatasets().clear();
+
+        for (RealFunction func : functions)
+        {
+          RealDataSet sample = func.quantize(left, right, n);
+          plotter.chart.getDatasets().add(sample);
+        }
+
+        // Create and show the scene if not already displayed
+        if (plotter.stage == null)
+        {
+          plotter.stage.show();
+        }
+        else
+        {
+          plotter.stage.show();
+
+          plotter.stage.toFront();
+        }
+      }
+    });
   }
 
 }

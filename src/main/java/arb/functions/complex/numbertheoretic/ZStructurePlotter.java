@@ -10,7 +10,7 @@ public class ZStructurePlotter
 
 //    ShellFunctions.plot(primaryStage, 0, 125, func.asRealToComplexFunction().realPart());
     ZStructureFunction zvs = new ZStructureFunction();
-    ShellFunctions.plot(0, 42, zvs);
+    ShellFunctions.plot(0, 42, 1000, zvs);
 
   }
 }
