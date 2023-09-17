@@ -7,7 +7,7 @@ import arb.space.topological.Bundle;
 import arb.space.topological.CotangentSpace;
 
 public interface CotangentBundle<X extends Field<X>, M extends DifferentiableManifold<X>> extends
-                                Bundle<M, CotangentSpace<M>, Function<M, CotangentSpace<M>>>
+                                Bundle<X, M, CotangentSpace<X>, Function<M, CotangentSpace<X>>>
 {
 
 }

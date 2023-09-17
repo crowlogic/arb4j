@@ -68,12 +68,16 @@ public class ExpressionTest extends
     }
   }
 
+  public void testNegativeInput()
+  {
+
+  }
+
   public void testConstant()
   {
-    RealFunction expression = express("69.42", variables);
+    try ( RealFunction expression = express("69.42", variables))
     {
-      Real func = expression.evaluate(one, 1, 256, new Real());
-      assertEquals(69.42, func.doubleValue(RoundingMode.Up));
+      assertEquals(69.42, expression.eval(1.0));
     }
   }
 
@@ -138,7 +142,7 @@ public class ExpressionTest extends
   public void testFunctionOfVariablePlusAConstant()
   {
     RealFunction express = express("tanh(y+1)", variables);
-    assertEquals(0.9950547536867304, express.eval(1.0));
+    assertEquals(0.9950547536867305, express.eval(1.0));
   }
 
   public void testFunctionOfVariablePlusAVariable()

@@ -15,7 +15,7 @@ import arb.space.topological.TangentSpace;
  * TODO: also {@link CotangentBundle}
  */
 public interface TangentBundle<X extends Field<X>, M extends DifferentiableManifold<X>> extends
-                              Bundle<M, TangentSpace<M>, Function<M, TangentSpace<M>>>
+                              Bundle<X, M, TangentSpace<X>, Function<M, TangentSpace<X>>>
 {
 
 }
