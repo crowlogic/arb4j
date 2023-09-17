@@ -70,9 +70,12 @@ public class ExpressionTest extends
 
   public void testNegativeInput()
   {
-
+    try ( RealFunction expression = express("-t") )
+    {
+      assertEquals(-1.0, expression.eval(1.0));
+    }
   }
-
+  
   public void testConstant()
   {
     try ( RealFunction expression = express("69.42", variables))
