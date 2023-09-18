@@ -53,6 +53,10 @@ public class arblib {
     arblibJNI.arb_csch(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
   }
 
+  public static void _arb_vec_set(Real res, Real vec, int len) {
+    arblibJNI._arb_vec_set(Real.getCPtr(res), res, Real.getCPtr(vec), vec, len);
+  }
+
   public static void acb_dft_convol(Complex w, Complex f, Complex g, int len, int prec) {
     arblibJNI.acb_dft_convol(Complex.getCPtr(w), w, Complex.getCPtr(f), f, Complex.getCPtr(g), g, len, prec);
   }

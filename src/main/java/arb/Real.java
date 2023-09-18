@@ -325,7 +325,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    */
   public Real structure(int n, int bits, Real result)
   {
-    IntStream.range(0, n).forEach(i -> gammaVariance(i, bits, result.get(i)));
+    IntStream.range(0, n).parallel().forEach(i -> gammaVariance(i, bits, result.get(i)));
     return result;
   }
   
@@ -1316,7 +1316,16 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
         
   public Real set(Real real)
   {
+    assert dim == real.dim;
+    if ( dim == 1 )
+    {
      arblib.arb_set( this, real );
+     }
+     else
+     { 
+       arblib._arb_vec_set( this, real, dim );
+     }
+     
      return this;    
   }
   

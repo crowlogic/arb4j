@@ -1,0 +1,6 @@
+var f = express("sin(t)");
+var y = f.quantize(0,π.mul(100,128,new Real()).doubleValue(),128,10000,false);
+var s = y.structure(1000);
+var st = express("2*sin(t/2)^2");
+plot(s)
+plot(0,32,1000,st);

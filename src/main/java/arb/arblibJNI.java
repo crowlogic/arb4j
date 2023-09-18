@@ -20,6 +20,7 @@ public class arblibJNI {
   public final static native void arb_csc_pi(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_sech(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_csch(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void _arb_vec_set(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void acb_dft_convol(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4, int jarg5);
   public final static native void arb_mat_neg(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native void arb_mat_add(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);

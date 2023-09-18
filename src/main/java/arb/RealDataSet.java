@@ -1,6 +1,7 @@
 package arb;
 
 import java.io.Closeable;
+import java.util.stream.IntStream;
 
 import de.gsi.dataset.DataSet;
 import de.gsi.dataset.DataSet2D;
@@ -63,5 +64,17 @@ public class RealDataSet extends
       return;
     }
     data.close();
+  }
+
+  public RealDataSet structure(int n)
+  {
+    var         x   = getRealXValues();
+    var         y   = getRealYValues();
+    RealDataSet rds = new RealDataSet("structure[" + y.name + "]",
+                                      n);
+    var outy = rds.getRealYValues();
+    rds.getRealXValues().set(x.slice(0, n));
+    IntStream.range(0, n).parallel().forEach(i -> y.gammaVariance(i, 128, outy.get(i)));
+    return rds;
   }
 }

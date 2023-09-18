@@ -104,8 +104,8 @@ public interface RealToComplexFunction extends
       {
 
         /* Compute initial crude estimate for the whole interval. */
-        as.set(a);
-        bs.set(b);
+        as.get(0).set(a);
+        bs.get(0).set(b);
         calculateSimpleQuadrature(as, bs, prec, vs, verbose);
         mag_hypot(ms, vs.getReal().getRad(), vs.getImag().getRad());
 

@@ -14,6 +14,8 @@ void arb_csc_pi(arb_t res, const arb_t x, slong prec);
 void arb_sech(arb_t res, const arb_t x, slong prec);
 void arb_csch(arb_t res, const arb_t x, slong prec);
 
+void _arb_vec_set(arb_ptr res, arb_srcptr vec, slong len);
+
 void acb_dft_convol(acb_ptr w, acb_srcptr f, acb_srcptr g, slong len, slong prec);
  
 void arb_mat_neg(arb_mat_t dest, const arb_mat_t src);

@@ -117,7 +117,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     String intermediateVarName = getNextIntermediatevariableFieldName(depth);
     intermediateVariables.add(intermediateVarName);
-    if (verbose)
+    //if (verbose)
     {
       System.out.println("Allocating intermediate variable " + intermediateVarName + " at depth " + depth);
     }
@@ -487,7 +487,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     int           startPos = this.position;
 
-    if (eat(depth, '('))
+    if (eat(depth+1, '('))
     {
       node = eatFirst(depth+1);
       if (!eat(depth+1, ')'))
@@ -534,10 +534,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
 
     Node<D, R, F> node = eatSecond(depth);
-
+    
     while (true)
     {
-      if (eat(depth + 1, '+'))
+      if (eat(depth, '+'))
       {
         assert node != null : "node before + cannot be null";
         node = new Add<>(this,
@@ -551,7 +551,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         {
           node = new LiteralConstant<>(this,
                                        "0",
-                                       depth + 1);
+                                       depth);
         }
         node = new Subtract<>(this,
                               node,
