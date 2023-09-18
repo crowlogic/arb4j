@@ -234,7 +234,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   /**
    * Binomial coefficient. 
    * 
-   * this choose k
+   * The number of ways of choosing k out of this items in no particular order
    * 
    * @param k
    * @param bits

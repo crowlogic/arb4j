@@ -89,7 +89,7 @@ public class ExpressionTest extends
 
   public void testFunctionInvolvingABesselFunction()
   {
-    RealFunction expression = express("a-b*J₀(λ*t)", variables);
+    RealFunction expression = express("a-b*J₀(λ*t)", variables );
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
       assertEquals(0.23480231344203342, evaluatedX.doubleValue());
