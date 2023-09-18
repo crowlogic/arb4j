@@ -24,7 +24,7 @@ import arb.space.topological.*;
  */
 public interface VectorBundle<X extends Field<X>, E extends TopologicalSpace<X>, B extends TopologicalSpace<X>, C extends Connection<X, B>, π extends SurjectiveFunction<E, B>>
                              extends
-                             FiberBundle<E, B, TopologicalVectorSpace<X, X>, π>
+                             FiberBundle<X, E, B, TopologicalVectorSpace<X, X>, π>
 {
   /**
    * Retrieves the Connection associated with this VectorBundle. The Connection

@@ -547,7 +547,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       }
       else if (eat(depth, '-'))
       {
-        assert node != null : "node before - cannot be null";
+        if (node == null)
+        {
+          node = new LiteralConstant<>(this,
+                                       "0",
+                                       depth + 1);
+        }
         node = new Subtract<>(this,
                               node,
                               eatSecond(depth),

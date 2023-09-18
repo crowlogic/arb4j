@@ -5,8 +5,8 @@ package arb.space.topological;
  * the object itself. All spaces are subsets of their ambient space.
  *
  */
-public interface AmbientSpace extends
-                              TopologicalSpace
+public interface AmbientSpace<X> extends
+                              TopologicalSpace<X>
 {
 
 }

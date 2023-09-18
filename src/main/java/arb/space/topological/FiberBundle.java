@@ -1,5 +1,6 @@
 package arb.space.topological;
 
+import arb.Field;
 import arb.functions.SurjectiveFunction;
 
 /**
@@ -22,9 +23,9 @@ import arb.functions.SurjectiveFunction;
  * @param <π> the projection map from the total space E to the base space B
  *            (also known as bundle projection)
  */
-public interface FiberBundle<E extends TopologicalSpace, B extends TopologicalSpace, F extends TopologicalSpace, π extends SurjectiveFunction<E, B>>
+public interface FiberBundle<X extends Field<X>, E extends TopologicalSpace<X>, B extends TopologicalSpace<X>, F extends TopologicalSpace<X>, π extends SurjectiveFunction<E, B>>
                             extends
-                            Bundle<E, B, π>
+                            Bundle<X, E, B, π>
 {
   /**
    * Retrieves the fiber F over a given point in the base space B.
@@ -35,27 +36,30 @@ public interface FiberBundle<E extends TopologicalSpace, B extends TopologicalSp
   F fiber(B point);
 
   /**
-   * Checks if a given point in the total space E is in the fiber over a specified point in the base space B.
+   * Checks if a given point in the total space E is in the fiber over a specified
+   * point in the base space B.
    *
    * @param pointInTotalSpace The point in the total space E.
-   * @param pointInBaseSpace The point in the base space B.
-   * @return true if the point in the total space is in the fiber over the specified point in the base space, false otherwise.
+   * @param pointInBaseSpace  The point in the base space B.
+   * @return true if the point in the total space is in the fiber over the
+   *         specified point in the base space, false otherwise.
    */
   boolean isInFiber(E pointInTotalSpace, B pointInBaseSpace);
 
   /**
-   * Returns a section of the bundle. A section of a fiber bundle is a continuous map that sends each point in the base space B to a point in the fiber over B.
+   * Returns a section of the bundle. A section of a fiber bundle is a continuous
+   * map that sends each point in the base space B to a point in the fiber over B.
    *
    * @return A section of the bundle.
    */
   Section<E, B, F> section();
 
   /**
-   * Checks if the fiber bundle is trivial. A fiber bundle is trivial if it is isomorphic to the product of its base space B and fiber F.
+   * Checks if the fiber bundle is trivial. A fiber bundle is trivial if it is
+   * isomorphic to the product of its base space B and fiber F.
    *
    * @return true if the fiber bundle is trivial, false otherwise.
    */
   boolean isTrivial();
-  
-  
+
 }

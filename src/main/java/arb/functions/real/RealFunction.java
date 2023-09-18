@@ -5,6 +5,7 @@ import static java.lang.String.format;
 import static java.lang.System.out;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.stream.IntStream;
 
 import arb.*;
@@ -25,8 +26,13 @@ import de.gsi.chart.Chart;
  * default implementations for various techniques, including Newton's method.
  */
 public interface RealFunction extends
-                              Function<Real, Real>
+                              Function<Real, Real>, Closeable, AutoCloseable
 {
+  @Override
+  default void close() 
+  {    
+  }
+
   public default RealFunction sub(RealFunction that)
   {
     return (x, order, bits, result) ->
@@ -163,7 +169,7 @@ public interface RealFunction extends
   {
     try ( var x = new Real(t))
     {
-      return evaluate(x, 1, Double.PRECISION + 5, x).doubleValue();
+      return evaluate(x, 1, Double.PRECISION + 5, x).doubleValue(RoundingMode.Up);
     }
   }
 

@@ -21,7 +21,7 @@ import arb.functions.Function;
  * @param <B> base space
  * @param <P> projection map (function)
  */
-public interface Bundle<E extends TopologicalSpace, B extends TopologicalSpace, P extends Function<E, B>>
+public interface Bundle<X, E extends TopologicalSpace<X>, B extends TopologicalSpace<X>, P extends Function<E, B>>
 {
 
 }
