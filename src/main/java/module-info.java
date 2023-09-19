@@ -11,6 +11,7 @@ module arb4j
   requires transitive java.desktop;
   requires transitive java.instrument;
   requires transitive java.logging;
+  requires transitive javafx.fxml;
   requires transitive javafx.graphics;
   requires transitive javafx.controls;
   requires transitive junit;
@@ -22,7 +23,7 @@ module arb4j
   requires transitive jdk.unsupported;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
-
+  
   exports arb;
   exports arb.expressions;
   exports arb.expressions.nodes;
