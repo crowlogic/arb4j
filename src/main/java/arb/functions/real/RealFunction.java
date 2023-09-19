@@ -26,11 +26,13 @@ import de.gsi.chart.Chart;
  * default implementations for various techniques, including Newton's method.
  */
 public interface RealFunction extends
-                              Function<Real, Real>, Closeable, AutoCloseable
+                              Function<Real, Real>,
+                              Closeable,
+                              AutoCloseable
 {
   @Override
-  default void close() 
-  {    
+  default void close()
+  {
   }
 
   public default RealFunction sub(RealFunction that)
@@ -87,22 +89,22 @@ public interface RealFunction extends
    */
   public default RealDataSet quantize(double left, double right, int n)
   {
-    return quantize(left, right, Double.SIZE, n, false);
+    return quantize(left, right, n, false, Double.SIZE);
   }
 
   /**
    * Default to parallel=false for
-   * this{@link #quantize(double, double, int, int, boolean)}
+   * this{@link #quantize(double, double, int, boolean, int)}
    * 
    * @param left
    * @param right
-   * @param bits
    * @param n
+   * @param bits
    * @return
    */
-  public default RealDataSet quantize(double left, double right, int bits, int n)
+  public default RealDataSet quantize(double left, double right, int n, int bits)
   {
-    return quantize(left, right, bits, n, false);
+    return quantize(left, right, n, false, bits);
   }
 
   /**
@@ -111,17 +113,35 @@ public interface RealFunction extends
    * 
    * @param left
    * @param right
-   * @param bits
    * @param n
    * @param parallel if true then multiple threads are used
+   * @param bits
    * @return
    */
-  public default RealDataSet quantize(double left, double right, int bits, int n, boolean parallel)
+  public default RealDataSet quantize(double left, double right, int n, boolean parallel, int bits)
   {
     try ( FloatInterval I = new FloatInterval(left,
                                               right);)
     {
       return quantize(I, bits, n, parallel);
+    }
+  }
+
+  /**
+   * Default to 128 bits for this{@link #quantize(double, double, int, int)}
+   * 
+   * @param left
+   * @param right
+   * @param n
+   * @param parallel
+   * @return
+   */
+  public default RealDataSet quantize(double left, double right, int n, boolean parallel)
+  {
+    try ( FloatInterval I = new FloatInterval(left,
+                                              right);)
+    {
+      return quantize(I, 128, n, parallel);
     }
   }
 

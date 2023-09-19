@@ -23,6 +23,7 @@ public class RealPartOfHolomorphicMapping implements
   @Override
   public Complex evaluate(Real x, int order, int prec, Complex res)
   {
+    res.im().zero();
     res.re().set(x);
     return f.evaluate(res, order, prec, res);
   }

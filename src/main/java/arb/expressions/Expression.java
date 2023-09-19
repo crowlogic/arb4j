@@ -117,7 +117,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     String intermediateVarName = getNextIntermediatevariableFieldName(depth);
     intermediateVariables.add(intermediateVarName);
-    //if (verbose)
+    if (verbose)
     {
       System.out.println("Allocating intermediate variable " + intermediateVarName + " at depth " + depth);
     }
