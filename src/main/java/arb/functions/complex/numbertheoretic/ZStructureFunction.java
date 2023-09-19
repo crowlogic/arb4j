@@ -4,13 +4,14 @@ import static arb.RealConstants.one;
 import static arb.expressions.Expression.express;
 
 import arb.Real;
+import arb.RealConstants;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
 public class ZStructureFunction implements
                                 RealFunction
 {
-  private static final String EXPRESSION = "a-b*J₀(λ*t)";
+  private static final String EXPRESSION = "a-b*J0(t*λ)";
 
   @Override
   public String toString()
@@ -27,9 +28,9 @@ public class ZStructureFunction implements
   public ZStructureFunction()
   {
     super();
-    vars.put("a", a.set(one));
-    vars.put("b", b.set(one));
-    vars.put("λ", λ.set(one));
+    vars.put("a", a.set(RealConstants.one));
+    vars.put("b", b.set(RealConstants.one));
+    vars.put("λ", λ.set(RealConstants.one));
     kernel = express(EXPRESSION, vars);
   }
 
