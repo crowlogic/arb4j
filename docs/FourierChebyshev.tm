@@ -10,28 +10,30 @@
     <date|>
   </author-affiliation>>>>
 
-  <abstract-data|<abstract|An expression for the Fourier transforms of the
-  Chebyshev polynomials of the first kind >>
+  <abstract-data|<abstract|The normalized Fourier transforms of the Chebyshev
+  polynomials of the first kind are <math|\<#2083\>F\<#2081\>> hypergeometric
+  functions.>>
 
-  Let <math|T<rsub|n>> be the Chebyshev polynomials of the first kind
+  Let <math|T<rsub|n>> be the Chebyshev polynomials of the first
+  kind<cite|TODO>
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|T<rsub|n><around*|(|x|)>>|<cell|=<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
     y>*<wide|T|^><rsub|n><around|(|y|)>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
     y>*<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><rsub|><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
-    y>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
+    y>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*y
     z>*T<rsub|n><around|(|z|)>d*z d*y>>>>>
   </equation>
 
   where <math|\<#2082\>F\<#2081\>> is the (Gauss) hypergeometric function and
-  <math|<wide|T|^><rsub|n><around|(|y|)>> is the Fourier transforms <math|>
-  of <math|T<rsub|n><around*|(|x|)>> given by\ 
+  the <math|<wide|T|^><rsub|n><around|(|y|)>> are the Fourier transforms
+  <math|> of <math|T<rsub|n><around*|(|x|)>> given by\ 
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|<wide|T|^><rsub|n><around|(|y|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
     y>*T<rsub|n><around|(|x|)>d*y=<big|int><rsub|-1><rsup|1>e<rsup|-i*x
     y>*T<rsub|n><around|(|x|)>d*x>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
-    y>*<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>d*y>>|<row|<cell|>|<cell|=<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>
+    y>*<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>d*x>>|<row|<cell|>|<cell|=<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>
   </equation>
 
   where
@@ -48,10 +50,7 @@
   at y=0 are given
 
   <\equation>
-    lim<rsub|y\<rightarrow\>0> <wide|T|^><rsub|ortho,n><around|(|\<lambda\>|)>=-<frac|<math-up|e><rsup|-2
-    i n \<pi\>>+<math-up|e><rsup|<with|math-font-family|rm|-i n
-    \<pi\>>>|2<sqrt|\<pi\>><sqrt|<frac|<math-up|e><rsup|i n
-    \<pi\>><around*|(|2n<rsup|2>-1|)>|4n<rsup|2>-1>><around|\||n<rsup|2>-1|\|>>\<forall\>n\<geqslant\>3
+    lim<rsub|y\<rightarrow\>0> <wide|T|^><rsub|ortho,n><around|(|\<lambda\>|)>=<choice|<tformat|<table|<row|<cell|<frac|1|<sqrt|\<pi\>>>>|<cell|n=0>>|<row|<cell|0>|<cell|n\<neq\>0>>>>>
   </equation>
 
   TODO: <cite|esgpz>
@@ -86,17 +85,15 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|4|1>>
-    <associate|auto-2|<tuple|4|?>>
-    <associate|auto-4|<tuple|3|?>>
-    <associate|auto-5|<tuple|4|?>>
     <associate|bib-esgpz|<tuple|1|1>>
-    <associate|gen-h1-1-00000001|<tuple|3|?>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
+      TODO
+
       esgpz
     </associate>
     <\associate|toc>
