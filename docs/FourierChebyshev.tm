@@ -13,12 +13,13 @@
   Let <math|T<rsub|n>> be the Chebyshev polynomials of the first kind
 
   <\equation>
-    T<rsub|n><around*|(|x|)>=<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>
+    T<rsub|n><around*|(|x|)>=<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
+    y>*<wide|T|^><rsub|n><around|(|y|)>d*y
   </equation>
 
-  where <math|\<#2082\>F\<#2081\>> is the (Gauss) hypergeometric function.
-  The Fourier transforms <math|<wide|T|^><rsub|n><around|(|y|)>> of
-  <math|T<rsub|n><around*|(|x|)>> are given by\ 
+  where <math|\<#2082\>F\<#2081\>> is the (Gauss) hypergeometric function and
+  <math|<wide|T|^><rsub|n><around|(|y|)>> is the Fourier transforms <math|>
+  of <math|T<rsub|n><around*|(|x|)>> given by\ 
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|<wide|T|^><rsub|n><around|(|y|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
@@ -31,13 +32,6 @@
   <\equation>
     F<rsub|m><rsup|\<pm\>><around*|(|y|)>=*<rsub|3>F<rsub|1><space|-0.17em><around*|(|<around|[|1,m,-m|]>,<around*|[|<frac|1|2>|]>,<frac|<math-up|<math|\<pm\>>>i
     y|2*>|)>
-  </equation>
-
-  and the Fourier duality is demonstrated by the inverse transform
-
-  <\equation>
-    <big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
-    y>*<wide|T|^><rsub|n><around|(|y|)>d*y=T<rsub|n><around|(|x|)>
   </equation>
 
   Apply the Gram-Schmidt process to <math|<wide|T<rsub|n>|^>> to get
@@ -69,7 +63,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|0.8>
+    <associate|magnification|1>
     <associate|page-even-footer|>
     <associate|page-even-header|>
     <associate|page-height|auto>
@@ -84,7 +78,7 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|5|1>>
+    <associate|auto-1|<tuple|4|1>>
     <associate|bib-esgpz|<tuple|1|1>>
   </collection>
 </references>
