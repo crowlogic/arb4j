@@ -69,6 +69,7 @@
 
 <\initial>
   <\collection>
+    <associate|magnification|0.8>
     <associate|page-even-footer|>
     <associate|page-even-header|>
     <associate|page-height|auto>
