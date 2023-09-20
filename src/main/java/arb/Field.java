@@ -107,7 +107,7 @@ public interface Field<X extends Field<X>> extends
    * @return result after it has been populated with the the product of the field
    *         element with the integer
    */
-  public <Y extends X> Y mul(int x, int prec, Y result);
+  public X mul(int x, int prec, X result);
 
   /**
    * Performs multiplication
