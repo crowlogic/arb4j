@@ -19,11 +19,17 @@
     y>*T<rsub|n><around|(|x|)>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|-i*x
     y>*T<rsub|n><around|(|x|)>d*x<space|2em><around*|[|<text|due to
     <math|T<rsub|n>> being 0 outside the interval
-    <math|<around*|(|-1,1|)>>>|]>>>|<row|<cell|>|<cell|=<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-
-    i>\<cdot\>y><rsub|>*<rsub|3>F<rsub|1><space|-0.17em><around*|(|<around|[|1,m,-m|]>,<around*|[|<frac|1|2>|]>,<frac|<math-up|i>|2*y>|)>-<math-up|e><rsup|<math-up|i>\<cdot\>y><around|(|-1|)><rsup|m><rsub|>*<rsub|3>F<rsub|1><space|-0.17em><around*|(|<around|[|1,m,-m|]>,<around*|[|<frac|1|2>|]>,-<frac|<math-up|i>|2*y>|)>|)>>>>>>
+    <math|<around*|(|-1,1|)>>>|]>>>|<row|<cell|>|<cell|=<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>
   </equation>
 
-  where the Fourier duality is demonstrated by the inverse transform
+  where
+
+  <\equation>
+    F<rsub|m><rsup|\<pm\>><around*|(|y|)>=*<rsub|3>F<rsub|1><space|-0.17em><around*|(|<around|[|1,m,-m|]>,<around*|[|<frac|1|2>|]>,<frac|<math-up|<math|\<pm\>>>i
+    y|2*>|)>
+  </equation>
+
+  and the Fourier duality is demonstrated by the inverse transform
 
   <\equation>
     <big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
@@ -38,6 +44,8 @@
   <\equation>
     lim<rsub|y\<rightarrow\>0> <wide|T|^><rsub|n,<text|ortho>><around|(|\<lambda\>|)>=-<frac|<math-up|e><rsup|-2\<cdot\><math-up|I>\<cdot\>n\<cdot\>\<pi\>>+<math-up|e><rsup|<with|math-font-family|rm|-I>\<cdot\>n\<cdot\>\<pi\>>|2\<cdot\><sqrt|\<pi\>>\<cdot\><sqrt|<frac|<math-up|e><rsup|<math-up|I>\<cdot\>n\<cdot\>\<pi\>>\<cdot\><around*|(|2\<cdot\>n<rsup|2>-1|)>|4\<cdot\>n<rsup|2>-1>>\<cdot\><around|\||n<rsup|2>-1|\|>>\<forall\>n\<geqslant\>3
   </equation>
+
+  \;
 </body>
 
 <\initial>
