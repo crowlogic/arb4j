@@ -204,8 +204,6 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     return result;
   }
   
-  Object lock;
-  
   /**
    * @see arblib#acb_dirichlet_hardy_z(Complex, Complex, DirichletGroup,
    *      DirichletCharacter, int, int)
@@ -219,10 +217,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     try ( Complex z = new Complex())
     {
       z.re().set(this);
-      synchronized (lock)
-      {
-        arblib.acb_dirichlet_hardy_z(z, z, null, null, 1, bits);
-      }
+      arblib.acb_dirichlet_hardy_z(z, z, null, null, 1, bits);
       return result.set(z.re());
     }
   }

@@ -11,6 +11,8 @@ public class ExpressionTest extends
                             TestCase
 {
   Variables<Real> variables = new Variables<>();
+  private Real    v;
+  private Real    v3;
 
   @Override
   protected void setUp() throws Exception
@@ -22,6 +24,10 @@ public class ExpressionTest extends
     variables.put("a", one);
 
     variables.put("λ", one);
+
+    v = Real.newVector(5);
+    variables.put("v", v);
+    v3 = v.get(2).set("8081.2024", 128);
 
     variables.put("x", vars.get(0).set(1e6));
 
@@ -49,10 +55,19 @@ public class ExpressionTest extends
     }
   }
 
+  public void testIndexedVariable()
+  {
+    try ( RealFunction expression = express("v[3]", variables))
+    {
+      Real value = expression.evaluate(one, 1, 256, new Real());
+      assertEquals(v3, value);
+    }
+  }
+
   public void testAddTwoConstants()
   {
 
-    RealFunction expression = express("69 + 0.42", variables);
+    try ( RealFunction expression = express("69 + 0.42", variables))
     {
       Real func = expression.evaluate(one, 1, 256, new Real());
       assertEquals(69.42, func.doubleValue(RoundingMode.Up));
@@ -70,12 +85,12 @@ public class ExpressionTest extends
 
   public void testNegativeInput()
   {
-    try ( RealFunction expression = express("-t") )
+    try ( RealFunction expression = express("-t"))
     {
       assertEquals(-1.0, expression.eval(1.0));
     }
   }
-  
+
   public void testConstant()
   {
     try ( RealFunction expression = express("69.42", variables))
@@ -96,7 +111,7 @@ public class ExpressionTest extends
 
   public void testFunctionInvolvingABesselFunction()
   {
-    RealFunction expression = express("a-b*J₀(λ*t)", variables );
+    RealFunction expression = express("a-b*J₀(λ*t)", variables);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
       assertEquals(0.23480231344203342, evaluatedX.doubleValue());
