@@ -57,7 +57,7 @@ public class ExpressionTest extends
 
   public void testIndexedVariable()
   {
-    try ( RealFunction expression = express("v[3]", variables))
+    try ( RealFunction expression = express("v[3]", variables,true))
     {
       Real value = expression.evaluate(one, 1, 256, new Real());
       assertEquals(v3, value);

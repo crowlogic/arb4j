@@ -225,7 +225,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.out.println("Generating " + className + " from expression '" + expression);
+      System.out.println("Generating " + className + " from expression '" + expression + "'");
       System.out.flush();
     }
 
@@ -487,10 +487,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     int           startPos = this.position;
 
-    if (eat(depth+1, '('))
+    if (eat(depth + 1, '('))
     {
-      node = eatFirst(depth+1);
-      if (!eat(depth+1, ')'))
+      node = eatFirst(depth + 1);
+      if (!eat(depth + 1, ')'))
       {
         assert false : String.format("expected closing parenthesis at: depth=%d startPos=%s, position=%s, node=%s\n",
                                      depth,
@@ -534,7 +534,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
 
     Node<D, R, F> node = eatSecond(depth);
-    
+
     while (true)
     {
       if (eat(depth, '+'))
@@ -645,7 +645,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Upon entrance, this{@link #ch} should already be known to be a Latin or Greek
    * character
    * 
-   * @param depth    TODO
+   * @param depth    
    * @param startPos
    * 
    * @return the name at startPos
@@ -657,13 +657,25 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       nextChar();
     }
     String identifier = expression.substring(startPos, position);
+    String index      = null;
+    if (eat(depth, '['))
+    {
+      int indexPosition = position;
+
+      while (ch != ']')
+      {
+        nextChar();
+      }
+      index = expression.substring(indexPosition, position);
+    }
     if (verbose)
     {
-      System.err.format("eatName(depth=%d): startPos=%d, position=%d, identifier='%s' ch='%c'\n",
+      System.err.format("eatName(depth=%d): startPos=%d, position=%d, identifier='%s' index='%s' ch='%c'\n",
                         depth,
                         startPos,
                         position,
                         identifier,
+                        index,
                         ch == -1 ? '?' : ch);
     }
     return identifier;
