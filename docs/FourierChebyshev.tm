@@ -10,16 +10,20 @@
     <date|>
   </author-affiliation>>>>
 
-  Let <math|T<rsub|n>> be the Chebyshev polynomials of the first kind. The
-  Fourier transforms <math|<wide|T|^><rsub|n><around|(|y|)>> of
+  Let <math|T<rsub|n>> be the Chebyshev polynomials of the first kind
+
+  <\equation>
+    T<rsub|n><around*|(|x|)>=<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>
+  </equation>
+
+  where <math|\<#2082\>F\<#2081\>> is the (Gauss) hypergeometric function.
+  The Fourier transforms <math|<wide|T|^><rsub|n><around|(|y|)>> of
   <math|T<rsub|n><around*|(|x|)>> are given by\ 
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|<wide|T|^><rsub|n><around|(|y|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
     y>*T<rsub|n><around|(|x|)>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|-1><rsup|1>e<rsup|-i*x
-    y>*T<rsub|n><around|(|x|)>d*x<space|2em><around*|[|<text|due to
-    <math|T<rsub|n>> being 0 outside the interval
-    <math|<around*|(|-1,1|)>>>|]>>>|<row|<cell|>|<cell|=<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>
+    y>*T<rsub|n><around|(|x|)>d*x>>|<row|<cell|>|<cell|=<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>
   </equation>
 
   where
@@ -34,13 +38,6 @@
   <\equation>
     <big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
     y>*<wide|T|^><rsub|n><around|(|y|)>d*y=T<rsub|n><around|(|x|)>
-  </equation>
-
-  This isn't too surprising given that <math|T<rsub|n><around*|(|x|)>> is
-  actually a hypergeometric function defined by
-
-  <\equation>
-    T<rsub|n><around*|(|x|)>=<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>
   </equation>
 
   Apply the Gram-Schmidt process to <math|<wide|T<rsub|n>|^>> to get
@@ -86,8 +83,8 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|5|?>>
-    <associate|bib-esgpz|<tuple|1|?>>
+    <associate|auto-1|<tuple|5|1>>
+    <associate|bib-esgpz|<tuple|1|1>>
   </collection>
 </references>
 
