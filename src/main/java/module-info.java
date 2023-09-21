@@ -56,6 +56,7 @@ module arb4j
   exports arb.music;
   exports arb.stochastic;
   exports arb.stochastic.processes;
+  exports arb.stochastic.processes.correlationfunctions;
   exports arb.stochastic.processes.integrators;
   exports arb.utensils;
   exports arb.viz;

@@ -24,7 +24,7 @@ import arb.functions.Function;
  * @param <X>
  */
 public interface Kernel<X extends Field<X>> extends
-                       Function<OrderedPair<X, X>, X>
+                       Function<X, X>
 {
 
 }
