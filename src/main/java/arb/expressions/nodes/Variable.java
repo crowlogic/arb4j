@@ -12,6 +12,31 @@ import arb.expressions.Expression.Reference;
 import arb.expressions.Variables;
 import arb.functions.Function;
 
+/**
+ * Represents a variable node within an {@link Expression}. This class extends
+ * the {@link Node} class to provide additional behavior for tracking variables
+ * in a namespace and for handling independent variables within the expression.
+ *
+ * <p>
+ * A variable can either be independent or dependent on other variables. If it's
+ * independent, this information is stored within the {@link Expression} that
+ * owns this {@code Variable} node.
+ * </p>
+ *
+ * <p>
+ * This class is also responsible for generating bytecode for this variable node
+ * through its {@link #generate(MethodVisitor)} method.
+ * </p>
+ *
+ * @param <D> Type of domain field, must extend {@link arb.Field}.
+ * @param <R> Type of range field, must extend {@link arb.Field}.
+ * @param <F> Type of function that maps domain to range, must implement
+ *            {@link Function}.
+ *
+ * @see Node
+ * @see Expression
+ * @see Variables
+ */
 public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
                      Node<D, R, F>
 {
@@ -106,7 +131,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
   @Override
   public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
-    assert false : "a variable is never reusable";
+    assert false : "a variable is never reusable(overwritable)";
     return null;
   }
 
