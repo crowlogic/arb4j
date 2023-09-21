@@ -579,15 +579,15 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   private Node<D, R, F> eatFunctionInvocationOrVariableReference(int depth, int startPos)
   {
-    String  functionOrVariableName = eatName(depth, startPos);
-    boolean isFunction             = eat(depth, '(');
+    Reference functionOrVariable = eatName(depth, startPos);
+    boolean   isFunction         = eat(depth, '(');
     if (verbose)
     {
       System.err.format("eatFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
                         depth,
                         startPos,
                         position,
-                        functionOrVariableName,
+                        functionOrVariable,
                         isFunction);
     }
 
@@ -599,26 +599,26 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n",
                                                  startPos,
                                                  position,
-                                                 functionOrVariableName,
+                                                 functionOrVariable,
                                                  isFunction,
                                                  depth));
       }
       return new FunctionCall<>(this,
-                                functionOrVariableName,
+                                functionOrVariable.name,
                                 arg,
                                 depth);
     }
-    else if ("π".equals(functionOrVariableName))
+    else if ("π".equals(functionOrVariable))
     {
       return new LiteralConstant<>(this,
-                                   functionOrVariableName,
+                                   functionOrVariable.name,
                                    depth + 1);
     }
     else
     {
-      return new Variable<>(this,
-                            functionOrVariableName,
-                            depth + 1);
+      return new Variable<D, R, F>(this,
+                                   functionOrVariable,
+                                   depth + 1);
     }
   }
 
@@ -641,16 +641,35 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return eatPower(depth, eat(depth));
   }
 
+  public static class Reference
+  {
+    @Override
+    public String toString()
+    {
+      return String.format("Reference[name=%s, index=%s]", name, index);
+    }
+
+    public Reference(String identifier, String index)
+    {
+      this.name  = identifier;
+      this.index = index;
+    }
+
+    public String name;
+
+    public String index;
+  }
+
   /**
    * Upon entrance, this{@link #ch} should already be known to be a Latin or Greek
    * character
    * 
-   * @param depth    
+   * @param depth
    * @param startPos
    * 
-   * @return the name at startPos
+   * @return the {@link Reference} (having name and possibly index) at startPos
    */
-  private String eatName(int depth, int startPos)
+  private Reference eatName(int depth, int startPos)
   {
     while (isLatinOrGreek(ch, true))
     {
@@ -678,7 +697,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                         index,
                         ch == -1 ? '?' : ch);
     }
-    return identifier;
+
+    return new Reference(identifier,
+                         index);
   }
 
   /**

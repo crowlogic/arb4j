@@ -1,32 +1,36 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.loadInput;
+import static arb.expressions.Compiler.loadThis;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
 import org.objectweb.asm.MethodVisitor;
 
 import arb.expressions.Expression;
+import arb.expressions.Expression.Reference;
 import arb.expressions.Variables;
 import arb.functions.Function;
 
 public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
                      Node<D, R, F>
 {
-  private final String        name;
+  private final Reference     reference;
   private final Variables<D>  namespace;
   private Expression<D, R, F> expression;
   boolean                     isIndependent = false;
 
-  public Variable(Expression<D, R, F> expression, String variableName, int depth)
+  public Variable(Expression<D, R, F> expression, Reference variableReference, int depth)
   {
-    super(expression, depth+1);
+    super(expression,
+          depth + 1);
     this.expression = expression;
-    this.name       = variableName;
+    this.reference  = variableReference;
     this.namespace  = expression.variables;
-    if (namespace == null || namespace.get(variableName) == null)
+    if (namespace == null || namespace.get(variableReference.name) == null)
     {
-      if (expression.independentVariableNode == null || expression.independentVariableNode.name.equals(variableName))
+      if (expression.independentVariableNode == null
+                    || expression.independentVariableNode.reference.equals(variableReference))
       {
         expression.independentVariableNode = this;
         isIndependent                      = true;
@@ -38,15 +42,15 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
       else
       {
         throw new RuntimeException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
-                                          variableName,
+                                          variableReference,
                                           expression,
                                           expression.independentVariableNode),
-                                   new NoSuchFieldException(variableName));
+                                   new NoSuchFieldException(variableReference.toString()));
       }
     }
     if (!isIndependent)
     {
-      expression.referencedVariables.put(variableName, this);
+      expression.referencedVariables.put(variableReference.name, this);
     }
   }
 
@@ -61,12 +65,16 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     return String.format("%s%s[name=%s]",
                          depth < 0 ? "" : indent(depth),
                          getClass().getSimpleName(),
-                         isIndependent ? format("INPUT(%s)", name) : name);
+                         isIndependent ? format("INPUT(%s)", reference) : reference);
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv)
   {
+    if (reference.index != null)
+    {
+      assert false : "TODO: handle indexed reference";
+    }
     if (verbose)
     {
       out.println(this);
@@ -78,7 +86,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     }
     else
     {
-      expression.loadField(loadThis(mv), name, true);
+      expression.loadField(loadThis(mv), reference.name, true);
     }
 
     if (isLast)
