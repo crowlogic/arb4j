@@ -108,8 +108,9 @@
   </equation>
 
   where <math|E> denotes expectation. For a stationary zero-mean Gaussian
-  process, Rice's formula provides an expression for the expected number of
-  zeros in a certain interval. For <math|Z<around|(|t|)>> with derivative
+  process, Rice's formula<cite-detail|GaussianProcessLevelCrossings|Theorem
+  2.2> provides an expression for the expected number of zeros in a certain
+  interval. For <math|Z<around|(|t|)>> with derivative
   <math|Z<rprime|'><around|(|t|)>> and given that <math|Z<around|(|t|)>> and
   <math|Z<rprime|'><around|(|t|)>> are jointly Gaussian, the expected number
   of zeros in the interval <math|<around|[|0,R|]>> is given by:
@@ -125,13 +126,18 @@
   regarding the number of zeros of <math|J<rsub|0>>. <cite|esgpz>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|2>
+    <\bib-list|3>
       <bibitem*|1><label|bib-ArfkenWeber2005>G.<nbsp>Arfken<localize| and
       >H.<nbsp>Weber. <newblock><with|font-shape|italic|Mathematical Methods
       for Physicists>. <newblock>Elsevier AP, Boston, 6th<localize| edition>,
       2005.<newblock>
 
-      <bibitem*|2><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
+      <bibitem*|2><label|bib-GaussianProcessLevelCrossings>Marie<nbsp>F.<nbsp>Kratz.
+      <newblock>Level crossings and other level functionals of stationary
+      Gaussian processes. <newblock><with|font-shape|italic|Probability
+      Surveys>, 3:230\U288, 2006.<newblock>
+
+      <bibitem*|3><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
       Expected Number of Zeros of a Stationary Gaussian Process.
       <newblock><with|font-shape|italic|The Annals of Mathematical
       Statistics>, 36(3):1043\U1046, 1965.<newblock>
@@ -143,7 +149,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
+    <associate|magnification|1>
     <associate|page-even-footer|>
     <associate|page-even-header|>
     <associate|page-height|auto>
@@ -164,7 +170,8 @@
     <associate|auto-4|<tuple|2|2>>
     <associate|auto-5|<tuple|6|2>>
     <associate|bib-ArfkenWeber2005|<tuple|1|2>>
-    <associate|bib-esgpz|<tuple|2|2>>
+    <associate|bib-GaussianProcessLevelCrossings|<tuple|2|?>>
+    <associate|bib-esgpz|<tuple|3|2>>
   </collection>
 </references>
 
@@ -172,6 +179,8 @@
   <\collection>
     <\associate|bib>
       ArfkenWeber2005
+
+      GaussianProcessLevelCrossings
 
       esgpz
     </associate>
