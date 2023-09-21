@@ -15,7 +15,7 @@
   functions.>>
 
   Let <math|T<rsub|n>> be the Chebyshev polynomials of the first
-  kind<cite|TODO>
+  kind<cite-detail|ArfkenWeber2005|(13.140)>
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|T<rsub|n><around*|(|x|)>>|<cell|=<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
@@ -56,8 +56,13 @@
   TODO: <cite|esgpz>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|1>
-      <bibitem*|1><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
+    <\bib-list|2>
+      <bibitem*|1><label|bib-ArfkenWeber2005>G.<nbsp>Arfken<localize| and
+      >H.<nbsp>Weber. <newblock><with|font-shape|italic|Mathematical Methods
+      for Physicists>. <newblock>Elsevier AP, Boston, 6th<localize| edition>,
+      2005.<newblock>
+
+      <bibitem*|2><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
       Expected Number of Zeros of a Stationary Gaussian Process.
       <newblock><with|font-shape|italic|The Annals of Mathematical
       Statistics>, 36(3):1043\U1046, 1965.<newblock>
@@ -85,14 +90,15 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|4|1>>
-    <associate|bib-esgpz|<tuple|1|1>>
+    <associate|bib-ArfkenWeber2005|<tuple|1|?>>
+    <associate|bib-esgpz|<tuple|2|1>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
-      TODO
+      ArfkenWeber2005
 
       esgpz
     </associate>
