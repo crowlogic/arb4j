@@ -3,16 +3,50 @@
 <style|<tuple|article|alt-colors|boring-white|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|Orthogonal Polynomials Related to The Bessel Functions
-  <math|J<rsub|0>,J<rsub|1>> And The First-Kind Chebyshev
-  Polynomials>|<doc-author|<author-data|<author-name|Stephen
+  <doc-data|<doc-title|<strong|Orthogonalization of the Fourier Transforms of
+  the First-Kind Chebyshev Polynomials and an Associated Gaussian
+  Process>>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date|>
   </author-affiliation>>>>
 
   <abstract-data|<abstract|The normalized Fourier transforms of the Chebyshev
   polynomials of the first kind are <math|\<#2083\>F\<#2081\>> hypergeometric
-  functions.>>
+  functions whose even-indexed functions converge to the Bessel function of
+  the first kind <math|J<rsub|0>> and whose odd-indexed functions converge to
+  <math|<wide|J|\<dot\>><rsub|0>=-J<rsub|1>>.>>
+
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>The
+    First-Kind Chebyshev Polynomials <with|color|#503050|font-family|rm|<with|mode|math|T<rsub|n><around*|(|x|)>>>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <with|par-left|1tab|1.1<space|2spc>The Fourier Transforms
+    <with|color|#503050|font-family|rm|<with|mode|math|<wide|T|^><rsub|n><around|(|y|)>>>
+    of <with|color|#503050|font-family|rm|<with|mode|math|T<rsub|n><around*|(|x|)>>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2>>
+
+    <with|par-left|1tab|1.2<space|2spc>The Orthogonalization
+    <with|color|#503050|font-family|rm|<with|mode|math|<wide|T|\<breve\>><rsub|n><around|(|y|)>>>
+    of <with|color|#503050|font-family|rm|<with|mode|math|<wide|T|^><rsub|n><around|(|y|)>>>
+    Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3>>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>The
+    Gaussian Process <with|color|#503050|font-family|rm|<with|mode|math|Z<around*|(|x|)>>>
+    Having Covariance Kernel <with|color|#503050|font-family|rm|<with|mode|math|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-4><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5><vspace|0.5fn>
+  </table-of-contents>
+
+  <section|The First-Kind Chebyshev Polynomials
+  <math|T<rsub|n><around*|(|x|)>>>
 
   Let <math|T<rsub|n>> be the Chebyshev polynomials of the first
   kind<cite-detail|ArfkenWeber2005|(13.140)>
@@ -25,9 +59,13 @@
     z>*T<rsub|n><around|(|z|)>d*z d*y>>>>>
   </equation>
 
-  where <math|\<#2082\>F\<#2081\>> is the (Gauss) hypergeometric function and
-  the <math|<wide|T|^><rsub|n><around|(|y|)>> are the Fourier transforms
-  <math|> of <math|T<rsub|n><around*|(|x|)>> given by\ 
+  where <math|\<#2082\>F\<#2081\>> is the (Gauss) hypergeometric function.\ 
+
+  <subsection|The Fourier Transforms <math|<wide|T|^><rsub|n><around|(|y|)>>
+  of <math|T<rsub|n><around*|(|x|)>>>
+
+  The functions <math|<wide|T|^><rsub|n><around|(|y|)>> are Fourier
+  transforms <math|>of <math|T<rsub|n><around*|(|x|)>> defined by
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|<wide|T|^><rsub|n><around|(|y|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
@@ -44,16 +82,47 @@
     y|2*>|)>
   </equation>
 
+  <subsection|The Orthogonalization <math|<wide|T|\<breve\>><rsub|n><around|(|y|)>>
+  of <math|<wide|T|^><rsub|n><around|(|y|)>> Via The Gram-Schmidt Process>
+
+  \;
+
   Apply the Gram-Schmidt process to <math|<wide|T<rsub|n>|^>> to get
-  <math|<wide|T|^><rsub|ortho,n>> then the limits of the orthogonalized
-  Fourier transforms <math|<wide|T|^><rsub|<text|ortho,n>><around|(|\<lambda\>|)>>
-  at y=0 are given
+  <math|<wide|T|\<breve\>><rsub|n>> then the limits of the orthogonalized
+  Fourier transforms <math|<wide|T|\<breve\>><rsub|n><around|(|y|)>> at y=0
+  are given
 
   <\equation>
-    lim<rsub|y\<rightarrow\>0> <wide|T|^><rsub|ortho,n><around|(|\<lambda\>|)>=<choice|<tformat|<table|<row|<cell|<frac|1|<sqrt|\<pi\>>>>|<cell|n=0>>|<row|<cell|0>|<cell|n\<neq\>0>>>>>
+    lim<rsub|y\<rightarrow\>0> <wide|T|\<breve\>><rsub|n><around|(|y|)>=<choice|<tformat|<table|<row|<cell|<frac|1|<sqrt|\<pi\>>>>|<cell|n=0>>|<row|<cell|0>|<cell|n\<neq\>0>>>>>
   </equation>
 
-  TODO: <cite|esgpz>
+  <section|The Gaussian Process <math|Z<around*|(|x|)>> Having Covariance
+  Kernel <math|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>
+
+  Consider a zero-mean Gaussian process <math|Z<around|(|t|)>> with
+  covariance function given by
+
+  <\equation>
+    r<around*|(|<around*|\||t-s|\|>|)>=\<bbb-E\><around*|[|Z<around*|(|t|)>Z<around*|(|s|)>|]>=\<pi\>
+    J<rsub|0><around*|(|2\<pi\><around*|\||t-s|\|>|)>
+  </equation>
+
+  where <math|E> denotes expectation. For a stationary zero-mean Gaussian
+  process, Rice's formula provides an expression for the expected number of
+  zeros in a certain interval. For <math|Z<around|(|t|)>> with derivative
+  <math|Z<rprime|'><around|(|t|)>> and given that <math|Z<around|(|t|)>> and
+  <math|Z<rprime|'><around|(|t|)>> are jointly Gaussian, the expected number
+  of zeros in the interval <math|<around|[|0,R|]>> is given by:
+
+  <\equation>
+    \<bbb-E\><around*|[|N<around*|(|R|)>|]>=R
+    <big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|\||<wide|r<around*|(|t|)>|\<dot\>>|\|>\<phi\><around*|(|r<around*|(|t|)>|)>\<mathd\>t
+  </equation>
+
+  where <math|\<phi\>> is the standard Gaussian density function and
+  <math|r<around*|(|t|)>> is the normalized covariance function. Now compare
+  the result from the Gaussian process approach with the known result
+  regarding the number of zeros of <math|J<rsub|0>>. <cite|esgpz>
 
   <\bibliography|bib|tm-plain|refs>
     <\bib-list|2>
@@ -74,7 +143,7 @@
 
 <\initial>
   <\collection>
-    <associate|magnification|1>
+    <associate|magnification|1.2>
     <associate|page-even-footer|>
     <associate|page-even-header|>
     <associate|page-height|auto>
@@ -89,9 +158,13 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|4|1>>
-    <associate|bib-ArfkenWeber2005|<tuple|1|?>>
-    <associate|bib-esgpz|<tuple|2|1>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|1.1|1>>
+    <associate|auto-3|<tuple|1.2|2>>
+    <associate|auto-4|<tuple|2|2>>
+    <associate|auto-5|<tuple|6|2>>
+    <associate|bib-ArfkenWeber2005|<tuple|1|2>>
+    <associate|bib-esgpz|<tuple|2|2>>
   </collection>
 </references>
 
@@ -103,9 +176,32 @@
       esgpz
     </associate>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>The
+      First-Kind Chebyshev Polynomials <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|T<rsub|n><around*|(|x|)>>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
+
+      <with|par-left|<quote|1tab>|1.1<space|2spc>The Fourier Transforms
+      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|<wide|T|^><rsub|n><around|(|y|)>>>
+      of <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|T<rsub|n><around*|(|x|)>>>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2>>
+
+      <with|par-left|<quote|1tab>|1.2<space|2spc>The Orthogonalization
+      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|<wide|T|\<breve\>><rsub|n><around|(|y|)>>>
+      of <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|<wide|T|^><rsub|n><around|(|y|)>>>
+      Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-3>>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>The
+      Gaussian Process <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|Z<around*|(|x|)>>>
+      Having Covariance Kernel <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-4><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-5><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
