@@ -95,11 +95,11 @@
   get <math|<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>> \ 
 
   <\equation>
-    <wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<wide|T|^><rsub|n><around*|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|<wide|T|^><rsub|n><around*|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>|\<rangle\>>|<around|\<langle\>|<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>>*<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>
+    <wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<wide|T|^><rsub|n><around*|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|<wide|T|^><rsub|n><around*|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>>*<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>
   </equation>
 
   then the limits of the orthogonalized Fourier transforms
-  <math|<wide|T|\<breve\>><rsub|n><around|(|y|)>> at y=0 are given
+  <math|<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>> at y=0 are given
 
   <\equation>
     lim<rsub|y\<rightarrow\>0> <wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<choice|<tformat|<table|<row|<cell|<frac|1|<sqrt|\<pi\>>>>|<cell|n=0>>|<row|<cell|0>|<cell|n\<neq\>0>>>>>
@@ -184,9 +184,9 @@
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|1.2.1|2>>
     <associate|auto-5|<tuple|2|2>>
-    <associate|auto-6|<tuple|7|?>>
+    <associate|auto-6|<tuple|7|2>>
     <associate|bib-ArfkenWeber2005|<tuple|1|2>>
-    <associate|bib-GaussianProcessLevelCrossings|<tuple|2|?>>
+    <associate|bib-GaussianProcessLevelCrossings|<tuple|2|2>>
     <associate|bib-esgpz|<tuple|3|2>>
   </collection>
 </references>
