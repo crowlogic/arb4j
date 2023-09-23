@@ -27,10 +27,5 @@ public class StandardGaussianCharacteristicFunction implements
     return res;
   }
 
-  @Override
-  public void recomputeIntermediateVariables()
-  {
-
-  }
 
 }

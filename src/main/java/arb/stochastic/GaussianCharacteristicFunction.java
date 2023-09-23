@@ -43,10 +43,5 @@ public class GaussianCharacteristicFunction implements
 //     res).mul(sqrtπ, prec, res);
   }
 
-  @Override
-  public void recomputeIntermediateVariables()
-  {
-
-  }
 
 }

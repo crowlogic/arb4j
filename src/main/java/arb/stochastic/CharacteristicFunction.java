@@ -55,11 +55,5 @@ public interface CharacteristicFunction extends
                                         HolomorphicFunction
 {
 
-  /**
-   * Recalculate cached functions of parameters that would be too wasteful to
-   * recalculate, so just do it once here instead of each time the value is
-   * needed.
-   */
-  void recomputeIntermediateVariables();
 
 }
