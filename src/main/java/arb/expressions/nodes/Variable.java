@@ -4,9 +4,12 @@ import static arb.expressions.Compiler.loadInput;
 import static arb.expressions.Compiler.loadThis;
 import static java.lang.String.format;
 import static java.lang.System.out;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
+import arb.Real;
 import arb.expressions.Expression;
 import arb.expressions.Expression.Reference;
 import arb.expressions.Variables;
@@ -96,10 +99,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
   @Override
   public MethodVisitor generate(MethodVisitor mv)
   {
-    if (reference.index != null)
-    {
-      assert false : "TODO: handle indexed reference";
-    }
+
     if (verbose)
     {
       out.println(this);
@@ -112,6 +112,23 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     else
     {
       expression.loadField(loadThis(mv), reference.name, true);
+    }
+
+    if (reference.index != null)
+    {
+      if (arb.expressions.Compiler.isDigit(reference.index.charAt(0)))
+      {
+        mv.visitLdcInsn(Integer.parseInt(reference.index) - 1);
+      }
+      else
+      {
+        assert false : "TODO: handle variable index references";
+      }
+      mv.visitMethodInsn(INVOKEVIRTUAL,
+                         expression.domainClassInternalName,
+                         "get",
+                         "(I)" + expression.domainClassDescriptor,
+                         false);
     }
 
     if (isLast)

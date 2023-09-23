@@ -308,6 +308,18 @@ public class Compiler
    * @return true if the character is a Latin or Greek alphabet character; false
    *         otherwise
    */
+  static public boolean isDigit(int ch)
+  {
+    return ch >= '0' && ch <= '9';
+  }
+
+  /**
+   * Checks whether a given character is a Latin or Greek alphabet character.
+   * 
+   * @param ch The character to check
+   * @return true if the character is a Latin or Greek alphabet character; false
+   *         otherwise
+   */
   static public boolean isLatinOrGreek(int ch, boolean digit)
   {
     return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || isGreek(ch) || ch == '√' || ch == '₀'

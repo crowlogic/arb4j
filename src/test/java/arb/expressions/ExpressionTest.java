@@ -27,7 +27,11 @@ public class ExpressionTest extends
 
     v = Real.newVector(5);
     variables.put("v", v);
+    v.get(0).set("1.0", 128);
+    v.get(1).set("2.0", 128);
     v3 = v.get(2).set("8081.2024", 128);
+    v.get(3).set("4.0", 128);
+    v.get(4).set("5.0", 128);
 
     variables.put("x", vars.get(0).set(1e6));
 
@@ -55,9 +59,18 @@ public class ExpressionTest extends
     }
   }
 
-  public void testIndexedVariable()
+  public void testVariableIndexedByAConstant()
   {
-    try ( RealFunction expression = express("v[3]", variables,true))
+    try ( RealFunction expression = express("v[3]", variables, true))
+    {
+      Real value = expression.evaluate(one, 1, 256, new Real());
+      assertEquals(v3, value);
+    }
+  }
+
+  public void testVariableIndexedByAVariable()
+  {
+    try ( RealFunction expression = express("v[k]", variables, true))
     {
       Real value = expression.evaluate(one, 1, 256, new Real());
       assertEquals(v3, value);

@@ -16,35 +16,6 @@
   the first kind <math|J<rsub|0>> and whose odd-indexed functions converge to
   <math|<wide|J|\<dot\>><rsub|0>=-J<rsub|1>>.>>
 
-  <\table-of-contents|toc>
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>The
-    First-Kind Chebyshev Polynomials <with|color|#503050|font-family|rm|<with|mode|math|T<rsub|n><around*|(|x|)>>>>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-1><vspace|0.5fn>
-
-    <with|par-left|1tab|1.1<space|2spc>The Fourier Transforms
-    <with|color|#503050|font-family|rm|<with|mode|math|<wide|T|^><rsub|n><around|(|y|)>>>
-    of <with|color|#503050|font-family|rm|<with|mode|math|T<rsub|n><around*|(|x|)>>>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-2>>
-
-    <with|par-left|1tab|1.2<space|2spc>The Orthogonalization
-    <with|color|#503050|font-family|rm|<with|mode|math|<wide|T|\<breve\>><rsub|n><around|(|y|)>>>
-    of <with|color|#503050|font-family|rm|<with|mode|math|<wide|T|^><rsub|n><around|(|y|)>>>
-    Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-3>>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>The
-    Gaussian Process <with|color|#503050|font-family|rm|<with|mode|math|Z<around*|(|x|)>>>
-    Having Covariance Kernel <with|color|#503050|font-family|rm|<with|mode|math|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-4><vspace|0.5fn>
-
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-5><vspace|0.5fn>
-  </table-of-contents>
-
   <section|The First-Kind Chebyshev Polynomials
   <math|T<rsub|n><around*|(|x|)>>>
 
@@ -153,7 +124,7 @@
     <associate|page-even-footer|>
     <associate|page-even-header|>
     <associate|page-height|auto>
-    <associate|page-medium|papyrus>
+    <associate|page-medium|paper>
     <associate|page-odd-footer|>
     <associate|page-odd-header|>
     <associate|page-orientation|portrait>
@@ -166,11 +137,11 @@
   <\collection>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|1.1|1>>
-    <associate|auto-3|<tuple|1.2|2>>
+    <associate|auto-3|<tuple|1.2|1>>
     <associate|auto-4|<tuple|2|2>>
     <associate|auto-5|<tuple|6|2>>
     <associate|bib-ArfkenWeber2005|<tuple|1|2>>
-    <associate|bib-GaussianProcessLevelCrossings|<tuple|2|?>>
+    <associate|bib-GaussianProcessLevelCrossings|<tuple|2|2>>
     <associate|bib-esgpz|<tuple|3|2>>
   </collection>
 </references>
