@@ -109,7 +109,7 @@
 
   \;
 
-  <text-dots>
+  <text-dots><cite|burchnall_1951>
 
   <section|The Gaussian Process <math|Z<around*|(|x|)>> Having Covariance
   Kernel <math|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>
@@ -141,18 +141,22 @@
   regarding the number of zeros of <math|J<rsub|0>>. <cite|esgpz>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|3>
+    <\bib-list|4>
       <bibitem*|1><label|bib-ArfkenWeber2005>G.<nbsp>Arfken<localize| and
       >H.<nbsp>Weber. <newblock><with|font-shape|italic|Mathematical Methods
       for Physicists>. <newblock>Elsevier AP, Boston, 6th<localize| edition>,
       2005.<newblock>
 
-      <bibitem*|2><label|bib-GaussianProcessLevelCrossings>Marie<nbsp>F.<nbsp>Kratz.
+      <bibitem*|2><label|bib-burchnall_1951>J.<nbsp>L.<nbsp>Burchnall.
+      <newblock>The bessel polynomials. <newblock><with|font-shape|italic|Canadian
+      Journal of Mathematics>, 3:62\U68, 1951.<newblock>
+
+      <bibitem*|3><label|bib-GaussianProcessLevelCrossings>Marie<nbsp>F.<nbsp>Kratz.
       <newblock>Level crossings and other level functionals of stationary
       Gaussian processes. <newblock><with|font-shape|italic|Probability
       Surveys>, 3:230\U288, 2006.<newblock>
 
-      <bibitem*|3><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
+      <bibitem*|4><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
       Expected Number of Zeros of a Stationary Gaussian Process.
       <newblock><with|font-shape|italic|The Annals of Mathematical
       Statistics>, 36(3):1043\U1046, 1965.<newblock>
@@ -186,8 +190,9 @@
     <associate|auto-5|<tuple|2|2>>
     <associate|auto-6|<tuple|7|2>>
     <associate|bib-ArfkenWeber2005|<tuple|1|2>>
-    <associate|bib-GaussianProcessLevelCrossings|<tuple|2|2>>
-    <associate|bib-esgpz|<tuple|3|2>>
+    <associate|bib-GaussianProcessLevelCrossings|<tuple|3|2>>
+    <associate|bib-burchnall_1951|<tuple|2|?>>
+    <associate|bib-esgpz|<tuple|4|2>>
   </collection>
 </references>
 
@@ -195,6 +200,8 @@
   <\collection>
     <\associate|bib>
       ArfkenWeber2005
+
+      burchnall_1951
 
       GaussianProcessLevelCrossings
 
