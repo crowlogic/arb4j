@@ -1,15 +1,12 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.loadInput;
-import static arb.expressions.Compiler.loadThis;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Type;
 
-import arb.Real;
 import arb.expressions.Expression;
 import arb.expressions.Expression.Reference;
 import arb.expressions.Variables;
@@ -113,10 +110,10 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     {
       expression.loadField(loadThis(mv), reference.name, true);
     }
-
+    
     if (reference.index != null)
     {
-      if (arb.expressions.Compiler.isDigit(reference.index.charAt(0)))
+      if (isDigit(reference.index.charAt(0)))
       {
         mv.visitLdcInsn(Integer.parseInt(reference.index) - 1);
       }
