@@ -16,6 +16,39 @@
   the first kind <math|J<rsub|0>> and whose odd-indexed functions converge to
   <math|<wide|J|\<dot\>><rsub|0>=-J<rsub|1>>.>>
 
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>The
+    First-Kind Chebyshev Polynomials <with|color|#503050|font-family|rm|<with|mode|math|T<rsub|n><around*|(|x|)>>>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <with|par-left|1tab|1.1<space|2spc>The Fourier Transforms
+    <with|color|#503050|font-family|rm|<with|mode|math|<wide|T|^><rsub|n><around|(|y|)>>>
+    of <with|color|#503050|font-family|rm|<with|mode|math|T<rsub|n><around*|(|x|)>>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2>>
+
+    <with|par-left|1tab|1.2<space|2spc>The Orthogonalization
+    <with|color|#503050|font-family|rm|<with|mode|math|<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>>>
+    of <with|color|#503050|font-family|rm|<with|mode|math|<above|<wide|T|^>|><rsub|n><around|(|y|)>>>
+    Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3>>
+
+    <with|par-left|2tab|1.2.1<space|2spc>The Bessel Polynomials
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-4>>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>The
+    Gaussian Process <with|color|#503050|font-family|rm|<with|mode|math|Z<around*|(|x|)>>>
+    Having Covariance Kernel <with|color|#503050|font-family|rm|<with|mode|math|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6><vspace|0.5fn>
+  </table-of-contents>
+
   <section|The First-Kind Chebyshev Polynomials
   <math|T<rsub|n><around*|(|x|)>>>
 
@@ -53,19 +86,30 @@
     y|2*>|)>
   </equation>
 
-  <subsection|The Orthogonalization <math|<wide|T|\<breve\>><rsub|n><around|(|y|)>>
-  of <math|<wide|T|^><rsub|n><around|(|y|)>> Via The Gram-Schmidt Process>
+  <subsection|The Orthogonalization <math|<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>>
+  of <math|<above|<wide|T|^>|><rsub|n><around|(|y|)>> Via The Gram-Schmidt
+  Process>
+
+  Apply the Gram-Schmidt process to the Fourier transformed Type <math|I>
+  Chebyshev polynomials <math|<above|<wide|T|^>|><rsub|n><around|(|y|)>> to
+  get <math|<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>> \ 
+
+  <\equation>
+    <wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<wide|T|^><rsub|n><around*|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|<wide|T|^><rsub|n><around*|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>,<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>>*<wide|T|^><rsup|\<perp\>><rsub|m><around|(|y|)>
+  </equation>
+
+  then the limits of the orthogonalized Fourier transforms
+  <math|<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>> at y=0 are given
+
+  <\equation>
+    lim<rsub|y\<rightarrow\>0> <wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<choice|<tformat|<table|<row|<cell|<frac|1|<sqrt|\<pi\>>>>|<cell|n=0>>|<row|<cell|0>|<cell|n\<neq\>0>>>>>
+  </equation>
+
+  <subsubsection|The Bessel Polynomials>
 
   \;
 
-  Apply the Gram-Schmidt process to <math|<wide|T<rsub|n>|^>> to get
-  <math|<wide|T|\<breve\>><rsub|n>> then the limits of the orthogonalized
-  Fourier transforms <math|<wide|T|\<breve\>><rsub|n><around|(|y|)>> at y=0
-  are given
-
-  <\equation>
-    lim<rsub|y\<rightarrow\>0> <wide|T|\<breve\>><rsub|n><around|(|y|)>=<choice|<tformat|<table|<row|<cell|<frac|1|<sqrt|\<pi\>>>>|<cell|n=0>>|<row|<cell|0>|<cell|n\<neq\>0>>>>>
-  </equation>
+  <text-dots>
 
   <section|The Gaussian Process <math|Z<around*|(|x|)>> Having Covariance
   Kernel <math|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>
@@ -124,7 +168,7 @@
     <associate|page-even-footer|>
     <associate|page-even-header|>
     <associate|page-height|auto>
-    <associate|page-medium|paper>
+    <associate|page-medium|papyrus>
     <associate|page-odd-footer|>
     <associate|page-odd-header|>
     <associate|page-orientation|portrait>
@@ -137,9 +181,10 @@
   <\collection>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|1.1|1>>
-    <associate|auto-3|<tuple|1.2|1>>
-    <associate|auto-4|<tuple|2|2>>
-    <associate|auto-5|<tuple|6|2>>
+    <associate|auto-3|<tuple|1.2|2>>
+    <associate|auto-4|<tuple|1.2.1|2>>
+    <associate|auto-5|<tuple|2|2>>
+    <associate|auto-6|<tuple|7|2>>
     <associate|bib-ArfkenWeber2005|<tuple|1|2>>
     <associate|bib-GaussianProcessLevelCrossings|<tuple|2|2>>
     <associate|bib-esgpz|<tuple|3|2>>
@@ -168,20 +213,24 @@
       <no-break><pageref|auto-2>>
 
       <with|par-left|<quote|1tab>|1.2<space|2spc>The Orthogonalization
-      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|<wide|T|\<breve\>><rsub|n><around|(|y|)>>>
-      of <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|<wide|T|^><rsub|n><around|(|y|)>>>
+      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>>>
+      of <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|<above|<wide|T|^>|><rsub|n><around|(|y|)>>>
       Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
+
+      <with|par-left|<quote|2tab>|1.2.1<space|2spc>The Bessel Polynomials
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-4>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>The
       Gaussian Process <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|Z<around*|(|x|)>>>
       Having Covariance Kernel <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4><vspace|0.5fn>
+      <no-break><pageref|auto-5><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5><vspace|0.5fn>
+      <no-break><pageref|auto-6><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
