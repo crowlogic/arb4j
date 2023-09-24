@@ -56,14 +56,14 @@
   kind<cite-detail|ArfkenWeber2005|(13.140)>
 
   <\equation>
-    <tabular|<tformat|<table|<row|<cell|T<rsub|n><around*|(|x|)>>|<cell|=<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
+    <tabular|<tformat|<table|<row|<cell|T<rsub|n><around*|(|x|)>>|<cell|=<rsub|2>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|1|2>-<frac|x|2>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
     y>*<wide|T|^><rsub|n><around|(|y|)>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
     y>*<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><rsub|><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>d*y>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
     y>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*y
     z>*T<rsub|n><around|(|z|)>d*z d*y>>>>>
   </equation>
 
-  where <math|\<#2082\>F\<#2081\>> is the (Gauss) hypergeometric function.\ 
+  where <math|<rsub|2>F<rsub|1>> is the (Gauss) hypergeometric function.\ 
 
   <subsection|The Fourier Transforms <math|<wide|T|^><rsub|n><around|(|y|)>>
   of <math|T<rsub|n><around*|(|x|)>>>
@@ -75,15 +75,14 @@
     <tabular|<tformat|<table|<row|<cell|<wide|T|^><rsub|n><around|(|y|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
     y>*T<rsub|n><around|(|x|)>d*y=<big|int><rsub|-1><rsup|1>e<rsup|-i*x
     y>*T<rsub|n><around|(|x|)>d*x>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
-    y>*<rsub|>\<#2082\>F\<#2081\><around*|(|<around*|[|n,-n|]>,<around*|[|<frac|1|2>|]>,<frac|1|2>-<frac|x|2>|)>d*x>>|<row|<cell|>|<cell|=<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>
+    y> <rsub|2>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|1|2>-<frac|x|2>|)>*<rsub|>d*x>>|<row|<cell|>|<cell|=<with|font-base-size|12|<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>>
   </equation>
 
   where
 
   <\equation>
-    F<rsub|m><rsup|\<pm\>><around*|(|y|)>=\<#2083\>F\<#2081\>
-    <space|-0.17em><around*|(|<around|[|1,m,-m|]>,<around*|[|<frac|1|2>|]>,<frac|<math-up|<math|\<pm\>>>i
-    y|2*>|)>
+    F<rsub|n><rsup|\<pm\>><around*|(|y|)>=<rsub|3>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|2|2|cell-halign|c>|<cwith|1|-1|2|2|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|1,>|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|\<pm\>i
+    y|2>|)>
   </equation>
 
   <subsection|The Orthogonalization <math|<wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>>
@@ -200,7 +199,7 @@
     <associate|auto-6|<tuple|7|2>>
     <associate|bib-ArfkenWeber2005|<tuple|1|2>>
     <associate|bib-GaussianProcessLevelCrossings|<tuple|3|2>>
-    <associate|bib-SingularOrthoPoly1|<tuple|4|?>>
+    <associate|bib-SingularOrthoPoly1|<tuple|4|2>>
     <associate|bib-burchnall_1951|<tuple|2|2>>
     <associate|bib-esgpz|<tuple|5|2>>
   </collection>
