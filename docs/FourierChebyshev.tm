@@ -10,11 +10,11 @@
     <date|>
   </author-affiliation>>>>
 
-  <abstract-data|<abstract|The normalized Fourier transforms of the Chebyshev
-  polynomials of the first kind are <math|\<#2083\>F\<#2081\>> hypergeometric
-  functions whose even-indexed functions converge to the Bessel function of
-  the first kind <math|J<rsub|0>> and whose odd-indexed functions converge to
-  <math|<wide|J|\<dot\>><rsub|0>=-J<rsub|1>>.>>
+  <abstract-data|<abstract|The even-indexed orthonormalized Fourier
+  transforms of the Chebyshev polynomials of the first kind forms a basis in
+  a reproducing-kernel Hilbert space for the Bessel function of the first
+  kind <math|J<rsub|0>> and likewise for the odd-indexed functions which
+  reproduce <math|<wide|J|\<dot\>><rsub|0>=-J<rsub|1>>.>>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>The
@@ -105,6 +105,9 @@
     lim<rsub|y\<rightarrow\>0> <wide|T|^><rsup|\<perp\>><rsub|n><around|(|y|)>=<choice|<tformat|<table|<row|<cell|<frac|1|<sqrt|\<pi\>>>>|<cell|n=0>>|<row|<cell|0>|<cell|n\<neq\>0>>>>>
   </equation>
 
+  and it is here that the Bessel polynomials appear.
+  <cite|SingularOrthoPoly1>
+
   <subsubsection|The Bessel Polynomials>
 
   \;
@@ -141,7 +144,7 @@
   regarding the number of zeros of <math|J<rsub|0>>. <cite|esgpz>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|4>
+    <\bib-list|5>
       <bibitem*|1><label|bib-ArfkenWeber2005>G.<nbsp>Arfken<localize| and
       >H.<nbsp>Weber. <newblock><with|font-shape|italic|Mathematical Methods
       for Physicists>. <newblock>Elsevier AP, Boston, 6th<localize| edition>,
@@ -156,7 +159,13 @@
       Gaussian processes. <newblock><with|font-shape|italic|Probability
       Surveys>, 3:230\U288, 2006.<newblock>
 
-      <bibitem*|4><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
+      <bibitem*|4><label|bib-SingularOrthoPoly1>Lance<nbsp>L.<nbsp>Littlejohn<localize|
+      and >Allan<nbsp>M.<nbsp>Krall. <newblock>Orthogonal polynomials and
+      singular sturm-liouville systems, i.
+      <newblock><with|font-shape|italic|The Rocky Mountain Journal of
+      Mathematics>, 16(3):435\U479, 1986.<newblock>
+
+      <bibitem*|5><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
       Expected Number of Zeros of a Stationary Gaussian Process.
       <newblock><with|font-shape|italic|The Annals of Mathematical
       Statistics>, 36(3):1043\U1046, 1965.<newblock>
@@ -191,8 +200,9 @@
     <associate|auto-6|<tuple|7|2>>
     <associate|bib-ArfkenWeber2005|<tuple|1|2>>
     <associate|bib-GaussianProcessLevelCrossings|<tuple|3|2>>
-    <associate|bib-burchnall_1951|<tuple|2|?>>
-    <associate|bib-esgpz|<tuple|4|2>>
+    <associate|bib-SingularOrthoPoly1|<tuple|4|?>>
+    <associate|bib-burchnall_1951|<tuple|2|2>>
+    <associate|bib-esgpz|<tuple|5|2>>
   </collection>
 </references>
 
@@ -200,6 +210,8 @@
   <\collection>
     <\associate|bib>
       ArfkenWeber2005
+
+      SingularOrthoPoly1
 
       burchnall_1951
 
