@@ -7,9 +7,7 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.expressions.Expression;
-import arb.expressions.Expression.Reference;
-import arb.expressions.Variables;
+import arb.expressions.*;
 import arb.functions.Function;
 
 /**
@@ -45,6 +43,11 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
   private Expression<D, R, F> expression;
   boolean                     isIndependent = false;
 
+  public static boolean isConstant(String s)
+  {
+    return "π".equals(s);
+  }
+
   public Variable(Expression<D, R, F> expression, Reference variableReference, int depth)
   {
     super(expression,
@@ -54,8 +57,9 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     this.namespace  = expression.variables;
     if (namespace == null || namespace.get(variableReference.name) == null)
     {
-      if (expression.independentVariableNode == null
+      if ((expression.independentVariableNode == null
                     || expression.independentVariableNode.reference.equals(variableReference))
+                    && !isConstant(variableReference.name))
       {
         expression.independentVariableNode = this;
         isIndependent                      = true;
@@ -110,7 +114,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     {
       expression.loadField(loadThis(mv), reference.name, true);
     }
-    
+
     if (reference.index != null)
     {
       if (isDigit(reference.index.charAt(0)))

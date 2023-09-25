@@ -608,7 +608,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                 arg,
                                 depth);
     }
-    else if ("π".equals(functionOrVariable))
+    else if ("π".equals(functionOrVariable.name))
     {
       return new LiteralConstant<>(this,
                                    functionOrVariable.name,
@@ -639,25 +639,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
 
     return eatPower(depth, eat(depth));
-  }
-
-  public static class Reference
-  {
-    @Override
-    public String toString()
-    {
-      return String.format("Reference[name=%s, index=%s]", name, index);
-    }
-
-    public Reference(String identifier, String index)
-    {
-      this.name  = identifier;
-      this.index = index;
-    }
-
-    public String name;
-
-    public String index;
   }
 
   /**
