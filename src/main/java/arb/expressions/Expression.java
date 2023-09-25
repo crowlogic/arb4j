@@ -58,8 +58,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   protected byte[]                           instructions;
 
-  protected String                           shortClassName;
-
   public boolean                             verbose                   = false;
 
   Class<F>                                   compiledClass;
@@ -92,8 +90,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     this.rangeClassDescriptor      = Type.getDescriptor(rangeClass);
     this.domainClassDescriptor     = Type.getDescriptor(domainClass);
-    this.shortClassName            = className;
-    this.className                 = className; 
+    this.className                 = className;
     this.domainClass               = domainClass;
     this.rangeClass                = rangeClass;
     this.functionClass             = functionClass;
@@ -178,7 +175,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   protected Class<F> define()
   {
-    return compiledClass = defineFunctionClass(this.className, instructions );
+    return compiledClass = defineFunctionClass(this.className, instructions);
   }
 
   /**
@@ -279,7 +276,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     if (verbose)
     {
-      File file = new File(shortClassName + ".class");
+      File file = new File(className + ".class");
       writeBytecodes(file);
     }
     return this;
@@ -873,7 +870,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   @Override
   public String toString()
   {
-    return "Expression[expression=" + expression + ", shortClassName=" + shortClassName + "]";
+    return "Expression[expression=" + expression + ", shortClassName=" + className + "]";
   }
 
   /**
