@@ -98,16 +98,14 @@ public class Compiler
   @SuppressWarnings("unchecked")
   static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
          Class<F>
-         defineFunctionClass(byte[] bytecodes)
+         defineFunctionClass(String className, byte[] bytecodes)
   {
 
     try
     {
-      Lookup lookup = MethodHandles.lookup();
-      synchronized (lookup)
-      {
-        return (Class<F>) lookup.defineClass(bytecodes);
-      }
+      ByteArrayClassLoader loader = new ByteArrayClassLoader(className,
+                                                             bytecodes);
+      return (Class<F>) loader.findClass(className);
     }
     catch (Exception e)
     {
