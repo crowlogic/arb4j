@@ -3,6 +3,7 @@ package arb.expressions.nodes;
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.out;
+import static org.objectweb.asm.Opcodes.GETFIELD;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
@@ -123,8 +124,9 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
       }
       else
       {
-        assert false : "TODO: handle variable index references";
+        expression.loadIndexField(loadThis(mv), reference.index);
       }
+
       mv.visitMethodInsn(INVOKEVIRTUAL,
                          expression.domainClassInternalName,
                          "get",

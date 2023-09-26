@@ -7,6 +7,7 @@ import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 
 import java.io.*;
+import java.io.ObjectInputStream.GetField;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -885,6 +886,20 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   public MethodVisitor checkClassCast(MethodVisitor mv, boolean range)
   {
     mv.visitTypeInsn(Opcodes.CHECKCAST, range ? rangeClassInternalName : domainClassInternalName);
+    return mv;
+  }
+
+  /**
+   * Emits a {@link Opcodes#GETFIELD} instruction for the integer field with the
+   * given name
+   * 
+   * @param mv
+   * @param indexFieldName
+   * @return
+   */
+  public MethodVisitor loadIndexField(MethodVisitor mv, String indexFieldName)
+  {
+    mv.visitFieldInsn(GETFIELD, functionClassInternalName, indexFieldName, "I"); // Assuming the field is
     return mv;
   }
 
