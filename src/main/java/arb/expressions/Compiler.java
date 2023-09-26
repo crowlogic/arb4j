@@ -540,4 +540,60 @@ public class Compiler
                      .replace('₉', '9');
   }
 
+  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+         F
+         instantiate(String expression,
+                     Variables<D> variables,
+                     Class<D> domainClass,
+                     Class<R> rangeClass,
+                     Class<F> functionClass,
+                     boolean verbose)
+  {
+    return compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
+  }
+
+  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+         F
+         instantiate(String className,
+                     String expression,
+                     Variables<D> variables,
+                     Class<D> domainClass,
+                     Class<R> rangeClass,
+                     Class<F> functionClass,
+                     boolean verbose)
+  {
+    return compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
+  }
+
+  public static RealFunction express(String expression)
+  {
+    return express(expression, null);
+  }
+
+  public static RealFunction express(String className, String expression, Variables<Real> variables)
+  {
+    return instantiate(className
+                  + System.nanoTime(), expression, variables, Real.class, Real.class, RealFunction.class, false);
+  }
+
+  public static RealFunction express(String expression, Variables<Real> variables)
+  {
+    return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, false);
+  }
+
+  public static RealFunction express(String className, String expression, Variables<Real> variables, boolean verbose)
+  {
+    return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, verbose);
+  }
+
+  public static RealFunction express(String expression, Variables<Real> variables, boolean verbose)
+  {
+    return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, verbose);
+  }
+
+  public static RealFunction express(String expression, boolean verbose)
+  {
+    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
+  }
+
 }

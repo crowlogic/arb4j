@@ -7,7 +7,6 @@ import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 
 import java.io.*;
-import java.io.ObjectInputStream.GetField;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -917,63 +916,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     mv.visitFieldInsn(GETFIELD, className, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
     return mv;
-  }
-
-  public static RealFunction express(String expression)
-  {
-    return express(expression, null);
-  }
-
-  public static RealFunction express(String className, String expression, Variables<Real> variables)
-  {
-    return instantiate(className
-                  + System.nanoTime(), expression, variables, Real.class, Real.class, RealFunction.class, false);
-  }
-
-  public static RealFunction express(String expression, Variables<Real> variables)
-  {
-    return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, false);
-  }
-
-  public static RealFunction express(String className, String expression, Variables<Real> variables, boolean verbose)
-  {
-    return instantiate(className
-                  + System.nanoTime(), expression, variables, Real.class, Real.class, RealFunction.class, verbose);
-  }
-
-  public static RealFunction express(String expression, Variables<Real> variables, boolean verbose)
-  {
-    return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, verbose);
-  }
-
-  public static RealFunction express(String expression, boolean verbose)
-  {
-    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
-  }
-
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
-         F
-         instantiate(String className,
-                     String expression,
-                     Variables<D> variables,
-                     Class<D> domainClass,
-                     Class<R> rangeClass,
-                     Class<F> functionClass,
-                     boolean verbose)
-  {
-    return compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
-  }
-
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
-         F
-         instantiate(String expression,
-                     Variables<D> variables,
-                     Class<D> domainClass,
-                     Class<R> rangeClass,
-                     Class<F> functionClass,
-                     boolean verbose)
-  {
-    return compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
   /**

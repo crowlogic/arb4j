@@ -1,10 +1,10 @@
 package arb.functions.complex.numbertheoretic;
 
 import static arb.RealConstants.one;
-import static arb.expressions.Expression.express;
 
 import arb.Real;
 import arb.RealConstants;
+import arb.expressions.Compiler;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
@@ -31,7 +31,7 @@ public class ZStructureFunction implements
     vars.put("a", a.set(RealConstants.one));
     vars.put("b", b.set(RealConstants.one));
     vars.put("λ", λ.set(RealConstants.one));
-    kernel = express(EXPRESSION, vars);
+    kernel = Compiler.express(EXPRESSION, vars);
   }
 
   final public RealFunction kernel;
