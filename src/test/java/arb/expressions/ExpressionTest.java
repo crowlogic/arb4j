@@ -69,11 +69,19 @@ public class ExpressionTest extends
 
   public void testVariableIndexedByAVariable()
   {
-    try ( RealFunction expression = Compiler.express("v[k]", variables, true))
+    boolean caughtTheMissingIndexReference = false;
+    try ( RealFunction expression = Compiler.express("v[k]", variables))
     {
       Real value = expression.evaluate(one, 1, 256, new Real());
+      caughtTheMissingIndexReference = true;
       assertEquals(v3, value);
     }
+    catch (NoSuchFieldError e)
+    {
+      assertEquals("k", e.getMessage());
+      caughtTheMissingIndexReference = true;
+    }
+    assertTrue(caughtTheMissingIndexReference);
   }
 
   public void testAddTwoConstants()
@@ -479,8 +487,8 @@ public class ExpressionTest extends
   public void testYabaDabaDo()
   {
     RealFunction expression = Compiler.express("YabaDabaDo",
-                                      "((r^(1-α)-1)*r^((α-1)*(1+n/2)))/(Γ(α)*Γ(2-α))*r^((1-α)*i)",
-                                      variables);
+                                               "((r^(1-α)-1)*r^((α-1)*(1+n/2)))/(Γ(α)*Γ(2-α))*r^((1-α)*i)",
+                                               variables);
     Real         c0         = expression.evaluate(zero, 1, 128, new Real());
     {
       assertEquals(0.018045813351600336, c0.doubleValue());
