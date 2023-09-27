@@ -23,17 +23,7 @@
 					<release>20</release>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>com.gluonhq</groupId>
-				<artifactId>client-maven-plugin</artifactId>
-				<version>0.1.40</version>
-				<configuration>
-					<mainClass>
-						arb.stochastic.volatility.heston.InteractiveInterface</mainClass>
-					<graalvmHome>/usr/lib/jvm/oracle-java20-jdk-amd64</graalvmHome>
-				</configuration>
-			</plugin>
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
