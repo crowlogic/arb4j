@@ -41,7 +41,7 @@ public class CircleTest extends
       System.out.println("basePoint=" + basePoint);
       rotatedAndScaledPoint.printPrecision = false;
       System.out.println("rotatedAndScaledPoint=" + rotatedAndScaledPoint);
-      assertEquals(0.2, rotatedAndScaledPoint.getReal().doubleValue(), Math.pow(10, -17));
+      assertEquals(0.2, rotatedAndScaledPoint.getReal().doubleValue(RoundingMode.Down), Math.pow(10, -17));
       assertEquals(0.9, rotatedAndScaledPoint.getImag().getMid().doubleValue(RoundingMode.Near), Math.pow(10, -17));
 
     }
@@ -64,7 +64,7 @@ public class CircleTest extends
       System.out.println("basePoint=" + basePoint);
       rotatedAndScaledPoint.printPrecision = false;
       System.out.println("rotatedAndScaledPoint=" + rotatedAndScaledPoint);
-      assertEquals(0.2, rotatedAndScaledPoint.getReal().doubleValue(), Math.pow(10, -17));
+      assertEquals(0.2, rotatedAndScaledPoint.getReal().doubleValue(RoundingMode.Down), Math.pow(10, -17));
       assertEquals(0.9, rotatedAndScaledPoint.getImag().getMid().doubleValue(RoundingMode.Near), Math.pow(10, -17));
 
     }

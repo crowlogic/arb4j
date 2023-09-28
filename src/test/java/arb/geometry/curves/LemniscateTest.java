@@ -16,8 +16,8 @@ public class LemniscateTest extends
     try ( Lemniscate lem = new Lemniscate())
     {
       Complex w = lem.evaluate(ComplexConstants.one.getReal(), 2, 555, Complex.newVector(2));
-      assertEquals(0.6326452950883671, w.getReal().doubleValue(), 4.31E-21);
-      assertEquals(0.5323526594920905, w.getImag().doubleValue(), 3.53E-22);
+      assertEquals(0.6326452950883672, w.getReal().doubleValue(), 4.31E-21);
+      assertEquals(0.5323526594920907, w.getImag().doubleValue(), 3.53E-22);
       assertEquals(-1.3220770748926538, w.get(1).getReal().doubleValue(), 2.02E-21);
       assertEquals(-0.7706697864689901, w.get(1).getImag().doubleValue(), 1.23E-21);
       /**

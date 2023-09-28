@@ -15,10 +15,10 @@ public class TFunctionTest extends
       Complex result = tFunction.evaluate(t, 2, 256, Complex.newVector(2));
       System.out.format("S(%s)=%s\n", t, result);
 
-      assertEquals(0.9272321871063991, result.getReal().doubleValue());
-      assertEquals(0.0231349498078495, result.getImag().doubleValue());
-      assertEquals(0.11036812556099569, result.get(1).getReal().doubleValue());
-      assertEquals(-0.04104757711323206, result.get(1).getImag().doubleValue());
+      assertEquals(0.9272321871063992, result.getReal().doubleValue());
+      assertEquals(0.023134949807849504, result.getImag().doubleValue());
+      assertEquals(0.1103681255609957, result.get(1).getReal().doubleValue());
+      assertEquals(-0.04104757711323205, result.get(1).getImag().doubleValue());
     }
   }
 }

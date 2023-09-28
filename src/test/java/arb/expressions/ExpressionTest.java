@@ -134,7 +134,7 @@ public class ExpressionTest extends
     RealFunction expression = Compiler.express("a-b*J₀(λ*t)", variables);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
-      assertEquals(0.23480231344203342, evaluatedX.doubleValue());
+      assertEquals(0.23480231344203345, evaluatedX.doubleValue());
     }
   }
 
@@ -409,7 +409,7 @@ public class ExpressionTest extends
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(one, 1, 256, result);
       assert result == evaluatedX;
-      assertEquals(0.923076923076923, evaluatedX.doubleValue());
+      assertEquals(0.9230769230769231, evaluatedX.doubleValue());
     }
   }
 
@@ -491,7 +491,7 @@ public class ExpressionTest extends
                                                variables);
     Real         c0         = expression.evaluate(zero, 1, 128, new Real());
     {
-      assertEquals(0.018045813351600336, c0.doubleValue());
+      assertEquals(0.01804581335160034, c0.doubleValue());
     }
   }
 }

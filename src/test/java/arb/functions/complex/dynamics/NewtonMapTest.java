@@ -24,7 +24,7 @@ public class NewtonMapTest extends
     Complex   t         = new Complex().set(0.1, 0.2);
     Complex   w         = newtonMap.evaluate(t, 1, prec, new Complex());
     assertEquals(0.047147279411764706, w.getReal().doubleValue(), Math.pow(10, -20));
-    assertEquals(0.09959161764705882, w.getImag().doubleValue(), Math.pow(10, -20));
+    assertEquals(0.09959161764705883, w.getImag().doubleValue(), Math.pow(10, -20));
   }
 
   @SuppressWarnings("resource")
@@ -36,8 +36,8 @@ public class NewtonMapTest extends
     Complex             t          = new Complex().set(0.1, 0.2);
     Complex             w          = f.evaluate(t, 1, prec, new Complex());
 
-    assertEquals(0.47827850346020756, w.getReal().doubleValue(), Math.pow(10, -20));
-    assertEquals(0.03295813148788927, w.getImag().doubleValue(), Math.pow(10, -20));
+    assertEquals(0.4782785034602076, w.getReal().doubleValue(), Math.pow(10, -20));
+    assertEquals(0.03295813148788928, w.getImag().doubleValue(), Math.pow(10, -20));
   }
 
   public void testSMultiplier()

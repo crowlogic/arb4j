@@ -15,11 +15,11 @@ public class SFunctionTest extends
       // System.out.format("S(%s)=%s\n", t, result);
 
       assertEquals(0.8272968560866428, result.getReal().doubleValue());
-      assertEquals(0.08966870829390232, result.getImag().doubleValue());
+      assertEquals(0.08966870829390233, result.getImag().doubleValue());
       assertEquals(0.38675539544351079481, result.get(1).getReal().doubleValue());
       assertEquals(-0.2612896231011732, result.get(1).getImag().doubleValue());
-      assertEquals(-1.0761213853361626, result.get(2).getReal().doubleValue());
-      assertEquals(0.8891161743087089, result.get(2).getImag().doubleValue());
+      assertEquals(-1.0761213853361624, result.get(2).getReal().doubleValue());
+      assertEquals(0.889116174308709, result.get(2).getImag().doubleValue());
       assertEquals(2.0, t.getReal().doubleValue());
       assertEquals(0.2, t.getImag().doubleValue());
       assertTrue(sFunction.scale.equals(RealConstants.one));

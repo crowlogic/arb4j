@@ -68,7 +68,7 @@ public class BrownianMotion implements
     return (state, order, precision, result) ->
     {
       assert order <= 2;
-      Real sqrtdt = state.sqrtdt(precision, result);
+      Real sqrtdt = state.sqrtdt(precision, result.get(0));
       assert sqrtdt.isFinite() : "√dt=" + sqrtdt;
       sqrtdt.mul(σ, precision, result);
       if (order >= 2)
