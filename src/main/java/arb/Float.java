@@ -75,7 +75,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
    System.loadLibrary( "arblib" );
  }
  
-  public static RoundingMode defaultRoundingMode = RoundingMode.Near;
+  public static RoundingMode defaultRoundingMode = RoundingMode.Floor;
   
   public static Float valueOf(String string, int bits)
   {
