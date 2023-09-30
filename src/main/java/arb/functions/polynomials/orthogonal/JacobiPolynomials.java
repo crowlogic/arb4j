@@ -1,76 +1,51 @@
 package arb.functions.polynomials.orthogonal;
 
+import static arb.expressions.Compiler.express;
+
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import arb.*;
 import arb.domains.Domain;
+import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
-public class JacobiPolynomials<P extends JacobiPolynomial> implements
-                              OrthogonalBasis<Real, P>,
-                              Iterable<P>
+public class JacobiPolynomials implements
+                               OrthogonalBasis<Real, RealPolynomial>,
+                               AutoCloseable
 {
 
-  private final int    n;
-  private final double α;
-  private final double β;
+  final Real α = new Real();
+  final Real β = new Real();
 
-  public JacobiPolynomials(int n, double alpha, double beta)
+  public JacobiPolynomials(Real α, Real β)
   {
-    this.n = n;
-    this.α = alpha;
-    this.β = beta;
+    this.α.set(α);
+    this.β.set(β);
   }
 
-  private double compute(int n, double x)
-  {
-    if (n == 0)
-      return 1.0;
-    if (n == 1)
-      return 0.5 * ((α + β + 2) * x + (α - β));
+  Variables<Real> vars         = new Variables<>();
 
-    double a  = 2 * (n) * (n + α + β) * (2 * n - 2 + α + β);
-    double b  = (2 * n - 1 + α + β) * (α * α - β * β);
-    double c  = (2 * n - 2 + α + β) * (2 * n - 1 + α + β) * (2 * n + α + β);
-    double d  = 2 * (n - 1 + α) * (n - 1 + β) * (2 * n + α + β);
-
-    double p0 = compute(n - 2, x);
-    double p1 = compute(n - 1, x);
-
-    return (1 / a) * ((b + c * x) * p1 - d * p0);
-  }
-
-  public double evaluateAt(double x)
-  {
-    return compute(n, x);
-  }
+  RealFunction    orthoMeasure = express("(1-x)^α*(1+x)^β", vars);
 
   @Override
-  public Iterator<P> iterator()
+  public Iterator<RealPolynomial> iterator()
   {
-    return new Iterator<P>()
+    return new Iterator<RealPolynomial>()
     {
       private int currentIndex = 0;
 
       @Override
       public boolean hasNext()
       {
-        return currentIndex <= n;
+        return true;
       }
 
-      @SuppressWarnings(
-      { "unchecked" })
+      @SuppressWarnings("unchecked")
       @Override
-      public P next()
+      public RealPolynomial next()
       {
-        if (!hasNext())
-          throw new NoSuchElementException();
-        // Assuming RealPolynomial has a method or constructor to create a Jacobi
-        // Polynomial
-        return (P) new JacobiPolynomial(currentIndex++,
-                                        α,
-                                        β); // Replace with actual implementation
+        return (RealPolynomial) new JacobiPolynomial(JacobiPolynomials.this,
+                                                     currentIndex++);
       }
     };
   }
@@ -78,23 +53,45 @@ public class JacobiPolynomials<P extends JacobiPolynomial> implements
   @Override
   public RealFunction getOrthogonalMeasure()
   {
-    // TODO: Implement this method
-    return null;
+    return orthoMeasure;
+  }
+
+  public static final Real domain = new Real();
+
+  static
+  {
+    domain.setRad(MagnitudeConstants.one);
   }
 
   @Override
   public Domain<Real> getDomain()
   {
-    // TODO: Implement this method
-    return null;
+    return domain;
   }
 
   public static void main(String[] args)
   {
-    JacobiPolynomials<JacobiPolynomial> jacobiPolynomials = new JacobiPolynomials<>(5,
-                                                                                    1.0,
-                                                                                    2.0);
-    double                              result            = jacobiPolynomials.evaluateAt(0.5);
-    System.out.println("The value of Jacobi Polynomial is: " + result);
+    try ( JacobiPolynomials jacobiPolynomials = new JacobiPolynomials(RealConstants.one,
+                                                                      RealConstants.two))
+    {
+      Iterator<RealPolynomial> iterator         = jacobiPolynomials.iterator();
+      RealPolynomial           jacobiPolynomial = iterator.next();
+
+      double                   result           = jacobiPolynomial.eval(0.5);
+
+      System.out.println("The value of Jacobi Polynomial is: " + result);
+    }
+    catch (Exception e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void close() throws Exception
+  {
+    α.close();
+    β.close();
   }
 }

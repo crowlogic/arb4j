@@ -9,7 +9,7 @@ public class RealConstants
 
   public static final int  prec          = 256;
 
-  public static final Real constants     = Real.newAlignedVector(12);
+  public static final Real constants     = Real.newAlignedVector(14);
 
   public static Real       half          = constants.get(0).one().div(2, prec);
   public static Real       one           = constants.get(1).one();
@@ -23,6 +23,8 @@ public class RealConstants
   public static Real       negOne        = constants.get(9).one().neg();
   public static Real       twoπ          = constants.get(10).π(prec).mul(2, prec);
   public static Real       indeterminant = constants.get(11).indeterminate();
+  public static Real       two           = constants.get(12).set(2);
+  public static Real       negInf        = constants.get(13).negInf();
 
   static
   {
