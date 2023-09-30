@@ -2,7 +2,6 @@ package arb.functions.polynomials.orthogonal;
 
 import java.util.Iterator;
 
-import arb.OrthogonalBasis;
 import arb.Real;
 import arb.domains.Domain;
 import arb.functions.real.RealFunction;
@@ -11,6 +10,13 @@ public class ChebyshevyPolynomials extends
                                    JacobiPolynomials<ChebyshevPolynomialOfTheFirstKind>
 
 {
+
+  public ChebyshevyPolynomials(int n)
+  {
+    super(n,
+          0.5,
+          0.5);
+  }
 
   @Override
   public Iterator<ChebyshevPolynomialOfTheFirstKind> iterator()
