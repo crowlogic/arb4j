@@ -3,8 +3,8 @@ package arb.functions.polynomials.orthogonal;
 import arb.*;
 
 public class ChebyshevPolynomialOfTheFirstKind extends
-                                 RealPolynomial implements
-                                 AutoCloseable
+                                               JacobiPolynomial implements
+                                               AutoCloseable
 {
 
   @Override
@@ -23,12 +23,13 @@ public class ChebyshevPolynomialOfTheFirstKind extends
    * 
    * @param n the real order of the Chebyshev poly
    */
-  public ChebyshevPolynomialOfTheFirstKind(Real n)
+  public ChebyshevPolynomialOfTheFirstKind(int n)
   {
-    this.n = n;
+    super(n, 0.5, 0.5 );
+    this.n.set(n);
   }
 
-  final Real n;
+  final Real n = new Real();
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
