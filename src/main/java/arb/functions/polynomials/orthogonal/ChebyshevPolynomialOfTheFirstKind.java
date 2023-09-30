@@ -6,6 +6,10 @@ public class ChebyshevPolynomialOfTheFirstKind extends
                                                JacobiPolynomial implements
                                                AutoCloseable
 {
+  static
+  {
+    System.loadLibrary("arblib");
+  }
 
   @Override
   public String toString()
@@ -25,7 +29,9 @@ public class ChebyshevPolynomialOfTheFirstKind extends
    */
   public ChebyshevPolynomialOfTheFirstKind(int n)
   {
-    super(n, 0.5, 0.5 );
+    super(n,
+          0.5,
+          0.5);
     this.n.set(n);
   }
 
