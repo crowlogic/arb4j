@@ -49,11 +49,10 @@
     <no-break><pageref|auto-6><vspace|0.5fn>
   </table-of-contents>
 
-  <section|The First-Kind Chebyshev Polynomials
-  <math|T<rsub|n><around*|(|x|)>>>
+  <section|The Type-I Chebyshev Polynomials <math|T<rsub|n><around*|(|x|)>>>
 
-  Let <math|T<rsub|n>> be the Chebyshev polynomials of the first
-  kind<cite-detail|ArfkenWeber2005|(13.140)>
+  Let <math|T<rsub|n>> be the Chebyshev polynomials of the first kind, also
+  said to be of Type-I, defined by
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|T<rsub|n><around*|(|x|)>>|<cell|=<rsub|2>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|1|2>-<frac|x|2>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
@@ -63,7 +62,8 @@
     z>*T<rsub|n><around|(|z|)>d*z d*y>>>>>
   </equation>
 
-  where <math|<rsub|2>F<rsub|1>> is the (Gauss) hypergeometric function.\ 
+  where <math|<rsub|2>F<rsub|1>> is the (Gauss) hypergeometric function.
+  <cite-detail|ArfkenWeber2005|(13.140)>
 
   <subsection|The Fourier Transforms <math|<wide|T|^><rsub|n><around|(|y|)>>
   of <math|T<rsub|n><around*|(|x|)>>>
