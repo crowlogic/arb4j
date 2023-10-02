@@ -20,21 +20,21 @@ public class Compiler
 {
   private static final String objectDesc = Type.getInternalName(Object.class);
 
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<Real, Real, RealFunction>
          compile(String className, String expression, boolean verbose)
   {
     return compile(className, expression, null, Real.class, Real.class, RealFunction.class, verbose);
   }
 
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<Real, Real, RealFunction>
          compile(String className, String expression, Variables<Real> variables, boolean verbose)
   {
     return compile(className, expression, variables, Real.class, Real.class, RealFunction.class, verbose);
   }
 
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<Real, Real, RealFunction>
          compile(String className, String expression, Variables<Real> variables)
   {
@@ -58,7 +58,7 @@ public class Compiler
    *                         {@link System#err}
    * @return compiled {@link Expression}
    */
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<D, R, F>
          compile(String className,
                  String expressionString,
@@ -86,17 +86,17 @@ public class Compiler
   }
 
   /**
-   * Calls {@link Lookup#defineClass(byte[])} to generate a {@link Class}
-   * extending {@link Function}
+   * Invokes {@link ByteArrayClassLoader} to define a {@link Class} extending
+   * {@link Function}
    * 
    * @param <D>       the type of {@link Field} of the domain
    * @param <R>       the type of {@link Field} of the range
    * @param <F>       the type of {@link Function}
-   * @param bytecodes
+   * @param bytecodes the JVM opcodes defining the class
    * @return a {@link Class} ready to be instantiated and evaluated
    */
   @SuppressWarnings("unchecked")
-  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Class<F>
          defineFunctionClass(String className, byte[] bytecodes)
   {
@@ -119,11 +119,11 @@ public class Compiler
    * 
    * @param cw               The ClassVisitor for the class being generated
    * @param typeDescriptor   the type of the fields
-   * @param literalConstants An Iterable of {@link LiteralConstant} objects
-   *                         representing the constants to be declared
+   * @param literalConstants An {@link Iterable} of {@link LiteralConstant}
+   *                         objects representing the constants to be declared
    * @return
    */
-  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          ClassVisitor
          declareConstants(ClassVisitor cw, String typeDescriptor, ArrayList<LiteralConstant<D, R, F>> literals)
   {
@@ -145,7 +145,7 @@ public class Compiler
    *                  fields
    * @return
    */
-  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          ClassVisitor
          declareVariables(Expression<D, R, F> expression, ClassVisitor cw, Collection<String> variables)
   {
@@ -159,7 +159,7 @@ public class Compiler
     return cw;
   }
 
-  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
          closeField(Expression<D, R, F> expression, MethodVisitor mv, String fieldNameToBeClosed)
   {
@@ -168,7 +168,7 @@ public class Compiler
     return mv;
   }
 
-  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
          generateConstructor(Expression<D, R, F> expression, ClassVisitor cw)
   {
@@ -231,7 +231,7 @@ public class Compiler
     return mv;
   }
 
-  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          ClassVisitor
          generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor cw)
   {
@@ -347,7 +347,9 @@ public class Compiler
   }
 
   /**
-   * Prepares the stack for reusing the left node.
+   * Prepares the stack for reusing the left node. There is no direct JVM
+   * instruction to duplicate the bottom value of the stack to the top, so a
+   * combination of instructions is necessary.
    * 
    * Stack: (L, R, I) -> (L, R, I, L)
    * 
@@ -357,8 +359,10 @@ public class Compiler
    * 
    * DUP_X2: (R,I,L) -> (L, R, I, L).
    * 
-   * @param mv The MethodVisitor to manipulate the stack
-   * @return
+   * @param mv The {@link MethodVisitor} to which instructions to transform the
+   *           stack are dispatched
+   * 
+   * @return mv (fluent pattern)
    */
   public static MethodVisitor prepareStackForReusingLeftSide(MethodVisitor mv)
   {
@@ -380,8 +384,10 @@ public class Compiler
    * DUP_X1: Duplicates the top operand stack value and inserts it beneath the
    * next-to-topmost value: (L, I, R) -> (L, R, I, R)
    * 
-   * @param mv The MethodVisitor to manipulate the stack
-   * @return
+   * @param mv The {@link MethodVisitor} to which instructions to transform the
+   *           stack are emitted
+   * 
+   * @return mv
    */
   public static MethodVisitor prepareStackForReusingRightSide(MethodVisitor mv)
   {
@@ -390,18 +396,45 @@ public class Compiler
     return mv;
   }
 
+  /**
+   * Loads the 4th and last argument onto the stack, and since this follows the fluent pattern, it is also the return variable
+   * 
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)} methods is (this,order,bits,result)
+   * 
+   * @param mv the {@link MethodVisitor} to receive the instructions
+   * 
+   * @return mv
+   */
   public static MethodVisitor loadResult(MethodVisitor mv)
   {
     mv.visitVarInsn(Opcodes.ALOAD, 4);
     return mv;
   }
 
+  /**
+   * Loads the 3rd argument (bits) onto the stack
+   * 
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)} methods is (this,order,bits,result)
+
+   * @param mv the {@link MethodVisitor} to receive the instructions
+   * 
+   * @return mv the {@link MethodVisitor} parameter
+   */
   public static MethodVisitor loadBits(MethodVisitor mv)
   {
     mv.visitVarInsn(Opcodes.ILOAD, 3); // Load bits onto the stack
     return mv;
   }
 
+  /**
+   * Loads the 1st argument (this) onto the stack
+   * 
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)} methods is (this,order,bits,result)
+
+   * @param mv the {@link MethodVisitor} to receive the instructions
+   * 
+   * @return mv the {@link MethodVisitor} parameter
+   */  
   public static MethodVisitor loadInput(MethodVisitor mv)
   {
     mv.visitVarInsn(Opcodes.ALOAD, 1); // Load `input` onto the stack
@@ -422,7 +455,7 @@ public class Compiler
     return ch == '^' || ch == '⁰' || ch == '¹' || ch == '²' || ch == '³' || (ch >= '⁴' && ch <= '⁹');
   }
 
-  static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<D, R, F>
          compile(String expression,
                  Variables<D> variables,
@@ -540,7 +573,7 @@ public class Compiler
                      .replace('₉', '9');
   }
 
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          F
          instantiate(String expression,
                      Variables<D> variables,
@@ -552,7 +585,7 @@ public class Compiler
     return compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
-  public static <D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          F
          instantiate(String className,
                      String expression,
@@ -572,8 +605,7 @@ public class Compiler
 
   public static RealFunction express(String className, String expression, Variables<Real> variables)
   {
-    return instantiate(className
-                  + System.nanoTime(), expression, variables, Real.class, Real.class, RealFunction.class, false);
+    return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, false);
   }
 
   public static RealFunction express(String expression, Variables<Real> variables)

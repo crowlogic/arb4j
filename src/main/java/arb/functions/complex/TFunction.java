@@ -14,8 +14,7 @@ public class TFunction extends
 
   public TFunction()
   {
-    super(
-          new SFunction(),
+    super(new SFunction(),
           new WickRotation(false));
     f.scale.printPrecision = false;
   }

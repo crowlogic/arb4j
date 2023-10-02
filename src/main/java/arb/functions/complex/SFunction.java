@@ -20,15 +20,13 @@ public class SFunction implements
 
   public SFunction()
   {
-    this(
-         RealConstants.one);
+    this(RealConstants.one);
   }
 
   public SFunction(Real a)
   {
     this.scale = new Real(a);
   }
-
 
   @Override
   public void close()
