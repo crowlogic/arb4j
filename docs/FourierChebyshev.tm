@@ -71,7 +71,8 @@
     <tabular|<tformat|<table|<row|<cell|<wide|T|^><rsub|n><around|(|y|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
     y>*T<rsub|n><around|(|x|)>d*y=<big|int><rsub|-1><rsup|1>e<rsup|-i*x
     y>*T<rsub|n><around|(|x|)>d*x>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
-    y> <rsub|2>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|1|2>-<frac|x|2>|)>*<rsub|>d*x>>|<row|<cell|>|<cell|=<with|font-base-size|12|<frac|i*|y>*<around*|(|<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>>
+    y> <rsub|2>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|1|2>-<frac|x|2>|)>*<rsub|>d*x>>|<row|<cell|>|<cell|=<with|font-base-size|12|<frac|i*<around*|(|e<rsup|-i
+    y>F<rsup|+><rsub|n><around*|(|y|)>-e<rsup|i<around*|(|\<pi\>n+y|)>>F<rsub|n><rsup|-><around*|(|y|)>|)>|y>*>>>>>>
   </equation>
 
   where
@@ -91,7 +92,8 @@
   <math|T<rsub|n><around*|(|x|)>> with
 
   <\equation>
-    <tabular|<tformat|<table|<row|<cell|Y<rsub|n><around*|(|y|)>>|<cell|=<frac|<wide|T|^><rsub|n><around|(|y|)>|<around*|\||<wide|T|^><rsub|n>|\|>>>>|<row|<cell|>|<cell|=<frac|i*|y><frac|<with|font-base-size|12|*<math-up|e><rsup|<math-up|-i>y><rsub|>F<rsup|+><rsub|n><around*|(|y|)>-<math-up|e><rsup|<math-up|i>y><around|(|-1|)><rsup|n><rsub|>F<rsub|n><rsup|-><around*|(|y|)>>|<sqrt|<frac|4<around*|(|-1|)><rsup|n>\<pi\>-<around*|(|2n<rsup|2>-1|)>|4n<rsup|2>-1>>>>>>>>
+    <tabular|<tformat|<table|<row|<cell|Y<rsub|n><around*|(|y|)>>|<cell|=<frac|<wide|T|^><rsub|n><around|(|y|)>|<around*|\||<wide|T|^><rsub|n>|\|>>>>|<row|<cell|>|<cell|>>|<row|<cell|>|<cell|=<frac|i*|y><frac|e<rsup|-i
+    y>F<rsup|+><rsub|n><around*|(|y|)>-e<rsup|i<around*|(|\<pi\>n+y|)>>F<rsub|n><rsup|-><around*|(|y|)>|<sqrt|<frac|4<around*|(|-1|)><rsup|n>\<pi\>-<around*|(|2n<rsup|2>-1|)>|4n<rsup|2>-1>>>>>>>>
   </equation>
 
   \ <subsection|The Orthogonalization <math|Y<rsup|\<perp\>><rsub|n><around|(|y|)>>
@@ -102,7 +104,7 @@
   <math|Y<rsup|\<perp\>><rsub|n><around|(|y|)>> \ 
 
   <\equation>
-    Y<rsup|\<perp\>><rsub|n><around|(|y|)>=<wide|T|^><rsub|n><around*|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|Y<rsub|n><around*|(|y|)>,Y<rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|Y<rsup|\<perp\>><rsub|m><around|(|y|)>,Y<rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>>*Y<rsup|\<perp\>><rsub|m><around|(|y|)>
+    Y<rsup|\<perp\>><rsub|n><around|(|y|)>=Y<rsub|n><around*|(|y|)>-<big|sum><rsub|m=1><rsup|n-1><frac|<around|\<langle\>|Y<rsub|n><around*|(|y|)>,Y<rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>|<around|\<langle\>|Y<rsup|\<perp\>><rsub|m><around|(|y|)>,Y<rsup|\<perp\>><rsub|m><around|(|y|)>|\<rangle\>>>*Y<rsup|\<perp\>><rsub|m><around|(|y|)>
   </equation>
 
   then the limits of <math|Y<rsup|\<perp\>><rsub|n><around|(|y|)>> at y=0 are
@@ -112,17 +114,30 @@
     lim<rsub|y\<rightarrow\>0> Y<rsup|\<perp\>><rsub|n><around|(|y|)>=<choice|<tformat|<table|<row|<cell|<frac|1|<sqrt|\<pi\>>>>|<cell|n=0>>|<row|<cell|0>|<cell|n\<neq\>0>>>>>
   </equation>
 
-  and it is here that the (shifted) Bessel polynomials appear indirectly.
-  <cite|SingularOrthoPoly1><cite|burchnall_1951> Let
+  Let
 
   <\equation>
     A<rsub|k,n>=*-<around*|(|-1|)><rsup|n+<choose|k|2>>2<rsup|2n-1-k><choose|k+1|k-2n+1><around*|(|k+2|)><rsub|k-2*n+1>
+  </equation>
+
+  and
+
+  <\equation>
+    B<rsub|k,n>=\<cdots\>
+  </equation>
+
+  then we <math|Y<rsup|\<perp\>><rsub|n><around*|(|y|)>> defined by
+
+  <\equation>
+    \;
   </equation>
 
   where the first several row-vectors are shown in Table <reference|A>.
 
   <big-table|<math|<around*|[|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|c>|<cwith|1|-1|3|3|cell-halign|c>|<cwith|1|-1|4|4|cell-halign|c>|<cwith|1|-1|5|5|cell-halign|c>|<cwith|1|-1|6|6|cell-halign|c>|<cwith|1|-1|7|7|cell-halign|c>|<cwith|1|-1|7|7|cell-rborder|0ln>|<table|<row|<cell|-3>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|15>|<cell|-6>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|105>|<cell|-45>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-945>|<cell|420>|<cell|-15>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-10395>|<cell|4725>|<cell|-210>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|135135>|<cell|-62370>|<cell|3150>|<cell|-28>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|2027025>|<cell|-945945>|<cell|51975>|<cell|-630>|<cell|1>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-34459425>|<cell|16216200>|<cell|-945945>|<cell|13860>|<cell|-45>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-654729075>|<cell|310134825>|<cell|-18918900>|<cell|315315>|<cell|-1485>|<cell|1>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|13749310575>|<cell|-6547290750>|<cell|413513100>|<cell|-7567560>|<cell|45045>|<cell|-66>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>>>>>|]>>|The
   row-vectors <label|A><math|A<rsub|k,n>>>
+
+  \;
 
   <section|The Gaussian Process <math|Z<around*|(|x|)>> Having Covariance
   Kernel <math|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>
@@ -237,7 +252,7 @@
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|1|2>>
     <associate|auto-5|<tuple|2|2>>
-    <associate|auto-6|<tuple|12|3>>
+    <associate|auto-6|<tuple|14|3>>
     <associate|bib-ArfkenWeber2005|<tuple|1|3>>
     <associate|bib-GaussianProcessLevelCrossings|<tuple|3|3>>
     <associate|bib-SingularOrthoPoly1|<tuple|4|3>>
