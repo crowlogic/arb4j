@@ -51,11 +51,10 @@ public interface MetricSpace<X extends Field<X>> extends
   {
     try ( Real dist = new Real();)
     {
-      Real distance = metric().evaluate(new OrderedPair<>(x,
-                                                          y),
-                                        1,
-                                        128,
-                                        dist);
+      Real distance = norm(new OrderedPair<>(x,
+                                             y),
+                           128,
+                           dist);
       return distance.isPositive();
     }
   }
@@ -64,19 +63,20 @@ public interface MetricSpace<X extends Field<X>> extends
    * Calculates the norm (magnitude) of a given vector in the metric space with a
    * specified precision. This is done by calling the {@code evaluate} method on
    * the metric associated with this space.
-   *
+   * 
+   * @param v          the vector for which the norm is to be calculated.
    * @param bits       the number of bits of precision for the result of the
    *                   calculation.
-   * @param v          the vector for which the norm is to be calculated.
    * @param normResult the {@code Real} instance in which to store the result of
    *                   the norm calculation. If this is null, a new {@code Real}
    *                   object will be returned with the result.
+   *
    * @return the calculated norm of the vector {@code v} to the specified
    *         precision. If {@code normResult} was not null, it will be returned
    *         with the calculated value; otherwise, a new {@code Real} instance
    *         will be returned containing the result.
    */
-  public default Real norm(int bits, OrderedPair<X, X> v, Real normResult)
+  public default Real norm(OrderedPair<X, X> v, int bits, Real normResult)
   {
     return metric().evaluate(v, 1, bits, normResult);
   }
