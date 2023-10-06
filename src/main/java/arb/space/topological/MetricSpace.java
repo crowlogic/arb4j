@@ -36,10 +36,29 @@ import arb.space.bornological.BornologicalSpace;
  * @param <V>  the type of the vector
  */
 public interface MetricSpace<X extends Field<X>> extends
-                            TopologicalSpace<X>,
+                            HausdorffSpace<X>,
                             BornologicalSpace<X>
 
 {
+
+  /**
+   * If distance is positive, x and y can be separated.
+   * 
+   * See {@link HausdorffSpace#isSeparable(Object, Object)}
+   */
+  @Override
+  public default boolean isSeparable(X x, X y)
+  {
+    try ( Real dist = new Real();)
+    {
+      Real distance = metric().evaluate(new OrderedPair<>(x,
+                                                          y),
+                                        1,
+                                        128,
+                                        dist);
+      return distance.isPositive();
+    }
+  }
 
   /**
    * Calculates the norm (magnitude) of a given vector in the metric space with a
