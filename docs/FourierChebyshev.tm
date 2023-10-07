@@ -3,18 +3,19 @@
 <style|<tuple|article|alt-colors|boring-white|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|<strong|Orthogonalization of the Fourier Transforms of
-  the First-Kind Chebyshev Polynomials and an Associated Gaussian
-  Process>>|<doc-author|<author-data|<author-name|Stephen
+  <doc-data|<doc-title|<strong|An Orthogonal Basis for the Bessel Functions
+  of the First Kind of Orders 0 and 1>>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date|>
   </author-affiliation>>>>
 
   <abstract-data|<abstract|The even-indexed orthonormalized Fourier
-  transforms of the Chebyshev polynomials of the first kind forms a basis in
-  a reproducing-kernel Hilbert space for the Bessel function of the first
-  kind <math|J<rsub|0>> and likewise for the odd-indexed functions which
-  reproduce <math|<wide|J|\<dot\>><rsub|0>=-J<rsub|1>>.>>
+  transforms of the Chebyshev polynomials of the first kind form a basis in a
+  reproducing-kernel Hilbert space for the Bessel function of the first kind
+  <math|J<rsub|0>> and likewise for the odd-indexed functions which form a
+  basis that reproduces <math|<wide|J|\<dot\>><rsub|0>=-J<rsub|1>>.
+  Suprisingly, such a basis for these functions was not known to exist before
+  this.>>
 
   <\table-of-contents|toc>
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>The
@@ -34,24 +35,32 @@
     Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Stationary
-    Gaussian Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Riesz
+    Representation Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-5><vspace|0.5fn>
 
-    <with|par-left|1tab|2.1<space|2spc>Bulinskaya's Theorem:
-    <with|color|#503050|font-family|rm|<with|mode|math|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>>
+    <with|par-left|1tab|2.1<space|2spc>Application to Legendre Polynomials
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-6>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>The
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Stationary
+    Gaussian Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7><vspace|0.5fn>
+
+    <with|par-left|1tab|3.1<space|2spc>Bulinskaya's Theorem:
+    <with|color|#503050|font-family|rm|<with|mode|math|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8>>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>The
     Gaussian Process <with|color|#503050|font-family|rm|<with|mode|math|Z<around*|(|x|)>>>
     Having Covariance Kernel <with|color|#503050|font-family|rm|<with|mode|math|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-7><vspace|0.5fn>
+    <no-break><pageref|auto-9><vspace|0.5fn>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-8><vspace|0.5fn>
+    <no-break><pageref|auto-10><vspace|0.5fn>
   </table-of-contents>
 
   <section|The Type-I Chebyshev Polynomials <math|T<rsub|n><around*|(|x|)>>>
@@ -138,7 +147,7 @@
   then we <math|Y<rsup|\<perp\>><rsub|n><around*|(|y|)>> defined by
 
   <\equation>
-    \;
+    \<ldots\>.
   </equation>
 
   where the first several row-vectors are shown in Table <reference|A>.
@@ -147,6 +156,161 @@
   row-vectors <label|A><math|A<rsub|k,n>>>
 
   \;
+
+  <section|Riesz Representation Theorem><label|riesz-representation-theorem><label|riesz-representation-theorem>
+
+  The Riesz Representation Theorem serves as a key result in functional
+  analysis, establishing a connection between linear functionals and measures
+  or inner products, depending on the context. The theorem has multiple
+  versions, and two notable ones are as follows:<label|riesz-representation-theorem-for-hilbert-spaces><label|riesz-representation-theorem-for-hilbert-spaces>
+
+  <\theorem>
+    <strong|Riesz Representation Theorem for Hilbert Spaces>
+
+    Let <math|H> be a Hilbert space over <math|\<bbb-C\>> or
+    <math|\<bbb-R\>>, and let <math|f:H\<rightarrow\>\<bbb-C\>> (or
+    <math|f:H\<rightarrow\>\<bbb-R\>>) be a continuous linear functional.
+    Then there exists a unique vector <math|y\<in\>H> such that for every
+    <math|x\<in\>H>
+
+    <\equation>
+      f<around|(|x|)>=<around|\<langle\>|x,y|\<rangle\>>
+    </equation>
+
+    Here, <math|<around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>>> denotes
+    the inner product in <math|H>.
+  </theorem>
+
+  <\theorem>
+    <strong|Riesz Representation Theorem for Measures>
+
+    Let <math|X> be a locally compact Hausdorff space, and let
+    <math|C<rsub|c><around|(|X|)>> be the space of all continuous functions
+    <math|f:X\<rightarrow\>\<bbb-C\>> (or <math|\<bbb-R\>>) with compact
+    support. If <math|\<Lambda\>:C<rsub|c><around|(|X|)>\<rightarrow\>\<bbb-C\>>
+    (or <math|\<bbb-R\>>) is a continuous linear functional, then there
+    exists a unique regular complex Borel measure <math|\<mu\>> (or real
+    Borel measure, depending on the field) on <math|X> such that
+
+    <\equation>
+      \<Lambda\><around|(|f|)>=<big|int><rsub|X>f*d*\<mu\>
+    </equation>
+
+    for all <math|f\<in\>C<rsub|c><around|(|X|)>>.
+  </theorem>
+
+  The Hilbert spaces version implies that every continuous linear functional
+  can be represented using the inner product with a specific vector in that
+  space and the measure version indicates that continuous linear functionals
+  on <math|C<rsub|c><around|(|X|)>> can be represented as integrals against a
+  unique measure.
+
+  <subsection|Application to Legendre Polynomials>
+
+  Considering the space <math|L<rsup|2><around|(|<around|[|-1,1|]>|)>> of
+  Lebesgue square-integrable functions on the interval
+  <math|<around|[|-1,1|]>> with the inner product defined as
+
+  <\equation>
+    <around|\<langle\>|f,g|\<rangle\>>=<big|int><rsub|-1><rsup|1>f<around|(|x|)>*g<around|(|x|)>*<space|0.17em>d*x
+  </equation>
+
+  then it can be shown that the Legendre polynomials
+  <math|P<rsub|n><around|(|x|)>> are orthogonal to this inner product:
+
+  <\equation>
+    <around|\<langle\>|P<rsub|m>,P<rsub|n>|\<rangle\>>=<big|int><rsub|-1><rsup|1>P<rsub|m><around|(|x|)>*P<rsub|n><around|(|x|)>*<space|0.17em>d*x=\<delta\><rsub|m*n>
+  </equation>
+
+  where <math|\<delta\><rsub|m*n>> is the Kronecker delta. Now, let's say we
+  have a continuous linear functional <math|f:L<rsup|2><around|(|<around|[|-1,1|]>|)>\<to\>\<bbb-R\>>.
+  By the Riesz Representation Theorem, there exists a unique
+  <math|g\<in\>L<rsup|2><around|(|<around|[|-1,1|]>|)>> such that
+
+  <\equation>
+    f<around|(|h|)>=<around|\<langle\>|h,g|\<rangle\>>
+  </equation>
+
+  for all <math|h\<in\>L<rsup|2><around|(|<around|[|-1,1|]>|)>>. We can
+  expand <math|g> in terms of the Legendre polynomials:
+
+  <\equation>
+    g<around|(|x|)>=<big|sum><rsub|n=0><rsup|\<infty\>>a<rsub|n>*P<rsub|n><around|(|x|)>
+  </equation>
+
+  Then,
+
+  <\equation>
+    f<around|(|h|)>=<around|\<langle\>|h,g|\<rangle\>>=<around|\<langle\>|h,<big|sum><rsub|n=0><rsup|\<infty\>>a<rsub|n>*P<rsub|n>|\<rangle\>>=<big|sum><rsub|n=0><rsup|\<infty\>>a<rsub|n>*<around|\<langle\>|h,P<rsub|n>|\<rangle\>>
+  </equation>
+
+  Here, <math|a<rsub|n>> can be found as:
+
+  <\equation>
+    a<rsub|n>=<around|\<langle\>|g,P<rsub|n>|\<rangle\>>
+  </equation>
+
+  This can be seen as being equivalent to the application of the
+  Karhunen-Loeve theorem
+
+  <\theorem>
+    <strong|The Karhunen-Loève theorem>
+
+    Let <math|X<rsub|t>> be a zero-mean, square-integrable stochastic process
+    with <hlink|autocovariance function|AutocovarianceFunction>
+    <math|R<around|(|s,t|)>>. The Karhunen-Loève theorem states that there
+    exists an orthonormal set of functions
+    <math|<around|{|\<phi\><rsub|k><around|(|t|)>|}>> such that any random
+    variable <math|X<rsub|t>> can be represented as an infinite series:
+
+    <\equation>
+      X<rsub|t>=<big|sum><rsub|k=1><rsup|\<infty\>>Z<rsub|k>*\<phi\><rsub|k><around|(|t|)>
+    </equation>
+
+    Here, the <math|Z<rsub|k>> are uncorrelated random variables defined by
+
+    <\equation>
+      Z<rsub|k>=<big|int>X<rsub|t>*\<phi\><rsub|k><around|(|t|)>*d*t
+    </equation>
+
+    \ and the functions <math|\<phi\><rsub|k><around|(|t|)>> are the
+    eigenfunctions of the autocovariance function, which means that
+
+    <\em>
+      <\itemize-dot>
+        <item>They satisfy the integral equation:
+
+        <\equation>
+          <big|int>R<around|(|s,t|)>*\<phi\><rsub|k><around|(|t|)>*d*t=\<lambda\><rsub|k>*\<phi\><rsub|k><around|(|s|)>
+        </equation>
+
+        where <math|\<lambda\><rsub|k>> are the eigenvalues of the
+        autocovariance function and are always real and nonnegative.
+
+        <item>The eigenfunctions are orthogonal, i.e.,
+
+        <\equation>
+          <big|int>\<phi\><rsub|k><around|(|t|)>*\<phi\><rsub|j><around|(|t|)>*d*t=\<delta\><rsub|k*j>
+        </equation>
+
+        where <math|\<delta\><rsub|k*j>> is the Kronecker delta function,
+        which equals to 1 if <math|k=j> and 0 otherwise
+
+        <item>The uncorrelated random variables <math|Z<rsub|k>> have zero
+        mean and variances equal to the corresponding eigenvalues:
+
+        <\equation>
+          E<around|[|Z<rsub|k><rsup|2>|]>=\<lambda\><rsub|k><text|>
+        </equation>
+
+        and
+
+        <\equation>
+          E<around|[|Z<rsub|k>|]>=0<text|>
+        </equation>
+      </itemize-dot>
+    </em>
+  </theorem>
 
   <section|Stationary Gaussian Processes>
 
@@ -220,9 +384,10 @@
   spectral distribution is simply the integral
   <math|\<rho\><around*|(|t|)>=<big|int><wide|\<rho\>|\<dot\>><around*|(|t|)>>
   which is also sometimes called the integrated spectrum.
+  <cite|yaglom1987correlation><cite|rao2014stochastic>
 
   <\bibliography|bib|tm-plain|refs>
-    <\bib-list|3>
+    <\bib-list|5>
       <bibitem*|1><label|bib-ArfkenWeber2005>G.<nbsp>Arfken<localize| and
       >H.<nbsp>Weber. <newblock><with|font-shape|italic|Mathematical Methods
       for Physicists>. <newblock>Elsevier AP, Boston, 6th<localize| edition>,
@@ -233,7 +398,17 @@
       Gaussian processes. <newblock><with|font-shape|italic|Probability
       Surveys>, 3:230\U288, 2006.<newblock>
 
-      <bibitem*|3><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
+      <bibitem*|3><label|bib-rao2014stochastic>M.M.<nbsp>Rao.
+      <newblock><with|font-shape|italic|Stochastic Processes - Inference
+      Theory>. <newblock>Springer Monographs in Mathematics. Springer
+      International Publishing, 2014.<newblock>
+
+      <bibitem*|4><label|bib-yaglom1987correlation>A.M.<nbsp>Yaglom.
+      <newblock><with|font-shape|italic|Correlation Theory of Stationary and
+      Related Random Functions: Volume I: Basic Results>. <newblock>Applied
+      Probability. Springer New York, 1987.<newblock>
+
+      <bibitem*|5><label|bib-esgpz>N.<nbsp>Donald Ylvisaker. <newblock>The
       Expected Number of Zeros of a Stationary Gaussian Process.
       <newblock><with|font-shape|italic|The Annals of Mathematical
       Statistics>, 36(3):1043\U1046, 1965.<newblock>
@@ -260,18 +435,24 @@
 
 <\references>
   <\collection>
-    <associate|A|<tuple|1|?>>
+    <associate|A|<tuple|1|3>>
     <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|28|6>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
-    <associate|auto-4|<tuple|1|2>>
-    <associate|auto-5|<tuple|2|2>>
-    <associate|auto-6|<tuple|2.1|3>>
-    <associate|auto-7|<tuple|3|?>>
-    <associate|auto-8|<tuple|14|?>>
-    <associate|bib-ArfkenWeber2005|<tuple|1|3>>
-    <associate|bib-GaussianProcessLevelCrossings|<tuple|2|3>>
-    <associate|bib-esgpz|<tuple|3|3>>
+    <associate|auto-4|<tuple|1|3>>
+    <associate|auto-5|<tuple|2|3>>
+    <associate|auto-6|<tuple|2.1|4>>
+    <associate|auto-7|<tuple|3|5>>
+    <associate|auto-8|<tuple|3.1|5>>
+    <associate|auto-9|<tuple|4|6>>
+    <associate|bib-ArfkenWeber2005|<tuple|1|6>>
+    <associate|bib-GaussianProcessLevelCrossings|<tuple|2|6>>
+    <associate|bib-esgpz|<tuple|5|6>>
+    <associate|bib-rao2014stochastic|<tuple|3|6>>
+    <associate|bib-yaglom1987correlation|<tuple|4|6>>
+    <associate|riesz-representation-theorem|<tuple|2|3>>
+    <associate|riesz-representation-theorem-for-hilbert-spaces|<tuple|2|3>>
   </collection>
 </references>
 
@@ -285,6 +466,10 @@
       GaussianProcessLevelCrossings
 
       esgpz
+
+      yaglom1987correlation
+
+      rao2014stochastic
     </associate>
     <\associate|table>
       <tuple|normal|<surround|<hidden-binding|<tuple>|1>||The row-vectors
@@ -308,24 +493,32 @@
       Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Stationary
-      Gaussian Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Riesz
+      Representation Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|2.1<space|2spc>Bulinskaya's Theorem:
-      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|2.1<space|2spc>Application to Legendre
+      Polynomials <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>The
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Stationary
+      Gaussian Processes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-7><vspace|0.5fn>
+
+      <with|par-left|<quote|1tab>|3.1<space|2spc>Bulinskaya's Theorem:
+      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-8>>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>The
       Gaussian Process <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|Z<around*|(|x|)>>>
       Having Covariance Kernel <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|\<pi\>J<rsub|0><around*|(|2\<pi\>t|)>>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7><vspace|0.5fn>
+      <no-break><pageref|auto-9><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8><vspace|0.5fn>
+      <no-break><pageref|auto-10><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
