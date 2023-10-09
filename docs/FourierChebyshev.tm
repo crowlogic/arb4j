@@ -48,7 +48,7 @@
     <no-break><pageref|auto-7><vspace|0.5fn>
 
     <with|par-left|1tab|3.1<space|2spc>Bulinskaya's Theorem:
-    <with|color|#503050|font-family|rm|<with|mode|math|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>>
+    <with|color|#503050|font-family|rm|<with|mode|math|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>>=0
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-8>>
 
@@ -314,7 +314,7 @@
 
   <section|Stationary Gaussian Processes>
 
-  <subsection|Bulinskaya's Theorem: <math|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>>
+  <subsection|Bulinskaya's Theorem: <math|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>=0>
 
   <\theorem>
     <strong|Bulinskaya's theorem on the non-tagency of level crossing
@@ -506,7 +506,7 @@
       <no-break><pageref|auto-7><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|3.1<space|2spc>Bulinskaya's Theorem:
-      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>>
+      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|\<bbb-P\>*<around|[|X<around|(|s|)>=x\<cap\><wide|X|\<dot\>><around|(|s|)>=0|]>>>=0
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
 
