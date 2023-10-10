@@ -29,9 +29,8 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-2>>
 
-    <with|par-left|1tab|1.2<space|2spc>The Orthogonalization
-    <with|color|#503050|font-family|rm|<with|mode|math|Y<rsup|\<perp\>><rsub|n><around|(|y|)>>>
-    of <with|color|#503050|font-family|rm|<with|mode|math|Y<rsup|><rsub|n><around|(|y|)>>>
+    <with|par-left|1tab|1.2<space|2spc>Orthogonalizing
+    <with|color|#503050|font-family|rm|<with|mode|math|Y<rsup|><rsub|n><around|(|y|)>>>
     Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3>>
 
@@ -114,8 +113,8 @@
     y>F<rsup|+><rsub|n><around*|(|y|)>-e<rsup|i<around*|(|\<pi\>n+y|)>>F<rsub|n><rsup|-><around*|(|y|)>|<sqrt|<frac|4<around*|(|-1|)><rsup|n>\<pi\>-<around*|(|2n<rsup|2>-1|)>|4n<rsup|2>-1>>>>>>>>
   </equation>
 
-  \ <subsection|The Orthogonalization <math|Y<rsup|\<perp\>><rsub|n><around|(|y|)>>
-  of <math|Y<rsup|><rsub|n><around|(|y|)>> Via The Gram-Schmidt Process>
+  \ <subsection|Orthogonalizing <math|Y<rsup|><rsub|n><around|(|y|)>> Via The
+  Gram-Schmidt Process>
 
   Apply the Gram-Schmidt process to the normalized Fourier transforms of the
   Type <math|I> Chebyshev polynomials <math|Y<rsub|n><around*|(|y|)>> to get
@@ -135,27 +134,38 @@
   Let
 
   <\equation>
-    A<rsub|k,n>=*-<around*|(|-1|)><rsup|n+<choose|k|2>>2<rsup|2n-1-k><choose|k+1|k-2n+1><around*|(|k+2|)><rsub|k-2*n+1>
+    <tabular|<tformat|<table|<row|<cell|A<rsub|k,n>>|<cell|=*-<around*|(|-1|)><rsup|n+<choose|k|2>><around*|(|k-2n+1|)>!2<rsup|2n-1-k><choose|k+1|k-2n+1><choose|2k+2-2n|k+1>>>>>>
   </equation>
 
   and
 
   <\equation>
-    B<rsub|k,n>=\<cdots\>
+    <tabular|<tformat|<table|<row|<cell|B<rsub|k,n>>|<cell|=<frac|<around*|(|-1|)><rsup|n+<choose|k|2>>*2<rsup|k-2*n>*<around*|(|k-n|)>!<choose|<frac|1|2>-n+k|k-2*n>|n!>>>>>>
   </equation>
 
-  then we <math|Y<rsup|\<perp\>><rsub|n><around*|(|y|)>> defined by
+  then defined the associated functions
 
   <\equation>
-    \<ldots\>.
+    \<Psi\><rsub|n><rsup|sin><around*|(|y|)>=<frac|sin<around*|(|y|)><sqrt|2n-1>|x<rsup|n><sqrt|\<pi\>>><big|sum><rsub|k=0><rsup|n-2>x<rsup|2k>A<rsub|k,n-2>
   </equation>
 
-  where the first several row-vectors are shown in Table <reference|A>.
+  and
 
-  <big-table|<math|<around*|[|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|c>|<cwith|1|-1|3|3|cell-halign|c>|<cwith|1|-1|4|4|cell-halign|c>|<cwith|1|-1|5|5|cell-halign|c>|<cwith|1|-1|6|6|cell-halign|c>|<cwith|1|-1|7|7|cell-halign|c>|<cwith|1|-1|7|7|cell-rborder|0ln>|<table|<row|<cell|-3>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|15>|<cell|-6>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|105>|<cell|-45>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-945>|<cell|420>|<cell|-15>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-10395>|<cell|4725>|<cell|-210>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|135135>|<cell|-62370>|<cell|3150>|<cell|-28>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|2027025>|<cell|-945945>|<cell|51975>|<cell|-630>|<cell|1>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-34459425>|<cell|16216200>|<cell|-945945>|<cell|13860>|<cell|-45>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-654729075>|<cell|310134825>|<cell|-18918900>|<cell|315315>|<cell|-1485>|<cell|1>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|13749310575>|<cell|-6547290750>|<cell|413513100>|<cell|-7567560>|<cell|45045>|<cell|-66>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>>>>>|]>>|The
-  row-vectors <label|A><math|A<rsub|k,n>>>
+  <\equation>
+    \<Psi\><rsub|n><rsup|cos><around*|(|y|)>=<frac|cos<around*|(|y|)><sqrt|2n-1>|x<rsup|n><sqrt|\<pi\>>><big|sum><rsub|k=0><rsup|n-2>x<rsup|2k+1>B<rsub|k,n-2>
+  </equation>
+
+  then <math|Y<rsup|\<perp\>><rsub|n><around*|(|y|)>> can be expressed as
+
+  <\equation>
+    Y<rsup|\<perp\>><rsub|n>=<choice|<tformat|<table|<row|<cell|<frac|sin<around*|(|y|)>|y
+    <sqrt|\<pi\>>>>|<cell|n=1>>|<row|<cell|\<Psi\><rsup|sin><rsub|n><around*|(|y|)>+\<Psi\><rsup|cos><rsub|n><around*|(|y|)>>|<cell|n\<gtr\>1>>>>>
+  </equation>
 
   \;
+
+  <big-table|<math|<around*|[|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|c>|<cwith|1|-1|3|3|cell-halign|c>|<cwith|1|-1|4|4|cell-halign|c>|<cwith|1|-1|5|5|cell-halign|c>|<cwith|1|-1|6|6|cell-halign|c>|<cwith|1|-1|7|7|cell-halign|c>|<cwith|1|-1|7|7|cell-rborder|0ln>|<table|<row|<cell|-3>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|15>|<cell|-6>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|105>|<cell|-45>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-945>|<cell|420>|<cell|-15>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-10395>|<cell|4725>|<cell|-210>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|135135>|<cell|-62370>|<cell|3150>|<cell|-28>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|2027025>|<cell|-945945>|<cell|51975>|<cell|-630>|<cell|1>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-34459425>|<cell|16216200>|<cell|-945945>|<cell|13860>|<cell|-45>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-654729075>|<cell|310134825>|<cell|-18918900>|<cell|315315>|<cell|-1485>|<cell|1>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|13749310575>|<cell|-6547290750>|<cell|413513100>|<cell|-7567560>|<cell|45045>|<cell|-66>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>>>>>|]>>|The
+  first 10 row-vectors of <label|A><math|A<rsub|k,n>> matrix>
 
   <section|Riesz Representation Theorem><label|riesz-representation-theorem><label|riesz-representation-theorem>
 
@@ -437,7 +447,7 @@
   <\collection>
     <associate|A|<tuple|1|3>>
     <associate|auto-1|<tuple|1|1>>
-    <associate|auto-10|<tuple|28|6>>
+    <associate|auto-10|<tuple|30|6>>
     <associate|auto-2|<tuple|1.1|2>>
     <associate|auto-3|<tuple|1.2|2>>
     <associate|auto-4|<tuple|1|3>>
@@ -472,8 +482,9 @@
       rao2014stochastic
     </associate>
     <\associate|table>
-      <tuple|normal|<surround|<hidden-binding|<tuple>|1>||The row-vectors
-      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|A<rsub|k,n>>>>|<pageref|auto-4>>
+      <tuple|normal|<surround|<hidden-binding|<tuple>|1>||The first 10
+      row-vectors of <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|A<rsub|k,n>>>
+      matrix>|<pageref|auto-4>>
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>The
@@ -487,9 +498,8 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2>>
 
-      <with|par-left|<quote|1tab>|1.2<space|2spc>The Orthogonalization
-      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|Y<rsup|\<perp\>><rsub|n><around|(|y|)>>>
-      of <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|Y<rsup|><rsub|n><around|(|y|)>>>
+      <with|par-left|<quote|1tab>|1.2<space|2spc>Orthogonalizing
+      <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|Y<rsup|><rsub|n><around|(|y|)>>>
       Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
 

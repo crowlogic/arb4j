@@ -1,0 +1,352 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath,amssymb,hyperref}
+\geometry{letterpaper, portrait}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\cdummy}{\cdot}
+\newcommand{\mathd}{\mathrm{d}}
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmem}[1]{{\em #1\/}}
+\newcommand{\tmstrong}[1]{\textbf{#1}}
+\newcommand{\tmtextit}[1]{\text{{\itshape{#1}}}}
+\newenvironment{itemizedot}{\begin{itemize} \renewcommand{\labelitemi}{$\bullet$}\renewcommand{\labelitemii}{$\bullet$}\renewcommand{\labelitemiii}{$\bullet$}\renewcommand{\labelitemiv}{$\bullet$}}{\end{itemize}}
+\newtheorem{theorem}{Theorem}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{{\tmstrong{An Orthogonal Basis for the Bessel Functions of the First
+Kind of Orders 0 and 1}}}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{October 10, 2023}
+}
+
+\maketitle
+
+\begin{abstract}
+  The even-indexed orthonormalized Fourier transforms of the Chebyshev
+  polynomials of the first kind form a basis in a reproducing-kernel Hilbert
+  space for the Bessel function of the first kind $J_0$ and likewise for the
+  odd-indexed functions which form a basis that reproduces $\dot{J}_0 = -
+  J_1$. Suprisingly, such a basis for these functions was not known to exist
+  before this.
+\end{abstract}
+
+{\tableofcontents}
+
+\section{The Type-I Chebyshev Polynomials $T_n (x)$}
+
+Let $T_n$ be the Chebyshev polynomials of the first kind, also said to be of
+Type-I, defined by
+\begin{equation}
+  \begin{array}{ll}
+    T_n (x) & =_2 F_1 \left( \begin{array}{cc}
+      n, & - n\\
+      & \frac{1}{2}
+    \end{array} | \frac{1}{2} - \frac{x}{2} \right)\\
+    & = \int_{- \infty}^{\infty} e^{ix y}  \hat{T}_n (y) dy\\
+    & = \int_{- \infty}^{\infty} e^{ix y}  \frac{i}{y} 
+    (\mathrm{e}^{\textrm{-i} y}  F^+_n (y) - \mathrm{e}^{\mathrm{i} y}  (-
+    1)^n  F_n^- (y)) dy\\
+    & = \int_{- \infty}^{\infty} e^{ix y}  \int_{- \infty}^{\infty} e^{- iy
+    z} T_n (z) dz dy
+  \end{array}
+\end{equation}
+where $_2 F_1$ is the (Gauss) hypergeometric function.
+{\cite[(13.140)]{ArfkenWeber2005}}
+
+\subsection{The Fourier Transforms $\hat{T}_n (y)$ of $T_n (x)$}
+
+The functions $\hat{T}_n (y)$ are Fourier transforms of $T_n (x)$ defined by
+\begin{equation}
+  \begin{array}{ll}
+    \hat{T}_n (y) & = \int_{- \infty}^{\infty} e^{- ix y} T_n (x) dy = \int_{-
+    1}^1 e^{- ix y} T_n (x) dx\\
+    & = \int_{- \infty}^{\infty} e^{- ix y} _2 F_1 \left( \begin{array}{cc}
+      n, & - n\\
+      & \frac{1}{2}
+    \end{array} | \frac{1}{2} - \frac{x}{2} \right)   dx\\
+    & = \frac{i (e^{- i y} F^+_n (y) - e^{i (\pi n + y)} F_n^- (y))}{y} 
+  \end{array}
+\end{equation}
+where
+\begin{equation}
+  F_n^{\pm} (y) =_3 F_1 \left( \begin{array}{ccc}
+    1, & n, & - n\\
+    &  & \frac{1}{2}
+  \end{array} | \frac{\pm i y}{2} \right)
+\end{equation}
+The $L^1$ norm of $\hat{T}_n (y)$ is
+\begin{equation}
+  | \hat{T}_n | = \sqrt{\frac{4 (- 1)^n \pi - (2 n^2 - 1)}{4 n^2 - 1}}
+\end{equation}
+then define the normalized Fourier transforms of $T_n (x)$ with
+\begin{equation}
+  \begin{array}{ll}
+    Y_n (y) & = \frac{\hat{T}_n (y)}{| \hat{T}_n |}\\
+    & \\
+    & = \frac{i}{y} \frac{e^{- i y} F^+_n (y) - e^{i (\pi n + y)} F_n^-
+    (y)}{\sqrt{\frac{4 (- 1)^n \pi - (2 n^2 - 1)}{4 n^2 - 1}}}
+  \end{array}
+\end{equation}
+\subsection{The Orthogonalization $Y^{\perp}_n (y)$ of $Y _n (y)$ Via The
+Gram-Schmidt Process}
+
+Apply the Gram-Schmidt process to the normalized Fourier transforms of the
+Type $I$ Chebyshev polynomials $Y_n (y)$ to get $Y^{\perp}_n (y)$ \
+\begin{equation}
+  Y^{\perp}_n (y) = Y_n (y) - \sum_{m = 1}^{n - 1} \frac{\langle Y_n (y),
+  Y^{\perp}_m (y) \rangle}{\langle Y^{\perp}_m (y), Y^{\perp}_m (y) \rangle}
+  Y^{\perp}_m (y)
+\end{equation}
+then the limits of $Y^{\perp}_n (y)$ at y=0 are equal to
+\begin{equation}
+  \lim_{y \rightarrow 0} Y^{\perp}_n (y) = \left\{\begin{array}{ll}
+    \frac{1}{\sqrt{\pi}} & n = 0\\
+    0 & n \neq 0
+  \end{array}\right.
+\end{equation}
+Let
+\begin{equation}
+  A_{k, n} = - (- 1)^{n + \binom{k}{2}} 2^{2 n - 1 - k} \binom{k + 1}{k - 2 n
+  + 1} (k + 2)_{k - 2 n + 1}
+\end{equation}
+and
+\begin{equation}
+  B_{k, n} = \cdots
+\end{equation}
+then we $Y^{\perp}_n (y)$ defined by
+\begin{equation}
+  \ldots .
+\end{equation}
+where the first several row-vectors are shown in Table \ref{A}.
+
+\begin{table}[h]
+  $\left[ \begin{array}{cccccccc}
+    - 3 & 1 & 0 & 0 & 0 & 0 & 0 & \ldots\\
+    15 & - 6 & 0 & 0 & 0 & 0 & 0 & \ldots\\
+    105 & - 45 & 1 & 0 & 0 & 0 & 0 & \ldots\\
+    - 945 & 420 & - 15 & 0 & 0 & 0 & 0 & \ldots\\
+    - 10395 & 4725 & - 210 & 1 & 0 & 0 & 0 & \ldots\\
+    135135 & - 62370 & 3150 & - 28 & 0 & 0 & 0 & \ldots\\
+    2027025 & - 945945 & 51975 & - 630 & 1 & 0 & 0 & \ldots\\
+    - 34459425 & 16216200 & - 945945 & 13860 & - 45 & 0 & 0 & \ldots\\
+    - 654729075 & 310134825 & - 18918900 & 315315 & - 1485 & 1 & 0 & \ldots\\
+    13749310575 & - 6547290750 & 413513100 & - 7567560 & 45045 & - 66 & 0 &
+    \ldots\\
+    \ldots & \ldots & \ldots & \ldots & \ldots & \ldots & \ldots & \ldots
+  \end{array} \right]$
+  \caption{The row-vectors \label{A}$A_{k, n}$}
+\end{table}
+
+\
+
+\section{Riesz Representation
+Theorem}\label{riesz-representation-theorem}\label{riesz-representation-theorem}
+
+The Riesz Representation Theorem serves as a key result in functional
+analysis, establishing a connection between linear functionals and measures or
+inner products, depending on the context. The theorem has multiple versions,
+and two notable ones are as
+follows:\label{riesz-representation-theorem-for-hilbert-spaces}\label{riesz-representation-theorem-for-hilbert-spaces}
+
+\begin{theorem}
+  {\tmstrong{Riesz Representation Theorem for Hilbert Spaces}}
+  
+  Let $H$ be a Hilbert space over $\mathbb{C}$ or $\mathbb{R}$, and let $f : H
+  \rightarrow \mathbb{C}$ (or $f : H \rightarrow \mathbb{R}$) be a continuous
+  linear functional. Then there exists a unique vector $y \in H$ such that for
+  every $x \in H$
+  \begin{equation}
+    f (x) = \langle x, y \rangle
+  \end{equation}
+  Here, $\langle \cdummy, \cdummy \rangle$ denotes the inner product in $H$.
+\end{theorem}
+
+\begin{theorem}
+  {\tmstrong{Riesz Representation Theorem for Measures}}
+  
+  Let $X$ be a locally compact Hausdorff space, and let $C_c (X)$ be the space
+  of all continuous functions $f : X \rightarrow \mathbb{C}$ (or $\mathbb{R}$)
+  with compact support. If $\Lambda : C_c (X) \rightarrow \mathbb{C}$ (or
+  $\mathbb{R}$) is a continuous linear functional, then there exists a unique
+  regular complex Borel measure $\mu$ (or real Borel measure, depending on the
+  field) on $X$ such that
+  \begin{equation}
+    \Lambda (f) = \int_X fd \mu
+  \end{equation}
+  for all $f \in C_c (X)$.
+\end{theorem}
+
+The Hilbert spaces version implies that every continuous linear functional can
+be represented using the inner product with a specific vector in that space
+and the measure version indicates that continuous linear functionals on $C_c
+(X)$ can be represented as integrals against a unique measure.
+
+\subsection{Application to Legendre Polynomials}
+
+Considering the space $L^2 ([- 1, 1])$ of Lebesgue square-integrable functions
+on the interval $[- 1, 1]$ with the inner product defined as
+\begin{equation}
+  \langle f, g \rangle = \int_{- 1}^1 f (x) g (x)  \hspace{0.17em} dx
+\end{equation}
+then it can be shown that the Legendre polynomials $P_n (x)$ are orthogonal to
+this inner product:
+\begin{equation}
+  \langle P_m, P_n \rangle = \int_{- 1}^1 P_m (x) P_n (x)  \hspace{0.17em} dx
+  = \delta_{mn}
+\end{equation}
+where $\delta_{mn}$ is the Kronecker delta. Now, let's say we have a
+continuous linear functional $f : L^2 ([- 1, 1]) \to \mathbb{R}$. By the Riesz
+Representation Theorem, there exists a unique $g \in L^2 ([- 1, 1])$ such that
+\begin{equation}
+  f (h) = \langle h, g \rangle
+\end{equation}
+for all $h \in L^2 ([- 1, 1])$. We can expand $g$ in terms of the Legendre
+polynomials:
+\begin{equation}
+  g (x) = \sum_{n = 0}^{\infty} a_n P_n (x)
+\end{equation}
+Then,
+\begin{equation}
+  f (h) = \langle h, g \rangle = \langle h, \sum_{n = 0}^{\infty} a_n P_n
+  \rangle = \sum_{n = 0}^{\infty} a_n  \langle h, P_n \rangle
+\end{equation}
+Here, $a_n$ can be found as:
+\begin{equation}
+  a_n = \langle g, P_n \rangle
+\end{equation}
+This can be seen as being equivalent to the application of the Karhunen-Loeve
+theorem
+
+\begin{theorem}
+  {\tmstrong{The Karhunen-Lo{\`e}ve theorem}}
+  
+  Let $X_t$ be a zero-mean, square-integrable stochastic process with
+  \href{AutocovarianceFunction}{autocovariance function} $R (s, t)$. The
+  Karhunen-Lo{\`e}ve theorem states that there exists an orthonormal set of
+  functions $\{\phi_k (t)\}$ such that any random variable $X_t$ can be
+  represented as an infinite series:
+  \begin{equation}
+    X_t = \sum_{k = 1}^{\infty} Z_k \phi_k (t)
+  \end{equation}
+  Here, the $Z_k$ are uncorrelated random variables defined by
+  \begin{equation}
+    Z_k = \int X_t \phi_k (t) dt
+  \end{equation}
+  and the functions $\phi_k (t)$ are the eigenfunctions of the autocovariance
+  function, which means that
+  
+  {\tmem{\begin{itemizedot}
+    \item They satisfy the integral equation:
+    \begin{equation}
+      \int R (s, t) \phi_k (t) dt = \lambda_k \phi_k (s)
+    \end{equation}
+    where $\lambda_k$ are the eigenvalues of the autocovariance function and
+    are always real and nonnegative.
+    
+    \item The eigenfunctions are orthogonal, i.e.,
+    \begin{equation}
+      \int \phi_k (t) \phi_j (t) dt = \delta_{kj}
+    \end{equation}
+    where $\delta_{kj}$ is the Kronecker delta function, which equals to 1 if
+    $k = j$ and 0 otherwise
+    
+    \item The uncorrelated random variables $Z_k$ have zero mean and variances
+    equal to the corresponding eigenvalues:
+    \begin{equation}
+      E [Z_k^2] = \lambda_k \text{}
+    \end{equation}
+    and
+    \begin{equation}
+      E [Z_k] = 0 \text{}
+    \end{equation}
+  \end{itemizedot}}}
+\end{theorem}
+
+\section{Stationary Gaussian Processes}
+
+\subsection{Bulinskaya's Theorem: $\mathbb{P} [X (s) = x \cap \dot{X} (s) =
+0]$=0}
+
+\begin{theorem}
+  {\tmstrong{Bulinskaya's theorem on the non-tagency of level crossing
+  functionals of continuously differentiable Gaussian processes}}.
+  
+  Let $X = \{ X_t : 0 \leqslant s \leqslant t \}$ be an almost surely
+  continuously differentiable stochastic process with $1$-dimensional density
+  $p_s (u)$ bounded in the $u$ variable $\forall s$. \ {\cite[Theorem
+  1.1]{GaussianProcessLevelCrossings}}
+\end{theorem}
+
+\section{The Gaussian Process $Z (x)$ Having Covariance Kernel $\pi J_0 (2 \pi
+t)$}
+
+Consider a zero-mean Gaussian process $Z (t)$ with covariance function given
+by
+\begin{equation}
+  r (| t - s |) =\mathbb{E} [Z (t) Z (s)] = \pi J_0 (2 \pi | t - s |)
+\end{equation}
+where $E$ denotes expectation. For a stationary zero-mean Gaussian process,
+Rice's formula{\cite[Theorem 2.2]{GaussianProcessLevelCrossings}} provides an
+expression for the expected number of zeros in a certain interval. For $Z (t)$
+with derivative $Z' (t)$ and given that $Z (t)$ and $Z' (t)$ are jointly
+Gaussian, the expected number of zeros in the interval $[0, R]$ is given by:
+\begin{equation}
+  \mathbb{E} [N (R)] = R \int_{- \infty}^{\infty} | \dot{r (t)} | \phi (r (t))
+  \mathd t
+\end{equation}
+where $\phi$ is the standard Gaussian density function and $r (t)$ is the
+normalized covariance function. Now compare the result from the Gaussian
+process approach with the known result regarding the number of zeros of $J_0$.
+{\cite{esgpz}} The power spectral density of the process is given by the
+Fourier transform of the covariance kernel $r$
+\[ \dot{\rho} (t) = \int_{- \infty}^{\infty} e^{- 2 \pi i s t} r (s, t) \mathd
+   s \]
+and conversely the covariance kernel is the inverse Fourier transform of the
+spectral density
+\begin{equation}
+  r (h) = \int_{- 1}^1 e^{- \lambda h} \mathd \rho (\lambda)
+\end{equation}
+where $\rho (s)$ is the spectral distribution function
+\begin{equation}
+  \int_{- 1}^t \dot{\rho} (s) \mathd s = \int_{- 1}^t \frac{1}{\sqrt{1 - s^2}}
+  \mathd s = \int_{- 1}^t \mathd \rho (s) = \frac{\arcsin (s) +
+  \frac{\pi}{2}}{\pi}
+\end{equation}
+and when the integral is written with respect to the function $\rho (s)$
+rather than $s$ it symbolizes the Lebesgue-Stieltjes integral with respect to
+the spectral distribution function which is absolutely continuous in this case
+and therefore the spectral distribution is simply the integral $\rho (t) =
+\int \dot{\rho} (t)$ which is also sometimes called the integrated spectrum.
+{\cite{yaglom1987correlation}}{\cite{rao2014stochastic}}
+
+\begin{thebibliography}{1}
+  \bibitem[1]{ArfkenWeber2005}G.~Arfken  and  H.~Weber.
+  {\newblock}\tmtextit{Mathematical Methods for Physicists}.
+  {\newblock}Elsevier AP, Boston, 6th  edition, 2005.{\newblock}
+  
+  \bibitem[2]{GaussianProcessLevelCrossings}Marie~F.~Kratz. {\newblock}Level
+  crossings and other level functionals of stationary Gaussian processes.
+  {\newblock}\tmtextit{Probability Surveys}, 3:230--288, 2006.{\newblock}
+  
+  \bibitem[3]{rao2014stochastic}M.M.~Rao. {\newblock}\tmtextit{Stochastic
+  Processes - Inference Theory}. {\newblock}Springer Monographs in
+  Mathematics. Springer International Publishing, 2014.{\newblock}
+  
+  \bibitem[4]{yaglom1987correlation}A.M.~Yaglom.
+  {\newblock}\tmtextit{Correlation Theory of Stationary and Related Random
+  Functions: Volume I: Basic Results}. {\newblock}Applied Probability.
+  Springer New York, 1987.{\newblock}
+  
+  \bibitem[5]{esgpz}N.~Donald Ylvisaker. {\newblock}The Expected Number of
+  Zeros of a Stationary Gaussian Process. {\newblock}\tmtextit{The Annals of
+  Mathematical Statistics}, 36(3):1043--1046, 1965.{\newblock}
+\end{thebibliography}
+
+\
+
+\end{document}
