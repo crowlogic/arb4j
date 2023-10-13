@@ -6,6 +6,11 @@ public class LegendrePolynomial extends
                                 RealPolynomial implements
                                 AutoCloseable
 {
+  
+  static
+  {
+    System.loadLibrary("arblib");
+  }
 
   public LegendrePolynomial(int order)
   {
