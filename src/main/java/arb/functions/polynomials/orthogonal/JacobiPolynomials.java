@@ -1,97 +1,52 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.expressions.Compiler.express;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
-import java.util.Iterator;
-
-import arb.*;
-import arb.domains.Domain;
+import arb.Real;
+import arb.RealConstants;
 import arb.expressions.Variables;
-import arb.functions.real.RealFunction;
 
-public class JacobiPolynomials implements
-                               OrthogonalBasis<Real, RealPolynomial>,
-                               AutoCloseable
+public class JacobiPolynomials
 {
 
-  final Real α = new Real();
-  final Real β = new Real();
+  public static int      bits = 128;
+  public Variables<Real> vars;
+  public Real            α;
+  public Real            β;
 
-  public JacobiPolynomials(Real α, Real β)
+  public JacobiPolynomials(Real a, Real b)
   {
-    this.α.set(α);
-    this.β.set(β);
+    this.α = a;
+    this.β = a;
   }
 
-  Variables<Real> vars         = new Variables<>();
-
-  RealFunction    orthoMeasure = express("(1-x)^α*(1+x)^β", vars);
-
-  @Override
-  public Iterator<RealPolynomial> iterator()
+  public static List<Real> computeCoefficients(int n, Real alpha, Real beta)
   {
-    return new Iterator<RealPolynomial>()
+    if (n < 2)
     {
-      private int currentIndex = 0;
+      throw new IllegalArgumentException("n should be >= 2");
+    }
 
-      @Override
-      public boolean hasNext()
-      {
-        return true;
-      }
+    List<Real> coefficients = new ArrayList<>();
+    coefficients.add(RealConstants.one); // P_0^(alpha, beta)(z) coefficient
+    coefficients.add(RealConstants.zero); // P_1^(alpha, beta)(z) coefficient
 
-      @SuppressWarnings("unchecked")
-      @Override
-      public RealPolynomial next()
-      {
-        return (RealPolynomial) new JacobiPolynomial(JacobiPolynomials.this,
-                                                     currentIndex++);
-      }
-    };
-  }
+    IntStream.range(2, n + 1).forEach(i ->
+    {
+      assert false : " 'TODO: use Expression#Compiler";
+    });
 
-  @Override
-  public RealFunction getOrthogonalMeasure()
-  {
-    return orthoMeasure;
-  }
-
-  public static final Real domain = new Real();
-
-  static
-  {
-    domain.setRad(MagnitudeConstants.one);
-  }
-
-  @Override
-  public Domain<Real> getDomain()
-  {
-    return domain;
+    return coefficients;
   }
 
   public static void main(String[] args)
   {
-    try ( JacobiPolynomials jacobiPolynomials = new JacobiPolynomials(RealConstants.one,
-                                                                      RealConstants.two))
-    {
-      Iterator<RealPolynomial> iterator         = jacobiPolynomials.iterator();
-      RealPolynomial           jacobiPolynomial = iterator.next();
+    Real       alpha        = new Real(1);
+    Real       beta         = new Real(1);
 
-      double                   result           = jacobiPolynomial.eval(0.5);
-
-      System.out.println("The value of Jacobi Polynomial is: " + result);
-    }
-    catch (Exception e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
-
-  @Override
-  public void close() throws Exception
-  {
-    α.close();
-    β.close();
+    List<Real> coefficients = computeCoefficients(5, alpha, beta);
+    coefficients.forEach(System.out::println);
   }
 }

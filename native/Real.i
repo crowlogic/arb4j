@@ -581,6 +581,11 @@ import arb.stochastic.ProbabilityDistributionFunction;
   {
     forEach(element -> pdf.sample(randomState, prec, element));
   }
+  
+  public Real add(Real d, int prec)
+  {
+    return add(d, prec, this);
+  }  
     
   /**
    * Self-referencing this{@link #add(int, int, Real)}
