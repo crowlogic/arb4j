@@ -25,7 +25,7 @@ into Java bytecodes, obviating the necessity to write long strands of Java code 
 
 # Coming Soon
 ### Automatic Differentiation of Expressions (doable now that symbolic parser and compiler works)
-Until then, derivatives of expressions must be manually expressed.
+Until then, derivatives of expressions must be manually expressed. see https://github.com/crowlogic/arb4j/issues/253
 
 # Copyright
 
