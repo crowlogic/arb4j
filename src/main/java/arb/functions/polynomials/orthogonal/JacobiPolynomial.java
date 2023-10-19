@@ -7,6 +7,21 @@ import arb.Real;
 import arb.RealPolynomial;
 import arb.expressions.Variables;
 
+/**
+ * The Jacobi Polynomials are orthogonal with respect to the measure<br>
+ * 
+ * (1-x)^α+(1+x)^β<br>
+ * 
+ * over the interval [-1,1].<br>
+ * 
+ * aₙ P(n+1, α, β)(x) = bₙ P(n, α, β)(x) + cₙ P(n-1, α, β)(x)<br>
+ * 
+ * aₙ = 2(n + 1)(n + α + β + 1)(2n + α + β)<br>
+ * 
+ * bₙ = (2n + α + β)((α² - β²) + (2n + α + β)(2n + α + β + 2))<br>
+ * 
+ * cₙ = 2(n + α)(n + β)(2n + α + β + 2)<br>
+ */
 public class JacobiPolynomial extends
                               RealPolynomial
 {
