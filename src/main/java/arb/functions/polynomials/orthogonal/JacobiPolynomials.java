@@ -1,16 +1,18 @@
 package arb.functions.polynomials.orthogonal;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 
-import arb.Real;
-import arb.RealConstants;
+import arb.*;
+import arb.domains.Domain;
+import arb.expressions.Compiler;
 import arb.expressions.Variables;
+import arb.functions.complex.HolomorphicFunction;
+import arb.functions.real.RealFunction;
 
-public class JacobiPolynomials
+public class JacobiPolynomials implements
+                               OrthogonalBasis<Real, JacobiPolynomial>
 {
-
   public static int      bits = 128;
   public Variables<Real> vars;
   public Real            α;
@@ -19,7 +21,7 @@ public class JacobiPolynomials
   public JacobiPolynomials(Real a, Real b)
   {
     this.α = a;
-    this.β = a;
+    this.β = b;
   }
 
   public static List<Real> computeCoefficients(int n, Real alpha, Real beta)
@@ -33,20 +35,47 @@ public class JacobiPolynomials
     coefficients.add(RealConstants.one); // P_0^(alpha, beta)(z) coefficient
     coefficients.add(RealConstants.zero); // P_1^(alpha, beta)(z) coefficient
 
-    IntStream.range(2, n + 1).forEach(i ->
+    Variables<Real> vars = new Variables<>();
+    vars.put("a", alpha);
+    vars.put("b", beta);
+    Real realn = new Real();
+    vars.put("n", realn);
+
+    String       expressionStr = "(2 * n + a + b) / (2 * n) * z * P(n-1, a, b, z) - (n + a + b - 1) / n * P(n-2, a, b, z)";
+    RealFunction expression    = Compiler.express(expressionStr, vars);
+
+    try ( Real z = new Real())
     {
-      assert false : " 'TODO: use Expression#Compiler";
-    });
+      IntStream.range(2, n + 1).forEach(i ->
+      {
+        realn.set(i);
+        Real coefficient = expression.evaluate(realn, bits, z);
+        coefficients.add(coefficient);
+      });
+    }
 
     return coefficients;
   }
 
-  public static void main(String[] args)
+  @Override
+  public Iterator<JacobiPolynomial> iterator()
   {
-    Real       alpha        = new Real(1);
-    Real       beta         = new Real(1);
-
-    List<Real> coefficients = computeCoefficients(5, alpha, beta);
-    coefficients.forEach(System.out::println);
+    assert false : "TODO";
+    return null;
   }
+
+  @Override
+  public RealFunction getOrthogonalMeasure()
+  {
+    assert false : "return (1-x)^a(1+x)^b";
+    return null;
+  }
+
+  @Override
+  public Domain<Real> getDomain()
+  {
+    assert false : "TODO";
+    return null;
+  }
+
 }

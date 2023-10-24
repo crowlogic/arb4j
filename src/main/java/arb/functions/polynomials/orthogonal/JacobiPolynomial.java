@@ -14,7 +14,7 @@ import arb.expressions.Variables;
  * 
  * over the interval [-1,1].<br>
  * 
- * aₙ P(n+1, α, β)(x) = bₙ P(n, α, β)(x) + cₙ P(n-1, α, β)(x)<br>
+ * P(n, α, β)(x) = (aₙx + bₙ)P(n-1, α, β)(x) - cₙP(n-2, α, β)(x)<br>
  * 
  * aₙ = 2(n + 1)(n + α + β + 1)(2n + α + β)<br>
  * 
