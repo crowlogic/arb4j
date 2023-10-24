@@ -370,7 +370,12 @@ import dnl.utils.text.table.TextTable;
   {
     return getNumRows() == getNumCols();
   }
-  
+
+  public Real diag()
+  {
+    assert false : "todo";
+    return null;
+  }  
     
       
 %};

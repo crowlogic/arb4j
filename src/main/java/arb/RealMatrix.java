@@ -409,7 +409,12 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   {
     return getNumRows() == getNumCols();
   }
-  
+
+  public Real diag()
+  {
+    assert false : "todo";
+    return null;
+  }  
     
       
 

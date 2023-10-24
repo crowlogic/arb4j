@@ -10,7 +10,7 @@ import arb.expressions.Variables;
 /**
  * The Jacobi Polynomials are orthogonal with respect to the measure<br>
  * 
- * (1-x)^α+(1+x)^β<br>
+ * (1-x)^α*(1+x)^β<br>
  * 
  * over the interval [-1,1].<br>
  * 
