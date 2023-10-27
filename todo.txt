@@ -1,1 +1,0 @@
-find out why exponentially regularized function plotter values arent cached
