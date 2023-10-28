@@ -24,7 +24,7 @@ public class JacobiPolynomials implements
     this.β = b;
   }
 
-  public static List<Real> computeCoefficients(int n, Real alpha, Real beta)
+  public List<Real> computeCoefficients(int n)
   {
     if (n < 2)
     {
@@ -36,8 +36,8 @@ public class JacobiPolynomials implements
     coefficients.add(RealConstants.zero); // P_1^(alpha, beta)(z) coefficient
 
     Variables<Real> vars = new Variables<>();
-    vars.put("a", alpha);
-    vars.put("b", beta);
+    vars.put("a", α);
+    vars.put("b", β);
     Real realn = new Real();
     vars.put("n", realn);
 
