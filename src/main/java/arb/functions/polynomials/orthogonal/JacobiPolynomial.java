@@ -5,7 +5,7 @@ import arb.RealPolynomial;
 /**
  * The Jacobi Polynomials are orthogonal with respect to the measure
  * 
- * (1-x)ᵃ(1+x)ᵇ
+ * (1-x)^α*(1+x)^β
  * 
  * over the interval [-1,1].
  * 
