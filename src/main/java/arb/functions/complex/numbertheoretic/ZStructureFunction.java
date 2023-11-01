@@ -1,7 +1,5 @@
 package arb.functions.complex.numbertheoretic;
 
-import static arb.RealConstants.one;
-
 import arb.Real;
 import arb.RealConstants;
 import arb.expressions.Compiler;

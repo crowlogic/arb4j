@@ -5,7 +5,6 @@ import static java.lang.String.format;
 import static java.lang.System.out;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.stream.IntStream;
 
 import arb.*;
@@ -15,7 +14,6 @@ import arb.RealRootInterval.RefinementResult;
 import arb.functions.Function;
 import arb.functions.complex.HolomorphicFunction;
 import arb.utensils.Utensils;
-import de.gsi.chart.Chart;
 
 /**
  * The RealFunction interface, a part of the arb.functions.real package, is

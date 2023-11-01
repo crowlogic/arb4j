@@ -1,6 +1,5 @@
 package arb.stochastic;
 
-import arb.Real;
 import arb.functions.real.RealFunction;
 
 /**

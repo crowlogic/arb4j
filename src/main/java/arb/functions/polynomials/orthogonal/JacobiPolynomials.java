@@ -7,7 +7,6 @@ import arb.*;
 import arb.domains.Domain;
 import arb.expressions.Compiler;
 import arb.expressions.Variables;
-import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;
 
 public class JacobiPolynomials implements

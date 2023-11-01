@@ -1,7 +1,6 @@
 package arb.operators;
 
 import arb.Field;
-import arb.OrderedPair;
 import arb.functions.Function;
 
 /**

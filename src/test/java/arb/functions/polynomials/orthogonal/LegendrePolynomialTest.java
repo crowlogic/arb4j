@@ -1,6 +1,7 @@
 package arb.functions.polynomials.orthogonal;
 
-import arb.*;
+import arb.Real;
+import arb.RealConstants;
 import junit.framework.TestCase;
 
 /**

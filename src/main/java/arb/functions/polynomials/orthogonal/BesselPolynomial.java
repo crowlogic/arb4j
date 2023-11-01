@@ -1,6 +1,7 @@
 package arb.functions.polynomials.orthogonal;
 
-import arb.*;
+import arb.Real;
+import arb.RealPolynomial;
 
 /**
  * the Bessel polynomials are an orthogonal sequence of polynomials defined by

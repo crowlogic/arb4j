@@ -1,9 +1,6 @@
 package arb.viz;
 
-import static java.lang.System.out;
-
 import arb.functions.real.FunctionSampler;
-import arb.utensils.ShellFunctions;
 import de.gsi.chart.XYChart;
 import de.gsi.chart.axes.AxisMode;
 import de.gsi.chart.axes.spi.DefaultNumericAxis;

@@ -2,14 +2,13 @@ package arb.expressions;
 
 import static org.objectweb.asm.Opcodes.*;
 
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodHandles.Lookup;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.objectweb.asm.*;
 
-import arb.*;
+import arb.Field;
+import arb.Real;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -445,8 +444,8 @@ public class Compiler
    * 
    * @param ch
    * @return true if ch represents a caret or a UTF superscript digit except 0 or
-   *         1 because it doesnt make sense to raise anything to the 0th power
-   *         because thats just equal to 1 and it doesnt make sense to raise
+   *         1 because it doesn't make sense to raise anything to the 0th power
+   *         because thats just equal to 1 and it doesn't make sense to raise
    *         something to the 1st power because thats the identity operation
    * 
    */

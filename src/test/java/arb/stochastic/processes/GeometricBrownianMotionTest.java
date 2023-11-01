@@ -2,7 +2,6 @@ package arb.stochastic.processes;
 
 import static arb.RealConstants.one;
 
-import arb.FloatInterval;
 import arb.RandomState;
 import arb.stochastic.processes.integrators.AbstractDiffusionProcessIntegrator;
 import arb.stochastic.processes.integrators.EulerIntegrator;

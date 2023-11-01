@@ -1,7 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
 import arb.*;
-import arb.functions.real.RealFunction;
 
 public class HermitePolynomial extends
                                RealPolynomial implements

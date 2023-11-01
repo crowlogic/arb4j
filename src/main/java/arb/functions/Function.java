@@ -1,6 +1,5 @@
 package arb.functions;
 
-import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.HolomorphicFunction;
 

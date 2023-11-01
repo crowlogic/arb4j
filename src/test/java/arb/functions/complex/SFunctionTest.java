@@ -1,6 +1,7 @@
 package arb.functions.complex;
 
-import arb.*;
+import arb.Complex;
+import arb.RealConstants;
 import junit.framework.TestCase;
 
 public class SFunctionTest extends
