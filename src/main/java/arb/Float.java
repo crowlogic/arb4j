@@ -23,7 +23,7 @@ import arb.utensils.Utensils;
  * <li>a size field tracking the number of limbs used (one bit of this field is
  * also used for the sign of the number)</li>
  * <li>and two more words</li>
- * </ul> 
+ * </ul>
  * <br>
  * If the precision is 128 bits or less then the last two (quad)words hold the
  * value directly if there are at most two limbs, otherwise they contain one
@@ -97,6 +97,20 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     this(segment.address(),
          false);
     this.segment = segment;
+  }
+
+  public String name;
+  
+  public Float setName( String name )
+  {
+    this.name = name;
+    return this;
+  }
+  
+  @Override
+  public String getName()
+  {
+   return name;
   }
 
 

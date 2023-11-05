@@ -1782,7 +1782,23 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     return result;
   }  
   
-
+  /**
+   * Sets this{@link #name} to the given name
+   * 
+   * @param name
+   * @return this for reference chaining fluent-style
+   */
+  public Real setName(String name)
+  {
+    this.name = name;
+    return this;
+  }
+  
+  @Override
+  public String getName()
+  {
+    return name;
+  }  
   
 
   public void setMid(Float value) {

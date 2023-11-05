@@ -1,6 +1,10 @@
 package arb.functions.polynomials.orthogonal;
 
+import arb.Real;
 import arb.RealPolynomial;
+import arb.expressions.Compiler;
+import arb.expressions.Variables;
+import arb.functions.real.RealFunction;
 
 /**
  * The Jacobi Polynomials are orthogonal with respect to the measure
@@ -11,15 +15,15 @@ import arb.RealPolynomial;
  * 
  * For the Jacobi polynomials:
  * 
- * Initial condition: P₀(x) = 1 
+ * Initial condition: P₀(x) = 1
  * 
  * Initial condition: P₁(x) = ½*(α + β + 2) + x*(α - β)
  * 
  * Recurrence relation: Pₙ(x) = aₙ*x*Pₙ₋₁(x) + bₙ*Pₙ₋₂(x)
  * 
  * coefficients: aₙ = cₙ (α² - β²)
- *  
- * coeffecients: bₙ = cₙ (2ₙ + α + β)
+ * 
+ * coeffecients: bₙ = cₙ * dₙ
  * 
  * where
  * 
@@ -41,6 +45,15 @@ public class JacobiPolynomial extends
                               RealPolynomial
 {
 
+  Real                  α    = new Real();
+
+  Real                  β    = new Real();
+
+  final Variables<Real> vars = new Variables<Real>(α.setName("α"),
+                                                   β.setName("β"));
+
+  final RealFunction    p1   = Compiler.express("½*(α + β + 2) + x*(α - β)", vars, true);
+
   public JacobiPolynomial(JacobiPolynomials sequence, int n)
   {
     this.sequence = sequence;
@@ -51,4 +64,10 @@ public class JacobiPolynomial extends
 
   final int               n;
 
+  @Override
+  public void close()
+  {
+    α.close();
+    β.close();
+  }
 }

@@ -1138,4 +1138,11 @@ import arb.domains.Domain;
   {
     return locked;
   }      
+  
+  @Override
+  public String getName()
+  {
+   return name;
+  }
+  
 %};

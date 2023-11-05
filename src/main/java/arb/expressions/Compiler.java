@@ -288,14 +288,14 @@ public class Compiler
   }
 
   /**
-   * Checks whether a given character is a digit or a decimal point.
+   * Checks whether a given character is a digit, a  decimal point, or '½'
    * 
    * @param ch The character to check
    * @return true if the character is a digit or a decimal point; false otherwise
    */
-  static boolean isDigitOrDot(int ch)
+  static boolean isNumeric(int ch)
   {
-    return (ch >= '0' && ch <= '9') || ch == '.';
+    return (ch >= '0' && ch <= '9') || ch == '.' || ch == '½';
   }
 
   /**
@@ -396,9 +396,11 @@ public class Compiler
   }
 
   /**
-   * Loads the 4th and last argument onto the stack, and since this follows the fluent pattern, it is also the return variable
+   * Loads the 4th and last argument onto the stack, and since this follows the
+   * fluent pattern, it is also the return variable
    * 
-   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)} methods is (this,order,bits,result)
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
    * 
    * @param mv the {@link MethodVisitor} to receive the instructions
    * 
@@ -413,8 +415,9 @@ public class Compiler
   /**
    * Loads the 3rd argument (bits) onto the stack
    * 
-   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)} methods is (this,order,bits,result)
-
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
+   * 
    * @param mv the {@link MethodVisitor} to receive the instructions
    * 
    * @return mv the {@link MethodVisitor} parameter
@@ -428,12 +431,13 @@ public class Compiler
   /**
    * Loads the 1st argument (this) onto the stack
    * 
-   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)} methods is (this,order,bits,result)
-
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
+   * 
    * @param mv the {@link MethodVisitor} to receive the instructions
    * 
    * @return mv the {@link MethodVisitor} parameter
-   */  
+   */
   public static MethodVisitor loadInput(MethodVisitor mv)
   {
     mv.visitVarInsn(Opcodes.ALOAD, 1); // Load `input` onto the stack

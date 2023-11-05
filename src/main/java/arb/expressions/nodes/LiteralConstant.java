@@ -15,7 +15,9 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   public final String value;
   public String       fieldName;
 
-  String              π = "π";
+  String              π    = "π";
+
+  String              half = "½";
 
   public LiteralConstant(Expression<D, R, F> expression, String constantValueString, int depth)
   {
@@ -89,7 +91,13 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
                         fieldName,
                         expression.domainClassDescriptor);
     }
-    else
+    else if (half.equals(fieldName))
+    {
+      mv.visitFieldInsn(Opcodes.GETSTATIC,
+                        Type.getInternalName(RealConstants.class),
+                        "half",
+                        expression.domainClassDescriptor);
+    }
     {
       expression.loadField(loadThis(mv), fieldName, false);
     }

@@ -64,6 +64,20 @@ import arb.utensils.Utensils;
     this.segment = segment;
   }
 
+  public String name;
+  
+  public Float setName( String name )
+  {
+    this.name = name;
+    return this;
+  }
+  
+  @Override
+  public String getName()
+  {
+   return name;
+  }
+
 
   /**
    * 

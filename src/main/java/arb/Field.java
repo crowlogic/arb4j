@@ -219,4 +219,6 @@ public interface Field<X extends Field<X>> extends
 
   public X newFieldElement();
 
+  public String getName();
+
 }

@@ -495,7 +495,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                      node.toString());
       }
     }
-    else if (isDigitOrDot(ch))
+    else if (isNumeric(ch))
     {
       node = eatNumber(depth, startPos);
       assert node != null : "eatNumber returned null";
@@ -689,7 +689,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   private Node<D, R, F> eatNumber(int depth, int startPos)
   {
-    while (isDigitOrDot(ch))
+    while (isNumeric(ch))
     {
       nextChar();
     }

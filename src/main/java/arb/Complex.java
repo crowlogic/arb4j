@@ -1175,6 +1175,13 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
   {
     return locked;
   }      
+  
+  @Override
+  public String getName()
+  {
+   return name;
+  }
+  
 
   public void setRealObj(Real value) {
     arblibJNI.Complex_realObj_set(swigCPtr, this, Real.getCPtr(value), value);
