@@ -52,7 +52,7 @@ public class JacobiPolynomial extends
   final Variables<Real> vars = new Variables<Real>(α.setName("α"),
                                                    β.setName("β"));
 
-  final RealFunction    p1   = Compiler.express("½*(α + β + 2) + x*(α - β)", vars, true);
+  final RealFunction    p1   = Compiler.express("(α + β + 2)/2 + x*(α - β)", vars, true);
 
   public JacobiPolynomial(JacobiPolynomials sequence, int n)
   {
