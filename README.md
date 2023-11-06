@@ -48,7 +48,7 @@ try (Real five = x.sqrt(128, new Real())) {
 ## Advanced Tools
 
 ### Expression Compiler
-- Arb4j includes an innovative tool that compiles mathematical expressions directly into Java bytecode.
+- Arb4j includes an innovative tool that [compiles](https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/expressions/Compiler.java) mathematical [expressions](https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/expressions/Expression.java) directly into Java bytecode.
 - This eliminates the need for writing verbose Java code for complex function evaluations.
 
 ### Coming Soon: Automatic Differentiation of Expressions
