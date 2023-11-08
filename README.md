@@ -54,7 +54,7 @@ doSomething(x);
 - This eliminates the need for writing verbose Java code for complex function evaluations.
 
 #### Coming Soon: Automatic Differentiation of Expressions
-- The groundwork has been laid with the symbolic parser and compiler's functionality, setting the stage for future implementation of automatic differentiation.
+- The symbolic parser and compiler is sufficiently developed enough to have automatic differentiation be implemented
 - For current methods, refer to: [GitHub Issue #253](https://github.com/crowlogic/arb4j/issues/253)
 
 ## Licensing
