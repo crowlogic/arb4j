@@ -51,7 +51,7 @@ doSomething(x);
 
 #### Expression Compiler
 - Arb4j includes the innovative [arb.expressions](https://github.com/crowlogic/arb4j/tree/master/src/main/java/arb/expressions) package that contains classes for [compiling](https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/expressions/Compiler.java) mathematical [expressions](https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/expressions/Expression.java) in the form of Strings directly into Java bytecode.
-- This eliminates the need for writing verbose Java code for complex function evaluations.
+- This eliminates the need for writing verbose and error-prone Java code for the evaluation of non-trivial functions
 
 #### Coming Soon: Automatic Differentiation of Expressions
 - The symbolic parser and compiler is sufficiently developed enough to have automatic differentiation be implemented
