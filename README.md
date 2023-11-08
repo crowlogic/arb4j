@@ -33,31 +33,34 @@ Real y = new Real("25", 128)
             .tanh(128);
 ```
 
-### Resource Management: Try-With-Resources
-- `Real` and `Complex` classes manage native memory allocation and will not be automatically freed by the Java garbage collector.
-- To counteract this, `close()` is implemented via the `AutoCloseable` interface, enabling the use of try-with-resources for efficient memory management.
+### Simplified Resource Management with Automatic Arena
+- Previously, `Real` and `Complex` classes required explicit memory management due to native memory allocation.
+- Now, using JDK 21's `Arena` class with an automatic arena, memory deallocation is managed by the garbage collector, avoiding performance issues associated with finalizers.
+- Objects can be treated as POJOs, reducing the risk of memory leaks and the need for explicit deallocation.
 
 **Example:**
 
 ```java
-try (Real five = x.sqrt(128, new Real())) {
-    doSomething(five);
-} // 'close()' is called automatically at the end of the block
+// No need for try-with-resources, memory is managed automatically
+Real x = new Real("25", 128);
+doSomething(x);
+// Memory will be deallocated after 'x' becomes unreachable
 ```
 
-## Advanced Tools
+### Advanced Tools
 
-### Expression Compiler
-- Arb4j includes the innovative [arb.expressions](https://github.com/crowlogic/arb4j/tree/master/src/main/java/arb/expressions) package that contains classes for [compiling](https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/expressions/Compiler.java) mathematical [expressions](https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/expressions/Expression.java) in the form of a Strings directly into Java bytecode.
+#### Expression Compiler
+- Arb4j includes the innovative [arb.expressions](https://github.com/crowlogic/arb4j/tree/master/src/main/java/arb/expressions) package that contains classes for [compiling](https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/expressions/Compiler.java) mathematical [expressions](https://github.com/crowlogic/arb4j/blob/master/src/main/java/arb/expressions/Expression.java) in the form of Strings directly into Java bytecode.
 - This eliminates the need for writing verbose Java code for complex function evaluations.
 
-### Coming Soon: Automatic Differentiation of Expressions
+#### Coming Soon: Automatic Differentiation of Expressions
 - The groundwork has been laid with the symbolic parser and compiler's functionality, setting the stage for future implementation of automatic differentiation.
 - For current methods, refer to: [GitHub Issue #253](https://github.com/crowlogic/arb4j/issues/253)
 
 ## Licensing
 
-arb4j is made available under the Mozilla Public License 2.0. For more details, please consult the [COPYRIGHT](COPYRIGHT) file included in the project repository.
+arb4j is made available under the Mozilla Public License 2.0. For more details, please consult the [COPYRIGHT](https://github.com/crowlogic/arb4j/blob/master/COPYRIGHT) file included in the project repository.
+
 
 
 
