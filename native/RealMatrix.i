@@ -20,6 +20,30 @@ import dnl.utils.text.table.TextTable;
 %typemap(javacode) arb_mat_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  public class RowIterator implements
+                           Iterator<Real>
+  {
+    private final int rowCount;
+    int               i = 0;
+
+    public RowIterator(int rowCount)
+    {
+      this.rowCount = rowCount;
+    }
+
+    @Override
+    public boolean hasNext()
+    {
+      return i < rowCount;
+    }
+
+    @Override
+    public Real next()
+    {
+      return RealMatrix.this.getRow(i++);
+    }
+  }
+  
   public Real getRow(int i)
   {
     return rows[i];
@@ -54,26 +78,11 @@ import dnl.utils.text.table.TextTable;
   {
     final int rowCount = getNumRows();
 
-    return new Iterator<Real>()
-    {
-      int       i        = 0;
-
-      @Override
-      public boolean hasNext()
-      {
-        return i < rowCount;
-      }
-
-      @Override
-      public Real next()
-      {
-        return RealMatrix.this.getRow(i++);
-      }
-    };
+    return new RowIterator(rowCount);
   }
   
   /**
-   * Sets det to the determinant of the matrix A.
+   * Calculates the determinant of this (real-valued) matrix
    * 
    * The lu version uses Gaussian elimination with partial pivoting. If at some
    * point an invertible pivot element cannot be found, the elimination is stopped
@@ -92,7 +101,7 @@ import dnl.utils.text.table.TextTable;
    * @see arb#arb_mat_det(Real, RealMatrix, int)
    * @param bits
    * @param result
-   * @return result after having been assigned the determinant
+   * @return the resulting determinant
    */
   public Real determinant(int bits, Real result)
 
@@ -100,29 +109,6 @@ import dnl.utils.text.table.TextTable;
     arb_mat_det(result, this, bits);
     return result;
   }
-
-  /**
-   * Sets where is a square matrix, computed by solving the system
-   * 
-   * X = A^(-1)
-   * 
-   * If cannot be inverted numerically (indicating either that is singular or that
-   * the precision is insufficient), the values in the output matrix are left
-   * undefined and zero is returned. A nonzero return value guarantees that the
-   * matrix is invertible and that the exact inverse is contained in the output.
-   * 
-   * @see arb#arb_mat_inv(RealMatrix, RealMatrix, int)
-   * 
-   * @param bits
-   * @param result
-   * @return
-   */
-  public RealMatrix inverse(int bits, RealMatrix result)
-
-  {
-    arb_mat_inv(result, this, bits);
-    return result;
-  }  
   
   /**
    * @see arb#arb_mat_zero(RealMatrix)
@@ -234,9 +220,9 @@ import dnl.utils.text.table.TextTable;
     table.setAddRowNumbering(true);
     table.printTable(ps, 0);
     ps.flush();
-    String string = (name != null ? name + "=\n" : "") + os.toString();
-    return string;
-  }  
+    return (name != null ? name + "=\n" : "") + "(" + getDimString() + ")" + os.toString();
+  }
+  
   private String getDimString()
   {
     String dimString = "(" + this.getNumRows() + "," + this.getNumCols() + ")";
@@ -270,12 +256,22 @@ import dnl.utils.text.table.TextTable;
   }
   
   /**
+   * Calculates the inverse of this matrix when it is square by solving the linear
+   * system of equations
+   * 
+   * X = A^(-1)
+   * 
+   * If cannot be inverted numerically (indicating either that is singular or that
+   * the precision is insufficient) then null is returned.
+   * 
    * @see arb#arb_mat_inv(RealMatrix, RealMatrix, int)
-   * @param prec
+   * 
+   * @param bits
    * @param result
-   * @return result
+   * @return null if this matrix is not invertible otherwise the resulting matrix
+   *         will be guaranteed to contain the inverse (in the sense of balls)
    */
-  public RealMatrix inv(int prec, RealMatrix result)
+  public RealMatrix invert(int prec, RealMatrix result)
   {
     if (arb_mat_inv(result, this, prec) == 0)
     {
@@ -287,7 +283,6 @@ import dnl.utils.text.table.TextTable;
       return result;
     }
   }
-
   
   /**
    * @see arb#arb_mat_transpose(RealMatrix, RealMatrix)
