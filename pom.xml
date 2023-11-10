@@ -20,7 +20,7 @@
 				<version>3.10.1</version>
 				<configuration>
 					<compilerArgs>--enable-preview</compilerArgs>
-					<release>20</release>
+
 				</configuration>
 			</plugin>
 			
