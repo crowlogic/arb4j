@@ -294,7 +294,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     m.rows = new Real[rows];
 
     // Allocate a native memory segment for the row pointers using the static arena
-    MemorySegment segment = arena.allocate(rows * Long.BYTES);
+    MemorySegment segment = MemorySegment.ofAddress(m.getRowPointers());
     m.rowPointers = segment.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
 
     for (int i = 0; i < rows; i++)
