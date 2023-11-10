@@ -1062,11 +1062,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    * {@link arblibJNI#mprotect(long, long, int)} method. The actual size based on
    * the rounding up of the buffer size to the nearest page boundary is set which
    * is always greater than or equal to the requested dimension
-   * 
-   * TODO: use
-   * {@link MemorySegment#allocateNative(java.lang.foreign.MemoryLayout, java.lang.foreign.MemorySession)}
-   * instead of {@link arblibJNI#memalign(long, long)}
-   * 
+   *
    * @param size
    * @return
    */
