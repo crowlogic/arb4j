@@ -256,6 +256,16 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return BesselJ(zero, bits, result);
   }
 
+  /**
+   * The gamma-variance is a quantized element of the variance
+   * this{@link #structure(int, int)} function
+   * 
+   * @param n
+   * @param prec
+   * @param result
+   * @return the variance of the differences of points of this separated by a
+   *         distance of n
+   */
   public Real gammaVariance(int n, int prec, Real result)
   {
     if (n == 0)
@@ -266,10 +276,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
     try ( Real unshiftedSlice = slice(0, dim - n); Real shiftedSlice = shift(n);
           Real y = unshiftedSlice.sub(shiftedSlice, prec, Real.newVector(dim - n)))
     {
-      Real pow = y.pow(2, prec);
-      Real sum = pow.sum(prec, result);
-      Real div = sum.div(dim - n, prec, result);
-      return div;
+      return y.pow(2, prec).sum(prec, result).div(dim - n, prec, result);
     }
   }
 
