@@ -1,8 +1,8 @@
 %typemap(javaimports) arb_mat_struct %{
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
 import java.util.Iterator;
@@ -245,22 +245,27 @@ import dnl.utils.text.table.TextTable;
   
   Real[] rows;
   
+  public static Arena arena = Arena.ofAuto();
+
   public static RealMatrix newMatrix(int rows, int cols)
   {
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
 
     m.rows = new Real[rows];
-    MemorySegment ms = MemorySegment.ofAddress(m.getRowPointers(), rows * 8, SegmentScope.auto());
 
-    m.rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
-    m.rows        = new Real[rows];
+    // Allocate a native memory segment for the row pointers using the static arena
+    MemorySegment segment = arena.allocate(rows * Long.BYTES);
+    m.rowPointers = segment.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
+
     for (int i = 0; i < rows; i++)
     {
-      m.rows[i]          = new Real(m.rowPointers.get(i),
+      long rowPointer = m.rowPointers.get(i); // Retrieve the pointer for each row
+      m.rows[i]          = new Real(rowPointer,
                                     false);
       m.rows[i].elements = new Real[m.rows[i].dim = cols];
     }
+
     return m;
   }
   
