@@ -2,7 +2,6 @@ package arb;
 
 import java.io.Closeable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.ref.Cleaner.Cleanable;
 import java.util.Iterator;
 
@@ -27,7 +26,6 @@ public class FloatPartition implements
   private int     prec;
   private Float[] elements;
 
-  SegmentScope    scope = SegmentScope.auto();
 
   MemorySegment   segment;
 

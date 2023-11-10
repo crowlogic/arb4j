@@ -89,7 +89,7 @@ import arb.utensils.Utensils;
   public static Float newVector(int length, boolean aligned)
   {
     Float array = new Float(aligned ? MemorySegment.allocateNative(Float.BYTES
-                  * length, 4096, scope) : MemorySegment.allocateNative(Float.BYTES * length, scope),
+                  * length, arb.arblib.getpagesize(), scope) : MemorySegment.allocateNative(Float.BYTES * length, scope),
                             length);
     array.dim   = length;
     return array;
