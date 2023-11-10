@@ -1,8 +1,8 @@
 package arb;
 
 import java.io.Closeable;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.ref.Cleaner.Cleanable;
 import java.util.Iterator;
 
 /**
@@ -16,21 +16,20 @@ import java.util.Iterator;
 public class FloatPartition implements
                             AutoCloseable,
                             Closeable,
-                            Cleanable,
                             Partition<Float>
 {
-  FloatInterval   interval;
-  Float           partitions;
-  int             n;
-  public Real     δt;
-  private int     prec;
-  private Float[] elements;
+  FloatInterval       interval;
+  Float               partitions;
+  int                 n;
+  public Real         δt;
+  private int         prec;
+  private Float[]     elements;
 
+  MemorySegment       segment;
 
-  MemorySegment   segment;
-
-  private long    swigCPtr;
-  private Float   dtfloat;
+  private long        swigCPtr;
+  private Float       dtfloat;
+  public static Arena arena = Arena.ofAuto();
 
   /**
    * Construct a {@link FloatPartition} of a {@link FloatInterval} TODO: should
@@ -42,12 +41,9 @@ public class FloatPartition implements
    * @param n
    */
   @SuppressWarnings("resource")
-  public FloatPartition(int precision,
-                        FloatInterval interval,
-                        int n)
+  public FloatPartition(int precision, FloatInterval interval, int n)
   {
-    segment           = MemorySegment.allocateNative(Float.BYTES * (n + 1), scope);
-    swigCPtr          = segment.address();
+    segment           = arena.allocate(Float.BYTES * (n + 1), arb.arblib.getpagesize());    swigCPtr          = segment.address();
     this.n            = n;
     this.prec         = precision;
     dtfloat           = new Float();
@@ -108,12 +104,6 @@ public class FloatPartition implements
   public int count()
   {
     return n;
-  }
-
-  @Override
-  public void clean()
-  {
-    close();
   }
 
 }
