@@ -1023,17 +1023,12 @@ import arb.stochastic.ProbabilityDistributionFunction;
    * {@link arblibJNI#mprotect(long, long, int)} method. The actual size based on
    * the rounding up of the buffer size to the nearest page boundary is set which
    * is always greater than or equal to the requested dimension
-   * 
-   * TODO: use
-   * {@link MemorySegment#allocateNative(java.lang.foreign.MemoryLayout, java.lang.foreign.MemorySession)}
-   * instead of {@link arblibJNI#memalign(long, long)}
-   * 
+   *
    * @param size
    * @return
    */
   public static Real newAlignedVector(int size)
   {
-    Arena         arena    = Arena.global();
     int           bytesize = Real.BYTES * size;
     MemorySegment location = arena.allocate(bytesize, arb.arblib.getpagesize());
     Real          array    = new Real(location,
@@ -1758,6 +1753,8 @@ import arb.stochastic.ProbabilityDistributionFunction;
   {
     return name;
   }  
+  
+  public static Arena         arena    = Arena.ofAuto();
   
   public Real(MemorySegment location, boolean cMemoryOwn)
   {

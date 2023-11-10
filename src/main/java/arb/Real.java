@@ -1072,7 +1072,6 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    */
   public static Real newAlignedVector(int size)
   {
-    Arena         arena    = Arena.global();
     int           bytesize = Real.BYTES * size;
     MemorySegment location = arena.allocate(bytesize, arb.arblib.getpagesize());
     Real          array    = new Real(location,
@@ -1797,6 +1796,8 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     return name;
   }  
+  
+  public static Arena         arena    = Arena.ofAuto();
   
   public Real(MemorySegment location, boolean cMemoryOwn)
   {
