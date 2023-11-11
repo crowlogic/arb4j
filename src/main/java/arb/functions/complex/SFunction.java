@@ -11,7 +11,7 @@ import arb.exceptions.NotDifferentiableException;
  * <code>S(t)=tanh(ln(1-t^2)))=((1 - t^2)^2 - 1)/((1 - t^2)^2 + 1)</code>
  */
 public class SFunction implements
-                       HolomorphicFunction,
+                       ComplexFunction,
                        AutoCloseable
 {
   SFunctionInverse[] inverses = new SFunctionInverse[SFunctionInverse.BRANCH_COUNT];
@@ -35,7 +35,7 @@ public class SFunction implements
   }
 
   @Override
-  public HolomorphicFunction differential() throws NotDifferentiableException
+  public ComplexFunction differential() throws NotDifferentiableException
   {
     return (z, order, prec, w) ->
     {
@@ -128,7 +128,7 @@ public class SFunction implements
   }
 
   @Override
-  public synchronized HolomorphicFunction inverse(int branch)
+  public synchronized ComplexFunction inverse(int branch)
   {
     assert 0 <= branch && branch <= 4 : branch + " must be in {0,1,2,3}";
     SFunctionInverse inverse = inverses[branch];

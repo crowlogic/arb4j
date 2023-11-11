@@ -12,7 +12,7 @@ import arb.Float;
 import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
 import arb.functions.Function;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 import arb.utensils.Utensils;
 
 /**
@@ -191,7 +191,7 @@ public interface RealFunction extends
     }
   }
 
-  public default HolomorphicFunction asHolomorphicFunction()
+  public default ComplexFunction asHolomorphicFunction()
   {
     return (z, order, prec, value) ->
     {

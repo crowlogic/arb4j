@@ -4,7 +4,7 @@ import static arb.arblib.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.real.ComplexMagnitude;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
@@ -104,7 +104,7 @@ public class Integrators
    * @return true if the integral converged to the target accuracy on all
    *         subintervals otherwise returns false
    */
-  public static Complex integrate(HolomorphicFunction f,
+  public static Complex integrate(ComplexFunction f,
                                   Complex a,
                                   Complex b,
                                   int relAccuracyBitsGoal,
@@ -171,7 +171,7 @@ public class Integrators
     return res;
   }
 
-  public static Complex integrate(HolomorphicFunction f,
+  public static Complex integrate(ComplexFunction f,
                                   Real a,
                                   Real b,
                                   int relAccuracyBitsGoal,
@@ -266,7 +266,7 @@ public class Integrators
    * @param errors              Magnitude array storing error magnitudes.
    * @param topErrors           Magnitude array storing the top error magnitudes.
    */
-  public static void bisect(HolomorphicFunction f,
+  public static void bisect(ComplexFunction f,
                             int relAccuracyGoalBits,
                             int prec,
                             Magnitude tmpMag,
@@ -316,7 +316,7 @@ public class Integrators
     }
   }
 
-  static void integrate(HolomorphicFunction f,
+  static void integrate(ComplexFunction f,
                         int relAccuracyBitsGoal,
                         Magnitude absErrorToleranceGoal,
                         int prec,

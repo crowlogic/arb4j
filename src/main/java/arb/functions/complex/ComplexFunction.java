@@ -12,7 +12,7 @@ import arb.utensils.Utensils;
 
 /**
  * <pre>
- * A HolomorphicFunction is a complex-valued function that is holomorphic, i.e.
+ * A ComplexFunction is a complex-valued function that is holomorphic, i.e.
  * complex differentiable at every point within its domain. This interface
  * provides methods for computing line integrals along curves, computing the
  * absolute value of this function, computing the adjoint of this function,
@@ -40,8 +40,8 @@ import arb.utensils.Utensils;
  * the function is analytic in that region.
  * </pre>
  */
-public interface HolomorphicFunction extends
-                                     Function<Complex, Complex>
+public interface ComplexFunction extends
+                                 Function<Complex, Complex>
 {
   /**
    * The proper term to describe a function that maps from the set of real numbers
@@ -156,16 +156,16 @@ public interface HolomorphicFunction extends
       assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
       try ( Complex x = new Complex())
       {
-        HolomorphicFunction.this.evaluate(z, order, prec, x).abs(prec, w);
+        ComplexFunction.this.evaluate(z, order, prec, x).abs(prec, w);
       }
       return w;
     };
     return function;
   }
 
-  public default HolomorphicFunction differential() throws NotDifferentiableException
+  public default ComplexFunction differential() throws NotDifferentiableException
   {
-    return new TaylorShift<HolomorphicFunction>(this);
+    return new TaylorShift<ComplexFunction>(this);
   }
 
   /**
@@ -177,9 +177,9 @@ public interface HolomorphicFunction extends
     return 1;
   }
 
-  public default ImaginaryHolomorphicPart<HolomorphicFunction> imaginaryPart()
+  public default ImaginaryHolomorphicPart<ComplexFunction> imaginaryPart()
   {
-    return new ImaginaryHolomorphicPart<HolomorphicFunction>(this);
+    return new ImaginaryHolomorphicPart<ComplexFunction>(this);
   }
 
   /**
@@ -192,7 +192,7 @@ public interface HolomorphicFunction extends
    *         this{@link #integral()}{@link #differential()} == this ==
    *         this{@link #differential()}{@link #integral()}
    */
-  public default HolomorphicFunction integral() throws NotIntegrableException
+  public default ComplexFunction integral() throws NotIntegrableException
   {
     throw new UnsupportedOperationException(getClass() + " needs to implement this method");
   }
@@ -212,9 +212,9 @@ public interface HolomorphicFunction extends
     // uncertainty radius is there");
   }
 
-  public default RealHolomorphicPart<HolomorphicFunction> realPart()
+  public default RealHolomorphicPart<ComplexFunction> realPart()
   {
-    return new RealHolomorphicPart<HolomorphicFunction>(this);
+    return new RealHolomorphicPart<ComplexFunction>(this);
   }
 
   /**

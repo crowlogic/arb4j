@@ -2,7 +2,7 @@ package arb.geometry.curves;
 
 import arb.Real;
 import arb.functions.RealToComplexFunction;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 import arb.geometry.surfaces.Plane;
 
@@ -29,7 +29,7 @@ public interface PlaneCurve extends
     return differential();
   }
 
-  public default HolomorphicFunction getUnitSpeedCurve()
+  public default ComplexFunction getUnitSpeedCurve()
   {
     assert false : "TODO: invert the arc-length to normalize this curve so that it goes from [0,1] instead of [0,getArchLength(2π)]";
     return null;

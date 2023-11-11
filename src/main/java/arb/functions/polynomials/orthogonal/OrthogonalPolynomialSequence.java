@@ -4,7 +4,7 @@ import arb.Field;
 import arb.OrthogonalBasis;
 import arb.domains.Domain;
 import arb.functions.Function;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 public interface OrthogonalPolynomialSequence<X extends Field<X>, R extends Function<X, X>, O extends OrthogonalBasis<X, R>>
@@ -17,7 +17,7 @@ public interface OrthogonalPolynomialSequence<X extends Field<X>, R extends Func
    * 
    * @return
    */
-  public HolomorphicFunction getOrthogonalMeasure();
+  public ComplexFunction getOrthogonalMeasure();
 
   /**
    * 
