@@ -26,6 +26,12 @@ public class Context<X extends Field<X>, F extends Function<X, X>>
     this.functions = functions;
   }
 
+  public Context(Variables<X> vars)
+  {
+    this.variables = vars;
+    this.functions = new Functions<>();
+  }
+
   public Variables<X> variables;
 
   public Functions<F> functions;
@@ -36,9 +42,9 @@ public class Context<X extends Field<X>, F extends Function<X, X>>
     return this;
   }
 
-  public Context<X, F> registerFunction(String functionName, F function)
+  public F registerFunction(String functionName, F function)
   {
     functions.put(functionName, function);
-    return this;
+    return function;
   }
 }

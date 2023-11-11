@@ -233,7 +233,7 @@ import dnl.utils.text.table.TextTable;
   
   public static Arena arena = Arena.ofAuto();
 
-  public static RealMatrix newMatrix(int rows, int cols)
+ public static RealMatrix newMatrix(int rows, int cols)
   {
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);

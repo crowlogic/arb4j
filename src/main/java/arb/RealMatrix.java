@@ -8,16 +8,17 @@
 
 package arb;
 
-import static arb.arblib.*;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.lang.foreign.*;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
+import java.nio.ByteOrder;
 import java.nio.LongBuffer;
 import java.util.Iterator;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import static arb.arblib.*;
 
 import dnl.utils.text.table.TextTable;
 
@@ -271,24 +272,27 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   
   public static Arena arena = Arena.ofAuto();
 
-  public static RealMatrix newMatrix(int rows, int cols) {
+ public static RealMatrix newMatrix(int rows, int cols)
+  {
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
 
     m.rows = new Real[rows];
 
-    // Obtain a MemorySegment from the native address provided by getRowPointers
-    MemorySegment segment = MemorySegment.ofAddress(MemoryAddress.ofLong(m.getRowPointers()), rows * Long.BYTES, ResourceScope.globalScope());
+    // Allocate a native memory segment for the row pointers using the static arena
+    MemorySegment segment = MemorySegment.ofAddress(m.getRowPointers());
+    m.rowPointers = segment.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
 
-    for (int i = 0; i < rows; i++) {
-        // Retrieve the row pointer for each row
-        long rowPointer = segment.get(ValueLayout.JAVA_LONG, i * Long.BYTES);
-        m.rows[i] = new Real(rowPointer, false);
-        m.rows[i].elements = new Real[m.rows[i].dim = cols];
+    for (int i = 0; i < rows; i++)
+    {
+      long rowPointer = m.rowPointers.get(i); // Retrieve the pointer for each row
+      m.rows[i]          = new Real(rowPointer,
+                                    false);
+      m.rows[i].elements = new Real[m.rows[i].dim = cols];
     }
 
     return m;
-}
+  }
   
   /**
    * Calculates the inverse of this matrix when it is square by solving the linear
