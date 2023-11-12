@@ -40,6 +40,7 @@ public class FloatPartition implements
    * @param interval
    * @param n
    */
+  @SuppressWarnings("resource")
   public FloatPartition(int precision, FloatInterval interval, int n)
   {
     segment           = arena.allocate(Float.BYTES * (n + 1), arb.arblib.getpagesize());

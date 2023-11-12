@@ -1,8 +1,8 @@
 %typemap(javaimports) arf_struct %{
 import static arb.arblib.*;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
+import java.lang.foreign.SegmentScope;
 import java.util.Iterator;
 
 import arb.utensils.Utensils;
@@ -54,7 +54,7 @@ import arb.utensils.Utensils;
   public static final int BYTES = 32;
 
   MemorySegment           segment;
-  
+  static SegmentScope     scope = SegmentScope.auto();
   public int dim;
 
   protected Float(MemorySegment segment, int length)
@@ -78,7 +78,6 @@ import arb.utensils.Utensils;
    return name;
   }
 
-  public static Arena     arena = Arena.ofAuto();
 
   /**
    * 
@@ -89,13 +88,13 @@ import arb.utensils.Utensils;
    */
   public static Float newVector(int length, boolean aligned)
   {
-    int bytes = Float.BYTES * length;
-    Float array = new Float(aligned ? arena.allocate(bytes,
-                                                     arb.arblib.getpagesize()) : arena.allocate(bytes),
+    Float array = new Float(aligned ? MemorySegment.allocateNative(Float.BYTES
+                  * length, arb.arblib.getpagesize(), scope) : MemorySegment.allocateNative(Float.BYTES * length, scope),
                             length);
-    array.dim = length;
+    array.dim   = length;
     return array;
   }
+
 
   @Override
   public Iterator<Float> iterator()
@@ -216,6 +215,13 @@ import arb.utensils.Utensils;
     if (swigCMemOwn)
     {
       arf_clear(this);
+    }
+    else
+    {
+      if ( scope != null && scope.isAlive() ) 
+      {        
+        scope = null;
+      }
     }
     return this;
   }
