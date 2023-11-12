@@ -12,7 +12,6 @@ import static arb.IntegerConstants.*;
 import static arb.arblib.*;
 import static arb.RealConstants.*;
 import java.io.Serializable;
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.util.*;
 import java.util.function.IntFunction;
@@ -183,10 +182,8 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
 
   private static final long serialVersionUID = 1L;
 
-  static
-  {
-    System.loadLibrary("arblib");
-  }
+  static { System.loadLibrary( "arblib" ); }
+
 
   @Override
   public Real apply(int value)
@@ -194,22 +191,23 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     return get(value);
   }
 
-  /**
+ 
+ /**
    * @see arblib#arb_asin(Real, Real, int)
    * @param prec
    * @param result
    * @return
    */
-  public Real arcsin(int prec, Real result)
+  public Real arcsin(int prec, Real result )
   {
-    arblib.arb_asin(result, this, prec);
+    arblib.arb_asin(result, this, prec );
     return result;
   }
-
+  
   /**
    * @see arblib#acb_dirichlet_hardy_z(Complex, Complex, DirichletGroup,
    *      DirichletCharacter, int, int)
-   * 
+   *      
    * @param bits
    * @param result
    * @return
@@ -223,7 +221,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
       return result.set(z.re());
     }
   }
-
+  
   /**
    * 
    * @return {@link arb#arb_is_exact(Real)} != 0
@@ -232,9 +230,9 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     return arblib.arb_is_exact(this) != 0;
   }
-
+  
   /**
-   * Binomial coefficient.
+   * Binomial coefficient. 
    * 
    * The number of ways of choosing k out of this items in no particular order
    * 
@@ -242,14 +240,14 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    * @param bits
    * @return this
    */
-  public Real choose(int k, int bits)
+  public Real choose( int k, int bits )
   {
     arblib.arb_bin_ui(this, this, k, bits);
     return this;
   }
-
+  
   /**
-   * Binomial coefficient.
+   * Binomial coefficient. 
    * 
    * this choose k
    * 
@@ -258,12 +256,12 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    * @param result
    * @return
    */
-  public Real choose(int k, int bits, Real result)
+  public Real choose( int k, int bits, Real result )
   {
     arblib.arb_bin_ui(result, this, k, bits);
     return result;
   }
-
+    
   /**
    * Bessel function of the first kind
    * 
@@ -294,7 +292,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     return BesselJ(zero, bits, result);
   }
-
+    
   public Real gammaVariance(int n, int prec, Real result)
   {
     if (n == 0)
@@ -302,7 +300,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
       return result.zero();
     }
 
-    try ( Real unshiftedSlice = slice(0, dim - n); Real shiftedSlice = shift(n);
+    try ( Real unshiftedSlice = slice(0, dim-n); Real shiftedSlice = shift(n);
           Real y = unshiftedSlice.sub(shiftedSlice, prec, Real.newVector(dim - n)))
     {
       Real pow = y.pow(2, prec);
@@ -311,15 +309,14 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
       return div;
     }
   }
-
-  /**
-   * Calculate the empirical (variance) structure function, also known as a
-   * variogram:
+  
+ /**
+   * Calculate the empirical (variance) structure function, also known as a variogram:
    *
    * <|Z(i+n)-Z(i)|^2>
    *
-   * @param n      number of shifts to calculate
-   * 
+   * @param n number of shifts to calculate
+   
    * @param bits
    * @param Result
    * @return a vector of n {@link Real} γ-variances calculated via
@@ -331,7 +328,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     IntStream.range(0, n).parallel().forEach(i -> gammaVariance(i, bits, result.get(i)));
     return result;
   }
-
+  
   /**
    * Shortcut for this{@link #structure(int, int)} which allocates a new
    * {@link Real} vector with {@link Real#newVector(int)}
@@ -343,8 +340,8 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   public Real structure(int n, int bits)
   {
     return structure(n, bits, Real.newVector(n, "γ"));
-  }
-
+  }  
+  
   /**
    * A this{@link #slice(int, int)} of this array of {@link Real}s from the n-th
    * element to the last
@@ -354,9 +351,9 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    */
   public Real shift(int n)
   {
-    return slice(n, dim);
+    return slice(n, dim );
   }
-
+  
   /**
    * Sets u to an upper bound for the absolute value of x via
    * {@link arb#arb_get_mag(Magnitude, Real)}
@@ -370,7 +367,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_get_mag(upperBound, this);
     return upperBound;
   }
-
+  
   /**
    * 
    * @return a clone of this
@@ -384,12 +381,12 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     }
     return copy;
   }
-
+  
   @Override
   public Real identity()
   {
     return zero;
-  }
+  }  
 
   @Override
   public Real apply(Real x, Real y)
@@ -404,21 +401,22 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     assert false : "TODO";
     return null;
   }
-
+    
   @Override
   public Real clone()
   {
     return copy();
   }
-
-  public static Real newVector(int dim, String vecName)
+ 
+  public static Real newVector( int dim, String vecName  )
   {
-    Real array = arblib._arb_vec_init(dim);
-    array.swigCMemOwn = true;
-    array.elements    = new Real[array.dim = dim];
-    array.name        = vecName;
+    Real array = arblib._arb_vec_init(dim);    
+    array.swigCMemOwn = true;    
+    array.elements = new Real[array.dim = dim];
+    array.name = vecName;
     return array;
   }
+
 
   public static Real valueOf(int d)
   {
@@ -426,14 +424,16 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     real.set(d);
     return real;
   }
-
+  
   public static Real valueOf(double d)
   {
     Real real = new Real();
     real.set(d);
     return real;
   }
+  
 
+    
   /**
    * Swap the two elements
    * 
@@ -446,19 +446,19 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     return get(i).swap(get(j));
   }
 
+  
   /**
    * multiply this by the imaginary unit
-   * 
-   * @param bits
+   * @param bits 
    * @param result
    * 
    * @return this*i where i=√(-1)
    */
   public Complex muli(int bits, Complex result)
   {
-    return ComplexConstants.i.mul(this, bits, result);
+    return ComplexConstants.i.mul(this, bits, result );
   }
-
+  
   public Real(Real _z)
   {
     this();
@@ -470,30 +470,30 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_sinh(result, this, prec);
     return result;
   }
-
+  
   public Real cosh(int prec, Real result)
   {
     arblib.arb_cosh(result, this, prec);
     return result;
 
   }
-
+  
   public Real mul2e(int i)
   {
     return mul2e(i, this);
   }
-
+  
   @Override
   public int hashCode()
   {
     return Objects.hash(doubleValue());
   }
-
+  
   public Real normalize(int prec)
   {
-    return normalize(prec, this);
+    return normalize(prec,this);
   }
-
+  
   /**
    * Divides the elements of this by the standard deviation
    * 
@@ -503,7 +503,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    */
   public Real normalize(int prec, Real result)
   {
-    try ( Real σ = standardDeviation(prec, new Real()))
+    try ( Real σ = standardDeviation(prec, new Real() ))
     {
       for (int i = 0; i < dim; i++)
       {
@@ -517,24 +517,22 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    * The covariance of x and y is Σ(x[i]-mean(x))*(y[i]-mean(y)),i=1..dim)
    * 
    * @param that
-   * 
    * @param prec
-   * 
    * @param res
-   * 
    * @return the covariance of this and that
    */
   public Real covariance(Real that, int prec, Real res)
   {
     assert dim == that.dim;
-    try ( Real a = mean(prec, new Real()); Real b = that.mean(prec, new Real());
+    try ( Real a = mean(prec, new Real()); 
+          Real b = that.mean(prec, new Real());
           Real aCentered = vecScalarSub(a, prec, Real.newVector(dim));
           Real bCentered = that.vecScalarSub(b, prec, Real.newVector(dim)))
     {
       return aCentered.dotProduct(bCentered, prec, res).div(dim, prec);
     }
   }
-
+  
   /**
    * 
    * @param a      scalar (single real value, only element 0 is used, it is NOT
@@ -559,13 +557,12 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib._arb_vec_neg(res, this, dim);
     return res;
   }
-
+    
   /**
    * Calls {@link arblibJNI#mprotect(long, long, int)} with
    * {@link Protections#PROT_READ} only so that the contents become immutable. Any
    * code that attmpets to change the variable will trigger a segfault
-   * 
-   * @return
+   * @return 
    */
   @Override
   public Real lock()
@@ -579,28 +576,28 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
 
   /**
    * Calls {@link arblibJNI#mprotect(long, long, int)} with
-   * {@link Protections#PROT_READ} and {@link Protections#PROT_WRITE} so that the
-   * contents become mutable again
+   * {@link Protections#PROT_READ} and {@link Protections#PROT_WRITE} so that the contents 
+   * become mutable again
    */
   @Override
   public Real unlock()
   {
     int status = arblibJNI.mprotect(swigCPtr,
-                                    BYTES * dim,
-                                    Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
+                                 BYTES * dim,
+                                 Protections.PROT_READ.bitfield | Protections.PROT_WRITE.bitfield);
     assert status == 0 : "mprotect call failed. errno=" + arblib.errorNumber();
     locked = false;
     return this;
   }
 
   boolean locked = false;
-
+  
   @Override
   public boolean locked()
   {
     return locked;
   }
-
+  
   /**
    * @see {@link Real#log(int, Real)}
    * 
@@ -611,7 +608,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     return log(prec, this);
   }
-
+  
   /**
    * Calls {@link Real#random(RandomState, int)} on each element of this
    * 
@@ -623,12 +620,12 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     forEach(element -> pdf.sample(randomState, prec, element));
   }
-
+  
   public Real add(Real d, int prec)
   {
     return add(d, prec, this);
-  }
-
+  }  
+    
   /**
    * Self-referencing this{@link #add(int, int, Real)}
    * 
@@ -660,12 +657,12 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_add_si(res, this, x, prec);
     return res;
   }
-
+  
   public Real sub(int i, int prec)
   {
-    return sub(i, prec, this);
+    return sub(i,prec,this);
   }
-
+  
   public Real variance(int prec, Real result)
   {
     try ( Real mean = new Real())
@@ -677,33 +674,34 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   public Real variance(int prec, Real mean, Real result)
   {
     result.zero();
-    try ( Real x = new Real();)
+    try ( Real x = new Real(); )
     {
       for (Real element : this)
-      {
-        result.add(element.sub(mean, prec, x).pow(2, prec), prec);
+      {	    
+        result.add( element.sub(mean, prec, x).pow(2, prec), prec );
       }
     }
     return result.div(dim, prec);
   }
-
+  
   public Real standardDeviation(int prec, Real result)
   {
     try ( Real mean = new Real())
     {
       return standardDeviation(prec, mean(prec, mean), result);
-    }
+    }  
   }
-
+  
   public Real standardDeviation(int prec, Real mean, Real result)
   {
     return variance(prec, mean, result).sqrt(prec);
   }
-
+  
+ 
   @Override
   public int dim()
   {
-    return dim;
+    return dim;    
   }
 
   public Stream<Real> stream()
@@ -711,21 +709,21 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
                                 false);
   }
-
+  
   public Real abs()
   {
     return abs(this);
   }
-
+  
   @Override
   public Iterator<Real> iterator()
   {
     return new RealIterator(this);
   }
-
+  
   /**
-   * Copy constructor
-   */
+    * Copy constructor
+    */
   public Real(Float div, Magnitude mag)
   {
     this();
@@ -735,7 +733,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
 
   public Real pow(int i, int prec)
   {
-    return pow(i, prec, this);
+    return pow(i,prec,this);
   }
 
   public Real(String string, int prec)
@@ -743,14 +741,15 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     this();
     set(string, prec);
   }
-
+  
   public Real log(int prec, Real res)
   {
     arblib.arb_log(res, this, prec);
-    return res;
+    return res;    
   }
 
-  public Real mul2e(int e, Real res)
+  
+  public Real mul2e( int e, Real res )
   {
     arb_mul_2exp_si(res, this, e);
     return res;
@@ -768,28 +767,30 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_urandom(this, state, bits);
     return this;
   }
-
+  
+  
   /**
    * FIXME: test for memory leaks
-   */
+   */ 
   public Real resize(int alloc)
   {
     swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
-                                                                                false),
-                                                            2 * (long) alloc * Real.BYTES));
+                                                                             false),
+                                                         2 * (long)alloc * Real.BYTES));
     Real newElements[] = new Real[alloc];
     System.arraycopy(elements, 0, newElements, 0, dim);
     this.dim = alloc;
     elements = newElements;
     return this;
   }
+   
 
   public Real abs(int prec, Real w)
   {
     arblib.arb_abs(w, this);
     return w;
   }
-
+  
   /**
    * Computes the (Normal Gaussian) error function using an automatic algorithm
    * choice. If z is too small to use the asymptotic expansion, a working
@@ -808,10 +809,8 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   }
 
   /**
-   * Computes the complementary (Normal Gaussian) error function
-   * 1-this{@link #erf(int, Real)} whilst avoiding the catastrophic cancellation
-   * for large positive z.
-   * 
+   * Computes the complementary (Normal Gaussian) error function  1-this{@link #erf(int, Real)}
+   * whilst avoiding the catastrophic cancellation for large positive z.
    * @param prec
    * @param res
    * @return {@link arb#arb_hypgeom_erf(Real, Real, int)}
@@ -821,8 +820,8 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_hypgeom_erfc(res, this, prec);
     return res;
   }
-
-  /**
+    
+ /**
    * The inverse of this{@link #erf(int, Real)}
    * 
    * @param prec
@@ -847,31 +846,32 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_hypgeom_erfcinv(res, this, prec);
     return res;
   }
-
+      
   public Complex div(Complex divisor, int prec, Complex w)
-  {
-    return mul(divisor.inv(prec, w), prec, w);
+  {  
+    return mul( divisor.inv(prec, w), prec, w );   
   }
-
+  
   public Real sech(int prec, Real w)
   {
     arblib.arb_sech(w, this, prec);
     return w;
   }
-
+  
   public Complex sub(Complex a, int prec, Complex res)
   {
     return add(a.neg(res), prec, res);
   }
-
+  
   public Complex add(Complex a, int prec, Complex res)
   {
     arblib.acb_add_arb(res, a, this, prec);
     return res;
   }
 
+  
   /**
-   * Adds the magnitude to the radius of this
+   * Adds the magnitude to the radius of this 
    * 
    * @param err
    * @return
@@ -881,20 +881,20 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_add_error_mag(this, err);
     return this;
   }
-
+  
   public Real clear()
   {
-    if (swigCMemOwn)
+    if ( swigCMemOwn )
     {
-      swigCMemOwn = false;
-      for (int i = 0; i < dim; i++)
+      swigCMemOwn = false;    
+      for ( int i = 0; i < dim; i++ )
       {
         get(i).clear();
       }
     }
     return this;
   }
-
+    
   /**
    * Compares the midpoint of this to another Real, disregarding the uncertainty
    * radius if they are not equal. If they are equal, then compare the radius
@@ -903,17 +903,16 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   public int compareTo(Real o)
   {
     int cmp = getMid().compareTo(o.getMid());
-    if (cmp == 0)
+    if ( cmp == 0 )
     {
       cmp = getRad().compareTo(o.getRad());
     }
     return cmp;
   }
-
+  
   public Real set(int i)
   {
-    arblib.arb_set_si(this, i);
-    ;
+    arblib.arb_set_si(this, i);;
     return this;
   }
 
@@ -929,14 +928,14 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   @Override
   public boolean equals(Object obj)
   {
-    if (!(obj instanceof Real))
+    if ( !(obj instanceof Real))
     {
       return false;
     }
-    Real that = (Real) obj;
+    Real that = (Real)obj;
     return arblib.arb_equal(this, that) != 0;
   }
-
+  
   /**
    * 
    * @param prec
@@ -948,7 +947,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_get_interval_arf(interval.getA(), interval.getB(), this, prec);
     return interval;
   }
-
+  
   /**
    * @return {@link arb#arb_allocated_bytes(Real)}
    */
@@ -958,9 +957,9 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   }
 
   /**
-   * 
+   *  
    * @return -this
-   */
+   */  
   public Real neg()
   {
     return neg(this);
@@ -976,13 +975,13 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_neg(value, this);
     return value;
   }
-
-  public Real sqrt(int prec)
+    
+  public Real sqrt( int prec )  
   {
-    return sqrt(prec, this);
+    return sqrt(prec,this);
   }
-
-  public Real sqrt(int prec, Real res)
+  
+  public Real sqrt( int prec, Real res )
   {
     arblib.arb_sqrt(res, this, prec);
     return res;
@@ -997,27 +996,27 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    */
   public Real addmul(Real that, int prec, Real result)
   {
-    arblib.arb_addmul(result, this, that, prec);
+    arblib.arb_addmul( result, this, that, prec );
     return result;
   }
-
+  
   public boolean isFinite()
   {
     return arblib.arb_is_finite(this) != 0;
   }
 
-  public Real floor(int prec, Real res)
+  public Real floor( int prec, Real res )
   {
-    arblib.arb_floor(res, this, prec);
+    arblib.arb_floor( res, this, prec );
     return res;
   }
 
-  public Real ceil(int prec, Real res)
+  public Real ceil( int prec, Real res )
   {
-    arblib.arb_ceil(res, this, prec);
+    arblib.arb_ceil( res, this, prec );
     return res;
   }
-
+ 
   /**
    * @return this after calling arb#arb_indeterminate(Real)
    */
@@ -1026,22 +1025,22 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arb_indeterminate(this);
     return this;
   }
-
+ 
   public Real frac(int prec, Real res)
   {
-    try ( Real f = new Real())
+    try (Real f = new Real() )
     {
       return sub(floor(prec, f), prec, res);
     }
   }
-
-  public int dim = 1;
-
+ 
+   public int dim = 1;
+  
   public int size()
   {
     return dim;
   }
-
+ 
   public Real slice(int startInclusive, int endExclusive)
   {
     int sliceDim = endExclusive - startInclusive;
@@ -1055,80 +1054,84 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     array.elements = new Real[array.dim = sliceDim];
     return array;
   }
-
-  /**
+     
+ /**
    * Construct a new {@link Real} aligned on a page boundary so that this can be
    * this{@link #lock()}ed by invoking the
-   * {@link arblibJNI#mprotect(long, long, int)} method. The actual size based on
-   * the rounding up of the buffer size to the nearest page boundary is set which
-   * is always greater than or equal to the requested dimension
-   *
+   * {@link arblibJNI#mprotect(long, long, int)} method. The actual size based on the
+   * rounding up of the buffer size to the nearest page boundary is set which is
+   * always greater than or equal to the requested dimension
+   * 
+   * TODO: use
+   * {@link MemorySegment#allocateNative(java.lang.foreign.MemoryLayout, java.lang.foreign.MemorySession)}
+   * instead of {@link arblibJNI#memalign(long, long)}
+   * 
    * @param size
    * @return
    */
   public static Real newAlignedVector(int size)
   {
-    int           bytesize = Real.BYTES * size;
-    MemorySegment location = arena.allocate(bytesize, arb.arblib.getpagesize());
-    Real          array    = new Real(location,
-                                      true);
-    array.dim = size;
+    // Calculate the size aligned to the page boundary
+    int  alignedSize = (int) ((size * Real.BYTES + PAGESIZE - 1) / PAGESIZE * PAGESIZE);
 
-    Real x          = array;
-    
+    long pointer     = arblibJNI.memalign(PAGESIZE, alignedSize);
+    arblibJNI.memset(pointer, 0, alignedSize);
+    Real x          = new Real(pointer,
+                               true);
+
     // Calculate the actual number of elements that can fit in the aligned buffer
-    int  actualSize = (int) (location.byteSize() / Real.BYTES);
+    int  actualSize = alignedSize / Real.BYTES;
 
     x.elements = new Real[x.dim = actualSize];
     for (int j = 0; j < actualSize; j++)
     {
-      Real y = x.elements[j] = new Real(array.swigCPtr + (Real.BYTES * j),
+      Real y = x.elements[j] = new Real(pointer + (Real.BYTES * j),
                                         false);
       y.init();
     }
     return x;
   }
-
-  public static Real newVector(int dim)
+       
+  public static Real newVector( int dim )
   {
-    Real array = arblib._arb_vec_init(dim);
-    array.swigCMemOwn = true;
-    array.dim         = dim;
-    array.elements    = new Real[array.dim = dim];
+    Real array = arblib._arb_vec_init(dim);    
+    array.swigCMemOwn = true;    
+    array.dim = dim;
+    array.elements = new Real[array.dim = dim];
     return array;
   }
-
-  public Real cos(int prec, Real result)
+ 
+  public Real cos(int prec, Real result )
   {
-    arblib.arb_cos(result, this, prec);
+    arblib.arb_cos(result, this, prec );
     return result;
   }
 
-  public Real sin(int prec, Real result)
+  public Real sin(int prec, Real result )
   {
-    arblib.arb_sin(result, this, prec);
+    arblib.arb_sin(result, this, prec );
     return result;
   }
-
+ 
   @Override
   public Real mul(int i, int prec, Real res)
   {
     arblib.arb_mul_si(res, this, i, prec);
     return res;
   }
-
+ 
   public Complex mul(Complex exp, int prec, Complex r)
   {
-    arblib.acb_mul_arb(r, exp, this, prec);
+    arblib.acb_mul_arb(r, exp, this, prec );
     return r;
   }
-
-  public Real tanh(int prec, Real result)
-  {
-    arblib.arb_tanh(result, this, prec);
+  
+  public Real tanh(int prec, Real result )
+  {   
+    arblib.arb_tanh(result, this, prec );
     return result;
   }
-
+  
   public Real swap(Real u)
   {
     arblib.arb_swap(this, u);
@@ -1138,13 +1141,14 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   @Override
   public Real div(Real exp, int prec, Real r)
   {
-    arblib.arb_div(r, this, exp, prec);
+    arblib.arb_div(r, this, exp, prec );
     return r;
   }
+  
 
   public int relAccuracyBits()
   {
-    return arblib.arb_rel_accuracy_bits(this);
+   return arblib.arb_rel_accuracy_bits(this);
   }
 
   public Real sub(Real real, int prec, Real res)
@@ -1164,32 +1168,31 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
 
   public static final int BYTES = Float.BYTES + Magnitude.BYTES;
 
-  public Real setIntervalMagnitude(Magnitude a, Magnitude b, int prec)
+  public Real setIntervalMagnitude( Magnitude a, Magnitude b, int prec )
   {
     arblib.arb_set_interval_mag(this, a, b, prec);
     return this;
   }
-
-  public Real π(int prec)
+    
+  public Real π( int prec )
   {
     arblib.arb_const_pi(this, prec);
     return this;
   }
-
+  
   public Real init()
   {
     arblib.arb_init(this);
     return this;
   }
-
+  
   /**
-   * Return this field to the cycloid of non-existence from which it came by
-   * calling this{@link #clear()}
+   * Return this field to the cycloid of non-existence from which it came by calling this{@link #clear()}
    */
   @Override
-  public void close()
-  {
-    if (locked)
+  public void close() 
+  { 
+    if ( locked )
     {
       unlock();
     }
@@ -1198,12 +1201,12 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
 
   public Real add(Real d, int prec, Real res)
   {
-    arblib.arb_add(res, this, d, prec);
+    arblib.arb_add(res, this, d, prec );
     return res;
   }
-
-  public Real[] elements;
-
+  
+    public Real[] elements;
+  
   public Real get(int index)
   {
     assert index < dim : String.format("index = %d >= dim = %d", index, dim);
@@ -1219,51 +1222,50 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     }
     return element;
   }
-
+   
   public String toFixedString()
   {
     StringBuilder sb = new StringBuilder();
     sb.append("[");
     for (int i = 0; i < dim; i++)
     {
-      if (i > 0)
+      if ( i > 0 )
       {
-        if (dim > 3)
+        if ( dim > 3 )
         {
           sb.append(",\n ");
         }
         else
         {
-          sb.append(", ");
+          sb.append(", ");          
         }
       }
-      sb.append(String.format("%010.010f", get(i).doubleValue()));
+      sb.append(String.format("%010.010f", get(i).doubleValue() ) );
     }
     sb.append("]");
     return sb.toString();
   }
-
+  
   public String toString()
   {
-    return (name == null ? "" : name + " ") + toString(digits());
+    return ( name == null ? "" : name + " " ) + toString(digits());
   }
 
   public String name;
-
+    
   public int digits()
   {
-    try ( Magnitude d = new Magnitude())
+    try ( Magnitude d = new Magnitude()  )
     {
       getRad().inv(d);
       d.log(d);
       d.div(MagnitudeConstants.log10mag, d);
-      return Math.max(5, (int) d.doubleValue() + 2);
+      return Math.max( 5, (int) d.doubleValue() + 2 );
     }
-  }
-
-  public boolean       printPrecision = true;
-  public MemorySegment segment;
-
+  }  
+  
+  public boolean  printPrecision = true;
+    
   public String toString(int digits)
   {
     return toString(digits, printPrecision);
@@ -1274,16 +1276,16 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     if (dim == 1)
     {
       return arblib.arb_get_str(this,
-                                digits,
-                                (printPrecision
-                                              || precise) ? IntegerConstants.ARB_STR_MORE : IntegerConstants.ARB_STR_NO_RADIUS)
-                   .replace("[", "")
-                   .replace("]", "");
+                             digits,
+                             (printPrecision
+                                           || precise) ? IntegerConstants.ARB_STR_MORE : IntegerConstants.ARB_STR_NO_RADIUS)
+                             .replace("[", "")
+                             .replace("]", "");                                           
     }
     else
     {
       StringBuilder sb = new StringBuilder();
-      if (dim > 1)
+      if ( dim > 1 ) 
       {
         sb.append("[");
       }
@@ -1291,46 +1293,47 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
       {
         if (i > 0)
         {
-          if (dim > 3)
+          if ( dim > 3 )
           {
             sb.append(",\n ");
           }
           else
           {
-            sb.append(", ");
-          }
+            sb.append(", ");          
+          }        
         }
         sb.append(String.format("%s", get(i).toString(digits, printPrecision)));
       }
-      if (dim > 1)
+      if ( dim > 1 )
       {
         sb.append("]");
       }
       return sb.toString();
     }
   }
-
-  public Real abs(Real res)
+      
+  public Real abs(Real res)  
   {
     arblib.arb_abs(res, this);
     return res;
   }
 
+        
   public Real set(Real real)
   {
     assert dim == real.dim;
-    if (dim == 1)
+    if ( dim == 1 )
     {
-      arblib.arb_set(this, real);
-    }
-    else
-    {
-      arblib._arb_vec_set(this, real, dim);
-    }
-
-    return this;
+     arblib.arb_set( this, real );
+     }
+     else
+     { 
+       arblib._arb_vec_set( this, real, dim );
+     }
+     
+     return this;    
   }
-
+  
   public int bits()
   {
     return arblib.arb_bits(this);
@@ -1341,13 +1344,13 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_pos_inf(this);
     return this;
   }
-
+  
   public Real negInf()
   {
     arblib.arb_neg_inf(this);
     return this;
   }
-
+  
   public Real zero()
   {
     arblib.arb_zero(this);
@@ -1359,37 +1362,38 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_one(this);
     return this;
   }
-
+         
   public Real set(String string, int prec)
   {
     arblib.arb_set_str(this, string, prec);
     return this;
   }
-
-  public boolean overlaps(Real interval)
+  
+  
+  public boolean overlaps( Real interval )
   {
     return arblib.arb_overlaps(this, interval) != 0;
   }
-
-  @Override
-  public boolean contains(Real interval)
+  
+  @Override  
+  public boolean contains( Real interval )
   {
     return arblib.arb_contains(this, interval) != 0;
   }
-
+    
   public Real set(double d)
   {
     arblib.arb_set_d(this, d);
     return this;
   }
-
+  
   @Override
   public Real div(int k, int prec, Real res)
   {
     arblib.arb_div_si(res, this, k, prec);
     return res;
   }
-
+  
   public double doubleValue()
   {
     return getMid().doubleValue();
@@ -1399,7 +1403,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     return getMid().doubleValue(rm);
   }
-
+  
   /**
    * @return arb#arb_sgn_nonzero(Real)
    */
@@ -1417,19 +1421,19 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     return arblib.arb_is_negative(this) != 0;
   }
-
+  
   public boolean containsZero()
   {
     return arblib.arb_contains_zero(this) != 0;
   }
-
+  
   public Real set(FloatInterval interval, int prec)
   {
     Float a = interval.getA();
     Float b = interval.getB();
 
     /* [-inf, -inf] or [+inf, +inf] */
-    if (a.isInfinite() && a.equals(b))
+    if (a.isInfinite() && a.equals(b) )
     {
       setMid(a);
       getRad().zero();
@@ -1437,7 +1441,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     }
 
     /* any nan -> [nan +/- inf] */
-    if (a.isNotANumber() || b.isNotANumber())
+    if (a.isNotANumber() || b.isNotANumber() )
     {
       arb_indeterminate(this);
       return this;
@@ -1480,9 +1484,9 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    * 
    * @param prec
    * @param r
-   * @return the multiplicative inverse of r
+   * @return the multiplicative inverse of r 
    */
-  public Real inv(int prec, Real r)
+  public Real inv( int prec, Real r )
   {
     arblib.arb_inv(r, this, prec);
     return r;
@@ -1499,8 +1503,8 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     arblib.arb_sec(r, this, prec);
     return r;
-  }
-
+  }  
+  
   /**
    * Sets this real number to its reciprocal, also known as its multiplicative
    * inverse
@@ -1512,7 +1516,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     return inv(prec, this);
   }
-
+    
   public Real pow(int power, int prec, Real r)
   {
     if (dim == 1)
@@ -1528,7 +1532,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     }
     return r;
   }
-
+  
   /**
    * Sets this real number to its reciprocal, also known as its multiplicative
    * inverse
@@ -1539,15 +1543,15 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
    */
   public Real recip(int prec, Real result)
   {
-    return inv(prec, result);
+    return inv(prec,result);
   }
-
+    
   public Real tan(int prec, Real r)
   {
     arblib.arb_tan(r, this, prec);
     return r;
   }
-
+  
   public boolean isZero()
   {
     return arb_is_zero(this) != 0;
@@ -1555,8 +1559,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
 
   /**
    * Calls this{@link #setMid(Float)} and zeros out the radius
-   * 
-   * @param u value to set the midpoint of this real number ball to
+   * @param u value to set the midpoint of this real number ball to 
    * @return this
    */
   public Real set(Float u)
@@ -1564,19 +1567,18 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     setMid(u);
     getRad().zero();
     return this;
-  }
-
+  }  
+   
   public Real mul(Real x, int prec, Real result)
   {
-    arblib.arb_mul(result, this, x, prec);
+    arblib.arb_mul(result, this, x, prec );
     return result;
   }
 
   public Real dotProduct(Real other, int prec, Real res)
   {
-    // TODO: replace this with arblib.arb_dot(res, res, prec, other, prec, res,
-    // prec, prec, prec);
-
+    // TODO: replace this with arblib.arb_dot(res, res, prec, other, prec, res, prec, prec, prec);
+  
     assert dim == other.dim;
     res.zero();
     try ( Real x = new Real();)
@@ -1611,7 +1613,8 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   public Real correlation(Real that, int prec, Real res)
   {
     assert dim == that.dim : "dimensions must match, this.dim=" + dim + " != that.dim = " + that.dim;
-    try ( Real thisSum = Σ(prec, new Real()); Real thatSum = that.Σ(prec, new Real());
+    try ( Real thisSum = Σ(prec, new Real());
+          Real thatSum = that.Σ(prec, new Real());
           Real thisThatDotProduct = new Real();)
     {
       dotProduct(that, prec, thisThatDotProduct);
@@ -1641,12 +1644,13 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     return pow(y, prec, this);
   }
 
+
   public Real exp(int prec)
   {
-    return exp(prec, this);
+    return exp(prec,this);
   }
-
-  /**
+  
+ /**
    * log-Γ
    * 
    * @see arb#arb_lgamma(Real, Real, int)
@@ -1659,7 +1663,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_lgamma(value, this, bits);
     return value;
   }
-
+  
   /**
    * @see arb#arb_gamma(Real, Real, int)
    * @param bits
@@ -1671,7 +1675,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     arblib.arb_gamma(value, this, bits);
     return value;
   }
-
+    
   /**
    * Like this{@link #equals(Object)} but declares equality to be true if is true
    * up to a specified precision
@@ -1684,20 +1688,21 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     try ( Real residual = new Real())
     {
-      return approximatelyEquals(that, prec, residual);
+      return approximatelyEquals(that,prec,residual);
     }
   }
 
-  /**
+  
+ /**
    * 
    * @param bits
-   * @return true if this{@link #approximatelyEquals(Real, int)}
-   *         {@link RealConstants#zero} up to bits precision
+   * @return true if this{@link #approximatelyEquals(Real, int)} {@link RealConstants#zero} up to bits precision
    */
   public boolean isZeroUpTo(int bits)
   {
     return approximatelyEquals(RealConstants.zero, bits);
   }
+
 
   /**
    * Like this{@link #equals(Object)} but declares equality to be true if is true
@@ -1712,13 +1717,13 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     return sub(that, prec, res).containsZero();
   }
-
+    
   public Real(double w)
   {
     this();
     set(w);
   }
-
+  
   /**
    * Perform a linear regression where this=x is the independent variable
    * 
@@ -1738,8 +1743,10 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     Real      slope     = result.get(0);
     Real      intercept = result.get(1);
 
-    try ( Real sumX = x.sum(bits, new Real()); Real sumY = y.sum(bits, new Real());
-          Real sumXY = x.dotProduct(y, bits, new Real()); Real sumXX = x.dotProduct(x, bits, new Real());
+    try ( Real sumX = x.sum(bits, new Real());
+          Real sumY = y.sum(bits, new Real());
+          Real sumXY = x.dotProduct(y, bits, new Real());
+          Real sumXX = x.dotProduct(x, bits, new Real());
           Real tmp = new Real();)
     {
       // m = (N*Σ(xy) - Σx*Σy) / (N*Σ(x^2) - (Σx)^2)
@@ -1757,7 +1764,7 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     }
     return result;
   }
-
+  
   /**
    * Calculate the sum of the elements
    * 
@@ -1773,8 +1780,8 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
       result.add(val, bits);
     }
     return result;
-  }
-
+  }  
+  
   /**
    * Sets this{@link #name} to the given name
    * 
@@ -1792,16 +1799,6 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
   {
     return name;
   }  
-  
-  public static Arena         arena    = Arena.ofAuto();
-  
-  public Real(MemorySegment location, boolean cMemoryOwn)
-  {
-    swigCMemOwn  = cMemoryOwn;
-    swigCPtr     = location.address();
-    this.segment = location;
-  }
-
   
 
   public void setMid(Float value) {

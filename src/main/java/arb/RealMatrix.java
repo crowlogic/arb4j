@@ -10,8 +10,8 @@ package arb;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
+import java.lang.foreign.SegmentScope;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
 import java.util.Iterator;
@@ -59,30 +59,6 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
 
   static { System.loadLibrary( "arblib" ); }
 
-  public class RowIterator implements
-                           Iterator<Real>
-  {
-    private final int rowCount;
-    int               i = 0;
-
-    public RowIterator(int rowCount)
-    {
-      this.rowCount = rowCount;
-    }
-
-    @Override
-    public boolean hasNext()
-    {
-      return i < rowCount;
-    }
-
-    @Override
-    public Real next()
-    {
-      return RealMatrix.this.getRow(i++);
-    }
-  }
-  
   public Real getRow(int i)
   {
     return rows[i];
@@ -117,11 +93,26 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   {
     final int rowCount = getNumRows();
 
-    return new RowIterator(rowCount);
+    return new Iterator<Real>()
+    {
+      int       i        = 0;
+
+      @Override
+      public boolean hasNext()
+      {
+        return i < rowCount;
+      }
+
+      @Override
+      public Real next()
+      {
+        return RealMatrix.this.getRow(i++);
+      }
+    };
   }
   
   /**
-   * Calculates the determinant of this (real-valued) matrix
+   * Sets det to the determinant of the matrix A.
    * 
    * The lu version uses Gaussian elimination with partial pivoting. If at some
    * point an invertible pivot element cannot be found, the elimination is stopped
@@ -140,7 +131,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
    * @see arb#arb_mat_det(Real, RealMatrix, int)
    * @param bits
    * @param result
-   * @return the resulting determinant
+   * @return result after having been assigned the determinant
    */
   public Real determinant(int bits, Real result)
 
@@ -148,6 +139,29 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     arb_mat_det(result, this, bits);
     return result;
   }
+
+  /**
+   * Sets where is a square matrix, computed by solving the system
+   * 
+   * X = A^(-1)
+   * 
+   * If cannot be inverted numerically (indicating either that is singular or that
+   * the precision is insufficient), the values in the output matrix are left
+   * undefined and zero is returned. A nonzero return value guarantees that the
+   * matrix is invertible and that the exact inverse is contained in the output.
+   * 
+   * @see arb#arb_mat_inv(RealMatrix, RealMatrix, int)
+   * 
+   * @param bits
+   * @param result
+   * @return
+   */
+  public RealMatrix inverse(int bits, RealMatrix result)
+
+  {
+    arb_mat_inv(result, this, bits);
+    return result;
+  }  
   
   /**
    * @see arb#arb_mat_zero(RealMatrix)
@@ -259,9 +273,9 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     table.setAddRowNumbering(true);
     table.printTable(ps, 0);
     ps.flush();
-    return (name != null ? name + "=\n" : "") + "(" + getDimString() + ")" + os.toString();
-  }
-  
+    String string = (name != null ? name + "=\n" : "") + os.toString();
+    return string;
+  }  
   private String getDimString()
   {
     String dimString = "(" + this.getNumRows() + "," + this.getNumCols() + ")";
@@ -270,47 +284,32 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   
   Real[] rows;
   
-  public static Arena arena = Arena.ofAuto();
-
   public static RealMatrix newMatrix(int rows, int cols)
   {
     RealMatrix m = new RealMatrix();
     m.init(rows, cols);
 
     m.rows = new Real[rows];
+    MemorySegment ms = MemorySegment.ofAddress(m.getRowPointers(), rows * 8, SegmentScope.auto());
 
-    // Allocate a native memory segment for the row pointers using the static arena
-    MemorySegment segment = MemorySegment.ofAddress(m.getRowPointers());
-    m.rowPointers = segment.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
-
+    m.rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
+    m.rows        = new Real[rows];
     for (int i = 0; i < rows; i++)
     {
-      long rowPointer = m.rowPointers.get(i); // Retrieve the pointer for each row
-      m.rows[i]          = new Real(rowPointer,
+      m.rows[i]          = new Real(m.rowPointers.get(i),
                                     false);
       m.rows[i].elements = new Real[m.rows[i].dim = cols];
     }
-
     return m;
   }
   
   /**
-   * Calculates the inverse of this matrix when it is square by solving the linear
-   * system of equations
-   * 
-   * X = A^(-1)
-   * 
-   * If cannot be inverted numerically (indicating either that is singular or that
-   * the precision is insufficient) then null is returned.
-   * 
    * @see arb#arb_mat_inv(RealMatrix, RealMatrix, int)
-   * 
-   * @param bits
+   * @param prec
    * @param result
-   * @return null if this matrix is not invertible otherwise the resulting matrix
-   *         will be guaranteed to contain the inverse (in the sense of balls)
+   * @return result
    */
-  public RealMatrix invert(int prec, RealMatrix result)
+  public RealMatrix inv(int prec, RealMatrix result)
   {
     if (arb_mat_inv(result, this, prec) == 0)
     {
@@ -322,6 +321,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
       return result;
     }
   }
+
   
   /**
    * @see arb#arb_mat_transpose(RealMatrix, RealMatrix)
