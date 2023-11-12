@@ -43,8 +43,7 @@ public class FloatPartition implements
   @SuppressWarnings("resource")
   public FloatPartition(int precision, FloatInterval interval, int n)
   {
-    segment           = arena.allocate(Float.BYTES * (n + 1), arb.arblib.getpagesize());
-    swigCPtr          = segment.address();
+    segment           = arena.allocate(Float.BYTES * (n + 1), arb.arblib.getpagesize());    swigCPtr          = segment.address();
     this.n            = n;
     this.prec         = precision;
     dtfloat           = new Float();
@@ -54,11 +53,10 @@ public class FloatPartition implements
     elements          = new Float[n];
     for (int i = 0; i < n; i++)
     {
-      dtfloat.mul(i,
-                  prec,
-                  elements[i] = new Float(swigCPtr + Float.BYTES * i,
-                                          false))
-             .add(interval.getA(), precision);
+      Float τi = elements[i] = new Float(swigCPtr + Float.BYTES * i,
+                                         false);
+      dtfloat.mul(i, prec, τi);
+      τi.add(interval.getA(), precision);
     }
   }
 
