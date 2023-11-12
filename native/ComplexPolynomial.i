@@ -5,7 +5,7 @@ import static arb.arblib.*;
 %}
 
 %typemap(javafinalize) acb_poly_struct ""
-%typemap(javainterfaces) acb_poly_struct "AutoCloseable,ComplexFunction"
+%typemap(javainterfaces) acb_poly_struct "AutoCloseable,HolomorphicFunction"
 
 %typemap(javacode) acb_poly_struct %{
 

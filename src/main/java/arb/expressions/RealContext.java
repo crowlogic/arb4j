@@ -7,9 +7,4 @@ public class RealContext extends
                          Context<Real, RealFunction>
 {
 
-  public RealContext(Variables<Real> vars)
-  {
-    super(vars);
-  }
-
 }

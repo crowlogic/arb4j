@@ -1,10 +1,9 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.expressions.Compiler.express;
-
 import arb.Real;
 import arb.RealPolynomial;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
 /**
@@ -46,18 +45,16 @@ public class JacobiPolynomial extends
                               RealPolynomial
 {
 
-  Real                  α       = new Real();
+  Real                  α    = new Real();
 
-  Real                  β       = new Real();
+  Real                  β    = new Real();
 
-  final Variables<Real> vars    = new Variables<Real>(α.setName("α"),
-                                                      β.setName("β"));
+  final Variables<Real> vars = new Variables<Real>(α.setName("α"),
+                                                   β.setName("β"));
 
-  final RealContext     context = new RealContext(vars);
+  final RealFunction    d    = Compiler.express("2*n+α+β", vars);
 
-  final RealFunction    d       = context.registerFunction("d", express("2*n+α+β", vars));
-
-  final RealFunction    p1      = express("d(1)/2 + x*(α - β)", vars, true);
+  final RealFunction    p1   = Compiler.express("d(1)/2 + x*(α - β)", vars, true);
 
   public JacobiPolynomial(JacobiPolynomials sequence, int n)
   {
