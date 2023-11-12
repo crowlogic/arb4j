@@ -652,7 +652,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     {
       nextChar();
     }
-    String identifier = expression.substring(startPos, position);
+    String identifier = expression.substring(startPos, position).trim();
     String index      = null;
     if (eat(depth, '['))
     {
