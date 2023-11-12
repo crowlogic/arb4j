@@ -1,6 +1,6 @@
 package arb.stochastic;
 
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 import arb.operators.integraltransforms.FourierTransform;
 
 /**
@@ -52,7 +52,7 @@ import arb.operators.integraltransforms.FourierTransform;
  *            characteristic function corresponds to
  */
 public interface CharacteristicFunction extends
-                                        ComplexFunction
+                                        HolomorphicFunction
 {
 
 

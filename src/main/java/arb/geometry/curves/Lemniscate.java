@@ -3,7 +3,7 @@ package arb.geometry.curves;
 import static java.lang.Math.max;
 
 import arb.*;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 import arb.functions.real.RealFunction;
 
 /**
@@ -91,7 +91,7 @@ public class Lemniscate implements
 
   @SuppressWarnings("unchecked")
   @Override
-  public ComplexFunction inverse(int branch)
+  public HolomorphicFunction inverse(int branch)
   {
     switch (branch)
     {

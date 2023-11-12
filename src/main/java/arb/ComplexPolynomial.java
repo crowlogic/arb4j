@@ -9,10 +9,10 @@
 package arb;
 
 import static arb.RealConstants.*;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 import static arb.arblib.*;
 
-public class ComplexPolynomial implements AutoCloseable,ComplexFunction {
+public class ComplexPolynomial implements AutoCloseable,HolomorphicFunction {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 

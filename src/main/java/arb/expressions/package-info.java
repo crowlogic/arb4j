@@ -30,7 +30,7 @@
  * <p>
  * Although the current implementation only supports the
  * {@link arb.functions.real.RealFunction} interface, future updates will add
- * support for the ComplexFunction interface, extending the functionality of
+ * support for the HolomorphicFunction interface, extending the functionality of
  * this package to handle complex number expressions.
  *
  * <p>

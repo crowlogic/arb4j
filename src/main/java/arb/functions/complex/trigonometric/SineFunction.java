@@ -1,10 +1,10 @@
 package arb.functions.complex.trigonometric;
 
 import arb.Complex;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 public class SineFunction implements
-                          ComplexFunction
+                          HolomorphicFunction
 {
 
   @Override

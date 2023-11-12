@@ -3,7 +3,7 @@ package arb.functions.complex.elliptic;
 import static arb.arblib.acb_elliptic_k;
 
 import arb.Complex;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 /**
  * K(s) is the Complete Elliptical Integral of the First Kind, ALso known as the
@@ -13,7 +13,7 @@ import arb.functions.complex.ComplexFunction;
  *
  */
 public class RealQuarterPeriod implements
-                               ComplexFunction
+                               HolomorphicFunction
 {
 
   @Override

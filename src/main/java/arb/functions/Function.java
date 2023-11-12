@@ -1,7 +1,7 @@
 package arb.functions;
 
 import arb.exceptions.NotDifferentiableException;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 public interface Function<D, R>
 {
@@ -21,7 +21,7 @@ public interface Function<D, R>
    * evaluated at a precision of prec bits. 
    * 
    * NOTE: In this case, the implementation must verify that f is a 
-   * {@link ComplexFunction} on the complex interval defined by t, 
+   * {@link HolomorphicFunction} on the complex interval defined by t, 
    * and set the coefficients in the result(res) to non-finite values 
    * otherwise.
    * 

@@ -33,7 +33,7 @@ public class SFunctionTest extends
     {
       for (int i = 0; i < 4; i++)
       {
-        ComplexFunction firstInverse = sFunction.inverse(0);
+        HolomorphicFunction firstInverse = sFunction.inverse(0);
 
       }
     }

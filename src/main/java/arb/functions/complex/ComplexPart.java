@@ -1,7 +1,7 @@
 package arb.functions.complex;
 
-public abstract class ComplexPart<F extends ComplexFunction> implements
-                                 ComplexFunction
+public abstract class ComplexPart<F extends HolomorphicFunction> implements
+                                 HolomorphicFunction
 {
   F f;
 

@@ -7,7 +7,7 @@ import arb.expressions.Expression;
  * TODO: redo with {@link Expression}
  */
 public class SFunctionInverse implements
-                              ComplexFunction
+                              HolomorphicFunction
 {
 
   public static final int BRANCH_COUNT = 4;

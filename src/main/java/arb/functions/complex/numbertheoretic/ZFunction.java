@@ -4,10 +4,10 @@ import static java.lang.Math.max;
 
 import arb.Complex;
 import arb.arblib;
-import arb.functions.complex.ComplexFunction;
+import arb.functions.complex.HolomorphicFunction;
 
 public class ZFunction implements
-                       ComplexFunction
+                       HolomorphicFunction
 {
   @Override
   public String toString()
