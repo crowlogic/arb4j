@@ -370,7 +370,7 @@ public class ExpressionTest extends
 
   public void testPi()
   {
-    RealFunction expression = Compiler.express("π");
+    RealFunction expression = Compiler.express("π", true);
     try ( Real pi = expression.evaluate(RealConstants.zero, 128, new Real()))
     {
       assertEquals(RealConstants.π, pi);
