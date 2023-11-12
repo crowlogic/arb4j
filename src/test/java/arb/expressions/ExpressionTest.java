@@ -10,6 +10,8 @@ public class ExpressionTest extends
                             TestCase
 {
   Variables<Real> variables = new Variables<>();
+  RealContext context = new RealContext(variables);
+  
   private Real    v;
   private Real    v3;
 
@@ -60,7 +62,7 @@ public class ExpressionTest extends
 
   public void testVariableIndexedByAConstant()
   {
-    try ( RealFunction expression = Compiler.express("v[3]", variables, true))
+    try ( RealFunction expression = Compiler.express("v[3]", context, true))
     {
       Real value = expression.evaluate(one, 1, 256, new Real());
       assertEquals(v3, value);

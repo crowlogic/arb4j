@@ -42,7 +42,7 @@ public class Context<X extends Field<X>, F extends Function<X, X>>
     return this;
   }
 
-  public F registerFunction(String functionName, F function)
+  public F register(String functionName, F function)
   {
     functions.put(functionName, function);
     return function;

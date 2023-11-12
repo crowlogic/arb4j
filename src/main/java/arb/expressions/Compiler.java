@@ -621,9 +621,9 @@ public class Compiler
     return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, verbose);
   }
 
-  public static RealFunction express(String expression, Variables<Real> variables, boolean verbose)
+  public static RealFunction express(String expression, RealContext context, boolean verbose)
   {
-    return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, verbose);
+    return instantiate(expression, context.variables, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   public static RealFunction express(String expression, boolean verbose)
