@@ -1,7 +1,7 @@
 package arb.functions.real;
 
 import arb.functions.ComplexToRealFunction;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * An abstract base class for real functions derived from holomorphic functions
@@ -9,9 +9,9 @@ import arb.functions.complex.HolomorphicFunction;
  * {@link RealFunction} interface and serves as a foundation for subclasses that
  * work with holomorphic functions.
  *
- * @param <F> A generic type that extends {@link HolomorphicFunction}
+ * @param <F> A generic type that extends {@link ComplexFunction}
  */
-public abstract class ComplexHolomorphicPart<F extends HolomorphicFunction> implements
+public abstract class ComplexHolomorphicPart<F extends ComplexFunction> implements
                                             ComplexToRealFunction
 {
 

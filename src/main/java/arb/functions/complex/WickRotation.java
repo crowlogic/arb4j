@@ -12,7 +12,7 @@ import arb.ComplexConstants;
  * @author crow
  */
 public class WickRotation implements
-                          HolomorphicFunction
+                          ComplexFunction
 {
 
   @Override

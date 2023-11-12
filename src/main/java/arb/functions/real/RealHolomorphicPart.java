@@ -2,7 +2,7 @@ package arb.functions.real;
 
 import arb.*;
 import arb.functions.RealToComplexFunction;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * Represents the real part of a holomorphic function, i.e., a complex
@@ -11,20 +11,20 @@ import arb.functions.complex.HolomorphicFunction;
  * the function up to a specified order of derivative and with a specified level
  * of precision.
  *
- * @param <F> A generic type that extends {@link HolomorphicFunction}
+ * @param <F> A generic type that extends {@link ComplexFunction}
  */
-public class RealHolomorphicPart<F extends HolomorphicFunction> extends
+public class RealHolomorphicPart<F extends ComplexFunction> extends
                                 ComplexHolomorphicPart<F>
 {
 
   /**
    * A wrapper class for {@link RealToComplexFunction} that implements the
-   * {@link HolomorphicFunction} interface. This class allows a
+   * {@link ComplexFunction} interface. This class allows a
    * {@code RealToComplexFunction} to be used in contexts that require a
-   * {@code HolomorphicFunction}.
+   * {@code ComplexFunction}.
    */
   public static class Wrapper implements
-                              HolomorphicFunction
+                              ComplexFunction
   {
     @Override
     public String toString()

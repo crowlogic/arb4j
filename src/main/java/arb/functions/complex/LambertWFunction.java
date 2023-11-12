@@ -24,10 +24,10 @@ complex interval arithmetic</a>
  * 
  * @see <a href= "https://arblib.org/acb.html#lambert-w-function">the arblib
  *      documentation</a> for information about the flags parameter
- * @see HolomorphicFunction
+ * @see ComplexFunction
  */
 public class LambertWFunction implements
-                              HolomorphicFunction
+                              ComplexFunction
 {
   // TOOD: make javadocs for flags param instead of referring elsewhere
 

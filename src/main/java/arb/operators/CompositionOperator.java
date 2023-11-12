@@ -1,7 +1,7 @@
 package arb.operators;
 
 import arb.Complex;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 import arb.space.topological.VectorSpace;
 
 /**
@@ -11,12 +11,12 @@ import arb.space.topological.VectorSpace;
  *
  */
 
-public class CompositionOperator<F extends HolomorphicFunction, G extends HolomorphicFunction> implements
-                                HolomorphicFunction,
+public class CompositionOperator<F extends ComplexFunction, G extends ComplexFunction> implements
+                                ComplexFunction,
                                 LinearOperator<Complex, Complex>,
                                 AutoCloseable
 {
-  public static <F extends HolomorphicFunction, G extends HolomorphicFunction> CompositionOperator<F, G> compose(F f,
+  public static <F extends ComplexFunction, G extends ComplexFunction> CompositionOperator<F, G> compose(F f,
                                                                                                                  G g)
   {
     return new CompositionOperator<F, G>(f,

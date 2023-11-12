@@ -2,7 +2,7 @@ package arb.functions.real;
 
 import arb.Complex;
 import arb.Real;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * Represents the imaginary part of a holomorphic function (i.e., complex
@@ -11,9 +11,9 @@ import arb.functions.complex.HolomorphicFunction;
  * imaginary part of the function up to a specified order of derivative and with
  * a specified level of precision.
  *
- * @param <F> A generic type that extends {@link HolomorphicFunction}
+ * @param <F> A generic type that extends {@link ComplexFunction}
  */
-public class ImaginaryHolomorphicPart<F extends HolomorphicFunction> extends
+public class ImaginaryHolomorphicPart<F extends ComplexFunction> extends
                                      ComplexHolomorphicPart<F>
 {
 

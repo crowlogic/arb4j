@@ -10,7 +10,7 @@ import org.scilab.forge.jlatexmath.*;
 import arb.*;
 import arb.Float;
 import arb.RealRootInterval.RefinementResult;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 public class Utensils
@@ -190,7 +190,7 @@ public class Utensils
     }
   }
 
-  public static Complex calculateSimpleQuadrature(HolomorphicFunction f, Complex a, Complex b, int prec, Complex res)
+  public static Complex calculateSimpleQuadrature(ComplexFunction f, Complex a, Complex b, int prec, Complex res)
   {
     try ( Magnitude magδ = new Magnitude(); Complex midpoint = new Complex(); Complex δ = new Complex();
           Complex widePoint = new Complex();)
@@ -216,7 +216,7 @@ public class Utensils
     }
   }
 
-  public static boolean evaluateGaussLegendreIntegral(HolomorphicFunction f,
+  public static boolean evaluateGaussLegendreIntegral(ComplexFunction f,
                                                       Complex a,
                                                       Complex b,
                                                       Magnitude tol,
@@ -350,7 +350,7 @@ public class Utensils
 
   public static final int glStepCount = glSteps.length;
 
-  public static void evaluateBestGaussLegendreQuadratureRule(HolomorphicFunction f,
+  public static void evaluateBestGaussLegendreQuadratureRule(ComplexFunction f,
                                                              int prec,
                                                              AtomicLong evalCount,
                                                              Complex res,

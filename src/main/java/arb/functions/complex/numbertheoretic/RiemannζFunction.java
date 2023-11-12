@@ -4,7 +4,7 @@ import static arb.arblib.acb_dirichlet_zeta_jet;
 
 import arb.Complex;
 import arb.Real;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 
 /**
  * The Riemann zeta function plays a pivotal role in analytic number theory, and
@@ -24,7 +24,7 @@ import arb.functions.complex.HolomorphicFunction;
  *
  */
 public class RiemannζFunction implements
-                              HolomorphicFunction
+                              ComplexFunction
 {
 
   @Override

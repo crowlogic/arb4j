@@ -13,9 +13,9 @@ public class RealPartOfHolomorphicMapping implements
     return f.toString();
   }
 
-  HolomorphicFunction f;
+  ComplexFunction f;
 
-  public RealPartOfHolomorphicMapping(HolomorphicFunction c)
+  public RealPartOfHolomorphicMapping(ComplexFunction c)
   {
     f = c;
   }

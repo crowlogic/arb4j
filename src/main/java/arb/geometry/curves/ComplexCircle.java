@@ -3,7 +3,7 @@ package arb.geometry.curves;
 import static java.lang.Math.max;
 
 import arb.*;
-import arb.functions.complex.HolomorphicFunction;
+import arb.functions.complex.ComplexFunction;
 import arb.functions.complex.SFunction;
 import arb.functions.complex.dynamics.NewtonMap;
 import arb.operators.CompositionOperator;
@@ -24,7 +24,7 @@ import arb.operators.CompositionOperator;
  *
  */
 public class ComplexCircle implements
-                           HolomorphicFunction,
+                           ComplexFunction,
                            AutoCloseable
 {
   @Override
