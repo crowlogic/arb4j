@@ -45,6 +45,7 @@ public class Context<X extends Field<X>, F extends Function<X, X>>
 
   public F register(String functionName, F function)
   {
+    assert false : "TODO: update FunctionCall to support calling registered Functions";
     functions.put(functionName, function);
     return function;
   }

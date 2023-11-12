@@ -120,6 +120,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
   public MethodVisitor generate(MethodVisitor methodVisitor)
   {
     CodeGenerator handler = (isLast ? lastCallFunctionHandlers : functionHandlers).get(name);
+    
     if (handler == null)
     {
       throw new RuntimeException("No handler for function '" + name + "'");

@@ -288,7 +288,7 @@ public class Compiler
   }
 
   /**
-   * Checks whether a given character is a digit, a  decimal point, or '½'
+   * Checks whether a given character is a digit, a decimal point, or '½'
    * 
    * @param ch The character to check
    * @return true if the character is a digit or a decimal point; false otherwise
@@ -603,7 +603,7 @@ public class Compiler
 
   public static RealFunction express(String expression)
   {
-    return express(expression, null);
+    return express(expression, (Variables<Real>) null);
   }
 
   public static RealFunction express(String className, String expression, Variables<Real> variables)
@@ -611,9 +611,36 @@ public class Compiler
     return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, false);
   }
 
-  public static RealFunction express(String expression, Variables<Real> variables)
+  public static RealFunction express(String expression, Variables<Real> vars)
   {
-    return instantiate(expression, variables, Real.class, Real.class, RealFunction.class, false);
+    return instantiate(expression, vars, Real.class, Real.class, RealFunction.class, false);
+  }
+
+  public static RealFunction express(String expression, RealContext context)
+  {
+    return instantiate(expression, context.variables, Real.class, Real.class, RealFunction.class, false);
+  }
+
+  /**
+   * Returns this{@link #express(String, RealContext)} after calling
+   * {@link Context#register(String, Function)} to register the function by name
+   * in the specified {@link Context}
+   * 
+   * @param name
+   * @param expression
+   * @param context
+   * @return
+   */
+  public static RealFunction express(String name, String expression, RealContext context)
+  {
+    RealFunction func = instantiate(expression,
+                                    context.variables,
+                                    Real.class,
+                                    Real.class,
+                                    RealFunction.class,
+                                    false);
+    context.register(name, func);
+    return func;
   }
 
   public static RealFunction express(String className, String expression, Variables<Real> variables, boolean verbose)

@@ -220,7 +220,7 @@ public class ExpressionTest extends
   {
     Real         three      = new Real(3.0);
     Real         two        = new Real(2.0);
-    RealFunction expression = Compiler.express("y⁵", null);
+    RealFunction expression = Compiler.express("y⁵");
     {
       Real result     = new Real();
 
@@ -236,7 +236,7 @@ public class ExpressionTest extends
 
   public void testInputSquared()
   {
-    RealFunction expression = Compiler.express("y^2", null);
+    RealFunction expression = Compiler.express("y^2");
     {
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(new Real(2.0), 1, 256, result);
@@ -251,7 +251,7 @@ public class ExpressionTest extends
 
   public void testInputSquaredPlusOne()
   {
-    RealFunction expression = Compiler.express("y^2+1", null);
+    RealFunction expression = Compiler.express("y^2+1");
     {
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(new Real(2.0), 1, 256, result);
@@ -267,7 +267,7 @@ public class ExpressionTest extends
 
   public void testInputSquaredWithBetterLookingUnicodeSymbols()
   {
-    RealFunction expression = Compiler.express("y²", null);
+    RealFunction expression = Compiler.express("y²");
     {
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(new Real(2.0), 1, 256, result);

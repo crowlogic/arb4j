@@ -19,17 +19,16 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
   {
     if (right.isReusable())
     {
-      prepareStackForReusingRightSide(mv);
+      return prepareStackForReusingRightSide(mv);
     }
     else if (left.isReusable())
     {
-      prepareStackForReusingLeftSide(mv);
+      return prepareStackForReusingLeftSide(mv);
     }
     else
     {
       throw new IllegalArgumentException("Neither side is reusable: " + this);
     }
-    return null;
   }
 
   protected final Node<D, R, F> right, left;
