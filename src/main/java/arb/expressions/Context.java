@@ -2,12 +2,13 @@ package arb.expressions;
 
 import arb.Field;
 import arb.Real;
+import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
  * {@link Context} for the {@link Expression} {@link Compiler} to use for the
- * resolution of variable and function references (beyond those which are
- * member-functions of the {@link Real} type)
+ * resolution of {@link Variable} and {@link Function} references (beyond those
+ * which are member-functions of the {@link Real} type)
  * 
  * @param <X>
  * @param <F>
@@ -36,10 +37,10 @@ public class Context<X extends Field<X>, F extends Function<X, X>>
 
   public Functions<F> functions;
 
-  public Context<X, F> registerVariable(X variable)
+  public X register(X variable)
   {
     variables.put(variable.getName(), variable);
-    return this;
+    return variable;
   }
 
   public F register(String functionName, F function)
