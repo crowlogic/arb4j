@@ -12,4 +12,8 @@ public class RealContext extends
     super(vars);
   }
 
+  public RealContext()
+  {
+  }
+
 }

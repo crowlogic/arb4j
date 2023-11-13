@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 import arb.*;
 import arb.domains.Domain;
 import arb.expressions.Compiler;
+import arb.expressions.RealContext;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
@@ -39,9 +40,10 @@ public class JacobiPolynomials implements
     vars.put("b", β);
     Real realn = new Real();
     vars.put("n", realn);
-
+    RealContext context = new RealContext(vars);
+    
     String       expressionStr = "(2 * n + a + b) / (2 * n) * z * P(n-1, a, b, z) - (n + a + b - 1) / n * P(n-2, a, b, z)";
-    RealFunction expression    = Compiler.express(expressionStr, vars);
+    RealFunction expression    = Compiler.express(expressionStr, context);
 
     try ( Real z = new Real())
     {

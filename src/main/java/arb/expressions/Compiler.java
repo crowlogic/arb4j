@@ -603,17 +603,12 @@ public class Compiler
 
   public static RealFunction express(String expression)
   {
-    return express(expression, (Variables<Real>) null);
+    return express(expression, null);
   }
 
   public static RealFunction express(String className, String expression, Variables<Real> variables)
   {
     return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, false);
-  }
-
-  public static RealFunction express(String expression, Variables<Real> vars)
-  {
-    return instantiate(expression, vars, Real.class, Real.class, RealFunction.class, false);
   }
 
   public static RealFunction express(String expression, RealContext context)

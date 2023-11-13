@@ -15,7 +15,7 @@ public class ModifiedCauchyCorrelationFunction extends
                                                CauchyCorrelationFunction
 {
 
-  public RealFunction c = Compiler.express("((1+|h|)^a)^(-(β/α)-1)*(1+(1-β)*|h|^α)", vars);
+  public RealFunction c = Compiler.express("((1+|h|)^a)^(-(β/α)-1)*(1+(1-β)*|h|^α)", context);
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
