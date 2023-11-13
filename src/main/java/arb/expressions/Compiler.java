@@ -606,11 +606,6 @@ public class Compiler
     return express(expression, null);
   }
 
-  public static RealFunction express(String className, String expression, Variables<Real> variables)
-  {
-    return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, false);
-  }
-
   public static RealFunction express(String expression, RealContext context)
   {
     return instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
@@ -638,9 +633,9 @@ public class Compiler
     return func;
   }
 
-  public static RealFunction express(String className, String expression, Variables<Real> variables, boolean verbose)
+  public static RealFunction express(String className, String expression, RealContext context, boolean verbose)
   {
-    return instantiate(className, expression, variables, Real.class, Real.class, RealFunction.class, verbose);
+    return instantiate(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   public static RealFunction express(String expression, RealContext context, boolean verbose)

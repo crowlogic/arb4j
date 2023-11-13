@@ -80,12 +80,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
 
+  private Context<D, R, F> context;
+
   public Expression(String className,
                     Class<D> domainClass,
                     Class<R> rangeClass,
                     Class<F> functionClass,
                     String expression,
-                    Context<D,R,F> context)
+                    Context<D, R, F> context)
   {
     this.rangeClassDescriptor      = Type.getDescriptor(rangeClass);
     this.domainClassDescriptor     = Type.getDescriptor(domainClass);
@@ -97,7 +99,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
     this.expression                = Compiler.replaceSubscripts(expression);
-    this.variables                 = context.variables;
+    this.context                   = context;
+    this.variables                 = context != null ? context.variables : null;
   }
 
   /**
