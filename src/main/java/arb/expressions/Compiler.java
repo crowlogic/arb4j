@@ -629,7 +629,7 @@ public class Compiler
   public static RealFunction express(String name, String expression, RealContext context)
   {
     RealFunction func = instantiate(expression,
-                                    context.variables,
+                                    context,
                                     Real.class,
                                     Real.class,
                                     RealFunction.class,
@@ -645,7 +645,7 @@ public class Compiler
 
   public static RealFunction express(String expression, RealContext context, boolean verbose)
   {
-    return instantiate(expression, context.variables, Real.class, Real.class, RealFunction.class, verbose);
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   public static RealFunction express(String expression, boolean verbose)
