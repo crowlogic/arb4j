@@ -29,7 +29,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   protected final String                     expression;
 
-  public Variables<D>                        variables;
+  public Variables<R>                        variables;
 
   public String                              className;
 
@@ -85,7 +85,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                     Class<R> rangeClass,
                     Class<F> functionClass,
                     String expression,
-                    Variables<D> nameSpace)
+                    Context<D,R,F> context)
   {
     this.rangeClassDescriptor      = Type.getDescriptor(rangeClass);
     this.domainClassDescriptor     = Type.getDescriptor(domainClass);
@@ -97,7 +97,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
     this.expression                = Compiler.replaceSubscripts(expression);
-    this.variables                 = nameSpace;
+    this.variables                 = context.variables;
   }
 
   /**

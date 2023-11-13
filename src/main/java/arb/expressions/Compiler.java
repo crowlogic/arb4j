@@ -28,9 +28,9 @@ public class Compiler
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<Real, Real, RealFunction>
-         compile(String className, String expression, Variables<Real> variables, boolean verbose)
+         compile(String className, String expression, RealContext context, boolean verbose)
   {
-    return compile(className, expression, variables, Real.class, Real.class, RealFunction.class, verbose);
+    return compile(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
@@ -48,7 +48,7 @@ public class Compiler
    * @param <F>
    * @param className
    * @param expressionString
-   * @param variables
+   * @param context
    * @param domainClass
    * @param rangeClass
    * @param functionClass
@@ -61,18 +61,18 @@ public class Compiler
          Expression<D, R, F>
          compile(String className,
                  String expressionString,
-                 Variables<D> variables,
+                 Context<D, R, F> context,
                  Class<D> domainClass,
                  Class<R> rangeClass,
                  Class<F> functionClass,
                  boolean verbose)
   {
-    Expression<D, R, F> expression = new Expression<>(className,
-                                                      domainClass,
-                                                      rangeClass,
-                                                      functionClass,
-                                                      expressionString,
-                                                      variables);
+    Expression<D, R, F> expression = new Expression<D, R, F>(className,
+                                                             domainClass,
+                                                             rangeClass,
+                                                             functionClass,
+                                                             expressionString,
+                                                             context);
 
     if (verbose)
     {
@@ -461,14 +461,14 @@ public class Compiler
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<D, R, F>
          compile(String expression,
-                 Variables<D> variables,
-                 Class<D> domainClass,
-                 Class<R> rangeClass,
-                 Class<F> functionClass,
+                 Context<D, R, F> context,
+                 Class<D> class1,
+                 Class<R> class2,
+                 Class<F> class3,
                  boolean verbose)
   {
     String className = Compiler.expressionToUniqueClassname(expression);
-    return compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose);
+    return compile(className, expression, context, class1, class2, class3, verbose);
   }
 
   static String expressionToUniqueClassname(String expression)
@@ -579,26 +579,26 @@ public class Compiler
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          F
          instantiate(String expression,
-                     Variables<D> variables,
-                     Class<D> domainClass,
-                     Class<R> rangeClass,
-                     Class<F> functionClass,
+                     Context<D, R, F> context,
+                     Class<D> class1,
+                     Class<R> class2,
+                     Class<F> class3,
                      boolean verbose)
   {
-    return compile(expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
+    return compile(expression, context, class1, class2, class3, verbose).instantiate();
   }
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          F
          instantiate(String className,
                      String expression,
-                     Variables<D> variables,
+                     Context<D,R,F> context,
                      Class<D> domainClass,
                      Class<R> rangeClass,
                      Class<F> functionClass,
                      boolean verbose)
   {
-    return compile(className, expression, variables, domainClass, rangeClass, functionClass, verbose).instantiate();
+    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
   public static RealFunction express(String expression)
@@ -618,7 +618,7 @@ public class Compiler
 
   public static RealFunction express(String expression, RealContext context)
   {
-    return instantiate(expression, context.variables, Real.class, Real.class, RealFunction.class, false);
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
   }
 
   /**

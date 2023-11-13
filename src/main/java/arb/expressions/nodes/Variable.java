@@ -39,7 +39,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
                      Node<D, R, F>
 {
   private final Reference     reference;
-  private final Variables<D>  namespace;
+  private final Variables<R>  namespace;
   private Expression<D, R, F> expression;
   boolean                     isIndependent = false;
 

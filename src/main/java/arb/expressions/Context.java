@@ -10,10 +10,10 @@ import arb.functions.Function;
  * resolution of {@link Variable} and {@link Function} references (beyond those
  * which are member-functions of the {@link Real} type)
  * 
- * @param <X>
+ * @param <D>
  * @param <F>
  */
-public class Context<X extends Field<X>, F extends Function<X, X>>
+public class Context<D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
 {
   public Context()
   {
@@ -21,23 +21,23 @@ public class Context<X extends Field<X>, F extends Function<X, X>>
     this.functions = new Functions<>();
   }
 
-  public Context(Variables<X> variables, Functions<F> functions)
+  public Context(Variables<R> variables, Functions<F> functions)
   {
     this.variables = variables;
     this.functions = functions;
   }
 
-  public Context(Variables<X> vars)
+  public Context(Variables<R> vars)
   {
     this.variables = vars;
     this.functions = new Functions<>();
   }
 
-  public Variables<X> variables;
+  public Variables<R> variables;
 
   public Functions<F> functions;
 
-  public X register(X variable)
+  public R register(R variable)
   {
     variables.put(variable.getName(), variable);
     return variable;
@@ -45,7 +45,6 @@ public class Context<X extends Field<X>, F extends Function<X, X>>
 
   public F register(String functionName, F function)
   {
-    assert false : "TODO: update FunctionCall to support calling registered Functions";
     functions.put(functionName, function);
     return function;
   }

@@ -23,7 +23,7 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
     verbose         = expression.verbose;
   }
 
-  final Variables<D> namespace;
+  final Variables<R> namespace;
 
   public abstract MethodVisitor generate(MethodVisitor mv);
 
