@@ -35,9 +35,9 @@ public class Compiler
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<Real, Real, RealFunction>
-         compile(String className, String expression, Variables<Real> variables)
+         compile(String className, String expression, RealContext context)
   {
-    return compile(className, expression, variables, Real.class, Real.class, RealFunction.class, false);
+    return compile(className, expression, context, Real.class, Real.class, RealFunction.class, false);
   }
 
   /**
@@ -592,7 +592,7 @@ public class Compiler
          F
          instantiate(String className,
                      String expression,
-                     Context<D,R,F> context,
+                     Context<D, R, F> context,
                      Class<D> domainClass,
                      Class<R> rangeClass,
                      Class<F> functionClass,
