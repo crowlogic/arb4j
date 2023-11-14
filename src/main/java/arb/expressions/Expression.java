@@ -21,6 +21,17 @@ import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
+/**
+ * TODO: since a {@link Field} is reserved for each intermediate stage of the
+ * computation it should be in principle possible to modify the logic so that
+ * references to existing results are used instead of emitting instructions to
+ * recompute a value which has already been computed. This is a rather basic
+ * optimization that compilers do
+ * 
+ * @param <D>
+ * @param <R>
+ * @param <F>
+ */
 public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
 {
   protected int                              position                  = -1;
@@ -80,7 +91,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
 
-  private Context<D, R, F> context;
+  private Context<D, R, F>                   context;
 
   public Expression(String className,
                     Class<D> domainClass,
@@ -184,7 +195,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Calls this{@link #skipSpaces()} and checks if the current this{@link #ch} is
    * equal to one of the charsToEat
    * 
-   * @param depth      TODO
+   * @param depth
    * @param charsToEat
    * 
    * @return true if the next non-space character is one of the characters in
@@ -709,7 +720,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * TODO: support numbers greater than 9 so something like "x²⁴" would mean
    * "x^(24)"
    * 
-   * @param depth TODO
+   * @param depth
    * @param node
    * 
    * @return node if this{@link #ch} does not indicate the specific power raising
@@ -734,7 +745,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Checks if this{@link #ch} is a ^ character or a numerical superscript and
    * generates the corresponding {@link RaiseToPower} node if so
    * 
-   * @param depth TODO
+   * @param depth
    * @param node
    * 
    * @return node if this{@link #ch} does not indicate a power raising operation,
@@ -776,7 +787,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * Calls this{@link #eatSuperscript(int, Node, int, String)} for each digit of
    * the base 10 numeral system
    * 
-   * @param depth TODO
+   * @param depth
    * @param node
    * 
    * @return
@@ -939,7 +950,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * DESIGN: only need a new intermediate variable for each level of depth
    * 
    * @param mv
    * @param depth the depth this intermediate variable is needed for. "x" would be
