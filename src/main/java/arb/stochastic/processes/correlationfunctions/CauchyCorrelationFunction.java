@@ -32,31 +32,23 @@ public class CauchyCorrelationFunction implements
     β.close();
   }
 
-  public Variables<Real> vars = new Variables<Real>();
-
-  public RealContext context = new RealContext(vars);
-  
-  public RealFunction    c    = Compiler.express("((1+|h|)^α)^(-(β/α))", context);
-
   /**
    * α∈(0,2)
    */
-  public final Real             α    = new Real();
+  public final Real      α       = new Real();
 
   /**
    * β≥0
    */
-  public final Real             β    = new Real();
+  public final Real      β       = new Real();
 
+  public Variables<Real> vars    = new Variables<Real>(α.setName("α"),
+                                                       β.setName("β"));
 
-  {
-    vars.put("α",α);
-    vars.put("β",β);
+  public RealContext     context = new RealContext(vars);
 
-  }
-  
-  
-  
+  public RealFunction    c       = Compiler.express("((1+|h|)^α)^(-(β/α))", context);
+
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
   {
