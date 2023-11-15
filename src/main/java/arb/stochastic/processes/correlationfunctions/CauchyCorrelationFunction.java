@@ -28,7 +28,7 @@ public class CauchyCorrelationFunction implements
 
   public RealContext context = new RealContext(vars);
   
-  public RealFunction    c    = Compiler.express("((1+|h|)^a)^(-(β/α))", context);
+  public RealFunction    c    = Compiler.express("((1+|h|)^α)^(-(β/α))", context);
 
   /**
    * α∈(0,2)
