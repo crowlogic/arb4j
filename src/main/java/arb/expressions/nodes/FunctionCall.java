@@ -26,7 +26,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     MethodVisitor generate(MethodVisitor mv, Node<?, ?, ?> node, int depth);
   }
 
-  private final String                                   name;
+  private final String                           name;
 
   public static final Map<String, CodeGenerator> functionHandlers         = new HashMap<>();
 
@@ -120,10 +120,15 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
   public MethodVisitor generate(MethodVisitor methodVisitor)
   {
     CodeGenerator handler = (isLast ? lastCallFunctionHandlers : functionHandlers).get(name);
-    
+
     if (handler == null)
     {
-      throw new RuntimeException("No handler for function '" + name + "'");
+      F registeredFunction = expression.context.functions.get(name);
+      if (registeredFunction == null)
+      {
+        throw new RuntimeException("No handler for function '" + name + "'");
+      }
+      assert false : "TODO: invoke " + registeredFunction;
     }
     return handler.generate(methodVisitor, node, depth);
   }

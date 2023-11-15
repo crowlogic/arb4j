@@ -21,17 +21,7 @@ import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
-/**
- * TODO: since a {@link Field} is reserved for each intermediate stage of the
- * computation it should be in principle possible to modify the logic so that
- * references to existing results are used instead of emitting instructions to
- * recompute a value which has already been computed. This is a rather basic
- * optimization that compilers do
- * 
- * @param <D>
- * @param <R>
- * @param <F>
- */
+
 public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
 {
   protected int                              position                  = -1;
@@ -91,7 +81,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
 
-  private Context<D, R, F>                   context;
+  public Context<D, R, F>                   context;
 
   public Expression(String className,
                     Class<D> domainClass,
