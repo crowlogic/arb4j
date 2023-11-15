@@ -12,6 +12,14 @@ import arb.stochastic.processes.RealSymmetricCovarianceKernel;
  * 
  * see <a href="https://arxiv.org/abs/physics/0109031">Stochastic models which
  * separate fractal dimension and Hurst effect</a>
+ * 
+ * <pre>
+ * Copyright ©2023 Stephen Crowley
+ *  
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre>
  */
 public class CauchyCorrelationFunction implements
                                        RealSymmetricCovarianceKernel,
