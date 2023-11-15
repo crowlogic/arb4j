@@ -1,6 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.callFunction;
+import static arb.expressions.Compiler.callFieldMethod;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -128,7 +128,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
       {
         throw new RuntimeException("No handler for function '" + name + "'");
       }
-      assert false : "TODO: invoke " + registeredFunction;
+      assert false : "TODO: invoke evaluate method on " + expression.functionClass + ": " + registeredFunction;
     }
     return handler.generate(methodVisitor, node, depth);
   }
@@ -153,7 +153,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
    */
   public static CodeGenerator registerFunctionHandler(String functionName, String alias, boolean lastCall)
   {
-    CodeGenerator handler = (mv, node, depth) -> callFunction(mv, functionName, node, lastCall, depth);
+    CodeGenerator handler = (mv, node, depth) -> callFieldMethod(mv, functionName, node, lastCall, depth);
 
     (lastCall ? lastCallFunctionHandlers : functionHandlers).put(alias != null ? alias : functionName, handler);
 
