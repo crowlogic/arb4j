@@ -133,7 +133,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
                          false);
     }
 
-    if (isLast)
+    if (isResult)
     {
       expression.setResult(mv);
     }

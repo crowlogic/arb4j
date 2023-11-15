@@ -56,7 +56,7 @@ public abstract class UnaryOperation<D extends arb.Field<D>, R extends arb.Field
   @Override
   public boolean isReusable()
   {
-    return node.isReusable() || node.isLast;
+    return node.isReusable() || node.isResult;
   }
 
   @Override

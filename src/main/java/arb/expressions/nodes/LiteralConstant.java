@@ -102,7 +102,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
       expression.loadField(loadThis(mv), fieldName, false);
     }
 
-    if (isLast)
+    if (isResult)
     {
       expression.setResult(mv);
     }

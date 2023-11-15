@@ -18,7 +18,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
   @Override
   public String toString()
   {
-    return "FunctionCall[name=" + name + ", arg=" + node + ", isLast=" + isLast + "]";
+    return "FunctionCall[name=" + name + ", arg=" + node + ", isResult=" + isResult + "]";
   }
 
   public interface CodeGenerator
@@ -28,9 +28,9 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
 
   private final String                           name;
 
-  public static final Map<String, CodeGenerator> functionHandlers         = new HashMap<>();
+  public static final Map<String, CodeGenerator> functionHandlers       = new HashMap<>();
 
-  public static final Map<String, CodeGenerator> lastCallFunctionHandlers = new HashMap<>();
+  public static final Map<String, CodeGenerator> resultFunctionHandlers = new HashMap<>();
 
   static
   {
@@ -119,7 +119,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
   @Override
   public MethodVisitor generate(MethodVisitor methodVisitor)
   {
-    CodeGenerator handler = (isLast ? lastCallFunctionHandlers : functionHandlers).get(name);
+    CodeGenerator handler = (isResult ? resultFunctionHandlers : functionHandlers).get(name);
 
     if (handler == null)
     {
@@ -129,19 +129,24 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
         throw new RuntimeException("No handler for function '" + name + "'");
       }
       assert false : "TODO: invoke evaluate method on " + expression.functionClass + ": " + registeredFunction;
+
+      return methodVisitor;
     }
-    return handler.generate(methodVisitor, node, depth);
+    else
+    {
+      return handler.generate(methodVisitor, node, depth);
+    }
   }
 
   /**
-   * Registers a {@link CodeGenerator} that calls the function
+   * Registers a {@link CodeGenerator} that generates code to call the function
    * 
    * @param functionName
    * @param alias        if not null then the its handler its registered rather
    *                     than the functionName itself, in that case the
    *                     functionName is only used in the handler and not as part
    *                     of the key to be put into
-   *                     this{@link #lastCallFunctionHandlers} or
+   *                     this{@link #resultFunctionHandlers} or
    *                     this{@link #functionHandlers}
    * 
    * @param lastCall     if true then the handler assigns its output to the result
@@ -149,14 +154,15 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
    *                     variable which could possibly be the result if its
    *                     available to be used as such via
    *                     {@link Expression#resultInUse}
-   * @return
+   * @return the {@link CodeGenerator} associated with this particular instance of
+   *         the function
    */
   public static CodeGenerator registerFunctionHandler(String functionName, String alias, boolean lastCall)
   {
-    CodeGenerator handler = (mv, node, depth) -> callFieldMethod(mv, functionName, node, lastCall, depth);
-
-    (lastCall ? lastCallFunctionHandlers : functionHandlers).put(alias != null ? alias : functionName, handler);
-
+    CodeGenerator handler  = (mv, node, depth) -> callFieldMethod(mv, functionName, node, lastCall, depth);
+    var           handlers = lastCall ? resultFunctionHandlers : functionHandlers;
+    String        name     = alias != null ? alias : functionName;
+    handlers.put(name, handler);
     return handler;
   }
 

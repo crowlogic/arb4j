@@ -10,11 +10,11 @@ import arb.functions.Function;
 
 public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
 {
-  public static boolean      verbose = false;
+  public static boolean      verbose  = false;
 
   public Expression<D, R, F> expression;
 
-  public boolean             isLast  = false;
+  public boolean             isResult = false;
 
   public Node(Expression<D, R, F> expression, int depth)
   {

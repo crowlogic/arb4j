@@ -423,7 +423,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     nextChar();
     rootNode = eatFirst(0);
     assert rootNode != null : "eatRootNode: eatFirst() returned null, expression='" + expression + "'";
-    rootNode.isLast = true;
+    rootNode.isResult = true;
     return rootNode;
   }
 
