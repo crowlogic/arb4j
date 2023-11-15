@@ -35,15 +35,15 @@ public class CauchyCorrelationFunction implements
   /**
    * α∈(0,2)
    */
-  public final Real      α       = new Real();
+  public final Real      α       = new Real().setName("α");
 
   /**
    * β≥0
    */
-  public final Real      β       = new Real();
+  public final Real      β       = new Real().setName("β");
 
-  public Variables<Real> vars    = new Variables<Real>(α.setName("α"),
-                                                       β.setName("β"));
+  public Variables<Real> vars    = new Variables<Real>(α,
+                                                       β);
 
   public RealContext     context = new RealContext(vars);
 
