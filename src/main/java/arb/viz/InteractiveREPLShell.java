@@ -13,6 +13,32 @@ import javafx.stage.Stage;
 import jdk.jshell.JShell;
 import jdk.jshell.SnippetEvent;
 
+/**
+ * {@link InteractiveREPLShell} provides a graphical interface for the arb4j project,
+ * intended to serve as a versatile and enhanced replacement for the standard
+ * {@link JShell} with additional graphical capabilities. This class offers an
+ * interactive Read-Eval-Print Loop (REPL) environment that allows users to
+ * execute Java code and display results in various formats, including text,
+ * graphs, and other visual representations.
+ *
+ * This REPL shell is particularly tailored for the arb4j project, a robust Java
+ * API for high-performance mathematical computations and representations. It
+ * leverages the JShell API for executing Java code snippets and extends its
+ * functionality with capabilities to display complex outputs such as LaTeX
+ * formatted formulas, 2D/3D graphs, and more, catering to the needs of
+ * scientific and computational tasks in arb4j.
+ * 
+ * <pre>
+ * Copyright ©2023 Stephen A. Crowley
+ * 
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre>
+ *
+ * @see jdk.jshell.JShell
+ * @see jdk.jshell.SnippetEvent
+ */
 public class InteractiveREPLShell extends
                                   Application
 {
@@ -43,7 +69,7 @@ public class InteractiveREPLShell extends
     primaryStage.show();
   }
 
-  private void evaluateJavaInput(String input)
+  void evaluateInput(String input)
   {
     List<SnippetEvent> events = jshell.eval(input);
     for (SnippetEvent e : events)
@@ -55,11 +81,12 @@ public class InteractiveREPLShell extends
       else if (e.exception() != null)
       {
         displayResult("Exception: " + e.exception().getMessage());
+        e.exception().printStackTrace();
       }
     }
   }
 
-  private void displayResult(String result)
+  void displayResult(String result)
   {
     Platform.runLater(() ->
     {
@@ -71,8 +98,7 @@ public class InteractiveREPLShell extends
     });
   }
 
-//Modified addNewInputField to return the new TextField
-  private TextField addNewInputField()
+  TextField addNewInputField()
   {
     TextField inputField = new TextField();
     inputField.setPromptText("Enter Java code...");
@@ -80,7 +106,7 @@ public class InteractiveREPLShell extends
     {
       String input = inputField.getText();
       inputField.setEditable(false); // Disable the field after input
-      evaluateJavaInput(input);
+      evaluateInput(input);
       addNewInputField();
     });
     mainContainer.getChildren().add(inputField);
