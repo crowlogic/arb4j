@@ -42,6 +42,8 @@ public class InteractiveREPLShell extends
     Scene scene = new Scene(scrollPane,
                             800,
                             600);
+    scene.getStylesheets().add("dark-theme.css");
+
     primaryStage.setTitle("arb4j Interactive REPL Console with JShell");
     primaryStage.setScene(scene);
     primaryStage.show();
