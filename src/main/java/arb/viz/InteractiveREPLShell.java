@@ -14,12 +14,12 @@ import jdk.jshell.JShell;
 import jdk.jshell.SnippetEvent;
 
 /**
- * {@link InteractiveREPLShell} provides a graphical interface for the arb4j project,
- * intended to serve as a versatile and enhanced replacement for the standard
- * {@link JShell} with additional graphical capabilities. This class offers an
- * interactive Read-Eval-Print Loop (REPL) environment that allows users to
- * execute Java code and display results in various formats, including text,
- * graphs, and other visual representations.
+ * {@link InteractiveREPLShell} provides a graphical interface for the arb4j
+ * project, intended to serve as a versatile and enhanced replacement for the
+ * standard {@link JShell} with additional graphical capabilities. This class
+ * offers an interactive Read-Eval-Print Loop (REPL) environment that provides
+ * for the execution of Java code and the display of results in various formats,
+ * including text, graphs, and other visual representations.
  *
  * This REPL shell is particularly tailored for the arb4j project, a robust Java
  * API for high-performance mathematical computations and representations. It
