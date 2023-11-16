@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import arb.*;
 import arb.stochastic.ProbabilityDistributionFunction;
-import de.gsi.dataset.DataSet;
+import io.fair_acc.dataset.DataSet;
 
 /**
  * The {@code EvaluationSequence} class represents a sequence of evaluations for

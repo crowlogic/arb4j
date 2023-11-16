@@ -1,7 +1,7 @@
 package arb;
 
-import de.gsi.dataset.DataSet;
-import de.gsi.dataset.spi.AbstractDataSet;
+import io.fair_acc.dataset.DataSet;
+import io.fair_acc.dataset.spi.AbstractDataSet;
 
 /**
  * A specialized DataSet class for handling sequences of Real numbers. This
@@ -33,7 +33,7 @@ public class SequenceDataSet extends
    */
   public SequenceDataSet(Real sequence)
   {
-    super(sequence.name != null ? sequence.name : String.valueOf(System.identityHashCode(sequence)),
+    super((String) (sequence.name != null ? sequence.name : String.valueOf(System.identityHashCode(sequence))),
           2);
     this.sequence = sequence;
   }

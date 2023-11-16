@@ -23,7 +23,7 @@
 
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -93,7 +93,7 @@
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-fxml</artifactId>
 			<version>20.0.2</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>com.massisframework</groupId>
 			<artifactId>j-text-utils</artifactId>
@@ -105,27 +105,21 @@
 			<version>1.0.7</version>
 		</dependency>
 		<dependency>
-			<groupId>de.gsi.chart</groupId>
-			<artifactId>chartfx-chart</artifactId>
-			<version>11.2.7</version>
+			<groupId>io.fair-acc</groupId>
+			<artifactId>chartfx</artifactId>
+			<version>11.3.0</version>
 		</dependency>
+		<dependency>
+			<groupId>io.fair-acc</groupId>
+			<artifactId>dataset</artifactId>
+			<version>11.3.0</version>
+		</dependency>		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.2.3</version>
 		</dependency>
-		<dependency>
-			<groupId>de.gsi.math</groupId>
-			<artifactId>chartfx-math</artifactId>
-			<version>11.2.7</version>
-			<exclusions>
-				<exclusion>
-					<!-- declare the exclusion here -->
-					<groupId>org.apache.commons</groupId>
-					<artifactId>commons-math3</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.controlsfx</groupId>
 			<artifactId>controlsfx</artifactId>

@@ -1,10 +1,10 @@
 package arb.viz;
 
 import arb.functions.real.FunctionSampler;
-import de.gsi.chart.XYChart;
-import de.gsi.chart.axes.AxisMode;
-import de.gsi.chart.axes.spi.DefaultNumericAxis;
-import de.gsi.chart.plugins.*;
+import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.axes.AxisMode;
+import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
+import io.fair_acc.chartfx.plugins.*;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -80,7 +80,7 @@ public class FunctionPlotter extends
 
   private void updateLegend()
   {
-    chart.getLegend().updateLegend(chart.getDatasets(), chart.getRenderers(), true);
+    chart.getLegend().updateLegend(chart.getRenderers(), true);
   }
 
   @Override

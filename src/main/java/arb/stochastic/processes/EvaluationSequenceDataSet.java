@@ -1,19 +1,19 @@
 package arb.stochastic.processes;
 
-import de.gsi.chart.XYChart;
-import de.gsi.dataset.DataSet;
-import de.gsi.dataset.spi.AbstractDataSet;
+import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.dataset.DataSet;
+import io.fair_acc.dataset.spi.AbstractDataSet;
 
 /**
  * Used by {@link EvaluationSequence} for plotting things with {@link XYChart}
  */
 public class EvaluationSequenceDataSet extends
-                                       AbstractDataSet<EvaluationSequenceDataSet>
+                                       AbstractDataSet<EvaluationSequenceDataSet>                                        
 {
   private static final long        serialVersionUID = 1L;
-  
+
   private final EvaluationSequence evaluationSequence;
-  
+
   private final int                datasetDim;
 
   EvaluationSequenceDataSet(EvaluationSequence evaluationSequence, String name, int datasetDim)

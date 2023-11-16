@@ -3,9 +3,9 @@ package arb;
 import java.io.Closeable;
 import java.util.stream.IntStream;
 
-import de.gsi.dataset.DataSet;
-import de.gsi.dataset.DataSet2D;
-import de.gsi.dataset.spi.AbstractDataSet;
+import io.fair_acc.dataset.DataSet;
+import io.fair_acc.dataset.DataSet2D;
+import io.fair_acc.dataset.spi.AbstractDataSet;
 
 public class RealDataSet extends
                          AbstractDataSet<RealDataSet> implements

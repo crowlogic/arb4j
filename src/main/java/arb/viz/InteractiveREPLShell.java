@@ -58,7 +58,7 @@ public class InteractiveREPLShell extends
       StringWriter sw = new StringWriter();
       PrintWriter  pw = new PrintWriter(sw);
       e.printStackTrace(pw);
-      String stackTrace = sw.toString(); // Stack trace as a string
+      String stackTrace = sw.toString(); 
 
       displayResult("Error: " + e.getMessage() + "\nStack Trace:\n" + stackTrace);
     }

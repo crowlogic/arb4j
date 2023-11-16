@@ -17,14 +17,13 @@ module arb4j
   requires transitive javafx.controls;
   requires transitive junit;
   requires transitive j.text.utils;
-  requires transitive de.gsi.chartfx.chart;
-  requires transitive de.gsi.chartfx.dataset;
-  requires transitive de.gsi.chartfx.math;
   requires transitive jlatexmath;
   requires transitive jdk.unsupported;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
   requires transitive jdk.jshell;
+  requires transitive io.fair_acc.chartfx;
+  requires transitive io.fair_acc.dataset;
 
   
   exports arb;
