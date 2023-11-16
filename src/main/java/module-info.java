@@ -23,6 +23,7 @@ module arb4j
   requires transitive jdk.unsupported;
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
+  requires transitive jdk.jshell;
   
   exports arb;
   exports arb.expressions;
