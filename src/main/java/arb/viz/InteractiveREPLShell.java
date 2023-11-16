@@ -5,8 +5,6 @@ import java.io.StringWriter;
 import java.util.List;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -36,22 +34,15 @@ public class InteractiveREPLShell extends
     scrollPane.setFitToWidth(true);
     scrollPane.setPrefHeight(600);
 
-    // Add listener to VBox's height property
-    mainContainer.heightProperty().addListener(new ChangeListener<Number>()
-    {
-      @Override
-      public void changed(ObservableValue<? extends Number> observable, Number oldHeight, Number newHeight)
-      {
-        scrollPane.setVvalue((Double) newHeight);
-      }
-    });
+    mainContainer.heightProperty()
+                 .addListener((observable, oldHeight, newHeight) -> scrollPane.setVvalue((Double) newHeight));
 
     addNewInputField();
 
     Scene scene = new Scene(scrollPane,
                             800,
                             600);
-    primaryStage.setTitle("ARB4J Interactive REPL Console with JShell");
+    primaryStage.setTitle("arb4j Interactive REPL Console with JShell");
     primaryStage.setScene(scene);
     primaryStage.show();
   }
