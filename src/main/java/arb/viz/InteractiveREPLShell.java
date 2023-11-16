@@ -3,7 +3,6 @@ package arb.viz;
 import java.util.List;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -64,7 +63,12 @@ public class InteractiveREPLShell extends
 
   void evaluateInput(String input)
   {
-    List<SnippetEvent> events = jshell.eval(input);
+    displayResults(jshell.eval(input));
+    addNewInputField().requestFocus();
+  }
+
+  public void displayResults(List<SnippetEvent> events)
+  {
     for (SnippetEvent e : events)
     {
       if (e.value() != null)
@@ -81,14 +85,13 @@ public class InteractiveREPLShell extends
 
   void displayResult(String result)
   {
-    Platform.runLater(() ->
+    // Platform.runLater(() ->
     {
-      Text output = new Text(result);
+      Text output = new Text("output: " + result);
       mainContainer.getChildren().add(output);
-      // Ensure that the focus is set on the newly added TextField
-      TextField newInputField = addNewInputField();
-      newInputField.requestFocus();
-    });
+
+    }
+    ;
   }
 
   TextField addNewInputField()
@@ -100,7 +103,6 @@ public class InteractiveREPLShell extends
       String input = inputField.getText();
       inputField.setEditable(false); // Disable the field after input
       evaluateInput(input);
-      addNewInputField();
     });
     mainContainer.getChildren().add(inputField);
     return inputField;
