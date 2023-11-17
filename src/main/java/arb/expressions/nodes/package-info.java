@@ -4,6 +4,14 @@
  * a {@link arb.functions.Function} implementation. Currently only
  * {@link arb.functions.real.RealFunction} is supported but it should be easy to
  * support other fields besides {@link arb.Real} since the code is pretty well
- * generified
+ * generified.
+ * 
+ * <pre>
+ * Copyright ©2023 Stephen Crowley
+ *  
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre>
  */
 package arb.expressions.nodes;

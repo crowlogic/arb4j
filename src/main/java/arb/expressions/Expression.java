@@ -947,7 +947,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    *              example
    * @return name of the intermediate variable
    */
-  public String locateExistingOrInstantiateNewIntermediateOutputVariable(MethodVisitor mv, int depth)
+  public String locateExistingOrInstantiateNewIntermediateResultVariable(MethodVisitor mv, int depth)
   {
     if (!resultInUse)
     {

@@ -92,7 +92,7 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
     }
     else
     {
-      expression.locateExistingOrInstantiateNewIntermediateOutputVariable(mv, depth);
+      expression.locateExistingOrInstantiateNewIntermediateResultVariable(mv, depth);
     }
 
     String rcd = expression.rangeClassDescriptor;

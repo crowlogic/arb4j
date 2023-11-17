@@ -543,7 +543,7 @@ public class Compiler
       }
       else
       {
-        expression.locateExistingOrInstantiateNewIntermediateOutputVariable(mv, depth);
+        expression.locateExistingOrInstantiateNewIntermediateResultVariable(mv, depth);
       }
     }
 
