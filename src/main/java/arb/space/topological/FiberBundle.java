@@ -52,7 +52,7 @@ public interface FiberBundle<X extends Field<X>, E extends TopologicalSpace<X>, 
    *
    * @return A section of the bundle.
    */
-  Section<E, B, F> section();
+  Section<X, E, B, F> section();
 
   /**
    * Checks if the fiber bundle is trivial. A fiber bundle is trivial if it is

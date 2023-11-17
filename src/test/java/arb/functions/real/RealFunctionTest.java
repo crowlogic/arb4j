@@ -81,62 +81,70 @@ public class RealFunctionTest extends
 
   public void testSubFunction()
   {
-    RealFunction f1     = (x, order, bits, result) -> result.set(x);
-    RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
+    try ( RealFunction f1 = (x, order, bits, result) -> result.set(x))
+    {
+      RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
 
-    RealFunction fSub   = f1.sub(f2);
+      RealFunction fSub   = f1.sub(f2);
 
-    Real         x      = new Real("2",
-                                   128);
-    Real         result = new Real();
+      Real         x      = new Real("2",
+                                     128);
+      Real         result = new Real();
 
-    fSub.evaluate(x, 0, 64, result);
-    assertEquals(-2.0, result.doubleValue());
+      fSub.evaluate(x, 0, 64, result);
+      assertEquals(-2.0, result.doubleValue());
+    }
   }
 
   public void testDivFunction()
   {
-    RealFunction f1     = (x, order, bits, result) -> result.set(x);
-    RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
+    try ( RealFunction f1 = (x, order, bits, result) -> result.set(x))
+    {
+      RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
 
-    RealFunction fDiv   = f1.div(f2);
+      RealFunction fDiv   = f1.div(f2);
 
-    Real         x      = new Real("2",
-                                   128);
-    Real         result = new Real();
+      Real         x      = new Real("2",
+                                     128);
+      Real         result = new Real();
 
-    fDiv.evaluate(x, 0, 64, result);
-    assertEquals(0.5, result.doubleValue());
+      fDiv.evaluate(x, 0, 64, result);
+      assertEquals(0.5, result.doubleValue());
+    }
   }
 
   public void testAddFunction()
   {
-    RealFunction f1     = (x, order, bits, result) -> result.set(x);
-    RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
+    try ( RealFunction f1 = (x, order, bits, result) -> result.set(x))
+    {
+      RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
 
-    RealFunction fAdd   = f1.add(f2);
+      RealFunction fAdd   = f1.add(f2);
 
-    Real         x      = new Real("2",
-                                   128);
-    Real         result = new Real();
+      Real         x      = new Real("2",
+                                     128);
+      Real         result = new Real();
 
-    fAdd.evaluate(x, 0, 64, result);
-    assertEquals(6.0, result.doubleValue());
+      fAdd.evaluate(x, 0, 64, result);
+      assertEquals(6.0, result.doubleValue());
+    }
   }
 
   public void testMulFunction()
   {
-    RealFunction f1     = (x, order, bits, result) -> result.set(x);
-    RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
+    try ( RealFunction f1 = (x, order, bits, result) -> result.set(x))
+    {
+      RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
 
-    RealFunction fMul   = f1.mul(f2);
+      RealFunction fMul   = f1.mul(f2);
 
-    Real         x      = new Real("2",
-                                   128);
-    Real         result = new Real();
+      Real         x      = new Real("2",
+                                     128);
+      Real         result = new Real();
 
-    fMul.evaluate(x, 0, 64, result);
-    assertEquals(8.0, result.doubleValue());
+      fMul.evaluate(x, 0, 64, result);
+      assertEquals(8.0, result.doubleValue());
+    }
   }
 
   public void testLocateRootsSine()

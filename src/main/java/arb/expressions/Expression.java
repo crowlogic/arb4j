@@ -21,7 +21,6 @@ import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
-
 public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
 {
   protected int                              position                  = -1;
@@ -81,7 +80,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
 
-  public Context<D, R, F>                   context;
+  public Context<D, R, F>                    context;
 
   public Expression(String className,
                     Class<D> domainClass,
@@ -220,8 +219,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * which evaluates this{@link #expression}
    * 
    * @return this
+   * @throws ExpressionCompilerException
    */
-  Expression<D, R, F> generate()
+  Expression<D, R, F> generate() throws ExpressionCompilerException
   {
     if (verbose)
     {
@@ -374,7 +374,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param cv
    * @return cv
    */
-  private ClassVisitor generateEvaluationMethod(ClassVisitor cv)
+  private ClassVisitor generateEvaluationMethod(ClassVisitor cv) throws ExpressionCompilerException
   {
 
     String methodDesc      = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
@@ -418,7 +418,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return cv;
   }
 
-  public Node<D, R, F> eatRootNode()
+  public Node<D, R, F> eatRootNode() throws ExpressionCompilerException
   {
     nextChar();
     rootNode = eatFirst(0);
@@ -475,8 +475,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param depth
    * 
    * @return the next node in the syntax tree
+   * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eat(int depth)
+  private Node<D, R, F> eat(int depth) throws ExpressionCompilerException
   {
     if (verbose)
     {
@@ -492,11 +493,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       node = eatFirst(depth + 1);
       if (!eat(depth + 1, ')'))
       {
-        assert false : String.format("expected closing parenthesis at: depth=%d startPos=%s, position=%s, node=%s\n",
-                                     depth,
-                                     startPos,
-                                     position,
-                                     node.toString());
+        throw new ExpressionCompilerException(String.format("expected closing parenthesis at: depth=%d startPos=%s, position=%s, node=%s\n",
+                                                            depth,
+                                                            startPos,
+                                                            position,
+                                                            node.toString()));
       }
     }
     else if (isNumeric(ch))
@@ -525,8 +526,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * 
    * @return new {@link Add} or {@link Subtract} node or result from
    *         this{@link #eatSecond(int)}
+   * @throws ExpressionCompilerException
    */
-  public Node<D, R, F> eatFirst(int depth)
+  public Node<D, R, F> eatFirst(int depth) throws ExpressionCompilerException
   {
     if (verbose)
     {
@@ -537,9 +539,15 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     while (true)
     {
+      if (node == null)
+      {
+        node = new LiteralConstant<>(this,
+                                     "0",
+                                     depth);
+      }
+
       if (eat(depth, '+'))
       {
-        assert node != null : "node before + cannot be null";
         node = new Add<>(this,
                          node,
                          eatSecond(depth),
@@ -547,12 +555,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       }
       else if (eat(depth, '-'))
       {
-        if (node == null)
-        {
-          node = new LiteralConstant<>(this,
-                                       "0",
-                                       depth);
-        }
         node = new Subtract<>(this,
                               node,
                               eatSecond(depth),
@@ -567,8 +569,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   /**
    * At this point it is only known that the present character this{@link #ch} at
-   * this{@link #position} is a {@link Compiler#isLatinOrGreek(int, boolean)} so
-   * that it is the name of something, but unknown if its the name of a function
+   * this{@link #position} {@link Compiler#isLatinOrGreek(int, boolean)} so that
+   * it is the name of something, but unknown if its the name of a function
    * invocation or a variable reference
    * 
    * @param depth
@@ -576,18 +578,20 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param node
    * 
    * @return
+   * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eatFunctionInvocationOrVariableReference(int depth, int startPos)
+  private Node<D, R, F> eatFunctionInvocationOrVariableReference(int depth,
+                                                                 int startPos) throws ExpressionCompilerException
   {
-    Reference functionOrVariable = eatName(depth, startPos);
-    boolean   isFunction         = eat(depth, '(');
+    Reference functionOrVariableName = eatName(depth, startPos);
+    boolean   isFunction             = eat(depth, '(');
     if (verbose)
     {
       System.err.format("eatFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
                         depth,
                         startPos,
                         position,
-                        functionOrVariable,
+                        functionOrVariableName,
                         isFunction);
     }
 
@@ -599,39 +603,40 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n",
                                                  startPos,
                                                  position,
-                                                 functionOrVariable,
+                                                 functionOrVariableName,
                                                  isFunction,
                                                  depth));
       }
       return new FunctionCall<>(this,
-                                functionOrVariable.name,
+                                functionOrVariableName.name,
                                 arg,
                                 depth);
     }
-    else if ("π".equals(functionOrVariable.name))
+    else if (LiteralConstant.constantSymbols.contains(functionOrVariableName.name))
     {
       return new LiteralConstant<>(this,
-                                   functionOrVariable.name,
+                                   functionOrVariableName.name,
                                    depth + 1);
     }
     else
     {
       return new Variable<D, R, F>(this,
-                                   functionOrVariable,
+                                   functionOrVariableName,
                                    depth + 1);
     }
   }
 
   /**
-   * Calls this{@link #eat(int)} and if this{@link #ch} indicates a power-raising
-   * operation then a new {@link RaiseToPower} node is instantiated
+   * Calls this{@link #eat(int)} and if this{@link #ch} is '^' then a new
+   * {@link RaiseToPower} node is instantiated
    * 
    * @param depth
    * 
    * @return either a new {@link RaiseToPower} node from
    *         this{@link #eatPower(int, Node)} or a node from this{@link #eat(int)}
+   * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eatLast(int depth)
+  private Node<D, R, F> eatLast(int depth) throws ExpressionCompilerException
   {
     if (verbose)
     {
@@ -741,8 +746,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @return node if this{@link #ch} does not indicate a power raising operation,
    *         otherwise returns a new {@link RaiseToPower} operator with node as
    *         its parent node
+   * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eatPower(int depth, Node<D, R, F> node)
+  private Node<D, R, F> eatPower(int depth, Node<D, R, F> node) throws ExpressionCompilerException
   {
     if (eat(depth, '^'))
     {
@@ -804,8 +810,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * 
    * @return new {@link Multiply} or {@link Divide} node or result from
    *         this{@link #eatLast(int)}
+   * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eatSecond(int depth)
+  private Node<D, R, F> eatSecond(int depth) throws ExpressionCompilerException
   {
     if (verbose)
     {
@@ -901,7 +908,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   public MethodVisitor loadIndexField(MethodVisitor mv, String indexFieldName)
   {
-    mv.visitFieldInsn(GETFIELD, functionClassInternalName, indexFieldName, "I"); // Assuming the field is
+    mv.visitFieldInsn(GETFIELD, functionClassInternalName, indexFieldName, "I");
     return mv;
   }
 
@@ -922,8 +929,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * Emit an instruction to invoke a unary function on a field. The unary function
-   * has the signature D functionName( int bits, D result)
+   * Emit an instruction to invoke a {@link UnaryOperation} on a field. The unary
+   * operation has the signature D functionName( int bits, D result)
    * 
    * @param mv
    * @param functionName
@@ -949,6 +956,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   public String locateExistingOrInstantiateNewIntermediateResultVariable(MethodVisitor mv, int depth)
   {
+
     if (!resultInUse)
     {
       checkClassCast(loadResult(mv), true);

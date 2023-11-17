@@ -56,6 +56,7 @@ public class Compiler
    *                         generating is printed to {@link System#out} and
    *                         {@link System#err}
    * @return compiled {@link Expression}
+   * @throws ExpressionCompilerException
    */
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<D, R, F>
@@ -65,7 +66,7 @@ public class Compiler
                  Class<D> domainClass,
                  Class<R> rangeClass,
                  Class<F> functionClass,
-                 boolean verbose)
+                 boolean verbose) throws ExpressionCompilerException
   {
     Expression<D, R, F> expression = new Expression<D, R, F>(className,
                                                              domainClass,

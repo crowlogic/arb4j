@@ -1,5 +1,6 @@
 package arb.space.topological;
 
+import arb.Field;
 import arb.functions.Function;
 
 /**
@@ -18,7 +19,8 @@ import arb.functions.Function;
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Section_(fiber_bundle)">Section@Wikipedia</a>
  */
-public interface Section<E extends TopologicalSpace, B extends TopologicalSpace, F extends TopologicalSpace> extends
+public interface Section<X extends Field<X>, E extends TopologicalSpace<X>, B extends TopologicalSpace<X>, F extends TopologicalSpace<X>>
+                        extends
                         Function<B, E>
 {
 

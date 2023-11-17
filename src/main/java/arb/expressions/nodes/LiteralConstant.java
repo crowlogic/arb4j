@@ -3,6 +3,8 @@ package arb.expressions.nodes;
 import static arb.expressions.Compiler.loadThis;
 import static java.lang.System.out;
 
+import java.util.HashSet;
+
 import org.objectweb.asm.*;
 
 import arb.RealConstants;
@@ -12,12 +14,20 @@ import arb.functions.Function;
 public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
                             Node<D, R, F>
 {
-  public final String value;
-  public String       fieldName;
+  public final String           value;
+  public String                 fieldName;
 
-  String              π    = "π";
+  public static final String    π               = "π";
 
-  String              half = "½";
+  public static final String    half            = "½";
+
+  public static HashSet<String> constantSymbols = new HashSet<String>();
+  
+  static
+  {
+    constantSymbols.add(π);
+    constantSymbols.add(half);
+  }
 
   public LiteralConstant(Expression<D, R, F> expression, String constantValueString, int depth)
   {
