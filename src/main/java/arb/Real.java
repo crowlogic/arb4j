@@ -1222,6 +1222,16 @@ public class Real implements Domain<Real>,CommutativeGroup<Real>,Serializable,Co
     }
     return element;
   }
+  
+  public Real set(int index, Real element )
+  {
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (index == 0 && dim == 1)
+    {
+      return set(element);
+    }
+    return elements[index] = element;
+  }  
    
   public String toFixedString()
   {
