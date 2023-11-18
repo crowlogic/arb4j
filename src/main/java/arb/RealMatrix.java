@@ -410,13 +410,17 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     return getNumRows() == getNumCols();
   }
 
-  public Real diagonal = null;
+  private Real diagonal = null;
 
   public Real diag()
   {
     assert isSquare() : "diag() is not well-defined for non-square matrices";
     if (diagonal == null || diagonal.size() != getNumRows())
     {
+      if ( diagonal != null )
+      {
+        diagonal.close();
+      }
       diagonal = Real.newVector(getNumRows());
       IntStream.range(0, getNumCols()).forEach(i -> diagonal.set(i, get(i, i)));
     }

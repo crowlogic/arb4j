@@ -2,6 +2,8 @@ package arb;
 
 import static arb.utensils.Utensils.println;
 
+import java.util.stream.IntStream;
+
 import junit.framework.TestCase;
 
 public class RealMatrixTest extends
@@ -30,6 +32,20 @@ public class RealMatrixTest extends
     {
       println(row);
     }
+  }
+
+  public void testDiagonal()
+  {
+    int        n    = 5;
+    RealMatrix A    = RealMatrix.newMatrix(n, n);
+    Real       diag = A.diag();
+    assert diag.size() == n;
+    IntStream.range(0, n).forEach(i -> diag.get(i).set(i + 1));
+    System.out.println("A=" + A);
+    IntStream.range(0, n)
+             .forEach(i -> IntStream.range(0, n)
+                                    .forEach(j -> assertTrue(A.get(i, j)
+                                                              .equals(i == j ? diag.get(i) : RealConstants.zero))));
   }
 
 }
