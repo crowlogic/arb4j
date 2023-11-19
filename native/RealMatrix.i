@@ -73,25 +73,27 @@ import dnl.utils.text.table.TextTable;
   }
   
   /**
-   * Sets det to the determinant of the matrix A.
+   * Calculates the determinant of this matrix A
    * 
    * The lu version uses Gaussian elimination with partial pivoting. If at some
    * point an invertible pivot element cannot be found, the elimination is stopped
    * and the magnitude of the determinant of the remaining submatrix is bounded
    * using Hadamard’s inequality.
    * 
-   * The precond version computes an approximate LU factorization of A and
-   * multiplies by the inverse L and U martices as preconditioners to obtain a
-   * matrix close to the identity matrix [Rum2010]. An enclosure for this
-   * determinant is computed using Gershgorin circles. This is about four times
-   * slower than direct Gaussian elimination, but much more numerically stable.
+   * The preconditioned version computes an approximate LU factorization of A and
+   * multiplies by the inverse L and U matrices as preconditioners to obtain a
+   * matrix close to the identity matrix. An enclosure for this determinant is
+   * computed using Gershgorin circles, a process that is about four times slower
+   * than direct Gaussian elimination, but much more numerically stable.
    * 
-   * This function automatically selects between the lu and precond versions and
-   * additionally handles small or triangular matrices by direct formulas.
+   * This function automatically selects between the lu and preconditioned
+   * versions and additionally handles small or triangular matrices by direct
+   * formulas.
    * 
    * @see arb#arb_mat_det(Real, RealMatrix, int)
-   * @param bits
-   * @param result
+   * @param bits   precision
+   * @param result the {@link Real} result variable to be assigned the value of
+   *               the determinant
    * @return result after having been assigned the determinant
    */
   public Real determinant(int bits, Real result)
