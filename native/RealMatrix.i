@@ -337,17 +337,10 @@ import dnl.utils.text.table.TextTable;
 
   /**
    * Computes the LU factorization of this {@link RealMatrix} using Gaussian
-   * elimination with partial pivoting. The input and result output matrices can
-   * be the same, thus providing for in-place factorization.
+   * elimination with partial pivoting. <br> The input and result output matrices can
+   * be the same, thus providing for in-place factorization.<br>
    * 
-   * The result matrix is populated with the LU factorization of this matrix if
-   * non-zero and thus invertible pivots can be found, thus guaranteeing that this
-   * matrix is invertible.
-   * 
-   * If invertible pivot elements cannot be found then null is returned and the
-   * permutations entries are unmodified.
-   * 
-   * If the return value is null than one of 3 things could be the reason:
+   * If the return value is null then one of 3 things could be the reason:<br>
    * 
    * <ul>
    * <li>the matrix is singular</li>
@@ -362,7 +355,11 @@ import dnl.utils.text.table.TextTable;
    *                    output matrix
    * @param bits        number of bits of precision with which to perform the
    *                    calculations
-   * @param result      the {@link RealMatrix} to be assigned the LU factorization
+   * @param result      is populated with the LU factorization of this matrix if
+   *                    non-zero and thus invertible pivots can be found, thus
+   *                    guaranteeing that this matrix is invertible. If invertible
+   *                    pivot elements cannot be found then null is returned and
+   *                    the permutations entries are unmodified.
    * 
    * @return result if this matrix is invertible otherwise null
    */
