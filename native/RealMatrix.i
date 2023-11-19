@@ -363,10 +363,9 @@ import dnl.utils.text.table.TextTable;
    * 
    * @return result if this matrix is invertible otherwise null
    */
-  public RealMatrix computeLowerUpperFactorization(SWIGTYPE_p_long permutation, int bits, RealMatrix result)
+  public RealMatrix computeLowerUpperFactorization(LongBuffer permutation, int bits, RealMatrix result)
   {
-    assert false : "TODO: map SWIGTYPE_p_long";
-    if (arblib.arb_mat_lu(null, result, this, bits) != 0)
+    if (arblib.arb_mat_lu(permutation, result, this, bits) != 0)
     {
       return result;
     }

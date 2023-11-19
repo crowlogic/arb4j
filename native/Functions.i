@@ -1,6 +1,16 @@
 #define __off_t long int
 #define off_t long int
 
+
+%typemap(jtype) slong* "java.nio.LongBuffer"
+%typemap(jstype) slong* "java.nio.LongBuffer"
+%typemap(javain) slong* "$javainput"
+%typemap(in) long* {
+    $1 = (long *)(*jenv)->GetDirectBufferAddress(jenv, $input);
+    if (!$1) SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Direct buffer is null");
+}
+
+
 int arb_mat_lu(slong * P, arb_mat_t LU, const arb_mat_t A, slong prec);
 
 void acb_dirichlet_lerch_phi(acb_t res, const acb_t z, const acb_t s, const acb_t a, slong prec);
