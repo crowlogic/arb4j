@@ -1,6 +1,8 @@
 #define __off_t long int
 #define off_t long int
 
+int arb_mat_lu(slong * P, arb_mat_t LU, const arb_mat_t A, slong prec);
+
 void acb_dirichlet_lerch_phi(acb_t res, const acb_t z, const acb_t s, const acb_t a, slong prec);
 
 void arb_poly_product_roots(arb_poly_t poly, arb_srcptr xs, slong n, slong prec);

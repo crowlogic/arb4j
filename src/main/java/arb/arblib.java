@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int arb_mat_lu(SWIGTYPE_p_long P, RealMatrix LU, RealMatrix A, int prec) {
+    return arblibJNI.arb_mat_lu(SWIGTYPE_p_long.getCPtr(P), RealMatrix.getCPtr(LU), LU, RealMatrix.getCPtr(A), A, prec);
+  }
+
   public static void acb_dirichlet_lerch_phi(Complex res, Complex z, Complex s, Complex a, int prec) {
     arblibJNI.acb_dirichlet_lerch_phi(Complex.getCPtr(res), res, Complex.getCPtr(z), z, Complex.getCPtr(s), s, Complex.getCPtr(a), a, prec);
   }

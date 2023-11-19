@@ -335,6 +335,49 @@ import dnl.utils.text.table.TextTable;
     return this;
   } 
 
+  /**
+   * Computes the LU factorization of this {@link RealMatrix} using Gaussian
+   * elimination with partial pivoting. The input and result output matrices can
+   * be the same, thus providing for in-place factorization.
+   * 
+   * The result matrix is populated with the LU factorization of this matrix if
+   * non-zero and thus invertible pivots can be found, thus guaranteeing that this
+   * matrix is invertible.
+   * 
+   * If invertible pivot elements cannot be found then null is returned and the
+   * permutations entries are unmodified.
+   * 
+   * If the return value is null than one of 3 things could be the reason:
+   * 
+   * <ul>
+   * <li>the matrix is singular</li>
+   * <li>the input matrix was computed to insufficient precision</li>
+   * <li>the LU factorization was attempted at insufficient precision</li>
+   * </ul>
+   * 
+   * Currently only the default version which chooses an algorithm automatically
+   * is wrapped
+   * 
+   * @param permutation row index in the input matrix corresponding to row in the
+   *                    output matrix
+   * @param bits        number of bits of precision with which to perform the
+   *                    calculations
+   * @param result      the {@link RealMatrix} to be assigned the LU factorization
+   * 
+   * @return result if this matrix is invertible otherwise null
+   */
+  public RealMatrix computeLowerUpperFactorization(SWIGTYPE_p_long permutation, int bits, RealMatrix result)
+  {
+    assert false : "TODO: map SWIGTYPE_p_long";
+    if (arblib.arb_mat_lu(null, result, this, bits) != 0)
+    {
+      return result;
+    }
+    else
+    {
+      return null;
+    }
+  }
 
   /**
    * Computes the Cholesky decomposition of A. Returning the factor matrix iff the
