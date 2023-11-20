@@ -90,7 +90,7 @@ public class RealMatrixTest extends
    */
   public void testLowerUpperFactorization()
   {
-
+    assert false : "todo: test LU";
   }
 
 }
