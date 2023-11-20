@@ -88,7 +88,18 @@ public class RealMatrixTest extends
    */
   public void testLowerUpperFactorization()
   {
-    assert false : "todo: test LU";
+    int        i = 0, j = 0, k = 0, n = 5, N = n * n;
+    RealMatrix A = RealMatrix.newMatrix(n, n);
+    while (k < N)
+    {
+      A.get(i++, j).set(++k);
+      if (i == n)
+      {
+        i = 0;
+        j++;
+      }
+    }
+    assert false : "todo: test LU, A =" + A;
   }
 
 }
