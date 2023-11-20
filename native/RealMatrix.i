@@ -373,6 +373,7 @@ import dnl.utils.text.table.TextTable;
     }
     else
     {
+      result.name = "lu_" + ( name != null ? name : "");    
       return null;
     }
   }
