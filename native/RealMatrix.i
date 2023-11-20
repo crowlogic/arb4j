@@ -339,8 +339,25 @@ import dnl.utils.text.table.TextTable;
 
   /**
    * Computes the LU factorization of this {@link RealMatrix} using Gaussian
-   * elimination with partial pivoting. <br> The input and result output matrices can
-   * be the same, thus providing for in-place factorization.<br>
+   * elimination with partial pivoting. <br><br>
+   * The input and result output matrices can be the same, thus providing for
+   * in-place factorization.<br><br>
+   * 
+   * LU decomposition, n. (of a square matrix A) a factorization A = LU where L
+   * and U are respectively lower- and upper-triangular. <br><br>
+   * 
+   * Although not every square matrix has an LU decomposition, one may always
+   * write A = PLU, where P is a permutation matrix, L is nonsingular and
+   * lower-triangular, and U is upper-triangular. <br><br>
+   * 
+   * A non-singular square matrix has an LU decomposition if and only if all its
+   * leading principal minors are nonzero. <br><br>
+   * 
+   * If A is nonsingular and has an LU decomposition, then A = L'DU', where all of
+   * the main diagonal entries of the lower triangular matrix L' are equal to 1,
+   * U' is upper triangular, and each of the main diagonal entries of the diagonal
+   * matrix D is equal to the corresponding leading principal minor of A; the
+   * factors L', D, and U' are unique. <br><br>
    * 
    * If the return value is null then one of 3 things could be the reason:<br>
    * 
@@ -369,11 +386,11 @@ import dnl.utils.text.table.TextTable;
   {
     if (arblib.arb_mat_lu(permutation, result, this, bits) != 0)
     {
+      result.name = "lu_" + (name != null ? name : "");
       return result;
     }
     else
     {
-      result.name = "lu_" + ( name != null ? name : "");    
       return null;
     }
   }
