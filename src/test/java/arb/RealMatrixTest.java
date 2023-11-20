@@ -14,7 +14,6 @@ public class RealMatrixTest extends
   {
     int        prec        = 128;
     RealMatrix correlation = RealMatrix.newMatrix(2, 2).identity();
-    System.out.println("shit " + correlation.getRow(0));
     correlation.name = "correlation";
     correlation.get(1, 0).set(-0.75);
     correlation.get(0, 1).set(-0.75);
@@ -41,7 +40,6 @@ public class RealMatrixTest extends
     Real       diag = A.diag();
     assert diag.size() == n;
     IntStream.range(0, n).forEach(i -> diag.get(i).set(i + 1));
-    System.out.println("A=" + A);
     IntStream.range(0, n)
              .forEach(i -> IntStream.range(0, n)
                                     .forEach(j -> assertTrue(A.get(i, j)
