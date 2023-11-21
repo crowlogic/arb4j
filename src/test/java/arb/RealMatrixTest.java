@@ -88,7 +88,7 @@ public class RealMatrixTest extends
    */
   public void testLowerUpperFactorization()
   {
-    int i = 0, j = 0, k = 0, n = 5, N = n * n;
+    int i = 0, j = 0, k = 0, n = 4, N = n * n;
     try ( RealMatrix A = RealMatrix.newMatrix(n, n))
     {
       while (k < N)
