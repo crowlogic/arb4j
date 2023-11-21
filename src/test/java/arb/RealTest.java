@@ -11,7 +11,13 @@ import junit.framework.TestCase;
 public class RealTest extends
                       TestCase
 {
-
+  public void testAddOneAndOne()
+  {
+    Real real = new Real();
+    real.add(RealConstants.one, 128);
+    assertEquals(RealConstants.one, real);
+  }
+  
   public void testChoose()
   {
     try ( Real ten = Real.valueOf(10))

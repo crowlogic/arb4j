@@ -1,7 +1,10 @@
 package arb.functions.complex.numbertheoretic;
 
+import static arb.arblib.acb_dirichlet_hardy_z;
+import static arb.arblib.acb_set_d;
 import static java.lang.Math.pow;
 
+import arb.ArblibTest;
 import arb.Complex;
 import junit.framework.TestCase;
 
@@ -29,6 +32,20 @@ public class ZFunctionTest extends
 //    
       res.clear();
     }
+  }
+
+  public static void testHardyZFunction()
+  {
+  
+    Complex result = new Complex();
+    Complex input  = new Complex();
+  
+    acb_set_d(input, 13.2);
+  
+    acb_dirichlet_hardy_z(result, input, null, null, 1, ArblibTest.prec);
+    double res = result.getReal().doubleValue();
+    assertEquals(-0.6699771881103516, res, 0.000001);
+  
   }
 
 }
