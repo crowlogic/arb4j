@@ -2,6 +2,7 @@ package arb;
 
 import static arb.utensils.Utensils.println;
 
+import java.nio.*;
 import java.util.stream.IntStream;
 
 import junit.framework.TestCase;
@@ -89,17 +90,26 @@ public class RealMatrixTest extends
   public void testLowerUpperFactorization()
   {
     int i = 0, j = 0, k = 0, n = 4, N = n * n;
-    try ( RealMatrix A = RealMatrix.newMatrix(n, n))
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n); RealMatrix LU = RealMatrix.newMatrix(n, n))
     {
       while (k < N)
       {
-        A.get(i++, j).set(++k);
+        A.get(i, j++).set(++k);
         if (i == n)
         {
           i = 0;
           j++;
         }
       }
+      RealMatrix factorization = A.computeLowerUpperFactorization(ByteBuffer.allocateDirect(n * Long.BYTES)
+                                                                            .order(ByteOrder.nativeOrder())
+                                                                            .asLongBuffer(),
+                                                                  128,
+                                                                  LU);
+      System.out.println("A=" + A);
+      System.out.println("LU=" + LU);
+      assert factorization == LU;
+
       assert false : "todo: test LU, A =" + A;
     }
   }

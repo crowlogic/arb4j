@@ -423,7 +423,8 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
    */
   public RealMatrix computeLowerUpperFactorization(LongBuffer permutation, int bits, RealMatrix result)
   {
-    if (arblib.arb_mat_lu(permutation, result, this, bits) != 0)
+    int retval = arblib.arb_mat_lu(permutation, result, this, bits);
+    if (retval != 0)
     {
       result.name = "lu_" + (name != null ? name : "");
       return result;
