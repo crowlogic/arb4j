@@ -19,7 +19,7 @@ public class ArblibTest extends
   public static void testRealFrac()
   {
     try ( Real a = new Real("12.123456789",
-                            128);
+                            prec);
           Real bee = a.frac(prec, new Real());)
     {
 
