@@ -18,12 +18,13 @@ public class ArblibTest extends
 
   public static void testRealFrac()
   {
-    try ( Real a = new Real())
+    try ( Real a = new Real("12.123456789",
+                            128);
+          Real bee = a.frac(prec, new Real());)
     {
-      a.set("12.123456789", 128);
-      Real bee = a.frac(prec, new Real());
-      System.out.println("bee " + bee);
+
       double b = bee.doubleValue();
+      assert 0.123456789 == b;
     }
   }
 
@@ -51,13 +52,10 @@ public class ArblibTest extends
     z.getReal().set(13.2);
     acb_dirichlet_hardy_theta(faze, z, null, null, 1, prec);
     double result = faze.getReal().doubleValue();
-    out.println("theta(" + z.getReal().doubleValue() + ")=" + result);
     assertEquals(-2.0916778325102459547, result, pow(10, -2));
-    out.println("e^(" + faze + ")=");
     faze.getImag().set(faze.getReal());
     arb_set_d(faze.getReal(), 0);
     acb_exp(faze, faze, prec);
-    out.println(faze + " should be\n -.497644932260514 + I-0.867380839882591 ");
     assertEquals(-0.497644932260514, faze.getReal().doubleValue(), pow(10, -12));
     assertEquals(-0.867380839882591, faze.getImag().doubleValue(), pow(10, -12));
     // -.497644932260514-.867380839882591*I
