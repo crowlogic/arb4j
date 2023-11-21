@@ -94,7 +94,7 @@ public class RealMatrixTest extends
     {
       while (k < N)
       {
-        A.get(i, j++).set(++k);
+        A.get(i++, j).set(++k);
         if (i == n)
         {
           i = 0;
