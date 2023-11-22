@@ -3,6 +3,7 @@ package arb;
 import static arb.utensils.Utensils.println;
 
 import java.nio.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import junit.framework.TestCase;
@@ -130,6 +131,11 @@ public class RealMatrixTest extends
       RealMatrix factorization = A.computeLowerUpperFactorization(permutation, 128, LU);
       System.out.println(A);
       System.out.println(LU);
+      String permutationString = "[" + IntStream.range(0, n)
+                                                .mapToObj(i -> String.valueOf(permutation.get(i)))
+                                                .collect(Collectors.joining(","))
+                    + "]";
+      System.out.println("permutations=" + permutationString);
       assert factorization == LU;
 
       assert false : "todo: test LU, A =" + A;
