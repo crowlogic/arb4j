@@ -108,6 +108,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
                         "half",
                         expression.domainClassDescriptor);
     }
+    else
     {
       expression.loadField(loadThis(mv), fieldName, false);
     }
