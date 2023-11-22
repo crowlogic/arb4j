@@ -357,15 +357,32 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   }
 
   /**
-   * @see arb#arb_mat_mul(RealMatrix, RealMatrix, RealMatrix, int)
-   * @param x
-   * @param prec
+   * <pre>
+   * Sets res to the matrix product of this and that. The operands must have
+   * compatible dimensions for matrix multiplication.
+   * 
+   * The classical version performs matrix multiplication in the trivial way.
+   * 
+   * The block version decomposes the input matrices into one or several blocks of
+   * uniformly scaled matrices and multiplies large blocks via fmpz_mat_mul. It
+   * also invokes _arb_mat_addmul_rad_mag_fast() for the radius matrix
+   * multiplications.
+   * 
+   * The threaded version performs classical multiplication but splits the
+   * computation over the number of threads returned by flint_get_num_threads().
+   * </pre>
+   * 
+   * The {@link arblib#arb_mat_mul(RealMatrix, RealMatrix, RealMatrix, int)}
+   * function chooses an algorithm automatically.
+   * 
+   * @param that 
+   * @param bits precision
    * @param result
-   * @return result
+   * @return result set to this*that
    */
-  public RealMatrix mul(RealMatrix x, int prec, RealMatrix result)
+  public RealMatrix mul(RealMatrix that, int bits, RealMatrix result)
   {
-    arb_mat_mul(result, this, x, prec);
+    arb_mat_mul(result, this, that, bits);
     return result;
   }
 
