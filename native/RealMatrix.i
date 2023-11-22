@@ -188,7 +188,18 @@ import dnl.utils.text.table.TextTable;
     return arb_mat_eq(this, other) != 0;    
   }
 
+  public RealMatrix set(int i, int j, Real real)
+  {
+   get(i,j).set(real);
+   return this;    
+  }
 
+  public RealMatrix set(int i, int j, long l)
+  {
+    get(i, j).set(l);
+    return this;
+  }
+  
  /**
    * Accessor for the i,j-th element
    * 
@@ -470,7 +481,35 @@ import dnl.utils.text.table.TextTable;
     return diagonal;
   }
     
-      
+  public RealMatrix extractUpperAndLowerTriangularMatrices(  RealMatrix L, RealMatrix U )
+  {
+    assert isSquare() : "matrix must be square";
+    int n = getNumRows();
+
+    for (int i = 0; i < n; i++)
+    {
+      for (int j = 0; j < n; j++)
+      {
+        if (i > j)
+        {
+          L.set(i, j, get(i, j));
+          U.set(i, j, 0);
+        }
+        else if (i == j)
+        {
+          L.set(i, j, 1);
+          U.set(i, j, get(i, j));
+        }
+        else
+        {
+          L.set(i, j, 0);
+          U.set(i, j, get(i, j));
+        }
+      }
+    }
+    
+    return this;
+  }        
 %};
 
 
