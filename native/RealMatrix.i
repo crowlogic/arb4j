@@ -347,13 +347,23 @@ import dnl.utils.text.table.TextTable;
    * The {@link arblib#arb_mat_mul(RealMatrix, RealMatrix, RealMatrix, int)}
    * function chooses an algorithm automatically.
    * 
-   * @param that 
-   * @param bits precision
+   * @param that
+   * @param bits   precision
    * @param result
    * @return result set to this*that
    */
   public RealMatrix mul(RealMatrix that, int bits, RealMatrix result)
   {
+    assert getNumCols() == that.getNumRows() : String.format("this matrix col count does %d not match right matrix row count %d",
+                                                             getNumCols(),
+                                                             that.getNumRows());
+    assert getNumRows() == result.getNumRows() : String.format("Result matrix row count does %d not match left matrix row count %d",
+                                                               getNumRows(),
+                                                               result.getNumRows());
+    assert that.getNumCols() == result.getNumCols() : String.format("this matrix col count does %d not match right matrix row count %d",
+                                                                    that.getNumCols(),
+                                                                    result.getNumCols());
+
     arb_mat_mul(result, this, that, bits);
     return result;
   }
