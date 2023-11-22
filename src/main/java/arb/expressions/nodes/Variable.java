@@ -43,11 +43,6 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
   private Expression<D, R, F> expression;
   boolean                     isIndependent = false;
 
-  public static boolean isConstant(String s)
-  {
-    return "π".equals(s);
-  }
-
   public Variable(Expression<D, R, F> expression, Reference variableReference, int depth)
   {
     super(expression,
@@ -59,7 +54,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     {
       if ((expression.independentVariableNode == null
                     || expression.independentVariableNode.reference.equals(variableReference))
-                    && !isConstant(variableReference.name))
+                    && !LiteralConstant.isConstant(variableReference.name))
       {
         expression.independentVariableNode = this;
         isIndependent                      = true;

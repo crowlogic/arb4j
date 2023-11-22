@@ -22,11 +22,16 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   public static final String    half            = "½";
 
   public static HashSet<String> constantSymbols = new HashSet<String>();
-  
+
   static
   {
     constantSymbols.add(π);
     constantSymbols.add(half);
+  }
+
+  public static boolean isConstant(String var)
+  {
+    return constantSymbols.contains(var);
   }
 
   public LiteralConstant(Expression<D, R, F> expression, String constantValueString, int depth)
