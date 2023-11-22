@@ -1,6 +1,6 @@
 %typemap(javafinalize) arb_struct ""
 
-%typemap(javainterfaces) arb_struct "Domain<Real>,CommutativeGroup<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real>"
+%typemap(javainterfaces) arb_struct "Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real>"
 
 %typemap(javaimports) arb_struct %{
 import static arb.IntegerConstants.*;
@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.function.IntFunction;
 import java.util.stream.*;
 import arb.domains.Domain;
-import arb.groups.CommutativeGroup;
 import arb.stochastic.ProbabilityDistributionFunction;
 
 /**
@@ -342,27 +341,25 @@ import arb.stochastic.ProbabilityDistributionFunction;
     }
     return copy;
   }
+
+  /**
+   * A variable-argument assignment-from-{@link Double} functions that uses
+   * {@link Real#set(double)} for each eleent in order
+   * 
+   * 
+   * @param d
+   * @return this
+   */
+  public Real set(double... d)
+  {
+    assert dim == d.length : "this.dim=" + dim + " != d.length=" + d.length;
+    for (int i = 0; i < d.length; i++)
+    {
+      get(i).set(d[i]);
+    }
+    return this;
+  }
   
-  @Override
-  public Real identity()
-  {
-    return zero;
-  }  
-
-  @Override
-  public Real apply(Real x, Real y)
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
-  public Real inverse(Real x)
-  {
-    assert false : "TODO";
-    return null;
-  }
-    
   @Override
   public Real clone()
   {

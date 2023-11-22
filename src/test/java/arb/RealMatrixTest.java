@@ -48,8 +48,8 @@ public class RealMatrixTest extends
   }
 
   /**
-   * This test case demonstrates the LU decomposition and factorization for a 4x4 matrix.
-   * It initializes matrix L and U as follows:
+   * This test case demonstrates the LU decomposition and factorization for a 4x4
+   * matrix. It initializes matrix L and U as follows:
    * 
    * <pre>
    * L := Transpose(<<1, 0, 0, 0> | <2, 5, 0, 0> | <3, 6, 8, 0> | <4, 7, 9, 10>>);
@@ -118,15 +118,12 @@ public class RealMatrixTest extends
     int i = 0, j = 0, k = 0, n = 4, N = n * n;
     try ( RealMatrix A = RealMatrix.newMatrix(n, n); RealMatrix LU = RealMatrix.newMatrix(n, n))
     {
-      while (k < N)
-      {
-        A.get(i++, j).set(++k);
-        if (i == n)
-        {
-          i = 0;
-          j++;
-        }
-      }
+
+      A.getRow(0).set(1, 2, 4, 7);
+      A.getRow(1).set(2, 19, 33, 54);
+      A.getRow(2).set(3, 24, 90, 141);
+      A.getRow(3).set(4, 29, 105, 265);
+
       RealMatrix factorization = A.computeLowerUpperFactorization(ByteBuffer.allocateDirect(n * Long.BYTES)
                                                                             .order(ByteOrder.nativeOrder())
                                                                             .asLongBuffer(),
