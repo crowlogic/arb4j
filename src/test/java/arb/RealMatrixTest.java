@@ -115,8 +115,8 @@ public class RealMatrixTest extends
    */
   public void testLowerUpperFactorization()
   {
-    int i = 0, j = 0, k = 0, n = 4, N = n * n;
-    try ( RealMatrix A = RealMatrix.newMatrix(n, n); RealMatrix LU = RealMatrix.newMatrix(n, n))
+    int n = 4;
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A"); RealMatrix LU = RealMatrix.newMatrix(n, n))
     {
 
       A.getRow(0).set(1, 2, 4, 7);
@@ -124,13 +124,12 @@ public class RealMatrixTest extends
       A.getRow(2).set(3, 24, 90, 141);
       A.getRow(3).set(4, 29, 105, 265);
 
-      RealMatrix factorization = A.computeLowerUpperFactorization(ByteBuffer.allocateDirect(n * Long.BYTES)
-                                                                            .order(ByteOrder.nativeOrder())
-                                                                            .asLongBuffer(),
-                                                                  128,
-                                                                  LU);
-      System.out.println("A=" + A);
-      System.out.println("LU=" + LU);
+      LongBuffer permutation   = ByteBuffer.allocateDirect(n * Long.BYTES)
+                                           .order(ByteOrder.nativeOrder())
+                                           .asLongBuffer();
+      RealMatrix factorization = A.computeLowerUpperFactorization(permutation, 128, LU);
+      System.out.println(A);
+      System.out.println(LU);
       assert factorization == LU;
 
       assert false : "todo: test LU, A =" + A;

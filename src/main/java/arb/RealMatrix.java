@@ -59,6 +59,12 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
 
   static { System.loadLibrary( "arblib" ); }
 
+  public RealMatrix setName(String string)
+  {
+    this.name = string;
+    return this;
+  }
+
   public Real getRow(int i)
   {
     return rows[i];
