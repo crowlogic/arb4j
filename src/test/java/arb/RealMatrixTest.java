@@ -48,44 +48,70 @@ public class RealMatrixTest extends
   }
 
   /**
-   * <pre>
-   A := <<1, 2, 3, 4> | <5, 6, 7, 8> | <9, 10, 11, 12> | <13, 14, 15, 16>>
-                           [1  5  9   13]
-                           [            ]
-                           [2  6  10  14]
-                      A := [            ]
-                           [3  7  11  15]
-                           [            ]
-                           [4  8  12  16]
-  
-  p, l, u := LUDecomposition(A);
-                      [1  0  0  0]  [1  0  0  0]  
-                      [          ]  [          ]  
-                      [0  1  0  0]  [2  1  0  0]  
-           p, l, u := [          ], [          ], 
-                      [0  0  1  0]  [3  2  1  0]  
-                      [          ]  [          ]  
-                      [0  0  0  1]  [4  3  0  1]  
-  
-             [1      5           9           13     ]
-             [                                      ]
-             [0      -4          -8          -12    ]
-             [                                      ]
-             [0      0           0            0     ]
-             [                                      ]
-             [0      0           0            0     ]
-  
-  
-  (p . l) . u;
-                         [1  5  9   13]
-                         [            ]
-                         [2  6  10  14]
-                         [            ]
-                         [3  7  11  15]
-                         [            ]
-                         [4  8  12  16]
+   * This test case demonstrates the LU decomposition and factorization for a 4x4 matrix.
+   * It initializes matrix L and U as follows:
    * 
+   * <pre>
+   * L := Transpose(<<1, 0, 0, 0> | <2, 5, 0, 0> | <3, 6, 8, 0> | <4, 7, 9, 10>>);
+   *                            [1  0  0  0 ]
+   *                            [           ]
+   *                            [2  5  0  0 ]
+   *                       L := [           ]
+   *                            [3  6  8  0 ]
+   *                            [           ]
+   *                            [4  7  9  10]
+   * 
+   * U := <<1, 0, 0, 0> | <2, 3, 0, 0> | <4, 5, 6, 0> | <7, 8, 9, 10>>;
+   *                            [1  2  4  7 ]
+   *                            [           ]
+   *                            [0  3  5  8 ]
+   *                       U := [           ]
+   *                            [0  0  6  9 ]
+   *                            [           ]
+   *                            [0  0  0  10]
+   * 
+   * The product of L and U gives matrix A:
+   * A := L . U;
+   *                          [1  2    4    7 ]
+   *                          [               ]
+   *                          [2  19  33   54 ]
+   *                     A := [               ]
+   *                          [3  24  90   141]
+   *                          [               ]
+   *                          [4  29  105  265]
+   * 
+   * It then performs LU decomposition on matrix A, resulting in matrices P, L, and U:
+   * - P is the permutation matrix.
+   * - L is the lower-triangular matrix.
+   * - U is the upper-triangular matrix.
+   * 
+   * The factorization is shown as follows:
+   * 
+   * p, l, u := LUDecomposition(A);
+   *                             [1  0  0  0]                  
+   *                             [          ]                  
+   *               [1  0  0  0]  [2  1  0  0]  [1  2   4    7 ]
+   *               [          ]  [          ]  [              ]
+   *               [0  1  0  0]  [   6      ]  [0  15  25  40 ]
+   *    p, l, u := [          ], [3  -  1  0], [              ]
+   *               [0  0  1  0]  [   5      ]  [0  0   48  72 ]
+   *               [          ]  [          ]  [              ]
+   *               [0  0  0  1]  [   7  9   ]  [0  0   0   100]
+   *                             [4  -  -  1]                  
+   *                             [   5  8   ]                  
+   * 
+   * The equality of the matrix product (p . l) . u and A is verified as follows:
+   * (p . l) . u = A;
+   *             [1  2    4    7 ]   [1  2    4    7 ]
+   *             [               ]   [               ]
+   *             [2  19  33   54 ]   [2  19  33   54 ]
+   *             [               ] = [               ]
+   *             [3  24  90   141]   [3  24  90   141]
+   *             [               ]   [               ]
+   *             [4  29  105  265]   [4  29  105  265]
    * </pre>
+   * 
+   * @see RealMatrix
    */
   public void testLowerUpperFactorization()
   {
