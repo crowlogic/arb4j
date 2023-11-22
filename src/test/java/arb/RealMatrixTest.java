@@ -117,7 +117,9 @@ public class RealMatrixTest extends
   public void testLowerUpperFactorization()
   {
     int n = 4;
-    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A"); RealMatrix LU = RealMatrix.newMatrix(n, n))
+
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A"); RealMatrix LU = RealMatrix.newMatrix(n, n);
+          RealMatrix lowerFactor = RealMatrix.newMatrix(n, n); RealMatrix upperFactor = RealMatrix.newMatrix(n, n);)
     {
 
       A.getRow(0).set(1, 2, 4, 7);
@@ -138,9 +140,11 @@ public class RealMatrixTest extends
       System.out.println("permutations=" + permutationString);
       assert factorization == LU;
 
+      factorization.extractUpperAndLowerTriangularMatrices(lowerFactor, upperFactor);
+      
+      System.out.format( "upperFactor=%s\n\nlowerFactor=%s\n\n", upperFactor, lowerFactor );
       assert false : "todo: test LU, A =" + A;
     }
   }
 
-  
 }
