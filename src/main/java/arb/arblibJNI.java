@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void arb_mat_swap_rows(long jarg1, RealMatrix jarg1_, java.nio.LongBuffer jarg2, int jarg3, int jarg4);
   public final static native int arb_mat_lu(java.nio.LongBuffer jarg1, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);
   public final static native void acb_dirichlet_lerch_phi(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, long jarg4, Complex jarg4_, int jarg5);
   public final static native void arb_poly_product_roots(long jarg1, RealPolynomial jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);

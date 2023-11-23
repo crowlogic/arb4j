@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void arb_mat_swap_rows(RealMatrix mat, java.nio.LongBuffer perm, int numRows, int s) {
+    arblibJNI.arb_mat_swap_rows(RealMatrix.getCPtr(mat), mat, perm, numRows, s);
+  }
+
   public static int arb_mat_lu(java.nio.LongBuffer P, RealMatrix LU, RealMatrix A, int prec) {
     return arblibJNI.arb_mat_lu(P, RealMatrix.getCPtr(LU), LU, RealMatrix.getCPtr(A), A, prec);
   }

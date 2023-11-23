@@ -10,6 +10,27 @@
     if (!$1) SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Direct buffer is null");
 }
 
+void
+arb_mat_swap_rows(arb_mat_t mat, slong * perm, slong r, slong s)
+{
+    if (r != s)
+    {
+        arb_ptr u;
+        slong t;
+
+        if (perm != NULL)
+        {
+            t = perm[s];
+            perm[s] = perm[r];
+            perm[r] = t;
+        }
+
+        u = mat->rows[s];
+        mat->rows[s] = mat->rows[r];
+        mat->rows[r] = u;
+    }
+}
+
 
 int arb_mat_lu(slong * P, arb_mat_t LU, const arb_mat_t A, slong prec);
 
