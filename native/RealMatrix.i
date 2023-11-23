@@ -306,13 +306,20 @@ import dnl.utils.text.table.TextTable;
   /**
    * @see arb#arb_mat_transpose(RealMatrix, RealMatrix)
    * 
-   * @param result
+   * @param transposed
    * @return result
-   */  
-  public RealMatrix transpose(RealMatrix result)
+   */
+  public RealMatrix transpose(RealMatrix transposed)
   {
-    arb_mat_transpose(result, this);
-    return result;
+    assert getNumRows() == transposed.getNumCols() : String.format("this.numRows = %d != transposed.numCols = %d\n",
+                                                                   this.getNumRows(),
+                                                                   transposed.getNumCols());
+    assert getNumCols() == transposed.getNumRows() : String.format("this.numCols = %d != transposed.numRows = %d\n",
+                                                                   this.getNumCols(),
+                                                                   transposed.getNumRows());
+
+    arb_mat_transpose(transposed, this);
+    return transposed;
   }
   
   /**

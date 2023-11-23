@@ -141,9 +141,32 @@ public class RealMatrixTest extends
       assert factorization == LU;
 
       factorization.extractUpperAndLowerTriangularMatrices(lowerFactor, upperFactor);
-      
-      System.out.format( "upperFactor=%s\n\nlowerFactor=%s\n\n", upperFactor, lowerFactor );
+
+      System.out.format("upperFactor=%s\n\nlowerFactor=%s\n\n", upperFactor, lowerFactor);
       assert false : "todo: test LU, A =" + A;
+    }
+  }
+
+  public void testTranspose()
+  {
+    int n = 4;
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n); RealMatrix B = RealMatrix.newMatrix(n, n);
+          RealMatrix C = RealMatrix.newMatrix(n, n);)
+    {
+
+      A.getRow(0).set(1, 2, 3, 4);
+      A.getRow(1).set(5, 6, 7, 8);
+      A.getRow(2).set(9, 10, 11, 12);
+      A.getRow(3).set(13, 14, 15, 16);
+
+      B.getRow(0).set(1, 5, 9, 13);
+      B.getRow(1).set(2, 6, 10, 14);
+      B.getRow(2).set(3, 7, 11, 15);
+      B.getRow(3).set(4, 8, 12, 16);
+
+      A.transpose(C);
+
+      assertEquals(B, C);
     }
   }
 
