@@ -322,6 +322,12 @@ import dnl.utils.text.table.TextTable;
     return transposed;
   }
   
+  public RealMatrix permute(LongBuffer permutation)
+  {
+    assert false : "TODO: permute the rows of this matrix (in-place)";
+    
+    return this;
+  }  
   /**
    * Calls {@link arb#arb_mat_clear(RealMatrix)}
    * @return this
