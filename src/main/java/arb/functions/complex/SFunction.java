@@ -14,7 +14,6 @@ public class SFunction implements
                        ComplexFunction,
                        AutoCloseable
 {
-  SFunctionInverse[] inverses = new SFunctionInverse[SFunctionInverse.BRANCH_COUNT];
 
   public Real        scale;
 
@@ -124,20 +123,22 @@ public class SFunction implements
   @Override
   public int getInverseBranchCount()
   {
-    return SFunctionInverse.BRANCH_COUNT;
+    return 4;
   }
 
   @Override
   public synchronized ComplexFunction inverse(int branch)
   {
-    assert 0 <= branch && branch <= 4 : branch + " must be in {0,1,2,3}";
-    SFunctionInverse inverse = inverses[branch];
-    if (inverse == null)
-    {
-      inverse = inverses[branch] = new SFunctionInverse(scale,
-                                                        branch);
-    }
-    return inverse;
+    assert false : "TODO: redo with expression compiler";
+    return null;
+//    assert 0 <= branch && branch <= 4 : branch + " must be in {0,1,2,3}";
+//    SFunctionInverse inverse = inverses[branch];
+//    if (inverse == null)
+//    {
+//      inverse = inverses[branch] = new SFunctionInverse(scale,
+//                                                        branch);
+//    }
+//    return inverse;
   }
 
   @Override

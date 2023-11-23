@@ -85,7 +85,7 @@ public interface RealToComplexFunction extends
     {
       int        depthLimit, evalLimit, degLimit, depth, maxDepth, top, allocation;
       long       leafIntervalCount;
-      boolean    useHeap, glStatus, verbose, realError;
+      boolean    useHeap, glStatus, verbose;
       AtomicLong evalCount;
 
       evalCount           = new AtomicLong();
