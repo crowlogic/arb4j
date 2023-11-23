@@ -361,7 +361,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     return transposed;
   }
   
-  public RealMatrix permute(LongBuffer permutation)
+  public RealMatrix permuteRows(LongBuffer permutation)
   {
     assert false : "TODO: permute the rows of this matrix (in-place)";
     
@@ -547,6 +547,9 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   {
     assert isSquare() : "matrix must be square";
     int n = getNumRows();
+
+    L.setName("L_" + name );
+    U.setName("U_" + name );  
 
     for (int i = 0; i < n; i++)
     {

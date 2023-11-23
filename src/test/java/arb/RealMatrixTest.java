@@ -128,24 +128,26 @@ public class RealMatrixTest extends
       A.getRow(2).set(3, 24, 90, 141);
       A.getRow(3).set(4, 29, 105, 265);
 
-      LongBuffer permutation   = ByteBuffer.allocateDirect(n * Long.BYTES)
-                                           .order(ByteOrder.nativeOrder())
-                                           .asLongBuffer();
-      RealMatrix factorization = A.computeLowerUpperFactorization(permutation, 128, LU);
-      System.out.println(A);
-      System.out.println(LU);
-      String permutationString = "[" + IntStream.range(0, n)
-                                                .mapToObj(i -> String.valueOf(permutation.get(i)))
-                                                .collect(Collectors.joining(","))
+      LongBuffer permutation       = ByteBuffer.allocateDirect(n * Long.BYTES)
+                                               .order(ByteOrder.nativeOrder())
+                                               .asLongBuffer();
+      RealMatrix factorization     = A.computeLowerUpperFactorization(permutation, 128, LU);
+
+      String     permutationString = "[" + IntStream.range(0, n)
+                                                    .mapToObj(i -> String.valueOf(permutation.get(i)))
+                                                    .collect(Collectors.joining(","))
                     + "]";
       System.out.println("permutations=" + permutationString);
       assert factorization == LU;
 
       factorization.extractUpperAndLowerTriangularMatrices(lowerFactor, upperFactor);
 
-      lowerFactor.mul(upperFactor, 128, B).permute(permutation);
+      lowerFactor.mul(upperFactor, 128, B);
 
-      System.out.format("upperFactor=%s\n\nlowerFactor=%s\n\nB=%s\n\n", upperFactor, lowerFactor, B);
+      System.out.format("%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n", factorization, upperFactor, lowerFactor, A, B);
+
+      B.permuteRows(permutation);
+
       assertEquals(A, B);
     }
   }

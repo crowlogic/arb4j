@@ -322,7 +322,7 @@ import dnl.utils.text.table.TextTable;
     return transposed;
   }
   
-  public RealMatrix permute(LongBuffer permutation)
+  public RealMatrix permuteRows(LongBuffer permutation)
   {
     assert false : "TODO: permute the rows of this matrix (in-place)";
     
@@ -508,6 +508,9 @@ import dnl.utils.text.table.TextTable;
   {
     assert isSquare() : "matrix must be square";
     int n = getNumRows();
+
+    L.setName("L_" + name );
+    U.setName("U_" + name );  
 
     for (int i = 0; i < n; i++)
     {
