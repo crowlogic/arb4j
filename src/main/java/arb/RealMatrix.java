@@ -588,7 +588,9 @@ public class RealMatrix implements
   {
     assert isSquare() : "matrix must be square";
     int n = getNumRows();
-
+    L.setName( "lower_" + name );
+    U.setName( "upper_" + name );
+    
     for (int i = 0; i < n; i++)
     {
       for (int j = 0; j < n; j++)
