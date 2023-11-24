@@ -35,7 +35,7 @@ import dnl.utils.text.table.TextTable;
 
   public RealMatrix mul(Real k, int bits, RealMatrix result)
   {
-    assert false : "TODO: multiply the elements of the matrix by a scalar and return the result";
+    assert false : "TODO: multiply the elements of the matrix by a scalar and return the result, used by Surface";
     return result;
   }
 
