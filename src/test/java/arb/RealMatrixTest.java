@@ -157,6 +157,14 @@ public class RealMatrixTest extends
 
       System.out.println("permutations=" + getPermutationString(permutation));
 
+      for ( int i = 0; i< n; i++ )
+      {
+        Real row = B.getRow(i);
+        System.out.println( "row[" + i + "] = " + row );
+      }
+      
+      assertTrue( B.getRow(0).get(3).equals(B.get(0,3)));
+
       RealMatrix diff = A.sub(B, 128, factorization);
       diff.printPrecision = true;
       out.println("diff=" + diff);
