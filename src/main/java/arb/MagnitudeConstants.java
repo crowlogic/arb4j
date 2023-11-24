@@ -15,7 +15,7 @@ public class MagnitudeConstants
 
   static
   {
-    zeroMag  = new Magnitude().zero();
-    log10mag = new Magnitude().set(10).log();
+    zeroMag  = new Magnitude().init().zero();
+    log10mag = new Magnitude().init().set(10).log();
   }
 }

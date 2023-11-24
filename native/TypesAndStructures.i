@@ -23,6 +23,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <malloc.h>
+#include <mpfr.h>
 
 typedef slong fmpz;
 typedef fmpz fmpz_t[1];
@@ -122,6 +123,7 @@ typedef struct
 mag_struct;
 
 typedef mag_struct mag_t[1];
+
 typedef mag_struct * mag_ptr;
 typedef const mag_struct * mag_srcptr;
 
