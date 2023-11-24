@@ -380,7 +380,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     return transposed;
   }
   
-/**
+  /**
    * Swaps two rows of this matrix.
    *
    * This method swaps the rows indexed by {@code r} and {@code s} in this matrix.
@@ -393,18 +393,12 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
    * the size of the permutations buffer. Assertions need to be enabled at runtime
    * for these checks to take effect.
    *
-   *
-   * FIXME: swap the elements of this{@link #rows} as well since
-   * {@link arblib#arb_mat_swap_rows(RealMatrix, LongBuffer, int, int)} takes care
-   * of swapping the elements of the row pointer array
-   * 
    * @param permutations An optional buffer of permutations. If non-null, the
    *                     method records the swap in this buffer. The buffer should
    *                     have at least as many elements as there are rows in the
    *                     matrix. Each element in the buffer represents a row
    *                     index, and the value at each position indicates where the
    *                     original row has been moved to after a series of swaps.
-   * 
    * @param r            The index of the first row to swap. Must be a valid index
    *                     within the matrix.
    * @param s            The index of the second row to swap. Must be a valid
@@ -412,8 +406,24 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
    * @return The {@code RealMatrix} object with the rows swapped, allowing for
    *         method chaining.
    * 
-   * 
+   *         FIXME: swap the elements of this{@link #rows} as well since
+   *         {@link arblib#arb_mat_swap_rows(RealMatrix, LongBuffer, int, int)}
+   *         takes care of swapping the elements of the row pointer array
    */
+  public RealMatrix swapRows(LongBuffer permutations, int r, int s)
+  {
+    int numRows = getNumRows();
+    assert r >= 0 && r < numRows : "Row index r (" + r + ") is out of bounds. Valid range: [0, " + (numRows - 1)
+                  + "].";
+    assert s >= 0 && s < numRows : "Row index s (" + s + ") is out of bounds. Valid range: [0, " + (numRows - 1)
+                  + "].";
+    assert permutations == null || permutations.capacity() >= numRows : "Permutations buffer size ("
+                  + (permutations != null ? permutations.capacity() : "null")
+                  + ") is smaller than the number of rows (" + numRows + ").";
+
+    arblib.arb_mat_swap_rows(this, permutations, r, s);
+    return this;
+  }
    
   /**
    * Calls {@link arb#arb_mat_clear(RealMatrix)}
