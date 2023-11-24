@@ -146,12 +146,12 @@ public class RealMatrixTest extends
       // B.permuteRows(permutation);
       System.out.println("permutations=" + getPermutationString(permutation));
 
-      B.permute( permutation );
-      
+      B.permute(permutation);
+
       System.out.println("after depermutation\n" + B);
 
       RealMatrix diff = A.sub(B, 128, factorization);
-      out.println( "diff=" + diff );
+      out.println("diff=" + diff);
       assertEquals(A, B);
 
     }
@@ -184,6 +184,29 @@ public class RealMatrixTest extends
       B.getRow(3).set(4, 8, 12, 16);
 
       A.transpose(C);
+
+      assertEquals(B, C);
+    }
+  }
+
+  public void testMultiplyByScalar()
+  {
+    int n = 4;
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n); RealMatrix B = RealMatrix.newMatrix(n, n);
+          RealMatrix C = RealMatrix.newMatrix(n, n);)
+    {
+
+      A.getRow(0).set(1, 2, 3, 4);
+      A.getRow(1).set(5, 6, 7, 8);
+      A.getRow(2).set(9, 10, 11, 12);
+      A.getRow(3).set(13, 14, 15, 16);
+
+      B.getRow(0).set(2, 4, 6, 8);
+      B.getRow(1).set(10, 12, 14, 16);
+      B.getRow(2).set(18, 20, 22, 24);
+      B.getRow(3).set(26, 28, 30, 32);
+
+      A.mul(RealConstants.two, 128, C);
 
       assertEquals(B, C);
     }
