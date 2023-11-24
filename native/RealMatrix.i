@@ -52,9 +52,24 @@ import dnl.utils.text.table.TextTable;
     
   private LongBuffer rowPointers;
 
-  public RealMatrix mul(Real k, int bits, RealMatrix result)
+  /**
+   * Multiplies each element of this matrix by a {@link Real} scalar
+   * 
+   * @param scalar
+   * @param bits
+   * @param result
+   * @return
+   */
+  public RealMatrix mul(Real scalar, int bits, RealMatrix result)
   {
-    assert false : "TODO: multiply the elements of the matrix by a scalar and return the result, used by Surface";
+    assert getNumRows() == result.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n",
+                                                               getNumRows(),
+                                                               result.getNumRows());
+    assert getNumCols() == result.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n",
+                                                               getNumCols(),
+                                                               result.getNumCols());
+
+    arblib.arb_mat_scalar_mul_arb(result, this, scalar, bits);
     return result;
   }
 

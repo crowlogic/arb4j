@@ -39,6 +39,14 @@ arb_mat_swap_rows(arb_mat_t mat, slong * perm, slong r, slong s)
     }
 }
 
+void arb_mat_scalar_mul_arb(arb_mat_t B, const arb_mat_t A, const arb_t c, slong prec)
+{
+    slong i, j;
+
+    for (i = 0; i < arb_mat_nrows(A); i++)
+        for (j = 0; j < arb_mat_ncols(A); j++)
+            arb_mul(arb_mat_entry(B, i, j), arb_mat_entry(A, i, j), c, prec);
+}
 
 int arb_mat_lu(slong * P, arb_mat_t LU, const arb_mat_t A, slong prec);
 

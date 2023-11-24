@@ -1,6 +1,7 @@
 package arb;
 
 import static arb.utensils.Utensils.println;
+import static java.lang.System.out;
 
 import java.nio.*;
 import java.util.stream.Collectors;
@@ -149,6 +150,8 @@ public class RealMatrixTest extends
       
       System.out.println("after depermutation\n" + B);
 
+      RealMatrix diff = A.sub(B, 128, factorization);
+      out.println( "diff=" + diff );
       assertEquals(A, B);
 
     }

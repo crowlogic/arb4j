@@ -13,6 +13,10 @@ public class arblib {
     arblibJNI.arb_mat_swap_rows(RealMatrix.getCPtr(mat), mat, perm, numRows, s);
   }
 
+  public static void arb_mat_scalar_mul_arb(RealMatrix B, RealMatrix A, Real numCols, int prec) {
+    arblibJNI.arb_mat_scalar_mul_arb(RealMatrix.getCPtr(B), B, RealMatrix.getCPtr(A), A, Real.getCPtr(numCols), numCols, prec);
+  }
+
   public static int arb_mat_lu(java.nio.LongBuffer P, RealMatrix LU, RealMatrix A, int prec) {
     return arblibJNI.arb_mat_lu(P, RealMatrix.getCPtr(LU), LU, RealMatrix.getCPtr(A), A, prec);
   }
