@@ -37,6 +37,7 @@
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/jdk-19/include"/>
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/jdk-19/include/linux"/>
 									<listOptionValue builtIn="false" value="/usr/local/include"/>
+									<listOptionValue builtIn="false" value="/usr/local/include/flint"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1680898602" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -50,6 +51,7 @@
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/jdk-19/include"/>
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/jdk-19/include/linux"/>
 									<listOptionValue builtIn="false" value="/usr/local/include"/>
+									<listOptionValue builtIn="false" value="/usr/local/include/flint"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1886750268" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -68,8 +70,9 @@
 								</inputType>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.so.release.1619469054" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.so.release">
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.both.asm.option.include.paths.228203612" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.both.asm.option.include.paths.228203612" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="/usr/local/include"/>
+									<listOptionValue builtIn="false" value="/usr/local/include/flint"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.514661915" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
