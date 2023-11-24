@@ -58,9 +58,25 @@ import dnl.utils.text.table.TextTable;
     return result;
   }
 
-  public RealMatrix sub(RealMatrix iI, int bits, RealMatrix result)
+  /**
+   * Sets res to the difference of this and that. The operands must have the same
+   * dimensions.
+   * 
+   * @param that
+   * @param bits
+   * @param result
+   * @return result 
+   */
+  public RealMatrix sub(RealMatrix that, int bits, RealMatrix result)
   {
-    assert false : "TODO: implement matrix subtraction";
+    assert getNumRows() == that.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n",
+                                                             getNumRows(),
+                                                             that.getNumRows());
+    assert getNumCols() == that.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n",
+                                                             getNumCols(),
+                                                             that.getNumCols());
+
+    arblib.arb_mat_sub(result, this, that, bits);
     return result;
   }
   
