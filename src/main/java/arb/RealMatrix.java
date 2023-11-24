@@ -320,7 +320,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
    */
   public Real get(int i, int j)
   {
-    return arb_mat_entry_ptr(this, i,j);
+    return rows[i].get(j);
   }
 
   public String name;
