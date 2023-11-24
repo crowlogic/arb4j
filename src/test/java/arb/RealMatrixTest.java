@@ -128,16 +128,12 @@ public class RealMatrixTest extends
       A.getRow(2).set(3, 24, 90, 141);
       A.getRow(3).set(4, 29, 105, 265);
 
-      LongBuffer permutation       = ByteBuffer.allocateDirect(n * Long.BYTES)
-                                               .order(ByteOrder.nativeOrder())
-                                               .asLongBuffer();
-      RealMatrix factorization     = A.computeLowerUpperFactorization(permutation, 128, LU);
+      LongBuffer permutation   = ByteBuffer.allocateDirect(n * Long.BYTES)
+                                           .order(ByteOrder.nativeOrder())
+                                           .asLongBuffer();
+      RealMatrix factorization = A.computeLowerUpperFactorization(permutation, 128, LU);
 
-      String     permutationString = "[" + IntStream.range(0, n)
-                                                    .mapToObj(i -> String.valueOf(permutation.get(i)))
-                                                    .collect(Collectors.joining(","))
-                    + "]";
-      System.out.println("permutations=" + permutationString);
+      System.out.println("permutations=" + getPermutationString(permutation));
       assert factorization == LU;
 
       factorization.extractUpperAndLowerTriangularMatrices(lowerFactor, upperFactor);
@@ -146,10 +142,30 @@ public class RealMatrixTest extends
 
       System.out.format("%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n", factorization, upperFactor, lowerFactor, A, B);
 
-    //  B.permuteRows(permutation);
+      // B.permuteRows(permutation);
+      System.out.println("permutations=" + getPermutationString(permutation));
+
+      for (int i = 0; i < n; i++)
+      {
+        B.swapRows(permutation, i, (int) permutation.get(i));
+        System.out.println("permutations=" + getPermutationString(permutation));
+
+      }
+
+      System.out.println("after swap\n" + B);
 
       assertEquals(A, B);
+
     }
+  }
+
+  public String getPermutationString(LongBuffer permutation)
+  {
+    String permutationString = "[" + IntStream.range(0, permutation.capacity())
+                                              .mapToObj(i -> String.valueOf(permutation.get(i)))
+                                              .collect(Collectors.joining(","))
+                  + "]";
+    return permutationString;
   }
 
   public void testTranspose()

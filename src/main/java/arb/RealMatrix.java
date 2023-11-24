@@ -72,6 +72,12 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   
   private LongBuffer rowPointers;
 
+  public RealMatrix mul(Real k, int bits, RealMatrix result)
+  {
+    assert false : "TODO: multiply the elements of the matrix by a scalar and return the result, used by Surface";
+    return result;
+  }
+
   public RealMatrix sub(RealMatrix iI, int bits, RealMatrix result)
   {
     assert false : "TODO: implement matrix subtraction";

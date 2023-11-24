@@ -7,8 +7,15 @@
 %typemap(jstype) slong* "java.nio.LongBuffer"
 %typemap(javain) slong* "$javainput"
 %typemap(in) long* {
-    $1 = (long *)(*jenv)->GetDirectBufferAddress(jenv, $input);
-    if (!$1) SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Direct buffer is null");
+    if ( $input != 0 )
+    {
+     $1 = (long *)(*jenv)->GetDirectBufferAddress(jenv, $input);    
+     if (!$1) SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Direct buffer is null");
+    }
+    else
+    {
+     $1 = 0;
+    }
 }
 
 void
