@@ -145,14 +145,9 @@ public class RealMatrixTest extends
       // B.permuteRows(permutation);
       System.out.println("permutations=" + getPermutationString(permutation));
 
-      for (int i = 0; i < n; i++)
-      {
-        B.swapRows(permutation, i, (int) permutation.get(i));
-        System.out.println("permutations=" + getPermutationString(permutation));
-
-      }
-
-      System.out.println("after swap\n" + B);
+      B.permute( permutation );
+      
+      System.out.println("after depermutation\n" + B);
 
       assertEquals(A, B);
 
