@@ -1262,13 +1262,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     
   public int digits()
   {
-    try ( Magnitude d = new Magnitude()  )
-    {
-      getRad().inv(d);
-      d.log(d);
-      d.div(MagnitudeConstants.log10mag, d);
-      return Math.max( 5, (int) d.doubleValue() + 2 );
-    }
+   return 15;
   }  
   
   public boolean  printPrecision = true;

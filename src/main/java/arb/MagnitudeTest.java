@@ -9,4 +9,13 @@ public class MagnitudeTest extends
                            TestCase
 {
 
+  public void testDoubleSetter()
+  {
+    try ( Magnitude mag = new Magnitude())
+    {
+      arblib.mag_init(mag);
+      mag.set(6.9);
+    }
+
+  }
 }

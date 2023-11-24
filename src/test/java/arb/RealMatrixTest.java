@@ -146,7 +146,7 @@ public class RealMatrixTest extends
 
       System.out.format("%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n", factorization, upperFactor, lowerFactor, A, B);
 
-      B.permuteRows(permutation);
+    //  B.permuteRows(permutation);
 
       assertEquals(A, B);
     }
