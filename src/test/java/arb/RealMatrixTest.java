@@ -132,7 +132,12 @@ public class RealMatrixTest extends
       LongBuffer permutation   = ByteBuffer.allocateDirect(n * Long.BYTES)
                                            .order(ByteOrder.nativeOrder())
                                            .asLongBuffer();
+      
+      printRowPointers(LU);
+      
       RealMatrix factorization = A.computeLowerUpperFactorization(permutation, 128, LU);
+
+      printRowPointers(LU);
 
       System.out.println("permutations=" + getPermutationString(permutation));
       assert factorization == LU;
@@ -150,11 +155,19 @@ public class RealMatrixTest extends
 
       System.out.println("after depermutation\n" + B);
 
-      RealMatrix diff = A.sub(B, 128, factorization);
-      out.println("diff=" + diff);
       assertEquals(A, B);
 
     }
+  }
+
+  private void printRowPointers(RealMatrix lU)
+  {
+    for( int i = 0; i < lU.rowPointers.capacity(); i++ )
+    {
+      long ptr = lU.rowPointers.get(i);
+      System.out.format("row[%d]=0x%x\n", i, ptr );
+    }
+    out.println();
   }
 
   public String getPermutationString(LongBuffer permutation)

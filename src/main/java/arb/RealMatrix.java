@@ -89,7 +89,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     return this;
   }
     
-  private LongBuffer rowPointers;
+  LongBuffer rowPointers;
 
   /**
    * Multiplies each element of this matrix by a {@link Real} scalar
@@ -320,7 +320,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
    */
   public Real get(int i, int j)
   {
-    return rows[i].get(j);
+    return arb_mat_entry_ptr(this, i,j);
   }
 
   public String name;

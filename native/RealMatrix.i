@@ -50,7 +50,7 @@ import dnl.utils.text.table.TextTable;
     return this;
   }
     
-  private LongBuffer rowPointers;
+  LongBuffer rowPointers;
 
   /**
    * Multiplies each element of this matrix by a {@link Real} scalar
@@ -281,7 +281,7 @@ import dnl.utils.text.table.TextTable;
    */
   public Real get(int i, int j)
   {
-    return rows[i].get(j);
+    return arb_mat_entry_ptr(this, i,j);
   }
 
   public String name;
