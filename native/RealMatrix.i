@@ -651,6 +651,22 @@ import dnl.utils.text.table.TextTable;
     
     return this;
   }        
+  
+  /**
+   * Sets result to the Frobenius norm (i.e. the square root of the sum of squares
+   * of entries) of A. See
+   * {@link arblib#arb_mat_frobenius_norm(Real, RealMatrix, int)}
+   * 
+   * @param bits   of precision
+   * @param result the Frobenius norm of this matrix
+   * @return the result after it has been assigned the value of the Frobenius norm
+   *         of this matrix
+   */
+  public Real frobeniusNorm(int bits, Real normResult)
+  {
+    arblib.arb_mat_frobenius_norm(normResult, this, bits);
+    return normResult;
+  }  
 %};
 
 

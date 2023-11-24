@@ -163,10 +163,11 @@ public class RealMatrixTest extends
 
       try ( Real frobeniusNorm = new Real();)
       {
-        arblib.arb_mat_frobenius_norm(frobeniusNorm, diff, 128);
+        diff.frobeniusNorm( 128, frobeniusNorm );
+        out.println("frobenius norm=" + frobeniusNorm.doubleValue());
+
         assertTrue(frobeniusNorm.containsZero());
 
-        out.println("frobenius norm=" + frobeniusNorm.doubleValue());
         assertTrue(frobeniusNorm.doubleValue() < 1e-35);
       }
     }
