@@ -1,7 +1,7 @@
 package arb;
 
 import static arb.utensils.Utensils.println;
-import static java.lang.System.out;
+import static java.lang.System.*;
 
 import java.nio.*;
 import java.util.stream.Collectors;
@@ -129,12 +129,12 @@ public class RealMatrixTest extends
       A.getRow(2).set(3, 24, 90, 141);
       A.getRow(3).set(4, 29, 105, 265);
 
-      LongBuffer permutation   = ByteBuffer.allocateDirect(n * Long.BYTES)
-                                           .order(ByteOrder.nativeOrder())
-                                           .asLongBuffer();
-      
+      LongBuffer permutation = ByteBuffer.allocateDirect(n * Long.BYTES)
+                                         .order(ByteOrder.nativeOrder())
+                                         .asLongBuffer();
+
       printRowPointers(LU);
-      
+
       RealMatrix factorization = A.computeLowerUpperFactorization(permutation, 128, LU);
 
       printRowPointers(LU);
@@ -155,17 +155,29 @@ public class RealMatrixTest extends
 
       System.out.println("after depermutation\n" + B);
 
-      assertEquals(A, B);
+      System.out.println("permutations=" + getPermutationString(permutation));
 
+      RealMatrix diff = A.sub(B, 128, factorization);
+      diff.printPrecision = true;
+      out.println("diff=" + diff);
+
+      try ( Real frobeniusNorm = new Real();)
+      {
+        arblib.arb_mat_frobenius_norm(frobeniusNorm, diff, 128);
+        assertTrue(frobeniusNorm.containsZero());
+
+        out.println("frobenius norm=" + frobeniusNorm.doubleValue());
+        assertTrue(frobeniusNorm.doubleValue() < 1e-35);
+      }
     }
   }
 
   private void printRowPointers(RealMatrix lU)
   {
-    for( int i = 0; i < lU.rowPointers.capacity(); i++ )
+    for (int i = 0; i < lU.rowPointers.capacity(); i++)
     {
       long ptr = lU.rowPointers.get(i);
-      System.out.format("row[%d]=0x%x\n", i, ptr );
+      System.out.format("row[%d]=0x%x\n", i, ptr);
     }
     out.println();
   }

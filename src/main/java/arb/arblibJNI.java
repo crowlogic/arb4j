@@ -9,6 +9,9 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void arb_mat_bound_frobenius_norm(long jarg1, Magnitude jarg1_, long jarg2, RealMatrix jarg2_);
+  public final static native void arb_mat_bound_inf_norm(long jarg1, Magnitude jarg1_, long jarg2, RealMatrix jarg2_);
+  public final static native void arb_mat_frobenius_norm(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
   public final static native void arb_mat_swap_rows(long jarg1, RealMatrix jarg1_, java.nio.LongBuffer jarg2, int jarg3, int jarg4);
   public final static native void arb_mat_scalar_mul_arb(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native int arb_mat_lu(java.nio.LongBuffer jarg1, long jarg2, RealMatrix jarg2_, long jarg3, RealMatrix jarg3_, int jarg4);

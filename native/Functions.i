@@ -1,6 +1,7 @@
 #define __off_t long int
 #define off_t long int
 
+#include <gmp.h>
 #include <arb_mat.h>
 
 %typemap(jtype) slong* "java.nio.LongBuffer"
@@ -17,6 +18,10 @@
      $1 = 0;
     }
 }
+
+void arb_mat_bound_frobenius_norm(mag_t b, const arb_mat_t A);
+void arb_mat_bound_inf_norm(mag_t b, const arb_mat_t A);
+void arb_mat_frobenius_norm(arb_t res, const arb_mat_t A, slong prec);
 
 void
 arb_mat_swap_rows(arb_mat_t mat, slong * perm, slong r, slong s)

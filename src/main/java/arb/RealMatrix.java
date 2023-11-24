@@ -325,6 +325,8 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
 
   public String name;
   
+  boolean printPrecision = false;
+  
   @Override
   public String toString()
   {
@@ -337,7 +339,8 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     {
       for (int j = 0; j < getNumCols(); ++j)
       {
-        String string  = get(i, j).toFixedString();
+        Real x = get(i, j);
+        String string  = printPrecision ? x.toString() : x.toFixedString();
         int    decimal = string.indexOf(46);
         if (decimal > maxDecimal)
         {
@@ -367,6 +370,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     String string = (name != null ? name + "=\n" : "") + os.toString();
     return string;
   }  
+  
   private String getDimString()
   {
     String dimString = "(" + this.getNumRows() + "," + this.getNumCols() + ")";

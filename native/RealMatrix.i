@@ -286,6 +286,8 @@ import dnl.utils.text.table.TextTable;
 
   public String name;
   
+  boolean printPrecision = false;
+  
   @Override
   public String toString()
   {
@@ -298,7 +300,8 @@ import dnl.utils.text.table.TextTable;
     {
       for (int j = 0; j < getNumCols(); ++j)
       {
-        String string  = get(i, j).toFixedString();
+        Real x = get(i, j);
+        String string  = printPrecision ? x.toString() : x.toFixedString();
         int    decimal = string.indexOf(46);
         if (decimal > maxDecimal)
         {
@@ -328,6 +331,7 @@ import dnl.utils.text.table.TextTable;
     String string = (name != null ? name + "=\n" : "") + os.toString();
     return string;
   }  
+  
   private String getDimString()
   {
     String dimString = "(" + this.getNumRows() + "," + this.getNumCols() + ")";

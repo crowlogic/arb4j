@@ -2,7 +2,8 @@
 %{
 #include <flint/fmpz.h>
 #include <mpfr.h>
-#include <flint/flint.h>#include <arf.h>
+#include <flint/flint.h>
+#include <arf.h>
 #include <arb.h>
 #include <acb_hypgeom.h>
 #include <arb_hypgeom.h>

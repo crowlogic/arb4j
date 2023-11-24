@@ -9,6 +9,18 @@
 package arb;
 
 public class arblib {
+  public static void arb_mat_bound_frobenius_norm(Magnitude b, RealMatrix A) {
+    arblibJNI.arb_mat_bound_frobenius_norm(Magnitude.getCPtr(b), b, RealMatrix.getCPtr(A), A);
+  }
+
+  public static void arb_mat_bound_inf_norm(Magnitude b, RealMatrix A) {
+    arblibJNI.arb_mat_bound_inf_norm(Magnitude.getCPtr(b), b, RealMatrix.getCPtr(A), A);
+  }
+
+  public static void arb_mat_frobenius_norm(Real res, RealMatrix A, int prec) {
+    arblibJNI.arb_mat_frobenius_norm(Real.getCPtr(res), res, RealMatrix.getCPtr(A), A, prec);
+  }
+
   public static void arb_mat_swap_rows(RealMatrix mat, java.nio.LongBuffer perm, int numRows, int s) {
     arblibJNI.arb_mat_swap_rows(RealMatrix.getCPtr(mat), mat, perm, numRows, s);
   }
