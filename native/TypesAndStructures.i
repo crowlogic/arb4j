@@ -14,7 +14,11 @@
 #include <acb_dirichlet.h>
 #include <dirichlet.h>
 #include <acb_modular.h>
+#include <arb_calc.h>
 #include <acb_dft.h>
+#include <arb_mat.h>
+#include <arb_poly.h>
+#include <acb_mat.h>
 #include <sys/mman.h>
 #include <fcntl.h>
 #include <unistd.h>

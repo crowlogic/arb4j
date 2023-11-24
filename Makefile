@@ -12,7 +12,7 @@ native/arb_wrap.c: native/*.i
 	swig $(SWIGFLAGS) $(INCLUDES) native/arb.i
 
 libarblib.so: $(SOURCES)
-	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint-arb  
+	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint  
 
 clean:
 	rm -f libarblib.so *.o native/arb_wrap.c

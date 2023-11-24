@@ -12,6 +12,7 @@
 #include <flint/profiler.h>
 #include <acb_dirichlet.h>
 #include <string.h>
+#include <math.h>
 #include "acb.h"
 #include "acb_hypgeom.h"
 #include "acb_modular.h"

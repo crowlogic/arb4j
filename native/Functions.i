@@ -1,6 +1,7 @@
 #define __off_t long int
 #define off_t long int
 
+#include <arb_mat.h>
 
 %typemap(jtype) slong* "java.nio.LongBuffer"
 %typemap(jstype) slong* "java.nio.LongBuffer"

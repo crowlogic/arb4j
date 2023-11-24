@@ -363,7 +363,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   
   public RealMatrix permuteRows(LongBuffer permutation)
   {
-    assert false : "TODO: permute the rowPointers of this matrix (in-place)";
+    assert false : "TODO: permute the rows of this matrix (in-place)";
     
     return this;
   }  
