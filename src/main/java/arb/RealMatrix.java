@@ -98,6 +98,28 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   }
 
   /**
+   * Sets res to the sum of this and that. The operands must have the same
+   * dimensions.
+   * 
+   * @param that
+   * @param bits
+   * @param result
+   * @return result 
+   */
+  public RealMatrix add(RealMatrix that, int bits, RealMatrix result)
+  {
+    assert getNumRows() == that.getNumRows() : String.format("this.numRows=%d != that.numRows = %d\n",
+                                                             getNumRows(),
+                                                             that.getNumRows());
+    assert getNumCols() == that.getNumCols() : String.format("this.numCols=%d != that.numCols = %d\n",
+                                                             getNumCols(),
+                                                             that.getNumCols());
+
+    arblib.arb_mat_add(result, this, that, bits);
+    return result;
+  }
+  
+  /**
    * Sets res to the difference of this and that. The operands must have the same
    * dimensions.
    * 
