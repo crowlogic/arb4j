@@ -152,18 +152,21 @@ public class RealMatrixTest extends
       System.out.println("permutations=" + getPermutationString(permutation));
 
       B.permute(permutation);
+      LU.permute(permutation);
 
       System.out.println("after depermutation\n" + B);
 
       System.out.println("permutations=" + getPermutationString(permutation));
 
-      for ( int i = 0; i< n; i++ )
+      for (int i = 0; i < n; i++)
       {
         Real row = B.getRow(i);
-        System.out.println( "row[" + i + "] = " + row );
+        System.out.println("row[" + i + "] = " + row);
       }
-      
-      assertTrue( B.getRow(0).get(3).equals(B.get(0,3)));
+
+      printRowPointers(LU);
+
+      assertTrue(B.getRow(0).get(3).equals(B.get(0, 3)));
 
       RealMatrix diff = A.sub(B, 128, factorization);
       diff.printPrecision = true;
@@ -171,7 +174,7 @@ public class RealMatrixTest extends
 
       try ( Real frobeniusNorm = new Real();)
       {
-        diff.frobeniusNorm( 128, frobeniusNorm );
+        diff.frobeniusNorm(128, frobeniusNorm);
         out.println("frobenius norm=" + frobeniusNorm.doubleValue());
 
         assertTrue(frobeniusNorm.containsZero());
@@ -186,7 +189,7 @@ public class RealMatrixTest extends
     for (int i = 0; i < lU.rowPointers.capacity(); i++)
     {
       long ptr = lU.rowPointers.get(i);
-      System.out.format("row[%d]=0x%x\n", i, ptr);
+      System.out.format("row[%d]=0x%x  rowPointer=0x%x\n", i, ptr, Real.getCPtr( lU.rows[i] ) );
     }
     out.println();
   }
