@@ -15,9 +15,25 @@ public class RealMatrixTest extends
 
   public void testGetRowAndGet()
   {
-    assert false : "god dammit to motherfucking goddamn hell";
+    int n = 4;
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n); RealMatrix B = RealMatrix.newMatrix(n, n);
+          RealMatrix C = RealMatrix.newMatrix(n, n);)
+    {
+
+      A.getRow(0).set(1, 2, 3, 4);
+      A.getRow(1).set(5, 6, 7, 8);
+      A.getRow(2).set(9, 10, 11, 12);
+      A.getRow(3).set(13, 14, 15, 16);
+
+      assertTrue(A.getRow(0).get(3).equals(A.get(0, 3)));
+
+      A.swapRows(null, 2, 3);
+
+      assertTrue(A.getRow(0).get(3).equals(A.get(0, 3)));
+
+    }
   }
-  
+
   public void testChol()
   {
     int        prec        = 128;
@@ -55,8 +71,8 @@ public class RealMatrixTest extends
   }
 
   /**
-   * This test case demonstrates the LU decomposition and factorization for a 4x4
-   * matrix. It initializes matrix L and U as follows:
+   * This test case demonstrates the LU factorization for a 4x4 matrix. It
+   * initializes matrix L and U as follows:
    * 
    * <pre>
    * L := Transpose(<<1, 0, 0, 0> | <2, 5, 0, 0> | <3, 6, 8, 0> | <4, 7, 9, 10>>);
@@ -134,6 +150,8 @@ public class RealMatrixTest extends
       A.getRow(2).set(3, 24, 90, 141);
       A.getRow(3).set(4, 29, 105, 265);
 
+      System.out.println(A);
+
       LongBuffer permutation = ByteBuffer.allocateDirect(n * Long.BYTES)
                                          .order(ByteOrder.nativeOrder())
                                          .asLongBuffer();
@@ -144,7 +162,7 @@ public class RealMatrixTest extends
 
       printRowPointers(LU);
 
-      System.out.println("permutations=" + getPermutationString(permutation));
+
       assert factorization == LU;
 
       factorization.extractUpperAndLowerTriangularMatrices(lowerFactor, upperFactor);
@@ -195,7 +213,7 @@ public class RealMatrixTest extends
           {
             Real got    = B.get(i, j);
             Real gotRow = B.getRow(i).get(j);
-            out.format("[%d,%d] got=%s(0x%x)[0x%x] gotRow=%s(0x%x)[0x%x]\n",
+            out.format("[%d,%d]\n  got   =%s(0x%x)[0x%x]\n  gotRow=%s(0x%x)[0x%x]\n",
                        i,
                        j,
                        got,
@@ -206,7 +224,7 @@ public class RealMatrixTest extends
                        System.identityHashCode(gotRow));
           }
         }
-        System.out.println( );
+        System.out.println();
 
       }
     }
