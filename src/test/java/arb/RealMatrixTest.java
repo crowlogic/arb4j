@@ -181,6 +181,29 @@ public class RealMatrixTest extends
 
         assertTrue(frobeniusNorm.doubleValue() < 1e-35);
       }
+
+      for (int k = 0; k < 2; k++)
+      {
+        for (int i = 0; i < n; i++)
+        {
+          for (int j = 0; j < n; j++)
+          {
+            Real got    = B.get(i, j);
+            Real gotRow = B.getRow(i).get(j);
+            out.format("[%d,%d] got=%s(0x%x)[0x%x] gotRow=%s(0x%x)[0x%x]\n",
+                       i,
+                       j,
+                       got,
+                       Real.getCPtr(got),
+                       System.identityHashCode(got),
+                       gotRow,
+                       Real.getCPtr(gotRow),
+                       System.identityHashCode(gotRow));
+          }
+        }
+        System.out.println( );
+
+      }
     }
   }
 
@@ -189,7 +212,7 @@ public class RealMatrixTest extends
     for (int i = 0; i < lU.rowPointers.capacity(); i++)
     {
       long ptr = lU.rowPointers.get(i);
-      System.out.format("row[%d]=0x%x  rowPointer=0x%x\n", i, ptr, Real.getCPtr( lU.rows[i] ) );
+      System.out.format("row[%d]=0x%x  rowPointer=0x%x\n", i, ptr, Real.getCPtr(lU.rows[i]));
     }
     out.println();
   }

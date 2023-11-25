@@ -312,7 +312,10 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   }
   
  /**
-   * Accessor for the i,j-th element
+   * Accessor for the i,j-th element. 
+   * 
+   * FIXME: this allocates a new Real each time, modify
+   * it to use getRow(i).get(j);
    * 
    * @param i
    * @param j
