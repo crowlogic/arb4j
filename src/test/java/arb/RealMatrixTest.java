@@ -162,6 +162,7 @@ public class RealMatrixTest extends
 
       printRowPointers(LU);
 
+      System.out.println("LU=" + LU);
 
       assert factorization == LU;
 
@@ -235,7 +236,7 @@ public class RealMatrixTest extends
     for (int i = 0; i < lU.rowPointers.capacity(); i++)
     {
       long ptr = lU.rowPointers.get(i);
-      System.out.format("row[%d]=0x%x  rowPointer=0x%x\n", i, ptr, Real.getCPtr(lU.rows[i]));
+      System.out.format("row[%d]=0x%x  rows[i].swigCptr=0x%x\n", i, ptr, Real.getCPtr(lU.rows[i]));
     }
     out.println();
   }
