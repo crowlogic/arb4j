@@ -9,8 +9,8 @@
 package arb;
 
 public class FastDFTCyclicScheme {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public FastDFTCyclicScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -19,18 +19,6 @@ public class FastDFTCyclicScheme {
 
   public static long getCPtr(FastDFTCyclicScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(FastDFTCyclicScheme obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   @SuppressWarnings("deprecation")

@@ -23,8 +23,8 @@ import static arb.arblib.*;
 import dnl.utils.text.table.TextTable;
 
 public class RealMatrix implements AutoCloseable,Iterable<Real> {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public RealMatrix(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -33,18 +33,6 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
 
   public static long getCPtr(RealMatrix obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(RealMatrix obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   public synchronized void delete() {
@@ -312,10 +300,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   }
   
  /**
-   * Accessor for the i,j-th element. 
-   * 
-   * FIXME: this allocates a new Real each time, modify
-   * it to use getRow(i).get(j);
+   * Accessor for the i,j-th element
    * 
    * @param i
    * @param j
@@ -323,6 +308,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
    */
   public Real get(int i, int j)
   {
+//    return getRow(i).get(j);
     return arb_mat_entry_ptr(this, i,j);
   }
 
@@ -480,9 +466,16 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     assert permutations == null || permutations.capacity() >= numRows : "Permutations buffer size ("
                   + (permutations != null ? permutations.capacity() : "null")
                   + ") is smaller than the number of rows (" + numRows + ").";
+    
     Real rRow = rows[r];
-    rows[r] = rows[s];
-    rows[s] = rRow;
+    long rPtr = rRow.swigCPtr;
+    Real sRow = rows[s];
+    Real[] rElements = rRow.elements;
+    rRow.elements = sRow.elements;
+    rRow.swigCPtr = sRow.swigCPtr;
+    sRow.elements = rElements;
+    sRow.swigCPtr = rPtr;
+    
     arblib.arb_mat_swap_rows(this, permutations, r, s);
     return this;
   }

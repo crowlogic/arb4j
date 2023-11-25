@@ -9,8 +9,8 @@
 package arb;
 
 public class FastDFTSchemeUnion {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public FastDFTSchemeUnion(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -19,18 +19,6 @@ public class FastDFTSchemeUnion {
 
   public static long getCPtr(FastDFTSchemeUnion obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(FastDFTSchemeUnion obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   @SuppressWarnings("deprecation")

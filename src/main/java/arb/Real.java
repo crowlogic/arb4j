@@ -145,8 +145,8 @@ import arb.stochastic.ProbabilityDistributionFunction;
  */
 
 public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real> {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public Real(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -155,18 +155,6 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   public static long getCPtr(Real obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(Real obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   public synchronized void delete() {

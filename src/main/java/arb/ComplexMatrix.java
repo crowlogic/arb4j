@@ -12,8 +12,8 @@ import static arb.arblib.acb_mat_clear;
 import static arb.arblib.acb_mat_init;
 
 public class ComplexMatrix implements AutoCloseable {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public ComplexMatrix(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -22,18 +22,6 @@ public class ComplexMatrix implements AutoCloseable {
 
   public static long getCPtr(ComplexMatrix obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(ComplexMatrix obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   public synchronized void delete() {

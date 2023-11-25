@@ -11,19 +11,19 @@ package arb;
 public class SWIGTYPE_p_fmpz {
   private transient long swigCPtr;
 
-  public SWIGTYPE_p_fmpz(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
+  protected SWIGTYPE_p_fmpz(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
     swigCPtr = cPtr;
   }
 
-  public SWIGTYPE_p_fmpz() {
+  protected SWIGTYPE_p_fmpz() {
     swigCPtr = 0;
   }
 
-  public static long getCPtr(SWIGTYPE_p_fmpz obj) {
+  protected static long getCPtr(SWIGTYPE_p_fmpz obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public static long swigRelease(SWIGTYPE_p_fmpz obj) {
+  protected static long swigRelease(SWIGTYPE_p_fmpz obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 }

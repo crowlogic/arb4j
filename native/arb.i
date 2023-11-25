@@ -4,7 +4,20 @@
  
 %include "init.i"
 
+%typemap(javabody) SWIGTYPE (CLASS::Real) %{
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
+  public $javaclassname(long cPtr, boolean cMemoryOwn) {
+    swigCMemOwn = cMemoryOwn;
+    swigCPtr = cPtr;
+  }
+
+  public static long getCPtr($javaclassname obj) {
+    return (obj == null) ? 0 : obj.swigCPtr;
+  }
+%}
+  
 #define __signed__
 #define slong signed long 
 #define ulong unsigned long 
@@ -15,10 +28,6 @@
 typedef mag_struct mag_t[1];
 typedef mag_struct * mag_ptr;
 typedef unsigned long* unsigned_long_ptr;
-
-
-SWIG_JAVABODY_PROXY(public, public, SWIGTYPE)
-SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %ignore size;
 %ignore alloc;

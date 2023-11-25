@@ -9,8 +9,8 @@
 package arb;
 
 public class FastDFTBluesteinScheme {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public FastDFTBluesteinScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -19,18 +19,6 @@ public class FastDFTBluesteinScheme {
 
   public static long getCPtr(FastDFTBluesteinScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(FastDFTBluesteinScheme obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   @SuppressWarnings("deprecation")

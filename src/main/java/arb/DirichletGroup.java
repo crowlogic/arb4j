@@ -11,8 +11,8 @@ package arb;
 import static arb.arblib.*;
 
 public class DirichletGroup implements AutoCloseable {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public DirichletGroup(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -21,18 +21,6 @@ public class DirichletGroup implements AutoCloseable {
 
   public static long getCPtr(DirichletGroup obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(DirichletGroup obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   public synchronized void delete() {

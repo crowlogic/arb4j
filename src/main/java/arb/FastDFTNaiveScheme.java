@@ -9,8 +9,8 @@
 package arb;
 
 public class FastDFTNaiveScheme {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public FastDFTNaiveScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -19,18 +19,6 @@ public class FastDFTNaiveScheme {
 
   public static long getCPtr(FastDFTNaiveScheme obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(FastDFTNaiveScheme obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   @SuppressWarnings("deprecation")

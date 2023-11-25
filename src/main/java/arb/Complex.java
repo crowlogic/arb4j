@@ -31,8 +31,8 @@ import arb.domains.Domain;
  */
 
 public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>,Serializable,Lockable<Complex>,IntFunction<Complex> {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public Complex(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -41,18 +41,6 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
 
   public static long getCPtr(Complex obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(Complex obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   public synchronized void delete() {

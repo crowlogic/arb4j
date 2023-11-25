@@ -13,8 +13,8 @@ import arb.functions.complex.ComplexFunction;
 import static arb.arblib.*;
 
 public class ComplexPolynomial implements AutoCloseable,ComplexFunction {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public ComplexPolynomial(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -23,18 +23,6 @@ public class ComplexPolynomial implements AutoCloseable,ComplexFunction {
 
   public static long getCPtr(ComplexPolynomial obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(ComplexPolynomial obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   public synchronized void delete() {

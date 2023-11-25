@@ -12,8 +12,8 @@ import static arb.arblib.*;
 import arb.functions.real.RealFunction;
 
 public class RealPolynomial implements AutoCloseable,RealFunction {
-  private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  protected long swigCPtr;
+  protected boolean swigCMemOwn;
 
   public RealPolynomial(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -22,18 +22,6 @@ public class RealPolynomial implements AutoCloseable,RealFunction {
 
   public static long getCPtr(RealPolynomial obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
-  }
-
-  public static long swigRelease(RealPolynomial obj) {
-    long ptr = 0;
-    if (obj != null) {
-      if (!obj.swigCMemOwn)
-        throw new RuntimeException("Cannot release ownership as memory is not owned");
-      ptr = obj.swigCPtr;
-      obj.swigCMemOwn = false;
-      obj.delete();
-    }
-    return ptr;
   }
 
   public synchronized void delete() {
