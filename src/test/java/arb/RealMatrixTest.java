@@ -13,6 +13,11 @@ public class RealMatrixTest extends
                             TestCase
 {
 
+  public void testGetRowAndGet()
+  {
+    assert false : "god dammit to motherfucking goddamn hell";
+  }
+  
   public void testChol()
   {
     int        prec        = 128;
