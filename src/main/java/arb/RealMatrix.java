@@ -661,7 +661,21 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     }
     return diagonal;
   }
-    
+
+  /**
+   * Extracts the upper and lower triangular matrices from this square matrix.
+   * <p>
+   * This method fills the provided matrices L (lower triangular) and U (upper triangular)
+   * with the corresponding elements from this matrix. The diagonal elements of L are set to 1,
+   * and the rest of the elements in L and U are filled based on their position relative to the diagonal.
+   * The method asserts that this matrix is square.
+   * </p>
+   *
+   * @param L The matrix to be filled with the lower triangular part of this matrix.
+   * @param U The matrix to be filled with the upper triangular part of this matrix.
+   * @return The current instance of {@link RealMatrix}.
+   * @throws AssertionError If this matrix is not square.
+   */    
   public RealMatrix extractUpperAndLowerTriangularMatrices(  RealMatrix L, RealMatrix U )
   {
     assert isSquare() : "matrix must be square";
