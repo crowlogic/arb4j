@@ -646,7 +646,7 @@ import dnl.utils.text.table.TextTable;
    *
    * @param L The matrix to be filled with the lower triangular part of this matrix.
    * @param U The matrix to be filled with the upper triangular part of this matrix.
-   * @return The current instance of {@link RealMatrix}.
+   * @return this
    * @throws AssertionError If this matrix is not square.
    */    
   public RealMatrix extractUpperAndLowerTriangularMatrices(  RealMatrix L, RealMatrix U )
