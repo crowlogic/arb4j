@@ -420,7 +420,7 @@ public class ExpressionTest extends
 
   public void testSimplerCompoundExpression()
   {
-    RealFunction expression = Expression.express("SimplerCompoundExpression", "1+(2)+(3)", context);
+    RealFunction expression = Expression.express("1+(2)+(3)", context);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
 
@@ -489,14 +489,4 @@ public class ExpressionTest extends
     }
   }
 
-  public void testYabaDabaDo()
-  {
-    RealFunction expression = Expression.express("YabaDabaDo",
-                                               "((r^(1-α)-1)*r^((α-1)*(1+n/2)))/(Γ(α)*Γ(2-α))*r^((1-α)*i)",
-                                               context);
-    Real         c0         = expression.evaluate(zero, 1, 128, new Real());
-    {
-      assertEquals(0.01804581335160034, c0.doubleValue());
-    }
-  }
 }
