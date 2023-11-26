@@ -112,7 +112,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
 
     if (reference.index != null)
     {
-      if (isDigit(reference.index.charAt(0)))
+      if (Parser.isDigit(reference.index.charAt(0)))
       {
         mv.visitLdcInsn(Integer.parseInt(reference.index) - 1);
       }

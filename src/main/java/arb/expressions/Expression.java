@@ -102,7 +102,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     this.rangeClassInternalName    = Type.getInternalName(rangeClass);
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
-    this.expression                = Compiler.replaceSubscripts(expression);
+    this.expression                = Parser.replaceSubscripts(expression);
     this.context                   = context;
     this.variables                 = context != null ? context.variables : null;
     evaluateMethodSignature        = String.format("(L%s;IIL%s;)L%s;",
@@ -508,12 +508,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                                             node.toString()));
       }
     }
-    else if (isNumeric(ch))
+    else if (Parser.isNumeric(ch))
     {
       node = eatNumber(depth, startPos);
       assert node != null : "eatNumber returned null";
     }
-    else if (isLatinOrGreek(ch, false))
+    else if (Parser.isLatinOrGreek(ch, false))
     {
       node = eatFunctionInvocationOrVariableReference(depth, startPos);
       assert node != null : "eatFunctionInvocationOrVariableReference returned null";
@@ -577,7 +577,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   /**
    * At this point it is only known that the present character this{@link #ch} at
-   * this{@link #position} {@link Compiler#isLatinOrGreek(int, boolean)} so that
+   * this{@link #position} {@link Parser#isLatinOrGreek(int, boolean)} so that
    * it is the name of something, but unknown if its the name of a function
    * invocation or a variable reference
    * 
@@ -665,7 +665,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   private Reference eatName(int depth, int startPos)
   {
-    while (isLatinOrGreek(ch, true))
+    while (Parser.isLatinOrGreek(ch, true))
     {
       nextChar();
     }
@@ -706,7 +706,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   private Node<D, R, F> eatNumber(int depth, int startPos)
   {
-    while (isNumeric(ch))
+    while (Parser.isNumeric(ch))
     {
       nextChar();
     }
@@ -1000,6 +1000,49 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                        evaluateMethodDesc,
                        false);
     return mv;
+  }
+
+  public static RealFunction express(String expression)
+  {
+    return express(expression, null);
+  }
+
+  public static RealFunction express(String expression, RealContext context)
+  {
+    return Compiler.instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
+  }
+
+  /**
+   * Returns this{@link #express(String, RealContext)} after calling
+   * {@link Context#registerFunction(String, Function)} to register the function
+   * by name in the specified {@link Context}
+   * 
+   * @param name
+   * @param expression
+   * @param context
+   * @return
+   */
+  public static RealFunction express(String name, String expression, RealContext context)
+  {
+    RealFunction func = Compiler.instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
+    context.registerFunction(name, func);
+    assert false : "TODO: https://github.com/crowlogic/arb4j/issues/264: inject the function as a member variable in the expression class during initialization and load the field as the 1st operand, order=2 for the 2nd operand, bits for the 3rd, and then the result variable to be returned as the 4th operand";
+    return func;
+  }
+
+  public static RealFunction express(String className, String expression, RealContext context, boolean verbose)
+  {
+    return Compiler.instantiate(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
+  }
+
+  public static RealFunction express(String expression, RealContext context, boolean verbose)
+  {
+    return Compiler.instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
+  }
+
+  public static RealFunction express(String expression, boolean verbose)
+  {
+    return Compiler.instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
   }
 
 }

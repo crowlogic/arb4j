@@ -2,7 +2,6 @@ package arb.stochastic.processes.correlationfunctions;
 
 import arb.Real;
 import arb.expressions.*;
-import arb.expressions.Compiler;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.RealSymmetricCovarianceKernel;
 
@@ -47,7 +46,7 @@ public class CauchyCorrelationFunction implements
 
   public RealContext     context = new RealContext(vars);
 
-  public RealFunction    c       = Compiler.express("((1+|h|)^α)^(-(β/α))", context);
+  public RealFunction    c       = Expression.express("((1+|h|)^α)^(-(β/α))", context);
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)

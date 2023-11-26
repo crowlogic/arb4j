@@ -2,9 +2,7 @@ package arb.functions.complex.numbertheoretic;
 
 import arb.Real;
 import arb.RealConstants;
-import arb.expressions.Compiler;
-import arb.expressions.RealContext;
-import arb.expressions.Variables;
+import arb.expressions.*;
 import arb.functions.real.RealFunction;
 
 public class ZStructureFunction implements
@@ -32,7 +30,7 @@ public class ZStructureFunction implements
     vars.put("a", a.set(RealConstants.one));
     vars.put("b", b.set(RealConstants.one));
     vars.put("λ", λ.set(RealConstants.one));
-    kernel = Compiler.express(EXPRESSION, context);
+    kernel = Expression.express(EXPRESSION, context);
   }
 
   final public RealFunction kernel;

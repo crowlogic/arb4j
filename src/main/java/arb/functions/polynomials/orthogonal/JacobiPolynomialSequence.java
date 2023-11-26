@@ -1,15 +1,11 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.expressions.Compiler.express;
-
 import java.util.*;
 import java.util.stream.IntStream;
 
 import arb.*;
 import arb.domains.Domain;
-import arb.expressions.Compiler;
-import arb.expressions.RealContext;
-import arb.expressions.Variables;
+import arb.expressions.*;
 import arb.functions.real.RealFunction;
 
 /**
@@ -59,9 +55,9 @@ public class JacobiPolynomialSequence implements
 
   final RealContext     context = new RealContext(vars);
 
-  final RealFunction    d       = express("d", "2*n+α+β", context);
+  final RealFunction    d       = Expression.express("d", "2*n+α+β", context);
 
-  final RealFunction    p1      = express("d(1)/2 + x*(α - β)", context, true);
+  final RealFunction    p1      = Expression.express("d(1)/2 + x*(α - β)", context, true);
 
   public JacobiPolynomialSequence(Real a, Real b)
   {
@@ -88,7 +84,7 @@ public class JacobiPolynomialSequence implements
     RealContext  context       = new RealContext(vars);
 
     String       expressionStr = "(2 * n + a + b) / (2 * n) * z * P(n-1, a, b, z) - (n + a + b - 1) / n * P(n-2, a, b, z)";
-    RealFunction expression    = Compiler.express(expressionStr, context);
+    RealFunction expression    = Expression.express(expressionStr, context);
 
     try ( Real z = new Real())
     {

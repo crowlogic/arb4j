@@ -5,7 +5,7 @@ import java.util.List;
 
 import arb.Real;
 import arb.RealMatrix;
-import arb.expressions.Compiler;
+import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 
 public class CovarianceEigenSolver
@@ -39,7 +39,7 @@ public class CovarianceEigenSolver
 
   public static void main(String[] args)
   {
-    RealFunction kernel               = Compiler.express("exp(-x^2)");
+    RealFunction kernel               = Expression.express("exp(-x^2)");
     List<Double>             discretizationPoints = Arrays.asList(0.0, 0.1, 0.2, 0.3, 0.4, 0.5);
     CovarianceEigenSolver    solver               = new CovarianceEigenSolver(kernel,
                                                                               discretizationPoints);

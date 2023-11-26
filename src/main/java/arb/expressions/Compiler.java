@@ -12,7 +12,6 @@ import arb.Real;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.functions.real.BesselFunctionOfTheFirstKind;
 import arb.functions.real.RealFunction;
 
 public class Compiler
@@ -289,52 +288,6 @@ public class Compiler
   }
 
   /**
-   * Checks whether a given character is a digit, a decimal point, or '½'
-   * 
-   * @param ch The character to check
-   * @return true if the character is a digit or a decimal point; false otherwise
-   */
-  static boolean isNumeric(int ch)
-  {
-    return (ch >= '0' && ch <= '9') || ch == '.' || ch == '½';
-  }
-
-  /**
-   * Checks whether a given character is a Latin or Greek alphabet character.
-   * 
-   * @param ch The character to check
-   * @return true if the character is a Latin or Greek alphabet character; false
-   *         otherwise
-   */
-  static public boolean isDigit(int ch)
-  {
-    return ch >= '0' && ch <= '9';
-  }
-
-  /**
-   * Checks whether a given character is a Latin or Greek alphabet character.
-   * 
-   * @param ch The character to check
-   * @return true if the character is a Latin or Greek alphabet character; false
-   *         otherwise
-   */
-  static public boolean isLatinOrGreek(int ch, boolean digit)
-  {
-    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || isGreek(ch) || ch == '√' || ch == '₀'
-                  || (digit && (ch >= '0' && ch <= '9'));
-  }
-
-  /**
-   * 
-   * @param ch
-   * @return true if ch represents an upper or lowercase GreekRegistration
-   */
-  public static boolean isGreek(int ch)
-  {
-    return (ch >= 0x0391 && ch <= 0x03A9) || (ch >= 0x03B1 && ch <= 0x03C9);
-  }
-
-  /**
    * Loads the `this` reference onto the JVM stack.
    * 
    * @param mv The MethodVisitor to be used for adding the `this` reference
@@ -443,20 +396,6 @@ public class Compiler
   {
     mv.visitVarInsn(Opcodes.ALOAD, 1); // Load `input` onto the stack
     return mv;
-  }
-
-  /**
-   * 
-   * @param ch
-   * @return true if ch represents a caret or a UTF superscript digit except 0 or
-   *         1 because it doesn't make sense to raise anything to the 0th power
-   *         because thats just equal to 1 and it doesn't make sense to raise
-   *         something to the 1st power because thats the identity operation
-   * 
-   */
-  public static boolean isPowerCharacter(int ch)
-  {
-    return ch == '^' || ch == '⁰' || ch == '¹' || ch == '²' || ch == '³' || (ch >= '⁴' && ch <= '⁹');
   }
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
@@ -611,28 +550,6 @@ public class Compiler
     return expression.callUnaryFunction(expression.checkClassCast(mv, false), functionName);
   }
 
-  /**
-   * Replaces UTF subscripts ₀-₉ with 0-9, so that J₀ can be parsed as a
-   * {@link BesselFunctionOfTheFirstKind} and other similar expressions likewise
-   * 
-   * @param expression
-   * 
-   * @return expression with 0-9 substituted in place of ₀-₉
-   */
-  public static String replaceSubscripts(String expression)
-  {
-    return expression.replace('₀', '0')
-                     .replace('₁', '1')
-                     .replace('₂', '2')
-                     .replace('₃', '3')
-                     .replace('₄', '4')
-                     .replace('₅', '5')
-                     .replace('₆', '6')
-                     .replace('₇', '7')
-                     .replace('₈', '8')
-                     .replace('₉', '9');
-  }
-
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          F
          instantiate(String expression,
@@ -656,49 +573,6 @@ public class Compiler
                      boolean verbose)
   {
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
-  }
-
-  public static RealFunction express(String expression)
-  {
-    return express(expression, null);
-  }
-
-  public static RealFunction express(String expression, RealContext context)
-  {
-    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
-  }
-
-  /**
-   * Returns this{@link #express(String, RealContext)} after calling
-   * {@link Context#registerFunction(String, Function)} to register the function
-   * by name in the specified {@link Context}
-   * 
-   * @param name
-   * @param expression
-   * @param context
-   * @return
-   */
-  public static RealFunction express(String name, String expression, RealContext context)
-  {
-    RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
-    context.registerFunction(name, func);
-    assert false : "TODO: https://github.com/crowlogic/arb4j/issues/264: inject the function as a member variable in the expression class during initialization and load the field as the 1st operand, order=2 for the 2nd operand, bits for the 3rd, and then the result variable to be returned as the 4th operand";
-    return func;
-  }
-
-  public static RealFunction express(String className, String expression, RealContext context, boolean verbose)
-  {
-    return instantiate(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
-  }
-
-  public static RealFunction express(String expression, RealContext context, boolean verbose)
-  {
-    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
-  }
-
-  public static RealFunction express(String expression, boolean verbose)
-  {
-    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
   }
 
 }

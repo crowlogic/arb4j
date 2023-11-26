@@ -10,6 +10,7 @@ import org.objectweb.asm.MethodVisitor;
 import arb.Field;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.Parser;
 import arb.functions.Function;
 
 public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Function<D, R>> extends
@@ -112,7 +113,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
           expression,
           depth);
     assert argument != null;
-    this.name  = Compiler.replaceSubscripts(functionName);
+    this.name  = Parser.replaceSubscripts(functionName);
     this.depth = depth;
   }
 
