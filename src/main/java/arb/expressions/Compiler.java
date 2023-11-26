@@ -511,7 +511,11 @@ public class Compiler
    */
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
-         callRegisteredFunction(MethodVisitor mv, String functionName, Node<D, R, F> arg, boolean lastCall, int depth)
+         callRegisteredFunction(MethodVisitor mv,
+                                String functionName,
+                                Node<D, R, F> arg,
+                                boolean lastCall,
+                                int depth)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -551,7 +555,7 @@ public class Compiler
 
     return expression.callRegisteredUnaryFunction(expression.checkClassCast(mv, false), functionName);
   }
-  
+
   /**
    * Generate an invocation of member function of {@link Field} by its name and
    * the {@link Node} whose evaluated result is the independent variable, also
@@ -678,6 +682,7 @@ public class Compiler
   {
     RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
     context.registerFunction(name, func);
+    assert false : "TODO: inject the function as a member variable in the expression class during initialization and load the field as the 1st operand, order=2 for the 2nd operand, bits for the 3rd, and then the result variable to be returned as the 4th operand";
     return func;
   }
 
