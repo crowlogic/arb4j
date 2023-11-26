@@ -82,6 +82,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public Context<D, R, F>                    context;
 
+  private static final String                evaluateMethodDesc        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+
+  public final String                        evaluateMethodSignature;
+
   public Expression(String className,
                     Class<D> domainClass,
                     Class<R> rangeClass,
@@ -101,6 +105,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     this.expression                = Compiler.replaceSubscripts(expression);
     this.context                   = context;
     this.variables                 = context != null ? context.variables : null;
+    evaluateMethodSignature        = String.format("(L%s;IIL%s;)L%s;",
+                                                   domainClassInternalName,
+                                                   rangeClassInternalName,
+                                                   rangeClassInternalName);
   }
 
   /**
@@ -377,21 +385,21 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   private ClassVisitor generateEvaluationMethod(ClassVisitor cv) throws ExpressionCompilerException
   {
 
-    String methodDesc      = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
-
-    String methodSignature = String.format("(L%s;IIL%s;)L%s;",
-                                           domainClassInternalName,
-                                           rangeClassInternalName,
-                                           rangeClassInternalName);
-    Label  startLabel      = new Label();
-    Label  endLabel        = new Label();
+    Label startLabel = new Label();
+    Label endLabel   = new Label();
 
     if (verbose)
     {
-      System.out.format("Generating evaluate with methodDesc='%s' signature='%s'\n", methodDesc, methodSignature);
+      System.out.format("Generating evaluate with methodDesc='%s' signature='%s'\n",
+                        evaluateMethodDesc,
+                        evaluateMethodSignature);
     }
 
-    MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PUBLIC, "evaluate", methodDesc, methodSignature, null);
+    MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PUBLIC,
+                                      "evaluate",
+                                      evaluateMethodDesc,
+                                      evaluateMethodSignature,
+                                      null);
 
     mv.visitCode();
     mv.visitLabel(startLabel);
@@ -969,6 +977,29 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       loadField(loadThis(mv), intermediateVariableName, true);
       return intermediateVariableName;
     }
+  }
+
+  /**
+   * Emit an instruction to invoke the
+   * {@link Function#evaluate(Object, int, Object)} method of a function
+   * registered via a call to {@link Context#registerFunction(String, Function) . The
+   * unary operation has the signature D functionName( int bits, D result)
+   * 
+   * @param mv
+   * @param functionName
+   * @return mv
+   */
+  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor mv, String functionName)
+  {
+    F func = context.functions.get(functionName);
+    assert func != null : functionName + " not found in context";
+
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       Type.getInternalName(func.getClass()),
+                       "evaluate",
+                       evaluateMethodDesc,
+                       false);
+    return mv;
   }
 
 }

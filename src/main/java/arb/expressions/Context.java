@@ -37,13 +37,13 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
 
   public Functions<F> functions;
 
-  public R register(R variable)
+  public R registerVariable(R variable)
   {
     variables.put(variable.getName(), variable);
     return variable;
   }
 
-  public F register(String functionName, F function)
+  public F registerFunction(String functionName, F function)
   {
     functions.put(functionName, function);
     return function;

@@ -511,6 +511,61 @@ public class Compiler
    */
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
+         callRegisteredFunction(MethodVisitor mv, String functionName, Node<D, R, F> arg, boolean lastCall, int depth)
+  {
+    var     expression = arg.expression;
+    boolean verbose    = expression.verbose;
+
+    if (verbose)
+    {
+      System.err.format("callRegisteredFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
+                        functionName,
+                        arg,
+                        lastCall,
+                        depth);
+    }
+
+    arg.generate(mv);
+    loadBits(mv);
+
+    if (lastCall)
+    {
+      loadResult(mv);
+    }
+    else
+    {
+      if (arg.isReusable())
+      {
+        if (verbose)
+        {
+          System.err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+        }
+
+        arg.prepareStackForReuse(mv);
+      }
+      else
+      {
+        expression.locateExistingOrInstantiateNewIntermediateResultVariable(mv, depth);
+      }
+    }
+
+    return expression.callRegisteredUnaryFunction(expression.checkClassCast(mv, false), functionName);
+  }
+  
+  /**
+   * Generate an invocation of member function of {@link Field} by its name and
+   * the {@link Node} whose evaluated result is the independent variable, also
+   * known as the argument, to be passed to the function represented by this node
+   * 
+   * @param mv
+   * @param functionName
+   * @param arg
+   * @param lastCall
+   * @param depth
+   * @return
+   */
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
          callFieldMethod(MethodVisitor mv, String functionName, Node<D, R, F> arg, boolean lastCall, int depth)
   {
     var     expression = arg.expression;
@@ -525,7 +580,8 @@ public class Compiler
                         depth);
     }
 
-    loadBits(arg.generate(mv));
+    arg.generate(mv);
+    loadBits(mv);
 
     if (lastCall)
     {
@@ -610,7 +666,7 @@ public class Compiler
 
   /**
    * Returns this{@link #express(String, RealContext)} after calling
-   * {@link Context#register(String, Function)} to register the function by name
+   * {@link Context#registerFunction(String, Function)} to register the function by name
    * in the specified {@link Context}
    * 
    * @param name
@@ -621,7 +677,7 @@ public class Compiler
   public static RealFunction express(String name, String expression, RealContext context)
   {
     RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
-    context.register(name, func);
+    context.registerFunction(name, func);
     return func;
   }
 

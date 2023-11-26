@@ -123,12 +123,8 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
 
     if (handler == null)
     {
-      F registeredFunction = expression.context.functions.get(name);
-      if (registeredFunction == null)
-      {
-        throw new RuntimeException("No handler for function '" + name + "'");
-      }
-      assert false : "TODO: invoke evaluate method on " + expression.functionClass + ": " + registeredFunction;
+
+      Compiler.callRegisteredFunction(methodVisitor, name, node, isResult, depth);
 
       return methodVisitor;
     }
