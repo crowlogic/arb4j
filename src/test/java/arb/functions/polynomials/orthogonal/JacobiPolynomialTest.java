@@ -19,7 +19,7 @@ public class JacobiPolynomialTest extends
 {
   public static void testP1()
   {
-    JacobiPolynomials seq = new JacobiPolynomials(half,
+    JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
                                                   half);
     try ( JacobiPolynomial p1 = new JacobiPolynomial(seq,
                                                      1))

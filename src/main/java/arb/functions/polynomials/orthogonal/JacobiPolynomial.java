@@ -1,38 +1,8 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.expressions.Compiler.express;
-
-import arb.Real;
 import arb.RealPolynomial;
-import arb.expressions.*;
-import arb.functions.real.RealFunction;
 
 /**
- * The Jacobi Polynomials are orthogonal with respect to the measure
- * 
- * (1-x)^α*(1+x)^β
- * 
- * over the interval [-1,1].
- * 
- * For the Jacobi polynomials:
- * 
- * Initial condition: P₀(x) = 1
- * 
- * Initial condition: P₁(x) = ½*(α + β + 2) + x*(α - β)
- * 
- * Recurrence relation: Pₙ(x) = aₙ*x*Pₙ₋₁(x) + bₙ*Pₙ₋₂(x)
- * 
- * coefficients: aₙ = cₙ (α² - β²)
- * 
- * coeffecients: bₙ = cₙ * dₙ
- * 
- * where
- * 
- * Common factor: cₙ = (dₙ - 1) / (dₙ*dₙ₋₁)
- * 
- * with
- * 
- * Common factor: dₙ = 2n + α + β
  * 
  * <pre>
  * Copyright ©2023 Stephen Crowley
@@ -46,33 +16,14 @@ public class JacobiPolynomial extends
                               RealPolynomial
 {
 
-  Real                  α       = new Real();
-
-  Real                  β       = new Real();
-
-  final Variables<Real> vars    = new Variables<Real>(α.setName("α"),
-                                                      β.setName("β"));
-
-  final RealContext     context = new RealContext(vars);
-
-  final RealFunction    d       = express("d", "2*n+α+β", context);
-
-  final RealFunction    p1      = express("d(1)/2 + x*(α - β)", context);
-
-  public JacobiPolynomial(JacobiPolynomials sequence, int n)
+  public JacobiPolynomial(JacobiPolynomialSequence sequence, int n)
   {
     this.sequence = sequence;
     this.n        = n;
   }
 
-  final JacobiPolynomials sequence;
+  final JacobiPolynomialSequence sequence;
 
-  final int               n;
+  final int                      n;
 
-  @Override
-  public void close()
-  {
-    α.close();
-    β.close();
-  }
 }
