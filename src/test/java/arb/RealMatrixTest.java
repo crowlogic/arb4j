@@ -27,9 +27,14 @@ public class RealMatrixTest extends
 
       assertTrue(A.getRow(0).get(3).equals(A.get(0, 3)));
 
-      A.swapRows(null, 2, 3);
+      A.swapRows(null, 0, 3);
 
       assertTrue(A.getRow(0).get(3).equals(A.get(0, 3)));
+      
+      A.swapRows(null, 0, 3);
+
+      assertTrue(A.getRow(3).get(3).equals(A.get(3, 3)));
+
 
     }
   }
@@ -162,6 +167,7 @@ public class RealMatrixTest extends
 
       printRowPointers(LU);
 
+      
       System.out.println("LU=" + LU);
 
       assert factorization == LU;
@@ -181,13 +187,7 @@ public class RealMatrixTest extends
       System.out.println("after depermutation\n" + B);
 
       System.out.println("permutations=" + getPermutationString(permutation));
-
-      for (int i = 0; i < n; i++)
-      {
-        Real row = B.getRow(i);
-        System.out.println("row[" + i + "] = " + row);
-      }
-
+      
       printRowPointers(LU);
 
       assertTrue(B.getRow(0).get(3).equals(B.get(0, 3)));
@@ -213,16 +213,9 @@ public class RealMatrixTest extends
           for (int j = 0; j < n; j++)
           {
             Real got    = B.get(i, j);
-            Real gotRow = B.getRow(i).get(j);
-            out.format("[%d,%d]\n  got   =%s(0x%x)[0x%x]\n  gotRow=%s(0x%x)[0x%x]\n",
-                       i,
-                       j,
-                       got,
-                       Real.getCPtr(got),
-                       System.identityHashCode(got),
-                       gotRow,
-                       Real.getCPtr(gotRow),
-                       System.identityHashCode(gotRow));
+            Real gotViaRow = B.getRow(i).get(j);
+            assertEquals( got, gotViaRow );
+            assertTrue( got == gotViaRow );
           }
         }
         System.out.println();
@@ -236,9 +229,10 @@ public class RealMatrixTest extends
     for (int i = 0; i < lU.rowPointers.capacity(); i++)
     {
       long ptr = lU.rowPointers.get(i);
-      System.out.format("row[%d]=0x%x  rows[i].swigCptr=0x%x\n", i, ptr, Real.getCPtr(lU.rows[i]));
-    }
-    out.println();
+      long swigPtr = Real.getCPtr(lU.rows[i]);
+      assertEquals( ptr, swigPtr );
+      //System.out.format("row[%d]=0x%x  rows[i].swigCptr=0x%x\n", i, ptr, swigPtr);
+    }    
   }
 
   public String getPermutationString(LongBuffer permutation)

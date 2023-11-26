@@ -31,6 +31,29 @@ import dnl.utils.text.table.TextTable;
     return rows[i];
   }  
   
+  private void initRows()
+  {
+    if ( rows == null )
+    {
+      rows        = new Real[getNumRows()];
+    }
+    for (int i = 0; i < getNumRows(); i++)
+    {
+      if ( rows[i] == null )
+      {
+        rows[i]          = new Real(rowPointers.get(i),
+                                    false);
+      }
+      else
+      {                                   
+        rows[i].swigCPtr = rowPointers.get(i);
+      }
+      rows[i].elements = new Real[rows[i].dim = getNumCols()];
+    }
+    
+  }
+
+  
   /**
    * Apply this{@link #swapRows(LongBuffer, int, int)} to each element of a permutation array
    * 
@@ -281,7 +304,7 @@ import dnl.utils.text.table.TextTable;
    */
   public Real get(int i, int j)
   {
-    return arb_mat_entry_ptr(this, i,j);
+    return getRow(i).get(j);
   }
 
   public String name;
@@ -349,13 +372,7 @@ import dnl.utils.text.table.TextTable;
     MemorySegment ms = MemorySegment.ofAddress(m.getRowPointers(), rows * 8, SegmentScope.auto());
 
     m.rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
-    m.rows        = new Real[rows];
-    for (int i = 0; i < rows; i++)
-    {
-      m.rows[i]          = new Real(m.rowPointers.get(i),
-                                    false);
-      m.rows[i].elements = new Real[m.rows[i].dim = cols];
-    }
+    m.initRows();
     return m;
   }
   
@@ -423,10 +440,6 @@ import dnl.utils.text.table.TextTable;
    *                     index within the matrix.
    * @return The {@code RealMatrix} object with the rows swapped, allowing for
    *         method chaining.
-   * 
-   *         FIXME: swap the elements of this{@link #rows} as well since
-   *         {@link arblib#arb_mat_swap_rows(RealMatrix, LongBuffer, int, int)}
-   *         takes care of swapping the elements of the row pointer array
    */
   public RealMatrix swapRows(LongBuffer permutations, int r, int s)
   {
@@ -561,6 +574,7 @@ import dnl.utils.text.table.TextTable;
     if (arblib.arb_mat_lu(permutation, result, this, bits) != 0)
     {
       result.name = "lu_" + (name != null ? name : "");
+      result.initRows();
       return result;
     }
     else
