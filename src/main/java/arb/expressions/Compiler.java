@@ -15,6 +15,15 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
+/**
+ * <pre>
+ * Copyright ©2023 Stephen Crowley
+ *  
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre>
+ */
 public class Compiler
 {
   private static final String objectDesc = Type.getInternalName(Object.class);
@@ -23,7 +32,14 @@ public class Compiler
          Expression<Real, Real, RealFunction>
          compile(String className, String expression, boolean verbose)
   {
-    return compile(className, expression, null, Real.class, Real.class, RealFunction.class, verbose);
+    return compile(className, expression, null, verbose);
+  }
+
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         Expression<Real, Real, RealFunction>
+         compile(String className, String expression, RealContext context)
+  {
+    return compile(className, expression, context, false);
   }
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
@@ -31,13 +47,6 @@ public class Compiler
          compile(String className, String expression, RealContext context, boolean verbose)
   {
     return compile(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
-  }
-
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         Expression<Real, Real, RealFunction>
-         compile(String className, String expression, RealContext context)
-  {
-    return compile(className, expression, context, Real.class, Real.class, RealFunction.class, false);
   }
 
   /**
@@ -140,9 +149,9 @@ public class Compiler
   /**
    * Declares the given variables as fields in the class being generated.
    * 
-   * @param classVisitor        The ClassVisitor for the class being generated
-   * @param variables A {@link Collection} of variable names to be declared as
-   *                  fields
+   * @param classVisitor The ClassVisitor for the class being generated
+   * @param variables    A {@link Collection} of variable names to be declared as
+   *                     fields
    * @return
    */
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
@@ -252,22 +261,6 @@ public class Compiler
     mv.visitInsn(DUP);
     mv.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "()V", false);
     mv.visitFieldInsn(PUTFIELD, expression.className, intermediateVariable, expression.domainClassDescriptor);
-    return mv;
-  }
-
-  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         MethodVisitor
-         initializeLiteralConstantWithPi(Expression<D, R, F> expression,
-                                         MethodVisitor mv,
-                                         LiteralConstant<D, R, F> constant)
-  {
-    mv.visitVarInsn(ALOAD, 0);
-    mv.visitTypeInsn(NEW, expression.domainClassInternalName);
-    mv.visitInsn(DUP);
-    mv.visitLdcInsn(constant.value);
-    mv.visitIntInsn(SIPUSH, constant.bits);
-    mv.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "(Ljava/lang/String;I)V", false);
-    mv.visitFieldInsn(PUTFIELD, expression.className, constant.fieldName, expression.domainClassDescriptor);
     return mv;
   }
 
@@ -484,7 +477,11 @@ public class Compiler
    */
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
-         callFieldMethod(MethodVisitor methodVisitor, String functionName, Node<D, R, F> arg, boolean lastCall, int depth)
+         callFieldMethod(MethodVisitor methodVisitor,
+                         String functionName,
+                         Node<D, R, F> arg,
+                         boolean lastCall,
+                         int depth)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -492,10 +489,10 @@ public class Compiler
     if (verbose)
     {
       err.format("callFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
-                        functionName,
-                        arg,
-                        lastCall,
-                        depth);
+                 functionName,
+                 arg,
+                 lastCall,
+                 depth);
       err.flush();
     }
 
