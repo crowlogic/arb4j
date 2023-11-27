@@ -1,7 +1,7 @@
 package arb;
 
 import static arb.utensils.Utensils.println;
-import static java.lang.System.*;
+import static java.lang.System.out;
 
 import java.nio.*;
 import java.util.stream.Collectors;
@@ -30,11 +30,10 @@ public class RealMatrixTest extends
       A.swapRows(null, 0, 3);
 
       assertTrue(A.getRow(0).get(3).equals(A.get(0, 3)));
-      
+
       A.swapRows(null, 0, 3);
 
       assertTrue(A.getRow(3).get(3).equals(A.get(3, 3)));
-
 
     }
   }
@@ -157,40 +156,34 @@ public class RealMatrixTest extends
 
       System.out.println(A);
 
-      LongBuffer permutation = ByteBuffer.allocateDirect(n * Long.BYTES)
-                                         .order(ByteOrder.nativeOrder())
-                                         .asLongBuffer();
-
-      printRowPointers(LU);
+      LongBuffer permutation   = ByteBuffer.allocateDirect(n * Long.BYTES)
+                                           .order(ByteOrder.nativeOrder())
+                                           .asLongBuffer();
 
       RealMatrix factorization = A.computeLowerUpperFactorization(permutation, 128, LU);
-
-      printRowPointers(LU);
-
-      
-      System.out.println("LU=" + LU);
 
       assert factorization == LU;
 
       factorization.extractUpperAndLowerTriangularMatrices(lowerFactor, upperFactor);
+
+      lowerFactor.permute(permutation);
+      upperFactor.permute(permutation);
 
       lowerFactor.mul(upperFactor, 128, B);
 
       System.out.format("%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n", factorization, upperFactor, lowerFactor, A, B);
 
       // B.permuteRows(permutation);
+      // System.out.println("permutations=" + getPermutationString(permutation));
+
+      // B.permute(permutation);
+      // LU.permute(permutation);
+
+      // System.out.println("after depermutation\n" + B);
+
       System.out.println("permutations=" + getPermutationString(permutation));
 
-      B.permute(permutation);
-      LU.permute(permutation);
-
-      System.out.println("after depermutation\n" + B);
-
-      System.out.println("permutations=" + getPermutationString(permutation));
-      
-      printRowPointers(LU);
-
-      assertTrue(B.getRow(0).get(3).equals(B.get(0, 3)));
+      // printRowPointers(LU);
 
       RealMatrix diff = A.sub(B, 128, factorization);
       diff.printPrecision = true;
@@ -212,10 +205,10 @@ public class RealMatrixTest extends
         {
           for (int j = 0; j < n; j++)
           {
-            Real got    = B.get(i, j);
+            Real got       = B.get(i, j);
             Real gotViaRow = B.getRow(i).get(j);
-            assertEquals( got, gotViaRow );
-            assertTrue( got == gotViaRow );
+            assertEquals(got, gotViaRow);
+            assertTrue(got == gotViaRow);
           }
         }
         System.out.println();
@@ -224,15 +217,44 @@ public class RealMatrixTest extends
     }
   }
 
-  private void printRowPointers(RealMatrix lU)
+  public void testDepermutedLowerUpperFactorization()
   {
-    for (int i = 0; i < lU.rowPointers.capacity(); i++)
+    int n = 4;
+
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A"); RealMatrix diff = RealMatrix.newMatrix(n, n);
+          RealMatrix lowerFactor = RealMatrix.newMatrix(n, n); RealMatrix upperFactor = RealMatrix.newMatrix(n, n);
+          RealMatrix B = RealMatrix.newMatrix(n, n).setName("B"))
     {
-      long ptr = lU.rowPointers.get(i);
-      long swigPtr = Real.getCPtr(lU.rows[i]);
-      assertEquals( ptr, swigPtr );
-      //System.out.format("row[%d]=0x%x  rows[i].swigCptr=0x%x\n", i, ptr, swigPtr);
-    }    
+
+      A.getRow(0).set(1, 2, 4, 7);
+      A.getRow(1).set(2, 19, 33, 54);
+      A.getRow(2).set(3, 24, 90, 141);
+      A.getRow(3).set(4, 29, 105, 265);
+
+      System.out.println(A);
+
+      
+      A.computeLowerUpperFactorization(128, lowerFactor, upperFactor);
+
+      lowerFactor.mul(upperFactor, 128, B);
+
+      System.out.format("%s\n\n%s\n\n%s\n\n%s\n\n", upperFactor, lowerFactor, A, B);
+
+      A.sub(B, 128, diff);
+      diff.printPrecision = true;
+      out.println("diff=" + diff);
+
+      try ( Real frobeniusNorm = new Real();)
+      {
+        diff.frobeniusNorm(128, frobeniusNorm);
+        out.println("frobenius norm=" + frobeniusNorm.doubleValue());
+
+        assertTrue(frobeniusNorm.containsZero());
+
+        assertTrue(frobeniusNorm.doubleValue() < 1e-35);
+      }
+    }
+
   }
 
   public String getPermutationString(LongBuffer permutation)

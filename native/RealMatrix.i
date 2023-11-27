@@ -3,13 +3,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentScope;
-import java.nio.ByteOrder;
-import java.nio.LongBuffer;
+import java.nio.*;
 import java.util.Iterator;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import static arb.arblib.*;
+import static java.lang.String.format;
 
 import dnl.utils.text.table.TextTable;
 %}
@@ -582,6 +582,42 @@ import dnl.utils.text.table.TextTable;
       return null;
     }
   }
+  
+ /**
+   * Calls
+   * this{@link #computeLowerUpperFactorization(int, RealMatrix, RealMatrix)} but
+   * applies a sequence of this{@link #swapRows(LongBuffer, int, int)} operations
+   * to put the matrix back into its natural order that was modified by arb_mat_lu
+   * before returning
+   * 
+   * @param bits
+   * @param lowerFactor the {@link RealMatrix} to be set to the lower factor
+   * @param upperFactor the {@link RealMatrix} to be set to the upper factor
+   * @return this
+   */
+  public RealMatrix computeLowerUpperFactorization(int bits, RealMatrix lowerFactor, RealMatrix upperFactor)
+  {
+    assert lowerFactor.getNumRows() == upperFactor.getNumRows() : format("lowerFactor.numRows = %d != upperFactor.numRows = %d\n",
+                                                                         lowerFactor.getNumRows(),
+                                                                         upperFactor.getNumCols());
+    assert lowerFactor.getNumCols() == upperFactor.getNumCols() : format("lowerFactor.numRows = %d != upperFactor.numRows = %d\n",
+                                                                         lowerFactor.getNumRows(),
+                                                                         upperFactor.getNumCols());
+    final int  n             = lowerFactor.getNumRows();
+
+    LongBuffer permutation   = ByteBuffer.allocateDirect(n * Long.BYTES)
+                                         .order(ByteOrder.nativeOrder())
+                                         .asLongBuffer();
+
+    RealMatrix factorization = computeLowerUpperFactorization(permutation, 128, upperFactor);
+
+    factorization.extractUpperAndLowerTriangularMatrices(lowerFactor, upperFactor);
+
+    lowerFactor.permute(permutation);
+    upperFactor.permute(permutation);
+
+    return this;
+  }  
 
   /**
    * Computes the Cholesky decomposition of A. Returning the factor matrix iff the
