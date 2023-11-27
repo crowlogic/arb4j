@@ -135,7 +135,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     intermediateVariables.add(intermediateVarName);
     if (verbose)
     {
-      System.out.println("Allocating intermediate variable " + intermediateVarName + " at depth " + depth);
+      out.println("Allocating intermediate variable " + intermediateVarName + " at depth " + depth);
+      out.flush();
     }
     return intermediateVarName;
   }
@@ -242,8 +243,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.out.println("Generating " + className + " from expression '" + expression + "'");
-      System.out.flush();
+      out.println("Generating " + className + " from expression '" + expression + "'");
+      out.flush();
     }
 
     ClassVisitor classVisitor = constructClassVisitor();
@@ -256,7 +257,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
       if (verbose)
       {
-        System.err.println("Declaring constants: " + literalConstants);
+        err.println("Declaring constants: " + literalConstants);
+        err.flush();
       }
       declareConstants(classVisitor, domainClassDescriptor, literalConstants);
 
@@ -264,7 +266,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         if (verbose)
         {
-          System.err.println("Declaring variables: " + referencedVariables);
+          err.println("Declaring variables: " + referencedVariables);
+          err.flush();
         }
         declareVariables(this, classVisitor, referencedVariables.keySet());
       }
@@ -282,7 +285,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         if (verbose)
         {
-          System.out.println("Generating close method");
+          out.println("Generating close method");
+          out.flush();
         }
         generateCloseMethod(classVisitor);
       }
@@ -345,8 +349,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         List<String> constantList = literalConstants.stream().map(c -> c.fieldName).toList();
         if (verbose)
         {
-          System.err.println("Closing literal constants : " + constantList);
-          System.err.flush();
+          err.println("Closing literal constants : " + constantList);
+          err.flush();
         }
 
         closeFields(methodVisitor, constantList);
@@ -356,8 +360,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         if (verbose)
         {
-          System.err.println("Closing intermediate variables : " + intermediateVariables);
-          System.err.flush();
+          err.println("Closing intermediate variables : " + intermediateVariables);
+          err.flush();
         }
 
         closeFields(methodVisitor, intermediateVariables);
@@ -404,9 +408,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     if (verbose)
     {
-      System.out.format("Generating evaluate with methodDesc='%s' signature='%s'\n",
-                        evaluateMethodDesc,
-                        evaluateMethodSignature);
+      out.format("Generating evaluate with methodDesc='%s' signature='%s'\n",
+                 evaluateMethodDesc,
+                 evaluateMethodSignature);
+      out.flush();
     }
 
     MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
@@ -422,7 +427,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     if (verbose)
     {
-      System.out.println("Returning from evaluate method...\n");
+      out.println("Returning from evaluate method...\n");
+      out.flush();
     }
 
     mv.visitInsn(Opcodes.ARETURN);
@@ -503,7 +509,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.err.format("eat(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("eat(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.flush();
     }
 
     Node<D, R, F> node     = null;
@@ -554,7 +561,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.err.format("eatFirst(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("eatFirst(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.flush();
     }
 
     Node<D, R, F> node = eatSecond(depth);
@@ -609,12 +617,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     boolean   isFunction             = eat(depth, '(');
     if (verbose)
     {
-      System.err.format("eatFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
+      err.format("eatFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
                         depth,
                         startPos,
                         position,
                         functionOrVariableName,
                         isFunction);
+      err.flush();
     }
 
     if (isFunction)
@@ -662,7 +671,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     if (verbose)
     {
-      System.err.format("eatLast(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("eatLast(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.flush();
     }
 
     return eatPower(depth, eat(depth));
@@ -697,13 +707,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
     if (verbose)
     {
-      System.err.format("eatName(depth=%d): startPos=%d, position=%d, identifier='%s' index='%s' ch='%c'\n",
+      err.format("eatName(depth=%d): startPos=%d, position=%d, identifier='%s' index='%s' ch='%c'\n",
                         depth,
                         startPos,
                         position,
                         identifier,
                         index,
                         ch == -1 ? '?' : ch);
+      err.flush();
     }
 
     return new Reference(identifier,

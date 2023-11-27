@@ -73,7 +73,8 @@ public class Compiler
       {
         if (verbose)
         {
-          System.err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+          err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+          err.flush();
         }
 
         arg.prepareStackForReuse(methodVisitor);
@@ -113,11 +114,13 @@ public class Compiler
 
     if (verbose)
     {
-      System.err.format("callRegisteredFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
+      err.format("callRegisteredFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
                         functionName,
                         arg,
                         lastCall,
                         depth);
+      err.flush();
+      
     }
 
     arg.generate(methodVisitor);
@@ -133,7 +136,8 @@ public class Compiler
       {
         if (verbose)
         {
-          System.err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+          err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+          err.flush();
         }
 
         arg.prepareStackForReuse(methodVisitor);
