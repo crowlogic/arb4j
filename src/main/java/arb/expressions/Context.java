@@ -13,6 +13,14 @@ import arb.functions.Function;
  * resolution of {@link Variable} and {@link Function} references (beyond those
  * which are member-functions of the {@link Real} type)
  * 
+ * <pre>
+ * Copyright ©2023 Stephen Crowley
+ * 
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre>
+ * 
  * @param <D>
  * @param <F>
  */
