@@ -577,8 +577,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   /**
    * At this point it is only known that the present character this{@link #ch} at
-   * this{@link #position} {@link Parser#isLatinOrGreek(int, boolean)} so that
-   * it is the name of something, but unknown if its the name of a function
+   * this{@link #position} {@link Parser#isLatinOrGreek(int, boolean)} so that it
+   * is the name of something, but unknown if its the name of a function
    * invocation or a variable reference
    * 
    * @param depth
@@ -982,8 +982,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * Emit an instruction to invoke the
    * {@link Function#evaluate(Object, int, Object)} method of a function
-   * registered via a call to {@link Context#registerFunction(String, Function) . The
-   * unary operation has the signature D functionName( int bits, D result)
+   * registered via a call to {@link Context#registerFunction(String, Function) .
+   * The unary operation has the signature D functionName( int bits, D result)
    * 
    * @param mv
    * @param functionName
@@ -1013,9 +1013,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   }
 
   /**
-   * Returns this{@link #express(String, RealContext)} after calling
-   * {@link Context#registerFunction(String, Function)} to register the function
-   * by name in the specified {@link Context}
+   * Returns the result of
+   * {@link Compiler#instantiate(String, Context, Class, Class, Class, boolean)}
+   * after calling {@link Context#registerFunction(String, Function)} to register
+   * the function by name in the specified {@link Context}
    * 
    * @param name
    * @param expression
