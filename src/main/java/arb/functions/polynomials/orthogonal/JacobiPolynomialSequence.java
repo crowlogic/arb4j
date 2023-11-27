@@ -62,8 +62,8 @@ public class JacobiPolynomialSequence implements
 
   public JacobiPolynomialSequence(Real a, Real b)
   {
-    this.α = a;
-    this.β = b;
+    this.α.set(a);
+    this.β.set(b);
   }
 
   public Real computeCoefficients(int N)
