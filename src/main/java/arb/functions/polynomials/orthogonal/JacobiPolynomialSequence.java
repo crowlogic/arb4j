@@ -45,7 +45,8 @@ import arb.functions.real.RealFunction;
  * </pre>
  */
 public class JacobiPolynomialSequence implements
-                                      OrthogonalBasis<Real, JacobiPolynomial>
+                                      OrthogonalBasis<Real, JacobiPolynomial>,
+                                      AutoCloseable
 {
   public static int     bits    = 128;
   public Real           α       = new Real();
@@ -115,6 +116,13 @@ public class JacobiPolynomialSequence implements
   {
     assert false : "TODO";
     return null;
+  }
+
+  @Override
+  public void close() throws Exception
+  {
+    α.close();
+    β.close();
   }
 
 }
