@@ -550,29 +550,4 @@ public class Compiler
     return expression.callUnaryFunction(expression.checkClassCast(mv, false), functionName);
   }
 
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         F
-         instantiate(String expression,
-                     Context<D, R, F> context,
-                     Class<D> class1,
-                     Class<R> class2,
-                     Class<F> class3,
-                     boolean verbose)
-  {
-    return compile(expression, context, class1, class2, class3, verbose).instantiate();
-  }
-
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         F
-         instantiate(String className,
-                     String expression,
-                     Context<D, R, F> context,
-                     Class<D> domainClass,
-                     Class<R> rangeClass,
-                     Class<F> functionClass,
-                     boolean verbose)
-  {
-    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
-  }
-
 }

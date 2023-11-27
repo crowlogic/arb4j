@@ -1002,6 +1002,31 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return mv;
   }
 
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         F
+         instantiate(String expression,
+                     Context<D, R, F> context,
+                     Class<D> class1,
+                     Class<R> class2,
+                     Class<F> class3,
+                     boolean verbose)
+  {
+    return Compiler.compile(expression, context, class1, class2, class3, verbose).instantiate();
+  }
+
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         F
+         instantiate(String className,
+                     String expression,
+                     Context<D, R, F> context,
+                     Class<D> domainClass,
+                     Class<R> rangeClass,
+                     Class<F> functionClass,
+                     boolean verbose)
+  {
+    return Compiler.compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
+  }
+
   public static RealFunction express(String expression)
   {
     return express(expression, null);
@@ -1009,12 +1034,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public static RealFunction express(String expression, RealContext context)
   {
-    return Compiler.instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
+    return Expression.instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
   }
 
   /**
    * Returns the result of
-   * {@link Compiler#instantiate(String, Context, Class, Class, Class, boolean)}
+   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean)}
    * after calling {@link Context#registerFunction(String, Function)} to register
    * the function by name in the specified {@link Context}
    * 
@@ -1025,7 +1050,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   public static RealFunction express(String name, String expression, RealContext context)
   {
-    RealFunction func = Compiler.instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
+    RealFunction func = Expression.instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
     context.registerFunction(name, func);
     assert false : "TODO: https://github.com/crowlogic/arb4j/issues/264: inject the function as a member variable in the expression class during initialization and load the field as the 1st operand, order=2 for the 2nd operand, bits for the 3rd, and then the result variable to be returned as the 4th operand";
     return func;
@@ -1033,17 +1058,17 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public static RealFunction express(String className, String expression, RealContext context, boolean verbose)
   {
-    return Compiler.instantiate(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
+    return Expression.instantiate(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   public static RealFunction express(String expression, RealContext context, boolean verbose)
   {
-    return Compiler.instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
+    return Expression.instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   public static RealFunction express(String expression, boolean verbose)
   {
-    return Compiler.instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
+    return Expression.instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
   }
 
 }
