@@ -1,5 +1,6 @@
 package arb.expressions;
 
+import static java.lang.String.format;
 import static java.lang.System.out;
 
 import arb.Field;
@@ -53,6 +54,10 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
     {
       out.format("registerFunction( functionName = %s, function = %s )\n", functionName, function);
     }
+    assert !functions.containsKey(functionName) : format("a function named %s of class %s is already registered",
+                                                         functionName,
+                                                         function);
+
     functions.put(functionName, function);
     return function;
   }
