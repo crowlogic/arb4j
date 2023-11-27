@@ -1002,7 +1002,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     F func = context.functions.get(functionName);
     assert func != null : format(" function named '%s' not found in context", functionName);
-
+    assert false : format("reference function class %s by name of field '%s'\n", func.getClass(), functionName);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   functionClassInternalName,
                                   "evaluate",
@@ -1060,7 +1060,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   public static RealFunction express(String functionName, String expression, RealContext context)
   {
-    return express(functionName, expression, context, false );
+    return express(functionName, expression, context, false);
   }
 
   public static RealFunction express(String functionName, String expression, RealContext context, boolean verbose)
@@ -1070,7 +1070,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                                Real.class,
                                                Real.class,
                                                RealFunction.class,
-                                               false);
+                                               verbose);
+
     context.registerFunction(functionName, func);
     // assert false : "TODO: https://github.com/crowlogic/arb4j/issues/264: inject
     // the function as a member variable in the expression class during
