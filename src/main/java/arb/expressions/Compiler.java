@@ -270,14 +270,11 @@ public class Compiler
    */
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          ClassVisitor
-         declareVariables(Expression<D, R, F> expression, ClassVisitor classVisitor, Collection<String> variables)
+         declareVariables(Expression<D, R, F> expression, ClassVisitor classVisitor, Iterable<String> variables)
   {
-    if (!variables.isEmpty())
+    for (String variableName : variables)
     {
-      for (String variableName : variables)
-      {
-        classVisitor.visitField(ACC_PUBLIC, variableName, expression.domainClassDescriptor, null, null);
-      }
+      classVisitor.visitField(ACC_PUBLIC, variableName, expression.domainClassDescriptor, null, null);
     }
     return classVisitor;
   }

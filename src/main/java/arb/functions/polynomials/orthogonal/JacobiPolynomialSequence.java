@@ -57,7 +57,7 @@ public class JacobiPolynomialSequence implements
 
   final RealContext     context = new RealContext(vars);
 
-  final RealFunction    d       = Expression.express("d", "2*n+α+β", context);
+  final RealFunction    d       = Expression.express("d", "2*n+α+β", context, true );
 
   final RealFunction    p1      = Expression.express("d(1)/2 + x*(α - β)", context, true);
 

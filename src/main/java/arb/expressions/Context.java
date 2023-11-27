@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import static java.lang.System.out;
+
 import arb.Field;
 import arb.Real;
 import arb.expressions.nodes.Variable;
@@ -43,8 +45,14 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
     return variable;
   }
 
+  public boolean verbose = true;
+
   public F registerFunction(String functionName, F function)
   {
+    if (verbose)
+    {
+      out.format("registerFunction( functionName = %s, function = %s )\n", functionName, function);
+    }
     functions.put(functionName, function);
     return function;
   }

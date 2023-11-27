@@ -262,6 +262,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
       declareVariables(this, classVisitor, intermediateVariables);
 
+      if (context != null && !context.functions.isEmpty())
+      {
+        assert false : "TODO: declare registered functions here";
+      }
+
       generateConstructor(this, classVisitor);
 
       if (needsCloseMethod())
@@ -396,10 +401,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     }
 
     MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                      "evaluate",
-                                      evaluateMethodDesc,
-                                      evaluateMethodSignature,
-                                      null);
+                                                "evaluate",
+                                                evaluateMethodDesc,
+                                                evaluateMethodSignature,
+                                                null);
 
     mv.visitCode();
     mv.visitLabel(startLabel);
@@ -895,9 +900,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * emits an {@link Opcodes#CHECKCAST} instruction
    * 
    * @param methodVisitor
-   * @param range if true then emits an instruction to check if the top element on
-   *              the stack is a this{@link #rangeClassInternalName} otherwise
-   *              tests if its a this{@link #domainClassInternalName}
+   * @param range         if true then emits an instruction to check if the top
+   *                      element on the stack is a
+   *                      this{@link #rangeClassInternalName} otherwise tests if
+   *                      its a this{@link #domainClassInternalName}
    * @return mv
    */
   public MethodVisitor checkClassCast(MethodVisitor methodVisitor, boolean range)
@@ -925,14 +931,17 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * 
    * @param methodVisitor
    * @param fieldName
-   * @param range     if true then the field is of type
-   *                  this{@link #domainClassDescriptor} otherwise of type
-   *                  this{@link #rangeClassDescriptor}
+   * @param range         if true then the field is of type
+   *                      this{@link #domainClassDescriptor} otherwise of type
+   *                      this{@link #rangeClassDescriptor}
    * @return
    */
   public MethodVisitor loadField(MethodVisitor methodVisitor, String fieldName, boolean range)
   {
-    methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
+    methodVisitor.visitFieldInsn(GETFIELD,
+                                 className,
+                                 fieldName,
+                                 range ? rangeClassDescriptor : domainClassDescriptor);
     return methodVisitor;
   }
 
@@ -947,19 +956,19 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   public MethodVisitor callUnaryFunction(MethodVisitor methodVisitor, String functionName)
   {
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       domainClassInternalName,
-                       functionName,
-                       format("(I%s)%s", domainClassDescriptor, domainClassDescriptor),
-                       false);
+                                  domainClassInternalName,
+                                  functionName,
+                                  format("(I%s)%s", domainClassDescriptor, domainClassDescriptor),
+                                  false);
     return methodVisitor;
   }
 
   /**
    * 
    * @param methodVisitor
-   * @param depth the depth this intermediate variable is needed for. "x" would be
-   *              depth 0, "sin(x)" would be sin at depth 0 and x at depth 1 for
-   *              example
+   * @param depth         the depth this intermediate variable is needed for. "x"
+   *                      would be depth 0, "sin(x)" would be sin at depth 0 and x
+   *                      at depth 1 for example
    * @return name of the intermediate variable
    */
   public String locateExistingOrInstantiateNewIntermediateResultVariable(MethodVisitor methodVisitor, int depth)
@@ -992,13 +1001,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, String functionName)
   {
     F func = context.functions.get(functionName);
-    assert func != null : format(" function named '%s' not found in context", functionName );
+    assert func != null : format(" function named '%s' not found in context", functionName);
 
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       functionClassInternalName,
-                       "evaluate",
-                       evaluateMethodDesc,
-                       false);
+                                  functionClassInternalName,
+                                  "evaluate",
+                                  evaluateMethodDesc,
+                                  false);
     return methodVisitor;
   }
 
@@ -1024,7 +1033,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                      Class<F> functionClass,
                      boolean verbose)
   {
-    return Compiler.compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
+    return Compiler.compile(className, expression, context, domainClass, rangeClass, functionClass, verbose)
+                   .instantiate();
   }
 
   public static RealFunction express(String expression)
@@ -1043,22 +1053,31 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * after calling {@link Context#registerFunction(String, Function)} to register
    * the function by name in the specified {@link Context}
    * 
-   * @param name
+   * @param functionName
    * @param expression
    * @param context
    * @return
    */
-  public static RealFunction express(String name, String expression, RealContext context)
+  public static RealFunction express(String functionName, String expression, RealContext context)
   {
-    RealFunction func = Expression.instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
-    context.registerFunction(name, func);
-    //assert false : "TODO: https://github.com/crowlogic/arb4j/issues/264: inject the function as a member variable in the expression class during initialization and load the field as the 1st operand, order=2 for the 2nd operand, bits for the 3rd, and then the result variable to be returned as the 4th operand";
-    return func;
+    return express(functionName, expression, context, false );
   }
 
-  public static RealFunction express(String className, String expression, RealContext context, boolean verbose)
+  public static RealFunction express(String functionName, String expression, RealContext context, boolean verbose)
   {
-    return Expression.instantiate(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
+    RealFunction func = Expression.instantiate(expression,
+                                               context,
+                                               Real.class,
+                                               Real.class,
+                                               RealFunction.class,
+                                               false);
+    context.registerFunction(functionName, func);
+    // assert false : "TODO: https://github.com/crowlogic/arb4j/issues/264: inject
+    // the function as a member variable in the expression class during
+    // initialization and load the field as the 1st operand, order=2 for the 2nd
+    // operand, bits for the 3rd, and then the result variable to be returned as the
+    // 4th operand";
+    return func;
   }
 
   public static RealFunction express(String expression, RealContext context, boolean verbose)
