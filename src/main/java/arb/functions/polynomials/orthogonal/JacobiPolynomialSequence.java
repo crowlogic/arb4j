@@ -111,18 +111,21 @@ public class JacobiPolynomialSequence implements
     return null;
   }
 
+  public static Real domain = new Real("0+/-1",
+                                       128);
+
   @Override
   public Domain<Real> getDomain()
   {
-    assert false : "TODO";
-    return null;
+    return domain;
   }
 
   @Override
-  public void close() throws Exception
+  public void close()
   {
     α.close();
     β.close();
+    domain.close();
   }
 
 }

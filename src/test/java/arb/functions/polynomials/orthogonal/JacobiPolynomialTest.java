@@ -17,10 +17,12 @@ import junit.framework.TestCase;
 public class JacobiPolynomialTest extends
                                   TestCase
 {
+
+
   public static void testP1()
   {
     JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                  half);
+                                                                half);
     try ( JacobiPolynomial p1 = new JacobiPolynomial(seq,
                                                      1))
     {

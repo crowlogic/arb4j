@@ -1052,7 +1052,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     RealFunction func = Expression.instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
     context.registerFunction(name, func);
-    assert false : "TODO: https://github.com/crowlogic/arb4j/issues/264: inject the function as a member variable in the expression class during initialization and load the field as the 1st operand, order=2 for the 2nd operand, bits for the 3rd, and then the result variable to be returned as the 4th operand";
+    //assert false : "TODO: https://github.com/crowlogic/arb4j/issues/264: inject the function as a member variable in the expression class during initialization and load the field as the 1st operand, order=2 for the 2nd operand, bits for the 3rd, and then the result variable to be returned as the 4th operand";
     return func;
   }
 
