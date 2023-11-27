@@ -1,6 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.callFieldMethod;
+import static arb.expressions.Compiler.callFieldFunction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -156,7 +156,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
    */
   public static CodeGenerator registerFunctionHandler(String functionName, String alias, boolean lastCall)
   {
-    CodeGenerator handler  = (mv, node, depth) -> callFieldMethod(mv, functionName, node, lastCall, depth);
+    CodeGenerator handler  = (mv, node, depth) -> callFieldFunction(mv, functionName, node, lastCall, depth);
     var           handlers = lastCall ? resultFunctionHandlers : functionHandlers;
     String        name     = alias != null ? alias : functionName;
     handlers.put(name, handler);

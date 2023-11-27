@@ -3,7 +3,6 @@ package arb.expressions;
 import static java.lang.System.*;
 import static org.objectweb.asm.Opcodes.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.objectweb.asm.*;
@@ -28,25 +27,156 @@ public class Compiler
 {
   private static final String objectDesc = Type.getInternalName(Object.class);
 
+  /**
+   * Generate an invocation of member function of {@link Field} by its name and
+   * the {@link Node} whose evaluated result is the independent variable, also
+   * known as the argument, to be passed to the function represented by this node
+   * 
+   * @param methodVisitor
+   * @param functionName
+   * @param arg
+   * @param lastCall
+   * @param depth
+   * @return
+   */
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         callFieldFunction(MethodVisitor methodVisitor,
+                           String functionName,
+                           Node<D, R, F> arg,
+                           boolean lastCall,
+                           int depth)
+  {
+    var     expression = arg.expression;
+    boolean verbose    = expression.verbose;
+
+    if (verbose)
+    {
+      err.format("callFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
+                 functionName,
+                 arg,
+                 lastCall,
+                 depth);
+      err.flush();
+    }
+
+    arg.generate(methodVisitor);
+    loadBits(methodVisitor);
+
+    if (lastCall)
+    {
+      loadResult(methodVisitor);
+    }
+    else
+    {
+      if (arg.isReusable())
+      {
+        if (verbose)
+        {
+          System.err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+        }
+
+        arg.prepareStackForReuse(methodVisitor);
+      }
+      else
+      {
+        expression.locateExistingOrInstantiateNewIntermediateResultVariable(methodVisitor, depth);
+      }
+    }
+
+    expression.checkClassCast(methodVisitor, false);
+    return expression.callUnaryFunction(methodVisitor, functionName);
+  }
+
+  /**
+   * Generate an invocation of member function of {@link Field} by its name and
+   * the {@link Node} whose evaluated result is the independent variable, also
+   * known as the argument, to be passed to the function represented by this node
+   * 
+   * @param methodVisitor
+   * @param functionName
+   * @param arg
+   * @param lastCall
+   * @param depth
+   * @return
+   */
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         callRegisteredFunction(MethodVisitor methodVisitor,
+                                String functionName,
+                                Node<D, R, F> arg,
+                                boolean lastCall,
+                                int depth)
+  {
+    var     expression = arg.expression;
+    boolean verbose    = expression.verbose;
+
+    if (verbose)
+    {
+      System.err.format("callRegisteredFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
+                        functionName,
+                        arg,
+                        lastCall,
+                        depth);
+    }
+
+    arg.generate(methodVisitor);
+    loadBits(methodVisitor);
+
+    if (lastCall)
+    {
+      loadResult(methodVisitor);
+    }
+    else
+    {
+      if (arg.isReusable())
+      {
+        if (verbose)
+        {
+          System.err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+        }
+
+        arg.prepareStackForReuse(methodVisitor);
+      }
+      else
+      {
+        expression.locateExistingOrInstantiateNewIntermediateResultVariable(methodVisitor, depth);
+      }
+    }
+
+    return expression.callRegisteredUnaryFunction(expression.checkClassCast(methodVisitor, false), functionName);
+  }
+
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         closeField(Expression<D, R, F> expression, MethodVisitor methodVisitor, String fieldNameToBeClosed)
+  {
+    methodVisitor.visitFieldInsn(GETFIELD,
+                                 expression.className,
+                                 fieldNameToBeClosed,
+                                 expression.domainClassDescriptor);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, expression.domainClassInternalName, "close", "()V", false);
+    return methodVisitor;
+  }
+
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         Expression<D, R, F>
+         compile(String expression,
+                 Context<D, R, F> context,
+                 Class<D> domainClass,
+                 Class<R> rangeClass,
+                 Class<F> functionClass,
+                 boolean verbose)
+  {
+    String className = Parser.expressionToUniqueClassname(expression);
+    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose);
+  }
+
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Expression<Real, Real, RealFunction>
          compile(String className, String expression, boolean verbose)
   {
     return compile(className, expression, null, verbose);
-  }
-
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         Expression<Real, Real, RealFunction>
-         compile(String className, String expression, RealContext context)
-  {
-    return compile(className, expression, context, false);
-  }
-
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         Expression<Real, Real, RealFunction>
-         compile(String className, String expression, RealContext context, boolean verbose)
-  {
-    return compile(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   /**
@@ -94,6 +224,64 @@ public class Compiler
     return expression;
   }
 
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         Expression<Real, Real, RealFunction>
+         compile(String className, String expression, RealContext context)
+  {
+    return compile(className, expression, context, false);
+  }
+
+  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         Expression<Real, Real, RealFunction>
+         compile(String className, String expression, RealContext context, boolean verbose)
+  {
+    return compile(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
+  }
+
+  /**
+   * Declares the given constants as fields in the class being generated.
+   * 
+   * @param classVisitor     The ClassVisitor for the class being generated
+   * @param typeDescriptor   the type of the fields
+   * @param literalConstants An {@link Iterable} of {@link LiteralConstant}
+   *                         objects representing the constants to be declared
+   * @return
+   */
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         ClassVisitor
+         declareConstants(ClassVisitor classVisitor,
+                          String typeDescriptor,
+                          Iterable<LiteralConstant<D, R, F>> literals)
+  {
+    for (LiteralConstant<?, ?, ?> constant : literals)
+    {
+      classVisitor.visitField(ACC_PUBLIC, constant.fieldName, typeDescriptor, null, null);
+    }
+    return classVisitor;
+  }
+
+  /**
+   * Declares the given variables as fields in the class being generated.
+   * 
+   * @param classVisitor The ClassVisitor for the class being generated
+   * @param variables    A {@link Collection} of variable names to be declared as
+   *                     fields
+   * @return
+   */
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         ClassVisitor
+         declareVariables(Expression<D, R, F> expression, ClassVisitor classVisitor, Collection<String> variables)
+  {
+    if (!variables.isEmpty())
+    {
+      for (String variableName : variables)
+      {
+        classVisitor.visitField(ACC_PUBLIC, variableName, expression.domainClassDescriptor, null, null);
+      }
+    }
+    return classVisitor;
+  }
+
   /**
    * Invokes {@link ByteArrayClassLoader} to define a {@link Class} extending
    * {@link Function}
@@ -123,70 +311,16 @@ public class Compiler
     }
   }
 
-  /**
-   * Declares the given constants as fields in the class being generated.
-   * 
-   * @param cw               The ClassVisitor for the class being generated
-   * @param typeDescriptor   the type of the fields
-   * @param literalConstants An {@link Iterable} of {@link LiteralConstant}
-   *                         objects representing the constants to be declared
-   * @return
-   */
-  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         ClassVisitor
-         declareConstants(ClassVisitor cw, String typeDescriptor, ArrayList<LiteralConstant<D, R, F>> literals)
-  {
-    if (!literals.isEmpty())
-    {
-      for (LiteralConstant<?, ?, ?> constant : literals)
-      {
-        cw.visitField(ACC_PUBLIC, constant.fieldName, typeDescriptor, null, null);
-      }
-    }
-    return cw;
-  }
-
-  /**
-   * Declares the given variables as fields in the class being generated.
-   * 
-   * @param classVisitor The ClassVisitor for the class being generated
-   * @param variables    A {@link Collection} of variable names to be declared as
-   *                     fields
-   * @return
-   */
-  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         ClassVisitor
-         declareVariables(Expression<D, R, F> expression, ClassVisitor classVisitor, Collection<String> variables)
-  {
-    if (!variables.isEmpty())
-    {
-      for (String variableName : variables)
-      {
-        classVisitor.visitField(ACC_PUBLIC, variableName, expression.domainClassDescriptor, null, null);
-      }
-    }
-    return classVisitor;
-  }
-
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
-         closeField(Expression<D, R, F> expression, MethodVisitor mv, String fieldNameToBeClosed)
-  {
-    mv.visitFieldInsn(GETFIELD, expression.className, fieldNameToBeClosed, expression.domainClassDescriptor);
-    mv.visitMethodInsn(INVOKEVIRTUAL, expression.domainClassInternalName, "close", "()V", false);
-    return mv;
-  }
-
-  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         MethodVisitor
-         generateConstructor(Expression<D, R, F> expression, ClassVisitor cw)
+         generateConstructor(Expression<D, R, F> expression, ClassVisitor classVisitor)
   {
     if (expression.verbose)
     {
       out.println("Generating constructor for " + expression);
       out.flush();
     }
-    MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+    MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
     mv.visitCode();
 
     // call the super class default no-arg constructor
@@ -221,125 +355,105 @@ public class Compiler
   }
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         ClassVisitor
+         generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor classVisitor)
+  {
+    classVisitor.visit(V20 | V_PREVIEW, ACC_PUBLIC, className, null, objectDesc, new String[]
+    { expression.functionClassInternalName });
+    return classVisitor;
+  }
+
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
-         initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor mv)
+         initializeField(Expression<D, R, F> expression, MethodVisitor methodVisitor, String intermediateVariable)
+  {
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitTypeInsn(NEW, expression.domainClassInternalName);
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "()V", false);
+    methodVisitor.visitFieldInsn(PUTFIELD,
+                                 expression.className,
+                                 intermediateVariable,
+                                 expression.domainClassDescriptor);
+    return methodVisitor;
+  }
+
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
+  {
+    for (String intermediateVariable : expression.intermediateVariables)
+    {
+      initializeField(expression, methodVisitor, intermediateVariable);
+    }
+    return methodVisitor;
+  }
+
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
 
     for (LiteralConstant<D, R, F> literal : expression.literalConstants)
     {
-      initializeLiteralConstantWithString(expression, mv, literal);
+      initializeLiteralConstantWithString(expression, methodVisitor, literal);
     }
-    return mv;
-  }
-
-  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         MethodVisitor
-         initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor mv)
-  {
-    for (String intermediateVariable : expression.intermediateVariables)
-    {
-      initializeField(expression, mv, intermediateVariable);
-    }
-    return mv;
-  }
-
-  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         ClassVisitor
-         generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor cw)
-  {
-    cw.visit(V20 | V_PREVIEW, ACC_PUBLIC, className, null, objectDesc, new String[]
-    { expression.functionClassInternalName });
-    return cw;
-  }
-
-  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         MethodVisitor
-         initializeField(Expression<D, R, F> expression, MethodVisitor mv, String intermediateVariable)
-  {
-    mv.visitVarInsn(ALOAD, 0);
-    mv.visitTypeInsn(NEW, expression.domainClassInternalName);
-    mv.visitInsn(DUP);
-    mv.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "()V", false);
-    mv.visitFieldInsn(PUTFIELD, expression.className, intermediateVariable, expression.domainClassDescriptor);
-    return mv;
+    return methodVisitor;
   }
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
          initializeLiteralConstantWithString(Expression<D, R, F> expression,
-                                             MethodVisitor mv,
+                                             MethodVisitor methodVisitor,
                                              LiteralConstant<D, R, F> constant)
   {
-    mv.visitVarInsn(ALOAD, 0);
-    mv.visitTypeInsn(NEW, expression.domainClassInternalName);
-    mv.visitInsn(DUP);
-    mv.visitLdcInsn(constant.value);
-    mv.visitIntInsn(SIPUSH, constant.bits);
-    mv.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "(Ljava/lang/String;I)V", false);
-    mv.visitFieldInsn(PUTFIELD, expression.className, constant.fieldName, expression.domainClassDescriptor);
-    return mv;
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitTypeInsn(NEW, expression.domainClassInternalName);
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitLdcInsn(constant.value);
+    methodVisitor.visitIntInsn(SIPUSH, constant.bits);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                  expression.domainClassInternalName,
+                                  "<init>",
+                                  "(Ljava/lang/String;I)V",
+                                  false);
+    methodVisitor.visitFieldInsn(PUTFIELD,
+                                 expression.className,
+                                 constant.fieldName,
+                                 expression.domainClassDescriptor);
+    return methodVisitor;
   }
 
   /**
-   * Loads the `this` reference onto the JVM stack.
+   * Loads the 3rd argument (bits) onto the stack
    * 
-   * @param mv The MethodVisitor to be used for adding the `this` reference
-   * @return
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
+   * 
+   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
+   * 
+   * @return mv the {@link MethodVisitor} parameter
    */
-  public static MethodVisitor loadThis(MethodVisitor mv)
+  public static MethodVisitor loadBits(MethodVisitor methodVisitor)
   {
-    mv.visitVarInsn(ALOAD, 0); // Load `this` onto the stack
-    return mv;
+    methodVisitor.visitVarInsn(Opcodes.ILOAD, 3); // Load bits onto the stack
+    return methodVisitor;
   }
 
   /**
-   * Prepares the stack for reusing the left node. There is no direct JVM
-   * instruction to duplicate the bottom value of the stack to the top, so a
-   * combination of instructions is necessary.
+   * Loads the 1st argument (this) onto the stack
    * 
-   * Stack: (L, R, I) -> (L, R, I, L)
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
    * 
-   * DUP2_X1: (L, R, I) -> (R, I, L, R, I).
+   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
    * 
-   * POP2: (R, I, L, R, I) -> (R,I,L)
-   * 
-   * DUP_X2: (R,I,L) -> (L, R, I, L).
-   * 
-   * @param mv The {@link MethodVisitor} to which instructions to transform the
-   *           stack are dispatched
-   * 
-   * @return mv (fluent pattern)
+   * @return mv the {@link MethodVisitor} parameter
    */
-  public static MethodVisitor prepareStackForReusingLeftSide(MethodVisitor mv)
+  public static MethodVisitor loadInput(MethodVisitor methodVisitor)
   {
-    mv.visitInsn(DUP2_X1);
-    mv.visitInsn(POP2);
-    mv.visitInsn(DUP_X2);
-    return mv;
-  }
-
-  /**
-   * Prepares the stack for reusing the right node.
-   * 
-   * Stack: (L, R, I) -> (L, R, I, R)
-   *
-   * The method uses the following bytecode instructions:
-   *
-   * SWAP: Swaps the top two operand stack values. (L, R, I) -> (L, I, R)
-   *
-   * DUP_X1: Duplicates the top operand stack value and inserts it beneath the
-   * next-to-topmost value: (L, I, R) -> (L, R, I, R)
-   * 
-   * @param mv The {@link MethodVisitor} to which instructions to transform the
-   *           stack are emitted
-   * 
-   * @return mv
-   */
-  public static MethodVisitor prepareStackForReusingRightSide(MethodVisitor mv)
-  {
-    mv.visitInsn(SWAP);
-    mv.visitInsn(DUP_X1);
-    return mv;
+    methodVisitor.visitVarInsn(Opcodes.ALOAD, 1); // Load `input` onto the stack
+    return methodVisitor;
   }
 
   /**
@@ -360,168 +474,66 @@ public class Compiler
   }
 
   /**
-   * Loads the 3rd argument (bits) onto the stack
+   * Loads the `this` reference onto the JVM stack.
    * 
-   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
-   * methods is (this,order,bits,result)
-   * 
-   * @param mv the {@link MethodVisitor} to receive the instructions
-   * 
-   * @return mv the {@link MethodVisitor} parameter
-   */
-  public static MethodVisitor loadBits(MethodVisitor mv)
-  {
-    mv.visitVarInsn(Opcodes.ILOAD, 3); // Load bits onto the stack
-    return mv;
-  }
-
-  /**
-   * Loads the 1st argument (this) onto the stack
-   * 
-   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
-   * methods is (this,order,bits,result)
-   * 
-   * @param mv the {@link MethodVisitor} to receive the instructions
-   * 
-   * @return mv the {@link MethodVisitor} parameter
-   */
-  public static MethodVisitor loadInput(MethodVisitor mv)
-  {
-    mv.visitVarInsn(Opcodes.ALOAD, 1); // Load `input` onto the stack
-    return mv;
-  }
-
-  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         Expression<D, R, F>
-         compile(String expression,
-                 Context<D, R, F> context,
-                 Class<D> domainClass,
-                 Class<R> rangeClass,
-                 Class<F> functionClass,
-                 boolean verbose)
-  {
-    String className = Parser.expressionToUniqueClassname(expression);
-    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose);
-  }
-
-  /**
-   * Generate an invocation of member function of {@link Field} by its name and
-   * the {@link Node} whose evaluated result is the independent variable, also
-   * known as the argument, to be passed to the function represented by this node
-   * 
-   * @param mv
-   * @param functionName
-   * @param arg
-   * @param lastCall
-   * @param depth
+   * @param methodVisitor The MethodVisitor to be used for adding the `this`
+   *                      reference
    * @return
    */
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         MethodVisitor
-         callRegisteredFunction(MethodVisitor mv,
-                                String functionName,
-                                Node<D, R, F> arg,
-                                boolean lastCall,
-                                int depth)
+  public static MethodVisitor loadThis(MethodVisitor methodVisitor)
   {
-    var     expression = arg.expression;
-    boolean verbose    = expression.verbose;
-
-    if (verbose)
-    {
-      System.err.format("callRegisteredFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
-                        functionName,
-                        arg,
-                        lastCall,
-                        depth);
-    }
-
-    arg.generate(mv);
-    loadBits(mv);
-
-    if (lastCall)
-    {
-      loadResult(mv);
-    }
-    else
-    {
-      if (arg.isReusable())
-      {
-        if (verbose)
-        {
-          System.err.println("Preparing stack to reuse its argument " + arg.toString(-1));
-        }
-
-        arg.prepareStackForReuse(mv);
-      }
-      else
-      {
-        expression.locateExistingOrInstantiateNewIntermediateResultVariable(mv, depth);
-      }
-    }
-
-    return expression.callRegisteredUnaryFunction(expression.checkClassCast(mv, false), functionName);
+    methodVisitor.visitVarInsn(ALOAD, 0); // Load `this` onto the stack
+    return methodVisitor;
   }
 
   /**
-   * Generate an invocation of member function of {@link Field} by its name and
-   * the {@link Node} whose evaluated result is the independent variable, also
-   * known as the argument, to be passed to the function represented by this node
+   * Prepares the stack for reusing the left node. There is no direct JVM
+   * instruction to duplicate the bottom value of the stack to the top, so a
+   * combination of instructions is necessary.
    * 
-   * @param methodVisitor
-   * @param functionName
-   * @param arg
-   * @param lastCall
-   * @param depth
-   * @return
+   * Stack: (L, R, I) -> (L, R, I, L)
+   * 
+   * DUP2_X1: (L, R, I) -> (R, I, L, R, I).
+   * 
+   * POP2: (R, I, L, R, I) -> (R,I,L)
+   * 
+   * DUP_X2: (R,I,L) -> (L, R, I, L).
+   * 
+   * @param methodVisitor The {@link MethodVisitor} to which instructions to
+   *                      transform the stack are dispatched
+   * 
+   * @return mv (fluent pattern)
    */
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         MethodVisitor
-         callFieldMethod(MethodVisitor methodVisitor,
-                         String functionName,
-                         Node<D, R, F> arg,
-                         boolean lastCall,
-                         int depth)
+  public static MethodVisitor prepareStackForReusingLeftSide(MethodVisitor methodVisitor)
   {
-    var     expression = arg.expression;
-    boolean verbose    = expression.verbose;
+    methodVisitor.visitInsn(DUP2_X1);
+    methodVisitor.visitInsn(POP2);
+    methodVisitor.visitInsn(DUP_X2);
+    return methodVisitor;
+  }
 
-    if (verbose)
-    {
-      err.format("callFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
-                 functionName,
-                 arg,
-                 lastCall,
-                 depth);
-      err.flush();
-    }
-
-    arg.generate(methodVisitor);
-    loadBits(methodVisitor);
-
-    if (lastCall)
-    {
-      loadResult(methodVisitor);
-    }
-    else
-    {
-      if (arg.isReusable())
-      {
-        if (verbose)
-        {
-          System.err.println("Preparing stack to reuse its argument " + arg.toString(-1));
-        }
-
-        arg.prepareStackForReuse(methodVisitor);
-      }
-      else
-      {
-        expression.locateExistingOrInstantiateNewIntermediateResultVariable(methodVisitor, depth);
-      }
-    }
-
-    expression.checkClassCast(methodVisitor, false);
-    return expression.callUnaryFunction(methodVisitor, functionName);
+  /**
+   * Prepares the stack for reusing the right node.
+   * 
+   * Stack: (L, R, I) -> (L, R, I, R)
+   *
+   * The method uses the following bytecode instructions:
+   *
+   * SWAP: Swaps the top two operand stack values. (L, R, I) -> (L, I, R)
+   *
+   * DUP_X1: Duplicates the top operand stack value and inserts it beneath the
+   * next-to-topmost value: (L, I, R) -> (L, R, I, R)
+   * 
+   * @param methodVisitor The {@link MethodVisitor} to which instructions to
+   *                      transform the stack are emitted
+   * 
+   * @return mv
+   */
+  public static MethodVisitor prepareStackForReusingRightSide(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitInsn(SWAP);
+    methodVisitor.visitInsn(DUP_X1);
+    return methodVisitor;
   }
 
 }
