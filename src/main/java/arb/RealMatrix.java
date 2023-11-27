@@ -8,6 +8,9 @@
 
 package arb;
 
+import static arb.arblib.*;
+import static java.lang.String.format;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.foreign.MemorySegment;
@@ -17,8 +20,6 @@ import java.util.Iterator;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import static arb.arblib.*;
-import static java.lang.String.format;
 
 import dnl.utils.text.table.TextTable;
 

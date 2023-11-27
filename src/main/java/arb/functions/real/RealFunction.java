@@ -1,5 +1,6 @@
 package arb.functions.real;
 
+import static arb.RealConstants.prec;
 import static arb.utensils.Utensils.*;
 import static java.lang.String.format;
 import static java.lang.System.out;

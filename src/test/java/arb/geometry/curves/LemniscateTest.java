@@ -1,6 +1,7 @@
 package arb.geometry.curves;
 
 import static arb.RealConstants.half;
+import static arb.RealConstants.prec;
 import static java.lang.System.out;
 
 import arb.*;

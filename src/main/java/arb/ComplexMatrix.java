@@ -8,8 +8,7 @@
 
 package arb;
 
-import static arb.arblib.acb_mat_clear;
-import static arb.arblib.acb_mat_init;
+import static arb.arblib.*;
 
 public class ComplexMatrix implements AutoCloseable {
   protected long swigCPtr;

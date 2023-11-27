@@ -8,14 +8,19 @@
 
 package arb;
 
+import static arb.IntegerConstants.PAGESIZE;
 import static arb.arblib.*;
-import java.io.*;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.lang.foreign.MemorySegment;
 import java.util.*;
 import java.util.function.IntFunction;
-import java.util.stream.*;
-import arb.space.topological.EuclideanVectorSpace;
-import static arb.IntegerConstants.PAGESIZE;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 import arb.domains.Domain;
+import arb.space.topological.EuclideanVectorSpace;
 
 /**
  * The {@link Complex} numbers constitute an algebraically closed {@link Field}, a

@@ -8,8 +8,7 @@
 
 package arb;
 
-import static arb.arblib.arf_interval_get_arb;
-import static arb.arblib.arf_interval_swap;
+import static arb.arblib.*;
 
 import arb.domains.Interval;
 

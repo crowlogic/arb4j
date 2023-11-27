@@ -4,6 +4,7 @@ import static arb.utensils.Utensils.println;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
+import arb.FloatInterval.RootStatus;
 import arb.functions.real.RealFunction;
 
 public class RealRootInterval extends

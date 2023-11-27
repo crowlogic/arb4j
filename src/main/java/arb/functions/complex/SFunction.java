@@ -1,5 +1,6 @@
 package arb.functions.complex;
 
+import static arb.RealConstants.prec;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 

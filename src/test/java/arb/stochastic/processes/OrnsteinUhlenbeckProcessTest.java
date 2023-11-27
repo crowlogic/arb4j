@@ -1,11 +1,11 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.*;
 import static arb.utensils.Utensils.println;
 
 import arb.RandomState;
 import arb.Real;
 import junit.framework.TestCase;
+import static arb.RealConstants.*;
 
 public class OrnsteinUhlenbeckProcessTest extends
                                           TestCase

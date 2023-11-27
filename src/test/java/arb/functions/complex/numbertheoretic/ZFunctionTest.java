@@ -1,7 +1,6 @@
 package arb.functions.complex.numbertheoretic;
 
-import static arb.arblib.acb_dirichlet_hardy_z;
-import static arb.arblib.acb_set_d;
+import static arb.arblib.*;
 import static java.lang.Math.pow;
 
 import arb.ArblibTest;
