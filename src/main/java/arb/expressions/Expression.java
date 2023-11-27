@@ -237,19 +237,19 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       System.out.flush();
     }
 
-    ClassVisitor cw = constructClassVisitor();
+    ClassVisitor classVisitor = constructClassVisitor();
 
     try
     {
-      generateFunctionInterface(this, className, cw);
+      generateFunctionInterface(this, className, classVisitor);
 
-      generateEvaluationMethod(cw);
+      generateEvaluationMethod(classVisitor);
 
       if (verbose)
       {
         System.err.println("Declaring constants: " + literalConstants);
       }
-      declareConstants(cw, domainClassDescriptor, literalConstants);
+      declareConstants(classVisitor, domainClassDescriptor, literalConstants);
 
       if (variables != null)
       {
@@ -257,12 +257,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         {
           System.err.println("Declaring variables: " + referencedVariables);
         }
-        declareVariables(this, cw, referencedVariables.keySet());
+        declareVariables(this, classVisitor, referencedVariables.keySet());
       }
 
-      declareVariables(this, cw, intermediateVariables);
+      declareVariables(this, classVisitor, intermediateVariables);
 
-      generateConstructor(this, cw);
+      generateConstructor(this, classVisitor);
 
       if (needsCloseMethod())
       {
@@ -270,20 +270,20 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
         {
           System.out.println("Generating close method");
         }
-        generateCloseMethod(cw);
+        generateCloseMethod(classVisitor);
       }
 
     }
     finally
     {
-      cw.visitEnd();
+      classVisitor.visitEnd();
       if (verbose)
       {
-        cw = ((FlushingTraceClassVisitor) cw).getDelegate();
+        classVisitor = ((FlushingTraceClassVisitor) classVisitor).getDelegate();
       }
     }
 
-    instructions = ((ClassWriter) cw.getDelegate()).toByteArray();
+    instructions = ((ClassWriter) classVisitor.getDelegate()).toByteArray();
 
     if (verbose)
     {
@@ -379,10 +379,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * Generates the {@link RealFunction#evaluate(Real, int, int, Real)} method
    * 
-   * @param cv
-   * @return cv
+   * @param classVisitor
+   * @return classVisitor
    */
-  private ClassVisitor generateEvaluationMethod(ClassVisitor cv) throws ExpressionCompilerException
+  private ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws ExpressionCompilerException
   {
 
     Label startLabel = new Label();
@@ -395,7 +395,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                         evaluateMethodSignature);
     }
 
-    MethodVisitor mv = cv.visitMethod(Opcodes.ACC_PUBLIC,
+    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                       "evaluate",
                                       evaluateMethodDesc,
                                       evaluateMethodSignature,
@@ -423,7 +423,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
     mv.visitEnd();
 
-    return cv;
+    return classVisitor;
   }
 
   public Node<D, R, F> eatRootNode() throws ExpressionCompilerException
@@ -894,87 +894,87 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   /**
    * emits an {@link Opcodes#CHECKCAST} instruction
    * 
-   * @param mv
+   * @param methodVisitor
    * @param range if true then emits an instruction to check if the top element on
    *              the stack is a this{@link #rangeClassInternalName} otherwise
    *              tests if its a this{@link #domainClassInternalName}
    * @return mv
    */
-  public MethodVisitor checkClassCast(MethodVisitor mv, boolean range)
+  public MethodVisitor checkClassCast(MethodVisitor methodVisitor, boolean range)
   {
-    mv.visitTypeInsn(Opcodes.CHECKCAST, range ? rangeClassInternalName : domainClassInternalName);
-    return mv;
+    methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, range ? rangeClassInternalName : domainClassInternalName);
+    return methodVisitor;
   }
 
   /**
    * Emits a {@link Opcodes#GETFIELD} instruction for the integer field with the
    * given name
    * 
-   * @param mv
+   * @param methodVisitor
    * @param indexFieldName
    * @return
    */
-  public MethodVisitor loadIndexField(MethodVisitor mv, String indexFieldName)
+  public MethodVisitor loadIndexField(MethodVisitor methodVisitor, String indexFieldName)
   {
-    mv.visitFieldInsn(GETFIELD, functionClassInternalName, indexFieldName, "I");
-    return mv;
+    methodVisitor.visitFieldInsn(GETFIELD, functionClassInternalName, indexFieldName, "I");
+    return methodVisitor;
   }
 
   /**
    * Emit a {@link Opcodes#GETFIELD} instruction
    * 
-   * @param mv
+   * @param methodVisitor
    * @param fieldName
    * @param range     if true then the field is of type
    *                  this{@link #domainClassDescriptor} otherwise of type
    *                  this{@link #rangeClassDescriptor}
    * @return
    */
-  public MethodVisitor loadField(MethodVisitor mv, String fieldName, boolean range)
+  public MethodVisitor loadField(MethodVisitor methodVisitor, String fieldName, boolean range)
   {
-    mv.visitFieldInsn(GETFIELD, className, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
-    return mv;
+    methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
+    return methodVisitor;
   }
 
   /**
    * Emit an instruction to invoke a {@link UnaryOperation} on a field. The unary
    * operation has the signature D functionName( int bits, D result)
    * 
-   * @param mv
+   * @param methodVisitor
    * @param functionName
    * @return mv
    */
-  public MethodVisitor callUnaryFunction(MethodVisitor mv, String functionName)
+  public MethodVisitor callUnaryFunction(MethodVisitor methodVisitor, String functionName)
   {
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        domainClassInternalName,
                        functionName,
                        format("(I%s)%s", domainClassDescriptor, domainClassDescriptor),
                        false);
-    return mv;
+    return methodVisitor;
   }
 
   /**
    * 
-   * @param mv
+   * @param methodVisitor
    * @param depth the depth this intermediate variable is needed for. "x" would be
    *              depth 0, "sin(x)" would be sin at depth 0 and x at depth 1 for
    *              example
    * @return name of the intermediate variable
    */
-  public String locateExistingOrInstantiateNewIntermediateResultVariable(MethodVisitor mv, int depth)
+  public String locateExistingOrInstantiateNewIntermediateResultVariable(MethodVisitor methodVisitor, int depth)
   {
 
     if (!resultInUse)
     {
-      checkClassCast(loadResult(mv), true);
+      checkClassCast(loadResult(methodVisitor), true);
       resultInUse = true;
       return "<RESULT>";
     }
     else
     {
       String intermediateVariableName = newIntermediateVariable(depth);
-      loadField(loadThis(mv), intermediateVariableName, true);
+      loadField(loadThis(methodVisitor), intermediateVariableName, true);
       return intermediateVariableName;
     }
   }
@@ -985,21 +985,21 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * registered via a call to {@link Context#registerFunction(String, Function) .
    * The unary operation has the signature D functionName( int bits, D result)
    * 
-   * @param mv
+   * @param methodVisitor
    * @param functionName
    * @return mv
    */
-  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor mv, String functionName)
+  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, String functionName)
   {
     F func = context.functions.get(functionName);
     assert func != null : format(" function named '%s' not found in context", functionName );
 
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        functionClassInternalName,
                        "evaluate",
                        evaluateMethodDesc,
                        false);
-    return mv;
+    return methodVisitor;
   }
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>

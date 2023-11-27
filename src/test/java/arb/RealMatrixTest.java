@@ -232,7 +232,6 @@ public class RealMatrixTest extends
       A.getRow(3).set(4, 29, 105, 265);
 
       System.out.println(A);
-
       
       A.computeLowerUpperFactorization(128, lowerFactor, upperFactor);
 
