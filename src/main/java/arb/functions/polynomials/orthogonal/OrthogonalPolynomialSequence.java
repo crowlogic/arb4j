@@ -1,7 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
-import arb.Field;
-import arb.OrthogonalBasis;
+import arb.*;
 import arb.domains.Domain;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
@@ -31,7 +30,7 @@ public interface OrthogonalPolynomialSequence<X extends Field<X>, R extends Func
 
   /**
    * 
-   * @return a Real whose midpoint and radius cover the domain over which these
+   * @return a {@link Real} whose midpoint and radius cover the domain over which these
    *         polynomials are orthogonal over with respect to the measure given by
    *         this{@link #getOrthogonalMeasure()}
    */

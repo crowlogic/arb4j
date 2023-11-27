@@ -992,10 +992,10 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   public MethodVisitor callRegisteredUnaryFunction(MethodVisitor mv, String functionName)
   {
     F func = context.functions.get(functionName);
-    assert func != null : functionName + " not found in context";
+    assert func != null : format(" function named '%s' not found in context", functionName );
 
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(func.getClass()),
+                       functionClassInternalName,
                        "evaluate",
                        evaluateMethodDesc,
                        false);

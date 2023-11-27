@@ -87,4 +87,29 @@ public class Parser
                      .replace('₉', '9');
   }
 
+  static String expressionToUniqueClassname(String expression)
+  {
+    return expression.replace(" ", "")
+                     .replace("+", "Plus")
+                     .replace("-", "Minus")
+                     .replace("*", "Times")
+                     .replace("/", "DividedBy")
+                     .replace("^", "ToThePowerOf")
+                     .replace("(", "")
+                     .replace(")", "")
+                     .replace("1", "One")
+                     .replace("2", "Two")
+                     .replace("3", "Three")
+                     .replace("4", "Four")
+                     .replace("5", "Five")
+                     .replace("6", "Six")
+                     .replace("7", "Seven")
+                     .replace("8", "Eight")
+                     .replace("9", "Nine")
+                     .replace("0", "Zero")
+                     .replace(".", "Point")
+                     .replace('[', '_')
+                     .replace(']', '_');
+  }
+
 }

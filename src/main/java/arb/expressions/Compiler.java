@@ -1,5 +1,6 @@
 package arb.expressions;
 
+import static java.lang.System.*;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.util.ArrayList;
@@ -139,23 +140,23 @@ public class Compiler
   /**
    * Declares the given variables as fields in the class being generated.
    * 
-   * @param cw        The ClassVisitor for the class being generated
+   * @param classVisitor        The ClassVisitor for the class being generated
    * @param variables A {@link Collection} of variable names to be declared as
    *                  fields
    * @return
    */
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          ClassVisitor
-         declareVariables(Expression<D, R, F> expression, ClassVisitor cw, Collection<String> variables)
+         declareVariables(Expression<D, R, F> expression, ClassVisitor classVisitor, Collection<String> variables)
   {
     if (!variables.isEmpty())
     {
       for (String variableName : variables)
       {
-        cw.visitField(ACC_PUBLIC, variableName, expression.domainClassDescriptor, null, null);
+        classVisitor.visitField(ACC_PUBLIC, variableName, expression.domainClassDescriptor, null, null);
       }
     }
-    return cw;
+    return classVisitor;
   }
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
@@ -173,7 +174,8 @@ public class Compiler
   {
     if (expression.verbose)
     {
-      System.out.println("Generating constructor for " + expression);
+      out.println("Generating constructor for " + expression);
+      out.flush();
     }
     MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
     mv.visitCode();
@@ -186,7 +188,8 @@ public class Compiler
     {
       if (expression.verbose)
       {
-        System.out.println("Preparing literal constants: " + expression.literalConstants);
+        out.println("Preparing literal constants: " + expression.literalConstants);
+        out.flush();
       }
 
       initializeLiteralConstants(expression, mv);
@@ -196,7 +199,8 @@ public class Compiler
     {
       if (expression.verbose)
       {
-        System.err.println("Preparing intermediate variables: " + expression.intermediateVariables);
+        err.println("Preparing intermediate variables: " + expression.intermediateVariables);
+        err.flush();
       }
       initializeIntermediateVariables(expression, mv);
     }
@@ -257,14 +261,12 @@ public class Compiler
                                          MethodVisitor mv,
                                          LiteralConstant<D, R, F> constant)
   {
-
     mv.visitVarInsn(ALOAD, 0);
     mv.visitTypeInsn(NEW, expression.domainClassInternalName);
     mv.visitInsn(DUP);
     mv.visitLdcInsn(constant.value);
     mv.visitIntInsn(SIPUSH, constant.bits);
     mv.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "(Ljava/lang/String;I)V", false);
-
     mv.visitFieldInsn(PUTFIELD, expression.className, constant.fieldName, expression.domainClassDescriptor);
     return mv;
   }
@@ -275,14 +277,12 @@ public class Compiler
                                              MethodVisitor mv,
                                              LiteralConstant<D, R, F> constant)
   {
-
     mv.visitVarInsn(ALOAD, 0);
     mv.visitTypeInsn(NEW, expression.domainClassInternalName);
     mv.visitInsn(DUP);
     mv.visitLdcInsn(constant.value);
     mv.visitIntInsn(SIPUSH, constant.bits);
     mv.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "(Ljava/lang/String;I)V", false);
-
     mv.visitFieldInsn(PUTFIELD, expression.className, constant.fieldName, expression.domainClassDescriptor);
     return mv;
   }
@@ -402,38 +402,13 @@ public class Compiler
          Expression<D, R, F>
          compile(String expression,
                  Context<D, R, F> context,
-                 Class<D> class1,
-                 Class<R> class2,
-                 Class<F> class3,
+                 Class<D> domainClass,
+                 Class<R> rangeClass,
+                 Class<F> functionClass,
                  boolean verbose)
   {
-    String className = Compiler.expressionToUniqueClassname(expression);
-    return compile(className, expression, context, class1, class2, class3, verbose);
-  }
-
-  static String expressionToUniqueClassname(String expression)
-  {
-    return expression.replace(" ", "")
-                     .replace("+", "Plus")
-                     .replace("-", "Minus")
-                     .replace("*", "Times")
-                     .replace("/", "DividedBy")
-                     .replace("^", "ToThePowerOf")
-                     .replace("(", "")
-                     .replace(")", "")
-                     .replace("1", "One")
-                     .replace("2", "Two")
-                     .replace("3", "Three")
-                     .replace("4", "Four")
-                     .replace("5", "Five")
-                     .replace("6", "Six")
-                     .replace("7", "Seven")
-                     .replace("8", "Eight")
-                     .replace("9", "Nine")
-                     .replace("0", "Zero")
-                     .replace(".", "Point")
-                     .replace('[', '_')
-                     .replace(']', '_');
+    String className = Parser.expressionToUniqueClassname(expression);
+    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose);
   }
 
   /**
@@ -500,7 +475,7 @@ public class Compiler
    * the {@link Node} whose evaluated result is the independent variable, also
    * known as the argument, to be passed to the function represented by this node
    * 
-   * @param mv
+   * @param methodVisitor
    * @param functionName
    * @param arg
    * @param lastCall
@@ -509,26 +484,27 @@ public class Compiler
    */
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
-         callFieldMethod(MethodVisitor mv, String functionName, Node<D, R, F> arg, boolean lastCall, int depth)
+         callFieldMethod(MethodVisitor methodVisitor, String functionName, Node<D, R, F> arg, boolean lastCall, int depth)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
 
     if (verbose)
     {
-      System.err.format("callFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
+      err.format("callFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
                         functionName,
                         arg,
                         lastCall,
                         depth);
+      err.flush();
     }
 
-    arg.generate(mv);
-    loadBits(mv);
+    arg.generate(methodVisitor);
+    loadBits(methodVisitor);
 
     if (lastCall)
     {
-      loadResult(mv);
+      loadResult(methodVisitor);
     }
     else
     {
@@ -539,15 +515,16 @@ public class Compiler
           System.err.println("Preparing stack to reuse its argument " + arg.toString(-1));
         }
 
-        arg.prepareStackForReuse(mv);
+        arg.prepareStackForReuse(methodVisitor);
       }
       else
       {
-        expression.locateExistingOrInstantiateNewIntermediateResultVariable(mv, depth);
+        expression.locateExistingOrInstantiateNewIntermediateResultVariable(methodVisitor, depth);
       }
     }
 
-    return expression.callUnaryFunction(expression.checkClassCast(mv, false), functionName);
+    expression.checkClassCast(methodVisitor, false);
+    return expression.callUnaryFunction(methodVisitor, functionName);
   }
 
 }
