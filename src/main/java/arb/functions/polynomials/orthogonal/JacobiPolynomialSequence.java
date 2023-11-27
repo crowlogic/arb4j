@@ -1,9 +1,10 @@
 package arb.functions.polynomials.orthogonal;
 
-import java.util.*;
+import java.util.Iterator;
 import java.util.stream.IntStream;
 
-import arb.*;
+import arb.OrthogonalBasis;
+import arb.Real;
 import arb.domains.Domain;
 import arb.expressions.*;
 import arb.functions.real.RealFunction;
@@ -65,36 +66,32 @@ public class JacobiPolynomialSequence implements
     this.β = b;
   }
 
-  public List<Real> computeCoefficients(int n)
+  public Real computeCoefficients(int N)
   {
-    if (n < 2)
+    if (N < 2)
     {
       throw new IllegalArgumentException("n should be >= 2");
     }
 
-    List<Real> coefficients = new ArrayList<>();
-    coefficients.add(RealConstants.one); // P_0^(alpha, beta)(z) coefficient
-    coefficients.add(RealConstants.zero); // P_1^(alpha, beta)(z) coefficient
+    Real            coefficients = Real.newVector(N + 2);
 
-    Variables<Real> vars = new Variables<>();
+    Variables<Real> vars         = new Variables<>();
     vars.put("a", α);
     vars.put("b", β);
     Real realn = new Real();
     vars.put("n", realn);
+    vars.put("P", coefficients);
+    // FIXME: implement integer variables along with the integer-constants in
+    // https://github.com/crowlogic/arb4j/issues/222
     RealContext  context       = new RealContext(vars);
 
-    String       expressionStr = "(2 * n + a + b) / (2 * n) * z * P(n-1, a, b, z) - (n + a + b - 1) / n * P(n-2, a, b, z)";
+    String       expressionStr = "(2 * n + a + b) / (2 * n) * z * P[n-1] - (n + a + b - 1) / n * P[n-2]";
     RealFunction expression    = Expression.express(expressionStr, context);
 
-    try ( Real z = new Real())
+    IntStream.range(2, N + 1).forEach(n ->
     {
-      IntStream.range(2, n + 1).forEach(i ->
-      {
-        realn.set(i);
-        Real coefficient = expression.evaluate(realn, bits, z);
-        coefficients.add(coefficient);
-      });
-    }
+      expression.evaluate(realn.set(n), bits, coefficients.get(n));
+    });
 
     return coefficients;
   }
