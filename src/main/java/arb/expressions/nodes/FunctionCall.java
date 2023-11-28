@@ -23,7 +23,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
 
   public interface CodeGenerator
   {
-    MethodVisitor generate(MethodVisitor mv, Node<?, ?, ?> node, int depth);
+    MethodVisitor generate(MethodVisitor mv, Node<?, ?, ?> operand, int depth);
   }
 
   private final String                           name;

@@ -951,7 +951,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * 
    * @param methodVisitor
    * @param fieldName
-   * @param range         if true then the field is of type
+   * @param range         if false then the field is of type
    *                      this{@link #domainClassDescriptor} otherwise of type
    *                      this{@link #rangeClassDescriptor}
    * @return
@@ -1022,7 +1022,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     F func = context.functions.get(functionName);
     assert func != null : format(" function named '%s' not found in context", functionName);
-    assert false : format("reference function class %s by name of field '%s'\n", func.getClass(), functionName);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   functionClassInternalName,
                                   "evaluate",

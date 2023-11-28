@@ -90,9 +90,10 @@ public class Compiler
   }
 
   /**
-   * Generate an invocation of member function of {@link Field} by its name and
-   * the {@link Node} whose evaluated result is the independent variable, also
-   * known as the argument, to be passed to the function represented by this node
+   * Generate an invocation of function registered via
+   * {@link Context#registerFunction(String, Function)} by its name and the
+   * {@link Node} whose evaluated result is the independent variable, also known
+   * as the argument, to be passed to the function represented by this node
    * 
    * @param methodVisitor
    * @param functionName
@@ -115,13 +116,16 @@ public class Compiler
     if (verbose)
     {
       err.format("callRegisteredFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
-                        functionName,
-                        arg,
-                        lastCall,
-                        depth);
+                 functionName,
+                 arg,
+                 lastCall,
+                 depth);
       err.flush();
-      
+
     }
+
+    expression.loadt
+    expression.loadField(methodVisitor, functionName, true);
 
     arg.generate(methodVisitor);
     loadBits(methodVisitor);
