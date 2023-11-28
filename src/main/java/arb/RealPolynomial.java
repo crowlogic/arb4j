@@ -9,7 +9,6 @@
 package arb;
 
 import static arb.arblib.*;
-
 import arb.functions.real.RealFunction;
 
 public class RealPolynomial implements AutoCloseable,RealFunction {

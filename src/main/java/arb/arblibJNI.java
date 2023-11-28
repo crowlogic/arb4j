@@ -9,6 +9,8 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void acb_calc_gl_node(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4, int jarg5);
+  public final static native void arb_ceil(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_mat_bound_frobenius_norm(long jarg1, Magnitude jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native void arb_mat_bound_inf_norm(long jarg1, Magnitude jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native void arb_mat_frobenius_norm(long jarg1, Real jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
@@ -211,7 +213,6 @@ public class arblibJNI {
   public final static native long arb_mat_entry_ptr(long jarg1, RealMatrix jarg1_, int jarg2, int jarg3);
   public final static native void flint_cleanup();
   public final static native void flint_cleanup_master();
-  public final static native void acb_calc_gl_node(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4, int jarg5);
   public final static native int arf_cmp(long jarg1, Float jarg1_, long jarg2, Float jarg2_);
   public final static native void acb_one(long jarg1, Complex jarg1_);
   public final static native int arb_is_zero(long jarg1, Real jarg1_);
@@ -317,7 +318,6 @@ public class arblibJNI {
   public final static native long flint_malloc(long jarg1);
   public final static native long flint_realloc(long jarg1, long jarg2);
   public final static native long flint_calloc(long jarg1, long jarg2);
-  public final static native void color_function(double[] jarg1, double[] jarg2, double[] jarg3, long jarg4, Complex jarg4_, int jarg5);
   public final static native void acb_set_d(long jarg1, Complex jarg1_, double jarg2);
   public final static native void acb_dirichlet_zeta_jet(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3, int jarg4, int jarg5);
   public final static native void acb_dirichlet_hardy_z(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, DirichletGroup jarg3_, long jarg4, DirichletCharacter jarg4_, int jarg5, int jarg6);
@@ -329,7 +329,6 @@ public class arblibJNI {
   public final static native int arf_sub(long jarg1, Float jarg1_, long jarg2, Float jarg2_, long jarg3, Float jarg3_, int jarg4, int jarg5);
   public final static native void acb_conj(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
   public final static native void arb_floor(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-  public final static native void arb_ceil(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_div(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_sin(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_cos(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
@@ -353,6 +352,7 @@ public class arblibJNI {
   public final static native void acb_add_ui(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, int jarg4);
   public final static native void acb_log(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
   public final static native void acb_tanh(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
+  public final static native void color_function(double[] jarg1, double[] jarg2, double[] jarg3, long jarg4, Complex jarg4_, int jarg5);
   public final static native void arb_set_d(long jarg1, Real jarg1_, double jarg2);
   public final static native void acb_dirichlet_hurwitz(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Complex jarg3_, int jarg4);
   public final static native void acb_dirichlet_hardy_theta(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, DirichletGroup jarg3_, long jarg4, DirichletCharacter jarg4_, int jarg5, int jarg6);

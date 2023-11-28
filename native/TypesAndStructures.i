@@ -43,7 +43,6 @@ typedef fmpz fmpz_t[1];
 
 typedef long int		mp_size_t;
 
-#include "color.h"
 #ifndef size_t
 #define size_t long unsigned int
 #endif

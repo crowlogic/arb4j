@@ -19,6 +19,9 @@
     }
 }
 
+void acb_calc_gl_node(arb_t x, arb_t w, slong i, slong k, slong prec);
+void arb_ceil(arb_t z, const arb_t x, slong prec);
+
 void arb_mat_bound_frobenius_norm(mag_t b, const arb_mat_t A);
 void arb_mat_bound_inf_norm(mag_t b, const arb_mat_t A);
 void arb_mat_frobenius_norm(arb_t res, const arb_mat_t A, slong prec);
@@ -394,9 +397,11 @@ arb_ptr arb_mat_entry_ptr(arb_mat_t mat, slong i, slong j);
 void flint_cleanup(void);
 void flint_cleanup_master(void);
 
-void acb_calc_gl_node(arb_t x, arb_t w, slong i, slong k, slong prec);
+
 
 extern "C" {
+
+void acb_calc_gl_node(arb_t x, arb_t w, slong i, slong k, slong prec);
 
 int arf_cmp(const arf_t x, const arf_t y);
  
@@ -632,8 +637,6 @@ void * flint_calloc(size_t num, size_t size);
 %apply double *OUTPUT { double *G };
 %apply double *OUTPUT { double *B };
 
-void color_function(double * R, double * G, double * B, const acb_t z, int mode);
-
  void acb_set_d(acb_t z, double c);
 
  void acb_dirichlet_zeta_jet(acb_t res, const acb_t s, int deflate, slong len, slong prec);
@@ -660,8 +663,6 @@ char * arf_get_str(const arf_t x, slong d);
  void acb_conj(acb_t z, const acb_t x);
  
 void arb_floor(arb_t y, const arb_t x, slong prec);
-
-void arb_ceil(arb_t y, const arb_t x, slong prec);
 
 void arb_div(arb_t z, const arb_t x, const arb_t y, slong prec);
 

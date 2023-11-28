@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void acb_calc_gl_node(Real x, Real w, int i, int k, int prec) {
+    arblibJNI.acb_calc_gl_node(Real.getCPtr(x), x, Real.getCPtr(w), w, i, k, prec);
+  }
+
+  public static void arb_ceil(Real z, Real x, int prec) {
+    arblibJNI.arb_ceil(Real.getCPtr(z), z, Real.getCPtr(x), x, prec);
+  }
+
   public static void arb_mat_bound_frobenius_norm(Magnitude b, RealMatrix A) {
     arblibJNI.arb_mat_bound_frobenius_norm(Magnitude.getCPtr(b), b, RealMatrix.getCPtr(A), A);
   }
@@ -821,10 +829,6 @@ public class arblib {
     arblibJNI.flint_cleanup_master();
   }
 
-  public static void acb_calc_gl_node(Real x, Real w, int i, int k, int prec) {
-    arblibJNI.acb_calc_gl_node(Real.getCPtr(x), x, Real.getCPtr(w), w, i, k, prec);
-  }
-
   public static int arf_cmp(Float x, Float y) {
     return arblibJNI.arf_cmp(Float.getCPtr(x), x, Float.getCPtr(y), y);
   }
@@ -1249,10 +1253,6 @@ public class arblib {
     return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 
-  public static void color_function(double[] R, double[] G, double[] B, Complex z, int mode) {
-    arblibJNI.color_function(R, G, B, Complex.getCPtr(z), z, mode);
-  }
-
   public static void acb_set_d(Complex z, double numCols) {
     arblibJNI.acb_set_d(Complex.getCPtr(z), z, numCols);
   }
@@ -1295,10 +1295,6 @@ public class arblib {
 
   public static void arb_floor(Real y, Real x, int prec) {
     arblibJNI.arb_floor(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
-  }
-
-  public static void arb_ceil(Real y, Real x, int prec) {
-    arblibJNI.arb_ceil(Real.getCPtr(y), y, Real.getCPtr(x), x, prec);
   }
 
   public static void arb_div(Real z, Real x, Real y, int prec) {
@@ -1391,6 +1387,10 @@ public class arblib {
 
   public static void acb_tanh(Complex y, Complex x, int prec) {
     arblibJNI.acb_tanh(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
+  }
+
+  public static void color_function(double[] R, double[] G, double[] B, Complex z, int mode) {
+    arblibJNI.color_function(R, G, B, Complex.getCPtr(z), z, mode);
   }
 
   public static void arb_set_d(Real x, double y) {
