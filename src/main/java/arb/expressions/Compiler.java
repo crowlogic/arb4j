@@ -123,8 +123,7 @@ public class Compiler
       err.flush();
 
     }
-
-    expression.loadt
+    // TODO: need to load this before emitting a GETFIELD instruction. how?
     expression.loadField(methodVisitor, functionName, true);
 
     arg.generate(methodVisitor);
