@@ -91,7 +91,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public Context<D, R, F>                    context;
 
-  private static final String                evaluateMethodDesc        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String                evaluateMethodDesc        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
   public final String                        evaluateMethodSignature;
 
@@ -390,7 +390,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     for (String variables : fields)
     {
-      closeField(this, loadThis(methodVisitor), variables);
+      closeField(this, loadThisOntoStack(methodVisitor), variables);
     }
   }
 
@@ -956,7 +956,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    *                      this{@link #rangeClassDescriptor}
    * @return
    */
-  public MethodVisitor loadField(MethodVisitor methodVisitor, String fieldName, boolean range)
+  public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, boolean range)
   {
     methodVisitor.visitFieldInsn(GETFIELD,
                                  className,
@@ -1003,7 +1003,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     else
     {
       String intermediateVariableName = newIntermediateVariable(depth);
-      loadField(loadThis(methodVisitor), intermediateVariableName, true);
+      loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, true);
       return intermediateVariableName;
     }
   }

@@ -107,7 +107,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     }
     else
     {
-      expression.loadField(loadThis(mv), reference.name, true);
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, true);
     }
 
     if (reference.index != null)
@@ -118,7 +118,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
       }
       else
       {
-        expression.loadIndexField(loadThis(mv), reference.index);
+        expression.loadIndexField(loadThisOntoStack(mv), reference.index);
       }
 
       mv.visitMethodInsn(INVOKEVIRTUAL,

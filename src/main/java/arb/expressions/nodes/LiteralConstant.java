@@ -1,6 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.loadThis;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.System.out;
 
 import java.util.HashSet;
@@ -115,7 +115,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
     }
     else
     {
-      expression.loadField(loadThis(mv), fieldName, false);
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, false);
     }
 
     if (isResult)

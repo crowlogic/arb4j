@@ -123,10 +123,11 @@ public class Compiler
       err.flush();
 
     }
-    loadThis(methodVisitor);
-    expression.loadField(methodVisitor, functionName, true);
+    loadThisOntoStack(methodVisitor);
+    expression.loadFieldOntoStack(methodVisitor, functionName, true);
 
     arg.generate(methodVisitor);
+    loadZero(methodVisitor);
     loadBits(methodVisitor);
 
     if (lastCall)
@@ -152,6 +153,11 @@ public class Compiler
     }
 
     return expression.callRegisteredUnaryFunction(expression.checkClassCast(methodVisitor, false), functionName);
+  }
+
+  public static void loadZero(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitInsn(Opcodes.ICONST_0);
   }
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
@@ -484,7 +490,7 @@ public class Compiler
    *                      reference
    * @return
    */
-  public static MethodVisitor loadThis(MethodVisitor methodVisitor)
+  public static MethodVisitor loadThisOntoStack(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(ALOAD, 0); // Load `this` onto the stack
     return methodVisitor;
