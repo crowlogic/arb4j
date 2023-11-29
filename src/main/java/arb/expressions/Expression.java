@@ -3,7 +3,7 @@ package arb.expressions;
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.*;
-import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -632,7 +632,14 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     if (isFunction)
     {
       Node<D, R, F> arg = eatFirst(depth + 1);
-      if (!eat(depth, ')'))
+      if (eat(depth, ')'))
+      {
+        return new FunctionCall<>(this,
+                                  functionOrVariableName.name,
+                                  arg,
+                                  depth);
+      }
+      else
       {
         throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n",
                                                  startPos,
@@ -641,10 +648,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                                  isFunction,
                                                  depth));
       }
-      return new FunctionCall<>(this,
-                                functionOrVariableName.name,
-                                arg,
-                                depth);
     }
     else if (LiteralConstant.constantSymbols.contains(functionOrVariableName.name))
     {
@@ -957,14 +960,24 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param range         if false then the field is of type
    *                      this{@link #domainClassDescriptor} otherwise of type
    *                      this{@link #rangeClassDescriptor}
-   * @return
+   * @return this{@link #loadFieldOntoStack(MethodVisitor, String, String)}
    */
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, boolean range)
   {
-    methodVisitor.visitFieldInsn(GETFIELD,
-                                 className,
-                                 fieldName,
-                                 range ? rangeClassDescriptor : domainClassDescriptor);
+    return loadFieldOntoStack(methodVisitor, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
+  }
+
+  /**
+   * Emit a {@link Opcodes#GETFIELD} instruction
+   * 
+   * @param methodVisitor
+   * @param fieldName
+   * @param range         the type descriptor
+   * @return
+   */
+  public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
+  {
+    methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
     return methodVisitor;
   }
 
@@ -1025,6 +1038,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
   {
     F func = context.functions.get(functionName);
     assert func != null : format(" function named '%s' not found in context", functionName);
+    // methodVisitor.visitInsn(AALOAD);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   functionClassInternalName,
                                   "evaluate",
@@ -1037,12 +1051,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
          F
          instantiate(String expression,
                      Context<D, R, F> context,
-                     Class<D> class1,
-                     Class<R> class2,
-                     Class<F> class3,
+                     Class<D> domaiClass,
+                     Class<R> rangeClass,
+                     Class<F> functionClass,
                      boolean verbose)
   {
-    return Compiler.compile(expression, context, class1, class2, class3, verbose).instantiate();
+    return Compiler.compile(expression, context, domaiClass, rangeClass, functionClass, verbose).instantiate();
   }
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
@@ -1066,7 +1080,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public static RealFunction express(String expression, RealContext context)
   {
-    return Expression.instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
   }
 
   /**
@@ -1087,30 +1101,21 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public static RealFunction express(String functionName, String expression, RealContext context, boolean verbose)
   {
-    RealFunction func = Expression.instantiate(expression,
-                                               context,
-                                               Real.class,
-                                               Real.class,
-                                               RealFunction.class,
-                                               verbose);
+    RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
 
     context.registerFunction(functionName, func);
-    // assert false : "TODO: https://github.com/crowlogic/arb4j/issues/264: inject
-    // the function as a member variable in the expression class during
-    // initialization and load the field as the 1st operand, order=2 for the 2nd
-    // operand, bits for the 3rd, and then the result variable to be returned as the
-    // 4th operand";
+
     return func;
   }
 
   public static RealFunction express(String expression, RealContext context, boolean verbose)
   {
-    return Expression.instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   public static RealFunction express(String expression, boolean verbose)
   {
-    return Expression.instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
+    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
   }
 
 }

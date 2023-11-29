@@ -123,11 +123,13 @@ public class Compiler
       err.flush();
 
     }
-    loadThisOntoStack(methodVisitor);
-    expression.loadFieldOntoStack(methodVisitor, functionName, true);
+
+    expression.loadFieldOntoStack(loadThisOntoStack(methodVisitor),
+                                  functionName,
+                                  expression.functionClassDescriptor);
 
     arg.generate(methodVisitor);
-    loadZero(methodVisitor);
+    loadOrder(methodVisitor);
     loadBits(methodVisitor);
 
     if (lastCall)
@@ -152,7 +154,7 @@ public class Compiler
       }
     }
 
-    return expression.callRegisteredUnaryFunction(expression.checkClassCast(methodVisitor, false), functionName);
+    return expression.callRegisteredUnaryFunction(methodVisitor, functionName);
   }
 
   public static void loadZero(MethodVisitor methodVisitor)
@@ -442,6 +444,22 @@ public class Compiler
                                  expression.className,
                                  constant.fieldName,
                                  expression.domainClassDescriptor);
+    return methodVisitor;
+  }
+
+  /**
+   * Loads the 2nd argument (order) onto the stack
+   * 
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
+   * 
+   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
+   * 
+   * @return mv the {@link MethodVisitor} parameter
+   */
+  public static MethodVisitor loadOrder(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitVarInsn(Opcodes.ILOAD, 2); // Load order onto the stack
     return methodVisitor;
   }
 

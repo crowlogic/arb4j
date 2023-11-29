@@ -1,6 +1,7 @@
 package arb.functions.real;
 
 import arb.Real;
+import arb.RealConstants;
 
 public class Cool implements
                   RealFunction
@@ -21,7 +22,7 @@ public class Cool implements
   {
     return d.evaluate(c0, 0, bits, result)
             .div(c1, bits, l0)
-            .add(in.mul(α.sub(this.β, bits, this.l1), bits, this.l2), bits, result);
+            .add(in.mul(α.sub(β, bits, l1), bits, l2), bits, result);
   }
 
   public void close()
@@ -33,4 +34,10 @@ public class Cool implements
     this.l2.close();
   }
 
+  public static void main( String args[] )
+  {
+    Cool cool = new Cool();
+    Real hmm = cool.evaluate(RealConstants.one, 128, new Real() );
+    System.out.println( "hmm " + hmm );
+  }
 }
