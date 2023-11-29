@@ -87,11 +87,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public Class<F>                            functionClass;
 
+  public String                              functionClassDescriptor;
+
   public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
 
   public Context<D, R, F>                    context;
 
-  public static final String                evaluateMethodDesc        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String                 evaluateMethodDesc        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
   public final String                        evaluateMethodSignature;
 
@@ -111,6 +113,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     this.rangeClassInternalName    = Type.getInternalName(rangeClass);
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
+    this.functionClassDescriptor   = Type.getDescriptor(functionClass);
     this.expression                = Parser.replaceSubscripts(expression);
     this.context                   = context;
     this.variables                 = context != null ? context.variables : null;
@@ -276,7 +279,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
       if (context != null && !context.functions.isEmpty())
       {
-        declareFunctions( this, classVisitor, context.functions );
+        declareFunctions(this, classVisitor, context.functions);
       }
 
       generateConstructor(this, classVisitor);
@@ -311,7 +314,6 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return this;
   }
 
- 
   private ClassVisitor constructClassVisitor()
   {
     ClassVisitor cw = new CheckClassAdapter(new ClassWriter(ClassWriter.COMPUTE_FRAMES));
@@ -619,11 +621,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     if (verbose)
     {
       err.format("eatFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
-                        depth,
-                        startPos,
-                        position,
-                        functionOrVariableName,
-                        isFunction);
+                 depth,
+                 startPos,
+                 position,
+                 functionOrVariableName,
+                 isFunction);
       err.flush();
     }
 
@@ -709,12 +711,12 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     if (verbose)
     {
       err.format("eatName(depth=%d): startPos=%d, position=%d, identifier='%s' index='%s' ch='%c'\n",
-                        depth,
-                        startPos,
-                        position,
-                        identifier,
-                        index,
-                        ch == -1 ? '?' : ch);
+                 depth,
+                 startPos,
+                 position,
+                 identifier,
+                 index,
+                 ch == -1 ? '?' : ch);
       err.flush();
     }
 

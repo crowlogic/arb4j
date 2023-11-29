@@ -294,9 +294,12 @@ public class Compiler
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          ClassVisitor
-         declareFunctions(Expression<D, R, F> expression2, ClassVisitor classVisitor, Functions<F> functions)
+         declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions<F> functions)
   {
-    assert false : "TODO: declare registered functions here";
+    for (String functionName : functions.keySet())
+    {
+      classVisitor.visitField(ACC_PUBLIC, functionName, expression.functionClassDescriptor, null, null);
+    }
     return classVisitor;
   }
 
