@@ -292,6 +292,14 @@ public class Compiler
     return classVisitor;
   }
 
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         ClassVisitor
+         declareFunctions(Expression<D, R, F> expression2, ClassVisitor classVisitor, Functions<F> functions)
+  {
+    assert false : "TODO: declare registered functions here";
+    return classVisitor;
+  }
+
   /**
    * Invokes {@link ByteArrayClassLoader} to define a {@link Class} extending
    * {@link Function}

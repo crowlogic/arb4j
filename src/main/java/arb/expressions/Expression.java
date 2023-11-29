@@ -276,7 +276,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
       if (context != null && !context.functions.isEmpty())
       {
-        assert false : "TODO: declare registered functions here";
+        declareFunctions( this, classVisitor, context.functions );
       }
 
       generateConstructor(this, classVisitor);
@@ -311,6 +311,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return this;
   }
 
+ 
   private ClassVisitor constructClassVisitor()
   {
     ClassVisitor cw = new CheckClassAdapter(new ClassWriter(ClassWriter.COMPUTE_FRAMES));
