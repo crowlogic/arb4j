@@ -25,6 +25,10 @@ public class CompiledExpressionClassLoader extends
   /**
    * FIXME: this needs to coordinate with {@link Context} so references to
    * registered functions can be handled
+   * 
+   * https://github.com/crowlogic/arb4j/issues/264
+   * 
+   * https://github.com/crowlogic/arb4j/issues/264
    */
   @Override
   protected Class<?> findClass(String name) throws ClassNotFoundException
