@@ -9,19 +9,23 @@ package arb.expressions;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class ByteArrayClassLoader extends
-                                  ClassLoader
+public class CompiledExpressionClassLoader extends
+                                           ClassLoader
 {
 
   private final byte[] classData;
   private final String className;
 
-  public ByteArrayClassLoader(String className, byte[] classData)
+  public CompiledExpressionClassLoader(String className, byte[] classData)
   {
     this.className = className;
     this.classData = classData;
   }
 
+  /**
+   * FIXME: this needs to coordinate with {@link Context} so references to
+   * registered functions can be handled
+   */
   @Override
   protected Class<?> findClass(String name) throws ClassNotFoundException
   {

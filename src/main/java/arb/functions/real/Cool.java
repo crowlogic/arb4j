@@ -34,10 +34,4 @@ public class Cool implements
     this.l2.close();
   }
 
-  public static void main( String args[] )
-  {
-    Cool cool = new Cool();
-    Real hmm = cool.evaluate(RealConstants.one, 128, new Real() );
-    System.out.println( "hmm " + hmm );
-  }
 }

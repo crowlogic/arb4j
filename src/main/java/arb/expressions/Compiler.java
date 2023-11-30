@@ -4,6 +4,7 @@ import static java.lang.System.*;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.objectweb.asm.*;
 
@@ -86,7 +87,7 @@ public class Compiler
     }
 
     expression.checkClassCast(methodVisitor, false);
-    return expression.callUnaryFunction(methodVisitor, functionName);
+    return expression.callBuiltinUnaryFunction(methodVisitor, functionName);
   }
 
   /**
@@ -124,9 +125,9 @@ public class Compiler
 
     }
 
-    expression.loadFieldOntoStack(loadThisOntoStack(methodVisitor),
-                                  functionName,
-                                  expression.functionClassDescriptor);
+    expression.loadFunctionFieldReferenceOntoStack(loadThisOntoStack(methodVisitor),
+                                                   functionName,
+                                                   expression.functionClassDescriptor);
 
     arg.generate(methodVisitor);
     loadOrder(methodVisitor);
@@ -154,7 +155,13 @@ public class Compiler
       }
     }
 
-    return expression.callRegisteredUnaryFunction(methodVisitor, functionName);
+    expression.callRegisteredUnaryFunction(methodVisitor, functionName);
+
+    if (verbose)
+    {
+      System.err.println("Returning from callRegisteredFunction");
+    }
+    return methodVisitor;
   }
 
   public static void loadZero(MethodVisitor methodVisitor)
@@ -296,17 +303,21 @@ public class Compiler
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          ClassVisitor
-         declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions<F> functions)
+         declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions<D, R, F> functions)
   {
-    for (String functionName : functions.keySet())
+    for (Map.Entry<String, F> entry : functions.entrySet())
     {
-      classVisitor.visitField(ACC_PUBLIC, functionName, expression.functionClassDescriptor, null, null);
+      classVisitor.visitField(ACC_PUBLIC,
+                              entry.getKey(),
+                              entry.getValue().getClass().descriptorString(),
+                              null,
+                              null);
     }
     return classVisitor;
   }
 
   /**
-   * Invokes {@link ByteArrayClassLoader} to define a {@link Class} extending
+   * Invokes {@link CompiledExpressionClassLoader} to define a {@link Class} extending
    * {@link Function}
    * 
    * @param <D>       the type of {@link Field} of the domain
@@ -323,7 +334,7 @@ public class Compiler
 
     try
     {
-      ByteArrayClassLoader loader = new ByteArrayClassLoader(className,
+      CompiledExpressionClassLoader loader = new CompiledExpressionClassLoader(className,
                                                              bytecodes);
       return (Class<F>) loader.findClass(className);
     }

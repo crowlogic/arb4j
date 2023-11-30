@@ -113,7 +113,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     this.rangeClassInternalName    = Type.getInternalName(rangeClass);
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
-    this.functionClassDescriptor   = Type.getDescriptor(functionClass);
+    this.functionClassDescriptor   = "L" + className + ";";
     this.expression                = Parser.replaceSubscripts(expression);
     this.context                   = context;
     this.variables                 = context != null ? context.variables : null;
@@ -960,11 +960,11 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param range         if false then the field is of type
    *                      this{@link #domainClassDescriptor} otherwise of type
    *                      this{@link #rangeClassDescriptor}
-   * @return this{@link #loadFieldOntoStack(MethodVisitor, String, String)}
+   * @return this{@link #loadFunctionFieldReferenceOntoStack(MethodVisitor, String, String)}
    */
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, boolean range)
   {
-    return loadFieldOntoStack(methodVisitor, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
+    return loadFunctionFieldReferenceOntoStack(methodVisitor, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
   }
 
   /**
@@ -975,7 +975,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param range         the type descriptor
    * @return
    */
-  public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
+  public MethodVisitor loadFunctionFieldReferenceOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
     return methodVisitor;
@@ -983,13 +983,13 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   /**
    * Emit an instruction to invoke a {@link UnaryOperation} on a field. The unary
-   * operation has the signature D functionName( int bits, D result)
+   * operation has the signature D functionName( int bits, D result). 
    * 
    * @param methodVisitor
    * @param functionName
-   * @return mv
+   * @return methodVisitor
    */
-  public MethodVisitor callUnaryFunction(MethodVisitor methodVisitor, String functionName)
+  public MethodVisitor callBuiltinUnaryFunction(MethodVisitor methodVisitor, String functionName)
   {
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   domainClassInternalName,
@@ -1044,7 +1044,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
                                   "evaluate",
                                   evaluateMethodDesc,
                                   false);
-    return methodVisitor;
+    return checkClassCast(methodVisitor, true);
   }
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>

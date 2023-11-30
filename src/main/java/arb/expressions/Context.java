@@ -29,10 +29,10 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
   public Context()
   {
     this.variables = new Variables<>();
-    this.functions = new Functions<>();
+    this.functions = new Functions<D, R, F>();
   }
 
-  public Context(Variables<R> variables, Functions<F> functions)
+  public Context(Variables<R> variables, Functions<D, R, F> functions)
   {
     this.variables = variables;
     this.functions = functions;
@@ -44,9 +44,9 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
     this.functions = new Functions<>();
   }
 
-  public Variables<R> variables;
+  public Variables<R>       variables;
 
-  public Functions<F> functions;
+  public Functions<D, R, F> functions;
 
   public R registerVariable(R variable)
   {

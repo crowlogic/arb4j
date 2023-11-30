@@ -2,8 +2,8 @@ package arb.expressions;
 
 import java.util.HashMap;
 
+import arb.Field;
 import arb.functions.Function;
-
 
 /**
  * <pre>
@@ -14,7 +14,7 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class Functions<F extends Function<?, ?>> extends
+public class Functions<D extends Field<D>, R extends Field<R>, F extends Function<D, R>> extends
                       HashMap<String, F>
 {
 
