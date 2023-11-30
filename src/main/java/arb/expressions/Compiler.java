@@ -307,18 +307,22 @@ public class Compiler
   {
     for (Map.Entry<String, F> entry : functions.entrySet())
     {
-      classVisitor.visitField(ACC_PUBLIC,
-                              entry.getKey(),
-                              entry.getValue().getClass().descriptorString(),
-                              null,
-                              null);
+      String name       = entry.getKey();
+      String descriptor = entry.getValue().getClass().descriptorString();
+
+      if (expression.verbose)
+      {
+        out.format("declareFunction: name=%s classDescriptor=%s\n", name, descriptor);
+        out.flush();
+      }
+      classVisitor.visitField(ACC_PUBLIC, name, descriptor, null, null);
     }
     return classVisitor;
   }
 
   /**
-   * Invokes {@link CompiledExpressionClassLoader} to define a {@link Class} extending
-   * {@link Function}
+   * Invokes {@link CompiledExpressionClassLoader} to define a {@link Class}
+   * extending {@link Function}
    * 
    * @param <D>       the type of {@link Field} of the domain
    * @param <R>       the type of {@link Field} of the range
@@ -329,13 +333,13 @@ public class Compiler
   @SuppressWarnings("unchecked")
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          Class<F>
-         defineFunctionClass(String className, byte[] bytecodes)
+         defineFunctionClass(String className, byte[] bytecodes, Context<D, R, F> context)
   {
-
+    assert false : "TODO: modify CompiledExpressionClassLoader to coordiante with " + context;
     try
     {
       CompiledExpressionClassLoader loader = new CompiledExpressionClassLoader(className,
-                                                             bytecodes);
+                                                                               bytecodes);
       return (Class<F>) loader.findClass(className);
     }
     catch (Exception e)

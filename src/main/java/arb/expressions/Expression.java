@@ -198,7 +198,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   protected Class<F> define()
   {
-    return compiledClass = defineFunctionClass(this.className, instructions);
+    return compiledClass = defineFunctionClass(this.className, instructions, context);
   }
 
   /**
