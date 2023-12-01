@@ -65,6 +65,18 @@ public class arblib {
     arblibJNI.arb_poly_evaluate(Real.getCPtr(res), res, RealPolynomial.getCPtr(f), f, Real.getCPtr(a), a, prec);
   }
 
+  public static void arb_poly_init(RealPolynomial poly) {
+    arblibJNI.arb_poly_init(RealPolynomial.getCPtr(poly), poly);
+  }
+
+  public static void arb_poly_init2(RealPolynomial poly, int len) {
+    arblibJNI.arb_poly_init2(RealPolynomial.getCPtr(poly), poly, len);
+  }
+
+  public static void arb_poly_swinnerton_dyer_ui(RealPolynomial poly, long n, int prec) {
+    arblibJNI.arb_poly_swinnerton_dyer_ui(RealPolynomial.getCPtr(poly), poly, n, prec);
+  }
+
   public static void arb_sec(Real res, Real x, int prec) {
     arblibJNI.arb_sec(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
   }

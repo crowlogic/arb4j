@@ -1,6 +1,7 @@
 package arb.functions.polynomials.orthogonal;
 
 import arb.RealPolynomial;
+import arb.arblib;
 
 /**
  * 
@@ -20,7 +21,9 @@ public class JacobiPolynomial extends
   {
     this.sequence = sequence;
     this.n        = n;
-    assert false : "TODO: evaluate 3-term recurrence and initialize polynomial coeffecients";
+    arblib.arb_poly_init2(this, n+1);
+    assert getLength() == n+1;
+    //assert false : "TODO: evaluate 3-term recurrence and initialize polynomial coeffecients";
   }
 
   final JacobiPolynomialSequence sequence;
