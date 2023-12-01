@@ -406,13 +406,13 @@ public class Compiler
          initializeField(Expression<D, R, F> expression, MethodVisitor methodVisitor, String intermediateVariable)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitTypeInsn(NEW, expression.domainClassInternalName);
+    methodVisitor.visitTypeInsn(NEW, expression.rangeClassInternalName);
     methodVisitor.visitInsn(DUP);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "()V", false);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.rangeClassInternalName, "<init>", "()V", false);
     methodVisitor.visitFieldInsn(PUTFIELD,
                                  expression.className,
                                  intermediateVariable,
-                                 expression.domainClassDescriptor);
+                                 expression.rangeClassDescriptor);
     return methodVisitor;
   }
 

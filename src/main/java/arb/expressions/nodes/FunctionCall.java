@@ -12,6 +12,15 @@ import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;
 
+/**
+ * <pre>
+ * Copyright ©2023 Stephen Crowley
+ * 
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre>
+ */
 public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
 {
