@@ -335,11 +335,11 @@ public class Compiler
          Class<F>
          defineFunctionClass(String className, byte[] bytecodes, Context<D, R, F> context)
   {
-    assert false : "TODO: modify CompiledExpressionClassLoader to coordiante with " + context;
+
     try
     {
-      CompiledExpressionClassLoader loader = new CompiledExpressionClassLoader(className,
-                                                                               bytecodes);
+      CompiledExpressionClassLoader loader = context != null ? context.classLoader : new CompiledExpressionClassLoader();
+      loader.defineClass(className, bytecodes);
       return (Class<F>) loader.findClass(className);
     }
     catch (Exception e)

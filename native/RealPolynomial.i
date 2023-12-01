@@ -84,8 +84,11 @@ import arb.functions.real.RealFunction;
   public Real getCoeffs()
   {
     Real coeffsNative = getCoeffsNative();
-    coeffsNative.dim = getLength();
-    coeffsNative.elements = new Real[coeffsNative.dim];
+    if ( coeffsNative != null )
+    {
+      coeffsNative.dim = getLength();
+      coeffsNative.elements = new Real[coeffsNative.dim];      
+    }
     return coeffsNative;
-  }  
+  }   
 %};

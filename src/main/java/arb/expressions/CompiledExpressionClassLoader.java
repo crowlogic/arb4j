@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import java.util.HashMap;
+
 /**
  * <pre>
  * Copyright ©2023 Stephen Crowley
@@ -13,30 +15,31 @@ public class CompiledExpressionClassLoader extends
                                            ClassLoader
 {
 
-  private final byte[] classData;
-  private final String className;
+  HashMap<String, Class<?>> compiledClasses = new HashMap<>();
 
-  public CompiledExpressionClassLoader(String className, byte[] classData)
+  public CompiledExpressionClassLoader()
   {
-    this.className = className;
-    this.classData = classData;
   }
 
-  /**
-   * FIXME: this needs to coordinate with {@link Context} so references to
-   * registered functions can be handled
-   * 
-   * https://github.com/crowlogic/arb4j/issues/264
-   * 
-   * https://github.com/crowlogic/arb4j/issues/264
-   */
+
   @Override
   protected Class<?> findClass(String name) throws ClassNotFoundException
   {
-    if (!name.equals(this.className))
+    Class<?> compiledClass = compiledClasses.get(name);
+    if (compiledClass != null)
+    {
+      return compiledClass;
+    }
+    else
     {
       throw new ClassNotFoundException(name);
     }
-    return defineClass(name, this.classData, 0, this.classData.length);
+  }
+
+  public Class<?> defineClass(String className, byte[] bytecodes)
+  {
+    Class<?> definedClass = defineClass(className, bytecodes, 0, bytecodes.length);
+    compiledClasses.put(className, definedClass);
+    return definedClass;
   }
 }

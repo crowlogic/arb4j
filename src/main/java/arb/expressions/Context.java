@@ -56,6 +56,8 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
 
   public boolean verbose = true;
 
+  public final CompiledExpressionClassLoader classLoader = new CompiledExpressionClassLoader();
+
   public F registerFunction(String functionName, F function)
   {
     if (verbose)
