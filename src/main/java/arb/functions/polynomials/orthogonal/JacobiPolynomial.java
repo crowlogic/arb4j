@@ -20,6 +20,7 @@ public class JacobiPolynomial extends
   {
     this.sequence = sequence;
     this.n        = n;
+    assert false : "TODO: evaluate 3-term recurrence and initialize polynomial coeffecients";
   }
 
   final JacobiPolynomialSequence sequence;

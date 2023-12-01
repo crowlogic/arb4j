@@ -3,6 +3,8 @@ package arb.functions.polynomials.orthogonal;
 import static arb.RealConstants.half;
 import static java.lang.System.out;
 
+import arb.Real;
+import arb.RealConstants;
 import junit.framework.TestCase;
 
 /**
@@ -18,7 +20,6 @@ public class JacobiPolynomialTest extends
                                   TestCase
 {
 
-
   public static void testP1()
   {
     JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
@@ -27,6 +28,10 @@ public class JacobiPolynomialTest extends
                                                      1))
     {
       out.println("p1=" + p1);
+      try ( Real result = p1.evaluate(RealConstants.one, 0, 128, new Real()))
+      {
+        out.println("p1(1)=" + result);
+      }
     }
   }
 }

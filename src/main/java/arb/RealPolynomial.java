@@ -80,6 +80,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction {
   {
     switch (order)
     {
+    case 0:
     case 1:
       arb_poly_evaluate(w, this, z, prec);
       return w;
@@ -89,7 +90,6 @@ public class RealPolynomial implements AutoCloseable,RealFunction {
     default:
       throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented");
     }
-
   }
   
   public double eval(double d)
@@ -117,7 +117,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction {
       coeffsNative.elements = new Real[coeffsNative.dim];      
     }
     return coeffsNative;
-  }  
+  }   
 
   public void setCoeffsNative(Real value) {
     arblibJNI.RealPolynomial_coeffsNative_set(swigCPtr, this, Real.getCPtr(value), value);

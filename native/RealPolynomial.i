@@ -53,6 +53,7 @@ import arb.functions.real.RealFunction;
   {
     switch (order)
     {
+    case 0:
     case 1:
       arb_poly_evaluate(w, this, z, prec);
       return w;
@@ -62,7 +63,6 @@ import arb.functions.real.RealFunction;
     default:
       throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented");
     }
-
   }
   
   public double eval(double d)
