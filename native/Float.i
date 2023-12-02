@@ -263,7 +263,7 @@ import arb.utensils.Utensils;
     return this;
   }
   
-  public Float assign(double i)
+  public Float set(double i)
   {
     arf_set_d(this, i);
     return this;
@@ -354,7 +354,7 @@ import arb.utensils.Utensils;
   public Float(double d)
   {
     this();
-    assign(d);
+    set(d);
   }
   
 %};

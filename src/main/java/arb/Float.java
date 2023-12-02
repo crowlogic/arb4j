@@ -286,7 +286,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     return this;
   }
   
-  public Float assign(double i)
+  public Float set(double i)
   {
     arf_set_d(this, i);
     return this;
@@ -377,7 +377,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   public Float(double d)
   {
     this();
-    assign(d);
+    set(d);
   }
   
 

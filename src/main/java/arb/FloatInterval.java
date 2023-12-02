@@ -101,8 +101,8 @@ public class FloatInterval implements AutoCloseable, Interval<Float> {
   {
     this();
     init();
-    getA().assign(left);
-    getB().assign(right);
+    getA().set(left);
+    getB().set(right);
   }
   
   public FloatInterval init()
@@ -157,8 +157,8 @@ public class FloatInterval implements AutoCloseable, Interval<Float> {
   {
     this();
     init();
-    getA().assign(left);
-    getB().assign(right);
+    getA().set(left);
+    getB().set(right);
   }
   
   public FloatInterval set(FloatInterval interval)

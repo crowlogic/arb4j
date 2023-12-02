@@ -88,8 +88,8 @@ import arb.domains.Interval;
   {
     this();
     init();
-    getA().assign(left);
-    getB().assign(right);
+    getA().set(left);
+    getB().set(right);
   }
   
   public FloatInterval init()
@@ -144,8 +144,8 @@ import arb.domains.Interval;
   {
     this();
     init();
-    getA().assign(left);
-    getB().assign(right);
+    getA().set(left);
+    getB().set(right);
   }
   
   public FloatInterval set(FloatInterval interval)
