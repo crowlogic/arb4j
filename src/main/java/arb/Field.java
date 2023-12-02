@@ -16,6 +16,14 @@ public interface Field<X extends Field<X>> extends
                       Iterable<X>
 {
 
+  /**
+   * Assignment operator
+   * 
+   * @param value
+   * @return this after having been assigned value
+   */
+  public X set(X value);
+  
   @Override
   default Iterator<X> iterator()
   {

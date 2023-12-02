@@ -279,7 +279,8 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     return v;    
   }
   
-  public Float assign( Float f )
+  @Override
+  public Float set( Float f )
   {
     arf_set( this, f );
     return this;

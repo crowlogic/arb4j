@@ -30,7 +30,7 @@ import arb.functions.real.RealFunction;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+public class Expression<D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
 {
   protected int                              position                  = -1;
 

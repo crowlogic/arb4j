@@ -256,7 +256,8 @@ import arb.utensils.Utensils;
     return v;    
   }
   
-  public Float assign( Float f )
+  @Override
+  public Float set( Float f )
   {
     arf_set( this, f );
     return this;
