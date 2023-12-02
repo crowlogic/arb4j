@@ -1040,7 +1040,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     assert func != null : format(" function named '%s' not found in context", functionName);
     // methodVisitor.visitInsn(AALOAD);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  functionClassInternalName,
+                                  Type.getInternalName(func.getClass()),
                                   "evaluate",
                                   evaluateMethodDesc,
                                   false);

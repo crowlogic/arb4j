@@ -125,9 +125,11 @@ public class Compiler
 
     }
 
+    F func = expression.context.functions.get(functionName);
+
     expression.loadFunctionFieldReferenceOntoStack(loadThisOntoStack(methodVisitor),
                                                    functionName,
-                                                   expression.functionClassDescriptor);
+                                                   func.getClass().descriptorString());
 
     arg.generate(methodVisitor);
     loadOrder(methodVisitor);

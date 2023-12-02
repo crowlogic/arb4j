@@ -38,6 +38,7 @@ public class CompiledExpressionClassLoader extends
 
   public Class<?> defineClass(String className, byte[] bytecodes)
   {
+    System.out.println( "Defined " + className );
     Class<?> definedClass = defineClass(className, bytecodes, 0, bytecodes.length);
     compiledClasses.put(className, definedClass);
     return definedClass;
