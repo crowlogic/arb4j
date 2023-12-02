@@ -471,21 +471,23 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   public void injectRegisteredFunctionReferences() throws NoSuchFieldException, IllegalAccessException
   {
-    context.functions.entrySet().forEach(entry ->
+    if (context != null)
     {
-      try
+      context.functions.entrySet().forEach(entry ->
       {
-        String functionName = entry.getKey();
-        java.lang.reflect.Field field = compiledClass.getField(functionName);
-        field.set(instance, entry.getValue() );
-      }
-      catch (Exception e)
-      {
-        throw new RuntimeException(e.getMessage(),
-                                   e);
-      }
-    });
-
+        try
+        {
+          String                  functionName = entry.getKey();
+          java.lang.reflect.Field field        = compiledClass.getField(functionName);
+          field.set(instance, entry.getValue());
+        }
+        catch (Exception e)
+        {
+          throw new RuntimeException(e.getMessage(),
+                                     e);
+        }
+      });
+    }
   }
 
   public void injectVariableReferences() throws NoSuchFieldException, IllegalAccessException
@@ -496,7 +498,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         try
         {
-          R value = variables.get(entry.getKey());
+          R                       value = variables.get(entry.getKey());
           java.lang.reflect.Field field = compiledClass.getField(entry.getKey());
           field.set(instance, value);
         }
