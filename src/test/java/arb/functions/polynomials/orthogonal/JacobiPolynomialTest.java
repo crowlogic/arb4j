@@ -20,18 +20,29 @@ public class JacobiPolynomialTest extends
                                   TestCase
 {
 
-  public static void testP1()
+  public static void testD()
   {
-    JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                                half);
-    try ( JacobiPolynomial p1 = new JacobiPolynomial(seq,
-                                                     1))
+    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
+                                                                      half))
     {
-      out.println("p1=" + p1);
-      try ( Real result = p1.evaluate(RealConstants.one, 0, 128, new Real()))
+      try ( Real result = seq.d.evaluate(RealConstants.one, 0, 128, new Real()))
       {
         out.println("p1(1)=" + result);
       }
     }
+
+  }
+  
+  public static void testP1()
+  {
+    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
+                                                                      half))
+    {
+      try ( Real result = seq.p1.evaluate(RealConstants.one, 0, 128, new Real()))
+      {
+        out.println("p1(1)=" + result);
+      }
+    }
+
   }
 }

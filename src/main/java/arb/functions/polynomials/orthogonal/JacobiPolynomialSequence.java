@@ -1,5 +1,7 @@
 package arb.functions.polynomials.orthogonal;
 
+import static arb.expressions.Expression.express;
+
 import java.util.Iterator;
 import java.util.stream.IntStream;
 
@@ -57,9 +59,9 @@ public class JacobiPolynomialSequence implements
 
   final RealContext     context = new RealContext(vars);
 
-  final RealFunction    d       = Expression.express("d", "2*n+α+β", context, true );
+  final public RealFunction    d       = express("d", "2*n+α+β", context, true );
 
-  final RealFunction    p1      = Expression.express("d(1)/2 + x*(α - β)", context, true);
+  final public RealFunction    p1      = express("d(1)/2 + x*(α - β)", context, true);
 
   public JacobiPolynomialSequence(Real a, Real b)
   {
