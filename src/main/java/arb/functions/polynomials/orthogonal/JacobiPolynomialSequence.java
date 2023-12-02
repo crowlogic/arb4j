@@ -50,18 +50,20 @@ public class JacobiPolynomialSequence implements
                                       OrthogonalBasis<Real, JacobiPolynomial>,
                                       AutoCloseable
 {
-  public static int     bits    = 128;
-  public Real           α       = new Real();
-  public Real           β       = new Real();
+  public static int           bits    = 128;
+  public Real                 α       = new Real();
+  public Real                 β       = new Real();
 
-  final Variables<Real> vars    = new Variables<Real>(α.setName("α"),
-                                                      β.setName("β"));
+  final Variables<Real>       vars    = new Variables<Real>(α.setName("α"),
+                                                            β.setName("β"));
 
-  final RealContext     context = new RealContext(vars);
+  final RealContext           context = new RealContext(vars);
 
-  final public RealFunction    d       = express("d", "2*n+α+β", context, true );
+  final public static boolean verbose = false;
 
-  final public RealFunction    p1      = express("d(1)/2 + x*(α - β)", context, true);
+  final public RealFunction   d       = express("d", "2*n+α+β", context, verbose);
+
+  final public RealFunction   p1      = express("d(1)/2 + x*(α - β)", context, verbose);
 
   public JacobiPolynomialSequence(Real a, Real b)
   {

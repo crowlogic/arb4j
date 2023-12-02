@@ -146,8 +146,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   /**
    * 1. Calls this{@link #define()} if this{@link #compiledClass} is NULL<br>
-   * 2. Instantiates the class and assigns it to this{@link #instance} 3. Calls
-   * this{@link #injectVariableReferences()}
+   * 2. Instantiates the class and assigns it to this{@link #instance} <br>
+   * 3. Calls this{@link #injectVariableReferences()} <br>
    * 
    * @return this{@link #instance} after it has been compiled (if necessary),
    *         instantiated and injected with references to {@link Variable}s in
@@ -159,6 +159,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     {
       instance = (compiledClass != null ? compiledClass : define()).getDeclaredConstructor().newInstance();
       injectVariableReferences();
+      injectRegisteredFunctionReferences();
     }
     catch (Exception e)
     {
@@ -468,6 +469,25 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
     return "l" + intermediateVariableCount++;
   }
 
+  public void injectRegisteredFunctionReferences() throws NoSuchFieldException, IllegalAccessException
+  {
+    context.functions.entrySet().forEach(entry ->
+    {
+      try
+      {
+        String functionName = entry.getKey();
+        java.lang.reflect.Field field = compiledClass.getField(functionName);
+        field.set(instance, entry.getValue() );
+      }
+      catch (Exception e)
+      {
+        throw new RuntimeException(e.getMessage(),
+                                   e);
+      }
+    });
+
+  }
+
   public void injectVariableReferences() throws NoSuchFieldException, IllegalAccessException
   {
     if (referencedVariables != null)
@@ -476,7 +496,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
       {
         try
         {
-          compiledClass.getField(entry.getKey()).set(instance, variables.get(entry.getKey()));
+          R value = variables.get(entry.getKey());
+          java.lang.reflect.Field field = compiledClass.getField(entry.getKey());
+          field.set(instance, value);
         }
         catch (Exception e)
         {
@@ -964,7 +986,9 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    */
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, boolean range)
   {
-    return loadFunctionFieldReferenceOntoStack(methodVisitor, fieldName, range ? rangeClassDescriptor : domainClassDescriptor);
+    return loadFunctionFieldReferenceOntoStack(methodVisitor,
+                                               fieldName,
+                                               range ? rangeClassDescriptor : domainClassDescriptor);
   }
 
   /**
@@ -975,7 +999,8 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
    * @param range         the type descriptor
    * @return
    */
-  public MethodVisitor loadFunctionFieldReferenceOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
+  public MethodVisitor
+         loadFunctionFieldReferenceOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
     return methodVisitor;
@@ -983,7 +1008,7 @@ public class Expression<D extends arb.Field<D>, R extends arb.Field<R>, F extend
 
   /**
    * Emit an instruction to invoke a {@link UnaryOperation} on a field. The unary
-   * operation has the signature D functionName( int bits, D result). 
+   * operation has the signature D functionName( int bits, D result).
    * 
    * @param methodVisitor
    * @param functionName

@@ -1,6 +1,7 @@
 package arb.expressions;
 
 import static arb.RealConstants.*;
+import static arb.expressions.Expression.express;
 
 import arb.*;
 import arb.functions.real.RealFunction;
@@ -65,7 +66,7 @@ public class ExpressionTest extends
 
   public void testVariableIndexedByAConstant()
   {
-    try ( RealFunction expression = Expression.express("v[3]", context, true))
+    try ( RealFunction expression = express("v[3]", context))
     {
       Real value = expression.evaluate(one, 1, 256, new Real());
       assertEquals(v3, value);
@@ -75,7 +76,7 @@ public class ExpressionTest extends
   public void testVariableIndexedByAVariable()
   {
     boolean caughtTheMissingIndexReference = false;
-    try ( RealFunction expression = Expression.express("v[k]", context))
+    try ( RealFunction expression = express("v[k]", context))
     {
       Real value = expression.evaluate(one, 1, 256, new Real());
       caughtTheMissingIndexReference = true;
@@ -92,7 +93,7 @@ public class ExpressionTest extends
   public void testAddTwoConstants()
   {
 
-    try ( RealFunction expression = Expression.express("69 + 0.42", context))
+    try ( RealFunction expression = express("69 + 0.42", context))
     {
       Real func = expression.evaluate(one, 1, 256, new Real());
       assertEquals(69.42, func.doubleValue(RoundingMode.Up));

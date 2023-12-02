@@ -54,7 +54,7 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
     return variable;
   }
 
-  public boolean verbose = true;
+  public boolean verbose = false;
 
   public final CompiledExpressionClassLoader classLoader = new CompiledExpressionClassLoader();
 

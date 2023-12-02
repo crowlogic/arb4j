@@ -46,10 +46,10 @@ import arb.functions.Function;
 public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
                      Node<D, R, F>
 {
-  private final Reference     reference;
-  private final Variables<R>  namespace;
-  private Expression<D, R, F> expression;
-  boolean                     isIndependent = false;
+  public final Reference     reference;
+  public final Variables<R>  namespace;
+  public Expression<D, R, F> expression;
+  public boolean             isIndependent = false;
 
   public Variable(Expression<D, R, F> expression, Reference variableReference, int depth)
   {

@@ -27,12 +27,14 @@ public class JacobiPolynomialTest extends
     {
       try ( Real result = seq.d.evaluate(RealConstants.one, 0, 128, new Real()))
       {
-        out.println("p1(1)=" + result);
+        // out.println("d(1)=" + result);
+
+        assertEquals(3.0, result.doubleValue());
       }
     }
 
   }
-  
+
   public static void testP1()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
@@ -40,7 +42,9 @@ public class JacobiPolynomialTest extends
     {
       try ( Real result = seq.p1.evaluate(RealConstants.one, 0, 128, new Real()))
       {
-        out.println("p1(1)=" + result);
+        // out.println("p1(1)=" + result);
+
+        assertEquals(1.5, result.doubleValue());
       }
     }
 
