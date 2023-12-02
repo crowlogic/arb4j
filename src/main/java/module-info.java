@@ -1,5 +1,5 @@
 /**
- * A high-performance Java API for arblib
+ * A high-performance Java API for <a href="http://arblib.org">arblib</a>
  * 
  * @see <a href="https://github.com/crowlogic/arb4j/">the arb4j homepage on
  *      github</a>

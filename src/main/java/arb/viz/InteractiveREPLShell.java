@@ -3,12 +3,15 @@ package arb.viz;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import jdk.jshell.JShell;
@@ -51,7 +54,7 @@ public class InteractiveREPLShell extends
     Scene scene = new Scene(scrollPane,
                             800,
                             600);
-    scene.getStylesheets().add("dark-theme.css");
+    // scene.getStylesheets().add("dark-theme.css");
 
     primaryStage.setTitle("arb4j Interactive REPL Console with JShell");
     primaryStage.setScene(scene);
@@ -69,7 +72,7 @@ public class InteractiveREPLShell extends
       StringWriter sw = new StringWriter();
       PrintWriter  pw = new PrintWriter(sw);
       e.printStackTrace(pw);
-      String stackTrace = sw.toString(); 
+      String stackTrace = sw.toString();
 
       displayResult("Error: " + e.getMessage() + "\nStack Trace:\n" + stackTrace);
     }
@@ -89,23 +92,43 @@ public class InteractiveREPLShell extends
       }
       else if (e.status() == Status.REJECTED)
       {
-        displayResult("Error: " + e.snippet().source() + " is not valid.");
+        displayResult("Error: Snippet Rejected - " + e.snippet().source());
+
+        String diagMessages = jshell.diagnostics(e.snippet())
+                                    .map(diag -> diag.toString())
+                                    .collect(Collectors.joining("\n"));
+        displayResult("Error: " + diagMessages);
+
       }
       else if (e.exception() != null)
       {
-        displayResult("Exception: " + e.exception().getMessage());
-        e.exception().printStackTrace();
+        // More detailed error for exceptions
+        StringWriter sw = new StringWriter();
+        PrintWriter  pw = new PrintWriter(sw);
+        e.exception().printStackTrace(pw);
+        displayResult("Exception: " + e.exception().toString() + "\nStack Trace:\n" + sw.toString(), true);
       }
       else
       {
-        displayResult("Unknown error occurred.");
+        displayResult("Unknown error occurred", true);
       }
     }
   }
 
   void displayResult(String result)
   {
+    displayResult(result, false);
+  }
+
+  void displayResult(String result, boolean error)
+  {
     Text output = new Text("output: " + result);
+
+    if (error)
+    {
+      output.setFill(Color.RED);
+    }
+    output.setFont(new Font(16));
     mainContainer.getChildren().add(output);
   }
 
@@ -113,6 +136,7 @@ public class InteractiveREPLShell extends
   {
     TextField inputField = new TextField();
     inputField.setPromptText("Enter Java code...");
+    inputField.setFont(new Font(16));
     inputField.setOnAction(event ->
     {
       String input = inputField.getText();
