@@ -383,9 +383,15 @@ public class Compiler
         err.println("Preparing intermediate variables: " + expression.intermediateVariables);
         err.flush();
       }
+
       initializeIntermediateVariables(expression, mv);
     }
 
+    if (expression.context != null && !expression.context.functions.isEmpty())
+    {
+      initializeRegisteredFunctions(expression, mv);
+
+    }
     mv.visitInsn(RETURN);
     mv.visitMaxs(0, 0);
     mv.visitEnd();
@@ -399,6 +405,33 @@ public class Compiler
     classVisitor.visit(V20 | V_PREVIEW, ACC_PUBLIC, className, null, objectDesc, new String[]
     { expression.functionClassInternalName });
     return classVisitor;
+  }
+
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         initializeRegisteredFunction(Expression<D, R, F> expression,
+                                      MethodVisitor methodVisitor,
+                                      String functionName,
+                                      F function)
+  {
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitInsn(ACONST_NULL);
+    methodVisitor.visitFieldInsn(PUTFIELD,
+                                 expression.className,
+                                 functionName,
+                                 function.getClass().descriptorString());
+    return methodVisitor;
+  }
+
+  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+         MethodVisitor
+         initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
+  {
+    for (Map.Entry<String, F> entry : expression.context.functions.entrySet())
+    {
+      initializeRegisteredFunction(expression, methodVisitor, entry.getKey(), entry.getValue());
+    }
+    return methodVisitor;
   }
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
