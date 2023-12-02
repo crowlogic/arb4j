@@ -1,7 +1,5 @@
 package arb.operators.integraltransforms;
 
-import static arb.RealConstants.prec;
-
 import arb.*;
 import arb.functions.RealToComplexFunction;
 

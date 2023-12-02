@@ -1,13 +1,12 @@
 package arb.expressions.nodes;
 
-import arb.expressions.Compiler;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Field;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
 import arb.functions.Function;

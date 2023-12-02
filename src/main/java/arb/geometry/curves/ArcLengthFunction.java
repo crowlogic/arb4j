@@ -1,7 +1,5 @@
 package arb.geometry.curves;
 
-import static arb.RealConstants.prec;
-
 import arb.*;
 import arb.functions.RealToComplexFunction;
 import arb.functions.real.RealFunction;

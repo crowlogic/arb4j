@@ -3,7 +3,7 @@ package arb.expressions;
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.*;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.GETFIELD;
 
 import java.io.*;
 import java.lang.reflect.Method;
