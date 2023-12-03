@@ -25,6 +25,7 @@ import arb.functions.real.RealFunction;
    */
   public RealPolynomial shiftLeft(int n, RealPolynomial result)
   {
+    assert result != this : "aliasing not allowed";
     arblib.arb_poly_shift_left(result, this, n);
     return result;
   }
@@ -38,9 +39,10 @@ import arb.functions.real.RealFunction;
    */
   public RealPolynomial shiftRight(int n, RealPolynomial result)
   {
+    assert result != this : "aliasing not allowed";    
     arblib.arb_poly_shift_right(result, this, n);
     return result;
-  }
+  }za
   
   /**
    * Sets {C, max(lenThis, lenThat)} to the sum of {this, thisLen} and {that, thatLen} by calling
