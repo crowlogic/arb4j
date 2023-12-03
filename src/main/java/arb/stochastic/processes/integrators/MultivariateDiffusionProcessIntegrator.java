@@ -2,7 +2,8 @@ package arb.stochastic.processes.integrators;
 
 import static arb.RealConstants.zero;
 import static arb.utensils.Utensils.println;
-import static java.lang.System.*;
+import static java.lang.System.err;
+import static java.lang.System.out;
 
 import arb.*;
 import arb.stochastic.GaussianDistribution;

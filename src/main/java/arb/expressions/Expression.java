@@ -2,7 +2,8 @@ package arb.expressions;
 
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
-import static java.lang.System.*;
+import static java.lang.System.err;
+import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 
 import java.io.*;

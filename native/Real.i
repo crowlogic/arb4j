@@ -4,13 +4,15 @@
 
 %typemap(javaimports) arb_struct %{
 import static arb.IntegerConstants.*;
+import static arb.RealConstants.zero;
 import static arb.arblib.*;
-import static arb.RealConstants.*;
+
 import java.io.Serializable;
 import java.lang.foreign.MemorySegment;
 import java.util.*;
 import java.util.function.IntFunction;
 import java.util.stream.*;
+
 import arb.domains.Domain;
 import arb.stochastic.ProbabilityDistributionFunction;
 

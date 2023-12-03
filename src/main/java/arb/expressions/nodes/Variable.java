@@ -1,6 +1,7 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.loadInput;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;

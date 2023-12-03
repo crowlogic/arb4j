@@ -1,6 +1,7 @@
 package arb.domains;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.one;
+import static arb.RealConstants.zero;
 
 import arb.Float;
 import arb.FloatConstants;

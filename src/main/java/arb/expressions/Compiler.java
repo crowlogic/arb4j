@@ -1,6 +1,7 @@
 package arb.expressions;
 
-import static java.lang.System.*;
+import static java.lang.System.err;
+import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Collection;

@@ -1,7 +1,8 @@
 
 package arb.functions.complex.hyperbolic;
 
-import static arb.arblib.*;
+import static arb.arblib.acb_cosh;
+import static arb.arblib.acb_sinh;
 
 import arb.Complex;
 import arb.functions.complex.EvenFunction;
