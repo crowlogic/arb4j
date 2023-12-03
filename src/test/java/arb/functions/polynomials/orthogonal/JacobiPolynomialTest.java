@@ -30,14 +30,14 @@ public class JacobiPolynomialTest extends
     {
       try ( Real result = seq.c.evaluate(one, 1, bits, new Real()))
       {
-        out.println("c(1)=" + result);
+        // out.println("c(1)=" + result);
 
         assertEquals(0.666666666666666666666666, result.doubleValue());
       }
     }
 
   }
-  
+
   public static void testD()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,

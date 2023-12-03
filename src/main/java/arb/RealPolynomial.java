@@ -42,6 +42,11 @@ public class RealPolynomial implements
     }
   }
 
+  static
+  {
+    System.loadLibrary("arblib");
+  }
+
   @Override
   public String toString()
   {
@@ -169,17 +174,54 @@ public class RealPolynomial implements
     }
   }
 
-  public void setCoeffs(Real value)
+  /**
+   * Calls this{@link #init(int)}
+   * 
+   * @param order
+   */
+  public RealPolynomial(int order)
   {
-    setCoeffsNative(value);
-    setLength(value.size());
+    this();
+    init(order);
+    setLength(order);
   }
+
+  /**
+   * Calls {@link arblib#arb_poly_init(RealPolynomial, int)} to initializes the
+   * polynomial for use, setting it to the zero polynomial.
+   * 
+   * @param order
+   * @return this
+   */
+  public RealPolynomial init()
+  {
+    arblib.arb_poly_init(this);
+    return this;
+  }
+
+  /**
+   * Calls {@link arblib#arb_poly_init2(RealPolynomial, int)} which calls
+   * {@link arblib#arb_poly_init(RealPolynomial)} then
+   * {@link arblib#arb_poly_fit_length(RealPolynomial, int)} to make sure that the
+   * coefficient array of the polynomial contains at least order initialized
+   * coefficients
+   * 
+   * @param order
+   * @return this
+   */
+  public RealPolynomial init(int order)
+  {
+    arblib.arb_poly_init2(this, order);
+    return this;
+  }
+
+  public Real coeffsNative;
 
   public Real getCoeffs()
   {
-    Real coeffsNative = getCoeffsNative();
-    if (coeffsNative != null)
+    if (coeffsNative == null)
     {
+      coeffsNative          = getCoeffsNative();
       coeffsNative.dim      = getLength();
       coeffsNative.elements = new Real[coeffsNative.dim];
     }
@@ -212,6 +254,11 @@ public class RealPolynomial implements
   {
     this(arblibJNI.new_RealPolynomial(),
          true);
+  }
+
+  public Real get(int i)
+  {
+    return i < getLength() ? getCoeffs().get(i) : null;
   }
 
 }

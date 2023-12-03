@@ -9,11 +9,20 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void arb_poly_get_coeff_ptr(long jarg1, RealPolynomial jarg1_, int jarg2);
+  public final static native void arb_poly_get_coeff_arb(long jarg1, Real jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3);
+  public final static native void arb_poly_set_coeff_arb(long jarg1, RealPolynomial jarg1_, int jarg2, long jarg3, Real jarg3_);
+  public final static native void arb_poly_set(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_);
+  public final static native void _arb_poly_set_length(long jarg1, RealPolynomial jarg1_, int jarg2);
+  public final static native void _arb_poly_normalise(long jarg1, RealPolynomial jarg1_);
+  public final static native void arb_poly_scalar_mul(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, Real jarg3_, int jarg4);
+  public final static native void arb_poly_scalar_div(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_poly_shift_left(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3);
   public final static native void arb_poly_shift_right(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3);
   public final static native void arb_poly_mul(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, RealPolynomial jarg3_, int jarg4);
   public final static native void arb_poly_add(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, RealPolynomial jarg3_, int jarg4);
   public final static native void arb_poly_sub(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, RealPolynomial jarg3_, int jarg4);
+  public final static native void arb_poly_fit_length(long jarg1, RealPolynomial jarg1_, int jarg2);
   public final static native void acb_calc_gl_node(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4, int jarg5);
   public final static native void arb_ceil(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_mat_bound_frobenius_norm(long jarg1, Magnitude jarg1_, long jarg2, RealMatrix jarg2_);
@@ -26,7 +35,6 @@ public class arblibJNI {
   public final static native void arb_poly_product_roots(long jarg1, RealPolynomial jarg1_, long jarg2, Real jarg2_, int jarg3, int jarg4);
   public final static native void arb_poly_clear(long jarg1, RealPolynomial jarg1_);
   public final static native void arb_poly_evaluate2(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, RealPolynomial jarg3_, long jarg4, Real jarg4_, int jarg5);
-  public final static native void arb_poly_fit_length(long jarg1, RealPolynomial jarg1_, int jarg2);
   public final static native void arb_poly_evaluate(long jarg1, Real jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_poly_init(long jarg1, RealPolynomial jarg1_);
   public final static native void arb_poly_init2(long jarg1, RealPolynomial jarg1_, int jarg2);

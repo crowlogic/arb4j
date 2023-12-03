@@ -64,9 +64,13 @@ public class JacobiPolynomialSequence implements
 
   final public RealFunction   d       = express("d", "2*n+α+β", context, verbose);
 
-  final public RealFunction   p1      = express("d(1)/2 + x*(α - β)", context, verbose);
-
   final public RealFunction   c       = express("c", "(d(n)-1)/(d(n)*d(n-1))", context, verbose);
+
+  final public RealFunction   a       = express("a", "c(n)*(α²+β²)", context, verbose);
+
+  final public RealFunction   b       = express("b", "c(n)*d(n)", context, verbose);
+
+  final public RealFunction   p1      = express("d(1)/2 + x*(α - β)", context, verbose);
 
   public JacobiPolynomialSequence(Real a, Real b)
   {

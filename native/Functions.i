@@ -19,6 +19,22 @@
     }
 }
 
+void arb_poly_get_coeff_ptr(arb_poly_t poly, slong n);
+ 
+void arb_poly_get_coeff_arb(arb_t v, const arb_poly_t poly, slong n);
+
+void arb_poly_set_coeff_arb(arb_poly_t poly, slong n, const arb_t c);
+ 
+void arb_poly_set(arb_poly_t dest, const arb_poly_t src);
+ 
+void _arb_poly_set_length(arb_poly_t poly, slong len);
+
+void _arb_poly_normalise(arb_poly_t poly);
+
+void arb_poly_scalar_mul(arb_poly_t res, const arb_poly_t poly, const arb_t c, slong prec);
+
+void arb_poly_scalar_div(arb_poly_t res, const arb_poly_t poly, const arb_t c, slong prec);
+
 void arb_poly_shift_left(arb_poly_t res, const arb_poly_t poly, slong n);
 
 void arb_poly_shift_right(arb_poly_t res, const arb_poly_t poly, slong n);
@@ -31,6 +47,8 @@ void arb_poly_add(arb_poly_t res, const arb_poly_t poly1,
 
 void arb_poly_sub(arb_poly_t res, const arb_poly_t poly1,
               const arb_poly_t poly2, slong prec);
+
+void arb_poly_fit_length(arb_poly_t poly, slong len);
               
 void acb_calc_gl_node(arb_t x, arb_t w, slong i, slong k, slong prec);
 void arb_ceil(arb_t z, const arb_t x, slong prec);

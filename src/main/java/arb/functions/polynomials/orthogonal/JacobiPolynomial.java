@@ -21,10 +21,11 @@ public class JacobiPolynomial extends
   {
     this.sequence = sequence;
     this.n        = n;
-    arblib.arb_poly_init2(this, n+1);
+    init(n+1);
     assert getLength() == n+1;
     //assert false : "TODO: evaluate 3-term recurrence and initialize polynomial coeffecients";
   }
+
 
   final JacobiPolynomialSequence sequence;
 
