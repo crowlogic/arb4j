@@ -4,6 +4,7 @@ import arb.Real;
 import arb.RealConstants;
 import arb.functions.real.RealFunction;
 
+@SuppressWarnings("unused")
 public final class InverseGaussianDensityFunction implements
                                                   RealFunction
 {

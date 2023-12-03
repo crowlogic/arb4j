@@ -3,13 +3,15 @@ package arb.stochastic;
 import arb.Real;
 import junit.framework.TestCase;
 
-public class StandardGaussianDensityFunctionTest extends TestCase
+public class StandardGaussianDensityFunctionTest extends
+                                                 TestCase
 {
 
   public void testEvaluateRealIntIntReal()
   {
-    StandardGaussianDensityFunction sdf = new StandardGaussianDensityFunction();
+    try ( StandardGaussianDensityFunction sdf = new StandardGaussianDensityFunction())
     {
+
       Real result = sdf.evaluate(new Real("0.12",
                                           128),
                                  1,

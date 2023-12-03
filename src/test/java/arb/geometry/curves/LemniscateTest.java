@@ -1,7 +1,6 @@
 package arb.geometry.curves;
 
 import static arb.RealConstants.half;
-import static arb.RealConstants.prec;
 import static java.lang.System.out;
 
 import arb.*;
@@ -9,6 +8,7 @@ import arb.exceptions.NotDifferentiableException;
 import arb.functions.RealToComplexFunction;
 import junit.framework.TestCase;
 
+@SuppressWarnings("unused")
 public class LemniscateTest extends
                             TestCase
 {

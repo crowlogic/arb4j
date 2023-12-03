@@ -10,6 +10,7 @@ import arb.Float;
 import arb.functions.complex.numbertheoretic.ZFunction;
 import junit.framework.TestCase;
 
+@SuppressWarnings("unused")
 public class RealFunctionTest extends
                               TestCase
 {

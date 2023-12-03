@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 /**
  * Test case for FastThreadLocal.
  */
+@SuppressWarnings("unused")
 public class FastThreadLocalTest extends
                                  TestCase
 {

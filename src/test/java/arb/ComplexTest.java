@@ -8,6 +8,8 @@ import java.util.stream.IntStream;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings(
+{ "unused" })
 public class ComplexTest extends
                          TestCase
 {

@@ -6,6 +6,8 @@ import arb.functions.real.RealFunction;
 import arb.stochastic.StandardGaussianDensityFunction;
 import junit.framework.TestCase;
 
+@SuppressWarnings(
+{ "resource", "unused" })
 public class HermitePolynomialsTest extends
                                     TestCase
 {
@@ -24,8 +26,8 @@ public class HermitePolynomialsTest extends
 
   public void testOrthogonality()
   {
-    var          p         = new StandardGaussianDensityFunction();
- 
+    var p = new StandardGaussianDensityFunction();
+
     try ( var h1 = new HermitePolynomial(1); var h2 = new HermitePolynomial(2); Real r = Real.newVector(4))
     {
       RealFunction integrand = (t, order, bits, res) -> h1.evaluate(t, bits, r)

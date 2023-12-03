@@ -4,6 +4,7 @@ import arb.Complex;
 import arb.RealConstants;
 import junit.framework.TestCase;
 
+@SuppressWarnings("unused")
 public class SFunctionTest extends
                            TestCase
 {

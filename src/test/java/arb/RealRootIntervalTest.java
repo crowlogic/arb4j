@@ -4,6 +4,8 @@ import static java.lang.System.out;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings(
+{ "unused" })
 public class RealRootIntervalTest extends
                                   TestCase
 {

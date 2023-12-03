@@ -21,6 +21,8 @@ import arb.arblib;
  * calculating RGB intensities anyway..
  * 
  */
+@SuppressWarnings(
+{ "unused" })
 public class PointValueCache implements
                              AutoCloseable
 {
@@ -59,9 +61,7 @@ public class PointValueCache implements
    * @param numXpoints
    * @param numYpoints
    */
-  public PointValueCache(String id,
-                         int numXpoints,
-                         int numYpoints)
+  public PointValueCache(String id, int numXpoints, int numYpoints)
   {
     System.out.println("Opening " + id + ".arb" + " and .arb1");
     this.width  = numXpoints;

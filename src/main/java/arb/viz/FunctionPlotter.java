@@ -13,6 +13,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+@SuppressWarnings(
+{ "unused" })
 public class FunctionPlotter extends
                              FunctionSampler
 {

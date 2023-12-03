@@ -23,6 +23,7 @@ import arb.space.topological.EuclideanSpace;
  * 
  * @see <a href="https://en.wikipedia.org/wiki/Surface_(topology)">Wikipedia</a>
  */
+@SuppressWarnings("unused")
 public interface Surface extends
                          Manifold<Complex>
 {

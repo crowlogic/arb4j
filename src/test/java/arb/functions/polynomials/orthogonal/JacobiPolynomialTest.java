@@ -1,10 +1,9 @@
 package arb.functions.polynomials.orthogonal;
 
 import static arb.RealConstants.half;
-import static java.lang.System.out;
+import static arb.RealConstants.one;
 
 import arb.Real;
-import arb.RealConstants;
 import junit.framework.TestCase;
 
 /**
@@ -20,12 +19,14 @@ public class JacobiPolynomialTest extends
                                   TestCase
 {
 
+  public static final int bits = 128;
+
   public static void testD()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
                                                                       half))
     {
-      try ( Real result = seq.d.evaluate(RealConstants.one, 0, 128, new Real()))
+      try ( Real result = seq.d.evaluate(one, 0, bits, new Real()))
       {
         // out.println("d(1)=" + result);
 
@@ -40,7 +41,7 @@ public class JacobiPolynomialTest extends
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
                                                                       half))
     {
-      try ( Real result = seq.p1.evaluate(RealConstants.one, 0, 128, new Real()))
+      try ( Real result = seq.p1.evaluate(one, 0, bits, new Real()))
       {
         // out.println("p1(1)=" + result);
 

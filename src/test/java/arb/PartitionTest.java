@@ -2,6 +2,8 @@ package arb;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings(
+{ "unused" })
 public class PartitionTest extends
                            TestCase
 {

@@ -4,6 +4,8 @@ import org.junit.*;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings(
+{ "unused" })
 public class RealPartitionTest extends
                                TestCase
 {
