@@ -478,9 +478,9 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     assert permutations == null || permutations.capacity() >= numRows : "Permutations buffer size ("
                   + (permutations != null ? permutations.capacity() : "null")
                   + ") is smaller than the number of rows (" + numRows + ").";
-    long rPtr = rows[r].swigCPtr;
-    rows[r].swigCPtr = rows[s].swigCPtr;
-    rows[s].swigCPtr = rPtr;
+    Real rPtr = rows[r];
+    rows[r] = rows[s];
+    rows[s] = rPtr;
     arblib.arb_mat_swap_rows(this, permutations, r, s);
     return this;
   }
