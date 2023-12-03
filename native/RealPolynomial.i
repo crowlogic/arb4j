@@ -14,7 +14,40 @@ import arb.functions.real.RealFunction;
     return String.format("RealPolynomial[length=%d, coeffs=%s]", getLength(), getCoeffs());
   }
 
-
+  /**
+   * Sets {C, max(lenThis, lenThat)} to the sum of {this, thisLen} and {that, thatLen} by calling
+   * {@link arblib#arb_poly_add(RealPolynomial, RealPolynomial, RealPolynomial, int)}<br>
+   * 
+   * Allows aliasing of the input and output operands.
+   * 
+   * @param that
+   * @param prec
+   * @param result
+   * @return result
+   */
+  public RealPolynomial add(RealPolynomial that, int prec, RealPolynomial result)
+  {
+    arblib.arb_poly_add(result, this, that, prec);
+    return result;
+  }
+  
+  /**
+   * Sets {C, max(lenThis, lenThat)} to the difference of {this, thisLen} and {that, thatLen} by calling
+   * {@link arblib#arb_poly_sub(RealPolynomial, RealPolynomial, RealPolynomial, int)}<br>
+   * 
+   * Allows aliasing of the input and output operands.
+   * 
+   * @param that
+   * @param prec
+   * @param result
+   * @return result
+   */
+  public RealPolynomial sub(RealPolynomial that, int prec, RealPolynomial result)
+  {
+    arblib.arb_poly_sub(result, this, that, prec);
+    return result;
+  }
+  
   /**
    * Calls {@link arb#arb_clear(Real)}
    * 
