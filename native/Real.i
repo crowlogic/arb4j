@@ -6,12 +6,15 @@
 import static arb.IntegerConstants.*;
 import static arb.RealConstants.zero;
 import static arb.arblib.*;
+import static java.lang.String.format;
 
 import java.io.Serializable;
 import java.lang.foreign.MemorySegment;
 import java.util.*;
 import java.util.function.IntFunction;
-import java.util.stream.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import arb.domains.Domain;
 import arb.stochastic.ProbabilityDistributionFunction;
@@ -486,14 +489,15 @@ import arb.stochastic.ProbabilityDistributionFunction;
     assert dim == that.dim;
     try ( Real a = mean(prec, new Real()); 
           Real b = that.mean(prec, new Real());
-          Real aCentered = vecScalarSub(a, prec, Real.newVector(dim));
-          Real bCentered = that.vecScalarSub(b, prec, Real.newVector(dim)))
+          Real aCentered = subScalar(a, prec, Real.newVector(dim));
+          Real bCentered = that.subScalar(b, prec, Real.newVector(dim)))
     {
       return aCentered.dotProduct(bCentered, prec, res).div(dim, prec);
     }
   }
   
   /**
+   * Subtract a scalar from each element of this vector
    * 
    * @param a      scalar (single real value, only element 0 is used, it is NOT
    *               treated as a vector)
@@ -502,7 +506,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
    * @return newVector=this-a where a is a scalar subtracted from each element of
    *         this
    */
-  public Real vecScalarSub(Real a, int prec, Real result)
+  public Real subScalar(Real a, int prec, Real result)
   {
     assert dim == result.dim;
     for (int i = 0; i < dim; i++)
