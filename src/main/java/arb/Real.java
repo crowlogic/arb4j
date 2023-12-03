@@ -1257,7 +1257,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     
   public int digits()
   {
-   return 15;
+   return 42;
   }  
   
   public boolean  printPrecision = true;
@@ -1274,7 +1274,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
       return arblib.arb_get_str(this,
                              digits,
                              (printPrecision
-                                           || precise) ? IntegerConstants.ARB_STR_MORE : IntegerConstants.ARB_STR_NO_RADIUS)
+                                           || precise) ? 0 : IntegerConstants.ARB_STR_NO_RADIUS)
                              .replace("[", "")
                              .replace("]", "");                                           
     }

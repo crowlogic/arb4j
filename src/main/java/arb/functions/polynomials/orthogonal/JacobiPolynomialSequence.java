@@ -8,7 +8,6 @@ import java.util.stream.IntStream;
 import arb.OrthogonalBasis;
 import arb.Real;
 import arb.domains.Domain;
-import arb.expressions.Expression;
 import arb.expressions.RealContext;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
@@ -67,6 +66,8 @@ public class JacobiPolynomialSequence implements
 
   final public RealFunction   p1      = express("d(1)/2 + x*(α - β)", context, verbose);
 
+  final public RealFunction   c       = express("c", "(d(n)-1)/(d(n)*d(n-1))", context, verbose);
+
   public JacobiPolynomialSequence(Real a, Real b)
   {
     this.α.set(a);
@@ -80,20 +81,16 @@ public class JacobiPolynomialSequence implements
       throw new IllegalArgumentException("n should be >= 2");
     }
 
-    Real            coefficients = Real.newVector(N + 2);
+    Real coefficients = Real.newVector(N + 2);
 
-    Variables<Real> vars         = new Variables<>();
-    vars.put("a", α);
-    vars.put("b", β);
-    Real realn = new Real();
+    Real realn        = new Real();
     vars.put("n", realn);
     vars.put("P", coefficients);
     // FIXME: implement integer variables along with the integer-constants in
     // https://github.com/crowlogic/arb4j/issues/222
-    RealContext  context       = new RealContext(vars);
 
     String       expressionStr = "(2 * n + a + b) / (2 * n) * z * P[n-1] - (n + a + b - 1) / n * P[n-2]";
-    RealFunction expression    = Expression.express(expressionStr, context);
+    RealFunction expression    = express(expressionStr, context);
 
     IntStream.range(2, N + 1).forEach(n ->
     {

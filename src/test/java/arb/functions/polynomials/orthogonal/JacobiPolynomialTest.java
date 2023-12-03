@@ -2,6 +2,8 @@ package arb.functions.polynomials.orthogonal;
 
 import static arb.RealConstants.half;
 import static arb.RealConstants.one;
+import static java.lang.System.out;
+import static org.objectweb.asm.Opcodes.ASM10_EXPERIMENTAL;
 
 import arb.Real;
 import junit.framework.TestCase;
@@ -21,12 +23,27 @@ public class JacobiPolynomialTest extends
 
   public static final int bits = 128;
 
+  public static void testC()
+  {
+    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
+                                                                      half))
+    {
+      try ( Real result = seq.c.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("c(1)=" + result);
+
+        assertEquals(0.666666666666666666666666, result.doubleValue());
+      }
+    }
+
+  }
+  
   public static void testD()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
                                                                       half))
     {
-      try ( Real result = seq.d.evaluate(one, 0, bits, new Real()))
+      try ( Real result = seq.d.evaluate(one, 1, bits, new Real()))
       {
         // out.println("d(1)=" + result);
 
