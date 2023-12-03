@@ -23,7 +23,7 @@ import arb.functions.real.RealFunction;
  * 
  * Initial condition: P₀(x) = 1
  * 
- * Initial condition: P₁(x) = ½*(α + β + 2) + x*(α - β)
+ * Initial condition: P₁(x) = d₁/2 + x*(α - β)
  * 
  * Recurrence relation: Pₙ(x) = aₙ*x*Pₙ₋₁(x) + bₙ*Pₙ₋₂(x)
  * 
