@@ -308,10 +308,10 @@ public class Compiler
          ClassVisitor
          declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions<D, R, F> functions)
   {
-    for (Map.Entry<String, F> entry : functions.entrySet())
+    // for (Map.Entry<String, F> entry : functions.entrySet())
+    functions.forEach((name, function) ->
     {
-      String name       = entry.getKey();
-      String descriptor = entry.getValue().getClass().descriptorString();
+      String descriptor = function.getClass().descriptorString();
 
       if (expression.verbose)
       {
@@ -319,7 +319,7 @@ public class Compiler
         out.flush();
       }
       classVisitor.visitField(ACC_PUBLIC, name, descriptor, null, null);
-    }
+    });
     return classVisitor;
   }
 
