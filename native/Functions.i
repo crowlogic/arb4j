@@ -19,6 +19,13 @@
     }
 }
 
+
+void arb_poly_add(arb_poly_t res, const arb_poly_t poly1,
+              const arb_poly_t poly2, slong prec);
+
+void arb_poly_sub(arb_poly_t res, const arb_poly_t poly1,
+              const arb_poly_t poly2, slong prec);
+              
 void acb_calc_gl_node(arb_t x, arb_t w, slong i, slong k, slong prec);
 void arb_ceil(arb_t z, const arb_t x, slong prec);
 
