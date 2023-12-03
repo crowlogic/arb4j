@@ -308,7 +308,6 @@ public class Compiler
          ClassVisitor
          declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions<D, R, F> functions)
   {
-    // for (Map.Entry<String, F> entry : functions.entrySet())
     functions.forEach((name, function) ->
     {
       String descriptor = function.getClass().descriptorString();
