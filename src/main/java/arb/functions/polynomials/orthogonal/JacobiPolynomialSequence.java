@@ -81,21 +81,21 @@ public class JacobiPolynomialSequence implements
       throw new IllegalArgumentException("n should be >= 2");
     }
 
-    Real coefficients = Real.newVector(N + 2);
+    Real         coefficients = Real.newVector(N + 2);
 
-    Real realn        = new Real();
-    vars.put("n", realn);
-    vars.put("P", coefficients);
     // FIXME: implement integer variables along with the integer-constants in
     // https://github.com/crowlogic/arb4j/issues/222
 
-    String       expressionStr = "(2 * n + a + b) / (2 * n) * z * P[n-1] - (n + a + b - 1) / n * P[n-2]";
-    RealFunction expression    = express(expressionStr, context);
+    RealFunction p            = express("(2 * n + a + b) / (2 * n) * z * P[n-1] - (n + a + b - 1) / n * P[n-2]",
+                                        context);
 
-    IntStream.range(2, N + 1).forEach(n ->
+    try ( Real realn = new Real())
     {
-      expression.evaluate(realn.set(n), bits, coefficients.get(n));
-    });
+      IntStream.range(2, N + 1).forEach(n ->
+      {
+        p.evaluate(realn.set(n), bits, coefficients.get(n));
+      });
+    }
 
     return coefficients;
   }
@@ -115,7 +115,7 @@ public class JacobiPolynomialSequence implements
   }
 
   public static Real domain = new Real("0+/-1",
-                                       128);
+                                       bits);
 
   @Override
   public Domain<Real> getDomain()
