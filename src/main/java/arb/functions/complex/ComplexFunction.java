@@ -7,7 +7,9 @@ import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;
 import arb.functions.Function;
 import arb.functions.RealToComplexFunction;
-import arb.functions.real.*;
+import arb.functions.real.ImaginaryHolomorphicPart;
+import arb.functions.real.RealFunction;
+import arb.functions.real.RealHolomorphicPart;
 import arb.utensils.Utensils;
 
 /**

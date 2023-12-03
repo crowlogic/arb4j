@@ -4,7 +4,9 @@ import static arb.RealConstants.one;
 import static arb.RealConstants.zero;
 
 import arb.Real;
-import arb.stochastic.*;
+import arb.stochastic.CharacteristicFunction;
+import arb.stochastic.ProbabilityDistributionFunction;
+import arb.stochastic.RealProbabilityDensityFunction;
 
 /**
  * TODO: also, Brownian motion

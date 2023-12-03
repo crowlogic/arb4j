@@ -5,7 +5,9 @@ import static arb.RealConstants.zero;
 import java.lang.ref.Cleaner.Cleanable;
 
 import arb.Real;
-import arb.stochastic.*;
+import arb.stochastic.CharacteristicFunction;
+import arb.stochastic.ProbabilityDistributionFunction;
+import arb.stochastic.RealProbabilityDensityFunction;
 
 /**
  * 

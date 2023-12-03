@@ -6,11 +6,15 @@ import static java.lang.System.err;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;

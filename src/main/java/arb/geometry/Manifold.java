@@ -5,7 +5,9 @@ import java.util.Set;
 import arb.Field;
 import arb.geometry.curves.Circle;
 import arb.geometry.curves.Lemniscate;
-import arb.geometry.surfaces.*;
+import arb.geometry.surfaces.Plane;
+import arb.geometry.surfaces.Sphere;
+import arb.geometry.surfaces.Surface;
 import arb.space.topological.EuclideanSpace;
 import arb.space.topological.TopologicalSpace;
 

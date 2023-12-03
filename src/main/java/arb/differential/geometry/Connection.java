@@ -1,6 +1,8 @@
 package arb.differential.geometry;
 
-import arb.*;
+import arb.ComplexMatrix;
+import arb.Field;
+import arb.RealMatrix;
 import arb.functions.Function;
 import arb.geometry.curves.Curve;
 import arb.space.topological.TopologicalSpace;

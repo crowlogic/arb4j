@@ -1,6 +1,8 @@
 package arb.space.topological;
 
-import arb.*;
+import arb.Complex;
+import arb.Field;
+import arb.Real;
 
 /**
  * A normed vector space or normed space is a {@link VectorSpace} over the

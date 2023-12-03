@@ -5,7 +5,9 @@ import static java.lang.System.out;
 
 import java.util.HashSet;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.RealConstants;
 import arb.expressions.Expression;

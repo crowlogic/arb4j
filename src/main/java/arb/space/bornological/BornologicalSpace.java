@@ -1,6 +1,8 @@
 package arb.space.bornological;
 
-import arb.space.topological.*;
+import arb.space.topological.MetricSpace;
+import arb.space.topological.NormedSpace;
+import arb.space.topological.Space;
 
 /**
  * A BornologicalSpace is a mathematical space in which the concept of

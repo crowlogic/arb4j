@@ -2,7 +2,9 @@ package arb.functions.complex.numbertheoretic;
 
 import arb.Real;
 import arb.RealConstants;
-import arb.expressions.*;
+import arb.expressions.Expression;
+import arb.expressions.RealContext;
+import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
 public class ZStructureFunction implements

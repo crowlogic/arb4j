@@ -3,8 +3,10 @@ package arb.functions.real;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
-import arb.*;
 import arb.Float;
+import arb.FloatInterval;
+import arb.Real;
+import arb.RealDataSet;
 
 /**
  * The {@link FunctionSampler} class performs the sampling of real functions.

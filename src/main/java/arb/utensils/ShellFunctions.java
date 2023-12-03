@@ -1,6 +1,8 @@
 package arb.utensils;
 
-import arb.*;
+import arb.Real;
+import arb.RealDataSet;
+import arb.SequenceDataSet;
 import arb.functions.real.RealFunction;
 import arb.viz.FunctionPlotter;
 import javafx.application.Platform;

@@ -4,7 +4,9 @@ import static org.objectweb.asm.Opcodes.ASM10_EXPERIMENTAL;
 
 import java.util.List;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.TypePath;
 import org.objectweb.asm.util.Printer;
 import org.objectweb.asm.util.Textifier;
 

@@ -4,7 +4,9 @@ import java.util.function.BinaryOperator;
 
 import arb.Metric;
 import arb.geometry.surfaces.Surface;
-import arb.space.topological.*;
+import arb.space.topological.AmbientSpace;
+import arb.space.topological.EuclideanSpace;
+import arb.space.topological.TangentSpace;
 
 /**
  * the {@link FirstFundamentalForm} is the inner product on the

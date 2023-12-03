@@ -2,7 +2,9 @@ package arb.differential.geometry;
 
 import arb.Field;
 import arb.functions.SurjectiveFunction;
-import arb.space.topological.*;
+import arb.space.topological.FiberBundle;
+import arb.space.topological.TopologicalSpace;
+import arb.space.topological.TopologicalVectorSpace;
 
 /**
  * A VectorBundle is a special type of FiberBundle where the fiber over each

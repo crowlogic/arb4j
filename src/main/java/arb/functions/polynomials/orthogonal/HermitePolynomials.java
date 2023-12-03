@@ -2,7 +2,9 @@ package arb.functions.polynomials.orthogonal;
 
 import java.util.Iterator;
 
-import arb.*;
+import arb.OrthogonalBasis;
+import arb.Real;
+import arb.RealConstants;
 import arb.domains.Domain;
 import arb.domains.ExtendedRealLine;
 import arb.expressions.Variables;

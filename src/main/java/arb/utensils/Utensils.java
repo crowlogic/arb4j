@@ -5,7 +5,9 @@ import static arb.arblib.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.scilab.forge.jlatexmath.*;
+import org.scilab.forge.jlatexmath.TeXConstants;
+import org.scilab.forge.jlatexmath.TeXFormula;
+import org.scilab.forge.jlatexmath.TeXIcon;
 
 import arb.*;
 import arb.Float;

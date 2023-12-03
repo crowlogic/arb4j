@@ -3,7 +3,9 @@ package arb.differential.geometry;
 import arb.Field;
 import arb.functions.Function;
 import arb.geometry.Manifold;
-import arb.space.topological.*;
+import arb.space.topological.TangentSpace;
+import arb.space.topological.TopologicalSpace;
+import arb.space.topological.VectorSpace;
 
 /**
  * An {@link AffineConnection} is a geometric object on a smooth

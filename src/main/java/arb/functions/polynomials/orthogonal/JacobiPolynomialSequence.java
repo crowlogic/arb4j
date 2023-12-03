@@ -8,7 +8,9 @@ import java.util.stream.IntStream;
 import arb.OrthogonalBasis;
 import arb.Real;
 import arb.domains.Domain;
-import arb.expressions.*;
+import arb.expressions.Expression;
+import arb.expressions.RealContext;
+import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
 /**

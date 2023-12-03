@@ -2,7 +2,9 @@ package arb;
 
 import arb.functions.Function;
 import arb.measures.Measure;
-import arb.space.topological.*;
+import arb.space.topological.CartesianProduct;
+import arb.space.topological.MetricSpace;
+import arb.space.topological.MetrizableSpace;
 
 /**
  * 

@@ -1,6 +1,8 @@
 package arb.functions.polynomials.orthogonal;
 
-import arb.*;
+import arb.Real;
+import arb.RealPolynomial;
+import arb.arblib;
 
 /**
  * 

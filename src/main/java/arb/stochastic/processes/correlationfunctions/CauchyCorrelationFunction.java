@@ -1,7 +1,9 @@
 package arb.stochastic.processes.correlationfunctions;
 
 import arb.Real;
-import arb.expressions.*;
+import arb.expressions.Expression;
+import arb.expressions.RealContext;
+import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.RealSymmetricCovarianceKernel;
 

@@ -3,7 +3,9 @@ package arb.stochastic.processes;
 import static arb.RealConstants.zero;
 
 import arb.Real;
-import arb.stochastic.*;
+import arb.stochastic.GaussianCharacteristicFunction;
+import arb.stochastic.GaussianDensityFunction;
+import arb.stochastic.GaussianDistribution;
 
 /**
  * A Gaussian "white noise" process of specified fixed mean and standard

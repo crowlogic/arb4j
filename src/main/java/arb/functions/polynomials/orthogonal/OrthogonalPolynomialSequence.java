@@ -1,6 +1,8 @@
 package arb.functions.polynomials.orthogonal;
 
-import arb.*;
+import arb.Field;
+import arb.OrthogonalBasis;
+import arb.Real;
 import arb.domains.Domain;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;

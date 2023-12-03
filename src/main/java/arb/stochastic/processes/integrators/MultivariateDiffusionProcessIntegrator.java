@@ -7,7 +7,9 @@ import static java.lang.System.out;
 
 import arb.*;
 import arb.stochastic.GaussianDistribution;
-import arb.stochastic.processes.*;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.EvaluationSequence;
+import arb.stochastic.processes.MultivariateDiffusionProcess;
 
 /**
  * <pre>
