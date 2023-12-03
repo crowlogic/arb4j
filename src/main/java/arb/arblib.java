@@ -9,6 +9,18 @@
 package arb;
 
 public class arblib {
+  public static void arb_poly_shift_left(RealPolynomial res, RealPolynomial poly, int n) {
+    arblibJNI.arb_poly_shift_left(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly, n);
+  }
+
+  public static void arb_poly_shift_right(RealPolynomial res, RealPolynomial poly, int n) {
+    arblibJNI.arb_poly_shift_right(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly, n);
+  }
+
+  public static void arb_poly_mul(RealPolynomial res, RealPolynomial poly1, RealPolynomial poly2, int prec) {
+    arblibJNI.arb_poly_mul(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly1), poly1, RealPolynomial.getCPtr(poly2), poly2, prec);
+  }
+
   public static void arb_poly_add(RealPolynomial res, RealPolynomial poly1, RealPolynomial poly2, int prec) {
     arblibJNI.arb_poly_add(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly1), poly1, RealPolynomial.getCPtr(poly2), poly2, prec);
   }

@@ -19,7 +19,13 @@
     }
 }
 
+void arb_poly_shift_left(arb_poly_t res, const arb_poly_t poly, slong n);
 
+void arb_poly_shift_right(arb_poly_t res, const arb_poly_t poly, slong n);
+
+void arb_poly_mul(arb_poly_t res, const arb_poly_t poly1,
+              const arb_poly_t poly2, slong prec);
+              
 void arb_poly_add(arb_poly_t res, const arb_poly_t poly1,
               const arb_poly_t poly2, slong prec);
 
