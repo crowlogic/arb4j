@@ -1121,6 +1121,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
     else
     {
       assert dim == real.dim : String.format("this.dim=%d != dim=%d\n", this.dim, real.dim);
+      assert res.dim == dim : format("result.dim = %d != this.dim = %d\n", res.dim, dim );
       arblib._arb_vec_sub(res, this, real, dim, prec);
       return res;
     }
