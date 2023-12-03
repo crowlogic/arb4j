@@ -1,6 +1,7 @@
 package arb.expressions;
 
 import static arb.expressions.Compiler.*;
+import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
@@ -177,22 +178,22 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
   /**
    * Calls {@link Compiler#loadResult(MethodVisitor)}, then
    * this{@link #checkClassCast(MethodVisitor, boolean)} then generates an
-   * invocation of the "set" method whose only argument and return type is
-   * this{@link #domainClassDescriptor}
+   * invocation of the {@link Field#set(Field)} method whose only argument and
+   * return type is this{@link #domainClassDescriptor}
    * 
-   * @param mv
-   * @return mv
+   * @param methodVisitor
+   * @return methodVisitor
    */
-  public MethodVisitor setResult(MethodVisitor mv)
+  public MethodVisitor setResult(MethodVisitor methodVisitor)
   {
-    checkClassCast(loadResult(mv), false);
-    mv.visitInsn(Opcodes.SWAP);
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       domainClassInternalName,
-                       "set",
-                       format("(%s)%s", domainClassDescriptor, domainClassDescriptor),
-                       false);
-    return mv;
+    checkClassCast(loadResult(methodVisitor), false);
+    methodVisitor.visitInsn(Opcodes.SWAP);
+    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                  domainClassInternalName,
+                                  "set",
+                                  format("(%s)%s", domainClassDescriptor, domainClassDescriptor),
+                                  false);
+    return methodVisitor;
   }
 
   /**
@@ -423,16 +424,16 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
       out.flush();
     }
 
-    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                "evaluate",
-                                                evaluateMethodDesc,
-                                                evaluateMethodSignature,
-                                                null);
+    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                           "evaluate",
+                                                           evaluateMethodDesc,
+                                                           evaluateMethodSignature,
+                                                           null);
 
-    mv.visitCode();
-    mv.visitLabel(startLabel);
+    methodVisitor.visitCode();
+    methodVisitor.visitLabel(startLabel);
 
-    eatRootNode().generate(mv);
+    eatRootNode().generate(methodVisitor);
 
     if (verbose)
     {
@@ -440,17 +441,17 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
       out.flush();
     }
 
-    mv.visitInsn(Opcodes.ARETURN);
-    mv.visitLabel(endLabel);
+    methodVisitor.visitInsn(Opcodes.ARETURN);
+    methodVisitor.visitLabel(endLabel);
 
-    mv.visitLocalVariable("in", "Ljava/lang/Object;", domainClassDescriptor, startLabel, endLabel, 1);
-    mv.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
-    mv.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
-    mv.visitLocalVariable("result", "Ljava/lang/Object;", rangeClassDescriptor, startLabel, endLabel, 4);
+    methodVisitor.visitLocalVariable("in", "Ljava/lang/Object;", domainClassDescriptor, startLabel, endLabel, 1);
+    methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
+    methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
+    methodVisitor.visitLocalVariable("result", "Ljava/lang/Object;", rangeClassDescriptor, startLabel, endLabel, 4);
 
-    mv.visitMaxs(0, 0);
+    methodVisitor.visitMaxs(0, 0);
 
-    mv.visitEnd();
+    methodVisitor.visitEnd();
 
     return classVisitor;
   }
@@ -574,7 +575,8 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
 
     if (verbose)
     {
-      System.out.println("eat() returning " + node);
+      out.println("eat() returning " + node);
+      out.flush();
     }
 
     return node;
@@ -766,7 +768,7 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
    */
   private Node<D, R, F> eatNumber(int depth, int startPos)
   {
-    while (Parser.isNumeric(ch))
+    while (isNumeric(ch))
     {
       nextChar();
     }
@@ -884,7 +886,8 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
   {
     if (verbose)
     {
-      System.err.format("eatSecond(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("eatSecond(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.flush();
     }
 
     Node<D, R, F> node = eatLast(depth);
@@ -959,7 +962,7 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
    *                      element on the stack is a
    *                      this{@link #rangeClassInternalName} otherwise tests if
    *                      its a this{@link #domainClassInternalName}
-   * @return mv
+   * @return methodVisitor
    */
   public MethodVisitor checkClassCast(MethodVisitor methodVisitor, boolean range)
   {
@@ -1064,13 +1067,10 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
    * 
    * @param methodVisitor
    * @param functionName
-   * @return mv
+   * @return methodVisitor
    */
-  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, String functionName)
+  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, String functionName, F func)
   {
-    F func = context.functions.get(functionName);
-    assert func != null : format(" function named '%s' not found in context", functionName);
-    // methodVisitor.visitInsn(AALOAD);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(func.getClass()),
                                   "evaluate",
@@ -1088,7 +1088,7 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
                      Class<F> functionClass,
                      boolean verbose)
   {
-    return Compiler.compile(expression, context, domaiClass, rangeClass, functionClass, verbose).instantiate();
+    return compile(expression, context, domaiClass, rangeClass, functionClass, verbose).instantiate();
   }
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
@@ -1101,8 +1101,7 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
                      Class<F> functionClass,
                      boolean verbose)
   {
-    return Compiler.compile(className, expression, context, domainClass, rangeClass, functionClass, verbose)
-                   .instantiate();
+    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
   public static RealFunction express(String expression)

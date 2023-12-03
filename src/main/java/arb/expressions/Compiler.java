@@ -5,7 +5,6 @@ import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.objectweb.asm.*;
 
@@ -158,11 +157,12 @@ public class Compiler
       }
     }
 
-    expression.callRegisteredUnaryFunction(methodVisitor, functionName);
+    expression.callRegisteredUnaryFunction(methodVisitor, functionName, func);
 
     if (verbose)
     {
-      System.err.println("Returning from callRegisteredFunction");
+      err.println("Returning from callRegisteredFunction");
+      err.flush();
     }
     return methodVisitor;
   }
@@ -360,12 +360,12 @@ public class Compiler
       out.println("Generating constructor for " + expression);
       out.flush();
     }
-    MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
-    mv.visitCode();
+    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+    methodVisitor.visitCode();
 
     // call the super class default no-arg constructor
-    mv.visitVarInsn(ALOAD, 0);
-    mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
 
     if (!expression.literalConstants.isEmpty())
     {
@@ -375,7 +375,7 @@ public class Compiler
         out.flush();
       }
 
-      initializeLiteralConstants(expression, mv);
+      initializeLiteralConstants(expression, methodVisitor);
     }
 
     if (expression.intermediateVariableCount > 0)
@@ -386,18 +386,18 @@ public class Compiler
         err.flush();
       }
 
-      initializeIntermediateVariables(expression, mv);
+      initializeIntermediateVariables(expression, methodVisitor);
     }
 
     if (expression.context != null && !expression.context.functions.isEmpty())
     {
-      initializeRegisteredFunctions(expression, mv);
+      initializeRegisteredFunctions(expression, methodVisitor);
 
     }
-    mv.visitInsn(RETURN);
-    mv.visitMaxs(0, 0);
-    mv.visitEnd();
-    return mv;
+    methodVisitor.visitInsn(RETURN);
+    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitEnd();
+    return methodVisitor;
   }
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
@@ -429,16 +429,18 @@ public class Compiler
          MethodVisitor
          initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
-    for (Map.Entry<String, F> entry : expression.context.functions.entrySet())
+    expression.context.functions.forEach((name, function) ->
     {
-      initializeRegisteredFunction(expression, methodVisitor, entry.getKey(), entry.getValue());
-    }
+      initializeRegisteredFunction(expression, methodVisitor, name, function);
+    });
     return methodVisitor;
   }
 
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
-         initializeField(Expression<D, R, F> expression, MethodVisitor methodVisitor, String intermediateVariable)
+         initializeIntermediateVariable(Expression<D, R, F> expression,
+                                        MethodVisitor methodVisitor,
+                                        String intermediateVariable)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitTypeInsn(NEW, expression.rangeClassInternalName);
@@ -457,7 +459,7 @@ public class Compiler
   {
     for (String intermediateVariable : expression.intermediateVariables)
     {
-      initializeField(expression, methodVisitor, intermediateVariable);
+      initializeIntermediateVariable(expression, methodVisitor, intermediateVariable);
     }
     return methodVisitor;
   }
@@ -505,11 +507,11 @@ public class Compiler
    * 
    * @param methodVisitor the {@link MethodVisitor} to receive the instructions
    * 
-   * @return mv the {@link MethodVisitor} parameter
+   * @return methodVisitor the {@link MethodVisitor} parameter
    */
   public static MethodVisitor loadOrder(MethodVisitor methodVisitor)
   {
-    methodVisitor.visitVarInsn(Opcodes.ILOAD, 2); // Load order onto the stack
+    methodVisitor.visitVarInsn(Opcodes.ILOAD, 2);
     return methodVisitor;
   }
 
@@ -521,11 +523,11 @@ public class Compiler
    * 
    * @param methodVisitor the {@link MethodVisitor} to receive the instructions
    * 
-   * @return mv the {@link MethodVisitor} parameter
+   * @return methodVisitor the {@link MethodVisitor} parameter
    */
   public static MethodVisitor loadBits(MethodVisitor methodVisitor)
   {
-    methodVisitor.visitVarInsn(Opcodes.ILOAD, 3); // Load bits onto the stack
+    methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
     return methodVisitor;
   }
 
@@ -537,11 +539,11 @@ public class Compiler
    * 
    * @param methodVisitor the {@link MethodVisitor} to receive the instructions
    * 
-   * @return mv the {@link MethodVisitor} parameter
+   * @return methodVisitor the {@link MethodVisitor} parameter
    */
   public static MethodVisitor loadInput(MethodVisitor methodVisitor)
   {
-    methodVisitor.visitVarInsn(Opcodes.ALOAD, 1); // Load `input` onto the stack
+    methodVisitor.visitVarInsn(Opcodes.ALOAD, 1);
     return methodVisitor;
   }
 
@@ -552,14 +554,14 @@ public class Compiler
    * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
    * methods is (this,order,bits,result)
    * 
-   * @param mv the {@link MethodVisitor} to receive the instructions
+   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
    * 
-   * @return mv
+   * @return methodVisitor
    */
-  public static MethodVisitor loadResult(MethodVisitor mv)
+  public static MethodVisitor loadResult(MethodVisitor methodVisitor)
   {
-    mv.visitVarInsn(Opcodes.ALOAD, 4);
-    return mv;
+    methodVisitor.visitVarInsn(Opcodes.ALOAD, 4);
+    return methodVisitor;
   }
 
   /**
@@ -571,7 +573,7 @@ public class Compiler
    */
   public static MethodVisitor loadThisOntoStack(MethodVisitor methodVisitor)
   {
-    methodVisitor.visitVarInsn(ALOAD, 0); // Load `this` onto the stack
+    methodVisitor.visitVarInsn(ALOAD, 0);
     return methodVisitor;
   }
 
@@ -591,7 +593,7 @@ public class Compiler
    * @param methodVisitor The {@link MethodVisitor} to which instructions to
    *                      transform the stack are dispatched
    * 
-   * @return mv (fluent pattern)
+   * @return methodVisitor (fluent pattern)
    */
   public static MethodVisitor prepareStackForReusingLeftSide(MethodVisitor methodVisitor)
   {
@@ -616,7 +618,7 @@ public class Compiler
    * @param methodVisitor The {@link MethodVisitor} to which instructions to
    *                      transform the stack are emitted
    * 
-   * @return mv
+   * @return methodVisitor
    */
   public static MethodVisitor prepareStackForReusingRightSide(MethodVisitor methodVisitor)
   {
