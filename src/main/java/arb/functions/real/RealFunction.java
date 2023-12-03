@@ -202,7 +202,7 @@ public interface RealFunction extends
     };
   }
 
-  public boolean verbose = true;
+  public boolean verbose = false;
 
   /**
    * Performs one step of Newton's method. Should not usually be called directly
