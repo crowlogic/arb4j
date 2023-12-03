@@ -15,6 +15,32 @@ import arb.functions.real.RealFunction;
   }
 
   /**
+   * @see arblib#arb_poly_shift_left(RealPolynomial, RealPolynomial, int)
+   * 
+   * @param n
+   * @param result
+   * @return
+   */
+  public RealPolynomial shiftLeft(int n, RealPolynomial result)
+  {
+    arblib.arb_poly_shift_left(result, this, n);
+    return result;
+  }
+
+  /**
+   * @see arblib#arb_poly_shift_right(RealPolynomial, RealPolynomial, int)
+   * 
+   * @param n
+   * @param result
+   * @return
+   */
+  public RealPolynomial shiftRight(int n, RealPolynomial result)
+  {
+    arblib.arb_poly_shift_right(result, this, n);
+    return result;
+  }
+  
+  /**
    * Sets {C, max(lenThis, lenThat)} to the sum of {this, thisLen} and {that, thatLen} by calling
    * {@link arblib#arb_poly_add(RealPolynomial, RealPolynomial, RealPolynomial, int)}<br>
    * 
