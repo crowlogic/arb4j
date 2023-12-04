@@ -23,6 +23,36 @@ public class JacobiPolynomialTest extends
 
   public static final int bits = 128;
 
+  public static void testA()
+  {
+    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
+                                                                      half))
+    {
+      try ( Real result = seq.a.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("a(1)=" + result);
+
+        // assertEquals(0.666666666666666666666666, result.doubleValue());
+      }
+    }
+
+  }
+
+  public static void testB()
+  {
+    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
+                                                                      half))
+    {
+      try ( Real result = seq.b.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("b(1)=" + result);
+
+        // assertEquals(0.666666666666666666666666, result.doubleValue());
+      }
+    }
+
+  }
+
   public static void testC()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
@@ -30,7 +60,7 @@ public class JacobiPolynomialTest extends
     {
       try ( Real result = seq.c.evaluate(one, 1, bits, new Real()))
       {
-        // out.println("c(1)=" + result);
+        out.println("c(1)=" + result);
 
         assertEquals(0.666666666666666666666666, result.doubleValue());
       }
@@ -45,7 +75,7 @@ public class JacobiPolynomialTest extends
     {
       try ( Real result = seq.d.evaluate(one, 1, bits, new Real()))
       {
-        // out.println("d(1)=" + result);
+        out.println("d(1)=" + result);
 
         assertEquals(3.0, result.doubleValue());
       }
