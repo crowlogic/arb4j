@@ -32,7 +32,7 @@ public class JacobiPolynomialTest extends
       {
         out.println("a(1)=" + result);
 
-        // assertEquals(0.666666666666666666666666, result.doubleValue());
+        assertEquals(0.33333333333333333333333333333, result.doubleValue());
       }
     }
 
@@ -47,7 +47,7 @@ public class JacobiPolynomialTest extends
       {
         out.println("b(1)=" + result);
 
-        // assertEquals(0.666666666666666666666666, result.doubleValue());
+        assertEquals(2.0, result.doubleValue());
       }
     }
 
