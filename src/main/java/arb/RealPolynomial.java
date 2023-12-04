@@ -69,7 +69,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction {
     assert result != this : "aliasing not allowed";    
     arblib.arb_poly_shift_right(result, this, n);
     return result;
-  }za
+  }
   
   /**
    * Sets {C, max(lenThis, lenThat)} to the sum of {this, thisLen} and {that, thatLen} by calling
