@@ -3,6 +3,7 @@ package arb.expressions.nodes;
 import java.util.Collections;
 
 import org.objectweb.asm.MethodVisitor;
+import org.scilab.forge.jlatexmath.LaTeXAtom;
 
 import arb.Field;
 import arb.expressions.Expression;
@@ -64,5 +65,11 @@ public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F ext
   public abstract boolean isReusable();
 
   public abstract MethodVisitor prepareStackForReuse(MethodVisitor mv);
+
+  /**
+   * 
+   * @return the {@link LaTeXAtom} string that represents this node
+   */
+  public abstract String typeset();
 
 }

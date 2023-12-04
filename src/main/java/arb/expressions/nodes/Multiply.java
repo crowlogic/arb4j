@@ -1,5 +1,7 @@
 package arb.expressions.nodes;
 
+import static java.lang.String.format;
+
 import arb.expressions.Expression;
 import arb.functions.Function;
 
@@ -22,5 +24,11 @@ public class Multiply<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
           "mul",
           right,
           depth);
+  }
+
+  @Override
+  public String typeset()
+  {
+    return format("{%s} {%s}", left.typeset(), right.typeset());
   }
 }

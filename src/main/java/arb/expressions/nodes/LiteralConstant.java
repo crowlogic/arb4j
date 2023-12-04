@@ -49,7 +49,7 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   {
     super(expression,
           depth + 1);
-    value = constantValueString;
+    value = constantValueString.trim();
 
     if (π.equals(constantValueString))
     {
@@ -148,5 +148,22 @@ public class LiteralConstant<D extends arb.Field<D>, R extends arb.Field<R>, F e
   {
     assert false : "a constant is never reusable";
     return null;
+  }
+
+  @Override
+  public String typeset()
+  {
+    if (π.equals(value))
+    {
+      return "\\pi";
+    }
+    else if (half.equals(value))
+    {
+      return "\\frac{1}{2}";
+    }
+    else
+    {
+      return value;
+    }
   }
 }

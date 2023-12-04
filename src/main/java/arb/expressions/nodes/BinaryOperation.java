@@ -1,6 +1,7 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.*;
+import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -50,7 +51,8 @@ public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Fiel
                          Node<D, R, F> right,
                          int depth)
   {
-    super(parser, depth+1);
+    super(parser,
+          depth + 1);
 
     this.right     = right;
     this.operation = operation;

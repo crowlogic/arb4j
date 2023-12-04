@@ -1088,7 +1088,14 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
                      Class<F> functionClass,
                      boolean verbose)
   {
-    return compile(expression, context, domaiClass, rangeClass, functionClass, verbose).instantiate();
+    Expression<D, R, F> compiledExpression = compile(expression,
+                                                     context,
+                                                     domaiClass,
+                                                     rangeClass,
+                                                     functionClass,
+                                                     verbose);
+    //out.println("instantiating $" + compiledExpression.rootNode.typeset() + "$");
+    return compiledExpression.instantiate();
   }
 
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>

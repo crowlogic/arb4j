@@ -1,5 +1,7 @@
 package arb.expressions.nodes;
 
+import static java.lang.String.format;
+
 import arb.expressions.Expression;
 import arb.functions.Function;
 
@@ -12,6 +14,13 @@ import arb.functions.Function;
 public class RaiseToPower<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
                          BinaryOperation<D, R, F>
 {
+  
+  @Override
+  public String typeset()
+  {
+    return format("{%s}^{%s}", left.typeset(), right.typeset());
+  }
+  
   public RaiseToPower(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent, int depth)
   {
     super(expression,

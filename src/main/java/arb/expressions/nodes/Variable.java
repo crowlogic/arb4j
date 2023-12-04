@@ -36,13 +36,13 @@ import arb.functions.Function;
  * @see Expression
  * @see Variables
  * 
- * <pre>
+ *      <pre>
  * Copyright ©2023 Stephen Crowley
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
+ *      </pre>
  */
 public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
                      Node<D, R, F>
@@ -156,6 +156,12 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
   {
     assert false : "a variable is never reusable(overwritable)";
     return null;
+  }
+
+  @Override
+  public String typeset()
+  {
+    return reference.typeset();
   }
 
 }

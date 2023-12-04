@@ -63,4 +63,16 @@ public class Reference
   public String name;
 
   public String index;
+
+  public String typeset()
+  {
+    if (index != null)
+    {
+      return String.format("%s[%s]", name, index);
+    }
+    else
+    {
+      return name;
+    }
+  }
 }
