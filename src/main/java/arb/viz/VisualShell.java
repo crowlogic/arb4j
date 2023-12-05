@@ -1,18 +1,24 @@
 package arb.viz;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.scilab.forge.jlatexmath.LaTeXAtom;
+import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -126,16 +132,44 @@ public class VisualShell extends
     displayResult(result, false);
   }
 
+  boolean isLaTeX(String str)
+  {
+    str = str.replace("\"","");
+    System.out.println( "isLatex " + str );
+    // Implement logic to determine if 'str' is a LaTeX expression
+    return str.startsWith("$") && str.endsWith("$");
+  }
+
+
+
   void displayResult(String result, boolean error)
   {
-    Text output = new Text("output: " + result);
-
-    if (error)
+    if (isLaTeX(result))
     {
-      output.setFill(Color.RED);
+      TeXFormula    formula       = new TeXFormula(result);
+      TeXIcon       icon          = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 20);
+
+      BufferedImage bufferedImage = new BufferedImage(icon.getIconWidth(),
+                                                      icon.getIconHeight(),
+                                                      BufferedImage.TYPE_INT_ARGB);
+      Graphics2D    graphics2D    = bufferedImage.createGraphics();
+      icon.paintIcon(null, graphics2D, 0, 0);
+      graphics2D.dispose();
+
+      Image     image     = SwingFXUtils.toFXImage(bufferedImage, null);
+      ImageView imageView = new ImageView(image);
+      mainContainer.getChildren().add(imageView);
     }
-    output.setFont(new Font(16));
-    mainContainer.getChildren().add(output);
+    else
+    {
+      Text output = new Text("output: " + result);
+      if (error)
+      {
+        output.setFill(Color.RED);
+      }
+      output.setFont(new Font(16));
+      mainContainer.getChildren().add(output);
+    }
   }
 
   TextField addNewInputField()

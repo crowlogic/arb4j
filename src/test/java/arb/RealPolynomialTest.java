@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 public class RealPolynomialTest extends
                                 TestCase
 {
-  public static void testAddition()
+  public static void testLeftShift()
   {
     RealPolynomial p = new RealPolynomial(5);
     p.get(2).set(π);

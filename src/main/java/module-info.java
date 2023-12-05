@@ -15,6 +15,7 @@ module arb4j
   requires transitive javafx.fxml;
   requires transitive javafx.graphics;
   requires transitive javafx.controls;
+  requires transitive javafx.swing;  
   requires transitive junit;
   requires transitive j.text.utils;
   requires transitive jlatexmath;

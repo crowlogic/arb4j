@@ -89,6 +89,11 @@
 			<artifactId>javafx-base</artifactId>
 			<version>20.0.2</version>
 		</dependency>
+			<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-swing</artifactId>
+			<version>20.0.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-fxml</artifactId>
