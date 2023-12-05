@@ -47,9 +47,9 @@ import arb.functions.real.RealFunction;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class JacobiPolynomialSequence implements
-                                      OrthogonalBasis<Real, JacobiPolynomial>,
-                                      AutoCloseable
+public class JacobiPolynomialSequence<J extends JacobiPolynomial<?>> implements
+                                     OrthogonalBasis<Real, J>,
+                                     AutoCloseable
 {
   public static int           bits    = 128;
   public Real                 α       = new Real();
@@ -120,7 +120,7 @@ public class JacobiPolynomialSequence implements
   }
 
   @Override
-  public Iterator<JacobiPolynomial> iterator()
+  public Iterator<J> iterator()
   {
     assert false : "TODO";
     return null;

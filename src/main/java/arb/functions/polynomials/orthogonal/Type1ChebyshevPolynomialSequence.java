@@ -7,7 +7,7 @@ import arb.RealConstants;
  * Polynomial Pₙ with α=β=−½ such that <br>
  * <br>
  * 
- * Tₙ(x) = Pₙ(−½,−½,x) / π​*Γ(n+1)/Γ(n+½)
+ * Tₙ(x) = Pₙ(−½,−½,x) * π​*Γ(n+1)/Γ(n+½)
  * 
  * <pre>
  * Copyright ©2023 Stephen Crowley
@@ -18,7 +18,7 @@ import arb.RealConstants;
  * </pre>
  */
 public class Type1ChebyshevPolynomialSequence extends
-                                              JacobiPolynomialSequence
+                                              JacobiPolynomialSequence<Type1ChebyshevPolynomial>
 
 {
 

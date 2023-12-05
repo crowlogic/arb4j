@@ -1,7 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
 import arb.RealPolynomial;
-import arb.arblib;
 
 /**
  * 
@@ -13,22 +12,22 @@ import arb.arblib;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class JacobiPolynomial extends
-                              RealPolynomial
+public class JacobiPolynomial<J extends JacobiPolynomial<?>> extends
+                             RealPolynomial
 {
 
-  public JacobiPolynomial(JacobiPolynomialSequence sequence, int n)
+  public JacobiPolynomial(JacobiPolynomialSequence<J> sequence, int n)
   {
     this.sequence = sequence;
     this.n        = n;
-    init(n+1);
-    assert getLength() == n+1;
-    //assert false : "TODO: evaluate 3-term recurrence and initialize polynomial coeffecients";
+    init(n + 1);
+    assert getLength() == n + 1;
+    // assert false : "TODO: evaluate 3-term recurrence and initialize polynomial
+    // coeffecients";
   }
 
+  final JacobiPolynomialSequence<J> sequence;
 
-  final JacobiPolynomialSequence sequence;
-
-  final int                      n;
+  final int                         n;
 
 }

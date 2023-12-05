@@ -23,8 +23,8 @@ public class JacobiPolynomialTest extends
 
   public static void testA()
   {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                                      half))
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   half))
     {
       try ( Real result = seq.A.evaluate(one, 1, bits, new Real()))
       {
@@ -38,8 +38,8 @@ public class JacobiPolynomialTest extends
 
   public static void testAChebyshev()
   {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(negHalf,
-                                                                      negHalf);
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf);
           Real three = new Real("3",
                                 128);)
     {
@@ -55,8 +55,8 @@ public class JacobiPolynomialTest extends
 
   public static void testB()
   {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                                      half))
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   half))
     {
       try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
       {
@@ -69,8 +69,8 @@ public class JacobiPolynomialTest extends
 
   public static void testC()
   {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                                      half))
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   half))
     {
       try ( Real result = seq.C.evaluate(one, 1, bits, new Real()))
       {
@@ -84,8 +84,8 @@ public class JacobiPolynomialTest extends
 
   public static void testa()
   {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                                      half))
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   half))
     {
       try ( Real result = seq.a.evaluate(one, 1, bits, new Real()))
       {
@@ -99,8 +99,8 @@ public class JacobiPolynomialTest extends
 
   public static void testb()
   {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                                      half))
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   half))
     {
       try ( Real result = seq.b.evaluate(one, 1, bits, new Real()))
       {
@@ -114,8 +114,8 @@ public class JacobiPolynomialTest extends
 
   public static void testc()
   {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                                      half))
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   half))
     {
       try ( Real result = seq.c.evaluate(one, 1, bits, new Real()))
       {
@@ -129,8 +129,8 @@ public class JacobiPolynomialTest extends
 
   public static void testd()
   {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                                      half))
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   half))
     {
       try ( Real result = seq.d.evaluate(one, 1, bits, new Real()))
       {
@@ -144,8 +144,8 @@ public class JacobiPolynomialTest extends
 
   public static void testP1()
   {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
-                                                                      half))
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   half))
     {
       try ( Real result = seq.p1.evaluate(one, 0, bits, new Real()))
       {
