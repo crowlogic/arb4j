@@ -688,12 +688,13 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
       }
       else
       {
-        throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n",
+        throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n, expression=%s\n",
                                                  startPos,
                                                  position,
                                                  functionOrVariableName,
                                                  isFunction,
-                                                 depth));
+                                                 depth,
+                                                 expression));
       }
     }
     else if (LiteralConstant.constantSymbols.contains(functionOrVariableName.name))
@@ -752,12 +753,17 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
     {
       int indexPosition = position;
 
-      while (ch != ']')
+      while (!eat(depth, ']') && position < expression.length())
       {
         nextChar();
       }
-      index = expression.substring(indexPosition, position);
+      index = expression.substring(indexPosition, position - 1);
+//      if ()
+//      {
+//        throw new ExpressionCompilerException("missing closing ']' at " + position + " of '" + expression + "'");
+//      }
     }
+
     if (verbose)
     {
       err.format("eatName(depth=%d): startPos=%d, position=%d, identifier='%s' index='%s' ch='%c'\n",
