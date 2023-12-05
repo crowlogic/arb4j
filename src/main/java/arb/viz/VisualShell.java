@@ -13,6 +13,7 @@ import org.scilab.forge.jlatexmath.TeXIcon;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -184,7 +185,15 @@ public class VisualShell extends
     });
 
     // Capture key events for history navigation
-    inputField.addEventFilter(KeyEvent.KEY_PRESSED, event ->
+    inputField.addEventFilter(KeyEvent.KEY_PRESSED, keyPressEventFilter(inputField));
+
+    mainContainer.getChildren().add(inputField);
+    return inputField;
+  }
+
+  public EventHandler<? super KeyEvent> keyPressEventFilter(TextField inputField)
+  {
+    return event ->
     {
       if (event.getCode() == KeyCode.UP)
       {
@@ -208,10 +217,7 @@ public class VisualShell extends
         }
         event.consume(); // Prevent default behavior
       }
-    });
-
-    mainContainer.getChildren().add(inputField);
-    return inputField;
+    };
   }
 
   private ArrayList<String> commandHistory = new ArrayList<>();
