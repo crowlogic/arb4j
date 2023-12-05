@@ -3,6 +3,11 @@ package arb.functions.polynomials.orthogonal;
 import arb.RealConstants;
 
 /**
+ * The Chebyshev polynomials of the first kind are an instance of the Jacobi
+ * Polynomial Pₙ with α=β=−½ such that <br>
+ * <br>
+ * 
+ * Tₙ(x) = Pₙ(−½,−½,x)×π​×Γ(n+1)/Γ(n+½)
  * 
  * <pre>
  * Copyright ©2023 Stephen Crowley
@@ -12,12 +17,12 @@ import arb.RealConstants;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class ChebyshevyPolynomialSequence extends
-                                          JacobiPolynomialSequence
+public class Type1ChebyshevPolynomialSequence extends
+                                              JacobiPolynomialSequence
 
 {
 
-  public ChebyshevyPolynomialSequence(int n)
+  public Type1ChebyshevPolynomialSequence(int n)
   {
     super(RealConstants.half,
           RealConstants.half);
