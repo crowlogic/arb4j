@@ -5,6 +5,10 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.scilab.forge.jlatexmath.LaTeXAtom;
+import org.scilab.forge.jlatexmath.TeXFormula;
+import org.scilab.forge.jlatexmath.TeXIcon;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -19,6 +23,8 @@ import jdk.jshell.Snippet.Status;
 import jdk.jshell.SnippetEvent;
 
 /**
+ * TODO: render {@link TeXIcon}s with {@link TeXFormula}s for latex outputs
+ * 
  * <pre>
  * Copyright ©2023 Stephen Crowley
  * 
@@ -27,8 +33,8 @@ import jdk.jshell.SnippetEvent;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class InteractiveREPLShell extends
-                                  Application
+public class VisualShell extends
+                         Application
 {
 
   private VBox       mainContainer;
