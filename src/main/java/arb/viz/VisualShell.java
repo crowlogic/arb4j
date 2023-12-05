@@ -1,9 +1,9 @@
 package arb.viz;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +18,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -148,7 +149,7 @@ public class VisualShell extends
       TeXFormula    formula       = new TeXFormula(result);
 
       BufferedImage bufferedImage = (BufferedImage) formula.createBufferedImage(TeXConstants.STYLE_DISPLAY,
-                                                                                20,
+                                                                                30,
                                                                                 java.awt.Color.BLACK,
                                                                                 java.awt.Color.WHITE);
 
@@ -178,10 +179,43 @@ public class VisualShell extends
       String input = inputField.getText();
       inputField.setEditable(false); // Disable the field after input
       evaluateInput(input);
+      commandHistory.add(input); // Add command to history
+      historyIndex = commandHistory.size(); // Reset history index
     });
+
+    // Capture key events for history navigation
+    inputField.addEventFilter(KeyEvent.KEY_PRESSED, event ->
+    {
+      if (event.getCode() == KeyCode.UP)
+      {
+        if (historyIndex > 0)
+        {
+          historyIndex--;
+          inputField.setText(commandHistory.get(historyIndex));
+        }
+        event.consume(); // Prevent default behavior
+      }
+      else if (event.getCode() == KeyCode.DOWN)
+      {
+        if (historyIndex < commandHistory.size() - 1)
+        {
+          historyIndex++;
+          inputField.setText(commandHistory.get(historyIndex));
+        }
+        else
+        {
+          inputField.clear();
+        }
+        event.consume(); // Prevent default behavior
+      }
+    });
+
     mainContainer.getChildren().add(inputField);
     return inputField;
   }
+
+  private ArrayList<String> commandHistory = new ArrayList<>();
+  private int               historyIndex   = 0;
 
   public static void main(String[] args)
   {
