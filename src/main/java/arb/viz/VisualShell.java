@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
-import org.scilab.forge.jlatexmath.TeXIcon;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
