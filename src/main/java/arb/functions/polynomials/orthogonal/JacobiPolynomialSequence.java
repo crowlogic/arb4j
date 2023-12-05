@@ -68,14 +68,14 @@ public class JacobiPolynomialSequence implements
                                                 verbose);
 
   final public RealFunction   B       = express("B",
-                                                "(α^2 - β^2)*(2*n + α + β + 1)) / (2*(n + 1)*(n + α + β + 1)*(2*n + α + β)",
+                                                "(α^2 - β^2)*(2*n + α + β + 1) / (2*(n + 1)*(n + α + β + 1)*(2*n + α + β))",
                                                 context,
                                                 verbose);
 
   final public RealFunction   C       = express("C",
-                                                "(n + α)*(n + β)*(2*n + α + β + 2)) / ((n + 1)*(n + α + β + 1)*(2*n + α + β)",
+                                                "(n + α)*(n + β)*(2*n + α + β + 2) / ((n + 1)*(n + α + β + 1)*(2*n + α + β))",
                                                 context,
-                                                true);
+                                                verbose);
 
   final public RealFunction   d       = express("d", "2*n+α+β", context, verbose);
 

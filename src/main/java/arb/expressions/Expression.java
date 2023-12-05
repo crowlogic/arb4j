@@ -565,11 +565,12 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
       node = eatFirst(depth + 1);
       if (!eat(depth + 1, ')'))
       {
-        throw new ExpressionCompilerException(String.format("expected closing parenthesis at: depth=%d startPos=%s, position=%s, node=%s\n",
+        throw new ExpressionCompilerException(String.format("expected closing parenthesis at: depth=%d startPos=%s, position=%s in expression '%s' of length %d",
                                                             depth,
                                                             startPos,
                                                             position,
-                                                            node));
+                                                            expression,
+                                                            expression.length()));
       }
 
     }
