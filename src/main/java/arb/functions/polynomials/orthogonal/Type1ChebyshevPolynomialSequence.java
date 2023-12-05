@@ -24,8 +24,8 @@ public class Type1ChebyshevPolynomialSequence extends
 
   public Type1ChebyshevPolynomialSequence(int n)
   {
-    super(RealConstants.half,
-          RealConstants.half);
+    super(RealConstants.negHalf,
+          RealConstants.negHalf);
   }
 
 }
