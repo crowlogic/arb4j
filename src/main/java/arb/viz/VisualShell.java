@@ -180,8 +180,8 @@ public class VisualShell extends
       String input = inputField.getText();
       inputField.setEditable(false); // Disable the field after input
       evaluateInput(input);
-      commandHistory.add(input); // Add command to history
-      historyIndex = commandHistory.size(); // Reset history index
+      controlInputHistory.add(input); // Add command to history
+      historyIndex = controlInputHistory.size(); // Reset history index
     });
 
     // Capture key events for history navigation
@@ -200,16 +200,16 @@ public class VisualShell extends
         if (historyIndex > 0)
         {
           historyIndex--;
-          inputField.setText(commandHistory.get(historyIndex));
+          inputField.setText(controlInputHistory.get(historyIndex));
         }
         event.consume(); // Prevent default behavior
       }
       else if (event.getCode() == KeyCode.DOWN)
       {
-        if (historyIndex < commandHistory.size() - 1)
+        if (historyIndex < controlInputHistory.size() - 1)
         {
           historyIndex++;
-          inputField.setText(commandHistory.get(historyIndex));
+          inputField.setText(controlInputHistory.get(historyIndex));
         }
         else
         {
@@ -220,8 +220,8 @@ public class VisualShell extends
     };
   }
 
-  private ArrayList<String> commandHistory = new ArrayList<>();
-  private int               historyIndex   = 0;
+  private ArrayList<String> controlInputHistory = new ArrayList<>();
+  private int               historyIndex        = 0;
 
   public static void main(String[] args)
   {
