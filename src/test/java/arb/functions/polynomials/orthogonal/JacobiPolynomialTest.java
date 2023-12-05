@@ -69,13 +69,13 @@ public class JacobiPolynomialTest extends
 
   public static void testC()
   {
-    try ( var seq = new JacobiPolynomialSequence<>(half,
-                                                   half))
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf))
     {
       try ( Real result = seq.C.evaluate(one, 1, bits, new Real()))
       {
-        out.println("C(1)=" + result);
-        assertEquals(0.625, result.doubleValue());
+        out.println("P(-1/2,-1/2).C(1)=" + result);
+        assertEquals(0.375, result.doubleValue());
         assertTrue(result.isExact());
       }
     }
@@ -89,7 +89,7 @@ public class JacobiPolynomialTest extends
     {
       try ( Real result = seq.a.evaluate(one, 1, bits, new Real()))
       {
-        out.println("a(1)=" + result);
+        out.println("P(1/2,1/2).a(1)=" + result);
 
         assertEquals(0.33333333333333333333333333333, result.doubleValue());
       }
@@ -104,7 +104,7 @@ public class JacobiPolynomialTest extends
     {
       try ( Real result = seq.b.evaluate(one, 1, bits, new Real()))
       {
-        out.println("b(1)=" + result);
+        out.println("P(1/2,1/2).b(1)=" + result);
 
         assertEquals(2.0, result.doubleValue());
       }
@@ -119,7 +119,7 @@ public class JacobiPolynomialTest extends
     {
       try ( Real result = seq.c.evaluate(one, 1, bits, new Real()))
       {
-        out.println("c(1)=" + result);
+        out.println("P(1/2,1/2).c(1)=" + result);
 
         assertEquals(0.666666666666666666666666, result.doubleValue());
       }
