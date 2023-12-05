@@ -3,7 +3,6 @@ package arb.functions.polynomials.orthogonal;
 import static arb.RealConstants.half;
 import static arb.RealConstants.one;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ASM10_EXPERIMENTAL;
 
 import arb.Real;
 import junit.framework.TestCase;
@@ -32,12 +31,12 @@ public class JacobiPolynomialTest extends
       {
         out.println("A(1)=" + result);
         assertEquals(60.0, result.doubleValue());
-        assertTrue( result.isExact() );
+        assertTrue(result.isExact());
       }
     }
 
   }
-  
+
   public static void testB()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
@@ -46,13 +45,13 @@ public class JacobiPolynomialTest extends
       try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
       {
         out.println("B(1)=" + result);
-       // assertEquals(60.0, result.doubleValue());
-       // assertTrue( result.isExact() );
+        assertEquals(0.0, result.doubleValue());
+        assertTrue(result.isExact());
       }
     }
-
   }
 
+  
   public static void testC()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
@@ -61,13 +60,13 @@ public class JacobiPolynomialTest extends
       try ( Real result = seq.C.evaluate(one, 1, bits, new Real()))
       {
         out.println("C(1)=" + result);
-       // assertEquals(60.0, result.doubleValue());
-       // assertTrue( result.isExact() );
+        assertEquals(0.625, result.doubleValue());
+        assertTrue( result.isExact() );
       }
     }
 
   }
-  
+
   public static void testa()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
@@ -121,8 +120,8 @@ public class JacobiPolynomialTest extends
       try ( Real result = seq.d.evaluate(one, 1, bits, new Real()))
       {
         out.println("d(1)=" + result);
-
         assertEquals(3.0, result.doubleValue());
+        assertTrue( result.isExact() );
       }
     }
 
