@@ -16,6 +16,24 @@ import arb.functions.real.RealFunction;
     return String.format("RealPolynomial[length=%d, coeffs=%s]", getLength(), getCoeffs());
   }
 
+  public RealPolynomial mul( RealPolynomial that, int bits, RealPolynomial result )
+  {
+    arblib.arb_poly_mul(result, this, that, bits );
+    return result;
+  }
+  
+  public RealPolynomial mul( Real that, int bits, RealPolynomial result )
+  {
+    arblib.arb_poly_scalar_mul(result, this, that, bits );
+    return result;
+  }
+  
+  public RealPolynomial div( Real that, int bits, RealPolynomial result )
+  {
+    arblib.arb_poly_scalar_div(result, this, that, bits );
+    return result;
+  }
+  
   /**
    * @see arblib#arb_poly_shift_left(RealPolynomial, RealPolynomial, int)
    * 
