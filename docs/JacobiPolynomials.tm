@@ -82,6 +82,10 @@
   <math|-1>, the integrals at the endpoints of the interval would diverge and
   the weight function would no longer be integrable.\ 
 
+  <\equation*>
+    P<rsub|n><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>=<frac|<around|(|n+\<alpha\>|)>*<around|(|n+\<beta\>|)>*P<rsub|n-1><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>-C<rsub|n>*P<rsub|n-2><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>|<around|(|2*n+\<alpha\>+\<beta\>|)>>
+  </equation*>
+
   \;
 </body>
 
@@ -105,12 +109,12 @@
 <\auxiliary>
   <\collection>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Jacobi
-      Polynomials> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>
+      The Traditional Formulas> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>
-      Formulas> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Jacobi
+      Polynomials> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
     </associate>
   </collection>

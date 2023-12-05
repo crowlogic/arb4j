@@ -43,7 +43,12 @@ import arb.functions.real.RealFunction;
     arblib.arb_poly_shift_right(result, this, n);
     return result;
   }
-  
+ 
+  public Real get(int i)
+  {
+    return i < getLength() ? getCoeffs().get(i) : null;
+  }
+   
   /**
    * Sets {C, max(lenThis, lenThat)} to the sum of {this, thisLen} and {that, thatLen} by calling
    * {@link arblib#arb_poly_add(RealPolynomial, RealPolynomial, RealPolynomial, int)}<br>
