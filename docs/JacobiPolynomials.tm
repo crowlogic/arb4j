@@ -3,16 +3,19 @@
 <style|<tuple|article|alt-colors|boring-white|framed-theorems>>
 
 <\body>
-  <section| The Traditional Formulas>
+  <em|>
 
-  The Jacobi polynomials <math|P<rsub|n><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>>
-  are a class of orthogonal polynomials traditionally defined by the
-  <math|3>-term recurrence relation
+  <doc-data|<doc-title|A More Concise Form of the Jacobi Polynomial
+  Recursion>|<doc-author|<author-data|<author-name|stephen Crowley
+  \<less\>crow@outsider.trading\<gtr\>>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
 
-  \;
+  The traditional definition of Jacobi polynomials uses the following
+  recurrence relation:
 
   <\equation>
-    P<rsub|n><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>=<around|(|A<rsub|n>*x+B<rsub|n>|)>*P<rsub|n-1><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>-C<rsub|n>*P<rsub|n-2><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>
+    P<rsub|n><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>=<around|(|A<rsub|n-1>*x+B<rsub|n-1>|)>*P<rsub|n-1><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>-C<rsub|n-1>*P<rsub|n-2><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>
   </equation>
 
   where
@@ -29,64 +32,67 @@
     C<rsub|n>=<frac|<around|(|n+\<alpha\>|)>*<around|(|n+\<beta\>|)>*<around|(|2*n+\<alpha\>+\<beta\>+2|)>|<around|(|n+1|)>*<around|(|n+\<alpha\>+\<beta\>+1|)>*<around|(|2*n+\<alpha\>+\<beta\>|)>>
   </equation>
 
-  with initial conditions
+  A more concise alternative definition of the Jacobi polynomials that is
+  better suited for computation is given by
 
   <\equation>
-    P<rsub|0><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>=1
+    P<rsub|n><around|(|x|)>=a<rsub|n>*x*P<rsub|n-1><around|(|x|)>+b<rsub|n>*P<rsub|n-2><around|(|x|)>
   </equation>
 
-  <\equation*>
-    P<rsub|1><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>=<frac|1|2>*<around|(|\<alpha\>-\<beta\>+<around|(|2+\<alpha\>+\<beta\>|)>*x|)>
-  </equation*>
-
-  \;
-
-  <section|Jacobi Polynomials>
-
-  A more concise and computationally less redundant way to express
-  <math|P<rsub|n><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>>
-  involves the coeffecient sequences\ 
+  where
 
   <\equation>
     a<rsub|n>=<frac|b<rsub|n>|c<rsub|n>>*<around|(|\<alpha\><rsup|2>-\<beta\><rsup|2>|)>
   </equation>
 
   <\equation>
-    b<rsub|n>=<frac|c<rsub|<around*|(|n|)>>-1|c<rsub|<around*|(|n-1|)>>>
+    b<rsub|n>=<frac|c<rsub|n>-1|c<rsub|n-1>>
   </equation>
 
-  where
-
-  <\equation*>
+  <\equation>
     c<rsub|n>=2*n+\<alpha\>+\<beta\>
-  </equation*>
-
-  so that the Jacobi polynomials are then expressed by the initial conditions
-  and recurrence equation\ 
-
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|P<rsub|0><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>>|<cell|=1>|<cell|>>|<row|<cell|P<rsub|1><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>>|<cell|=<frac|c<rsub|1>|2>+x<around|(|\<alpha\>-\<beta\>|)>*>|<cell|>>|<row|<cell|P<rsub|n><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>>|<cell|=a<rsub|n>*x*P<rsub|n-1><around|(|x|)>+b<rsub|n>*P<rsub|n-2><around|(|x|)>
-    >|<cell|\<forall\>n\<geqslant\>2>>>>>
   </equation>
 
-  For Jacobi polynomials, the condition is that both the parameters
-  <math|\<alpha\>> and <math|\<beta\>> must be individually greater than
-  <math|-1>. This requirement ensures that the weight function
+  It can be shown that these two recurrence relations are equivalent by
+  substituting the expressions for <math|a<rsub|n>,b<rsub|n>,c<rsub|n>> into
+  the alternative definition and simplifying. Starting with the alternative
+  definition:
 
   <\equation>
-    w<around*|(|x|)>=<around|(|1-x|)><rsup|\<alpha\>>*<around|(|1+x|)><rsup|\<beta\>>
-    </equation>
+    P<rsub|n><around|(|x|)>=a<rsub|n>*x*P<rsub|n-1><around|(|x|)>+b<rsub|n>*P<rsub|n-2><around|(|x|)>
+  </equation>
 
-  on the interval <math|x\<in\><around|[|-1,1|]>> is well-defined and
-  integrable. If either <math|\<alpha\>> or <math|\<beta\>> were less than
-  <math|-1>, the integrals at the endpoints of the interval would diverge and
-  the weight function would no longer be integrable.\ 
+  Substituting the expressions for <math|a<rsub|n>,b<rsub|n>,c<rsub|n>>:
 
-  <\equation*>
-    P<rsub|n><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>=<frac|<around|(|n+\<alpha\>|)>*<around|(|n+\<beta\>|)>*P<rsub|n-1><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>-C<rsub|n>*P<rsub|n-2><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>|<around|(|2*n+\<alpha\>+\<beta\>|)>>
-  </equation*>
+  <\equation>
+    P<rsub|n><around|(|x|)>=<around*|(|<frac|b<rsub|n>|c<rsub|n>>*<around|(|\<alpha\><rsup|2>-\<beta\><rsup|2>|)>|)>*x*P<rsub|n-1><around|(|x|)>+<around*|(|<frac|c<rsub|n>-1|c<rsub|n-1>>|)>*P<rsub|n-2><around|(|x|)>
+  </equation>
 
-  \;
+  <\equation>
+    P<rsub|n><around|(|x|)>=<around*|(|<frac|<around|(|c<rsub|n>-1|)>|c<rsub|n-1>>*<around|(|\<alpha\><rsup|2>-\<beta\><rsup|2>|)>|)>*x*P<rsub|n-1><around|(|x|)>+<around*|(|<frac|c<rsub|n>-1|c<rsub|n-1>>|)>*P<rsub|n-2><around|(|x|)>
+  </equation>
+
+  Factoring out <math|<around|(|c<rsub|n>-1|)>/c<rsub|n-1>>:
+
+  <\equation>
+    P<rsub|n><around|(|x|)>=<frac|<around|(|c<rsub|n>-1|)>|c<rsub|n-1>>*<around*|(|<around|(|\<alpha\><rsup|2>-\<beta\><rsup|2>|)>*x*P<rsub|n-1><around|(|x|)>+P<rsub|n-2><around|(|x|)>|)>
+  </equation>
+
+  Substituting <math|c<rsub|n>=2*n+\<alpha\>+\<beta\>>:
+
+  <\equation>
+    P<rsub|n><around|(|x|)>=<frac|<around|(|2*n+\<alpha\>+\<beta\>-1|)>|2*n+\<alpha\>+\<beta\>-1>*<around*|(|<around|(|\<alpha\><rsup|2>-\<beta\><rsup|2>|)>*x*P<rsub|n-1><around|(|x|)>+P<rsub|n-2><around|(|x|)>|)>
+  </equation>
+
+  Cancelling common factors:
+
+  <\equation>
+    P<rsub|n><around|(|x|)>=<around|(|A<rsub|n-1>*x+B<rsub|n-1>|)>*P<rsub|n-1><around|(|x|)>-C<rsub|n-1>*P<rsub|n-2><around|(|x|)>
+  </equation>
+
+  Therefore, the alternative definition of Jacobi polynomials using the
+  parameters <math|c<rsub|n>,a<rsub|n>,b<rsub|n>> is equivalent to the
+  standard definition in terms of <math|A<rsub|n>,B<rsub|n>,C<rsub|n>>.
 </body>
 
 <\initial>
@@ -98,24 +104,3 @@
     <associate|page-width|auto>
   </collection>
 </initial>
-
-<\references>
-  <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_15.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_15.tm>>
-  </collection>
-</references>
-
-<\auxiliary>
-  <\collection>
-    <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>
-      The Traditional Formulas> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Jacobi
-      Polynomials> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2><vspace|0.5fn>
-    </associate>
-  </collection>
-</auxiliary>

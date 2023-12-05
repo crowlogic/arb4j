@@ -433,7 +433,17 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
     methodVisitor.visitCode();
     methodVisitor.visitLabel(startLabel);
 
-    eatRootNode().generate(methodVisitor);
+    Node<D, R, F> rootNode = eatRootNode();
+
+    if (position < expression.length())
+    {
+      throw new ExpressionCompilerException(String.format("unexpected '%c' character at position=%s in expression '%s' of length %d\n",
+                                                          ch,
+                                                          position,
+                                                          expression,
+                                                          expression.length()));
+    }
+    rootNode.generate(methodVisitor);
 
     if (verbose)
     {
@@ -559,8 +569,9 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
                                                             depth,
                                                             startPos,
                                                             position,
-                                                            node.toString()));
+                                                            node));
       }
+
     }
     else if (Parser.isNumeric(ch))
     {
@@ -571,6 +582,10 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
     {
       node = eatFunctionInvocationOrVariableReference(depth, startPos);
       assert node != null : "eatFunctionInvocationOrVariableReference returned null";
+    }
+    else if (ch == ')')
+    {
+      assert false : "wack";
     }
 
     if (verbose)
@@ -1094,7 +1109,7 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
                                                      rangeClass,
                                                      functionClass,
                                                      verbose);
-    //out.println("instantiating $" + compiledExpression.rootNode.typeset() + "$");
+    // out.println("instantiating $" + compiledExpression.rootNode.typeset() + "$");
     return compiledExpression.instantiate();
   }
 

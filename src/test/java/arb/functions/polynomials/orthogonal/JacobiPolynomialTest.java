@@ -28,6 +28,51 @@ public class JacobiPolynomialTest extends
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
                                                                       half))
     {
+      try ( Real result = seq.A.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("A(1)=" + result);
+        assertEquals(60.0, result.doubleValue());
+        assertTrue( result.isExact() );
+      }
+    }
+
+  }
+  
+  public static void testB()
+  {
+    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
+                                                                      half))
+    {
+      try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("B(1)=" + result);
+       // assertEquals(60.0, result.doubleValue());
+       // assertTrue( result.isExact() );
+      }
+    }
+
+  }
+
+  public static void testC()
+  {
+    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
+                                                                      half))
+    {
+      try ( Real result = seq.C.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("C(1)=" + result);
+       // assertEquals(60.0, result.doubleValue());
+       // assertTrue( result.isExact() );
+      }
+    }
+
+  }
+  
+  public static void testa()
+  {
+    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
+                                                                      half))
+    {
       try ( Real result = seq.a.evaluate(one, 1, bits, new Real()))
       {
         out.println("a(1)=" + result);
@@ -38,7 +83,7 @@ public class JacobiPolynomialTest extends
 
   }
 
-  public static void testB()
+  public static void testb()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
                                                                       half))
@@ -53,7 +98,7 @@ public class JacobiPolynomialTest extends
 
   }
 
-  public static void testC()
+  public static void testc()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
                                                                       half))
@@ -68,7 +113,7 @@ public class JacobiPolynomialTest extends
 
   }
 
-  public static void testD()
+  public static void testd()
   {
     try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(half,
                                                                       half))
