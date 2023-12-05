@@ -31,8 +31,6 @@ import jdk.jshell.Snippet.Status;
 import jdk.jshell.SnippetEvent;
 
 /**
- * TODO: render {@link TeXIcon}s with {@link TeXFormula}s for latex outputs
- * 
  * <pre>
  * Copyright ©2023 Stephen Crowley
  * 
@@ -45,9 +43,9 @@ public class VisualShell extends
                          Application
 {
 
-  private VBox       mainContainer;
-  private ScrollPane scrollPane;
-  private JShell     jshell;
+  VBox       mainContainer;
+  ScrollPane scrollPane;
+  JShell     jshell;
 
   @Override
   public void start(Stage primaryStage)
@@ -220,8 +218,8 @@ public class VisualShell extends
     };
   }
 
-  private ArrayList<String> controlInputHistory = new ArrayList<>();
-  private int               historyIndex        = 0;
+  ArrayList<String> controlInputHistory = new ArrayList<>();
+  int               historyIndex        = 0;
 
   public static void main(String[] args)
   {
