@@ -4,7 +4,7 @@
 
 <\body>
   <doc-data|<\doc-title>
-    Nonintegrable Kernel Functions on Noncompact Domains through Mercer's and
+    Nonintegrable Kernel Functions on Noncompact Domains: Mercer's and
     Bochner's Theorems
   </doc-title>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
