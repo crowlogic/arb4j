@@ -6,6 +6,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 
 import arb.Field;
+import arb.Typesettable;
 import arb.expressions.Expression;
 import arb.expressions.Variables;
 import arb.functions.Function;
@@ -19,7 +20,8 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
+public abstract class Node<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> implements
+                          Typesettable
 {
   public static boolean      verbose  = false;
 
