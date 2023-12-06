@@ -4,10 +4,9 @@ import arb.Complex;
 import arb.functions.complex.MeromorphicFunction;
 
 /**
- * Represents an elliptic function, a type of complex function notable for its
- * appearance in various areas of mathematics and physics. These functions are
- * doubly periodic, meaning they repeat their values in two directions in the
- * complex plane.
+ * Represents an elliptic function, a type of {@link MeromorphicFunction}
+ * notable for being doubly periodic, meaning that it is periodic in two
+ * directions.
  * 
  * <p>
  * An elliptic function is a {@link MeromorphicFunction} on the {@link Complex}
