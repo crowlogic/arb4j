@@ -50,6 +50,9 @@ try (Real x = new Real("25", 128)) {
 - A symbolic parser and compiler for automatic differentiation is in development. 
 - Current progress can be tracked at: [GitHub Issue #253](https://github.com/crowlogic/arb4j/issues/253).
 
+## Forked modularized version of jlatexmath 
+See [this](https://github.com/crowlogic/jlatexmath) for a version of jlatexmath without the unnamed module warnings
+
 ## Licensing
 
 arb4j is licensed under the Mozilla Public License 2.0. For more details, please refer to the [COPYRIGHT](https://github.com/crowlogic/arb4j/blob/master/COPYRIGHT) file in the project repository.
