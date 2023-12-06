@@ -12,7 +12,6 @@ public class FastDFTChineseRemainder {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public FastDFTChineseRemainder(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

@@ -26,7 +26,6 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public RealMatrix(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

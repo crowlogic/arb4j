@@ -4,15 +4,9 @@
  
 %include "init.i"
 
-
-%inline %{
-static jfieldID FID_arb_Integer_value;
-%}
-
 %typemap(javabody) SWIGTYPE (CLASS::Real) %{
   protected long swigCPtr;
   protected boolean swigCMemOwn;
-
 
   public $javaclassname(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
@@ -23,61 +17,17 @@ static jfieldID FID_arb_Integer_value;
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 %}
- 
-   static jfieldID FID_arb_Integer_value;
- 
- 
+  
 #define __signed__
 #define slong signed long 
 #define ulong unsigned long 
 #define fmpr_rnd_t int
 #define arf_rnd_t int
+#define fmpz_t signed long long
 
 typedef mag_struct mag_t[1];
 typedef mag_struct * mag_ptr;
 typedef unsigned long* unsigned_long_ptr;
-
-%inline %{
- static jfieldID FID_arb_Integer;
-%}
-
-%init %{
-    jclass integerClass = (*env)->FindClass( env, "arb/Integer");
-    if (integerClass == NULL) {
-        fprintf(stderr, "Error: Class 'arb/Integer' not found\n");
-        abort();
-    }
-
-    FID_arb_Integer_value = (*env)->GetFieldID(env, integerClass, "valueFieldName", "J");
-    if (FID_arb_Integer_value == NULL) {
-        fprintf(stderr, "Error: Field 'valueFieldName' not found in 'arb/Integer'\n");
-        abort();
-    }
-%}
-
-%typemap(jni) fmpz_t "jobject"
-%typemap(javaout) fmpz_t {
-    return new arb.Integer($jnicall);
-}
-
-// Define the Java class for fmpz_t
-%typemap(javaclassname) fmpz_t "arb.Integer"
-
-// Typemap for input (Java to C)
-%typemap(in) fmpz_t {
-       $1 = (fmpz_t) JCALL2(GetLongField, jenv, $input, FID_arb_Integer_value);
-}
-
-// Typemap for output (C to Java)
-%typemap(out) fmpz_t {
-    jobject result = JCALL3(NewObject, jenv, CID_arb_Integer, MID_arb_Integer_constructor, (jlong)$1);
-    $result = result;
-}
-
-// Typemap for Java input argument
-%typemap(javain) fmpz_t "$javainput"
-
-
 
 %ignore size;
 %ignore alloc;

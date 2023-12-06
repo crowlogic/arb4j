@@ -12,7 +12,6 @@ public class DirichletPrimeGroup {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public DirichletPrimeGroup(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

@@ -12,7 +12,6 @@ public class FastDFTScheme {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public FastDFTScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

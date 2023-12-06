@@ -9,11 +9,6 @@
 package arb;
 
 public class arblibJNI {
-  public final static native void FID_arb_Integer_value_set(long jarg1);
-  public final static native long FID_arb_Integer_value_get();
-  public final static native void FID_arb_Integer_set(long jarg1);
-  public final static native long FID_arb_Integer_get();
-  public final static native void fmpz_zero(long jarg1);
   public final static native void arb_poly_get_coeff_ptr(long jarg1, RealPolynomial jarg1_, int jarg2);
   public final static native void arb_poly_get_coeff_arb(long jarg1, Real jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3);
   public final static native void arb_poly_set_coeff_arb(long jarg1, RealPolynomial jarg1_, int jarg2, long jarg3, Real jarg3_);

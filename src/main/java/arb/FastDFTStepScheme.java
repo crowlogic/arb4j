@@ -12,7 +12,6 @@ public class FastDFTStepScheme {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public FastDFTStepScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

@@ -14,7 +14,6 @@ public class DirichletGroup implements AutoCloseable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public DirichletGroup(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

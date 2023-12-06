@@ -12,7 +12,6 @@ public class FastDFTRadix2Scheme {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public FastDFTRadix2Scheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

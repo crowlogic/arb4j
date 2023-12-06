@@ -14,7 +14,6 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public Magnitude(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

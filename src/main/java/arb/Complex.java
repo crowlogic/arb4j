@@ -34,7 +34,6 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public Complex(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

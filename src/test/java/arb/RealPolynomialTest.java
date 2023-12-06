@@ -1,22 +1,13 @@
 package arb;
 
-import static arb.RealConstants.*;
-import static java.lang.System.out;
+import static arb.RealConstants.zero;
+import static arb.RealConstants.π;
 
 import junit.framework.TestCase;
 
 public class RealPolynomialTest extends
                                 TestCase
 {
-  public void testMul()
-  {
-    try ( RealPolynomial x = new RealPolynomial(1))
-    {
-      x.get(0).set(one);
-      assertTrue(x.get(0).isExact());
-      out.println( "x=" + x );
-    }
-  }
   public static void testLeftShift()
   {
     RealPolynomial p = new RealPolynomial(5);

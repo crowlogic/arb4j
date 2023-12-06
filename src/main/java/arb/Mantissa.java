@@ -12,7 +12,6 @@ public class Mantissa {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-
   public Mantissa(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
