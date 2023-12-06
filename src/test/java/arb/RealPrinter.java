@@ -1,6 +1,17 @@
 package arb;
 
-
+/**
+ * @author The Absurd Surd
+ * 
+ *         crow@c17:~$ lookup surd 4 definitions found
+ * 
+ *         From The Collaborative International Dictionary of English v.0.48
+ *         [gcide]:
+ * 
+ *         Surd \Surd\, n. (Math.) 1. A quantity which can not be expressed by
+ *         rational numbers; thus, [root]2 is a surd. [1913 Webster]
+ * 
+ */
 public class RealPrinter
 {
 //  public static ArbStrParts arbGetStrParts(Real x, long n, boolean more)
