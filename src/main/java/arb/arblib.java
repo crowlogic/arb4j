@@ -9,6 +9,26 @@
 package arb;
 
 public class arblib {
+  public static int fmpz_set_str(long f, String str, int b) {
+    return arblibJNI.fmpz_set_str(f, str, b);
+  }
+
+  public static String fmpz_get_str(String str, int b, long f) {
+    return arblibJNI.fmpz_get_str(str, b, f);
+  }
+
+  public static void fmpz_init(long f) {
+    arblibJNI.fmpz_init(f);
+  }
+
+  public static void fmpz_clear(long f) {
+    arblibJNI.fmpz_clear(f);
+  }
+
+  public static void fmpz_init2(long f, long limbs) {
+    arblibJNI.fmpz_init2(f, limbs);
+  }
+
   public static void arb_poly_get_coeff_ptr(RealPolynomial poly, int n) {
     arblibJNI.arb_poly_get_coeff_ptr(RealPolynomial.getCPtr(poly), poly, n);
   }

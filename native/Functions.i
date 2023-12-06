@@ -19,6 +19,14 @@
     }
 }
 
+ int fmpz_set_str(fmpz_t f, const char *str, int b);
+ 
+ char *fmpz_get_str(char *str, int b, const fmpz_t f);
+ 
+void fmpz_init(fmpz_t f) { *f = WORD(0); }
+void fmpz_clear(fmpz_t f) { if (COEFF_IS_MPZ(*f)) _fmpz_clear_mpz(*f); }
+ void fmpz_init2(fmpz_t f, ulong limbs);
+ 
 void arb_poly_get_coeff_ptr(arb_poly_t poly, slong n);
  
 void arb_poly_get_coeff_arb(arb_t v, const arb_poly_t poly, slong n);
