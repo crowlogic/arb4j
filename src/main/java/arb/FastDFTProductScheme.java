@@ -12,6 +12,7 @@ public class FastDFTProductScheme {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public FastDFTProductScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

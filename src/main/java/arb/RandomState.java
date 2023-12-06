@@ -14,6 +14,7 @@ public class RandomState implements RandomVectorGenerator {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public RandomState(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

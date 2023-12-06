@@ -15,6 +15,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public RealPolynomial(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

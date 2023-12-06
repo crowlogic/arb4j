@@ -38,6 +38,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public Float(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

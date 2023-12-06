@@ -12,6 +12,7 @@ public class GMPRandomState {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public GMPRandomState(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

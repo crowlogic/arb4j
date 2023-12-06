@@ -19,6 +19,8 @@
     }
 }
 
+void fmpz_zero(fmpz_t f);
+
 void arb_poly_get_coeff_ptr(arb_poly_t poly, slong n);
  
 void arb_poly_get_coeff_arb(arb_t v, const arb_poly_t poly, slong n);

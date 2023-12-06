@@ -9,6 +9,26 @@
 package arb;
 
 public class arblib {
+  public static void setFID_arb_Integer_value(SWIGTYPE_p_jfieldID value) {
+    arblibJNI.FID_arb_Integer_value_set(SWIGTYPE_p_jfieldID.getCPtr(value));
+  }
+
+  public static SWIGTYPE_p_jfieldID getFID_arb_Integer_value() {
+    return new SWIGTYPE_p_jfieldID(arblibJNI.FID_arb_Integer_value_get(), true);
+  }
+
+  public static void setFID_arb_Integer(SWIGTYPE_p_jfieldID value) {
+    arblibJNI.FID_arb_Integer_set(SWIGTYPE_p_jfieldID.getCPtr(value));
+  }
+
+  public static SWIGTYPE_p_jfieldID getFID_arb_Integer() {
+    return new SWIGTYPE_p_jfieldID(arblibJNI.FID_arb_Integer_get(), true);
+  }
+
+  public static void fmpz_zero(SWIGTYPE_p_fmpz_t f) {
+    arblibJNI.fmpz_zero(f);
+  }
+
   public static void arb_poly_get_coeff_ptr(RealPolynomial poly, int n) {
     arblibJNI.arb_poly_get_coeff_ptr(RealPolynomial.getCPtr(poly), poly, n);
   }
@@ -289,7 +309,7 @@ public class arblib {
     arblibJNI.acb_addmul_si(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
   }
 
-  public static void acb_addmul_fmpz(Complex z, Complex x, long y, int prec) {
+  public static void acb_addmul_fmpz(Complex z, Complex x, SWIGTYPE_p_fmpz_t y, int prec) {
     arblibJNI.acb_addmul_fmpz(Complex.getCPtr(z), z, Complex.getCPtr(x), x, y, prec);
   }
 
@@ -309,7 +329,7 @@ public class arblib {
     arblibJNI.arb_addmul_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
-  public static void arb_addmul_fmpz(Real z, Real x, long y, int prec) {
+  public static void arb_addmul_fmpz(Real z, Real x, SWIGTYPE_p_fmpz_t y, int prec) {
     arblibJNI.arb_addmul_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
@@ -329,7 +349,7 @@ public class arblib {
     arblibJNI.arb_submul_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
-  public static void arb_submul_fmpz(Real z, Real x, long y, int prec) {
+  public static void arb_submul_fmpz(Real z, Real x, SWIGTYPE_p_fmpz_t y, int prec) {
     arblibJNI.arb_submul_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
@@ -341,19 +361,19 @@ public class arblib {
     arblibJNI.arf_abs(Float.getCPtr(y), y, Float.getCPtr(x), x);
   }
 
-  public static void acb_lambertw_asymp(Complex res, Complex z, long k, int L, int M, int prec) {
+  public static void acb_lambertw_asymp(Complex res, Complex z, SWIGTYPE_p_fmpz_t k, int L, int M, int prec) {
     arblibJNI.acb_lambertw_asymp(Complex.getCPtr(res), res, Complex.getCPtr(z), z, k, L, M, prec);
   }
 
-  public static int acb_lambertw_check_branch(Complex w, long k, int prec) {
+  public static int acb_lambertw_check_branch(Complex w, SWIGTYPE_p_fmpz_t k, int prec) {
     return arblibJNI.acb_lambertw_check_branch(Complex.getCPtr(w), w, k, prec);
   }
 
-  public static void acb_lambertw_bound_deriv(Magnitude res, Complex z, Complex ez1, long k) {
+  public static void acb_lambertw_bound_deriv(Magnitude res, Complex z, Complex ez1, SWIGTYPE_p_fmpz_t k) {
     arblibJNI.acb_lambertw_bound_deriv(Magnitude.getCPtr(res), res, Complex.getCPtr(z), z, Complex.getCPtr(ez1), ez1, k);
   }
 
-  public static void acb_lambertw(Complex res, Complex z, long k, int flags, int prec) {
+  public static void acb_lambertw(Complex res, Complex z, SWIGTYPE_p_fmpz_t k, int flags, int prec) {
     arblibJNI.acb_lambertw(Complex.getCPtr(res), res, Complex.getCPtr(z), z, k, flags, prec);
   }
 
@@ -720,7 +740,7 @@ public class arblib {
     arblibJNI.acb_dirichlet_hardy_z_series(ComplexPolynomial.getCPtr(res), res, ComplexPolynomial.getCPtr(s), s, DirichletGroup.getCPtr(G), G, DirichletCharacter.getCPtr(chi), chi, len, prec);
   }
 
-  public static void acb_dirichlet_hardy_z_zero(Real res, long n, int prec) {
+  public static void acb_dirichlet_hardy_z_zero(Real res, SWIGTYPE_p_fmpz_t n, int prec) {
     arblibJNI.acb_dirichlet_hardy_z_zero(Real.getCPtr(res), res, n, prec);
   }
 
@@ -1066,7 +1086,7 @@ public class arblib {
     arblibJNI.arb_add_error_2exp_si(Real.getCPtr(x), x, err);
   }
 
-  public static void arb_add_error_2exp_fmpz(Real x, long err) {
+  public static void arb_add_error_2exp_fmpz(Real x, SWIGTYPE_p_fmpz_t err) {
     arblibJNI.arb_add_error_2exp_fmpz(Real.getCPtr(x), x, err);
   }
 

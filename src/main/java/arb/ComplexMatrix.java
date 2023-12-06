@@ -15,6 +15,7 @@ public class ComplexMatrix implements AutoCloseable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public ComplexMatrix(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

@@ -12,6 +12,7 @@ public class RandomAlgorithmData {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public RandomAlgorithmData(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

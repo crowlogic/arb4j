@@ -16,6 +16,7 @@ public class ComplexPolynomial implements AutoCloseable,ComplexFunction {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public ComplexPolynomial(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

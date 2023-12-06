@@ -12,6 +12,7 @@ public class FastDFTSchemeUnion {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public FastDFTSchemeUnion(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

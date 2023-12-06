@@ -12,6 +12,7 @@ public class FastDFTNaiveScheme {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public FastDFTNaiveScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

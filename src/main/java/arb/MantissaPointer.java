@@ -12,6 +12,7 @@ public class MantissaPointer {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public MantissaPointer(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;

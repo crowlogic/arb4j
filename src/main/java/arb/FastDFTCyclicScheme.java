@@ -12,6 +12,7 @@ public class FastDFTCyclicScheme {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
+
   public FastDFTCyclicScheme(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
