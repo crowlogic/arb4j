@@ -621,14 +621,15 @@ public class Utensils
                                        int prec,
                                        boolean verbose)
   {
-    try ( Real t = new Real(); Real m = new Real(); Float u = new Float();)
+    try ( Real t = new Real(); Real m = new Real(); )
     {
-
+      Float u = m.getMid();
+      
       /* Compute the midpoint */
       block.getA().add(block.getB(), prec, RoundingMode.Down, u).half(u);
 
       /* Evaluate the function at the midpoint so the sign can be returned */
-      int sign = realFunction.evaluate(m.set(u), 1, prec, t).sign();
+      int sign = realFunction.evaluate(m, 1, prec, t).sign();
 
       /* split the interval at the midpoint */
       left.setA(block.getA());
