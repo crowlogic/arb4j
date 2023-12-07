@@ -559,13 +559,12 @@ public class Utensils
    * @param tmp
    * @param a
    * @param b
-   * @param prec
+   * @param fidelity
    * @return
    */
-  public static boolean overlaps(Real tmp, Real a, Real b, int prec)
+  public static boolean overlaps(Real tmp, Real a, Real b, int fidelity)
   {
-    arb_sub(tmp, a, b, prec);
-    return arb_contains_zero(tmp) != 0;
+    return a.sub(b, fidelity, tmp).containsZero();
   }
 
   /**
@@ -621,10 +620,10 @@ public class Utensils
                                        int prec,
                                        boolean verbose)
   {
-    try ( Real t = new Real(); Real m = new Real(); )
+    try ( Real t = new Real(); Real m = new Real();)
     {
       Float u = m.getMid();
-      
+
       /* Compute the midpoint */
       block.getA().add(block.getB(), prec, RoundingMode.Down, u).half(u);
 
