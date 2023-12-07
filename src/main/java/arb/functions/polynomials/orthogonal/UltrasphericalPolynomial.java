@@ -1,7 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
 /**
- * 
  * <pre>
  * Copyright ©2023 Stephen Crowley
  *  
@@ -11,13 +10,12 @@ package arb.functions.polynomials.orthogonal;
  * </pre>
  * 
  * @param <J>
- * @see Type1ChebyshevPolynomialSequence
  */
-public class Type1ChebyshevPolynomial extends
-                                      UltrasphericalPolynomial<Type1ChebyshevPolynomial>
+public class UltrasphericalPolynomial<J extends UltrasphericalPolynomial<?>> extends
+                                     JacobiPolynomial<J>
 {
 
-  public Type1ChebyshevPolynomial(JacobiPolynomialSequence<Type1ChebyshevPolynomial> sequence, int n)
+  public UltrasphericalPolynomial(JacobiPolynomialSequence<J> sequence, int n)
   {
     super(sequence,
           n);
