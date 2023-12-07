@@ -353,13 +353,13 @@ public class Utensils
   public static final int glStepCount = glSteps.length;
 
   public static void evaluateBestGaussLegendreQuadratureRule(ComplexFunction f,
-                                                             int prec,
+                                                             int bits,
                                                              AtomicLong evalCount,
                                                              Complex res,
                                                              boolean converged,
                                                              Complex mid,
                                                              Complex δ,
-                                                             Complex wide,
+                                                             Complex widePoint,
                                                              Complex s,
                                                              Complex v,
                                                              Magnitude err,
@@ -382,14 +382,15 @@ public class Utensils
 
         for (k = 0; k < best_n; k++)
         {
-          acb_calc_gl_node(x, w, i, k, prec);
-          f.evaluate(δ.mul(x, prec, wide).add(mid, prec, wide), 0, prec, v);
-          v.addmul(x.get(1), prec, s);
+          acb_calc_gl_node(x, w, i, k, bits);
+          δ.mul(x, bits, widePoint).add(mid, bits);
+          f.evaluate(widePoint, 0, bits, v);
+          v.addmul(x.get(1), bits, s);
         }
 
         evalCount.getAndAdd(best_n);
 
-        acb_add_error_mag(s.mul(δ, prec, res), err);
+        acb_add_error_mag(s.mul(δ, bits, res), err);
 
       }
     }
