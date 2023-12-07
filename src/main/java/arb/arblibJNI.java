@@ -9,6 +9,10 @@
 package arb;
 
 public class arblibJNI {
+  public final static native long fmpz_get_ui(long jarg1);
+  public final static native int fmpz_get_si(long jarg1);
+  public final static native void fmpz_set(long jarg1, long jarg2);
+  public final static native void fmpz_set_si(long jarg1, int jarg2);
   public final static native int fmpz_set_str(long jarg1, String jarg2, int jarg3);
   public final static native String fmpz_get_str(String jarg1, int jarg2, long jarg3);
   public final static native void fmpz_init(long jarg1);

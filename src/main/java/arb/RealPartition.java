@@ -27,15 +27,15 @@ public class RealPartition implements
 
   private FloatInterval interval;
 
-  public RealPartition(FloatInterval interval, int prec, Real T, boolean includeError)
+  public RealPartition(FloatInterval interval, int bits, Real T, boolean includeError)
   {
     final int n = T.size();
     this.T = T;
-    (this.interval = interval).length(prec, dt.getMid()).div(n, prec);
+    (this.interval = interval).length(bits, dt.getMid()).div(n, bits);
     T.printPrecision = true;
-    dt.div(2, prec, halfdt);
+    dt.div(2, bits, halfdt);
 
-    generate(prec, includeError);
+    generate(bits, includeError);
   }
 
   private Real generate(int prec, boolean includeError)

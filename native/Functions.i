@@ -19,6 +19,14 @@
     }
 }
 
+ulong fmpz_get_ui(const fmpz_t f);
+
+slong fmpz_get_si(const fmpz_t f);
+
+void fmpz_set(fmpz_t f, const fmpz_t g);
+
+void fmpz_set_si(fmpz_t f, slong val);
+
  int fmpz_set_str(fmpz_t f, const char *str, int b);
  
  char *fmpz_get_str(char *str, int b, const fmpz_t f);

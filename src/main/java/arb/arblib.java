@@ -9,6 +9,22 @@
 package arb;
 
 public class arblib {
+  public static long fmpz_get_ui(long f) {
+    return arblibJNI.fmpz_get_ui(f);
+  }
+
+  public static int fmpz_get_si(long f) {
+    return arblibJNI.fmpz_get_si(f);
+  }
+
+  public static void fmpz_set(long f, long g) {
+    arblibJNI.fmpz_set(f, g);
+  }
+
+  public static void fmpz_set_si(long f, int val) {
+    arblibJNI.fmpz_set_si(f, val);
+  }
+
   public static int fmpz_set_str(long f, String str, int b) {
     return arblibJNI.fmpz_set_str(f, str, b);
   }

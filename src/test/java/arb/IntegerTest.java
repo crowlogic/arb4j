@@ -6,15 +6,17 @@ public class IntegerTest extends
                          TestCase
 {
 
-  public void testInit()
+  public void testSetAndGet()
   {
-    try ( Integer possiblyGargantuanInteger = new Integer())
+    try ( Integer bfi = new Integer())
     {
-        System.out.println( possiblyGargantuanInteger );
-        possiblyGargantuanInteger.set("1000000");
-        System.out.println( possiblyGargantuanInteger );        
+      System.out.println(bfi);
+      bfi.set("1000000");
+      System.out.println(bfi);
+      assertEquals(1000000, bfi.getSignedValue());
+      assertEquals(1000000, bfi.getUnsignedValue());
     }
-    
+
   }
 
 }

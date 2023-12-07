@@ -20,12 +20,12 @@ final class PartitionIterator implements
   @Override
   public boolean hasNext()
   {
-    return i < this.partition.n;
+    return i < partition.n;
   }
 
   @Override
   public Float next()
   {
-    return this.partition.get(i++);
+    return partition.get(i++);
   }
 }
