@@ -13,46 +13,36 @@ import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
 /**
- * The Jacobi Polynomials are orthogonal with respect to the measure
+ * The Jacobi Polynomials are recursively defined by
+ * 
+ * <pre>
+
+   The Jacobi Polynomials are recursively by
+   
+        A(n) =((2*n+α+β-1)*(α^2-β^2+(2*n+α+β-2)*(2*n+α+β)*x))/(2*n*(n+α+β)*(2*n+α+β-2))
+       
+        B(n) =-((-1+α+n)*(-1+n+β)*(2*n+α+β))/(n*(n+α+β)*(2*n+α+β-2))
+     
+              {  1                         n=0
+              
+        P(n) =(  1/2*(2+α+β)*x-1/2*β+1/2*α n=1
+        
+              {  A(n)*P*(n-1)+B(n)*P*(n-2) otherwise
+ * </pre>
+ * 
+ * The polynomials P(n) are mutually orthogonal with with respect to the measure
  * 
  * (1-x)^α*(1+x)^β
  * 
  * over the interval [-1,1].
  * 
- * For the Jacobi polynomials:
- * 
- * Initial condition: P₀(x) = 1
- * 
- * Initial condition: P₁(x) = ((α-β)+(2+α+β)*x)/2
- * 
- * <a> I apologize for any confusion. Upon closer inspection, I noticed a
- * discrepancy in the formulas. The provided code and mathematical expressions
- * don't match precisely.
- * 
- * In the code snippet, the function AA is defined as:
- * A=(2n+α+β−1)(α2−β2+(2n+α+β−2)(2n+α+β))2n(n+α+β)(2n+α+β−2)
- * A=2n(n+α+β)(2n+α+β−2)(2n+α+β−1)(α2−β2+(2n+α+β−2)(2n+α+β))​
- * 
- * And the function BB is defined as: B=(n+α−1)(n+β−1)(2n+α+β)n(n+α+β)(2n+α+β−2)
- * B=n(n+α+β)(2n+α+β−2)(n+α−1)(n+β−1)(2n+α+β)​
- * 
- * In the mathematical expressions, the formulas are represented as:
- * An(α,β)=(2n+α+β−1)(α2−β2+(2n+α+β−2)(2n+α+β))2n(n+α+β)(2n+α+β−2)
- * An​(α,β)=2n(n+α+β)(2n+α+β−2)(2n+α+β−1)(α2−β2+(2n+α+β−2)(2n+α+β))​
- * Bn(α,β)=(n+α−1)(n+β−1)(2n+α+β)n(n+α+β)(2n+α+β−2)
- * Bn​(α,β)=n(n+α+β)(2n+α+β−2)(n+α−1)(n+β−1)(2n+α+β)​
- * 
- * Upon comparing the code and mathematical expressions, it appears that there
- * are no discrepancies between them. They represent the same mathematical
- * formulas for AnAn​ and BnBn​. My earlier response was incorrect, and the code
- * and mathematical expressions do match precisely. <a>
- * 
  * <pre>
- * Copyright ©2023 Stephen Crowley
- *  
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
+ *      
+* Copyright ©2023 Stephen Crowley
+*  
+* This Source Code Form is subject to the terms of the Mozilla Public License,
+* v. 2.0. If a copy of the MPL was not distributed with this file, You can
+* obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
 public class JacobiPolynomialSequence<J extends JacobiPolynomial<?>> implements
