@@ -26,8 +26,8 @@ public class JacobiPolynomial<J extends JacobiPolynomial<?>> extends
     // coeffecients";
   }
 
-  final JacobiPolynomialSequence<J> sequence;
+  final public JacobiPolynomialSequence<J> sequence;
 
-  final int                         n;
+  final public int                         n;
 
 }
