@@ -71,9 +71,9 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<?>> implements
   final public static boolean verbose = false;
 
   final public RealFunction   A       = express("A",
-                                                "((2*n+α+β-1)*(α^2-β^2+(2*n+α+β-2)*(2*n+α+β)))/(2*n*(n+α+β)*(2*n+α+β-2))",
+                                                "((2*n+α+β-1)*(α^2-β^2+(2*n+α+β-2)*(2*n+α+β)))/(2*n*(n+α+β)*(2*(n-1)+α+β))",
                                                 context,
-                                                verbose);
+                                                true);
 
   final public RealFunction   B       = express("B",
                                                 "((n+α-1)*(n+β-1)*(2*n+α+β))/(n*(n+α+β)*(2*n+α+β-2))",

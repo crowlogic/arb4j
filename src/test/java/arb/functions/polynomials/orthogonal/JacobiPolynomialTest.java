@@ -26,7 +26,7 @@ public class JacobiPolynomialTest extends
     try ( var seq = new JacobiPolynomialSequence<>(half,
                                                    half))
     {
-      try ( Real result = seq.A.evaluate(one, 1, bits, new Real()))
+      try ( Real result = seq.A.evaluate(new Real("1.5",128), 1, bits, new Real()))
       {
         out.println("A(1)=" + result);
         assertEquals(60.0, result.doubleValue());
