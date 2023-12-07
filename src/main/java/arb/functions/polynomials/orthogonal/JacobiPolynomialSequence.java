@@ -23,21 +23,29 @@ import arb.functions.real.RealFunction;
  * 
  * Initial condition: P₀(x) = 1
  * 
- * Initial condition: P₁(x) = d₁/2 + x*(α - β)
+ * Initial condition: P₁(x) = ((α-β)+(2+α+β)*x)/2
  * 
- * Recurrence relation: Pₙ(x) = aₙ*x*Pₙ₋₁(x) + bₙ*Pₙ₋₂(x)
+ * <a> I apologize for any confusion. Upon closer inspection, I noticed a
+ * discrepancy in the formulas. The provided code and mathematical expressions
+ * don't match precisely.
  * 
- * coefficients: aₙ = cₙ (α² - β²)
+ * In the code snippet, the function AA is defined as:
+ * A=(2n+α+β−1)(α2−β2+(2n+α+β−2)(2n+α+β))2n(n+α+β)(2n+α+β−2)
+ * A=2n(n+α+β)(2n+α+β−2)(2n+α+β−1)(α2−β2+(2n+α+β−2)(2n+α+β))​
  * 
- * coeffecients: bₙ = cₙ * dₙ
+ * And the function BB is defined as: B=(n+α−1)(n+β−1)(2n+α+β)n(n+α+β)(2n+α+β−2)
+ * B=n(n+α+β)(2n+α+β−2)(n+α−1)(n+β−1)(2n+α+β)​
  * 
- * where
+ * In the mathematical expressions, the formulas are represented as:
+ * An(α,β)=(2n+α+β−1)(α2−β2+(2n+α+β−2)(2n+α+β))2n(n+α+β)(2n+α+β−2)
+ * An​(α,β)=2n(n+α+β)(2n+α+β−2)(2n+α+β−1)(α2−β2+(2n+α+β−2)(2n+α+β))​
+ * Bn(α,β)=(n+α−1)(n+β−1)(2n+α+β)n(n+α+β)(2n+α+β−2)
+ * Bn​(α,β)=n(n+α+β)(2n+α+β−2)(n+α−1)(n+β−1)(2n+α+β)​
  * 
- * Common factor: cₙ = (dₙ - 1) / (dₙ*dₙ₋₁)
- * 
- * with
- * 
- * Common factor: dₙ = 2n + α + β
+ * Upon comparing the code and mathematical expressions, it appears that there
+ * are no discrepancies between them. They represent the same mathematical
+ * formulas for AnAn​ and BnBn​. My earlier response was incorrect, and the code
+ * and mathematical expressions do match precisely. <a>
  * 
  * <pre>
  * Copyright ©2023 Stephen Crowley
@@ -63,29 +71,16 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<?>> implements
   final public static boolean verbose = false;
 
   final public RealFunction   A       = express("A",
-                                                "(2*n + α + β + 1)*(2*n + α + β + 2) / 2*(n + 1)*(n + α + β + 1)",
+                                                "((2*n+α+β-1)*(α^2-β^2+(2*n+α+β-2)*(2*n+α+β)))/(2*n*(n+α+β)*(2*n+α+β-2))",
                                                 context,
                                                 verbose);
 
   final public RealFunction   B       = express("B",
-                                                "(α^2 - β^2)*(2*n + α + β + 1) / (2*(n + 1)*(n + α + β + 1)*(2*n + α + β))",
+                                                "((n+α-1)*(n+β-1)*(2*n+α+β))/(n*(n+α+β)*(2*n+α+β-2))",
                                                 context,
                                                 verbose);
 
-  final public RealFunction   C       = express("C",
-                                                "(n + α)*(n + β)*(2*n + α + β + 2) / ((n + 1)*(n + α + β + 1)*(2*n + α + β))",
-                                                context,
-                                                verbose);
-
-  final public RealFunction   d       = express("d", "2*n+α+β", context, verbose);
-
-  final public RealFunction   c       = express("c", "(d(n)-1)/(d(n)*d(n-1))", context, verbose);
-
-  final public RealFunction   a       = express("a", "c(n)*(α²+β²)", context, verbose);
-
-  final public RealFunction   b       = express("b", "c(n)*d(n)", context, verbose);
-
-  final public RealFunction   p1      = express("d(1)/2 + x*(α - β)", context, verbose);
+  final public RealFunction   p1      = express("α/2-β/2+(2+α+β)*x/2", context, verbose);
 
   public JacobiPolynomialSequence(Real a, Real b)
   {
