@@ -508,6 +508,20 @@ import arb.domains.Domain;
     arblib.acb_addmul(result, this, that, prec);
     return result;
   }
+  
+  /**
+   * @see arblib#acb_addmul_arb(Complex, Complex, Real, int)m
+   * @param that
+   * @param bits
+   * @param result
+   * @return result = result + this * that
+   */
+  public Complex addmul(Real that, int bits, Complex result)
+  {
+    arblib.acb_addmul_arb(result, this, that, bits);
+    return result;
+  }
+  
     
   /**
    * Computes the dot product of the vectors x and y, setting res to

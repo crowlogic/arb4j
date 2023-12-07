@@ -384,7 +384,7 @@ public class Utensils
         {
           acb_calc_gl_node(x, w, i, k, prec);
           f.evaluate(δ.mul(x, prec, wide).add(mid, prec, wide), 0, prec, v);
-          acb_addmul_arb(s, v, x.get(1), prec);
+          v.addmul(x.get(1), prec, s);
         }
 
         evalCount.getAndAdd(best_n);
