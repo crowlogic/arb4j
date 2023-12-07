@@ -625,8 +625,7 @@ public class Utensils
     {
 
       /* Compute the midpoint */
-      arblib.arf_add(u, block.getA(), block.getB(), java.lang.Integer.MAX_VALUE, IntegerConstants.ARF_RND_DOWN);
-      u.half(u);
+      block.getA().add(block.getB(), prec, RoundingMode.Down, u).half(u);
 
       /* Evaluate the function at the midpoint so the sign can be returned */
       int sign = realFunction.evaluate(m.set(u), 1, prec, t).sign();
