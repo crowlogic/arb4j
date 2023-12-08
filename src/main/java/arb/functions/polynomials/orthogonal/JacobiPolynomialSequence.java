@@ -14,7 +14,7 @@ import arb.functions.real.RealFunction;
 
 /**
  *  
- * The Jacobi Polynomials are recursively defined by
+ * The Jacobi polynomials are recursively defined by
  * 
  * <pre>
 
