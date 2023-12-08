@@ -24,7 +24,7 @@
   partition functions of the form
 
   <\equation>
-    Z<rsub|n>=<big|int><rsub|M\<in\><math-bf|H><rsup|n\<times\>n>>e<rsup|<text|tr><around|(|V<around|(|M|)>|)>>*<space|0.17em>d*\<mu\><rsub|0><around|(|M|)>
+    Z<rsub|n,V>=<big|int><rsub|M\<in\><math-bf|H><rsup|n\<times\>n>>e<rsup|<text|tr><around|(|V<around|(|M|)>|)>>*<space|0.17em>d*\<mu\><rsub|0><around|(|M|)>
   </equation>
 
   where
@@ -38,22 +38,21 @@
   <math|n\<times\>n> matrices, is given by
 
   <\equation>
-    p<rsub|n,V><around|(|x<rsub|1>,\<ldots\>,x<rsub|n>|)>=<around*|(|<frac|1|Z<rsub|n,V>>|)><around*|(|<big|prod><rsub|i=1><rsup|n-1><big|prod><rsub|j=i+1><rsup|n><around|(|x<rsub|i>-x<rsub|j>|)><rsup|2>|)>*exp
-    <around*|(|-<big|sum><rsub|i=1><rsup|n>V<around|(|x<rsub|i>|)>|)>
+    p<rsub|n,V><around|(|x<rsub|1>,\<ldots\>,x<rsub|n>|)>=<around*|(|<frac|*e<rsup|-<big|sum><rsub|i=1><rsup|n>V<around|(|x<rsub|i>|)>>|Z<rsub|n,V>><big|prod><rsub|i=1><rsup|n-1><big|prod><rsub|j=i+1><rsup|n><around|(|x<rsub|i>-x<rsub|j>|)><rsup|2>|)>
   </equation>
 
   The <math|k>-point correlation functions (or marginal distributions) are
   defined as
 
   <\equation>
-    R<rsup|<around|(|k|)>><rsub|n,V><around|(|x<rsub|1>,\<ldots\>,x<rsub|k>|)>=<frac|n!|<around|(|n-k|)>!>*<big|int><rsub|<math-bf|R>>d*x<rsub|k+1>*\<cdots\>*<big|int><rsub|<math-bf|R>>d*x<rsub|n>*<space|0.17em>p<rsub|n,V><around|(|x<rsub|1>,x<rsub|2>,\<ldots\>,x<rsub|n>|)>,
+    R<rsup|<around|(|k|)>><rsub|n,V><around|(|x<rsub|1>,\<ldots\>,x<rsub|k>|)>=<frac|n!|<around|(|n-k|)>!>*<big|int><rsub|<math-bf|R>>p<rsub|n,V><around|(|x<rsub|1>,x<rsub|2>,\<ldots\>,x<rsub|n>|)>d*x<rsub|k+1>*\<cdots\>*<big|int><rsub|<math-bf|R>>d*x<rsub|n>*
   </equation>
 
   which are skew symmetric functions of their variables. In particular, the
   one-point correlation function, or density of states, is
 
   <\equation>
-    R<rsup|<around|(|1|)>><rsub|n,V><around|(|x<rsub|1>|)>=n*<big|int><rsub|<math-bf|R>>d*x<rsub|2>*\<cdots\>*<big|int><rsub|<math-bf|R>>d*x<rsub|n>*<space|0.17em>p<rsub|n,V><around|(|x<rsub|1>,x<rsub|2>,\<ldots\>,x<rsub|n>|)>.
+    R<rsup|<around|(|1|)>><rsub|n,V><around|(|x<rsub|1>|)>=n*<big|int><rsub|<math-bf|R>>p<rsub|n,V><around|(|x<rsub|1>,x<rsub|2>,\<ldots\>,x<rsub|n>|)>d*x<rsub|2>*\<cdots\>*<big|int><rsub|<math-bf|R>>d*x<rsub|n>*
   </equation>
 
   Its integral over a Borel set <math|B\<subset\><math-bf|R>> gives the
@@ -72,7 +71,7 @@
     determinant
 
     <\equation>
-      R<rsup|<around|(|k|)>><rsub|n,V><around|(|x<rsub|1>,x<rsub|2>,\<ldots\>,x<rsub|k>|)>=det<rsub|1\<leq\>i,j\<leq\>k><around|(|K<rsub|n,V><around|(|x<rsub|i>,x<rsub|j>|)>|)>,
+      R<rsup|<around|(|k|)>><rsub|n,V><around|(|x<rsub|1>,x<rsub|2>,\<ldots\>,x<rsub|k>|)>=det<rsub|1\<leq\>i,j\<leq\>k><around|(|K<rsub|n,V><around|(|x<rsub|i>,x<rsub|j>|)>|)>
     </equation>
 
     where <math|K<rsub|n,V><around|(|x,y|)>> is the <math|n>-th
@@ -85,7 +84,7 @@
     associated to <math|V>, written in terms of the quasipolynomials
 
     <\equation>
-      \<psi\><rsub|k><around|(|x|)>=<frac|1|<sqrt|h<rsub|k>>>*<space|0.17em>p<rsub|k><around|(|z|)>*<space|0.17em>e<rsup|-V<around|(|z|)>/2>
+      \<psi\><rsub|k><around|(|x|)>=<frac|p<rsub|k><around|(|z|)>*<space|0.17em>e<rsup|-<frac|V<around|(|z|)>|2>>|<sqrt|h<rsub|k>>>
     </equation>
 
     where <math|<around|{|p<rsub|k><around|(|x|)>|}><rsub|k\<in\><math-bf|N>>>
