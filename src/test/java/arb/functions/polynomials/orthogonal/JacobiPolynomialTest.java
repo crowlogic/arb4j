@@ -7,6 +7,8 @@ import arb.Real;
 import junit.framework.TestCase;
 
 /**
+ * https://github.com/crowlogic/arb4j/issues/254
+ * 
  * <pre>
  * Copyright ©2023 Stephen Crowley
  *  
