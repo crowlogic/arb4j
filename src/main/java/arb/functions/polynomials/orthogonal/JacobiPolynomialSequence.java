@@ -25,9 +25,9 @@ import arb.functions.real.RealFunction;
         B(n) =-((-1+α+n)*(-1+n+β)*(2*n+α+β))/(n*(n+α+β)*(2*n+α+β-2))
      
               {  1                         n=0
-              
+              {
         P(n) =(  1/2*(2+α+β)*x-1/2*β+1/2*α n=1
-        
+              {       
               {  A(n)*P*(n-1)+B(n)*P*(n-2) otherwise
  * </pre>
  * 
