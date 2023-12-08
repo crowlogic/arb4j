@@ -23,30 +23,31 @@ public class JacobiPolynomialTest extends
 
   public static void testA()
   {
-    try ( var seq = new JacobiPolynomialSequence<>(half,
-                                                   half))
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf);
+          Real three = new Real("3",
+                                128))
     {
-      try ( Real result = seq.A.evaluate(new Real("1.5",128), 1, bits, new Real()))
+      try ( Real result = seq.A.evaluate(three, 1, bits, new Real()))
       {
-        out.println("A(1)=" + result);
-        assertEquals(60.0, result.doubleValue());
-        assertTrue(result.isExact());
+        out.println("A(3)=" + result);
+        assertEquals(1.66666666666666666666666666666666, result.doubleValue());
       }
     }
 
   }
 
-  public static void testAChebyshev()
+  public static void testE()
   {
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
                                                    negHalf);
           Real three = new Real("3",
                                 128);)
     {
-      try ( Real result = seq.A.evaluate(three, 1, bits, new Real()))
+      try ( Real result = seq.E.evaluate(three, 1, bits, new Real()))
       {
-        out.println("A(3)=" + result);
-        assertEquals(252.0, result.doubleValue());
+        out.println("E(3)=" + result);
+        assertEquals(5.0, result.doubleValue());
         assertTrue(result.isExact());
       }
     }
