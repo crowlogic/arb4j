@@ -31,6 +31,28 @@ import arb.functions.real.RealFunction;
               {  A(n)*P*(n-1)+B(n)*P*(n-2) otherwise
  * </pre>
  * 
+ * in a more refactored form to make the repeated calculations more apparent
+ * 
+ * <pre>
+ *  
+    P(n=0,x) = 1
+    
+    P(n=1,x) = (1/2) * C(1) * x - (1/2) * (α - β)
+    
+    P(n≥2,x) = (A(n,x) * P(n-1,x) + B(n,x) * P(n-2,x)) / D(n)
+
+    where:
+    
+    C(n) = 2n + α + β
+    
+    A(n,x) = ((C(n) - 1) * ((α^2 - β^2) + C(n - 1) * C(n) * x)) / (2n)
+    
+    B(n,x) = ((n + α - 1) * (n + β - 1) * C(n)) / n
+    
+    D(n) = C(n/2) * (C(n - 1))
+ * 
+ * </pre>
+ * 
  * The polynomials P(n) are mutually orthogonal with with respect to the measure
  * 
  * (1-x)^α*(1+x)^β
