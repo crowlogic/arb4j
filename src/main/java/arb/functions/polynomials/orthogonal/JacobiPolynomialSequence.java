@@ -34,7 +34,7 @@ import arb.functions.real.RealFunction;
  * in a more refactored form to make the repeated calculations more apparent
  * 
  * <pre>
- *  
+ 
     P(n=0,x) = 1
     
     P(n=1,x) = (1/2) * C(1) * x - (1/2) * (α - β)
