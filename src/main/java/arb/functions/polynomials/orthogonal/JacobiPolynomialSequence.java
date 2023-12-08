@@ -87,7 +87,9 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<?>> implements
 
   final public RealFunction   A       = express("A", "(E(n)-1)*E(n)/(2*n*E(n/2))", context, verbose);
 
-  final public RealFunction   B       = express("1/2*(2*n+α+β-1)*(α^2-β^2)/n/(n+α+β)/(2*n+α+β-2)", context, false);
+  final public RealFunction   B       = express("((E(n) - 1)*(α^2 - β^2))/(2*n*(n + α + β)*E(n - 1))",
+                                                context,
+                                                verbose);
 
   final public RealFunction   C       = express("C",
                                                 "((n+α-1)*(n+β-1)*(2*n+α+β))/(n*(n+α+β)*(2*n+α+β-2))",

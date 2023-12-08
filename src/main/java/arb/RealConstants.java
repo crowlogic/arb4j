@@ -7,29 +7,43 @@ public class RealConstants
     System.loadLibrary("arblib");
   }
 
-  public static final int  prec          = 256;
+  public static final int           prec       = 256;
 
-  public static final Real constants     = Real.newAlignedVector(15);
+  public static final Real          constants  = Real.newAlignedVector(17);
 
-  public static Real       half          = constants.get(0).one().div(2, prec);
-  public static Real       one           = constants.get(1).one();
-  public static Real       zero          = constants.get(2).zero();
-  public static Real       posInf        = constants.get(3).posInf();
-  public static Real       π             = constants.get(4).π(prec);
-  public static Real       πsquared      = constants.get(5).π(prec).pow(2, prec);
-  public static Real       sqrtπ         = constants.get(6).π(prec).sqrt(prec);
-  public static Real       sqrt2π        = constants.get(7).π(prec).mul(2, prec).sqrt(prec);
-  public static Real       sqrt2         = constants.get(8).set(2).sqrt(prec);
-  public static Real       negOne        = constants.get(9).one().neg();
-  public static Real       twoπ          = constants.get(10).π(prec).mul(2, prec);
-  public static Real       indeterminant = constants.get(11).indeterminate();
-  public static Real       two           = constants.get(12).set(2);
-  public static Real       negInf        = constants.get(13).negInf();
-  public static Real       negHalf       = constants.get(14).one().div(2, prec).neg();
+  private static final RealIterator enumerator = constants.iterator();
+
+  private static Real next()
+  {
+    return enumerator.next();
+  }
+
+  public static Real half          = next().one().div(2, prec);
+  public static Real one           = next().one();
+  public static Real zero          = next().zero();
+  public static Real posInf        = next().posInf();
+  public static Real π             = next().π(prec);
+  public static Real πsquared      = next().π(prec).pow(2, prec);
+  public static Real sqrtπ         = next().π(prec).sqrt(prec);
+  public static Real sqrt2π        = next().π(prec).mul(2, prec).sqrt(prec);
+  public static Real sqrt2         = next().sqrt(prec);
+  public static Real negOne        = next().one().neg();
+  public static Real twoπ          = next().mul(2, prec);
+  public static Real indeterminant = next().indeterminate();
+  public static Real two           = next().set(2);
+  public static Real negInf        = next().negInf();
+  public static Real negHalf       = next().one().div(2, prec).neg();
+  public static Real oneQuarter    = next().one().div(4, prec);
+  public static Real threeQuarters = next().set(3).div(4, prec);
 
   static
   {
     constants.lock();
+  }
+
+  public static void main(String args[])
+  {
+    System.out.println(constants);
   }
 
 }

@@ -15,7 +15,10 @@ import static java.lang.String.format;
 
 import java.io.Serializable;
 import java.lang.foreign.MemorySegment;
-import java.util.*;
+import java.lang.foreign.SegmentScope;
+import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -707,7 +710,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   }
   
   @Override
-  public Iterator<Real> iterator()
+  public RealIterator iterator()
   {
     return new RealIterator(this);
   }
@@ -1046,6 +1049,28 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return array;
   }
      
+  public static Real newAlignedVectorViaAllocativeNative(int size)
+  {
+
+    Real x = new Real(0,
+                      false);
+    x.nativeSegment = MemorySegment.allocateNative(Real.BYTES * size, 4096, scope);
+    x.swigCPtr      = x.nativeSegment.address();
+    x.dim           = size;
+    x.elements      = new Real[x.dim];
+    for (int j = 0; j < x.dim; j++)
+    {
+      Real y = x.elements[j] = new Real(x.swigCPtr + (Real.BYTES * j),
+                                        false);
+      y.init();
+    }
+    return x;
+  }
+  
+
+  public static SegmentScope scope = SegmentScope.auto();
+  public MemorySegment       nativeSegment;
+         
  /**
    * Construct a new {@link Real} aligned on a page boundary so that this can be
    * this{@link #lock()}ed by invoking the
@@ -1063,18 +1088,18 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   public static Real newAlignedVector(int size)
   {
     // Calculate the size aligned to the page boundary
-    int  alignedSize = (int) ((size * Real.BYTES + PAGESIZE - 1) / PAGESIZE * PAGESIZE);
+    int  bytes = (int) ((size * Real.BYTES + PAGESIZE - 1) / PAGESIZE * PAGESIZE);
 
-    long pointer     = arblibJNI.memalign(PAGESIZE, alignedSize);
-    arblibJNI.memset(pointer, 0, alignedSize);
+    long pointer     = arblibJNI.memalign(PAGESIZE, bytes );
+    arblibJNI.memset(pointer, 0, bytes);
     Real x          = new Real(pointer,
                                true);
 
     // Calculate the actual number of elements that can fit in the aligned buffer
-    int  actualSize = alignedSize / Real.BYTES;
+    //int  actualSize = alignedSize / Real.BYTES;
 
-    x.elements = new Real[x.dim = actualSize];
-    for (int j = 0; j < actualSize; j++)
+    x.elements = new Real[x.dim = size];
+    for (int j = 0; j < size; j++)
     {
       Real y = x.elements[j] = new Real(pointer + (Real.BYTES * j),
                                         false);

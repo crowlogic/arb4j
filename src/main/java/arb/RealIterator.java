@@ -22,6 +22,10 @@ public class RealIterator implements
   @Override
   public Real next()
   {
+    if (!hasNext())
+    {
+      throw new IndexOutOfBoundsException(String.format("index=%d must be less than length=%d\n", i, x.dim));
+    }
     return x.get(i++);
   }
 
