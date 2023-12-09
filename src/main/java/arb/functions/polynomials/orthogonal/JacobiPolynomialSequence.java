@@ -13,59 +13,41 @@ import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
 /**
- * 
  * The Jacobi polynomials are recursively defined by
  * 
  * <pre>
-
-   The Jacobi Polynomials are recursively by
-   
-        A(n) =((2*n+α+β-1)*(α^2-β^2+(2*n+α+β-2)*(2*n+α+β)*x))/(2*n*(n+α+β)*(2*n+α+β-2))
-       
-        B(n) =-((-1+α+n)*(-1+n+β)*(2*n+α+β))/(n*(n+α+β)*(2*n+α+β-2))
-     
-              {  1                         n=0
-              {
-        P(n) =(  1/2*(2+α+β)*x-1/2*β+1/2*α n=1
-              {       
-              {  A(n)*P*(n-1)+B(n)*P*(n-2) otherwise
- * </pre>
  * 
- * in a more refactored form to make the repeated calculations more apparent
+ * Initial Conditions:
  * 
- * <pre>
- 
-    P(n=0,x) = 1
-    
-    P(n=1,x) = (1/2) * C(1) * x - (1/2) * (α - β)
-    
-    P(n≥2,x) = (A(n,x) * P(n-1,x) + B(n,x) * P(n-2,x)) / D(n)
-
-    where:
-    
-    C(n) = 2n + α + β
-    
-    A(n,x) = ((C(n) - 1) * ((α^2 - β^2) + C(n - 1) * C(n) * x)) / (2n)
-    
-    B(n,x) = ((n + α - 1) * (n + β - 1) * C(n)) / n
-    
-    D(n) = C(n/2) * (C(n - 1))
+ *   P[0] = 1
+ *   P[1] = ((2 + α + β) * x) / 2 - β / 2 + α / 2
+ * 
+ * Coefficient Functions:
+ * 
+ *   C(n) = 2n + α + β
+ *   A(n, x) = 1/2 * (C(n) - 1) * (α^2 - β^2 + C(n - 1) * C(n) * x)
+ *   B(n, x) = (n + α - 1) * (n + β - 1) * C(n)
+ * 
+ * Recurrence Relation for n >= 2:
+ * 
+ *   P[n] = (A(n, x) * P[n - 1] - B(n, x) * P[n - 2]) / (n * C(n/2) * C(n - 1))
  * 
  * </pre>
  * 
- * The polynomials P(n) are mutually orthogonal with with respect to the measure
+ * The polynomials P(n) are mutually orthogonal with respect to the weight
+ * function
  * 
- * (1-x)^α*(1+x)^β
+ * (1 - x)^α * (1 + x)^β
  * 
- * over the interval [-1,1].
+ * over the interval [-1, 1].
  * 
  * <pre>
- *      
-* Copyright ©2023 Stephen Crowley
-*  
-* This Source Code Form is subject to the terms of the Mozilla Public License,
-* v. 2.0. If a copy of the MPL was not distributed with this file, You can
-* obtain one at https://mozilla.org/MPL/2.0/.
+ * 
+ * Copyright ©2023 Stephen Crowley
+ * 
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
 public class JacobiPolynomialSequence<J extends JacobiPolynomial<?>> implements
