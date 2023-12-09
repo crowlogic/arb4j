@@ -16,7 +16,6 @@ import arb.functions.real.RealFunction;
  * The Jacobi polynomials are recursively defined by
  * 
  * <pre>
- * 
  * Initial Conditions:
  * 
  *   P[0] = 1
@@ -26,12 +25,12 @@ import arb.functions.real.RealFunction;
  * 
  *   C(n) = 2n + α + β
  *   A(n, x) = 1/2 * (C(n) - 1) * (α^2 - β^2 + C(n - 1) * C(n) * x)
- *   B(n, x) = (n + α - 1) * (n + β - 1) * C(n)
- * 
+ *   B(n) = (n + α - 1) * (n + β - 1) * C(n)
+ *   E(n) = (n * C(n/2) * C(n - 1))]
+ *   
  * Recurrence Relation for n >= 2:
  * 
- *   P[n] = (A(n, x) * P[n - 1] - B(n, x) * P[n - 2]) / (n * C(n/2) * C(n - 1))
- * 
+ *   P[n] = (A(n, x) * P[n-1] - B(n, x) * P[n-2]) / E(n)
  * </pre>
  * 
  * The polynomials P(n) are mutually orthogonal with respect to the weight
