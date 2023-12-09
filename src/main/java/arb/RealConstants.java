@@ -23,9 +23,9 @@ public class RealConstants
   public static Real zero          = next().zero();
   public static Real posInf        = next().posInf();
   public static Real π             = next().π(prec);
-  public static Real πsquared      = next().π(prec).pow(2, prec);
-  public static Real sqrtπ         = next().π(prec).sqrt(prec);
-  public static Real sqrt2π        = next().π(prec).mul(2, prec).sqrt(prec);
+  public static Real πsquared      = next().set(π).pow(2, prec);
+  public static Real sqrtπ         = next().set(π).sqrt(prec);
+  public static Real sqrt2π        = next().set(π).mul(2, prec).sqrt(prec);
   public static Real sqrt2         = next().set(2).sqrt(prec);
   public static Real negOne        = next().set(-1);
   public static Real twoπ          = next().set(2).mul(π, prec);

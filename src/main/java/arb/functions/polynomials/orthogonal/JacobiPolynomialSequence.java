@@ -18,19 +18,19 @@ import arb.functions.real.RealFunction;
  * <pre>
  * Initial Conditions:
  * 
- *   P[0] = 1
- *   P[1] = (C(1)x+α-β)/2
+ *   P(0,x) = 1
+ *   P(1,x) = (C(1)x+α-β)/2
  * 
  * Coefficient Functions:
  * 
  *   C(n) = 2n + α + β
- *   A(n, x) = 1/2 * (C(n) - 1) * (α^2 - β^2 + C(n - 1) * C(n) * x)
+ *   A(n, x) = (C(n) - 1) * (α^2 - β^2 + C(n - 1) * C(n) * x) / 2
  *   B(n) = (n + α - 1) * (n + β - 1) * C(n)
  *   E(n) = (n * C(n/2) * C(n - 1))]
  *   
  * Recurrence Relation for n >= 2:
  * 
- *   P[n] = (A(n, x) * P[n-1] - B(n, x) * P[n-2]) / E(n)
+ *   P[n] = (A(n, x) * P(n-1,x) - B(n) * P(n-2,x)) / E(n)
  * </pre>
  * 
  * The polynomials P(n) are mutually orthogonal with respect to the weight

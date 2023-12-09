@@ -59,13 +59,13 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   }
 
 
- static
- {
-   System.loadLibrary( "arblib" );
- }
- 
+  static
+  {
+    System.loadLibrary("arblib");
+  }
+
   public static RoundingMode defaultRoundingMode = RoundingMode.Near;
-  
+
   public static Float valueOf(String string, int bits)
   {
     try ( var x = new Real(string,
@@ -74,7 +74,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
       return x.getMid();
     }
   }
-   
+
   public static final int BYTES = 32;
 
   MemorySegment           segment;
@@ -86,22 +86,22 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     this(segment.address(),
          false);
     this.segment = segment;
+    this.dim     = length;
   }
 
   public String name;
-  
-  public Float setName( String name )
+
+  public Float setName(String name)
   {
     this.name = name;
     return this;
   }
-  
+
   @Override
   public String getName()
   {
-   return name;
+    return name;
   }
-
 
   /**
    * 
@@ -112,15 +112,10 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
    */
   public static Float newVector(int length, boolean aligned)
   {
-    Float array = new Float(aligned ? scope.allocate(Float.BYTES * length,
-                                                     arb.arblib.getpagesize()) : scope.allocate(Float.BYTES
-                                                                   * length),
-                            length);
-    array.dim = length;
-    return array;
+    return new Float(aligned ? scope.allocate(Float.BYTES * length,
+                                              arb.arblib.getpagesize()) : scope.allocate(Float.BYTES * length),
+                     length);
   }
-
-
 
   @Override
   public Iterator<Float> iterator()
@@ -138,23 +133,22 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   @Override
   public Float get(int index)
   {
-    assert false : "TODO";
+    assert false : "TODO: let Float be an array(vector) like Real does";
     return null;
   }
 
   @Override
   public Float div(Float j, int prec, Float result)
   {
-    arf_div(result, this, j, prec, defaultRoundingMode.ordinal());
-    return this;
+    return div(j, prec, defaultRoundingMode, result);
   }
- 
-  public Float abs( Float w)
+
+  public Float abs(Float w)
   {
     arf_abs(w, this);
     return w;
   }
-  
+
   /**
    * Self-referencing this{@link #add(int, int, Float)}
    * 
@@ -164,7 +158,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
    */
   public Float add(Float add, int prec)
   {
-   return add( add, prec, this ); 
+    return add(add, prec, this);
   }
 
   /**
@@ -178,7 +172,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   {
     return div(n, precision, this);
   }
-  
+
   /**
    * @return {@link arb#arf_is_zero(Float)} != 0
    */
@@ -192,7 +186,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   {
     return arf_cmp(this, o);
   }
-  
+
   /**
    * 
    * @return {@link arb#arf_is_nan(Float)} != 0
@@ -201,21 +195,21 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   {
     return arf_is_nan(this) != 0;
   }
-  
+
   /**
    * @return {@link arb#arf_equal(Float, Float)} != 0
    */
   @Override
   public boolean equals(Object obj)
   {
-    if ( !(obj instanceof Float))
+    if (!(obj instanceof Float))
     {
       return false;
     }
-    Float that = (Float)obj;
+    Float that = (Float) obj;
     return arf_equal(this, that) != 0;
   }
-  
+
   /**
    * 
    * @return {@link arb#arf_is_inf(Float)} != 0
@@ -224,18 +218,18 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   {
     return arf_is_inf(this) != 0;
   }
-  
+
   @Override
   public void close()
-  { 
-	clear();    
+  {
+    clear();
   }
-  
-  protected long getPointer() 
+
+  protected long getPointer()
   {
     return swigCPtr;
   }
-  
+
   public Float clear()
   {
     if (swigCMemOwn)
@@ -245,56 +239,55 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     return this;
   }
 
-    
   public String toString(int digits)
   {
-    return Utensils.removeTrailingZeros( arf_get_str(this,digits) );
+    return Utensils.removeTrailingZeros(arf_get_str(this, digits));
   }
-    
+
   public Float zero()
   {
-    arf_zero( this );
+    arf_zero(this);
     return this;
   }
-  
-  public Float neg( Float res )
+
+  public Float neg(Float res)
   {
-    arf_neg( res, this );
+    arf_neg(res, this);
     return this;
   }
-  
+
   @Override
-  public Float mul( Float y, int prec, Float res )
+  public Float mul(Float y, int prec, Float res)
   {
-   arf_mul_rnd_down( res, this, y, prec );
-   return this;
+    arf_mul_rnd_down(res, this, y, prec);
+    return this;
   }
 
   public Magnitude getMagnitude(Magnitude v)
   {
     arf_get_mag(v, this);
-    return v;    
+    return v;
   }
-  
+
   @Override
-  public Float set( Float f )
+  public Float set(Float f)
   {
-    arf_set( this, f );
+    arf_set(this, f);
     return this;
   }
-  
+
   public Float set(double i)
   {
     arf_set_d(this, i);
     return this;
   }
-  
+
   public Float init()
   {
     arf_init(this);
     return this;
   }
-  
+
   public String toString()
   {
     return toString(15);
@@ -303,45 +296,51 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   @Override
   public Float add(Float ay, int precision, Float result)
   {
-    arf_add(result, this, ay, precision, defaultRoundingMode.ordinal() );
-    return result;    
+    arf_add(result, this, ay, precision, defaultRoundingMode.ordinal());
+    return result;
   }
-    
+
   public Float add(Float ay, int thisprec, RoundingMode roundingMode, Float result)
   {
     arf_add(result, this, ay, thisprec, roundingMode.ordinal());
-    return result;    
+    return result;
   }
 
-  public double doubleValue( RoundingMode roundingMode )
+  public double doubleValue(RoundingMode roundingMode)
   {
-    return arf_get_d( this, roundingMode.ordinal() );
+    return arf_get_d(this, roundingMode.ordinal());
   }
- 
+
   @Override
   public Float sub(Float ay, int thisprec, Float result)
   {
-    return sub(ay,thisprec,defaultRoundingMode,result);
+    return sub(ay, thisprec, defaultRoundingMode, result);
   }
-    
+
   public Float sub(Float ay, int thisprec, RoundingMode round, Float result)
   {
     arf_sub(result, this, ay, thisprec, round.ordinal());
-    return result;    
+    return result;
   }
-  
+
   public Float mul(int ay, int thisprec, Float result)
   {
-    arf_mul_ui(result, this, ay, thisprec, defaultRoundingMode.ordinal() );
-    return result;    
+    arf_mul_ui(result, this, ay, thisprec, defaultRoundingMode.ordinal());
+    return result;
+  }
+
+  public Float div(Float i, int thisprec, RoundingMode round, Float res)
+  {
+    arf_div(res, this, i, thisprec, round.ordinal());
+    return res;
   }
 
   public Float div(int i, int thisprec, RoundingMode round, Float res)
   {
-   	arf_div_ui(res, this, i, thisprec, round.ordinal());
-    return res;    
+    arf_div_ui(res, this, i, thisprec, round.ordinal());
+    return res;
   }
-  
+
   public Float div(int i, int thisprec, Float res)
   {
     return div(i, thisprec, defaultRoundingMode, res);
@@ -349,9 +348,9 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
 
   public double doubleValue()
   {
-    return doubleValue( defaultRoundingMode );
+    return doubleValue(defaultRoundingMode);
   }
- 
+
   /**
    * Calls {@link arb#arf_mul_2exp_si(Float, Float, int)}(res,this,-1)
    * 
@@ -363,20 +362,20 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   {
     arf_mul_2exp_si(res, this, -1);
     return res;
-  }    
-  
+  }
+
   @Override
   public Float newFieldElement()
   {
     return new Float();
   }
-  
+
   public Float(double d)
   {
     this();
     set(d);
   }
-  
+
 
   public void setExp(SWIGTYPE_p_fmpz value) {
     arblibJNI.Float_exp_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
