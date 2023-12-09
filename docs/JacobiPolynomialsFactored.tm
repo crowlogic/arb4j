@@ -1,26 +1,45 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|article|alt-colors|boring-white|framed-theorems>>
+<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
 
 <\body>
-  For <math|n\<gtr\>1>:
+  <doc-data|<doc-date|>>
+
+  \;
+
+  <strong|Coefficient Function>s
 
   <\equation*>
-    P<rsub|n><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>=A<rsub|n><around|(|\<alpha\>,\<beta\>|)>*x*P<rsub|n-1><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>-B<rsub|n><around|(|\<alpha\>,\<beta\>|)>*P<rsub|n-2><rsup|<around|(|\<alpha\>,\<beta\>|)>><around|(|x|)>
-  </equation*>
-
-  Where:
-
-  <\equation*>
-    A<rsub|n><around|(|\<alpha\>,\<beta\>|)>=<frac|<around|(|C<rsub|n-1><around*|(|\<alpha\>,\<beta\>|)>-1|)>*<around|(|\<alpha\><rsup|2>-\<beta\><rsup|2>+C<rsub|n-1><around*|(|\<alpha\>,\<beta\>|)>*C<rsub|n><around*|(|\<alpha\>,\<beta\>|)>|)>|2*n*<around|(|C<rsub|<frac|n|2>><around*|(|\<alpha\>,\<beta\>|)>|)>*C<rsub|n-1><around*|(|\<alpha\>,\<beta\>|)>>
-  </equation*>
-
-  <\equation*>
-    B<rsub|n><around|(|\<alpha\>,\<beta\>|)>=<frac|<around|(|n+\<alpha\>-1|)>*<around|(|n+\<beta\>-1|)>*C<rsub|n><around*|(|\<alpha\>,\<beta\>|)>|n*<around|(|C<rsub|<frac|n|2>><around*|(|\<alpha\>,\<beta\>|)>|)>*C<rsub|n-1><around*|(|\<alpha\>,\<beta\>|)>>
+    A<around|(|n,x|)>=<frac|<around|(|C<around|(|n|)>-1|)>*<around|(|\<alpha\><rsup|2>-\<beta\><rsup|2>+C*<around|(|n-1|)>*C<around|(|n|)>*x|)>|2>*
   </equation*>
 
   <\equation*>
-    C<rsub|n><around*|(|\<alpha\>,\<beta\>|)>=2n+\<alpha\>+\<beta\>
+    B<around|(|n|)>=<around|(|n+\<alpha\>-1|)>*<around|(|n+\<beta\>-1|)>*C<around|(|n|)>
+  </equation*>
+
+  <\equation*>
+    C<around|(|n|)>=2*n+\<alpha\>+\<beta\>
+  </equation*>
+
+  <\equation*>
+    D<around*|(|n|)>=n*C<around|(|<frac|n|2>|)>*C*<around|(|n-1|)>
+  </equation*>
+
+  <strong|Initial Conditions>
+
+  <\equation*>
+    P<around*|(|0,x<rsub|>|)>=1
+  </equation*>
+
+  <\equation*>
+    P<around*|(|1,x|)>=<frac|C<around*|(|1|)>x-\<beta\>+\<alpha\>|2>*
+  </equation*>
+
+  <strong|<with|font-series|bold|Recurrence Relation>>
+  <math|\<forall\>n\<geqslant\>2>
+
+  <\equation*>
+    P<around*|(|n,x|)>=<frac|A<around|(|n,x|)>*P*<around*|(|n-1,x|)>-B<around|(|n|)>*P*<around*|(|n-2,x|)>|D<around*|(|n|)>>
   </equation*>
 </body>
 
@@ -28,8 +47,7 @@
   <\collection>
     <associate|magnification|2>
     <associate|page-height|auto>
-    <associate|page-medium|paper>
-    <associate|page-orientation|landscape>
+    <associate|page-medium|papyrus>
     <associate|page-type|letter>
     <associate|page-width|auto>
   </collection>
