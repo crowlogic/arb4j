@@ -36,6 +36,14 @@ public class MantissaPointer {
     }
   }
 
+  public void setD(SWIGTYPE_p_mp_ptr value) {
+    arblibJNI.MantissaPointer_d_set(swigCPtr, this, SWIGTYPE_p_mp_ptr.getCPtr(value));
+  }
+
+  public SWIGTYPE_p_mp_ptr getD() {
+    return new SWIGTYPE_p_mp_ptr(arblibJNI.MantissaPointer_d_get(swigCPtr, this), true);
+  }
+
   public MantissaPointer() {
     this(arblibJNI.new_MantissaPointer(), true);
   }

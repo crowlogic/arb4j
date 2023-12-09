@@ -377,12 +377,31 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   }
 
 
-  public void setExp(SWIGTYPE_p_fmpz value) {
-    arblibJNI.Float_exp_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
+  public void setExp(Integer value) {
+    getExp().set(value);
+  }
+  
+  Integer expInt = null;
+  
+  public Integer getExp() {
+    return ( expInt != null ? expInt : ( expInt = new Integer(swigCPtr,false) ) );
   }
 
-  public SWIGTYPE_p_fmpz getExp() {
-    return new SWIGTYPE_p_fmpz(arblibJNI.Float_exp_get(swigCPtr, this), true);
+  public void setSize(SWIGTYPE_p_mp_size_t value) {
+    arblibJNI.Float_size_set(swigCPtr, this, SWIGTYPE_p_mp_size_t.getCPtr(value));
+  }
+
+  public SWIGTYPE_p_mp_size_t getSize() {
+    return new SWIGTYPE_p_mp_size_t(arblibJNI.Float_size_get(swigCPtr, this), true);
+  }
+
+  public void setD(Mantissa value) {
+    arblibJNI.Float_d_set(swigCPtr, this, Mantissa.getCPtr(value), value);
+  }
+
+  public Mantissa getD() {
+    long cPtr = arblibJNI.Float_d_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new Mantissa(cPtr, false);
   }
 
   public Float() {

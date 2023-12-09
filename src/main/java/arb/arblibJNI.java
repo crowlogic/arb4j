@@ -546,8 +546,12 @@ public class arblibJNI {
   public final static native long Real_rad_get(long jarg1, Real jarg1_);
   public final static native long new_Real();
   public final static native void delete_Real(long jarg1);
+  public final static native void MantissaNoPointer_d_set(long jarg1, MantissaNoPointer jarg1_, long jarg2);
+  public final static native long MantissaNoPointer_d_get(long jarg1, MantissaNoPointer jarg1_);
   public final static native long new_MantissaNoPointer();
   public final static native void delete_MantissaNoPointer(long jarg1);
+  public final static native void MantissaPointer_d_set(long jarg1, MantissaPointer jarg1_, long jarg2);
+  public final static native long MantissaPointer_d_get(long jarg1, MantissaPointer jarg1_);
   public final static native long new_MantissaPointer();
   public final static native void delete_MantissaPointer(long jarg1);
   public final static native void Mantissa_noptr_set(long jarg1, Mantissa jarg1_, long jarg2, MantissaNoPointer jarg2_);
@@ -558,6 +562,10 @@ public class arblibJNI {
   public final static native void delete_Mantissa(long jarg1);
   public final static native void Float_exp_set(long jarg1, Float jarg1_, long jarg2);
   public final static native long Float_exp_get(long jarg1, Float jarg1_);
+  public final static native void Float_size_set(long jarg1, Float jarg1_, long jarg2);
+  public final static native long Float_size_get(long jarg1, Float jarg1_);
+  public final static native void Float_d_set(long jarg1, Float jarg1_, long jarg2, Mantissa jarg2_);
+  public final static native long Float_d_get(long jarg1, Float jarg1_);
   public final static native long new_Float();
   public final static native void delete_Float(long jarg1);
   public final static native void ComplexPolynomial_coeffsNative_set(long jarg1, ComplexPolynomial jarg1_, long jarg2, Complex jarg2_);

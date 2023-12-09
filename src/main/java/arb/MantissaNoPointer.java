@@ -36,6 +36,15 @@ public class MantissaNoPointer {
     }
   }
 
+  public void setD(SWIGTYPE_p_unsigned_long value) {
+    arblibJNI.MantissaNoPointer_d_set(swigCPtr, this, SWIGTYPE_p_unsigned_long.getCPtr(value));
+  }
+
+  public SWIGTYPE_p_unsigned_long getD() {
+    long cPtr = arblibJNI.MantissaNoPointer_d_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new SWIGTYPE_p_unsigned_long(cPtr, false);
+  }
+
   public MantissaNoPointer() {
     this(arblibJNI.new_MantissaNoPointer(), true);
   }

@@ -29,7 +29,7 @@ typedef mag_struct mag_t[1];
 typedef mag_struct * mag_ptr;
 typedef unsigned long* unsigned_long_ptr;
 
-%ignore size;
+//%ignore size;
 %ignore alloc;
 %ignore mp_lc;
 %ignore dlog_precomp_struct;
@@ -41,7 +41,7 @@ typedef unsigned long* unsigned_long_ptr;
 %ignore _mp_alg;
 %ignore phi;
 %ignore pe;
-%ignore d;
+//%ignore d;
 %ignore mod;
 %ignore entries;
 
