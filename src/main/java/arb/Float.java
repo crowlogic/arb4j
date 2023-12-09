@@ -10,11 +10,12 @@ package arb;
 
 import static arb.arblib.*;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.util.Iterator;
 
 import arb.utensils.Utensils;
+
 
 /**
  * A {@link Float} contains four words: <br>
@@ -77,8 +78,8 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   public static final int BYTES = 32;
 
   MemorySegment           segment;
-  static SegmentScope     scope = SegmentScope.auto();
-  public int dim;
+  static Arena            scope = Arena.ofAuto();
+  public int              dim;
 
   protected Float(MemorySegment segment, int length)
   {
@@ -111,12 +112,14 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
    */
   public static Float newVector(int length, boolean aligned)
   {
-    Float array = new Float(aligned ? MemorySegment.allocateNative(Float.BYTES
-                  * length, arb.arblib.getpagesize(), scope) : MemorySegment.allocateNative(Float.BYTES * length, scope),
+    Float array = new Float(aligned ? scope.allocate(Float.BYTES * length,
+                                                     arb.arblib.getpagesize()) : scope.allocate(Float.BYTES
+                                                                   * length),
                             length);
-    array.dim   = length;
+    array.dim = length;
     return array;
   }
+
 
 
   @Override
@@ -233,21 +236,15 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     return swigCPtr;
   }
   
- public Float clear()
+  public Float clear()
   {
     if (swigCMemOwn)
     {
       arf_clear(this);
     }
-    else
-    {
-      if ( scope != null && scope.isAlive() ) 
-      {        
-        scope = null;
-      }
-    }
     return this;
   }
+
     
   public String toString(int digits)
   {
