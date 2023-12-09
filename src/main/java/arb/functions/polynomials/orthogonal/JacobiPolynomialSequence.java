@@ -19,7 +19,7 @@ import arb.functions.real.RealFunction;
  * Initial Conditions:
  * 
  *   P[0] = 1
- *   P[1] = ((2 + α + β) * x) / 2 - β / 2 + α / 2
+ *   P[1] = (C(1)x+α-β)/2
  * 
  * Coefficient Functions:
  * 
