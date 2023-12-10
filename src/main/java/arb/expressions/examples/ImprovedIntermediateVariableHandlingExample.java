@@ -1,7 +1,9 @@
-package arb.expressions;
+package arb.expressions.examples;
 
 import arb.Real;
 import arb.RealIterator;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
 
 /**
