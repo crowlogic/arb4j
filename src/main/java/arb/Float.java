@@ -91,6 +91,16 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
 
   public String name;
 
+  public void setExp(Integer value) {
+    getExp().set(value);
+  }
+  
+  Integer expInt = null;
+  
+  public Integer getExp() {
+    return ( expInt != null ? expInt : ( expInt = new Integer(swigCPtr,false) ) );
+  }
+  
   public Float setName(String name)
   {
     this.name = name;
@@ -377,14 +387,12 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   }
 
 
-  public void setExp(Integer value) {
-    getExp().set(value);
+  public void setExp(SWIGTYPE_p_fmpz value) {
+    arblibJNI.Float_exp_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
   }
-  
-  Integer expInt = null;
-  
-  public Integer getExp() {
-    return ( expInt != null ? expInt : ( expInt = new Integer(swigCPtr,false) ) );
+
+  public SWIGTYPE_p_fmpz getExp() {
+    return new SWIGTYPE_p_fmpz(arblibJNI.Float_exp_get(swigCPtr, this), true);
   }
 
   public void setSize(SWIGTYPE_p_mp_size_t value) {

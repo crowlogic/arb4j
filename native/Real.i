@@ -9,8 +9,8 @@ import static arb.arblib.*;
 import static java.lang.String.format;
 
 import java.io.Serializable;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -1027,7 +1027,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
 
     Real x = new Real(0,
                       false);
-    x.nativeSegment = MemorySegment.allocateNative(Real.BYTES * size, 4096, scope);
+    x.nativeSegment = arena.allocate(Real.BYTES * size, 4096);
     x.swigCPtr      = x.nativeSegment.address();
     x.dim           = size;
     x.elements      = new Real[x.dim];
@@ -1040,16 +1040,13 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return x;
   }
   
-
-  public static SegmentScope scope = SegmentScope.auto();
-  public MemorySegment       nativeSegment;
+  public static Arena  arena = Arena.ofAuto();
+  public MemorySegment nativeSegment;
          
- /**
+  /**
    * Construct a new {@link Real} aligned on a page boundary so that this can be
    * this{@link #lock()}ed by invoking the
-   * {@link arblibJNI#mprotect(long, long, int)} method. The actual size based on the
-   * rounding up of the buffer size to the nearest page boundary is set which is
-   * always greater than or equal to the requested dimension
+   * {@link arblibJNI#mprotect(long, long, int)} method. 
    * 
    * TODO: use
    * {@link MemorySegment#allocateNative(java.lang.foreign.MemoryLayout, java.lang.foreign.MemorySession)}
@@ -1061,15 +1058,15 @@ import arb.stochastic.ProbabilityDistributionFunction;
   public static Real newAlignedVector(int size)
   {
     // Calculate the size aligned to the page boundary
-    int  bytes = (int) ((size * Real.BYTES + PAGESIZE - 1) / PAGESIZE * PAGESIZE);
+    int  bytes   = (int) ((size * Real.BYTES + PAGESIZE - 1) / PAGESIZE * PAGESIZE);
 
-    long pointer     = arblibJNI.memalign(PAGESIZE, bytes );
+    long pointer = arblibJNI.memalign(PAGESIZE, bytes);
     arblibJNI.memset(pointer, 0, bytes);
-    Real x          = new Real(pointer,
-                               true);
+    Real x = new Real(pointer,
+                      true);
 
     // Calculate the actual number of elements that can fit in the aligned buffer
-    //int  actualSize = alignedSize / Real.BYTES;
+    // int actualSize = alignedSize / Real.BYTES;
 
     x.elements = new Real[x.dim = size];
     for (int j = 0; j < size; j++)
