@@ -1,6 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
-import arb.RealConstants;
+import static arb.RealConstants.negHalf;
 
 /**
  * The Chebyshev polynomials of the first kind are an instance of the Jacobi
@@ -18,14 +18,13 @@ import arb.RealConstants;
  * </pre>
  */
 public class Type1ChebyshevPolynomialSequence extends
-                                              JacobiPolynomialSequence<Type1ChebyshevPolynomial>
+                                              UltrasphericalPolynomialSequence<Type1ChebyshevPolynomial>
 
 {
 
   public Type1ChebyshevPolynomialSequence(int n)
   {
-    super(RealConstants.negHalf,
-          RealConstants.negHalf);
+    super(negHalf);
   }
 
 }

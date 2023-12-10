@@ -111,6 +111,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
     if (verbose)
     {
       out.println(this);
+      out.flush();
     }
 
     if (isIndependent)

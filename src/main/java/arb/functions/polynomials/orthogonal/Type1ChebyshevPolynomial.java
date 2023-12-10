@@ -21,7 +21,7 @@ import arb.functions.real.RealFunction;
  * @see Type1ChebyshevPolynomialSequence
  */
 public class Type1ChebyshevPolynomial extends
-                                      UltrasphericalPolynomial<Type1ChebyshevPolynomial>
+                                      UltrasphericalPolynomial<Type1ChebyshevPolynomial, Type1ChebyshevPolynomialSequence>
 {
 
   @Override
@@ -43,7 +43,7 @@ public class Type1ChebyshevPolynomial extends
     return super.evaluate(z, order, prec, w).mul(norm, prec);
   }
 
-  public Type1ChebyshevPolynomial(JacobiPolynomialSequence<Type1ChebyshevPolynomial> sequence, int n)
+  public Type1ChebyshevPolynomial(Type1ChebyshevPolynomialSequence sequence, int n)
   {
     super(sequence,
           n);

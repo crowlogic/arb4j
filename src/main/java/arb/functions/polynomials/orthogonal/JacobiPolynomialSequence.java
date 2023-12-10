@@ -49,7 +49,7 @@ import arb.functions.real.RealFunction;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class JacobiPolynomialSequence<J extends JacobiPolynomial<?>> implements
+public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends JacobiPolynomial<?>>> implements
                                      OrthogonalBasis<Real, J>,
                                      AutoCloseable
 {

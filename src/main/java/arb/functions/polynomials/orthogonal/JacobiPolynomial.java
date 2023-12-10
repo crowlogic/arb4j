@@ -16,7 +16,7 @@ public class JacobiPolynomial<J extends JacobiPolynomial<?>> extends
                              RealPolynomial
 {
 
-  public JacobiPolynomial(JacobiPolynomialSequence<J> sequence, int n)
+  public JacobiPolynomial(JacobiPolynomialSequence<? extends J> sequence, int n)
   {
     this.sequence = sequence;
     this.n        = n;
@@ -26,7 +26,7 @@ public class JacobiPolynomial<J extends JacobiPolynomial<?>> extends
     // coeffecients";
   }
 
-  final public JacobiPolynomialSequence<J> sequence;
+  final public JacobiPolynomialSequence<? extends J> sequence;
 
   final public int                         n;
 

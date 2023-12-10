@@ -9,13 +9,15 @@ package arb.functions.polynomials.orthogonal;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  * 
- * @param <J>
+ * @param <J> the type of {@link UltrasphericalPolynomial}
+ * @param <K> the type of {@link UltrasphericalPolynomialSequence}
  */
-public class UltrasphericalPolynomial<J extends UltrasphericalPolynomial<?>> extends
+public class UltrasphericalPolynomial<J extends UltrasphericalPolynomial<?, ? extends K>, K extends UltrasphericalPolynomialSequence<? extends J>>
+                                     extends
                                      JacobiPolynomial<J>
 {
 
-  public UltrasphericalPolynomial(JacobiPolynomialSequence<J> sequence, int n)
+  public UltrasphericalPolynomial(K sequence, int n)
   {
     super(sequence,
           n);
