@@ -32,13 +32,12 @@ import arb.functions.real.RealFunction;
  * 
  * <p>
  * The <code>Expression</code> class in the <code>arb.expressions</code> package
- * is a versatile and dynamic expression compiler and evaluator, suitable for
- * generating high-performance {@link Function} implementations on-the-fly.
- * Presently only the {@link Real} valued {@link Field} is implemented, but in
- * principle can easily be extended to {@link Complex} since it is generic,
- * supporting types D (domain), R (range), and F (function), and leverages the
- * ASM bytecode manipulation framework for generating and executing compiled
- * expressions.
+ * is a versatile and dynamic expression compiler and evaluator which generates
+ * high-performance {@link Function} implementations on-the-fly. Presently only
+ * the {@link Real} valued {@link Field} is implemented, but in principle can
+ * easily be extended to {@link Complex} since it is generic, supporting types D
+ * (domain), R (range), and F (function), and leverages the ASM bytecode
+ * manipulation framework for generating and executing compiled expressions.
  * </p>
  *
  * <p>
