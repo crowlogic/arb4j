@@ -404,7 +404,7 @@ public class Compiler
          ClassVisitor
          generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor classVisitor)
   {
-    classVisitor.visit(V20 | V_PREVIEW, ACC_PUBLIC, className, null, objectDesc, new String[]
+    classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC, className, null, objectDesc, new String[]
     { expression.functionClassInternalName });
     return classVisitor;
   }
