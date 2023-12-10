@@ -20,9 +20,7 @@ import java.util.List;
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.Complex;
-import arb.Field;
-import arb.Real;
+import arb.*;
 import arb.expressions.nodes.*;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
@@ -80,7 +78,7 @@ import arb.functions.real.RealFunction;
  * 
  * @author ©2023 Stephen Crowley
  */
-public class Expression<D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+public class Expression<D extends Field<D>, R extends Field<R>, F extends Function<D, R>> implements Typesettable
 {
   protected int                              position                  = -1;
 
@@ -1175,6 +1173,12 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
                      boolean verbose)
   {
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
+  }
+
+  @Override
+  public String typeset()
+  {
+   return rootNode.typeset();
   }
 
 

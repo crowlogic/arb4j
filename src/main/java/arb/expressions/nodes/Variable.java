@@ -17,8 +17,10 @@ import arb.functions.Function;
  * in a namespace and for handling independent variables within the expression.
  *
  * <p>
- * A variable can either be independent or dependent on other variables. If it's
- * independent, this information is stored within the {@link Expression} that
+ * A variable can either be the independent variable otherwise its value is assumed
+ * to be defined in the {@link Context} associated with this this{@link #expression} 
+ * where its value is substituted and subsequently acts as a mutable (constant) ironically.
+ * If you really want it to be a constant, call the lock
  * owns this {@code Variable} node.
  * </p>
  *
@@ -70,6 +72,7 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
         if (verbose)
         {
           out.println("Independent Variable declared to be: " + this);
+          out.flush();
         }
       }
       else
