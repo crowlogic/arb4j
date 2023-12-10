@@ -37,7 +37,8 @@ import arb.functions.real.RealFunction;
  * the {@link Real} valued {@link Field} is implemented, but in principle it can
  * easily be extended to {@link Complex} since it is generic, supporting types D
  * (domain), R (range), and F (function), and leverages the ASM bytecode
- * manipulation framework for generating and executing compiled expressions.
+ * framework for generating and executing compiled expressions.
+ * <br>
  * Just implement the approriately specialized function to call
  * {@link Compiler#compile(String, String, Context, Class, Class, Class, boolean)}
  * like is done for
