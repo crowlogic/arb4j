@@ -1,8 +1,8 @@
 package arb.stochastic.processes.correlationfunctions;
 
 import arb.Real;
-import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
+import static arb.functions.real.RealFunction.express;
 
 /**
  * The set of functions which can be represented by this function is the
@@ -15,7 +15,7 @@ public class ModifiedCauchyCorrelationFunction extends
                                                CauchyCorrelationFunction
 {
 
-  public RealFunction c = Expression.express("((1+|h|)^a)^(-(β/α)-1)*(1+(1-β)*|h|^α)", context);
+  public RealFunction c = express("((1+|h|)^a)^(-(β/α)-1)*(1+(1-β)*|h|^α)", context);
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)

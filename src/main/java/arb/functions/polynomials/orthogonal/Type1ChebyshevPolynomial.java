@@ -1,6 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.expressions.Expression.express;
+import static arb.functions.real.RealFunction.express;
 
 import arb.Real;
 import arb.functions.real.RealFunction;

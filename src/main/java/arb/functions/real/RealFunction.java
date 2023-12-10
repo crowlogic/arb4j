@@ -1,5 +1,6 @@
 package arb.functions.real;
 
+import static arb.expressions.Expression.instantiate;
 import static arb.utensils.Utensils.*;
 import static java.lang.String.format;
 import static java.lang.System.out;
@@ -11,6 +12,9 @@ import arb.*;
 import arb.Float;
 import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.RealContext;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.utensils.Utensils;
@@ -508,4 +512,52 @@ public interface RealFunction extends
                                  bits,
                                  res);
   }
+
+  public static RealFunction express(String expression, boolean verbose2)
+  {
+    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
+  }
+
+  public static RealFunction express(String expression)
+  {
+    return express(expression, null);
+  }
+
+  public static RealFunction express(String expression, RealContext context)
+  {
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
+  }
+
+  /**
+   * Returns the result of
+   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean)}
+   * after calling {@link Context#registerFunction(String, Function)} to register
+   * the function by name in the specified {@link Context}
+   * 
+   * @param functionName
+   * @param expression
+   * @param context
+   * @return
+   */
+  public static RealFunction express(String functionName, String expression, RealContext context)
+  {
+    return express(functionName, expression, context, false);
+  }
+
+  public static RealFunction express(String functionName, String expression, RealContext context, boolean verbose)
+  {
+    RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
+
+    context.registerFunction(functionName, func);
+
+    return func;
+  }
+
+  public static RealFunction express(String expression, RealContext context, boolean verbose)
+  {
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
+  }
+  
+ 
+
 }

@@ -92,7 +92,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   public String name;
 
   public void setExp(Integer value) {
-    getExp().set(value);
+    getExponent().set(value);
   }
   
   Integer expInt = null;

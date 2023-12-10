@@ -69,7 +69,7 @@ import arb.utensils.Utensils;
   public String name;
 
   public void setExp(Integer value) {
-    getExp().set(value);
+    getExponent().set(value);
   }
   
   Integer expInt = null;

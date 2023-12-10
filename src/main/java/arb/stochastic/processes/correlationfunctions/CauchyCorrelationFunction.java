@@ -6,6 +6,7 @@ import arb.expressions.RealContext;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.RealSymmetricCovarianceKernel;
+import static arb.functions.real.RealFunction.express;
 
 /**
  * The set of functions which can be represented by this function is the 'Cauchy
@@ -48,7 +49,7 @@ public class CauchyCorrelationFunction implements
 
   public RealContext     context = new RealContext(vars);
 
-  public RealFunction    c       = Expression.express("((1+|h|)^α)^(-(β/α))", context);
+  public RealFunction    c       = express("((1+|h|)^α)^(-(β/α))", context);
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)

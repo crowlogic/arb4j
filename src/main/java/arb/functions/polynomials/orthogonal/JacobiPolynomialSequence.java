@@ -1,6 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.expressions.Expression.express;
+import static arb.functions.real.RealFunction.express;
 
 import java.util.Iterator;
 import java.util.stream.IntStream;

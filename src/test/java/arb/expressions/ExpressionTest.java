@@ -1,7 +1,7 @@
 package arb.expressions;
 
 import static arb.RealConstants.*;
-import static arb.expressions.Expression.express;
+import static arb.functions.real.RealFunction.express;
 
 import arb.*;
 import arb.functions.real.RealFunction;
