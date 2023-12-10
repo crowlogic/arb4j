@@ -14,13 +14,12 @@ import arb.functions.Function;
  * which are member-functions of the {@link Real} type)
  * 
  * <pre>
- * Copyright ©2023 Stephen Crowley
- * 
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  * 
+ * @author ©2023 Stephen Crowley
  * @param <D>
  * @param <F>
  */
@@ -54,7 +53,7 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
     return variable;
   }
 
-  public boolean verbose = false;
+  public boolean                             verbose     = false;
 
   public final CompiledExpressionClassLoader classLoader = new CompiledExpressionClassLoader();
 
