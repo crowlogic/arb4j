@@ -17,13 +17,38 @@ import arb.functions.real.RealFunction;
 
 /**
  * <pre>
+ * The Compiler class in the arb.expressions package is a comprehensive utility for compiling expressions in a 
+ * dynamic and flexible manner. This class provides a variety of static methods to generate, manipulate, and 
+ * compile expressions, mainly focusing on the functionality surrounding the ASM bytecode manipulation framework. 
+ * The class is designed to work with a range of types represented by the generic parameters D, R, and F, 
+ * corresponding to different field and function types in the expression's domain and range.
+ *
+ * Key functionalities include:
+ *  - Compiling expressions into Java bytecodes.
+ *  - Handling field functions and registered functions through method invocations.
+ *  - Loading and managing various types of arguments and variables, like zero, order, bits, results, 
+ *    and the 'this' reference.
+ *  - Handling literal constants and intermediate variables.
+ *  - Preparing and managing the stack for different use cases, such as reusing left or right nodes.
+ *  - Closing field resources and defining function classes.
+ *
+ * The class relies on various ASM classes like {@link MethodVisitor} and {@link ClassVisitor} to generate and 
+ * manipulate bytecode. It also integrates closely with other classes in the arb package, like {@link Field}, 
+ * {@link Function}, and {@link Expression}, to provide a flexible and dynamic expression compilation environment.
+ *
+ * Usage of this class requires a thorough understanding of ASM bytecode manipulation and the arb library's 
+ * structure and types. The verbose mode in various methods aids in debugging and understanding the internal 
+ * processes during expression compilation.
+ * 
+ * 
  * Copyright ©2023 Stephen Crowley
- *  
+ * 
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
+
 public class Compiler
 {
   private static final String objectDesc = Type.getInternalName(Object.class);
@@ -38,7 +63,7 @@ public class Compiler
    * @param arg
    * @param lastCall
    * @param depth
-   * @return
+   * @return methodVisitor (for fluent-style function composition)
    */
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
@@ -101,7 +126,7 @@ public class Compiler
    * @param arg
    * @param lastCall
    * @param depth
-   * @return
+   * @return methodVisitor
    */
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
@@ -266,11 +291,11 @@ public class Compiler
   /**
    * Declares the given constants as fields in the class being generated.
    * 
-   * @param classVisitor     The ClassVisitor for the class being generated
+   * @param classVisitor     The {@link ClassVisitor} for the class being generated
    * @param typeDescriptor   the type of the fields
    * @param literalConstants An {@link Iterable} of {@link LiteralConstant}
    *                         objects representing the constants to be declared
-   * @return
+   * @return classVisitor
    */
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          ClassVisitor
@@ -278,7 +303,7 @@ public class Compiler
                           String typeDescriptor,
                           Iterable<LiteralConstant<D, R, F>> literals)
   {
-    for (LiteralConstant<?, ?, ?> constant : literals)
+    for (var constant : literals)
     {
       classVisitor.visitField(ACC_PUBLIC, constant.fieldName, typeDescriptor, null, null);
     }
@@ -288,16 +313,16 @@ public class Compiler
   /**
    * Declares the given variables as fields in the class being generated.
    * 
-   * @param classVisitor The ClassVisitor for the class being generated
+   * @param classVisitor The {@link ClassVisitor} for the class being generated
    * @param variables    A {@link Collection} of variable names to be declared as
    *                     fields
-   * @return
+   * @return classVisitor
    */
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          ClassVisitor
          declareVariables(Expression<D, R, F> expression, ClassVisitor classVisitor, Iterable<String> variables)
   {
-    for (String variableName : variables)
+    for (var variableName : variables)
     {
       classVisitor.visitField(ACC_PUBLIC, variableName, expression.domainClassDescriptor, null, null);
     }
@@ -457,7 +482,7 @@ public class Compiler
          MethodVisitor
          initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
-    for (String intermediateVariable : expression.intermediateVariables)
+    for (var intermediateVariable : expression.intermediateVariables)
     {
       initializeIntermediateVariable(expression, methodVisitor, intermediateVariable);
     }
@@ -469,7 +494,7 @@ public class Compiler
          initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
 
-    for (LiteralConstant<D, R, F> literal : expression.literalConstants)
+    for (var literal : expression.literalConstants)
     {
       initializeLiteralConstantWithString(expression, methodVisitor, literal);
     }
