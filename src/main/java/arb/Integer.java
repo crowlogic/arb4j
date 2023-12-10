@@ -1,7 +1,7 @@
 package arb;
 
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  * This class wraps the fmpz type in flint which is an arbitrary precision
@@ -46,7 +46,7 @@ public class Integer implements
     this(1);
   }
 
-  static SegmentScope scope = SegmentScope.auto();
+  static Arena arena = Arena.ofAuto();
 
   public Integer(int dim)
   {
@@ -114,7 +114,7 @@ public class Integer implements
   /**
    * Sets this{@link #nativeSegment} by calling
    * {@link MemorySegment#allocateNative(long, SegmentScope)} and passing
-   * this{@link #scope} as the second argument then calling
+   * this{@link #arena} as the second argument then calling
    * {@link arblib#fmpz_init2(long, long)} on it
    * 
    * @param n
@@ -122,7 +122,7 @@ public class Integer implements
    */
   public Integer init(int n)
   {
-    nativeSegment = MemorySegment.allocateNative(Long.BYTES * dim, scope);
+    nativeSegment = arena.allocate(Long.BYTES * dim);
     swigCPtr      = nativeSegment.address();
     arblib.fmpz_init2(swigCPtr, n);
     return this;

@@ -1,10 +1,9 @@
 package arb;
 
 import java.io.Closeable;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.ref.Cleaner.Cleanable;
-import java.util.Iterator;
 
 /**
  * A {@link FloatPartition} denoted P of ...
@@ -27,7 +26,7 @@ public class FloatPartition implements
   private int     prec;
   private Float[] elements;
 
-  SegmentScope    scope = SegmentScope.auto();
+  Arena           arena = Arena.ofAuto();
 
   MemorySegment   segment;
 
@@ -43,12 +42,9 @@ public class FloatPartition implements
    * @param interval
    * @param n
    */
-  @SuppressWarnings("resource")
-  public FloatPartition(int precision,
-                        FloatInterval interval,
-                        int n)
+  public FloatPartition(int precision, FloatInterval interval, int n)
   {
-    segment           = MemorySegment.allocateNative(Float.BYTES * (n + 1), scope);
+    segment           = arena.allocate(Float.BYTES * (n + 1));
     swigCPtr          = segment.address();
     this.n            = n;
     this.prec         = precision;
@@ -101,9 +97,9 @@ public class FloatPartition implements
   }
 
   @Override
-  public Iterator<Float> iterator()
+  public FloatPartitionIterator iterator()
   {
-    return new PartitionIterator(this);
+    return new FloatPartitionIterator(this);
   }
 
   @Override
