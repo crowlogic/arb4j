@@ -17,15 +17,13 @@ import arb.functions.real.RealFunction;
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre> 
+ * </pre>
  */
 public class ImprovedIntermediateVariableHandlingExample implements
                                                          RealFunction
 {
-  public Real         c0                           = new Real("2",
-                                                              128);
-  public Real         c1                           = new Real("1",
-                                                              128);
+  public Real         c0                           = new Real().set(2);
+
   public Real         α;
   public Real         β;
   public Real         intermediateVariables        = Real.newVector(25);
@@ -67,7 +65,7 @@ public class ImprovedIntermediateVariableHandlingExample implements
     return c0.mul(in, bits, result)
              .add(α, bits, l0)
              .add(β, bits, l1)
-             .sub(c1, bits, l2)
+             .sub(1, bits, l2)
              .mul(α.pow(c0, bits, l3)
                    .sub(β.pow(c0, bits, l4), bits, l5)
                    .add(c0.mul(in, bits, l6)
@@ -81,7 +79,7 @@ public class ImprovedIntermediateVariableHandlingExample implements
                   l15)
              .div(c0.mul(in, bits, l16)
                     .mul(in.add(α, bits, l17).add(β, bits, l18), bits, l19)
-                    .mul(c0.mul(in.sub(c1, bits, l20), bits, l21).add(α, bits, l22).add(β, bits, l23), bits, l24),
+                    .mul(c0.mul(in.sub(1, bits, l20), bits, l21).add(α, bits, l22).add(β, bits, l23), bits, l24),
                   bits,
                   result);
   }
@@ -89,7 +87,6 @@ public class ImprovedIntermediateVariableHandlingExample implements
   public void close()
   {
     c0.close();
-    c1.close();
     intermediateVariables.close();
   }
 }

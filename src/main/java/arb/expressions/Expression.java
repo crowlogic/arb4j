@@ -20,6 +20,7 @@ import java.util.List;
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
+import arb.Complex;
 import arb.Field;
 import arb.Real;
 import arb.expressions.nodes.*;
@@ -28,13 +29,52 @@ import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
 /**
- * <pre>
- * Copyright ©2023 Stephen Crowley
  * 
+ * <p>
+ * The <code>Expression</code> class in the <code>arb.expressions</code> package
+ * is a versatile and dynamic expression compiler and evaluator, suitable for
+ * generating high-performance {@link Function} implementations on-the-fly.
+ * Presently only the {@link Real} valued {@link Field} is implemented, but in
+ * principle can easily be extended to {@link Complex} since it is generic,
+ * supporting types D (domain), R (range), and F (function), and leverages the
+ * ASM bytecode manipulation framework for generating and executing compiled
+ * expressions.
+ * </p>
+ *
+ * <p>
+ * Key Features:
+ * </p>
+ * <ul>
+ * <li>Compiles expressions dynamically into Java bytecodes.</li>
+ * <li>Supports operations like addition, subtraction, multiplication, division,
+ * and exponentiation.</li>
+ * <li>Manages variables, constants, and function calls within expressions.</li>
+ * <li>Handles intermediate variables and constants effectively.</li>
+ * <li>Injects variable and function references into compiled instances.</li>
+ * <li>Includes methods for parsing, evaluating, and generating necessary
+ * bytecode for expressions.</li>
+ * <li>Verbose mode for detailed logging during the compilation process.</li>
+ * </ul>
+ *
+ * <p>
+ * This class is integrated with other components of the <code>arb</code>
+ * library, such as <code>Field</code>, <code>Function</code>, and various node
+ * types. It uses ASM's <code>MethodVisitor</code> and <code>ClassVisitor</code>
+ * for bytecode generation and manipulation.
+ * </p>
+ *
+ * <pre>
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
+ * 
+ * @param <D> the domain type of the expression, extending <code>Field</code>
+ * @param <R> the range type of the expression, extending <code>Field</code>
+ * @param <F> the function type of the expression, extending
+ *            <code>Function</code>
+ * 
+ * @author ©2023 Stephen Crowley
  */
 public class Expression<D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
 {
