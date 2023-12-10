@@ -8,17 +8,19 @@
 
 package arb;
 
+import static arb.arblib.*;
+import static java.lang.String.format;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
-import java.nio.*;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.LongBuffer;
 import java.util.Iterator;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import static arb.arblib.*;
-import static java.lang.String.format;
 
 import dnl.utils.text.table.TextTable;
 
@@ -396,7 +398,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
     m.init(rows, cols);
 
     m.rows = new Real[rows];
-    MemorySegment ms = MemorySegment.ofAddress(m.getRowPointers(), rows * 8, SegmentScope.auto());
+    MemorySegment ms = MemorySegment.ofAddress(m.getRowPointers()).reinterpret(Long.BYTES * rows);
 
     m.rowPointers = ms.asByteBuffer().order(ByteOrder.nativeOrder()).asLongBuffer();
     m.initRows();

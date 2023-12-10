@@ -97,7 +97,7 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   
   Integer expInt = null;
   
-  public Integer getExp() {
+  public Integer getExponent() {
     return ( expInt != null ? expInt : ( expInt = new Integer(swigCPtr,false) ) );
   }
   
