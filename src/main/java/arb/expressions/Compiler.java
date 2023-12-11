@@ -129,7 +129,7 @@ public class Compiler
    */
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
-         callRegisteredFunction(MethodVisitor methodVisitor,
+         generateRegisteredFunctionCall(MethodVisitor methodVisitor,
                                 String functionName,
                                 Node<D, R, F> arg,
                                 boolean lastCall,

@@ -24,13 +24,15 @@ import arb.functions.real.RealFunction;
  * Coefficient Functions:
  * 
  *   C(n) = 2n + α + β
- *   A(n, x) = (C(n) - 1) * (α^2 - β^2 + C(n - 1) * C(n) * x) / 2
+ *   F(n) = C(n-1)*C(n)
+ *   G = α²-β²
+ *   A(n) = ( F(n)*x + G )*(C(n)-1)/2
  *   B(n) = (n + α - 1) * (n + β - 1) * C(n)
- *   E(n) = (n * C(n/2) * C(n - 1))]
+ *   E(n) = n * C(n/2) * C(n - 1)
  *   
  * Recurrence Relation for n >= 2:
  * 
- *   P[n] = (A(n, x) * P(n-1,x) - B(n) * P(n-2,x)) / E(n)
+ *   P[n] = (x * A(n) * P(n-1,x) - B(n) * P(n-2,x)) / E(n)
  * </pre>
  * 
  * The polynomials P(n) are mutually orthogonal with respect to the weight
@@ -64,7 +66,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final public static boolean verbose = false;
 
-  final public RealFunction   E       = express("E", "2*n+α+β", context, verbose);
+  final public RealFunction   C       = express("C", "2*n+α+β", context, verbose);
 
   final public RealFunction   A       = express("A", "(E(n)-1)*E(n)/(2*n*E(n/2))", context, verbose);
 
@@ -72,7 +74,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                 context,
                                                 verbose);
 
-  final public RealFunction   C       = express("C",
+  final public RealFunction   E       = express("E",
                                                 "((n+α-1)*(n+β-1)*(2*n+α+β))/(n*(n+α+β)*(2*n+α+β-2))",
                                                 context,
                                                 verbose);
