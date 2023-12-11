@@ -26,13 +26,13 @@ import arb.functions.real.RealFunction;
  *   C(n) = 2n + α + β
  *   F(n) = C(n-1)*C(n)
  *   G = α²-β²
- *   A(n, x) = ( F(n)*x + G )*(C(n)-1)/2
+ *   A(n) = ( F(n)*x + G )*(C(n)-1)/2
  *   B(n) = (n + α - 1) * (n + β - 1) * C(n)
  *   E(n) = n * C(n/2) * C(n - 1)
  *   
  * Recurrence Relation for n >= 2:
  * 
- *   P[n] = (A(n, x) * P(n-1,x) - B(n) * P(n-2,x)) / E(n)
+ *   P[n] = (x * A(n) * P(n-1,x) - B(n) * P(n-2,x)) / E(n)
  * </pre>
  * 
  * The polynomials P(n) are mutually orthogonal with respect to the weight
