@@ -13,6 +13,21 @@ import arb.functions.Function;
  * resolution of {@link Variable} and {@link Function} references (beyond those
  * which are member-functions of the {@link Real} type)
  * 
+ * <p>
+ * This class functions similarly to a closure in functional programming. It
+ * encapsulates an environment of variable bindings and functions, providing a
+ * context in which expressions are evaluated. Unlike a traditional closure, it
+ * does not contain the expression itself but rather the environment for such
+ * expressions. This context is essential for managing the scope and lifetime of
+ * variables and functions during expression evaluation.
+ * </p>
+ * 
+ * <p>
+ * In the context of a reduction system, this class can be thought of as
+ * managing the 'environment' part of a closure, where the variables and
+ * functions are bound and maintained.
+ * </p>
+ * 
  * <pre>
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
