@@ -134,7 +134,7 @@ public class FunctionCall<D extends Field<D>, R extends Field<R>, F extends Func
     if (handler == null)
     {
 
-      Compiler.callRegisteredFunction(methodVisitor, name, node, isResult, depth);
+      Compiler.generateRegisteredFunctionCall(methodVisitor, name, node, isResult, depth);
 
       return methodVisitor;
     }
