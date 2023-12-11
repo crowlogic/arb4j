@@ -59,9 +59,9 @@ import arb.functions.real.RealFunction;
  *
  * <p>
  * This class is integrated with other components of the <code>arb</code>
- * library, such as <code>Field</code>, <code>Function</code>, and various node
- * types. It uses ASM's <code>MethodVisitor</code> and <code>ClassVisitor</code>
- * for bytecode generation and manipulation.
+ * library, such as {@link Field}, {@link Function}, and various {@link Node}
+ * types. It uses ASM's {@link MethodVisitor} and {@link ClassVisitor} for
+ * bytecode generation.
  * </p>
  *
  * <pre>
@@ -77,7 +77,8 @@ import arb.functions.real.RealFunction;
  * 
  * @author ©2023 Stephen Crowley
  */
-public class Expression<D extends Field<D>, R extends Field<R>, F extends Function<D, R>> implements Typesettable
+public class Expression<D extends Field<D>, R extends Field<R>, F extends Function<D, R>> implements
+                       Typesettable
 {
   protected int                              position                  = -1;
 
@@ -1177,9 +1178,7 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
   @Override
   public String typeset()
   {
-   return rootNode.typeset();
+    return rootNode.typeset();
   }
-
-
 
 }
