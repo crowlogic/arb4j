@@ -24,9 +24,11 @@ import arb.functions.real.RealFunction;
  * Coefficient Functions:
  * 
  *   C(n) = 2n + α + β
- *   A(n, x) = (C(n) - 1) * (α^2 - β^2 + C(n - 1) * C(n) * x) / 2
+ *   F(n) = C(n-1)*C(n)
+ *   G = α²-β²
+ *   A(n, x) = ( F(n)*x + G )*(C(n)-1)/2
  *   B(n) = (n + α - 1) * (n + β - 1) * C(n)
- *   E(n) = (n * C(n/2) * C(n - 1))]
+ *   E(n) = n * C(n/2) * C(n - 1)
  *   
  * Recurrence Relation for n >= 2:
  * 
