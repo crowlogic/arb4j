@@ -71,6 +71,20 @@ public class JacobiPolynomialTest extends
     }
   }
 
+  public static void testC()
+  {
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   RealConstants.oneQuarter))
+    {
+      try ( Real result = seq.C.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("C(1)=" + result);
+        assertEquals(0.0, result.doubleValue());
+        assertTrue(result.isExact());
+      }
+    }
+  }
+  
   public static void testP1()
   {
     try ( var seq = new JacobiPolynomialSequence<>(half,

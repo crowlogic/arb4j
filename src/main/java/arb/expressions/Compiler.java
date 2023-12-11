@@ -4,6 +4,7 @@ import static java.lang.System.err;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
+import java.io.Closeable;
 import java.util.Collection;
 
 import org.objectweb.asm.*;
@@ -130,10 +131,10 @@ public class Compiler
   public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
          generateRegisteredFunctionCall(MethodVisitor methodVisitor,
-                                String functionName,
-                                Node<D, R, F> arg,
-                                boolean lastCall,
-                                int depth)
+                                        String functionName,
+                                        Node<D, R, F> arg,
+                                        boolean lastCall,
+                                        int depth)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -151,6 +152,10 @@ public class Compiler
 
     F func = expression.context.functions.get(functionName);
 
+    if (func == null)
+    {
+      throw new IllegalArgumentException(String.format("Undefined reference to function %s(.)", functionName ) );
+    }
     expression.loadFunctionFieldReferenceOntoStack(loadThisOntoStack(methodVisitor),
                                                    functionName,
                                                    func.getClass().descriptorString());
@@ -191,14 +196,27 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static void loadZero(MethodVisitor methodVisitor)
+  public static void loadZeroConstant(MethodVisitor methodVisitor)
   {
     methodVisitor.visitInsn(Opcodes.ICONST_0);
   }
 
+  /**
+   * Generate a call to the {@link Field}s {@link Closeable#close() method
+   * 
+   * @param <D>
+   * @param <R>
+   * @param <F>
+   * @param expression
+   * @param methodVisitor
+   * @param fieldNameToBeClosed
+   * @return
+   */
   static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
          MethodVisitor
-         closeField(Expression<D, R, F> expression, MethodVisitor methodVisitor, String fieldNameToBeClosed)
+         generateFieldClosure(Expression<D, R, F> expression,
+                              MethodVisitor methodVisitor,
+                              String fieldNameToBeClosed)
   {
     methodVisitor.visitFieldInsn(GETFIELD,
                                  expression.className,
@@ -290,7 +308,8 @@ public class Compiler
   /**
    * Declares the given constants as fields in the class being generated.
    * 
-   * @param classVisitor     The {@link ClassVisitor} for the class being generated
+   * @param classVisitor     The {@link ClassVisitor} for the class being
+   *                         generated
    * @param typeDescriptor   the type of the fields
    * @param literalConstants An {@link Iterable} of {@link LiteralConstant}
    *                         objects representing the constants to be declared

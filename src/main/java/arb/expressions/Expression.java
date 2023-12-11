@@ -442,7 +442,7 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
   {
     for (String variables : fields)
     {
-      closeField(this, loadThisOntoStack(methodVisitor), variables);
+      generateFieldClosure(this, loadThisOntoStack(methodVisitor), variables);
     }
   }
 
