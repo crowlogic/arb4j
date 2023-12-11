@@ -55,7 +55,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                      OrthogonalBasis<Real, J>,
                                      AutoCloseable
 {
-  public static int           bits    = 128;
+  public int                  bits    = 128;
   public Real                 α       = new Real();
   public Real                 β       = new Real();
 
@@ -67,22 +67,27 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   final public static boolean verbose = false;
 
   final public RealFunction   C       = express("C", "2*n+α+β", context, verbose);
+  final public RealFunction   F       = express("F", "C(n-1)*C(n)", context, verbose);
+
+  final public RealFunction   A       = express("A", "x➔(F(n)*x + G)*(C(n)/2 - 1/2)", context, verbose);
+
   final public RealFunction   E       = express("E",
                                                 "((n+α-1)*(n+β-1)*(2*n+α+β))/(n*(n+α+β)*(2*n+α+β-2))",
                                                 context,
                                                 verbose);
-  final public RealFunction   A       = express("A", "(E(n)-1)*E(n)/(2*n*E(n/2))", context, verbose);
 
   final public RealFunction   B       = express("((E(n) - 1)*(α^2 - β^2))/(2*n*(n + α + β)*E(n - 1))",
                                                 context,
                                                 verbose);
 
-
+  final public Real           G       = new Real();
 
   final public RealFunction   p1      = express("α/2-β/2+(2+α+β)*x/2", context, verbose);
 
   public JacobiPolynomialSequence(Real a, Real b)
   {
+    bits = Math.max(a.bits(), b.bits());
+    a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
   }
@@ -128,7 +133,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   }
 
   public static Real domain = new Real("0+/-1",
-                                       bits);
+                                       128);
 
   @Override
   public Domain<Real> getDomain()
@@ -142,6 +147,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     α.close();
     β.close();
     domain.close();
+    G.close();
   }
 
 }
