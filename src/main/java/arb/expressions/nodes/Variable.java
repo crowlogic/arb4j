@@ -17,18 +17,24 @@ import arb.functions.Function;
  * in a namespace and for handling independent variables within the expression.
  *
  * <p>
- * A variable can either be the independent variable otherwise its value is assumed
- * to be defined in the {@link Context} associated with this this{@link #expression} 
- * where its value is substituted and subsequently acts as a mutable (constant) ironically.
- * If you really want it to be a constant, call the lock
- * owns this {@code Variable} node.
+ * A variable can either be the independent variable otherwise its value is
+ * assumed to be defined in the {@link Context} associated with this
+ * this{@link #expression} where its value is substituted and subsequently acts
+ * as a mutable (constant) ironically. If you really want it to be a constant,
+ * call the lock owns this {@code Variable} node.
  * </p>
  *
  * <p>
  * This class is also responsible for generating bytecode for this variable node
  * through its {@link #generate(MethodVisitor)} method.
  * </p>
- *
+ * 
+ * <pre>
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ * </pre>
+ * 
  * @param <D> Type of domain field, must extend {@link arb.Field}.
  * @param <R> Type of range field, must extend {@link arb.Field}.
  * @param <F> Type of function that maps domain to range, must implement
@@ -38,13 +44,9 @@ import arb.functions.Function;
  * @see Expression
  * @see Variables
  * 
- *      <pre>
- * Copyright ©2023 Stephen Crowley
+ * @author ©2023 Stephen Crowley
  * 
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- *      </pre>
+ * 
  */
 public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
                      Node<D, R, F>

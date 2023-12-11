@@ -47,8 +47,26 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
 
   public Functions<D, R, F> functions;
 
+  /**
+   * Adds a given variable to {@link #variables}
+   * 
+   * @param variable
+   * @return variable
+   * 
+   * @throws IllegalArgumentException if a variable of the same name has already
+   *                                  been registered
+   */
   public R registerVariable(R variable)
   {
+    R existing = null;
+    if ((existing = variables.get(variable.getName())) != null)
+    {
+      boolean same = existing == variable;
+      throw new IllegalArgumentException(format("A variable named %s of type %s is already registered and it %s equal to the same object passed to registerVariable\n",
+                                                variable.getName(),
+                                                variable.getClass(),
+                                                same ? "IS" : "IS NOT"));
+    }
     variables.put(variable.getName(), variable);
     return variable;
   }
@@ -57,15 +75,26 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
 
   public final CompiledExpressionClassLoader classLoader = new CompiledExpressionClassLoader();
 
+  /**
+   * 
+   * @param functionName
+   * @param function
+   * @return
+   * @throws IllegalArgumentException if a function of the same name already
+   *                                  exists in this{@link #functions}
+   */
   public F registerFunction(String functionName, F function)
   {
     if (verbose)
     {
       out.format("registerFunction( functionName = %s, function = %s )\n", functionName, function);
     }
-    assert !functions.containsKey(functionName) : format("a function named %s of class %s is already registered",
-                                                         functionName,
-                                                         function);
+    if (functions.containsKey(functionName))
+    {
+      throw new IllegalArgumentException(format("a function named %s of class %s is already registered",
+                                                functionName,
+                                                function));
+    }
 
     functions.put(functionName, function);
     return function;
