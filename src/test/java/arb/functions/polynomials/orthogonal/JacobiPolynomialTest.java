@@ -79,22 +79,46 @@ public class JacobiPolynomialTest extends
       try ( Real result = seq.C.evaluate(one, 1, bits, new Real()))
       {
         out.println("C(1)=" + result);
-        assertEquals(0.0, result.doubleValue());
+        assertEquals(2.75, result.doubleValue());
         assertTrue(result.isExact());
       }
     }
   }
-  
+
+  public static void testF()
+  {
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   threeQuarters))
+    {
+      try ( Real result = seq.F.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("F(1)=" + result);
+        assertEquals(0.5625, result.doubleValue());
+        assertTrue(result.isExact());
+      }
+    }
+
+  }
+
+  public static void testG()
+  {
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf))
+    {
+      assertEquals(0.0, seq.G.doubleValue());
+    }
+  }
+
   public static void testP1()
   {
-    try ( var seq = new JacobiPolynomialSequence<>(half,
-                                                   half))
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf))
     {
       try ( Real result = seq.p1.evaluate(one, 0, bits, new Real()))
       {
-        // out.println("p1(1)=" + result);
+        out.println("p1(1)=" + result);
 
-        assertEquals(1.5, result.doubleValue());
+        assertEquals(0.5, result.doubleValue());
       }
     }
 
