@@ -611,7 +611,7 @@ import dnl.utils.text.table.TextTable;
                                          .order(ByteOrder.nativeOrder())
                                          .asLongBuffer();
 
-    RealMatrix factorization = computeLowerUpperFactorization(permutation, 128, upperFactor);
+    RealMatrix factorization = computeLowerUpperFactorization(permutation, bits, upperFactor);
 
     factorization.extractUpperAndLowerTriangularMatrices(lowerFactor, upperFactor);
 
