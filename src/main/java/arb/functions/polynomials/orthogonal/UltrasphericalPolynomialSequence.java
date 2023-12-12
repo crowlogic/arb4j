@@ -28,10 +28,11 @@ public class UltrasphericalPolynomialSequence<J extends UltrasphericalPolynomial
    * @param μ the value of α=μ and β=μ to pass to the
    *          {@link JacobiPolynomialSequence} constructor
    */
-  public UltrasphericalPolynomialSequence(Real μ)
+  public UltrasphericalPolynomialSequence(Real μ, int N)
   {
     super(μ,
-          μ);
+          μ,
+          N);
   }
 
 }
