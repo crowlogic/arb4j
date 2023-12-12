@@ -6,7 +6,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.ref.Cleaner.Cleanable;
 
 /**
- * A {@link FloatPartition} denoted P of ...
+ * A {@link FloatPartition} denoted Pfunc of ...
  * 
  * @see <a href="functions/doc-files/IntegrationNotes.pdf">notes on Riemann
  *      integration</a>

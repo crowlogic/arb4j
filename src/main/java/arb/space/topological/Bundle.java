@@ -19,7 +19,7 @@ import arb.functions.Function;
  * 
  * @param <E> total space
  * @param <B> base space
- * @param <P> projection map (function)
+ * @param <Pfunc> projection map (function)
  */
 public interface Bundle<X, E extends TopologicalSpace<X>, B extends TopologicalSpace<X>, P extends Function<E, B>>
 {

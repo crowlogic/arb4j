@@ -28,7 +28,7 @@ import arb.stochastic.GaussianDistribution;
  * 
  * @author crow
  *
- * @param <P>
+ * @param <Pfunc>
  * @param <F>
  * @param <C>
  */

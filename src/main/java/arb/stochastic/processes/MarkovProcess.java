@@ -11,7 +11,7 @@ import arb.stochastic.ProbabilityDensityFunction;
  * 
  * @author crow
  *
- * @param <P>
+ * @param <Pfunc>
  * @param <F>
  * @param <C>
  */

@@ -48,7 +48,7 @@ import arb.operators.integraltransforms.FourierTransform;
  * Therefore, the characteristic function of a random variable is indeed equal
  * to the Fourier transform of its pdf.
  * 
- * @param <P> the type of {@link RealProbabilityDensityFunction} this
+ * @param <Pfunc> the type of {@link RealProbabilityDensityFunction} this
  *            characteristic function corresponds to
  */
 public interface CharacteristicFunction extends

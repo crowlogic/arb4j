@@ -107,8 +107,8 @@ public class RealMatrixTest extends
    *                          [               ]
    *                          [4  29  105  265]
    * 
-   * It then performs LU decomposition on matrix A, resulting in matrices P, L, and U:
-   * - P is the permutation matrix.
+   * It then performs LU decomposition on matrix A, resulting in matrices Pfunc, L, and U:
+   * - Pfunc is the permutation matrix.
    * - L is the lower-triangular matrix.
    * - U is the upper-triangular matrix.
    * 

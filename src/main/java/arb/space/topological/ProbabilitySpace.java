@@ -4,7 +4,7 @@ import arb.measures.MeasureSpace;
 import arb.stochastic.ProbabilityDistributionFunction;
 
 /**
- * A {@link ProbabilitySpace} or a probability triple (Ω,F,P) is a mathematical
+ * A {@link ProbabilitySpace} or a probability triple (Ω,F,Pfunc) is a mathematical
  * structure consisting of three elements that provides a precise model of
  * random processes or "experiments".
  *
@@ -12,7 +12,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
  *            outcomes
  * @param <F> An {@link EventSpace}, which is a set of outcomes in the
  *            {@link SampleSpace} Ω.
- * @param <P> A probability {@link ProbabilityDistributionFunction}, which
+ * @param <Pfunc> A probability {@link ProbabilityDistributionFunction}, which
  *            assigns each event in the {@link EventSpace} a probability, which
  *            is a number between 0 and 1.
  */

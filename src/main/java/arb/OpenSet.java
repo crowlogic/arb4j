@@ -9,9 +9,9 @@ import arb.space.topological.MetricSpace;
  * {@link Real} {@link Line}.
  * 
  * In a {@link MetricSpace} (a {@link Set} along with a distance defined between
- * any two points), open sets are the sets that, with every point P, contain all
- * points that are sufficiently near to P (that is, all points whose distance to
- * P is less than some value depending on P).
+ * any two points), open sets are the sets that, with every point Pfunc, contain all
+ * points that are sufficiently near to Pfunc (that is, all points whose distance to
+ * Pfunc is less than some value depending on Pfunc).
  * 
  * More generally, one defines open sets as the members of a given collection of
  * subsets of a given set, a collection that has the property of containing
