@@ -54,6 +54,12 @@ public class Reference
     return String.format("Reference[name=%s, index=%s]", name, index);
   }
 
+  public Reference(String identifier)
+  {
+    this.name  = identifier;
+    this.index = null;
+  }
+  
   public Reference(String identifier, String index)
   {
     this.name  = identifier;

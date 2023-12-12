@@ -511,12 +511,15 @@ public class Expression<D extends Field<D>, R extends Field<R>, F extends Functi
   public Node<D, R, F> eatRootNode() throws ExpressionCompilerException
   {
     int rightArrowIndex = expression.indexOf('➔');
-    if ( rightArrowIndex != -1 )
+    if (rightArrowIndex != -1)
     {
-      String independentVariable = expression.substring(0, rightArrowIndex);
-      System.out.println("indepVar=" + independentVariable );
+      independentVariableNode = new Variable<D, R, F>(this,
+                                                      new Reference(expression.substring(0, rightArrowIndex)),
+                                                      0);
+      System.out.println("indepVar=" + independentVariableNode);
       position = rightArrowIndex;
-      assert independentVariable == null : "TODO: specify independent variable " + independentVariable;
+      // assert independentVariable == null : "TODO: specify independent variable " +
+      // independentVariable;
     }
     nextChar();
     rootNode = eatFirst(0);
