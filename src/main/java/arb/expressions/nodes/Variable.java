@@ -79,11 +79,10 @@ public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends 
       }
       else
       {
-        throw new RuntimeException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
+        throw new NoSuchFieldError(format("Undefined reference to variable '%s' in %s, independent variable is %s",
                                           variableReference,
                                           expression,
-                                          expression.independentVariableNode),
-                                   new NoSuchFieldException(variableReference.toString()));
+                                          expression.independentVariableNode));
       }
     }
     if (!isIndependent)

@@ -51,7 +51,7 @@ public class Reference
   @Override
   public String toString()
   {
-    return String.format("Reference[name=%s, index=%s]", name, index);
+    return index == null ? name : String.format("%s[%s]", name, index);
   }
 
   public Reference(String identifier)
@@ -59,7 +59,7 @@ public class Reference
     this.name  = identifier;
     this.index = null;
   }
-  
+
   public Reference(String identifier, String index)
   {
     this.name  = identifier;
