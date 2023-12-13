@@ -62,11 +62,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   final public Real           G       = new Real();
   final public Real           P       = new Real();
 
-  final Variables<Real>       vars    = new Variables<Real>(α.setName("α"),
-                                                            β.setName("β"),
-                                                            n.setName("n"),
-                                                            G.setName("G"),
-                                                            P.setName("P"));
+  final Variables<Real>       vars    = new Variables<Real>();
 
   final RealContext           context = new RealContext(vars);
 
@@ -96,6 +92,17 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
+    registerVariable("α", α);
+    registerVariable("β", α);
+    registerVariable("n", α);
+    registerVariable("G", α);
+    registerVariable("P", α);
+  }
+
+  private Real registerVariable(String name, Real variable)
+  {
+    variable.setName(name);
+    return vars.register(name, variable);
   }
 
   public Real compute()

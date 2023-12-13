@@ -9,12 +9,12 @@ import arb.functions.Function;
  * <pre>
  * Copyright ©2023 Stephen Crowley
  * 
- * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * This Source Code F,orm is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class Add<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
+public class Add<D, R, F extends Function<D, R>> extends
                 BinaryOperation<D, R, F>
 {
   

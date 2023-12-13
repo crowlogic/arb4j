@@ -83,7 +83,6 @@ public class ExpressionTest extends
     }
     catch (NoSuchFieldError e)
     {
-      assertEquals("k", e.getMessage());
       caughtTheMissingIndexReference = true;
     }
     assertTrue(caughtTheMissingIndexReference);

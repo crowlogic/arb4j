@@ -11,7 +11,7 @@ import arb.functions.Function;
  * TODO: specialize this for integers and use the int-constructor which would be
  * expected to be higher-performance than string parser
  */
-public class RaiseToPower<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
+public class RaiseToPower<D, R, F extends Function<D, R>> extends
                          BinaryOperation<D, R, F>
 {
   

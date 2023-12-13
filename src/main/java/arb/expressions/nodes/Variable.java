@@ -48,7 +48,7 @@ import arb.functions.Function;
  * 
  * 
  */
-public class Variable<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
+public class Variable<D, R, F extends Function<D, R>> extends
                      Node<D, R, F>
 {
   public final Reference     reference;

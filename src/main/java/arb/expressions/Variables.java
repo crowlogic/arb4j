@@ -2,8 +2,6 @@ package arb.expressions;
 
 import java.util.HashMap;
 
-import arb.Field;
-
 /**
  * <pre>
  * Copyright ©2023 Stephen Crowley
@@ -13,21 +11,15 @@ import arb.Field;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class Variables<X extends Field<X>> extends
+public class Variables<X> extends
                       HashMap<String, X>
 {
 
   private static final long serialVersionUID = 1L;
 
-  
-  @SafeVarargs
-  public Variables( X... fields)
+  public X register(String name, X field)
   {
-    for ( X field : fields )
-    {
-      String name = field.getName();
-      assert name != null : "variable names must not be null";
-      put( name, field );
-    }
+    return put(name, field);
   }
+
 }

@@ -14,7 +14,7 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class Divide<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
+public class Divide<D, R, F extends Function<D, R>> extends
                    BinaryOperation<D, R, F>
 {
   public Divide(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
@@ -25,7 +25,6 @@ public class Divide<D extends arb.Field<D>, R extends arb.Field<R>, F extends Fu
           right,
           depth);
   }
-  
 
   @Override
   public String typeset()

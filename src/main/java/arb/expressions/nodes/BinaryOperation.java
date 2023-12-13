@@ -19,8 +19,7 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public abstract class BinaryOperation<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>>
-                                     extends
+public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                      Node<D, R, F>
 {
 

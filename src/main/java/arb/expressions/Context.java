@@ -38,7 +38,7 @@ import arb.functions.Function;
  * @param <D>
  * @param <F>
  */
-public class Context<D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+public class Context<D, R, F extends Function<D, R>>
 {
   public Context()
   {
@@ -71,18 +71,18 @@ public class Context<D extends Field<D>, R extends Field<R>, F extends Function<
    * @throws IllegalArgumentException if a variable of the same name has already
    *                                  been registered
    */
-  public R registerVariable(R variable)
+  public R registerVariable(String name, R variable)
   {
     R existing = null;
-    if ((existing = variables.get(variable.getName())) != null)
+    if ((existing = variables.get(name)) != null)
     {
       boolean same = existing == variable;
       throw new IllegalArgumentException(format("A variable named %s of type %s is already registered and it %s equal to the same object passed to registerVariable\n",
-                                                variable.getName(),
+                                                name,
                                                 variable.getClass(),
                                                 same ? "IS" : "IS NOT"));
     }
-    variables.put(variable.getName(), variable);
+    variables.put(name, variable);
     return variable;
   }
 

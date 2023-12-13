@@ -14,7 +14,7 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class Functions<D extends Field<D>, R extends Field<R>, F extends Function<D, R>> extends
+public class Functions<D, R, F extends Function<D, R>> extends
                       HashMap<String, F>
 {
 

@@ -27,6 +27,12 @@ public class CauchyCorrelationFunction implements
                                        RealSymmetricCovarianceKernel,
                                        AutoCloseable
 {
+  public CauchyCorrelationFunction()
+  {
+    vars.register("α", α);
+    vars.register("β", β);
+  }
+
   @Override
   public void close()
   {
@@ -44,8 +50,7 @@ public class CauchyCorrelationFunction implements
    */
   public final Real      β       = new Real().setName("β");
 
-  public Variables<Real> vars    = new Variables<Real>(α,
-                                                       β);
+  public Variables<Real> vars    = new Variables<Real>();
 
   public RealContext     context = new RealContext(vars);
 
