@@ -2,6 +2,8 @@ package arb.expressions;
 
 import java.util.HashMap;
 
+import arb.Field;
+
 /**
  * <pre>
  * Copyright ©2023 Stephen Crowley
@@ -16,6 +18,20 @@ public class Variables<X> extends
 {
 
   private static final long serialVersionUID = 1L;
+
+  @SafeVarargs
+  public Variables(X... fields)
+  {
+    for (X field : fields)
+    {
+      if (field instanceof Field)
+      {
+        String name = ((Field<?>) field).getName();
+        assert name != null : "variable names must not be null";
+        put(name, field);
+      }
+    }
+  }
 
   public X register(String name, X field)
   {

@@ -56,13 +56,17 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                      AutoCloseable
 {
   public int                  bits    = 128;
-  public Real                 α       = new Real();
-  public Real                 β       = new Real();
-  public Real                 n       = new Real();
-  final public Real           G       = new Real();
-  final public Real           P       = new Real();
+  public Real                 α       = new Real().setName("α");
+  public Real                 β       = new Real().setName("β");
+  public Real                 n       = new Real().setName("n");
+  final public Real           G       = new Real().setName("G");
+  final public Real           P       = new Real().setName("P");
 
-  final Variables<Real>       vars    = new Variables<Real>();
+  final Variables<Real>       vars    = new Variables<Real>(α,
+                                                            β,
+                                                            n,
+                                                            G,
+                                                            P);
 
   final RealContext           context = new RealContext(vars);
 
@@ -92,17 +96,6 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
-    registerVariable("α", α);
-    registerVariable("β", α);
-    registerVariable("n", α);
-    registerVariable("G", α);
-    registerVariable("P", α);
-  }
-
-  private Real registerVariable(String name, Real variable)
-  {
-    variable.setName(name);
-    return vars.register(name, variable);
   }
 
   public Real compute()
