@@ -106,7 +106,6 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   public Real compute()
   {
-    assert false : "TODO: now need to do https://github.com/crowlogic/arb4j/issues/274 so that the compiled P expression can be a RealPolynomial";
     try ( Real realn = new Real())
     {
       IntStream.range(2, N + 1).forEach(n ->
