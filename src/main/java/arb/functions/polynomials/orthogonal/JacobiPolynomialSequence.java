@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 import arb.OrthogonalBasis;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.expressions.RealContext;
 import arb.expressions.Variables;
@@ -60,6 +61,11 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   public Real                 β       = new Real().setName("β");
   public Real                 n       = new Real().setName("n");
   final public Real           G       = new Real().setName("G");
+  /**
+   * TODO Let P be a triangular matrix, then define an array of
+   * {@link RealPolynomial}s of increasing degree that start at each of its rows
+   * 
+   **/
   final public Real           P       = new Real().setName("P");
 
   final Variables<Real>       vars    = new Variables<Real>(α,
