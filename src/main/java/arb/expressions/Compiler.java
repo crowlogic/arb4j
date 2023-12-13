@@ -34,8 +34,8 @@ import arb.functions.real.RealFunction;
  *  - Closing field resources and defining function classes.
  *
  * The class relies on various ASM classes like {@link MethodVisitor} and {@link ClassVisitor} to generate and 
- * manipulate bytecode. It also integrates closely with other classes in the arb package, like {@link Field}, 
- * {@link Function}, and {@link Expression}, to provide a flexible and dynamic expression compilation environment.
+ * manipulate bytecodes to generate implementations of {@link Function}s on-the-fly, chiefly thru the 
+ * {@link Expression} class to provide a flexible and dynamic expression compilation environment.
  *
  * Usage of this class requires a thorough understanding of ASM bytecode manipulation and the arb library's 
  * structure and types. The verbose mode in various methods aids in debugging and understanding the internal 
@@ -54,8 +54,8 @@ public class Compiler
   private static final String objectDesc = Type.getInternalName(Object.class);
 
   /**
-   * Generate an invocation of member function of {@link Field} by its name and
-   * the {@link Node} whose evaluated result is the independent variable, also
+   * Generate an invocation of member function of an {@link Object} by its name
+   * and the {@link Node} whose evaluated result is the independent variable, also
    * known as the argument, to be passed to the function represented by this node
    * 
    * @param methodVisitor
@@ -65,11 +65,11 @@ public class Compiler
    * @param depth
    * @return methodVisitor (for fluent-style function composition)
    */
-  public static <D, R, F extends Function<D, R>> MethodVisitor callFieldFunction(MethodVisitor methodVisitor,
-                                                                                 String functionName,
-                                                                                 Node<D, R, F> arg,
-                                                                                 boolean lastCall,
-                                                                                 int depth)
+  public static <D, R, F extends Function<D, R>> MethodVisitor callFunctionOfVariable(MethodVisitor methodVisitor,
+                                                                                      String functionName,
+                                                                                      Node<D, R, F> arg,
+                                                                                      boolean lastCall,
+                                                                                      int depth)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -154,9 +154,9 @@ public class Compiler
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s(.)", functionName));
     }
-    expression.loadFunctionFieldReferenceOntoStack(loadThisOntoStack(methodVisitor),
-                                                   functionName,
-                                                   func.getClass().descriptorString());
+    expression.loadVariableReferenceOntoStack(loadThisOntoStack(methodVisitor),
+                                              functionName,
+                                              func.getClass().descriptorString());
 
     arg.generate(methodVisitor);
     loadOrder(methodVisitor);
@@ -200,44 +200,42 @@ public class Compiler
   }
 
   /**
-   * Generate a call to the {@link Field}s {@link Closeable#close() method
+   * Generate a call to the {@link Object}s {@link Closeable#close()} method
    * 
    * @param <D>
    * @param <R>
    * @param <F>
    * @param expression
    * @param methodVisitor
-   * @param fieldNameToBeClosed
+   * @param variableNameToBeClosed
    * @return
    */
-  static <D, R, F extends Function<D, R>> MethodVisitor generateFieldClosure(Expression<D, R, F> expression,
-                                                                             MethodVisitor methodVisitor,
-                                                                             String fieldNameToBeClosed)
+  static <D, R, F extends Function<D, R>> MethodVisitor generateVariableClosure(Expression<D, R, F> expression,
+                                                                                MethodVisitor methodVisitor,
+                                                                                String variableNameToBeClosed)
   {
     methodVisitor.visitFieldInsn(GETFIELD,
                                  expression.className,
-                                 fieldNameToBeClosed,
+                                 variableNameToBeClosed,
                                  expression.domainClassDescriptor);
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, expression.domainClassInternalName, "close", "()V", false);
     return methodVisitor;
   }
 
-  static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         Expression<D, R, F>
-         compile(String expression,
-                 Context<D, R, F> context,
-                 Class<D> domainClass,
-                 Class<R> rangeClass,
-                 Class<F> functionClass,
-                 boolean verbose)
+  static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
+                                                                      Context<D, R, F> context,
+                                                                      Class<D> domainClass,
+                                                                      Class<R> rangeClass,
+                                                                      Class<F> functionClass,
+                                                                      boolean verbose)
   {
     String className = Parser.expressionToUniqueClassname(expression);
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose);
   }
 
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         Expression<Real, Real, RealFunction>
-         compile(String className, String expression, boolean verbose)
+  public static <D, R, F extends Function<D, R>> Expression<Real, Real, RealFunction> compile(String className,
+                                                                                              String expression,
+                                                                                              boolean verbose)
   {
     return compile(className, expression, null, verbose);
   }
@@ -260,7 +258,7 @@ public class Compiler
    * @return compiled {@link Expression}
    * @throws ExpressionCompilerException
    */
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+  public static <D, R, F extends Function<D, R>>
          Expression<D, R, F>
          compile(String className,
                  String expressionString,
@@ -287,14 +285,14 @@ public class Compiler
     return expression;
   }
 
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
-         Expression<Real, Real, RealFunction>
-         compile(String className, String expression, RealContext context)
+  public static <D, R, F extends Function<D, R>> Expression<Real, Real, RealFunction> compile(String className,
+                                                                                              String expression,
+                                                                                              RealContext context)
   {
     return compile(className, expression, context, false);
   }
 
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+  public static <D, R, F extends Function<D, R>>
          Expression<Real, Real, RealFunction>
          compile(String className, String expression, RealContext context, boolean verbose)
   {

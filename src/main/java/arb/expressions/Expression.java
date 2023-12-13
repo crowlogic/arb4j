@@ -442,7 +442,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     for (String variables : fields)
     {
-      generateFieldClosure(this, loadThisOntoStack(methodVisitor), variables);
+      generateVariableClosure(this, loadThisOntoStack(methodVisitor), variables);
     }
   }
 
@@ -1076,11 +1076,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param range         if false then the field is of type
    *                      this{@link #domainClassDescriptor} otherwise of type
    *                      this{@link #rangeClassDescriptor}
-   * @return this{@link #loadFunctionFieldReferenceOntoStack(MethodVisitor, String, String)}
+   * @return this{@link #loadVariableReferenceOntoStack(MethodVisitor, String, String)}
    */
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, boolean range)
   {
-    return loadFunctionFieldReferenceOntoStack(methodVisitor,
+    return loadVariableReferenceOntoStack(methodVisitor,
                                                fieldName,
                                                range ? rangeClassDescriptor : domainClassDescriptor);
   }
@@ -1094,7 +1094,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return
    */
   public MethodVisitor
-         loadFunctionFieldReferenceOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
+         loadVariableReferenceOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
     return methodVisitor;
