@@ -88,9 +88,9 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final public RealFunction   B       = express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context, verbose);
 
-  final public RealFunction   p1      = express("p1","x➔(C(1)*x-β+α)/2", context, verbose);
+  final public RealFunction   p1      = express("p1", "x➔(C(1)*x-β+α)/2", context, verbose);
 
-  final public RealFunction   Pfunc   = express("P","z➔(A(n) * z * P[n-1] - B(n) * P[n-2]) / 2", context, verbose);
+  final public RealFunction   Pfunc   = express("P", "z➔(A(n) * z * P[n-1] - B(n) * P[n-2]) / 2", context, verbose);
 
   public int                  N;
 
@@ -124,7 +124,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     return null;
   }
 
-  public final RealFunction orthogonalMeasure = express("(1-x)^α*(1+x)^β", context, true);
+  public final RealFunction orthogonalMeasure = express("x➔(1-x)^α*(1+x)^β", context, verbose);
 
   @Override
   public RealFunction getOrthogonalMeasure()

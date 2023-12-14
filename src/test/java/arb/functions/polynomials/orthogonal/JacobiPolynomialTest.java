@@ -79,7 +79,7 @@ public class JacobiPolynomialTest extends
   public static void testC()
   {
     try ( var seq = new JacobiPolynomialSequence<>(half,
-                                                   RealConstants.oneQuarter,
+                                                   oneQuarter,
                                                    N))
     {
       try ( Real result = seq.C.evaluate(one, 1, bits, new Real()))

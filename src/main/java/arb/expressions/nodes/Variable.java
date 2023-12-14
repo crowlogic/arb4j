@@ -85,6 +85,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
                                           expression.independentVariableNode));
       }
     }
+    if (expression.independentVariableNode != null
+                  && expression.independentVariableNode.reference.name.equals(variableReference.name))
+    {
+      isIndependent = true;
+    }
     if (!isIndependent)
     {
       expression.referencedVariables.put(variableReference.name, this);
