@@ -78,19 +78,19 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final public static boolean verbose = false;
 
-  final public RealFunction   C       = express("C", "2*n+α+β", context, verbose);
+  final public RealFunction   C       = express("C", "n➔2*n+α+β", context, verbose);
 
-  final public RealFunction   F       = express("F", "C(n-1)*C(n)", context, verbose);
+  final public RealFunction   F       = express("F", "n➔C(n-1)*C(n)", context, verbose);
 
   final public RealFunction   A       = express("A", "x➔(F(n)*x + G)*(C(n)/2 - 1/2)", context, verbose);
 
-  final public RealFunction   E       = express("E", "n*C(n/2)*C(n-1)", context, verbose);
+  final public RealFunction   E       = express("E", "n➔n*C(n/2)*C(n-1)", context, verbose);
 
-  final public RealFunction   B       = express("B", "(n+α-1)*(n+β-1)*C(n)", context, verbose);
+  final public RealFunction   B       = express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context, verbose);
 
-  final public RealFunction   p1      = express("(C(1)*x-β+α)/2", context, verbose);
+  final public RealFunction   p1      = express("p1","x➔(C(1)*x-β+α)/2", context, verbose);
 
-  final public RealFunction   Pfunc   = express("z➔(A(n) * z * P[n-1] - B(n) * P[n-2]) / 2", context, verbose);
+  final public RealFunction   Pfunc   = express("P","z➔(A(n) * z * P[n-1] - B(n) * P[n-2]) / 2", context, verbose);
 
   public int                  N;
 
