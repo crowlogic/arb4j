@@ -65,21 +65,24 @@ public class ExpressionTest extends
 
   public void testVariableIndexedByAConstant()
   {
-    try ( RealFunction expression = express("v[3]", context))
-    {
-      Real value = expression.evaluate(one, 1, 256, new Real());
-      assertEquals(v3, value);
-    }
+    RealFunction expression = express("v[3]", context);
+
+    Real         value      = expression.evaluate(one, 1, 256, new Real());
+    assertEquals(v3, value);
+
   }
 
   public void testVariableIndexedByAVariable()
   {
     boolean caughtTheMissingIndexReference = false;
-    try ( RealFunction expression = express("v[k]", context))
+    try
     {
-      Real value = expression.evaluate(one, 1, 256, new Real());
-      caughtTheMissingIndexReference = true;
-      assertEquals(v3, value);
+      RealFunction expression = express("v[k]", context);
+      {
+        Real value = expression.evaluate(one, 1, 256, new Real());
+        caughtTheMissingIndexReference = true;
+        assertEquals(v3, value);
+      }
     }
     catch (NoSuchFieldError e)
     {
@@ -91,7 +94,7 @@ public class ExpressionTest extends
   public void testAddTwoConstants()
   {
 
-    try ( RealFunction expression = express("69 + 0.42", context))
+    RealFunction expression = express("69 + 0.42", context);
     {
       Real func = expression.evaluate(one, 1, 256, new Real());
       assertEquals(69.42, func.doubleValue(RoundingMode.Up));
@@ -109,7 +112,7 @@ public class ExpressionTest extends
 
   public void testNegativeInput()
   {
-    try ( RealFunction expression = express("-t"))
+    RealFunction expression = express("-t");
     {
       assertEquals(-1.0, expression.eval(1.0));
     }
@@ -117,7 +120,7 @@ public class ExpressionTest extends
 
   public void testConstant()
   {
-    try ( RealFunction expression = express("69.42", context))
+    RealFunction expression = express("69.42", context);
     {
       assertEquals(69.42, expression.eval(1.0));
     }
@@ -486,8 +489,7 @@ public class ExpressionTest extends
     {
       assertEquals(1.2276839790698644, won.doubleValue());
     }
-    
-   
+
   }
 
 }

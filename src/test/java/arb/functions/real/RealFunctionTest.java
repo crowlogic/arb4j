@@ -82,7 +82,7 @@ public class RealFunctionTest extends
 
   public void testSubFunction()
   {
-    try ( RealFunction f1 = (x, order, bits, result) -> result.set(x))
+    RealFunction f1 = (x, order, bits, result) -> result.set(x);
     {
       RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
 
@@ -99,7 +99,7 @@ public class RealFunctionTest extends
 
   public void testDivFunction()
   {
-    try ( RealFunction f1 = (x, order, bits, result) -> result.set(x))
+    RealFunction f1 = (x, order, bits, result) -> result.set(x);
     {
       RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
 
@@ -116,7 +116,7 @@ public class RealFunctionTest extends
 
   public void testAddFunction()
   {
-    try ( RealFunction f1 = (x, order, bits, result) -> result.set(x))
+    RealFunction f1 = (x, order, bits, result) -> result.set(x);
     {
       RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
 
@@ -133,7 +133,7 @@ public class RealFunctionTest extends
 
   public void testMulFunction()
   {
-    try ( RealFunction f1 = (x, order, bits, result) -> result.set(x))
+    RealFunction f1 = (x, order, bits, result) -> result.set(x);
     {
       RealFunction f2     = (x, order, bits, result) -> x.mul(x, bits, result);
 

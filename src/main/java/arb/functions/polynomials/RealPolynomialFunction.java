@@ -1,6 +1,7 @@
 package arb.functions.polynomials;
 
 import arb.RealPolynomial;
+import arb.algebra.Ring;
 import arb.functions.Function;
 
 public interface RealPolynomialFunction extends

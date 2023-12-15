@@ -5,13 +5,13 @@ import static arb.utensils.Utensils.*;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
-import java.io.Closeable;
 import java.util.stream.IntStream;
 
 import arb.*;
 import arb.Float;
 import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
+import arb.algebra.Magma;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.RealContext;
@@ -21,17 +21,86 @@ import arb.utensils.Utensils;
 
 /**
  * The RealFunction interface, a part of the arb.functions.real package, is
- * designed for working with {@link Real}-valued functions. It offers
- * functionality for performing root-related operations, such as root
+ * designed foRealFunction working with {@link Real}-valued functions. It offers
+ * functionality foRealFunction performing root-related operations, such as root
  * refinement, evaluating convergence factors, and locating roots within
  * intervals. The interface extends {@link Function}<Real, Real> and includes
- * default implementations for various techniques, including Newton's method.
+ * default implementations foRealFunction various techniques, including Newton's
+ * method.
+ * 
+ * @author ©2023 Stephen Crowley
  */
 public interface RealFunction extends
-                              Function<Real, Real>,
-                              Closeable,
-                              AutoCloseable
+                              Function<Real, Real>
 {
+
+  /**
+   * It would be better to declare a generic argument R to RealFunction so that
+   * {@link RealFunction} could implement {@link Magma} with {@link RealFunction}
+   * as the argument but that would conflict with {@link RealPolynomial}s
+   * implementation of {@link Magma} with {@link RealPolynomial} arguments.If
+   * {@link RealFunction} had a generic argument type R then the Magma could be
+   * defined over this rather than directly over {@link RealPolynomial} and
+   * {@link RealFunction} which it implements
+   * 
+   * @return a newly constructed {@link Ring} referencing this
+   */
+  public default Ring ring()
+  {
+    return new Ring(this);
+  }
+
+  public static class Ring implements
+                           arb.algebra.Ring<RealFunction>
+  {
+    public RealFunction function;
+
+    public Ring(RealFunction realFunction)
+    {
+      this.function = realFunction;
+    }
+
+    @Override
+    public RealFunction mul(RealFunction operand, int bits, RealFunction result)
+    {
+      assert bits == 0
+                    && result == null : String.format("this is a functional, bits=%d must be 0 and result=%s must be null",
+                                                      bits,
+                                                      result);
+      return function.mul(operand);
+    }
+
+    @Override
+    public RealFunction div(RealFunction operand, int bits, RealFunction result)
+    {
+      assert bits == 0
+                    && result == null : String.format("this is a functional, bits=%d must be 0 and result=%s must be null",
+                                                      bits,
+                                                      result);
+      return function.div(operand);
+    }
+
+    @Override
+    public RealFunction add(RealFunction addend, int bits, RealFunction result)
+    {
+      assert bits == 0
+                    && result == null : String.format("this is a functional, bits=%d must be 0 and result=%s must be null",
+                                                      bits,
+                                                      result);
+      return function.add(addend);
+    }
+
+    @Override
+    public RealFunction sub(RealFunction subtrahend, int bits, RealFunction result)
+    {
+      assert bits == 0
+                    && result == null : String.format("this is a functional, bits=%d must be 0 and result=%s must be null",
+                                                      bits,
+                                                      result);
+      return function.add(subtrahend);
+    }
+
+  }
 
   public default RealFunction sub(RealFunction that)
   {
@@ -77,13 +146,9 @@ public interface RealFunction extends
     };
   }
 
-  @Override
-  default void close()
-  {
-  }
-
   /**
-   * Default to 128 bits for this{@link #quantize(double, double, int, int)}
+   * Default to 128 bits foRealFunction
+   * this{@link #quantize(double, double, int, int)}
    * 
    * @param left
    * @param right
@@ -131,7 +196,8 @@ public interface RealFunction extends
   }
 
   /**
-   * Default to 128 bits for this{@link #quantize(double, double, int, int)}
+   * Default to 128 bits foRealFunction
+   * this{@link #quantize(double, double, int, int)}
    * 
    * @param left
    * @param right
@@ -163,7 +229,7 @@ public interface RealFunction extends
    */
   public default RealDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    RealDataSet sample = new RealDataSet(toString() + " over " + interval.left().toString(5) + ".."
+    RealDataSet sample = new RealDataSet(toString() + " oveRealFunction " + interval.left().toString(5) + ".."
                   + interval.right().toString(5),
                                          n);
     Real        values = sample.getRealYValues();
@@ -181,8 +247,9 @@ public interface RealFunction extends
   }
 
   /**
-   * double wrapper for this{@link #evaluate(Real, int, int, Real)} which is
-   * called with {@link Double#PRECISION} bits
+   * double wrappeRealFunction foRealFunction
+   * this{@link #evaluate(Real, int, int, Real)} which is called with
+   * {@link Double#PRECISION} bits
    * 
    * @param t
    * @return the {@link Real#doubleValue()} applied to the result of the
@@ -190,7 +257,7 @@ public interface RealFunction extends
    */
   public default double eval(double t)
   {
-    try ( var x = new Real(t))
+    try ( Real x = new Real(t))
     {
       return evaluate(x, 1, Double.PRECISION + 5, x).doubleValue(RoundingMode.Up);
     }
@@ -213,7 +280,7 @@ public interface RealFunction extends
    * Performs one step of Newton's method. Should not usually be called directly
    * unless
    * {@link RealFunction#refineRootNewton(Real, Real, Float, int, int, boolean)}
-   * fails to suit your needs
+   * fails to suit youRealFunction needs
    * 
    * @param point
    * @param convergenceRegion the interval I
@@ -221,7 +288,7 @@ public interface RealFunction extends
    * @param prec
    * @param nextPoint
    * 
-   * @return C=the supremum of |f''(t)|/(2*|f'(t)| over {t,u}∈I
+   * @return C=the supremum of |f''(t)|/(2*|f'(t)| oveRealFunction {t,u}∈I
    */
   public default boolean
          calculateNewtonStep(Real point, Real convergenceRegion, Float convergenceFactor, int prec, Real nextPoint)
@@ -232,7 +299,7 @@ public interface RealFunction extends
   /**
    * Refines the precision of a root. Should not be called directly unless
    * {@link RealRootInterval#refine(RealFunction, int, int, Real, Real, RealRootInterval, RealRootInterval, Float, boolean)}
-   * fails to suit your needs
+   * fails to suit youRealFunction needs
    * 
    * @param root
    * @param convergenceRegion
@@ -257,16 +324,18 @@ public interface RealFunction extends
    * $C=sup{t,u}∈I(|f''(t)|/(2*|f'(t)|))$. The bound is obtained by calling
    * this{@link #evaluate(Real, int, int, Real)} directly. If this function is
    * ill-conditioned, then convergenceRegion which specifies the interval I may
-   * need to be extremely precise in order to get an effectively finite bound for
-   * C.
+   * need to be extremely precise in ordeRealFunction to get an effectively finite
+   * bound for C.
    * 
    * @param convergenceRegion the interval I
-   * @param jet               Real 3-vector to hold the results [f,f',f''] from
-   *                          calling this{@link #evaluate(Real, int, int, Real)}
+   * @param jet               Real 3-vectoRealFunction to hold the results
+   *                          [f,f',f''] from calling
+   *                          this{@link #evaluate(Real, int, int, Real)}
    * @param prec
    * @param convergenceFactor
    * 
-   * @return the convergenceFactor C after it has been assigned the result
+   * @return the convergenceFactoRealFunction C afteRealFunction it has been
+   *         assigned the result
    */
   public default Float
          getNewtonConvergenceFactor(Real convergenceRegion, Real jet, int prec, Float convergenceFactor)
@@ -283,55 +352,56 @@ public interface RealFunction extends
 
   /**
    * <code>
-   * Rigorously locates single roots of this function on the interior of an interval.
+   * Rigorously locates single roots of this function on the interioRealFunction of an interval.
    * 
    * {@link Roots} has the following properties: <br><br>
    * 
    * 1. The function has no roots on interval outside of the output subintervals.<br><br>
    * 
-   * 2. Subintervals are sorted in increasing order (with no overlap except possibly starting and ending with the same point).<br><br>
+   * 2. Subintervals are sorted in increasing ordeRealFunction (with no overlap except possibly starting and ending with the same point).<br><br>
    * 
    * 3. Subintervals with a flag of 1 contain exactly one (single) root.<br><br>
    * 
-   * 4. Subintervals with any other flag may or may not contain roots.<br><br>
+   * 4. Subintervals with any otheRealFunction flag may oRealFunction may not contain roots.<br><br>
    * 
-   * 5. If no flags other than 1 occur, all roots of the function on interval have been located.<br><br>
+   * 5. If no flags otheRealFunction than 1 occur, all roots of the function on interval have been located.<br><br>
    *  
-   * If there are output subintervals on which the existence or nonexistence of roots could not be determined, 
-   * further searches on those subintervals may be attempted with possibly with increased precision and/or increased bounds for 
+   * If there are output subintervals on which the existence oRealFunction nonexistence of roots could not be determined, 
+   * furtheRealFunction searches on those subintervals may be attempted with possibly with increased precision and/oRealFunction increased bounds foRealFunction 
    * the breaking criteria. 
    * 
-   * Note that roots of multiplicity higher than one and roots located exactly at endpoints cannot be located by this function.
+   * Note that roots of multiplicity higheRealFunction than one and roots located exactly at endpoints cannot be located by this function.
    
    * The following breaking criteria are implemented:
    * At most maxdepth recursive subdivisions are attempted therefore the smallest details that can be distinguished are therefore 
    * about maxdepth times the width of interval. 
    * 
-   * The total number of calls to this{@link #evaluate(Real, int, int, Real)} is thereby restricted to a small multiple of maxeval;
-   * the actual count can be slightly higher depending on implementation details. 
+   * The total numbeRealFunction of calls to this{@link #evaluate(Real, int, int, Real)} is thereby restricted to a small multiple of maxeval;
+   * the actual count can be slightly higheRealFunction depending on implementation details. 
    * </code>
    * 
    * NOTICE: it is assumed that subdivision points of interval can be represented
    * exactly as floating-point numbers in memory.
    * 
-   * For instance, the following will not produce reliable results:
+   * FoRealFunction instance, the following will not produce reliable results:
    * 1+/-2^(-10^(100))
    * 
    * @param interval the region with which to locate the roots
-   * @param maxDepth Between 20 and 50 is usually sufficient for almost all
-   *                 functions
-   * @param maxEvals If the total number of tested subintervals exceeds maxeval,
-   *                 the algorithm is terminated and any untested subintervals are
-   *                 added to the output. Between 100 and 100000 is usually
-   *                 sufficient.
+   * @param maxDepth Between 20 and 50 is usually sufficient foRealFunction almost
+   *                 all functions
+   * @param maxEvals If the total numbeRealFunction of tested subintervals exceeds
+   *                 maxeval, the algorithm is terminated and any untested
+   *                 subintervals are added to the output. Between 100 and 100000
+   *                 is usually sufficient.
    * @param maxFound The algorithm terminates if maxfound roots have been located.
    *                 In particular, setting maxfound to 1 can be used to locate
    *                 just one root of the function even if there are numerous
    *                 roots. To try to find all roots, LONG_MAX may be passed.
    * @param bits     denotes the precision used to evaluate the function. It is
-   *                 possibly also used for some other arithmetic operations
-   *                 performed internally by the algorithm. Note that it probably
-   *                 does not make sense for maxdepth to exceed prec.
+   *                 possibly also used foRealFunction some otheRealFunction
+   *                 arithmetic operations performed internally by the algorithm.
+   *                 Note that it probably does not make sense foRealFunction
+   *                 maxdepth to exceed prec.
    * @return a new instance of {@link Roots}
    */
   public default Roots locateRoots(RootLocatorOptions config)
@@ -365,7 +435,8 @@ public interface RealFunction extends
 
   /**
    * This function shouldn't usually be called directly unless
-   * this{@link #locateRoots(RootLocatorOptions)} fails to suit your needs
+   * this{@link #locateRoots(RootLocatorOptions)} fails to suit youRealFunction
+   * needs
    * 
    * @param found
    * @param root
@@ -452,8 +523,8 @@ public interface RealFunction extends
   /**
    * 
    * @param t
-   * @return the multiplicity of the root at the point t or 0 if there is no root
-   *         there
+   * @return the multiplicity of the root at the point t oRealFunction 0 if there
+   *         is no root there
    */
   public default int multiplicityOfRoot(Real t)
   {
@@ -463,8 +534,8 @@ public interface RealFunction extends
 
   /**
    * 
-   * @return the first inverse branch, or the only one if there is only one, which
-   *         is the case if the function is properly invertible
+   * @return the first inverse branch, oRealFunction the only one if there is only
+   *         one, which is the case if the function is properly invertible
    */
   public default RealFunction inverse()
   {
@@ -494,9 +565,10 @@ public interface RealFunction extends
   }
 
   /**
-   * FIXME: there needs to be a sleeker alternative to specifying so many
-   * parameters: create another integrate method that accepts a smaller set of
-   * arguments and calls this one with a reasonable set of values
+   * FIXME: there needs to be a sleekeRealFunction alternative to specifying so
+   * many parameters: create anotheRealFunction integrate method that accepts a
+   * smalleRealFunction set of arguments and calls this one with a reasonable set
+   * of values
    * 
    * @param left
    * @param right
@@ -543,8 +615,8 @@ public interface RealFunction extends
   /**
    * Returns the result of
    * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean)}
-   * after calling {@link Context#registerFunction(String, Function)} to register
-   * the function by name in the specified {@link Context}
+   * afteRealFunction calling {@link Context#registerFunction(String, Function)}
+   * to register the function by name in the specified {@link Context}
    * 
    * @param functionName
    * @param expression

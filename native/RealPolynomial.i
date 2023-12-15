@@ -11,6 +11,7 @@ import arb.algebra.Ring;
 
   static { System.loadLibrary("arblib"); }
 
+
   @Override
   public String toString()
   {

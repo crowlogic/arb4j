@@ -9,7 +9,7 @@ public class StandardGaussianDensityFunctionTest extends
 
   public void testEvaluateRealIntIntReal()
   {
-    try ( StandardGaussianDensityFunction sdf = new StandardGaussianDensityFunction())
+    StandardGaussianDensityFunction sdf = new StandardGaussianDensityFunction();
     {
 
       Real result = sdf.evaluate(new Real("0.12",

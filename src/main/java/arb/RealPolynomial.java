@@ -38,6 +38,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
 
   static { System.loadLibrary("arblib"); }
 
+
   @Override
   public String toString()
   {
