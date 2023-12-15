@@ -55,7 +55,7 @@ public class JacobiPolynomialTest extends
       try ( Real result = seq.E.evaluate(three, 1, bits, new Real()))
       {
         out.println("E(3)=" + result);
-        assertEquals(5.0, result.doubleValue());
+        assertEquals(18.0, result.doubleValue());
         assertTrue(result.isExact());
       }
     }
@@ -65,13 +65,13 @@ public class JacobiPolynomialTest extends
   public static void testB()
   {
     try ( var seq = new JacobiPolynomialSequence<>(half,
-                                                   RealConstants.oneQuarter,
+                                                   oneQuarter,
                                                    N))
     {
       try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
       {
         out.println("B(1)=" + result);
-        assertEquals(0.0, result.doubleValue());
+        assertEquals(0.34375, result.doubleValue());
         assertTrue(result.isExact());
       }
     }
@@ -114,7 +114,7 @@ public class JacobiPolynomialTest extends
                                                    threeQuarters,
                                                    N))
     {
-      assertEquals(0, seq.G.doubleValue());
+      assertEquals(-.3125, seq.G.doubleValue());
     }
   }
 

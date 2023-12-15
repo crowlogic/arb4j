@@ -21,12 +21,12 @@ public interface Field<X extends Field<X>> extends
 
   public default X add(X x)
   {
-    return add(x, Math.max(bits(), x.bits()));
+    return add(x, bits(this, x));
   }
 
   public default X add(X x, X result)
   {
-    return add(x, Math.max(bits(), x.bits()), result);
+    return add(x, bits(this, x), result);
   }
 
   /**
@@ -71,12 +71,12 @@ public interface Field<X extends Field<X>> extends
 
   public default X div(X x)
   {
-    return div(x, Math.max(bits(), x.bits()));
+    return div(x, bits(this, x));
   }
 
   public default X div(X x, X result)
   {
-    return div(x, Math.max(bits(), x.bits()), result);
+    return div(x, bits(this, x), result);
   }
 
   /**
@@ -179,7 +179,7 @@ public interface Field<X extends Field<X>> extends
 
   public default X mul(X x)
   {
-    return mul(x, Math.max(bits(), x.bits()));
+    return mul(x, bits(this, x));
   }
 
   /**
@@ -209,7 +209,7 @@ public interface Field<X extends Field<X>> extends
 
   public default X mul(X x, X result)
   {
-    return mul(x, Math.max(bits(), x.bits()), result);
+    return mul(x, bits(this, x), result);
   }
 
   public X newFieldElement();
@@ -247,12 +247,26 @@ public interface Field<X extends Field<X>> extends
 
   public default X sub(X x)
   {
-    return sub(x, Math.max(bits(), x.bits()));
+    return sub(x, bits(this, x));
+  }
+
+  /**
+   * Calculate the number of bits to use for a given pair of operands
+   * 
+   * @param <X>
+   * @param x
+   * @param y
+   * 
+   * @return no less than 128 since
+   */
+  public static <X extends Field<? extends X>> int bits(X x, X y)
+  {
+    return Math.max(128, Math.max(x.bits(), y.bits()));
   }
 
   public default X sub(X x, X result)
   {
-    return sub(x, Math.max(bits(), x.bits()), result);
+    return sub(x, bits(this, x), result);
   }
 
   public X zero();

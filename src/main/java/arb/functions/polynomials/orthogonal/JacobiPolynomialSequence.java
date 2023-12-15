@@ -98,7 +98,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   {
     this.N = N;
     P.resize(N + 2);
-    bits = Math.max(a.bits(), b.bits());
+    bits = Math.max(128, Math.max(a.bits(), b.bits()));
     a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
