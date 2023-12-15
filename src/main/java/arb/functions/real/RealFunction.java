@@ -36,9 +36,9 @@ public interface RealFunction extends
 
   /**
    * It would be better to declare a generic argument R to RealFunction so that
-   * {@link RealFunction} could implement {@link Magma} with {@link RealFunction}
+   * {@link RealFunction} could implement {@link arb.algebra.Ring} with {@link RealFunction}
    * as the argument but that would conflict with {@link RealPolynomial}s
-   * implementation of {@link Magma} with {@link RealPolynomial} arguments.If
+   * implementation of {@link arb.algebra.Ring} with {@link RealPolynomial} arguments.If
    * {@link RealFunction} had a generic argument type R then the Magma could be
    * defined over this rather than directly over {@link RealPolynomial} and
    * {@link RealFunction} which it implements
