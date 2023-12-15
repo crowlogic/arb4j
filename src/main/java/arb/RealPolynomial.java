@@ -9,11 +9,10 @@
 package arb;
 
 import static arb.arblib.*;
-
-import arb.algebra.Ring;
 import arb.functions.real.RealFunction;
+import arb.algebra.Ring;
 
-public class RealPolynomial implements Ring<RealPolynomial>,AutoCloseable,RealFunction {
+public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolynomial> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -44,6 +43,13 @@ public class RealPolynomial implements Ring<RealPolynomial>,AutoCloseable,RealFu
   {
     return String.format("RealPolynomial[length=%d, coeffs=%s]", getLength(), getCoeffs());
   }
+  
+  @Override
+  public RealPolynomial div(RealPolynomial j, int prec, RealPolynomial result)
+  {
+    assert false : "TODO: implement real polynomial division";
+    return null;
+  }  
 
   public RealPolynomial mul( RealPolynomial that, int bits, RealPolynomial result )
   {
@@ -262,13 +268,6 @@ public class RealPolynomial implements Ring<RealPolynomial>,AutoCloseable,RealFu
 
   public RealPolynomial() {
     this(arblibJNI.new_RealPolynomial(), true);
-  }
-
-  @Override
-  public RealPolynomial div(RealPolynomial j, int prec, RealPolynomial result)
-  {
-    assert false : "TODO: implement real polynomial division";
-    return null;
   }
 
 }

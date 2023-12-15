@@ -772,6 +772,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
                                                                              false),
                                                          2 * (long)alloc * Real.BYTES));
     Real newElements[] = new Real[alloc];
+    System.arraycopy(elements, 0, newElements, 0, dim);
     this.dim = alloc;
     elements = newElements;
     return this;

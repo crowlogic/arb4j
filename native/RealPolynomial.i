@@ -1,6 +1,7 @@
 %typemap(javaimports) arb_poly_struct %{
 import static arb.arblib.*;
 import arb.functions.real.RealFunction;
+import arb.algebra.Ring;
 %}
 
 %typemap(javafinalize) arb_poly_struct ""
