@@ -3,6 +3,8 @@ package arb;
 import java.io.Closeable;
 import java.util.Iterator;
 
+import arb.algebra.Ring;
+
 /**
  * a set of elements such that addition and multiplication are commutative and
  * associative and multiplication is distributive over addition and there are
@@ -13,7 +15,8 @@ public interface Field<X extends Field<X>> extends
                       AutoCloseable,
                       Closeable,
                       Comparable<X>,
-                      Iterable<X>
+                      Iterable<X>,
+                      Ring<X>
 {
 
   /**
@@ -23,7 +26,7 @@ public interface Field<X extends Field<X>> extends
    * @return this after having been assigned value
    */
   public X set(X value);
-  
+
   @Override
   default Iterator<X> iterator()
   {

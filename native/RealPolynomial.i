@@ -4,7 +4,7 @@ import arb.functions.real.RealFunction;
 %}
 
 %typemap(javafinalize) arb_poly_struct ""
-%typemap(javainterfaces) arb_poly_struct "AutoCloseable,RealFunction"
+%typemap(javainterfaces) arb_poly_struct "AutoCloseable,RealFunction,Ring<RealPolynomial>"
 
 %typemap(javacode) arb_poly_struct %{
 
@@ -15,6 +15,13 @@ import arb.functions.real.RealFunction;
   {
     return String.format("RealPolynomial[length=%d, coeffs=%s]", getLength(), getCoeffs());
   }
+  
+  @Override
+  public RealPolynomial div(RealPolynomial j, int prec, RealPolynomial result)
+  {
+    assert false : "TODO: implement real polynomial division";
+    return null;
+  }  
 
   public RealPolynomial mul( RealPolynomial that, int bits, RealPolynomial result )
   {

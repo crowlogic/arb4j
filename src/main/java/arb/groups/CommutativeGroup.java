@@ -5,9 +5,9 @@ import java.util.function.BinaryOperator;
 import arb.Set;
 
 /**
- * A {@link CommutativeGroup} is a {@link Set} A, together with a
- * {@link BinaryOperator} ⋅ that combines any two elements a,b of A to form
- * another element of A , denoted by a ⋅ b. The symbol ⋅ is a general
+ * A {@link CommutativeGroup} is a {@link Set} A, together with a binary
+ * operator called multiplication ⋅ that combines any two elements a,b of A to
+ * form another element of A , denoted by a ⋅ b. The symbol ⋅ is a general
  * placeholder for a concretely given operation. To qualify as a
  * {@link CommutativeGroup}, the {@link Set} and the {@link BinaryOperator},
  * 
@@ -34,7 +34,7 @@ import arb.Set;
  *
  */
 public interface CommutativeGroup<X> extends
-                                  Group<X>
+                                 Group<X>
 {
 
 }

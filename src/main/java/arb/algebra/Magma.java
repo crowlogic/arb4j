@@ -22,26 +22,59 @@ import arb.Set;
  * a, b ∈ M ⟹ a • b ∈ M
  * </p>
  * <p>
- * The {@code Magma} interface extends the {@link Set} interface and provides a
- * method to obtain the binary operator representing the magma operation.
- *
+
  * @param <X> the type of elements in the magma set
  */
 public interface Magma<X> extends
                       Set<X>
 {
   /**
-   * Returns the binary operator of this Magma.
-   * <p>
-   * The returned {@link BinaryOperator} must satisfy the closure property: for
-   * all elements a, b in M, the result of the operation a • b is also in M.
-   * </p>
-   * <p>
-   * Implementations of this method should ensure the closure property holds for
-   * the returned binary operator.
-   *
-   * @return The {@link BinaryOperator} representing the binary operation of this
-   *         Magma.
+   * Performs multiplication
+   * 
+   * @param x
+   * @param prec
+   * @param result
+   * @return the result after it has been populated with the the product of this
+   *         and x
    */
-  public BinaryOperator<X> operator();
+  public X mul(X x, int prec, X result);
+
+
+  /**
+   * Performs multiplication
+   * 
+   * @param x
+   * @param prec
+   * @return this after it has been populated with the result
+   */
+  @SuppressWarnings("unchecked")
+  public default X mul(X x, int prec)
+  {
+    X result = (X) this;
+    return mul(x, prec, result);
+  }
+
+  /**
+   * Compute the quotient of a field element with another field element
+   * 
+   * @param j      the field element to divide by
+   * @param prec   precision
+   * @param result where to store the result
+   * @return result
+   */
+  public X div(X j, int prec, X result);
+
+  /**
+   * Compute the quotient of a field element with another field element
+   * 
+   * @param j    the field element to divide by
+   * @param prec precision
+   * @return this after the resulting calculation has been assigned to it
+   */
+  @SuppressWarnings("unchecked")
+  public default X div(X j, int prec)
+  {
+    return div(j, prec, (X) this);
+  }
+
 }
