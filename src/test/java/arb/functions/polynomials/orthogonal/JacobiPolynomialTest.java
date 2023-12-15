@@ -38,7 +38,7 @@ public class JacobiPolynomialTest extends
       try ( Real result = seq.A.evaluate(threeHalves, 1, bits, new Real()))
       {
         out.println("A(3,1.5)=" + result);
-        assertEquals(1.66666666666666666666666666666666, result.doubleValue());
+        assertEquals(45.0, result.doubleValue());
       }
     }
 

@@ -76,12 +76,11 @@ public interface RealFunction extends
       }
     };
   }
+
   @Override
   default void close()
   {
   }
-
-  
 
   /**
    * Default to 128 bits for this{@link #quantize(double, double, int, int)}
@@ -472,13 +471,24 @@ public interface RealFunction extends
     return inverse(0);
   }
 
+  public default Real integrate(Real l, Real r)
+  {
+    try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17); Real result = new Real())
+    {
+      int                bits = Math.max(l.bits(), r.bits());
+      IntegrationOptions opts = new IntegrationOptions();
+      opts.verbose = verbose;
+      return integrate(l, r, bits / 2, acceptableUncertainty, opts, bits, result);
+    }
+  }
+
   public default double integrate(double left, double right)
   {
     try ( Magnitude acceptableUncertainty = new Magnitude(1.0e-17); Real l = new Real(left);
           Real r = new Real(right); Real result = new Real())
     {
       IntegrationOptions opts = new IntegrationOptions();
-      opts.verbose = true;
+      opts.verbose = verbose;
       return integrate(l, r, 64, acceptableUncertainty, opts, 128, result).doubleValue();
     }
   }
@@ -559,7 +569,5 @@ public interface RealFunction extends
   {
     return instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
-  
- 
 
 }
