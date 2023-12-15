@@ -1,15 +1,19 @@
 package arb.groups;
 
-import arb.Set;
+import java.util.function.BiFunction;
+
+import arb.algebra.Magma;
 
 /**
- * An interface for a mathematical group. A group is a set equipped with an
- * operation that combines any two of its elements to form a third element in
- * such a way that four conditions called group axioms are satisfied.
- *
+ * A {@link Group} is an associative invertible {@link Magma} that has an identity element.
+ * 
  * @param <X> the type of elements in this group
+ * 
+ * @author ©2023 Stephen Crowley All rights reserved. 
  */
-public interface Group<X> extends Set<X>
+public interface Group<X> extends
+                      Magma<X>,
+                      BiFunction<X, X, X>
 {
 
   /**
@@ -26,6 +30,7 @@ public interface Group<X> extends Set<X>
    * @param y the second element
    * @return the result of the operation
    */
+  @Override
   X apply(X x, X y);
 
   /**

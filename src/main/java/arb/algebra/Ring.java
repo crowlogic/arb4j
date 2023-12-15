@@ -29,21 +29,7 @@ public interface Ring<X> extends
                      Magma<X>
 {
 
-  /**
-   * Adds two elements of the ring.
-   * 
-   * @param element1 The first element to be added.
-   * @param element2 The second element to be added.
-   * @return The result of adding element1 and element2.
-   */
-  X add(X element1, int bits, X element2);
+  X add(X addend, int bits, X result);
 
-  /**
-   * Subtracts one element of the ring from another.
-   * 
-   * @param element1 The element from which to subtract.
-   * @param element2 The element to be subtracted.
-   * @return The result of subtracting element2 from element1.
-   */
-  X sub(X element1, int bits, X element2);
+  X sub(X subtrahend, int bits, X result );
 }

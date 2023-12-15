@@ -29,13 +29,13 @@ public interface Magma<X> extends
   /**
    * Performs multiplication
    * 
-   * @param x
+   * @param operand
    * @param prec
    * @param result
    * @return the result after it has been populated with the the product of this
-   *         and x
+   *         and the operand
    */
-  public X mul(X x, int prec, X result);
+  public X mul(X operand, int prec, X result);
 
   /**
    * Performs multiplication
@@ -52,7 +52,7 @@ public interface Magma<X> extends
   }
 
   /**
-   * Compute the quotient of a field element with another field element
+   * Compute the quotient of this {@link Magma} 
    * 
    * @param j      the field element to divide by
    * @param prec   precision
