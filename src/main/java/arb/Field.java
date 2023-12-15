@@ -19,21 +19,44 @@ public interface Field<X extends Field<X>> extends
                       Ring<X>
 {
 
-  /**
-   * Assignment operator
-   * 
-   * @param value
-   * @return this after having been assigned value
-   */
-  public X set(X value);
-
-  @Override
-  default Iterator<X> iterator()
+  public default X add(X x)
   {
-    assert false : "implement me";
-    return null;
-
+    return add(x, Math.max(bits(), x.bits()));
   }
+
+  public default X add(X x, X result)
+  {
+    return add(x, Math.max(bits(), x.bits()), result);
+  }
+
+  /**
+   * Adds two elements
+   * 
+   * @param element
+   * @param prec
+   * @return this after it has been assigned the result
+   */
+  @SuppressWarnings("unchecked")
+  public default X add(X element, int prec)
+  {
+    return add(element, prec, (X) this);
+  }
+
+  /**
+   * Adds two elements of this field
+   * 
+   * @param element
+   * @param prec
+   * @param result
+   * @return result
+   */
+  public X add(X element, int prec, X result);
+
+  /**
+   * @return minimum number of bits required to represent this element without
+   *         loss of precision (information)
+   */
+  public int bits();
 
   @Override
   default void close()
@@ -46,92 +69,14 @@ public interface Field<X extends Field<X>> extends
    */
   public int dim();
 
-  public X get(int index);
-
-  /**
-   * Summation is the addition of a sequence of any kind of numbers, called
-   * addends or summands; the result is their sum or total. Beside numbers, other
-   * types of values can be summed as well: functions, vectors, matrices,
-   * polynomials and, in general, elements of any type of mathematical objects on
-   * which an operation denoted "+" is defined.
-   * 
-   * @param prec
-   * @param result
-   * 
-   * @return the sum of the elements(or points) (via
-   *         {@link #add(Field, int, Field)} ) of this array of field elements
-   *         regarded as an array of length this{@link #dim()}
-   */
-  public default X Σ(int prec, X result)
+  public default X div(X x)
   {
-    result.zero();
-    forEach(element -> result.add(element, prec, result));
-    return result;
+    return div(x, Math.max(bits(), x.bits()));
   }
 
-  /**
-   * Calculates the arithmetic mean of the elements of this field regarded as an
-   * array of size this{@link #dim()}
-   * 
-   * @param prec   precision
-   * @param result
-   * 
-   * @return this{@link #Σ(int, Field)} / this{@link #dim()}
-   */
-  public default X mean(int prec, X result)
+  public default X div(X x, X result)
   {
-    return Σ(prec, result).div(dim(), prec);
-  }
-
-  /**
-   * Performs multiplication
-   * 
-   * @param x
-   * @param prec
-   * @param result
-   * @return the result after it has been populated with the the product of this
-   *         and x
-   */
-  public X mul(X x, int prec, X result);
-
-  /**
-   * Performs multiplication with a (signed) integer
-   * 
-   * @param x
-   * @param prec
-   * @return this after it has been populated with the result
-   */
-  @SuppressWarnings("unchecked")
-  public default X mul(int x, int prec)
-  {
-    X result = (X) this;
-    return mul(x, prec, result);
-  }
-
-  /**
-   * Performs multiplication with a (signed) integer
-   * 
-   * @param x
-   * @param prec
-   * @param result
-   * 
-   * @return result after it has been populated with the the product of the field
-   *         element with the integer
-   */
-  public X mul(int x, int prec, X result);
-
-  /**
-   * Performs multiplication
-   * 
-   * @param x
-   * @param prec
-   * @return this after it has been populated with the result
-   */
-  @SuppressWarnings("unchecked")
-  public default X mul(X x, int prec)
-  {
-    X result = (X) this;
-    return mul(x, prec, result);
+    return div(x, Math.max(bits(), x.bits()), result);
   }
 
   /**
@@ -160,16 +105,6 @@ public interface Field<X extends Field<X>> extends
   /**
    * Compute the quotient of a field element with another field element
    * 
-   * @param j      the field element to divide by
-   * @param prec   precision
-   * @param result where to store the result
-   * @return result
-   */
-  public X div(X j, int prec, X result);
-
-  /**
-   * Compute the quotient of a field element with another field element
-   * 
    * @param j    the field element to divide by
    * @param prec precision
    * @return this after the resulting calculation has been assigned to it
@@ -181,17 +116,111 @@ public interface Field<X extends Field<X>> extends
   }
 
   /**
-   * Adds two elements
+   * Compute the quotient of a field element with another field element
    * 
-   * @param element
+   * @param j      the field element to divide by
+   * @param prec   precision
+   * @param result where to store the result
+   * @return result
+   */
+  public X div(X j, int prec, X result);
+
+  public X get(int index);
+
+  public String getName();
+
+  @Override
+  default Iterator<X> iterator()
+  {
+    assert false : "implement me";
+    return null;
+
+  }
+
+  /**
+   * Calculates the arithmetic mean of the elements of this field regarded as an
+   * array of size this{@link #dim()}
+   * 
+   * @param prec   precision
+   * @param result
+   * 
+   * @return this{@link #Σ(int, Field)} / this{@link #dim()}
+   */
+  public default X mean(int prec, X result)
+  {
+    return Σ(prec, result).div(dim(), prec);
+  }
+
+  /**
+   * Performs multiplication with a (signed) integer
+   * 
+   * @param x
    * @param prec
-   * @return this after it has been assigned the result
+   * @return this after it has been populated with the result
    */
   @SuppressWarnings("unchecked")
-  public default X add(X element, int prec)
+  public default X mul(int x, int prec)
   {
-    return add(element, prec, (X) this);
+    X result = (X) this;
+    return mul(x, prec, result);
   }
+
+  /**
+   * Performs multiplication with a (signed) integer
+   * 
+   * @param x
+   * @param prec
+   * @param result
+   * 
+   * @return result after it has been populated with the the product of the field
+   *         element with the integer
+   */
+  public X mul(int x, int prec, X result);
+
+  public default X mul(X x)
+  {
+    return mul(x, Math.max(bits(), x.bits()));
+  }
+
+  /**
+   * Performs multiplication
+   * 
+   * @param x
+   * @param prec
+   * @return this after it has been populated with the result
+   */
+  @SuppressWarnings("unchecked")
+  public default X mul(X x, int prec)
+  {
+    X result = (X) this;
+    return mul(x, prec, result);
+  }
+
+  /**
+   * Performs multiplication
+   * 
+   * @param x
+   * @param prec
+   * @param result
+   * @return the result after it has been populated with the the product of this
+   *         and x
+   */
+  public X mul(X x, int prec, X result);
+
+  public default X mul(X x, X result)
+  {
+    return mul(x, Math.max(bits(), x.bits()), result);
+  }
+
+  public X newFieldElement();
+
+  /**
+   * Assignment operator
+   * 
+   * @param value
+   * @return this after having been assigned value
+   */
+  public X set(X value);
 
   /**
    * Subtracts a field element from this field
@@ -216,20 +245,37 @@ public interface Field<X extends Field<X>> extends
    */
   public X sub(X element, int prec, X result);
 
-  /**
-   * Adds two elements of this field
-   * 
-   * @param element
-   * @param prec
-   * @param result
-   * @return result
-   */
-  public X add(X element, int prec, X result);
+  public default X sub(X x)
+  {
+    return sub(x, Math.max(bits(), x.bits()));
+  }
+
+  public default X sub(X x, X result)
+  {
+    return sub(x, Math.max(bits(), x.bits()), result);
+  }
 
   public X zero();
 
-  public X newFieldElement();
-
-  public String getName();
+  /**
+   * Summation is the addition of a sequence of any kind of numbers, called
+   * addends or summands; the result is their sum or total. Beside numbers, other
+   * types of values can be summed as well: functions, vectors, matrices,
+   * polynomials and, in general, elements of any type of mathematical objects on
+   * which an operation denoted "+" is defined.
+   * 
+   * @param prec
+   * @param result
+   * 
+   * @return the sum of the elements(or points) (via
+   *         {@link #add(Field, int, Field)} ) of this array of field elements
+   *         regarded as an array of length this{@link #dim()}
+   */
+  public default X Σ(int prec, X result)
+  {
+    result.zero();
+    forEach(element -> result.add(element, prec, result));
+    return result;
+  }
 
 }

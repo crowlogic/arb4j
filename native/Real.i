@@ -737,20 +737,27 @@ import arb.stochastic.ProbabilityDistributionFunction;
   
   
   /**
-   * FIXME: test for memory leaks
-   */ 
+   * Calls {@link arblib#flint_realloc(SWIGTYPE_p_void, long)} and also allocate a
+   * new this{@link #elements} array and copy the contents from the existing one
+   * if any
+   * 
+   * @param alloc
+   * @return this
+   */
   public Real resize(int alloc)
   {
     swigCPtr = SWIGTYPE_p_void.getCPtr(arblib.flint_realloc(new SWIGTYPE_p_void(swigCPtr,
-                                                                             false),
-                                                         2 * (long)alloc * Real.BYTES));
+                                                                                false),
+                                                            2 * (long) alloc * Real.BYTES));
     Real newElements[] = new Real[alloc];
-    System.arraycopy(elements, 0, newElements, 0, dim);
+    if (elements != null)
+    {
+      System.arraycopy(elements, 0, newElements, 0, Math.min(alloc, dim));
+    }
     this.dim = alloc;
     elements = newElements;
     return this;
   }
-   
 
   public Real abs(int prec, Real w)
   {
@@ -1130,7 +1137,18 @@ import arb.stochastic.ProbabilityDistributionFunction;
     arblib.arb_div(r, this, exp, prec );
     return r;
   }
-  
+
+  /**
+   * Calls this{@link #div(int, int)} with bits=this{@link #bits()}
+   * 
+   * @param i
+   * @return this
+   */
+  public Real div(int i)
+  {
+    return div(i, bits());
+  }
+    
 
   public int relAccuracyBits()
   {

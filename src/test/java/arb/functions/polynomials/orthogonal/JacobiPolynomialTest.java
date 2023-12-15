@@ -31,12 +31,13 @@ public class JacobiPolynomialTest extends
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
                                                    negHalf,
                                                    N);
-          Real three = new Real("3",
-                                128))
+          Real threeHalves = new Real("1.5",
+                                      128);)
     {
-      try ( Real result = seq.A.evaluate(three, 1, bits, new Real()))
+      seq.n.set(3);
+      try ( Real result = seq.A.evaluate(threeHalves, 1, bits, new Real()))
       {
-        out.println("A(3)=" + result);
+        out.println("A(3,1.5)=" + result);
         assertEquals(1.66666666666666666666666666666666, result.doubleValue());
       }
     }
