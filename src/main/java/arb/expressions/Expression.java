@@ -1163,7 +1163,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return checkClassCast(methodVisitor, true);
   }
 
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+  public static <D, R, F extends Function<D, R>>
          F
          instantiate(String expression,
                      Context<D, R, F> context,
@@ -1182,7 +1182,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return compiledExpression.instantiate();
   }
 
-  public static <D extends Field<D>, R extends Field<R>, F extends Function<D, R>>
+  public static <D, R, F extends Function<D, R>>
          F
          instantiate(String className,
                      String expression,
