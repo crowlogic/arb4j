@@ -45,6 +45,18 @@ public class arblib {
     arblibJNI.fmpz_init2(f, limbs);
   }
 
+  public static int arf_bits(Float x) {
+    return arblibJNI.arf_bits(Float.getCPtr(x), x);
+  }
+
+  public static void arb_poly_div_series(RealPolynomial Q, RealPolynomial A, RealPolynomial B, int n, int prec) {
+    arblibJNI.arb_poly_div_series(RealPolynomial.getCPtr(Q), Q, RealPolynomial.getCPtr(A), A, RealPolynomial.getCPtr(B), B, n, prec);
+  }
+
+  public static int arb_poly_divrem(RealPolynomial Q, RealPolynomial R, RealPolynomial A, RealPolynomial B, int prec) {
+    return arblibJNI.arb_poly_divrem(RealPolynomial.getCPtr(Q), Q, RealPolynomial.getCPtr(R), R, RealPolynomial.getCPtr(A), A, RealPolynomial.getCPtr(B), B, prec);
+  }
+
   public static void arb_poly_get_coeff_ptr(RealPolynomial poly, int n) {
     arblibJNI.arb_poly_get_coeff_ptr(RealPolynomial.getCPtr(poly), poly, n);
   }

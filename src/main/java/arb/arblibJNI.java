@@ -18,6 +18,9 @@ public class arblibJNI {
   public final static native void fmpz_init(long jarg1);
   public final static native void fmpz_clear(long jarg1);
   public final static native void fmpz_init2(long jarg1, long jarg2);
+  public final static native int arf_bits(long jarg1, Float jarg1_);
+  public final static native void arb_poly_div_series(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, RealPolynomial jarg3_, int jarg4, int jarg5);
+  public final static native int arb_poly_divrem(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, RealPolynomial jarg3_, long jarg4, RealPolynomial jarg4_, int jarg5);
   public final static native void arb_poly_get_coeff_ptr(long jarg1, RealPolynomial jarg1_, int jarg2);
   public final static native void arb_poly_get_coeff_arb(long jarg1, Real jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3);
   public final static native void arb_poly_set_coeff_arb(long jarg1, RealPolynomial jarg1_, int jarg2, long jarg3, Real jarg3_);

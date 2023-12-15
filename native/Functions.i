@@ -34,7 +34,14 @@ void fmpz_set_si(fmpz_t f, slong val);
 void fmpz_init(fmpz_t f) { *f = WORD(0); }
 void fmpz_clear(fmpz_t f) { if (COEFF_IS_MPZ(*f)) _fmpz_clear_mpz(*f); }
  void fmpz_init2(fmpz_t f, ulong limbs);
- 
+
+slong arf_bits(const arf_t x);
+
+void arb_poly_div_series(arb_poly_t Q, const arb_poly_t A, const arb_poly_t B, slong n, slong prec);
+
+int arb_poly_divrem(arb_poly_t Q, arb_poly_t R,
+                             const arb_poly_t A, const arb_poly_t B, slong prec);
+                             
 void arb_poly_get_coeff_ptr(arb_poly_t poly, slong n);
  
 void arb_poly_get_coeff_arb(arb_t v, const arb_poly_t poly, slong n);

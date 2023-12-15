@@ -114,6 +114,15 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
   }
 
   /**
+   * @see arblib#arf_bits(Float)
+   */
+  @Override
+  public int bits()
+  {
+    return arblib.arf_bits(this);
+  }
+  
+  /**
    * 
    * @param length
    * @param aligned if true then the buffer is aligned on a page boundary so that

@@ -33,10 +33,10 @@ import arb.functions.real.RealFunction;
  *   
  * Recurrence Relation for n >= 2:
  * 
- *   Pfunc[n] = (x * A(n) * Pfunc(n-1,x) - B(n) * Pfunc(n-2,x)) / E(n)
+ *   P[n] = (x * A(n) * P(n-1,x) - B(n) * P(n-2,x)) / E(n)
  * </pre>
  * 
- * The polynomials Pfunc(n) are mutually orthogonal with respect to the weight
+ * The polynomials P(n) are mutually orthogonal with respect to the weight
  * function
  * 
  * (1 - x)^α * (1 + x)^β
@@ -90,7 +90,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final public RealFunction   p1      = express("p1", "x➔(C(1)*x-β+α)/2", context, verbose);
 
-  final public RealFunction   Pfunc   = express("P", "z➔(A(n) * z * P[n-1] - B(n) * P[n-2]) / 2", context, verbose);
+  final public RealFunction   Pfunc   = express("P", "z➔(A(n) * z * P[n-1,z] - B(n) * P[n-2,z]) / 2", context, verbose);
 
   public int                  N;
 

@@ -17,12 +17,16 @@ import arb.algebra.Ring;
     return String.format("RealPolynomial[length=%d, coeffs=%s]", getLength(), getCoeffs());
   }
   
+  /**
+   * Performs polynomial division without remainder by calling
+   * {@link arblib#arb_poly_div_series(RealPolynomial, RealPolynomial, RealPolynomial, int, int)}
+   */
   @Override
   public RealPolynomial div(RealPolynomial j, int prec, RealPolynomial result)
   {
-    assert false : "TODO: implement real polynomial division";
-    return null;
-  }  
+    arblib.arb_poly_div_series(result, this, j, result.getLength(), prec);
+    return result;
+  }
 
   public RealPolynomial mul( RealPolynomial that, int bits, RealPolynomial result )
   {
