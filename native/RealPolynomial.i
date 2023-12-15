@@ -19,6 +19,8 @@ import arb.algebra.Ring;
   
   /**
    * Performs polynomial division without remainder by calling
+   * {@link arblib#arb_poly_div_series(RealPolynomial, RealPolynomial, RealPolynomial, int, int)},
+   * the {@link RealPolynomial#getLength()} is used as the value of n to pass to
    * {@link arblib#arb_poly_div_series(RealPolynomial, RealPolynomial, RealPolynomial, int, int)}
    */
   @Override
