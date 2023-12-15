@@ -309,9 +309,11 @@ public class Compiler
    *                         objects representing the constants to be declared
    * @return classVisitor
    */
-  static <D, R, F extends Function<D, R>> ClassVisitor declareConstants(ClassVisitor classVisitor,
-                                                                        String typeDescriptor,
-                                                                        Iterable<LiteralConstant<D, R, F>> literals)
+  public static <D, R, F extends Function<D, R>>
+         ClassVisitor
+         declareConstants(ClassVisitor classVisitor,
+                          String typeDescriptor,
+                          Iterable<LiteralConstant<D, R, F>> literals)
   {
     for (var constant : literals)
     {
@@ -320,6 +322,7 @@ public class Compiler
     return classVisitor;
   }
 
+  
   /**
    * Declares the given variables as fields in the class being generated.
    * 
@@ -328,9 +331,9 @@ public class Compiler
    *                     fields
    * @return classVisitor
    */
-  static <D, R, F extends Function<D, R>> ClassVisitor declareVariables(Expression<D, R, F> expression,
-                                                                        ClassVisitor classVisitor,
-                                                                        Iterable<String> variables)
+  public static <D, R, F extends Function<D, R>> ClassVisitor declareVariables(Expression<D, R, F> expression,
+                                                                               ClassVisitor classVisitor,
+                                                                               Iterable<String> variables)
   {
     for (var variableName : variables)
     {
@@ -339,9 +342,9 @@ public class Compiler
     return classVisitor;
   }
 
-  static <D, R, F extends Function<D, R>> ClassVisitor declareFunctions(Expression<D, R, F> expression,
-                                                                        ClassVisitor classVisitor,
-                                                                        Functions<D, R, F> functions)
+  public static <D, R, F extends Function<D, R>> ClassVisitor declareFunctions(Expression<D, R, F> expression,
+                                                                               ClassVisitor classVisitor,
+                                                                               Functions<D, R, F> functions)
   {
     functions.forEach((name, function) ->
     {
@@ -368,9 +371,9 @@ public class Compiler
    * @return a {@link Class} ready to be instantiated and evaluated
    */
   @SuppressWarnings("unchecked")
-  static <D, R, F extends Function<D, R>> Class<F> defineFunctionClass(String className,
-                                                                       byte[] bytecodes,
-                                                                       Context<D, R, F> context)
+  public static <D, R, F extends Function<D, R>> Class<F> defineFunctionClass(String className,
+                                                                              byte[] bytecodes,
+                                                                              Context<D, R, F> context)
   {
 
     try
@@ -386,8 +389,8 @@ public class Compiler
     }
   }
 
-  static <D, R, F extends Function<D, R>> MethodVisitor generateConstructor(Expression<D, R, F> expression,
-                                                                            ClassVisitor classVisitor)
+  public static <D, R, F extends Function<D, R>> MethodVisitor generateConstructor(Expression<D, R, F> expression,
+                                                                                   ClassVisitor classVisitor)
   {
     if (expression.verbose)
     {
@@ -434,19 +437,21 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<D, R>> ClassVisitor generateFunctionInterface(Expression<D, R, F> expression,
-                                                                                 String className,
-                                                                                 ClassVisitor classVisitor)
+  public static <D, R, F extends Function<D, R>>
+         ClassVisitor
+         generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor classVisitor)
   {
     classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC, className, null, objectDesc, new String[]
     { expression.functionClassInternalName });
     return classVisitor;
   }
 
-  static <D, R, F extends Function<D, R>> MethodVisitor initializeRegisteredFunction(Expression<D, R, F> expression,
-                                                                                     MethodVisitor methodVisitor,
-                                                                                     String functionName,
-                                                                                     F function)
+  public static <D, R, F extends Function<D, R>>
+         MethodVisitor
+         initializeRegisteredFunction(Expression<D, R, F> expression,
+                                      MethodVisitor methodVisitor,
+                                      String functionName,
+                                      F function)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(ACONST_NULL);
@@ -457,8 +462,9 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<D, R>> MethodVisitor initializeRegisteredFunctions(Expression<D, R, F> expression,
-                                                                                      MethodVisitor methodVisitor)
+  public static <D, R, F extends Function<D, R>>
+         MethodVisitor
+         initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
     expression.context.functions.forEach((name, function) ->
     {
@@ -467,7 +473,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<D, R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          initializeIntermediateVariable(Expression<D, R, F> expression,
                                         MethodVisitor methodVisitor,
@@ -484,7 +490,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<D, R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
@@ -495,8 +501,9 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<D, R>> MethodVisitor initializeLiteralConstants(Expression<D, R, F> expression,
-                                                                                   MethodVisitor methodVisitor)
+  public static <D, R, F extends Function<D, R>>
+         MethodVisitor
+         initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
 
     for (var literal : expression.literalConstants)
@@ -506,7 +513,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<D, R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          initializeLiteralConstantWithString(Expression<D, R, F> expression,
                                              MethodVisitor methodVisitor,

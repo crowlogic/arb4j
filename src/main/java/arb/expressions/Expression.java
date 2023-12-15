@@ -307,29 +307,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       generateEvaluationMethod(classVisitor);
 
-      if (verbose)
-      {
-        err.println("Declaring constants: " + literalConstants);
-        err.flush();
-      }
-      declareConstants(classVisitor, domainClassDescriptor, literalConstants);
-
-      if (variables != null)
-      {
-        if (verbose)
-        {
-          err.println("Declaring variables: " + referencedVariables);
-          err.flush();
-        }
-        declareVariables(this, classVisitor, referencedVariables.keySet());
-      }
-
-      declareVariables(this, classVisitor, intermediateVariables);
-
-      if (context != null && !context.functions.isEmpty())
-      {
-        declareFunctions(this, classVisitor, context.functions);
-      }
+      declareFields(classVisitor);
 
       generateConstructor(this, classVisitor);
 
@@ -361,6 +339,51 @@ public class Expression<D, R, F extends Function<D, R>> implements
       writeBytecodes(file);
     }
     return this;
+  }
+
+  /**
+   * Calls {@link Compiler#declareConstants(ClassVisitor, String, Iterable)},
+   * this{@link #declareReferencedVariables(ClassVisitor)},
+   * this{@link #declareIntermediateVariables(ClassVisitor)}, then
+   * {@link Compiler#declareFunctions(Expression, ClassVisitor, Functions)}
+   * 
+   * @param classVisitor
+   */
+  public void declareFields(ClassVisitor classVisitor)
+  {
+    if (verbose)
+    {
+      err.println("Declaring constants: " + literalConstants);
+      err.flush();
+    }
+    declareConstants(classVisitor, domainClassDescriptor, literalConstants);
+
+    declareReferencedVariables(classVisitor);
+
+    declareIntermediateVariables(classVisitor);
+
+    if (context != null && !context.functions.isEmpty())
+    {
+      declareFunctions(this, classVisitor, context.functions);
+    }
+  }
+
+  public void declareIntermediateVariables(ClassVisitor classVisitor)
+  {
+    declareVariables(this, classVisitor, intermediateVariables);
+  }
+
+  public void declareReferencedVariables(ClassVisitor classVisitor)
+  {
+    if (variables != null)
+    {
+      if (verbose)
+      {
+        err.println("Declaring variables: " + referencedVariables);
+        err.flush();
+      }
+      declareVariables(this, classVisitor, referencedVariables.keySet());
+    }
   }
 
   private ClassVisitor constructClassVisitor()
@@ -1081,8 +1104,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, boolean range)
   {
     return loadVariableReferenceOntoStack(methodVisitor,
-                                               fieldName,
-                                               range ? rangeClassDescriptor : domainClassDescriptor);
+                                          fieldName,
+                                          range ? rangeClassDescriptor : domainClassDescriptor);
   }
 
   /**
@@ -1163,14 +1186,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return checkClassCast(methodVisitor, true);
   }
 
-  public static <D, R, F extends Function<D, R>>
-         F
-         instantiate(String expression,
-                     Context<D, R, F> context,
-                     Class<D> domaiClass,
-                     Class<R> rangeClass,
-                     Class<F> functionClass,
-                     boolean verbose)
+  public static <D, R, F extends Function<D, R>> F instantiate(String expression,
+                                                               Context<D, R, F> context,
+                                                               Class<D> domaiClass,
+                                                               Class<R> rangeClass,
+                                                               Class<F> functionClass,
+                                                               boolean verbose)
   {
     Expression<D, R, F> compiledExpression = compile(expression,
                                                      context,
@@ -1182,15 +1203,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return compiledExpression.instantiate();
   }
 
-  public static <D, R, F extends Function<D, R>>
-         F
-         instantiate(String className,
-                     String expression,
-                     Context<D, R, F> context,
-                     Class<D> domainClass,
-                     Class<R> rangeClass,
-                     Class<F> functionClass,
-                     boolean verbose)
+  public static <D, R, F extends Function<D, R>> F instantiate(String className,
+                                                               String expression,
+                                                               Context<D, R, F> context,
+                                                               Class<D> domainClass,
+                                                               Class<R> rangeClass,
+                                                               Class<F> functionClass,
+                                                               boolean verbose)
   {
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
