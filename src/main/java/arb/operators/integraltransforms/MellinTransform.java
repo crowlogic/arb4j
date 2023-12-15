@@ -9,19 +9,22 @@ public class MellinTransform<F extends RealToComplexFunction> extends
                             AbstractIntegralTransform<F, Real>
 {
   final static int bits = 128;
-  
 
   public MellinTransform(F f)
   {
     super(f);
   }
 
-  final RealToComplexFunction kernel = (s, order, prec, result) ->
-                                     {
-                                       result.re().set(s);
-                                       result.sub(1, prec);
-                                       return result;
-                                     };
+  final RealToComplexFunction kernel = new RealToComplexFunction()
+  {
+    @Override
+    public Complex evaluate(Real s, int order, int bits, Complex result)
+    {
+      result.re().set(s);
+      result.sub(1, bits);
+      return result;
+    }
+  };
 
   @Override
   public Complex evaluate(Real s, int order, int prec, Complex res)
@@ -29,17 +32,22 @@ public class MellinTransform<F extends RealToComplexFunction> extends
     order = Math.max(1, order);
     assert order < 2;
 
-    RealToComplexFunction integrand = (t, integrandOrder, integrandPrec, result) ->
+    RealToComplexFunction integrand = new RealToComplexFunction()
                                     {
-                                      try ( Complex a = new Complex())
+                                      @Override
+                                      public Complex
+                                             evaluate(Real t, int integrandOrder, int integrandPrec, Complex result)
                                       {
-                                        kernel.evaluate(t, integrandOrder, integrandPrec, a);
-                                        a.exp(integrandPrec);
-                                        a.mul(f.evaluate(t, integrandOrder, integrandPrec, result),
-                                              integrandPrec,
-                                              result);
-                                        return result;
-                                      }
+                                        try ( Complex a = new Complex())
+                                        {
+                                          kernel.evaluate(t, integrandOrder, integrandPrec, a);
+                                          a.exp(integrandPrec);
+                                          a.mul(f.evaluate(t, integrandOrder, integrandPrec, result),
+                                                integrandPrec,
+                                                result);
+                                          return result;
+                                        }
+                                      };
                                     };
 
     IntegrationOptions    opts      = new IntegrationOptions();
@@ -51,6 +59,5 @@ public class MellinTransform<F extends RealToComplexFunction> extends
   {
     return kernel;
   }
-
 
 }

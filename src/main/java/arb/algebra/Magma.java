@@ -1,7 +1,5 @@
 package arb.algebra;
 
-import java.util.function.BinaryOperator;
-
 import arb.Set;
 
 /**
@@ -22,7 +20,7 @@ import arb.Set;
  * a, b ∈ M ⟹ a • b ∈ M
  * </p>
  * <p>
-
+ * 
  * @param <X> the type of elements in the magma set
  */
 public interface Magma<X> extends
@@ -38,7 +36,6 @@ public interface Magma<X> extends
    *         and x
    */
   public X mul(X x, int prec, X result);
-
 
   /**
    * Performs multiplication

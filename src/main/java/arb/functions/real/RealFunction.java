@@ -32,10 +32,6 @@ public interface RealFunction extends
                               Closeable,
                               AutoCloseable
 {
-  @Override
-  default void close()
-  {
-  }
 
   public default RealFunction sub(RealFunction that)
   {
@@ -80,6 +76,12 @@ public interface RealFunction extends
       }
     };
   }
+  @Override
+  default void close()
+  {
+  }
+
+  
 
   /**
    * Default to 128 bits for this{@link #quantize(double, double, int, int)}
