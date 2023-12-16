@@ -19,7 +19,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
     context.registerVariable("y", y);
     y.set(1, RealConstants.oneQuarter);
     y.set(2, RealConstants.π);
-    RealPolynomialFunction f = express("x+y", context);
+    RealPolynomialFunction f = express("x+y", context, true);
     RealPolynomial         z = f.evaluate(x, 1, 128, new RealPolynomial());
     System.out.format("x + y = z\n");
     System.out.println("x=" + x);

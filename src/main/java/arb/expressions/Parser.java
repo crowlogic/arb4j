@@ -118,7 +118,8 @@ public class Parser
                      .replace("0", "Zero")
                      .replace(".", "Point")
                      .replace('[', '_')
-                     .replace(']', '_');
+                     .replace(']', '_')
+                     .replace("➔", "");
   }
 
 }
