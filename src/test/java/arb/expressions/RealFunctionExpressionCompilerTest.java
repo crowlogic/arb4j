@@ -7,7 +7,7 @@ import arb.*;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
-public class ExpressionTest extends
+public class RealFunctionExpressionCompilerTest extends
                             TestCase
 {
 

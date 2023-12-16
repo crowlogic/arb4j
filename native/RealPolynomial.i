@@ -11,7 +11,12 @@ import arb.algebra.Ring;
 
   static { System.loadLibrary("arblib"); }
 
-
+  public Real set(int i, Real two)
+  {
+    assert i < getLength() : String.format("i = %d >= length = %d\n", i, getLength());
+    return get(i).set(two);
+  }
+  
   @Override
   public String toString()
   {

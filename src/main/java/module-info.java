@@ -43,6 +43,7 @@ module arb4j
   exports arb.functions;
   exports arb.operators;
   exports arb.operators.integraltransforms;
+  exports arb.functions.polynomials;  
   exports arb.functions.polynomials.orthogonal;
   exports arb.functions.real;
   exports arb.functions.complex;
