@@ -9,6 +9,18 @@
 package arb;
 
 public class arblib {
+  public static void arb_poly_majorant(RealPolynomial res, RealPolynomial poly, int prec) {
+    arblibJNI.arb_poly_majorant(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly, prec);
+  }
+
+  public static int arb_poly_equal(RealPolynomial A, RealPolynomial B) {
+    return arblibJNI.arb_poly_equal(RealPolynomial.getCPtr(A), A, RealPolynomial.getCPtr(B), B);
+  }
+
+  public static int arb_poly_overlaps(RealPolynomial poly1, RealPolynomial poly2) {
+    return arblibJNI.arb_poly_overlaps(RealPolynomial.getCPtr(poly1), poly1, RealPolynomial.getCPtr(poly2), poly2);
+  }
+
   public static long fmpz_get_ui(long f) {
     return arblibJNI.fmpz_get_ui(f);
   }

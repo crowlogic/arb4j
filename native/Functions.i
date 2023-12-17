@@ -19,6 +19,12 @@
     }
 }
 
+void arb_poly_majorant(arb_poly_t res, const arb_poly_t poly, slong prec);
+
+int arb_poly_equal(const arb_poly_t A, const arb_poly_t B);
+
+int arb_poly_overlaps(const arb_poly_t poly1, const arb_poly_t poly2);
+
 ulong fmpz_get_ui(const fmpz_t f);
 
 slong fmpz_get_si(const fmpz_t f);
