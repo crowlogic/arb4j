@@ -13,15 +13,23 @@ import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import arb.algebra.Ring;
 import dnl.utils.text.table.TextTable;
 %}
 
 %typemap(javafinalize) arb_mat_struct ""
-%typemap(javainterfaces) arb_mat_struct "AutoCloseable,Iterable<Real>"
+%typemap(javainterfaces) arb_mat_struct "AutoCloseable,Iterable<Real>,Ring<RealMatrix>"
 
 %typemap(javacode) arb_mat_struct %{
   static { System.loadLibrary( "arblib" ); }
 
+  @Override
+  public RealMatrix div(RealMatrix j, int prec, RealMatrix result)
+  {
+    assert false : "todo: division";
+    return null;
+  }
+  
   public RealMatrix setName(String string)
   {
     this.name = string;

@@ -22,9 +22,10 @@ import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import arb.algebra.Ring;
 import dnl.utils.text.table.TextTable;
 
-public class RealMatrix implements AutoCloseable,Iterable<Real> {
+public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix> {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -49,6 +50,13 @@ public class RealMatrix implements AutoCloseable,Iterable<Real> {
 
   static { System.loadLibrary( "arblib" ); }
 
+  @Override
+  public RealMatrix div(RealMatrix j, int prec, RealMatrix result)
+  {
+    assert false : "todo: division";
+    return null;
+  }
+  
   public RealMatrix setName(String string)
   {
     this.name = string;
