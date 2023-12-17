@@ -19,6 +19,8 @@
     }
 }
 
+void arb_poly_neg(arb_poly_t res, const arb_poly_t poly);
+
 void arb_poly_majorant(arb_poly_t res, const arb_poly_t poly, slong prec);
 
 int arb_poly_equal(const arb_poly_t A, const arb_poly_t B);

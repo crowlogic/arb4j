@@ -1270,7 +1270,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
     
   public int digits()
   {
-   return 42;
+   return 17;
   }  
   
   public boolean  printPrecision = true;

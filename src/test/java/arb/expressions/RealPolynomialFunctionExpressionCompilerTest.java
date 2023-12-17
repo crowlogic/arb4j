@@ -32,4 +32,24 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
     System.out.println("z=" + z);
     assertEquals(correctZ, z);
   }
+  
+  public static void testSub()
+  {
+    RealPolynomialContext context = new RealPolynomialContext();
+    RealPolynomial        x       = new RealPolynomial(1);
+    x.set(0, RealConstants.two);
+    RealPolynomial y = new RealPolynomial(3);
+    context.registerVariable("y", y);
+    y.set(1, oneQuarter);
+    y.set(2, π);
+    RealPolynomialFunction f        = express("x-y", context, false);
+    RealPolynomial         z        = f.evaluate(x, 1, RealConstants.prec, new RealPolynomial());
+    RealPolynomial         correctZ = new RealPolynomial(3);
+    correctZ.set(two, oneQuarter, π).neg().get(0).neg();
+    System.out.format("x + y = z\n");
+    System.out.println("x=" + x);
+    System.out.println("y=" + y);
+    System.out.println("z=" + z);
+    assertEquals(correctZ, z);
+  }
 }

@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void arb_poly_neg(RealPolynomial res, RealPolynomial poly) {
+    arblibJNI.arb_poly_neg(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly);
+  }
+
   public static void arb_poly_majorant(RealPolynomial res, RealPolynomial poly, int prec) {
     arblibJNI.arb_poly_majorant(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly, prec);
   }

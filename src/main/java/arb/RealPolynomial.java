@@ -298,7 +298,19 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
       coeffsNative.elements = new Real[coeffsNative.dim];
     }
     return coeffsNative;
-  }  
+  }
+  
+  public RealPolynomial neg()
+  {
+    return neg(this);
+  }
+  
+  public RealPolynomial neg( RealPolynomial result )
+  {
+    arblib.arb_poly_neg( result, this );
+    return this;
+  }
+  
 
 
   public void setCoeffsNative(Real value) {
