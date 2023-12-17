@@ -116,7 +116,7 @@
 		</dependency>
 		<dependency>
 			<groupId>io.fair-acc</groupId>
-			<artifactId>dataset</artifactId>
+			<artifactId>bench</artifactId>
 			<version>11.3.0</version>
 		</dependency>		
 		<dependency>

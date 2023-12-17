@@ -25,8 +25,8 @@ module arb4j
   requires transitive jdk.jshell;
   requires transitive io.fair_acc.chartfx;
   requires transitive io.fair_acc.dataset;
+  requires transitive io.fair_acc.bench;  
 
-  
   exports arb;
   exports arb.expressions;
   exports arb.expressions.nodes;

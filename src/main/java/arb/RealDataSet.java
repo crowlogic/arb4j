@@ -68,11 +68,11 @@ public class RealDataSet extends
 
   public RealDataSet structure(int n)
   {
-    var         x   = getRealXValues();
-    var         y   = getRealYValues();
-    RealDataSet rds = new RealDataSet("structure[" + y.name + "]",
-                                      n);
-    var outy = rds.getRealYValues();
+    var         x    = getRealXValues();
+    var         y    = getRealYValues();
+    RealDataSet rds  = new RealDataSet("structure[" + y.name + "]",
+                                       n);
+    var         outy = rds.getRealYValues();
     rds.getRealXValues().set(x.slice(0, n));
     IntStream.range(0, n).parallel().forEach(i -> y.gammaVariance(i, 128, outy.get(i)));
     return rds;
