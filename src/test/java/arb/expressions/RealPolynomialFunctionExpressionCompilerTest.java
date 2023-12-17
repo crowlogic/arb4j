@@ -4,6 +4,7 @@ import static arb.RealConstants.oneQuarter;
 import static arb.RealConstants.two;
 import static arb.RealConstants.π;
 import static arb.functions.polynomials.RealPolynomialFunction.express;
+import static java.lang.System.out;
 
 import arb.RealConstants;
 import arb.RealPolynomial;
@@ -13,26 +14,31 @@ import junit.framework.TestCase;
 public class RealPolynomialFunctionExpressionCompilerTest extends
                                                           TestCase
 {
-  public static void testBasic()
+  public static void testAdd()
   {
     RealPolynomialContext context = new RealPolynomialContext();
-    RealPolynomial        x       = new RealPolynomial(1);
-    x.set(0, RealConstants.two);
-    RealPolynomial y = new RealPolynomial(3);
-    context.registerVariable("y", y);
-    y.set(1, oneQuarter);
-    y.set(2, π);
-    RealPolynomialFunction f        = express("x+y", context, false);
-    RealPolynomial         z        = f.evaluate(x, 1, RealConstants.prec, new RealPolynomial());
-    RealPolynomial         correctZ = new RealPolynomial(3);
-    correctZ.set(two, oneQuarter, π);
-    System.out.format("x + y = z\n");
-    System.out.println("x=" + x);
-    System.out.println("y=" + y);
-    System.out.println("z=" + z);
-    assertEquals(correctZ, z);
+    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();
+          var correctZ = new RealPolynomial(3))
+    {
+      correctZ.set(two, oneQuarter, π);
+      context.registerVariable("y", y);
+      var f = express("x+y", context, false);
+
+      x.set(0, two);
+      y.set(1, oneQuarter);
+      y.set(2, π);
+      f.evaluate(x, 1, RealConstants.prec, z);
+
+      System.out.format("x + y = z\n");
+      System.out.println("x=" + x);
+      System.out.println("y=" + y);
+      System.out.println("z=" + z);
+      out.flush();
+      
+      assertEquals(correctZ, z);
+    }
   }
-  
+
   public static void testSub()
   {
     RealPolynomialContext context = new RealPolynomialContext();
@@ -46,10 +52,11 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
     RealPolynomial         z        = f.evaluate(x, 1, RealConstants.prec, new RealPolynomial());
     RealPolynomial         correctZ = new RealPolynomial(3);
     correctZ.set(two, oneQuarter, π).neg().get(0).neg();
-    System.out.format("x + y = z\n");
+    System.out.format("x - y = z\n");
     System.out.println("x=" + x);
     System.out.println("y=" + y);
     System.out.println("z=" + z);
+    out.flush();
     assertEquals(correctZ, z);
   }
 }
