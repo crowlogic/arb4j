@@ -11,10 +11,36 @@ import arb.algebra.Ring;
 
   static { System.loadLibrary("arblib"); }
 
-  public Real set(int i, Real two)
+  /**
+   * Call this{@link #set(int, Real)} successively
+   * 
+   * @param elements an array of values whose length is no greater than
+   *                 this{@link #getLength()}
+   * @return this
+   */
+  public RealPolynomial set(Real... elements)
+  {
+    assert elements.length <= getLength() : String.format("cannot set elemenets of dimension %d because the dimension of this polynomials coeffecients is only %d\n",
+                                                          elements.length,
+                                                          getLength());
+    for (int i = 0; i < elements.length; i++)
+    {
+      set(i, elements[i]);
+    }
+    return this;
+  }
+  
+  /**
+   * Set the value of the i-th element of this polynomial's coefficients
+   * 
+   * @param i index which must be less than this{@link #getLength()}
+   * @param val value to be set
+   * @return this
+   */
+  public Real set(int i, Real val)
   {
     assert i < getLength() : String.format("i = %d >= length = %d\n", i, getLength());
-    return get(i).set(two);
+    return get(i).set(val);
   }
   
   @Override
