@@ -215,7 +215,7 @@ import dnl.utils.text.table.TextTable;
   }
 
   /**
-   * Sets where is a square matrix, computed by solving the system
+   * Sets the result to the inverse of this (square) matrix, computed by solving the system
    * 
    * X = A^(-1)
    * 
@@ -231,11 +231,10 @@ import dnl.utils.text.table.TextTable;
    * @return
    */
   public RealMatrix inverse(int bits, RealMatrix result)
-
   {
     arb_mat_inv(result, this, bits);
     return result;
-  }  
+  }
   
   /**
    * @see arb#arb_mat_zero(RealMatrix)

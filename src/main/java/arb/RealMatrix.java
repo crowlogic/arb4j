@@ -242,7 +242,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   }
 
   /**
-   * Sets where is a square matrix, computed by solving the system
+   * Sets the result to the inverse of this (square) matrix, computed by solving the system
    * 
    * X = A^(-1)
    * 
@@ -258,11 +258,10 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
    * @return
    */
   public RealMatrix inverse(int bits, RealMatrix result)
-
   {
     arb_mat_inv(result, this, bits);
     return result;
-  }  
+  }
   
   /**
    * @see arb#arb_mat_zero(RealMatrix)
