@@ -38,6 +38,20 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
 
   static { System.loadLibrary("arblib"); }
 
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (obj instanceof RealPolynomial)
+    {
+      RealPolynomial that = (RealPolynomial) obj;
+      return arblib.arb_poly_equal(this, that) != 0;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  
   /**
    * Call this{@link #set(int, Real)} successively
    * 
