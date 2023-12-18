@@ -48,6 +48,8 @@ typedef unsigned long* unsigned_long_ptr;
 %rename (numRows) r;
 %rename (numCols) c;
 
+
+
 %rename (rowPointers) rows;
 %rename (initialValue) gmp_init;
 %rename (gmpRandomState) gmp_state;
@@ -85,6 +87,24 @@ typedef unsigned long* unsigned_long_ptr;
 %rename (RealMatrix) arb_mat_struct;
 %rename (FoundRoots) root_struct;
 
+%typemap(javafinalize) dirichlet_prime_group_struct ""
+%typemap(javafinalize) dirichlet_char_struct ""
+%typemap(javafinalize) dirichlet_group_struct ""
+%typemap(javafinalize) acb_dft_bluestein_struct ""
+%typemap(javafinalize) acb_dft_crt_struct ""
+%typemap(javafinalize) acb_dft_cyc_struct ""
+%typemap(javafinalize) acb_dft_naive_struct ""
+%typemap(javafinalize) acb_dft_prod_struct ""
+%typemap(javafinalize) acb_dft_rad2_struct ""
+%typemap(javafinalize) acb_dft_pre_struct ""
+%typemap(javafinalize) acb_dft_pre_struct_t ""
+%typemap(javafinalize) acb_dft_step_struct ""
+%typemap(javafinalize) __gmp_randstate_struct ""
+%typemap(javafinalize) __gmp_randstate_struct__mp_algdata ""
+%typemap(javafinalize) mantissa_struct ""
+%typemap(javafinalize) mantissa_ptr_struct ""
+%typemap(javafinalize) mantissa_noptr_struct ""
+ 
 %include "Magnitude.i"
 
 %include "Float.i"
