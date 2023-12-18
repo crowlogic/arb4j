@@ -1,8 +1,6 @@
 package arb.expressions;
 
-import static arb.RealConstants.oneQuarter;
-import static arb.RealConstants.two;
-import static arb.RealConstants.π;
+import static arb.RealConstants.*;
 import static arb.functions.polynomials.RealPolynomialFunction.express;
 import static java.lang.System.out;
 
@@ -29,10 +27,10 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
       y.set(2, π);
       f.evaluate(x, 1, RealConstants.prec, z);
 
-      System.out.format("x + y = z\n");
-      System.out.println("x=" + x);
-      System.out.println("y=" + y);
-      System.out.println("z=" + z);
+      out.format("x + y = z\n");
+      out.println("x=" + x);
+      out.println("y=" + y);
+      out.println("z=" + z);
       out.flush();
       
       assertEquals(correctZ, z);
@@ -52,11 +50,36 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
     RealPolynomial         z        = f.evaluate(x, 1, RealConstants.prec, new RealPolynomial());
     RealPolynomial         correctZ = new RealPolynomial(3);
     correctZ.set(two, oneQuarter, π).neg().get(0).neg();
-    System.out.format("x - y = z\n");
-    System.out.println("x=" + x);
-    System.out.println("y=" + y);
-    System.out.println("z=" + z);
+    out.format("x - y = z\n");
+    out.println("x=" + x);
+    out.println("y=" + y);
+    out.println("z=" + z);
     out.flush();
     assertEquals(correctZ, z);
+  }
+  
+  public static void testMul()
+  {
+    RealPolynomialContext context = new RealPolynomialContext();
+    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();
+          var correctZ = new RealPolynomial(3))
+    {
+      correctZ.set(zero, half, twoπ);
+      context.registerVariable("y", y);
+      var f = express("x*y", context, false);
+
+      x.set(0, two);
+      y.set(1, oneQuarter);
+      y.set(2, π);
+      f.evaluate(x, 1, RealConstants.prec, z);
+
+      out.format("x * y = z\n");
+      out.println("x=" + x);
+      out.println("y=" + y);
+      out.println("z=" + z);
+      out.flush();
+      
+      assertEquals(correctZ, z);
+    }
   }
 }
