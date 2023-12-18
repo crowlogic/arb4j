@@ -11,6 +11,16 @@ import arb.algebra.Ring;
 
   static { System.loadLibrary("arblib"); }
 
+  /**
+   * 
+   * @param that
+   * @return {@link arblib#arb_poly_overlaps(RealPolynomial, RealPolynomial)} != 0
+   */
+  public boolean overlaps(RealPolynomial that)
+  {
+    return arblib.arb_poly_overlaps(this, that) != 0;
+  }
+  
   @Override
   public boolean equals(Object obj)
   {
