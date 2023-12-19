@@ -9,6 +9,22 @@ import static arb.arblib.*;
 %typemap(javacode) mag_struct %{
   String name;
 
+  public Magnitude one()
+  {
+    mag_one(this);
+    return this;
+  }
+
+  public Magnitude mul(Magnitude mag)
+  {
+    return mul(mag,this);
+  }
+
+  public Magnitude sub(Magnitude t)
+  {
+    return sub(t,this);
+  }
+
   public Magnitude sqrt()
   {
     return sqrt(this);

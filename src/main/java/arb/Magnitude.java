@@ -35,6 +35,33 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
 
   String name;
 
+  public Magnitude one()
+  {
+    mag_one(this);
+    return this;
+  }
+
+  public Magnitude mul(Magnitude mag)
+  {
+    return mul(mag,this);
+  }
+
+  public Magnitude sub(Magnitude t)
+  {
+    return sub(t,this);
+  }
+
+  public Magnitude sqrt()
+  {
+    return sqrt(this);
+  }
+
+  public Magnitude sqrt(Magnitude magnitude)
+  {
+    mag_sqrt(magnitude, this);
+    return magnitude;
+  }
+  
   /**
    * @see arb#mag_max(Magnitude, Magnitude, Magnitude)
    * 
@@ -277,17 +304,6 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
 
   public Magnitude() {
     this(arblibJNI.new_Magnitude(), true);
-  }
-
-  public Magnitude sqrt()
-  {
-    return sqrt(this);
-  }
-
-  public Magnitude sqrt(Magnitude magnitude)
-  {
-    mag_sqrt(magnitude, this);
-    return magnitude;
   }
 
 }

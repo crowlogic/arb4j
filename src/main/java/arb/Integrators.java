@@ -349,9 +349,9 @@ public class Integrators
                         u);
     }
 
-    int  depth;
-    int  maxDepth;
-    int  top;
+    int depth;
+    int maxDepth;
+    int top;
 
     f.simpleQuadrature(as, bs, prec, vs);
     mag_hypot(ms, vs.getReal().getRad(), vs.getImag().getRad());
@@ -395,13 +395,13 @@ public class Integrators
       if (vs.get(top).isFinite())
       {
         if (Integrators.evaluateGaussLegendreIntegral(f,
-                                                   as.get(top),
-                                                   bs.get(top),
-                                                   newTol,
-                                                   degLimit,
-                                                   prec,
-                                                   evalCount,
-                                                   u))
+                                                      as.get(top),
+                                                      bs.get(top),
+                                                      newTol,
+                                                      degLimit,
+                                                      prec,
+                                                      evalCount,
+                                                      u))
         {
           if (debug)
           {
@@ -665,83 +665,81 @@ public class Integrators
   {
     boolean converged = false;
     try ( Complex mid = new Complex(); Complex δ = new Complex(); Complex wide = new Complex();
-          Magnitude tmpm = new Magnitude(); Complex s = new Complex(); Complex v = new Complex();
+          Magnitude m = new Magnitude(); Complex s = new Complex(); Complex v = new Complex();
           Magnitude M = new Magnitude(); Magnitude X = new Magnitude(); Magnitude Y = new Magnitude();
           Magnitude rho = new Magnitude(); Magnitude err = new Magnitude(); Magnitude t = new Magnitude();
           Magnitude bestRho = new Magnitude();)
     {
       int Xexp;
       int i, n, best_n;
-  
+
       if (degreeLimit <= 0)
       {
         res.setIndeterminate();
         evalCount.set(0);
         return false;
       }
-  
+
       /* delta = (b-a)/2 */
       b.sub(a, bits, δ).mul2e(-1);
-  
+
       /* mid = (a+b)/2 */
       a.add(b, bits, mid).mul2e(-1);
-  
+
       best_n = -1;
       evalCount.set(0);
-  
+
       mag_inf(err);
-  
+
       for (Xexp = 0; Xexp < bits /* && Xexp == 0 */; Xexp += Math.max(1, Xexp))
       {
-        mag_one(X);
+        X.one();
         mag_mul_2exp_si(X, X, Xexp + 1);
-  
+
         /* rho = X + √(X^2 - 1) (lower bound) */
         mag_mul_lower(rho, X, X);
-        mag_one(t);
+        t.one();
         mag_sub_lower(rho, rho, t);
         mag_sqrt_lower(rho, rho);
         mag_add_lower(rho, rho, X);
-  
+
         /* Y = √(X^2 - 1) (upper bound) */
-        mag_mul(Y, X, X);
-        mag_one(t);
-        mag_sub(Y, Y, t);
-        Y.sqrt();
-  
+        X.mul(X, Y).sub(t.one()).sqrt();
+
         wide.zero();
         wide.getReal().getRad().set(X);
         wide.getImag().getRad().set(Y);
-  
+
         /* transform to [a,b] */
         Complex x = wide.mul(δ, bits).add(mid, bits);
         f.evaluate(x, 1, bits, v);
         evalCount.incrementAndGet();
-  
+
         /* no dice */
         if (!v.isFinite())
           break;
-  
+
         /* M = (b-a)/2 |f| */
         acb_get_mag(M, v);
-        acb_get_mag(tmpm, δ);
-        mag_mul(M, M, tmpm);
-  
+        acb_get_mag(m, δ);
+
+        M.mul(m);
+
         /* Search for the smallest n that gives err < tol (if possible) */
         for (i = 0; i < Utensils.glStepCount && Utensils.glSteps[i] <= degreeLimit; i++)
         {
           n = Utensils.glSteps[i];
-  
+
           /* (64/15) M / ((ρ-1) ρ^(2n-1)) */
           mag_pow_ui_lower(t, rho, 2 * n - 1);
-          mag_one(tmpm);
-          mag_sub_lower(tmpm, rho, tmpm);
-          mag_mul_lower(t, t, tmpm);
+          m.one();
+          mag_sub_lower(m, rho, m);
+          mag_mul_lower(t, t, m);
           mag_mul_ui_lower(t, t, 15);
-          mag_div(t, M, t);
+          M.div(t, t);
           mag_mul_2exp_si(t, t, 6);
-  
-          if (mag_cmp(t, tol) < 0)
+
+          if (t.compareTo(tol) < 0)
           {
             converged = true;
             /* The best so far. */
@@ -751,16 +749,27 @@ public class Integrators
               mag_set(bestRho, rho);
               best_n = n;
             }
-  
+
             /* Best possible n. */
             if (n == 1)
               break;
           }
         }
       }
-  
+
       /* Evaluate best found Gauss-Legendre quadrature rule. */
-      Utensils.evaluateBestGaussLegendreQuadratureRule(f, bits, evalCount, res, converged, mid, δ, wide, s, v, err, best_n);
+      Utensils.evaluateBestGaussLegendreQuadratureRule(f,
+                                                       bits,
+                                                       evalCount,
+                                                       res,
+                                                       converged,
+                                                       mid,
+                                                       δ,
+                                                       wide,
+                                                       s,
+                                                       v,
+                                                       err,
+                                                       best_n);
     }
     return converged;
   }
