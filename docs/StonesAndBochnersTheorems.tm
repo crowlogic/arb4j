@@ -5,13 +5,28 @@
 <\body>
   <\theorem>
     <with|font-series|bold|(M. H. Stone).> Let <math|<around|{|U<rsub|t>|}>>,
-    <math|-\<infty\>\<less\>t\<less\>\<infty\>>, be a one-parameter class
-    <math|<around|(|C<rsub|0>|)>> of unitary operators in a Hilbert space
+    <math|-\<infty\>\<less\>t\<less\>\<infty\>>, be a one-parameter group of
+    class <math|<around|(|C<rsub|0>|)>> unitary operators in a Hilbert space
     <math|X>. Then
 
     <\equation>
-      U<rsub|t>=e<rsup|i*t*H>,<space|1em><text|where><space|1em>f<around|(|t|)>=exp
-      <around|(|i*t*\<lambda\>|)>*<space|1em><text|and><space|1em>i*H=A,<space|1em>H<rsup|\<ast\>>=H
+      U<rsub|t>=e<rsup|i*t*H>
+    </equation>
+
+    where
+
+    <\equation>
+      f<around|(|t|)>=e<rsup|i*t*\<lambda\>>
+    </equation>
+
+    and
+
+    <\equation>
+      <space|1em>i*H=A
+    </equation>
+
+    <\equation>
+      H<rsup|\<ast\>>=H
     </equation>
 
     <math|H> is the infinitesimal generator of the group <math|U<rsub|t>>.
@@ -21,7 +36,7 @@
       U<rsub|t>=e<rsup|i*t*H>
     </equation>
 
-    \ defines a one-parameter group of class <math|<around|(|C<rsub|0>|)>> of
+    defines a one-parameter group of class <math|<around|(|C<rsub|0>|)>> of
     unitary operators.
   </theorem>
 
@@ -29,61 +44,68 @@
   the semi-group theory,
 
   <\equation>
-    U<rsub|t,x>=s-lim<rsub|n\<to\>\<infty\>> exp
-    <around*|(|i*t*H*<around*|(|I-<frac|i|n>*H|)><rsup|-1>|)>*x
+    U<rsub|t,x>=s-lim<rsub|n\<to\>\<infty\>>
+    e<rsup|i*t*H*<around*|(|I-<frac|i|n>*H|)><rsup|-1>>*x
   </equation>
 
   Since the function
 
   <\equation>
-    g<around|(|t|)>=exp <around*|(|i*t*<around*|(|1-<frac|1|n>*i*\<lambda\>|)><rsup|-1>|)>
+    g<around|(|t|)>=e<rsup|i*t*<around*|(|1-<frac|1|n>*i*\<lambda\>|)><rsup|-1>>
   </equation>
 
   is smaller than
 
   <\equation>
-    exp <around*|(|-<frac|n*t<rsup|2>|1/n<rsup|2>+2>|)>
+    e<rsup|-<frac|n*t<rsup|2>|<frac|1|n<rsup|2>>+2>>
   </equation>
 
-  in absolute value, we have, for <math|H=<big|int>f*d*E<around|(|\<lambda\>|)>>,
+  in absolute value, we have, for
 
   <\equation>
-    exp <around*|(|i*t*H*<around*|(|I-<frac|i|n>*H|)><rsup|-1>|)>=<big|int>exp
-    <around*|(|<frac|i*t*\<lambda\>|1-<frac|i|n>*\<lambda\>>|)>*d*E<around|(|\<lambda\>|)>
+    H=<big|int>f*d*E<around|(|\<lambda\>|)>
   </equation>
 
-  and, moreover,
+  <\equation>
+    e<rsup|i*t*H*<around*|(|I-<frac|i|n>*H|)><rsup|-1>>=<big|int>e<rsup|<frac|i*t*\<lambda\>|1-<frac|i|n>*\<lambda\>>>*d*E<around|(|\<lambda\>|)>
+  </equation>
+
+  and moreover,
 
   <\equation>
-    lim<rsub|n\<to\>\<infty\>> <big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|\||exp
-    <around*|(|<frac|i*t*\<lambda\>|1-<frac|i|n>*\<lambda\>>|)>-exp
-    <around|(|i*t*\<lambda\>|)>|\|><rsup|2>*d*<around|\<\|\|\>|E<around|(|\<lambda\>|)>*x|\<\|\|\>><rsup|2>=0
+    lim<rsub|n\<to\>\<infty\>> <big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|\||e<rsup|<frac|i*t*\<lambda\>|1-<frac|i|n>*\<lambda\>>>-e<rsup|i*t*\<lambda\>>|\|><rsup|2>*d*<around|\<\|\|\>|E<around|(|\<lambda\>|)>*x|\<\|\|\>><rsup|2>=0
   </equation>
 
   This proves that
 
   <\equation>
-    U<rsub|t>=f<rsub|t><around|(|H|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>exp
-    <around|(|i*t*\<lambda\>|)>*d*E<around|(|\<lambda\>|)>
+    U<rsub|t>=f<rsub|t><around|(|H|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*t*\<lambda\>>*d*E<around|(|\<lambda\>|)>
   </equation>
 
   For the converse part of Theorem 1, we observe that, by the operational
   calculus of the preceding section,
 
   <\equation>
-    f<rsub|t><around|(|H|)><rsup|\<ast\>>=f<rsub|-t><around|(|H|)>*<space|1em><text|and><space|1em>f<rsub|t><around|(|H|)>*f<rsub|s><around|(|H|)>=f<rsub|t+s><around|(|H|)>,<space|1em>f<rsub|0><around|(|H|)>=I
+    f<rsub|t><around|(|H|)><rsup|\<ast\>>=f<rsub|-t><around|(|H|)>
+  </equation>
+
+  <\equation>
+    f<rsub|t><around|(|H|)>*f<rsub|s><around|(|H|)>=f<rsub|t+s><around|(|H|)>
+  </equation>
+
+  <\equation>
+    f<rsub|0><around|(|H|)>=I
   </equation>
 
   We also have the strong continuity of <math|f<rsub|t><around|(|H|)>> at
   <math|t=0> by
 
   <\equation>
-    <around|\<\|\|\>|f<rsub|t><around|(|H|)>*x-x|\<\|\|\>><rsup|2>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||exp
-    <around|(|i*t*\<lambda\>|)>-1|\|><rsup|2>*d*<around|\<\|\|\>|E<around|(|\<lambda\>|)>*x|\<\|\|\>><rsup|2>\<to\>0*<space|1em><text|as><space|1em>t\<to\>0
+    <around|\<\|\|\>|f<rsub|t><around|(|H|)>*x-x|\<\|\|\>><rsup|2>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around|\||e<rsup|i*t*\<lambda\>>-1|\|><rsup|2>*d*<around|\<\|\|\>|E<around|(|\<lambda\>|)>*x|\<\|\|\>><rsup|2>\<to\>0*<space|1em><text|as><space|1em>t\<to\>0
   </equation>
 
   Hence <math|U<rsub|t>=f<rsub|t><around|(|H|)>> is a one-parameter group of
-  class <math|<around|(|C<rsub|0>|)>> of unitary operators.
+  class <math|<around|(|C<rsub|0>|)>> unitary operators.
 
   <\theorem>
     <with|font-series|bold|(Bochner).> A complex-valued continuous function
