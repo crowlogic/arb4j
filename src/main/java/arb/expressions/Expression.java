@@ -90,9 +90,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                              className;
 
-  final public Class<D>                      domainClass;
+  final public Class<? extends D>            domainClass;
 
-  final public Class<R>                      rangeClass;
+  final public Class<? extends R>            rangeClass;
 
   final public String                        domainClassDescriptor;
 
@@ -133,7 +133,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F>                       rootNode;
 
-  public Class<F>                            functionClass;
+  public Class<? extends F>                  functionClass;
 
   public String                              functionClassDescriptor;
 
@@ -146,9 +146,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public final String                        evaluateMethodSignature;
 
   public Expression(String className,
-                    Class<D> domainClass,
-                    Class<R> rangeClass,
-                    Class<F> functionClass,
+                    Class<? extends D> domainClass,
+                    Class<? extends R> rangeClass,
+                    Class<? extends F> functionClass,
                     String expression,
                     Context<D, R, F> context)
   {
