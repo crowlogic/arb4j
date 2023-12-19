@@ -279,4 +279,15 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
     this(arblibJNI.new_Magnitude(), true);
   }
 
+  public Magnitude sqrt()
+  {
+    return sqrt(this);
+  }
+
+  public Magnitude sqrt(Magnitude magnitude)
+  {
+    mag_sqrt(magnitude, this);
+    return magnitude;
+  }
+
 }

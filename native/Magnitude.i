@@ -9,6 +9,17 @@ import static arb.arblib.*;
 %typemap(javacode) mag_struct %{
   String name;
 
+  public Magnitude sqrt()
+  {
+    return sqrt(this);
+  }
+
+  public Magnitude sqrt(Magnitude magnitude)
+  {
+    mag_sqrt(magnitude, this);
+    return magnitude;
+  }
+  
   /**
    * @see arb#mag_max(Magnitude, Magnitude, Magnitude)
    * 
