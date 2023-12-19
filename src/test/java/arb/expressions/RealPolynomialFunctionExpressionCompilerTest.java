@@ -32,7 +32,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
       out.println("y=" + y);
       out.println("z=" + z);
       out.flush();
-      
+
       assertEquals(correctZ, z);
     }
   }
@@ -57,7 +57,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
     out.flush();
     assertEquals(correctZ, z);
   }
-  
+
   public static void testMul()
   {
     RealPolynomialContext context = new RealPolynomialContext();
@@ -78,8 +78,33 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
       out.println("y=" + y);
       out.println("z=" + z);
       out.flush();
-      
+
       assertEquals(correctZ, z);
+    }
+  }
+
+  public static void testDivisionWithRemainder()
+  {
+    RealPolynomialContext context = new RealPolynomialContext();
+    try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();)
+    {
+      context.registerVariable("y", y);
+      var f = express("x/y", context, false);
+
+      x.set(0, two);
+      y.set(0, RealConstants.πsquared);
+      y.set(1, oneQuarter);
+      y.set(2, π);
+      f.evaluate(x, 1, RealConstants.prec, z);
+
+      out.format("x / y = z\n");
+      out.println("x=" + x);
+      out.println("y=" + y);
+      out.println("z=" + z);
+      out.flush();
+
+      assertTrue(z.isZero());
+      assertEquals(x, z.remainder);
     }
   }
 }

@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int arb_poly_is_zero(RealPolynomial z) {
+    return arblibJNI.arb_poly_is_zero(RealPolynomial.getCPtr(z), z);
+  }
+
   public static void arb_poly_neg(RealPolynomial res, RealPolynomial poly) {
     arblibJNI.arb_poly_neg(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly);
   }

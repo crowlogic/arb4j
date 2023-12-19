@@ -2,6 +2,8 @@
 import static arb.arblib.*;
 import arb.functions.real.RealFunction;
 import arb.algebra.Ring;
+import arb.exceptions.DivisionByZeroException;
+
 %}
 
 %typemap(javafinalize) arb_poly_struct ""
@@ -74,16 +76,45 @@ import arb.algebra.Ring;
   }
   
   /**
-   * Performs polynomial division without remainder by calling
-   * {@link arblib#arb_poly_div_series(RealPolynomial, RealPolynomial, RealPolynomial, int, int)},
-   * the {@link RealPolynomial#getLength()} is used as the value of n to pass to
-   * {@link arblib#arb_poly_div_series(RealPolynomial, RealPolynomial, RealPolynomial, int, int)}
+   * 
+   * @return {@link arblib#arb_poly_is_zero(RealPolynomial)} != 0
+   */
+  public boolean isZero()
+  {
+    return arblib.arb_poly_is_zero(this) != 0;
+  }
+  
+  /**
+   * Performs polynomial division with remainder, computing a quotient and a
+   * remainder such that
+   * 
+   * The implementation reverses the inputs and performs power series division.
+   * 
+   * If the leading coefficient of the dividend contains zero (or if is
+   * identically zero), then a {@link DivisionByZeroException} is thrown.
+   * Otherwise, the {@link RealPolynomial} quotient will be calculated
+   * 
+   * nonzero.
+   * 
+   * The {@link RealPolynomial#remainder} will be populated and will have its
+   * {@link AutoCloseable#close()} method called by the {@link RealPolynomial}
+   * quotient to which it is associated when its {@link AutoCloseable#close()}
+   * method is called
    */
   @Override
-  public RealPolynomial div(RealPolynomial j, int prec, RealPolynomial result)
+  public RealPolynomial div(RealPolynomial dividend, int prec, RealPolynomial resultingQuotient)
   {
-    arblib.arb_poly_div_series(result, this, j, result.getLength(), prec);
-    return result;
+    RealPolynomial remainder = new RealPolynomial();
+
+    if (arblib.arb_poly_divrem(resultingQuotient, remainder, this, dividend, prec) == 0)
+    {
+      throw new DivisionByZeroException("division by zero: dividend=" + dividend);
+    }
+    if (remainder.getLength() > 0)
+    {
+      resultingQuotient.remainder = remainder;
+    }
+    return resultingQuotient;
   }
 
   public RealPolynomial mul( RealPolynomial that, int bits, RealPolynomial result )
@@ -189,7 +220,14 @@ import arb.algebra.Ring;
   public void close()
   {
     clear();
+    if ( remainder != null )
+    {
+      remainder.close();
+      remainder = null;
+    }
   }
+
+  public RealPolynomial remainder;
   
  /**
    * @see arb#arb_poly_product_roots(RealPolynomial, Real, int, int)
@@ -277,8 +315,11 @@ import arb.algebra.Ring;
     if (coeffsNative == null)
     {
       coeffsNative          = getCoeffsNative();
-      coeffsNative.dim      = getLength();
-      coeffsNative.elements = new Real[coeffsNative.dim];
+      if (coeffsNative != null)
+      {
+        coeffsNative.dim      = getLength();
+        coeffsNative.elements = new Real[coeffsNative.dim];
+      }      
     }
     return coeffsNative;
   }
