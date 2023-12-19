@@ -3,6 +3,11 @@
  * 
  * @see <a href="https://github.com/crowlogic/arb4j/">the arb4j homepage on
  *      github</a>
+ *      /**
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs format of the same document respectively.
  */
 module arb4j
 {

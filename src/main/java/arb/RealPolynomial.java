@@ -13,6 +13,12 @@ import arb.functions.real.RealFunction;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
 
+/**
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs format of the same document respectively.
+ */
 
 public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolynomial> {
   protected long swigCPtr;
@@ -113,20 +119,18 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
   
   /**
    * Performs polynomial division with remainder, computing a quotient and a
-   * remainder such that
-   * 
-   * The implementation reverses the inputs and performs power series division.
+   * remainder such that the implementation reverses the inputs and performs p
+   * ower series division.
    * 
    * If the leading coefficient of the dividend contains zero (or if is
    * identically zero), then a {@link DivisionByZeroException} is thrown.
    * Otherwise, the {@link RealPolynomial} quotient will be calculated
    * 
-   * nonzero.
-   * 
-   * The {@link RealPolynomial#remainder} will be populated and will have its
-   * {@link AutoCloseable#close()} method called by the {@link RealPolynomial}
-   * quotient to which it is associated when its {@link AutoCloseable#close()}
-   * method is called
+   * If there is a remainder then the {@link RealPolynomial#remainder} will be 
+   * populated and will have its {@link AutoCloseable#close()} method called by 
+   * the {@link RealPolynomial} quotient being returned as the result when its 
+   * {@link AutoCloseable#close()} method is called, otherwise the quotients 
+   * {@link RealPolynomial#remainder} will be null.
    */
   @Override
   public RealPolynomial div(RealPolynomial dividend, int prec, RealPolynomial resultingQuotient)
