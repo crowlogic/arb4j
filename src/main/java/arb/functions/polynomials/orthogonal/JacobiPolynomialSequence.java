@@ -2,6 +2,7 @@ package arb.functions.polynomials.orthogonal;
 
 import static arb.functions.real.RealFunction.express;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.IntStream;
 
@@ -56,49 +57,52 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                      OrthogonalBasis<Real, J>,
                                      AutoCloseable
 {
-  public int                  bits    = 128;
-  public Real                 α       = new Real().setName("α");
-  public Real                 β       = new Real().setName("β");
-  public Real                 n       = new Real().setName("n");
-  final public Real           G       = new Real().setName("G");
+  public int                             bits    = 128;
+  public Real                            α       = new Real().setName("α");
+  public Real                            β       = new Real().setName("β");
+  public Real                            n       = new Real().setName("n");
+  final public Real                      G       = new Real().setName("G");
   /**
    * TODO Let P be a triangular matrix, then define an array of
    * {@link RealPolynomial}s of increasing degree that start at each of its rows
    * 
    **/
-  final public Real           P       = new Real().setName("P");
+  final public ArrayList<RealPolynomial> P;
 
-  final Variables<Real>       vars    = new Variables<Real>(α,
-                                                            β,
-                                                            n,
-                                                            G,
-                                                            P);
+  final Variables<Real>                  vars    = new Variables<Real>(α,
+                                                                       β,
+                                                                       n,
+                                                                       G,
+                                                                       P);
 
-  final RealContext           context = new RealContext(vars);
+  final RealContext                      context = new RealContext(vars);
 
-  final public static boolean verbose = false;
+  final public static boolean            verbose = false;
 
-  final public RealFunction   C       = express("C", "n➔2*n+α+β", context, verbose);
+  final public RealFunction              C       = express("C", "n➔2*n+α+β", context, verbose);
 
-  final public RealFunction   F       = express("F", "n➔C(n-1)*C(n)", context, verbose);
+  final public RealFunction              F       = express("F", "n➔C(n-1)*C(n)", context, verbose);
 
-  final public RealFunction   A       = express("A", "x➔(F(n)*x + G)*(C(n)/2 - 1/2)", context, verbose);
+  final public RealFunction              A       = express("A", "x➔(F(n)*x + G)*(C(n)/2 - 1/2)", context, verbose);
 
-  final public RealFunction   E       = express("E", "n➔n*C(n/2)*C(n-1)", context, verbose);
+  final public RealFunction              E       = express("E", "n➔n*C(n/2)*C(n-1)", context, verbose);
 
-  final public RealFunction   B       = express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context, verbose);
+  final public RealFunction              B       = express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context, verbose);
 
-  final public RealFunction   p1      = express("p1", "x➔(C(1)*x-β+α)/2", context, verbose);
+  final public RealFunction              p1      = express("p1", "x➔(C(1)*x-β+α)/2", context, verbose);
 
-  final public RealFunction   Pfunc   = express("P", "z➔(A(n) * z * P[n-1,z] - B(n) * P[n-2,z]) / 2", context, verbose);
+  final public RealFunction              Pfunc   = express("P",
+                                                           "z➔(A(n) * z * P[n-1,z] - B(n) * P[n-2,z]) / 2",
+                                                           context,
+                                                           verbose);
 
-  public int                  N;
+  public int                             N;
 
   public JacobiPolynomialSequence(Real a, Real b, int N)
   {
     this.N = N;
-    P.resize(N + 2);
-    bits = Math.max(128, Math.max(a.bits(), b.bits()));
+    P      = new ArrayList<RealPolynomial>(N + 2);
+    bits   = Math.max(128, Math.max(a.bits(), b.bits()));
     a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
