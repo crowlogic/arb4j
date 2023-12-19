@@ -41,6 +41,16 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
     return this;
   }
 
+  /**
+   * 
+   * @param mag
+   * @return sets this to the maximum of this and mag
+   */
+  public Magnitude max(Magnitude mag)
+  {
+    return max(mag,this);
+  }
+
   public Magnitude mul(Magnitude mag)
   {
     return mul(mag,this);

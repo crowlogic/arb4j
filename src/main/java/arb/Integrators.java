@@ -292,8 +292,8 @@ public class Integrators
     /* Adjust absolute tolerance based on new information. */
     acb_get_mag_lower(tmpMag, topVal);
     mag_mul_2exp_si(tmpMag, tmpMag, -relAccuracyGoalBits);
-    mag_max(newTol, newTol, tmpMag);
-
+    newTol.max( tmpMag );
+    
     /* Evaluate on [mid, b] */
     Complex val = values.get(depth);
     f.simpleQuadrature(left.get(depth), right.get(depth), prec, val);
