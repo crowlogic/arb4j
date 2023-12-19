@@ -9,6 +9,22 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_mul(long f, long g, long h) {
+    arblibJNI.fmpz_mul(f, g, h);
+  }
+
+  public static void fmpz_divexact(long f, long g, long h) {
+    arblibJNI.fmpz_divexact(f, g, h);
+  }
+
+  public static void fmpz_add(long f, long g, long h) {
+    arblibJNI.fmpz_add(f, g, h);
+  }
+
+  public static void fmpz_sub(long f, long g, long h) {
+    arblibJNI.fmpz_sub(f, g, h);
+  }
+
   public static int arb_poly_is_zero(RealPolynomial z) {
     return arblibJNI.arb_poly_is_zero(RealPolynomial.getCPtr(z), z);
   }

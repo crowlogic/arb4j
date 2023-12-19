@@ -3,6 +3,8 @@ package arb;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
+import arb.algebra.Ring;
+
 /**
  * This class wraps the fmpz type in flint which is an arbitrary precision
  * integer implemented as a signed 64bit integer. When its second most
@@ -26,7 +28,7 @@ import java.lang.foreign.MemorySegment;
  * </pre>
  */
 public class Integer implements
-                     AutoCloseable
+                     AutoCloseable, Ring<Integer>
 {
   @Override
   public String toString()
@@ -152,6 +154,38 @@ public class Integer implements
   public void close()
   {
     delete();
+  }
+
+  @Override
+  public Integer mul(Integer operand, int prec, Integer result)
+  {
+    assert prec == 0 : "exact precision methods require bits=0";
+    arblib.fmpz_mul(result.swigCPtr, this.swigCPtr, operand.swigCPtr );
+    return result;
+  }
+
+  @Override
+  public Integer div(Integer operand, int prec, Integer result)
+  {
+    assert prec == 0 : "exact precision methods require bits=0";
+    arblib.fmpz_divexact(result.swigCPtr, this.swigCPtr, operand.swigCPtr );
+    return result;
+  }
+
+  @Override
+  public Integer add(Integer operand, int prec, Integer result)
+  {
+    assert prec == 0 : "exact precision methods require bits=0";
+    arblib.fmpz_add(result.swigCPtr, this.swigCPtr, operand.swigCPtr );
+    return result;
+  }
+
+  @Override
+  public Integer sub(Integer operand, int prec, Integer result)
+  {
+    assert prec == 0 : "exact precision methods require bits=0";
+    arblib.fmpz_sub(result.swigCPtr, this.swigCPtr, operand.swigCPtr );
+    return result;
   }
 
 }
