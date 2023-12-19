@@ -1,13 +1,13 @@
 package arb.stochastic.processes;
 
+import static arb.functions.real.RealFunction.express;
+
 import java.util.Arrays;
 import java.util.List;
 
 import arb.Real;
 import arb.RealMatrix;
-import arb.expressions.Expression;
 import arb.functions.real.RealFunction;
-import static arb.functions.real.RealFunction.express;
 
 public class CovarianceEigenSolver
 {

@@ -7,7 +7,6 @@
  *
  * <h1>PRIORITIES</h1>
  * <ul>
- * <li>support symbolic constants such as π #219</li>
  * <li>expression compiler: integer-valued literal-constants should map to
  * integer-versions of arblib calls if they exist #222</li>
  * <li>Complex types</li>
@@ -48,13 +47,6 @@
  * The package also includes a suite of unit tests to ensure the correctness of
  * the expression parsing, transformation, evaluation, and bytecode generation
  * features.
- * 
- * <pre>
- * Copyright ©2023 Stephen Crowley
- * 
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
+
  */
 package arb.expressions;

@@ -3,7 +3,6 @@ package arb.expressions;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
-import arb.Field;
 import arb.Real;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
@@ -27,13 +26,7 @@ import arb.functions.Function;
  * managing the 'environment' part of a closure, where the variables and
  * functions are bound and maintained.
  * </p>
- * 
- * <pre>
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
- * 
+
  * @author ©2023 Stephen Crowley
  * @param <D>
  * @param <F>

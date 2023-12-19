@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Field;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
@@ -132,7 +131,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>> ex
     CodeGenerator handler = (isResult ? resultFunctionHandlers : functionHandlers).get(name);
 
     if (handler == null)
-    {
+    { 
 
       Compiler.generateRegisteredFunctionCall(methodVisitor, name, node, isResult, depth);
 

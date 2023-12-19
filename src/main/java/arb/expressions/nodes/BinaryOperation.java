@@ -1,7 +1,6 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.*;
-import static java.lang.String.format;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
