@@ -720,8 +720,8 @@ public class Integrators
           break;
 
         /* M = (b-a)/2 |f| */
-        acb_get_mag(M, v);
-        acb_get_mag(m, δ);
+        v.absUpperBound(M);
+        δ.absUpperBound(m);
 
         M.mul(m);
 
