@@ -86,20 +86,18 @@ import arb.exceptions.DivisionByZeroException;
   
   /**
    * Performs polynomial division with remainder, computing a quotient and a
-   * remainder such that
-   * 
-   * The implementation reverses the inputs and performs power series division.
+   * remainder such that the implementation reverses the inputs and performs p
+   * ower series division.
    * 
    * If the leading coefficient of the dividend contains zero (or if is
    * identically zero), then a {@link DivisionByZeroException} is thrown.
    * Otherwise, the {@link RealPolynomial} quotient will be calculated
    * 
-   * nonzero.
-   * 
-   * The {@link RealPolynomial#remainder} will be populated and will have its
-   * {@link AutoCloseable#close()} method called by the {@link RealPolynomial}
-   * quotient to which it is associated when its {@link AutoCloseable#close()}
-   * method is called
+   * If there is a remainder then the {@link RealPolynomial#remainder} will be 
+   * populated and will have its {@link AutoCloseable#close()} method called by 
+   * the {@link RealPolynomial} quotient being returned as the result when its 
+   * {@link AutoCloseable#close()} method is called, otherwise the quotients 
+   * {@link RealPolynomial#remainder} will be null.
    */
   @Override
   public RealPolynomial div(RealPolynomial dividend, int prec, RealPolynomial resultingQuotient)
