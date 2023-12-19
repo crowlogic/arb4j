@@ -72,8 +72,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   final Variables<Real>                  vars    = new Variables<Real>(α,
                                                                        β,
                                                                        n,
-                                                                       G,
-                                                                       P);
+                                                                       G);
 
   final RealContext                      context = new RealContext(vars);
 
@@ -114,11 +113,11 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     {
       IntStream.range(2, N + 1).forEach(n ->
       {
-        Pfunc.evaluate(realn.set(n), bits, P.get(n));
+        // Pfunc.evaluate(realn.set(n), bits, P.get(n));
       });
     }
 
-    return P;
+    return null;// P
   }
 
   @Override
