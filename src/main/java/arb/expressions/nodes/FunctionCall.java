@@ -22,7 +22,7 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class FunctionCall<D, R, F extends Function<D, R>> extends
+public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>> extends
                          UnaryOperation<D, R, F>
 {
   @Override

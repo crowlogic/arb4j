@@ -77,7 +77,7 @@ import arb.functions.real.RealFunction;
  * 
  * @author ©2023 Stephen Crowley
  */
-public class Expression<D, R, F extends Function<D, R>> implements
+public class Expression<D, R, F extends Function<? extends D, ? extends R>> implements
                        Typesettable
 {
   protected int                              position                  = -1;

@@ -38,7 +38,7 @@ import arb.functions.Function;
  * @param <D>
  * @param <F>
  */
-public class Context<D, R, F extends Function<D, R>>
+public class Context<D, R, F extends Function<? extends D, ? extends R>>
 {
   public Context()
   {

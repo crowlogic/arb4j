@@ -20,7 +20,7 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public abstract class Node<D, R, F extends Function<D, R>> implements
+public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> implements
                           Typesettable
 {
   public static boolean      verbose  = false;

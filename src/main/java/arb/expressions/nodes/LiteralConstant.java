@@ -22,7 +22,7 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class LiteralConstant<D, R, F extends Function<D, R>> extends
+public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>> extends
                             Node<D, R, F>
 {
   public final String           value;

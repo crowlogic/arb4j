@@ -14,7 +14,7 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class Add<D, R, F extends Function<D, R>> extends
+public class Add<D, R, F extends Function<? extends D, ? extends R>> extends
                 BinaryOperation<D, R, F>
 {
   

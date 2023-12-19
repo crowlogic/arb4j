@@ -14,7 +14,7 @@ import arb.functions.Function;
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
  */
-public class Multiply<D, R, F extends Function<D, R>> extends
+public class Multiply<D, R, F extends Function<? extends D, ? extends R>> extends
                      BinaryOperation<D, R, F>
 {
   public Multiply(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
