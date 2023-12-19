@@ -30,6 +30,10 @@ public class Variables<X> extends
         assert name != null : "variable names must not be null";
         put(name, field);
       }
+      else
+      {
+        throw new UnsupportedOperationException("TODO: this is not a Field..support mixing of types");
+      }
     }
   }
 
