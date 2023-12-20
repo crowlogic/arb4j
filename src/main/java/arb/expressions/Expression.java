@@ -555,8 +555,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
         out.flush();
       }
       position = rightArrowIndex;
-      // assert independentVariable == null : "TODO: specify independent variable " +
-      // independentVariable;
+
     }
   }
 
