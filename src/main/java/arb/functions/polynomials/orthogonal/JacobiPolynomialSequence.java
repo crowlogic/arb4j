@@ -107,8 +107,10 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final IntegerToRealPolynomialContext         intToPolyContext = new IntegerToRealPolynomialContext();
 
+  // TODO: make TupleToRealPolynomialFunction and replace
+  // IntegerToRealPolynomialFunction with it
   final public IntegerToRealPolynomialFunction Pfunc            = express("P",
-                                                                          "n➔(A(n) * z * P[n-1,z] - B(n) * P[n-2,z]) / 2",
+                                                                          "(n,z)➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
                                                                           intToPolyContext,
                                                                           verbose);
 
