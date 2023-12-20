@@ -78,7 +78,7 @@ import arb.exceptions.DivisionByZeroException;
   @Override
   public String toString()
   {
-    return String.format("RealPolynomial[length=%d, coeffs=%s]", getLength(), getCoeffs());
+    return String.format("RealPolynomial[length=%d, coeffs=%s, remainder=%s]", getLength(), getCoeffs(), remainder );
   }
   
   /**
