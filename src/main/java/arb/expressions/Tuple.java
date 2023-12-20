@@ -1,7 +1,6 @@
 package arb.expressions;
 
 import arb.Real;
-import arb.algebra.Ring;
 import arb.functions.Function;
 
 /**
@@ -30,30 +29,29 @@ import arb.functions.Function;
 public class Tuple
 {
 
-  public final Ring<?>[]                  values;
+  public final Object[]   values;
 
-  public final Class<? extends Ring<?>>[] types;
+  public final Class<?>[] types;
 
   @SafeVarargs
-  public Tuple(Class<? extends Ring<?>>... types)
+  public Tuple(Class<?>... types)
   {
     this.types  = types;
-    this.values = new Ring<?>[types.length];
+    this.values = new Object[types.length];
   }
 
-  @SuppressWarnings("unchecked")
-  public Tuple(Ring<?>... values)
+  public Tuple(Object... values)
   {
     this.values = values;
     this.types  = new Class[values.length];
     for (int i = 0; i < values.length; i++)
     {
-      types[i] = (Class<? extends Ring<?>>) values[i].getClass();
+      types[i] = values[i].getClass();
     }
   }
 
   @SuppressWarnings("unchecked")
-  public <O extends Ring<?>> O set(int index, O value)
+  public <O> O set(int index, O value)
   {
     if (value == null)
     {
@@ -72,7 +70,7 @@ public class Tuple
   }
 
   @SuppressWarnings("unchecked")
-  public <O extends Ring<?>> O get(int index)
+  public <O> O get(int index)
   {
     O o = (O) values[index];
     assert o == null || o.getClass() == types[index] : String.format("wrong type %s at index %s, it should be %s",
