@@ -1,5 +1,7 @@
 package arb.algebra;
 
+import arb.groups.CommutativeGroup;
+
 /**
  * <pre>
  * A ring is a set R equipped with two operations: addition (+) and 
