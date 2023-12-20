@@ -34,7 +34,8 @@ public class Tuple
 
   public final Class<? extends Ring<?>>[] types;
 
-  public Tuple(Class<? extends Ring<?>>[] types)
+  @SafeVarargs
+  public Tuple(Class<? extends Ring<?>>... types)
   {
     this.types  = types;
     this.values = new Ring<?>[types.length];
@@ -60,7 +61,8 @@ public class Tuple
     }
     else
     {
-      assert value.getClass() == types[index] : String.format("incompatible type %s specified for index=%d whose type is %s",
+      assert value.getClass() == types[index] : String.format("incompatible value %s of type %s specified for index=%d whose type is %s",
+                                                              value,
                                                               value.getClass(),
                                                               index,
                                                               values[index].getClass());
