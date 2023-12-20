@@ -25,33 +25,59 @@ import arb.functions.Function;
  * arb4j is made available under the terms of the Business Source License™ v1.1
  * ©2023 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively. 
+ * TeXmacs format of the same document respectively.
  */
 public class Tuple
 {
 
-  public final Ring<?>[] values;
+  public final Ring<?>[]                  values;
 
-  public Tuple(int dim)
+  public final Class<? extends Ring<?>>[] types;
+
+  public Tuple(Class<? extends Ring<?>>[] types)
   {
-    this.values = new Ring<?>[dim];
+    this.types  = types;
+    this.values = new Ring<?>[types.length];
   }
 
+  @SuppressWarnings("unchecked")
   public Tuple(Ring<?>... values)
   {
     this.values = values;
+    this.types  = new Class[values.length];
+    for (int i = 0; i < values.length; i++)
+    {
+      types[i] = (Class<? extends Ring<?>>) values[i].getClass();
+    }
   }
 
   @SuppressWarnings("unchecked")
   public <O extends Ring<?>> O set(int index, O value)
   {
-    return (O) (values[index] = value);
+    if (value == null)
+    {
+      return (O) (values[index] = null);
+    }
+    else
+    {
+      assert value.getClass() == types[index] : String.format("incompatible type %s specified for index=%d whose type is %s",
+                                                              value.getClass(),
+                                                              index,
+                                                              values[index].getClass());
+      O val = (O) (values[index] = value);
+      return val;
+    }
   }
 
   @SuppressWarnings("unchecked")
   public <O extends Ring<?>> O get(int index)
   {
-    return (O) values[index];
+    O o = (O) values[index];
+    assert o == null || o.getClass() == types[index] : String.format("wrong type %s at index %s, it should be %s",
+                                                                     o.getClass(),
+                                                                     index,
+                                                                     types[index]);
+    return o;
   }
 
 }
