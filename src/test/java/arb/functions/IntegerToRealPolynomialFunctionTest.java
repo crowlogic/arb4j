@@ -8,7 +8,7 @@ public class IntegerToRealPolynomialFunctionTest extends
                                                  TestCase
 {
 
-  public void testExpressStringIntegerToRealPolynomialContextBoolean()
+  public void testExpressIntegerToRealPolynomialContextBoolean()
   {
     IntegerToRealPolynomialFunction f = IntegerToRealPolynomialFunction.express("P", "2*n+x", null, false);
     Integer n = new Integer();

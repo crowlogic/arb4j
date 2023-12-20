@@ -20,13 +20,12 @@ import arb.functions.complex.ComplexFunction;
 import arb.utensils.Utensils;
 
 /**
- * The RealFunction interface, a part of the arb.functions.real package, is
- * designed foRealFunction working with {@link Real}-valued functions. It offers
- * functionality foRealFunction performing root-related operations, such as root
- * refinement, evaluating convergence factors, and locating roots within
- * intervals. The interface extends {@link Function}<Real, Real> and includes
- * default implementations foRealFunction various techniques, including Newton's
- * method.
+ * The {@link RealFunction} interface, a part of the arb.functions.real package,
+ * models {@link Real}-valued functions. It offers functionality for performing
+ * root-related operations, such as root refinement, evaluating convergence
+ * factors, and locating roots within intervals. The interface extends
+ * {@link Function}<Real, Real> and includes default implementations of various
+ * techniques, including Newton's method.
  * 
  * @author ©2023 Stephen Crowley
  */
@@ -36,12 +35,13 @@ public interface RealFunction extends
 
   /**
    * It would be better to declare a generic argument R to RealFunction so that
-   * {@link RealFunction} could implement {@link arb.algebra.Ring} with {@link RealFunction}
-   * as the argument but that would conflict with {@link RealPolynomial}s
-   * implementation of {@link arb.algebra.Ring} with {@link RealPolynomial} arguments.If
-   * {@link RealFunction} had a generic argument type R then the Magma could be
-   * defined over this rather than directly over {@link RealPolynomial} and
-   * {@link RealFunction} which it implements
+   * {@link RealFunction} could implement {@link arb.algebra.Ring} with
+   * {@link RealFunction} as the argument but that would conflict with
+   * {@link RealPolynomial}s implementation of {@link arb.algebra.Ring} with
+   * {@link RealPolynomial} arguments.If {@link RealFunction} had a generic
+   * argument type R then the Magma could be defined over this rather than
+   * directly over {@link RealPolynomial} and {@link RealFunction} which it
+   * implements
    * 
    * @return a newly constructed {@link Ring} referencing this
    */

@@ -1,13 +1,14 @@
-package arb.expressions;
+package arb;
 
-import arb.Real;
+import arb.domains.Domain;
 import arb.functions.Function;
+import arb.functions.MultivariateFunction;
 
 /**
- * A multivariate {@link Function} can be described as a function of a tuple. In
- * mathematics, a tuple can be thought of as an ordered list of elements. For a
- * multivariate function, the tuple would consist of the variables upon which
- * the function depends.
+ * A {@link MultivariateFunction} can be described as a function of a
+ * {@link Tuple}. A tuple is an ordered list of elements. For a multivariate
+ * function, the tuple would consist of the independent variables upon which the
+ * function operates.
  * 
  * For example, a bivariate function f that depends on two variables x and y can
  * be written as f(x,y). This function is essentially a function of the tuple
@@ -40,6 +41,16 @@ public class Tuple
     this.values = new Object[types.length];
   }
 
+  /**
+   * A tuple should be constructed by the expression compiler by passing
+   * references to the ordered set of variables that should be used as the input
+   * to a {@link MultivariateFunction} whose {@link Domain} is a {@link Tuple}.
+   * 
+   * {@link Tuple#types} takes the types from the values via
+   * {@link Object#getClass()}
+   * 
+   * @param values
+   */
   public Tuple(Object... values)
   {
     this.values = values;

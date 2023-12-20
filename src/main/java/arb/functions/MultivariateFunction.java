@@ -1,6 +1,6 @@
 package arb.functions;
 
-import arb.expressions.Tuple;
+import arb.Tuple;
 
 /**
  * See {@link Tuple}
