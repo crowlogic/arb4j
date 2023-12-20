@@ -1,6 +1,7 @@
 package arb.functions.polynomials.orthogonal;
 
 import static arb.functions.real.RealFunction.express;
+import static arb.functions.IntegerToRealPolynomialFunction.express;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,6 +13,8 @@ import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.expressions.RealContext;
 import arb.expressions.Variables;
+import arb.functions.IntegerToRealPolynomialContext;
+import arb.functions.IntegerToRealPolynomialFunction;
 import arb.functions.real.RealFunction;
 
 /**
@@ -57,45 +60,59 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                      OrthogonalBasis<Real, J>,
                                      AutoCloseable
 {
-  public int                             bits    = 128;
-  public Real                            α       = new Real().setName("α");
-  public Real                            β       = new Real().setName("β");
-  public Real                            n       = new Real().setName("n");
-  final public Real                      G       = new Real().setName("G");
+  public int                                   bits             = 128;
+  public Real                                  α                = new Real().setName("α");
+  public Real                                  β                = new Real().setName("β");
+  public Real                                  n                = new Real().setName("n");
+  final public Real                            G                = new Real().setName("G");
   /**
    * TODO Let P be a triangular matrix, then define an array of
    * {@link RealPolynomial}s of increasing degree that start at each of its rows
    * 
    **/
-  final public ArrayList<RealPolynomial> P;
+  final public ArrayList<RealPolynomial>       P;
 
-  final Variables<Real>                  vars    = new Variables<Real>(α,
-                                                                       β,
-                                                                       n,
-                                                                       G);
+  final Variables<Real>                        vars             = new Variables<Real>(α,
+                                                                                      β,
+                                                                                      n,
+                                                                                      G);
 
-  final RealContext                      context = new RealContext(vars);
+  final RealContext                            context          = new RealContext(vars);
 
-  final public static boolean            verbose = false;
+  final public static boolean                  verbose          = false;
 
-  final public RealFunction              C       = express("C", "n➔2*n+α+β", context, verbose);
+  final public RealFunction                    C                = express("C", "n➔2*n+α+β", context, verbose);
 
-  final public RealFunction              F       = express("F", "n➔C(n-1)*C(n)", context, verbose);
+  final public RealFunction                    F                = express("F", "n➔C(n-1)*C(n)", context, verbose);
 
-  final public RealFunction              A       = express("A", "x➔(F(n)*x + G)*(C(n)/2 - 1/2)", context, verbose);
+  final public RealFunction                    A                = express("A",
+                                                                          "x➔(F(n)*x + G)*(C(n)/2 - 1/2)",
+                                                                          context,
+                                                                          verbose);
 
-  final public RealFunction              E       = express("E", "n➔n*C(n/2)*C(n-1)", context, verbose);
+  final public RealFunction                    E                = express("E",
+                                                                          "n➔n*C(n/2)*C(n-1)",
+                                                                          context,
+                                                                          verbose);
 
-  final public RealFunction              B       = express("B", "n➔(n+α-1)*(n+β-1)*C(n)", context, verbose);
+  final public RealFunction                    B                = express("B",
+                                                                          "n➔(n+α-1)*(n+β-1)*C(n)",
+                                                                          context,
+                                                                          verbose);
 
-  final public RealFunction              p1      = express("p1", "x➔(C(1)*x-β+α)/2", context, verbose);
+  final public RealFunction                    p1               = express("p1",
+                                                                          "x➔(C(1)*x-β+α)/2",
+                                                                          context,
+                                                                          verbose);
 
-  final public RealFunction              Pfunc   = express("P",
-                                                           "z➔(A(n) * z * P[n-1,z] - B(n) * P[n-2,z]) / 2",
-                                                           context,
-                                                           verbose);
+  final IntegerToRealPolynomialContext         intToPolyContext = new IntegerToRealPolynomialContext();
 
-  public int                             N;
+  final public IntegerToRealPolynomialFunction Pfunc            = express("P",
+                                                                          "n➔(A(n) * z * P[n-1,z] - B(n) * P[n-2,z]) / 2",
+                                                                          intToPolyContext,
+                                                                          verbose);
+
+  public int                                   N;
 
   public JacobiPolynomialSequence(Real a, Real b, int N)
   {
