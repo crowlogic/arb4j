@@ -30,6 +30,10 @@ import jdk.jshell.Snippet.Status;
 import jdk.jshell.SnippetEvent;
 
 /**
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs format of the same document respectively.
  * 
  * The {@link PhilosopherStone} class in the arb4j project stands out as a
  * sophisticated tool for visually evaluating mathematical expressions,
@@ -86,12 +90,6 @@ import jdk.jshell.SnippetEvent;
  * </ol>
  * </p>
  * 
- * <pre>
- * 
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
  * 
  * @author ©2023 Stephen Crowley
  */
@@ -122,7 +120,7 @@ public class PhilosopherStone extends
     Scene scene = new Scene(scrollPane,
                             800,
                             600);
-    // scene.getStylesheets().add("dark-theme.css");
+     scene.getStylesheets().add("dark-theme.css");
 
     primaryStage.setTitle("The Philosopher's Stone");
     primaryStage.setScene(scene);
