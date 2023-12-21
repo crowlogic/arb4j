@@ -54,15 +54,15 @@ public class Reference
     return index == null ? name : String.format("%s[%s]", name, index);
   }
 
-  public Reference(String identifier)
+  public Reference(String name)
   {
-    this.name  = identifier;
+    this.name  = name == null ? null : name.trim();
     this.index = null;
   }
 
-  public Reference(String identifier, String index)
+  public Reference(String name, String index)
   {
-    this.name  = identifier;
+    this.name  = name == null ? null : name.trim();
     this.index = index;
   }
 
@@ -80,5 +80,10 @@ public class Reference
     {
       return name;
     }
+  }
+
+  public boolean isTuple()
+  {
+    return name.startsWith("(") && name.endsWith(")");
   }
 }

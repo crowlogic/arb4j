@@ -8,27 +8,33 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.Real;
 import arb.expressions.*;
 import arb.functions.Function;
 
 /**
  * Represents a variable node within an {@link Expression}. This class extends
  * the {@link Node} class to provide additional behavior for tracking variables
- * in a namespace and for handling independent variables within the expression.
+ * in a {@link Context} and for handling independent variables within the
+ * expression.
  *
  * <p>
  * A variable can either be the independent variable otherwise its value is
  * assumed to be defined in the {@link Context} associated with this
  * this{@link #expression} where its value is substituted and subsequently acts
- * as a mutable (constant) ironically. If you really want it to be a constant,
- * call the lock owns this {@code Variable} node.
+ * as a mutable variable reference but remains a constant if not modified. If
+ * one really wants the constant to be immutable then calling
+ * {@link Real#lock()} will do the trick, but for that to work the Real (scalar
+ * or vector) should have been constructed with the alignment option specified
+ * as true so that its address is aligned on a page boundary, where it must be
+ * for locking to occur. ( At least on x86-64 machines)
  * </p>
  *
  * <p>
  * This class is also responsible for generating bytecode for this variable node
  * through its {@link #generate(MethodVisitor)} method.
  * </p>
-
+ * 
  * 
  * @param <D> Type of domain field, must extend {@link arb.Field}.
  * @param <R> Type of range field, must extend {@link arb.Field}.
@@ -58,6 +64,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     this.expression = expression;
     this.reference  = variableReference;
     this.namespace  = expression.variables;
+    assert variableReference.isTuple() == false : "TODO: handle tuples: " + variableReference.name;
     if (namespace == null || namespace.get(variableReference.name) == null)
     {
       if ((expression.independentVariableNode == null

@@ -223,12 +223,14 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
-                                                                      Context<D, R, F> context,
-                                                                      Class<D> domainClass,
-                                                                      Class<R> rangeClass,
-                                                                      Class<F> functionClass,
-                                                                      boolean verbose)
+  static <D, R, F extends Function<? extends D, ? extends R>>
+         Expression<D, R, F>
+         compile(String expression,
+                 Context<D, R, F> context,
+                 Class<? extends D> domainClass,
+                 Class<? extends R> rangeClass,
+                 Class<? extends F> functionClass,
+                 boolean verbose)
   {
     String className = Parser.expressionToUniqueClassname(expression);
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose);
@@ -259,14 +261,14 @@ public class Compiler
    * @return compiled {@link Expression}
    * @throws ExpressionCompilerException
    */
-  public static <D, R, F extends Function<D, R>>
+  public static <D, R, F extends Function<? extends D, ? extends R>>
          Expression<D, R, F>
          compile(String className,
                  String expressionString,
                  Context<D, R, F> context,
-                 Class<D> domainClass,
-                 Class<R> rangeClass,
-                 Class<F> functionClass,
+                 Class<? extends D> domainClass,
+                 Class<? extends R> rangeClass,
+                 Class<? extends F> functionClass,
                  boolean verbose) throws ExpressionCompilerException
   {
     Expression<D, R, F> expression = new Expression<D, R, F>(className,

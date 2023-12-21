@@ -34,11 +34,14 @@ public class Tuple
 
   public final Class<?>[] types;
 
+  public final String[] names;
+  
   @SafeVarargs
   public Tuple(Class<?>... types)
   {
     this.types  = types;
     this.values = new Object[types.length];
+    this.names = new String[types.length];
   }
 
   /**
@@ -55,12 +58,23 @@ public class Tuple
   {
     this.values = values;
     this.types  = new Class[values.length];
+    this.names = new String[types.length];
     for (int i = 0; i < values.length; i++)
     {
       types[i] = values[i].getClass();
     }
   }
 
+  public String setName( int index, String name )
+  {
+    return names[index] = name;
+  }
+  
+  public String getName( int index )
+  {
+    return names[index];
+  }
+  
   @SuppressWarnings("unchecked")
   public <O> O set(int index, O value)
   {

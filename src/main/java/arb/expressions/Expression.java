@@ -1185,16 +1185,16 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
     return checkClassCast(methodVisitor, true);
   }
 
-  public static <D, R, F extends Function<D, R>> F instantiate(String expression,
+  public static <D, R, F extends Function<? extends D, ? extends R>> F instantiate(String expression,
                                                                Context<D, R, F> context,
-                                                               Class<D> domaiClass,
-                                                               Class<R> rangeClass,
-                                                               Class<F> functionClass,
+                                                               Class<? extends D> domainClass,
+                                                               Class<? extends R> rangeClass,
+                                                               Class<? extends F> functionClass,
                                                                boolean verbose)
   {
     Expression<D, R, F> compiledExpression = compile(expression,
                                                      context,
-                                                     domaiClass,
+                                                     domainClass,
                                                      rangeClass,
                                                      functionClass,
                                                      verbose);
