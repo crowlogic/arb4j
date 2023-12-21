@@ -50,7 +50,7 @@ public class Reference
    * 
    * @return true if this{@link #name} starts with ( and ends with )
    */
-  public boolean isTuple()
+  public boolean isMultivariate()
   {
     return name.startsWith("(") && name.endsWith(")");
   }
@@ -59,26 +59,24 @@ public class Reference
   public boolean equals(Object obj)
   {
     if (this == obj)
+    {
       return true;
-    if (obj == null)
+    }
+    if (obj == null || getClass() != obj.getClass())
+    {
       return false;
-    if (getClass() != obj.getClass())
-      return false;
+    }
     Reference other = (Reference) obj;
-    if (index == null)
+    if (index != null && !index.equals(other.index))
     {
-      if (other.index != null)
-        return false;
-    }
-    else if (!index.equals(other.index))
       return false;
-    if (name == null)
+    }
+
+    if (!name.equals(other.name))
     {
-      if (other.name != null)
-        return false;
-    }
-    else if (!name.equals(other.name))
       return false;
+    }
+
     return true;
   }
 }

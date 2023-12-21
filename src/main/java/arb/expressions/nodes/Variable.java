@@ -65,7 +65,9 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     this.expression = expression;
     this.reference  = reference;
     this.variables  = expression.variables;
-    assert reference.isTuple() == false : "TODO: handle tuples: " + reference.name;
+    boolean isMultivariate = reference.isMultivariate();
+    
+    assert isMultivariate == false : "TODO: handle tuples: " + reference.name;
     if (variables == null || variables.get(reference.name) == null)
     {
       if ((expression.independentVariableNode == null
