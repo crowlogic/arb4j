@@ -110,7 +110,7 @@ public class PhilosopherStone extends
                             600);
     // scene.getStylesheets().add("dark-theme.css");
 
-    primaryStage.setTitle("arb4j Interactive REPL Console with JShell");
+    primaryStage.setTitle("The Philosopher's Stone");
     primaryStage.setScene(scene);
     primaryStage.show();
   }
