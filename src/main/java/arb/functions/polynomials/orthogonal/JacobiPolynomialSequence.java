@@ -112,7 +112,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   final public IntegerToRealPolynomialFunction Pfunc            = express("P",
                                                                           "(n,z)➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
                                                                           intToPolyContext,
-                                                                          verbose);
+                                                                          true);
 
   public int                                   N;
 

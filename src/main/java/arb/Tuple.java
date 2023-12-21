@@ -1,6 +1,11 @@
 package arb;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
 import arb.domains.Domain;
+import arb.expressions.UndefinedReferenceException;
 import arb.functions.Function;
 import arb.functions.MultivariateFunction;
 
@@ -19,9 +24,6 @@ import arb.functions.MultivariateFunction;
  * In this notation, f maps tuples of {@link Real} numbers (points in R^n) to
  * {@link Real} numbers(points in R^1).
  * 
- * TODO: https://github.com/crowlogic/arb4j/issues/284: expression compiler:
- * multivariate function support via Tuple class
- * 
  * arb4j is made available under the terms of the Business Source License™ v1.1
  * ©2023 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
@@ -30,18 +32,24 @@ import arb.functions.MultivariateFunction;
 public class Tuple
 {
 
+  @Override
+  public String toString()
+  {
+    return "(" + Arrays.asList(names).stream().collect(Collectors.joining(",")) + ")";
+  }
+
   public final Object[]   values;
 
   public final Class<?>[] types;
 
-  public final String[] names;
-  
+  public final String[]   names;
+
   @SafeVarargs
   public Tuple(Class<?>... types)
   {
     this.types  = types;
     this.values = new Object[types.length];
-    this.names = new String[types.length];
+    this.names  = new String[types.length];
   }
 
   /**
@@ -58,23 +66,38 @@ public class Tuple
   {
     this.values = values;
     this.types  = new Class[values.length];
-    this.names = new String[types.length];
+    this.names  = new String[types.length];
     for (int i = 0; i < values.length; i++)
     {
       types[i] = values[i].getClass();
     }
   }
 
-  public String setName( int index, String name )
+  public String setName(int index, String name)
   {
-    return names[index] = name;
+    names[index] = name;
+    return name;
   }
-  
-  public String getName( int index )
+
+  public int getIndex(String name)
+  {
+    for (int i = 0; i < names.length; i++)
+    {
+      if (name.equals(names[i]))
+      {
+        return i;
+      }
+    }
+    throw new UndefinedReferenceException(String.format("No variable named %s exists in tuple %s",
+                                                        name,
+                                                        toString()));
+  }
+
+  public String getName(int index)
   {
     return names[index];
   }
-  
+
   @SuppressWarnings("unchecked")
   public <O> O set(int index, O value)
   {

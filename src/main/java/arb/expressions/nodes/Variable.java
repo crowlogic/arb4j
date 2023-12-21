@@ -66,7 +66,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     this.reference  = reference;
     this.variables  = expression.variables;
     boolean isMultivariate = reference.isMultivariate();
-    
+
     assert isMultivariate == false : "TODO: handle tuples: " + reference.name;
     if (variables == null || variables.get(reference.name) == null)
     {
@@ -84,10 +84,10 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
       }
       else
       {
-        throw new NoSuchFieldError(format("Undefined reference to variable '%s' in %s, independent variable is %s",
-                                          reference,
-                                          expression,
-                                          expression.independentVariableNode));
+        throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
+                                                     reference,
+                                                     expression,
+                                                     expression.independentVariableNode));
       }
     }
     if (expression.independentVariableNode != null
