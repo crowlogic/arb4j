@@ -30,7 +30,20 @@ import jdk.jshell.Snippet.Status;
 import jdk.jshell.SnippetEvent;
 
 /**
- * The Philosopher's Stone and Alchemy.
+ * 
+ * The {@link PhilosopherStone} class in the arb4j project stands out as a
+ * sophisticated tool for visually evaluating mathematical expressions,
+ * effectively leveraging the strengths of Java and JShell. It extends beyond
+ * standard text-based expression evaluation, utilizing Java's capabilities to
+ * render complex mathematical formulas, charts, and other expressions where
+ * plain text falls short. This class embodies a seamless integration of Java's
+ * computational power with advanced visual rendering, making it an invaluable
+ * resource for those seeking a more dynamic and illustrative approach to
+ * understanding and interacting with mathematical concepts.
+ * 
+ * <h3>Meaning</h3>
+ * 
+ * <h4>The Philosopher's Stone and Alchemy</h4>
  * <p>
  * The philosopher's stone, rooted in the ancient practice of alchemy, is a
  * legendary substance allegedly capable of turning base metals such as mercury
@@ -72,14 +85,15 @@ import jdk.jshell.SnippetEvent;
  * <li>The Philosopher's Stone in myth and literature.</li>
  * </ol>
  * </p>
- *
+ * 
  * <pre>
- * Copyright ©2023 Stephen Crowley
  * 
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
  * </pre>
+ * 
+ * @author ©2023 Stephen Crowley
  */
 public class PhilosopherStone extends
                               Application
