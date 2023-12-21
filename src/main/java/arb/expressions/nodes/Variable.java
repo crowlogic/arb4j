@@ -9,6 +9,7 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Real;
+import arb.Tuple;
 import arb.expressions.*;
 import arb.functions.Function;
 
@@ -53,23 +54,23 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
                      Node<D, R, F>
 {
   public final Reference     reference;
-  public final Variables<R>  namespace;
+  public final Variables<R>  variables;
   public Expression<D, R, F> expression;
   public boolean             isIndependent = false;
 
-  public Variable(Expression<D, R, F> expression, Reference variableReference, int depth)
+  public Variable(Expression<D, R, F> expression, Reference reference, int depth)
   {
     super(expression,
           depth + 1);
     this.expression = expression;
-    this.reference  = variableReference;
-    this.namespace  = expression.variables;
-    assert variableReference.isTuple() == false : "TODO: handle tuples: " + variableReference.name;
-    if (namespace == null || namespace.get(variableReference.name) == null)
+    this.reference  = reference;
+    this.variables  = expression.variables;
+    assert reference.isTuple() == false : "TODO: handle tuples: " + reference.name;
+    if (variables == null || variables.get(reference.name) == null)
     {
       if ((expression.independentVariableNode == null
-                    || expression.independentVariableNode.reference.equals(variableReference))
-                    && !LiteralConstant.isConstant(variableReference.name))
+                    || expression.independentVariableNode.reference.equals(reference))
+                    && !LiteralConstant.isConstant(reference.name))
       {
         expression.independentVariableNode = this;
         isIndependent                      = true;
@@ -82,19 +83,19 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
       else
       {
         throw new NoSuchFieldError(format("Undefined reference to variable '%s' in %s, independent variable is %s",
-                                          variableReference,
+                                          reference,
                                           expression,
                                           expression.independentVariableNode));
       }
     }
     if (expression.independentVariableNode != null
-                  && expression.independentVariableNode.reference.name.equals(variableReference.name))
+                  && expression.independentVariableNode.reference.name.equals(reference.name))
     {
       isIndependent = true;
     }
     if (!isIndependent)
     {
-      expression.referencedVariables.put(variableReference.name, this);
+      expression.referencedVariables.put(reference.name, this);
     }
   }
 
@@ -112,6 +113,13 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
                          isIndependent ? format("INPUT(%s)", reference) : reference);
   }
 
+  /**
+   * TODO: modify this checking of this{@link #isIndependent} to see if its part
+   * of a {@link Tuple} and if so generate the reference to the corresponding
+   * element of the input tuple rather than generating a reference to the tuple
+   * itself
+   * 
+   */
   @Override
   public MethodVisitor generate(MethodVisitor mv)
   {
@@ -133,20 +141,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
 
     if (reference.index != null)
     {
-      if (Parser.isDigit(reference.index.charAt(0)))
-      {
-        mv.visitLdcInsn(Integer.parseInt(reference.index) - 1);
-      }
-      else
-      {
-        expression.loadIndexField(loadThisOntoStack(mv), reference.index);
-      }
-
-      mv.visitMethodInsn(INVOKEVIRTUAL,
-                         expression.domainClassInternalName,
-                         "get",
-                         "(I)" + expression.domainClassDescriptor,
-                         false);
+      generateIndexAccess(mv);
     }
 
     if (isResult)
@@ -155,6 +150,24 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     }
 
     return mv;
+  }
+
+  public void generateIndexAccess(MethodVisitor mv)
+  {
+    if (Parser.isDigit(reference.index.charAt(0)))
+    {
+      mv.visitLdcInsn(Integer.parseInt(reference.index) - 1);
+    }
+    else
+    {
+      expression.loadIndexField(loadThisOntoStack(mv), reference.index);
+    }
+
+    mv.visitMethodInsn(INVOKEVIRTUAL,
+                       expression.domainClassInternalName,
+                       "get",
+                       "(I)" + expression.domainClassDescriptor,
+                       false);
   }
 
   @Override
