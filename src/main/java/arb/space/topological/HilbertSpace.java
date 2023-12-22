@@ -31,32 +31,25 @@ public interface HilbertSpace<F extends Field<F>, VE, O extends OrthogonalBasis<
    * @return an OrthonormalBasis instance representing an orthonormal basis for
    *         this Hilbert space
    */
-  OrthogonalBasis<F, VE> basis();
+  O basis();
 
   /**
-   * Given a vector described in terms of the basis provided, this method computes
-   * and returns the representation of this vector in the default basis of this
-   * space (as would be returned by {@link #getBasis()}).
-   *
-   * @param vectorInBasis the vector, described in terms of the provided basis
-   * @param basis         the basis with respect to which the provided vector is
-   *                      currently defined
-   * @return the representation of the vector in the default basis of this Hilbert
-   *         space, returned as an instance of the field F
+   * Apply the appropriate similarity transform so that a vector expressed in
+   * terms of a given basis is transformed into a vector expressed in terms of
+   * this{@link #basis()}
+   * 
+   * TODO: there should be a default implementation of this, and, should the
+   * argument be a {@link HilbertSpace} (which by the class design contains the
+   * this{@link #basis()} function to get the {@link OrthogonalBasis} associated
+   * to the {@link HilbertSpace} or should {@link HilbertSpace} also implement the
+   * {@link OrthogonalBasis} interface rather than having a method returning the
+   * associated basis...?
+   * 
+   * @param vectorInAnotherBasis
+   * @param anotherBasis
+   * @return a vector transformed such that it is expressed in
+   *         this{@link #basis()}
    */
-  F changeTo(F vectorInBasis, O basis);
+  F project(F vectorInAnotherBasis, O anotherBasis);
 
-  /**
-   * Given a vector described in terms of the default basis of this space (as
-   * would be returned by {@link #getBasis()}), this method computes and returns
-   * the representation of this vector in the provided basis.
-   *
-   * @param vectorInDefaultBasis the vector, described in terms of the default
-   *                             basis
-   * @param basis                the basis to which the vector representation
-   *                             should be changed
-   * @return the representation of the vector in the provided basis, returned as
-   *         an instance of the field F
-   */
-  F changeFrom(F vectorInDefaultBasis, O basis);
 }
