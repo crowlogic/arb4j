@@ -8,6 +8,12 @@ package arb;
 public class Quaternion implements
                         AutoCloseable
 {
+  @Override
+  public String toString()
+  {
+    return String.format("Quaternion[left=%s, right=%s]", left, right);
+  }
+
   public final Complex left;  // Left component of the quaternion
   public final Complex right; // Right component of the quaternion
 
@@ -46,10 +52,11 @@ public class Quaternion implements
    */
   public Quaternion mul(Quaternion other, int bits, Quaternion result)
   {
-    try ( Complex tmp = new Complex(); Complex otherRightConjugate = other.right.conj(new Complex()))
+    try ( Complex a = new Complex(); Complex otherRightConjugate = other.right.conj(new Complex());
+          Complex otherLeftConjugate = other.left.conj(new Complex()))
     {
-      left.mul(other.left, bits, result.left).sub(right.mul(otherRightConjugate, bits, tmp), bits);
-      left.mul(other.right, bits, result.right).add(otherRightConjugate.mul(left, bits, tmp), bits);
+      left.mul(other.left, bits, result.left).sub(right.mul(otherRightConjugate, bits, a), bits);
+      left.mul(other.right, bits, result.right).add(right.mul(otherLeftConjugate, bits, a), bits);
       return result;
     }
   }
