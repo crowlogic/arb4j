@@ -13,6 +13,8 @@ import junit.framework.TestCase;
 public class QuaternionTest extends
                             TestCase
 {
+  final public static int bits = 128;
+
   public void testMultiply()
   {
     Complex    a = new Complex(one,
@@ -27,7 +29,7 @@ public class QuaternionTest extends
                                sqrt2);
     Quaternion B = new Quaternion(c,
                                   d);
-    Quaternion C = A.mul(B, 512, new Quaternion());
+    Quaternion C = A.mul(B, bits, new Quaternion());
 
     System.out.format("A=%s\nB=%s\nC=A*B=%s\n", A, B, C);
     assertEquals(-9.8694238154832143, C.left.real.doubleValue());
