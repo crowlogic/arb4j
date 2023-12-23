@@ -346,7 +346,7 @@ public class Compiler
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
          ClassVisitor
-         declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions<D, R, F> functions)
+         declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions<F> functions)
   {
     functions.forEach((name, function) ->
     {

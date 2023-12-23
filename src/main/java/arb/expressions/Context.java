@@ -36,10 +36,10 @@ public class Context<D, R, F extends Function<? extends D, ? extends R>>
   public Context()
   {
     this.variables = new Variables<>();
-    this.functions = new Functions<D, R, F>();
+    this.functions = new Functions<F>();
   }
 
-  public Context(Variables<R> variables, Functions<D, R, F> functions)
+  public Context(Variables<R> variables, Functions<F> functions)
   {
     this.variables = variables;
     this.functions = functions;
@@ -53,7 +53,7 @@ public class Context<D, R, F extends Function<? extends D, ? extends R>>
 
   public Variables<R>       variables;
 
-  public Functions<D, R, F> functions;
+  public Functions<F> functions;
 
   /**
    * Adds a given variable to {@link #variables}

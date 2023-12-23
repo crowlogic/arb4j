@@ -7,7 +7,7 @@ import arb.functions.Function;
 /**
 
  */
-public class Functions<D, R, F extends Function<? extends D, ? extends R>> extends
+public class Functions<F extends Function<?,?>> extends
                       HashMap<String, F>
 {
 
