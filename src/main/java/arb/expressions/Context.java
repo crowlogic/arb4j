@@ -57,6 +57,12 @@ public class Context
     this.functions = new Functions();
   }
 
+  public Context(Functions funcs)
+  {
+    this.variables = new Variables();
+    this.functions = funcs;
+  }
+  
   public Variables variables;
 
   public Functions functions;

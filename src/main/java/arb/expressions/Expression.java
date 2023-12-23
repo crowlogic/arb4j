@@ -64,16 +64,14 @@ import arb.functions.real.RealFunction;
  * bytecode generation.
  * </p>
  *
- * <pre>
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs format of the same document respectively.
  * 
- * @param <D> the domain type of the expression, extending <code>Field</code>
- * @param <R> the range type of the expression, extending <code>Field</code>
- * @param <F> the function type of the expression, extending
- *            <code>Function</code>
+ * @param <D> domain type
+ * @param <R> range type
+ * @param <F> the function type of the expression, extending {@link Function}
  * 
  * @author ©2023 Stephen Crowley
  */
