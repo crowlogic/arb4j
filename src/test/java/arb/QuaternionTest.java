@@ -25,6 +25,5 @@ public class QuaternionTest extends
     assertEquals(-17.496703857594721, C.left.imag.doubleValue());
     assertEquals(7.0517214629309924, C.right.real.doubleValue());
     assertEquals(32.545490242672915, C.right.imag.doubleValue());
-
   }
 }
