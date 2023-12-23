@@ -54,7 +54,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
                      Node<D, R, F>
 {
   public final Reference     reference;
-  public final Variables<R>  variables;
+  public final Variables     variables;
   public Expression<D, R, F> expression;
   public boolean             isIndependent = false;
 

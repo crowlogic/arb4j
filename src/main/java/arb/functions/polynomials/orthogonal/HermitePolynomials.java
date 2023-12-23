@@ -84,7 +84,7 @@ public class HermitePolynomials implements
     };
   }
 
-  Variables<Real> context        = new Variables<Real>();
+  Variables context        = new Variables();
 
   RealFunction    standardNormal = (t, order, bits, result) -> t.pow(2, bits, result).neg().exp(bits);
 

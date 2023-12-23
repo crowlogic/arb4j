@@ -16,7 +16,8 @@ public interface Field<X extends Field<X>> extends
                       Closeable,
                       Comparable<X>,
                       Iterable<X>,
-                      Ring<X>
+                      Ring<X>,
+                      HasName
 {
 
   public default X add(X x)

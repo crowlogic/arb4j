@@ -35,23 +35,23 @@ public class Context<D, R, F extends Function<? extends D, ? extends R>>
 {
   public Context()
   {
-    this.variables = new Variables<>();
+    this.variables = new Variables();
     this.functions = new Functions<F>();
   }
 
-  public Context(Variables<R> variables, Functions<F> functions)
+  public Context(Variables variables, Functions<F> functions)
   {
     this.variables = variables;
     this.functions = functions;
   }
 
-  public Context(Variables<R> vars)
+  public Context(Variables vars)
   {
     this.variables = vars;
     this.functions = new Functions<>();
   }
 
-  public Variables<R>       variables;
+  public Variables       variables;
 
   public Functions<F> functions;
 

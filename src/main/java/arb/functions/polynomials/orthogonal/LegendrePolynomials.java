@@ -90,7 +90,7 @@ public class LegendrePolynomials implements
     };
   }
 
-  Variables<Real> context       = new Variables<Real>();
+  Variables context       = new Variables();
 
   RealFunction    constantUnity = (t, order, bits, result) -> result.one();
 

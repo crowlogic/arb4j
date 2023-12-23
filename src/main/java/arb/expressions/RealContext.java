@@ -16,7 +16,7 @@ public class RealContext extends
                          Context<Real, Real, RealFunction>
 {
 
-  public RealContext(Variables<Real> vars)
+  public RealContext(Variables vars)
   {
     super(vars);
   }

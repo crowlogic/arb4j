@@ -19,7 +19,7 @@ public class ZStructureFunction implements
     return getClass().getSimpleName() + "[" + EXPRESSION + "]";
   }
 
-  Variables<Real> vars = new Variables<>();
+  Variables vars = new Variables();
 
   RealContext context = new RealContext(vars);
   

@@ -2,44 +2,43 @@ package arb.expressions;
 
 import java.util.HashMap;
 
-import arb.Field;
+import arb.HasName;
 
 /**
- * <pre>
- * Copyright ©2023 Stephen Crowley
- * 
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of the arb4j project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs formatted versions of the same document respectively.
  */
-public class Variables<X> extends
-                      HashMap<String, X>
-{
+public class Variables
 
-  private static final long serialVersionUID = 1L;
+{
+  HashMap<String, Object> map = new HashMap<>();
 
   @SafeVarargs
-  public Variables(X... fields)
+  public <A extends HasName> Variables(A... variables)
   {
-    for (X field : fields)
+    for (A variable : variables)
     {
-      if (field instanceof Field)
-      {
-        String name = ((Field<?>) field).getName();
-        assert name != null : "variable names must not be null";
-        put(name, field);
-      }
-      else
-      {
-        throw new UnsupportedOperationException("TODO: this is not a Field..support mixing of types");
-      }
+      map.put(variable.getName(), variable);
     }
   }
 
-  public X register(String name, X field)
+  public Object register(String name, Object field)
   {
-    return put(name, field);
+    return map.put(name, field);
+  }
+
+  @SuppressWarnings("unchecked")
+  public <R> R get(String name)
+  {
+    return (R) map.get(name);
+  }
+
+  @SuppressWarnings("unchecked")
+  public <R> R put(String name, R variable)
+  {
+    return (R) map.put(name, variable);
   }
 
 }

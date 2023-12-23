@@ -1,7 +1,7 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.functions.real.RealFunction.express;
 import static arb.functions.IntegerToRealPolynomialFunction.express;
+import static arb.functions.real.RealFunction.express;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -72,10 +72,10 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
    **/
   final public ArrayList<RealPolynomial>       P;
 
-  final Variables<Real>                        vars             = new Variables<Real>(α,
-                                                                                      β,
-                                                                                      n,
-                                                                                      G);
+  final Variables                              vars             = new Variables(α,
+                                                                                β,
+                                                                                n,
+                                                                                G);
 
   final RealContext                            context          = new RealContext(vars);
 

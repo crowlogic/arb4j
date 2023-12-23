@@ -29,7 +29,7 @@ public abstract class Node<D, R, F extends Function<? extends D, ? extends R>> i
     verbose         = expression.verbose;
   }
 
-  final Variables<R> namespace;
+  final Variables namespace;
 
   public abstract MethodVisitor generate(MethodVisitor mv);
 

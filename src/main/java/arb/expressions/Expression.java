@@ -86,7 +86,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
 
   protected final String                     expression;
 
-  public Variables<R>                        variables;
+  public Variables                           variables;
 
   public String                              className;
 
@@ -1186,11 +1186,11 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>> F instantiate(String expression,
-                                                               Context<D, R, F> context,
-                                                               Class<? extends D> domainClass,
-                                                               Class<? extends R> rangeClass,
-                                                               Class<? extends F> functionClass,
-                                                               boolean verbose)
+                                                                                   Context<D, R, F> context,
+                                                                                   Class<? extends D> domainClass,
+                                                                                   Class<? extends R> rangeClass,
+                                                                                   Class<? extends F> functionClass,
+                                                                                   boolean verbose)
   {
     Expression<D, R, F> compiledExpression = compile(expression,
                                                      context,

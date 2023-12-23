@@ -8,15 +8,15 @@ import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 public class RealFunctionExpressionCompilerTest extends
-                            TestCase
+                                                TestCase
 {
 
-  RealContext     context   = new RealContext();
+  RealContext  context   = new RealContext();
 
-  Variables<Real> variables = context.variables;
+  Variables    variables = context.variables;
 
-  private Real    v;
-  private Real    v3;
+  private Real v;
+  private Real v3;
 
   @Override
   protected void setUp() throws Exception
