@@ -3,13 +3,10 @@ package arb.expressions;
 import arb.functions.real.BesselFunctionOfTheFirstKind;
 
 /**
- * <pre>
- * Copyright ©2023 Stephen Crowley
- * 
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs format of the same document respectively.
  */
 public class Parser
 {
@@ -98,7 +95,8 @@ public class Parser
 
   static String expressionToUniqueClassname(String expression)
   {
-    return expression.replace(" ", "")
+    return expression.replace(",", "")
+                     .replace(" ", "")
                      .replace("+", "Plus")
                      .replace("-", "Minus")
                      .replace("*", "Times")

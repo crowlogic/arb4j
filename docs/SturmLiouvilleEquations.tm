@@ -10,12 +10,13 @@
   Given <math|p<around|(|x|)>\<gtr\>0>, <math|p<around|(|x|)>> continuous on
   <math|<around|[|a,b|]>>, and <math|w<around|(|x|)>\<gtr\>0>,
   <math|w<around|(|x|)>> continuous on <math|<around|[|a,b|]>>, consider the
-  differential equation:
+  differential equation
 
-  <\Shaded>
-    \ <Highlighting|| <NormalTok|\\frac{d}{dx}\\left(p(x)
-    \\frac{dy}{dx}\\right) - q(x)y + \\lambda w(x) y = 0>>
-  </Shaded>
+  <\equation>
+    <\equation*>
+      <frac|d|d*x><around*|(|p<around|(|x|)><frac|d*|d*x>y<around*|(|x|)>|)>+<around|(|\<lambda\>*w<around|(|x|)>-q<around|(|x|)>|)>*y<around|(|x|)>=0
+    </equation*>
+  </equation>
 
   Subject to boundary conditions of the form:
 

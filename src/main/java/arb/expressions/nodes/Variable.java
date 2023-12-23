@@ -36,9 +36,13 @@ import arb.functions.Function;
  * through its {@link #generate(MethodVisitor)} method.
  * </p>
  * 
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs formatted versions of the same document respectively.
  * 
- * @param <D> Type of domain field, must extend {@link arb.Field}.
- * @param <R> Type of range field, must extend {@link arb.Field}.
+ * @param <D> Type of domain field
+ * @param <R> Type of range field
  * @param <F> Type of function that maps domain to range, must implement
  *            {@link Function}.
  *
@@ -46,9 +50,8 @@ import arb.functions.Function;
  * @see Expression
  * @see Variables
  * 
+ *
  * @author ©2023 Stephen Crowley
- * 
- * 
  */
 public class Variable<D, R, F extends Function<? extends D, ? extends R>> extends
                      Node<D, R, F>

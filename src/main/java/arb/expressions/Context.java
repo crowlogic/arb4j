@@ -3,35 +3,39 @@ package arb.expressions;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
-import java.util.HashMap;
-
 import arb.Real;
+import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
  * {@link Context} for the {@link Expression} {@link Compiler} to use for the
- * resolution of {@link Variable} and {@link Function} references (beyond those
- * which are member-functions of the {@link Real} type)
+ * resolution of {@link Variable} and {@link Function} references (in addition
+ * to those which are member-functions of the {@link Real} type)
  * 
  * <p>
  * This class functions similarly to a closure in functional programming. It
- * encapsulates an environment of variable bindings and functions, providing a
+ * encapsulates an environment of variable, bindings and functions, providing a
  * context in which expressions are evaluated. Unlike a traditional closure, it
  * does not contain the expression itself but rather the environment for such
- * expressions. This context is essential for managing the scope and lifetime of
- * variables and functions during expression evaluation.
+ * expressions and therefore fulfills its essential function by facilitating the
+ * organization and reification of mathematical expressions into cohesive
+ * functional units via {@link Compiler} class, {@link Expression} class, and
+ * the {@link Node} class along with all of its extensions.
  * </p>
  * 
  * <p>
  * In the context of a reduction system, this class can be thought of as
  * managing the 'environment' part of a closure, where the variables and
- * functions are bound and maintained.
+ * functions are localized and maintained.
  * </p>
  * 
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs format of the same document respectively.
+ * 
  * @author ©2023 Stephen Crowley
- * @param <D>
- * @param <F>
  */
 public class Context
 {
