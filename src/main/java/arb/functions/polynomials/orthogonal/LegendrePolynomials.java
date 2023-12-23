@@ -38,11 +38,10 @@ import arb.utensils.ShellFunctions;
  *           {@code RealFunction}, {@code Real}, and other classes which are not
  *           defined here. Ensure to have appropriate definitions for them.
  * 
- * @author [Your Name]
- * @version 1.0
- * @see LegendrePolynomial
- * @see RealFunction
- * @since 1.0
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of the arb4j project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs formatted versions of the same document respectively.
  */
 public class LegendrePolynomials implements
                                  OrthogonalBasis<Real, LegendrePolynomial>

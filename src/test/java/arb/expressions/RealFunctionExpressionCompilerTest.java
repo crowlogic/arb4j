@@ -1,9 +1,12 @@
 package arb.expressions;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.one;
+import static arb.RealConstants.zero;
 import static arb.functions.real.RealFunction.express;
 
-import arb.*;
+import arb.Real;
+import arb.RealConstants;
+import arb.RoundingMode;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 

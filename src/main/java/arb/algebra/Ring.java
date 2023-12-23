@@ -1,6 +1,6 @@
 package arb.algebra;
 
-import arb.groups.CommutativeGroup;
+import arb.HasName;
 
 /**
  * <pre>
@@ -28,10 +28,18 @@ import arb.groups.CommutativeGroup;
  * @param <X> the set over which this {@link Ring} is defined.
  */
 public interface Ring<X> extends
-                     Magma<X>
+                     Magma<X>,
+                     HasName
 {
+
+  @Override
+  default String getName()
+  {
+    assert false : "this should be over-ridden";
+    return "null";
+  }
 
   X add(X addend, int bits, X result);
 
-  X sub(X subtrahend, int bits, X result );
+  X sub(X subtrahend, int bits, X result);
 }

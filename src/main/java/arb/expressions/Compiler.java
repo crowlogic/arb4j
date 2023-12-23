@@ -226,7 +226,7 @@ public class Compiler
   static <D, R, F extends Function<? extends D, ? extends R>>
          Expression<D, R, F>
          compile(String expression,
-                 Context<D, R, F> context,
+                 Context context,
                  Class<? extends D> domainClass,
                  Class<? extends R> rangeClass,
                  Class<? extends F> functionClass,
@@ -265,7 +265,7 @@ public class Compiler
          Expression<D, R, F>
          compile(String className,
                  String expressionString,
-                 Context<D, R, F> context,
+                 Context context,
                  Class<? extends D> domainClass,
                  Class<? extends R> rangeClass,
                  Class<? extends F> functionClass,
@@ -295,8 +295,7 @@ public class Compiler
     return compile(className, expression, context, false);
   }
 
-  public static <D, R, F extends Function<D, R>>
-         Expression<Real, Real, RealFunction>
+  public static Expression<Real, Real, RealFunction>
          compile(String className, String expression, RealContext context, boolean verbose)
   {
     return compile(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
@@ -346,9 +345,9 @@ public class Compiler
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
          ClassVisitor
-         declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions<F> functions)
+         declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions functions)
   {
-    functions.forEach((name, function) ->
+    functions.map.forEach((name, function) ->
     {
       String descriptor = function.getClass().descriptorString();
 
@@ -373,9 +372,9 @@ public class Compiler
    * @return a {@link Class} ready to be instantiated and evaluated
    */
   @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         Class<F>
-         defineFunctionClass(String className, byte[] bytecodes, Context<D, R, F> context)
+  public static <D, R, F extends Function<? extends D, ? extends R>> Class<F> defineFunctionClass(String className,
+                                                                                                  byte[] bytecodes,
+                                                                                                  Context context)
   {
 
     try
@@ -454,7 +453,7 @@ public class Compiler
          initializeRegisteredFunction(Expression<D, R, F> expression,
                                       MethodVisitor methodVisitor,
                                       String functionName,
-                                      F function)
+                                      Function<?, ?> function)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(ACONST_NULL);
@@ -469,7 +468,7 @@ public class Compiler
          MethodVisitor
          initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
-    expression.context.functions.forEach((name, function) ->
+    expression.context.functions.map.forEach((name, function) ->
     {
       initializeRegisteredFunction(expression, methodVisitor, name, function);
     });

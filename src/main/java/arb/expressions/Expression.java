@@ -139,7 +139,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
 
   public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
 
-  public Context<D, R, F>                    context;
+  public Context                             context;
 
   public static final String                 evaluateMethodDesc        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
@@ -150,7 +150,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
                     Class<? extends R> rangeClass,
                     Class<? extends F> functionClass,
                     String expression,
-                    Context<D, R, F> context)
+                    Context context)
   {
     this.rangeClassDescriptor      = Type.getDescriptor(rangeClass);
     this.domainClassDescriptor     = Type.getDescriptor(domainClass);
@@ -573,7 +573,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
   {
     if (context != null)
     {
-      context.functions.entrySet().forEach(entry ->
+      context.functions.map.entrySet().forEach(entry ->
       {
         try
         {
@@ -1186,7 +1186,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>> F instantiate(String expression,
-                                                                                   Context<D, R, F> context,
+                                                                                   Context context,
                                                                                    Class<? extends D> domainClass,
                                                                                    Class<? extends R> rangeClass,
                                                                                    Class<? extends F> functionClass,
@@ -1204,7 +1204,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
 
   public static <D, R, F extends Function<D, R>> F instantiate(String className,
                                                                String expression,
-                                                               Context<D, R, F> context,
+                                                               Context context,
                                                                Class<D> domainClass,
                                                                Class<R> rangeClass,
                                                                Class<F> functionClass,
