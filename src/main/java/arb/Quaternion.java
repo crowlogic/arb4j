@@ -98,10 +98,9 @@ public class Quaternion implements
    */
   public Quaternion div(Quaternion other, int bits, Quaternion result)
   {
-    try ( Quaternion inverse = other.conjugate(new Quaternion()); Real norm = other.norm(bits, new Real()))
+    try ( Quaternion otherConjugate = other.conjugate(new Quaternion()); Real norm = other.norm(bits, new Real()))
     {
-      inverse.div(norm, bits);
-      return mul(inverse, bits, result);
+      return mul(otherConjugate.div(norm, bits), bits, result);
     }
   }
 
