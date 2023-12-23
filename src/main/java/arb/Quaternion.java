@@ -42,8 +42,6 @@ public class Quaternion implements
 
   /**
    * Multiplies this quaternion with another quaternion and stores the result.
-   * Quaternion multiplication formula: (a + bi + cj + dk) * (e + fi + gj + hk)
-   * where a, b, c, d, e, f, g, h are real numbers.
    *
    * @param other  The quaternion to multiply with.
    * @param bits   The precision of the operation.
