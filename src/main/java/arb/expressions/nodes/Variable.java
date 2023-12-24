@@ -6,6 +6,8 @@ import static java.lang.String.format;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import java.util.Objects;
+
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Real;
@@ -56,6 +58,26 @@ import arb.functions.Function;
 public class Variable<D, R, F extends Function<? extends D, ? extends R>> extends
                      Node<D, R, F>
 {
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(expression, isIndependent, reference, variables);
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Variable other = (Variable) obj;
+    return Objects.equals(expression, other.expression) && isIndependent == other.isIndependent
+                  && Objects.equals(reference, other.reference) && Objects.equals(variables, other.variables);
+  }
+
   public final Reference     reference;
   public final Variables     variables;
   public Expression<D, R, F> expression;
@@ -73,15 +95,15 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     assert isMultivariate == false : "TODO: handle tuples: " + reference.name;
     if (variables == null || variables.get(reference.name) == null)
     {
-      if ((expression.independentVariableNode == null
-                    || expression.independentVariableNode.reference.equals(reference))
-                    && !LiteralConstant.isConstant(reference.name))
+      boolean isReservedLiteralConstant = LiteralConstant.isConstant(reference.name);
+      if ((expression.independentVariableNode == null || expression.independentVariableNode.equals(this))
+                    && !isReservedLiteralConstant)
       {
         expression.independentVariableNode = this;
         isIndependent                      = true;
         if (verbose)
         {
-          out.println("Independent Variable declared to be: " + this);
+          out.format("%s: Independent Variable declared to be: %s", expression, this);
           out.flush();
         }
       }
@@ -93,13 +115,14 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
                                                      expression.independentVariableNode));
       }
     }
-    if (expression.independentVariableNode != null
-                  && expression.independentVariableNode.reference.name.equals(reference.name))
-    {
-      isIndependent = true;
-    }
+
     if (!isIndependent)
     {
+      if (verbose)
+      {
+        out.format("%s: referenced %s\n", expression, reference);
+        out.flush();
+      }
       expression.referencedVariables.put(reference.name, this);
     }
   }
