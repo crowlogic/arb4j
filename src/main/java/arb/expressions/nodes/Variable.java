@@ -73,7 +73,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Variable other = (Variable) obj;
+    var other = (Variable<?, ?, ?>) obj;
     return Objects.equals(expression, other.expression) && isIndependent == other.isIndependent
                   && Objects.equals(reference, other.reference) && Objects.equals(variables, other.variables);
   }
