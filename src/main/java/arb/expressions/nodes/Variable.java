@@ -58,31 +58,12 @@ import arb.functions.Function;
 public class Variable<D, R, F extends Function<? extends D, ? extends R>> extends
                      Node<D, R, F>
 {
-  @Override
-  public int hashCode()
-  {
-    return Objects.hash(expression, isIndependent, reference, variables);
-  }
-
-  @Override
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    var other = (Variable<?, ?, ?>) obj;
-    return Objects.equals(expression, other.expression) && isIndependent == other.isIndependent
-                  && Objects.equals(reference, other.reference) && Objects.equals(variables, other.variables);
-  }
-
   public final Reference     reference;
+
   public final Variables     variables;
+
   public Expression<D, R, F> expression;
   public boolean             isIndependent = false;
-
   public Variable(Expression<D, R, F> expression, Reference reference, int depth)
   {
     super(expression,
@@ -93,27 +74,9 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     boolean isMultivariate = reference.isMultivariate();
 
     assert isMultivariate == false : "TODO: handle tuples: " + reference.name;
-    if (variables == null || variables.get(reference.name) == null)
+    if (variables == null || !variables.map.containsKey(reference.name))
     {
-      boolean isReservedLiteralConstant = LiteralConstant.isConstant(reference.name);
-      if ((expression.independentVariableNode == null || expression.independentVariableNode.equals(this))
-                    && !isReservedLiteralConstant)
-      {
-        expression.independentVariableNode = this;
-        isIndependent                      = true;
-        if (verbose)
-        {
-          out.format("%s: Independent Variable declared to be: %s", expression, this);
-          out.flush();
-        }
-      }
-      else
-      {
-        throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
-                                                     reference,
-                                                     expression,
-                                                     expression.independentVariableNode));
-      }
+      resolveReference(expression, reference);
     }
 
     if (!isIndependent)
@@ -126,19 +89,18 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
       expression.referencedVariables.put(reference.name, this);
     }
   }
-
   @Override
-  public String toString()
+  public boolean equals(Object obj)
   {
-    return toString(0);
-  }
-
-  public String toString(int depth)
-  {
-    return String.format("%s%s[name=%s]",
-                         depth < 0 ? "" : indent(depth),
-                         getClass().getSimpleName(),
-                         isIndependent ? format("INPUT(%s)", reference) : reference);
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    var other = (Variable<?, ?, ?>) obj;
+    return Objects.equals(expression, other.expression) && isIndependent == other.isIndependent
+                  && Objects.equals(reference, other.reference) && Objects.equals(variables, other.variables);
   }
 
   /**
@@ -199,6 +161,12 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
   }
 
   @Override
+  public int hashCode()
+  {
+    return Objects.hash(expression, isIndependent, reference, variables);
+  }
+
+  @Override
   public boolean isReusable()
   {
     return false;
@@ -209,6 +177,43 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
   {
     assert false : "a variable is never reusable(overwritable)";
     return null;
+  }
+
+  public void resolveReference(Expression<D, R, F> expression, Reference reference)
+  {
+    boolean isReservedLiteralConstant = LiteralConstant.isConstant(reference.name);
+    var     independentVariable       = expression.independentVariableNode;
+    isIndependent = (independentVariable == null || independentVariable.equals(this));
+    if (isIndependent && !isReservedLiteralConstant)
+    {
+      expression.independentVariableNode = this;
+      if (verbose)
+      {
+        out.format("%s: Independent Variable declared to be: %s", expression, this);
+        out.flush();
+      }
+    }
+    else
+    {
+      throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
+                                                   reference,
+                                                   expression,
+                                                   independentVariable));
+    }
+  }
+
+  @Override
+  public String toString()
+  {
+    return toString(0);
+  }
+
+  public String toString(int depth)
+  {
+    return String.format("%s%s[name=%s]",
+                         depth < 0 ? "" : indent(depth),
+                         getClass().getSimpleName(),
+                         isIndependent ? format("INPUT(%s)", reference) : reference);
   }
 
   @Override

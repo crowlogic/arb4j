@@ -13,7 +13,7 @@ import arb.HasName;
 public class Variables
 
 {
-  HashMap<String, Object> map = new HashMap<>();
+  public final HashMap<String, Object> map = new HashMap<>();
 
   @SafeVarargs
   public <A extends HasName> Variables(A... variables)
