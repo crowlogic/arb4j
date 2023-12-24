@@ -17,21 +17,20 @@ public class QuaternionTest extends
 
   public void testMultiply()
   {
-    Complex    a = new Complex(one,
-                               π);
-    Complex    b = new Complex(half,
-                               two);
-    Quaternion A = new Quaternion(a,
-                                  b);
-    Complex    c = new Complex(oneQuarter,
-                               threeQuarters);
-    Complex    d = new Complex(πsquared,
-                               sqrt2);
-    Quaternion B = new Quaternion(c,
-                                  d);
+    Quaternion A = new Quaternion(new Complex(one,
+                                              π),
+                                  new Complex(half,
+                                              two));
+
+    Quaternion B = new Quaternion(new Complex(oneQuarter,
+                                              threeQuarters),
+                                  new Complex(πsquared,
+                                              sqrt2));
+    
     Quaternion C = A.mul(B, bits, new Quaternion());
 
     System.out.format("A=%s\nB=%s\nC=A*B=%s\n", A, B, C);
+    
     assertEquals(-9.8694238154832143, C.left.real.doubleValue());
     assertEquals(-17.496703857594721, C.left.imag.doubleValue());
     assertEquals(7.0517214629309924, C.right.real.doubleValue());
