@@ -186,14 +186,14 @@ public class RealFunctionTest extends
     assertEquals(192, roots.evals);
     assertEquals(3, roots.size());
     RealRootInterval first     = roots.get(0);
-    Real             firstRoot = first.getReal(new Real(), prec);
+    Real             firstRoot = first.getReal(prec, new Real());
     assertEquals(14.13125, firstRoot.getMid().doubleValue(RoundingMode.Ceiling), pow(10, -30));
     assertEquals(first.status, FloatInterval.RootStatus.RootLocated);
 
     roots.refine(f, prec, 40, true);
     System.out.println("rootsAfterRefinement=" + roots);
 
-    assertEquals(14.134725141734693, roots.get(0).getReal(new Real(), 256).doubleValue(RoundingMode.Down), 0);
+    assertEquals(14.134725141734693, roots.get(0).getReal(256, new Real()).doubleValue(RoundingMode.Down), 0);
     assertEquals(2, roots.unknownCount);
     assertEquals(1, roots.foundCount);
   }
@@ -206,7 +206,7 @@ public class RealFunctionTest extends
     {
       out.println("real.allocatedBytes=" + jet.getAllocatedBytes());
       System.out.println("interval=" + interval);
-      Real region = interval.getReal(new Real(), 128);
+      Real region = interval.getReal(128, new Real());
       out.println("mag=" + region.getRad());
       System.out.println("region=" + region);
       Float C = sineFunction.getNewtonConvergenceFactor(region, jet, 128, new Float());

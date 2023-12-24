@@ -21,11 +21,9 @@ public class RealRootInterval extends
     return String.format("[%s, %s]=%s", getA(), getB(), status);
   }
 
-  public RealRootInterval(double left,
-                          double right)
+  public RealRootInterval(double left, double right)
   {
-    super(
-          left,
+    super(left,
           right);
     assert left < right;
   }
@@ -34,19 +32,16 @@ public class RealRootInterval extends
   {
   }
 
-  public RealRootInterval(Float left,
-                          Float right)
+  public RealRootInterval(Float left, Float right)
   {
-    super(
-          left,
+    super(left,
           right);
     assert left.compareTo(right) <= 0;
   }
 
   public RealRootInterval(FloatInterval interval)
   {
-    this(
-         interval.getA(),
+    this(interval.getA(),
          interval.getB());
   }
 
@@ -105,7 +100,7 @@ public class RealRootInterval extends
     status = RootStatus.RootUnknown;
     try ( Real t = Real.newVector(2); Real x = new Real())
     {
-      func.evaluate(getReal(x, prec), 1, prec, t.get(0));
+      func.evaluate(getReal(prec, x), 1, prec, t.get(0));
       found.evals++;
 
       if (t.isPositive() || t.isNegative())
@@ -193,12 +188,12 @@ public class RealRootInterval extends
 
     }
 
-    convergenceRegion.getReal(v, highPrec);
+    convergenceRegion.getReal(highPrec, v);
 
     func.getNewtonConvergenceFactor(v, w, highPrec, convergenceFactor);
 
     RefinementResult refinementResult = func.refineRootNewton(v,
-                                                              getReal(w, highPrec),
+                                                              getReal(highPrec, w),
                                                               convergenceFactor,
                                                               10,
                                                               highPrec,

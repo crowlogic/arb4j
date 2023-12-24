@@ -155,7 +155,7 @@ import arb.domains.Interval;
     return this;
   }
   
-  public Real getReal(Real res, int prec)
+  public Real getReal(int prec, Real res)
   {
     arf_interval_get_arb(res, this, prec);
     return res;
