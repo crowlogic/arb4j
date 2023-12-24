@@ -19,16 +19,14 @@ import arb.algebra.Ring;
  * therefore the maximum size integer that can be passed to ARB as a fmpz_t
  * without it being interpreted as a pointer is 2^62 - 1.
  * 
- * <pre>
- * Copyright ©2023 Stephen Crowley
- *  
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs format of the same document respectively.
  */
 public class Integer implements
-                     AutoCloseable, Ring<Integer>
+                     AutoCloseable,
+                     Ring<Integer>
 {
   @Override
   public String toString()
@@ -160,7 +158,7 @@ public class Integer implements
   public Integer mul(Integer operand, int prec, Integer result)
   {
     assert prec == 0 : "exact precision methods require bits=0";
-    arblib.fmpz_mul(result.swigCPtr, this.swigCPtr, operand.swigCPtr );
+    arblib.fmpz_mul(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
 
@@ -168,7 +166,7 @@ public class Integer implements
   public Integer div(Integer operand, int prec, Integer result)
   {
     assert prec == 0 : "exact precision methods require bits=0";
-    arblib.fmpz_divexact(result.swigCPtr, this.swigCPtr, operand.swigCPtr );
+    arblib.fmpz_divexact(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
 
@@ -176,7 +174,7 @@ public class Integer implements
   public Integer add(Integer operand, int prec, Integer result)
   {
     assert prec == 0 : "exact precision methods require bits=0";
-    arblib.fmpz_add(result.swigCPtr, this.swigCPtr, operand.swigCPtr );
+    arblib.fmpz_add(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
 
@@ -184,7 +182,7 @@ public class Integer implements
   public Integer sub(Integer operand, int prec, Integer result)
   {
     assert prec == 0 : "exact precision methods require bits=0";
-    arblib.fmpz_sub(result.swigCPtr, this.swigCPtr, operand.swigCPtr );
+    arblib.fmpz_sub(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
 
