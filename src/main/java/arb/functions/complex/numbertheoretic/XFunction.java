@@ -1,18 +1,19 @@
 package arb.functions.complex.numbertheoretic;
 
 import arb.Real;
-import arb.functions.*;
 import arb.functions.complex.SFunction;
 import arb.operators.CompositionOperator;
 
 /**
  * The conjugate of this function is {@link YFunction}
  * 
- * @author crow
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs format of the same document respectively.
  */
 public class XFunction extends
-                       CompositionOperator<SFunction, ZFunction> implements
-                       SymmetricFunction
+                       CompositionOperator<SFunction, ZFunction>
 {
 
   @Override
@@ -33,23 +34,4 @@ public class XFunction extends
           new ZFunction());
   }
 
-  @Override
-  public int getNumberOfSymmetries()
-  {
-    return 2;
-  }
-
-  @Override
-  public Symmetry getSymmetry(int symmetry)
-  {
-    switch (symmetry)
-    {
-    case 0:
-      return new RealAxisSymmetry(false);
-    case 1:
-      return new ImaginaryAxisSymmetry(true);
-    default:
-      throw new IllegalArgumentException("only 2 symmetries");
-    }
-  }
 }
