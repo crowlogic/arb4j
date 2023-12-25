@@ -37,4 +37,28 @@ public class QuaternionTest extends
     assertEquals(32.545490242672915, C.right.imag.doubleValue());
 
   }
+  
+  public void testDivision()
+  {
+    Quaternion A = new Quaternion(new Complex(one,
+                                              π),
+                                  new Complex(half,
+                                              two));
+
+    Quaternion B = new Quaternion(new Complex(oneQuarter,
+                                              threeQuarters),
+                                  new Complex(πsquared,
+                                              sqrt2));
+    
+    Quaternion C = A.div(B, bits, new Quaternion());
+
+    System.out.format("A=%s\nB=%s\nC=A/B=%s\n", A, B, C);
+    
+    assertEquals(-9.8694238154832143, C.left.real.doubleValue());
+    assertEquals(-17.496703857594721, C.left.imag.doubleValue());
+    assertEquals(7.0517214629309924, C.right.real.doubleValue());
+    assertEquals(32.545490242672915, C.right.imag.doubleValue());
+
+  }
+  
 }

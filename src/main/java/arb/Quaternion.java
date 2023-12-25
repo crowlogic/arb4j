@@ -94,7 +94,7 @@ public class Quaternion implements
   /**
    * Divides this quaternion by another quaternion and stores the result.
    * Quaternion division is performed by multiplying the quaternion with the
-   * inverse of the other.
+   * this{@link #multiplicativeInverse(int, Quaternion)} of this
    *
    * @param other  The quaternion to divide by.
    * @param bits   The precision of the operation.
@@ -103,10 +103,23 @@ public class Quaternion implements
    */
   public Quaternion div(Quaternion other, int bits, Quaternion result)
   {
-    try ( Quaternion otherConjugate = other.conjugate(new Quaternion()); Real norm = other.norm(bits, new Real()))
+    try ( Quaternion multiplicativeInverseOfThis = other.multiplicativeInverse(bits, new Quaternion());)
     {
-      return mul(otherConjugate.div(norm, bits), bits, result);
+      return mul(multiplicativeInverseOfThis, bits, result);
     }
+  }
+
+  /**
+   * Calculate the multiplicative inverse of this
+   * 
+   * @param bits
+   * @param result
+   * @return 1/(left.real^2+left.imag^2+right.real^2+right.imag^2)
+   */
+  public Quaternion multiplicativeInverse(int bits, Quaternion result)
+  {
+    assert false : "TODO: implement multiplicative inverse";
+    return null;
   }
 
   /**

@@ -390,13 +390,7 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
     String string = (name != null ? name + "=\n" : "") + os.toString();
     return string;
   }  
-  
-  private String getDimString()
-  {
-    String dimString = "(" + this.getNumRows() + "," + this.getNumCols() + ")";
-    return dimString;
-  }
-  
+    
   Real[] rows;
   
   public static RealMatrix newMatrix(int rows, int cols)

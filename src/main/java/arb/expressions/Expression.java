@@ -541,7 +541,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
 
   public void parseOptionalIndependentVariableSpecification()
   {
-    int rightArrowIndex = expression.indexOf('➔');
+    int rightArrowIndex = expression.replace("->","➔").indexOf('➔');
     if (rightArrowIndex != -1)
     {
       independentVariableNode = new Variable<D, R, F>(this,
