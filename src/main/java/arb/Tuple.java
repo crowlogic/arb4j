@@ -1,12 +1,10 @@
 package arb;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import arb.domains.Domain;
 import arb.expressions.UndefinedReferenceException;
-import arb.functions.Function;
 import arb.functions.MultivariateFunction;
 
 /**
