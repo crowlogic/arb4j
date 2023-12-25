@@ -65,6 +65,8 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
   public Expression<D, R, F> expression;
   public boolean             isIndependent = false;
 
+  private boolean isMultivariate;
+
   public Variable(Expression<D, R, F> expression, Reference reference, int depth)
   {
     super(expression,
@@ -72,9 +74,8 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     this.expression = expression;
     this.reference  = reference;
     this.variables  = expression.variables;
-    boolean isMultivariate = reference.isMultivariate();
+    isMultivariate = reference.isMultivariate();
 
-    //assert isMultivariate == false : "TODO: handle tuples: " + reference.name;
     if (variables == null || !variables.map.containsKey(reference.name))
     {
       resolveReference(expression, reference);

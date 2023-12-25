@@ -72,14 +72,16 @@ public class Parser
   }
 
   /**
-   * Replaces UTF subscripts ₀-₉ with 0-9, so that J₀ can be parsed as a
-   * {@link BesselFunctionOfTheFirstKind} and other similar expressions likewise
+   * Replaces UTF subscripts ₀-₉ with 0-9 and '->' with '➔', so that J₀ can be
+   * parsed as a {@link BesselFunctionOfTheFirstKind} and other similar
+   * expressions likewise, as well as the use of two character ascii arrow version of ➔ used
+   * to declare the independent variable or declare a multivariate function "(n,x)->n*x" for instance
    * 
    * @param expression
    * 
    * @return expression with 0-9 substituted in place of ₀-₉
    */
-  public static String replaceSubscripts(String expression)
+  public static String replaceSubscriptsAndArrows(String expression)
   {
     return expression.replace('₀', '0')
                      .replace('₁', '1')
@@ -90,7 +92,8 @@ public class Parser
                      .replace('₆', '6')
                      .replace('₇', '7')
                      .replace('₈', '8')
-                     .replace('₉', '9');
+                     .replace('₉', '9')
+                     .replace("->", "➔");
   }
 
   static String expressionToUniqueClassname(String expression)

@@ -160,7 +160,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
     this.functionClassDescriptor   = "L" + className + ";";
-    this.expression                = Parser.replaceSubscripts(expression);
+    this.expression                = Parser.replaceSubscriptsAndArrows(expression);
     this.context                   = context;
     this.variables                 = context != null ? context.variables : null;
     evaluateMethodSignature        = String.format("(L%s;IIL%s;)L%s;",

@@ -118,7 +118,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>> ex
           expression,
           depth);
     assert argument != null;
-    this.name  = Parser.replaceSubscripts(functionName);
+    this.name  = Parser.replaceSubscriptsAndArrows(functionName);
     this.depth = depth;
   }
 
