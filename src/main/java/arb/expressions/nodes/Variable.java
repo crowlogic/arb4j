@@ -102,7 +102,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
       return false;
     var other = (Variable<?, ?, ?>) obj;
     return Objects.equals(expression, other.expression) && isIndependent == other.isIndependent
-                  && Objects.equals(reference, other.reference) && Objects.equals(variables, other.variables);
+                  && Objects.equals(reference, other.reference);
   }
 
   /**
@@ -184,8 +184,8 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
   public void resolveReference(Expression<D, R, F> expression, Reference reference)
   {
     var independentVariable = expression.independentVariableNode;
-    isIndependent = (independentVariable == null || independentVariable.equals(this));
-    if (isIndependent)
+
+    if (isIndependent = (independentVariable == null || this.equals(independentVariable)))
     {
       expression.independentVariableNode = this;
       if (verbose)

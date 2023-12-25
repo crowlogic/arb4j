@@ -55,28 +55,5 @@ public class Reference
     return name.startsWith("(") && name.endsWith(")");
   }
 
-  @Override
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-    {
-      return true;
-    }
-    if (obj == null || getClass() != obj.getClass())
-    {
-      return false;
-    }
-    Reference other = (Reference) obj;
-    if (index != null && !index.equals(other.index))
-    {
-      return false;
-    }
 
-    if (!name.equals(other.name))
-    {
-      return false;
-    }
-
-    return true;
-  }
 }
