@@ -1,6 +1,6 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
+<style|<tuple|article|alt-colors|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title| Essentially Self-Adjoint
@@ -70,9 +70,9 @@
     <item><strong|Closure and Self-Adjointness>: The operator <math|A> is
     closable, and its closure <math|<wide|A|\<bar\>>> is self-adjoint. This
     implies <math|<wide|A|\<bar\>>=A<rsup|\<ast\>>>, with
-    <math|A<rsup|\<ast\>>> being the adjoint of <math|A>, and it necessitates
-    that <math|<wide|A|\<bar\>>> and <math|A<rsup|\<ast\>>> have the same
-    domain and action.
+    <math|A<rsup|\<ast\>>> being the adjoint of <math|A>, and thus it is a
+    necessary condtion that <math|<wide|A|\<bar\>>> and
+    <math|A<rsup|\<ast\>>> are equal.
   </enumerate>
 
   <section|The Closure of an Operator is Complete>
@@ -84,19 +84,43 @@
 
   <\enumerate>
     <item>The graph <math|G<around|(|A|)>> of <math|A> is the set
-    <math|<around|{|<around|(|f,A*f|)>:f\<in\>\<cal-D\><around|(|A|)>|}>> in
-    <math|\<cal-H\>\<times\>\<cal-H\>>.
 
-    <item>The closure of this graph, <math|<wide|G<around|(|A|)>|\<bar\>>>,
-    includes all limit points of sequences in <math|G<around|(|A|)>>, meaning
-    <math|<around|(|f,g|)>> is in <math|<wide|G<around|(|A|)>|\<bar\>>> if
-    there exists a sequence <math|<around|{|f<rsub|n>|}>> in
-    <math|\<cal-D\><around|(|A|)>> such that <math|f<rsub|n>\<to\>f> and
-    <math|A*f<rsub|n>\<to\>g> as <math|n\<to\>\<infty\>>.
+    \ 
 
-    <item>The operator <math|<wide|A|\<bar\>>>, defined by this closed graph,
-    extends <math|A> to include these limit points, thereby 'completing' the
-    operator.
+    <\equation>
+      <around|{|<around|(|f,A*f|)>:f\<in\>\<cal-D\><around|(|A|)>|}>\<in\>\<cal-H\>\<times\>\<cal-H\>
+    </equation>
+
+    <item>The closure <math|<wide|G<around|(|A|)>|\<bar\>>> of the graph
+    <math|G<around*|(|A|)>> of <math|A>, includes all limit points of
+    sequences in the graph, meaning
+
+    \ 
+
+    <\equation>
+      <around|(|f,g|)>\<in\><wide|G<around|(|A|)>|\<bar\>>
+    </equation>
+
+    \ if there exists a sequence of functions
+    <math|<around|{|f<rsub|n>|}>\<in\>\<cal-D\><around|(|A|)>> in the domain
+    of <math|A> such that
+
+    <\equation>
+      lim<rsub|n\<rightarrow\>\<infty\>>f<rsub|n><around*|(|x|)>=f<around*|(|x|)>
+    </equation>
+
+    and
+
+    <\equation>
+      lim<rsub|n\<rightarrow\>\<infty\>>A*f<rsub|n><around*|(|x|)>=g<around*|(|x|)>
+    </equation>
+
+    \;
+
+    <item>The operator <math|<wide|A|\<bar\>>>, defined by the closure
+    <wide|G(A)|\<bar\>> of the graph <math|G<around*|(|A|)>> of <math|A>,
+    extends <math|A> to include these limit points, thereby
+    <strong|completing> the operator and providing its closure\<cdot\>.
   </enumerate>
 
   <section|Self-Adjoint Extensions and Defect Indices>
@@ -152,11 +176,11 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_7.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_7.tm>>
-    <associate|auto-3|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_7.tm>>
-    <associate|auto-4|<tuple|4|2|../../.TeXmacs/texts/scratch/no_name_7.tm>>
-    <associate|auto-5|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|1>>
+    <associate|auto-3|<tuple|3|2>>
+    <associate|auto-4|<tuple|4|2>>
+    <associate|auto-5|<tuple|5|2>>
   </collection>
 </references>
 
