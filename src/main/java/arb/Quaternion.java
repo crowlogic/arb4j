@@ -51,11 +51,10 @@ public class Quaternion implements
    */
   public Quaternion mul(Quaternion other, int bits, Quaternion result)
   {
-    try ( Complex a = new Complex(); Complex otherRightConjugate = other.right.conj(new Complex());
-          Complex otherLeftConjugate = other.left.conj(new Complex()))
+    try ( Complex a = new Complex())
     {
-      left.mul(other.left, bits, result.left).sub(right.mul(otherRightConjugate, bits, a), bits);
-      left.mul(other.right, bits, result.right).add(right.mul(otherLeftConjugate, bits, a), bits);
+      left.mul(other.left, bits, result.left).sub(right.mul(other.right.conj(a), bits, a), bits);
+      left.mul(other.right, bits, result.right).add(right.mul(other.left.conj(a), bits, a), bits);
       return result;
     }
   }
