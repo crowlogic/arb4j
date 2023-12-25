@@ -64,6 +64,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public Expression<D, R, F> expression;
   public boolean             isIndependent = false;
+
   public Variable(Expression<D, R, F> expression, Reference reference, int depth)
   {
     super(expression,
@@ -89,6 +90,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
       expression.referencedVariables.put(reference.name, this);
     }
   }
+
   @Override
   public boolean equals(Object obj)
   {
@@ -181,10 +183,9 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public void resolveReference(Expression<D, R, F> expression, Reference reference)
   {
-    boolean isReservedLiteralConstant = LiteralConstant.isConstant(reference.name);
-    var     independentVariable       = expression.independentVariableNode;
+    var independentVariable = expression.independentVariableNode;
     isIndependent = (independentVariable == null || independentVariable.equals(this));
-    if (isIndependent && !isReservedLiteralConstant)
+    if (isIndependent)
     {
       expression.independentVariableNode = this;
       if (verbose)
