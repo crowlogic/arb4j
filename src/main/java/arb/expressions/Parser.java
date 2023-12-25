@@ -117,7 +117,8 @@ public class Parser
                      .replace(".", "Point")
                      .replace('[', '_')
                      .replace(']', '_')
-                     .replace("➔", "");
+                     .replace("➔", "")
+                     .replace("½", "half");
   }
 
 }

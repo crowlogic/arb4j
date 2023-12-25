@@ -86,7 +86,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   final public RealFunction                    F                = express("F", "n➔C(n-1)*C(n)", context, verbose);
 
   final public RealFunction                    A                = express("A",
-                                                                          "x➔(F(n)*x + G)*(C(n)/2 - 1/2)",
+                                                                          "(n,x)➔(F(n)*x + G)*(C(n)/2 - ½)",
                                                                           context,
                                                                           verbose);
 

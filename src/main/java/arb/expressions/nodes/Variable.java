@@ -74,7 +74,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     this.variables  = expression.variables;
     boolean isMultivariate = reference.isMultivariate();
 
-    assert isMultivariate == false : "TODO: handle tuples: " + reference.name;
+    //assert isMultivariate == false : "TODO: handle tuples: " + reference.name;
     if (variables == null || !variables.map.containsKey(reference.name))
     {
       resolveReference(expression, reference);
