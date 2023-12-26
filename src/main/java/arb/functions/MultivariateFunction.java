@@ -24,12 +24,9 @@ public interface MultivariateFunction<R> extends
                                      Function<Tuple, R>
 {
 
-  @SuppressWarnings("unchecked")
-  public static <R>
-         MultivariateFunction<R>
-         express(Class<? extends R> rangeClass, String expression, Context context, boolean verbose)
+  public static <R> MultivariateFunction<R> express(Class<? extends R> rangeClass, String expression)
   {
-    return instantiate(expression, context, Tuple.class, rangeClass, MultivariateFunction.class, verbose);
+    return express(rangeClass, expression, null);
   }
 
   public static <R> MultivariateFunction<R> express(Class<? extends R> rangeClass,
@@ -39,16 +36,19 @@ public interface MultivariateFunction<R> extends
     return express(rangeClass, expression, null, verbose);
   }
 
-  public static <R> MultivariateFunction<R> express(Class<? extends R> rangeClass, String expression)
-  {
-    return express(rangeClass, expression, null);
-  }
-
   public static <R> MultivariateFunction<R> express(Class<? extends R> rangeClass,
                                                     String expression,
                                                     Context context)
   {
     return express(rangeClass, null, expression, context, false);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <R>
+         MultivariateFunction<R>
+         express(Class<? extends R> rangeClass, String expression, Context context, boolean verbose)
+  {
+    return instantiate(expression, context, Tuple.class, rangeClass, MultivariateFunction.class, verbose);
   }
 
   /**
