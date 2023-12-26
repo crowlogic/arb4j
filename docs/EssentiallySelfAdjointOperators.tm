@@ -68,8 +68,8 @@
     product in <math|\<cal-H\>>.
 
     <item><strong|Closure and Self-Adjointness>: The operator <math|A> is
-    closable, and its closure <math|<wide|A|\<bar\>>> is self-adjoint. This
-    implies <math|<wide|A|\<bar\>>=A<rsup|\<ast\>>>, with
+    <em|closable>, and its closure <math|<wide|A|\<bar\>>> is self-adjoint.
+    This implies <math|<wide|A|\<bar\>>=A<rsup|\<ast\>>>, with
     <math|A<rsup|\<ast\>>> being the adjoint of <math|A>, and thus it is a
     necessary condtion that <math|<wide|A|\<bar\>>> and
     <math|A<rsup|\<ast\>>> are equal.
@@ -78,50 +78,35 @@
   <section|The Closure of an Operator is Complete>
 
   The concept of an operator's closure is analogous to completing a function
-  by considering its limit points. Specifically, for a linear operator
-  <math|A> with domain <math|\<cal-D\><around|(|A|)>>, its closure
-  <math|<wide|A|\<bar\>>> is defined as follows:
+  by considering its limit points. Specifically,\ 
 
-  <\enumerate>
-    <item>The graph <math|G<around|(|A|)>> of <math|A> is the set
-
-    \ 
-
-    <\equation>
-      <around|{|<around|(|f,A*f|)>:f\<in\>\<cal-D\><around|(|A|)>|}>\<in\>\<cal-H\>\<times\>\<cal-H\>
-    </equation>
-
-    <item>The closure <math|<wide|G<around|(|A|)>|\<bar\>>> of the graph
-    <math|G<around*|(|A|)>> of <math|A>, includes all limit points of
-    sequences in the graph, meaning
-
-    \ 
+  <\definition>
+    <strong|(Closure of an Operatior)> Let <math|A> be a linear operator with
+    domain <math|\<cal-D\><around|(|A|)>> in a Hilbert space
+    <math|\<cal-H\>>. The graph of <math|A>, denoted <math|G<around|(|A|)>>,
+    is defined by
 
     <\equation>
-      <around|(|f,g|)>\<in\><wide|G<around|(|A|)>|\<bar\>>
+      G<around|(|A|)>=<around|{|<around|(|f,A*f|)>:f\<in\>\<cal-D\><around|(|A|)>|}>\<subseteq\>\<cal-H\>\<times\>\<cal-H\>.
     </equation>
 
-    \ if there exists a sequence of functions
-    <math|<around|{|f<rsub|n>|}>\<in\>\<cal-D\><around|(|A|)>> in the domain
-    of <math|A> such that
+    The closure of <math|G<around|(|A|)>>, denoted
+    <math|<wide|G<around|(|A|)>|\<bar\>>>, includes all limit points of
+    sequences in <math|G<around|(|A|)>>. Specifically, if there exists a
+    sequence <math|<around|{|f<rsub|n>|}>\<subseteq\>\<cal-D\><around|(|A|)>>
+    such that <math|f<rsub|n>\<to\>f> in <math|\<cal-H\>>, and
+    <math|A*f<rsub|n>\<to\>g> in <math|\<cal-H\>>, then
 
     <\equation>
-      lim<rsub|n\<rightarrow\>\<infty\>>f<rsub|n><around*|(|x|)>=f<around*|(|x|)>
+      <around|(|f,g|)>\<in\><wide|G<around|(|A|)>|\<bar\>>.
     </equation>
 
-    and
-
-    <\equation>
-      lim<rsub|n\<rightarrow\>\<infty\>>A*f<rsub|n><around*|(|x|)>=g<around*|(|x|)>
-    </equation>
-
-    \;
-
-    <item>The operator <math|<wide|A|\<bar\>>>, defined by the closure
-    <wide|G(A)|\<bar\>> of the graph <math|G<around*|(|A|)>> of <math|A>,
-    extends <math|A> to include these limit points, thereby
-    <strong|completing> the operator and providing its closure\<cdot\>.
-  </enumerate>
+    The operator <math|<wide|A|\<bar\>>>, defined by
+    <math|<wide|A|\<bar\>>*f=g> for each <math|<around|(|f,g|)>\<in\><wide|G<around|(|A|)>|\<bar\>>>,
+    is the <strong|closure> of <math|A>. This extends <math|A> to include
+    these limit points, thereby <with|font-series|bold|completing> the
+    operator.
+  </definition>
 
   <section|Self-Adjoint Extensions and Defect Indices>
 
