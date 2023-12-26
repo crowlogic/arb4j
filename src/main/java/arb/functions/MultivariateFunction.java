@@ -55,8 +55,9 @@ public interface MultivariateFunction<R> extends
    * Returns the result of
    * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean)}
    * afteRealFunction calling {@link Context#registerFunction(String, Function)}
-   * to register the function by name in the specified {@link Context}
+   * to register the function by name in the specified {@link Context} '
    * 
+   * @param rangeClass   the type of ther range of this functionj
    * @param functionName
    * @param expression
    * @param context
