@@ -198,7 +198,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     {
       if (expression.isMultivariateDomain())
       {
-        assert false : String.format("TODO: resolve %s via input tuple %s" , this, inputVariable );
+        assert false : String.format("TODO: resolve %s via input tuple %s (if its there, otherwise throw an exception)" , this, inputVariable );
       }
       else
       {
