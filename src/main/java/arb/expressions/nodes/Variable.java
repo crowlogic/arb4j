@@ -107,13 +107,6 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     return Objects.equals(reference, other.reference);
   }
 
-  /**
-   * TODO: modify this checking of this{@link #isIndependent} to see if its part
-   * of a {@link Tuple} and if so generate the reference to the corresponding
-   * element of the input tuple rather than generating a reference to the tuple
-   * itself
-   * 
-   */
   @Override
   public MethodVisitor generate(MethodVisitor mv)
   {
