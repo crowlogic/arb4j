@@ -11,6 +11,7 @@ import java.util.Objects;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Real;
+import arb.RealPolynomial;
 import arb.Tuple;
 import arb.expressions.*;
 import arb.functions.Function;
@@ -64,6 +65,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public Expression<D, R, F> expression;
   public boolean             isIndependent = false;
+  public boolean             indeterminant = false;
 
   public final boolean       isMultivariate;
 
@@ -125,6 +127,10 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     if (isIndependent)
     {
       expression.checkClassCast(loadInput(mv), false);
+    }
+    else if (indeterminant)
+    {
+      assert false : "TODO: generate code to construct the identity polynomial x->x=[0 1] which corresponds to 0+x and put it on the stack";
     }
     else
     {
@@ -198,14 +204,29 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     {
       if (expression.isMultivariateDomain())
       {
-        assert false : String.format("TODO: resolve %s via input tuple %s (if its there, otherwise throw an exception)" , this, inputVariable );
+        assert false : String.format("TODO: resolve %s via input tuple %s (if its there, otherwise throw an exception)",
+                                     this,
+                                     inputVariable);
       }
       else
       {
-        throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
-                                                     reference,
-                                                     expression,
-                                                     inputVariable));
+        if (indeterminant = expression.hasPolynomialRange())
+        {
+          expression.indeterminate = this;
+
+          if (verbose)
+          {
+            out.format("%s: Indeterminate of polynomial declared to be: %s", expression, this);
+            out.flush();
+          }
+        }
+        else
+        {
+          throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
+                                                       reference,
+                                                       expression,
+                                                       inputVariable));
+        }
       }
     }
   }

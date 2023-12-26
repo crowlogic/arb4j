@@ -143,6 +143,8 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
 
   public final String                        evaluateMethodSignature;
 
+  public Variable<D, R, F> indeterminate;
+
   public Expression(String className,
                     Class<? extends D> domainClass,
                     Class<? extends R> rangeClass,
@@ -787,10 +789,6 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
     }
     else
     {
-      if (rangeClass.equals(RealPolynomial.class))
-      {
-        assert false : "TODO: handle placeholder variable when treating the functions elements as members of a vector space  rather than treating it as a real-valued variable to be used in the pointwise evaluation of the polynomial";
-      }
       return new Variable<D, R, F>(this,
                                    functionOrVariableName,
                                    depth + 1);
@@ -1232,6 +1230,16 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
   public boolean isMultivariateDomain()
   {
     return domainClass.isAssignableFrom(Tuple.class);
+  }
+
+  /**
+   * 
+   * @return true if this{@link #rangeClass} {@link Object#equals(Object)}
+   *         {@link RealPolynomial}
+   */
+  public boolean hasPolynomialRange()
+  {
+    return rangeClass.equals(RealPolynomial.class);
   }
 
 }
