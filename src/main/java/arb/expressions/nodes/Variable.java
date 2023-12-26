@@ -64,8 +64,8 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
   public final Variables     variables;
 
   public Expression<D, R, F> expression;
-  public boolean             isIndependent = false;
-  public boolean             indeterminant = false;
+  public boolean             isIndependent   = false;
+  public boolean             isIndeterminant = false;
 
   public final boolean       isMultivariate;
 
@@ -128,9 +128,9 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     {
       expression.checkClassCast(loadInput(mv), false);
     }
-    else if (indeterminant)
+    else if (isIndeterminant)
     {
-      assert false : "TODO: generate code to construct the identity polynomial x->x=[0 1] which corresponds to 0+x and put it on the stack";
+      assert false : "TODO: https://github.com/crowlogic/arb4j/issues/294: generate code to construct the identity polynomial x->x=[0 1] which corresponds to 0+x and put it on the stack";
     }
     else
     {
@@ -210,7 +210,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
       }
       else
       {
-        if (indeterminant = expression.hasPolynomialRange())
+        if (isIndeterminant = expression.hasPolynomialRange())
         {
           expression.indeterminate = this;
 
