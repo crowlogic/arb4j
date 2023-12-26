@@ -42,10 +42,10 @@
 
   <\align>
     <tformat|<table|<row|<cell|<around*|(|S
-    f<rsup|>|)><rsub|1><rsup|-1><around*|(|a|)>>|<cell|=RootOf<around*|(|f<around*|(|x|)>-<sqrt|<frac|1-a+<sqrt|-a<rsup|2>+1>|a-1>>|)><eq-number>>>|<row|<cell|<around*|(|S
-    f<rsup|>|)><rsub|2><rsup|-1><around*|(|a|)>>|<cell|=RootOf<around*|(|<around*|\<nobracket\>|f|(>x)+<sqrt|<frac|1-a+<sqrt|-a<rsup|2>+1>|a-1>>|)><eq-number>>>|<row|<cell|<around*|(|S
-    f<rsup|>|)><rsub|3><rsup|-1><around*|(|a|)>>|<cell|=RootOf<around*|(|f<around*|(|x|)>-<sqrt|<frac|1+a+<sqrt|-a<rsup|2>+1>|a-1>>|)><eq-number>>>|<row|<cell|<around*|(|S
-    f<rsup|>|)><rsub|4><rsup|-1><around*|(|a|)>>|<cell|=RootOf<around*|(|f<around*|(|x|)>+<sqrt|<frac|1+a+<sqrt|-a<rsup|2>+1>|a-1>>|)><eq-number>>>>>
+    f<rsup|>|)><rsub|1><rsup|-1><around*|(|a|)>>|<cell|=RootOf<around*|(|f<around*|(|x|)>-<sqrt|<frac|1-a+<sqrt|1-a<rsup|2>>|a-1>>|)><eq-number>>>|<row|<cell|<around*|(|S
+    f<rsup|>|)><rsub|2><rsup|-1><around*|(|a|)>>|<cell|=RootOf<around*|(|<around*|\<nobracket\>|f|(>x)+<sqrt|<frac|1-a+<sqrt|1-a<rsup|2>>|a-1>>|)><eq-number>>>|<row|<cell|<around*|(|S
+    f<rsup|>|)><rsub|3><rsup|-1><around*|(|a|)>>|<cell|=RootOf<around*|(|f<around*|(|x|)>-<sqrt|<frac|1+a+<sqrt|1-a<rsup|2>>|a-1>>|)><eq-number>>>|<row|<cell|<around*|(|S
+    f<rsup|>|)><rsub|4><rsup|-1><around*|(|a|)>>|<cell|=RootOf<around*|(|f<around*|(|x|)>+<sqrt|<frac|1+a+<sqrt|1-a<rsup|2>>|a-1>>|)><eq-number>>>>>
   </align>
 
   \;
@@ -84,10 +84,6 @@
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Inverse
       Transformation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Conclusion>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
