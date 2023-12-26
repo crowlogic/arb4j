@@ -24,7 +24,6 @@ import arb.*;
 import arb.expressions.nodes.*;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
-import arb.functions.MultivariateFunction;
 import arb.functions.real.RealFunction;
 
 /**
@@ -623,7 +622,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
    * Consumes characters, calling this{@link #eatFirst(int)} to process
    * parenthesis and calling this{@link #eatNumber(int)} if this{@link #ch}
    * indicates a number a the current position or
-   * this{@link #eatFunctionInvocationOrVariableReference(int, int)} if
+   * this{@link #resolveFunctionInvocationOrVariableReference(int, int)} if
    * this{@link #ch} indicates the name of either a function or variable reference
    * 
    * @param depth
@@ -664,7 +663,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
     }
     else if (Parser.isLatinOrGreek(ch, false))
     {
-      node = eatFunctionInvocationOrVariableReference(depth, startPos);
+      node = resolveFunctionInvocationOrVariableReference(depth, startPos);
       assert node != null : "eatFunctionInvocationOrVariableReference returned null";
     }
     else if (ch == ')')
@@ -743,14 +742,14 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
    * @return
    * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eatFunctionInvocationOrVariableReference(int depth,
-                                                                 int startPos) throws ExpressionCompilerException
+  private Node<D, R, F> resolveFunctionInvocationOrVariableReference(int depth,
+                                                                     int startPos) throws ExpressionCompilerException
   {
     Reference functionOrVariableName = eatName(depth, startPos);
     boolean   isFunction             = eat(depth, '(');
     if (verbose)
     {
-      err.format("eatFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
+      err.format("resolveFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
                  depth,
                  startPos,
                  position,
