@@ -81,9 +81,9 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
                                                                             RealPolynomial.class,
                                                                             "A",
-                                                                            "n➔(F(n)*x + G)*(C(n)/2 - ½)",
+                                                                            "n➔(F(n)*x + G)*(C(n) - 1)/2",
                                                                             context,
-                                                                            verbose);
+                                                                            true);
 
   final public RealFunction                      E       = RealFunction.express("E",
                                                                                 "n➔n*C(n/2)*C(n-1)",
@@ -100,11 +100,12 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                                 context,
                                                                                 verbose);
 
-  final public MultivariateFunction<Real>        Pfunc   = MultivariateFunction.express(Real.class,
-                                                                                        "P",
-                                                                                        "(n,z)➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
-                                                                                        context,
-                                                                                        true);
+  final public Function<Integer, RealPolynomial> Pfunc   = Function.express(Integer.class,
+                                                                            RealPolynomial.class,
+                                                                            "P",
+                                                                            "(n,z)➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
+                                                                            context,
+                                                                            true);
 
   public int                                     N;
 

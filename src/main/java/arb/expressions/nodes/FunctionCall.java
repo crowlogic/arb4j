@@ -128,7 +128,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>> ex
     CodeGenerator handler = (isResult ? resultFunctionHandlers : functionHandlers).get(name);
 
     if (handler == null)
-    { 
+    {
 
       Compiler.generateRegisteredFunctionCall(methodVisitor, name, node, isResult, depth);
 
@@ -173,22 +173,7 @@ public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>> ex
   @Override
   public String typeset()
   {
-    String name = this.name;
-
-    if ("√".equals(name))
-    {
-      name = "sqrt";
-    }
-    else if ("J0".equals(name))
-    {
-      name = "J_0";
-    }
-    else
-    {
-      name = "\\" + name;
-    }
-    return format("%s (%s)", name, node.typeset());
-
+    return format("%s(%s)", name.replace("√", "sqrt").replace("J0", "J_0"), node.typeset());
   }
 
 }

@@ -11,8 +11,6 @@ import java.util.Objects;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Real;
-import arb.RealPolynomial;
-import arb.Tuple;
 import arb.expressions.*;
 import arb.functions.Function;
 
@@ -123,7 +121,10 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     }
     else if (isIndeterminant)
     {
-      assert false : "TODO: https://github.com/crowlogic/arb4j/issues/294: generate code to construct the identity polynomial x->x=[0 1] which corresponds to 0+x and put it on the stack";
+      expression.checkClassCast(Compiler.loadResult(mv), true);
+
+      // I think the correct thing to do here is to assign
+      //assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
     }
     else
     {

@@ -18,7 +18,7 @@ public class Subtract<D, R, F extends Function<? extends D, ? extends R>> extend
   @Override
   public String typeset()
   {
-    return format("{%s} - {%s}", left.typeset(), right.typeset());
+    return format("(%s - %s)", left.typeset(), right.typeset());
   }
   public Subtract(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
   {

@@ -228,12 +228,12 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
    */
   public MethodVisitor setResult(MethodVisitor methodVisitor)
   {
-    checkClassCast(loadResult(methodVisitor), false);
+    checkClassCast(loadResult(methodVisitor), true);
     methodVisitor.visitInsn(Opcodes.SWAP);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  domainClassInternalName,
+                                  rangeClassInternalName,
                                   "set",
-                                  format("(%s)%s", domainClassDescriptor, domainClassDescriptor),
+                                  format("(%s)%s", rangeClassDescriptor, rangeClassDescriptor),
                                   false);
     return methodVisitor;
   }
@@ -247,7 +247,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
    */
   protected Class<F> define()
   {
-    return compiledClass = defineFunctionClass(this.className, instructions, context);
+    return compiledClass = defineFunctionClass(className, instructions, context);
   }
 
   /**
@@ -285,7 +285,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
   }
 
   /**
-   * Generates the {@link Class} containing a {@link RealFunction} implementation
+   * Generates the {@link Class} containing a {@link Function} implementation
    * which evaluates this{@link #expression}
    * 
    * @return this
@@ -1072,7 +1072,13 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
    */
   public MethodVisitor checkClassCast(MethodVisitor methodVisitor, boolean range)
   {
-    methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, range ? rangeClassInternalName : domainClassInternalName);
+    String checking = range ? rangeClassInternalName : domainClassInternalName;
+    if  ( verbose )
+    {
+      out.format("checking class cast for %s type %s\n", range ? "range" : "domain", checking );
+      out.flush();
+    }
+    methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
     return methodVisitor;
   }
 

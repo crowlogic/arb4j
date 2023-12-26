@@ -407,41 +407,24 @@ public class Compiler
     MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
     methodVisitor.visitCode();
 
-    // call the super class default no-arg constructor
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+    generateInvocationOfDefaultNoArgConstructor(methodVisitor);
 
-    if (!expression.literalConstants.isEmpty())
-    {
-      if (expression.verbose)
-      {
-        out.println("Preparing literal constants: " + expression.literalConstants);
-        out.flush();
-      }
+    initializeLiteralConstants(expression, methodVisitor);
 
-      initializeLiteralConstants(expression, methodVisitor);
-    }
+    initializeIntermediateVariables(expression, methodVisitor);
 
-    if (expression.intermediateVariableCount > 0)
-    {
-      if (expression.verbose)
-      {
-        err.println("Preparing intermediate variables: " + expression.intermediateVariables);
-        err.flush();
-      }
+    initializeRegisteredFunctions(expression, methodVisitor);
 
-      initializeIntermediateVariables(expression, methodVisitor);
-    }
-
-    if (expression.context != null && !expression.context.functions.isEmpty())
-    {
-      initializeRegisteredFunctions(expression, methodVisitor);
-
-    }
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(0, 0);
     methodVisitor.visitEnd();
     return methodVisitor;
+  }
+
+  public static void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
   }
 
   public static <D, R, F extends Function<? extends D, ? extends R>>
@@ -473,10 +456,19 @@ public class Compiler
          MethodVisitor
          initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
-    expression.context.functions.map.forEach((name, function) ->
+    if (expression.verbose && expression.context != null && !expression.context.functions.isEmpty())
     {
-      initializeRegisteredFunction(expression, methodVisitor, name, function);
-    });
+      err.println("Preparing intermediate variables: " + expression.intermediateVariables);
+      err.flush();
+    }
+
+    if (expression.context != null)
+    {
+      expression.context.functions.map.forEach((name, function) ->
+      {
+        initializeRegisteredFunction(expression, methodVisitor, name, function);
+      });
+    }
     return methodVisitor;
   }
 
@@ -501,6 +493,12 @@ public class Compiler
          MethodVisitor
          initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
+    if (expression.intermediateVariableCount > 0 && expression.verbose)
+    {
+      err.println("Preparing intermediate variables: " + expression.intermediateVariables);
+      err.flush();
+    }
+
     for (var intermediateVariable : expression.intermediateVariables)
     {
       initializeIntermediateVariable(expression, methodVisitor, intermediateVariable);
@@ -512,6 +510,12 @@ public class Compiler
          MethodVisitor
          initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
+    if (expression.verbose && !expression.literalConstants.isEmpty())
+    {
+
+      out.println("Preparing literal constants: " + expression.literalConstants);
+      out.flush();
+    }
 
     for (var literal : expression.literalConstants)
     {
