@@ -788,6 +788,10 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
     }
     else
     {
+      if (rangeClass.equals(RealPolynomial.class))
+      {
+        assert false : "TODO: handle placeholder variable when treating the functions elements as members of a vector space  rather than treating it as a real-valued variable to be used in the pointwise evaluation of the polynomial";
+      }
       return new Variable<D, R, F>(this,
                                    functionOrVariableName,
                                    depth + 1);

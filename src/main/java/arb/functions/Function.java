@@ -1,6 +1,10 @@
 package arb.functions;
 
+import static arb.expressions.Expression.instantiate;
+
 import arb.exceptions.NotDifferentiableException;
+import arb.expressions.Context;
+import arb.expressions.Expression;
 import arb.functions.complex.ComplexFunction;
 
 public interface Function<D, R>
@@ -95,6 +99,77 @@ public interface Function<D, R>
   {
     assert false : "TODO: implement in " + getClass();
     return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <D, R, F extends Function<? extends D, ? extends R>> F express(Class<? extends D> domainClass,
+                                                                               Class<? extends R> rangeClass,
+                                                                               String functionName,
+                                                                               String expression,
+                                                                               Context context,
+                                                                               boolean verbose)
+  {
+    var func = instantiate(expression, context, domainClass, rangeClass, Function.class, verbose);
+
+    if (functionName != null)
+    {
+      context.registerFunction(functionName, func);
+    }
+
+    return (F) func;
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <D, R>
+         Function<? extends D, ? extends R>
+         express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, Context context)
+  {
+    return instantiate(expression, context, domainClass, rangeClass, Function.class, false);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <D, R>
+         Function<? extends D, ? extends R>
+         express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, boolean verbose)
+  {
+    return instantiate(expression, null, domainClass, rangeClass, Function.class, verbose);
+  }
+
+  public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
+                                                                  Class<? extends R> rangeClass,
+                                                                  String expression)
+  {
+    return express(domainClass, rangeClass, expression, null);
+  }
+
+  /**
+   * Returns the result of
+   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean)}
+   * afteRealFunction calling {@link Context#registerFunction(String, Function)}
+   * to register the function by name in the specified {@link Context}
+   * 
+   * @param functionName
+   * @param expression
+   * @param context
+   * @return
+   */
+  public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
+                                                                  Class<? extends R> rangeClass,
+                                                                  String functionName,
+                                                                  String expression,
+                                                                  Context context)
+  {
+    return express(domainClass, rangeClass, functionName, expression, context, false);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
+                                                                  Class<? extends R> rangeClass,
+                                                                  String expression,
+                                                                  Context context,
+                                                                  boolean verbose)
+  {
+    return instantiate(expression, context, domainClass, rangeClass, Function.class, verbose);
   }
 
 }

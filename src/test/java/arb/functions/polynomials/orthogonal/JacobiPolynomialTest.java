@@ -4,6 +4,7 @@ import static arb.RealConstants.*;
 import static java.lang.System.out;
 
 import arb.Real;
+import arb.RealPolynomial;
 import arb.Tuple;
 import arb.Integer;
 import junit.framework.TestCase;
@@ -32,13 +33,10 @@ public class JacobiPolynomialTest extends
           Integer n = new Integer())
     {
 
-      Tuple input = new Tuple(n.set(3),
-                              threeHalves);
-
-      try ( Real result = seq.A.evaluate(input, 1, bits, new Real()))
+      try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
       {
         out.println("A(3,1.5)=" + result);
-        assertEquals(45.0, result.doubleValue());
+        assertEquals(45.0, result.eval(threeHalves.doubleValue()));
       }
     }
 

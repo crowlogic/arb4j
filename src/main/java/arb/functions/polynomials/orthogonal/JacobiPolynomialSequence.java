@@ -5,9 +5,12 @@ import java.util.Iterator;
 import java.util.stream.IntStream;
 
 import arb.*;
+import arb.Integer;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.expressions.Variables;
+import arb.functions.Function;
+import arb.functions.IntegerToRealPolynomialFunction;
 import arb.functions.MultivariateFunction;
 import arb.functions.real.RealFunction;
 
@@ -54,46 +57,56 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                      OrthogonalBasis<Real, J>,
                                      AutoCloseable
 {
-  public int                              bits    = 128;
-  public Real                             α       = new Real().setName("α");
-  public Real                             β       = new Real().setName("β");
-  final public Real                       G       = new Real().setName("G");
-  final public RealMatrix                 O;
-  final public ArrayList<RealPolynomial>  P;
-  final Variables                         vars    = new Variables(α,
-                                                                  β,
-                                                                  G);
+  public int                                     bits    = 128;
+  public Real                                    α       = new Real().setName("α");
+  public Real                                    β       = new Real().setName("β");
+  final public Real                              G       = new Real().setName("G");
+  final public RealMatrix                        O;
+  final public ArrayList<RealPolynomial>         P;
+  final Variables                                vars    = new Variables(α,
+                                                                         β,
+                                                                         G);
 
-  final Context                           context = new Context(vars);
+  final Context                                  context = new Context(vars);
 
-  final public static boolean             verbose = false;
+  final public static boolean                    verbose = false;
 
-  final public RealFunction               C       = RealFunction.express("C", "n➔2*n+α+β", context, verbose);
+  final public RealFunction                      C       = RealFunction.express("C", "n➔2*n+α+β", context, verbose);
 
-  final public RealFunction               F       = RealFunction.express("F", "n➔C(n-1)*C(n)", context, verbose);
+  final public RealFunction                      F       = RealFunction.express("F",
+                                                                                "n➔C(n-1)*C(n)",
+                                                                                context,
+                                                                                verbose);
 
-  final public MultivariateFunction<Real> A       = MultivariateFunction.express(Real.class,
-                                                                                 "A",
-                                                                                 "(n,x)➔(F(n)*x + G)*(C(n)/2 - ½)",
-                                                                                 context,
-                                                                                 verbose);
+  final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
+                                                                            RealPolynomial.class,
+                                                                            "A",
+                                                                            "n➔(F(n)*x + G)*(C(n)/2 - ½)",
+                                                                            context,
+                                                                            verbose);
 
-  final public RealFunction               E       = RealFunction.express("E", "n➔n*C(n/2)*C(n-1)", context, verbose);
+  final public RealFunction                      E       = RealFunction.express("E",
+                                                                                "n➔n*C(n/2)*C(n-1)",
+                                                                                context,
+                                                                                verbose);
 
-  final public RealFunction               B       = RealFunction.express("B",
-                                                                         "n➔(n+α-1)*(n+β-1)*C(n)",
-                                                                         context,
-                                                                         verbose);
+  final public RealFunction                      B       = RealFunction.express("B",
+                                                                                "n➔(n+α-1)*(n+β-1)*C(n)",
+                                                                                context,
+                                                                                verbose);
 
-  final public RealFunction               p1      = RealFunction.express("p1", "x➔(C(1)*x-β+α)/2", context, verbose);
+  final public RealFunction                      p1      = RealFunction.express("p1",
+                                                                                "x➔(C(1)*x-β+α)/2",
+                                                                                context,
+                                                                                verbose);
 
-  final public MultivariateFunction<Real> Pfunc   = MultivariateFunction.express(Real.class,
-                                                                                 "P",
-                                                                                 "(n,z)➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
-                                                                                 context,
-                                                                                 true);
+  final public MultivariateFunction<Real>        Pfunc   = MultivariateFunction.express(Real.class,
+                                                                                        "P",
+                                                                                        "(n,z)➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
+                                                                                        context,
+                                                                                        true);
 
-  public int                              N;
+  public int                                     N;
 
   public JacobiPolynomialSequence(Real a, Real b, int N)
   {
