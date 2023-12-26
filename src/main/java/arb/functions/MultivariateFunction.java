@@ -9,6 +9,10 @@ import arb.expressions.Expression;
 /**
  * See {@link Tuple}
  * 
+ * integers can be handled by considering it a univariate {@link Tuple} and then
+ * using the generified
+ * {@link MultivariateFunction}{@link #express(Class, String)}x
+ * 
  * arb4j is made available under the terms of the Business Source License™ v1.1
  * ©2023 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
