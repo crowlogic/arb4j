@@ -1,8 +1,10 @@
 package arb.functions;
 
-import arb.Real;
+import static arb.expressions.Expression.instantiate;
+
 import arb.Tuple;
 import arb.expressions.Context;
+import arb.expressions.Expression;
 
 /**
  * See {@link Tuple}
@@ -18,10 +20,70 @@ public interface MultivariateFunction<R> extends
                                      Function<Tuple, R>
 {
 
-  public static MultivariateFunction<Real> express(String string, String string2, Context context, boolean b)
+  @SuppressWarnings("unchecked")
+  public static <R>
+         MultivariateFunction<R>
+         express(Class<? extends R> rangeClass, String expression, Context context, boolean verbose)
   {
-    assert false : "TODO: implement";
-    return null;
+    return instantiate(expression, context, Tuple.class, rangeClass, MultivariateFunction.class, verbose);
+  }
+
+  public static <R> MultivariateFunction<R> express(Class<? extends R> rangeClass,
+                                                    String expression,
+                                                    boolean verbose)
+  {
+    return express(rangeClass, expression, null, verbose);
+  }
+
+  public static <R> MultivariateFunction<R> express(Class<? extends R> rangeClass, String expression)
+  {
+    return express(rangeClass, expression, null);
+  }
+
+  public static <R> MultivariateFunction<R> express(Class<? extends R> rangeClass,
+                                                    String expression,
+                                                    Context context)
+  {
+    return express(rangeClass, null, expression, context, false);
+  }
+
+  /**
+   * Returns the result of
+   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean)}
+   * afteRealFunction calling {@link Context#registerFunction(String, Function)}
+   * to register the function by name in the specified {@link Context}
+   * 
+   * @param functionName
+   * @param expression
+   * @param context
+   * @return
+   */
+  public static <R>
+         MultivariateFunction<R>
+         express(Class<? extends R> rangeClass, String functionName, String expression, Context context)
+  {
+    return express(rangeClass, functionName, expression, context, false);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <R> MultivariateFunction<R> express(Class<? extends R> rangeClass,
+                                                    String functionName,
+                                                    String expression,
+                                                    Context context,
+                                                    boolean verbose)
+  {
+    MultivariateFunction<R> func = instantiate(expression,
+                                               context,
+                                               Tuple.class,
+                                               rangeClass,
+                                               MultivariateFunction.class,
+                                               verbose);
+    if (functionName != null)
+    {
+      context.registerFunction(functionName, func);
+    }
+
+    return func;
   }
 
 }

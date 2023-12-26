@@ -27,7 +27,7 @@ import arb.functions.MultivariateFunction;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public class Tuple
+public class Tuple implements AutoCloseable
 {
 
   @Override
@@ -124,6 +124,13 @@ public class Tuple
                                                                      index,
                                                                      types[index]);
     return o;
+  }
+
+  @Override
+  public void close() throws Exception
+  {
+    // TODO Auto-generated method stub
+    
   }
 
 }

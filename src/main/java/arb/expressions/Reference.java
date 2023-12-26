@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import java.util.Objects;
+
 /**
  * <pre>
  * Copyright ©2023 Stephen Crowley
@@ -11,6 +13,25 @@ package arb.expressions;
  */
 public class Reference
 {
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(index, name);
+  }
+
+  @Override
+  public boolean equals(Object obj)
+  {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Reference other = (Reference) obj;
+    return Objects.equals(index, other.index) && Objects.equals(name, other.name);
+  }
 
   @Override
   public String toString()

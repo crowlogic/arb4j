@@ -24,6 +24,7 @@ import arb.*;
 import arb.expressions.nodes.*;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
+import arb.functions.MultivariateFunction;
 import arb.functions.real.RealFunction;
 
 /**
@@ -541,7 +542,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
 
   public void parseOptionalIndependentVariableSpecification()
   {
-    int rightArrowIndex = expression.replace("->","➔").indexOf('➔');
+    int rightArrowIndex = expression.replace("->", "➔").indexOf('➔');
     if (rightArrowIndex != -1)
     {
       independentVariableNode = new Variable<D, R, F>(this,
@@ -1196,7 +1197,10 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
                                                      rangeClass,
                                                      functionClass,
                                                      verbose);
-    // out.println("instantiating $" + compiledExpression.rootNode.typeset() + "$");
+    if (verbose)
+    {
+      out.println("instantiating $" + compiledExpression.rootNode.typeset() + "$");
+    }
     return compiledExpression.instantiate();
   }
 
@@ -1215,6 +1219,16 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
   public String typeset()
   {
     return rootNode.typeset();
+  }
+
+  /**
+   * 
+   * @return true if this{@link #domainClass}
+   *         {@link Class#isAssignableFrom(Class)} {@link Tuple#getClass()}
+   */
+  public boolean isMultivariateDomain()
+  {
+    return domainClass.isAssignableFrom(Tuple.class);
   }
 
 }

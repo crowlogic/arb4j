@@ -102,8 +102,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     if (getClass() != obj.getClass())
       return false;
     var other = (Variable<?, ?, ?>) obj;
-    return Objects.equals(expression, other.expression) && isIndependent == other.isIndependent
-                  && Objects.equals(reference, other.reference);
+    return Objects.equals(reference, other.reference);
   }
 
   /**
@@ -184,9 +183,9 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
 
   public void resolveReference(Reference reference)
   {
-    var independentVariable = expression.independentVariableNode;
+    var inputVariable = expression.independentVariableNode;
 
-    if (isIndependent = equals(independentVariable))
+    if (isIndependent = equals(inputVariable))
     {
       expression.independentVariableNode = this;
       if (verbose)
@@ -197,10 +196,17 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     }
     else
     {
-      throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
-                                                   reference,
-                                                   expression,
-                                                   independentVariable));
+      if (expression.isMultivariateDomain())
+      {
+        assert false : String.format("TODO: resolve %s via input tuple %s" , this, inputVariable );
+      }
+      else
+      {
+        throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
+                                                     reference,
+                                                     expression,
+                                                     inputVariable));
+      }
     }
   }
 

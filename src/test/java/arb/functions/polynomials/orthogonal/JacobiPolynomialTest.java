@@ -4,7 +4,8 @@ import static arb.RealConstants.*;
 import static java.lang.System.out;
 
 import arb.Real;
-import arb.RealConstants;
+import arb.Tuple;
+import arb.Integer;
 import junit.framework.TestCase;
 
 /**
@@ -27,10 +28,14 @@ public class JacobiPolynomialTest extends
                                                    negHalf,
                                                    N);
           Real threeHalves = new Real("1.5",
-                                      128);)
+                                      128);
+          Integer n = new Integer())
     {
-      seq.n.set(3);
-      try ( Real result = seq.A.evaluate(threeHalves, 1, bits, new Real()))
+
+      Tuple input = new Tuple(n.set(3),
+                              threeHalves);
+
+      try ( Real result = seq.A.evaluate(input, 1, bits, new Real()))
       {
         out.println("A(3,1.5)=" + result);
         assertEquals(45.0, result.doubleValue());

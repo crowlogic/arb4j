@@ -57,13 +57,11 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   public int                              bits    = 128;
   public Real                             α       = new Real().setName("α");
   public Real                             β       = new Real().setName("β");
-  public Real                             n       = new Real().setName("n");
   final public Real                       G       = new Real().setName("G");
   final public RealMatrix                 O;
   final public ArrayList<RealPolynomial>  P;
   final Variables                         vars    = new Variables(α,
                                                                   β,
-                                                                  n,
                                                                   G);
 
   final Context                           context = new Context(vars);
@@ -74,10 +72,11 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final public RealFunction               F       = RealFunction.express("F", "n➔C(n-1)*C(n)", context, verbose);
 
-  final public RealFunction               A       = RealFunction.express("A",
-                                                                         "(n,x)➔(F(n)*x + G)*(C(n)/2 - ½)",
-                                                                         context,
-                                                                         verbose);
+  final public MultivariateFunction<Real> A       = MultivariateFunction.express(Real.class,
+                                                                                 "A",
+                                                                                 "(n,x)➔(F(n)*x + G)*(C(n)/2 - ½)",
+                                                                                 context,
+                                                                                 verbose);
 
   final public RealFunction               E       = RealFunction.express("E", "n➔n*C(n/2)*C(n-1)", context, verbose);
 
@@ -88,7 +87,8 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final public RealFunction               p1      = RealFunction.express("p1", "x➔(C(1)*x-β+α)/2", context, verbose);
 
-  final public MultivariateFunction<Real> Pfunc   = MultivariateFunction.express("P",
+  final public MultivariateFunction<Real> Pfunc   = MultivariateFunction.express(Real.class,
+                                                                                 "P",
                                                                                  "(n,z)➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
                                                                                  context,
                                                                                  true);
@@ -158,7 +158,6 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     β.close();
     domain.close();
     G.close();
-    n.close();
     O.close();
     P.forEach(RealPolynomial::close);
   }
