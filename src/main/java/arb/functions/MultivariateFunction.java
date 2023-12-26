@@ -1,6 +1,8 @@
 package arb.functions;
 
+import arb.Real;
 import arb.Tuple;
+import arb.expressions.Context;
 
 /**
  * See {@link Tuple}
@@ -15,5 +17,11 @@ import arb.Tuple;
 public interface MultivariateFunction<R> extends
                                      Function<Tuple, R>
 {
+
+  public static MultivariateFunction<Real> express(String string, String string2, Context context, boolean b)
+  {
+    assert false : "TODO: implement";
+    return null;
+  }
 
 }

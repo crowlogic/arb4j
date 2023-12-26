@@ -295,13 +295,13 @@ public class Compiler
 
   public static <D, R, F extends Function<D, R>> Expression<Real, Real, RealFunction> compile(String className,
                                                                                               String expression,
-                                                                                              RealContext context)
+                                                                                              Context context)
   {
     return compile(className, expression, context, false);
   }
 
   public static Expression<Real, Real, RealFunction>
-         compile(String className, String expression, RealContext context, boolean verbose)
+         compile(String className, String expression, Context context, boolean verbose)
   {
     return compile(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }

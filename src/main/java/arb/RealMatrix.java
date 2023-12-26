@@ -67,6 +67,11 @@ public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix>
   {
     return rows[i];
   }  
+
+  public long getRowPointer(int i)
+  {
+    return rows[i].swigCPtr;
+  }      
   
   private void initRows()
   {

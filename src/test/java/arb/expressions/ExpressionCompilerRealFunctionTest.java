@@ -14,7 +14,7 @@ public class ExpressionCompilerRealFunctionTest extends
                                                 TestCase
 {
 
-  RealContext  context   = new RealContext();
+  Context  context   = new Context();
 
   Variables    variables = context.variables;
 

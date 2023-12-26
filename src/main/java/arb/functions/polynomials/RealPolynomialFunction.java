@@ -5,7 +5,6 @@ import static arb.expressions.Expression.instantiate;
 import arb.RealPolynomial;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.expressions.RealPolynomialContext;
 import arb.functions.Function;
 
 public interface RealPolynomialFunction extends
@@ -28,7 +27,7 @@ public interface RealPolynomialFunction extends
     return express(expression, null);
   }
 
-  public static RealPolynomialFunction express(String expression, RealPolynomialContext context)
+  public static RealPolynomialFunction express(String expression, Context context)
   {
     return instantiate(expression,
                        context,
@@ -48,13 +47,13 @@ public interface RealPolynomialFunction extends
    * @return a newly generated and constructed {@link RealPolynomialFunction}
    *         which evaluates the expression
    */
-  public static RealPolynomialFunction express(String functionName, String expression, RealPolynomialContext context)
+  public static RealPolynomialFunction express(String functionName, String expression, Context context)
   {
     return express(functionName, expression, context, false);
   }
 
   public static RealPolynomialFunction
-         express(String functionName, String expression, RealPolynomialContext context, boolean verbose)
+         express(String functionName, String expression, Context context, boolean verbose)
   {
     RealPolynomialFunction func = instantiate(expression,
                                               context,
@@ -68,7 +67,7 @@ public interface RealPolynomialFunction extends
     return func;
   }
 
-  public static RealPolynomialFunction express(String expression, RealPolynomialContext context, boolean verbose)
+  public static RealPolynomialFunction express(String expression, Context context, boolean verbose)
   {
     return instantiate(expression,
                        context,

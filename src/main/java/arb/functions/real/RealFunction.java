@@ -1,7 +1,9 @@
 package arb.functions.real;
 
 import static arb.expressions.Expression.instantiate;
-import static arb.utensils.Utensils.*;
+import static arb.utensils.Utensils.computeNewtonStep;
+import static arb.utensils.Utensils.println;
+import static arb.utensils.Utensils.refineRootViaNewtonsMethod;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -11,10 +13,8 @@ import arb.*;
 import arb.Float;
 import arb.FloatInterval.RootStatus;
 import arb.RealRootInterval.RefinementResult;
-import arb.algebra.Magma;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.expressions.RealContext;
 import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.utensils.Utensils;
@@ -607,7 +607,7 @@ public interface RealFunction extends
     return express(expression, null);
   }
 
-  public static RealFunction express(String expression, RealContext context)
+  public static RealFunction express(String expression, Context context)
   {
     return instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
   }
@@ -623,12 +623,12 @@ public interface RealFunction extends
    * @param context
    * @return
    */
-  public static RealFunction express(String functionName, String expression, RealContext context)
+  public static RealFunction express(String functionName, String expression, Context context)
   {
     return express(functionName, expression, context, false);
   }
 
-  public static RealFunction express(String functionName, String expression, RealContext context, boolean verbose)
+  public static RealFunction express(String functionName, String expression, Context context, boolean verbose)
   {
     RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
 
@@ -637,7 +637,7 @@ public interface RealFunction extends
     return func;
   }
 
-  public static RealFunction express(String expression, RealContext context, boolean verbose)
+  public static RealFunction express(String expression, Context context, boolean verbose)
   {
     return instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }

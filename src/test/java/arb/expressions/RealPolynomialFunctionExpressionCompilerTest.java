@@ -14,7 +14,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
 {
   public static void testAdd()
   {
-    RealPolynomialContext context = new RealPolynomialContext();
+    Context context = new Context();
     try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();
           var correctZ = new RealPolynomial(3))
     {
@@ -39,8 +39,8 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
 
   public static void testSub()
   {
-    RealPolynomialContext context = new RealPolynomialContext();
-    RealPolynomial        x       = new RealPolynomial(1);
+    Context        context = new Context();
+    RealPolynomial x       = new RealPolynomial(1);
     x.set(0, RealConstants.two);
     RealPolynomial y = new RealPolynomial(3);
     context.registerVariable("y", y);
@@ -60,7 +60,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
 
   public static void testMul()
   {
-    RealPolynomialContext context = new RealPolynomialContext();
+    Context context = new Context();
     try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();
           var correctZ = new RealPolynomial(3))
     {
@@ -85,7 +85,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
 
   public static void testDivisionWithRemainder()
   {
-    RealPolynomialContext context = new RealPolynomialContext();
+    Context context = new Context();
     try ( var x = new RealPolynomial(1); var y = new RealPolynomial(3); var z = new RealPolynomial();)
     {
       context.registerVariable("y", y);

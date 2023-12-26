@@ -40,6 +40,11 @@ import dnl.utils.text.table.TextTable;
   {
     return rows[i];
   }  
+
+  public long getRowPointer(int i)
+  {
+    return rows[i].swigCPtr;
+  }      
   
   private void initRows()
   {

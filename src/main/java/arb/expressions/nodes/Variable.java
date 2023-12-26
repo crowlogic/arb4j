@@ -65,7 +65,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
   public Expression<D, R, F> expression;
   public boolean             isIndependent = false;
 
-  private boolean            isMultivariate;
+  public final boolean       isMultivariate;
 
   public Variable(Expression<D, R, F> expression, Reference reference, int depth)
   {
@@ -78,7 +78,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
 
     if (variables == null || !variables.map.containsKey(reference.name))
     {
-      resolveReference(expression, reference);
+      resolveReference(reference);
     }
 
     if (!isIndependent)
@@ -182,7 +182,7 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     return null;
   }
 
-  public void resolveReference(Expression<D, R, F> expression, Reference reference)
+  public void resolveReference(Reference reference)
   {
     var independentVariable = expression.independentVariableNode;
 

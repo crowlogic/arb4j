@@ -4,7 +4,7 @@ import static arb.functions.real.RealFunction.express;
 
 import arb.Real;
 import arb.RealConstants;
-import arb.expressions.RealContext;
+import arb.expressions.Context;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
@@ -21,7 +21,7 @@ public class ZStructureFunction implements
 
   Variables vars = new Variables();
 
-  RealContext context = new RealContext(vars);
+  Context context = new Context(vars);
   
   public Real             a    = new Real();
   public Real             b    = new Real();

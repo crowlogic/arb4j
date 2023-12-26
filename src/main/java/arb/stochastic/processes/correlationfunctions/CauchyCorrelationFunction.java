@@ -3,7 +3,7 @@ package arb.stochastic.processes.correlationfunctions;
 import static arb.functions.real.RealFunction.express;
 
 import arb.Real;
-import arb.expressions.RealContext;
+import arb.expressions.Context;
 import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.RealSymmetricCovarianceKernel;
@@ -52,7 +52,7 @@ public class CauchyCorrelationFunction implements
 
   public Variables    vars    = new Variables();
 
-  public RealContext  context = new RealContext(vars);
+  public Context  context = new Context(vars);
 
   public RealFunction c       = express("((1+|h|)^α)^(-(β/α))", context);
 
