@@ -67,13 +67,11 @@ public class Compiler
    * @param depth
    * @return methodVisitor (for fluent-style function composition)
    */
-  public static <D, R, F extends Function<D,R>>
-         MethodVisitor
-         callFunctionOfVariable(MethodVisitor methodVisitor,
-                                String functionName,
-                                Node<D, R, F> arg,
-                                boolean lastCall,
-                                int depth)
+  public static <D, R, F extends Function<D, R>> MethodVisitor callFunctionOfVariable(MethodVisitor methodVisitor,
+                                                                                      String functionName,
+                                                                                      Node<D, R, F> arg,
+                                                                                      boolean lastCall,
+                                                                                      int depth)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -130,7 +128,7 @@ public class Compiler
    * @param depth
    * @return methodVisitor
    */
-  public static <D, R, F extends Function<D,R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          generateRegisteredFunctionCall(MethodVisitor methodVisitor,
                                         String functionName,
@@ -312,7 +310,7 @@ public class Compiler
    *                         objects representing the constants to be declared
    * @return classVisitor
    */
-  public static <D, R, F extends Function<D,R>>
+  public static <D, R, F extends Function<D, R>>
          ClassVisitor
          declareConstants(ClassVisitor classVisitor,
                           String typeDescriptor,
@@ -327,6 +325,8 @@ public class Compiler
 
   /**
    * Declares the given variables as fields in the class being generated.
+   * 
+   * TODO: needs to be refactored so that the variable type is passed in
    * 
    * @param classVisitor The {@link ClassVisitor} for the class being generated
    * @param variables    A {@link Collection} of variable names to be declared as

@@ -3,6 +3,8 @@ package arb.functions;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.expressions.Compiler;
+import arb.expressions.Expression;
 import arb.functions.polynomials.orthogonal.JacobiPolynomialSequence;
 
 /**
@@ -24,6 +26,13 @@ public abstract class A implements
   public Function<Integer, Real> C;
   public Function<Integer, Real> F;
 
+  /**
+   * Modify
+   * {@link Compiler#declareVariables(arb.expressions.Expression, org.objectweb.asm.ClassVisitor, Iterable) where
+   * its hard coded to use the Expression#domainClassDescriptor and make it so that Expression#intermediateVariables consists 
+   * and also modify Compiler#declareFunctions(arb.expressions.Expression,
+   * org.objectweb.asm.ClassVisitor, arb.expressions.Functions)
+   */
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
     return F.evaluate(in, order, bits, l2)
