@@ -75,7 +75,7 @@ import arb.functions.real.RealFunction;
  * 
  * @author ©2023 Stephen Crowley
  */
-public class Expression<D, R, F extends Function<D,R>> implements
+public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
   protected int                              position                  = -1;
@@ -1156,7 +1156,7 @@ public class Expression<D, R, F extends Function<D,R>> implements
    */
   public String locateExistingOrInstantiateNewIntermediateResultVariable(MethodVisitor methodVisitor, int depth)
   {
-
+    assert false : "Todo: add type of intermediate variable to locateExistingOrInstantiateNewIntermediateResultVariable";
     if (!resultInUse)
     {
       checkClassCast(loadResult(methodVisitor), true);
