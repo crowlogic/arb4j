@@ -26,8 +26,8 @@ public abstract class A implements
 
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
-    return F.evaluate(in, order, bits, result.getCoeffs())
-            .mul(result, bits, l0)
+    return F.evaluate(in, order, bits, l2)
+            .mul(result.identity(), bits, l0)
             .add(G, bits, l1)
             .mul(C.evaluate(in, order, bits, l2).sub(c0, bits, l3), bits, l4)
             .div(c1, bits, result);

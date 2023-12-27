@@ -114,7 +114,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   final public Function<Integer, RealPolynomial> Pfunc   = Function.express(Integer.class,
                                                                             RealPolynomial.class,
                                                                             "P",
-                                                                            "(n,z)➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
+                                                                            "n➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
                                                                             context,
                                                                             true);
 

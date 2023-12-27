@@ -301,6 +301,13 @@ import arb.exceptions.DivisionByZeroException;
     return this;
   }
 
+  public RealPolynomial set(RealPolynomial a)
+  {
+    arblib.arb_poly_set(this, a);
+    return this;    
+  }
+
+
   /**
    * Calls {@link arblib#arb_poly_init2(RealPolynomial, int)} which calls
    * {@link arblib#arb_poly_init(RealPolynomial)} then
@@ -319,6 +326,21 @@ import arb.exceptions.DivisionByZeroException;
     
   public Real coeffsNative;
 
+
+  /**
+   * Sets this to the polynomial y(x)=x whose coefficient vector is [0 1]
+   * 
+   * @return this
+   */
+  public RealPolynomial identity()
+  {
+    setLength(2);
+    Real c = getCoeffs();
+    c.get(0).zero();
+    c.get(1).one();
+   return this;
+  }
+  
   public Real getCoeffs()
   {
     if (coeffsNative == null)
