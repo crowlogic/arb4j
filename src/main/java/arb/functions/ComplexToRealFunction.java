@@ -4,6 +4,9 @@ import arb.Complex;
 import arb.Real;
 import arb.functions.real.RealFunction;
 
+/**
+ * TODO: redesign
+ */
 public interface ComplexToRealFunction extends
                                        Function<Complex, Real>
 
