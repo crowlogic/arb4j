@@ -2,6 +2,7 @@ package arb;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
+import java.util.Arrays;
 
 import arb.algebra.Ring;
 
@@ -56,6 +57,7 @@ public class Integer implements
   public long           swigCPtr;
   public boolean        swigCMemOwn = true;
   private MemorySegment nativeSegment;
+  public Integer[]      elements;
 
   /**
    * @return {@link arblib#fmpz_get_ui(long)}
@@ -111,6 +113,22 @@ public class Integer implements
     return init(1);
   }
 
+  public Integer get(int index)
+  {
+    assert index < dim : String.format("index = %d >= dim = %d", index, dim);
+    if (index == 0 && dim == 1)
+    {
+      return this;
+    }
+    Integer element = elements[index];
+    if (element == null)
+    {
+      element = elements[index] = new Integer(swigCPtr + index * Long.BYTES,
+                                              false);
+    }
+    return element;
+  }
+
   /**
    * Sets this{@link #nativeSegment} by calling
    * {@link MemorySegment#allocateNative(long, SegmentScope)} and passing
@@ -151,7 +169,14 @@ public class Integer implements
   @Override
   public void close()
   {
-    delete();
+    if (elements != null && dim > 1)
+    {
+      Arrays.stream(elements).forEach(Integer::delete);
+    }
+    else
+    {
+      delete();
+    }
   }
 
   @Override

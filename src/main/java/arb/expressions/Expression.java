@@ -143,7 +143,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
 
   public final String                        evaluateMethodSignature;
 
-  public Variable<D, R, F> indeterminate;
+  public Variable<D, R, F>                   indeterminate;
 
   public Expression(String className,
                     Class<? extends D> domainClass,
@@ -1073,9 +1073,9 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
   public MethodVisitor checkClassCast(MethodVisitor methodVisitor, boolean range)
   {
     String checking = range ? rangeClassInternalName : domainClassInternalName;
-    if  ( verbose )
+    if (verbose)
     {
-      out.format("checking class cast for %s type %s\n", range ? "range" : "domain", checking );
+      out.format("checking class cast for %s type %s\n", range ? "range" : "domain", checking);
       out.flush();
     }
     methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
@@ -1191,12 +1191,12 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
     return checkClassCast(methodVisitor, true);
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>> F instantiate(String expression,
-                                                                                   Context context,
-                                                                                   Class<? extends D> domainClass,
-                                                                                   Class<? extends R> rangeClass,
-                                                                                   Class<? extends F> functionClass,
-                                                                                   boolean verbose)
+  public static <D, R, F extends Function<D, R>> F instantiate(String expression,
+                                                               Context context,
+                                                               Class<? extends D> domainClass,
+                                                               Class<? extends R> rangeClass,
+                                                               Class<? extends F> functionClass,
+                                                               boolean verbose)
   {
     Expression<D, R, F> compiledExpression = compile(expression,
                                                      context,
@@ -1206,7 +1206,7 @@ public class Expression<D, R, F extends Function<? extends D, ? extends R>> impl
                                                      verbose);
     if (verbose)
     {
-      out.println("instantiating $" + compiledExpression.rootNode.typeset() + "$");
+      out.println("instantiating $ " + compiledExpression.rootNode.typeset() + "$");
     }
     return compiledExpression.instantiate();
   }

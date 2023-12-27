@@ -47,8 +47,7 @@ public class JacobiPolynomialTest extends
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
                                                    negHalf,
                                                    N);
-          Real three = new Real("3",
-                                128);)
+          Integer three = new Integer())
     {
       try ( Real result = seq.E.evaluate(three, 1, bits, new Real()))
       {
@@ -64,8 +63,11 @@ public class JacobiPolynomialTest extends
   {
     try ( var seq = new JacobiPolynomialSequence<>(half,
                                                    oneQuarter,
-                                                   N))
+                                                   N);
+          var one = new Integer())
     {
+      one.set(1);
+
       try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
       {
         out.println("B(1)=" + result);
@@ -79,8 +81,10 @@ public class JacobiPolynomialTest extends
   {
     try ( var seq = new JacobiPolynomialSequence<>(half,
                                                    oneQuarter,
-                                                   N))
+                                                   N);
+          var one = new Integer())
     {
+      one.set(1);
       try ( Real result = seq.C.evaluate(one, 1, bits, new Real()))
       {
         out.println("C(1)=" + result);
@@ -94,8 +98,11 @@ public class JacobiPolynomialTest extends
   {
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
                                                    threeQuarters,
-                                                   N))
+                                                   N);
+          var one = new Integer();)
     {
+      one.set(1);
+
       try ( Real result = seq.F.evaluate(one, 1, bits, new Real()))
       {
         out.println("F(1)=" + result);

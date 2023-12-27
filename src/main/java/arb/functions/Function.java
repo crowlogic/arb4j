@@ -102,7 +102,7 @@ public interface Function<D, R>
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<? extends D, ? extends R>> F express(Class<? extends D> domainClass,
+  public static <D, R, F extends Function<D,R>> F express(Class<? extends D> domainClass,
                                                                                Class<? extends R> rangeClass,
                                                                                String functionName,
                                                                                String expression,
@@ -120,8 +120,7 @@ public interface Function<D, R>
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, R>
-         Function<? extends D, ? extends R>
+  public static <D, R, F extends Function<D,R>> F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, Context context)
   {
     return instantiate(expression, context, domainClass, rangeClass, Function.class, false);
