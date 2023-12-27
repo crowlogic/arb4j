@@ -102,12 +102,12 @@ public interface Function<D, R>
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<D,R>> F express(Class<? extends D> domainClass,
-                                                                               Class<? extends R> rangeClass,
-                                                                               String functionName,
-                                                                               String expression,
-                                                                               Context context,
-                                                                               boolean verbose)
+  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
+                                                           Class<? extends R> rangeClass,
+                                                           String functionName,
+                                                           String expression,
+                                                           Context context,
+                                                           boolean verbose)
   {
     var func = instantiate(expression, context, domainClass, rangeClass, Function.class, verbose);
 
@@ -120,18 +120,19 @@ public interface Function<D, R>
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<D,R>> F
+  public static <D, R, F extends Function<D, R>>
+         F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, Context context)
   {
-    return instantiate(expression, context, domainClass, rangeClass, Function.class, false);
+    return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, false);
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, R>
-         Function<? extends D, ? extends R>
+  public static <D, R, F extends Function<D, R>>
+         F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, boolean verbose)
   {
-    return instantiate(expression, null, domainClass, rangeClass, Function.class, verbose);
+    return  (F) instantiate(expression, null, domainClass, rangeClass, Function.class, verbose);
   }
 
   public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
@@ -152,11 +153,11 @@ public interface Function<D, R>
    * @param context
    * @return
    */
-  public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
-                                                                  Class<? extends R> rangeClass,
-                                                                  String functionName,
-                                                                  String expression,
-                                                                  Context context)
+  public static <D, R> Function<D, R> express(Class<? extends D> domainClass,
+                                              Class<? extends R> rangeClass,
+                                              String functionName,
+                                              String expression,
+                                              Context context)
   {
     return express(domainClass, rangeClass, functionName, expression, context, false);
   }

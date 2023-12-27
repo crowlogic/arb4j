@@ -149,7 +149,25 @@ import arb.stochastic.ProbabilityDistributionFunction;
 
   static { System.loadLibrary( "arblib" ); }
 
+  public RealPolynomial mul(RealPolynomial a, int bits, RealPolynomial res)
+  {
+    return a.mul(this, bits, res);
+  }
 
+  public RealPolynomial add(RealPolynomial a, int bits, RealPolynomial res)
+  {
+    res.set(a);
+    res.getCoeffs().get(0).add(this,bits);
+    return res;
+  }
+
+  public RealPolynomial sub(Real a, int bits, RealPolynomial res)
+  {
+    res.set(a);
+    res.getCoeffs().get(0).sub(this,bits);
+    return res;
+  }
+  
   @Override
   public Real apply(int value)
   {

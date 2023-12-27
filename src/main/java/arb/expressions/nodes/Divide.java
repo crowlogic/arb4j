@@ -11,7 +11,7 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public class Divide<D, R, F extends Function<? extends D, ? extends R>> extends
+public class Divide<D, R, F extends Function<D,R>> extends
                    BinaryOperation<D, R, F>
 {
   public Divide(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)

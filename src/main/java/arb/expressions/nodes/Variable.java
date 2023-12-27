@@ -54,7 +54,7 @@ import arb.functions.Function;
  *
  * @author ©2023 Stephen Crowley
  */
-public class Variable<D, R, F extends Function<? extends D, ? extends R>> extends
+public class Variable<D, R, F extends Function<D, R>> extends
                      Node<D, R, F>
 {
   public final Reference     reference;
@@ -124,7 +124,8 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
       expression.checkClassCast(Compiler.loadResult(mv), true);
 
       // I think the correct thing to do here is to assign
-      //assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
+      // assert false : "TODO: generate code to call the identity function on the
+      // polynomial result which has been loaded onto the stack";
     }
     else
     {
@@ -181,6 +182,11 @@ public class Variable<D, R, F extends Function<? extends D, ? extends R>> extend
     return null;
   }
 
+  /**
+   * Set this{@link #isIndeterminant} , this{@link #isIndependent}
+   * 
+   * @param reference
+   */
   public void resolveReference(Reference reference)
   {
     var inputVariable = expression.independentVariableNode;

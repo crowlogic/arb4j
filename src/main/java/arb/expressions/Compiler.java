@@ -67,7 +67,7 @@ public class Compiler
    * @param depth
    * @return methodVisitor (for fluent-style function composition)
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D,R>>
          MethodVisitor
          callFunctionOfVariable(MethodVisitor methodVisitor,
                                 String functionName,
@@ -130,7 +130,7 @@ public class Compiler
    * @param depth
    * @return methodVisitor
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D,R>>
          MethodVisitor
          generateRegisteredFunctionCall(MethodVisitor methodVisitor,
                                         String functionName,
@@ -214,11 +214,9 @@ public class Compiler
    * @param variableNameToBeClosed
    * @return
    */
-  static <D, R, F extends Function<? extends D, ? extends R>>
-         MethodVisitor
-         generateVariableClosure(Expression<D, R, F> expression,
-                                 MethodVisitor methodVisitor,
-                                 String variableNameToBeClosed)
+  static <D, R, F extends Function<D, R>> MethodVisitor generateVariableClosure(Expression<D, R, F> expression,
+                                                                                MethodVisitor methodVisitor,
+                                                                                String variableNameToBeClosed)
   {
     methodVisitor.visitFieldInsn(GETFIELD,
                                  expression.className,
@@ -228,14 +226,12 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<? extends D, ? extends R>>
-         Expression<D, R, F>
-         compile(String expression,
-                 Context context,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> rangeClass,
-                 Class<? extends F> functionClass,
-                 boolean verbose)
+  static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
+                                                                      Context context,
+                                                                      Class<? extends D> domainClass,
+                                                                      Class<? extends R> rangeClass,
+                                                                      Class<? extends F> functionClass,
+                                                                      boolean verbose)
   {
     String className = Parser.expressionToUniqueClassname(expression);
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose);
@@ -266,7 +262,7 @@ public class Compiler
    * @return compiled {@link Expression}
    * @throws ExpressionCompilerException
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D, R>>
          Expression<D, R, F>
          compile(String className,
                  String expressionString,
@@ -316,7 +312,7 @@ public class Compiler
    *                         objects representing the constants to be declared
    * @return classVisitor
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D,R>>
          ClassVisitor
          declareConstants(ClassVisitor classVisitor,
                           String typeDescriptor,
@@ -337,9 +333,9 @@ public class Compiler
    *                     fields
    * @return classVisitor
    */
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         ClassVisitor
-         declareVariables(Expression<D, R, F> expression, ClassVisitor classVisitor, Iterable<String> variables)
+  public static <D, R, F extends Function<D, R>> ClassVisitor declareVariables(Expression<D, R, F> expression,
+                                                                               ClassVisitor classVisitor,
+                                                                               Iterable<String> variables)
   {
     for (var variableName : variables)
     {
@@ -348,9 +344,9 @@ public class Compiler
     return classVisitor;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         ClassVisitor
-         declareFunctions(Expression<D, R, F> expression, ClassVisitor classVisitor, Functions functions)
+  public static <D, R, F extends Function<D, R>> ClassVisitor declareFunctions(Expression<D, R, F> expression,
+                                                                               ClassVisitor classVisitor,
+                                                                               Functions functions)
   {
     functions.map.forEach((name, function) ->
     {
@@ -395,9 +391,8 @@ public class Compiler
     }
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
-         MethodVisitor
-         generateConstructor(Expression<D, R, F> expression, ClassVisitor classVisitor)
+  public static <D, R, F extends Function<D, R>> MethodVisitor generateConstructor(Expression<D, R, F> expression,
+                                                                                   ClassVisitor classVisitor)
   {
     if (expression.verbose)
     {
@@ -427,7 +422,7 @@ public class Compiler
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D, R>>
          ClassVisitor
          generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor classVisitor)
   {
@@ -436,7 +431,7 @@ public class Compiler
     return classVisitor;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          initializeRegisteredFunction(Expression<D, R, F> expression,
                                       MethodVisitor methodVisitor,
@@ -452,7 +447,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
@@ -472,7 +467,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          initializeIntermediateVariable(Expression<D, R, F> expression,
                                         MethodVisitor methodVisitor,
@@ -489,7 +484,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
@@ -506,7 +501,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
@@ -524,7 +519,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static <D, R, F extends Function<? extends D, ? extends R>>
+  public static <D, R, F extends Function<D, R>>
          MethodVisitor
          initializeLiteralConstantWithString(Expression<D, R, F> expression,
                                              MethodVisitor methodVisitor,

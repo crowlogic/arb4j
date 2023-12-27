@@ -18,7 +18,7 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public class FunctionCall<D, R, F extends Function<? extends D, ? extends R>> extends
+public class FunctionCall<D, R, F extends Function<D,R>> extends
                          UnaryOperation<D, R, F>
 {
   @Override

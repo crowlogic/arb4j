@@ -19,7 +19,7 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public class LiteralConstant<D, R, F extends Function<? extends D, ? extends R>> extends
+public class LiteralConstant<D, R, F extends Function<D,R>> extends
                             Node<D, R, F>
 {
   public final String           value;
