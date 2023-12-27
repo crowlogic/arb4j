@@ -18,10 +18,10 @@ import arb.functions.real.RealFunction;
  * The Jacobi polynomials are recursively defined by
  * 
  * <pre>
- * Initial Conditions:
+ * Initial Conditions: both α,β>-1 fixed
  * 
- *   Pfunc(0,x) = 1
- *   Pfunc(1,x) = (C(1)x+α-β)/2
+ *   P(0,x) = 1
+ *   P(1,x) = (C(1)*x-β+α)/2
  * 
  * Coefficient Functions:
  * 
@@ -34,24 +34,25 @@ import arb.functions.real.RealFunction;
  *   
  * Recurrence Relation for n >= 2:
  * 
- *   P[n] = (x * A(n) * P(n-1,x) - B(n) * P(n-2,x)) / E(n)
+ *  P(n,x)=(A(n) * x * P(n-1,x) - B(n) * P(n-2,x)) / 2
+ *  
  * </pre>
  * 
- * The polynomials P(n) are mutually orthogonal with respect to the weight
+ * The polynomials P(n,x) are mutually orthogonal with respect to the weight
  * function
  * 
  * (1 - x)^α * (1 + x)^β
  * 
- * over the interval [-1, 1].
+ * over the interval [-1, 1].<br><br>
  * 
  * <pre>
- * 
- * Copyright ©2023 Stephen Crowley
- * 
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs formatted versions of the same document respectively.
  * </pre>
+ * 
+ * @author Stephen Crowley
  */
 public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends JacobiPolynomial<?>>> implements
                                      OrthogonalBasis<Real, J>,

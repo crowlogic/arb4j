@@ -124,10 +124,10 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
   
   /**
    * Performs polynomial division with remainder, computing a quotient and a
-   * remainder such that the implementation reverses the inputs and performs p
-   * ower series division.
+   * remainder such that the implementation reverses the inputs and performs 
+   * power series division.
    * 
-   * If the leading coefficient of the dividend contains zero (or if is
+   * If the leading coefficient of the divisor contains zero (or if is
    * identically zero), then a {@link DivisionByZeroException} is thrown.
    * Otherwise, the {@link RealPolynomial} quotient will be calculated
    * 
@@ -138,13 +138,13 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    * {@link RealPolynomial#remainder} will be null.
    */
   @Override
-  public RealPolynomial div(RealPolynomial dividend, int prec, RealPolynomial resultingQuotient)
+  public RealPolynomial div(RealPolynomial divisor, int prec, RealPolynomial resultingQuotient)
   {
     RealPolynomial remainder = new RealPolynomial();
 
-    if (arblib.arb_poly_divrem(resultingQuotient, remainder, this, dividend, prec) == 0)
+    if (arblib.arb_poly_divrem(resultingQuotient, remainder, this, divisor, prec) == 0)
     {
-      throw new DivisionByZeroException("division by zero: dividend=" + dividend);
+      throw new DivisionByZeroException("division by zero: dividend=" + divisor);
     }
     if (remainder.getLength() > 0)
     {

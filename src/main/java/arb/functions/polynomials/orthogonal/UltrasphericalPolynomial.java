@@ -2,17 +2,18 @@ package arb.functions.polynomials.orthogonal;
 
 /**
  * <pre>
- * Copyright ©2023 Stephen Crowley
- *  
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2023 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs formatted versions of the same document respectively.
  * </pre>
+ * 
+ * @author ©2023 Stephen Crowley
  * 
  * @param <J> the type of {@link UltrasphericalPolynomial}
  * @param <K> the type of {@link UltrasphericalPolynomialSequence}
  */
-public class UltrasphericalPolynomial<J extends UltrasphericalPolynomial<?, ? extends K>, K extends UltrasphericalPolynomialSequence<? extends J>>
+public class UltrasphericalPolynomial<J extends UltrasphericalPolynomial<? extends J, ? extends K>, K extends UltrasphericalPolynomialSequence<? extends J>>
                                      extends
                                      JacobiPolynomial<J>
 {
