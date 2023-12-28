@@ -5,8 +5,8 @@ import java.util.Collections;
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 
-import arb.Field;
-import arb.Typesettable;
+import arb.*;
+import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.Variables;
 import arb.functions.Function;
@@ -17,7 +17,7 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public abstract class Node<D, R, F extends Function<D,R>> implements
+public abstract class Node<D, R, F extends Function<D, R>> implements
                           Typesettable
 {
   public static boolean      verbose  = false;
@@ -71,7 +71,13 @@ public abstract class Node<D, R, F extends Function<D,R>> implements
    */
   public abstract String typeset();
 
+  /**
+   * 
+   * @return the type that this node results in when evaluated, should usually be
+   *         one of {@link Real}, {@link Complex}, {@link RealPolynomial}, or
+   *         {@link RealMatrix}, {@link ComplexMatrix}, {@link ComplexPolynomial},
+   *         or {@link Integer}
+   */
   public abstract Class<?> type();
-  
 
 }

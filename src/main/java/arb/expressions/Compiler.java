@@ -73,7 +73,8 @@ public class Compiler
                                                                             String functionName,
                                                                             Node<D, R, F> arg,
                                                                             boolean lastCall,
-                                                                            int depth, Class<?> rangeType)
+                                                                            int depth,
+                                                                            Class<?> rangeType)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -214,9 +215,11 @@ public class Compiler
    * @param variableNameToBeClosed
    * @return
    */
-  static <D, R, F extends Function<D, R>> MethodVisitor generateVariableClosure(Expression<D, R, F> expression,
-                                                                                MethodVisitor methodVisitor,
-                                                                                String variableNameToBeClosed)
+  public static <D, R, F extends Function<D, R>>
+         MethodVisitor
+         generateVariableClosure(Expression<D, R, F> expression,
+                                 MethodVisitor methodVisitor,
+                                 String variableNameToBeClosed)
   {
     methodVisitor.visitFieldInsn(GETFIELD,
                                  expression.className,
@@ -226,12 +229,12 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
-                                                                      Context context,
-                                                                      Class<? extends D> domainClass,
-                                                                      Class<? extends R> rangeClass,
-                                                                      Class<? extends F> functionClass,
-                                                                      boolean verbose)
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             boolean verbose)
   {
     String className = Parser.expressionToUniqueClassname(expression);
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose);
