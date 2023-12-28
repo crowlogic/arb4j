@@ -40,6 +40,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   private String                operation;
 
+  public final Class<?>         type;
+
   public BinaryOperation(Expression<D, R, F> parser,
                          Node<D, R, F> left,
                          String operation,
@@ -54,6 +56,20 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     this.left      = left;
     this.depth     = depth;
     assert left != null && right != null : "one or more of the operands to this were missing: " + this;
+    this.type = determineResultType(left, right);
+  }
+
+  public Class<?> determineResultType(Node<D, R, F> left, Node<D, R, F> right)
+  {
+    if ( left.type().equals(right.type()))
+    {
+      return left.type();
+    }
+    else
+    {
+      assert false : "todo: determine result type, left=" + left + " right=" + right;
+      return null;
+    }
   }
 
   @Override
@@ -98,7 +114,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.reserveIntermediateVariable(mv, depth, null);
+      expression.reserveIntermediateVariable(mv, depth, type);
     }
 
     String rcd = expression.rangeClassDescriptor;
@@ -153,5 +169,11 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                          childIndent,
                          right == null ? null : right.toString(depth < 0 ? depth : (depth + 2)),
                          indent);
+  }
+
+  @Override
+  public final Class<?> type()
+  {
+    return type;
   }
 }

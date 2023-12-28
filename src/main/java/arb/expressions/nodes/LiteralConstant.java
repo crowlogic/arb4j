@@ -22,6 +22,12 @@ import arb.functions.Function;
 public class LiteralConstant<D, R, F extends Function<D,R>> extends
                             Node<D, R, F>
 {
+  @Override
+  public Class<?> type()
+  {
+   return expression.rangeClass;
+  }
+  
   public final String           value;
   public String                 fieldName;
 

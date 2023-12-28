@@ -176,4 +176,10 @@ public class FunctionCall<D, R, F extends Function<D,R>> extends
     return format("%s(%s)", name.replace("√", "sqrt").replace("J0", "J_0"), node.typeset());
   }
 
+  @Override
+  public Class<?> type()
+  {
+   return expression.rangeClass;
+  }
+
 }

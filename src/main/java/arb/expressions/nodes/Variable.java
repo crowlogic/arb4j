@@ -57,6 +57,12 @@ import arb.functions.Function;
 public class Variable<D, R, F extends Function<D, R>> extends
                      Node<D, R, F>
 {
+  @Override
+  public Class<?> type()
+  {
+   return expression.rangeClass;
+  }
+  
   public final Reference     reference;
 
   public final Variables     variables;

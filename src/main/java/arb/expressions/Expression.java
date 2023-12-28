@@ -1154,12 +1154,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param depth         the depth this intermediate variable is needed for. "x"
    *                      would be depth 0, "sin(x)" would be sin at depth 0 and x
    *                      at depth 1 for example
-   * @param type TODO
+   * @param type          TODO
    * @return name of the intermediate variable
    */
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
   {
-    assert false : "Todo: add type of intermediate variable to locateExistingOrInstantiateNewIntermediateResultVariable: " + type;
+    if (!type.equals(rangeClass))
+    {
+      assert false : "Todo: add type of intermediate variable to locateExistingOrInstantiateNewIntermediateResultVariable: "
+                    + type;
+    }
     if (!resultInUse)
     {
       checkClassCast(loadResult(methodVisitor), true);

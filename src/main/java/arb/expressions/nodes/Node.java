@@ -71,4 +71,7 @@ public abstract class Node<D, R, F extends Function<D,R>> implements
    */
   public abstract String typeset();
 
+  public abstract Class<?> type();
+  
+
 }
