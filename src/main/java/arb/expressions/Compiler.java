@@ -73,7 +73,7 @@ public class Compiler
                                                                             String functionName,
                                                                             Node<D, R, F> arg,
                                                                             boolean lastCall,
-                                                                            int depth)
+                                                                            int depth, Class<?> rangeType)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -109,7 +109,7 @@ public class Compiler
       }
       else
       {
-        expression.reserveIntermediateVariable(methodVisitor, depth, null);
+        expression.reserveIntermediateVariable(methodVisitor, depth, rangeType);
       }
     }
 

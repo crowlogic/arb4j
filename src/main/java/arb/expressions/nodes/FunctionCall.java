@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.Real;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
@@ -18,7 +19,7 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public class FunctionCall<D, R, F extends Function<D,R>> extends
+public class FunctionCall<D, R, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
 {
   @Override
@@ -72,11 +73,11 @@ public class FunctionCall<D, R, F extends Function<D,R>> extends
   {
     for (String function : functions)
     {
-      registerFunctionHandler(function);
+      registerFunctionHandler(function, Real.class);
     }
-    registerFunctionHandler("log", "ln");
+    registerFunctionHandler("log", Real.class, "ln");
     // FIXME: todo, add support for √25 with no parenthesis
-    registerFunctionHandler("sqrt", "√");
+    registerFunctionHandler("sqrt", Real.class, "√");
 
   }
 
@@ -90,10 +91,10 @@ public class FunctionCall<D, R, F extends Function<D,R>> extends
    * @param functionName
    * @param aliases
    */
-  private static void registerFunctionHandler(String functionName, String... aliases)
+  private static void registerFunctionHandler(String functionName, Class<?> rangeType, String... aliases)
   {
-    registerFunctionHandler(functionName, true, aliases);
-    registerFunctionHandler(functionName, false, aliases);
+    registerFunctionHandler(functionName, true, rangeType, aliases);
+    registerFunctionHandler(functionName, false, rangeType, aliases);
   }
 
   /**
@@ -103,12 +104,13 @@ public class FunctionCall<D, R, F extends Function<D,R>> extends
    * @param lastCall     if true then this function invocation
    * @param aliases
    */
-  private static void registerFunctionHandler(String functionName, boolean lastCall, String... aliases)
+  private static void
+          registerFunctionHandler(String functionName, boolean lastCall, Class<?> rangeType, String... aliases)
   {
-    registerFunctionHandler(functionName, null, lastCall);
+    registerFunctionHandler(functionName, null, lastCall, rangeType);
     for (String alias : aliases)
     {
-      registerFunctionHandler(functionName, alias, lastCall);
+      registerFunctionHandler(functionName, alias, lastCall, rangeType);
     }
   }
 
@@ -159,11 +161,12 @@ public class FunctionCall<D, R, F extends Function<D,R>> extends
    * @return the {@link CodeGenerator} associated with this particular instance of
    *         the function
    */
-  public static CodeGenerator registerFunctionHandler(String functionName, String alias, boolean lastCall)
+  public static CodeGenerator
+         registerFunctionHandler(String functionName, String alias, boolean lastCall, Class<?> rangeType)
   {
     CodeGenerator handler  = (mv,
                               node,
-                              depth) -> Compiler.callFunction(mv, functionName, node, lastCall, depth);
+                              depth) -> Compiler.callFunction(mv, functionName, node, lastCall, depth, rangeType);
     var           handlers = lastCall ? resultFunctionHandlers : functionHandlers;
     String        name     = alias != null ? alias : functionName;
     handlers.put(name, handler);
@@ -179,7 +182,7 @@ public class FunctionCall<D, R, F extends Function<D,R>> extends
   @Override
   public Class<?> type()
   {
-   return expression.rangeClass;
+    return expression.rangeClass;
   }
 
 }
