@@ -1159,7 +1159,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
   {
-    //assert false : "Todo: add type of intermediate variable to locateExistingOrInstantiateNewIntermediateResultVariable: " + type;
+    assert false : "Todo: add type of intermediate variable to locateExistingOrInstantiateNewIntermediateResultVariable: " + type;
     if (!resultInUse)
     {
       checkClassCast(loadResult(methodVisitor), true);
