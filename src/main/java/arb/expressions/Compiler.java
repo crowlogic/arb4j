@@ -69,11 +69,11 @@ public class Compiler
    * @param depth
    * @return methodVisitor (for fluent-style function composition)
    */
-  public static <D, R, F extends Function<D, R>> MethodVisitor callFunctionOfVariable(MethodVisitor methodVisitor,
-                                                                                      String functionName,
-                                                                                      Node<D, R, F> arg,
-                                                                                      boolean lastCall,
-                                                                                      int depth)
+  public static <D, R, F extends Function<D, R>> MethodVisitor callFunction(MethodVisitor methodVisitor,
+                                                                            String functionName,
+                                                                            Node<D, R, F> arg,
+                                                                            boolean lastCall,
+                                                                            int depth)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -109,7 +109,7 @@ public class Compiler
       }
       else
       {
-        expression.locateExistingOrInstantiateNewIntermediateResultVariable(methodVisitor, depth);
+        expression.reserveIntermediateVariable(methodVisitor, depth, null);
       }
     }
 
@@ -184,7 +184,7 @@ public class Compiler
       }
       else
       {
-        expression.locateExistingOrInstantiateNewIntermediateResultVariable(methodVisitor, depth);
+        expression.reserveIntermediateVariable(methodVisitor, depth, null);
       }
     }
 

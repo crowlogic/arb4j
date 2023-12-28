@@ -98,7 +98,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.locateExistingOrInstantiateNewIntermediateResultVariable(mv, depth);
+      expression.reserveIntermediateVariable(mv, depth, null);
     }
 
     String rcd = expression.rangeClassDescriptor;

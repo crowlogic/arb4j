@@ -163,7 +163,7 @@ public class FunctionCall<D, R, F extends Function<D,R>> extends
   {
     CodeGenerator handler  = (mv,
                               node,
-                              depth) -> Compiler.callFunctionOfVariable(mv, functionName, node, lastCall, depth);
+                              depth) -> Compiler.callFunction(mv, functionName, node, lastCall, depth);
     var           handlers = lastCall ? resultFunctionHandlers : functionHandlers;
     String        name     = alias != null ? alias : functionName;
     handlers.put(name, handler);
