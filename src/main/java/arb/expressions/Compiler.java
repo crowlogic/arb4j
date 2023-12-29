@@ -58,66 +58,6 @@ public class Compiler
   private static final String objectDesc = Type.getInternalName(Object.class);
 
   /**
-   * Generate an invocation of member function of an {@link Object} by its name
-   * and the {@link Node} whose evaluated result is the independent variable, also
-   * known as the argument, to be passed to the function represented by this node
-   * 
-   * @param methodVisitor
-   * @param functionName
-   * @param arg
-   * @param lastCall
-   * @param depth
-   * @return methodVisitor (for fluent-style function composition)
-   */
-  public static <D, R, F extends Function<D, R>> MethodVisitor callFunction(MethodVisitor methodVisitor,
-                                                                            String functionName,
-                                                                            Node<D, R, F> arg,
-                                                                            boolean lastCall,
-                                                                            int depth)
-  {
-    var     expression = arg.expression;
-    boolean verbose    = expression.verbose;
-
-    if (verbose)
-    {
-      err.format("callFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
-                 functionName,
-                 arg,
-                 lastCall,
-                 depth);
-      err.flush();
-    }
-
-    arg.generate(methodVisitor);
-    loadBits(methodVisitor);
-
-    if (lastCall)
-    {
-      loadResult(methodVisitor);
-    }
-    else
-    {
-      if (arg.isReusable())
-      {
-        if (verbose)
-        {
-          err.println("Preparing stack to reuse its argument " + arg.toString(-1));
-          err.flush();
-        }
-
-        arg.prepareStackForReuse(methodVisitor);
-      }
-      else
-      {
-        expression.reserveIntermediateVariable(methodVisitor, depth, arg.type());
-      }
-    }
-
-    expression.checkClassCast(methodVisitor, false);
-    return expression.callBuiltinUnaryFunction(methodVisitor, functionName);
-  }
-
-  /**
    * Generate an invocation of function registered via
    * {@link Context#registerFunction(String, Function)} by its name and the
    * {@link Node} whose evaluated result is the independent variable, also known
@@ -135,7 +75,6 @@ public class Compiler
          generateRegisteredFunctionCall(MethodVisitor methodVisitor,
                                         String functionName,
                                         Node<D, R, F> arg,
-                                        boolean lastCall,
                                         int depth)
   {
     var     expression = arg.expression;
@@ -143,10 +82,9 @@ public class Compiler
 
     if (verbose)
     {
-      err.format("callRegisteredFunction(functionName=%s, arg=%s, lastCall=%s, depth=%d)\n",
+      err.format("callRegisteredFunction(functionName=%s, arg=%s, depth=%d)\n",
                  functionName,
                  arg,
-                 lastCall,
                  depth);
       err.flush();
 
@@ -166,7 +104,7 @@ public class Compiler
     loadOrder(methodVisitor);
     loadBits(methodVisitor);
 
-    if (lastCall)
+    if (arg.isResult)
     {
       loadResult(methodVisitor);
     }
@@ -214,9 +152,11 @@ public class Compiler
    * @param variableNameToBeClosed
    * @return
    */
-  static <D, R, F extends Function<D, R>> MethodVisitor generateVariableClosure(Expression<D, R, F> expression,
-                                                                                MethodVisitor methodVisitor,
-                                                                                String variableNameToBeClosed)
+  public static <D, R, F extends Function<D, R>>
+         MethodVisitor
+         generateVariableClosure(Expression<D, R, F> expression,
+                                 MethodVisitor methodVisitor,
+                                 String variableNameToBeClosed)
   {
     methodVisitor.visitFieldInsn(GETFIELD,
                                  expression.className,
@@ -226,12 +166,12 @@ public class Compiler
     return methodVisitor;
   }
 
-  static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
-                                                                      Context context,
-                                                                      Class<? extends D> domainClass,
-                                                                      Class<? extends R> rangeClass,
-                                                                      Class<? extends F> functionClass,
-                                                                      boolean verbose)
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             boolean verbose)
   {
     String className = Parser.expressionToUniqueClassname(expression);
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose);

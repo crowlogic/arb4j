@@ -158,17 +158,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   public String toString(int depth)
   {
-    String indent      = depth < 0 ? "" : indent(depth);
-    String childIndent = depth < 0 ? "" : indent(depth + 1);
-    return String.format(depth < 0 ? "%s%s[depth=%d %s left=%s,%s right=%s%s]" : "%s%s[\n%s left=\n %s,\n%s right=\n %s\n%s]",
-                         indent,
-                         getClass().getSimpleName(),
-                         depth,
-                         childIndent,
-                         left == null ? null : left.toString(depth < 0 ? depth : (depth + 2)),
-                         childIndent,
-                         right == null ? null : right.toString(depth < 0 ? depth : (depth + 2)),
-                         indent);
+    return typeset();
   }
 
   @Override

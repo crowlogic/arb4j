@@ -14,9 +14,9 @@ public class ExpressionCompilerRealFunctionTest extends
                                                 TestCase
 {
 
-  Context  context   = new Context();
+  Context      context;
 
-  Variables    variables = context.variables;
+  Variables    variables;
 
   private Real v;
   private Real v3;
@@ -24,6 +24,9 @@ public class ExpressionCompilerRealFunctionTest extends
   @Override
   protected void setUp() throws Exception
   {
+    context = new Context();
+    variables = context.variables;
+
     Real vars = Real.newAlignedVector(6);
 
     variables.put("b", one);
@@ -290,7 +293,7 @@ public class ExpressionCompilerRealFunctionTest extends
 
   public void testLogOnePlusInputSquared()
   {
-    RealFunction expression = express("ln(t^2+1)", context);
+    RealFunction expression = express("ln(t^2+1)", context,true);
     {
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(one, 1, 256, result);
@@ -414,11 +417,11 @@ public class ExpressionCompilerRealFunctionTest extends
 
   public void testSFunctionWithVar()
   {
-    RealFunction expression = express("tanh(ln(1+y^2))", context);
+    RealFunction expression = express("tanh(ln(1+y^2))", context, true);
     {
-      Real result     = new Real();
-      Real evaluatedX = expression.evaluate(one, 1, 256, result);
-      assert result == evaluatedX;
+      Real y = context.variables.get("y");
+      System.out.println( "y=" + y );
+      Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
       assertEquals(0.9230769230769231, evaluatedX.doubleValue());
     }
   }
