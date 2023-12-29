@@ -107,6 +107,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     public String   name;
     public Class<?> type;
+
     public static <D, R, F extends Function<D, R>>
            MethodVisitor
            initializeIntermediateVariable(Expression<D, R, F> expression,
@@ -123,6 +124,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                    intermediateVariable.type.descriptorString());
       return methodVisitor;
     }
+
     public static <D, R, F extends Function<D, R>>
            MethodVisitor
            initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
@@ -132,7 +134,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         err.println("Preparing intermediate variables: " + expression.intermediateVariables);
         err.flush();
       }
-    
+
       for (var intermediateVariable : expression.intermediateVariables)
       {
         initializeIntermediateVariable(expression, methodVisitor, intermediateVariable);
@@ -653,6 +655,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
         try
         {
           String                  functionName = entry.getKey();
+          // FIXME: create a referencedFunctions and only generate fields for functions
+          // that are used instead of creating one for every function in the Context
           java.lang.reflect.Field field        = compiledClass.getField(functionName);
           field.set(instance, entry.getValue());
         }
@@ -673,9 +677,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         try
         {
-          R                       value = variables.get(entry.getKey());
-          java.lang.reflect.Field field = compiledClass.getField(entry.getKey());
-          field.set(instance, value);
+          String variableName = entry.getKey();
+          if (referencedVariables.containsKey(variableName))
+          {
+            R                       value = variables.get(variableName);
+            java.lang.reflect.Field field = compiledClass.getField(variableName);
+            field.set(instance, value);
+          }
         }
         catch (Exception e)
         {
@@ -1292,7 +1300,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     return rootNode.typeset();
   }
-
 
   /**
    * 
