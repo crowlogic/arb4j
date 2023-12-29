@@ -12,7 +12,6 @@ import org.objectweb.asm.*;
 import arb.Field;
 import arb.Real;
 import arb.expressions.nodes.LiteralConstant;
-import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -56,85 +55,6 @@ import arb.functions.real.RealFunction;
 public class Compiler
 {
   private static final String objectDesc = Type.getInternalName(Object.class);
-
-  /**
-   * Generate an invocation of function registered via
-   * {@link Context#registerFunction(String, Function)} by its name and the
-   * {@link Node} whose evaluated result is the independent variable, also known
-   * as the argument, to be passed to the function represented by this node
-   * 
-   * @param methodVisitor
-   * @param functionName
-   * @param arg
-   * @param lastCall
-   * @param depth
-   * @return methodVisitor
-   */
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
-         generateRegisteredFunctionCall(MethodVisitor methodVisitor,
-                                        String functionName,
-                                        Node<D, R, F> arg,
-                                        int depth)
-  {
-    var     expression = arg.expression;
-    boolean verbose    = expression.verbose;
-
-    if (verbose)
-    {
-      err.format("callRegisteredFunction(functionName=%s, arg=%s, depth=%d)\n",
-                 functionName,
-                 arg,
-                 depth);
-      err.flush();
-
-    }
-
-    F func = expression.context.functions.get(functionName);
-
-    if (func == null)
-    {
-      throw new IllegalArgumentException(String.format("Undefined reference to function %s(.)", functionName));
-    }
-    expression.loadVariableReferenceOntoStack(loadThisOntoStack(methodVisitor),
-                                              functionName,
-                                              func.getClass().descriptorString());
-
-    arg.generate(methodVisitor);
-    loadOrder(methodVisitor);
-    loadBits(methodVisitor);
-
-    if (arg.isResult)
-    {
-      loadResult(methodVisitor);
-    }
-    else
-    {
-      if (arg.isReusable())
-      {
-        if (verbose)
-        {
-          err.println("Preparing stack to reuse its argument " + arg.toString(-1));
-          err.flush();
-        }
-
-        arg.prepareStackForReuse(methodVisitor);
-      }
-      else
-      {
-        expression.reserveIntermediateVariable(methodVisitor, depth, null);
-      }
-    }
-
-    expression.callRegisteredUnaryFunction(methodVisitor, functionName, func);
-
-    if (verbose)
-    {
-      err.println("Returning from callRegisteredFunction");
-      err.flush();
-    }
-    return methodVisitor;
-  }
 
   public static void loadZeroConstant(MethodVisitor methodVisitor)
   {
@@ -416,13 +336,13 @@ public class Compiler
                                         String intermediateVariable)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitTypeInsn(NEW, expression.rangeClassInternalName);
+    methodVisitor.visitTypeInsn(NEW, expression.domainClassInternalName);
     methodVisitor.visitInsn(DUP);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.rangeClassInternalName, "<init>", "()V", false);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "()V", false);
     methodVisitor.visitFieldInsn(PUTFIELD,
                                  expression.className,
                                  intermediateVariable,
-                                 expression.rangeClassDescriptor);
+                                 expression.domainClassDescriptor);
     return methodVisitor;
   }
 

@@ -4,7 +4,6 @@ import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.expressions.Compiler;
-import arb.expressions.Expression;
 import arb.functions.polynomials.orthogonal.JacobiPolynomialSequence;
 
 /**

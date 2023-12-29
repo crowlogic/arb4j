@@ -51,13 +51,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     if (context != null && context.functions.map.containsKey(name))
     {
 
-      Compiler.generateRegisteredFunctionCall(methodVisitor, name, node, depth);
+      generateContextualFunctionCall(methodVisitor);
 
       return methodVisitor;
     }
     else
     {
-      generateBuiltinFunctionCall(methodVisitor, name, node, depth);
+      generateBuiltinFunctionCall(methodVisitor);
 
       return methodVisitor;
     }
@@ -81,25 +81,21 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * known as the argument, to be passed to the function represented by this node
    * 
    * @param methodVisitor
-   * @param functionName
-   * @param arg
    * @param lastCall
-   * @param depth
    * @return methodVisitor (for fluent-style function composition)
    */
-  public MethodVisitor
-         generateBuiltinFunctionCall(MethodVisitor methodVisitor, String functionName, Node<D, R, F> arg, int depth)
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor)
   {
-    var     expression = arg.expression;
+    var     expression = node.expression;
     boolean verbose    = expression.verbose;
 
     if (verbose)
     {
-      out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", functionName, arg, depth);
+      out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", name, node, depth);
       out.flush();
     }
 
-    arg.generate(methodVisitor);
+    node.generate(methodVisitor);
     loadBits(methodVisitor);
 
     if (isResult)
@@ -108,24 +104,96 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      if (arg.isReusable())
+      if (node.isReusable())
       {
         if (verbose)
         {
-          err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+          err.println("Preparing stack to reuse its argument " + node.toString(-1));
           err.flush();
         }
 
-        arg.prepareStackForReuse(methodVisitor);
+        node.prepareStackForReuse(methodVisitor);
       }
       else
       {
-        expression.reserveIntermediateVariable(methodVisitor, depth, arg.type());
+        expression.reserveIntermediateVariable(methodVisitor, depth, node.type());
       }
     }
 
     expression.checkClassCast(methodVisitor, false);
-    return expression.callBuiltinUnaryFunction(methodVisitor, functionName);
+    return expression.callBuiltinUnaryFunction(methodVisitor, name);
+  }
+
+  /**
+   * Generate an invocation of function registered via
+   * {@link Context#registerFunction(String, Function)} by its name and the
+   * {@link Node} whose evaluated result is the independent variable, also known
+   * as the argument, to be passed to the function represented by this node
+   * 
+   * @param methodVisitor
+   * @param name
+   * @param node
+   * @param lastCall
+   * @param depth
+   * @return methodVisitor
+   */
+  public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor)
+  {
+    var     expression = node.expression;
+    boolean verbose    = expression.verbose;
+
+    if (verbose)
+    {
+      err.format("callRegisteredFunction(functionName=%s, arg=%s, depth=%d)\n", name, node, depth);
+      err.flush();
+
+    }
+
+    F func = expression.context.functions.get(name);
+
+    if (func == null)
+    {
+      throw new IllegalArgumentException(String.format("Undefined reference to function %s(.)", name));
+    }
+    expression.loadVariableReferenceOntoStack(Compiler.loadThisOntoStack(methodVisitor),
+                                              name,
+                                              func.getClass().descriptorString());
+
+    node.generate(methodVisitor);
+    Compiler.loadOrder(methodVisitor);
+    Compiler.loadBits(methodVisitor);
+
+    if (node.isResult)
+    {
+      Compiler.loadResult(methodVisitor);
+    }
+    else
+    {
+      if (node.isReusable())
+      {
+        if (verbose)
+        {
+          err.println("Preparing stack to reuse its argument " + node.toString(-1));
+          err.flush();
+        }
+
+        node.prepareStackForReuse(methodVisitor);
+      }
+      else
+      {
+        expression.reserveIntermediateVariable(methodVisitor, depth, null);
+      }
+    }
+
+    expression.callRegisteredUnaryFunction(methodVisitor, func);
+
+    if (verbose)
+    {
+      err.println("Returning from callRegisteredFunction");
+      err.flush();
+    }
+    
+    return methodVisitor;
   }
 
 }

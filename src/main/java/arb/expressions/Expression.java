@@ -75,7 +75,7 @@ import arb.functions.real.RealFunction;
  * 
  * @author ©2023 Stephen Crowley
  */
-public class Expression<D, R, F extends Function<D, R>> implements
+public class Expression<D, R, F extends Function<D,R>> implements
                        Typesettable
 {
   protected int                              position                  = -1;
@@ -1188,7 +1188,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param functionName
    * @return methodVisitor
    */
-  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, String functionName, F func)
+  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, F func)
   {
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(func.getClass()),
