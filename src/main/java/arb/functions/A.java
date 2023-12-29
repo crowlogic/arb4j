@@ -27,7 +27,7 @@ public abstract class A implements
 
   /**
    * Modify
-   * {@link Compiler#declareVariables(arb.expressions.Expression, org.objectweb.asm.ClassVisitor, Iterable) where
+   * {@link Compiler#declareVariables(arb.expressions.Expression, org.objectweb.asm.ClassVisitor, Iterable, boolean) where
    * its hard coded to use the Expression#domainClassDescriptor and make it so that Expression#intermediateVariables consists 
    * and also modify Compiler#declareFunctions(arb.expressions.Expression,
    * org.objectweb.asm.ClassVisitor, arb.expressions.Functions)

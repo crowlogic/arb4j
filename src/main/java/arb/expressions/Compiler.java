@@ -193,15 +193,23 @@ public class Compiler
    * @param classVisitor The {@link ClassVisitor} for the class being generated
    * @param variables    A {@link Collection} of variable names to be declared as
    *                     fields
+   * @param range        if true then the type is {@link Expression#rangeClass}
+   *                     otherwise its {@link Expression#domainClass}
+   * 
    * @return classVisitor
    */
   public static <D, R, F extends Function<D, R>> ClassVisitor declareVariables(Expression<D, R, F> expression,
                                                                                ClassVisitor classVisitor,
-                                                                               Iterable<String> variables)
+                                                                               Iterable<String> variables,
+                                                                               boolean range)
   {
     for (var variableName : variables)
     {
-      classVisitor.visitField(ACC_PUBLIC, variableName, expression.domainClassDescriptor, null, null);
+      classVisitor.visitField(ACC_PUBLIC,
+                              variableName,
+                              range ? expression.rangeClassDescriptor : expression.domainClassDescriptor,
+                              null,
+                              null);
     }
     return classVisitor;
   }
@@ -336,13 +344,13 @@ public class Compiler
                                         String intermediateVariable)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitTypeInsn(NEW, expression.domainClassInternalName);
+    methodVisitor.visitTypeInsn(NEW, expression.rangeClassInternalName);
     methodVisitor.visitInsn(DUP);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.domainClassInternalName, "<init>", "()V", false);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.rangeClassInternalName, "<init>", "()V", false);
     methodVisitor.visitFieldInsn(PUTFIELD,
                                  expression.className,
                                  intermediateVariable,
-                                 expression.domainClassDescriptor);
+                                 expression.rangeClassDescriptor);
     return methodVisitor;
   }
 

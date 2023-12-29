@@ -49,17 +49,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     Context context = expression.context;
     if (context != null && context.functions.map.containsKey(name))
-    {
-
-      generateContextualFunctionCall(methodVisitor);
-
-      return methodVisitor;
+    {      
+      return generateContextualFunctionCall(methodVisitor);
     }
     else
     {
-      generateBuiltinFunctionCall(methodVisitor);
-
-      return methodVisitor;
+     return generateBuiltinFunctionCall(methodVisitor);
     }
   }
 

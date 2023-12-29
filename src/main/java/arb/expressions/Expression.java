@@ -370,7 +370,7 @@ public class Expression<D, R, F extends Function<D,R>> implements
 
   public void declareIntermediateVariables(ClassVisitor classVisitor)
   {
-    declareVariables(this, classVisitor, intermediateVariables);
+    declareVariables(this, classVisitor, intermediateVariables, true);
   }
 
   public void declareReferencedVariables(ClassVisitor classVisitor)
@@ -382,7 +382,7 @@ public class Expression<D, R, F extends Function<D,R>> implements
         err.println("Declaring variables: " + referencedVariables);
         err.flush();
       }
-      declareVariables(this, classVisitor, referencedVariables.keySet());
+      declareVariables(this, classVisitor, referencedVariables.keySet(), false);
     }
   }
 
