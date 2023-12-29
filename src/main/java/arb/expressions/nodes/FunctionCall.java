@@ -122,6 +122,9 @@ public class FunctionCall<D, R, F extends Function<D,R>> extends
     this.depth = depth;
   }
 
+  /**
+   * FIXME: exchange the result and non-result maps with logic in {@link Compiler#callFunction(MethodVisitor, String, Node, boolean, int)}ll
+   */
   @Override
   public MethodVisitor generate(MethodVisitor methodVisitor)
   {

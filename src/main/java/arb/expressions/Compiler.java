@@ -109,7 +109,7 @@ public class Compiler
       }
       else
       {
-        expression.reserveIntermediateVariable(methodVisitor, depth, null);
+        expression.reserveIntermediateVariable(methodVisitor, depth, arg.type());
       }
     }
 

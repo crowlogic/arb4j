@@ -1147,14 +1147,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * Either generates a reference to an existing intermediate variable of the
+   * Either generates a reference to an existing intermediate variable thats not already allocated and is of the
    * specified type or allocates a new one and generates a reference to it
    * 
    * @param methodVisitor
    * @param depth         the depth this intermediate variable is needed for. "x"
    *                      would be depth 0, "sin(x)" would be sin at depth 0 and x
    *                      at depth 1 for example
-   * @param type          TODO
+   * @param type          the type of variable
    * @return name of the intermediate variable
    */
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
@@ -1252,7 +1252,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public boolean hasPolynomialRange()
   {
-    return rangeClass.equals(RealPolynomial.class);
+    return rangeClass.equals(RealPolynomial.class) || rangeClass.equals(ComplexPolynomial.class);
   }
 
 }
