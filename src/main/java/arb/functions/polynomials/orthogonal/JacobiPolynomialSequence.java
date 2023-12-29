@@ -117,7 +117,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                             "P",
                                                                             "n➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
                                                                             context,
-                                                                            true);
+                                                                            verbose);
 
   public int                                     N;
 
