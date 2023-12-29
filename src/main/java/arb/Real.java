@@ -153,8 +153,6 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  
-  
   public Real(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
