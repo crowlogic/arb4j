@@ -6,6 +6,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import arb.Integer;
 import arb.Real;
 import arb.expressions.Expression;
 import arb.functions.Function;
@@ -41,8 +42,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   private String                operation;
 
-  public final Class<?>         type;
-
   public BinaryOperation(Expression<D, R, F> parser,
                          Node<D, R, F> left,
                          String operation,
@@ -57,20 +56,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     this.left      = left;
     this.depth     = depth;
     assert left != null && right != null : "one or more of the operands to this were missing: " + this;
-    this.type = determineResultType(left, right);
-  }
-
-  public Class<?> determineResultType(Node<D, R, F> left, Node<D, R, F> right)
-  {
-    if (left.type().equals(right.type()))
-    {
-      return left.type();
-    }
-    else
-    {
-      assert false : "todo: determine result type, left=" + left + " right=" + right;
-      return null;
-    }
   }
 
   @Override
@@ -115,15 +100,17 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.reserveIntermediateVariable(mv, depth, type);
+      expression.reserveIntermediateVariable(mv, depth, type());
     }
 
+//    assert false : "assert that what is on the stack is we know that " + left.type() + " has " + operator + " method which operates on a " + right.type()
+//                  + " and produces a " + type();
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(left.type()),
                        operator,
                        String.format("(%sI%s)%s",
                                      right.type().descriptorString(),
-                                     type.descriptorString(),
+                                     type().descriptorString(),
                                      type().descriptorString()),
                        false);
 
@@ -164,9 +151,31 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     return typeset();
   }
 
+  /**
+   * symmetric type equality
+   * 
+   * @param a
+   * @param b
+   * @return true if (left,right) in { (a,b) , (b,a) }
+   */
+  public boolean typesSymmetryicallyEqual(Class<?> a, Class<?> b)
+  {
+    return (left.type().equals(a) && right.type().equals(b)) || (left.type().equals(b) && right.type().equals(a));
+  }
+
   @Override
   public final Class<?> type()
   {
-    return type;
+    if (left.type().equals(right.type()))
+    {
+      return left.type();
+    }
+
+    if (typesSymmetryicallyEqual(Integer.class, Real.class))
+    {
+      return Real.class;
+    }
+    assert false : String.format("TODO: handle resultant type for left=%s and right=%s", left, right);
+    return null;
   }
 }

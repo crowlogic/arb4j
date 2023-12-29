@@ -27,7 +27,9 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    return value.contains("\\.") ? Real.class : Integer.class;
+    return Real.class;
+    // FIXME: todo: implement integer-types
+    //return value.contains("\\.") ? Real.class : Integer.class;
   }
 
   public final String           value;

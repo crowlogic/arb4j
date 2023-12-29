@@ -113,7 +113,7 @@ public interface Function<D, R>
 
     if (functionName != null)
     {
-      context.registerFunction(functionName, func);
+      context.registerFunction(functionName, func, domainClass, rangeClass);
     }
 
     return (F) func;

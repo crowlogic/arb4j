@@ -632,7 +632,7 @@ public interface RealFunction extends
   {
     RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
 
-    context.registerFunction(functionName, func);
+    context.registerFunction(functionName, func, Real.class, Real.class );
 
     return func;
   }

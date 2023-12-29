@@ -6,12 +6,15 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.io.Closeable;
 import java.util.Collection;
+import java.util.Map;
 
 import org.objectweb.asm.*;
 
 import arb.Field;
 import arb.Real;
+import arb.expressions.Expression.IntermediateVariable;
 import arb.expressions.nodes.LiteralConstant;
+import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -185,35 +188,6 @@ public class Compiler
     return classVisitor;
   }
 
-  /**
-   * Declares the given variables as fields in the class being generated.
-   * 
-   * TODO: needs to be refactored so that the variable type is passed in
-   * 
-   * @param classVisitor The {@link ClassVisitor} for the class being generated
-   * @param variables    A {@link Collection} of variable names to be declared as
-   *                     fields
-   * @param range        if true then the type is {@link Expression#rangeClass}
-   *                     otherwise its {@link Expression#domainClass}
-   * 
-   * @return classVisitor
-   */
-  public static <D, R, F extends Function<D, R>> ClassVisitor declareVariables(Expression<D, R, F> expression,
-                                                                               ClassVisitor classVisitor,
-                                                                               Iterable<String> variables,
-                                                                               boolean range)
-  {
-    for (var variableName : variables)
-    {
-      classVisitor.visitField(ACC_PUBLIC,
-                              variableName,
-                              range ? expression.rangeClassDescriptor : expression.domainClassDescriptor,
-                              null,
-                              null);
-    }
-    return classVisitor;
-  }
-
   public static <D, R, F extends Function<D, R>> ClassVisitor declareFunctions(Expression<D, R, F> expression,
                                                                                ClassVisitor classVisitor,
                                                                                Functions functions)
@@ -276,7 +250,7 @@ public class Compiler
 
     initializeLiteralConstants(expression, methodVisitor);
 
-    initializeIntermediateVariables(expression, methodVisitor);
+    IntermediateVariable.initializeIntermediateVariables(expression, methodVisitor);
 
     initializeRegisteredFunctions(expression, methodVisitor);
 
@@ -333,40 +307,6 @@ public class Compiler
       {
         initializeRegisteredFunction(expression, methodVisitor, name, function);
       });
-    }
-    return methodVisitor;
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
-         initializeIntermediateVariable(Expression<D, R, F> expression,
-                                        MethodVisitor methodVisitor,
-                                        String intermediateVariable)
-  {
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitTypeInsn(NEW, expression.rangeClassInternalName);
-    methodVisitor.visitInsn(DUP);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.rangeClassInternalName, "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD,
-                                 expression.className,
-                                 intermediateVariable,
-                                 expression.rangeClassDescriptor);
-    return methodVisitor;
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
-         initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
-  {
-    if (expression.intermediateVariableCount > 0 && expression.verbose)
-    {
-      err.println("Preparing intermediate variables: " + expression.intermediateVariables);
-      err.flush();
-    }
-
-    for (var intermediateVariable : expression.intermediateVariables)
-    {
-      initializeIntermediateVariable(expression, methodVisitor, intermediateVariable);
     }
     return methodVisitor;
   }

@@ -123,7 +123,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (isIndependent)
     {
-      expression.checkClassCast(loadInput(mv), type());
+      expression.checkClassCast(loadInput(mv), expression.domainClass);
     }
     else if (isIndeterminant)
     {
@@ -204,31 +204,23 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      if (expression.isMultivariateDomain())
+
+      if (isIndeterminant = expression.hasPolynomialRange())
       {
-        assert false : String.format("TODO: resolve %s via input tuple %s (if its there, otherwise throw an exception)",
-                                     this,
-                                     inputVariable);
+        expression.indeterminate = this;
+
+        if (verbose)
+        {
+          out.format("%s: Indeterminate of polynomial declared to be: %s", expression, this);
+          out.flush();
+        }
       }
       else
       {
-        if (isIndeterminant = expression.hasPolynomialRange())
-        {
-          expression.indeterminate = this;
-
-          if (verbose)
-          {
-            out.format("%s: Indeterminate of polynomial declared to be: %s", expression, this);
-            out.flush();
-          }
-        }
-        else
-        {
-          throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
-                                                       reference,
-                                                       expression,
-                                                       inputVariable));
-        }
+        throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
+                                                     reference,
+                                                     expression,
+                                                     inputVariable));
       }
     }
   }

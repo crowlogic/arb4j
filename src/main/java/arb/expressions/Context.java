@@ -103,8 +103,9 @@ public class Context
    * @throws IllegalArgumentException if a function of the same name already
    *                                  exists in this{@link #functions}
    */
-  public Function<?, ?> registerFunction(String functionName, Function<?, ?> function)
+  public Function<?, ?> registerFunction(String functionName, Function<?, ?> function, Class<?> domainClass, Class<?> rangeClass )
   {
+    assert false : "TODO: add domainClass() and rangeClass() methods to Function so type checking can be done on the functions";
     if (verbose)
     {
       out.format("registerFunction( functionName = %s, function = %s )\n", functionName, function);

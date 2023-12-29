@@ -5,7 +5,7 @@ import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +13,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
@@ -78,27 +77,71 @@ import arb.functions.real.RealFunction;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
-  protected int                              position                  = -1;
+  protected int                   position = -1;
 
-  public int                                 ch                        = 0;
+  public int                      ch       = 0;
 
-  protected final String                     expression;
+  protected final String          expression;
 
-  public Variables                           variables;
+  public Variables                variables;
 
-  public String                              className;
+  public String                   className;
 
-  final public Class<? extends D>            domainClass;
+  final public Class<? extends D> domainClass;
 
-  final public Class<? extends R>            rangeClass;
+  final public Class<? extends R> rangeClass;
 
-  final public String                        domainClassDescriptor;
+  final public String             domainClassDescriptor;
 
-  final public String                        rangeClassDescriptor;
+  final public String             rangeClassDescriptor;
 
-  final public String                        functionClassInternalName;
+  final public String             functionClassInternalName;
 
-  public ArrayList<String>                   intermediateVariables     = new ArrayList<>();
+  public static class IntermediateVariable
+  {
+    public IntermediateVariable(String name, Class<?> type)
+    {
+      this.type = type;
+      this.name = name;
+    }
+
+    public String   name;
+    public Class<?> type;
+    public static <D, R, F extends Function<D, R>>
+           MethodVisitor
+           initializeIntermediateVariable(Expression<D, R, F> expression,
+                                          MethodVisitor methodVisitor,
+                                          IntermediateVariable intermediateVariable)
+    {
+      methodVisitor.visitVarInsn(ALOAD, 0);
+      methodVisitor.visitTypeInsn(NEW, expression.rangeClassInternalName);
+      methodVisitor.visitInsn(DUP);
+      methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.rangeClassInternalName, "<init>", "()V", false);
+      methodVisitor.visitFieldInsn(PUTFIELD,
+                                   expression.className,
+                                   intermediateVariable.name,
+                                   intermediateVariable.type.descriptorString());
+      return methodVisitor;
+    }
+    public static <D, R, F extends Function<D, R>>
+           MethodVisitor
+           initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
+    {
+      if (expression.intermediateVariableCount > 0 && expression.verbose)
+      {
+        err.println("Preparing intermediate variables: " + expression.intermediateVariables);
+        err.flush();
+      }
+    
+      for (var intermediateVariable : expression.intermediateVariables)
+      {
+        initializeIntermediateVariable(expression, methodVisitor, intermediateVariable);
+      }
+      return methodVisitor;
+    }
+  }
+
+  public ArrayList<IntermediateVariable>     intermediateVariables     = new ArrayList<IntermediateVariable>();
 
   int                                        intermediateVariableCount = 0;
 
@@ -180,10 +223,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return the field name returned by
    *         this{@link #getNextIntermediatevariableFieldName()}
    */
-  public String newIntermediateVariable(int depth)
+  public String newIntermediateVariable(int depth, Class<?> type)
   {
     String intermediateVarName = getNextIntermediatevariableFieldName(depth);
-    intermediateVariables.add(intermediateVarName);
+    intermediateVariables.add(new IntermediateVariable(intermediateVarName,
+                                                       type));
     if (verbose)
     {
       out.println("Allocating intermediate variable " + intermediateVarName + " at depth " + depth);
@@ -369,9 +413,39 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
+  /**
+   * Declares the given variables as fields in the class being generated.
+   * 
+   * TODO: needs to be refactored so that the variable type is passed in
+   * 
+   * @param classVisitor The {@link ClassVisitor} for the class being generated
+   * @param variables    A {@link Collection} of variable names to be declared as
+   *                     fields
+   * @param range        if true then the type is {@link Expression#rangeClass}
+   *                     otherwise its {@link Expression#domainClass}
+   * 
+   * @return classVisitor
+   */
+  public ClassVisitor declareVariables(ClassVisitor classVisitor,
+                                       Iterable<Map.Entry<String, Variable<D, R, F>>> variables)
+  {
+    for (var variable : variables)
+    {
+      classVisitor.visitField(ACC_PUBLIC,
+                              variable.getKey(),
+                              variable.getValue().type().descriptorString(),
+                              null,
+                              null);
+    }
+    return classVisitor;
+  }
+
   public void declareIntermediateVariables(ClassVisitor classVisitor)
   {
-    declareVariables(this, classVisitor, intermediateVariables, true);
+    for (var variable : intermediateVariables)
+    {
+      classVisitor.visitField(ACC_PUBLIC, variable.name, variable.type.descriptorString(), null, null);
+    }
   }
 
   public void declareReferencedVariables(ClassVisitor classVisitor)
@@ -383,7 +457,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         err.println("Declaring variables: " + referencedVariables);
         err.flush();
       }
-      declareVariables(this, classVisitor, referencedVariables.keySet(), false);
+      declareVariables(classVisitor, referencedVariables.entrySet());
     }
   }
 
@@ -440,7 +514,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
           err.flush();
         }
 
-        closeFields(methodVisitor, intermediateVariables);
+        closeFields(methodVisitor, intermediateVariables.stream().map(x -> x.name).collect(Collectors.toList()));
       }
 
       methodVisitor.visitInsn(Opcodes.RETURN);
@@ -1156,7 +1230,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else
     {
-      String intermediateVariableName = newIntermediateVariable(depth);
+      String intermediateVariableName = newIntermediateVariable(depth, type);
       loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, true);
       return intermediateVariableName;
     }
@@ -1172,7 +1246,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param functionName
    * @return methodVisitor
    */
-  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, F func, Class<?> type )
+  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, F func, Class<?> type)
   {
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(func.getClass()),
@@ -1219,15 +1293,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return rootNode.typeset();
   }
 
-  /**
-   * 
-   * @return true if this{@link #domainClass}
-   *         {@link Class#isAssignableFrom(Class)} {@link Tuple#getClass()}
-   */
-  public boolean isMultivariateDomain()
-  {
-    return domainClass.isAssignableFrom(Tuple.class);
-  }
 
   /**
    * 

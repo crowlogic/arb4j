@@ -33,7 +33,7 @@ import arb.functions.real.RealFunction;
  * Recurrence Relation for n >= 2:
  * 
  *  P(n,x)=(A(n) * x * P(n-1,x) - B(n) * P(n-2,x)) / 2
- *  
+ * 
  * </pre>
  * 
  * The polynomials P(n,x) are mutually orthogonal with respect to the weight
@@ -41,7 +41,8 @@ import arb.functions.real.RealFunction;
  * 
  * (1 - x)^α * (1 + x)^β
  * 
- * over the interval [-1, 1].<br><br>
+ * over the interval [-1, 1].<br>
+ * <br>
  * 
  * <pre>
  * arb4j is made available under the terms of the Business Source License™ v1.1
@@ -70,12 +71,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final public static boolean                    verbose = false;
 
-  final public Function<Integer, Real>           C       = Function.express(Integer.class,
-                                                                            Real.class,
-                                                                            "C",
-                                                                            "n➔2*n+α+β",
-                                                                            context,
-                                                                            true);
+  final public RealFunction                      C       = RealFunction.express("C", "n➔2*n+α+β", context, false);
 
   final public Function<Integer, Real>           F       = Function.express(Integer.class,
                                                                             Real.class,

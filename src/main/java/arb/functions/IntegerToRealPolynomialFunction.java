@@ -26,7 +26,7 @@ public interface IntegerToRealPolynomialFunction extends
                                                        IntegerToRealPolynomialFunction.class,
                                                        verbose);
 
-    context.registerFunction(functionName, func);
+    context.registerFunction(functionName, func, Integer.class, RealPolynomial.class);
 
     return func;
   }

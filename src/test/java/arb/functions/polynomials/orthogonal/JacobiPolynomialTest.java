@@ -5,6 +5,7 @@ import static java.lang.System.out;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealConstants;
 import arb.RealPolynomial;
 import junit.framework.TestCase;
 
@@ -80,11 +81,10 @@ public class JacobiPolynomialTest extends
   {
     try ( var seq = new JacobiPolynomialSequence<>(half,
                                                    oneQuarter,
-                                                   N);
-          var one = new Integer())
+                                                   N))
     {
       one.set(1);
-      try ( Real result = seq.C.evaluate(one, 1, bits, new Real()))
+      try ( Real result = seq.C.evaluate(RealConstants.one, 1, bits, new Real()))
       {
         out.println("C(1)=" + result);
         assertEquals(2.75, result.doubleValue());

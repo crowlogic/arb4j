@@ -326,7 +326,7 @@ public class ExpressionCompilerRealFunctionTest extends
   public void testOnePlusInputSquared()
   {
 
-    RealFunction expression = express("1+t^2", context);
+    RealFunction expression = express("1+t^2", context, true);
     {
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(one, 1, 256, result);
