@@ -1,10 +1,12 @@
 package arb.expressions;
 
+import arb.exceptions.ArbException;
+
 /**
 
  */
 public class ExpressionCompilerException extends
-                                         RuntimeException
+                                         ArbException
 {
 
   public ExpressionCompilerException()
