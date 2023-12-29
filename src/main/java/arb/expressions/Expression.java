@@ -75,7 +75,7 @@ import arb.functions.real.RealFunction;
  * 
  * @author ©2023 Stephen Crowley
  */
-public class Expression<D, R, F extends Function<D,R>> implements
+public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
   protected int                              position                  = -1;
@@ -224,11 +224,12 @@ public class Expression<D, R, F extends Function<D,R>> implements
    * return type is this{@link #domainClassDescriptor}
    * 
    * @param methodVisitor
+   * @param class1
    * @return methodVisitor
    */
   public MethodVisitor setResult(MethodVisitor methodVisitor)
   {
-    checkClassCast(loadResult(methodVisitor), true);
+    checkClassCast(loadResult(methodVisitor), rangeClass);
     methodVisitor.visitInsn(Opcodes.SWAP);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   rangeClassInternalName,
@@ -1064,18 +1065,18 @@ public class Expression<D, R, F extends Function<D,R>> implements
    * emits an {@link Opcodes#CHECKCAST} instruction
    * 
    * @param methodVisitor
-   * @param range         if true then emits an instruction to check if the top
+   * @param Type.gtype    if true then emits an instruction to check if the top
    *                      element on the stack is a
    *                      this{@link #rangeClassInternalName} otherwise tests if
    *                      its a this{@link #domainClassInternalName}
    * @return methodVisitor
    */
-  public MethodVisitor checkClassCast(MethodVisitor methodVisitor, boolean range)
+  public MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
   {
-    String checking = range ? rangeClassInternalName : domainClassInternalName;
+    String checking = Type.getInternalName(type);
     if (verbose)
     {
-      out.format("checking class cast for %s type %s\n", range ? "range" : "domain", checking);
+      out.format("checking class cast for %s\n", type);
       out.flush();
     }
     methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
@@ -1129,26 +1130,9 @@ public class Expression<D, R, F extends Function<D,R>> implements
   }
 
   /**
-   * Emit an instruction to invoke a {@link UnaryOperation} on a field. The unary
-   * operation has the signature D functionName( int bits, D result).
-   * 
-   * @param methodVisitor
-   * @param functionName
-   * @return methodVisitor
-   */
-  public MethodVisitor callBuiltinUnaryFunction(MethodVisitor methodVisitor, String functionName)
-  {
-    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  domainClassInternalName,
-                                  functionName,
-                                  format("(I%s)%s", domainClassDescriptor, domainClassDescriptor),
-                                  false);
-    return methodVisitor;
-  }
-
-  /**
-   * Either generates a reference to an existing intermediate variable thats not already allocated and is of the
-   * specified type or allocates a new one and generates a reference to it
+   * Either generates a reference to an existing intermediate variable thats not
+   * already allocated and is of the specified type or allocates a new one and
+   * generates a reference to it
    * 
    * @param methodVisitor
    * @param depth         the depth this intermediate variable is needed for. "x"
@@ -1166,7 +1150,7 @@ public class Expression<D, R, F extends Function<D,R>> implements
     }
     if (!resultInUse)
     {
-      checkClassCast(loadResult(methodVisitor), true);
+      checkClassCast(loadResult(methodVisitor), type);
       resultInUse = true;
       return "<RESULT>";
     }
@@ -1188,14 +1172,14 @@ public class Expression<D, R, F extends Function<D,R>> implements
    * @param functionName
    * @return methodVisitor
    */
-  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, F func)
+  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, F func, Class<?> type )
   {
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(func.getClass()),
                                   "evaluate",
                                   evaluateMethodDesc,
                                   false);
-    return checkClassCast(methodVisitor, true);
+    return checkClassCast(methodVisitor, type);
   }
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,

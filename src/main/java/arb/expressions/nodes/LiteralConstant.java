@@ -9,6 +9,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import arb.Integer;
+import arb.Real;
 import arb.RealConstants;
 import arb.expressions.Expression;
 import arb.functions.Function;
@@ -19,15 +21,15 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public class LiteralConstant<D, R, F extends Function<D,R>> extends
+public class LiteralConstant<D, R, F extends Function<D, R>> extends
                             Node<D, R, F>
 {
   @Override
   public Class<?> type()
   {
-   return expression.rangeClass;
+    return value.contains("\\.") ? Real.class : Integer.class;
   }
-  
+
   public final String           value;
   public String                 fieldName;
 
@@ -60,9 +62,9 @@ public class LiteralConstant<D, R, F extends Function<D,R>> extends
       return;
     }
 
-    for (LiteralConstant<D, R, F> existingConstant : expression.literalConstants)
+    for (var existingConstant : expression.literalConstants)
     {
-      if (existingConstant.value.equals(constantValueString))
+      if (existingConstant.value.equals(value))
       {
         if (verbose)
         {
@@ -88,11 +90,12 @@ public class LiteralConstant<D, R, F extends Function<D,R>> extends
   @Override
   public String toString()
   {
-    return String.format("%s[fieldName=%s, value=%s, depth=%s]",
+    return String.format("%s[fieldName=%s, value=%s, depth=%s, type=%s]",
                          getClass().getSimpleName(),
                          fieldName,
                          value,
-                         depth);
+                         depth,
+                         type());
   }
 
   public String toString(int depth)

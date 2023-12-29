@@ -7,6 +7,8 @@ import static java.lang.System.err;
 import static java.lang.System.out;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.expressions.*;
 import arb.functions.Function;
@@ -49,12 +51,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     Context context = expression.context;
     if (context != null && context.functions.map.containsKey(name))
-    {      
+    {
       return generateContextualFunctionCall(methodVisitor);
     }
     else
     {
-     return generateBuiltinFunctionCall(methodVisitor);
+      return generateBuiltinFunctionCall(methodVisitor);
     }
   }
 
@@ -95,7 +97,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (isResult)
     {
-      expression.checkClassCast(loadResult(methodVisitor), false);
+      expression.checkClassCast(loadResult(methodVisitor), node.type());
     }
     else
     {
@@ -115,8 +117,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       }
     }
 
-    expression.checkClassCast(methodVisitor, false);
-    return expression.callBuiltinUnaryFunction(methodVisitor, name);
+    expression.checkClassCast(methodVisitor, node.type());
+    return generateCallToBuiltinUnaryFunction(methodVisitor, name, node.type(), type());
   }
 
   /**
@@ -180,14 +182,47 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       }
     }
 
-    expression.callRegisteredUnaryFunction(methodVisitor, func);
+    expression.callRegisteredUnaryFunction(methodVisitor, func, type());
 
     if (verbose)
     {
       err.println("Returning from callRegisteredFunction");
       err.flush();
     }
-    
+
+    return methodVisitor;
+  }
+
+  /**
+   * Emit an instruction to invoke a {@link UnaryOperation} , that is, a function
+   * of one variable in the input domain mapping to one variable in the output
+   * range. The operators implementing method has the signature D functionName(
+   * int bits, D result).
+   * 
+   * @param methodVisitor
+   * @param functionName
+   * @param domainType
+   * @param rangeType
+   * @return methodVisitor
+   */
+  public static MethodVisitor generateCallToBuiltinUnaryFunction(MethodVisitor methodVisitor,
+                                                                 String functionName,
+                                                                 Class<?> domainType,
+                                                                 Class<?> rangeType)
+  {
+    if (verbose)
+    {
+      out.format("generateCallToBuiltinUnaryFunction(functionName=%s, domainType=%s, rangeType=%s\n",
+                 functionName,
+                 domainType,
+                 rangeType);
+      out.flush();
+    }
+    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                  Type.getInternalName(domainType),
+                                  functionName,
+                                  format("(I%s)%s", domainType.descriptorString(), rangeType.descriptorString()),
+                                  false);
     return methodVisitor;
   }
 

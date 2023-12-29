@@ -4,6 +4,7 @@ import static arb.expressions.Compiler.*;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.Real;
 import arb.expressions.Expression;
@@ -61,7 +62,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   public Class<?> determineResultType(Node<D, R, F> left, Node<D, R, F> right)
   {
-    if ( left.type().equals(right.type()))
+    if (left.type().equals(right.type()))
     {
       return left.type();
     }
@@ -77,7 +78,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     left.generate(mv);
     right.generate(mv);
-    return invokeMethod(mv, operation, expression.rangeClassInternalName);
+    return invokeMethod(mv, operation);
   }
 
   /**
@@ -92,13 +93,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
    * 
    * @return
    */
-  public MethodVisitor invokeMethod(MethodVisitor mv, String operator, String resultClassInternalName)
+  public MethodVisitor invokeMethod(MethodVisitor mv, String operator)
   {
     loadBits(mv);
     Node<D, R, F> reusableNode;
     if (isResult)
     {
-      expression.checkClassCast(loadResult(mv), false);
+      expression.checkClassCast(loadResult(mv), type());
     }
     else if ((reusableNode = getAReusableNode()) != null)
     {
@@ -117,11 +118,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       expression.reserveIntermediateVariable(mv, depth, type);
     }
 
-    String rcd = expression.rangeClassDescriptor;
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       expression.rangeClassInternalName,
+                       Type.getInternalName(left.type()),
                        operator,
-                       String.format("(%sI%s)%s", rcd, rcd, rcd),
+                       String.format("(%sI%s)%s",
+                                     right.type().descriptorString(),
+                                     type.descriptorString(),
+                                     type().descriptorString()),
                        false);
 
     return mv;

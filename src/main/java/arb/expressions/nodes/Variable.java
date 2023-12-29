@@ -60,9 +60,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-   return expression.rangeClass;
+    return expression.rangeClass;
   }
-  
+
   public final Reference     reference;
 
   public final Variables     variables;
@@ -123,15 +123,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (isIndependent)
     {
-      expression.checkClassCast(loadInput(mv), false);
+      expression.checkClassCast(loadInput(mv), type());
     }
     else if (isIndeterminant)
     {
-      expression.checkClassCast(Compiler.loadResult(mv), true);
-
-      // I think the correct thing to do here is to assign
-      // assert false : "TODO: generate code to call the identity function on the
-      // polynomial result which has been loaded onto the stack";
+      assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
     }
     else
     {
@@ -245,10 +241,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public String toString(int depth)
   {
-    return String.format("%s%s[name=%s]",
+    return String.format("%s%s[name=%s, type=%s]",
                          depth < 0 ? "" : indent(depth),
                          getClass().getSimpleName(),
-                         isIndependent ? format("INPUT(%s)", reference) : reference);
+                         isIndependent ? format("INPUT(%s)", reference) : reference,
+                         type());
   }
 
   @Override
