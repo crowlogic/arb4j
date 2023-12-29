@@ -537,7 +537,7 @@ public interface RealFunction extends
    * @return the first inverse branch, oRealFunction the only one if there is only
    *         one, which is the case if the function is properly invertible
    */
-  public default RealFunction inverse()
+  public default <R extends RealFunction> R inverse()
   {
     return inverse(0);
   }

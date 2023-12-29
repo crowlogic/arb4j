@@ -128,6 +128,7 @@ public class SFunction implements
     return 4;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public synchronized ComplexFunction inverse(int branch)
   {

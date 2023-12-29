@@ -10,8 +10,6 @@ import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.expressions.Variables;
 import arb.functions.Function;
-import arb.functions.IntegerToRealPolynomialFunction;
-import arb.functions.MultivariateFunction;
 import arb.functions.real.RealFunction;
 
 /**

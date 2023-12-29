@@ -9,20 +9,22 @@ import arb.stochastic.processes.RandomVectorGenerator;
  * corresponding density function
  */
 public interface ProbabilityDistributionFunction extends
-                                                RealFunction
+                                                 RealFunction
 {
 
   /**
-   * Draw a (pseudo) random sample from this density via the inverse sampling
-   * method, that is, drawing from a uniform distribution with Ra
+   * Draws a sample using the inverse sampling method
    * 
+   * @param generator
+   * @param resolution
+   * @param result
    * @return
    */
-  public default Real sample(RandomVectorGenerator generator, int prec, Real result)
+  public default Real sample(RandomVectorGenerator generator, int resolution, Real result)
   {
     RealFunction inverse  = inverse();
-    Real         u        = result.random(generator.getRandomState(), prec);
-    Real         evaluate = inverse.evaluate(u, 1, prec, result);
+    Real         u        = result.random(generator.getRandomState(), resolution);
+    Real         evaluate = inverse.evaluate(u, 1, resolution, result);
     return evaluate;
   }
 }

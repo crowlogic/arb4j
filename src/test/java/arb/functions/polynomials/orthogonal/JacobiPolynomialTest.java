@@ -3,10 +3,9 @@ package arb.functions.polynomials.orthogonal;
 import static arb.RealConstants.*;
 import static java.lang.System.out;
 
+import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.Tuple;
-import arb.Integer;
 import junit.framework.TestCase;
 
 /**

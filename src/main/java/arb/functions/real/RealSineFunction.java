@@ -37,11 +37,6 @@ public class RealSineFunction implements
     return "sin";
   }
 
-  @Override
-  public RealFunction inverse()
-  {
-    assert false : "todo";
-    return null;
-  }
+
 
 }

@@ -39,13 +39,6 @@ public final class ArcLengthFunction implements
   }
 
   @Override
-  public RealFunction inverse()
-  {
-    assert false : "TODO";
-    return null;
-  }
-
-  @Override
   public void close()
   {
     absErr.close();

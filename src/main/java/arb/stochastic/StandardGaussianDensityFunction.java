@@ -28,6 +28,7 @@ public class StandardGaussianDensityFunction implements
                                                                                    .log(prec)
                                                                                    .sqrt(prec);
 
+  @SuppressWarnings("unchecked")
   @Override
   public RealFunction inverse(int branch)
   {

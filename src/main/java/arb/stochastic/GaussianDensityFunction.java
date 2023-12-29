@@ -50,6 +50,7 @@ public class GaussianDensityFunction implements
     return 1;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public RealFunction inverse(int branch)
   {
