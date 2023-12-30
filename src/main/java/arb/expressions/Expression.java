@@ -502,7 +502,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * Generates the {@link RealFunction#evaluate(Real, int, int, Real)} method
+   * Generates the {@link Function#evaluate(Object, int, Object)} method
    * 
    * @param classVisitor
    * @return classVisitor
@@ -540,6 +540,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           expression,
                                                           expression.length()));
     }
+    
+    rootNode = rootNode.eliminateSubexpressions();
+    
     rootNode.generate(methodVisitor);
 
     if (verbose)
