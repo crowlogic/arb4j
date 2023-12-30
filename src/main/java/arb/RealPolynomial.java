@@ -9,8 +9,6 @@
 package arb;
 
 import static arb.arblib.*;
-import static java.lang.System.out;
-
 import arb.functions.real.RealFunction;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
@@ -222,7 +220,15 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     arblib.arb_poly_add(result, this, that, prec);
     return result;
   }
-  
+
+  public RealPolynomial sub(Real c0, int bits, RealPolynomial l3)
+  {
+    l3.set(this);
+    l3.get(0).sub(c0, bits);
+    return l3;
+  }
+
+
   /**
    * Sets {C, max(lenThis, lenThat)} to the difference of {this, thisLen} and {that, thatLen} by calling
    * {@link arblib#arb_poly_sub(RealPolynomial, RealPolynomial, RealPolynomial, int)}<br>
@@ -326,7 +332,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    */
   public RealPolynomial init()
   {
-    init(0);
+    arblib.arb_poly_init(this);
     return this;
   }
 
@@ -349,9 +355,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    */
   public RealPolynomial init(int order)
   {
-    out.println( "initialized " + this + " with order=" + order);
-    arblib.arb_poly_init(this);
-    arblib.arb_poly_fit_length(this, order);
+    arblib.arb_poly_init2(this, order);
     return this;
   }
     
@@ -365,6 +369,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    */
   public RealPolynomial identity()
   {
+    setLength(2);
     Real c = getCoeffs();
     c.get(0).zero();
     c.get(1).one();

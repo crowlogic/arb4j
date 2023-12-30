@@ -193,7 +193,15 @@ import arb.exceptions.DivisionByZeroException;
     arblib.arb_poly_add(result, this, that, prec);
     return result;
   }
-  
+
+  public RealPolynomial sub(Real c0, int bits, RealPolynomial l3)
+  {
+    l3.set(this);
+    l3.get(0).sub(c0, bits);
+    return l3;
+  }
+
+
   /**
    * Sets {C, max(lenThis, lenThat)} to the difference of {this, thisLen} and {that, thatLen} by calling
    * {@link arblib#arb_poly_sub(RealPolynomial, RealPolynomial, RealPolynomial, int)}<br>
