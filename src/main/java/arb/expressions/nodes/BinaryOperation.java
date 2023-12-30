@@ -8,6 +8,7 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
@@ -63,7 +64,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     left.generate(mv);
     right.generate(mv);
-    return invokeMethod(mv, operation);
+    Class<?> resultType = type();
+    return invokeMethod(mv, operation, resultType);
   }
 
   /**
@@ -78,13 +80,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
    * 
    * @return
    */
-  public MethodVisitor invokeMethod(MethodVisitor mv, String operator)
+  public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
     loadBits(mv);
     Node<D, R, F> reusableNode;
     if (isResult)
     {
-      expression.checkClassCast(loadResult(mv), type());
+      expression.checkClassCast(loadResult(mv), resultType);
     }
     else if ((reusableNode = getAReusableNode()) != null)
     {
@@ -100,7 +102,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.reserveIntermediateVariable(mv, depth, type());
+      expression.reserveIntermediateVariable(mv, depth, resultType);
     }
 
 //    assert false : "assert that what is on the stack is we know that " + left.type() + " has " + operator + " method which operates on a " + right.type()
@@ -175,7 +177,19 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     {
       return Real.class;
     }
-    assert false : String.format("TODO: handle resultant type for left=%s and right=%s", left, right);
+    else if (typesSymmetryicallyEqual(Integer.class, RealPolynomial.class))
+    {
+      return RealPolynomial.class;
+    }
+    else if (typesSymmetryicallyEqual(Real.class, RealPolynomial.class))
+    {
+      return RealPolynomial.class;
+
+    }
+    assert false : String.format("TODO: handle resultant type for left=%s and right=%s in %s",
+                                 left.type(),
+                                 right.type(),
+                                 typeset());
     return null;
   }
 }
