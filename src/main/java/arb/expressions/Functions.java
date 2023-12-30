@@ -1,6 +1,7 @@
 package arb.expressions;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import arb.functions.Function;
 
@@ -11,12 +12,45 @@ import arb.functions.Function;
  */
 public class Functions
 {
-  public final HashMap<String, Function<?, ?>> map = new HashMap<>();
+  public static final class Mapping<D,R>
+  {
+    @Override
+    public int hashCode()
+    {
+      return Objects.hash(domain, name, range);
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      Mapping<?, ?> other = (Mapping<?, ?>) obj;
+      return Objects.equals(domain, other.domain) && Objects.equals(name, other.name)
+                    && Objects.equals(range, other.range);
+    }
+
+    public String name;
+    
+    public Function<?, ?> func;
+
+    public Class<?>     domain;
+
+    public Class<?>     range;
+
+   
+  }
+
+  public final HashMap<String, Mapping<?,?>> map = new HashMap<>();
 
   @SuppressWarnings("unchecked")
-  public <F extends Function<?, ?>> F get(String functionName)
+  public <D,R> Mapping<D, R> get(String functionName)
   {
-    return (F) map.get(functionName);
+    return (Mapping<D, R>) map.get(functionName);
   }
 
   public boolean isEmpty()

@@ -71,6 +71,10 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final public static boolean                    verbose = false;
 
+  /**
+   * The C function is called with n/2 by the E function therefore its expressed as RealFunction, that is, a
+   * Function from ℝ to ℝ
+   */
   final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
 
   final public Function<Integer, Real>           F       = Function.express(Integer.class,
@@ -80,34 +84,34 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                             context,
                                                                             true);
 
-  final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
-                                                                            RealPolynomial.class,
-                                                                            "A",
-                                                                            "n➔(F(n)*x + G)*(C(n) - 1)/2",
-                                                                            context,
-                                                                            true);
-
-  final public RealFunction                      E       = RealFunction.express("E",
-                                                                                "n➔n*C(n/2)*C(n-1)",
-                                                                                context,
-                                                                                verbose);
-
-  final public RealFunction                      B       = RealFunction.express("B",
-                                                                                "n➔(n+α-1)*(n+β-1)*C(n)",
-                                                                                context,
-                                                                                verbose);
-
-  final public RealFunction                      p1      = RealFunction.express("p1",
-                                                                                "x➔(C(1)*x-β+α)/2",
-                                                                                context,
-                                                                                verbose);
-
-  final public Function<Integer, RealPolynomial> Pfunc   = Function.express(Integer.class,
-                                                                            RealPolynomial.class,
-                                                                            "P",
-                                                                            "n➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
-                                                                            context,
-                                                                            verbose);
+//  final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
+//                                                                            RealPolynomial.class,
+//                                                                            "A",
+//                                                                            "n➔(F(n)*x + G)*(C(n) - 1)/2",
+//                                                                            context,
+//                                                                            true);
+//
+//  final public RealFunction                      E       = RealFunction.express("E",
+//                                                                                "n➔n*C(n/2)*C(n-1)",
+//                                                                                context,
+//                                                                                verbose);
+//
+//  final public RealFunction                      B       = RealFunction.express("B",
+//                                                                                "n➔(n+α-1)*(n+β-1)*C(n)",
+//                                                                                context,
+//                                                                                verbose);
+//
+//  final public RealFunction                      p1      = RealFunction.express("p1",
+//                                                                                "x➔(C(1)*x-β+α)/2",
+//                                                                                context,
+//                                                                                verbose);
+//
+//  final public Function<Integer, RealPolynomial> Pfunc   = Function.express(Integer.class,
+//                                                                            RealPolynomial.class,
+//                                                                            "P",
+//                                                                            "n➔(A(n) * z * P(n-1,z) - B(n) * P(n-2,z)) / 2",
+//                                                                            context,
+//                                                                            verbose);
 
   public int                                     N;
 

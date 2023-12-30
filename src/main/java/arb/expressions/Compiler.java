@@ -10,6 +10,7 @@ import org.objectweb.asm.*;
 
 import arb.Field;
 import arb.Real;
+import arb.expressions.Functions.Mapping;
 import arb.expressions.nodes.LiteralConstant;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
@@ -173,9 +174,7 @@ public class Compiler
    */
   public static <D, R, F extends Function<D, R>>
          ClassVisitor
-         declareConstants(ClassVisitor classVisitor,
-                          Class<?> type,
-                          Iterable<LiteralConstant<D, R, F>> literals)
+         declareConstants(ClassVisitor classVisitor, Class<?> type, Iterable<LiteralConstant<D, R, F>> literals)
   {
     for (var constant : literals)
     {
@@ -274,15 +273,14 @@ public class Compiler
          MethodVisitor
          initializeRegisteredFunction(Expression<D, R, F> expression,
                                       MethodVisitor methodVisitor,
-                                      String functionName,
-                                      Function<?, ?> function)
+                                      Mapping<?, ?> mapping)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(ACONST_NULL);
     methodVisitor.visitFieldInsn(PUTFIELD,
                                  expression.className,
-                                 functionName,
-                                 function.getClass().descriptorString());
+                                 mapping.name,
+                                 mapping.func.getClass().descriptorString());
     return methodVisitor;
   }
 
@@ -298,9 +296,8 @@ public class Compiler
 
     if (expression.context != null)
     {
-      expression.context.functions.map.forEach((name, function) ->
-      {
-        initializeRegisteredFunction(expression, methodVisitor, name, function);
+      expression.context.functions.map.values().forEach( mapping -> {
+        initializeRegisteredFunction(expression, methodVisitor, mapping);
       });
     }
     return methodVisitor;
@@ -328,7 +325,8 @@ public class Compiler
          MethodVisitor
          initializeLiteralConstantWithString(Expression<D, R, F> expression,
                                              MethodVisitor methodVisitor,
-                                             LiteralConstant<D, R, F> constant,Class<?> type)
+                                             LiteralConstant<D, R, F> constant,
+                                             Class<?> type)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
@@ -340,10 +338,7 @@ public class Compiler
                                   "<init>",
                                   "(Ljava/lang/String;I)V",
                                   false);
-    methodVisitor.visitFieldInsn(PUTFIELD,
-                                 expression.className,
-                                 constant.fieldName,
-                                 type.descriptorString());
+    methodVisitor.visitFieldInsn(PUTFIELD, expression.className, constant.fieldName, type.descriptorString());
     return methodVisitor;
   }
 

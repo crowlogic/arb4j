@@ -112,7 +112,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   protected byte[]                           instructions;
 
-  public boolean                             verbose                   = false;
+  public boolean                             verbose                   = true;
 
   Class<F>                                   compiledClass;
 
