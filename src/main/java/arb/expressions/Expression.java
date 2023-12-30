@@ -840,11 +840,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   /**
    * Calls this{@link #eat(int)} and if this{@link #ch} is '^' then a new
-   * {@link RaiseToPower} node is instantiated
+   * {@link Exponentiate} node is instantiated
    * 
    * @param depth
    * 
-   * @return either a new {@link RaiseToPower} node from
+   * @return either a new {@link Exponentiate} node from
    *         this{@link #eatPower(int, Node)} or a node from this{@link #eat(int)}
    * @throws ExpressionCompilerException
    */
@@ -929,7 +929,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   /**
    * Checks if this{@link #ch} is a ^ numerical superscript and generates the
-   * corresponding {@link RaiseToPower} node if so
+   * corresponding {@link Exponentiate} node if so
    * 
    * TODO: support numbers greater than 9 so something like "x²⁴" would mean
    * "x^(24)"
@@ -938,14 +938,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param node
    * 
    * @return node if this{@link #ch} does not indicate the specific power raising
-   *         operation, otherwise returns a new {@link RaiseToPower} operator with
+   *         operation, otherwise returns a new {@link Exponentiate} operator with
    *         node as its parent node
    */
   Node<D, R, F> eatSuperscript(int depth, Node<D, R, F> node, char superscript, String digit)
   {
     if (eat(depth + 1, superscript))
     {
-      node = new RaiseToPower<>(this,
+      node = new Exponentiate<>(this,
                                 node,
                                 new LiteralConstant<>(this,
                                                       digit,
@@ -957,13 +957,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   /**
    * Checks if this{@link #ch} is a ^ character or a numerical superscript and
-   * generates the corresponding {@link RaiseToPower} node if so
+   * generates the corresponding {@link Exponentiate} node if so
    * 
    * @param depth
    * @param node
    * 
    * @return node if this{@link #ch} does not indicate a power raising operation,
-   *         otherwise returns a new {@link RaiseToPower} operator with node as
+   *         otherwise returns a new {@link Exponentiate} operator with node as
    *         its parent node
    * @throws ExpressionCompilerException
    */
@@ -976,7 +976,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         parenthetical = true;
       }
-      node = new RaiseToPower<>(this,
+      node = new Exponentiate<>(this,
                                 node,
                                 parenthetical ? eatFirst(depth) : eat(depth),
                                 depth + 1);

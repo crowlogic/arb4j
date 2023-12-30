@@ -71,8 +71,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    return function.range;
-  }
+78  }
 
   /**
    * Generate an invocation of member function of an {@link Object} by its name
