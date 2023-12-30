@@ -135,7 +135,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
                                     "identity",
                                     format("()%s", reference.type().descriptorString()),
                                     false);
-      assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
+//      assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
     }
     else
     {
