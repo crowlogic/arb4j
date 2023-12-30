@@ -1,9 +1,6 @@
 package arb.expressions;
 
 import java.util.HashMap;
-import java.util.Objects;
-
-import arb.functions.Function;
 
 /**
  * TODO: https://github.com/crowlogic/arb4j/issues/296: expression compiler: add
@@ -12,39 +9,6 @@ import arb.functions.Function;
  */
 public class Functions
 {
-  public static final class Mapping<D,R>
-  {
-    @Override
-    public int hashCode()
-    {
-      return Objects.hash(domain, name, range);
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-      if (this == obj)
-        return true;
-      if (obj == null)
-        return false;
-      if (getClass() != obj.getClass())
-        return false;
-      Mapping<?, ?> other = (Mapping<?, ?>) obj;
-      return Objects.equals(domain, other.domain) && Objects.equals(name, other.name)
-                    && Objects.equals(range, other.range);
-    }
-
-    public String name;
-    
-    public Function<?, ?> func;
-
-    public Class<?>     domain;
-
-    public Class<?>     range;
-
-   
-  }
-
   public final HashMap<String, Mapping<?,?>> map = new HashMap<>();
 
   @SuppressWarnings("unchecked")
