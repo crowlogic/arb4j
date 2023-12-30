@@ -4,7 +4,6 @@ import static java.lang.String.format;
 import static java.lang.System.err;
 
 import arb.Real;
-import arb.expressions.Functions.Mapping;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
@@ -81,7 +80,7 @@ public class Context
   {
     assert name != null : "name cannot be null";
     assert variable != null : "variable cannot be null";
-    
+
     R existing = null;
     if ((existing = variables.get(name)) != null)
     {
@@ -113,7 +112,7 @@ public class Context
 //    assert false : format("TODO: add %s and %s methods to Function so type checking can be done on the functions",
 //                          domainClass,
 //                          rangeClass);
-    
+
     if (verbose)
     {
       err.format("registerFunction( functionName = %s, function = %s, domainType=%s, rangeType=%s )\n",
@@ -130,10 +129,11 @@ public class Context
                                                 function));
     }
 
-    Mapping mapping = new Mapping();
-    mapping.name = functionName;
+    Mapping<?, ?> mapping = new Mapping<Object, Object>();
+    mapping.name   = functionName;
     mapping.domain = domainType;
-    mapping.range = rangeType;
+    mapping.range  = rangeType;
+    mapping.func   = function;
     functions.map.put(functionName, mapping);
     return function;
   }

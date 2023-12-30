@@ -1,5 +1,7 @@
 package arb.expressions.nodes;
 
+import static java.lang.System.out;
+
 import java.util.Collections;
 
 import org.objectweb.asm.MethodVisitor;
@@ -93,7 +95,7 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
      * MemoizedNode referencing it and replace the matching node with it
      * 
      */
-
+    out.format( "TODO: eliminate subexpressions in " + typeset() );
     return this;
   }
 

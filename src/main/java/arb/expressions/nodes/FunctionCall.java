@@ -11,7 +11,6 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.expressions.*;
-import arb.expressions.Functions.Mapping;
 import arb.functions.Function;
 
 /**
@@ -29,8 +28,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return "FunctionCall[name=" + name + ", arg=" + node + ", isResult=" + isResult + "]";
   }
 
-  public String         name;
-  public boolean        contextual = false;
+  public String        name;
+  public boolean       contextual = false;
   public Mapping<?, ?> function;
 
   public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument, int depth)
@@ -43,7 +42,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     this.depth = depth;
     if (expression.context != null)
     {
-      function = expression.context.functions.map.get(name);
+      function   = expression.context.functions.map.get(name);
       contextual = function != null;
     }
   }
@@ -153,7 +152,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (func == null)
     {
-      throw new IllegalArgumentException(String.format("Undefined reference to function %s(.)", name));
+      throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
 
     // func.getDomainType
