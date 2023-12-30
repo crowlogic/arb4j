@@ -139,11 +139,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
     else if (isIndeterminant)
     {
       expression.checkClassCast(Compiler.loadResult(mv), expression.rangeClass);
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         Type.getInternalName(expression.rangeClass),
-                         "identity",
-                         format("()%s", reference.type().descriptorString()),
-                         false);
+//      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+//                         Type.getInternalName(expression.rangeClass),
+//                         "identity",
+//                         format("()%s", reference.type().descriptorString()),
+//                         false);
 //      assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
     }
     else

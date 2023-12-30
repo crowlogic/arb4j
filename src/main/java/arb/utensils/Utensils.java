@@ -350,7 +350,6 @@ public class Utensils
    * @param ms
    * @param n
    */
-  @Deprecated(forRemoval = true)
   public static void heapUp(Real as, Real bs, Complex vs, Magnitude ms, int n)
   {
     int i, max, l, r;
@@ -388,7 +387,6 @@ public class Utensils
    * @param ms
    * @param n
    */
-  @Deprecated(forRemoval = true)
   public static void heapUp(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
   {
     int i, max, l, r;
@@ -425,7 +423,6 @@ public class Utensils
    * @param ms
    * @param n
    */
-  @Deprecated(forRemoval = true)
   public static void heapDown(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
   {
     int k = n - 1;

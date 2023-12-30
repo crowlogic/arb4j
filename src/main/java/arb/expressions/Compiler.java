@@ -5,15 +5,12 @@ import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.io.Closeable;
-import java.util.Collection;
-import java.util.Map;
 
 import org.objectweb.asm.*;
 
 import arb.Field;
 import arb.Real;
 import arb.expressions.nodes.LiteralConstant;
-import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -177,12 +174,12 @@ public class Compiler
   public static <D, R, F extends Function<D, R>>
          ClassVisitor
          declareConstants(ClassVisitor classVisitor,
-                          String typeDescriptor,
+                          Class<?> type,
                           Iterable<LiteralConstant<D, R, F>> literals)
   {
     for (var constant : literals)
     {
-      classVisitor.visitField(ACC_PUBLIC, constant.fieldName, typeDescriptor, null, null);
+      classVisitor.visitField(ACC_PUBLIC, constant.fieldName, type.descriptorString(), null, null);
     }
     return classVisitor;
   }
@@ -323,7 +320,7 @@ public class Compiler
 
     for (var literal : expression.literalConstants)
     {
-      initializeLiteralConstantWithString(expression, methodVisitor, literal);
+      initializeLiteralConstantWithString(expression, methodVisitor, literal, Real.class);
     }
     return methodVisitor;
   }
@@ -332,22 +329,22 @@ public class Compiler
          MethodVisitor
          initializeLiteralConstantWithString(Expression<D, R, F> expression,
                                              MethodVisitor methodVisitor,
-                                             LiteralConstant<D, R, F> constant)
+                                             LiteralConstant<D, R, F> constant,Class<?> type)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitTypeInsn(NEW, expression.domainClassInternalName);
+    methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitLdcInsn(constant.value);
     methodVisitor.visitIntInsn(SIPUSH, constant.bits);
     methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                  expression.domainClassInternalName,
+                                  Type.getInternalName(type),
                                   "<init>",
                                   "(Ljava/lang/String;I)V",
                                   false);
     methodVisitor.visitFieldInsn(PUTFIELD,
                                  expression.className,
                                  constant.fieldName,
-                                 expression.domainClassDescriptor);
+                                 type.descriptorString());
     return methodVisitor;
   }
 

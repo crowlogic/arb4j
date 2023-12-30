@@ -5,7 +5,8 @@ import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.GETFIELD;
 
 import java.io.File;
 import java.io.IOException;
@@ -357,7 +358,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.println("Declaring constants: " + literalConstants);
       err.flush();
     }
-    declareConstants(classVisitor, domainClassDescriptor, literalConstants);
+    declareConstants(classVisitor, Real.class, literalConstants);
 
     declareReferencedVariables(classVisitor);
 

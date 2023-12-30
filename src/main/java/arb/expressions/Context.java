@@ -2,7 +2,6 @@ package arb.expressions;
 
 import static java.lang.String.format;
 import static java.lang.System.err;
-import static java.lang.System.out;
 
 import arb.Real;
 import arb.expressions.nodes.Node;
