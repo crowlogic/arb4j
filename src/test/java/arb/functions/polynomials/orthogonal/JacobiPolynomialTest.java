@@ -97,8 +97,7 @@ public class JacobiPolynomialTest extends
   {
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
                                                    threeQuarters,
-                                                   N);
-          var one = new Integer();)
+                                                   N);)
     {
       one.set(1);
 
