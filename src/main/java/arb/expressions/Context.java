@@ -1,6 +1,7 @@
 package arb.expressions;
 
 import static java.lang.String.format;
+import static java.lang.System.err;
 import static java.lang.System.out;
 
 import arb.Real;
@@ -91,7 +92,7 @@ public class Context
     return variable;
   }
 
-  public boolean                             verbose     = false;
+  public boolean                             verbose     = true;
 
   public final CompiledExpressionClassLoader classLoader = new CompiledExpressionClassLoader();
 
@@ -109,13 +110,15 @@ public class Context
 //    assert false : format("TODO: add %s and %s methods to Function so type checking can be done on the functions",
 //                          domainClass,
 //                          rangeClass);
+    
     if (verbose)
     {
-      out.format("registerFunction( functionName = %s, function = %s, domainType=%s, rangeType=%s )\n",
+      err.format("registerFunction( functionName = %s, function = %s, domainType=%s, rangeType=%s )\n",
                  functionName,
                  function,
                  domainType,
                  rangeType);
+      err.flush();
     }
     if (functions.map.containsKey(functionName))
     {
