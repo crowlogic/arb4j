@@ -4,7 +4,7 @@ SOURCES=native/arb_wrap.c native/complex.c
 JAVA_HOME=$(shell readlink -f /usr/bin/javac | sed "s:bin/javac::")
 C_INCLUDES=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I/usr/local/include -I/usr/local/include/flint
 CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion
-SWIGFLAGS=-small -v -java -package arb -outdir src/main/java/arb
+SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
 
 all: libarblib.so
 

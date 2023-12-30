@@ -9,6 +9,8 @@
 package arb;
 
 import static arb.arblib.*;
+import static java.lang.System.out;
+
 import arb.functions.real.RealFunction;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
@@ -324,7 +326,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    */
   public RealPolynomial init()
   {
-    arblib.arb_poly_init(this);
+    init(0);
     return this;
   }
 
@@ -347,8 +349,9 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    */
   public RealPolynomial init(int order)
   {
-    setLength(order);
-    arblib.arb_poly_init2(this, order);
+    out.println( "initialized " + this + " with order=" + order);
+    arblib.arb_poly_init(this);
+    arblib.arb_poly_fit_length(this, order);
     return this;
   }
     
@@ -362,7 +365,6 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    */
   public RealPolynomial identity()
   {
-    init(2);
     Real c = getCoeffs();
     c.get(0).zero();
     c.get(1).one();
