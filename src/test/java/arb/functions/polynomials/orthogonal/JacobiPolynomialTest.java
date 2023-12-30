@@ -101,7 +101,7 @@ public class JacobiPolynomialTest extends
                                                    threeQuarters,
                                                    N);)
     {
-      one.set(1);
+      Integer one = new Integer();
 
       try ( Real result = seq.F.evaluate(one, 1, bits, new Real()))
       {

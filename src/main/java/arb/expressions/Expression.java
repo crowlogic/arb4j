@@ -366,7 +366,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (context != null && !context.functions.isEmpty())
     {
-      declareFunctions(this, classVisitor, context.functions);
+      declareFunctions(this, classVisitor);
     }
   }
 

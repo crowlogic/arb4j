@@ -185,10 +185,9 @@ public class Compiler
   }
 
   public static <D, R, F extends Function<D, R>> ClassVisitor declareFunctions(Expression<D, R, F> expression,
-                                                                               ClassVisitor classVisitor,
-                                                                               Functions functions)
+                                                                               ClassVisitor classVisitor)
   {
-    functions.map.forEach((name, function) ->
+    expression.context.functions.map.forEach((name, function) ->
     {
       String descriptor = function.getClass().descriptorString();
 

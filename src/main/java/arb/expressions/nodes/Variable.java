@@ -138,6 +138,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else if (isIndeterminant)
     {
+      assert expression.rangeClass == type() : String.format("expression.rangeClass=%s and this.type=%s so cannot use the result",
+                                                             expression.rangeClass,
+                                                             type());
       expression.checkClassCast(Compiler.loadResult(mv), expression.rangeClass);
 //      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
 //                         Type.getInternalName(expression.rangeClass),

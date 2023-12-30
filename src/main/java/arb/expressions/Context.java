@@ -94,7 +94,7 @@ public class Context
     return variable;
   }
 
-  public boolean                             verbose     = true;
+  public boolean                             verbose     = false;
 
   public final CompiledExpressionClassLoader classLoader = new CompiledExpressionClassLoader();
 
