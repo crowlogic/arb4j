@@ -4,6 +4,7 @@ import static java.lang.String.format;
 import static java.lang.System.err;
 
 import arb.Real;
+import arb.expressions.Functions.Mapping;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
@@ -129,7 +130,11 @@ public class Context
                                                 function));
     }
 
-    functions.map.put(functionName, function);
+    Mapping mapping = new Mapping();
+    mapping.name = functionName;
+    mapping.domain = domainType;
+    mapping.range = rangeType;
+    functions.map.put(functionName, mapping);
     return function;
   }
 }

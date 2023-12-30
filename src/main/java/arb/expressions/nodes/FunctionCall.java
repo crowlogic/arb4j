@@ -11,6 +11,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.expressions.*;
+import arb.expressions.Functions.Mapping;
 import arb.functions.Function;
 
 /**
@@ -28,12 +29,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return "FunctionCall[name=" + name + ", arg=" + node + ", isResult=" + isResult + "]";
   }
 
-  public interface CodeGenerator
-  {
-    MethodVisitor generate(MethodVisitor mv, Node<?, ?, ?> operand, int depth);
-  }
-
-  private final String name;
+  public String         name;
+  public boolean        contextual = false;
+  public Mapping<?, ?> function;
 
   public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument, int depth)
   {
@@ -43,14 +41,18 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     assert argument != null;
     this.name  = Parser.replaceSubscriptsAndArrows(functionName).replace("ln", "log").replace("√", "sqrt");
     this.depth = depth;
+    if (expression.context != null)
+    {
+      function = expression.context.functions.map.get(name);
+      contextual = function != null;
+    }
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor methodVisitor)
   {
 
-    Context context = expression.context;
-    if (context != null && context.functions.map.containsKey(name))
+    if (contextual)
     {
       return generateContextualFunctionCall(methodVisitor);
     }
@@ -69,7 +71,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    return expression.rangeClass;
+    return function.range;
   }
 
   /**
@@ -85,7 +87,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     var     expression = node.expression;
     boolean verbose    = expression.verbose;
-
     if (verbose)
     {
       out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", name, node, depth);
@@ -118,7 +119,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
 
     expression.checkClassCast(methodVisitor, node.type());
-    return generateCallToBuiltinUnaryFunction(methodVisitor, name, node.type(), type());
+    return generateCallToBuiltinUnaryFunction(methodVisitor, name, node.type(), expression.rangeClass);
   }
 
   /**
@@ -134,6 +135,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * @param depth
    * @return methodVisitor
    */
+  @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor)
   {
     var     expression = node.expression;
@@ -146,15 +148,18 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     }
 
-    F func = expression.context.functions.get(name);
+    Mapping<D, R> mapping = expression.context.functions.get(name);
+    F             func    = (F) mapping.func;
 
     if (func == null)
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s(.)", name));
     }
+
+    // func.getDomainType
     expression.loadVariableReferenceOntoStack(Compiler.loadThisOntoStack(methodVisitor),
                                               name,
-                                              func.getClass().descriptorString());
+                                              Function.class.descriptorString());
 
     node.generate(methodVisitor);
     Compiler.loadOrder(methodVisitor);
