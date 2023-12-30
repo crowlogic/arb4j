@@ -178,7 +178,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        expression.reserveIntermediateVariable(methodVisitor, depth, null);
+        expression.reserveIntermediateVariable(methodVisitor, depth, type());
       }
     }
 

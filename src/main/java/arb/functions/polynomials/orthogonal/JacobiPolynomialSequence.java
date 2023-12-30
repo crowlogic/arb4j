@@ -71,7 +71,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final public static boolean                    verbose = false;
 
-  final public RealFunction                      C       = RealFunction.express("C", "n➔2*n+α+β", context, false);
+  final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
 
   final public Function<Integer, Real>           F       = Function.express(Integer.class,
                                                                             Real.class,

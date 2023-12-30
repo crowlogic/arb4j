@@ -12,7 +12,6 @@ import org.objectweb.asm.*;
 
 import arb.Field;
 import arb.Real;
-import arb.expressions.Expression.IntermediateVariable;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;

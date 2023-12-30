@@ -25,14 +25,15 @@ public interface IntegerToRealPolynomialFunction extends
                                                        RealPolynomial.class,
                                                        IntegerToRealPolynomialFunction.class,
                                                        verbose);
-
-    context.registerFunction(functionName, func, Integer.class, RealPolynomial.class);
+    if (functionName != null)
+    {
+      context.registerFunction(functionName, func, Integer.class, RealPolynomial.class);
+    }
 
     return func;
   }
 
-  public static IntegerToRealPolynomialFunction
-         express(String expression, Context context, boolean verbose)
+  public static IntegerToRealPolynomialFunction express(String expression, Context context, boolean verbose)
   {
     return instantiate(expression,
                        context,

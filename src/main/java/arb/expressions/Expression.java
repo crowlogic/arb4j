@@ -97,52 +97,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   final public String             functionClassInternalName;
 
-  public static class IntermediateVariable
-  {
-    public IntermediateVariable(String name, Class<?> type)
-    {
-      this.type = type;
-      this.name = name;
-    }
-
-    public String   name;
-    public Class<?> type;
-
-    public static <D, R, F extends Function<D, R>>
-           MethodVisitor
-           initializeIntermediateVariable(Expression<D, R, F> expression,
-                                          MethodVisitor methodVisitor,
-                                          IntermediateVariable intermediateVariable)
-    {
-      methodVisitor.visitVarInsn(ALOAD, 0);
-      methodVisitor.visitTypeInsn(NEW, expression.rangeClassInternalName);
-      methodVisitor.visitInsn(DUP);
-      methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.rangeClassInternalName, "<init>", "()V", false);
-      methodVisitor.visitFieldInsn(PUTFIELD,
-                                   expression.className,
-                                   intermediateVariable.name,
-                                   intermediateVariable.type.descriptorString());
-      return methodVisitor;
-    }
-
-    public static <D, R, F extends Function<D, R>>
-           MethodVisitor
-           initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
-    {
-      if (expression.intermediateVariableCount > 0 && expression.verbose)
-      {
-        err.println("Preparing intermediate variables: " + expression.intermediateVariables);
-        err.flush();
-      }
-
-      for (var intermediateVariable : expression.intermediateVariables)
-      {
-        initializeIntermediateVariable(expression, methodVisitor, intermediateVariable);
-      }
-      return methodVisitor;
-    }
-  }
-
   public ArrayList<IntermediateVariable>     intermediateVariables     = new ArrayList<IntermediateVariable>();
 
   int                                        intermediateVariableCount = 0;

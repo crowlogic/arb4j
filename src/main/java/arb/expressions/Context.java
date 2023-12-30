@@ -62,7 +62,7 @@ public class Context
     this.variables = new Variables();
     this.functions = funcs;
   }
-  
+
   public Variables variables;
 
   public Functions functions;
@@ -103,12 +103,19 @@ public class Context
    * @throws IllegalArgumentException if a function of the same name already
    *                                  exists in this{@link #functions}
    */
-  public Function<?, ?> registerFunction(String functionName, Function<?, ?> function, Class<?> domainClass, Class<?> rangeClass )
+  public Function<?, ?>
+         registerFunction(String functionName, Function<?, ?> function, Class<?> domainType, Class<?> rangeType)
   {
-    assert false : "TODO: add domainClass() and rangeClass() methods to Function so type checking can be done on the functions";
+//    assert false : format("TODO: add %s and %s methods to Function so type checking can be done on the functions",
+//                          domainClass,
+//                          rangeClass);
     if (verbose)
     {
-      out.format("registerFunction( functionName = %s, function = %s )\n", functionName, function);
+      out.format("registerFunction( functionName = %s, function = %s, domainType=%s, rangeType=%s )\n",
+                 functionName,
+                 function,
+                 domainType,
+                 rangeType);
     }
     if (functions.map.containsKey(functionName))
     {
