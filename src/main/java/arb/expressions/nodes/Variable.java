@@ -3,6 +3,7 @@ package arb.expressions.nodes;
 import static arb.expressions.Compiler.loadInput;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
+import static java.lang.System.err;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
@@ -12,7 +13,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.Real; 
+import arb.Real;
 import arb.expressions.*;
 import arb.functions.Function;
 
@@ -62,7 +63,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    return expression.rangeClass;
+    return reference.type();
   }
 
   public final Reference     reference;
@@ -98,6 +99,14 @@ public class Variable<D, R, F extends Function<D, R>> extends
       }
       expression.referencedVariables.put(reference.name, this);
     }
+    else
+    {
+      if (expression.verbose)
+      {
+        err.println("Fucking " + reference);
+      }
+      reference.type = expression.domainClass;
+    }
   }
 
   @Override
@@ -131,15 +140,15 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       expression.checkClassCast(Compiler.loadResult(mv), expression.rangeClass);
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                    Type.getInternalName(expression.rangeClass),
-                                    "identity",
-                                    format("()%s", reference.type().descriptorString()),
-                                    false);
+                         Type.getInternalName(expression.rangeClass),
+                         "identity",
+                         format("()%s", reference.type().descriptorString()),
+                         false);
 //      assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
     }
     else
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type() );
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type());
     }
 
     if (reference.index != null)

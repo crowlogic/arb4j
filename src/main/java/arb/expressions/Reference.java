@@ -14,6 +14,11 @@ import java.util.Objects;
 public class Reference
 {
 
+  @Override
+  public String toString()
+  {
+    return String.format("Reference[name=%s, index=%s, type=%s]", type, name, index, type );  }
+
   public Class<?> type;
 
   @Override
@@ -35,11 +40,6 @@ public class Reference
     return Objects.equals(index, other.index) && Objects.equals(name, other.name);
   }
 
-  @Override
-  public String toString()
-  {
-    return index == null ? name : String.format("%s[%s]", name, index);
-  }
 
   public Reference(String name)
   {
