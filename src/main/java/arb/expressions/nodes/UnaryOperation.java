@@ -20,7 +20,7 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
   @Override
   public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
-    if (node.isReusable())
+    if (arg.isReusable())
     {
       return prepareStackForReusingLeftSide(mv);
     }
@@ -30,13 +30,13 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
     }
   }
 
-  protected final Node<D, R, F> node;
+  protected final Node<D, R, F> arg;
 
   public UnaryOperation(Node<D, R, F> node, Expression<D, R, F> expression, int depth)
   {
     super(expression,
           depth + 1);
-    this.node = node;
+    this.arg = node;
   }
 
   @Override
@@ -52,22 +52,22 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
     return String.format(depth < 0 ? "%s%s[name=%s,%sarg=%s%s%s]" : "%s%s[name=%s,\n%sarg=\n %s%s\n%s]",
                          indent,
                          getClass().getSimpleName(),
-                         node,
+                         arg,
                          childIndent,
                          childIndent,
-                         node.toString(depth < 0 ? depth : (depth + 1)),
+                         arg.toString(depth < 0 ? depth : (depth + 1)),
                          indent);
   }
 
   @Override
   public boolean isReusable()
   {
-    return node.isReusable() || node.isResult;
+    return arg.isReusable() || arg.isResult;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv)
   {
-    return node.generate(mv);
+    return arg.generate(mv);
   }
 }

@@ -65,7 +65,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return format("%s(%s)", name.replace("√", "\\sqrt").replace("J0", "J_0"), node.typeset());
+    return format("%s(%s)", name.replace("√", "\\sqrt").replace("J0", "J_0"), arg.typeset());
   }
 
   /**
@@ -80,7 +80,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    if ( isBuiltin() )
+    if (isBuiltin())
     {
       return expression.domainClass;
     }
@@ -99,41 +99,41 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    */
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor)
   {
-    var     expression = node.expression;
+    var     expression = arg.expression;
     boolean verbose    = expression.verbose;
     if (verbose)
     {
-      out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", name, node, depth);
+      out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", name, arg, depth);
       out.flush();
     }
 
-    node.generate(methodVisitor);
+    arg.generate(methodVisitor);
     loadBits(methodVisitor);
 
     if (isResult)
     {
-      expression.checkClassCast(loadResult(methodVisitor), node.type());
+      expression.checkClassCast(loadResult(methodVisitor), arg.type());
     }
     else
     {
-      if (node.isReusable())
+      if (arg.isReusable())
       {
         if (verbose)
         {
-          err.println("Preparing stack to reuse its argument " + node.toString(-1));
+          err.println("Preparing stack to reuse its argument " + arg.toString(-1));
           err.flush();
         }
 
-        node.prepareStackForReuse(methodVisitor);
+        arg.prepareStackForReuse(methodVisitor);
       }
       else
       {
-        expression.reserveIntermediateVariable(methodVisitor, depth, node.type());
+        expression.reserveIntermediateVariable(methodVisitor, depth, arg.type());
       }
     }
 
-    expression.checkClassCast(methodVisitor, node.type());
-    return generateCallToBuiltinUnaryFunction(methodVisitor, name, node.type(), expression.rangeClass);
+    expression.checkClassCast(methodVisitor, arg.type());
+    return generateCallToBuiltinUnaryFunction(methodVisitor, name, arg.type(), expression.rangeClass);
   }
 
   /**
@@ -144,7 +144,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * 
    * @param methodVisitor
    * @param name
-   * @param node
+   * @param arg
    * @param lastCall
    * @param depth
    * @return methodVisitor
@@ -152,18 +152,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor)
   {
-    var     expression = node.expression;
-    boolean verbose    = expression.verbose;
+    var           expression = arg.expression;
+    boolean       verbose    = expression.verbose;
 
-    if (verbose)
-    {
-      err.format("callRegisteredFunction(functionName=%s, arg=%s, depth=%d)\n", name, node, depth);
-      err.flush();
-
-    }
-
-    Mapping<D, R> mapping = expression.context.functions.get(name);
-    F             func    = (F) mapping.func;
+    Mapping<D, R> mapping    = expression.context.functions.get(name);
+    F             func       = (F) mapping.func;
 
     if (func == null)
     {
@@ -175,33 +168,55 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                               name,
                                               Function.class.descriptorString());
 
-    node.generate(methodVisitor);
+    arg.generate(methodVisitor);
     Compiler.loadOrder(methodVisitor);
     Compiler.loadBits(methodVisitor);
 
-    if (node.isResult)
+    Class<?> type = type();
+
+    if (!type.equals(arg.type()))
+    {
+      throw new ExpressionCompilerException(String.format("Incompatible type %s passed as argument to function %s of type %s while compiling %s\n",
+                                                          arg.type(),
+                                                          name,
+                                                          type(),
+                                                          expression.typeset()));
+    }
+    if (verbose)
+    {
+      err.format("callRegisteredFunction(functionName=%s, type=%s, arg=%s, arg.type=%s, depth=%d)\n",
+                 name,
+                 type,
+                 arg,
+                 arg.type(),
+                 depth);
+      err.flush();
+
+    }
+
+    if (arg.isResult)
     {
       Compiler.loadResult(methodVisitor);
     }
     else
     {
-      if (node.isReusable())
+      if (arg.isReusable())
       {
         if (verbose)
         {
-          err.println("Preparing stack to reuse its argument " + node.toString(-1));
+          err.println("Preparing stack to reuse its argument " + arg.toString(-1));
           err.flush();
         }
 
-        node.prepareStackForReuse(methodVisitor);
+        arg.prepareStackForReuse(methodVisitor);
       }
       else
       {
-        expression.reserveIntermediateVariable(methodVisitor, depth, type());
+        expression.reserveIntermediateVariable(methodVisitor, depth, type);
       }
     }
 
-    expression.callRegisteredUnaryFunction(methodVisitor, func, type());
+    expression.callRegisteredUnaryFunction(methodVisitor, func, type);
 
     if (verbose)
     {

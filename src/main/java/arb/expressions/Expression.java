@@ -161,7 +161,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.rangeClassInternalName    = Type.getInternalName(rangeClass);
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
-    this.functionClassDescriptor   = "L" + className + ";";
+    this.functionClassDescriptor   = functionClass.descriptorString();
     this.expression                = Parser.replaceSubscriptsAndArrows(expression);
     this.context                   = context;
     this.variables                 = context != null ? context.variables : null;
@@ -540,9 +540,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           expression,
                                                           expression.length()));
     }
-    
+
     rootNode = rootNode.eliminateSubexpressions();
-    
+
     rootNode.generate(methodVisitor);
 
     if (verbose)
@@ -782,7 +782,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * 
    * @param depth
    * @param startPos
-   * @param node
+   * @param arg
    * 
    * @return
    * @throws ExpressionCompilerException
@@ -1168,6 +1168,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public MethodVisitor
          loadVariableReferenceOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
+    if (verbose)
+    {
+      err.format("loadVariableReferenceOntoStack(fieldName=%s, fieldDescriptor=%s)\n",
+                      fieldName,
+                        fieldDescriptor);
+      err.flush();
+    }
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
     return methodVisitor;
   }
