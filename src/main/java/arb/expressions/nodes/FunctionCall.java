@@ -22,10 +22,11 @@ import arb.functions.Function;
 public class FunctionCall<D, R, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
 {
+
   @Override
   public String toString()
   {
-    return "FunctionCall[name=" + name + ", arg=" + node + ", isResult=" + isResult + "]";
+    return String.format("FunctionCall[name=%s, contextual=%s, function=%s]", name, contextual, function);
   }
 
   public String        name;
@@ -67,10 +68,25 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return format("%s(%s)", name.replace("√", "\\sqrt").replace("J0", "J_0"), node.typeset());
   }
 
+  /**
+   * 
+   * @return not this{@link #contextual}
+   */
+  public boolean isBuiltin()
+  {
+    return !contextual;
+  }
+
   @Override
   public Class<?> type()
   {
-78  }
+    if ( isBuiltin() )
+    {
+      return expression.domainClass;
+    }
+    assert function.range != null : "range of " + function + " is null";
+    return function.range;
+  }
 
   /**
    * Generate an invocation of member function of an {@link Object} by its name
