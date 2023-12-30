@@ -9,8 +9,10 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
-import arb.Real;
+import arb.Real; 
 import arb.expressions.*;
 import arb.functions.Function;
 
@@ -127,11 +129,17 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else if (isIndeterminant)
     {
+      expression.checkClassCast(Compiler.loadResult(mv), expression.rangeClass);
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                    Type.getInternalName(expression.rangeClass),
+                                    "identity",
+                                    format("()%s", reference.type().descriptorString()),
+                                    false);
       assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
     }
     else
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, true);
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type() );
     }
 
     if (reference.index != null)

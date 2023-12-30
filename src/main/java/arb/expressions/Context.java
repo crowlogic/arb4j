@@ -79,6 +79,9 @@ public class Context
    */
   public <R> R registerVariable(String name, R variable)
   {
+    assert name != null : "name cannot be null";
+    assert variable != null : "variable cannot be null";
+    
     R existing = null;
     if ((existing = variables.get(name)) != null)
     {

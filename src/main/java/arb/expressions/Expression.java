@@ -77,25 +77,25 @@ import arb.functions.real.RealFunction;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
-  protected int                   position = -1;
+  protected int                              position                  = -1;
 
-  public int                      ch       = 0;
+  public int                                 ch                        = 0;
 
-  protected final String          expression;
+  protected final String                     expression;
 
-  public Variables                variables;
+  public Variables                           variables;
 
-  public String                   className;
+  public String                              className;
 
-  final public Class<? extends D> domainClass;
+  final public Class<? extends D>            domainClass;
 
-  final public Class<? extends R> rangeClass;
+  final public Class<? extends R>            rangeClass;
 
-  final public String             domainClassDescriptor;
+  final public String                        domainClassDescriptor;
 
-  final public String             rangeClassDescriptor;
+  final public String                        rangeClassDescriptor;
 
-  final public String             functionClassInternalName;
+  final public String                        functionClassInternalName;
 
   public ArrayList<IntermediateVariable>     intermediateVariables     = new ArrayList<IntermediateVariable>();
 
@@ -578,7 +578,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (rightArrowIndex != -1)
     {
       independentVariableNode = new Variable<D, R, F>(this,
-                                                      new Reference(expression.substring(0, rightArrowIndex)),
+                                                      new Reference(expression.substring(0, rightArrowIndex),
+                                                                    null,
+                                                                    domainClass),
                                                       0);
       if (verbose)
       {
@@ -784,15 +786,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
   private Node<D, R, F> resolveFunctionInvocationOrVariableReference(int depth,
                                                                      int startPos) throws ExpressionCompilerException
   {
-    Reference functionOrVariableName = eatName(depth, startPos);
-    boolean   isFunction             = eat(depth, '(');
+    Reference reference  = eatName(depth, startPos);
+    boolean   isFunction = eat(depth, '(');
     if (verbose)
     {
-      err.format("resolveFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, identifier='%s', isFunction=%s\n",
+      err.format("resolveFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, reference='%s', isFunction=%s\n",
                  depth,
                  startPos,
                  position,
-                 functionOrVariableName,
+                 reference,
                  isFunction);
       err.flush();
     }
@@ -803,7 +805,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (eat(depth, ')'))
       {
         return new FunctionCall<>(this,
-                                  functionOrVariableName.name,
+                                  reference.name,
                                   arg,
                                   depth);
       }
@@ -812,23 +814,26 @@ public class Expression<D, R, F extends Function<D, R>> implements
         throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n, expression=%s\n",
                                                  startPos,
                                                  position,
-                                                 functionOrVariableName,
+                                                 reference,
                                                  isFunction,
                                                  depth,
                                                  expression));
       }
     }
-    else if (LiteralConstant.constantSymbols.contains(functionOrVariableName.name))
+    else if (LiteralConstant.constantSymbols.contains(reference.name))
     {
       return new LiteralConstant<>(this,
-                                   functionOrVariableName.name,
+                                   reference.name,
                                    depth + 1);
     }
     else
     {
-      return new Variable<D, R, F>(this,
-                                   functionOrVariableName,
-                                   depth + 1);
+      var contextVar = context == null ? null : context.variables.get(reference.name);
+      reference.type = (context == null || contextVar == null) ? domainClass : contextVar.getClass();
+      Variable<D, R, F> variable = new Variable<D, R, F>(this,
+                                                         reference,
+                                                         depth + 1);
+      return variable;
     }
   }
 
@@ -1143,11 +1148,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
    *                      this{@link #rangeClassDescriptor}
    * @return this{@link #loadVariableReferenceOntoStack(MethodVisitor, String, String)}
    */
-  public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, boolean range)
+  public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> type)
   {
-    return loadVariableReferenceOntoStack(methodVisitor,
-                                          fieldName,
-                                          range ? rangeClassDescriptor : domainClassDescriptor);
+    return loadVariableReferenceOntoStack(methodVisitor, fieldName, type.descriptorString());
   }
 
   /**
@@ -1193,7 +1196,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else
     {
       String intermediateVariableName = newIntermediateVariable(depth, type);
-      loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, true);
+      loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type);
       return intermediateVariableName;
     }
   }

@@ -14,6 +14,8 @@ import java.util.Objects;
 public class Reference
 {
 
+  public Class<?> type;
+
   @Override
   public int hashCode()
   {
@@ -50,6 +52,13 @@ public class Reference
     this.name  = name == null ? null : name.trim();
     this.index = index;
   }
+  
+  public Reference(String name, String index, Class<?> type)
+  {
+    this.name  = name == null ? null : name.trim();
+    this.index = index;
+    this.type  = type;
+  }
 
   public String name;
 
@@ -76,5 +85,9 @@ public class Reference
     return name.startsWith("(") && name.endsWith(")");
   }
 
+  public Class<?> type()
+  {
+    return type;
+  }
 
 }

@@ -8,6 +8,11 @@ import junit.framework.TestCase;
 public class RealPolynomialTest extends
                                 TestCase
 {
+  public static void testIdentity()
+  {
+     RealPolynomial eye = new RealPolynomial(2).identity();
+     System.out.println( "eye=" + eye );
+  }
   public static void testLeftShift()
   {
     RealPolynomial p = new RealPolynomial(5);

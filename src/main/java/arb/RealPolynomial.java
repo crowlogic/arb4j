@@ -347,6 +347,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    */
   public RealPolynomial init(int order)
   {
+    setLength(order);
     arblib.arb_poly_init2(this, order);
     return this;
   }
@@ -361,7 +362,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    */
   public RealPolynomial identity()
   {
-    setLength(2);
+    init(2);
     Real c = getCoeffs();
     c.get(0).zero();
     c.get(1).one();

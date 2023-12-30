@@ -29,7 +29,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   {
     return Real.class;
     // FIXME: todo: implement integer-types
-    //return value.contains("\\.") ? Real.class : Integer.class;
+    // return value.contains("\\.") ? Real.class : Integer.class;
   }
 
   public final String           value;
@@ -134,7 +134,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, false);
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, expression.domainClass);
     }
 
     if (isResult)
