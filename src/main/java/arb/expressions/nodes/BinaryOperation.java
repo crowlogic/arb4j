@@ -108,7 +108,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
 //    assert false : "assert that what is on the stack is we know that " + left.type() + " has " + operator + " method which operates on a " + right.type()
 //                  + " and produces a " + type();
-
+    assert left.type()
+               .equals(type()) : String.format("FIXME: stopping point, do type-casting here, left.type=%s != type=%s\n",
+                                               left.type(),
+                                               type());
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(left.type()),
                        operator,
@@ -117,9 +120,9 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                      type().descriptorString(),
                                      type().descriptorString()),
                        false);
-    if ( isResult )
+    if (isResult)
     {
-      err.println( "rez");
+      err.println("rez");
     }
     return mv;
   }
