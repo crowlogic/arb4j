@@ -165,10 +165,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (!type.equals(arg.type()))
     {
-      throw new ExpressionCompilerException(String.format("\"todo: allocate intermediate variable of type %s and call its set(%s) function before it gets passed on to the %s function",
+      String typecastVar = expression.newIntermediateVariable(depth, type);
+
+      throw new ExpressionCompilerException(String.format("todo: call %s(((%s)%s).set(%s))",
+                                                          functionName,
                                                           type,
-                                                          arg.type(),
-                                                          functionName));
+                                                          typecastVar,
+                                                          arg.type()));
     }
     else
     {
