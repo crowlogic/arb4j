@@ -205,20 +205,12 @@ public class arblib {
     arblibJNI.arb_poly_init(RealPolynomial.getCPtr(poly), poly);
   }
 
-  public static void arb_sub_fmpz(Real z, Real x, long y, int prec) {
-    arblibJNI.arb_sub_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
-  }
-
   public static void arb_poly_init2(RealPolynomial poly, int len) {
     arblibJNI.arb_poly_init2(RealPolynomial.getCPtr(poly), poly, len);
   }
 
   public static void arb_poly_swinnerton_dyer_ui(RealPolynomial poly, long n, int prec) {
     arblibJNI.arb_poly_swinnerton_dyer_ui(RealPolynomial.getCPtr(poly), poly, n, prec);
-  }
-
-  public static void arb_set_fmpz(Real x, long y) {
-    arblibJNI.arb_set_fmpz(Real.getCPtr(x), x, y);
   }
 
   public static void arb_sec(Real res, Real x, int prec) {

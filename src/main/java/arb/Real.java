@@ -1431,7 +1431,6 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   {
     return arblib.arb_contains(this, interval) != 0;
   }
-  
     
   public Real set(double d)
   {
@@ -1873,12 +1872,6 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   public Real() {
     this(arblibJNI.new_Real(), true);
-  }
-
-  public RealPolynomial set(Integer in)
-  {
-    // TODO Auto-generated method stub
-    return null;
   }
 
 }

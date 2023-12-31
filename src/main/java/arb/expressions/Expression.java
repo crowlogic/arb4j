@@ -190,7 +190,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return the field name returned by
    *         this{@link #getNextIntermediatevariableFieldName()}
    */
-  public String newIntermediateVariable(int depth, Class<?> type)
+  private String newIntermediateVariable(int depth, Class<?> type)
   {
     String intermediateVarName = getNextIntermediatevariableFieldName(depth);
     intermediateVariables.add(new IntermediateVariable(intermediateVarName,

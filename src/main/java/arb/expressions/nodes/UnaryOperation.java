@@ -30,7 +30,7 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
     }
   }
 
-  public final Node<D, R, F> arg;
+  protected final Node<D, R, F> arg;
 
   public UnaryOperation(Node<D, R, F> node, Expression<D, R, F> expression, int depth)
   {

@@ -58,10 +58,8 @@ public class arblibJNI {
   public final static native void arb_poly_evaluate2(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, RealPolynomial jarg3_, long jarg4, Real jarg4_, int jarg5);
   public final static native void arb_poly_evaluate(long jarg1, Real jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_poly_init(long jarg1, RealPolynomial jarg1_);
-  public final static native void arb_sub_fmpz(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void arb_poly_init2(long jarg1, RealPolynomial jarg1_, int jarg2);
   public final static native void arb_poly_swinnerton_dyer_ui(long jarg1, RealPolynomial jarg1_, long jarg2, int jarg3);
-  public final static native void arb_set_fmpz(long jarg1, Real jarg1_, long jarg2);
   public final static native void arb_sec(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_csc(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_csc_pi(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);

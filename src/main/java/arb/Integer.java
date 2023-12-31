@@ -211,16 +211,4 @@ public class Integer implements
     return result;
   }
 
-  public Real add(Real c0, int bits, Real result)
-  {
-    arblib.arb_set_fmpz(result, this.swigCPtr);
-    return result.add(c0, bits);
-  }
-
-  public Real sub(Real c0, int bits, Real result)
-  {
-    arblib.arb_set_fmpz(result, this.swigCPtr);
-    return result.sub(c0, bits);
-  }
-
 }
