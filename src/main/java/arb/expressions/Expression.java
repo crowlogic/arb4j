@@ -78,6 +78,16 @@ import arb.functions.real.RealFunction;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
+  @Override
+  public String toString()
+  {
+    return String.format("Expression[expression=%s, domainClass=%s, rangeClass=%s, typeset=%s]",
+                         expression,
+                         domainClass,
+                         rangeClass,
+                         typeset());
+  }
+
   protected int                              position                  = -1;
 
   public int                                 ch                        = 0;
@@ -1100,12 +1110,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return this;
   }
 
-  @Override
-  public String toString()
-  {
-    return "Expression[expression=" + expression + ", shortClassName=" + className + "]";
-  }
-
   /**
    * emits an {@link Opcodes#CHECKCAST} instruction
    * 
@@ -1150,11 +1154,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param range         if false then the field is of type
    *                      this{@link #domainClassDescriptor} otherwise of type
    *                      this{@link #rangeClassDescriptor}
-   * @return this{@link #loadVariableReferenceOntoStack(MethodVisitor, String, String)}
+   * @return this{@link #loadFieldOntoStack(MethodVisitor, String, String)}
    */
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> type)
   {
-    return loadVariableReferenceOntoStack(methodVisitor, fieldName, type.descriptorString());
+    return loadFieldOntoStack(methodVisitor, fieldName, type.descriptorString());
   }
 
   /**
@@ -1166,13 +1170,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return
    */
   public MethodVisitor
-         loadVariableReferenceOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
+         loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
     if (verbose)
     {
-      err.format("loadVariableReferenceOntoStack(fieldName=%s, fieldDescriptor=%s)\n",
-                      fieldName,
-                        fieldDescriptor);
+      err.format("loadVariableReferenceOntoStack(fieldName=%s, fieldDescriptor=%s)\n", fieldName, fieldDescriptor);
       err.flush();
     }
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
@@ -1266,7 +1268,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   @Override
   public String typeset()
   {
-    return rootNode.typeset();
+    return rootNode == null ? null : rootNode.typeset();
   }
 
   /**

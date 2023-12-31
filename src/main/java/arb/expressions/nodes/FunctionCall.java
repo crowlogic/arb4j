@@ -26,10 +26,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("FunctionCall[name=%s, contextual=%s, function=%s]", name, contextual, function);
+    return String.format("FunctionCall[name=%s, contextual=%s, function=%s]", functionName, contextual, function);
   }
 
-  public String        name;
+  public String        functionName;
   public boolean       contextual = false;
   public Mapping<?, ?> function;
 
@@ -39,11 +39,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
           expression,
           depth);
     assert argument != null;
-    this.name  = Parser.replaceSubscriptsAndArrows(functionName).replace("ln", "log").replace("√", "sqrt");
-    this.depth = depth;
+    this.functionName = Parser.replaceSubscriptsAndArrows(functionName).replace("ln", "log").replace("√", "sqrt");
+    this.depth        = depth;
     if (expression.context != null)
     {
-      function   = expression.context.functions.map.get(name);
+      function   = expression.context.functions.map.get(functionName);
       contextual = function != null;
     }
   }
@@ -65,7 +65,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return format("%s(%s)", name.replace("√", "\\sqrt").replace("J0", "J_0"), arg.typeset());
+    return format("%s(%s)", functionName.replace("√", "\\sqrt").replace("J0", "J_0"), arg.typeset());
   }
 
   /**
@@ -103,7 +103,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     boolean verbose    = expression.verbose;
     if (verbose)
     {
-      out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", name, arg, depth);
+      out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", functionName, arg, depth);
       out.flush();
     }
 
@@ -133,7 +133,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
 
     expression.checkClassCast(methodVisitor, arg.type());
-    return generateCallToBuiltinUnaryFunction(methodVisitor, name, arg.type(), expression.rangeClass);
+    return generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), expression.rangeClass);
   }
 
   /**
@@ -143,7 +143,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * as the argument, to be passed to the function represented by this node
    * 
    * @param methodVisitor
-   * @param name
+   * @param functionName
    * @param arg
    * @param lastCall
    * @param depth
@@ -154,8 +154,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     var           expression = arg.expression;
     boolean       verbose    = expression.verbose;
-
-    Mapping<D, R> mapping    = expression.context.functions.get(name);
+    Class<?>      type       = type();
+    Mapping<D, R> mapping    = expression.context.functions.get(functionName);
     F             func       = (F) mapping.func;
 
     if (func == null)
@@ -163,29 +163,26 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
 
-    // func.getDomainType
-    expression.loadVariableReferenceOntoStack(Compiler.loadThisOntoStack(methodVisitor),
-                                              name,
-                                              Function.class.descriptorString());
+    if (!type.equals(arg.type()))
+    {
+      throw new ExpressionCompilerException(String.format("\"todo: allocate intermediate variable of type %s and call its set(%s) function before it gets passed on to the %s function",
+                                                          type,
+                                                          arg.type(),
+                                                          functionName));
+    }
+    else
+    {
+      loadFunctionFromField(methodVisitor, mapping.func.getClass());
+    }
 
     arg.generate(methodVisitor);
     Compiler.loadOrder(methodVisitor);
     Compiler.loadBits(methodVisitor);
 
-    Class<?> type = type();
-
-    if (!type.equals(arg.type()))
-    {
-      throw new ExpressionCompilerException(String.format("Incompatible type %s passed as argument to function %s of type %s while compiling %s\n",
-                                                          arg.type(),
-                                                          name,
-                                                          type(),
-                                                          expression.typeset()));
-    }
     if (verbose)
     {
       err.format("callRegisteredFunction(functionName=%s, type=%s, arg=%s, arg.type=%s, depth=%d)\n",
-                 name,
+                 functionName,
                  type,
                  arg,
                  arg.type(),
@@ -225,6 +222,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
 
     return methodVisitor;
+  }
+
+  public void loadFunctionFromField(MethodVisitor methodVisitor, Class<?> type)
+  {
+    expression.loadFieldOntoStack(Compiler.loadThisOntoStack(methodVisitor), functionName, type);
   }
 
   /**

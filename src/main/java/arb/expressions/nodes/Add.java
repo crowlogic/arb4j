@@ -18,7 +18,7 @@ public class Add<D, R, F extends Function<D,R>> extends
   @Override
   public String typeset()
   {
-    return format("(%s + %s)", left.typeset(), right.typeset());
+    return format("%s + %s", left.typeset(), right.typeset());
   }
   
   public Add(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
