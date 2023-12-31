@@ -131,6 +131,7 @@ public class Compiler
                  Class<? extends F> functionClass,
                  boolean verbose) throws ExpressionCompilerException
   {
+
     Expression<D, R, F> expression = new Expression<D, R, F>(className,
                                                              domainClass,
                                                              rangeClass,

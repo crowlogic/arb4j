@@ -2,10 +2,10 @@ package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.loadBits;
 import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
@@ -168,27 +168,30 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     if (!type.equals(arg.type()))
     {
 
-      String typecastVar = expression.reserveIntermediateVariable(methodVisitor, depth, type);
+      String typecastVar = expression.newIntermediateVariable(depth, type);
       if (verbose)
       {
-        out.format("allocated intermediate variable %s of type %s for typecasting from type %s\n",
+        out.format("allocated intermediate variable %s of type %s for typecasting from type %s isInput=%s\n",
                    typecastVar,
                    type,
-                   arg.type());
+                   arg.type(),
+                   arg);
       }
+
+      expression.loadFieldOntoStack(loadThisOntoStack(methodVisitor), typecastVar, type);
+
       methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
                                     Type.getInternalName(type),
                                     "set",
-                                    Type.getMethodDescriptor(Type.getType(type), Type.getType(arg.type())),
+                                    Type.getMethodDescriptor(Type.getType(type()), Type.getType(arg.type())),
                                     false);
 
     }
-    else
-    {
-      loadFunctionFromField(methodVisitor, mapping.func.getClass());
-    }
+
+    loadFunctionFromField(methodVisitor, mapping.func.getClass());
 
     arg.generate(methodVisitor);
+
     Compiler.loadOrder(methodVisitor);
     Compiler.loadBits(methodVisitor);
 
