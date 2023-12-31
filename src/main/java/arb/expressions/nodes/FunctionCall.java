@@ -167,7 +167,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (!type.equals(arg.type()))
     {
-
+methodVisitor.visitInsn(Opcodes.DUP);
       String typecastVar = expression.reserveIntermediateVariable(methodVisitor, depth, type);
       if (verbose)
       {
@@ -181,6 +181,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                     "set",
                                     Type.getMethodDescriptor(Type.getType(type), Type.getType(arg.type())),
                                     false);
+      //Compiler.loadThisOntoStack(methodVisitor);
 
     }
     else
@@ -233,7 +234,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       err.println("Returning from callRegisteredFunction");
       err.flush();
     }
-
+    
+    
     return methodVisitor;
   }
 
