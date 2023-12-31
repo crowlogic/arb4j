@@ -9,7 +9,7 @@ import arb.functions.real.RealFunction;
 /**
  * This is what the generated expression in {@link JacobiPolynomialSequence#A}
  */
-public class A implements
+public abstract class A implements
                         Function<Integer, RealPolynomial>
 {
   public Real                    c0 = new Real("1",
@@ -17,28 +17,33 @@ public class A implements
   public Real                    c1 = new Real("2",
                                                128);
   public Real                    G;
-  public Integer                 x;                        // why is x being declared an integer?
-  public Real                    l0 = new Real();
+  public Integer                 x; // why is x being declared an integer?
+  public RealPolynomial          l0 = new RealPolynomial();
   public RealPolynomial          l1 = new RealPolynomial();
   public RealPolynomial          l2 = new RealPolynomial();
   public RealPolynomial          l3 = new RealPolynomial();
   public RealPolynomial          l4 = new RealPolynomial();
-  public Real                    l5 = new Real();
-  public Real                    l6 = new Real();
-
   public RealFunction            C  = null;
   public Function<Integer, Real> F  = null;
 
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
-
-    // C is called with n/2 therefore its expressed as RealFunction, that is, a
-    // Function from ℝ to ℝ
-    return this.F.evaluate(in, order, bits, l0)
-                 .mul(l1.identity(), bits, l1)
-                 .add(G, bits, l2)
-                 .mul(C.evaluate(l5.set(in), order, bits, l6).sub(c0, bits, l3), bits, l4)
-                 .div(c1, bits, result);
+    
+    // C is called with n/2 therefore its expressed as RealFunction, that is, a Function from ℝ to ℝ
+    return ((RealPolynomial) this.F.evaluate((Integer) in,
+                                             order,
+                                             bits,
+                                             (RealPolynomial) result)).mul((RealPolynomial) result, bits, this.l0)
+                                                                      .add(this.G, bits, this.l1)
+                                                                      .mul(((RealPolynomial) this.C.evaluate((Integer) in,
+                                                                                                             order,
+                                                                                                             bits,
+                                                                                                             this.l2)).sub(this.c0,
+                                                                                                                           bits,
+                                                                                                                           this.l3),
+                                                                           bits,
+                                                                           this.l4)
+                                                                      .div(this.c1, bits, (RealPolynomial) result);
   }
 
   public void close()
@@ -50,7 +55,5 @@ public class A implements
     this.l2.close();
     this.l3.close();
     this.l4.close();
-    this.l5.clone();
-    this.l6.close();
   }
 }
