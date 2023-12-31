@@ -110,7 +110,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 //                  + " and produces a " + type();
 
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(left.type()),
+                       Type.getInternalName(type()),
                        operator,
                        String.format("(%sI%s)%s",
                                      right.type().descriptorString(),

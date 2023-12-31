@@ -213,6 +213,10 @@ public class arblib {
     arblibJNI.arb_poly_swinnerton_dyer_ui(RealPolynomial.getCPtr(poly), poly, n, prec);
   }
 
+  public static void arb_set_fmpz(Real x, long y) {
+    arblibJNI.arb_set_fmpz(Real.getCPtr(x), x, y);
+  }
+
   public static void arb_sec(Real res, Real x, int prec) {
     arblibJNI.arb_sec(Real.getCPtr(res), res, Real.getCPtr(x), x, prec);
   }

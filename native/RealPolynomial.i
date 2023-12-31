@@ -19,6 +19,12 @@ import arb.exceptions.DivisionByZeroException;
 
   static { System.loadLibrary("arblib"); }
 
+
+  public RealPolynomial add(Real g, int bits)
+  {
+    return add(g,bits,this);
+  }
+
   public RealPolynomial add(Real g, int bits, RealPolynomial res)
   {
     return g.add(this, bits, res);   

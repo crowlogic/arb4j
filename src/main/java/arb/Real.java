@@ -202,6 +202,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   }
 
  
+  public Real set(Integer in)
+  {
+    arblib.arb_set_fmpz(this, in.swigCPtr);
+    return this;
+  }
+  
  /**
    * @see arblib#arb_asin(Real, Real, int)
    * @param prec

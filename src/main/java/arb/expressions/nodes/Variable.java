@@ -3,15 +3,12 @@ package arb.expressions.nodes;
 import static arb.expressions.Compiler.loadInput;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
-import static java.lang.System.err;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 
 import arb.Real;
 import arb.expressions.*;
@@ -101,10 +98,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      if (expression.verbose)
-      {
-        err.println("Fucking " + reference);
-      }
+  
       reference.type = expression.domainClass;
     }
   }
@@ -147,7 +141,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 //                         "identity",
 //                         format("()%s", reference.type().descriptorString()),
 //                         false);
-//      assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
+      assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
     }
     else
     {

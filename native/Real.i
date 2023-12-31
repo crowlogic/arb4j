@@ -175,6 +175,12 @@ import arb.stochastic.ProbabilityDistributionFunction;
   }
 
  
+  public Real set(Integer in)
+  {
+    arblib.arb_set_fmpz(this, in.swigCPtr);
+    return this;
+  }
+  
  /**
    * @see arblib#arb_asin(Real, Real, int)
    * @param prec
