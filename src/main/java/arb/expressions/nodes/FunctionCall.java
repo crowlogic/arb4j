@@ -5,6 +5,8 @@ import static arb.expressions.Compiler.loadResult;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -165,13 +167,21 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (!type.equals(arg.type()))
     {
-      String typecastVar = expression.newIntermediateVariable(depth, type);
 
-      throw new ExpressionCompilerException(String.format("todo: call %s(((%s)%s).set(%s))",
-                                                          functionName,
-                                                          type,
-                                                          typecastVar,
-                                                          arg.type()));
+      String typecastVar = expression.reserveIntermediateVariable(methodVisitor, depth, type);
+      if (verbose)
+      {
+        out.format("allocated intermediate variable %s of type %s for typecasting from type %s\n",
+                   typecastVar,
+                   type,
+                   arg.type());
+      }
+      methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
+                                    Type.getInternalName(type),
+                                    "set",
+                                    Type.getMethodDescriptor(Type.getType(type), Type.getType(arg.type())),
+                                    false);
+
     }
     else
     {

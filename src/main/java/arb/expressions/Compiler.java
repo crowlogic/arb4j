@@ -187,7 +187,7 @@ public class Compiler
   {
     expression.context.functions.map.forEach((name, function) ->
     {
-      String descriptor = function.getClass().descriptorString();
+      String descriptor = function.func.getClass().descriptorString();
 
       if (expression.verbose)
       {

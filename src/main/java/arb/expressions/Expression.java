@@ -190,7 +190,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return the field name returned by
    *         this{@link #getNextIntermediatevariableFieldName()}
    */
-  public String newIntermediateVariable(int depth, Class<?> type)
+  private String newIntermediateVariable(int depth, Class<?> type)
   {
     String intermediateVarName = getNextIntermediatevariableFieldName(depth);
     intermediateVariables.add(new IntermediateVariable(intermediateVarName,
@@ -337,7 +337,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     finally
     {
       classVisitor.visitEnd();
-      if (verbose)
+      if (classVisitor instanceof FlushingTraceClassVisitor)
       {
         classVisitor = ((FlushingTraceClassVisitor) classVisitor).getDelegate();
       }
@@ -428,9 +428,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
+  boolean debug = verbose;
+
   private ClassVisitor constructClassVisitor()
   {
-    ClassVisitor cw = new CheckClassAdapter(new ClassWriter(ClassWriter.COMPUTE_FRAMES));
+    ClassVisitor cw = debug ? new CheckClassAdapter(new ClassWriter(ClassWriter.COMPUTE_FRAMES)) : new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+
     if (verbose)
     {
       cw = new FlushingTraceClassVisitor(cw,
@@ -1169,8 +1172,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param range         the type descriptor
    * @return
    */
-  public MethodVisitor
-         loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
+  public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
     if (verbose)
     {
