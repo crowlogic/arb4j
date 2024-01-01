@@ -106,13 +106,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       expression.reserveIntermediateVariable(mv, depth, resultType);
     }
 
-//    assert false : "assert that what is on the stack is we know that " + left.type() + " has " + operator + " method which operates on a " + right.type()
-//                  + " and produces a " + type();
-    assert left.type()
-               .equals(type()) : String.format("FIXME: stopping point at '%s', do type-casting here, left.type=%s != type=%s\n",
-                                               typeset(),
-                                               left.type(),
-                                               type());
+    if (!left.type().equals(type()))
+    {
+      throw new UnsupportedOperationException(String.format("FIXME: stopping point at '%s', do type-casting here, left.type=%s != type=%s\n",
+                                                            typeset(),
+                                                            left.type(),
+                                                            type()));
+    }
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(left.type()),
                        operator,
