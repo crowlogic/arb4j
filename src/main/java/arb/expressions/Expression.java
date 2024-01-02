@@ -27,17 +27,7 @@ import arb.functions.Function;
  * <p>
  * The <code>Expression</code> class in the <code>arb.expressions</code> package
  * is a versatile and dynamic expression compiler and evaluator which generates
- * high-performance {@link Function} implementations on-the-fly. Presently only
- * the {@link Real} valued {@link Field} is implemented, but in principle it can
- * easily be extended to {@link Complex} since it is generic, supporting types D
- * (domain), R (range), and F (function), and leverages the ASM bytecode
- * framework for generating and executing compiled expressions. <br>
- * Just implement the appropriately specialized function to call
- * {@link Compiler#compile(String, String, Context, Class, Class, Class, boolean)}
- * like is done for
- * {@link Compiler#compile(String, String, RealContext, boolean)} and create an
- * extension of {@link Context} like is done for {@link RealContext}
- * </p>
+ * high-performance {@link Function} implementations on-the-fly.
  *
  * <p>
  * Key Features:
@@ -55,7 +45,7 @@ import arb.functions.Function;
  * </ul>
  *
  * <p>
- * This class is integrated with other components of the <code>arb</code>
+ * This class is integrated with other components of the <code>arb4j</code>
  * library, such as {@link Field}, {@link Function}, and various {@link Node}
  * types. It uses ASM's {@link MethodVisitor} and {@link ClassVisitor} for
  * bytecode generation.
@@ -78,11 +68,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   @Override
   public String toString()
   {
-    return String.format("Expression[expression=%s, domainClass=%s, rangeClass=%s, typeset=%s]",
-                         expression,
-                         domainClass,
-                         rangeClass,
-                         typeset());
+    return "Expression[" + expression + "]";
   }
 
   protected int                              position                  = -1;
@@ -279,7 +265,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (ch == charToEat)
       {
         nextChar();
-        if (verbose)
+        if (verboseParser)
         {
           err.format("Ate expected '%c' at depth %d and advanced to char '%c' at pos %d\n",
                      charToEat,
@@ -700,7 +686,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       assert false : "wack";
     }
 
-    if (verbose)
+    if (verboseParser)
     {
       out.println("eat() returning " + node);
       out.flush();
@@ -837,7 +823,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   private Node<D, R, F> eatLast(int depth) throws ExpressionCompilerException
   {
-    if (verbose)
+    if (verboseParser)
     {
       err.format("eatLast(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
@@ -878,7 +864,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 //      }
     }
 
-    if (verbose)
+    if (verboseParser)
     {
       err.format("eatName(depth=%d): startPos=%d, position=%d, identifier='%s' index='%s' ch='%c'\n",
                  depth,
@@ -1020,7 +1006,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   private Node<D, R, F> eatSecond(int depth) throws ExpressionCompilerException
   {
-    if (verbose)
+    if (verboseParser)
     {
       err.format("eatSecond(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
