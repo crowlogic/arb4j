@@ -30,6 +30,11 @@ public class Integer implements
                      Ring<Integer>
 {
 
+  public Real tanh(int bits, Real result)
+  {
+    return result.set(this).tanh(bits, result);
+  }
+  
   public Real sqrt(int bits, Real result)
   {
     return result.set(this).sqrt(bits);
