@@ -140,7 +140,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       expression.reserveIntermediateVariable(mv, depth, type());
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         Type.getInternalName(expression.rangeClass),
+                         Type.getInternalName(expression.rangeType),
                          "identity",
                          format("()%s", reference.type().descriptorString()),
                          false);

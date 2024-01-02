@@ -1,6 +1,9 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.loadBits;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
+import static arb.expressions.Compiler.prepareStackForReusingRightSide;
 import static java.lang.System.err;
 
 import org.objectweb.asm.MethodVisitor;
@@ -85,15 +88,21 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     Class<?> resultType = type();
     loadBits(mv);
     Node<D, R, F> reusableNode;
+    String        intermediary     = null;
+    Class<?>      targetResultType = expression.rangeType;
+
     if (isResult)
     {
-      Class<?> targetResultType = expression.rangeClass;
 
-      assert targetResultType.equals(resultType) : String.format("TODO: type conversion from %s to %s for result of binary operation",
-                                                                 resultType,
-                                                                 targetResultType);
+      if (!targetResultType.equals(resultType))
+      {
 
-      expression.checkClassCast(loadResult(mv), resultType);
+        intermediary = expression.reserveIntermediateVariable(mv, depth, resultType);
+      }
+      else
+      {
+        expression.checkClassCast(loadResult(mv), resultType);
+      }
 
     }
     else if ((reusableNode = getAReusableNode()) != null)
@@ -128,9 +137,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                      type().descriptorString(),
                                      type().descriptorString()),
                        false);
-    if (isResult)
+    if (intermediary != null)
     {
-      err.println("rez");
+      expression.checkClassCast(loadResult(mv), expression.rangeType);
+      expression.loadFieldOntoStack(mv, intermediary, resultType);
+      assert false : "TODO: " + String.format("TODO: invoke set method to complete conversion from %s to %s for result of binary operation",
+                                              resultType,
+                                              targetResultType);
     }
     return mv;
   }

@@ -118,10 +118,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (isResult)
     {
-      assert expression.rangeClass.equals(type()) : String.format("TODO: do type conversion from %s to %s\n",
+      assert expression.rangeType.equals(type()) : String.format("TODO: do type conversion from %s to %s\n",
                                                                   type(),
-                                                                  expression.rangeClass);
-      expression.checkClassCast(loadResult(methodVisitor), expression.rangeClass);
+                                                                  expression.rangeType);
+      expression.checkClassCast(loadResult(methodVisitor), expression.rangeType);
 
     }
     else
@@ -153,7 +153,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      return expression.rangeClass;
+      return expression.rangeType;
     }
   }
 

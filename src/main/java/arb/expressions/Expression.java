@@ -83,7 +83,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   final public Class<? extends D>            domainClass;
 
-  final public Class<? extends R>            rangeClass;
+  final public Class<? extends R>            rangeType;
 
   final public String                        domainClassDescriptor;
 
@@ -151,7 +151,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.domainClassDescriptor     = Type.getDescriptor(domainClass);
     this.className                 = className;
     this.domainClass               = domainClass;
-    this.rangeClass                = rangeClass;
+    this.rangeType                = rangeClass;
     this.functionClass             = functionClass;
     this.rangeClassInternalName    = Type.getInternalName(rangeClass);
     this.domainClassInternalName   = Type.getInternalName(domainClass);
@@ -225,7 +225,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public MethodVisitor setResult(MethodVisitor methodVisitor)
   {
-    checkClassCast(loadResult(methodVisitor), rangeClass);
+    checkClassCast(loadResult(methodVisitor), rangeType);
     methodVisitor.visitInsn(Opcodes.SWAP);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   rangeClassInternalName,
@@ -373,7 +373,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param classVisitor The {@link ClassVisitor} for the class being generated
    * @param variables    A {@link Collection} of variable names to be declared as
    *                     fields
-   * @param range        if true then the type is {@link Expression#rangeClass}
+   * @param range        if true then the type is {@link Expression#rangeType}
    *                     otherwise its {@link Expression#domainClass}
    * 
    * @return classVisitor
@@ -1154,7 +1154,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
   {
-    if (!resultInUse && type.equals(rangeClass))
+    if (!resultInUse && type.equals(rangeType))
     {
       checkClassCast(loadResult(methodVisitor), type);
       resultInUse = true;
@@ -1227,12 +1227,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   /**
    * 
-   * @return true if this{@link #rangeClass} {@link Object#equals(Object)}
+   * @return true if this{@link #rangeType} {@link Object#equals(Object)}
    *         {@link RealPolynomial}
    */
   public boolean hasPolynomialRange()
   {
-    return rangeClass.equals(RealPolynomial.class) || rangeClass.equals(ComplexPolynomial.class);
+    return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class);
   }
 
   public MethodVisitor declareFieldForRegisteredFunction(MethodVisitor methodVisitor, Mapping<?, ?> mapping)
