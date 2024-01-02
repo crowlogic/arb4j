@@ -60,31 +60,6 @@ public class Compiler
     methodVisitor.visitInsn(Opcodes.ICONST_0);
   }
 
-  /**
-   * Generate a call to the {@link Object}s {@link Closeable#close()} method
-   * 
-   * @param <D>
-   * @param <R>
-   * @param <F>
-   * @param expression
-   * @param methodVisitor
-   * @param variableNameToBeClosed
-   * @return
-   */
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
-         generateVariableClosure(Expression<D, R, F> expression,
-                                 MethodVisitor methodVisitor,
-                                 String variableNameToBeClosed)
-  {
-    methodVisitor.visitFieldInsn(GETFIELD,
-                                 expression.className,
-                                 variableNameToBeClosed,
-                                 expression.domainClassDescriptor);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, expression.domainClassInternalName, "close", "()V", false);
-    return methodVisitor;
-  }
-
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
                                                                              Context context,
                                                                              Class<? extends D> domainClass,
@@ -173,11 +148,11 @@ public class Compiler
    */
   public static <D, R, F extends Function<D, R>>
          ClassVisitor
-         declareConstants(ClassVisitor classVisitor, Class<?> type, Iterable<LiteralConstant<D, R, F>> literals)
+         declareConstants(ClassVisitor classVisitor, Iterable<LiteralConstant<D, R, F>> literals)
   {
     for (var constant : literals)
     {
-      classVisitor.visitField(ACC_PUBLIC, constant.fieldName, type.descriptorString(), null, null);
+      classVisitor.visitField(ACC_PUBLIC, constant.fieldName, constant.type().descriptorString(), null, null);
     }
     return classVisitor;
   }
@@ -300,7 +275,7 @@ public class Compiler
 
     for (var literal : expression.literalConstants)
     {
-      initializeLiteralConstantWithString(expression, methodVisitor, literal, Real.class);
+      initializeLiteralConstantWithString(expression, methodVisitor, literal);
     }
     return methodVisitor;
   }
@@ -309,18 +284,22 @@ public class Compiler
          MethodVisitor
          initializeLiteralConstantWithString(Expression<D, R, F> expression,
                                              MethodVisitor methodVisitor,
-                                             LiteralConstant<D, R, F> constant,
-                                             Class<?> type)
+                                             LiteralConstant<D, R, F> constant)
   {
+    Class<?> type = constant.type();
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitLdcInsn(constant.value);
-    methodVisitor.visitIntInsn(SIPUSH, constant.bits);
+    boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
+    if (needsBitsPassedToStringConstructor)
+    {
+      methodVisitor.visitIntInsn(SIPUSH, constant.bits);
+    }
     methodVisitor.visitMethodInsn(INVOKESPECIAL,
                                   Type.getInternalName(type),
                                   "<init>",
-                                  "(Ljava/lang/String;I)V",
+                                  needsBitsPassedToStringConstructor ? "(Ljava/lang/String;I)V" : "(Ljava/lang/String;)V",
                                   false);
     methodVisitor.visitFieldInsn(PUTFIELD, expression.className, constant.fieldName, type.descriptorString());
     return methodVisitor;

@@ -194,6 +194,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     res.getCoeffs().get(0).sub(this,bits);
     return res;
   }
+ 
+  public Real pow( Integer i, int bits, Real result )
+  {
+    arblib.arb_pow_fmpz(result, this, i.swigCPtr, bits);
+    return result;
+  }
   
   @Override
   public Real apply(int value)
@@ -717,6 +723,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   {
     return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
                                 false);
+  }
+  
+  public Real add( Integer z, int bits, Real result )
+  {
+    arblib.arb_add_fmpz(result, this, z.swigCPtr, bits);
+    return result;
   }
   
   public Real abs()

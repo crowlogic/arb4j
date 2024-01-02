@@ -5,13 +5,13 @@ import static arb.expressions.Compiler.loadResult;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import arb.Real;
 import arb.expressions.*;
 import arb.functions.Function;
 
@@ -167,7 +167,18 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (!type.equals(arg.type()))
     {
-methodVisitor.visitInsn(Opcodes.DUP);
+      try
+      {
+        String domainType = func.getClass().getMethod("domainType").getGenericReturnType().getTypeName();
+        out.println("domainType=" + domainType);
+
+      }
+      catch (NoSuchMethodException | SecurityException e)
+      {
+        throw new RuntimeException(e.getMessage(),
+                                   e);
+      }
+      methodVisitor.visitInsn(Opcodes.DUP);
       String typecastVar = expression.reserveIntermediateVariable(methodVisitor, depth, type);
       if (verbose)
       {
@@ -181,7 +192,7 @@ methodVisitor.visitInsn(Opcodes.DUP);
                                     "set",
                                     Type.getMethodDescriptor(Type.getType(type), Type.getType(arg.type())),
                                     false);
-      //Compiler.loadThisOntoStack(methodVisitor);
+      // Compiler.loadThisOntoStack(methodVisitor);
 
     }
     else
@@ -234,8 +245,7 @@ methodVisitor.visitInsn(Opcodes.DUP);
       err.println("Returning from callRegisteredFunction");
       err.flush();
     }
-    
-    
+
     return methodVisitor;
   }
 

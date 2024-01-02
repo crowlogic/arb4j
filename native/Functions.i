@@ -19,10 +19,13 @@
     }
 }
 
+void arb_add_fmpz(arb_t z, const arb_t x, const fmpz_t y, slong prec);
+
 void fmpz_mul(fmpz_t f, const fmpz_t g, const fmpz_t h);
 void fmpz_divexact(fmpz_t f, const fmpz_t g, const fmpz_t h);
 void fmpz_add(fmpz_t f, const fmpz_t g, const fmpz_t h);
 void fmpz_sub(fmpz_t f, const fmpz_t g, const fmpz_t h);
+void arb_pow_fmpz(arb_t y, const arb_t b, const fmpz_t e, slong prec);
 
 int arb_poly_is_zero(const arb_poly_t z);
 

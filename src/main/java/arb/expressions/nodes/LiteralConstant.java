@@ -9,6 +9,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
 import arb.expressions.Expression;
@@ -26,9 +27,8 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    return Real.class;
-    // FIXME: todo: implement integer-types
-    // return value.contains("\\.") ? Real.class : Integer.class;
+    assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integert is probably missing";
+    return value.contains("\\.") ? Real.class : Integer.class;
   }
 
   public final String           value;
@@ -133,7 +133,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, expression.domainClass);
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, type() );
     }
 
     if (isResult)

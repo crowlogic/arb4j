@@ -14,7 +14,6 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
@@ -23,7 +22,6 @@ import arb.*;
 import arb.expressions.nodes.*;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
-import arb.functions.real.RealFunction;
 
 /**
  * <p>
@@ -353,7 +351,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * Calls {@link Compiler#declareConstants(ClassVisitor, String, Iterable)},
+   * Calls {@link Compiler#declareConstants(ClassVisitor, Iterable)},
    * this{@link #declareReferencedVariables(ClassVisitor)},
    * this{@link #declareIntermediateVariables(ClassVisitor)}, then
    * {@link Compiler#declareFunctions(Expression, ClassVisitor, Functions)}
@@ -367,7 +365,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.println("Declaring constants: " + literalConstants);
       err.flush();
     }
-    declareConstants(classVisitor, Real.class, literalConstants);
+    declareConstants(classVisitor, literalConstants);
 
     declareReferencedVariables(classVisitor);
 
@@ -450,12 +448,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return !literalConstants.isEmpty() | intermediateVariableCount > 0;
   }
 
-  /**
-   * Generates the {@link RealFunction#close()} method
-   * 
-   * @param classVisitor
-   * @return
-   */
+  public MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String name, Class<?> type)
+  {
+    methodVisitor.visitFieldInsn(GETFIELD, className, name, type.descriptorString());
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(type), "close", "()V", false);
+    return methodVisitor;
+  }
+
   protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
   {
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "close", "()V", null, null);
@@ -463,17 +462,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       methodVisitor.visitCode();
 
-      if (!literalConstants.isEmpty())
-      {
-        List<String> constantList = literalConstants.stream().map(c -> c.fieldName).toList();
-        if (verbose)
-        {
-          err.println("Closing literal constants : " + constantList);
-          err.flush();
-        }
-
-        closeFields(methodVisitor, constantList);
-      }
+      literalConstants.forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                  constant.fieldName,
+                                                                  constant.type()));
 
       if (intermediateVariableCount > 0)
       {
@@ -483,7 +474,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
           err.flush();
         }
 
-        closeFields(methodVisitor, intermediateVariables.stream().map(x -> x.name).collect(Collectors.toList()));
+        intermediateVariables.forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                     intermediateVariable.name,
+                                                                                     intermediateVariable.type));
       }
 
       methodVisitor.visitInsn(Opcodes.RETURN);
@@ -497,28 +490,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  /**
-   * Calls this{@link #closeField(ClassVisitor)} for each named {@link Field}
-   * whether it be a {@link LiteralConstant} or a {@link Variable}
-   * 
-   * @param methodVisitor
-   * @param fields        an {@link Iterable} of {@link String}s naming the
-   *                      {@link Field}s to be closed
-   */
-  public void closeFields(MethodVisitor methodVisitor, Iterable<String> fields)
-  {
-    for (String variables : fields)
-    {
-      generateVariableClosure(this, loadThisOntoStack(methodVisitor), variables);
-    }
-  }
-
-  /**
-   * Generates the {@link Function#evaluate(Object, int, Object)} method
-   * 
-   * @param classVisitor
-   * @return classVisitor
-   */
   private ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws ExpressionCompilerException
   {
 
@@ -1175,7 +1146,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (verbose)
     {
-      err.format("loadVariableReferenceOntoStack(fieldName=%s, fieldDescriptor=%s)\n", fieldName, fieldDescriptor);
+      err.format("loadFieldOntoStack(fieldName=%s, fieldDescriptor=%s)\n", fieldName, fieldDescriptor);
       err.flush();
     }
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
@@ -1196,12 +1167,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
   {
-    if (!type.equals(rangeClass))
-    {
-      assert false : "Todo: add type of intermediate variable to locateExistingOrInstantiateNewIntermediateResultVariable: "
-                    + type;
-    }
-    if (!resultInUse)
+    if (!resultInUse && type.equals(rangeClass))
     {
       checkClassCast(loadResult(methodVisitor), type);
       resultInUse = true;

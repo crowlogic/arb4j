@@ -293,7 +293,7 @@ public class ExpressionCompilerRealFunctionTest extends
 
   public void testLogOnePlusInputSquared()
   {
-    RealFunction expression = express("ln(t^2+1)", context,true);
+    RealFunction expression = express("ln(t^2+1)", context);
     {
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(one, 1, 256, result);
@@ -326,7 +326,7 @@ public class ExpressionCompilerRealFunctionTest extends
   public void testOnePlusInputSquared()
   {
 
-    RealFunction expression = express("1+t^2", context, true);
+    RealFunction expression = express("1+t^2", context);
     {
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(one, 1, 256, result);
@@ -426,9 +426,9 @@ public class ExpressionCompilerRealFunctionTest extends
     }
   }
 
-  public void testSimplerCompoundExpression()
+  public void testOnePlusTwoPlusThree()
   {
-    RealFunction expression = express("1+(2)+(3)", context);
+    RealFunction expression = express("1+(2)+(3)", context,true);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
 

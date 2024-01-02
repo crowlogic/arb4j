@@ -167,6 +167,18 @@ import arb.stochastic.ProbabilityDistributionFunction;
     res.getCoeffs().get(0).sub(this,bits);
     return res;
   }
+ 
+  public Real add( Integer z, int bits, Real result )
+  {
+    arblib.arb_add_fmpz(result, this, z.swigCPtr, bits);
+    return result;
+  }
+  
+  public Real pow( Integer i, int bits, Real result )
+  {
+    arblib.arb_pow_fmpz(result, this, i.swigCPtr, bits);
+    return result;
+  }
   
   @Override
   public Real apply(int value)

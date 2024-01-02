@@ -65,8 +65,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     left.generate(mv);
     right.generate(mv);
-    Class<?> resultType = type();
-    return invokeMethod(mv, operation, resultType);
+    return invokeMethod(mv, operation);
   }
 
   /**
@@ -81,13 +80,21 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
    * 
    * @return
    */
-  public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
+  public MethodVisitor invokeMethod(MethodVisitor mv, String operator)
   {
+    Class<?> resultType = type();
     loadBits(mv);
     Node<D, R, F> reusableNode;
     if (isResult)
     {
+      Class<?> targetResultType = expression.rangeClass;
+
+      assert targetResultType.equals(resultType) : String.format("TODO: type conversion from %s to %s for result of binary operation",
+                                                                 resultType,
+                                                                 targetResultType);
+
       expression.checkClassCast(loadResult(mv), resultType);
+
     }
     else if ((reusableNode = getAReusableNode()) != null)
     {

@@ -4,11 +4,18 @@ import static java.lang.System.err;
 import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 import arb.functions.Function;
 
 public class IntermediateVariable
 {
+  @Override
+  public String toString()
+  {
+    return String.format("IntermediateVariable[name=%s, type=%s]", name, type);
+  }
+
   public IntermediateVariable(String name, Class<?> type)
   {
     this.type = type;
@@ -18,20 +25,16 @@ public class IntermediateVariable
   public String   name;
   public Class<?> type;
 
-  public static <D, R, F extends Function<D, R>>
+  public <D, R, F extends Function<D, R>>
          MethodVisitor
-         initializeIntermediateVariable(Expression<D, R, F> expression,
-                                        MethodVisitor methodVisitor,
-                                        IntermediateVariable intermediateVariable)
+         initializeIntermediateVariable(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitTypeInsn(NEW, expression.rangeClassInternalName);
+    String intermediateTypeInternalName = Type.getInternalName(type);
+    methodVisitor.visitTypeInsn(NEW, intermediateTypeInternalName);
     methodVisitor.visitInsn(DUP);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, expression.rangeClassInternalName, "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD,
-                                 expression.className,
-                                 intermediateVariable.name,
-                                 intermediateVariable.type.descriptorString());
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, intermediateTypeInternalName, "<init>", "()V", false);
+    methodVisitor.visitFieldInsn(PUTFIELD, expression.className, name, type.descriptorString());
     return methodVisitor;
   }
 
@@ -47,7 +50,7 @@ public class IntermediateVariable
 
     for (var intermediateVariable : expression.intermediateVariables)
     {
-      initializeIntermediateVariable(expression, methodVisitor, intermediateVariable);
+      intermediateVariable.initializeIntermediateVariable(expression, methodVisitor);
     }
     return methodVisitor;
   }

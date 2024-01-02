@@ -44,15 +44,10 @@ public class Integer implements
 
   public Integer()
   {
-    this(1);
+    init(1);
   }
 
-  static Arena arena = Arena.ofAuto();
-
-  public Integer(int dim)
-  {
-    init(dim);
-  }
+  public static Arena   arena       = Arena.ofAuto();
 
   public long           swigCPtr;
   public boolean        swigCMemOwn = true;
@@ -152,6 +147,12 @@ public class Integer implements
     swigCPtr    = cPtr;
   }
 
+  public Integer(String string)
+  {
+    init();
+    set(string);
+  }
+
   public static long getCPtr(Real obj)
   {
     return (obj == null) ? 0 : obj.swigCPtr;
@@ -182,7 +183,7 @@ public class Integer implements
   @Override
   public Integer mul(Integer operand, int prec, Integer result)
   {
-    assert prec == 0 : "exact precision methods require bits=0";
+  //  assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_mul(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
@@ -190,7 +191,7 @@ public class Integer implements
   @Override
   public Integer div(Integer operand, int prec, Integer result)
   {
-    assert prec == 0 : "exact precision methods require bits=0";
+   // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_divexact(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
@@ -198,7 +199,7 @@ public class Integer implements
   @Override
   public Integer add(Integer operand, int prec, Integer result)
   {
-    assert prec == 0 : "exact precision methods require bits=0";
+   // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_add(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
@@ -206,7 +207,7 @@ public class Integer implements
   @Override
   public Integer sub(Integer operand, int prec, Integer result)
   {
-    assert prec == 0 : "exact precision methods require bits=0";
+   // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_sub(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
