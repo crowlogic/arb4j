@@ -33,6 +33,10 @@ public class arblib {
     arblibJNI.arb_pow_fmpz(Real.getCPtr(y), y, Real.getCPtr(b), b, e, prec);
   }
 
+  public static void arb_set_fmpz(Real x, long y) {
+    arblibJNI.arb_set_fmpz(Real.getCPtr(x), x, y);
+  }
+
   public static int arb_poly_is_zero(RealPolynomial z) {
     return arblibJNI.arb_poly_is_zero(RealPolynomial.getCPtr(z), z);
   }

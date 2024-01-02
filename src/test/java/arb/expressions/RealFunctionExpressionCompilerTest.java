@@ -436,7 +436,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testSquareRootOfTwentyFive()
   {
-    RealFunction expression = express("√(25)", context);
+    RealFunction expression = express("√(25)", context,true);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
       assertEquals(5.0, evaluatedX.doubleValue(RoundingMode.Up));

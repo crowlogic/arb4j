@@ -217,6 +217,13 @@ import arb.stochastic.ProbabilityDistributionFunction;
     }
   }
   
+  public Real set(Integer integer)
+  {
+    arblib.arb_set_fmpz(this, integer.swigCPtr);
+    return this;
+  }
+    
+  
   /**
    * 
    * @return {@link arb#arb_is_exact(Real)} != 0

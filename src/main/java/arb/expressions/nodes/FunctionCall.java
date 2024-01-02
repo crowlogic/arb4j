@@ -118,7 +118,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (isResult)
     {
-      expression.checkClassCast(loadResult(methodVisitor), arg.type());
+      assert expression.rangeClass.equals(type()) : String.format("TODO: do type conversion from %s to %s\n",
+                                                                  type(),
+                                                                  expression.rangeClass);
+      expression.checkClassCast(loadResult(methodVisitor), expression.rangeClass);
+
     }
     else
     {
@@ -137,9 +141,20 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
         expression.reserveIntermediateVariable(methodVisitor, depth, arg.type());
       }
     }
+    Class<?> targetResultType = resultTypeFor(functionName);
+    return generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), targetResultType);
+  }
 
-    expression.checkClassCast(methodVisitor, arg.type());
-    return generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), expression.rangeClass);
+  private Class<?> resultTypeFor(String functionName)
+  {
+    if ("sqrt".equals(functionName))
+    {
+      return Real.class;
+    }
+    else
+    {
+      return expression.rangeClass;
+    }
   }
 
   /**
@@ -287,7 +302,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
                                   functionName,
-                                  format("(I%s)%s", domainType.descriptorString(), rangeType.descriptorString()),
+                                  format("(I%s)%s", rangeType.descriptorString(), rangeType.descriptorString()),
                                   false);
     return methodVisitor;
   }

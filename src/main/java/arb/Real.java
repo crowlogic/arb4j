@@ -195,6 +195,12 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return res;
   }
  
+  public Real add( Integer z, int bits, Real result )
+  {
+    arblib.arb_add_fmpz(result, this, z.swigCPtr, bits);
+    return result;
+  }
+  
   public Real pow( Integer i, int bits, Real result )
   {
     arblib.arb_pow_fmpz(result, this, i.swigCPtr, bits);
@@ -237,6 +243,13 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
       return result.set(z.re());
     }
   }
+  
+  public Real set(Integer integer)
+  {
+    arblib.arb_set_fmpz(this, integer.swigCPtr);
+    return this;
+  }
+    
   
   /**
    * 
@@ -723,12 +736,6 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   {
     return StreamSupport.stream(Spliterators.spliterator(iterator(), dim, Spliterator.SIZED | Spliterator.ORDERED),
                                 false);
-  }
-  
-  public Real add( Integer z, int bits, Real result )
-  {
-    arblib.arb_add_fmpz(result, this, z.swigCPtr, bits);
-    return result;
   }
   
   public Real abs()

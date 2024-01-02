@@ -27,6 +27,8 @@ void fmpz_add(fmpz_t f, const fmpz_t g, const fmpz_t h);
 void fmpz_sub(fmpz_t f, const fmpz_t g, const fmpz_t h);
 void arb_pow_fmpz(arb_t y, const arb_t b, const fmpz_t e, slong prec);
 
+void arb_set_fmpz(arb_t x, const fmpz_t y);
+
 int arb_poly_is_zero(const arb_poly_t z);
 
 void arb_poly_neg(arb_poly_t res, const arb_poly_t poly);

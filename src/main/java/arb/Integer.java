@@ -29,6 +29,12 @@ public class Integer implements
                      AutoCloseable,
                      Ring<Integer>
 {
+
+  public Real sqrt(int bits, Real result)
+  {
+    return result.set(this).sqrt(bits);
+  }
+
   @Override
   public String toString()
   {
@@ -183,7 +189,7 @@ public class Integer implements
   @Override
   public Integer mul(Integer operand, int prec, Integer result)
   {
-  //  assert prec == 0 : "exact precision methods require bits=0";
+    // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_mul(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
@@ -191,7 +197,7 @@ public class Integer implements
   @Override
   public Integer div(Integer operand, int prec, Integer result)
   {
-   // assert prec == 0 : "exact precision methods require bits=0";
+    // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_divexact(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
@@ -199,7 +205,7 @@ public class Integer implements
   @Override
   public Integer add(Integer operand, int prec, Integer result)
   {
-   // assert prec == 0 : "exact precision methods require bits=0";
+    // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_add(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
@@ -207,7 +213,7 @@ public class Integer implements
   @Override
   public Integer sub(Integer operand, int prec, Integer result)
   {
-   // assert prec == 0 : "exact precision methods require bits=0";
+    // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_sub(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
