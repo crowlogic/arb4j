@@ -142,6 +142,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                              functionClassDescriptor;
 
+  public HashMap<String, Mapping<?, ?>>      referencedFunctions       = new HashMap<>();
+
   public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
 
   public Context                             context;
@@ -373,7 +375,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (context != null && !context.functions.isEmpty())
     {
-      declareFunctions(this, classVisitor);
+      declareFunctionReferences(this, classVisitor);
     }
   }
 
@@ -620,13 +622,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         try
         {
-          String variableName = entry.getKey();
-          if (referencedVariables.containsKey(variableName))
-          {
-            R                       value = variables.get(variableName);
-            java.lang.reflect.Field field = compiledClass.getField(variableName);
-            field.set(instance, value);
-          }
+          String                  variableName = entry.getKey();
+          R                       value        = variables.get(variableName);
+          java.lang.reflect.Field field        = compiledClass.getField(variableName);
+          field.set(instance, value);
         }
         catch (Exception e)
         {
@@ -646,6 +645,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     ch = (++position < expression.length()) ? expression.charAt(position) : -1;
   }
 
+  boolean verboseParser = false;
+
   /**
    * Consumes characters, calling this{@link #eatFirst(int)} to process
    * parenthesis and calling this{@link #eatNumber(int)} if this{@link #ch}
@@ -660,7 +661,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   private Node<D, R, F> eat(int depth) throws ExpressionCompilerException
   {
-    if (verbose)
+    if (verboseParser)
     {
       err.format("eat(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
@@ -719,7 +720,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public Node<D, R, F> eatFirst(int depth) throws ExpressionCompilerException
   {
-    if (verbose)
+    if (verboseParser)
     {
       err.format("eatFirst(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();

@@ -47,6 +47,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       function   = expression.context.functions.map.get(functionName);
       contextual = function != null;
+      if (contextual)
+      {
+        expression.referencedFunctions.put(functionName, function);
+      }
     }
   }
 
@@ -178,6 +182,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
         throw new RuntimeException(e.getMessage(),
                                    e);
       }
+
       methodVisitor.visitInsn(Opcodes.DUP);
       String typecastVar = expression.reserveIntermediateVariable(methodVisitor, depth, type);
       if (verbose)

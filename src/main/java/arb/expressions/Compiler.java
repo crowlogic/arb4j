@@ -157,10 +157,11 @@ public class Compiler
     return classVisitor;
   }
 
-  public static <D, R, F extends Function<D, R>> ClassVisitor declareFunctions(Expression<D, R, F> expression,
-                                                                               ClassVisitor classVisitor)
+  public static <D, R, F extends Function<D, R>>
+         ClassVisitor
+         declareFunctionReferences(Expression<D, R, F> expression, ClassVisitor classVisitor)
   {
-    expression.context.functions.map.forEach((name, function) ->
+    expression.referencedFunctions.forEach((name, function) ->
     {
       String descriptor = function.func.getClass().descriptorString();
 
