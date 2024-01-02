@@ -109,9 +109,7 @@ public class Context
   public Function<?, ?>
          registerFunction(String functionName, Function<?, ?> function, Class<?> domainType, Class<?> rangeType)
   {
-//    assert false : format("TODO: add %s and %s methods to Function so type checking can be done on the functions",
-//                          domainClass,
-//                          rangeClass);
+
 
     if (verbose)
     {

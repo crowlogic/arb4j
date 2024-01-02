@@ -2,6 +2,7 @@ package arb.functions;
 
 import static arb.expressions.Expression.instantiate;
 
+import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
@@ -9,7 +10,19 @@ import arb.functions.complex.ComplexFunction;
 
 public interface Function<D, R>
 {
-
+  public default Class<D> domainType()
+  {
+    assert false : "this should be implemented by extending class";
+    return null; // for instance, the RealFunction would return Real.class for both the domain and range
+  }
+  
+  public default Class<R> rangeType()
+  {
+    assert false : "this should be implemented by extending class";
+    return null;
+  }
+ 
+  
   /**
    * <pre>
    * Evaluates this function f(t). It can be assumed that the result and input(t)

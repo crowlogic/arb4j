@@ -47,6 +47,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       function   = expression.context.functions.map.get(functionName);
       contextual = function != null;
+      if (contextual)
+      {
+        expression.referencedFunctions.put(functionName, function);
+      }
     }
   }
 
@@ -167,7 +171,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (!type.equals(arg.type()))
     {
-methodVisitor.visitInsn(Opcodes.DUP);
+      methodVisitor.visitInsn(Opcodes.DUP);
       String typecastVar = expression.reserveIntermediateVariable(methodVisitor, depth, type);
       if (verbose)
       {
@@ -181,7 +185,7 @@ methodVisitor.visitInsn(Opcodes.DUP);
                                     "set",
                                     Type.getMethodDescriptor(Type.getType(type), Type.getType(arg.type())),
                                     false);
-      //Compiler.loadThisOntoStack(methodVisitor);
+      // Compiler.loadThisOntoStack(methodVisitor);
 
     }
     else
@@ -234,8 +238,7 @@ methodVisitor.visitInsn(Opcodes.DUP);
       err.println("Returning from callRegisteredFunction");
       err.flush();
     }
-    
-    
+
     return methodVisitor;
   }
 
