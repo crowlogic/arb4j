@@ -138,16 +138,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else if (isIndeterminant)
     {
-      assert expression.rangeClass == type() : String.format("expression.rangeClass=%s and this.type=%s so cannot use the result",
-                                                             expression.rangeClass,
-                                                             type());
-      expression.checkClassCast(Compiler.loadResult(mv), expression.rangeClass);
-//      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-//                         Type.getInternalName(expression.rangeClass),
-//                         "identity",
-//                         format("()%s", reference.type().descriptorString()),
-//                         false);
-//      assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
+      expression.reserveIntermediateVariable(mv, depth, type());
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                         Type.getInternalName(expression.rangeClass),
+                         "identity",
+                         format("()%s", reference.type().descriptorString()),
+                         false);
+      //assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
     }
     else
     {
@@ -253,7 +250,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public String toString(int depth)
   {
-    return String.format("%s%s[name=%s, type=%s]",
+    return String.format("%s%s[reference=%s, type=%s]",
                          depth < 0 ? "" : indent(depth),
                          getClass().getSimpleName(),
                          isIndependent ? format("INPUT(%s)", reference) : reference,

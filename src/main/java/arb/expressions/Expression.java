@@ -5,8 +5,7 @@ import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -1282,6 +1281,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public boolean hasPolynomialRange()
   {
     return rangeClass.equals(RealPolynomial.class) || rangeClass.equals(ComplexPolynomial.class);
+  }
+
+  public MethodVisitor declareFieldForRegisteredFunction(MethodVisitor methodVisitor, Mapping<?, ?> mapping)
+  {
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitInsn(ACONST_NULL);
+    methodVisitor.visitFieldInsn(PUTFIELD, className, mapping.name, mapping.func.getClass().descriptorString());
+    return methodVisitor;
   }
 
 }

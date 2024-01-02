@@ -271,21 +271,6 @@ public class Compiler
 
   public static <D, R, F extends Function<D, R>>
          MethodVisitor
-         initializeRegisteredFunction(Expression<D, R, F> expression,
-                                      MethodVisitor methodVisitor,
-                                      Mapping<?, ?> mapping)
-  {
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitInsn(ACONST_NULL);
-    methodVisitor.visitFieldInsn(PUTFIELD,
-                                 expression.className,
-                                 mapping.name,
-                                 mapping.func.getClass().descriptorString());
-    return methodVisitor;
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
          initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
     if (expression.verbose && expression.context != null && !expression.context.functions.isEmpty())
@@ -296,10 +281,9 @@ public class Compiler
 
     if (expression.context != null)
     {
-      expression.context.functions.map.values().forEach(mapping ->
-      {
-        initializeRegisteredFunction(expression, methodVisitor, mapping);
-      });
+      expression.context.functions.map.values()
+                                      .forEach(mapping -> expression.declareFieldForRegisteredFunction(methodVisitor,
+                                                                                                       mapping));
     }
     return methodVisitor;
   }
