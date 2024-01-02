@@ -27,8 +27,8 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integert is probably missing";
-    return value.contains("\\.") ? Real.class : Integer.class;
+    assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
+    return (value.contains("\\.") || constantSymbols.contains(value)) ? Real.class : Integer.class;
   }
 
   public final String           value;
@@ -133,7 +133,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, type() );
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, type());
     }
 
     if (isResult)
