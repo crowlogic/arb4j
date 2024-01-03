@@ -4,7 +4,6 @@ import static arb.expressions.Compiler.loadBits;
 import static arb.expressions.Compiler.loadResult;
 import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
 import static arb.expressions.Compiler.prepareStackForReusingRightSide;
-import static java.lang.System.err;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -86,23 +85,60 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
    */
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator)
   {
-    Class<?> resultType = type();
+    Class<?> resultType       = type();
+    Class<?> targetResultType = expression.rangeType;
+
     loadBits(mv);
+    boolean cast = pushResult(mv, resultType, targetResultType);
+
+    invokeBinaryOperationMethod(mv, operator, left.type(), right.type(), type());
+    if (cast)
+    {
+      expression.checkClassCast(Compiler.loadResult(mv), targetResultType );
+
+      Compiler.invokeSetMethod(mv, targetResultType, resultType);
+
+    }
+    return mv;
+  }
+
+  void invokeBinaryOperationMethod(MethodVisitor mv,
+                                   String operator,
+                                   Class<?> leftType,
+                                   Class<?> rightType,
+                                   Class<?> returnType)
+  {
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       Type.getInternalName(leftType),
+                       operator,
+                       String.format("(%sI%s)%s",
+                                     rightType.descriptorString(),
+                                     returnType.descriptorString(),
+                                     returnType.descriptorString()),
+                       false);
+  }
+
+  private boolean pushResult(MethodVisitor mv, Class<?> resultType, Class<?> targetResultType)
+  {
     Node<D, R, F> reusableNode;
-    String        intermediary     = null;
-    Class<?>      targetResultType = expression.rangeType;
+    boolean       cast = false;
 
     if (isResult)
     {
 
       if (!targetResultType.equals(resultType))
       {
+        // expression.loadFieldOntoStack(mv, intermediary, resultType);
+        // expression.checkClassCast(loadResult(mv), expression.rangeType);
+        //expression.checkClassCast(loadResult(mv), targetResultType);
 
-        intermediary = expression.reserveIntermediateVariable(mv, depth, resultType);
+        cast = true;
+        expression.reserveIntermediateVariable(mv, depth, resultType);
       }
       else
       {
         expression.checkClassCast(loadResult(mv), resultType);
+
       }
 
     }
@@ -130,22 +166,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                                             left.type(),
                                                             type()));
     }
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(left.type()),
-                       operator,
-                       String.format("(%sI%s)%s",
-                                     right.type().descriptorString(),
-                                     type().descriptorString(),
-                                     type().descriptorString()),
-                       false);
-    if (intermediary != null)
-    {
-      //expression.loadFieldOntoStack(mv, intermediary, resultType);
-      expression.checkClassCast(loadResult(mv), expression.rangeType);
-      Compiler.invokeSetMethod(mv, expression.rangeType, resultType);
-     
-    }
-    return mv;
+    return cast;
   }
 
   /**

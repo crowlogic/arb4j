@@ -434,12 +434,12 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static void invokeSetMethod(MethodVisitor mv, Class<?> argType, Class<?> resultType)
+  public static void invokeSetMethod(MethodVisitor mv, Class<?> outType, Class<?> inType)
   {
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(argType),
+                       Type.getInternalName(outType),
                        "set",
-                       Type.getMethodDescriptor(Type.getType(argType), Type.getType(resultType)),
+                       Type.getMethodDescriptor(Type.getType(outType), Type.getType(inType)),
                        false);
   }
 
