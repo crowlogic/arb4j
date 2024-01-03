@@ -80,7 +80,17 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
    * Output Stack: (L, R, I, L) or (L, R, I, R) or (L,R,I,N) or (L,R,I,T) where N
    * is a newly allocated Real and T is the last argument passed to the
    * {@link Expression#evaluate(Real, int, int, Real)} method which is where the
-   * result will be stored and returned
+   * result will be stored and returned. <br>
+   * 
+   * If this is the last node in the expression and the type is not equalt to the
+   * result type then we need to generate the equivalent code
+   * 
+   * <pre>
+   * public Real evaluate(Real in, int order, int bits, Real result)
+   * {
+   *   return result.set(c0.div(this.c1, bits, this.l0));
+   * }
+   * </pre>
    * 
    * @return
    */
@@ -140,10 +150,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                        false);
     if (intermediary != null)
     {
-      //expression.loadFieldOntoStack(mv, intermediary, resultType);
+      // expression.loadFieldOntoStack(mv, intermediary, resultType);
       expression.checkClassCast(loadResult(mv), expression.rangeType);
       Compiler.invokeSetMethod(mv, expression.rangeType, resultType);
-     
+
     }
     return mv;
   }
