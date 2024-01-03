@@ -209,7 +209,7 @@ public class Integer implements
    */
   public Real div(Integer operand, int prec, Real result)
   {
-    return result.set(this).div(operand, prec, result);
+    return result.set(this).div(operand, prec);
   }
 
   /**
