@@ -34,7 +34,7 @@ public class Integer implements
   {
     return result.set(this).tanh(bits, result);
   }
-  
+
   public Real sqrt(int bits, Real result)
   {
     return result.set(this).sqrt(bits);
@@ -199,6 +199,22 @@ public class Integer implements
     return result;
   }
 
+  /**
+   * Division with fraction
+   * 
+   * @param operand
+   * @param prec
+   * @param result
+   * @return
+   */
+  public Real div(Integer operand, int prec, Real result)
+  {
+    return result.set(this).div(operand, prec, result);
+  }
+
+  /**
+   * Division, rounded to integer
+   */
   @Override
   public Integer div(Integer operand, int prec, Integer result)
   {

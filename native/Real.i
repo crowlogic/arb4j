@@ -154,6 +154,11 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return a.mul(this, bits, res);
   }
 
+  public Real div(Integer operand, int prec, Real result)
+  {
+    return result.set(this).div(operand,prec,result);
+  }
+
   public RealPolynomial add(RealPolynomial a, int bits, RealPolynomial res)
   {
     res.set(a);
