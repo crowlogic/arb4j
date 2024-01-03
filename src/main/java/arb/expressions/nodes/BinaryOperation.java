@@ -13,6 +13,7 @@ import org.objectweb.asm.Type;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
@@ -139,11 +140,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                        false);
     if (intermediary != null)
     {
+      //expression.loadFieldOntoStack(mv, intermediary, resultType);
       expression.checkClassCast(loadResult(mv), expression.rangeType);
-      expression.loadFieldOntoStack(mv, intermediary, resultType);
-      assert false : "TODO: " + String.format("TODO: invoke set method to complete conversion from %s to %s for result of binary operation",
-                                              resultType,
-                                              targetResultType);
+      Compiler.invokeSetMethod(mv, expression.rangeType, resultType);
+     
     }
     return mv;
   }
