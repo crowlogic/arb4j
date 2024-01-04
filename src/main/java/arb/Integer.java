@@ -164,6 +164,12 @@ public class Integer implements
     set(string);
   }
 
+  public Integer(int i)
+  {
+    init();
+    set(i);
+  }
+
   public static long getCPtr(Real obj)
   {
     return (obj == null) ? 0 : obj.swigCPtr;
@@ -241,12 +247,22 @@ public class Integer implements
     return result;
   }
 
+  public Real sub(Real subtrahend, int bits, Real result)
+  {
+    return result.set(this).sub(subtrahend, bits);
+  }
+
   @Override
   public Integer sub(Integer operand, int prec, Integer result)
   {
     // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_sub(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
+  }
+
+  public Integer sub(Integer b, int i)
+  {
+    return sub(b, i, this);
   }
 
 }

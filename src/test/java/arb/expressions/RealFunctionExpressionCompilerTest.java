@@ -369,7 +369,7 @@ public class RealFunctionExpressionCompilerTest extends
   public void testRaiseConstantToAConstantPower()
   {
 
-    RealFunction expression = express("  5   ^  2  ", context);
+    RealFunction expression = express(" 5   ^  2  ", context);
     {
       Real func = expression.evaluate(one, 1, 256, new Real());
       assertEquals(25.0, func.doubleValue(RoundingMode.Up));
