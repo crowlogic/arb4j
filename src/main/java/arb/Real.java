@@ -183,13 +183,13 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   public Real div(Integer operand, int prec)
   {
-    arblib.arb_div_fmpz(this, this, operand.swigCPtr, prec);
-    return this;
+     return div(operand,prec,this);
   }
     
   public Real div(Integer operand, int prec, Real result)
   {
-    return result.set(this).div(operand,prec,result);
+    arblib.arb_div_fmpz(result, this, operand.swigCPtr, prec );
+    return result;
   }
 
   public RealPolynomial add(RealPolynomial a, int bits, RealPolynomial res)

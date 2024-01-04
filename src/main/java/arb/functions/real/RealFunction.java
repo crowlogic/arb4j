@@ -257,9 +257,9 @@ public interface RealFunction extends
    */
   public default double eval(double t)
   {
-    try ( Real x = new Real(t))
+    try ( Real x = Real.newVector(2))
     {
-      return evaluate(x, 1, Double.PRECISION + 5, x).doubleValue(RoundingMode.Up);
+      return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue(RoundingMode.Up);
     }
   }
 
@@ -632,7 +632,7 @@ public interface RealFunction extends
   {
     RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
 
-    context.registerFunction(functionName, func, Real.class, Real.class );
+    context.registerFunction(functionName, func, Real.class, Real.class);
 
     return func;
   }

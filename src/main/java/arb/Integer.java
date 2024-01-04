@@ -249,7 +249,9 @@ public class Integer implements
 
   public Real sub(Real subtrahend, int bits, Real result)
   {
-    return result.set(this).sub(subtrahend, bits);
+    result.set(this);
+    result.sub(subtrahend, bits);
+    return result;
   }
 
   @Override
