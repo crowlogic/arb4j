@@ -1,9 +1,6 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.loadBits;
-import static arb.expressions.Compiler.loadResult;
-import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
-import static arb.expressions.Compiler.prepareStackForReusingRightSide;
+import static arb.expressions.Compiler.*;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -47,6 +44,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   private String                operation;
 
+  public final boolean          cast;
+
   public BinaryOperation(Expression<D, R, F> parser,
                          Node<D, R, F> left,
                          String operation,
@@ -60,12 +59,18 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     this.operation = operation;
     this.left      = left;
     this.depth     = depth;
+    cast           = !parser.rangeType.equals(type());
     assert left != null && right != null : "one or more of the operands to this were missing: " + this;
   }
 
   @Override
   public final MethodVisitor generate(MethodVisitor mv)
   {
+    if (cast)
+    {
+      expression.checkClassCast(Compiler.loadResult(mv), expression.rangeType);
+    }
+    // TODO: check left and right for the need to cast
     left.generate(mv);
     right.generate(mv);
     return invokeMethod(mv, operation);
@@ -89,15 +94,12 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     Class<?> targetResultType = expression.rangeType;
 
     loadBits(mv);
-    boolean cast = pushResult(mv, resultType, targetResultType);
+    loadResult(mv, resultType, targetResultType);
 
-    invokeBinaryOperationMethod(mv, operator, left.type(), right.type(), type());
+    invokeBinaryOperationMethod(mv, operator, left.type(), right.type(), resultType);
     if (cast)
     {
-      expression.checkClassCast(Compiler.loadResult(mv), targetResultType );
-
       Compiler.invokeSetMethod(mv, targetResultType, resultType);
-
     }
     return mv;
   }
@@ -118,26 +120,24 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                        false);
   }
 
-  private boolean pushResult(MethodVisitor mv, Class<?> resultType, Class<?> targetResultType)
+  private boolean loadResult(MethodVisitor mv, Class<?> resultType, Class<?> targetResultType)
   {
     Node<D, R, F> reusableNode;
-    boolean       cast = false;
 
     if (isResult)
     {
 
-      if (!targetResultType.equals(resultType))
+      if (cast)
       {
         // expression.loadFieldOntoStack(mv, intermediary, resultType);
         // expression.checkClassCast(loadResult(mv), expression.rangeType);
-        //expression.checkClassCast(loadResult(mv), targetResultType);
+        // expression.checkClassCast(loadResult(mv), targetResultType);
 
-        cast = true;
         expression.reserveIntermediateVariable(mv, depth, resultType);
       }
       else
       {
-        expression.checkClassCast(loadResult(mv), resultType);
+        expression.checkClassCast(Compiler.loadResult(mv), resultType);
 
       }
 
@@ -159,13 +159,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       expression.reserveIntermediateVariable(mv, depth, resultType);
     }
 
-    if (!left.type().equals(type()))
-    {
-      throw new UnsupportedOperationException(String.format("FIXME: stopping point at '%s', do type-casting here, left.type=%s != type=%s\n",
-                                                            typeset(),
-                                                            left.type(),
-                                                            type()));
-    }
+//    if (!left.type().equals(type()))
+//    {
+//      throw new UnsupportedOperationException(String.format("FIXME: stopping point at '%s', do type-casting here, left.type=%s != type=%s\n",
+//                                                            typeset(),
+//                                                            left.type(),
+//                                                            type()));
+//    }
     return cast;
   }
 
@@ -220,7 +220,12 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     if (left.type().equals(right.type()))
     {
-      return left.type();
+      // produce real values when integers are divided so that precision isn't lost..
+      // technically that could be accomplished by using the remainder field as well..
+      // remains to be determined what the best way to prefer a result-type thru the
+      // API and have that be used to generate the optimal structures
+      boolean integerDivision = operation.equals("div") && left.type().equals(Integer.class);
+      return integerDivision ? Real.class : left.type();
     }
     else if (typesSymmetryicallyEqual(Integer.class, Real.class))
     {

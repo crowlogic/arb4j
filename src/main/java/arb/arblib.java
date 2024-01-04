@@ -33,6 +33,10 @@ public class arblib {
     arblibJNI.arb_pow_fmpz(Real.getCPtr(y), y, Real.getCPtr(b), b, e, prec);
   }
 
+  public static void arb_div_fmpz(Real z, Real x, long y, int prec) {
+    arblibJNI.arb_div_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
+  }
+
   public static void arb_set_fmpz(Real x, long y) {
     arblibJNI.arb_set_fmpz(Real.getCPtr(x), x, y);
   }

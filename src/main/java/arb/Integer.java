@@ -227,6 +227,12 @@ public class Integer implements
     return result;
   }
 
+  public Real add(Real addend, int bits, Real result)
+  {
+    arblib.arb_add_fmpz(result, addend, this.swigCPtr, bits);
+    return result;
+  }
+
   @Override
   public Integer add(Integer operand, int prec, Integer result)
   {

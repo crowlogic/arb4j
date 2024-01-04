@@ -156,9 +156,10 @@ import arb.stochastic.ProbabilityDistributionFunction;
 
   public Real div(Integer operand, int prec)
   {
-    return div(operand,prec);
+    arblib.arb_div_fmpz(this, this, operand.swigCPtr, prec);
+    return this;
   }
-  
+    
   public Real div(Integer operand, int prec, Real result)
   {
     return result.set(this).div(operand,prec,result);
