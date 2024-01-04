@@ -10,7 +10,7 @@ public abstract class A implements
 {
   public Integer c0 = new Integer("42");
   public Integer c1 = new Integer("6");
-  public Integer l0 = new Integer();
+  public Real l0 = new Real();
 
   public Real evaluate(Real in, int order, int bits, Real result)
   {

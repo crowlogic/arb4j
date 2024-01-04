@@ -212,8 +212,12 @@ public class Integer implements
     return result.set(this).div(operand, prec);
   }
 
+  public Integer remainder;
+
   /**
    * Division, rounded to integer
+   * 
+   * TODO: add version for this{@link #remainder}
    */
   @Override
   public Integer div(Integer operand, int prec, Integer result)
