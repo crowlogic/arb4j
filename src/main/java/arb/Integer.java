@@ -220,6 +220,12 @@ public class Integer implements
 
   public Integer remainder;
 
+  public Integer pow( Integer operand, int bits, Integer result )
+  {
+    arblib.fmpz_pow_fmpz(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
+    return result;
+  }
+  
   /**
    * Division, rounded to integer
    * 
@@ -249,9 +255,7 @@ public class Integer implements
 
   public Real sub(Real subtrahend, int bits, Real result)
   {
-    result.set(this);
-    result.sub(subtrahend, bits);
-    return result;
+    return result.set(this).sub(subtrahend, bits);
   }
 
   @Override

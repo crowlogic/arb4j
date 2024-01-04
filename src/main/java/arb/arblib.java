@@ -13,6 +13,10 @@ public class arblib {
     arblibJNI.arb_add_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
+  public static int fmpz_pow_fmpz(long a, long b, long e) {
+    return arblibJNI.fmpz_pow_fmpz(a, b, e);
+  }
+
   public static void fmpz_mul(long f, long g, long h) {
     arblibJNI.fmpz_mul(f, g, h);
   }
