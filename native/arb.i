@@ -48,8 +48,6 @@ typedef unsigned long* unsigned_long_ptr;
 %rename (numRows) r;
 %rename (numCols) c;
 
-
-
 %rename (rowPointers) rows;
 %rename (initialValue) gmp_init;
 %rename (gmpRandomState) gmp_state;
@@ -98,7 +96,7 @@ typedef unsigned long* unsigned_long_ptr;
 %typemap(javafinalize) acb_dft_rad2_struct ""
 %typemap(javafinalize) acb_dft_pre_struct ""
 %typemap(javafinalize) acb_dft_pre_struct_t ""
-%typemap(javafinalize) acb_dft_step_struct ""
+%typemap(javafinalize) struct acb_dft_step_struct ""
 %typemap(javafinalize) __gmp_randstate_struct ""
 %typemap(javafinalize) __gmp_randstate_struct__mp_algdata ""
 %typemap(javafinalize) mantissa_struct ""

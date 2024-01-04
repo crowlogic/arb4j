@@ -1,12 +1,15 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.half;
+import static arb.RealConstants.negHalf;
+import static arb.RealConstants.one;
+import static arb.RealConstants.oneQuarter;
+import static arb.RealConstants.threeQuarters;
 import static java.lang.System.out;
 
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
-import arb.RealPolynomial;
 import junit.framework.TestCase;
 
 /**

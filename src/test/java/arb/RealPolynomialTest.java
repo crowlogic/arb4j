@@ -10,12 +10,14 @@ public class RealPolynomialTest extends
 {
   public static void testIdentity()
   {
-     RealPolynomial eye = new RealPolynomial();
-     System.out.println( "eye=" + eye );
-     eye.init();
-     System.out.println( "eye=" + eye );
-     eye.identity();
-     System.out.println( "eye=" + eye );
+     try ( RealPolynomial eye = new RealPolynomial())
+    {
+      System.out.println( "eye=" + eye );
+       eye.init();
+       System.out.println( "eye=" + eye );
+       eye.identity();
+       System.out.println( "eye=" + eye );
+    }
   }
   public static void testLeftShift()
   {

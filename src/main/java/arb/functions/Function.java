@@ -2,7 +2,6 @@ package arb.functions;
 
 import static arb.expressions.Expression.instantiate;
 
-import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.expressions.Context;
 import arb.expressions.Expression;

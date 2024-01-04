@@ -28,7 +28,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   public Class<?> type()
   {
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
-    return (value.contains("\\.") || constantSymbols.contains(value)) ? Real.class : Integer.class;
+    return (value.contains(".") || constantSymbols.contains(value)) ? Real.class : Integer.class;
   }
 
   public final String           value;

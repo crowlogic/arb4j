@@ -478,7 +478,6 @@ public class Utensils
    * @param ms
    * @param n
    */
-  @Deprecated(forRemoval = true)
   public static void heapDown(Real as, Real bs, Complex vs, Magnitude ms, int n)
   {
     int k = n - 1;
