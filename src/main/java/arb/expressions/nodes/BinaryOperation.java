@@ -70,7 +70,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     {
       expression.checkClassCast(Compiler.loadResult(mv), expression.rangeType);
     }
-    // TODO: check left and right for the need to cast
+    
+    assert false : " TODO: check left and right for the need to cast";
     left.generate(mv);
     right.generate(mv);
     return invokeMethod(mv, operation);

@@ -112,15 +112,18 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", functionName, arg, depth);
       out.flush();
     }
-
+    assert arg.type()
+              .equals(type()) : String.format("handle: handle type-conversion from arg.type = %s != func.type() = %s\n",
+                                              arg.type(),
+                                              type());
     arg.generate(methodVisitor);
     loadBits(methodVisitor);
 
     if (isResult)
     {
       assert expression.rangeType.equals(type()) : String.format("TODO: do type conversion from %s to %s\n",
-                                                                  type(),
-                                                                  expression.rangeType);
+                                                                 type(),
+                                                                 expression.rangeType);
       expression.checkClassCast(loadResult(methodVisitor), expression.rangeType);
 
     }
