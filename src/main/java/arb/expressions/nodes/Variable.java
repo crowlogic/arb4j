@@ -101,10 +101,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      if (expression.verbose)
-      {
-        err.println("Fucking " + reference);
-      }
       reference.type = expression.domainType;
     }
   }
