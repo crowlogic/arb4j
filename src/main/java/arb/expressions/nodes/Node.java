@@ -37,7 +37,7 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
 
   final Variables namespace;
 
-  public abstract MethodVisitor generate(MethodVisitor mv);
+  public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
   protected static String indent(int depth)
   {

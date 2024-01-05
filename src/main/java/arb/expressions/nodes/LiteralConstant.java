@@ -110,7 +110,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public MethodVisitor generate(MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (verbose)
     {

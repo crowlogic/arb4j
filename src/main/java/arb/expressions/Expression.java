@@ -81,7 +81,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                              className;
 
-  final public Class<? extends D>            domainClass;
+  final public Class<? extends D>            domainType;
 
   final public Class<? extends R>            rangeType;
 
@@ -150,7 +150,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.rangeClassDescriptor      = Type.getDescriptor(rangeClass);
     this.domainClassDescriptor     = Type.getDescriptor(domainClass);
     this.className                 = className;
-    this.domainClass               = domainClass;
+    this.domainType               = domainClass;
     this.rangeType                = rangeClass;
     this.functionClass             = functionClass;
     this.rangeClassInternalName    = Type.getInternalName(rangeClass);
@@ -374,7 +374,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param variables    A {@link Collection} of variable names to be declared as
    *                     fields
    * @param range        if true then the type is {@link Expression#rangeType}
-   *                     otherwise its {@link Expression#domainClass}
+   *                     otherwise its {@link Expression#domainType}
    * 
    * @return classVisitor
    */
@@ -514,7 +514,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     rootNode = rootNode.eliminateSubexpressions();
 
-    rootNode.generate(methodVisitor);
+    rootNode.generate(methodVisitor, rangeType);
 
     if (verbose)
     {
@@ -555,7 +555,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       independentVariableNode = new Variable<D, R, F>(this,
                                                       new Reference(expression.substring(0, rightArrowIndex),
                                                                     null,
-                                                                    domainClass),
+                                                                    domainType),
                                                       0);
       if (verbose)
       {
@@ -803,7 +803,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else
     {
       var contextVar = context == null ? null : context.variables.get(reference.name);
-      reference.type = (context == null || contextVar == null) ? domainClass : contextVar.getClass();
+      reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
       Variable<D, R, F> variable = new Variable<D, R, F>(this,
                                                          reference,
                                                          depth + 1);

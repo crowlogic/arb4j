@@ -55,7 +55,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public MethodVisitor generate(MethodVisitor methodVisitor)
+  public MethodVisitor generate(MethodVisitor methodVisitor, Class<?> resultType)
   {
 
     if (contextual)
@@ -88,7 +88,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     if (isBuiltin())
     {
-      return expression.domainClass;
+      return expression.domainType;
     }
     assert function.range != null : "range of " + function + " is null";
     return function.range;
@@ -116,7 +116,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
               .equals(type()) : String.format("handle: handle type-conversion from arg.type = %s != func.type() = %s\n",
                                               arg.type(),
                                               type());
-    arg.generate(methodVisitor);
+    arg.generate(methodVisitor, expression.domainType);
     loadBits(methodVisitor);
 
     if (isResult)
@@ -223,7 +223,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       loadFunctionFromField(methodVisitor, mapping.func.getClass());
     }
 
-    arg.generate(methodVisitor);
+    arg.generate(methodVisitor, mapping.domain);
     Compiler.loadOrder(methodVisitor);
     Compiler.loadBits(methodVisitor);
 

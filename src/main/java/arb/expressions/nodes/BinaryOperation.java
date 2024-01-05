@@ -44,37 +44,42 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   private String                operation;
 
-  public final boolean          cast;
+  public final boolean          castResult;
 
-  public BinaryOperation(Expression<D, R, F> parser,
+  public BinaryOperation(Expression<D, R, F> expression,
                          Node<D, R, F> left,
                          String operation,
                          Node<D, R, F> right,
                          int depth)
   {
-    super(parser,
+    super(expression,
           depth + 1);
 
     this.right     = right;
     this.operation = operation;
     this.left      = left;
     this.depth     = depth;
-    cast           = !parser.rangeType.equals(type());
+    castResult     = isResult && !expression.rangeType.equals(type());
     assert left != null && right != null : "one or more of the operands to this were missing: " + this;
   }
 
   @Override
-  public final MethodVisitor generate(MethodVisitor mv)
+  public final MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (cast)
+    if (castResult)
     {
-      expression.checkClassCast(Compiler.loadResult(mv), expression.rangeType);
-    }
-    
+      if (isResult)
+      {
+        expression.checkClassCast(Compiler.loadResult(mv), expression.rangeType);
+      }
+      else
+      {
 
- //   assert false : " TODO: check left and right for the need to cast";
-    left.generate(mv);
-    right.generate(mv);
+      }
+    }
+
+    left.generate(mv, resultType);
+    right.generate(mv, resultType);
     return invokeMethod(mv, operation);
   }
 
@@ -99,7 +104,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     loadResult(mv, resultType, targetResultType);
 
     invokeBinaryOperationMethod(mv, operator, left.type(), right.type(), resultType);
-    if (cast)
+    if (castResult)
     {
       Compiler.invokeSetMethod(mv, targetResultType, resultType);
     }
@@ -129,7 +134,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     if (isResult)
     {
 
-      if (cast)
+      if (castResult)
       {
         // expression.loadFieldOntoStack(mv, intermediary, resultType);
         // expression.checkClassCast(loadResult(mv), expression.rangeType);
@@ -168,7 +173,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 //                                                            left.type(),
 //                                                            type()));
 //    }
-    return cast;
+    return castResult;
   }
 
   /**

@@ -66,8 +66,8 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
   }
 
   @Override
-  public MethodVisitor generate(MethodVisitor mv)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    return arg.generate(mv);
+    return arg.generate(mv, resultType);
   }
 }
