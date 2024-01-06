@@ -14,6 +14,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import arb.Integer;
 import arb.Real;
 import arb.expressions.*;
 import arb.functions.Function;
@@ -55,12 +56,17 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
         expression.referencedFunctions.put(functionName, function);
       }
     }
+    targetResultType = resultTypeFor(functionName);
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor methodVisitor, Class<?> resultType)
   {
-
+    if (verbose)
+    {
+      out.format("\n%s: generate(resultType=%s)\n\n", functionName, resultType);
+      out.flush();
+    }
     if (contextual)
     {
       return generateContextualFunctionCall(methodVisitor, resultType);
@@ -91,7 +97,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     if (isBuiltin())
     {
-      return expression.domainType;
+      return resultTypeFor(functionName);
     }
     assert function.range != null : "range of " + function + " is null";
     return function.range;
@@ -108,17 +114,28 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    */
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    var     expression = arg.expression;
-    boolean verbose    = expression.verbose;
+    var     expression          = arg.expression;
+    boolean verbose             = expression.verbose;
+    boolean needsTypeConversion = !resultType.equals(type());
     if (verbose)
     {
-      out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", functionName, arg, depth);
+      out.format("\ngenerateBuiltinFunctionCall(functionName=%s, arg=%s, needsTypeConversion=%s, isResult=%s, resultType=%s, targetResultType=%s)\n\n",
+                 functionName,
+                 arg,
+                 needsTypeConversion,
+                 isResult,
+                 resultType,
+                 targetResultType);
       out.flush();
     }
-    boolean needsTypeConversion = !resultType.equals(type());
     if (needsTypeConversion)
     {
       Compiler.loadResult(methodVisitor);
+    }
+    if (verbose)
+    {
+      System.out.format("\nGenerating arg of type %s for %s\n\n", arg, this);
+      System.out.flush();
     }
     arg.generate(methodVisitor, expression.domainType);
     loadBits(methodVisitor);
@@ -148,7 +165,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
         expression.reserveIntermediateVariable(methodVisitor, depth, arg.type());
       }
     }
-    Class<?> targetResultType = resultTypeFor(functionName);
     generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), targetResultType);
     if (needsTypeConversion)
     {
@@ -160,10 +176,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
   HashSet<String> integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
   { "sqrt", "tanh", "log" }));
+  Class<?>        targetResultType;
 
   private Class<?> resultTypeFor(String functionName)
   {
-    if (integerFunctionsWithRealResults.contains(functionName))
+    if (arg.type().equals(Integer.class) && integerFunctionsWithRealResults.contains(functionName))
     {
       return Real.class;
     }

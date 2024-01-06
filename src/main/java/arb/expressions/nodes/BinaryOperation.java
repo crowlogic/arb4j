@@ -66,6 +66,11 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public final MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    if (verbose)
+    {
+      System.out.format("\n%s: generate(resultType=%s)\n\n", operation, resultType);
+      System.out.flush();
+    }
     if (castResult)
     {
       if (isResult)
@@ -207,7 +212,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   public String toString(int depth)
   {
-    return typeset();
+    return getClass().getSimpleName() + " " + typeset();
   }
 
   /**

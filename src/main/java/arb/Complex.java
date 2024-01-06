@@ -1211,5 +1211,4 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
     this(arblibJNI.new_Complex(), true);
   }
 
-
 }
