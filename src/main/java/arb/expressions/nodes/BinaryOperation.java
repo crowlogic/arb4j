@@ -85,7 +85,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
     left.generate(mv, resultType);
     right.generate(mv, resultType);
-    return invokeMethod(mv, operation);
+    return invokeMethod(mv, operation, resultType);
   }
 
   /**
@@ -97,12 +97,12 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
    * is a newly allocated Real and T is the last argument passed to the
    * {@link Expression#evaluate(Real, int, int, Real)} method which is where the
    * result will be stored and returned
+   * @param resultType 
    * 
    * @return
    */
-  public MethodVisitor invokeMethod(MethodVisitor mv, String operator)
+  public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
-    Class<?> resultType       = type();
     Class<?> targetResultType = expression.rangeType;
 
     loadBits(mv);

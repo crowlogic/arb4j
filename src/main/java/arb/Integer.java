@@ -215,14 +215,17 @@ public class Integer implements
     return result;
   }
 
-  /**
-   * Division with fraction
-   * 
-   * @param operand
-   * @param prec
-   * @param result
-   * @return
-   */
+  public Real mul(Integer operand, int prec, Real result)
+  {
+    return result.set(this).mul(operand, prec);
+  }
+
+  public Real pow(Integer operand, int prec, Real result)
+  {
+    return result.set(this).pow(operand, prec);
+  }
+
+  
   public Real div(Integer operand, int prec, Real result)
   {
     return result.set(this).div(operand, prec);
