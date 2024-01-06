@@ -83,7 +83,8 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
 
     if (verbose)
     {
-      out.println("Adding constant " + fieldName + " to " + expression + " with value " + value);
+      out.println("\nAdding constant " + fieldName + " to " + expression + " with value " + value + "\n");
+      out.flush();
     }
     expression.literalConstants.add(this);
   }

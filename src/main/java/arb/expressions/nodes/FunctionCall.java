@@ -16,7 +16,11 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.Mapping;
+import arb.expressions.Parser;
 import arb.functions.Function;
 
 /**
@@ -130,7 +134,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
     if (needsTypeConversion)
     {
-      Compiler.loadResult(methodVisitor);
+      Compiler.loadResult(methodVisitor, verbose);
     }
     if (verbose)
     {
@@ -145,7 +149,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       assert expression.rangeType.equals(type()) : String.format("TODO: do type conversion from %s to %s\n",
                                                                  type(),
                                                                  expression.rangeType);
-      expression.checkClassCast(loadResult(methodVisitor), expression.rangeType);
+      expression.checkClassCast(loadResult(methodVisitor, verbose), expression.rangeType);
 
     }
     else
@@ -168,7 +172,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), targetResultType);
     if (needsTypeConversion)
     {
-      Compiler.invokeSetMethod(methodVisitor, resultType, targetResultType);
+      Compiler.invokeSetMethod(methodVisitor, resultType, targetResultType, true);
 
     }
     return methodVisitor;
@@ -272,7 +276,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (arg.isResult)
     {
-      Compiler.loadResult(methodVisitor);
+      Compiler.loadResult(methodVisitor, verbose);
     }
     else
     {
@@ -327,7 +331,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     if (verbose)
     {
-      out.format("generateCallToBuiltinUnaryFunction(functionName=%s, domainType=%s, rangeType=%s\n",
+      out.format("\ngenerateCallToBuiltinUnaryFunction(functionName=%s, domainType=%s, rangeType=%s\n\n",
                  functionName,
                  domainType,
                  rangeType);

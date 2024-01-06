@@ -225,7 +225,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public MethodVisitor setResult(MethodVisitor methodVisitor)
   {
-    checkClassCast(loadResult(methodVisitor), rangeType);
+    checkClassCast(loadResult(methodVisitor, verbose), rangeType);
     methodVisitor.visitInsn(Opcodes.SWAP);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   rangeClassInternalName,
@@ -752,7 +752,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * 
    * @param depth
    * @param startPos
-   * @param arg
    * 
    * @return
    * @throws ExpressionCompilerException
@@ -764,7 +763,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     boolean   isFunction = eat(depth, '(');
     if (verbose)
     {
-      err.format("resolveFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, reference='%s', isFunction=%s\n",
+      err.format("\nresolveFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, reference='%s', isFunction=%s\n\n",
                  depth,
                  startPos,
                  position,
@@ -1156,7 +1155,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (!resultInUse && type.equals(rangeType))
     {
-      checkClassCast(loadResult(methodVisitor), type);
+      checkClassCast(loadResult(methodVisitor,verbose), type);
       resultInUse = true;
       return "<RESULT>";
     }

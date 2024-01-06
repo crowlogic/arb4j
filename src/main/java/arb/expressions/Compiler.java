@@ -380,8 +380,13 @@ public class Compiler
    * 
    * @return methodVisitor
    */
-  public static MethodVisitor loadResult(MethodVisitor methodVisitor)
+  public static MethodVisitor loadResult(MethodVisitor methodVisitor,boolean verbose)
   {
+    if ( verbose )
+    {
+      out.format("\nloadResult()\n\n");
+      out.flush();
+    }
     methodVisitor.visitVarInsn(Opcodes.ALOAD, 4);
     return methodVisitor;
   }
@@ -449,8 +454,13 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static void invokeSetMethod(MethodVisitor mv, Class<?> outType, Class<?> inType)
+  public static void invokeSetMethod(MethodVisitor mv, Class<?> outType, Class<?> inType, boolean verbose)
   {
+    if (verbose)
+    {
+      out.format("\ninvokeSetMethod( outType=%s, inType=%s, verbose=%s )\n\n", outType, inType, verbose);
+      out.flush();
+    }
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(outType),
                        "set",

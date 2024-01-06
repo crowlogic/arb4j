@@ -75,7 +75,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     {
       if (isResult)
       {
-        expression.checkClassCast(Compiler.loadResult(mv), expression.rangeType);
+        expression.checkClassCast(Compiler.loadResult(mv,verbose), expression.rangeType);
       }
       else
       {
@@ -111,7 +111,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     invokeBinaryOperationMethod(mv, operator, left.type(), right.type(), resultType);
     if (castResult)
     {
-      Compiler.invokeSetMethod(mv, targetResultType, resultType);
+      Compiler.invokeSetMethod(mv, targetResultType, resultType, verbose);
     }
     return mv;
   }
@@ -149,7 +149,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        expression.checkClassCast(Compiler.loadResult(mv), resultType);
+        expression.checkClassCast(Compiler.loadResult(mv,verbose), resultType);
 
       }
 

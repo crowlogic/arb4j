@@ -464,6 +464,9 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testTanhLogOne()
   {
+    /**
+     * This should be allocating a new intermediate variable 
+     */
     RealFunction expression = express("tanh(ln(1))", context);
     {
       Real result     = new Real();
