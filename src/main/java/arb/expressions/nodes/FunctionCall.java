@@ -36,7 +36,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("FunctionCall[name=%s, contextual=%s, function=%s]", functionName, contextual, function);
+    return String.format("FunctionCall[name=%s, contextual=%s, function=%s, targetResultType=%s]",
+                         functionName,
+                         contextual,
+                         function,
+                         targetResultType);
   }
 
   public String        functionName;
@@ -118,21 +122,21 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    */
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    var     expression          = arg.expression;
-    boolean verbose             = expression.verbose;
-    boolean needsTypeConversion = !resultType.equals(type());
+    var     expression                = arg.expression;
+    boolean verbose                   = expression.verbose;
+    boolean needsResultTypeConversion = !resultType.equals(type());
     if (verbose)
     {
       out.format("\ngenerateBuiltinFunctionCall(functionName=%s, arg=%s, needsTypeConversion=%s, isResult=%s, resultType=%s, targetResultType=%s)\n\n",
                  functionName,
                  arg,
-                 needsTypeConversion,
+                 needsResultTypeConversion,
                  isResult,
                  resultType,
                  targetResultType);
       out.flush();
     }
-    if (needsTypeConversion)
+    if (needsResultTypeConversion)
     {
       Compiler.loadResult(methodVisitor, verbose);
     }
@@ -141,15 +145,33 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       System.out.format("\nGenerating arg of type %s for %s\n\n", arg, this);
       System.out.flush();
     }
+    boolean needsArgTypeConversion = !arg.type().equals(expression.domainType);
+
+    // assert !needsArgTypeConversion : String.format("arg.type=%s != domainType =
+    // %s\n", arg.type(), expression.domainType );
     arg.generate(methodVisitor, expression.domainType);
     loadBits(methodVisitor);
 
+    loadOutputVariableOntoStack(methodVisitor, expression, verbose, resultType);
+
+    generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), targetResultType);
+
+    if (needsResultTypeConversion)
+    {
+      Compiler.invokeSetMethod(methodVisitor, resultType, targetResultType, true);
+
+    }
+    return methodVisitor;
+  }
+
+  private void loadOutputVariableOntoStack(MethodVisitor methodVisitor,
+                                           Expression<D, R, F> expression,
+                                           boolean verbose,
+                                           Class<?> resultType)
+  {
     if (isResult)
     {
-      assert expression.rangeType.equals(type()) : String.format("TODO: do type conversion from %s to %s\n",
-                                                                 type(),
-                                                                 expression.rangeType);
-      expression.checkClassCast(loadResult(methodVisitor, verbose), expression.rangeType);
+      expression.checkClassCast(loadResult(methodVisitor, verbose), resultType);
 
     }
     else
@@ -158,7 +180,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       {
         if (verbose)
         {
-          err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+          err.println("\nPreparing stack to reuse its argument " + arg.toString(-1) + "\n");
           err.flush();
         }
 
@@ -166,16 +188,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        expression.reserveIntermediateVariable(methodVisitor, depth, arg.type());
+        expression.reserveIntermediateVariable(methodVisitor, depth, resultType);
       }
     }
-    generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), targetResultType);
-    if (needsTypeConversion)
-    {
-      Compiler.invokeSetMethod(methodVisitor, resultType, targetResultType, true);
-
-    }
-    return methodVisitor;
   }
 
   HashSet<String> integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]

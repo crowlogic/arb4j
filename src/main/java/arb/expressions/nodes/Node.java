@@ -95,7 +95,7 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
      * MemoizedNode referencing it and replace the matching node with it
      * 
      */
-    out.println( "TODO: eliminate subexpressions in " + typeset() );
+   
     return this;
   }
 

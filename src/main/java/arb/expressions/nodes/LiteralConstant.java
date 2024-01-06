@@ -57,7 +57,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
           depth + 1);
     value = constantValueString.trim();
 
-    if (constantSymbols.contains(constantValueString))
+    if (isConstant(constantValueString))
     {
       fieldName = constantValueString;
       return;
@@ -83,7 +83,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
 
     if (verbose)
     {
-      out.println("\nAdding constant " + fieldName + " to " + expression + " with value " + value + "\n");
+      out.format("\nAdding constant %s of type %s to %s with value %s\n\n", fieldName, type(), expression, value);
       out.flush();
     }
     expression.literalConstants.add(this);

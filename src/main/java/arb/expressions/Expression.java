@@ -365,19 +365,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  /**
-   * Declares the given variables as fields in the class being generated.
-   * 
-   * TODO: needs to be refactored so that the variable type is passed in
-   * 
-   * @param classVisitor The {@link ClassVisitor} for the class being generated
-   * @param variables    A {@link Collection} of variable names to be declared as
-   *                     fields
-   * @param range        if true then the type is {@link Expression#rangeType}
-   *                     otherwise its {@link Expression#domainType}
-   * 
-   * @return classVisitor
-   */
   public ClassVisitor declareVariables(ClassVisitor classVisitor,
                                        Iterable<Map.Entry<String, Variable<D, R, F>>> variables)
   {
@@ -1105,34 +1092,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return methodVisitor;
   }
 
-  /**
-   * Emit a {@link Opcodes#GETFIELD} instruction
-   * 
-   * @param methodVisitor
-   * @param fieldName
-   * @param range         if false then the field is of type
-   *                      this{@link #domainClassDescriptor} otherwise of type
-   *                      this{@link #rangeClassDescriptor}
-   * @return this{@link #loadFieldOntoStack(MethodVisitor, String, String)}
-   */
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> type)
   {
     return loadFieldOntoStack(methodVisitor, fieldName, type.descriptorString());
   }
 
-  /**
-   * Emit a {@link Opcodes#GETFIELD} instruction
-   * 
-   * @param methodVisitor
-   * @param fieldName
-   * @param range         the type descriptor
-   * @return
-   */
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
     if (verbose)
     {
-      err.format("loadFieldOntoStack(fieldName=%s, fieldDescriptor=%s)\n", fieldName, fieldDescriptor);
+      err.format("\nloadFieldOntoStack(fieldName=%s, fieldDescriptor=%s)\n\n", fieldName, fieldDescriptor);
       err.flush();
     }
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
