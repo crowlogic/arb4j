@@ -60,11 +60,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (contextual)
     {
-      return generateContextualFunctionCall(methodVisitor);
+      return generateContextualFunctionCall(methodVisitor, resultType);
     }
     else
     {
-      return generateBuiltinFunctionCall(methodVisitor);
+      return generateBuiltinFunctionCall(methodVisitor, resultType);
     }
   }
 
@@ -103,7 +103,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * @param lastCall
    * @return methodVisitor (for fluent-style function composition)
    */
-  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor)
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType )
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -112,10 +112,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       out.format("callFunction(functionName=%s, arg=%s, depth=%d)\n", functionName, arg, depth);
       out.flush();
     }
-    assert arg.type()
-              .equals(type()) : String.format("handle: handle type-conversion from arg.type = %s != func.type() = %s\n",
-                                              arg.type(),
-                                              type());
+    boolean needsTypeConversion = !resultType.equals(type());
+    if (needsTypeConversion)
+    {
+      Compiler.loadResult(methodVisitor);
+    }
     arg.generate(methodVisitor, expression.domainType);
     loadBits(methodVisitor);
 
@@ -145,7 +146,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       }
     }
     Class<?> targetResultType = resultTypeFor(functionName);
-    return generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), targetResultType);
+    generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), targetResultType);
+    if  (needsTypeConversion)
+    {
+      Compiler.invokeSetMethod(methodVisitor, resultType, targetResultType);
+
+    }
+    return methodVisitor;
   }
 
   private Class<?> resultTypeFor(String functionName)
@@ -167,6 +174,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * as the argument, to be passed to the function represented by this node
    * 
    * @param methodVisitor
+   * @param resultType 
    * @param functionName
    * @param arg
    * @param lastCall
@@ -174,7 +182,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * @return methodVisitor
    */
   @SuppressWarnings("unchecked")
-  public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor)
+  public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
     var           expression = arg.expression;
     boolean       verbose    = expression.verbose;

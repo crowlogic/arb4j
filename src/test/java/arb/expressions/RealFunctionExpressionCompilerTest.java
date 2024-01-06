@@ -128,6 +128,16 @@ public class RealFunctionExpressionCompilerTest extends
       assertEquals(69.42, expression.eval(1.0));
     }
   }
+  
+  public void testHalf()
+  {
+
+    RealFunction expression = express("½*10", context);
+    {
+      Real func = expression.evaluate(one, 1, 256, new Real());
+      assertEquals(5.0, func.doubleValue(RoundingMode.Up));
+    }
+  }
 
   public void testDivideConstants()
   {

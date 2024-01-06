@@ -57,9 +57,9 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
           depth + 1);
     value = constantValueString.trim();
 
-    if (π.equals(constantValueString))
+    if (constantSymbols.contains(constantValueString))
     {
-      fieldName = π;
+      fieldName = constantValueString;
       return;
     }
 

@@ -197,6 +197,16 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return get(value);
   }
 
+  public Real mul(Integer operand, int prec)
+  {
+    return mul(operand, prec, this);
+  }
+
+  public Real mul(Integer operand, int prec, Real result)
+  {
+    arblib.arb_mul_fmpz(result, this, operand.swigCPtr, prec);
+    return result;
+  }
  
  /**
    * @see arblib#arb_asin(Real, Real, int)
