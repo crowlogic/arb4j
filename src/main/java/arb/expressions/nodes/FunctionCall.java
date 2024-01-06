@@ -7,6 +7,9 @@ import static java.lang.System.err;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -103,7 +106,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * @param lastCall
    * @return methodVisitor (for fluent-style function composition)
    */
-  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType )
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
     var     expression = arg.expression;
     boolean verbose    = expression.verbose;
@@ -147,7 +150,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
     Class<?> targetResultType = resultTypeFor(functionName);
     generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), targetResultType);
-    if  (needsTypeConversion)
+    if (needsTypeConversion)
     {
       Compiler.invokeSetMethod(methodVisitor, resultType, targetResultType);
 
@@ -155,9 +158,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return methodVisitor;
   }
 
+  HashSet<String> integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
+  { "sqrt", "tanh", "log" }));
+
   private Class<?> resultTypeFor(String functionName)
   {
-    if ("sqrt".equals(functionName))
+    if (integerFunctionsWithRealResults.contains(functionName))
     {
       return Real.class;
     }
@@ -174,7 +180,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * as the argument, to be passed to the function represented by this node
    * 
    * @param methodVisitor
-   * @param resultType 
+   * @param resultType
    * @param functionName
    * @param arg
    * @param lastCall
