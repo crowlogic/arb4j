@@ -48,6 +48,12 @@ import arb.domains.Domain;
     return cosh(prec, this);
   }
   
+  public Complex set(Integer integer)
+  {
+    re().set(integer);
+    im().zero();
+    return this;
+  }
   
 /**
    * @see this{@link #sinh(int, Complex)}

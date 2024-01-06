@@ -34,7 +34,17 @@ public class Integer implements
   {
     return result.set(this).tanh(bits, result);
   }
-
+  
+  public Complex tanh(int bits, Complex result)
+  {
+    return result.set(this).tanh(bits, result);
+  }
+  
+  public Complex sqrt(int bits, Complex result)
+  {
+    return result.set(this).sqrt(bits);
+  }
+  
   public Real sqrt(int bits, Real result)
   {
     return result.set(this).sqrt(bits);
@@ -220,12 +230,12 @@ public class Integer implements
 
   public Integer remainder;
 
-  public Integer pow( Integer operand, int bits, Integer result )
+  public Integer pow(Integer operand, int bits, Integer result)
   {
     arblib.fmpz_pow_fmpz(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
   }
-  
+
   /**
    * Division, rounded to integer
    * 
@@ -269,6 +279,18 @@ public class Integer implements
   public Integer sub(Integer b, int i)
   {
     return sub(b, i, this);
+  }
+
+  public Real log(int bits, Real result)
+  {
+    return result.set(this).log(bits);
+  }
+
+  public Complex log(int bits, Complex result)
+  {
+    result.im().zero();
+    result.re().set(this);
+    return result.log(bits);
   }
 
 }

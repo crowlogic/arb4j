@@ -1,13 +1,14 @@
-package arb.functions.real;
+package arb.functions;
 
 import arb.Integer;
 import arb.Real;
+import arb.functions.real.RealFunction;
 
-public class A implements
-               RealFunction
+public class tanhlnOne implements
+                       RealFunction
 {
   public Integer c0 = new Integer("1");
-  public Integer l0 = new Integer();
+  public Real l0 = new Real();
 
   public Real evaluate(Real in, int order, int bits, Real result)
   {

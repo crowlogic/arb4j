@@ -73,6 +73,12 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
     return cosh(prec, this);
   }
   
+  public Complex set(Integer integer)
+  {
+    re().set(integer);
+    im().zero();
+    return this;
+  }
   
 /**
    * @see this{@link #sinh(int, Complex)}
@@ -1204,5 +1210,6 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
   public Complex() {
     this(arblibJNI.new_Complex(), true);
   }
+
 
 }
