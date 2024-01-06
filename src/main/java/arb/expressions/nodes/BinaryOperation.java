@@ -1,6 +1,8 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.loadBits;
+import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
+import static arb.expressions.Compiler.prepareStackForReusingRightSide;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -46,6 +48,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   public final boolean          castResult;
 
+  private Class<?>              generatedType;
+
+  public Class<?> getGeneratedType()
+  {
+    return generatedType;
+  }
+
   public BinaryOperation(Expression<D, R, F> expression,
                          Node<D, R, F> left,
                          String operation,
@@ -66,6 +75,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public final MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    generatedType = resultType;
     if (verbose)
     {
       System.out.format("\n%s: generate(resultType=%s)\n\n", operation, resultType);
@@ -75,7 +85,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     {
       if (isResult)
       {
-        expression.checkClassCast(Compiler.loadResult(mv,verbose), expression.rangeType);
+        expression.checkClassCast(Compiler.loadResult(mv, verbose), expression.rangeType);
       }
       else
       {
@@ -97,7 +107,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
    * is a newly allocated Real and T is the last argument passed to the
    * {@link Expression#evaluate(Real, int, int, Real)} method which is where the
    * result will be stored and returned
-   * @param resultType 
+   * 
+   * @param resultType
    * 
    * @return
    */
@@ -108,7 +119,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     loadBits(mv);
     loadResult(mv, resultType, targetResultType);
 
-    invokeBinaryOperationMethod(mv, operator, left.type(), right.type(), resultType);
+    Class<?> overrideLeftType = left.getGeneratedType() != null ? left.getGeneratedType() : left.type();
+    invokeBinaryOperationMethod(mv, operator, overrideLeftType, right.type(), resultType);
     if (castResult)
     {
       Compiler.invokeSetMethod(mv, targetResultType, resultType, verbose);
@@ -149,7 +161,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        expression.checkClassCast(Compiler.loadResult(mv,verbose), resultType);
+        expression.checkClassCast(Compiler.loadResult(mv, verbose), resultType);
 
       }
 

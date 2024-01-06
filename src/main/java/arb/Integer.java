@@ -258,6 +258,11 @@ public class Integer implements
     return result;
   }
 
+  public Real add( Integer operand, int prec, Real result )
+  {
+    return result.set(this).add(operand,prec);
+  }
+  
   @Override
   public Integer add(Integer operand, int prec, Integer result)
   {

@@ -251,6 +251,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   {
     return pow(operand,prec,this);
   }
+
+  public Real add(Integer operand, int prec)
+  {
+    return add(operand, prec, this);
+  }
   
   /**
    * @see arblib#acb_dirichlet_hardy_z(Complex, Complex, DirichletGroup,

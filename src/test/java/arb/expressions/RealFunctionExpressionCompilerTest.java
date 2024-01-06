@@ -433,7 +433,7 @@ public class RealFunctionExpressionCompilerTest extends
     }
   }
 
-  public void testSimplerCompoundExpression()
+  public void testOnePlusTwoPlusThree()
   {
     RealFunction expression = express("1+(2)+(3)", context,true);
     {
