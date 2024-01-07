@@ -21,6 +21,10 @@ public class arblib {
     arblibJNI.arb_mul_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
+  public static void arb_sub_fmpz(Real z, Real x, long y, int prec) {
+    arblibJNI.arb_sub_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
+  }
+
   public static void fmpz_mul(long f, long g, long h) {
     arblibJNI.fmpz_mul(f, g, h);
   }

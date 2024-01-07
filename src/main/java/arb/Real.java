@@ -281,6 +281,16 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return this;
   }
     
+  public Real sub( Integer z, int bits, Real result )
+  {
+    arblib.arb_sub_fmpz(result, this, z.swigCPtr, bits);
+    return result;
+  }
+  
+  public Real sub(Integer operand, int prec)
+  {
+    return sub(operand,prec,this);  
+  }  
   
   /**
    * 

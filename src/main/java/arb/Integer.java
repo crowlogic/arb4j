@@ -258,6 +258,11 @@ public class Integer implements
     return result;
   }
 
+  public Real sub(Integer operand, int prec, Real result)
+  {
+    return result.set(this).sub(operand,prec);
+  }
+  
   public Real add( Integer operand, int prec, Real result )
   {
     return result.set(this).add(operand,prec);
@@ -300,5 +305,7 @@ public class Integer implements
     result.re().set(this);
     return result.log(bits);
   }
+
+  
 
 }
