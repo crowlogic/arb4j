@@ -357,17 +357,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
         classVisitor = ((FlushingTraceClassVisitor) classVisitor).getDelegate();
       }
     }
+    
+    instructions = ((ClassWriter) classVisitor).toByteArray();
+
 
     if (verbose)
     {
-      instructions = ((ClassWriter) classVisitor.getDelegate()).toByteArray();
       File file = new File(className + ".class");
       writeBytecodes(file);
     }
-    else
-    {
-      instructions = ((ClassWriter) classVisitor).toByteArray();
-    }
+   
     return this;
   }
 
