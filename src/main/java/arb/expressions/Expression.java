@@ -584,7 +584,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
           // FIXME: create a referencedFunctions and only generate fields for functions
           // that are used instead of creating one for every function in the Context
           java.lang.reflect.Field field        = compiledClass.getField(functionName);
-          field.set(instance, entry.getValue());
+          Mapping<?, ?> mapping = entry.getValue();
+          field.set(instance, mapping.func);
         }
         catch (Exception e)
         {
