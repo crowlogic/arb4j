@@ -1,23 +1,11 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.compile;
-import static arb.expressions.Compiler.declareConstants;
-import static arb.expressions.Compiler.declareFunctionReferences;
-import static arb.expressions.Compiler.defineFunctionClass;
-import static arb.expressions.Compiler.generateConstructor;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.loadResult;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACONST_NULL;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,27 +17,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.ComplexPolynomial;
-import arb.Field;
-import arb.RealPolynomial;
-import arb.Typesettable;
-import arb.expressions.nodes.Add;
-import arb.expressions.nodes.Divide;
-import arb.expressions.nodes.Exponentiate;
-import arb.expressions.nodes.FunctionCall;
-import arb.expressions.nodes.LiteralConstant;
-import arb.expressions.nodes.Multiply;
-import arb.expressions.nodes.Node;
-import arb.expressions.nodes.Subtract;
-import arb.expressions.nodes.Variable;
+import arb.*;
+import arb.expressions.nodes.*;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
 
@@ -287,7 +259,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return true if the next non-space character is one of the characters in
    *         charsToEat
    */
-  public boolean eat(int depth, char... charsToEat)
+  public boolean parse(int depth, char... charsToEat)
   {
     skipSpaces();
     for (int charToEat : charsToEat)
@@ -520,7 +492,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitCode();
     methodVisitor.visitLabel(startLabel);
 
-    Node<D, R, F> rootNode = eatRootNode();
+    Node<D, R, F> rootNode = parseRootNode();
 
     if (position < expression.length())
     {
@@ -556,11 +528,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  public Node<D, R, F> eatRootNode() throws ExpressionCompilerException
+  public Node<D, R, F> parseRootNode() throws ExpressionCompilerException
   {
     parseOptionalIndependentVariableSpecification();
     nextChar();
-    rootNode = eatFirst(0);
+    rootNode = parseFirst(0);
     assert rootNode != null : "eatRootNode: eatFirst() returned null, expression='" + expression + "'";
     rootNode.isResult = true;
     return rootNode;
@@ -653,7 +625,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   boolean verboseParser = false;
 
   /**
-   * Consumes characters, calling this{@link #eatFirst(int)} to process
+   * Consumes characters, calling this{@link #parseFirst(int)} to process
    * parenthesis and calling this{@link #eatNumber(int)} if this{@link #ch}
    * indicates a number a the current position or
    * this{@link #resolveFunctionInvocationOrVariableReference(int, int)} if
@@ -664,7 +636,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return the next node in the syntax tree
    * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eat(int depth) throws ExpressionCompilerException
+  private Node<D, R, F> parse(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -676,10 +648,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     int           startPos = this.position;
 
-    if (eat(depth + 1, '('))
+    if (parse(depth + 1, '('))
     {
-      node = eatFirst(depth + 1);
-      if (!eat(depth + 1, ')'))
+      node = parseFirst(depth + 1);
+      if (!parse(depth + 1, ')'))
       {
         throw new ExpressionCompilerException(String.format("expected closing parenthesis at: depth=%d startPos=%s, position=%s in expression '%s' of length %d",
                                                             depth,
@@ -692,7 +664,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else if (Parser.isNumeric(ch))
     {
-      node = eatNumber(depth, startPos);
+      node = parseNumber(depth, startPos);
       assert node != null : "eatNumber returned null";
     }
     else if (Parser.isLatinOrGreek(ch, false))
@@ -720,10 +692,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param depth
    * 
    * @return new {@link Add} or {@link Subtract} node or result from
-   *         this{@link #eatSecond(int)}
+   *         this{@link #parseSecond(int)}
    * @throws ExpressionCompilerException
    */
-  public Node<D, R, F> eatFirst(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseFirst(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -731,7 +703,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.flush();
     }
 
-    Node<D, R, F> node = eatSecond(depth);
+    Node<D, R, F> node = parseSecond(depth);
 
     while (true)
     {
@@ -742,18 +714,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                      depth);
       }
 
-      if (eat(depth, '+'))
+      if (parse(depth, '+'))
       {
         node = new Add<>(this,
                          node,
-                         eatSecond(depth),
+                         parseSecond(depth),
                          depth);
       }
-      else if (eat(depth, '-'))
+      else if (parse(depth, '-'))
       {
         node = new Subtract<>(this,
                               node,
-                              eatSecond(depth),
+                              parseSecond(depth),
                               depth);
       }
       else
@@ -778,8 +750,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   private Node<D, R, F> resolveFunctionInvocationOrVariableReference(int depth,
                                                                      int startPos) throws ExpressionCompilerException
   {
-    Reference reference  = eatName(depth, startPos);
-    boolean   isFunction = eat(depth, '(');
+    Reference reference  = parseName(depth, startPos);
+    boolean   isFunction = parse(depth, '(');
     if (verbose)
     {
       err.format("\nresolveFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, reference='%s', isFunction=%s\n\n",
@@ -793,8 +765,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (isFunction)
     {
-      Node<D, R, F> arg = eatFirst(depth + 1);
-      if (eat(depth, ')'))
+      Node<D, R, F> arg = parseFirst(depth + 1);
+      if (parse(depth, ')'))
       {
         return new FunctionCall<>(this,
                                   reference.name,
@@ -830,16 +802,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * Calls this{@link #eat(int)} and if this{@link #ch} is '^' then a new
+   * Calls this{@link #parse(int)} and if this{@link #ch} is '^' then a new
    * {@link Exponentiate} node is instantiated
    * 
    * @param depth
    * 
    * @return either a new {@link Exponentiate} node from
-   *         this{@link #eatPower(int, Node)} or a node from this{@link #eat(int)}
+   *         this{@link #parsePower(int, Node)} or a node from this{@link #parse(int)}
    * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eatLast(int depth) throws ExpressionCompilerException
+  private Node<D, R, F> parseLast(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -847,7 +819,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.flush();
     }
 
-    return eatPower(depth, eat(depth));
+    return parsePower(depth, parse(depth));
   }
 
   /**
@@ -859,7 +831,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * 
    * @return the {@link Reference} (having name and possibly index) at startPos
    */
-  private Reference eatName(int depth, int startPos)
+  private Reference parseName(int depth, int startPos)
   {
     while (Parser.isLatinOrGreek(ch, true))
     {
@@ -867,11 +839,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     String identifier = expression.substring(startPos, position).trim();
     String index      = null;
-    if (eat(depth, '['))
+    if (parse(depth, '['))
     {
       int indexPosition = position;
 
-      while (!eat(depth, ']') && position < expression.length())
+      while (!parse(depth, ']') && position < expression.length())
       {
         nextChar();
       }
@@ -906,7 +878,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * 
    * @return a new {@link LiteralConstant} representing the base-10 number
    */
-  private Node<D, R, F> eatNumber(int depth, int startPos)
+  private Node<D, R, F> parseNumber(int depth, int startPos)
   {
     while (isNumeric(ch))
     {
@@ -932,9 +904,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
    *         operation, otherwise returns a new {@link Exponentiate} operator with
    *         node as its parent node
    */
-  Node<D, R, F> eatSuperscript(int depth, Node<D, R, F> node, char superscript, String digit)
+  Node<D, R, F> parseSuperscript(int depth, Node<D, R, F> node, char superscript, String digit)
   {
-    if (eat(depth + 1, superscript))
+    if (parse(depth + 1, superscript))
     {
       node = new Exponentiate<>(this,
                                 node,
@@ -958,22 +930,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
    *         its parent node
    * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eatPower(int depth, Node<D, R, F> node) throws ExpressionCompilerException
+  private Node<D, R, F> parsePower(int depth, Node<D, R, F> node) throws ExpressionCompilerException
   {
-    if (eat(depth, '^'))
+    if (parse(depth, '^'))
     {
       boolean parenthetical = false;
-      if (eat(depth, '('))
+      if (parse(depth, '('))
       {
         parenthetical = true;
       }
       node = new Exponentiate<>(this,
                                 node,
-                                parenthetical ? eatFirst(depth) : eat(depth),
+                                parenthetical ? parseFirst(depth) : parse(depth),
                                 depth + 1);
       if (parenthetical)
       {
-        if (!eat(depth, ')'))
+        if (!parse(depth, ')'))
         {
           throw new RuntimeException(String.format("eatPower expected closing parenthesis at: position=%d, ch='%c'\n",
                                                    position,
@@ -985,12 +957,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else
     {
-      return eatSuperscripts(depth, node);
+      return parseSuperscripts(depth, node);
     }
   }
 
   /**
-   * Calls this{@link #eatSuperscript(int, Node, int, String)} for each digit of
+   * Calls this{@link #parseSuperscript(int, Node, int, String)} for each digit of
    * the base 10 numeral system
    * 
    * @param depth
@@ -998,18 +970,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * 
    * @return
    */
-  public Node<D, R, F> eatSuperscripts(int depth, Node<D, R, F> node)
+  public Node<D, R, F> parseSuperscripts(int depth, Node<D, R, F> node)
   {
-    node = eatSuperscript(depth + 1, node, '⁰', "0");
-    node = eatSuperscript(depth + 1, node, '¹', "1");
-    node = eatSuperscript(depth + 1, node, '²', "2");
-    node = eatSuperscript(depth + 1, node, '³', "3");
-    node = eatSuperscript(depth + 1, node, '⁴', "4");
-    node = eatSuperscript(depth + 1, node, '⁵', "5");
-    node = eatSuperscript(depth + 1, node, '⁶', "6");
-    node = eatSuperscript(depth + 1, node, '⁷', "7");
-    node = eatSuperscript(depth + 1, node, '⁸', "8");
-    node = eatSuperscript(depth + 1, node, '⁹', "9");
+    node = parseSuperscript(depth + 1, node, '⁰', "0");
+    node = parseSuperscript(depth + 1, node, '¹', "1");
+    node = parseSuperscript(depth + 1, node, '²', "2");
+    node = parseSuperscript(depth + 1, node, '³', "3");
+    node = parseSuperscript(depth + 1, node, '⁴', "4");
+    node = parseSuperscript(depth + 1, node, '⁵', "5");
+    node = parseSuperscript(depth + 1, node, '⁶', "6");
+    node = parseSuperscript(depth + 1, node, '⁷', "7");
+    node = parseSuperscript(depth + 1, node, '⁸', "8");
+    node = parseSuperscript(depth + 1, node, '⁹', "9");
     return node;
   }
 
@@ -1019,10 +991,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param depth
    * 
    * @return new {@link Multiply} or {@link Divide} node or result from
-   *         this{@link #eatLast(int)}
+   *         this{@link #parseLast(int)}
    * @throws ExpressionCompilerException
    */
-  private Node<D, R, F> eatSecond(int depth) throws ExpressionCompilerException
+  private Node<D, R, F> parseSecond(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -1030,23 +1002,23 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.flush();
     }
 
-    Node<D, R, F> node = eatLast(depth);
+    Node<D, R, F> node = parseLast(depth);
 
     while (true)
     {
-      if (eat(depth, '*', '×'))
+      if (parse(depth, '*', '×'))
       {
         node = new Multiply<>(this,
                               node,
-                              eatLast(depth),
+                              parseLast(depth),
                               depth);
 
       }
-      else if (eat(depth, '/', '÷'))
+      else if (parse(depth, '/', '÷'))
       {
         node = new Divide<>(this,
                             node,
-                            eatLast(depth),
+                            parseLast(depth),
                             depth);
       }
       else
