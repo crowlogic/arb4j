@@ -55,7 +55,7 @@ import arb.functions.Function;
  * @see Variables
  * 
  *
- * @author ©2023 Stephen Crowley
+ * @author ©2024 Stephen Crowley
  */
 public class Variable<D, R, F extends Function<D, R>> extends
                      Node<D, R, F>

@@ -1,4 +1,4 @@
-package arb.expressions.nodes;
+package arb.expressions.nodes.binary;
 
 import static arb.expressions.Compiler.loadBits;
 import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
@@ -13,6 +13,7 @@ import arb.Real;
 import arb.RealPolynomial;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**

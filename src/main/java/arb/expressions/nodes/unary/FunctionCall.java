@@ -1,11 +1,10 @@
-package arb.expressions.nodes;
+package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.loadBits;
 import static arb.expressions.Compiler.loadResult;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,11 +15,8 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Mapping;
-import arb.expressions.Parser;
+import arb.expressions.*;
+import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
@@ -91,10 +87,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return format("%s(%s)", functionName.replace("√", "\\sqrt").replace("J0", "J_0"), arg.typeset());
   }
 
-  /**
-   * 
-   * @return not this{@link #contextual}
-   */
   public boolean isBuiltin()
   {
     return !contextual;
@@ -111,15 +103,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return function.range;
   }
 
-  /**
-   * Generate an invocation of member function of an {@link Object} by its name
-   * and the {@link Node} whose evaluated result is the independent variable, also
-   * known as the argument, to be passed to the function represented by this node
-   * 
-   * @param methodVisitor
-   * @param lastCall
-   * @return methodVisitor (for fluent-style function composition)
-   */
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
     var     expression                = arg.expression;
@@ -145,10 +128,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       System.out.format("\nGenerating arg of type %s for %s\n\n", arg, this);
       System.out.flush();
     }
-    //boolean needsArgTypeConversion = !arg.type().equals(expression.domainType);
 
-    // assert !needsArgTypeConversion : String.format("arg.type=%s != domainType =
-    // %s\n", arg.type(), expression.domainType );
     arg.generate(methodVisitor, expression.domainType);
     loadBits(methodVisitor);
 
@@ -210,20 +190,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
   }
 
-  /**
-   * Generate an invocation of function registered via
-   * {@link Context#registerFunction(String, Function)} by its name and the
-   * {@link Node} whose evaluated result is the independent variable, also known
-   * as the argument, to be passed to the function represented by this node
-   * 
-   * @param methodVisitor
-   * @param resultType
-   * @param functionName
-   * @param arg
-   * @param lastCall
-   * @param depth
-   * @return methodVisitor
-   */
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
@@ -238,41 +204,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
 
-    if (!type.equals(arg.type()))
-    {
-      try
-      {
-        String domainType = func.getClass().getMethod("domainType").getGenericReturnType().getTypeName();
-        out.println("domainType=" + domainType);
-
-      }
-      catch (NoSuchMethodException | SecurityException e)
-      {
-        throw new RuntimeException(e.getMessage(),
-                                   e);
-      }
-
-      methodVisitor.visitInsn(Opcodes.DUP);
-      String typecastVar = expression.reserveIntermediateVariable(methodVisitor, depth, type);
-      if (verbose)
-      {
-        out.format("allocated intermediate variable %s of type %s for typecasting from type %s\n",
-                   typecastVar,
-                   type,
-                   arg.type());
-      }
-      methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-                                    Type.getInternalName(type),
-                                    "set",
-                                    Type.getMethodDescriptor(Type.getType(type), Type.getType(arg.type())),
-                                    false);
-      // Compiler.loadThisOntoStack(methodVisitor);
-
-    }
-    else
-    {
-      loadFunctionFromField(methodVisitor, mapping.func.getClass());
-    }
+    loadFunctionFromField(methodVisitor, mapping.func.getClass());
 
     arg.generate(methodVisitor, mapping.domain);
     Compiler.loadOrder(methodVisitor);
@@ -328,18 +260,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     expression.loadFieldOntoStack(Compiler.loadThisOntoStack(methodVisitor), functionName, type);
   }
 
-  /**
-   * Emit an instruction to invoke a {@link UnaryOperation} , that is, a function
-   * of one variable in the input domain mapping to one variable in the output
-   * range. The operators implementing method has the signature D functionName(
-   * int bits, D result).
-   * 
-   * @param methodVisitor
-   * @param functionName
-   * @param domainType
-   * @param rangeType
-   * @return methodVisitor
-   */
   public static MethodVisitor generateCallToBuiltinUnaryFunction(MethodVisitor methodVisitor,
                                                                  String functionName,
                                                                  Class<?> domainType,

@@ -1,8 +1,9 @@
-package arb.expressions.nodes;
+package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
 import arb.expressions.Expression;
+import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**

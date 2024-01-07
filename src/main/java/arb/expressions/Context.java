@@ -42,10 +42,10 @@ public class Context
   public Context()
   {
     this.variables = new Variables();
-    this.functions = new Functions();
+    this.functions = new FunctionMappings();
   }
 
-  public Context(Variables variables, Functions functions)
+  public Context(Variables variables, FunctionMappings functions)
   {
     this.variables = variables;
     this.functions = functions;
@@ -54,10 +54,10 @@ public class Context
   public Context(Variables vars)
   {
     this.variables = vars;
-    this.functions = new Functions();
+    this.functions = new FunctionMappings();
   }
 
-  public Context(Functions funcs)
+  public Context(FunctionMappings funcs)
   {
     this.variables = new Variables();
     this.functions = funcs;
@@ -65,7 +65,7 @@ public class Context
 
   public Variables variables;
 
-  public Functions functions;
+  public FunctionMappings functions;
 
   /**
    * Adds a given variable to {@link #variables}

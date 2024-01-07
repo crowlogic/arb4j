@@ -1,7 +1,5 @@
 package arb.expressions.nodes;
 
-import static java.lang.System.out;
-
 import java.util.Collections;
 
 import org.objectweb.asm.MethodVisitor;
@@ -11,6 +9,8 @@ import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.Variables;
+import arb.expressions.nodes.binary.Add;
+import arb.expressions.nodes.binary.BinaryOperation;
 import arb.functions.Function;
 
 /**

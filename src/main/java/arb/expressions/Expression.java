@@ -21,7 +21,11 @@ import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
 import arb.*;
-import arb.expressions.nodes.*;
+import arb.expressions.nodes.LiteralConstant;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
 
@@ -346,7 +350,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * Calls {@link Compiler#declareConstants(ClassVisitor, Iterable)},
    * this{@link #declareReferencedVariables(ClassVisitor)},
    * this{@link #declareIntermediateVariables(ClassVisitor)}, then
-   * {@link Compiler#declareFunctions(Expression, ClassVisitor, Functions)}
+   * {@link Compiler#declareFunctions(Expression, ClassVisitor, FunctionMappings)}
    * 
    * @param classVisitor
    */

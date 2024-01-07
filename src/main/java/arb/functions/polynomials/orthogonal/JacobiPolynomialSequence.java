@@ -21,7 +21,7 @@ import arb.functions.real.RealFunction;
  *   P(0,x) = 1
  *   P(1,x) = (C(1)*x-β+α)/2
  * 
- * Coefficient Functions:
+ * Coefficient FunctionMappings:
  * 
  *   C(n) = 2n + α + β
  *   F(n) = C(n-1)*C(n)

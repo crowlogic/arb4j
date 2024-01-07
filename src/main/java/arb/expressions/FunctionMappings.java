@@ -2,12 +2,7 @@ package arb.expressions;
 
 import java.util.HashMap;
 
-/**
- * TODO: https://github.com/crowlogic/arb4j/issues/296: expression compiler: add
- * type to registerBuiltinFunction and use [functionName,domain] as the key
- * instead of just functionName
- */
-public class Functions
+public class FunctionMappings
 {
   public final HashMap<String, Mapping<?,?>> map = new HashMap<>();
 
