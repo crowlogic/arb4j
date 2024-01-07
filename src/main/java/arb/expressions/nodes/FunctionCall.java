@@ -145,7 +145,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       System.out.format("\nGenerating arg of type %s for %s\n\n", arg, this);
       System.out.flush();
     }
-    boolean needsArgTypeConversion = !arg.type().equals(expression.domainType);
+    //boolean needsArgTypeConversion = !arg.type().equals(expression.domainType);
 
     // assert !needsArgTypeConversion : String.format("arg.type=%s != domainType =
     // %s\n", arg.type(), expression.domainType );
@@ -154,7 +154,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     loadOutputVariableOntoStack(methodVisitor, expression, verbose, resultType);
 
-    generateCallToBuiltinUnaryFunction(methodVisitor, functionName, arg.type(), targetResultType);
+    Class<?> argtype = arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
+    generateCallToBuiltinUnaryFunction(methodVisitor, functionName, argtype, targetResultType);
 
     if (needsResultTypeConversion)
     {

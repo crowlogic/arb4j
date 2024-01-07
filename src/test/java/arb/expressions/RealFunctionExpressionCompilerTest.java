@@ -58,7 +58,7 @@ public class RealFunctionExpressionCompilerTest extends
   public void testAddThreeConstants()
   {
 
-    RealFunction expression = express("69 + 0.42 + 0.58", context,true);
+    RealFunction expression = express("69 + 0.42 + 0.58", context);
     {
       Real func = expression.evaluate(one, 1, 256, new Real());
       assertEquals(70.00, func.doubleValue(RoundingMode.Up));
@@ -435,7 +435,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testOnePlusTwoPlusThree()
   {
-    RealFunction expression = express("1+(2)+(3)", context,true);
+    RealFunction expression = express("1+(2)+(3)", context);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
 
@@ -446,7 +446,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testSquareRootOfTwentyFive()
   {
-    RealFunction expression = express("√(25)", context,true);
+    RealFunction expression = express("√(25)", context);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
       assertEquals(5.0, evaluatedX.doubleValue(RoundingMode.Up));

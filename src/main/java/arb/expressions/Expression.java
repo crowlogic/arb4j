@@ -1,11 +1,23 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.compile;
+import static arb.expressions.Compiler.declareConstants;
+import static arb.expressions.Compiler.declareFunctionReferences;
+import static arb.expressions.Compiler.defineFunctionClass;
+import static arb.expressions.Compiler.generateConstructor;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACONST_NULL;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,13 +25,31 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.*;
-import arb.expressions.nodes.*;
+import arb.ComplexPolynomial;
+import arb.Field;
+import arb.RealPolynomial;
+import arb.Typesettable;
+import arb.expressions.nodes.Add;
+import arb.expressions.nodes.Divide;
+import arb.expressions.nodes.Exponentiate;
+import arb.expressions.nodes.FunctionCall;
+import arb.expressions.nodes.LiteralConstant;
+import arb.expressions.nodes.Multiply;
+import arb.expressions.nodes.Node;
+import arb.expressions.nodes.Subtract;
+import arb.expressions.nodes.Variable;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
 
@@ -105,7 +135,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   protected byte[]                           instructions;
 
-  public boolean                             verbose                   = true;
+  public boolean                             verbose                   = false;
 
   Class<F>                                   compiledClass;
 
@@ -150,8 +180,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.rangeClassDescriptor      = Type.getDescriptor(rangeClass);
     this.domainClassDescriptor     = Type.getDescriptor(domainClass);
     this.className                 = className;
-    this.domainType               = domainClass;
-    this.rangeType                = rangeClass;
+    this.domainType                = domainClass;
+    this.rangeType                 = rangeClass;
     this.functionClass             = functionClass;
     this.rangeClassInternalName    = Type.getInternalName(rangeClass);
     this.domainClassInternalName   = Type.getInternalName(domainClass);
@@ -328,12 +358,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
     }
 
-    instructions = ((ClassWriter) classVisitor.getDelegate()).toByteArray();
-
     if (verbose)
     {
+      instructions = ((ClassWriter) classVisitor.getDelegate()).toByteArray();
       File file = new File(className + ".class");
       writeBytecodes(file);
+    }
+    else
+    {
+      instructions = ((ClassWriter) classVisitor).toByteArray();
     }
     return this;
   }
@@ -1124,7 +1157,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (!resultInUse && type.equals(rangeType))
     {
-      checkClassCast(loadResult(methodVisitor,verbose), type);
+      checkClassCast(loadResult(methodVisitor, verbose), type);
       resultInUse = true;
       return "<RESULT>";
     }
