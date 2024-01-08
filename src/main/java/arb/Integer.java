@@ -34,17 +34,17 @@ public class Integer implements
   {
     return result.set(this).tanh(bits, result);
   }
-  
+
   public Complex tanh(int bits, Complex result)
   {
     return result.set(this).tanh(bits, result);
   }
-  
+
   public Complex sqrt(int bits, Complex result)
   {
     return result.set(this).sqrt(bits);
   }
-  
+
   public Real sqrt(int bits, Real result)
   {
     return result.set(this).sqrt(bits);
@@ -225,7 +225,6 @@ public class Integer implements
     return result.set(this).pow(operand, prec);
   }
 
-  
   public Real div(Integer operand, int prec, Real result)
   {
     return result.set(this).div(operand, prec);
@@ -257,7 +256,7 @@ public class Integer implements
     arblib.arb_add_fmpz(result, addend, this.swigCPtr, bits);
     return result;
   }
-  
+
   public Real mul(Real s, int bits, Real result)
   {
     arblib.arb_mul_fmpz(result, s, this.swigCPtr, bits);
@@ -266,14 +265,14 @@ public class Integer implements
 
   public Real sub(Integer operand, int prec, Real result)
   {
-    return result.set(this).sub(operand,prec);
+    return result.set(this).sub(operand, prec);
   }
-  
-  public Real add( Integer operand, int prec, Real result )
+
+  public Real add(Integer operand, int prec, Real result)
   {
-    return result.set(this).add(operand,prec);
+    return result.set(this).add(operand, prec);
   }
-  
+
   @Override
   public Integer add(Integer operand, int prec, Integer result)
   {
@@ -312,6 +311,11 @@ public class Integer implements
     return result.log(bits);
   }
 
-  
+  public Integer sub(int i, int bits, Integer res)
+  {
+    // assert prec == 0 : "exact precision methods require bits=0";
+    arblib.fmpz_sub_si(res.swigCPtr, this.swigCPtr, i);
+    return res;
+  }
 
 }

@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_sub_si(long f, long g, int x) {
+    arblibJNI.fmpz_sub_si(f, g, x);
+  }
+
   public static void arb_add_fmpz(Real z, Real x, long y, int prec) {
     arblibJNI.arb_add_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
