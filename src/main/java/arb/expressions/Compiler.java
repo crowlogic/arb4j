@@ -271,9 +271,9 @@ public class Compiler
 
     if (expression.context != null)
     {
-      expression.context.functions.map.values()
-                                      .forEach(mapping -> expression.declareFieldForRegisteredFunction(methodVisitor,
-                                                                                                       mapping));
+      expression.referencedFunctions.values()
+                                    .forEach(mapping -> expression.declareFieldForRegisteredFunction(methodVisitor,
+                                                                                                     mapping));
     }
     return methodVisitor;
   }
@@ -380,9 +380,9 @@ public class Compiler
    * 
    * @return methodVisitor
    */
-  public static MethodVisitor loadResult(MethodVisitor methodVisitor,boolean verbose)
+  public static MethodVisitor loadResult(MethodVisitor methodVisitor, boolean verbose)
   {
-    if ( verbose )
+    if (verbose)
     {
       out.format("\nloadResult()\n\n");
       out.flush();

@@ -576,7 +576,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (context != null)
     {
-      context.functions.map.entrySet().forEach(entry ->
+      referencedFunctions.entrySet().forEach(entry ->
       {
         try
         {
