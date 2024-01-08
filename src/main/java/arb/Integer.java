@@ -257,6 +257,12 @@ public class Integer implements
     arblib.arb_add_fmpz(result, addend, this.swigCPtr, bits);
     return result;
   }
+  
+  public Real mul(Real s, int bits, Real result)
+  {
+    arblib.arb_mul_fmpz(result, s, this.swigCPtr, bits);
+    return result;
+  }
 
   public Real sub(Integer operand, int prec, Real result)
   {
