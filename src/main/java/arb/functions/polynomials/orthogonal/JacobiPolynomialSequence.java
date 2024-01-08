@@ -16,24 +16,23 @@ import arb.functions.real.RealFunction;
  * The Jacobi polynomials are recursively defined by
  * 
  * <pre>
- * Initial Conditions: both α,β>-1 fixed
- * 
- *   P(0,x) = 1
- *   P(1,x) = (C(1)*x-β+α)/2
- * 
- * Coefficient FunctionMappings:
- * 
- *   C(n) = 2n + α + β
- *   F(n) = C(n-1)*C(n)
- *   G = α²-β²
- *   A(n) = ( F(n)*x + G )*(C(n)-1)/2
- *   B(n) = (n + α - 1) * (n + β - 1) * C(n)
- *   E(n) = n * C(n/2) * C(n - 1)
- *   
- * Recurrence Relation for n >= 2:
- * 
- *  P(n,x)=(A(n) * x * P(n-1,x) - B(n) * P(n-2,x)) / 2
- * 
+ *  C(n) = 2n + α + β
+ *  
+ *  F(n) = C(n-1) ⋅ C(n)
+ *  
+ *  G = α² - β²
+ *  
+ *  A(n, x) = (F(n) ⋅ x + G) ⋅ ((C(n) - 1) / 2)
+ *  
+ *  B(n) = (n + α - 1)(n + β - 1)C(n)
+ *  
+ *  E(n) = n ⋅ C(n/2) ⋅ C(n - 1)
+ *  
+ *  P(0,x) = 1
+ *  
+ *  P(1,x) = (C(1) ⋅ x + α - β) / 2
+ *  
+ *  P(n, x) = (A(n, x) ⋅ P(n - 1, x) - B(n) ⋅ P(n - 2, x)) / E(n) ∀ n ≥ 2 
  * </pre>
  * 
  * The polynomials P(n,x) are mutually orthogonal with respect to the weight
