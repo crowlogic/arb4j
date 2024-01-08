@@ -30,7 +30,8 @@ module arb4j
   requires transitive jdk.jshell;
   requires transitive io.fair_acc.chartfx;
   requires transitive io.fair_acc.dataset;
-  requires transitive io.fair_acc.bench;  
+  requires transitive io.fair_acc.bench;
+  requires transitive org.fxyz3d.core;  
 
   exports arb;
   exports arb.expressions;

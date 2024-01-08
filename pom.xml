@@ -83,8 +83,11 @@
 			<artifactId>asm-util</artifactId>
 			<version>9.6</version>
 		</dependency>
-
-
+		<dependency>
+			<groupId>org.fxyz3d</groupId>
+			<artifactId>fxyz3d</artifactId>
+			<version>0.6.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-base</artifactId>
