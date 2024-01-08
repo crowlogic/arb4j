@@ -45,25 +45,25 @@ public class JacobiPolynomialTest extends
 //
 //  }
 
-//  public static void testE()
-//  {
-//    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-//                                                   negHalf,
-//                                                   N))
-//    {
-//      try ( Real result = seq.E.evaluate(new Real("3",
-//                                                  128),
-//                                         1,
-//                                         bits,
-//                                         new Real()))
-//      {
-//        out.println("E(3)=" + result);
-//        assertEquals(18.0, result.doubleValue());
-//        assertTrue(result.isExact());
-//      }
-//    }
-//
-//  }
+  public static void testE()
+  {
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf,
+                                                   N))
+    {
+      try ( Real result = seq.E.evaluate(new Real("3",
+                                                  128),
+                                         1,
+                                         bits,
+                                         new Real()))
+      {
+        out.println("E(3)=" + result);
+        assertEquals(18.0, result.doubleValue());
+        assertTrue(result.isExact());
+      }
+    }
+
+  }
 //
   public static void testB()
   {
