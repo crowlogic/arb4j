@@ -14,6 +14,49 @@ import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
 
 /**
+ * <pre>
+ * With ArbLib, when you use `arb_poly_set_coeff_arb()` to set a coefficient
+ * for a polynomial, the library automatically handles the resizing of the
+ * polynomial if necessary. This means if you set a coefficient for a higher
+ * degree term than the polynomial currently supports, ArbLib will resize the
+ * polynomial to accommodate the new term.
+ * 
+ * For instance, if you have a polynomial currently of degree 1 (like p(x) =
+ * x), and you set a coefficient for the x^2 term, ArbLib will
+ * automatically resize the polynomial to be of degree 2 and set the appropriate
+ * coefficient.
+ * 
+ * In the provided code, when `arb_poly_set_coeff_arb(poly, 1, coeff);` is
+ * called, it sets the coefficient of x^1 to 1. If the polynomial `poly`
+ * was initially of a lower degree, this function would automatically resize it
+ * to be at least of degree 1. However, since the polynomial is initialized
+ * right before this without setting any specific degree, it will start as a
+ * degree 0 polynomial and then resize to degree 1 to accommodate the new
+ * coefficient.
+ * 
+ * I see what you mean. To reduce the memory allocated for a polynomial in
+ * ArbLib without changing its degree, you can use the `arb_poly_fit_length()`
+ * function. This function adjusts the memory allocation for a polynomial to
+ * match its actual degree.
+ * 
+ * Here's how you can use it:
+ * </pre>
+ * 
+ * <code>void arb_poly_fit_length(arb_poly_t poly);</code>
+ * <pre>
+ * After modifying the coefficients of a polynomial and potentially reducing its
+ * degree, you can call `arb_poly_fit_length(poly);` to make the polynomial's
+ * memory allocation match its current degree, thus reducing any unused memory.
+ * 
+ * For example, if you have a polynomial of degree 10 but have set most of the
+ * coefficients to zero and only use it as a quadratic polynomial, calling
+ * `arb_poly_fit_length(poly);` will adjust the memory allocation to match the
+ * degree of 2, reducing unnecessary memory usage.
+ * 
+ * This function ensures that the polynomial's memory usage is minimized without
+ * changing its degree.
+ * </pre>
+ * 
  * arb4j is made available under the terms of the Business Source License™ v1.1
  * ©2023 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
