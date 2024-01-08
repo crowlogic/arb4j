@@ -17,7 +17,7 @@ import arb.exceptions.DivisionByZeroException;
  * automatically resize the polynomial to be of degree 2 and set the appropriate
  * coefficient.
  * 
- * In the provided code, when `arb_poly_set_coeff_arb(poly, 1, coeff);` is
+ * When `arb_poly_set_coeff_arb(poly, 1, coeff);` is
  * called, it sets the coefficient of x^1 to 1. If the polynomial `poly`
  * was initially of a lower degree, this function would automatically resize it
  * to be at least of degree 1. However, since the polynomial is initialized
@@ -25,7 +25,7 @@ import arb.exceptions.DivisionByZeroException;
  * degree 0 polynomial and then resize to degree 1 to accommodate the new
  * coefficient.
  * 
- * I see what you mean. To reduce the memory allocated for a polynomial in
+ * To reduce the memory allocated for a polynomial in
  * ArbLib without changing its degree, you can use the `arb_poly_fit_length()`
  * function. This function adjusts the memory allocation for a polynomial to
  * match its actual degree.
@@ -34,6 +34,7 @@ import arb.exceptions.DivisionByZeroException;
  * </pre>
  * 
  * <code>void arb_poly_fit_length(arb_poly_t poly);</code>
+ * 
  * <pre>
  * After modifying the coefficients of a polynomial and potentially reducing its
  * degree, you can call `arb_poly_fit_length(poly);` to make the polynomial's
@@ -67,6 +68,12 @@ import arb.exceptions.DivisionByZeroException;
     return g.add(this, bits, res);   
   }
   
+  public RealPolynomial fitLength( )
+  {
+    arblib.arb_poly_fit_length(remainder, getLength());
+    return this;
+  }
+    
   /**
    * 
    * @param that
@@ -119,8 +126,8 @@ import arb.exceptions.DivisionByZeroException;
    */
   public Real set(int i, Real val)
   {
-    assert i < getLength() : String.format("i = %d >= length = %d\n", i, getLength());
-    return get(i).set(val);
+    arblib.arb_poly_set_coeff_arb(this, i, val);
+    return val;
   }
   
   @Override
@@ -378,6 +385,7 @@ import arb.exceptions.DivisionByZeroException;
   public Real coeffsNative;
 
 
+
   /**
    * Sets this to the polynomial y(x)=x whose coefficient vector is [0 1]
    * 
@@ -386,10 +394,9 @@ import arb.exceptions.DivisionByZeroException;
   public RealPolynomial identity()
   {
     setLength(2);
-    Real c = getCoeffs();
-    c.get(0).zero();
-    c.get(1).one();
-   return this;
+    set(0, RealConstants.zero);
+    set(1, RealConstants.one);
+    return this;
   }
   
   public Real getCoeffs()

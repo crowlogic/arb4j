@@ -88,7 +88,6 @@ public class JacobiPolynomialTest extends
                                                    oneQuarter,
                                                    N))
     {
-      one.set(1);
       try ( Real result = seq.C.evaluate(RealConstants.one, 1, bits, new Real()))
       {
         out.println("C(1)=" + result);
