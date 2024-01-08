@@ -130,7 +130,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                             false);
       p.setLength(i+1);
       P[i] = p;
-      System.out.format("p[%d]=%s\n", i, p);
+      System.out.format("p[%d].length=%s\n", i, p.getLength());
     }
   }
 
