@@ -251,7 +251,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
  
   public Real get(int i)
   {
-    arblib.arb_poly_get_coeff_arb(coeffsNative, remainder, i);
+    //arblib.arb_poly_get_coeff_arb(coeffsNative, remainder, i);
     return i < getLength() ? getCoeffs().get(i) : null;
   }
    
