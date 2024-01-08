@@ -153,7 +153,6 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
    */
   public Real set(int i, Real val)
   {
-    assert i < getLength() : String.format("i = %d >= length = %d\n", i, getLength());
     arblib.arb_poly_set_coeff_arb(this, i, val);
     return val;
   }
