@@ -65,22 +65,21 @@ public class JacobiPolynomialTest extends
 //
 //  }
 //
-//  public static void testB()
-//  {
-//    try ( var seq = new JacobiPolynomialSequence<>(half,
-//                                                   oneQuarter,
-//                                                   N))
-//    {
-//      one.set(1);
-//
-//      try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
-//      {
-//        out.println("B(1)=" + result);
-//        assertEquals(0.34375, result.doubleValue());
-//        assertTrue(result.isExact());
-//      }
-//    }
-//  }
+  public static void testB()
+  {
+    try ( var seq = new JacobiPolynomialSequence<>(half,
+                                                   oneQuarter,
+                                                   N))
+    {
+
+      try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("B(1)=" + result);
+        assertEquals(0.34375, result.doubleValue());
+        assertTrue(result.isExact());
+      }
+    }
+  }
 
   public static void testC()
   {
