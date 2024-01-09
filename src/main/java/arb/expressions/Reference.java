@@ -14,7 +14,7 @@ public class Reference
   @Override
   public String toString()
   {
-    return String.format("Reference[name=%s, index=%s, type=%s]", name, index, type);
+    return String.format("Reference[name=%s, index=%s, type=%s]", name, index, type != null ? type.getName() : null);
   }
 
   public Class<?> type;

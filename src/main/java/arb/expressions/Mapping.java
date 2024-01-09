@@ -4,12 +4,16 @@ import java.util.Objects;
 
 import arb.functions.Function;
 
-public final class Mapping<D,R>
+public final class Mapping<D, R>
 {
   @Override
   public String toString()
   {
-    return String.format("Mapping[name=%s, func=%s, domain=%s, range=%s]", name, func, domain, range);
+    return String.format("Mapping[name=%s, func=%s, domain=%s, range=%s]",
+                         name,
+                         func,
+                         domain != null ? domain.getName() : null,
+                         range != null ? range.getName() : null);
   }
 
   @Override
@@ -32,13 +36,12 @@ public final class Mapping<D,R>
                   && Objects.equals(range, other.range);
   }
 
-  public String name;
-  
+  public String         name;
+
   public Function<?, ?> func;
 
-  public Class<?>     domain;
+  public Class<?>       domain;
 
-  public Class<?>     range;
-
+  public Class<?>       range;
 
 }

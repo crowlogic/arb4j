@@ -27,6 +27,22 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 {
 
   @Override
+  public String toString()
+  {
+    return String.format("BinaryOperation[left=%s, right=%s, operation=%s, castResult=%s, generatedType=%s]",
+                         left,
+                         right,
+                         operation,
+                         castResult,
+                         generatedType != null ? generatedType.toString() : null );
+  }
+  
+  public String toString( int depth )
+  {
+    return toString();
+  }
+
+  @Override
   public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
     if (right.isReusable())
@@ -217,16 +233,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     return left.isReusable() || right.isReusable();
   }
 
-  @Override
-  public String toString()
-  {
-    return toString(0);
-  }
-
-  public String toString(int depth)
-  {
-    return getClass().getSimpleName() + " " + typeset();
-  }
+ 
 
   /**
    * symmetric type equality

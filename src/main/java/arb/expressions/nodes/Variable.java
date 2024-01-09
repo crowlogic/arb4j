@@ -253,7 +253,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
                          depth < 0 ? "" : indent(depth),
                          getClass().getSimpleName(),
                          isIndependent ? format("INPUT(%s)", reference) : reference,
-                         type());
+                         type() != null ? type().getName() : null);
   }
 
   @Override

@@ -37,7 +37,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                          contextual,
                          function,
                          arg,
-                         targetResultType);
+                         targetResultType != null ? targetResultType.getName() : null);
   }
 
   public String        functionName;
@@ -67,6 +67,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor methodVisitor, Class<?> resultType)
   {
+   
     if (verbose)
     {
       out.format("\n%s: generate(resultType=%s)\n\n", this, resultType);
@@ -116,8 +117,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                  arg,
                  needsResultTypeConversion,
                  isResult,
-                 resultType,
-                 targetResultType);
+                 resultType != null ? resultType.getName() : null,
+                 targetResultType != null ? targetResultType.getName() : null);
       out.flush();
     }
     if (needsResultTypeConversion)
@@ -136,6 +137,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     loadOutputVariableOntoStack(methodVisitor, expression, verbose, resultType);
 
     Class<?> argtype = arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
+    
     generateCallToBuiltinUnaryFunction(methodVisitor, functionName, argtype, targetResultType);
 
     if (needsResultTypeConversion)
@@ -233,6 +235,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       expression.reserveIntermediateVariable(methodVisitor, depth, type);
     }
 
+    Class<?> rightHandType = type();
+    assert arg.type()
+              .equals(rightHandType) : String.format("%s: arg.type = %s ≠ function.domain = %s",
+                                                                                            this,
+                                                                                            arg.type().getName(),
+                                                                                            rightHandType.getName());
     expression.callRegisteredUnaryFunction(methodVisitor, func, type);
 
     if (verbose)
