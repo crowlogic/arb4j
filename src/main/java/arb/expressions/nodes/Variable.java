@@ -213,7 +213,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
         expression.independentVariableNode = this;
         if (verbose)
         {
-          out.format("%s: Independent Variable declared to be: %s", expression, this);
+          out.format("\n%s: Independent Variable declared to be: %s\n\n", expression, this);
           out.flush();
         }
       }
@@ -227,7 +227,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
         if (verbose)
         {
-          out.format("%s: Indeterminate of polynomial declared to be: %s", expression, this);
+          out.format("\n%s: Indeterminate of polynomial declared to be: %s\n\n", expression, this);
           out.flush();
         }
       }
