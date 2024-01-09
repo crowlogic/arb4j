@@ -139,7 +139,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
                          "identity",
                          format("()%s", reference.type().descriptorString()),
                          false);
-      //assert false : "TODO: generate code to call the identity function on the polynomial result which has been loaded onto the stack";
+      // assert false : "TODO: generate code to call the identity function on the
+      // polynomial result which has been loaded onto the stack";
     }
     else
     {
@@ -207,11 +208,14 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (isIndependent = equals(inputVariable))
     {
-      expression.independentVariableNode = this;
-      if (verbose)
+      if (expression.independentVariableNode == null)
       {
-        out.format("%s: Independent Variable declared to be: %s", expression, this);
-        out.flush();
+        expression.independentVariableNode = this;
+        if (verbose)
+        {
+          out.format("%s: Independent Variable declared to be: %s", expression, this);
+          out.flush();
+        }
       }
     }
     else
