@@ -114,7 +114,7 @@ public class Quaternion implements
    * 
    * @param bits
    * @param result
-   * @return 1/(left.real^2+left.imag^2+right.real^2+right.imag^2)
+   * @return 1/this
    */
   public Quaternion multiplicativeInverse(int bits, Quaternion result)
   {
