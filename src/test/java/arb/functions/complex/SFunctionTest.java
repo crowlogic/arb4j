@@ -27,21 +27,21 @@ public class SFunctionTest extends
       assertTrue(sFunction.scale.equals(RealConstants.one));
     }
   }
-
-  public static void testInverseFunctions()
-  {
-    try ( var sFunction = new SFunction())
-    {
-      for (int i = 0; i < 4; i++)
-      {
-        ComplexFunction firstInverse = sFunction.inverse(0);
-
-      }
-    }
-    catch (Exception e)
-    {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-  }
+//
+//  public static void testInverseFunctions()
+//  {
+//    try ( var sFunction = new SFunction())
+//    {
+//      for (int i = 0; i < 4; i++)
+//      {
+//        ComplexFunction firstInverse = sFunction.inverse(0);
+//
+//      }
+//    }
+//    catch (Exception e)
+//    {
+//      // TODO Auto-generated catch block
+//      e.printStackTrace();
+//    }
+//  }
 }
