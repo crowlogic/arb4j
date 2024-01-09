@@ -79,7 +79,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     generatedType = resultType;
     if (verbose)
     {
-      System.out.format("\n%s: generate(resultType=%s)\n\n", operation, resultType);
+      System.out.format("\n%s: generate(resultType=%s)\n\n", this, resultType);
       System.out.flush();
     }
     if (castResult)

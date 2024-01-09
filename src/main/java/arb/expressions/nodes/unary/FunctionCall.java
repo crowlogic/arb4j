@@ -68,7 +68,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     if (verbose)
     {
-      out.format("\n%s: generate(resultType=%s)\n\n", functionName, resultType);
+      out.format("\n%s: generate(resultType=%s)\n\n", this, resultType);
       out.flush();
     }
     if (contextual)
