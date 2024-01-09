@@ -32,10 +32,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("FunctionCall[name=%s, contextual=%s, function=%s, targetResultType=%s]",
+    return String.format("FunctionCall[name=%s, contextual=%s, function=%s, arg=%s, targetResultType=%s]",
                          functionName,
                          contextual,
                          function,
+                         arg,
                          targetResultType);
   }
 
@@ -212,12 +213,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (verbose)
     {
-      err.format("callRegisteredFunction(functionName=%s, type=%s, arg=%s, arg.type=%s, depth=%d)\n",
-                 functionName,
-                 type,
-                 arg,
-                 arg.type(),
-                 depth);
+      err.format("\n%s: generateContextualFunctionCall(resultType=%s)\n", this, resultType);
       err.flush();
 
     }
