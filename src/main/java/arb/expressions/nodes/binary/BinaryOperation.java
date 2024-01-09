@@ -29,15 +29,14 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("BinaryOperation[left=%s, right=%s, operation=%s, castResult=%s, generatedType=%s]",
+    return String.format("BinaryOperation[left=%s, right=%s, operation=%s, generatedType=%s]",
                          left,
                          right,
                          operation,
-                         castResult,
-                         generatedType != null ? generatedType.toString() : null );
+                         generatedType != null ? generatedType.toString() : null);
   }
-  
-  public String toString( int depth )
+
+  public String toString(int depth)
   {
     return toString();
   }
@@ -63,8 +62,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   private String                operation;
 
-  public final boolean          castResult;
-
   private Class<?>              generatedType;
 
   public Class<?> getGeneratedType()
@@ -85,7 +82,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     this.operation = operation;
     this.left      = left;
     this.depth     = depth;
-    castResult     = isResult && !expression.rangeType.equals(type());
     assert left != null && right != null : "one or more of the operands to this were missing: " + this;
   }
 
@@ -97,17 +93,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     {
       System.out.format("\n%s: generate(resultType=%s)\n\n", this, resultType);
       System.out.flush();
-    }
-    if (castResult)
-    {
-      if (isResult)
-      {
-        expression.checkClassCast(Compiler.loadResult(mv, verbose), expression.rangeType);
-      }
-      else
-      {
-
-      }
     }
 
     left.generate(mv, resultType);
@@ -138,10 +123,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
     Class<?> overrideLeftType = left.getGeneratedType() != null ? left.getGeneratedType() : left.type();
     invokeBinaryOperationMethod(mv, operator, overrideLeftType, right.type(), resultType);
-    if (castResult)
-    {
-      Compiler.invokeSetMethod(mv, targetResultType, resultType, verbose);
-    }
+
     return mv;
   }
 
@@ -161,27 +143,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                        false);
   }
 
-  private boolean loadResult(MethodVisitor mv, Class<?> resultType, Class<?> targetResultType)
+  private MethodVisitor loadResult(MethodVisitor mv, Class<?> resultType, Class<?> targetResultType)
   {
     Node<D, R, F> reusableNode;
 
     if (isResult)
     {
-
-      if (castResult)
-      {
-        // expression.loadFieldOntoStack(mv, intermediary, resultType);
-        // expression.checkClassCast(loadResult(mv), expression.rangeType);
-        // expression.checkClassCast(loadResult(mv), targetResultType);
-
-        expression.reserveIntermediateVariable(mv, depth, resultType);
-      }
-      else
-      {
-        expression.checkClassCast(Compiler.loadResult(mv, verbose), resultType);
-
-      }
-
+      expression.checkClassCast(Compiler.loadResult(mv, verbose), resultType);
     }
     else if ((reusableNode = getAReusableNode()) != null)
     {
@@ -200,14 +168,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       expression.reserveIntermediateVariable(mv, depth, resultType);
     }
 
-//    if (!left.type().equals(type()))
-//    {
-//      throw new UnsupportedOperationException(String.format("FIXME: stopping point at '%s', do type-casting here, left.type=%s != type=%s\n",
-//                                                            typeset(),
-//                                                            left.type(),
-//                                                            type()));
-//    }
-    return castResult;
+
+    return mv;
   }
 
   /**
@@ -232,8 +194,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     return left.isReusable() || right.isReusable();
   }
-
- 
 
   /**
    * symmetric type equality
