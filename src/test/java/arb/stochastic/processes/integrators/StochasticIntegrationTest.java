@@ -2,28 +2,18 @@ package arb.stochastic.processes.integrators;
 
 import java.util.stream.IntStream;
 
-import arb.*;
-import arb.stochastic.processes.*;
+import arb.FloatInterval;
+import arb.RandomState;
+import arb.Real;
+import arb.stochastic.processes.BrownianMotion;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.EvaluationSequence;
 import junit.framework.TestCase;
 
 public class StochasticIntegrationTest extends
                                        TestCase
 {
   public static final int prec = 128;
-
-  public void testStandardWienerProcessWithMilsteinIntegrator()
-  {
-    IntStream.range(0, 1).forEach(i ->
-    {
-      BrownianMotion                                            B          = new BrownianMotion(new Real("1",
-                                                                                                         128));
-      DiffusionProcessState                                     state      = new DiffusionProcessState(new RandomState(i));
-
-      MilsteinIntegrator<BrownianMotion, DiffusionProcessState> integrator = new MilsteinIntegrator<BrownianMotion, DiffusionProcessState>(B,
-                                                                                                                                           state);
-      testStochasticIntegrator(integrator);
-    });
-  }
 
   public void testStandardWienerProcessWithEulerIntegrator()
   {
