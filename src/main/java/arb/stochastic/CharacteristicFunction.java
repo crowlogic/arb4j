@@ -1,7 +1,6 @@
 package arb.stochastic;
 
 import arb.functions.complex.ComplexFunction;
-import arb.operators.integraltransforms.FourierTransform;
 
 /**
  * A statistical distribution is not uniquely specified by its moments, but is
@@ -49,11 +48,10 @@ import arb.operators.integraltransforms.FourierTransform;
  * to the Fourier transform of its pdf.
  * 
  * @param <Pfunc> the type of {@link RealProbabilityDensityFunction} this
- *            characteristic function corresponds to
+ *                characteristic function corresponds to
  */
 public interface CharacteristicFunction extends
                                         ComplexFunction
 {
-
 
 }
