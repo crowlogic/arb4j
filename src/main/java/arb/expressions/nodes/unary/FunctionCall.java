@@ -222,26 +222,19 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     }
 
-    if (arg.isResult)
+    if (arg.isReusable())
     {
-      Compiler.loadResult(methodVisitor, verbose);
+      if (verbose)
+      {
+        err.println("Preparing stack to reuse its argument " + arg.toString(-1));
+        err.flush();
+      }
+
+      arg.prepareStackForReuse(methodVisitor);
     }
     else
     {
-      if (arg.isReusable())
-      {
-        if (verbose)
-        {
-          err.println("Preparing stack to reuse its argument " + arg.toString(-1));
-          err.flush();
-        }
-
-        arg.prepareStackForReuse(methodVisitor);
-      }
-      else
-      {
-        expression.reserveIntermediateVariable(methodVisitor, depth, type);
-      }
+      expression.reserveIntermediateVariable(methodVisitor, depth, type);
     }
 
     expression.callRegisteredUnaryFunction(methodVisitor, func, type);
