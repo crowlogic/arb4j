@@ -30,8 +30,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   public String toString()
   {
     return String.format("BinaryOperation[left=%s, right=%s, operation=%s, generatedType=%s]",
-                         left,
-                         right,
+                         left.typeset(),
+                         right.typeset(),
                          operation,
                          generatedType != null ? generatedType.toString() : null);
   }

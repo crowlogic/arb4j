@@ -424,7 +424,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testSFunctionWithVar()
   {
-    RealFunction expression = express("tanh(ln(1+y^2))", context);
+    RealFunction expression = express("tanh(ln(1+y^2))", context,true);
     {
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(one, 1, 256, result);

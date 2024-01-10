@@ -51,13 +51,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   }
 
   public String        functionName;
-  public boolean       contextual = false;
-  public Mapping<?, ?> function;
+  public boolean       contextual                      = false;
+  public Mapping<?, ?> mapping;
 
-  HashSet<String> integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
+  HashSet<String>      integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
   { "sqrt", "tanh", "log" }));
 
-  Class<?>        targetResultType;
+  Class<?>             targetResultType;
 
   public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument, int depth)
   {
@@ -69,11 +69,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     this.depth        = depth;
     if (expression.context != null)
     {
-      function   = expression.context.functions.map.get(functionName);
-      contextual = function != null;
+      mapping   = expression.context.functions.map.get(functionName);
+      contextual = mapping != null;
       if (contextual)
       {
-        expression.referencedFunctions.put(functionName, function);
+        expression.referencedFunctions.put(functionName, mapping);
       }
     }
     targetResultType = resultTypeFor(functionName);
@@ -82,7 +82,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor methodVisitor, Class<?> resultType)
   {
-   
+
     if (verbose)
     {
       out.format("\n%s: generate(resultType=%s)\n\n", this, resultType);
@@ -105,13 +105,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     boolean needsResultTypeConversion = !resultType.equals(type());
     if (verbose)
     {
-      out.format("\ngenerateBuiltinFunctionCall(functionName=%s, arg=%s, needsTypeConversion=%s, isResult=%s, resultType=%s, targetResultType=%s)\n\n",
-                 functionName,
-                 arg,
-                 needsResultTypeConversion,
-                 isResult,
-                 resultType != null ? resultType.getName() : null,
-                 targetResultType != null ? targetResultType.getName() : null);
+      out.format("\n%s: generateBuiltinFunctionCall(resultType=%s)\n\n", this, resultType);
       out.flush();
     }
     if (needsResultTypeConversion)
@@ -120,8 +114,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
     if (verbose)
     {
-      System.out.format("\nGenerating arg of type %s for %s\n\n", arg, this);
-      System.out.flush();
+      out.format("\nGenerating arg of type %s\n   for\n%s\n\n", arg, this);
+      out.flush();
     }
 
     arg.generate(methodVisitor, expression.domainType);
@@ -130,7 +124,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     loadOutputVariableOntoStack(methodVisitor, expression, verbose, resultType);
 
     Class<?> argtype = arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
-    
+
     generateCallToBuiltinUnaryFunction(methodVisitor, functionName, argtype, targetResultType);
 
     if (needsResultTypeConversion)
@@ -171,18 +165,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     loadOutputVariableOntoStack(methodVisitor, expression, verbose, type);
 
     Class<?> rightHandType = type();
-    assert arg.type()
-              .equals(rightHandType) : String.format("%s: arg.type = %s ≠ function.domain = %s",
-                                                                                            this,
-                                                                                            arg.type().getName(),
-                                                                                            rightHandType.getName());
-    expression.callRegisteredUnaryFunction(methodVisitor, func, type);
 
-    if (verbose)
-    {
-      err.println("Returning from callRegisteredFunction");
-      err.flush();
-    }
+    assert arg.type().equals(rightHandType) : String.format("%s: arg.type = %s ≠ function.domain = %s",
+                                                            this,
+                                                            arg.type().getName(),
+                                                            rightHandType.getName());
+    expression.callRegisteredUnaryFunction(methodVisitor, func, type);
 
     return methodVisitor;
   }
@@ -196,7 +184,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     expression.loadFieldOntoStack(Compiler.loadThisOntoStack(methodVisitor), functionName, type);
   }
-  
+
   private void loadOutputVariableOntoStack(MethodVisitor methodVisitor,
                                            Expression<D, R, F> expression,
                                            boolean verbose,
@@ -240,12 +228,14 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("FunctionCall[name=%s, contextual=%s, function=%s, arg=%s, targetResultType=%s]",
+    return contextual ? String.format("FunctionCall[name=%s,  function=%s, arg=%s, targetResultType=%s]",
                          functionName,
-                         contextual,
-                         function,
+                         mapping,
                          arg,
-                         targetResultType != null ? targetResultType.getName() : null);
+                         targetResultType != null ? targetResultType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
+                                                                                                       functionName,
+                                                                                                       arg,
+                                                                                                       targetResultType != null ? targetResultType.getName() : null);
   }
 
   @Override
@@ -255,8 +245,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       return resultTypeFor(functionName);
     }
-    assert function.range != null : "range of " + function + " is null";
-    return function.range;
+    assert mapping.range != null : "range of " + mapping + " is null";
+    return mapping.range;
   }
 
   @Override
