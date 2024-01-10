@@ -29,20 +29,35 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
 {
 
-  @Override
-  public String toString()
+  public static MethodVisitor generateCallToBuiltinUnaryFunction(MethodVisitor methodVisitor,
+                                                                 String functionName,
+                                                                 Class<?> domainType,
+                                                                 Class<?> rangeType)
   {
-    return String.format("FunctionCall[name=%s, contextual=%s, function=%s, arg=%s, targetResultType=%s]",
-                         functionName,
-                         contextual,
-                         function,
-                         arg,
-                         targetResultType != null ? targetResultType.getName() : null);
+    if (verbose)
+    {
+      out.format("\ngenerateCallToBuiltinUnaryFunction(functionName=%s, domainType=%s, rangeType=%s\n\n",
+                 functionName,
+                 domainType,
+                 rangeType);
+      out.flush();
+    }
+    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                  Type.getInternalName(domainType),
+                                  functionName,
+                                  format("(I%s)%s", rangeType.descriptorString(), rangeType.descriptorString()),
+                                  false);
+    return methodVisitor;
   }
 
   public String        functionName;
   public boolean       contextual = false;
   public Mapping<?, ?> function;
+
+  HashSet<String> integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
+  { "sqrt", "tanh", "log" }));
+
+  Class<?>        targetResultType;
 
   public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument, int depth)
   {
@@ -81,28 +96,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       return generateBuiltinFunctionCall(methodVisitor, resultType);
     }
-  }
-
-  @Override
-  public String typeset()
-  {
-    return format("%s(%s)", functionName.replace("√", "\\sqrt").replace("J0", "J_0"), arg.typeset());
-  }
-
-  public boolean isBuiltin()
-  {
-    return !contextual;
-  }
-
-  @Override
-  public Class<?> type()
-  {
-    if (isBuiltin())
-    {
-      return resultTypeFor(functionName);
-    }
-    assert function.range != null : "range of " + function + " is null";
-    return function.range;
   }
 
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
@@ -148,51 +141,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return methodVisitor;
   }
 
-  private void loadOutputVariableOntoStack(MethodVisitor methodVisitor,
-                                           Expression<D, R, F> expression,
-                                           boolean verbose,
-                                           Class<?> resultType)
-  {
-    if (isResult)
-    {
-      expression.checkClassCast(loadResult(methodVisitor, verbose), resultType);
-
-    }
-    else
-    {
-      if (arg.isReusable())
-      {
-        if (verbose)
-        {
-          err.println("\nPreparing stack to reuse its argument " + arg.toString(-1) + "\n");
-          err.flush();
-        }
-
-        arg.prepareStackForReuse(methodVisitor);
-      }
-      else
-      {
-        expression.reserveIntermediateVariable(methodVisitor, depth, resultType);
-      }
-    }
-  }
-
-  HashSet<String> integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
-  { "sqrt", "tanh", "log" }));
-  Class<?>        targetResultType;
-
-  private Class<?> resultTypeFor(String functionName)
-  {
-    if (arg.type().equals(Integer.class) && integerFunctionsWithRealResults.contains(functionName))
-    {
-      return Real.class;
-    }
-    else
-    {
-      return expression.rangeType;
-    }
-  }
-
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
@@ -220,20 +168,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     }
 
-    if (arg.isReusable())
-    {
-      if (verbose)
-      {
-        err.println("Preparing stack to reuse its argument " + arg.toString(-1));
-        err.flush();
-      }
-
-      arg.prepareStackForReuse(methodVisitor);
-    }
-    else
-    {
-      expression.reserveIntermediateVariable(methodVisitor, depth, type);
-    }
+    loadOutputVariableOntoStack(methodVisitor, expression, verbose, type);
 
     Class<?> rightHandType = type();
     assert arg.type()
@@ -252,30 +187,82 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return methodVisitor;
   }
 
+  public boolean isBuiltin()
+  {
+    return !contextual;
+  }
+
   public void loadFunctionFromField(MethodVisitor methodVisitor, Class<?> type)
   {
     expression.loadFieldOntoStack(Compiler.loadThisOntoStack(methodVisitor), functionName, type);
   }
-
-  public static MethodVisitor generateCallToBuiltinUnaryFunction(MethodVisitor methodVisitor,
-                                                                 String functionName,
-                                                                 Class<?> domainType,
-                                                                 Class<?> rangeType)
+  
+  private void loadOutputVariableOntoStack(MethodVisitor methodVisitor,
+                                           Expression<D, R, F> expression,
+                                           boolean verbose,
+                                           Class<?> resultType)
   {
-    if (verbose)
+    if (isResult)
     {
-      out.format("\ngenerateCallToBuiltinUnaryFunction(functionName=%s, domainType=%s, rangeType=%s\n\n",
-                 functionName,
-                 domainType,
-                 rangeType);
-      out.flush();
+      expression.checkClassCast(loadResult(methodVisitor, verbose), resultType);
     }
-    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  Type.getInternalName(domainType),
-                                  functionName,
-                                  format("(I%s)%s", rangeType.descriptorString(), rangeType.descriptorString()),
-                                  false);
-    return methodVisitor;
+    else
+    {
+      if (arg.isReusable())
+      {
+        if (verbose)
+        {
+          err.println("\nPreparing stack to reuse its argument " + arg.toString(-1) + "\n");
+          err.flush();
+        }
+
+        arg.prepareStackForReuse(methodVisitor);
+      }
+      else
+      {
+        expression.reserveIntermediateVariable(methodVisitor, depth, resultType);
+      }
+    }
+  }
+
+  private Class<?> resultTypeFor(String functionName)
+  {
+    if (arg.type().equals(Integer.class) && integerFunctionsWithRealResults.contains(functionName))
+    {
+      return Real.class;
+    }
+    else
+    {
+      return expression.rangeType;
+    }
+  }
+
+  @Override
+  public String toString()
+  {
+    return String.format("FunctionCall[name=%s, contextual=%s, function=%s, arg=%s, targetResultType=%s]",
+                         functionName,
+                         contextual,
+                         function,
+                         arg,
+                         targetResultType != null ? targetResultType.getName() : null);
+  }
+
+  @Override
+  public Class<?> type()
+  {
+    if (isBuiltin())
+    {
+      return resultTypeFor(functionName);
+    }
+    assert function.range != null : "range of " + function + " is null";
+    return function.range;
+  }
+
+  @Override
+  public String typeset()
+  {
+    return format("%s(%s)", functionName.replace("√", "\\sqrt").replace("J0", "J_0"), arg.typeset());
   }
 
 }
