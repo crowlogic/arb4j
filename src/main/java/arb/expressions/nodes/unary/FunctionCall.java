@@ -156,7 +156,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       assert false : String.format("%s: arg.type = %s ≠ function.domain = %s: TODO, reserve a new intermediate variable, call loadOutputVariableOntoStack, then call set method",
                                    this,
-                                   type().getName(),
+                                   arg.type().getName(),
                                    type().getName());
     }
     else
