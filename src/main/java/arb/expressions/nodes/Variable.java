@@ -129,7 +129,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (isIndependent)
     {
-      expression.checkClassCast(loadInput(mv), expression.domainType);
+      Compiler.checkClassCast(loadInput(mv), expression.domainType);
     }
     else if (isIndeterminant)
     {

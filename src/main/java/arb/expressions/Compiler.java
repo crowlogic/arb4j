@@ -468,4 +468,22 @@ public class Compiler
                        false);
   }
 
+  /**
+   * emits an {@link Opcodes#CHECKCAST} instruction
+   * 
+   * @param methodVisitor
+   * @param Type.gtype    if true then emits an instruction to check if the top
+   *                      element on the stack is a
+   *                      this{@link #rangeClassInternalName} otherwise tests if
+   *                      its a this{@link #domainClassInternalName}
+   * @return methodVisitor
+   */
+  public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
+  {
+    String checking = Type.getInternalName(type);
+  
+    methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
+    return methodVisitor;
+  }
+
 }

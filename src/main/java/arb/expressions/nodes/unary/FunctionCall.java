@@ -21,34 +21,13 @@ import arb.functions.Function;
 
 /**
  * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
+ * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
 public class FunctionCall<D, R, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
 {
-
-  public static MethodVisitor generateCallToBuiltinUnaryFunction(MethodVisitor methodVisitor,
-                                                                 String functionName,
-                                                                 Class<?> domainType,
-                                                                 Class<?> rangeType)
-  {
-    if (verbose)
-    {
-      out.format("\ngenerateCallToBuiltinUnaryFunction(functionName=%s, domainType=%s, rangeType=%s\n\n",
-                 functionName,
-                 domainType,
-                 rangeType);
-      out.flush();
-    }
-    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  Type.getInternalName(domainType),
-                                  functionName,
-                                  format("(I%s)%s", rangeType.descriptorString(), rangeType.descriptorString()),
-                                  false);
-    return methodVisitor;
-  }
 
   public String        functionName;
   public boolean       contextual                      = false;
@@ -69,7 +48,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     this.depth        = depth;
     if (expression.context != null)
     {
-      mapping   = expression.context.functions.map.get(functionName);
+      mapping    = expression.context.functions.map.get(functionName);
       contextual = mapping != null;
       if (contextual)
       {
@@ -123,10 +102,21 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     loadOutputVariableOntoStack(methodVisitor, expression, verbose, resultType);
 
-    Class<?> argtype = arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
-
-    generateCallToBuiltinUnaryFunction(methodVisitor, functionName, argtype, targetResultType);
-
+    Class<?> domainType = arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
+    Class<?> rangeType  = targetResultType;
+    if (verbose)
+    {
+      out.format("\ngenerateCallToBuiltinUnaryFunction(functionName=%s, domainType=%s, rangeType=%s\n\n",
+                 functionName,
+                 domainType,
+                 rangeType);
+      out.flush();
+    }
+    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                  Type.getInternalName(domainType),
+                                  functionName,
+                                  format("(I%s)%s", rangeType.descriptorString(), rangeType.descriptorString()),
+                                  false);
     if (needsResultTypeConversion)
     {
       Compiler.invokeSetMethod(methodVisitor, resultType, targetResultType, true);
@@ -170,7 +160,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                                             this,
                                                             arg.type().getName(),
                                                             rightHandType.getName());
-    expression.callRegisteredUnaryFunction(methodVisitor, func, type);
+
+    expression.callContextualUnaryFunction(methodVisitor, func, type);
 
     return methodVisitor;
   }
@@ -192,7 +183,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     if (isResult)
     {
-      expression.checkClassCast(loadResult(methodVisitor, verbose), resultType);
+      Compiler.checkClassCast(loadResult(methodVisitor, verbose), resultType);
     }
     else
     {
@@ -213,7 +204,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
   }
 
-  private Class<?> resultTypeFor(String functionName)
+  public Class<?> resultTypeFor(String functionName)
   {
     if (arg.type().equals(Integer.class) && integerFunctionsWithRealResults.contains(functionName))
     {
@@ -229,13 +220,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public String toString()
   {
     return contextual ? String.format("FunctionCall[name=%s,  function=%s, arg=%s, targetResultType=%s]",
-                         functionName,
-                         mapping,
-                         arg,
-                         targetResultType != null ? targetResultType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
-                                                                                                       functionName,
-                                                                                                       arg,
-                                                                                                       targetResultType != null ? targetResultType.getName() : null);
+                                      functionName,
+                                      mapping,
+                                      arg,
+                                      targetResultType != null ? targetResultType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
+                                                                                                                    functionName,
+                                                                                                                    arg,
+                                                                                                                    targetResultType != null ? targetResultType.getName() : null);
   }
 
   @Override

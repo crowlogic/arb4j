@@ -149,7 +149,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
     if (isResult)
     {
-      expression.checkClassCast(Compiler.loadResult(mv, verbose), resultType);
+      Compiler.checkClassCast(Compiler.loadResult(mv, verbose), resultType);
     }
     else if ((reusableNode = getAReusableNode()) != null)
     {

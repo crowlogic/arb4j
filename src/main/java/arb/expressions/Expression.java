@@ -221,7 +221,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   /**
    * Calls {@link Compiler#loadResult(MethodVisitor)}, then
-   * this{@link #checkClassCast(MethodVisitor, boolean)} then generates an
+   * this{@link Compiler#checkClassCast(MethodVisitor, boolean)} then generates an
    * invocation of the {@link Field#set(Field)} method whose only argument and
    * return type is this{@link #domainClassDescriptor}
    * 
@@ -231,7 +231,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public MethodVisitor setResult(MethodVisitor methodVisitor)
   {
-    checkClassCast(loadResult(methodVisitor, verbose), rangeType);
+    Compiler.checkClassCast(loadResult(methodVisitor, verbose), rangeType);
     methodVisitor.visitInsn(Opcodes.SWAP);
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   rangeClassInternalName,
@@ -1066,28 +1066,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * emits an {@link Opcodes#CHECKCAST} instruction
-   * 
-   * @param methodVisitor
-   * @param Type.gtype    if true then emits an instruction to check if the top
-   *                      element on the stack is a
-   *                      this{@link #rangeClassInternalName} otherwise tests if
-   *                      its a this{@link #domainClassInternalName}
-   * @return methodVisitor
-   */
-  public MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
-  {
-    String checking = Type.getInternalName(type);
-    if (verbose)
-    {
-      out.format("checking class cast for %s\n", type);
-      out.flush();
-    }
-    methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
-    return methodVisitor;
-  }
-
-  /**
    * Emits a {@link Opcodes#GETFIELD} instruction for the integer field with the
    * given name
    * 
@@ -1133,7 +1111,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (!resultInUse && type.equals(rangeType))
     {
-      checkClassCast(loadResult(methodVisitor, verbose), type);
+      Compiler.checkClassCast(loadResult(methodVisitor, verbose), type);
       resultInUse = true;
       return "<RESULT>";
     }
@@ -1155,14 +1133,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param functionName
    * @return methodVisitor
    */
-  public MethodVisitor callRegisteredUnaryFunction(MethodVisitor methodVisitor, F func, Class<?> type)
+  public MethodVisitor callContextualUnaryFunction(MethodVisitor methodVisitor, F func, Class<?> type)
   {
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(func.getClass()),
                                   "evaluate",
                                   evaluateMethodDesc,
                                   false);
-    return checkClassCast(methodVisitor, type);
+    return Compiler.checkClassCast(methodVisitor, type);
   }
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
