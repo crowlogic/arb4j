@@ -152,14 +152,17 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     }
 
-    loadOutputVariableOntoStack(methodVisitor, expression, verbose, type);
-
-    Class<?> rightHandType = type();
-
-    assert arg.type().equals(rightHandType) : String.format("%s: arg.type = %s ≠ function.domain = %s",
-                                                            this,
-                                                            arg.type().getName(),
-                                                            rightHandType.getName());
+    if (!arg.type().equals(type()))
+    {
+      assert false : String.format("%s: arg.type = %s ≠ function.domain = %s: TODO, reserve a new intermediate variable, call loadOutputVariableOntoStack, then call set method",
+                                   this,
+                                   type().getName(),
+                                   type().getName());
+    }
+    else
+    {
+      loadOutputVariableOntoStack(methodVisitor, expression, verbose, type);
+    }
 
     expression.callContextualUnaryFunction(methodVisitor, func, type);
 
