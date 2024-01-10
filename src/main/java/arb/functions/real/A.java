@@ -1,27 +1,30 @@
 package arb.functions.real;
 
-import arb.Integer;
 import arb.Real;
-import arb.functions.Function;
 
+/**
+ * n->n*C(n/2)*C(n-1)
+ */
 public class A
 {
-  public Integer                 c0 = new Integer("1");
-  public Real                    l0 = new Real();
-  public Real                    l1 = new Real();
-  public Integer                 l2 = new Integer();
-  public Function<Integer, Real> C  = null;
 
-  public Real evaluate(Integer in, int order, int bits, Real result)
+  public Real         l0 = new Real();
+  public Real         l1 = new Real();
+  public Real         l2 = new Real();
+  public Real         l3 = new Real();
+  public RealFunction C  = null;
+
+  public Real evaluate(Real in, int order, int bits, Real result)
   {
-    return C.evaluate(in.sub(1, bits, l2), order, bits, l0).mul(C.evaluate(in, order, bits, l1), bits, result);
+    return in.mul(C.evaluate(in.div(2, bits, result), order, bits, l0), bits, l1)
+             .mul(C.evaluate(in.sub(1, bits, l2), order, bits, l3), bits, result);
   }
 
   public void close()
   {
-    c0.close();
-    l0.close();
-    l1.close();
-    l2.close();
+    this.l0.close();
+    this.l1.close();
+    this.l2.close();
+    this.l3.close();
   }
 }
