@@ -126,19 +126,19 @@ public class JacobiPolynomialTest extends
     }
   }
 
-//  public static void testP1()
-//  {
-//    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-//                                                   negHalf,
-//                                                   N))
-//    {
-//      try ( Real result = seq.p1.evaluate(one, 0, bits, new Real()))
-//      {
-//        out.println("p1(1)=" + result);
-//
-//        assertEquals(0.5, result.doubleValue());
-//      }
-//    }
-//
-//  }
+  public static void testP1()
+  {
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf,
+                                                   N))
+    {
+      try ( Real result = seq.p1.evaluate(one, 0, bits, new Real()))
+      {
+        out.println("p1(1)=" + result);
+
+        assertEquals(0.5, result.doubleValue());
+      }
+    }
+
+  }
 }

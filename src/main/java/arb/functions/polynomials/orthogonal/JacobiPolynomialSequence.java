@@ -1,12 +1,14 @@
 package arb.functions.polynomials.orthogonal;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.IntStream;
 
-import arb.*;
 import arb.Integer;
+import arb.OrthogonalBasis;
+import arb.Real;
+import arb.RealMatrix;
+import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.expressions.Variables;
@@ -82,14 +84,14 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                   "F",
                                                                   "n➔C(n-1)*C(n)",
                                                                   context,
-                                                                  false);
+                                                                  verbose);
 
   final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
                                                                             RealPolynomial.class,
                                                                             "A",
                                                                             "n➔(F(n)*x + G)*(C(n) - 1)/2",
                                                                             context,
-                                                                            true);
+                                                                            verbose);
 
   final public RealFunction                      E       = RealFunction.express("E",
                                                                                 "n➔n*C(n/2)*C(n-1)",
@@ -106,12 +108,15 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                                 context,
                                                                                 verbose);
 
-//  final public Function<Integer, RealPolynomial> Pfunc   = Function.express(Integer.class,
-//                                                                            RealPolynomial.class,
-//                                                                            "P",
-//                                                                            "n➔(A(n) * z * P(n-1) - B(n) * P(n-2)) / 2",
-//                                                                            context,
-//                                                                            verbose);
+  /**
+   * TODO: when function, when(n=0,1,n=1,p1(z),otherwise,(A(n) * z * P(n-1) - B(n) * P(n-2)) / 2)
+   */
+  final public Function<Integer, RealPolynomial> Pfunc   = Function.express(Integer.class,
+                                                                            RealPolynomial.class,
+                                                                            "P",
+                                                                            "n➔(A(n) * z * P(n-1) - B(n) * P(n-2)) / 2",
+                                                                            context,
+                                                                            verbose);
 
   public int                           N;
 
