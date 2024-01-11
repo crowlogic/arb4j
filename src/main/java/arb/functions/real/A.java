@@ -26,39 +26,32 @@ public class A
 
                            public Real evaluate(Real in, int order, int bits, Real result)
                            {
-                             return this.c0.mul((Real) in, bits, this.l0)
-                                           .add(α, bits, this.l1)
-                                           .add(β, bits, (Real) result);
+                             return c0.mul(in, bits, l0).add(α, bits, l1).add(β, bits, result);
                            }
 
                            public void close()
                            {
-                             this.c0.close();
-                             this.l0.close();
-                             this.l1.close();
+                             c0.close();
+                             l0.close();
+                             l1.close();
                            }
                          };
 
   public Real evaluate(Integer in, int order, int bits, Real result)
   {
-    return ((Real) this.C.evaluate(this.l0.set(((Integer) in).sub(this.c0, bits, this.l1)),
-                                   order,
-                                   bits,
-                                   this.l2)).mul((Real) this.C.evaluate(this.l3.set((Integer) in),
-                                                                        order,
-                                                                        bits,
-                                                                        this.l4),
-                                                 bits,
-                                                 (Real) result);
+    in.sub(c0, bits, l1);
+    C.evaluate(l0.set(l1), order, bits, l2);
+    C.evaluate(l3.set(in), order, bits, l4);
+    return l2.mul(l4, bits, result);
   }
 
   public void close()
   {
-    this.c0.close();
-    this.l0.close();
-    this.l1.close();
-    this.l2.close();
-    this.l3.close();
-    this.l4.close();
+    c0.close();
+    l0.close();
+    l1.close();
+    l2.close();
+    l3.close();
+    l4.close();
   }
 }

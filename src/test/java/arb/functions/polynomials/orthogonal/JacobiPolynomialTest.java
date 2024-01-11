@@ -6,6 +6,7 @@ import static java.lang.System.out;
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
+import arb.RealPolynomial;
 import arb.functions.real.A;
 import junit.framework.TestCase;
 
@@ -100,7 +101,7 @@ public class JacobiPolynomialTest extends
                                                    threeQuarters,
                                                    N);)
     {
-      Integer one = new Integer();
+      Integer one = new Integer("1");
       A       a   = new A();
       a.α = seq.α;
       a.β = seq.β;
