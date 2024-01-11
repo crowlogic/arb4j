@@ -1,15 +1,12 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.RealConstants.half;
-import static arb.RealConstants.negHalf;
-import static arb.RealConstants.one;
-import static arb.RealConstants.oneQuarter;
-import static arb.RealConstants.threeQuarters;
+import static arb.RealConstants.*;
 import static java.lang.System.out;
 
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
+import arb.functions.real.A;
 import junit.framework.TestCase;
 
 /**
@@ -64,6 +61,7 @@ public class JacobiPolynomialTest extends
     }
 
   }
+
 //
   public static void testB()
   {
@@ -103,6 +101,16 @@ public class JacobiPolynomialTest extends
                                                    N);)
     {
       Integer one = new Integer();
+      A       a   = new A();
+      a.α = seq.α;
+      a.β = seq.β;
+
+      try ( Real result = a.evaluate(one, 1, bits, new Real()))
+      {
+        out.println("F(1)=" + result);
+        assertEquals(0.5625, result.doubleValue());
+        assertTrue(result.isExact());
+      }
 
       try ( Real result = seq.F.evaluate(one, 1, bits, new Real()))
       {

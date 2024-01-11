@@ -1,8 +1,6 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.loadBits;
-import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
-import static arb.expressions.Compiler.prepareStackForReusingRightSide;
+import static arb.expressions.Compiler.*;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -88,6 +86,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public final MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+
     generatedType = resultType;
     if (verbose)
     {
@@ -95,8 +94,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       System.out.flush();
     }
 
-    left.generate(mv, resultType);
-    right.generate(mv, resultType);
+    left.generate(mv, left.type());
+    right.generate(mv, right.type());
     return invokeMethod(mv, operation, resultType);
   }
 
@@ -125,7 +124,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
     Class<?> overrideLeftType  = leftGeneratedType != null ? leftGeneratedType : left.type();
     invokeBinaryOperationMethod(mv, operator, overrideLeftType, right.type(), resultType);
-    
+
     return mv;
   }
 
@@ -213,6 +212,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public final Class<?> type()
   {
+
     if (left.type().equals(right.type()))
     {
       boolean integerDivision = operation.equals("div") && left.type().equals(Integer.class);

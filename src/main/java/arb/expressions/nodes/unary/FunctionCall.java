@@ -145,15 +145,18 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     Class<?> argType                = arg.type();
     var      typeBefore             = argType;
     boolean  needsArgTypeConversion = !argType.equals(mapping.domain);
-
-    arg.generate(methodVisitor, mapping.domain);
     if (needsArgTypeConversion)
     {
       expression.reserveIntermediateVariable(methodVisitor, depth + 1, mapping.domain);
     }
+    arg.generate(methodVisitor, argType);
+
     Class<?> typeAfter = arg.type();
 
-    assert typeBefore.equals(typeAfter);
+    assert typeBefore.equals(typeAfter) : String.format("%s: typeBefore=%s typeAfter=%s\n",
+                                                        this,
+                                                        typeBefore,
+                                                        typeAfter);
 
     if (needsArgTypeConversion)
     {
