@@ -13,7 +13,13 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.Real;
-import arb.expressions.*;
+import arb.expressions.Compiler;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.Parser;
+import arb.expressions.Reference;
+import arb.expressions.UndefinedReferenceException;
+import arb.expressions.Variables;
 import arb.functions.Function;
 
 /**
@@ -62,7 +68,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    return reference.type();
+    return isIndeterminant ? expression.rangeType : reference.type();
   }
 
   public final Reference     reference;
@@ -143,9 +149,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
     else if (isIndeterminant)
     {
       // initialize with the identity polynomial
-      //expression.reserveIntermediateVariable(mv, depth, type());
-      Compiler.checkClassCast( Compiler.loadResult(mv, verbose), expression.rangeType );
-      
+      // expression.reserveIntermediateVariable(mv, depth, type());
+      Compiler.checkClassCast(Compiler.loadResult(mv, verbose), expression.rangeType);
+
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                          Type.getInternalName(expression.rangeType),
                          "identity",

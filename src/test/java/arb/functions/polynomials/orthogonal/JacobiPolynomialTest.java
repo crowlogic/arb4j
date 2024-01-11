@@ -23,24 +23,24 @@ public class JacobiPolynomialTest extends
 
   public static final int N    = 3;
 
-//  public static void testA()
-//  {
-//    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-//                                                   negHalf,
-//                                                   N);
-//          Real threeHalves = new Real("1.5",
-//                                      128);
-//          Integer n = new Integer())
-//    {
-//
-//      try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
-//      {
-//        out.println("A(3,1.5)=" + result);
-//        assertEquals(45.0, result.eval(threeHalves.doubleValue()));
-//      }
-//    }
-//
-//  }
+  public static void testA()
+  {
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf,
+                                                   N);
+          Real threeHalves = new Real("1.5",
+                                      128);
+          Integer n = new Integer())
+    {
+
+      try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
+      {
+        out.println("A(3,1.5)=" + result);
+        assertEquals(45.0, result.eval(threeHalves.doubleValue()));
+      }
+    }
+
+  }
 
   public static void testE()
   {
