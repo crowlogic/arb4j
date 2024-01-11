@@ -1156,7 +1156,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                Class<? extends D> domainClass,
                                                                Class<? extends R> rangeClass,
                                                                Class<? extends F> functionClass,
-                                                               boolean verbose)
+                                                               boolean verbose,
+                                                               String functionName)
   {
     Expression<D, R, F> compiledExpression = compile(expression,
                                                      context,
@@ -1164,11 +1165,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                      rangeClass,
                                                      functionClass,
                                                      verbose);
+    F                   func               = compiledExpression.instantiate();
+
+    if (functionName != null)
+    {
+      Mapping<?, ?> mapping = context.registerFunctionMapping(functionName, func, domainClass, rangeClass, functionClass);
+    }
+
     if (verbose)
     {
       out.println("instantiating $ " + compiledExpression.rootNode.typeset() + "$");
     }
-    return compiledExpression.instantiate();
+    return func;
   }
 
   public static <D, R, F extends Function<D, R>> F instantiate(String className,
@@ -1200,9 +1208,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor declareFieldForRegisteredFunction(MethodVisitor methodVisitor, Mapping<?, ?> mapping)
   {
+    assert mapping.functionInterface == null;
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(ACONST_NULL);
-    methodVisitor.visitFieldInsn(PUTFIELD, className, mapping.name, mapping.func.getClass().descriptorString());
+    methodVisitor.visitFieldInsn(PUTFIELD,
+                                 className,
+                                 mapping.name,
+                                 mapping.functionInterface != null ? mapping.functionInterface.descriptorString() : mapping.func.getClass()
+                                                                                                                                .descriptorString());
     return methodVisitor;
   }
 

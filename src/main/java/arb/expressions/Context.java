@@ -63,7 +63,7 @@ public class Context
     this.functions = funcs;
   }
 
-  public Variables variables;
+  public Variables        variables;
 
   public FunctionMappings functions;
 
@@ -102,14 +102,17 @@ public class Context
    * 
    * @param functionName
    * @param function
+   * @param functionClass
    * @return
    * @throws IllegalArgumentException if a function of the same name already
    *                                  exists in this{@link #functions}
    */
-  public Mapping<?, ?>
-         registerFunctionMapping(String functionName, Function<?, ?> function, Class<?> domainType, Class<?> rangeType)
+  public Mapping<?, ?> registerFunctionMapping(String functionName,
+                                               Function<?, ?> function,
+                                               Class<?> domainType,
+                                               Class<?> rangeType,
+                                               Class<?> functionClass)
   {
-
 
     if (verbose)
     {
@@ -128,11 +131,11 @@ public class Context
     }
 
     Mapping<?, ?> mapping = new Mapping<Object, Object>();
-    mapping.name   = functionName;
-    mapping.domain = domainType;
-    mapping.range  = rangeType;
-    mapping.func   = function;
-    
+    mapping.name              = functionName;
+    mapping.domain            = domainType;
+    mapping.range             = rangeType;
+    mapping.func              = function;
+    mapping.functionInterface = functionClass;
     functions.map.put(functionName, mapping);
     return mapping;
   }

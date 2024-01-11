@@ -1,9 +1,7 @@
 package arb.functions.real;
 
 import static arb.expressions.Expression.instantiate;
-import static arb.utensils.Utensils.computeNewtonStep;
-import static arb.utensils.Utensils.println;
-import static arb.utensils.Utensils.refineRootViaNewtonsMethod;
+import static arb.utensils.Utensils.*;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -599,7 +597,7 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression, boolean verbose2)
   {
-    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose);
+    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose, null);
   }
 
   public static RealFunction express(String expression)
@@ -609,12 +607,12 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression, Context context)
   {
-    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, false);
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, false, null);
   }
 
   /**
    * Returns the result of
-   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean)}
+   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean, String)}
    * afteRealFunction calling {@link Context#registerFunction(String, Function)}
    * to register the function by name in the specified {@link Context}
    * 
@@ -630,16 +628,20 @@ public interface RealFunction extends
 
   public static RealFunction express(String functionName, String expression, Context context, boolean verbose)
   {
-    RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
-
-    context.registerFunctionMapping(functionName, func, Real.class, Real.class);
+    RealFunction func = instantiate(expression,
+                                    context,
+                                    Real.class,
+                                    Real.class,
+                                    RealFunction.class,
+                                    verbose,
+                                    functionName);
 
     return func;
   }
 
   public static RealFunction express(String expression, Context context, boolean verbose)
   {
-    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose);
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose, null);
   }
 
 }

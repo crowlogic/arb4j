@@ -19,7 +19,8 @@ public interface RealPolynomialFunction extends
                        RealPolynomial.class,
                        RealPolynomial.class,
                        RealPolynomialFunction.class,
-                       verbose2);
+                       verbose2,
+                       null);
   }
 
   public static RealPolynomialFunction express(String expression)
@@ -34,7 +35,8 @@ public interface RealPolynomialFunction extends
                        RealPolynomial.class,
                        RealPolynomial.class,
                        RealPolynomialFunction.class,
-                       false);
+                       false,
+                       null);
   }
 
   /**
@@ -60,9 +62,8 @@ public interface RealPolynomialFunction extends
                                               RealPolynomial.class,
                                               RealPolynomial.class,
                                               RealPolynomialFunction.class,
-                                              verbose);
-
-    context.registerFunctionMapping(functionName, func, RealPolynomial.class, RealPolynomial.class);
+                                              verbose,
+                                              functionName);
 
     return func;
   }
@@ -74,7 +75,8 @@ public interface RealPolynomialFunction extends
                        RealPolynomial.class,
                        RealPolynomial.class,
                        RealPolynomialFunction.class,
-                       verbose);
+                       verbose,
+                       null);
   }
 
 }

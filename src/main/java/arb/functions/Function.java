@@ -122,14 +122,9 @@ public interface Function<D, R>
                                                            Context context,
                                                            boolean verbose)
   {
-    var func = instantiate(expression, context, domainClass, rangeClass, Function.class, verbose);
+    var func = instantiate(expression, context, domainClass, rangeClass, Function.class, verbose, functionName);
 
-    if (functionName != null)
-    {
-      Mapping<?, ?> mapping = context.registerFunctionMapping(functionName, func, domainClass, rangeClass);
-      mapping.functionInterface = Function.class;
-    }
-
+   
     return (F) func;
   }
 
@@ -138,7 +133,7 @@ public interface Function<D, R>
          F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, Context context)
   {
-    return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, false);
+    return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, false, null);
   }
 
   @SuppressWarnings("unchecked")
@@ -146,7 +141,7 @@ public interface Function<D, R>
          F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, boolean verbose)
   {
-    return (F) instantiate(expression, null, domainClass, rangeClass, Function.class, verbose);
+    return (F) instantiate(expression, null, domainClass, rangeClass, Function.class, verbose, null);
   }
 
   public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
@@ -158,7 +153,7 @@ public interface Function<D, R>
 
   /**
    * Returns the result of
-   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean)}
+   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean, String)}
    * afteRealFunction calling {@link Context#registerFunction(String, Function)}
    * to register the function by name in the specified {@link Context}
    * 
@@ -183,7 +178,7 @@ public interface Function<D, R>
                                                                   Context context,
                                                                   boolean verbose)
   {
-    return instantiate(expression, context, domainClass, rangeClass, Function.class, verbose);
+    return instantiate(expression, context, domainClass, rangeClass, Function.class, verbose, null);
   }
 
 }
