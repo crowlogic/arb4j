@@ -141,7 +141,19 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     loadFunctionFromField(methodVisitor, mapping.func.getClass());
 
+    boolean needsArgTypeConversion = !arg.type().equals(mapping.domain);
+//    if (needsArgTypeConversion)
+//    {
+//      expression.reserveIntermediateVariable(methodVisitor, depth + 1, mapping.domain);
+//    }
+
     arg.generate(methodVisitor, mapping.domain);
+
+//    if (needsArgTypeConversion)
+//    {
+//      Compiler.invokeSetMethod(methodVisitor, mapping.domain, arg.type(), verbose);
+//    }
+    
     Compiler.loadOrder(methodVisitor);
     Compiler.loadBits(methodVisitor);
 
@@ -152,17 +164,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     }
 
-    if (!arg.type().equals(type()))
-    {
-      assert false : String.format("%s: arg.type = %s ≠ function.domain = %s: TODO, reserve a new intermediate variable, call loadOutputVariableOntoStack, then call set method",
-                                   this,
-                                   arg.type().getName(),
-                                   type().getName());
-    }
-    else
-    {
-      loadOutputVariableOntoStack(methodVisitor, expression, verbose, type);
-    }
+    loadOutputVariableOntoStack(methodVisitor, expression, verbose, type);
 
     expression.callContextualUnaryFunction(methodVisitor, func, type);
 
