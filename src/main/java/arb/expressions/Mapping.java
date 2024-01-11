@@ -7,15 +7,16 @@ import arb.functions.Function;
 public final class Mapping<D, R>
 {
   public Class<?> functionInterface;
-  
+
   @Override
   public String toString()
   {
-    return String.format("Mapping[name=%s, func=%s, domain=%s, range=%s]",
+    return String.format("Mapping[name=%s, func=%s, domain=%s, range=%s, functionInterface=%s]",
                          name,
                          func,
                          domain != null ? domain.getName() : null,
-                         range != null ? range.getName() : null);
+                         range != null ? range.getName() : null,
+                         functionInterface);
   }
 
   @Override

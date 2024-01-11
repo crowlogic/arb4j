@@ -172,24 +172,6 @@ public class Compiler
     return classVisitor;
   }
 
-  public static <D, R, F extends Function<D, R>>
-         ClassVisitor
-         declareFunctionReferences(Expression<D, R, F> expression, ClassVisitor classVisitor)
-  {
-    expression.referencedFunctions.forEach((name, function) ->
-    {
-      String descriptor = function.func.getClass().descriptorString();
-
-      if (expression.verbose)
-      {
-        out.format("declareFunction: name=%s classDescriptor=%s\n", name, descriptor);
-        out.flush();
-      }
-      classVisitor.visitField(ACC_PUBLIC, name, descriptor, null, null);
-    });
-    return classVisitor;
-  }
-
   /**
    * Invokes {@link CompiledExpressionClassLoader} to define a {@link Class}
    * extending {@link Function}
@@ -263,9 +245,9 @@ public class Compiler
          MethodVisitor
          initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
-    if (expression.verbose && expression.context != null && !expression.context.functions.isEmpty())
+    if (expression.verbose && expression.context != null && !expression.referencedFunctions.isEmpty())
     {
-      err.println("Preparing intermediate variables: " + expression.intermediateVariables);
+      err.println("Preparing function references: " + expression.referencedFunctions);
       err.flush();
     }
 

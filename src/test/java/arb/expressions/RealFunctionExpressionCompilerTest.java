@@ -410,6 +410,20 @@ public class RealFunctionExpressionCompilerTest extends
       assertEquals(0.0, evaluatedX.doubleValue(RoundingMode.Up));
     }
   }
+  
+  public void testSFunctionWithGreekInputSplitIntoTwoFunctions()
+  {
+    RealFunction yay = express("yay","1+ρ^2", context);
+    RealFunction expression = express("tanh(ln(yay(ρ)))", context);
+    
+    {
+      Real result     = new Real();
+      Real evaluatedX = expression.evaluate(one, 1, 256, result);
+      assert result == evaluatedX;
+      assertEquals(0.6, evaluatedX.doubleValue());
+    }
+  }
+  
 
   public void testSFunctionWithGreekInput()
   {

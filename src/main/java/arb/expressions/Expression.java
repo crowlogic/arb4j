@@ -1,23 +1,11 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.compile;
-import static arb.expressions.Compiler.declareConstants;
-import static arb.expressions.Compiler.declareFunctionReferences;
-import static arb.expressions.Compiler.defineFunctionClass;
-import static arb.expressions.Compiler.generateConstructor;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.loadResult;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACONST_NULL;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,26 +17,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.ComplexPolynomial;
-import arb.Field;
-import arb.RealPolynomial;
-import arb.Typesettable;
+import arb.*;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.Add;
-import arb.expressions.nodes.binary.Divide;
-import arb.expressions.nodes.binary.Exponentiate;
-import arb.expressions.nodes.binary.Multiply;
-import arb.expressions.nodes.binary.Subtract;
+import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
@@ -383,10 +359,20 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareIntermediateVariables(classVisitor);
 
-    if (context != null && !context.functions.isEmpty())
+    declareFunctionReferences(classVisitor);
+
+  }
+
+  public ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
+  {
+    referencedFunctions.forEach((name, function) ->
     {
-      declareFunctionReferences(this, classVisitor);
-    }
+      String descriptor = function.functionInterface != null ? function.functionInterface.descriptorString() : function.func.getClass()
+                                                                                                                            .descriptorString();
+
+      classVisitor.visitField(ACC_PUBLIC, name, descriptor, null, null);
+    });
+    return classVisitor;
   }
 
   public ClassVisitor declareVariables(ClassVisitor classVisitor,
@@ -1141,10 +1127,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param functionName
    * @return methodVisitor
    */
-  public MethodVisitor callContextualUnaryFunction(MethodVisitor methodVisitor, F func, Class<?> type)
+  public MethodVisitor callContextualUnaryFunction(MethodVisitor methodVisitor, Mapping<D, R> mapping, Class<?> type)
   {
-    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  Type.getInternalName(func.getClass()),
+    methodVisitor.visitMethodInsn(mapping.functionInterface != null ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
+                                  Type.getInternalName(mapping.functionInterface != null ? mapping.functionInterface : mapping.func.getClass()),
                                   "evaluate",
                                   evaluateMethodDesc,
                                   false);
@@ -1169,7 +1155,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (functionName != null)
     {
-      Mapping<?, ?> mapping = context.registerFunctionMapping(functionName, func, domainClass, rangeClass, functionClass);
+      Mapping<?, ?> mapping = context.registerFunctionMapping(functionName,
+                                                              func,
+                                                              domainClass,
+                                                              rangeClass,
+                                                              functionClass);
     }
 
     if (verbose)
@@ -1208,7 +1198,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor declareFieldForRegisteredFunction(MethodVisitor methodVisitor, Mapping<?, ?> mapping)
   {
-    assert mapping.functionInterface == null;
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(ACONST_NULL);
     methodVisitor.visitFieldInsn(PUTFIELD,

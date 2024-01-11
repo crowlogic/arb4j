@@ -139,13 +139,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
 
-    loadFunctionFromField(methodVisitor, mapping.func.getClass());
+    loadFunctionFromField(methodVisitor,
+                          mapping.functionInterface != null ? mapping.functionInterface : mapping.func.getClass());
 
-    Class<?> argType = arg.type();
-    var typeBefore = argType;
-    boolean needsArgTypeConversion = !argType.equals(mapping.domain);
-
-
+    Class<?> argType                = arg.type();
+    var      typeBefore             = argType;
+    boolean  needsArgTypeConversion = !argType.equals(mapping.domain);
 
     arg.generate(methodVisitor, mapping.domain);
     if (needsArgTypeConversion)
@@ -154,13 +153,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
     Class<?> typeAfter = arg.type();
 
-    assert typeBefore.equals( typeAfter );
-    
+    assert typeBefore.equals(typeAfter);
+
     if (needsArgTypeConversion)
     {
       Compiler.invokeSetMethod(methodVisitor, mapping.domain, arg.type(), verbose);
     }
-    
+
     Compiler.loadOrder(methodVisitor);
     Compiler.loadBits(methodVisitor);
 
@@ -173,7 +172,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     loadOutputVariableOntoStack(methodVisitor, expression, verbose, type);
 
-    expression.callContextualUnaryFunction(methodVisitor, func, type);
+    expression.callContextualUnaryFunction(methodVisitor, mapping, type);
 
     return methodVisitor;
   }
