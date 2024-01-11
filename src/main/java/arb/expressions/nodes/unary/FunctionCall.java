@@ -141,14 +141,20 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     loadFunctionFromField(methodVisitor, mapping.func.getClass());
 
-    boolean needsArgTypeConversion = !arg.type().equals(mapping.domain);
+    Class<?> argType = arg.type();
+    var typeBefore = argType;
+    boolean needsArgTypeConversion = !argType.equals(mapping.domain);
+
 //    if (needsArgTypeConversion)
 //    {
 //      expression.reserveIntermediateVariable(methodVisitor, depth + 1, mapping.domain);
 //    }
 
     arg.generate(methodVisitor, mapping.domain);
+    Class<?> typeAfter = arg.type();
 
+    assert typeBefore.equals( typeAfter );
+    
 //    if (needsArgTypeConversion)
 //    {
 //      Compiler.invokeSetMethod(methodVisitor, mapping.domain, arg.type(), verbose);

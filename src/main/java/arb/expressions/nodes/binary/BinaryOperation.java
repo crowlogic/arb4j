@@ -121,7 +121,9 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     loadBits(mv);
     loadResult(mv, resultType, targetResultType);
 
-    Class<?> overrideLeftType = left.getGeneratedType() != null ? left.getGeneratedType() : left.type();
+    Class<?> leftGeneratedType = left.getGeneratedType();
+    
+    Class<?> overrideLeftType = leftGeneratedType != null ? leftGeneratedType : left.type();
     invokeBinaryOperationMethod(mv, operator, overrideLeftType, right.type(), resultType);
 
     return mv;
@@ -212,10 +214,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     if (left.type().equals(right.type()))
     {
-      // produce real values when integers are divided so that precision isn't lost..
-      // technically that could be accomplished by using the remainder field as well..
-      // remains to be determined what the best way to prefer a result-type thru the
-      // API and have that be used to generate the optimal structures
       boolean integerDivision = operation.equals("div") && left.type().equals(Integer.class);
       return integerDivision ? Real.class : left.type();
     }

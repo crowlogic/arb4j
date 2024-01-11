@@ -75,6 +75,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public final boolean       isMultivariate;
 
+  private Class<?>           generatedType;
+
   public Variable(Expression<D, R, F> expression, Reference reference, int depth)
   {
     super(expression,
@@ -120,7 +122,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-
+    generatedType = resultType;
     if (verbose)
     {
       out.println(this);
@@ -129,6 +131,10 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (isIndependent)
     {
+      assert expression.domainType.equals(resultType) : format("TODO: type conversion expression.domainType = %s != resultType = %s\n",
+                                                               expression.domainType,
+                                                               resultType);
+      
       Compiler.checkClassCast(loadInput(mv), expression.domainType);
     }
     else if (isIndeterminant)
