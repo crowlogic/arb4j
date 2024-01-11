@@ -32,7 +32,8 @@ public class JacobiPolynomialTest extends
                                       128);
           Integer n = new Integer())
     {
-
+      n.set("3");
+      
       try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
       {
         out.println("A(3,1.5)=" + result);

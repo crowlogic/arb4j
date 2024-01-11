@@ -90,6 +90,35 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
 
   static { System.loadLibrary("arblib"); }
 
+ /**
+   * TODO: add some 'spare' functionality to RealPolynomial so that the temporary
+   * variables can live there and possibly be managed more efficiently rather than
+   * being allocated and freed upon each invocation of
+   * this{@link #div(RealFunction)}
+   * 
+   * @param divisor
+   * @param bits
+   * @param result
+   * @return
+   */
+  public RealPolynomial div(Integer divisor, int bits, RealPolynomial result)
+  {
+    if (result.getLength() > 0)
+    {
+      try ( Real realDivisor = new Real())
+      {
+        realDivisor.set(divisor);
+        div(realDivisor, bits, result);
+      }
+      return result;
+    }
+    else
+    {
+      // its the 0 vector, so whatever its divided by its still zero
+      return this;
+    }
+  }
+  
   public RealPolynomial add(Real g, int bits, RealPolynomial res)
   {
     return g.add(this, bits, res);   
