@@ -35,21 +35,18 @@ import jdk.jshell.SnippetEvent;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs formatted versions of the same document respectively.
  * 
- * The {@link PhilosopherStone} class in the arb4j project stands out as a
- * sophisticated tool for visually evaluating mathematical expressions,
- * effectively leveraging the strengths of Java and JShell. It extends beyond
- * standard text-based expression evaluation, utilizing Java's capabilities to
- * render complex mathematical formulas, charts, and other expressions where
- * plain text falls short. This class is intended to embody a seamless
- * integration of Java's computational power with advanced visual rendering,
- * making it an invaluable resource for those seeking a more dynamic and
- * illustrative approach to understanding and interacting with mathematical
- * concepts.
+ * The {@link ArbShell} class in the arb4j project stands out as a sophisticated
+ * tool for visually evaluating mathematical expressions, effectively leveraging
+ * the strengths of Java and JShell. It extends beyond standard text-based
+ * expression evaluation, utilizing Java's capabilities to render complex
+ * mathematical formulas, charts, and other expressions where plain text falls
+ * short. This class is intended to embody a seamless integration of Java's
+ * computational power with advanced visual rendering.
  * 
- * @author ©2023 Stephen Crowley
+ * @author ©2024 Stephen Crowley
  */
-public class PhilosopherStone extends
-                              Application
+public class ArbShell extends
+                      Application
 {
 
   VBox       mainContainer;
