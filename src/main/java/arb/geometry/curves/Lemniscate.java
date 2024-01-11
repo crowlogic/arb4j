@@ -107,7 +107,7 @@ public class Lemniscate implements
   }
 
   @Override
-  public void close() throws Exception
+  public void close() 
   {
     scale.close();
   }

@@ -8,8 +8,13 @@ import arb.expressions.Expression;
 import arb.expressions.Mapping;
 import arb.functions.complex.ComplexFunction;
 
-public interface Function<D, R>
+public interface Function<D, R> extends AutoCloseable
 {
+  public default void close()
+  {
+    
+  }
+  
   public default Class<D> domainType()
   {
     assert false : "this should be implemented by extending class";

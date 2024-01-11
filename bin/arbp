@@ -3,7 +3,7 @@
 
 BASEDIR=$(dirname $(readlink -f $0))/..
 CLASSPATH=`cat $BASEDIR/class.path`:$BASEDIR/target/classes
-javap -c --module-path $CLASSPATH -classpath $CLASSPATH $@ | colorit -c $BASEDIR/javap.colorit.conf
+javap -s -l -constants -c --module-path $CLASSPATH -classpath $CLASSPATH $@ | colorit -c $BASEDIR/javap.colorit.conf
 
 
 

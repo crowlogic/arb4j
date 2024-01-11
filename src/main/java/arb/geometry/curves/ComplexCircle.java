@@ -75,7 +75,7 @@ public class ComplexCircle implements
   }
 
   @Override
-  public void close() throws Exception
+  public void close() 
   {
     s.clear();
     center.clear();

@@ -38,7 +38,7 @@ public class Ellipse implements
   }
 
   @Override
-  public void close() throws Exception
+  public void close() 
   {
     if (managesParameters)
     {

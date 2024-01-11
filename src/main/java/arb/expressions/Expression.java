@@ -1129,11 +1129,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public MethodVisitor callContextualUnaryFunction(MethodVisitor methodVisitor, Mapping<D, R> mapping, Class<?> type)
   {
+    boolean isInterface = mapping.functionInterface != null;
     methodVisitor.visitMethodInsn(mapping.functionInterface != null ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
-                                  Type.getInternalName(mapping.functionInterface != null ? mapping.functionInterface : mapping.func.getClass()),
+                                  Type.getInternalName(isInterface ? mapping.functionInterface : mapping.func.getClass()),
                                   "evaluate",
                                   evaluateMethodDesc,
-                                  false);
+                                  isInterface);
     return Compiler.checkClassCast(methodVisitor, type);
   }
 

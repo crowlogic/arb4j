@@ -67,7 +67,7 @@ public class Circle implements
   }
 
   @Override
-  public void close() throws Exception
+  public void close() 
   {
     t.close();
     h.close();

@@ -89,6 +89,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
       resolveReference(reference);
     }
 
+    if (expression.independentVariableNode != null && reference.equals(expression.independentVariableNode.reference))
+    {
+      isIndependent = true;
+    }
+
     if (!isIndependent)
     {
       if (verbose)
