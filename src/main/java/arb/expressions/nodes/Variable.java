@@ -143,11 +143,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
     else if (isIndeterminant)
     {
       // initialize with the identity polynomial
-      expression.reserveIntermediateVariable(mv, depth, type());
+      //expression.reserveIntermediateVariable(mv, depth, type());
+      Compiler.checkClassCast( Compiler.loadResult(mv, verbose), expression.rangeType );
+      
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                          Type.getInternalName(expression.rangeType),
                          "identity",
-                         format("()%s", reference.type().descriptorString()),
+                         format("()%s", expression.rangeType.descriptorString()),
                          false);
     }
     else

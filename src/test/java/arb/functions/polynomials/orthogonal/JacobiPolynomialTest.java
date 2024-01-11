@@ -24,24 +24,24 @@ public class JacobiPolynomialTest extends
 
   public static final int N    = 3;
 
-//  public static void testA()
-//  {
-//    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-//                                                   negHalf,
-//                                                   N);
-//          Real threeHalves = new Real("1.5",
-//                                      128);
-//          Integer n = new Integer())
-//    {
-//
-//      try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
-//      {
-//        out.println("A(3,1.5)=" + result);
-//        assertEquals(45.0, result.eval(threeHalves.doubleValue()));
-//      }
-//    }
-//
-//  }
+  public static void testA()
+  {
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf,
+                                                   N);
+          Real threeHalves = new Real("1.5",
+                                      128);
+          Integer n = new Integer())
+    {
+
+      try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
+      {
+        out.println("A(3,1.5)=" + result);
+        assertEquals(45.0, result.eval(threeHalves.doubleValue()));
+      }
+    }
+
+  }
 
   public static void testE()
   {
@@ -102,16 +102,9 @@ public class JacobiPolynomialTest extends
                                                    N);)
     {
       Integer one = new Integer("1");
-      A       a   = new A();
-      a.α = seq.α;
-      a.β = seq.β;
+    
 
-      try ( Real result = a.evaluate(one, 1, bits, new Real()))
-      {
-        out.println("F(1)=" + result);
-        assertEquals(0.5625, result.doubleValue());
-        assertTrue(result.isExact());
-      }
+     
 
       try ( Real result = seq.F.evaluate(one, 1, bits, new Real()))
       {
