@@ -5,10 +5,11 @@ import static arb.expressions.Expression.instantiate;
 import arb.Integer;
 import arb.RealPolynomial;
 import arb.expressions.Context;
+import arb.expressions.Mapping;
 
 /**
  * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
+ * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs formats of the same document respectively.
  */
@@ -27,7 +28,11 @@ public interface IntegerToRealPolynomialFunction extends
                                                        verbose);
     if (functionName != null)
     {
-      context.registerFunction(functionName, func, Integer.class, RealPolynomial.class);
+      Mapping<?, ?> mapping = context.registerFunctionMapping(functionName,
+                                                              func,
+                                                              Integer.class,
+                                                              RealPolynomial.class);
+      mapping.functionInterface = IntegerToRealPolynomialFunction.class;
     }
 
     return func;

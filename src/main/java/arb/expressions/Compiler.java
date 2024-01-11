@@ -481,7 +481,7 @@ public class Compiler
   public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
   {
     String checking = Type.getInternalName(type);
-  
+
     methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
     return methodVisitor;
   }

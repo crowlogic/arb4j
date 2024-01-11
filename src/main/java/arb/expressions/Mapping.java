@@ -6,6 +6,8 @@ import arb.functions.Function;
 
 public final class Mapping<D, R>
 {
+  public Class<?> functionInterface;
+  
   @Override
   public String toString()
   {

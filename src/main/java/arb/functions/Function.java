@@ -5,6 +5,7 @@ import static arb.expressions.Expression.instantiate;
 import arb.exceptions.NotDifferentiableException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.Mapping;
 import arb.functions.complex.ComplexFunction;
 
 public interface Function<D, R>
@@ -12,16 +13,16 @@ public interface Function<D, R>
   public default Class<D> domainType()
   {
     assert false : "this should be implemented by extending class";
-    return null; // for instance, the RealFunction would return Real.class for both the domain and range
+    return null; // for instance, the RealFunction would return Real.class for both the domain
+                 // and range
   }
-  
+
   public default Class<R> rangeType()
   {
     assert false : "this should be implemented by extending class";
     return null;
   }
- 
-  
+
   /**
    * <pre>
    * Evaluates this function f(t). It can be assumed that the result and input(t)
@@ -125,7 +126,8 @@ public interface Function<D, R>
 
     if (functionName != null)
     {
-      context.registerFunction(functionName, func, domainClass, rangeClass);
+      Mapping<?, ?> mapping = context.registerFunctionMapping(functionName, func, domainClass, rangeClass);
+      mapping.functionInterface = Function.class;
     }
 
     return (F) func;
@@ -144,7 +146,7 @@ public interface Function<D, R>
          F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, boolean verbose)
   {
-    return  (F) instantiate(expression, null, domainClass, rangeClass, Function.class, verbose);
+    return (F) instantiate(expression, null, domainClass, rangeClass, Function.class, verbose);
   }
 
   public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
@@ -183,6 +185,5 @@ public interface Function<D, R>
   {
     return instantiate(expression, context, domainClass, rangeClass, Function.class, verbose);
   }
-
 
 }

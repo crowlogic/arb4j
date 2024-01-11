@@ -62,7 +62,7 @@ public interface RealPolynomialFunction extends
                                               RealPolynomialFunction.class,
                                               verbose);
 
-    context.registerFunction(functionName, func, RealPolynomial.class, RealPolynomial.class);
+    context.registerFunctionMapping(functionName, func, RealPolynomial.class, RealPolynomial.class);
 
     return func;
   }
