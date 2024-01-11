@@ -1,11 +1,23 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.compile;
+import static arb.expressions.Compiler.declareConstants;
+import static arb.expressions.Compiler.declareFunctionReferences;
+import static arb.expressions.Compiler.defineFunctionClass;
+import static arb.expressions.Compiler.generateConstructor;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACONST_NULL;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,14 +29,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.*;
+import arb.ComplexPolynomial;
+import arb.Field;
+import arb.RealPolynomial;
+import arb.Typesettable;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.binary.Add;
+import arb.expressions.nodes.binary.Divide;
+import arb.expressions.nodes.binary.Exponentiate;
+import arb.expressions.nodes.binary.Multiply;
+import arb.expressions.nodes.binary.Subtract;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
@@ -120,13 +144,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public final String                        rangeClassInternalName;
 
   public final String                        domainClassInternalName;
-
-  /**
-   * if this is false then the result variable ( the last parameter to the
-   * evaluate method at index 4) is available to be reused as an intermediate
-   * variable
-   **/
-  public boolean                             resultInUse               = false;
 
   public Node<D, R, F>                       rootNode;
 
@@ -333,16 +350,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
         classVisitor = ((FlushingTraceClassVisitor) classVisitor).getDelegate();
       }
     }
-    
-    instructions = ((ClassWriter) classVisitor).toByteArray();
 
+    instructions = ((ClassWriter) classVisitor).toByteArray();
 
     if (verbose)
     {
       File file = new File(className + ".class");
       writeBytecodes(file);
     }
-   
+
     return this;
   }
 
@@ -584,7 +600,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
           // FIXME: create a referencedFunctions and only generate fields for functions
           // that are used instead of creating one for every function in the Context
           java.lang.reflect.Field field        = compiledClass.getField(functionName);
-          Mapping<?, ?> mapping = entry.getValue();
+          Mapping<?, ?>           mapping      = entry.getValue();
           field.set(instance, mapping.func);
         }
         catch (Exception e)
@@ -813,7 +829,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @param depth
    * 
    * @return either a new {@link Exponentiate} node from
-   *         this{@link #parsePower(int, Node)} or a node from this{@link #parse(int)}
+   *         this{@link #parsePower(int, Node)} or a node from
+   *         this{@link #parse(int)}
    * @throws ExpressionCompilerException
    */
   private Node<D, R, F> parseLast(int depth) throws ExpressionCompilerException
@@ -1109,18 +1126,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
   {
-    if (!resultInUse && type.equals(rangeType))
-    {
-      Compiler.checkClassCast(loadResult(methodVisitor, verbose), type);
-      resultInUse = true;
-      return "<RESULT>";
-    }
-    else
-    {
-      String intermediateVariableName = newIntermediateVariable(depth, type);
-      loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type);
-      return intermediateVariableName;
-    }
+    String intermediateVariableName = newIntermediateVariable(depth, type);
+    loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type);
+    return intermediateVariableName;
   }
 
   /**

@@ -119,13 +119,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     Class<?> targetResultType = expression.rangeType;
 
     loadBits(mv);
-    loadResult(mv, resultType, targetResultType);
+    boolean  freedUpResult     = loadResult(mv, resultType, targetResultType);
 
     Class<?> leftGeneratedType = left.getGeneratedType();
-    
-    Class<?> overrideLeftType = leftGeneratedType != null ? leftGeneratedType : left.type();
-    invokeBinaryOperationMethod(mv, operator, overrideLeftType, right.type(), resultType);
 
+    Class<?> overrideLeftType  = leftGeneratedType != null ? leftGeneratedType : left.type();
+    invokeBinaryOperationMethod(mv, operator, overrideLeftType, right.type(), resultType);
+    
     return mv;
   }
 
@@ -145,7 +145,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                        false);
   }
 
-  private MethodVisitor loadResult(MethodVisitor mv, Class<?> resultType, Class<?> targetResultType)
+  private boolean loadResult(MethodVisitor mv, Class<?> resultType, Class<?> targetResultType)
   {
     Node<D, R, F> reusableNode;
 
@@ -168,10 +168,11 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     else
     {
       expression.reserveIntermediateVariable(mv, depth, resultType);
+      return true;
+
     }
 
-
-    return mv;
+    return false;
   }
 
   /**
