@@ -90,7 +90,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 //                                                                            "n➔(F(n)*x + G)*(C(n) - 1)/2",
 //                                                                            context,
 //                                                                            true);
-//
+
   final public RealFunction                      E       = RealFunction.express("E",
                                                                                 "n➔n*C(n/2)*C(n-1)",
                                                                                 context,
@@ -101,11 +101,11 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                                 context,
                                                                                 verbose);
 
-//  final public RealFunction                      p1      = RealFunction.express("p1",
-//                                                                                "x➔(C(1)*x-β+α)/2",
-//                                                                                context,
-//                                                                                verbose);
-//
+  final public RealFunction                      p1      = RealFunction.express("p1",
+                                                                                "x➔(C(1)*x-β+α)/2",
+                                                                                context,
+                                                                                verbose);
+
 //  final public Function<Integer, RealPolynomial> Pfunc   = Function.express(Integer.class,
 //                                                                            RealPolynomial.class,
 //                                                                            "P",
