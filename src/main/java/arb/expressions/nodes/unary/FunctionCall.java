@@ -55,6 +55,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
         expression.referencedFunctions.put(functionName, mapping);
       }
     }
+    if ( functionName.equals(expression.functionName))
+    {
+      assert false : "TOOD: recursive function support https://github.com/crowlogic/arb4j/issues/254";
+    }
     targetResultType = resultTypeFor(functionName);
   }
 

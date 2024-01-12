@@ -2,26 +2,9 @@ package arb.expressions;
 
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.DUP;
-import static org.objectweb.asm.Opcodes.DUP2_X1;
-import static org.objectweb.asm.Opcodes.DUP_X1;
-import static org.objectweb.asm.Opcodes.DUP_X2;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.POP2;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.RETURN;
-import static org.objectweb.asm.Opcodes.SIPUSH;
-import static org.objectweb.asm.Opcodes.SWAP;
-import static org.objectweb.asm.Opcodes.V21;
-import static org.objectweb.asm.Opcodes.V_PREVIEW;
+import static org.objectweb.asm.Opcodes.*;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
 import arb.Field;
 import arb.Real;
@@ -82,8 +65,19 @@ public class Compiler
                                                                              Class<? extends F> functionClass,
                                                                              boolean verbose)
   {
+    return compile(expression, context, domainClass, rangeClass, functionClass, verbose, null);
+  }
+
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             boolean verbose,
+                                                                             String functionName)
+  {
     String className = Parser.expressionToUniqueClassname(expression);
-    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose);
+    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose, functionName);
   }
 
   public static <D, R, F extends Function<D, R>> Expression<Real, Real, RealFunction> compile(String className,
@@ -119,14 +113,16 @@ public class Compiler
                  Class<? extends D> domainClass,
                  Class<? extends R> rangeClass,
                  Class<? extends F> functionClass,
-                 boolean verbose) throws ExpressionCompilerException
+                 boolean verbose,
+                 String functionName) throws ExpressionCompilerException
   {
     Expression<D, R, F> expression = new Expression<D, R, F>(className,
                                                              domainClass,
                                                              rangeClass,
                                                              functionClass,
                                                              expressionString,
-                                                             context);
+                                                             context,
+                                                             functionName);
 
     if (verbose)
     {
@@ -136,6 +132,19 @@ public class Compiler
     expression.generate().define();
 
     return expression;
+  }
+
+  public static <D, R, F extends Function<D, R>>
+         Expression<D, R, F>
+         compile(String className,
+                 String expressionString,
+                 Context context,
+                 Class<? extends D> domainClass,
+                 Class<? extends R> rangeClass,
+                 Class<? extends F> functionClass,
+                 boolean verbose) throws ExpressionCompilerException
+  {
+    return compile(className, expressionString, context, domainClass, rangeClass, functionClass, verbose, null);
   }
 
   public static <D, R, F extends Function<D, R>> Expression<Real, Real, RealFunction> compile(String className,

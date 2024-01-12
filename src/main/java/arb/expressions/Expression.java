@@ -139,12 +139,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Variable<D, R, F>                   indeterminate;
 
+  public String                              functionName;
+
   public Expression(String className,
                     Class<? extends D> domainClass,
                     Class<? extends R> rangeClass,
                     Class<? extends F> functionClass,
                     String expression,
-                    Context context)
+                    Context context,
+                    String functionName)
   {
     this.rangeClassDescriptor      = Type.getDescriptor(rangeClass);
     this.domainClassDescriptor     = Type.getDescriptor(domainClass);
@@ -163,6 +166,23 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                    domainClassInternalName,
                                                    rangeClassInternalName,
                                                    rangeClassInternalName);
+    this.functionName              = functionName;
+  }
+
+  public Expression(String className2,
+                    Class<? extends D> domainClass,
+                    Class<? extends R> rangeClass,
+                    Class<? extends F> functionClass,
+                    String expressionString,
+                    Context context2)
+  {
+    this(className2,
+         domainClass,
+         rangeClass,
+         functionClass,
+         expressionString,
+         context2,
+         null);
   }
 
   /**
@@ -1151,7 +1171,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                      domainClass,
                                                      rangeClass,
                                                      functionClass,
-                                                     verbose);
+                                                     verbose,
+                                                     functionName);
     F                   func               = compiledExpression.instantiate();
 
     if (functionName != null)
