@@ -1406,7 +1406,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
         {
           if ( dim > 3 )
           {
-            sb.append(",\n ");
+            sb.append(", ");
           }
           else
           {
