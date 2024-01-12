@@ -9,6 +9,8 @@ import arb.RealConstants;
 import arb.ComplexConstants;
 import arb.Magnitude;
 import arb.Real;
+import arb.Integer;
+import arb.RealPolynomial;
 import arb.Complex;
 import arb.Float;
 import arb.FloatInterval;

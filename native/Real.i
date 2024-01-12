@@ -1379,7 +1379,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
         {
           if ( dim > 3 )
           {
-            sb.append(",\n ");
+            sb.append(", ");
           }
           else
           {
