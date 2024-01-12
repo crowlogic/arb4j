@@ -104,8 +104,10 @@ public class Quaternion implements
    */
   public Quaternion div(Quaternion other, int bits, Quaternion result)
   {
-    Quaternion multiplicativeInverse = other.multiplicativeInverse(bits, result);
-    return mul(multiplicativeInverse, bits, result);
+    try ( Quaternion multiplicativeInverse = other.multiplicativeInverse(bits, new Quaternion()))
+    {
+      return mul(multiplicativeInverse, bits, result);
+    }
   }
 
   /**
@@ -160,8 +162,10 @@ public class Quaternion implements
    */
   public Quaternion div(Real norm, int bits, Quaternion result)
   {
-    left.div(norm, bits, result.left);
-    right.div(norm, bits, result.right);
+    left.re().div(norm, bits, result.left.re());
+    left.im().div(norm, bits, result.left.im());
+    right.re().div(norm, bits, result.right.re());
+    right.im().div(norm, bits, result.right.im());
     return result;
   }
 

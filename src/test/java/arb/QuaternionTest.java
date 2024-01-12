@@ -72,6 +72,17 @@ public class QuaternionTest extends
 
   }
 
+  public void testMulInv()
+  {
+    Quaternion A = new Quaternion(new Complex(oneQuarter,
+                                              threeQuarters),
+                                  new Complex(πsquared,
+                                              sqrt2));
+    Quaternion norm = A.multiplicativeInverse(bits, new Quaternion());
+    System.out.println("norm=" + norm);
+
+  }
+
   public void testDivision()
   {
     Quaternion A = new Quaternion(new Complex(one,
@@ -83,6 +94,8 @@ public class QuaternionTest extends
                                               threeQuarters),
                                   new Complex(πsquared,
                                               sqrt2));
+
+    System.out.format("A=%s\nB=%s\n", A, B);
 
     Quaternion C = A.div(B, bits, new Quaternion());
 
