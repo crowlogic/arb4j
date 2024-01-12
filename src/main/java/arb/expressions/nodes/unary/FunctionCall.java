@@ -58,7 +58,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     if (functionName.equals(expression.functionName))
     {
       assert false : "TOOD: recursive function support " + functionName
-                    + ", call this.evaluate as if it was a function in he contex https://github.com/crowlogic/arb4j/issues/254";
+                    + ", call this.evaluate as if it was a function in the contex https://github.com/crowlogic/arb4j/issues/254";
     }
     targetResultType = resultTypeFor(functionName);
   }
