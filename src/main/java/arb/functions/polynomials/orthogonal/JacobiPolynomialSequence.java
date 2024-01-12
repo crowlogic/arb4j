@@ -59,32 +59,32 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                      OrthogonalBasis<Real, J>,
                                      AutoCloseable
 {
-  public int                           bits    = 128;
-  public Real                          α       = new Real().setName("α");
-  public Real                          β       = new Real().setName("β");
-  final public Real                    G       = new Real().setName("G");
-  final public RealMatrix              O;
-  final public RealPolynomial[]        P;
-  final Variables                      vars    = new Variables(α,
-                                                               β,
-                                                               G);
+  public int                                     bits    = 128;
+  public Real                                    α       = new Real().setName("α");
+  public Real                                    β       = new Real().setName("β");
+  final public Real                              G       = new Real().setName("G");
+  final public RealMatrix                        O;
+  final public RealPolynomial[]                  P;
+  final Variables                                vars    = new Variables(α,
+                                                                         β,
+                                                                         G);
 
-  final Context                        context = new Context(vars);
+  final Context                                  context = new Context(vars);
 
-  final public static boolean          verbose = false;
+  final public static boolean                    verbose = false;
 
   /**
    * The C function is called with n/2 by the E function therefore its expressed
    * as RealFunction, that is, a Function from ℝ to ℝ
    */
-  final public RealFunction            C       = RealFunction.express("C", "2*n+α+β", context, verbose);
+  final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
 
-  final public Function<Integer, Real> F       = Function.express(Integer.class,
-                                                                  Real.class,
-                                                                  "F",
-                                                                  "n➔C(n-1)*C(n)",
-                                                                  context,
-                                                                  verbose);
+  final public Function<Integer, Real>           F       = Function.express(Integer.class,
+                                                                            Real.class,
+                                                                            "F",
+                                                                            "n➔C(n-1)*C(n)",
+                                                                            context,
+                                                                            verbose);
 
   final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
                                                                             RealPolynomial.class,
@@ -109,16 +109,17 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                                 verbose);
 
   /**
-   * TODO: when function, when(n=0,1,n=1,p1(z),otherwise,(A(n) * z * P(n-1) - B(n) * P(n-2)) / 2)
+   * TODO: when function, when(n=0,1,n=1,p1(z),otherwise,(A(n) * z * P(n-1) - B(n)
+   * * P(n-2)) / 2)
    */
   final public Function<Integer, RealPolynomial> Pfunc   = Function.express(Integer.class,
                                                                             RealPolynomial.class,
                                                                             "P",
-                                                                            "n➔(A(n) * z * P(n-1) - B(n) * P(n-2)) / 2",
+                                                                            "n➔(A(n)*P(n-1) - B(n)*P(n-2))/E(n)",
                                                                             context,
 
                                                                             true);
-  public int                           N;
+  public int                                     N;
 
   public JacobiPolynomialSequence(Real a, Real b, int N)
   {
@@ -133,7 +134,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     {
       RealPolynomial p = new RealPolynomial(O.getRowPointer(i),
                                             false);
-      p.setLength(i+1);
+      p.setLength(i + 1);
       P[i] = p;
       System.out.format("p[%d].length=%s\n", i, p.getLength());
     }
