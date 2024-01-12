@@ -1177,11 +1177,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (functionName != null)
     {
-      Mapping<?, ?> mapping = context.registerFunctionMapping(functionName,
-                                                              func,
-                                                              domainClass,
-                                                              rangeClass,
-                                                              functionClass);
+      context.registerFunctionMapping(functionName, func, domainClass, rangeClass, functionClass);
     }
 
     if (verbose)
@@ -1222,11 +1218,19 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(ACONST_NULL);
+    boolean isInterface = mapping.functionInterface != null;
+    boolean isGeneric   = isInterface && mapping.functionInterface.equals(Function.class);
+
     methodVisitor.visitFieldInsn(PUTFIELD,
                                  className,
                                  mapping.name,
-                                 mapping.functionInterface != null ? mapping.functionInterface.descriptorString() : mapping.func.getClass()
-                                                                                                                                .descriptorString());
+                                 isInterface ? mapping.functionInterface.descriptorString() : mapping.func.getClass()
+                                                                                                          .descriptorString());
+
+    if (isInterface)
+    {
+      new Exception("TODO: add generic types ").printStackTrace();
+    }
     return methodVisitor;
   }
 

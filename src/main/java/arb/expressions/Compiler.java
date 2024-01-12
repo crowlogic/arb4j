@@ -78,6 +78,7 @@ public class Compiler
   {
     String className = Parser.expressionToUniqueClassname(expression);
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose, functionName);
+    
   }
 
   public static <D, R, F extends Function<D, R>> Expression<Real, Real, RealFunction> compile(String className,
