@@ -15,8 +15,8 @@ public class Quaternion implements
     return String.format("Quaternion[left=%s, right=%s]", left, right);
   }
 
-  public final Complex left;  // Left component of the quaternion
-  public final Complex right; // Right component of the quaternion
+  public final Complex left  = new Complex(); // Left component of the quaternion
+  public final Complex right = new Complex(); // Right component of the quaternion
 
   /**
    * Constructor to create a quaternion from two complex numbers.
@@ -28,8 +28,10 @@ public class Quaternion implements
    */
   public Quaternion(Complex left, Complex right)
   {
-    this.left  = left;
-    this.right = right;
+
+    this.left.set(left);
+    this.right.set(right);
+
   }
 
   /**
@@ -37,8 +39,7 @@ public class Quaternion implements
    */
   public Quaternion()
   {
-    left  = new Complex();
-    right = new Complex();
+
   }
 
   /**
@@ -103,10 +104,8 @@ public class Quaternion implements
    */
   public Quaternion div(Quaternion other, int bits, Quaternion result)
   {
-    try ( Quaternion multiplicativeInverseOfThis = other.multiplicativeInverse(bits, new Quaternion());)
-    {
-      return mul(multiplicativeInverseOfThis, bits, result);
-    }
+    Quaternion multiplicativeInverse = other.multiplicativeInverse(bits, result);
+    return mul(multiplicativeInverse, bits, result);
   }
 
   /**
@@ -118,8 +117,10 @@ public class Quaternion implements
    */
   public Quaternion multiplicativeInverse(int bits, Quaternion result)
   {
-    assert false : "TODO: implement multiplicative inverse";
-    return null;
+    try ( Real λ = norm2(bits, new Real());)
+    {
+      return conjugate(result).div(λ, bits);
+    }
   }
 
   /**
@@ -131,7 +132,8 @@ public class Quaternion implements
   public Quaternion conjugate(Quaternion quaternion)
   {
     left.conj(quaternion.left);
-    right.conj(quaternion.right);
+    right.re().neg(quaternion.right.re());
+    right.im().neg(quaternion.right.im());
     return quaternion;
   }
 
@@ -164,7 +166,28 @@ public class Quaternion implements
   }
 
   /**
-   * Calculates the norm of the quaternion.
+   * Calculates the squared norm of the quaternion.
+   *
+   * @param bits   The precision of the operation.
+   * @param result The real number where the result is stored.
+   * @return The norm of the quaternion.
+   */
+  public Real norm2(int bits, Real result)
+  {
+
+    result.zero();
+    left.re().addmul(left.re(), bits, result);
+    left.im().addmul(left.im(), bits, result);
+    right.re().addmul(right.re(), bits, result);
+    right.im().addmul(right.im(), bits, result);
+
+    return result;
+
+  }
+
+  /**
+   * Calculates the norm of the quaternion which is the square root of
+   * this{@link #norm2(int, Real)}
    *
    * @param bits   The precision of the operation.
    * @param result The real number where the result is stored.
@@ -172,12 +195,7 @@ public class Quaternion implements
    */
   public Real norm(int bits, Real result)
   {
-    try ( Real tmp = new Real())
-    {
-      left.norm(bits, result);
-      right.norm(bits, tmp);
-      return result.add(tmp, bits);
-    }
+    return norm2(bits, result).sqrt(bits);
   }
 
   /**

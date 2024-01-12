@@ -1075,7 +1075,7 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
    clear();
   }
   
-  Real real;
+  private Real real;
 
   public Real getReal()
   {
@@ -1089,7 +1089,7 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
     }
   }
 
-  Real imag;
+  private Real imag;
 
   public Real getImag()
   {
