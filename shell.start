@@ -17,5 +17,6 @@ import arb.functions.complex.numbertheoretic.ZFunction;
 import arb.IntegrationOptions;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import arb.functions.polynomials.orthogonal.*;
 
 ZFunction Z = new ZFunction();

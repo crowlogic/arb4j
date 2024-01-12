@@ -3,10 +3,8 @@ package arb.functions.polynomials.orthogonal;
 import static arb.RealConstants.*;
 import static java.lang.System.out;
 
+import arb.*;
 import arb.Integer;
-import arb.Real;
-import arb.RealConstants;
-import arb.RealPolynomial;
 import junit.framework.TestCase;
 
 /**
@@ -137,6 +135,21 @@ public class JacobiPolynomialTest extends
         out.println("p1(1)=" + result);
 
         assertEquals(0.5, result.doubleValue());
+      }
+    }
+
+  }
+  
+  public static void testP()
+  {
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf,
+                                                   N))
+    {
+      Integer won = new Integer("1");
+      try ( RealPolynomial result = seq.Pfunc.evaluate(won, 0, bits, new RealPolynomial()))
+      {
+        out.println("p(1)=" + result);
       }
     }
 
