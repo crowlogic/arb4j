@@ -142,6 +142,9 @@ public class JacobiPolynomialTest extends
   
   public static void testP()
   {
+    /**
+     * call Compiler initializeRegisteredFunctions
+     */
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
                                                    negHalf,
                                                    N))
