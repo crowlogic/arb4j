@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 
 /**
  * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
+ * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
@@ -35,8 +35,6 @@ public class QuaternionTest extends
                                               sqrt2));
 
     Quaternion C = A.mul(B, bits, new Quaternion());
-
-    System.out.format("A=%s\nB=%s\nC=A*B=%s\n", A, B, C);
 
     assertEquals(-9.8694238154832143, C.left.re().doubleValue());
     assertEquals(-17.496703857594721, C.left.im().doubleValue());
@@ -72,17 +70,6 @@ public class QuaternionTest extends
 
   }
 
-  public void testMulInv()
-  {
-    Quaternion A = new Quaternion(new Complex(oneQuarter,
-                                              threeQuarters),
-                                  new Complex(πsquared,
-                                              sqrt2));
-    Quaternion norm = A.multiplicativeInverse(bits, new Quaternion());
-    System.out.println("norm=" + norm);
-
-  }
-
   public void testDivision()
   {
     Quaternion A = new Quaternion(new Complex(one,
@@ -95,11 +82,7 @@ public class QuaternionTest extends
                                   new Complex(πsquared,
                                               sqrt2));
 
-    System.out.format("A=%s\nB=%s\n", A, B);
-
     Quaternion C = A.div(B, bits, new Quaternion());
-
-    System.out.format("A=%s\nB=%s\nC=A/B=%s\n", A, B, C);
 
     assertEquals(0.1036588997640670229376249035765398268756, C.left.re().doubleValue());
     assertEquals(0.1906100209168533630202319028395221259323, C.left.im().doubleValue());
