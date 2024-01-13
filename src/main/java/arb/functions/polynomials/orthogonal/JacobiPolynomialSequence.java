@@ -118,7 +118,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                             "n➔(A(n)*P(n-1) - B(n)*P(n-2))/E(n)",
                                                                             context,
 
-                                                                            true);
+                                                                            verbose);
   public int                                     N;
 
   public JacobiPolynomialSequence(Real a, Real b, int N)
