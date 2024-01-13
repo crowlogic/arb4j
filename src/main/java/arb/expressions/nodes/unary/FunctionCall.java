@@ -55,12 +55,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
         expression.referencedFunctions.put(functionName, mapping);
       }
     }
-    if (functionName.equals(expression.functionName))
-    {
-      assert false : "TOOD: recursive function support " + functionName
-                    + ", call this.evaluate as if it was a function in the contex https://github.com/crowlogic/arb4j/issues/254";
-    }
+
     targetResultType = resultTypeFor(functionName);
+
   }
 
   @Override
@@ -72,6 +69,22 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       out.format("\n%s: generate(resultType=%s)\n\n", this, resultType);
       out.flush();
     }
+
+    if (functionName.equals(expression.functionName))
+    {
+      contextual       = true;
+      mapping          = new Mapping<>();
+      targetResultType = expression.rangeType;
+      mapping.range    = targetResultType;
+      mapping.domain   = getDomainType();
+      mapping.name     = functionName;
+      // mapping.functionInterface = ex
+
+      // assert false : "TOOD: recursive function support " + functionName
+      // + ", call this.evaluate as if it was a function in the contex
+      // https://github.com/crowlogic/arb4j/issues/254";
+    }
+
     if (contextual)
     {
       return generateContextualFunctionCall(methodVisitor, resultType);
@@ -107,7 +120,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     loadOutputVariableOntoStack(methodVisitor, expression, verbose, resultType);
 
-    Class<?> domainType = arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
+    Class<?> domainType = getDomainType();
     Class<?> rangeType  = targetResultType;
     if (verbose)
     {
@@ -130,6 +143,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return methodVisitor;
   }
 
+  public Class<?> getDomainType()
+  {
+    return arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
+  }
+
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
@@ -138,7 +156,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     Class<?>      type       = type();
     Mapping<D, R> mapping    = expression.context.functions.get(functionName);
     F             func       = (F) mapping.func;
-
+    
     if (func == null)
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));

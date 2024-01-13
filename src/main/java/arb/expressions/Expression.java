@@ -18,12 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.objectweb.asm.*;
-import org.objectweb.asm.signature.SignatureVisitor;
-import org.objectweb.asm.signature.SignatureWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
 import arb.*;
-import arb.Integer;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -393,7 +390,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       String descriptor = function.functionInterface != null ? function.functionInterface.descriptorString() : function.func.getClass()
                                                                                                                             .descriptorString();
 
-      classVisitor.visitField(ACC_PUBLIC, name, descriptor, null, null);
+      classVisitor.visitField(ACC_PUBLIC, name, descriptor, getFunctionTypeSignature(domainType, rangeType), null);
     });
     return classVisitor;
   }
@@ -1169,6 +1166,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                boolean verbose,
                                                                String functionName)
   {
+    Mapping<?, ?> mapping = null;
+    if (functionName != null)
+    {
+      mapping = context.registerFunctionMapping(functionName, null, domainClass, rangeClass, functionClass);
+    }
+
     Expression<D, R, F> compiledExpression = compile(expression,
                                                      context,
                                                      domainClass,
@@ -1177,10 +1180,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                      verbose,
                                                      functionName);
     F                   func               = compiledExpression.instantiate();
-
-    if (functionName != null)
+    if (mapping != null)
     {
-      context.registerFunctionMapping(functionName, func, domainClass, rangeClass, functionClass);
+      mapping.func = func;
     }
 
     if (verbose)
@@ -1217,7 +1219,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class);
   }
 
-  public MethodVisitor declareFieldForRegisteredFunction(MethodVisitor methodVisitor, Mapping<?, ?> mapping)
+  public MethodVisitor initializeRegisteredFunction(MethodVisitor methodVisitor, Mapping<?, ?> mapping)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(ACONST_NULL);
@@ -1235,43 +1237,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
       new Exception("TODO: add generic types ").printStackTrace();
     }
     return methodVisitor;
-  }
-
-  public static void main(String[] args)
-  {
-    ClassWriter     cw              = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-
-    // Create an instance of SignatureWriter
-    SignatureWriter signatureWriter = new SignatureWriter();
-
-    // Start defining the class type (e.g., Map)
-    signatureWriter.visitClassType(Type.getInternalName(Map.class));
-    SignatureVisitor mainType = signatureWriter.visitTypeArgument('=');
-    // Define type argument for Map: String
-    SignatureVisitor typeArg1 = mainType.visitTypeArgument(SignatureVisitor.INSTANCEOF);
-    typeArg1.visitClassType(Type.getInternalName(String.class));
-    typeArg1.visitEnd();
-
-    // Define type argument for Map: Integer
-    SignatureVisitor typeArg2 = mainType.visitTypeArgument(SignatureVisitor.INSTANCEOF);
-    typeArg2.visitClassType(Type.getInternalName(Integer.class));
-    typeArg2.visitEnd();
-
-    // End the class type definition
-    mainType.visitEnd();
-
-    // Complete the Signature
-    String       fieldSignature = signatureWriter.toString();
-
-    // Use in ASM Field Declaration
-    FieldVisitor fv             = cw.visitField(Opcodes.ACC_PRIVATE,
-                                                "myMapField",
-                                                Type.getDescriptor(Map.class),
-                                                fieldSignature,
-                                                null);
-    fv.visitEnd();
-
-    // ... continue with class generation ...
   }
 
 }

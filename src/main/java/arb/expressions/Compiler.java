@@ -5,6 +5,8 @@ import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.*;
+import org.objectweb.asm.signature.SignatureVisitor;
+import org.objectweb.asm.signature.SignatureWriter;
 
 import arb.Field;
 import arb.Real;
@@ -247,7 +249,7 @@ public class Compiler
     if (expression.context != null)
     {
       expression.referencedFunctions.values()
-                                    .forEach(mapping -> expression.declareFieldForRegisteredFunction(methodVisitor,
+                                    .forEach(mapping -> expression.initializeRegisteredFunction(methodVisitor,
                                                                                                      mapping));
     }
     return methodVisitor;
@@ -459,6 +461,33 @@ public class Compiler
 
     methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
     return methodVisitor;
+  }
+
+  public static String getFunctionTypeSignature(Class<?> domain, Class<?> range)
+  {
+  
+    // Create an instance of SignatureWriter
+    SignatureWriter signatureWriter = new SignatureWriter();
+  
+    // Start defining the class type (e.g., Map)
+    signatureWriter.visitClassType(Type.getInternalName(Function.class));
+    SignatureVisitor functionType = signatureWriter.visitTypeArgument('=');
+    // Define the 1st type argument for Function (the domain)
+    SignatureVisitor typeArg1     = functionType.visitTypeArgument(SignatureVisitor.INSTANCEOF);
+    typeArg1.visitClassType(Type.getInternalName(domain));
+    typeArg1.visitEnd();
+  
+    SignatureVisitor typeArg2 = functionType.visitTypeArgument(SignatureVisitor.INSTANCEOF);
+  
+    typeArg2.visitClassType(Type.getInternalName(range));
+    typeArg2.visitEnd();
+  
+    // End the class type definition
+    functionType.visitEnd();
+  
+    // Complete the Signature
+    return signatureWriter.toString();
+  
   }
 
 }

@@ -39,6 +39,9 @@ import arb.functions.Function;
  */
 public class Context
 {
+  public final FunctionMappings functions;
+
+
   public Context()
   {
     this.variables = new Variables();
@@ -65,9 +68,9 @@ public class Context
 
   public Variables        variables;
 
-  public FunctionMappings functions;
 
   /**
+  public FunctionMappings functions;
    * Adds a given variable to {@link #variables}
    * 
    * @param variable

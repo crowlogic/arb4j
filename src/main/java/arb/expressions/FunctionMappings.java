@@ -2,7 +2,7 @@ package arb.expressions;
 
 import java.util.HashMap;
 
-public class FunctionMappings
+public class FunctionMappings 
 {
   public final HashMap<String, Mapping<?,?>> map = new HashMap<>();
 
