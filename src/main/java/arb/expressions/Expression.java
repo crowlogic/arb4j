@@ -1,11 +1,23 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.compile;
+import static arb.expressions.Compiler.declareConstants;
+import static arb.expressions.Compiler.defineFunctionClass;
+import static arb.expressions.Compiler.generateConstructor;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getFunctionTypeSignature;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACONST_NULL;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,14 +29,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.*;
+import arb.ComplexPolynomial;
+import arb.Field;
+import arb.RealPolynomial;
+import arb.Typesettable;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.binary.Add;
+import arb.expressions.nodes.binary.Divide;
+import arb.expressions.nodes.binary.Exponentiate;
+import arb.expressions.nodes.binary.Multiply;
+import arb.expressions.nodes.binary.Subtract;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
@@ -1228,7 +1252,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(ACONST_NULL);
     boolean isInterface = mapping.functionInterface != null;
-    boolean isGeneric   = isInterface && mapping.functionInterface.equals(Function.class);
 
     methodVisitor.visitFieldInsn(PUTFIELD,
                                  className,
@@ -1236,10 +1259,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                  isInterface ? mapping.functionInterface.descriptorString() : mapping.func.getClass()
                                                                                                           .descriptorString());
 
-    if (isInterface)
-    {
-      new Exception("TODO: add generic types ").printStackTrace();
-    }
     return methodVisitor;
   }
 
