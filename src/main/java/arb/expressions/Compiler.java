@@ -88,24 +88,7 @@ public class Compiler
     return compile(className, expression, null, verbose);
   }
 
-  /**
-   * Constructs and compiles an {@link Expression}
-   * 
-   * @param <D>
-   * @param <R>
-   * @param <F>
-   * @param className
-   * @param expressionString
-   * @param context
-   * @param domainClass
-   * @param rangeClass
-   * @param functionClass
-   * @param verbose          if true then information about the parsing and code
-   *                         generating is printed to {@link System#out} and
-   *                         {@link System#err}
-   * @return compiled {@link Expression}
-   * @throws ExpressionCompilerException
-   */
+
   public static <D, R, F extends Function<D, R>>
          Expression<D, R, F>
          compile(String className,
