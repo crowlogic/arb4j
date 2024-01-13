@@ -6,6 +6,7 @@ import static java.lang.Math.pow;
 import arb.*;
 import junit.framework.TestCase;
 
+@SuppressWarnings("resource")
 public class SineFunctionTest extends
                               TestCase
 {
@@ -18,7 +19,6 @@ public class SineFunctionTest extends
     assertTrue(y.getImag().isZero());
   }
 
-  @SuppressWarnings("resource")
   public synchronized void testIntegration()
   {
     SineFunction       sine                       = new SineFunction();

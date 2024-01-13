@@ -135,15 +135,19 @@ public interface ComplexFunction extends
                                             Complex res)
   {
 
-    RealToComplexFunction integrand = (t, order, prec, w) -> evaluate(curve.evaluate(t, 0, prec, w), order, prec, w);
-
-    return integrand.integrate(left,
-                               right,
-                               relativeAccuracyBitsGoal,
-                               absoluteErrorToleranceGoal,
-                               options,
-                               bits,
-                               res);
+    try ( RealToComplexFunction integrand = (t, order, prec, w) -> evaluate(curve.evaluate(t, 0, prec, w),
+                                                                            order,
+                                                                            prec,
+                                                                            w))
+    {
+      return integrand.integrate(left,
+                                 right,
+                                 relativeAccuracyBitsGoal,
+                                 absoluteErrorToleranceGoal,
+                                 options,
+                                 bits,
+                                 res);
+    }
 
   }
 

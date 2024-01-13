@@ -118,7 +118,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     Class<?> targetResultType = expression.rangeType;
 
     loadBits(mv);
-    boolean  freedUpResult     = loadResult(mv, resultType, targetResultType);
+    loadResult(mv, resultType, targetResultType);
 
     Class<?> leftGeneratedType = left.getGeneratedType();
 

@@ -8,6 +8,7 @@ import arb.RealDataSet;
 import arb.functions.real.FunctionSampler;
 import arb.functions.real.RealFunction;
 
+@SuppressWarnings("resource")
 public class ZFunctionSampler
 {
 

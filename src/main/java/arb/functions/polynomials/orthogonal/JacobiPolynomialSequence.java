@@ -4,11 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.IntStream;
 
+import arb.*;
 import arb.Integer;
-import arb.OrthogonalBasis;
-import arb.Real;
-import arb.RealMatrix;
-import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.expressions.Variables;
@@ -118,7 +115,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                             "n➔(A(n)*P(n-1) - B(n)*P(n-2))/E(n)",
                                                                             context,
 
-                                                                            true);
+                                                                            verbose);
   public int                                     N;
 
   public JacobiPolynomialSequence(Real a, Real b, int N)

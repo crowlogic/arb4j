@@ -5,7 +5,6 @@ import static arb.expressions.Expression.instantiate;
 import arb.exceptions.NotDifferentiableException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.expressions.Mapping;
 import arb.functions.complex.ComplexFunction;
 
 public interface Function<D, R> extends AutoCloseable

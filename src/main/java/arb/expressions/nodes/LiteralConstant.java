@@ -4,7 +4,6 @@ import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.System.out;
 
 import java.util.HashSet;
-import java.util.Objects;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;

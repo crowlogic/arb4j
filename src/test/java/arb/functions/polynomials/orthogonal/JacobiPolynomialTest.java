@@ -147,6 +147,7 @@ public class JacobiPolynomialTest extends
                                                    N))
     {
       Integer won = new Integer("1");
+      
       try ( RealPolynomial result = seq.Pfunc.evaluate(won, 0, bits, new RealPolynomial()))
       {
         out.println("p(1)=" + result);

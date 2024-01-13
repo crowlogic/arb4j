@@ -8,6 +8,7 @@ import arb.ArblibTest;
 import arb.Complex;
 import junit.framework.TestCase;
 
+@SuppressWarnings("resource")
 public class ZFunctionTest extends
                            TestCase
 {

@@ -3,6 +3,7 @@ package arb.functions.complex.elliptic;
 import arb.Complex;
 import junit.framework.TestCase;
 
+@SuppressWarnings("resource")
 public class RealQuarterPeriodTest extends
                                    TestCase
 {
