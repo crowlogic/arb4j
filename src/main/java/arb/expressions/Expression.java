@@ -390,7 +390,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
       String descriptor = function.functionInterface != null ? function.functionInterface.descriptorString() : function.func.getClass()
                                                                                                                             .descriptorString();
 
-      classVisitor.visitField(ACC_PUBLIC, name, descriptor, getFunctionTypeSignature(domainType, rangeType), null);
+      classVisitor.visitField(ACC_PUBLIC,
+                              name,
+                              descriptor,
+                              getFunctionTypeSignature(function.domain, function.range),
+                              null);
     });
     return classVisitor;
   }

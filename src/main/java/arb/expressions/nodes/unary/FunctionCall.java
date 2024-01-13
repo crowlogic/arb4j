@@ -157,7 +157,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     Mapping<D, R> mapping    = expression.context.functions.get(functionName);
     F             func       = (F) mapping.func;
     
-    if (func == null)
+    if (func == null && mapping.functionInterface == null )
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }

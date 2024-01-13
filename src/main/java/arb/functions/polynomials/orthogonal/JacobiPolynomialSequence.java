@@ -71,7 +71,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
 
   final Context                                  context = new Context(vars);
 
-  final public static boolean                    verbose = true;
+  final public static boolean                    verbose = false;
 
   /**
    * The C function is called with n/2 by the E function therefore its expressed
