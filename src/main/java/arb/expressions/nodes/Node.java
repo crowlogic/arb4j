@@ -93,21 +93,6 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
    */
   public abstract Class<?> type();
 
-  public Node<D, R, F> eliminateSubexpressions()
-  {
-    /**
-     * TODO: create a MemoizedNode that extends Node and simply emits a reference to
-     * the intermediate variable
-     * 
-     * TODO: each time a new intermediate variable is created, store the typeset
-     * representation of it and the intermediateVariable it maps to then in this
-     * method, iterate thru the expression and when the subexpression your about to
-     * generate for matches something in the hasmap then instantiate a new
-     * MemoizedNode referencing it and replace the matching node with it
-     * 
-     */
 
-    return this;
-  }
 
 }

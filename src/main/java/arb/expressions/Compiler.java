@@ -4,6 +4,9 @@ import static java.lang.System.err;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureVisitor;
 import org.objectweb.asm.signature.SignatureWriter;
@@ -11,6 +14,7 @@ import org.objectweb.asm.signature.SignatureWriter;
 import arb.Field;
 import arb.Real;
 import arb.expressions.nodes.LiteralConstant;
+import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -146,26 +150,7 @@ public class Compiler
     return compile(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
 
-  /**
-   * Declares the given constants as fields in the class being generated.
-   * 
-   * @param classVisitor     The {@link ClassVisitor} for the class being
-   *                         generated
-   * @param typeDescriptor   the type of the fields
-   * @param literalConstants An {@link Iterable} of {@link LiteralConstant}
-   *                         objects representing the constants to be declared
-   * @return classVisitor
-   */
-  public static <D, R, F extends Function<D, R>>
-         ClassVisitor
-         declareConstants(ClassVisitor classVisitor, Iterable<LiteralConstant<D, R, F>> literals)
-  {
-    for (var constant : literals)
-    {
-      classVisitor.visitField(ACC_PUBLIC, constant.fieldName, constant.type().descriptorString(), null, null);
-    }
-    return classVisitor;
-  }
+
 
   /**
    * Invokes {@link CompiledExpressionClassLoader} to define a {@link Class}
@@ -488,6 +473,21 @@ public class Compiler
     // Complete the Signature
     return signatureWriter.toString();
   
+  }
+
+  public static <D, R, F extends Function<D, R>>
+         ClassVisitor
+         declareVariables(ClassVisitor classVisitor, Iterable<Map.Entry<String, Variable<D, R, F>>> variables)
+  {
+    for (var variable : variables)
+    {
+      classVisitor.visitField(ACC_PUBLIC,
+                              variable.getKey(),
+                              variable.getValue().type().descriptorString(),
+                              null,
+                              null);
+    }
+    return classVisitor;
   }
 
 }
