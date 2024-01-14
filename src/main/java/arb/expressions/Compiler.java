@@ -5,7 +5,6 @@ import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureVisitor;
@@ -13,7 +12,6 @@ import org.objectweb.asm.signature.SignatureWriter;
 
 import arb.Field;
 import arb.Real;
-import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
@@ -84,7 +82,7 @@ public class Compiler
   {
     String className = Parser.expressionToUniqueClassname(expression);
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose, functionName);
-    
+
   }
 
   public static <D, R, F extends Function<D, R>> Expression<Real, Real, RealFunction> compile(String className,
@@ -93,7 +91,6 @@ public class Compiler
   {
     return compile(className, expression, null, verbose);
   }
-
 
   public static <D, R, F extends Function<D, R>>
          Expression<D, R, F>
@@ -149,8 +146,6 @@ public class Compiler
   {
     return compile(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
-
-
 
   /**
    * Invokes {@link CompiledExpressionClassLoader} to define a {@link Class}
@@ -235,7 +230,7 @@ public class Compiler
     {
       expression.referencedFunctions.values()
                                     .forEach(mapping -> expression.initializeRegisteredFunction(methodVisitor,
-                                                                                                     mapping));
+                                                                                                mapping));
     }
     return methodVisitor;
   }
@@ -253,33 +248,8 @@ public class Compiler
 
     for (var literal : expression.literalConstants)
     {
-      initializeLiteralConstantWithString(expression, methodVisitor, literal);
+      literal.initializeLiteralConstantWithString(methodVisitor);
     }
-    return methodVisitor;
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
-         initializeLiteralConstantWithString(Expression<D, R, F> expression,
-                                             MethodVisitor methodVisitor,
-                                             LiteralConstant<D, R, F> constant)
-  {
-    Class<?> type = constant.type();
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
-    methodVisitor.visitInsn(DUP);
-    methodVisitor.visitLdcInsn(constant.value);
-    boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
-    if (needsBitsPassedToStringConstructor)
-    {
-      methodVisitor.visitIntInsn(SIPUSH, constant.bits);
-    }
-    methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                  Type.getInternalName(type),
-                                  "<init>",
-                                  needsBitsPassedToStringConstructor ? "(Ljava/lang/String;I)V" : "(Ljava/lang/String;)V",
-                                  false);
-    methodVisitor.visitFieldInsn(PUTFIELD, expression.className, constant.fieldName, type.descriptorString());
     return methodVisitor;
   }
 
@@ -416,7 +386,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static void invokeSetMethod(MethodVisitor mv, Class<?> outType, Class<?> inType, boolean verbose)
+  public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> outType, Class<?> inType, boolean verbose)
   {
     if (verbose)
     {
@@ -428,18 +398,9 @@ public class Compiler
                        "set",
                        Type.getMethodDescriptor(Type.getType(outType), Type.getType(inType)),
                        false);
+    return mv;
   }
 
-  /**
-   * emits an {@link Opcodes#CHECKCAST} instruction
-   * 
-   * @param methodVisitor
-   * @param Type.gtype    if true then emits an instruction to check if the top
-   *                      element on the stack is a
-   *                      this{@link #rangeClassInternalName} otherwise tests if
-   *                      its a this{@link #domainClassInternalName}
-   * @return methodVisitor
-   */
   public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
   {
     String checking = Type.getInternalName(type);
@@ -450,29 +411,25 @@ public class Compiler
 
   public static String getFunctionTypeSignature(Class<?> domain, Class<?> range)
   {
-  
-    // Create an instance of SignatureWriter
+
     SignatureWriter signatureWriter = new SignatureWriter();
-  
-    // Start defining the class type (e.g., Map)
+
     signatureWriter.visitClassType(Type.getInternalName(Function.class));
-    SignatureVisitor functionType = signatureWriter.visitTypeArgument('=');
-    // Define the 1st type argument for Function (the domain)
-    SignatureVisitor typeArg1     = functionType.visitTypeArgument(SignatureVisitor.INSTANCEOF);
-    typeArg1.visitClassType(Type.getInternalName(domain));
-    typeArg1.visitEnd();
-  
-    SignatureVisitor typeArg2 = functionType.visitTypeArgument(SignatureVisitor.INSTANCEOF);
-  
-    typeArg2.visitClassType(Type.getInternalName(range));
-    typeArg2.visitEnd();
-  
-    // End the class type definition
+
+    SignatureVisitor functionType = signatureWriter.visitTypeArgument('=')
+                                                   .visitTypeArgument(SignatureVisitor.INSTANCEOF);
+    functionType.visitClassType(Type.getInternalName(domain));
     functionType.visitEnd();
-  
-    // Complete the Signature
+
+    SignatureVisitor rangeTypeArg = functionType.visitTypeArgument(SignatureVisitor.INSTANCEOF);
+
+    rangeTypeArg.visitClassType(Type.getInternalName(range));
+    rangeTypeArg.visitEnd();
+
+    functionType.visitEnd();
+
     return signatureWriter.toString();
-  
+
   }
 
   public static <D, R, F extends Function<D, R>>

@@ -2,6 +2,7 @@ package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.System.out;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.HashSet;
 
@@ -173,5 +174,26 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     {
       return value;
     }
+  }
+
+  public MethodVisitor initializeLiteralConstantWithString(MethodVisitor methodVisitor)
+  {
+    Class<?> type = type();
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitLdcInsn(value);
+    boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
+    if (needsBitsPassedToStringConstructor)
+    {
+      methodVisitor.visitIntInsn(SIPUSH, bits);
+    }
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                  Type.getInternalName(type),
+                                  "<init>",
+                                  needsBitsPassedToStringConstructor ? "(Ljava/lang/String;I)V" : "(Ljava/lang/String;)V",
+                                  false);
+    methodVisitor.visitFieldInsn(PUTFIELD, expression.className, fieldName, type.descriptorString());
+    return methodVisitor;
   }
 }
