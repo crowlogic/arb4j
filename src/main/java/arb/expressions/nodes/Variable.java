@@ -89,6 +89,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
     this.reference  = reference;
     this.variables  = expression.variables;
     isMultivariate  = reference.isMultivariate();
+    assert !(expression.recursive
+                  && reference.name.equals(expression.functionName)) : "not allowed to name a variable the same name as the function if its a recursive function";
 
     if (variables == null || !variables.map.containsKey(reference.name))
     {

@@ -624,6 +624,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void injectRegisteredFunctionReferences() throws NoSuchFieldException, IllegalAccessException
   {
+    if (recursive)
+    {
+      setFieldValue(functionName, instance);
+    }
+
     if (context != null)
     {
       referencedFunctions.entrySet().forEach(entry ->
@@ -631,11 +636,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
         try
         {
           String                  functionName = entry.getKey();
-          // FIXME: create a referencedFunctions and only generate fields for functions
-          // that are used instead of creating one for every function in the Context
           java.lang.reflect.Field field        = compiledClass.getField(functionName);
           Mapping<?, ?>           mapping      = entry.getValue();
-          field.set(instance, mapping.func);
+          if (!mapping.name.equals(this.functionName))
+          {
+            field.set(instance, mapping.func);
+          }
+
         }
         catch (Exception e)
         {
@@ -648,16 +655,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void injectVariableReferences() throws NoSuchFieldException, IllegalAccessException
   {
+
     if (referencedVariables != null)
     {
       referencedVariables.entrySet().forEach(entry ->
       {
         try
         {
-          String                  variableName = entry.getKey();
-          R                       value        = variables.get(variableName);
-          java.lang.reflect.Field field        = compiledClass.getField(variableName);
-          field.set(instance, value);
+          String variableName = entry.getKey();
+          R      value        = variables.get(variableName);
+          setFieldValue(variableName, value);
         }
         catch (Exception e)
         {
@@ -666,6 +673,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
         }
       });
     }
+  }
+
+  private void setFieldValue(String variableName, Object value) throws NoSuchFieldException, IllegalAccessException
+  {
+    java.lang.reflect.Field field = compiledClass.getField(variableName);
+    field.set(instance, value);
   }
 
   /**
@@ -677,7 +690,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     ch = (++position < expression.length()) ? expression.charAt(position) : -1;
   }
 
-  boolean verboseParser = false;
+  boolean        verboseParser = false;
+
+  public boolean recursive     = false;
 
   /**
    * Consumes characters, calling this{@link #parseFirst(int)} to process

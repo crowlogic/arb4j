@@ -78,6 +78,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       mapping.range    = targetResultType;
       mapping.domain   = getDomainType();
       mapping.name     = functionName;
+      expression.recursive = true;
+      
       // mapping.functionInterface = ex
 
       // assert false : "TOOD: recursive function support " + functionName
