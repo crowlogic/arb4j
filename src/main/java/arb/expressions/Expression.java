@@ -1,23 +1,11 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.compile;
-import static arb.expressions.Compiler.declareConstants;
-import static arb.expressions.Compiler.defineFunctionClass;
-import static arb.expressions.Compiler.generateConstructor;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getFunctionTypeSignature;
-import static arb.expressions.Compiler.loadResult;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACONST_NULL;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,26 +17,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.ComplexPolynomial;
-import arb.Field;
-import arb.RealPolynomial;
-import arb.Typesettable;
+import arb.*;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.Add;
-import arb.expressions.nodes.binary.Divide;
-import arb.expressions.nodes.binary.Exponentiate;
-import arb.expressions.nodes.binary.Multiply;
-import arb.expressions.nodes.binary.Subtract;
+import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
@@ -837,22 +813,21 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       if ("when".equals(reference.name))
       {
-        assert false : "todo: parse when function " + expression;
-        return null;
+        return parseWhen(depth+1);
       }
       else
       {
         Node<D, R, F> arg = parseFirst(depth + 1);
-        if (parse(depth, ')'))
+        if (parse(depth+1, ')'))
         {
           return new FunctionCall<>(this,
                                     reference.name,
                                     arg,
-                                    depth);
+                                    depth+1);
         }
         else
         {
-          throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n, expression=%s\n",
+          throw new RuntimeException(String.format("expected closing parenthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n, expression=%s\n",
                                                    startPos,
                                                    position,
                                                    reference,
@@ -877,6 +852,33 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                          depth + 1);
       return variable;
     }
+  }
+
+  public Node<D, R, F> parseWhen(int depth)
+  {
+    do
+    {
+      Node<D, R, F> var = parse(depth + 1);
+      if (var instanceof Variable && "else".equals(((Variable<D, R, F>) var).reference.name))
+      {
+        assert parse(depth + 1, ',') : ", expected after else condition";
+        Node<D, R, F> defaultValuevalue = parseFirst(depth + 1);
+
+        assert false : "todo: generate code to handle conditions and return this if none of the other conditions were met: "
+                      + defaultValuevalue;
+      }
+      assert parse(depth + 1, '=') : "= expected in condition of when function at pos=" + this.position + " var="
+                    + var;
+      Node<D, R, F> val = parse(depth + 1);
+
+      out.println("parsed " + var + " equals " + val);
+      assert parse(depth + 1, ',') : ", expected after condition of when function at pos=" + this.position;
+      Node<D, R, F> value = parseFirst(depth + 1);
+      err.println("value to be returned when condition is met: " + value + "\n");
+    }
+    while (parse(depth + 1, ','));
+    assert false : "todo: parse when function " + expression;
+    return null;
   }
 
   /**
