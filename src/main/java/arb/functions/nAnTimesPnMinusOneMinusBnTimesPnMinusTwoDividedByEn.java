@@ -10,7 +10,7 @@ import arb.RealPolynomial;
  * is null
  * 
  */
-public class nAnTimeszTimesPnMinusOneMinusBnTimesPnMinusTwoDividedByTwo implements Function<Integer,RealPolynomial>
+public class nAnTimesPnMinusOneMinusBnTimesPnMinusTwoDividedByEn implements Function<Integer,RealPolynomial>
 {
   public RealPolynomial                    l0  = new RealPolynomial();
   public Integer                           l1  = new Integer();
@@ -31,7 +31,7 @@ public class nAnTimeszTimesPnMinusOneMinusBnTimesPnMinusTwoDividedByTwo implemen
 
   public static void main( String args[] )
   {
-    nAnTimeszTimesPnMinusOneMinusBnTimesPnMinusTwoDividedByTwo a = new nAnTimeszTimesPnMinusOneMinusBnTimesPnMinusTwoDividedByTwo();
+    nAnTimesPnMinusOneMinusBnTimesPnMinusTwoDividedByEn a = new nAnTimesPnMinusOneMinusBnTimesPnMinusTwoDividedByEn();
     a.P = a;
     RealPolynomial p2 = a.evaluate(new Integer(2),128,new RealPolynomial());
     System.out.println( "p2=" + p2 );

@@ -101,21 +101,11 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                                 context,
                                                                                 verbose);
 
-  final public RealFunction                      p1      = RealFunction.express("p1",
-                                                                                "x➔(C(1)*x-β+α)/2",
-                                                                                context,
-                                                                                verbose);
-
-  /**
-   * TODO: when function, when(n=0,1,n=1,p1(z),otherwise,(A(n) * z * P(n-1) - B(n)
-   * * P(n-2)) / 2)
-   */
   final public Function<Integer, RealPolynomial> Pfunc   = Function.express(Integer.class,
                                                                             RealPolynomial.class,
                                                                             "P",
-                                                                            "n➔(A(n)*P(n-1) - B(n)*P(n-2))/E(n)",
+                                                                            "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
                                                                             context,
-
                                                                             verbose);
   public int                                     N;
 
