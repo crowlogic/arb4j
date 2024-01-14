@@ -1,10 +1,16 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.half;
+import static arb.RealConstants.negHalf;
+import static arb.RealConstants.one;
+import static arb.RealConstants.oneQuarter;
+import static arb.RealConstants.threeQuarters;
 import static java.lang.System.out;
 
-import arb.*;
 import arb.Integer;
+import arb.Real;
+import arb.RealConstants;
+import arb.RealPolynomial;
 import junit.framework.TestCase;
 
 /**
@@ -31,7 +37,7 @@ public class JacobiPolynomialTest extends
           Integer n = new Integer())
     {
       n.set("3");
-      
+
       try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
       {
         out.println("A(3,1.5)=" + result);
@@ -100,9 +106,6 @@ public class JacobiPolynomialTest extends
                                                    N);)
     {
       Integer one = new Integer("1");
-    
-
-     
 
       try ( Real result = seq.F.evaluate(one, 1, bits, new Real()))
       {
@@ -124,22 +127,6 @@ public class JacobiPolynomialTest extends
     }
   }
 
-  public static void testP1()
-  {
-    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-                                                   negHalf,
-                                                   N))
-    {
-      try ( Real result = seq.p1.evaluate(one, 0, bits, new Real()))
-      {
-        out.println("p1(1)=" + result);
-
-        assertEquals(0.5, result.doubleValue());
-      }
-    }
-
-  }
-  
   public static void testP()
   {
     /**
@@ -150,7 +137,7 @@ public class JacobiPolynomialTest extends
                                                    N))
     {
       Integer won = new Integer("1");
-      
+
       try ( RealPolynomial result = seq.Pfunc.evaluate(won, 0, bits, new RealPolynomial()))
       {
         out.println("p(1)=" + result);

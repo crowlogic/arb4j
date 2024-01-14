@@ -835,23 +835,31 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (isFunction)
     {
-      Node<D, R, F> arg = parseFirst(depth + 1);
-      if (parse(depth, ')'))
+      if ("when".equals(reference.name))
       {
-        return new FunctionCall<>(this,
-                                  reference.name,
-                                  arg,
-                                  depth);
+        assert false : "todo: parse when function " + expression;
+        return null;
       }
       else
       {
-        throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n, expression=%s\n",
-                                                 startPos,
-                                                 position,
-                                                 reference,
-                                                 isFunction,
-                                                 depth,
-                                                 expression));
+        Node<D, R, F> arg = parseFirst(depth + 1);
+        if (parse(depth, ')'))
+        {
+          return new FunctionCall<>(this,
+                                    reference.name,
+                                    arg,
+                                    depth);
+        }
+        else
+        {
+          throw new RuntimeException(String.format("expected closing paranthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n, expression=%s\n",
+                                                   startPos,
+                                                   position,
+                                                   reference,
+                                                   isFunction,
+                                                   depth,
+                                                   expression));
+        }
       }
     }
     else if (LiteralConstant.constantSymbols.contains(reference.name))
