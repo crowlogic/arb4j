@@ -1,12 +1,24 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.compile;
+import static arb.expressions.Compiler.defineFunctionClass;
+import static arb.expressions.Compiler.generateConstructor;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getFunctionTypeSignature;
+import static arb.expressions.Compiler.getIntermediateVariablePrefix;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACONST_NULL;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,17 +31,30 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.*;
+import arb.ComplexPolynomial;
+import arb.Field;
 import arb.Integer;
+import arb.RealPolynomial;
+import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.binary.Add;
+import arb.expressions.nodes.binary.Divide;
+import arb.expressions.nodes.binary.Exponentiate;
+import arb.expressions.nodes.binary.Multiply;
+import arb.expressions.nodes.binary.Subtract;
 import arb.expressions.nodes.unary.FunctionCall;
+import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
 
@@ -957,67 +982,85 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     do
     {
-      Node<D, R, F> node = parse(depth + 1);
-      if (!(node instanceof Variable))
-      {
-        throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
-                      + node);
-      }
-
-      Variable<D, R, F> variable = (Variable<D, R, F>) node;
-
-      if ("else".equals(variable.reference.name))
-      {
-        if (!parse(depth + 1, ','))
-        {
-          throw new ExpressionCompilerException(", expected after else condition");
-        }
-        defaultValue = parseFirst(depth + 1);
-
-        if (ch != ')')
-        {
-          throw new ExpressionCompilerException(format("expected closing ) of when statement after else at position=%d expression=%s",
-                                                       position,
-                                                       expression));
-        }
-      }
-      else
-      {
-        if (!variable.reference.equals(independentVariableNode.reference))
-        {
-          throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable which is "
-                        + independentVariableNode + " not " + variable);
-        }
-
-        if (!parse(depth + 1, '='))
-        {
-          throw new ExpressionCompilerException(format("= expected in condition of when function at pos=%d expression=%s but got ch=%c and lastCh=%c",
-                                                       position,
-                                                       expression,
-                                                       ch,
-                                                       lastCh));
-        }
-
-        Node<D, R, F> condition = parse(depth + 1);
-        if (!(condition instanceof LiteralConstant))
-        {
-          throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable to an Integer LiteralConstant type, but got "
-                        + condition);
-        }
-        LiteralConstant<D, R, F> constant = (LiteralConstant<D, R, F>) condition;
-        if (!parse(depth + 1, ','))
-        {
-          throw new ExpressionCompilerException(", expected after condition of when function at pos="
-                        + this.position);
-        }
-        Node<D, R, F> value = parseFirst(depth + 1);
-        cases.put(new Integer(constant.value), value);
-      }
+      defaultValue = parseWhenCondition(depth, cases);
     }
     while (parse(depth + 1, ','));
-    assert false : "TODO: make a When class that extends Node and contains cases=" + cases + " defaultValue="
-                  + defaultValue;
-    return null;
+    if (!parse(depth + 1, ')'))
+    {
+      throw new ExpressionCompilerException("Closing parenthesis expected at position=" + position
+                    + " of expression=" + expression);
+    }
+    if (defaultValue == null)
+    {
+      throw new ExpressionCompilerException("default value of when function not specified with else keyword at position="
+                    + position + " of expression=" + expression);
+    }
+    return new When<D, R, F>(this,
+                             cases,
+                             defaultValue,
+                             depth + 1);
+  }
+
+  public Node<D, R, F> parseWhenCondition(int depth, TreeMap<Integer, Node<D, R, F>> cases)
+  {
+    Node<D, R, F> defaultValue = null;
+
+    Node<D, R, F> node         = parse(depth + 1);
+    if (!(node instanceof Variable))
+    {
+      throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
+                    + node);
+    }
+
+    Variable<D, R, F> variable = (Variable<D, R, F>) node;
+
+    if ("else".equals(variable.reference.name))
+    {
+      if (!parse(depth + 1, ','))
+      {
+        throw new ExpressionCompilerException(", expected after else condition");
+      }
+      defaultValue = parseFirst(depth + 1);
+
+      if (ch != ')')
+      {
+        throw new ExpressionCompilerException(format("expected closing ) of when statement after else at position=%d expression=%s",
+                                                     position,
+                                                     expression));
+      }
+    }
+    else
+    {
+      if (!variable.reference.equals(independentVariableNode.reference))
+      {
+        throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable which is "
+                      + independentVariableNode + " not " + variable);
+      }
+
+      if (!parse(depth + 1, '='))
+      {
+        throw new ExpressionCompilerException(format("= expected in condition of when function at pos=%d expression=%s but got ch=%c and lastCh=%c",
+                                                     position,
+                                                     expression,
+                                                     ch,
+                                                     lastCh));
+      }
+
+      Node<D, R, F> condition = parse(depth + 1);
+      if (!(condition instanceof LiteralConstant))
+      {
+        throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable to an Integer LiteralConstant type, but got "
+                      + condition);
+      }
+      LiteralConstant<D, R, F> constant = (LiteralConstant<D, R, F>) condition;
+      if (!parse(depth + 1, ','))
+      {
+        throw new ExpressionCompilerException(", expected after condition of when function at pos=" + this.position);
+      }
+      Node<D, R, F> value = parseFirst(depth + 1);
+      cases.put(new Integer(constant.value), value);
+    }
+    return defaultValue;
   }
 
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
