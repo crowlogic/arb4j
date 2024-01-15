@@ -1,4 +1,4 @@
-package arb.expressions;
+package arb.exceptions;
 
 public class UndefinedReferenceException extends
                                          ExpressionCompilerException

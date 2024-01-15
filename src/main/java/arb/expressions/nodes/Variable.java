@@ -13,13 +13,8 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.Real;
-import arb.expressions.Compiler;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Parser;
-import arb.expressions.Reference;
-import arb.expressions.UndefinedReferenceException;
-import arb.expressions.Variables;
+import arb.exceptions.UndefinedReferenceException;
+import arb.expressions.*;
 import arb.functions.Function;
 
 /**

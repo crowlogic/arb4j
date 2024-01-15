@@ -24,6 +24,7 @@ import org.objectweb.asm.util.CheckClassAdapter;
 
 import arb.*;
 import arb.Integer;
+import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;

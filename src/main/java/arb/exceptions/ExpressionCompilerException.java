@@ -1,6 +1,4 @@
-package arb.expressions;
-
-import arb.exceptions.ArbException;
+package arb.exceptions;
 
 /**
 
