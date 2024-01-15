@@ -3,19 +3,30 @@ package arb.expressions;
 import static arb.expressions.Parser.expressionToUniqueClassname;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.DUP2_X1;
+import static org.objectweb.asm.Opcodes.DUP_X1;
+import static org.objectweb.asm.Opcodes.DUP_X2;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.POP2;
+import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.SWAP;
+import static org.objectweb.asm.Opcodes.V21;
+import static org.objectweb.asm.Opcodes.V_PREVIEW;
 
 import java.util.Map;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
 import org.objectweb.asm.signature.SignatureWriter;
 
 import arb.Field;
-import arb.Real;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
-import arb.functions.real.RealFunction;
 
 /**
  * <pre>
@@ -86,13 +97,6 @@ public class Compiler
 
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<Real, Real, RealFunction> compile(String className,
-                                                                                              String expression,
-                                                                                              boolean verbose)
-  {
-    return compile(className, expression, null, verbose);
-  }
-
   public static <D, R, F extends Function<D, R>>
          Expression<D, R, F>
          compile(String className,
@@ -133,19 +137,6 @@ public class Compiler
                  boolean verbose) throws ExpressionCompilerException
   {
     return compile(className, expressionString, context, domainClass, rangeClass, functionClass, verbose, null);
-  }
-
-  public static <D, R, F extends Function<D, R>> Expression<Real, Real, RealFunction> compile(String className,
-                                                                                              String expression,
-                                                                                              Context context)
-  {
-    return compile(className, expression, context, false);
-  }
-
-  public static Expression<Real, Real, RealFunction>
-         compile(String className, String expression, Context context, boolean verbose)
-  {
-    return compile(className, expression, context, Real.class, Real.class, RealFunction.class, verbose);
   }
 
   /**
