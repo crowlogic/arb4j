@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
@@ -118,9 +119,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
-  public int                                 position                  = -1;
+  public int                                 position              = -1;
 
-  public int                                 ch                        = 0;
+  public int                                 ch                    = 0;
 
   public final String                        expression;
 
@@ -138,13 +139,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   final public String                        functionClassInternalName;
 
-  public ArrayList<IntermediateVariable>     intermediateVariables     = new ArrayList<IntermediateVariable>();
-
-  int                                        intermediateVariableCount = 0;
+  public ArrayList<IntermediateVariable>     intermediateVariables = new ArrayList<IntermediateVariable>();
 
   int                                        constantCount;
 
-  public ArrayList<LiteralConstant<D, R, F>> literalConstants          = new ArrayList<LiteralConstant<D, R, F>>();
+  public ArrayList<LiteralConstant<D, R, F>> literalConstants      = new ArrayList<LiteralConstant<D, R, F>>();
 
   public Variable<D, R, F>                   independentVariableNode;
 
@@ -152,7 +151,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   protected byte[]                           instructions;
 
-  public boolean                             verbose                   = false;
+  public boolean                             verbose               = false;
 
   Class<F>                                   compiledClass;
 
@@ -168,9 +167,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                              functionClassDescriptor;
 
-  public HashMap<String, Mapping<D, R>>      referencedFunctions       = new HashMap<>();
+  public HashMap<String, Mapping<D, R>>      referencedFunctions   = new HashMap<>();
 
-  public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
+  public HashMap<String, Variable<D, R, F>>  referencedVariables   = new HashMap<>();
 
   public Context                             context;
 
@@ -180,11 +179,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                              functionName;
 
-  boolean                                    debug                     = verbose;
+  boolean                                    debug                 = verbose;
 
-  boolean                                    verboseParser             = false;
+  boolean                                    verboseParser         = false;
 
-  public boolean                             recursive                 = false;
+  public boolean                             recursive             = false;
 
   public Expression(String className,
                     Class<? extends D> domainClass,
@@ -495,9 +494,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return "c" + constantCount++;
   }
 
-  public String getNextIntermediatevariableFieldName(int depth)
+  public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
+
+  public String getNextIntermediatevariableFieldName(int depth, Class<?> type)
   {
-    return "l" + intermediateVariableCount++;
+    String        prefix  = getIntermediateVariablePrefix(type);
+    AtomicInteger counter = intermediateVariableCounters.get(prefix);
+    if (counter == null)
+    {
+      intermediateVariableCounters.put(prefix, counter = new AtomicInteger());
+    }
+    return prefix + counter.getAndIncrement();
   }
 
   public boolean hasPolynomialRange()
@@ -612,12 +619,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean needsCloseMethod()
   {
-    return !literalConstants.isEmpty() | intermediateVariableCount > 0;
+    return !literalConstants.isEmpty() | !intermediateVariables.isEmpty();
   }
 
   public String newIntermediateVariable(int depth, Class<?> type)
   {
-    String intermediateVarName = getNextIntermediatevariableFieldName(depth);
+    String intermediateVarName = getNextIntermediatevariableFieldName(depth, type);
     intermediateVariables.add(new IntermediateVariable(intermediateVarName,
                                                        type));
     if (verbose)
@@ -949,14 +956,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     do
     {
-      Node<D, R, F> var = parse(depth + 1);
-      if (!(var instanceof Variable))
+      Node<D, R, F> node = parse(depth + 1);
+      if (!(node instanceof Variable))
       {
         throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
-                      + var);
+                      + node);
       }
 
-      Variable<D, R, F> variable = (Variable<D, R, F>) var;
+      Variable<D, R, F> variable = (Variable<D, R, F>) node;
 
       if ("else".equals(variable.reference.name))
       {
@@ -966,14 +973,20 @@ public class Expression<D, R, F extends Function<D, R>> implements
         }
         defaultValue = parseFirst(depth + 1);
 
-        assert ch == ')' : format("expected closing ) of when statement after else at position=%d expression=%s",
-                                  position,
-                                  expression);
+        if (ch != ')')
+        {
+          throw new ExpressionCompilerException(format("expected closing ) of when statement after else at position=%d expression=%s",
+                                                       position,
+                                                       expression));
+        }
       }
       else
       {
-        assert variable.reference.equals(independentVariableNode.reference) : "condition of when statement must be the equality of the input variable which is "
-                      + independentVariableNode + " not " + variable;
+        if (!variable.reference.equals(independentVariableNode.reference))
+        {
+          throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable which is "
+                        + independentVariableNode + " not " + variable);
+        }
 
         if (!parse(depth + 1, '='))
         {
@@ -991,7 +1004,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                         + condition);
         }
         LiteralConstant<D, R, F> constant = (LiteralConstant<D, R, F>) condition;
-        out.println("parsed " + var + " equals " + condition);
         if (!parse(depth + 1, ','))
         {
           throw new ExpressionCompilerException(", expected after condition of when function at pos="

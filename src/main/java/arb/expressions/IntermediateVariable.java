@@ -42,7 +42,7 @@ public class IntermediateVariable
          MethodVisitor
          initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
-    if (expression.intermediateVariableCount > 0 && expression.verbose)
+    if (!expression.intermediateVariables.isEmpty() && expression.verbose)
     {
       err.println("Preparing intermediate variables: " + expression.intermediateVariables);
       err.flush();

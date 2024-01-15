@@ -24,7 +24,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
 import org.objectweb.asm.signature.SignatureWriter;
 
-import arb.Field;
+import arb.*;
+import arb.Integer;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
@@ -425,6 +426,40 @@ public class Compiler
                               null);
     }
     return classVisitor;
+  }
+
+  public static String getIntermediateVariablePrefix(Class<?> type)
+  {
+    String prefix = "l";
+    if (type.equals(Real.class))
+    {
+      prefix = "r";
+    }
+    else if (type.equals(Integer.class))
+    {
+      prefix = "i";
+    }
+    else if (type.equals(RealPolynomial.class))
+    {
+      prefix = "rp";
+    }
+    else if (type.equals(ComplexPolynomial.class))
+    {
+      prefix = "cp";
+    }
+    else if (type.equals(Complex.class))
+    {
+      prefix = "c";
+    }
+    else if (type.equals(RealMatrix.class))
+    {
+      prefix = "rm";
+    }
+    else if (type.equals(ComplexMatrix.class))
+    {
+      prefix = "cm";
+    }
+    return prefix;
   }
 
 }
