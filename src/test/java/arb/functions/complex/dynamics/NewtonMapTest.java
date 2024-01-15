@@ -37,17 +37,24 @@ public class NewtonMapTest extends
   public void testSMultiplier()
   {
     SFunction            sFunction   = new SFunction();
-    NewtonMap<SFunction> sNewtonMap  = new NewtonMap<SFunction>(sFunction);
-    ComplexFunction      sNewtonDiff = sNewtonMap.differential();
-    ComplexFunction      f           = sNewtonDiff;
-    try ( Complex t = new Complex(); Complex w = new Complex();)
+    try ( NewtonMap<SFunction> sNewtonMap = new NewtonMap<SFunction>(sFunction))
     {
-      f.evaluate(t.set(0, 0), 1, prec, w);
+      ComplexFunction      sNewtonDiff = sNewtonMap.differential();
+      ComplexFunction      f           = sNewtonDiff;
+      try ( Complex t = new Complex(); Complex w = new Complex();)
+      {
+        f.evaluate(t.set(0, 0), 1, prec, w);
 
-      // TODO: this will be busted until the NewtonMap is enhanced and modified for
-      // multiple roots
-      assertEquals(0.5, w.getReal().doubleValue(), Math.pow(10, -20));
-      assertEquals(0, w.getImag().doubleValue(), Math.pow(10, -20));
+        // TODO: this will be busted until the NewtonMap is enhanced and modified for
+        // multiple roots
+        assertEquals(0.5, w.getReal().doubleValue(), Math.pow(10, -20));
+        assertEquals(0, w.getImag().doubleValue(), Math.pow(10, -20));
+      }
+    }
+    catch (NotDifferentiableException e)
+    {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 }

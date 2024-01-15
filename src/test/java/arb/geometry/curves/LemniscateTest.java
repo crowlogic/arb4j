@@ -40,18 +40,19 @@ public class LemniscateTest extends
     {
       RealToComplexFunction dl     = l.differential();
 
-      RealToComplexFunction absdl  = (t, order, prec, w) ->
-                                   {
-                                     dl.evaluate(t, order, prec, tmp).abs(prec, w.getReal());
-                                     return w;
-                                   };
-
-      Complex               l1     = l.evaluate(ComplexConstants.one.getReal(), 2, 256, Complex.newVector(2));
-      Complex               dl1    = dl.evaluate(ComplexConstants.one.getReal(), 1, 256, Complex.newVector(1));
-      Complex               absdl1 = absdl.evaluate(ComplexConstants.one.getReal(), 1, 256, new Complex());
-      System.out.println("l'(1)=" + dl1);
-      System.out.println("|l'(1)|=" + absdl1);
-      assertTrue(l1.get(1).sub(dl1, 256, new Complex()).containsZero());
+      try ( RealToComplexFunction absdl = (t, order, prec, w) ->
+      {
+        dl.evaluate(t, order, prec, tmp).abs(prec, w.getReal());
+        return w;
+      })
+      {
+        Complex l1     = l.evaluate(ComplexConstants.one.getReal(), 2, 256, Complex.newVector(2));
+        Complex dl1    = dl.evaluate(ComplexConstants.one.getReal(), 1, 256, Complex.newVector(1));
+        Complex absdl1 = absdl.evaluate(ComplexConstants.one.getReal(), 1, 256, new Complex());
+        System.out.println("l'(1)=" + dl1);
+        System.out.println("|l'(1)|=" + absdl1);
+        assertTrue(l1.get(1).sub(dl1, 256, new Complex()).containsZero());
+      }
     }
     catch (NotDifferentiableException e)
     {

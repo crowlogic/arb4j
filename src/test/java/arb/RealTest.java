@@ -4,7 +4,6 @@ import static arb.RealConstants.one;
 import static arb.utensils.Utensils.println;
 import static java.lang.System.out;
 
-import arb.stochastic.GaussianDistribution;
 import arb.stochastic.processes.CorrelatedRandomVectorGenerator;
 import junit.framework.TestCase;
 
