@@ -973,16 +973,20 @@ public class Expression<D, R, F extends Function<D, R>> implements
         String        str          = "todo: generate code to handle conditions and return this if none of the other conditions were met: "
                       + defaultValue;
         System.err.println(str);
-        assert false : str;
+        assert ch== ')' : "expected closing ) of when statement after else at position=" + position
+                      + " expression=" + this.expression;
       }
-      assert parse(depth + 1, '=') : "= expected in condition of when function at pos=" + this.position + " var="
-                    + var;
+      assert parse(depth + 1, '=') : "= expected in condition of when function at pos=" + this.position
+                    + " expression=" + this.expression + " but got ch=" + (char) ch;
+      if ( ch == '=')
+      {
       Node<D, R, F> val = parse(depth + 1);
 
       out.println("parsed " + var + " equals " + val);
       assert parse(depth + 1, ',') : ", expected after condition of when function at pos=" + this.position;
       Node<D, R, F> value = parseAdditionAndSubtractionOperations(depth + 1);
       err.println("value to be returned when condition is met: " + value + "\n");
+      } 
     }
     while (parse(depth + 1, ','));
     assert false : "todo: parse when function " + expression;
