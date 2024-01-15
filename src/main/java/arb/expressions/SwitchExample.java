@@ -1,8 +1,14 @@
 package arb.expressions;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_STATIC;
+import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.RETURN;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
 
 public class SwitchExample
 {
@@ -25,6 +31,7 @@ public class SwitchExample
   private static void createTableSwitch(MethodVisitor mv)
   {
     mv.visitCode();
+    Label   endSwitch    = new Label();
     Label   defaultLabel = new Label();
     Label[] labels       = new Label[]
     { new Label(), new Label(), new Label() };
@@ -36,11 +43,13 @@ public class SwitchExample
     {
       mv.visitLabel(labels[i]);
       // Your case code goes here
-      mv.visitJumpInsn(GOTO, defaultLabel);
+      mv.visitJumpInsn(GOTO, endSwitch);
     }
 
     mv.visitLabel(defaultLabel);
     // Your default case code goes here
+
+    mv.visitLabel(endSwitch);
     mv.visitInsn(RETURN);
     mv.visitMaxs(3, 1);
     mv.visitEnd();
@@ -49,6 +58,7 @@ public class SwitchExample
   private static void createLookupSwitch(MethodVisitor mv)
   {
     mv.visitCode();
+    Label   endSwitch    = new Label();
     Label   defaultLabel = new Label();
     int[]   keys         =
     { 10, 20, 30 };
@@ -62,11 +72,13 @@ public class SwitchExample
     {
       mv.visitLabel(labels[i]);
       // Your case code goes here
-      mv.visitJumpInsn(GOTO, defaultLabel);
+      mv.visitJumpInsn(GOTO, endSwitch);
     }
 
     mv.visitLabel(defaultLabel);
     // Your default case code goes here
+
+    mv.visitLabel(endSwitch);
     mv.visitInsn(RETURN);
     mv.visitMaxs(3, 1);
     mv.visitEnd();
