@@ -1,7 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.loadBits;
-import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
@@ -15,7 +14,9 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
-import arb.expressions.*;
+import arb.expressions.Expression;
+import arb.expressions.Mapping;
+import arb.expressions.Parser;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
@@ -23,7 +24,7 @@ import arb.functions.Function;
  * arb4j is made available under the terms of the Business Source License™ v1.1
  * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
+ * TeXmacs formatted versions of the same document respectively.
  */
 public class FunctionCall<D, R, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
@@ -110,7 +111,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
     if (needsResultTypeConversion)
     {
-      Compiler.loadResult(methodVisitor, verbose);
+      loadResult(methodVisitor, verbose);
     }
     if (verbose)
     {
@@ -140,7 +141,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                   false);
     if (needsResultTypeConversion)
     {
-      Compiler.invokeSetMethod(methodVisitor, resultType, targetResultType, true);
+      invokeSetMethod(methodVisitor, resultType, targetResultType, true);
 
     }
     return methodVisitor;
@@ -186,11 +187,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (needsArgTypeConversion)
     {
-      Compiler.invokeSetMethod(methodVisitor, mapping.domain, arg.type(), verbose);
+      invokeSetMethod(methodVisitor, mapping.domain, arg.type(), verbose);
     }
 
-    Compiler.loadOrder(methodVisitor);
-    Compiler.loadBits(methodVisitor);
+    loadOrder(methodVisitor);
+    loadBits(methodVisitor);
 
     if (verbose)
     {
@@ -213,7 +214,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
   public void loadFunctionFromField(MethodVisitor methodVisitor, Class<?> type)
   {
-    expression.loadFieldOntoStack(Compiler.loadThisOntoStack(methodVisitor), functionName, type);
+    expression.loadFieldOntoStack(loadThisOntoStack(methodVisitor), functionName, type);
   }
 
   private void loadOutputVariableOntoStack(MethodVisitor methodVisitor,
@@ -223,7 +224,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     if (isResult)
     {
-      Compiler.checkClassCast(loadResult(methodVisitor, verbose), resultType);
+      checkClassCast(loadResult(methodVisitor, verbose), resultType);
     }
     else
     {
