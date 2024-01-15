@@ -1,23 +1,12 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.compile;
-import static arb.expressions.Compiler.defineFunctionClass;
-import static arb.expressions.Compiler.generateConstructor;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getFunctionTypeSignature;
-import static arb.expressions.Compiler.loadResult;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACONST_NULL;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,27 +16,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.ComplexPolynomial;
-import arb.Field;
-import arb.RealPolynomial;
-import arb.Typesettable;
+import arb.*;
+import arb.Integer;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.Add;
-import arb.expressions.nodes.binary.Divide;
-import arb.expressions.nodes.binary.Exponentiate;
-import arb.expressions.nodes.binary.Multiply;
-import arb.expressions.nodes.binary.Subtract;
+import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
@@ -668,7 +647,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (parse(depth + 1, '('))
     {
-      node = parseAdditionAndSubtractionOperations(depth + 1);
+      node = parseFirst(depth + 1);
       if (!parse(depth + 1, ')'))
       {
         throw new ExpressionCompilerException(String.format("expected closing parenthesis at: depth=%d startPos=%s, position=%s in expression '%s' of length %d",
@@ -704,6 +683,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return node;
   }
 
+  int lastCh;
+
   public boolean parse(int depth, char... charsToparse)
   {
     skipSpaces();
@@ -711,6 +692,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       if (ch == charToparse)
       {
+        lastCh = ch;
         nextChar();
         if (verboseParser)
         {
@@ -728,7 +710,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return false;
   }
 
-  public Node<D, R, F> parseAdditionAndSubtractionOperations(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseFirst(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -736,7 +718,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.flush();
     }
 
-    Node<D, R, F> node = parseMultiplicationAndDivisionOperations(depth);
+    Node<D, R, F> node = parseSecond(depth);
 
     return parseAdditionAndSubtractionOperations(depth, node);
   }
@@ -756,14 +738,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         node = new Add<>(this,
                          node,
-                         parseMultiplicationAndDivisionOperations(depth),
+                         parseSecond(depth),
                          depth);
       }
       else if (parse(depth, '-'))
       {
         node = new Subtract<>(this,
                               node,
-                              parseMultiplicationAndDivisionOperations(depth),
+                              parseSecond(depth),
                               depth);
       }
       else
@@ -773,7 +755,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public Node<D, R, F> parseExponentiationOperations(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseThird(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -862,7 +844,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       node = new Exponentiate<>(this,
                                 node,
-                                parenthetical ? parseAdditionAndSubtractionOperations(depth) : parse(depth),
+                                parenthetical ? parseFirst(depth) : parse(depth),
                                 depth + 1);
       if (parenthetical)
       {
@@ -886,13 +868,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     parseOptionalIndependentVariableSpecification();
     nextChar();
-    rootNode = parseAdditionAndSubtractionOperations(0);
+    rootNode = parseFirst(0);
     assert rootNode != null : "parseRootNode: parseFirst() returned null, expression='" + expression + "'";
     rootNode.isResult = true;
     return rootNode;
   }
 
-  public Node<D, R, F> parseMultiplicationAndDivisionOperations(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseSecond(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -900,7 +882,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.flush();
     }
 
-    Node<D, R, F> node = parseExponentiationOperations(depth);
+    Node<D, R, F> node = parseThird(depth);
 
     return parseMultiplicationAndDivisionOperations(depth, node);
   }
@@ -913,7 +895,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         node = new Multiply<>(this,
                               node,
-                              parseExponentiationOperations(depth),
+                              parseThird(depth),
                               depth);
 
       }
@@ -921,7 +903,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         node = new Divide<>(this,
                             node,
-                            parseExponentiationOperations(depth),
+                            parseThird(depth),
                             depth);
       }
       else
@@ -962,34 +944,66 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F> parseWhen(int depth)
   {
+    TreeMap<Integer, Node<D, R, F>> cases        = new TreeMap<>();
+    Node<D, R, F>                   defaultValue = null;
+
     do
     {
       Node<D, R, F> var = parse(depth + 1);
-      if (var instanceof Variable && "else".equals(((Variable<D, R, F>) var).reference.name))
+      if (!(var instanceof Variable))
       {
-        assert parse(depth + 1, ',') : ", expected after else condition";
-        Node<D, R, F> defaultValue = parseAdditionAndSubtractionOperations(depth + 1);
-
-        String        str          = "todo: generate code to handle conditions and return this if none of the other conditions were met: "
-                      + defaultValue;
-        System.err.println(str);
-        assert ch == ')' : "expected closing ) of when statement after else at position=" + position + " expression="
-                      + this.expression;
+        throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
+                      + var);
       }
-      assert parse(depth + 1, '=') : "= expected in condition of when function at pos=" + this.position
-                    + " expression=" + this.expression + " but got ch=" + (char) ch;
-      if (ch == '=')
-      {
-        Node<D, R, F> val = parse(depth + 1);
 
-        out.println("parsed " + var + " equals " + val);
-        assert parse(depth + 1, ',') : ", expected after condition of when function at pos=" + this.position;
-        Node<D, R, F> value = parseAdditionAndSubtractionOperations(depth + 1);
-        err.println("value to be returned when condition is met: " + value + "\n");
+      Variable<D, R, F> variable = (Variable<D, R, F>) var;
+
+      if ("else".equals(variable.reference.name))
+      {
+        if (!parse(depth + 1, ','))
+        {
+          throw new ExpressionCompilerException(", expected after else condition");
+        }
+        defaultValue = parseFirst(depth + 1);
+
+        assert ch == ')' : format("expected closing ) of when statement after else at position=%d expression=%s",
+                                  position,
+                                  expression);
+      }
+      else
+      {
+        assert variable.reference.equals(independentVariableNode.reference) : "condition of when statement must be the equality of the input variable which is "
+                      + independentVariableNode + " not " + variable;
+
+        if (!parse(depth + 1, '='))
+        {
+          throw new ExpressionCompilerException(format("= expected in condition of when function at pos=%d expression=%s but got ch=%c and lastCh=%c",
+                                                       position,
+                                                       expression,
+                                                       ch,
+                                                       lastCh));
+        }
+
+        Node<D, R, F> condition = parse(depth + 1);
+        if (!(condition instanceof LiteralConstant))
+        {
+          throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable to an Integer LiteralConstant type, but got "
+                        + condition);
+        }
+        LiteralConstant<D, R, F> constant = (LiteralConstant<D, R, F>) condition;
+        out.println("parsed " + var + " equals " + condition);
+        if (!parse(depth + 1, ','))
+        {
+          throw new ExpressionCompilerException(", expected after condition of when function at pos="
+                        + this.position);
+        }
+        Node<D, R, F> value = parseFirst(depth + 1);
+        cases.put(new Integer(constant.value), value);
       }
     }
     while (parse(depth + 1, ','));
-    assert false : "todo: parse when function " + expression;
+    assert false : "TODO: make a When class that extends Node and contains cases=" + cases + " defaultValue="
+                  + defaultValue;
     return null;
   }
 
@@ -1024,7 +1038,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else
       {
-        Node<D, R, F> arg = parseAdditionAndSubtractionOperations(depth + 1);
+        Node<D, R, F> arg = parseFirst(depth + 1);
         if (parse(depth + 1, ')'))
         {
           return new FunctionCall<>(this,

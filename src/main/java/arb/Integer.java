@@ -27,6 +27,7 @@ import arb.algebra.Ring;
  */
 public class Integer implements
                      AutoCloseable,
+                     Comparable<Integer>,
                      Ring<Integer>
 {
 
@@ -316,6 +317,12 @@ public class Integer implements
     // assert prec == 0 : "exact precision methods require bits=0";
     arblib.fmpz_sub_si(res.swigCPtr, this.swigCPtr, i);
     return res;
+  }
+
+  @Override
+  public int compareTo(Integer o)
+  {
+    return arblib.fmpz_cmp(swigCPtr, o.swigCPtr);
   }
 
 }
