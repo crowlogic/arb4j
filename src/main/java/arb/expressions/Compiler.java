@@ -67,12 +67,7 @@ import arb.functions.Function;
 
 public class Compiler
 {
-  private static final String objectDesc = Type.getInternalName(Object.class);
-
-  public static void loadZeroConstant(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitInsn(Opcodes.ICONST_0);
-  }
+  public static final String objectDesc = Type.getInternalName(Object.class);
 
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
                                                                              Context context,
@@ -106,7 +101,7 @@ public class Compiler
                  Class<? extends R> rangeClass,
                  Class<? extends F> functionClass,
                  boolean verbose,
-                 String functionName) throws ExpressionCompilerException
+                 String functionName) 
   {
     Expression<D, R, F> expression = new Expression<D, R, F>(className,
                                                              domainClass,
@@ -134,7 +129,7 @@ public class Compiler
                  Class<? extends D> domainClass,
                  Class<? extends R> rangeClass,
                  Class<? extends F> functionClass,
-                 boolean verbose) throws ExpressionCompilerException
+                 boolean verbose)
   {
     return compile(className, expressionString, context, domainClass, rangeClass, functionClass, verbose, null);
   }
