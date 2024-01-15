@@ -1,11 +1,23 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.compile;
+import static arb.expressions.Compiler.defineFunctionClass;
+import static arb.expressions.Compiler.generateConstructor;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getFunctionTypeSignature;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACONST_NULL;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,14 +28,26 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.*;
+import arb.ComplexPolynomial;
+import arb.Field;
+import arb.RealPolynomial;
+import arb.Typesettable;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.binary.Add;
+import arb.expressions.nodes.binary.Divide;
+import arb.expressions.nodes.binary.Exponentiate;
+import arb.expressions.nodes.binary.Multiply;
+import arb.expressions.nodes.binary.Subtract;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
@@ -35,12 +59,10 @@ import arb.functions.Function;
  * high-performance {@link Function} implementations on-the-fly.
  *
  * <p>
- * Key Features:
+ * Key features:
  * </p>
  * <ul>
- * <li>Compiles expressions dynamically into Java bytecodes.</li>
- * <li>Supports operations like addition, subtraction, multiplication, division,
- * and exponentiation.</li>
+ * <li>Compiles mathematical expressions dynamically into Java bytecodes.</li>
  * <li>Manages variables, constants, and function calls within expressions.</li>
  * <li>Handles intermediate variables and constants effectively.</li>
  * <li>Injects variable and function references into compiled instances.</li>
@@ -57,15 +79,15 @@ import arb.functions.Function;
  * </p>
  *
  * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
+ * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
+ * TeXmacs formatted versions of the same document respectively.
  * 
  * @param <D> domain type
  * @param <R> range type
  * @param <F> the function type of the expression, extending {@link Function}
  * 
- * @author ©2023 Stephen Crowley
+ * @author ©2024 Stephen Crowley
  */
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
@@ -101,7 +123,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (verbose)
     {
-      out.println("instantiating $ " + compiledExpression.rootNode.typeset() + "$");
+      out.format("\ninstantiating $%s$\n\n", compiledExpression.rootNode.typeset());
     }
     return func;
   }
@@ -117,11 +139,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
-  protected int                              position                  = -1;
+  public int                                 position                  = -1;
 
   public int                                 ch                        = 0;
 
-  protected final String                     expression;
+  public final String                        expression;
 
   public Variables                           variables;
 
@@ -167,7 +189,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                              functionClassDescriptor;
 
-  public HashMap<String, Mapping<?, ?>>      referencedFunctions       = new HashMap<>();
+  public HashMap<String, Mapping<D, R>>      referencedFunctions       = new HashMap<>();
 
   public HashMap<String, Variable<D, R, F>>  referencedVariables       = new HashMap<>();
 
@@ -190,14 +212,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
                     Class<? extends R> rangeClass,
                     Class<? extends F> functionClass,
                     String expressionString,
-                    Context context2)
+                    Context context)
   {
     this(className2,
          domainClass,
          rangeClass,
          functionClass,
          expressionString,
-         context2,
+         context,
          null);
   }
 
@@ -209,8 +231,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
                     Context context,
                     String functionName)
   {
-    this.rangeClassDescriptor      = Type.getDescriptor(rangeClass);
-    this.domainClassDescriptor     = Type.getDescriptor(domainClass);
+    this.rangeClassDescriptor      = rangeClass.descriptorString();
+    this.domainClassDescriptor     = domainClass.descriptorString();
     this.className                 = className;
     this.domainType                = domainClass;
     this.rangeType                 = rangeClass;
@@ -229,16 +251,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.functionName              = functionName;
   }
 
-  /**
-   * Emit an instruction to invoke the
-   * {@link Function#evaluate(Object, int, Object)} method of a function
-   * registered via a call to {@link Context#registerFunction(String, Function) .
-   * The unary operation has the signature D functionName( int bits, D result)
-   * 
-   * @param methodVisitor
-   * @param functionName
-   * @return methodVisitor
-   */
   public MethodVisitor callContextualUnaryFunction(MethodVisitor methodVisitor, Mapping<D, R> mapping, Class<?> type)
   {
     boolean isInterface = mapping.functionInterface != null;
@@ -250,7 +262,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return Compiler.checkClassCast(methodVisitor, type);
   }
 
-  private ClassVisitor constructClassVisitor()
+  public ClassVisitor constructClassVisitor()
   {
     ClassVisitor cw = debug ? new CheckClassAdapter(new ClassWriter(ClassWriter.COMPUTE_FRAMES)) : new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 
@@ -262,14 +274,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return cw;
   }
 
-  /**
-   * Calls {@link Compiler#declareConstants(ClassVisitor, Iterable)},
-   * {@link #declareReferencedVariables(ClassVisitor)},
-   * {@link #declareIntermediateVariables(ClassVisitor)}, then
-   * {@link Compiler#declareFunctions(Expression, ClassVisitor, FunctionMappings)}
-   * 
-   * @param classVisitor
-   */
   public void declareFields(ClassVisitor classVisitor)
   {
 
@@ -283,16 +287,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   }
 
-  /**
-   * Declares the given constants as fields in the class being generated.
-   * 
-   * @param classVisitor     The {@link ClassVisitor} for the class being
-   *                         generated
-   * @param typeDescriptor   the type of the fields
-   * @param literalConstants An {@link Iterable} of {@link LiteralConstant}
-   *                         objects representing the constants to be declared
-   * @return classVisitor
-   */
   public ClassVisitor declareConstants(ClassVisitor classVisitor)
   {
     if (verbose)
@@ -354,26 +348,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  /**
-   * Passes this{@link #instructions} to
-   * {@link Compiler#defineFunctionClass(byte[])} and assigns the result to
-   * this{@link #compiledClass}
-   * 
-   * @return this{@link #compiledClass} after it has been set
-   */
-  protected Class<F> define()
+  public Class<F> define()
   {
     return compiledClass = defineFunctionClass(className, instructions, context);
   }
 
-  /**
-   * Generates the {@link Class} containing a {@link Function} implementation
-   * which evaluates this{@link #expression}
-   * 
-   * @return this
-   * @throws ExpressionCompilerException
-   */
-  Expression<D, R, F> generate() throws ExpressionCompilerException
+  public Expression<D, R, F> generate() throws ExpressionCompilerException
   {
     if (verbose)
     {
@@ -431,7 +411,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return methodVisitor;
   }
 
-  protected ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
+  public ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
   {
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "close", "()V", null, null);
     try
@@ -466,7 +446,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  private ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws ExpressionCompilerException
+  public ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws ExpressionCompilerException
   {
 
     Label startLabel = new Label();
@@ -474,7 +454,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (verbose)
     {
-      out.format("Generating evaluate with methodDesc='%s' signature='%s'\n",
+      out.format("\nGenerating evaluate with methodDesc='%s' signature='%s'\n\n",
                  evaluateMethodDesc,
                  evaluateMethodSignature);
       out.flush();
@@ -511,16 +491,23 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitInsn(Opcodes.ARETURN);
     methodVisitor.visitLabel(endLabel);
 
-    methodVisitor.visitLocalVariable("in", "Ljava/lang/Object;", domainClassDescriptor, startLabel, endLabel, 1);
-    methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
-    methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
-    methodVisitor.visitLocalVariable("result", "Ljava/lang/Object;", rangeClassDescriptor, startLabel, endLabel, 4);
+    declareLocalVariables(methodVisitor, startLabel, endLabel);
 
     methodVisitor.visitMaxs(0, 0);
 
     methodVisitor.visitEnd();
 
     return classVisitor;
+  }
+
+  public MethodVisitor declareLocalVariables(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
+  {
+    String objectClassDescriptor = Object.class.descriptorString();
+    methodVisitor.visitLocalVariable("in", objectClassDescriptor, domainClassDescriptor, startLabel, endLabel, 1);
+    methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
+    methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
+    methodVisitor.visitLocalVariable("result", objectClassDescriptor, rangeClassDescriptor, startLabel, endLabel, 4);
+    return methodVisitor;
   }
 
   public String getNextConstantFieldName()
@@ -533,11 +520,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return "l" + intermediateVariableCount++;
   }
 
-  /**
-   * 
-   * @return true if this{@link #rangeType} {@link Object#equals(Object)}
-   *         {@link RealPolynomial}
-   */
   public boolean hasPolynomialRange()
   {
     return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class);
@@ -591,7 +573,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void injectVariableReferences() throws NoSuchFieldException, IllegalAccessException
   {
-
     if (referencedVariables != null)
     {
       referencedVariables.entrySet().forEach(entry ->
@@ -611,15 +592,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  /**
-   * 1. Calls this{@link #define()} if this{@link #compiledClass} is NULL<br>
-   * 2. Instantiates the class and assigns it to this{@link #instance} <br>
-   * 3. Calls this{@link #injectVariableReferences()} <br>
-   * 
-   * @return this{@link #instance} after it has been compiled (if necessary),
-   *         instantiated and injected with references to {@link Variable}s in
-   *         {@link Variables}
-   */
   protected F instantiate()
   {
     try
@@ -652,39 +624,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return methodVisitor;
   }
 
-  /**
-   * Emits a {@link Opcodes#GETFIELD} instruction for the integer field with the
-   * given name
-   * 
-   * @param methodVisitor
-   * @param indexFieldName
-   * @return
-   */
   public MethodVisitor loadIndexField(MethodVisitor methodVisitor, String indexFieldName)
   {
     methodVisitor.visitFieldInsn(GETFIELD, functionClassInternalName, indexFieldName, "I");
     return methodVisitor;
   }
 
-  /**
-   * @return true if either this{@link #literalConstants} or
-   *         this{@link #intermediateVariables} is populated
-   */
   public boolean needsCloseMethod()
   {
     return !literalConstants.isEmpty() | intermediateVariableCount > 0;
   }
 
-  /**
-   * Calls this{@link #getNextIntermediatevariableFieldName()} and adds it to
-   * this{@link #intermediateVariables}
-   * 
-   * @param depth
-   * 
-   * @return the field name returned by
-   *         this{@link #getNextIntermediatevariableFieldName()}
-   */
-  private String newIntermediateVariable(int depth, Class<?> type)
+  public String newIntermediateVariable(int depth, Class<?> type)
   {
     String intermediateVarName = getNextIntermediatevariableFieldName(depth);
     intermediateVariables.add(new IntermediateVariable(intermediateVarName,
@@ -697,32 +648,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return intermediateVarName;
   }
 
-  /**
-   * Increment this{@link #position} and set this{@link #ch} to the character at
-   * offset this{@link #position} in the expressing {@link String}
-   */
   public void nextChar()
   {
     ch = (++position < expression.length()) ? expression.charAt(position) : -1;
   }
 
-  /**
-   * Consumes characters, calling this{@link #parseFirst(int)} to process
-   * parenthesis and calling this{@link #eatNumber(int)} if this{@link #ch}
-   * indicates a number a the current position or
-   * this{@link #resolveFunctionInvocationOrVariableReference(int, int)} if
-   * this{@link #ch} indicates the name of either a function or variable reference
-   * 
-   * @param depth
-   * 
-   * @return the next node in the syntax tree
-   * @throws ExpressionCompilerException
-   */
-  private Node<D, R, F> parse(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parse(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
-      err.format("eat(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("parse(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
     }
 
@@ -732,7 +667,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (parse(depth + 1, '('))
     {
-      node = parseFirst(depth + 1);
+      node = parseAdditionAndSubtraction(depth + 1);
       if (!parse(depth + 1, ')'))
       {
         throw new ExpressionCompilerException(String.format("expected closing parenthesis at: depth=%d startPos=%s, position=%s in expression '%s' of length %d",
@@ -747,12 +682,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else if (Parser.isNumeric(ch))
     {
       node = parseNumber(depth, startPos);
-      assert node != null : "eatNumber returned null";
+      assert node != null : "parseNumber returned null";
     }
     else if (Parser.isLatinOrGreek(ch, false))
     {
       node = resolveFunctionInvocationOrVariableReference(depth, startPos);
-      assert node != null : "eatFunctionInvocationOrVariableReference returned null";
+      assert node != null : "parseFunctionInvocationOrVariableReference returned null";
     }
     else if (ch == ')')
     {
@@ -761,35 +696,25 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (verboseParser)
     {
-      out.println("eat() returning " + node);
+      out.println("parse() returning " + node);
       out.flush();
     }
 
     return node;
   }
 
-  /**
-   * Calls this{@link #skipSpaces()} and checks if the current this{@link #ch} is
-   * equal to one of the charsToEat
-   * 
-   * @param depth
-   * @param charsToEat
-   * 
-   * @return true if the next non-space character is one of the characters in
-   *         charsToEat
-   */
-  public boolean parse(int depth, char... charsToEat)
+  public boolean parse(int depth, char... charsToparse)
   {
     skipSpaces();
-    for (int charToEat : charsToEat)
+    for (int charToparse : charsToparse)
     {
-      if (ch == charToEat)
+      if (ch == charToparse)
       {
         nextChar();
         if (verboseParser)
         {
           err.format("Ate expected '%c' at depth %d and advanced to char '%c' at pos %d\n",
-                     charToEat,
+                     charToparse,
                      depth,
                      ch == -1 ? '?' : ch,
                      position);
@@ -802,25 +727,21 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return false;
   }
 
-  /**
-   * Loop which instantiates {@link Add} and {@link Subtract} nodes
-   * 
-   * @param depth
-   * 
-   * @return new {@link Add} or {@link Subtract} node or result from
-   *         this{@link #parseSecond(int)}
-   * @throws ExpressionCompilerException
-   */
-  public Node<D, R, F> parseFirst(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseAdditionAndSubtraction(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
-      err.format("eatFirst(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("parseFirst(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
     }
 
     Node<D, R, F> node = parseSecond(depth);
 
+    return parseAdditionAndSubtraction(depth, node);
+  }
+
+  public Node<D, R, F> parseAdditionAndSubtraction(int depth, Node<D, R, F> node)
+  {
     while (true)
     {
       if (node == null)
@@ -851,40 +772,20 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  /**
-   * Calls this{@link #parse(int)} and if this{@link #ch} is '^' then a new
-   * {@link Exponentiate} node is instantiated
-   * 
-   * @param depth
-   * 
-   * @return either a new {@link Exponentiate} node from
-   *         this{@link #parsePower(int, Node)} or a node from
-   *         this{@link #parse(int)}
-   * @throws ExpressionCompilerException
-   */
-  private Node<D, R, F> parseLast(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseLast(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
-      err.format("eatLast(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("parseLast(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
     }
 
     return parsePower(depth, parse(depth));
   }
 
-  /**
-   * Upon entrance, this{@link #ch} should already be known to be a Latin or Greek
-   * character
-   * 
-   * @param depth
-   * @param startPos
-   * 
-   * @return the {@link Reference} (having name and possibly index) at startPos
-   */
-  private Reference parseName(int depth, int startPos)
+  public Reference parseName(int depth, int startPos)
   {
-    while (Parser.isLatinOrGreek(ch, true))
+    while (isLatinOrGreek(ch, true))
     {
       nextChar();
     }
@@ -899,15 +800,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
         nextChar();
       }
       index = expression.substring(indexPosition, position - 1);
-//      if ()
-//      {
-//        throw new ExpressionCompilerException("missing closing ']' at " + position + " of '" + expression + "'");
-//      }
     }
 
     if (verboseParser)
     {
-      err.format("eatName(depth=%d): startPos=%d, position=%d, identifier='%s' index='%s' ch='%c'\n",
+      err.format("parseName(depth=%d): startPos=%d, position=%d, identifier='%s' index='%s' ch='%c'\n",
                  depth,
                  startPos,
                  position,
@@ -921,15 +818,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                          index);
   }
 
-  /**
-   * On entrance it should already be known that this{@link #ch} is a digit or a
-   * dot
-   * 
-   * @param startPos
-   * 
-   * @return a new {@link LiteralConstant} representing the base-10 number
-   */
-  private Node<D, R, F> parseNumber(int depth, int startPos)
+  public Node<D, R, F> parseNumber(int depth, int startPos)
   {
     while (isNumeric(ch))
     {
@@ -961,18 +850,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  /**
-   * Checks if this{@link #ch} is a ^ character or a numerical superscript and
-   * generates the corresponding {@link Exponentiate} node if so
-   * 
-   * @param depth
-   * @param node
-   * 
-   * @return node if this{@link #ch} does not indicate a power raising operation,
-   *         otherwise returns a new {@link Exponentiate} operator with node as
-   *         its parent node
-   * @throws ExpressionCompilerException
-   */
   private Node<D, R, F> parsePower(int depth, Node<D, R, F> node) throws ExpressionCompilerException
   {
     if (parse(depth, '^'))
@@ -984,13 +861,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       node = new Exponentiate<>(this,
                                 node,
-                                parenthetical ? parseFirst(depth) : parse(depth),
+                                parenthetical ? parseAdditionAndSubtraction(depth) : parse(depth),
                                 depth + 1);
       if (parenthetical)
       {
         if (!parse(depth, ')'))
         {
-          throw new RuntimeException(String.format("eatPower expected closing parenthesis at: position=%d, ch='%c'\n",
+          throw new RuntimeException(String.format("parsePower expected closing parenthesis at: position=%d, ch='%c'\n",
                                                    position,
                                                    ch == -1 ? '?' : ch));
         }
@@ -1008,31 +885,27 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     parseOptionalIndependentVariableSpecification();
     nextChar();
-    rootNode = parseFirst(0);
-    assert rootNode != null : "eatRootNode: eatFirst() returned null, expression='" + expression + "'";
+    rootNode = parseAdditionAndSubtraction(0);
+    assert rootNode != null : "parseRootNode: parseFirst() returned null, expression='" + expression + "'";
     rootNode.isResult = true;
     return rootNode;
   }
 
-  /**
-   * Loop which instantiates new {@link Multiply} and {@link Divide} nodes
-   * 
-   * @param depth
-   * 
-   * @return new {@link Multiply} or {@link Divide} node or result from
-   *         this{@link #parseLast(int)}
-   * @throws ExpressionCompilerException
-   */
-  private Node<D, R, F> parseSecond(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseSecond(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
-      err.format("eatSecond(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("parseSecond(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
     }
 
     Node<D, R, F> node = parseLast(depth);
 
+    return parseMultiplicationAndDivision(depth, node);
+  }
+
+  public Node<D, R, F> parseMultiplicationAndDivision(int depth, Node<D, R, F> node)
+  {
     while (true)
     {
       if (parse(depth, '*', '×'))
@@ -1057,21 +930,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  /**
-   * Checks if this{@link #ch} is a ^ numerical superscript and generates the
-   * corresponding {@link Exponentiate} node if so
-   * 
-   * TODO: support numbers greater than 9 so something like "x²⁴" would mean
-   * "x^(24)"
-   * 
-   * @param depth
-   * @param node
-   * 
-   * @return node if this{@link #ch} does not indicate the specific power raising
-   *         operation, otherwise returns a new {@link Exponentiate} operator with
-   *         node as its parent node
-   */
-  Node<D, R, F> parseSuperscript(int depth, Node<D, R, F> node, char superscript, String digit)
+  public Node<D, R, F> parseSuperscript(int depth, Node<D, R, F> node, char superscript, String digit)
   {
     if (parse(depth + 1, superscript))
     {
@@ -1085,15 +944,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return node;
   }
 
-  /**
-   * Calls this{@link #parseSuperscript(int, Node, int, String)} for each digit of
-   * the base 10 numeral system
-   * 
-   * @param depth
-   * @param node
-   * 
-   * @return
-   */
   public Node<D, R, F> parseSuperscripts(int depth, Node<D, R, F> node)
   {
     node = parseSuperscript(depth + 1, node, '⁰', "0");
@@ -1117,7 +967,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (var instanceof Variable && "else".equals(((Variable<D, R, F>) var).reference.name))
       {
         assert parse(depth + 1, ',') : ", expected after else condition";
-        Node<D, R, F> defaultValue = parseFirst(depth + 1);
+        Node<D, R, F> defaultValue = parseAdditionAndSubtraction(depth + 1);
 
         String        str          = "todo: generate code to handle conditions and return this if none of the other conditions were met: "
                       + defaultValue;
@@ -1130,7 +980,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       out.println("parsed " + var + " equals " + val);
       assert parse(depth + 1, ',') : ", expected after condition of when function at pos=" + this.position;
-      Node<D, R, F> value = parseFirst(depth + 1);
+      Node<D, R, F> value = parseAdditionAndSubtraction(depth + 1);
       err.println("value to be returned when condition is met: " + value + "\n");
     }
     while (parse(depth + 1, ','));
@@ -1138,18 +988,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return null;
   }
 
-  /**
-   * Either generates a reference to an existing intermediate variable thats not
-   * already allocated and is of the specified type or allocates a new one and
-   * generates a reference to it
-   * 
-   * @param methodVisitor
-   * @param depth         the depth this intermediate variable is needed for. "x"
-   *                      would be depth 0, "sin(x)" would be sin at depth 0 and x
-   *                      at depth 1 for example
-   * @param type          the type of variable
-   * @return name of the intermediate variable
-   */
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
   {
     String intermediateVariableName = newIntermediateVariable(depth, type);
@@ -1157,20 +995,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return intermediateVariableName;
   }
 
-  /**
-   * At this point it is only known that the present character this{@link #ch} at
-   * this{@link #position} {@link Parser#isLatinOrGreek(int, boolean)} so that it
-   * is the name of something, but unknown if its the name of a function
-   * invocation or a variable reference
-   * 
-   * @param depth
-   * @param startPos
-   * 
-   * @return
-   * @throws ExpressionCompilerException
-   */
-  private Node<D, R, F> resolveFunctionInvocationOrVariableReference(int depth,
-                                                                     int startPos) throws ExpressionCompilerException
+  public Node<D, R, F> resolveFunctionInvocationOrVariableReference(int depth,
+                                                                    int startPos) throws ExpressionCompilerException
   {
     Reference reference  = parseName(depth, startPos);
     boolean   isFunction = parse(depth, '(');
@@ -1193,7 +1019,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else
       {
-        Node<D, R, F> arg = parseFirst(depth + 1);
+        Node<D, R, F> arg = parseAdditionAndSubtraction(depth + 1);
         if (parse(depth + 1, ')'))
         {
           return new FunctionCall<>(this,
@@ -1230,22 +1056,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  private void setFieldValue(String variableName, Object value) throws NoSuchFieldException, IllegalAccessException
+  public void setFieldValue(String variableName, Object value) throws NoSuchFieldException, IllegalAccessException
   {
     java.lang.reflect.Field field = compiledClass.getField(variableName);
     field.set(instance, value);
   }
 
-  /**
-   * Calls {@link Compiler#loadResult(MethodVisitor)}, then
-   * this{@link Compiler#checkClassCast(MethodVisitor, boolean)} then generates an
-   * invocation of the {@link Field#set(Field)} method whose only argument and
-   * return type is this{@link #domainClassDescriptor}
-   * 
-   * @param methodVisitor
-   * @param class1
-   * @return methodVisitor
-   */
   public MethodVisitor setResult(MethodVisitor methodVisitor)
   {
     Compiler.checkClassCast(loadResult(methodVisitor, verbose), rangeType);
@@ -1258,9 +1074,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return methodVisitor;
   }
 
-  /**
-   * Calls this{@link #nextChar()} until ch != ' '
-   */
   void skipSpaces()
   {
     while (ch == ' ')
@@ -1281,12 +1094,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return rootNode == null ? null : rootNode.typeset();
   }
 
-  /**
-   * Writes the contents of this{@link #instructions} to a file
-   * 
-   * @param file
-   * @return
-   */
   public Expression<D, R, F> writeBytecodes(File file)
   {
     try

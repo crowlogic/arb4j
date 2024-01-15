@@ -31,13 +31,14 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
   public String        functionName;
   public boolean       contextual                      = false;
-  public Mapping<?, ?> mapping;
+  public Mapping<D, R> mapping;
 
   HashSet<String>      integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
   { "sqrt", "tanh", "log" }));
 
   Class<?>             targetResultType;
 
+  @SuppressWarnings("unchecked")
   public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument, int depth)
   {
     super(argument,
@@ -48,7 +49,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     this.depth        = depth;
     if (expression.context != null)
     {
-      mapping    = expression.context.functions.map.get(functionName);
+      mapping    = (Mapping<D, R>) expression.context.functions.map.get(functionName);
       contextual = mapping != null;
       if (contextual)
       {
