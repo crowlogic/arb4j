@@ -7,13 +7,15 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.complex.ComplexFunction;
 
-public interface Function<D, R> extends AutoCloseable
+@SuppressWarnings("unchecked")
+public interface Function<D, R> extends
+                         AutoCloseable
 {
   public default void close()
   {
-    
+
   }
-  
+
   public default Class<D> domainType()
   {
     assert false : "this should be implemented by extending class";
@@ -118,7 +120,23 @@ public interface Function<D, R> extends AutoCloseable
     return null;
   }
 
-  @SuppressWarnings("unchecked")
+  /**
+   * Returns the result of
+   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean, String)}
+   * after calling {@link Context#registerFunction(String, Function)} to register
+   * the function by name in the specified {@link Context}
+   * 
+   * @param <D>
+   * @param <R>
+   * @param <F>
+   * @param domainClass
+   * @param rangeClass
+   * @param functionName
+   * @param expression
+   * @param context
+   * @param verbose
+   * @return
+   */
   public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
                                                            Class<? extends R> rangeClass,
                                                            String functionName,
@@ -126,13 +144,9 @@ public interface Function<D, R> extends AutoCloseable
                                                            Context context,
                                                            boolean verbose)
   {
-    var func = instantiate(expression, context, domainClass, rangeClass, Function.class, verbose, functionName);
-
-   
-    return (F) func;
+    return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, verbose, functionName);
   }
 
-  @SuppressWarnings("unchecked")
   public static <D, R, F extends Function<D, R>>
          F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, Context context)
@@ -140,7 +154,6 @@ public interface Function<D, R> extends AutoCloseable
     return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, false, null);
   }
 
-  @SuppressWarnings("unchecked")
   public static <D, R, F extends Function<D, R>>
          F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, boolean verbose)
@@ -156,11 +169,7 @@ public interface Function<D, R> extends AutoCloseable
   }
 
   /**
-   * Returns the result of
-   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean, String)}
-   * afteRealFunction calling {@link Context#registerFunction(String, Function)}
-   * to register the function by name in the specified {@link Context}
-   * 
+   * @see {@link #express(Class, Class, String, String, Context, boolean)}
    * @param functionName
    * @param expression
    * @param context
@@ -175,7 +184,6 @@ public interface Function<D, R> extends AutoCloseable
     return express(domainClass, rangeClass, functionName, expression, context, false);
   }
 
-  @SuppressWarnings("unchecked")
   public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
                                                                   Class<? extends R> rangeClass,
                                                                   String expression,
