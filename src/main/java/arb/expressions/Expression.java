@@ -207,14 +207,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean                             recursive                 = false;
 
-  public Expression(String className2,
+  public Expression(String className,
                     Class<? extends D> domainClass,
                     Class<? extends R> rangeClass,
                     Class<? extends F> functionClass,
                     String expressionString,
                     Context context)
   {
-    this(className2,
+    this(className,
          domainClass,
          rangeClass,
          functionClass,
@@ -264,8 +264,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ClassVisitor constructClassVisitor()
   {
-    ClassVisitor cw = debug ? new CheckClassAdapter(new ClassWriter(ClassWriter.COMPUTE_FRAMES)) : new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-
+    ClassVisitor cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+    if (debug)
+    {
+      cw = new CheckClassAdapter(cw);
+    }
     if (verbose)
     {
       cw = new FlushingTraceClassVisitor(cw,
@@ -276,7 +279,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareFields(ClassVisitor classVisitor)
   {
-
     declareConstants(classVisitor);
 
     declareReferencedVariables(classVisitor);
@@ -284,14 +286,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     declareIntermediateVariables(classVisitor);
 
     declareFunctionReferences(classVisitor);
-
   }
 
   public ClassVisitor declareConstants(ClassVisitor classVisitor)
   {
     if (verbose)
     {
-      err.println("Declaring constants: " + literalConstants);
+      err.println("\nDeclaring constants: " + literalConstants + "\n\n");
       err.flush();
     }
     for (var constant : literalConstants)
@@ -305,7 +306,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (verbose)
     {
-      err.println("Declaring referenced functions: " + referencedFunctions);
+      err.println("\nDeclaring referenced functions: " + referencedFunctions + "\n\n");
       err.flush();
     }
     referencedFunctions.forEach((name, function) ->
@@ -326,7 +327,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (verbose)
     {
-      err.println("Declaring intermediate variables: " + intermediateVariables);
+      err.println("\nDeclaring intermediate variables: " + intermediateVariables + "\n\n");
       err.flush();
     }
     for (var variable : intermediateVariables)
@@ -377,7 +378,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         if (verbose)
         {
-          out.println("Generating close method");
+          out.println("\nGenerating close method\n\n");
           out.flush();
         }
         generateCloseMethod(classVisitor);
@@ -484,7 +485,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (verbose)
     {
-      out.println("Returning from evaluate method...\n");
+      out.println("\nReturning from evaluate method...\n\n");
       out.flush();
     }
 
@@ -540,7 +541,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return methodVisitor;
   }
 
-  public void injectRegisteredFunctionReferences() throws NoSuchFieldException, IllegalAccessException
+  public void injectContextualFunctionReferences() throws NoSuchFieldException, IllegalAccessException
   {
     if (recursive)
     {
@@ -598,7 +599,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       instance = (compiledClass != null ? compiledClass : define()).getDeclaredConstructor().newInstance();
       injectVariableReferences();
-      injectRegisteredFunctionReferences();
+      injectContextualFunctionReferences();
     }
     catch (Exception e)
     {
@@ -642,7 +643,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                        type));
     if (verbose)
     {
-      out.println("Allocating intermediate variable " + intermediateVarName + " at depth " + depth);
+      out.println("\nAllocating intermediate variable " + intermediateVarName + " at depth " + depth + "\n\n");
       out.flush();
     }
     return intermediateVarName;
@@ -663,7 +664,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     Node<D, R, F> node     = null;
 
-    int           startPos = this.position;
+    int           startPos = position;
 
     if (parse(depth + 1, '('))
     {
@@ -713,7 +714,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         nextChar();
         if (verboseParser)
         {
-          err.format("Ate expected '%c' at depth %d and advanced to char '%c' at pos %d\n",
+          err.format("\nparsed expected '%c' at depth %d and advanced to char '%c' at pos %d\n\n",
                      charToparse,
                      depth,
                      ch == -1 ? '?' : ch,
@@ -731,11 +732,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (verboseParser)
     {
-      err.format("parseFirst(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("parseAdditionAndSubtraction(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
     }
 
-    Node<D, R, F> node = parseSecond(depth);
+    Node<D, R, F> node = parseMultiplicationAndDivision(depth);
 
     return parseAdditionAndSubtraction(depth, node);
   }
@@ -755,14 +756,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         node = new Add<>(this,
                          node,
-                         parseSecond(depth),
+                         parseMultiplicationAndDivision(depth),
                          depth);
       }
       else if (parse(depth, '-'))
       {
         node = new Subtract<>(this,
                               node,
-                              parseSecond(depth),
+                              parseMultiplicationAndDivision(depth),
                               depth);
       }
       else
@@ -891,11 +892,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return rootNode;
   }
 
-  public Node<D, R, F> parseSecond(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseMultiplicationAndDivision(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
-      err.format("parseSecond(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("parseMultiplicationAndDivision(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
     }
 
