@@ -668,7 +668,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (parse(depth + 1, '('))
     {
-      node = parseAdditionAndSubtraction(depth + 1);
+      node = parseAdditionAndSubtractionOperations(depth + 1);
       if (!parse(depth + 1, ')'))
       {
         throw new ExpressionCompilerException(String.format("expected closing parenthesis at: depth=%d startPos=%s, position=%s in expression '%s' of length %d",
@@ -728,7 +728,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return false;
   }
 
-  public Node<D, R, F> parseAdditionAndSubtraction(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseAdditionAndSubtractionOperations(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -736,12 +736,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.flush();
     }
 
-    Node<D, R, F> node = parseMultiplicationAndDivision(depth);
+    Node<D, R, F> node = parseMultiplicationAndDivisionOperations(depth);
 
-    return parseAdditionAndSubtraction(depth, node);
+    return parseAdditionAndSubtractionOperations(depth, node);
   }
 
-  public Node<D, R, F> parseAdditionAndSubtraction(int depth, Node<D, R, F> node)
+  public Node<D, R, F> parseAdditionAndSubtractionOperations(int depth, Node<D, R, F> node)
   {
     while (true)
     {
@@ -756,14 +756,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         node = new Add<>(this,
                          node,
-                         parseMultiplicationAndDivision(depth),
+                         parseMultiplicationAndDivisionOperations(depth),
                          depth);
       }
       else if (parse(depth, '-'))
       {
         node = new Subtract<>(this,
                               node,
-                              parseMultiplicationAndDivision(depth),
+                              parseMultiplicationAndDivisionOperations(depth),
                               depth);
       }
       else
@@ -773,7 +773,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public Node<D, R, F> parseLast(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseExponentiationOperations(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -862,7 +862,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       node = new Exponentiate<>(this,
                                 node,
-                                parenthetical ? parseAdditionAndSubtraction(depth) : parse(depth),
+                                parenthetical ? parseAdditionAndSubtractionOperations(depth) : parse(depth),
                                 depth + 1);
       if (parenthetical)
       {
@@ -886,13 +886,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     parseOptionalIndependentVariableSpecification();
     nextChar();
-    rootNode = parseAdditionAndSubtraction(0);
+    rootNode = parseAdditionAndSubtractionOperations(0);
     assert rootNode != null : "parseRootNode: parseFirst() returned null, expression='" + expression + "'";
     rootNode.isResult = true;
     return rootNode;
   }
 
-  public Node<D, R, F> parseMultiplicationAndDivision(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> parseMultiplicationAndDivisionOperations(int depth) throws ExpressionCompilerException
   {
     if (verboseParser)
     {
@@ -900,12 +900,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.flush();
     }
 
-    Node<D, R, F> node = parseLast(depth);
+    Node<D, R, F> node = parseExponentiationOperations(depth);
 
-    return parseMultiplicationAndDivision(depth, node);
+    return parseMultiplicationAndDivisionOperations(depth, node);
   }
 
-  public Node<D, R, F> parseMultiplicationAndDivision(int depth, Node<D, R, F> node)
+  public Node<D, R, F> parseMultiplicationAndDivisionOperations(int depth, Node<D, R, F> node)
   {
     while (true)
     {
@@ -913,7 +913,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         node = new Multiply<>(this,
                               node,
-                              parseLast(depth),
+                              parseExponentiationOperations(depth),
                               depth);
 
       }
@@ -921,7 +921,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         node = new Divide<>(this,
                             node,
-                            parseLast(depth),
+                            parseExponentiationOperations(depth),
                             depth);
       }
       else
@@ -968,7 +968,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (var instanceof Variable && "else".equals(((Variable<D, R, F>) var).reference.name))
       {
         assert parse(depth + 1, ',') : ", expected after else condition";
-        Node<D, R, F> defaultValue = parseAdditionAndSubtraction(depth + 1);
+        Node<D, R, F> defaultValue = parseAdditionAndSubtractionOperations(depth + 1);
 
         String        str          = "todo: generate code to handle conditions and return this if none of the other conditions were met: "
                       + defaultValue;
@@ -981,7 +981,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       out.println("parsed " + var + " equals " + val);
       assert parse(depth + 1, ',') : ", expected after condition of when function at pos=" + this.position;
-      Node<D, R, F> value = parseAdditionAndSubtraction(depth + 1);
+      Node<D, R, F> value = parseAdditionAndSubtractionOperations(depth + 1);
       err.println("value to be returned when condition is met: " + value + "\n");
     }
     while (parse(depth + 1, ','));
@@ -1020,7 +1020,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else
       {
-        Node<D, R, F> arg = parseAdditionAndSubtraction(depth + 1);
+        Node<D, R, F> arg = parseAdditionAndSubtractionOperations(depth + 1);
         if (parse(depth + 1, ')'))
         {
           return new FunctionCall<>(this,

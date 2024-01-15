@@ -1,5 +1,6 @@
 package arb.expressions;
 
+import static arb.expressions.Parser.expressionToUniqueClassname;
 import static java.lang.System.err;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
@@ -45,12 +46,12 @@ import arb.functions.real.RealFunction;
  * 
  * <pre>
  * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
+ * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs formatted versions of the same document respectively.
  * </pre>
  * 
- * @author ©2023 Stephen Crowley
+ * @author ©2024 Stephen Crowley
  */
 
 public class Compiler
@@ -80,7 +81,7 @@ public class Compiler
                                                                              boolean verbose,
                                                                              String functionName)
   {
-    String className = Parser.expressionToUniqueClassname(expression);
+    String className = functionName != null ? functionName : expressionToUniqueClassname(expression);
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose, functionName);
 
   }
@@ -323,13 +324,6 @@ public class Compiler
     return methodVisitor;
   }
 
-  /**
-   * Loads the `this` reference onto the JVM stack.
-   * 
-   * @param methodVisitor The MethodVisitor to be used for adding the `this`
-   *                      reference
-   * @return
-   */
   public static MethodVisitor loadThisOntoStack(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
