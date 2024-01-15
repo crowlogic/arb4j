@@ -14,6 +14,7 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
+import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Mapping;
 import arb.expressions.Parser;
@@ -21,10 +22,31 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
+ * {@link FunctionCall} is a {@link Node} in the {@link Expression} that
+ * represents a call to either a builtin or a contextual function. A built-in
+ * function is one that is a member of the type of the domain or range of the
+ * function, such as {@link Real#tanh(int, Real)}. <br>
+ * <br>
+ * A contextual function is one that is shared thru a mutual {@link Context} by
+ * constructing one and passing it to the
+ * {@link Function#express(Class, Class, String, Context)} function or one of
+ * the other variations of the express function that accepts a {@link Context}
+ * argument. <br>
+ * <br>
+ * For the function to be callable from another function via a shared
+ * {@link Context} either the
+ * {@link Function#express(Class, Class, String, String, Context)} or
+ * {@link Function#express(Class, Class, String, String, Context, boolean)}
+ * methods that accepts another {@link String} argument specifying the name of
+ * the function should be used.<br>
+ * <br>
+ * 
+ * <pre>
  * arb4j is made available under the terms of the Business Source License™ v1.1
  * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs formatted versions of the same document respectively.
+ * </pre>
  */
 public class FunctionCall<D, R, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
@@ -74,14 +96,14 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (functionName.equals(expression.functionName))
     {
-      contextual       = true;
-      mapping          = new Mapping<>();
-      targetResultType = expression.rangeType;
-      mapping.range    = targetResultType;
-      mapping.domain   = getDomainType();
-      mapping.name     = functionName;
+      contextual           = true;
+      mapping              = new Mapping<>();
+      targetResultType     = expression.rangeType;
+      mapping.range        = targetResultType;
+      mapping.domain       = getDomainType();
+      mapping.name         = functionName;
       expression.recursive = true;
-      
+
       // mapping.functionInterface = ex
 
       // assert false : "TOOD: recursive function support " + functionName
@@ -160,8 +182,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     Class<?>      type       = type();
     Mapping<D, R> mapping    = expression.context.functions.get(functionName);
     F             func       = (F) mapping.func;
-    
-    if (func == null && mapping.functionInterface == null )
+
+    if (func == null && mapping.functionInterface == null)
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
