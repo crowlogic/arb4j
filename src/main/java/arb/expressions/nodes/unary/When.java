@@ -56,8 +56,6 @@ public class When<D, R, F extends Function<D, R>> extends
                          "getSignedValue",
                          Type.getMethodDescriptor(Type.getType(int.class)),
                          false);
-      mv.visitInsn(Opcodes.ICONST_1);
-      mv.visitInsn(Opcodes.ISUB);
       mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
       var branches = cases.entrySet().stream().collect(Collectors.toList());
       for (int i = 0; i < labels.length; i++)
@@ -70,6 +68,7 @@ public class When<D, R, F extends Function<D, R>> extends
       mv.visitLabel(defaultLabel);
       super.generate(mv, resultType);
       mv.visitLabel(endSwitch);
+      Compiler.checkClassCast(mv, expression.rangeType);
     }
     finally
     {
