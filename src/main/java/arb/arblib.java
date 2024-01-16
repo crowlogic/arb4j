@@ -57,6 +57,10 @@ public class arblib {
     arblibJNI.arb_div_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
+  public static int arb_poly_length(RealPolynomial poly) {
+    return arblibJNI.arb_poly_length(RealPolynomial.getCPtr(poly), poly);
+  }
+
   public static void arb_set_fmpz(Real x, long y) {
     arblibJNI.arb_set_fmpz(Real.getCPtr(x), x, y);
   }

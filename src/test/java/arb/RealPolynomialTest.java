@@ -8,17 +8,27 @@ import junit.framework.TestCase;
 public class RealPolynomialTest extends
                                 TestCase
 {
+  public void testSetInt()
+  {
+    RealPolynomial p = new RealPolynomial(1);
+    p.set(new Real().set(new Integer("10")));
+    p.set(new Integer("10"));
+
+    System.out.println("p=" + p);
+  }
+
   public static void testIdentity()
   {
-     try ( RealPolynomial eye = new RealPolynomial())
+    try ( RealPolynomial eye = new RealPolynomial())
     {
-      System.out.println( "eye=" + eye );
-       eye.init();
-       System.out.println( "eye=" + eye );
-       eye.identity();
-       System.out.println( "eye=" + eye );
+      System.out.println("eye=" + eye);
+      eye.zero();
+      System.out.println("eye=" + eye);
+      eye.identity();
+      System.out.println("eye=" + eye);
     }
   }
+
   public static void testLeftShift()
   {
     RealPolynomial p = new RealPolynomial(5);

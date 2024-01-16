@@ -21,6 +21,7 @@ public class arblibJNI {
   public final static native void fmpz_sub(long jarg1, long jarg2, long jarg3);
   public final static native void arb_pow_fmpz(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
   public final static native void arb_div_fmpz(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
+  public final static native int arb_poly_length(long jarg1, RealPolynomial jarg1_);
   public final static native void arb_set_fmpz(long jarg1, Real jarg1_, long jarg2);
   public final static native int arb_poly_is_zero(long jarg1, RealPolynomial jarg1_);
   public final static native void arb_poly_neg(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_);

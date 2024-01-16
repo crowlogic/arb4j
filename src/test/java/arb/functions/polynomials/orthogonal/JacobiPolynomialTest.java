@@ -165,6 +165,8 @@ public class JacobiPolynomialTest extends
         out.println("p(0)=" + result);  
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real() );
         assertEquals( RealConstants.one, valAtOne );
+        Real valAtPi = result.evaluate(RealConstants.π, 128, new Real() );
+        assertEquals( RealConstants.one, valAtPi );
       }
     }
 

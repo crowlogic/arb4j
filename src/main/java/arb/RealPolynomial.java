@@ -488,7 +488,10 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
   
   public RealPolynomial set(Integer c1)
   {
-    zero().get(0).set(c1);
+    try ( Real tmp = new Real();)
+    {
+      zero().set(0, tmp.set(c1));
+    }
     return this;
   }
 

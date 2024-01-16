@@ -4,6 +4,9 @@ import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
 
+/**
+ * bad *ASS*
+ */
 public class JacobiP implements
                      Function<Integer, RealPolynomial>
 {
