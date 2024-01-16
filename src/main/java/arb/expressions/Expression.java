@@ -651,9 +651,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public String newIntermediateVariable(int depth, Class<?> type)
   {
     String intermediateVarName = getNextIntermediatevariableFieldName(depth, type);
-    intermediateVariables.add(new IntermediateVariable(this,
-                                                       intermediateVarName,
-                                                       type));
+    intermediateVariables.add(new IntermediateVariable<>(this,
+                                                         intermediateVarName,
+                                                         type));
     if (verbose)
     {
       out.println("\nAllocating intermediate variable " + intermediateVarName + " at depth " + depth + "\n\n");
@@ -1193,7 +1193,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       err.println("Preparing intermediate variables: " + expression.intermediateVariables);
       err.flush();
     }
-  
+
     for (var intermediateVariable : expression.intermediateVariables)
     {
       intermediateVariable.initialize(methodVisitor);
