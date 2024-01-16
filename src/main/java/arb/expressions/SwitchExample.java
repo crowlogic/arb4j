@@ -31,28 +31,34 @@ public class SwitchExample
   private static void createTableSwitch(MethodVisitor mv)
   {
     mv.visitCode();
-    Label   endSwitch    = new Label();
-    Label   defaultLabel = new Label();
-    Label[] labels       = new Label[]
-    { new Label(), new Label(), new Label() };
-
-    mv.visitVarInsn(ILOAD, 0);
-    mv.visitTableSwitchInsn(1, 3, defaultLabel, labels);
-
-    for (int i = 0; i < labels.length; i++)
+    try
     {
-      mv.visitLabel(labels[i]);
-      // Your case code goes here
-      mv.visitJumpInsn(GOTO, endSwitch);
+      Label   endSwitch    = new Label();
+      Label   defaultLabel = new Label();
+      Label[] labels       = new Label[]
+      { new Label(), new Label(), new Label() };
+
+      mv.visitVarInsn(ILOAD, 0);
+      mv.visitTableSwitchInsn(1, 3, defaultLabel, labels);
+
+      for (int i = 0; i < labels.length; i++)
+      {
+        mv.visitLabel(labels[i]);
+        // Your case code goes here
+        mv.visitJumpInsn(GOTO, endSwitch);
+      }
+
+      mv.visitLabel(defaultLabel);
+      // Your default case code goes here
+
+      mv.visitLabel(endSwitch);
+      mv.visitInsn(RETURN);
+      mv.visitMaxs(3, 1);
     }
-
-    mv.visitLabel(defaultLabel);
-    // Your default case code goes here
-
-    mv.visitLabel(endSwitch);
-    mv.visitInsn(RETURN);
-    mv.visitMaxs(3, 1);
-    mv.visitEnd();
+    finally
+    {
+      mv.visitEnd();
+    }
   }
 
   private static void createLookupSwitch(MethodVisitor mv)
