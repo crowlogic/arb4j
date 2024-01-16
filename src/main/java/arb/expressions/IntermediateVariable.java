@@ -1,7 +1,10 @@
 package arb.expressions;
 
-import static java.lang.System.err;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
@@ -36,23 +39,6 @@ public class IntermediateVariable<D, R, F extends Function<D, R>>
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, intermediateTypeInternalName, "<init>", "()V", false);
     methodVisitor.visitFieldInsn(PUTFIELD, expression.className, name, type.descriptorString());
-    return methodVisitor;
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
-         initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
-  {
-    if (!expression.intermediateVariables.isEmpty() && expression.verbose)
-    {
-      err.println("Preparing intermediate variables: " + expression.intermediateVariables);
-      err.flush();
-    }
-
-    for (var intermediateVariable : expression.intermediateVariables)
-    {
-      intermediateVariable.initialize(methodVisitor);
-    }
     return methodVisitor;
   }
 }

@@ -179,7 +179,7 @@ public class Compiler
 
     initializeLiteralConstants(expression, methodVisitor);
 
-    IntermediateVariable.initializeIntermediateVariables(expression, methodVisitor);
+    Expression.initializeIntermediateVariables(expression, methodVisitor);
 
     initializeRegisteredFunctions(expression, methodVisitor);
 

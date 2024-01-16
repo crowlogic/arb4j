@@ -1184,4 +1184,21 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return this;
   }
 
+  public static <D, R, F extends Function<D, R>>
+         MethodVisitor
+         initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
+  {
+    if (!expression.intermediateVariables.isEmpty() && expression.verbose)
+    {
+      err.println("Preparing intermediate variables: " + expression.intermediateVariables);
+      err.flush();
+    }
+  
+    for (var intermediateVariable : expression.intermediateVariables)
+    {
+      intermediateVariable.initialize(methodVisitor);
+    }
+    return methodVisitor;
+  }
+
 }
