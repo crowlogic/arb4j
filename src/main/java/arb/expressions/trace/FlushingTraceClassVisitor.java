@@ -8,7 +8,7 @@ import org.objectweb.asm.util.TraceClassVisitor;
 /**
  * Like {@link TraceClassVisitor} but flushes the output before returning from
  * the visit methods. Contrary to what the ASM documentation says, the vast
- * majoroity of the time you can indeed get perfectly valid results with no need
+ * majority of the time you can indeed get perfectly valid results with no need
  * to buffer it all up until the visitEnd() method is called
  * 
  *

@@ -1,10 +1,19 @@
 package arb.expressions.nodes.unary;
 
-import java.util.TreeMap;
+import static arb.expressions.Compiler.loadInput;
+import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.RETURN;
 
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.Integer;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -28,13 +37,49 @@ public class When<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    for (var entry : cases.entrySet())
+    assert expression.domainType.equals(Integer.class) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
+                                                                       expression.domainType);
+    try
     {
-      System.out.println("case " + entry.getKey() + " -> " + entry.getValue());
+      mv.visitCode();
+
+      Label   endSwitch    = new Label();
+      Label   defaultLabel = new Label();
+      Label[] labels       = cases.entrySet()
+                                  .stream()
+                                  .map(entry -> new Label())
+                                  .collect(Collectors.toList())
+                                  .toArray(new Label[cases.size()]);
+
+      Compiler.checkClassCast(loadInput(mv), expression.domainType);
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                         Type.getInternalName(Integer.class),
+                         "getSignedValue",
+                         Type.getMethodDescriptor(Type.getType(int.class)),
+                         false);
+      mv.visitInsn(Opcodes.ICONST_1);
+      mv.visitInsn(Opcodes.ISUB);
+      mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
+      var branches = cases.entrySet().stream().collect(Collectors.toList());
+      for (int i = 0; i < labels.length; i++)
+      {
+        mv.visitLabel(labels[i]);
+        branches.get(i).getValue().generate(mv, expression.rangeType);
+        mv.visitJumpInsn(GOTO, endSwitch);
+      }
+
+      mv.visitLabel(defaultLabel);
+      super.generate(mv, resultType);
+      mv.visitLabel(endSwitch);
+      mv.visitInsn(RETURN);
+      mv.visitMaxs(4, 2);
     }
-    System.out.println("default -> " + arg);
-    assert false : "TODO: generate code to handle the cases and then return super.generate if none of the cases match the ones specified, this calls arg.generate where arg is the defaultValue defined by the expression that comes after the else statement";
-    return super.generate(mv, resultType);
+    finally
+    {
+      mv.visitEnd();
+    }
+
+    return mv;
   }
 
   @Override

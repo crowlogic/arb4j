@@ -268,7 +268,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ClassVisitor constructClassVisitor()
   {
-    ClassVisitor cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+    ClassVisitor cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
     if (debug)
     {
       cw = new CheckClassAdapter(cw);
