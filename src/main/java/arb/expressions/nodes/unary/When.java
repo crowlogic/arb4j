@@ -39,19 +39,23 @@ public class When<D, R, F extends Function<D, R>> extends
     {
       mv.visitCode();
 
-      cases.forEach((key, val) ->
+      labels = cases.entrySet()
+                    .stream()
+                    .map(entry -> new Label())
+                    .collect(Collectors.toList())
+                    .toArray(new Label[cases.size()]);
+
+      cases.entrySet()
+           .stream()
+           .map(entry -> new Label())
+           .collect(Collectors.toList())
+           .toArray(new Label[cases.size()]);
+
+      cases.values().forEach(val ->
       {
         val.isResult = isResult;
       });
       arg.isResult = isResult;
-
-      Label   endSwitch    = new Label();
-      Label   defaultLabel = new Label();
-      Label[] labels       = cases.entrySet()
-                                  .stream()
-                                  .map(entry -> new Label())
-                                  .collect(Collectors.toList())
-                                  .toArray(new Label[cases.size()]);
 
       Compiler.checkClassCast(loadInput(mv), expression.domainType);
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
@@ -60,13 +64,14 @@ public class When<D, R, F extends Function<D, R>> extends
                          Type.getMethodDescriptor(Type.getType(int.class)),
                          false);
       mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
-      var branches = cases.entrySet().stream().collect(Collectors.toList());
+      var branches = cases.values().stream().collect(Collectors.toList());
 
       for (int i = 0; i < labels.length; i++)
       {
         mv.visitLabel(labels[i]);
-        branches.get(i).getValue().generate(mv, expression.rangeType);
+        branches.get(i).generate(mv, expression.rangeType);
         mv.visitJumpInsn(GOTO, endSwitch);
+
       }
 
       mv.visitLabel(defaultLabel);
@@ -90,6 +95,9 @@ public class When<D, R, F extends Function<D, R>> extends
   }
 
   public TreeMap<Integer, Node<D, R, F>> cases;
+  private Label                          endSwitch    = new Label();
+  private Label                          defaultLabel = new Label();
+  private Label[]                        labels       = null;
 
   public When(Node<D, R, F> node, Expression<D, R, F> expression, int depth)
   {

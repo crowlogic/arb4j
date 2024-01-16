@@ -1355,21 +1355,46 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return toString(digits, printPrecision);
   }
 
+public static String removeTrailingZeros(String decimal)
+  {
+    if (decimal == null || decimal.isEmpty())
+    {
+      return decimal;
+    }
+
+    // Check if the string contains a decimal point.
+    if (!decimal.contains("."))
+    {
+      return decimal;
+    }
+
+    // Remove trailing zeros.
+    decimal = decimal.replaceAll("0*$", "");
+
+    // Remove the decimal point if there are no digits after it.
+    if (decimal.endsWith("."))
+    {
+      decimal = decimal.substring(0, decimal.length() - 1);
+    }
+
+    return decimal;
+  }
+
   public String toString(int digits, boolean precise)
   {
     if (dim == 1)
     {
-      return arblib.arb_get_str(this,
-                             digits,
-                             (printPrecision
-                                           || precise) ? 0 : IntegerConstants.ARB_STR_NO_RADIUS)
-                             .replace("[", "")
-                             .replace("]", "");                                           
+      return removeTrailingZeros(arblib.arb_get_str(this,
+                                                    digits,
+                                                    (printPrecision
+                                                                  || precise) ? 0 : IntegerConstants.ARB_STR_NO_RADIUS)
+                                       .replace("[", "")
+                                       .replace("]", ""));
     }
     else
     {
       StringBuilder sb = new StringBuilder();
-      if ( dim > 1 ) 
+      if (dim > 1)
       {
         sb.append("[");
       }
@@ -1377,25 +1402,24 @@ import arb.stochastic.ProbabilityDistributionFunction;
       {
         if (i > 0)
         {
-          if ( dim > 3 )
+          if (dim > 3)
           {
             sb.append(", ");
           }
           else
           {
-            sb.append(", ");          
-          }        
+            sb.append(", ");
+          }
         }
         sb.append(String.format("%s", get(i).toString(digits, printPrecision)));
       }
-      if ( dim > 1 )
+      if (dim > 1)
       {
         sb.append("]");
       }
       return sb.toString();
     }
   }
-      
   public Real abs(Real res)  
   {
     arblib.arb_abs(res, this);
