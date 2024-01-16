@@ -8,26 +8,27 @@ import org.objectweb.asm.Type;
 
 import arb.functions.Function;
 
-public class IntermediateVariable
+public class IntermediateVariable<D, R, F extends Function<D, R>>
 {
+  public Expression<D, R, F> expression;
+
   @Override
   public String toString()
   {
     return String.format("IntermediateVariable[name=%s, type=%s]", name, type);
   }
 
-  public IntermediateVariable(String name, Class<?> type)
+  public IntermediateVariable(Expression<D, R, F> expression, String name, Class<?> type)
   {
-    this.type = type;
-    this.name = name;
+    this.expression = expression;
+    this.type       = type;
+    this.name       = name;
   }
 
   public String   name;
   public Class<?> type;
 
-  public <D, R, F extends Function<D, R>>
-         MethodVisitor
-         initializeIntermediateVariable(Expression<D, R, F> expression, MethodVisitor methodVisitor)
+  public MethodVisitor initialize(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     String intermediateTypeInternalName = Type.getInternalName(type);
@@ -50,7 +51,7 @@ public class IntermediateVariable
 
     for (var intermediateVariable : expression.intermediateVariables)
     {
-      intermediateVariable.initializeIntermediateVariable(expression, methodVisitor);
+      intermediateVariable.initialize(methodVisitor);
     }
     return methodVisitor;
   }

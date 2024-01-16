@@ -145,71 +145,71 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
-  public int                                 position              = -1;
+  public int                                      position              = -1;
 
-  public int                                 ch                    = 0;
+  public int                                      ch                    = 0;
 
-  public final String                        expression;
+  public final String                             expression;
 
-  public Variables                           variables;
+  public Variables                                variables;
 
-  public String                              className;
+  public String                                   className;
 
-  final public Class<? extends D>            domainType;
+  final public Class<? extends D>                 domainType;
 
-  final public Class<? extends R>            rangeType;
+  final public Class<? extends R>                 rangeType;
 
-  final public String                        domainClassDescriptor;
+  final public String                             domainClassDescriptor;
 
-  final public String                        rangeClassDescriptor;
+  final public String                             rangeClassDescriptor;
 
-  final public String                        functionClassInternalName;
+  final public String                             functionClassInternalName;
 
-  public ArrayList<IntermediateVariable>     intermediateVariables = new ArrayList<IntermediateVariable>();
+  public ArrayList<IntermediateVariable<D, R, F>> intermediateVariables = new ArrayList<>();
 
-  int                                        constantCount;
+  int                                             constantCount;
 
-  public ArrayList<LiteralConstant<D, R, F>> literalConstants      = new ArrayList<LiteralConstant<D, R, F>>();
+  public ArrayList<LiteralConstant<D, R, F>>      literalConstants      = new ArrayList<>();
 
-  public Variable<D, R, F>                   independentVariableNode;
+  public Variable<D, R, F>                        independentVariableNode;
 
-  protected Method                           evaluateMethod;
+  protected Method                                evaluateMethod;
 
-  protected byte[]                           instructions;
+  protected byte[]                                instructions;
 
-  public boolean                             verbose               = false;
+  public boolean                                  verbose               = false;
 
-  Class<F>                                   compiledClass;
+  Class<F>                                        compiledClass;
 
-  F                                          instance;
+  F                                               instance;
 
-  public final String                        rangeClassInternalName;
+  public final String                             rangeClassInternalName;
 
-  public final String                        domainClassInternalName;
+  public final String                             domainClassInternalName;
 
-  public Node<D, R, F>                       rootNode;
+  public Node<D, R, F>                            rootNode;
 
-  public Class<? extends F>                  functionClass;
+  public Class<? extends F>                       functionClass;
 
-  public String                              functionClassDescriptor;
+  public String                                   functionClassDescriptor;
 
-  public HashMap<String, Mapping<D, R>>      referencedFunctions   = new HashMap<>();
+  public HashMap<String, Mapping<D, R>>           referencedFunctions   = new HashMap<>();
 
-  public HashMap<String, Variable<D, R, F>>  referencedVariables   = new HashMap<>();
+  public HashMap<String, Variable<D, R, F>>       referencedVariables   = new HashMap<>();
 
-  public Context                             context;
+  public Context                                  context;
 
-  public final String                        evaluateMethodSignature;
+  public final String                             evaluateMethodSignature;
 
-  public Variable<D, R, F>                   indeterminate;
+  public Variable<D, R, F>                        indeterminate;
 
-  public String                              functionName;
+  public String                                   functionName;
 
-  boolean                                    debug                 = verbose;
+  boolean                                         debug                 = verbose;
 
-  boolean                                    verboseParser         = false;
+  boolean                                         verboseParser         = false;
 
-  public boolean                             recursive             = false;
+  public boolean                                  recursive             = false;
 
   public Expression(String className,
                     Class<? extends D> domainClass,
@@ -651,7 +651,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public String newIntermediateVariable(int depth, Class<?> type)
   {
     String intermediateVarName = getNextIntermediatevariableFieldName(depth, type);
-    intermediateVariables.add(new IntermediateVariable(intermediateVarName,
+    intermediateVariables.add(new IntermediateVariable(this,
+                                                       intermediateVarName,
                                                        type));
     if (verbose)
     {
