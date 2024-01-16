@@ -10,9 +10,6 @@ import arb.RealPolynomial;
 public class JacobiP implements
                      Function<Integer, RealPolynomial>
 {
-  public Integer                           c0  = new Integer("0");
-  public Integer                           c1  = new Integer("1");
-  public Integer                           c2  = new Integer("2");
   public Real                              α;
   public Real                              β;
 
@@ -41,37 +38,34 @@ public class JacobiP implements
 
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
-    RealPolynomial var10000;
     switch (in.getSignedValue())
     {
     case 0:
-      var10000 = result.set(c1);
-      break;
-    case 1:
-      var10000 = C.evaluate(r0.set(c1), order, bits, r1)
-                  .mul(result.identity(), bits, rp0)
-                  .sub(β, bits, rp1)
-                  .add(α, bits, rp2)
-                  .div(c2, bits, result);
-      break;
-    default:
-      var10000 = A.evaluate(in, order, bits, rp3)
-                  .mul(P.evaluate(in.sub(c1, bits, i0), order, bits, rp4), bits, rp5)
-                  .sub(B.evaluate(r2.set(in), order, bits, r3)
-                        .mul(P.evaluate(in.sub(c2, bits, i1), order, bits, rp6), bits, rp7),
-                       bits,
-                       rp8)
-                  .div(E.evaluate(r4.set(in), order, bits, r5), bits, result);
-    }
+      return result.set(1);
 
-    return var10000;
+    case 1:
+      return C.evaluate(r0.set(1), order, bits, r1)
+              .mul(result.identity(), bits, rp0)
+              .sub(β, bits, rp1)
+              .add(α, bits, rp2)
+              .div(2, bits, result);
+
+    default:
+
+      // for n>=3 it fails due to the over-writing of the intermediate
+      // variables...memoization should fix this
+      return A.evaluate(in, order, bits, rp3)
+              .mul(P.evaluate(in.sub(1, bits, i0), order, bits, rp4), bits, rp5)
+              .sub(B.evaluate(r2.set(in), order, bits, r3)
+                    .mul(P.evaluate(in.sub(2, bits, i1), order, bits, rp6), bits, rp7),
+                   bits,
+                   rp8)
+              .div(E.evaluate(r4.set(in), order, bits, r5), bits, result);
+    }
   }
 
   public void close()
   {
-    c0.close();
-    c1.close();
-    c2.close();
     r0.close();
     r1.close();
     rp0.close();
