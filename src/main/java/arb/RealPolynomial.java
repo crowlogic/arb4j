@@ -479,7 +479,18 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     arblib.arb_poly_neg( result, this );
     return this;
   }
+
+  public RealPolynomial zero()
+  {
+    setLength(0);
+    return this;
+  }
   
+  public RealPolynomial set(Integer c1)
+  {
+    zero().get(0).set(c1);
+    return this;
+  }
 
 
   public void setCoeffsNative(Real value) {

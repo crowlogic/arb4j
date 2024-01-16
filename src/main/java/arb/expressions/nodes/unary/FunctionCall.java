@@ -163,7 +163,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                   false);
     if (needsResultTypeConversion)
     {
-      invokeSetMethod(methodVisitor, resultType, targetResultType, true);
+      invokeSetMethod(methodVisitor, targetResultType, resultType, true);
 
     }
     return methodVisitor;
@@ -209,7 +209,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (needsArgTypeConversion)
     {
-      invokeSetMethod(methodVisitor, mapping.domain, arg.type(), verbose);
+      invokeSetMethod(methodVisitor, arg.type(), mapping.domain, verbose);
     }
 
     loadOrder(methodVisitor);
@@ -237,34 +237,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public void loadFunctionFromField(MethodVisitor methodVisitor, Class<?> type)
   {
     expression.loadFieldOntoStack(loadThisOntoStack(methodVisitor), functionName, type);
-  }
-
-  private void loadOutputVariableOntoStack(MethodVisitor methodVisitor,
-                                           Expression<D, R, F> expression,
-                                           boolean verbose,
-                                           Class<?> resultType)
-  {
-    if (isResult)
-    {
-      checkClassCast(loadResult(methodVisitor, verbose), resultType);
-    }
-    else
-    {
-      if (arg.isReusable())
-      {
-        if (verbose)
-        {
-          err.println("\nPreparing stack to reuse its argument " + arg.toString(-1) + "\n");
-          err.flush();
-        }
-
-        arg.prepareStackForReuse(methodVisitor);
-      }
-      else
-      {
-        expression.reserveIntermediateVariable(methodVisitor, depth, resultType);
-      }
-    }
   }
 
   public Class<?> resultTypeFor(String functionName)

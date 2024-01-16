@@ -6,10 +6,7 @@ import static org.objectweb.asm.Opcodes.GOTO;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
 import arb.Integer;
 import arb.expressions.Compiler;
@@ -42,6 +39,12 @@ public class When<D, R, F extends Function<D, R>> extends
     {
       mv.visitCode();
 
+      cases.forEach((key, val) ->
+      {
+        val.isResult = isResult;
+      });
+      arg.isResult = isResult;
+
       Label   endSwitch    = new Label();
       Label   defaultLabel = new Label();
       Label[] labels       = cases.entrySet()
@@ -58,6 +61,7 @@ public class When<D, R, F extends Function<D, R>> extends
                          false);
       mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
       var branches = cases.entrySet().stream().collect(Collectors.toList());
+
       for (int i = 0; i < labels.length; i++)
       {
         mv.visitLabel(labels[i]);
@@ -68,11 +72,12 @@ public class When<D, R, F extends Function<D, R>> extends
       mv.visitLabel(defaultLabel);
       super.generate(mv, resultType);
       mv.visitLabel(endSwitch);
-      Compiler.checkClassCast(mv, expression.rangeType);
+
     }
     finally
     {
       mv.visitEnd();
+
     }
 
     return mv;

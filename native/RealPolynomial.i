@@ -452,6 +452,17 @@ import arb.exceptions.DivisionByZeroException;
     arblib.arb_poly_neg( result, this );
     return this;
   }
+
+  public RealPolynomial zero()
+  {
+    setLength(0);
+    return this;
+  }
   
+  public RealPolynomial set(Integer c1)
+  {
+    zero().get(0).set(c1);
+    return this;
+  }
 
 %};

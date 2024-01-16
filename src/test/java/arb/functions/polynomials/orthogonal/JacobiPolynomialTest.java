@@ -136,9 +136,34 @@ public class JacobiPolynomialTest extends
     {
       Integer won = new Integer("1");
 
-      try ( RealPolynomial result = seq.Pfunc.evaluate(won, 0, bits, new RealPolynomial()))
+      try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
       {
-        out.println("p(1)=" + result);
+        out.println("p(1)=" + result);  
+        Real valAtOne = result.evaluate(RealConstants.one, 128, new Real() );
+        assertEquals( RealConstants.half, valAtOne );
+        out.println("p(1)=" + result);  
+        Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real() );
+        assertEquals( RealConstants.one, valAtTwo );
+        
+      }
+    }
+
+  }
+  
+  public static void testP0()
+  {
+
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf,
+                                                   N))
+    {
+      Integer won = new Integer("0");
+
+      try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
+      {
+        out.println("p(0)=" + result);  
+        Real valAtOne = result.evaluate(RealConstants.one, 128, new Real() );
+        assertEquals( RealConstants.one, valAtOne );
       }
     }
 

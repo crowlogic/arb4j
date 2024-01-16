@@ -1137,14 +1137,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
     field.set(instance, value);
   }
 
-  public MethodVisitor setResult(MethodVisitor methodVisitor)
+  public MethodVisitor setResult(MethodVisitor methodVisitor, boolean swap, Class<?> inputType)
   {
     Compiler.checkClassCast(loadResult(methodVisitor, verbose), rangeType);
-    methodVisitor.visitInsn(Opcodes.SWAP);
+    if (swap)
+    {
+      methodVisitor.visitInsn(Opcodes.SWAP);
+    }
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   rangeClassInternalName,
                                   "set",
-                                  format("(%s)%s", rangeClassDescriptor, rangeClassDescriptor),
+                                  format("(%s)%s", inputType.descriptorString(), rangeClassDescriptor),
                                   false);
     return methodVisitor;
   }

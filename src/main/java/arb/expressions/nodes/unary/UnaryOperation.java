@@ -1,6 +1,7 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
+import static arb.expressions.Compiler.*;
+import static java.lang.System.err;
 
 import org.objectweb.asm.MethodVisitor;
 
@@ -70,5 +71,30 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     return arg.generate(mv, resultType);
+  }
+
+  protected void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Expression<D, R, F> expression, boolean verbose, Class<?> resultType)
+  {
+    if (isResult)
+    {
+      checkClassCast(loadResult(methodVisitor, verbose), resultType);
+    }
+    else
+    {
+      if (arg.isReusable())
+      {
+        if (verbose)
+        {
+          err.println("\nPreparing stack to reuse its argument " + arg.toString(-1) + "\n");
+          err.flush();
+        }
+  
+        arg.prepareStackForReuse(methodVisitor);
+      }
+      else
+      {
+        expression.reserveIntermediateVariable(methodVisitor, depth, resultType);
+      }
+    }
   }
 }

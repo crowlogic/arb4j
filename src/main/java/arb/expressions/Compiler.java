@@ -367,7 +367,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> outType, Class<?> inType, boolean verbose)
+  public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> inType, Class<?> outType, boolean verbose)
   {
     if (verbose)
     {
