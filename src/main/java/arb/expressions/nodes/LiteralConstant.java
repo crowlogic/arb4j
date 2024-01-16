@@ -2,12 +2,7 @@ package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.DUP;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.SIPUSH;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.HashSet;
 
@@ -30,11 +25,13 @@ import arb.functions.Function;
 public class LiteralConstant<D, R, F extends Function<D, R>> extends
                             Node<D, R, F>
 {
+  public boolean isInt = false;
+
   @Override
   public Class<?> type()
   {
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
-    return (value.contains(".") || constantSymbols.contains(value)) ? Real.class : Integer.class;
+    return isInt ? Integer.class : Real.class;
   }
 
   public final String           value;
@@ -62,6 +59,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     super(expression,
           depth + 1);
     value = constantValueString.trim();
+    isInt = !((value.contains(".") || constantSymbols.contains(value)));
 
     if (isConstant(constantValueString))
     {
