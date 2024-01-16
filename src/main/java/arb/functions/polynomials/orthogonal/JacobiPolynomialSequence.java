@@ -106,7 +106,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                             "P",
                                                                             "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
                                                                             context,
-                                                                            verbose || true);
+                                                                            verbose);
   public int                                     N;
 
   public JacobiPolynomialSequence(Real a, Real b, int N)
