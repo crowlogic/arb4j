@@ -2,7 +2,12 @@ package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.SIPUSH;
 
 import java.util.HashSet;
 
@@ -135,6 +140,9 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     }
     else
     {
+      // todo: https://github.com/crowlogic/arb4j/issues/222: use the primitive int ,
+      // the signature of the method being invoked will also have to know this has
+      // been done and change correspondingly
       expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, type());
     }
 
