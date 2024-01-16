@@ -147,7 +147,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     return null;
   }
 
-  public final RealFunction orthogonalMeasure = RealFunction.express("x➔(1-x)^α*(1+x)^β", context, verbose);
+  public final RealFunction orthogonalMeasure = RealFunction.express("w","x➔(1-x)^α*(1+x)^β", context, verbose);
 
   @Override
   public RealFunction getOrthogonalMeasure()

@@ -105,7 +105,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       expression.recursive = true;
       if ( "P".equals(functionName))
       {
-        System.err.println( "wtf P " + arg );
+        System.err.println( "wtf P " + this );
       }
     }
 
