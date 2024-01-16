@@ -103,12 +103,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       mapping.domain       = getDomainType();
       mapping.name         = functionName;
       expression.recursive = true;
-
-      // mapping.functionInterface = ex
-
-      // assert false : "TOOD: recursive function support " + functionName
-      // + ", call this.evaluate as if it was a function in the contex
-      // https://github.com/crowlogic/arb4j/issues/254";
+      if ( "P".equals(functionName))
+      {
+        System.err.println( "wtf P " + arg );
+      }
     }
 
     if (contextual)
@@ -257,10 +255,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return contextual ? String.format("FunctionCall[name=%s,  function=%s, arg=%s, targetResultType=%s]",
                                       functionName,
                                       mapping,
-                                      arg,
+                                      arg.typeset(),
                                       targetResultType != null ? targetResultType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
                                                                                                                     functionName,
-                                                                                                                    arg,
+                                                                                                                    arg.typeset(),
                                                                                                                     targetResultType != null ? targetResultType.getName() : null);
   }
 

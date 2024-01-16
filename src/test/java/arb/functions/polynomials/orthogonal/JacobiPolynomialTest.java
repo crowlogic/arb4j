@@ -190,4 +190,28 @@ public class JacobiPolynomialTest extends
     }
 
   }
+  
+  public static void testP3()
+  {
+
+    try ( var seq = new JacobiPolynomialSequence<>(negHalf,
+                                                   negHalf,
+                                                   N))
+    {
+      Integer too = new Integer("3");
+
+      try ( RealPolynomial result = seq.P.evaluate(too, 0, bits, new RealPolynomial()))
+      {
+        result.getCoeffs().printPrecision = true;
+        out.println("p(3,x)=" + result);
+        Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
+        assertEquals(0.375, valAtOne.doubleValue());
+        Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
+        System.out.format("P(2.1)=%s\nP(2,2=%s)\n", valAtOne, valAtTwo);
+        assertEquals(2.625, valAtTwo.doubleValue());
+
+      }
+    }
+
+  }
 }
