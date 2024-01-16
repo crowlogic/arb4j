@@ -2,7 +2,6 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.loadInput;
 import static org.objectweb.asm.Opcodes.GOTO;
-import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -71,8 +70,6 @@ public class When<D, R, F extends Function<D, R>> extends
       mv.visitLabel(defaultLabel);
       super.generate(mv, resultType);
       mv.visitLabel(endSwitch);
-      mv.visitInsn(RETURN);
-      mv.visitMaxs(4, 2);
     }
     finally
     {
