@@ -167,7 +167,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (isResult)
     {
-      expression.setResult(mv, false, type());
+      expression.setResult(mv, true, type());
     }
 
     return mv;

@@ -227,7 +227,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testIdentityInput()
   {
-    RealFunction identity = express("t", context);
+    RealFunction identity = express("t", context,true);
     Real         won      = identity.evaluate(one, 1, 256, new Real());
     {
       assertEquals(1.0, won.doubleValue());

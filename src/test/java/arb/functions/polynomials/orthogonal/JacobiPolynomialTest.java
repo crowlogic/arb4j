@@ -138,11 +138,12 @@ public class JacobiPolynomialTest extends
 
       try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
       {
-        out.println("p(1)=" + result);  
+        out.println("p(1,x)=" + result);  
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real() );
         assertEquals( RealConstants.half, valAtOne );
-        out.println("p(1)=" + result);  
         Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real() );
+        out.println("p(2)=" + result);  
+
         assertEquals( RealConstants.one, valAtTwo );
         
       }
