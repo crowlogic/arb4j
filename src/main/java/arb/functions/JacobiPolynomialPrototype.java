@@ -8,6 +8,7 @@ import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.functions.polynomials.orthogonal.JacobiPolynomialSequence;
+import arb.utensils.ShellFunctions;
 
 /**
  * The prototype of what the code-generatr generates for the
@@ -72,14 +73,16 @@ public class JacobiPolynomialPrototype implements
                                                  negHalf);
           JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(seq);)
     {
-
+      RealPolynomial polys[]  = new RealPolynomial[9];
       for (int n = 0; n < 9; n++)
       {
         RealPolynomial p = Pn.evaluate(new Integer(n), 128, new RealPolynomial());
+        polys[n] = p;
         System.out.format("P(%d)=%s\n", n, p);
       }
-    }
+      ShellFunctions.plot(-1, 1, 1000, polys);
 
+    }
   }
 
   @Override
