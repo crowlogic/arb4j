@@ -1,5 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.IntStream;
@@ -61,8 +62,6 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   public Real                                    α       = new Real().setName("α");
   public Real                                    β       = new Real().setName("β");
   final public Real                              G       = new Real().setName("G");
-  final public RealMatrix                        O;
-  final public RealPolynomial[]                  J;
   final Variables                                vars    = new Variables(α,
                                                                          β,
                                                                          G);
@@ -107,37 +106,13 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
                                                                             "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
                                                                             context,
                                                                             verbose);
-  public int                                     N;
 
-  public JacobiPolynomialSequence(Real a, Real b, int N)
+  public JacobiPolynomialSequence(Real a, Real b)
   {
-    this.N = N;
     bits   = Math.max(128, Math.max(a.bits(), b.bits()));
     a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
-    O = RealMatrix.newMatrix(N + 2, N + 2);
-    J = new RealPolynomial[N + 2];
-    for (int i = 0; i < N + 2; i++)
-    {
-      RealPolynomial p = new RealPolynomial(O.getRowPointer(i),
-                                            false);
-      p.setLength(i + 1);
-      J[i] = p;
-    }
-  }
-
-  public Real compute()
-  {
-    try ( Real realn = new Real())
-    {
-      IntStream.range(2, N + 1).forEach(n ->
-      {
-        // Pfunc.evaluate(realn.set(n), bits, P.get(n));
-      });
-    }
-
-    return null;// P
   }
 
   @Override
@@ -148,6 +123,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   }
 
   public final RealFunction orthogonalMeasure = RealFunction.express("w","x➔(1-x)^α*(1+x)^β", context, verbose);
+  public ArrayList<RealPolynomial> cache = new ArrayList<>();
 
   @Override
   public RealFunction getOrthogonalMeasure()
@@ -171,8 +147,6 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     β.close();
     domain.close();
     G.close();
-    O.close();
-    Arrays.asList(J).forEach(RealPolynomial::close);
   }
 
 }
