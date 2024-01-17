@@ -227,7 +227,7 @@ public interface RealFunction extends
    */
   public default RealDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    RealDataSet sample = new RealDataSet(toString() + " oveRealFunction " + interval.left().toString(5) + ".."
+    RealDataSet sample = new RealDataSet(toString() + " over " + interval.left().toString(5) + ".."
                   + interval.right().toString(5),
                                          n);
     Real        values = sample.getRealYValues();
