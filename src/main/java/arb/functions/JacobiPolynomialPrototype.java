@@ -46,51 +46,42 @@ public class JacobiPolynomialPrototype implements
   public JacobiPolynomialPrototype(JacobiPolynomialSequence seq)
   {
     this.seq = seq;
+    cloneFunctionReferences(seq, this);
   }
 
   private Function<Integer, RealPolynomial> constructNewElement(JacobiPolynomialSequence seq)
   {
     var element = new JacobiPolynomialPrototype(seq);
+    cloneFunctionReferences(seq, element);
+    return element;
+  }
+
+  public void cloneFunctionReferences(JacobiPolynomialSequence seq, JacobiPolynomialPrototype element)
+  {
     element.α = seq.α;
     element.β = seq.β;
     element.A = seq.A;
     element.C = seq.C;
     element.B = seq.B;
     element.E = seq.E;
-    return element;
   }
 
   public static void main(String args[])
   {
     try ( var seq = new JacobiPolynomialSequence(negHalf,
                                                  negHalf);
-          JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(seq);
-          JacobiPolynomialPrototype PnMinus1 = new JacobiPolynomialPrototype(seq);
-          JacobiPolynomialPrototype PnMinus2 = new JacobiPolynomialPrototype(seq);)
+          JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(seq);)
     {
-      Pn.P       = PnMinus1;
-      PnMinus1.P = PnMinus2;
-      PnMinus2.α = PnMinus1.α = Pn.α = seq.α;
-      PnMinus2.β = PnMinus1.β = Pn.β = seq.β;
-      PnMinus2.A = PnMinus1.A = Pn.A = seq.A;
-      PnMinus2.C = PnMinus1.C = Pn.C = seq.C;
-      PnMinus2.B = PnMinus1.B = Pn.B = seq.B;
-      PnMinus2.E = PnMinus1.E = Pn.E = seq.E;
-      
-      //Pn.evaluate(new Integer(2), 128, new RealPolynomial())
-      
-      for (int i = 0; i < 5; i++)
-      {
-        var p = Pn.evaluate(new Integer(i), 128, new RealPolynomial());
-        System.out.format("P(%d)=%s\n", i, p);
-      }
+
+      RealPolynomial p = Pn.evaluate(new Integer(4), 128, new RealPolynomial());
+      System.out.println( "p=" + p );
     }
+
   }
 
   @Override
   public RealPolynomial evaluate(final Integer in, int order, int bits, RealPolynomial result)
   {
-    System.out.format("evaluate(in=%s,order=%d,bits=%d,result=%s)\n", in, order, bits, result);
 
     final int index = in.getSignedValue();
 
@@ -104,14 +95,15 @@ public class JacobiPolynomialPrototype implements
     RealPolynomial cachedResult = seq.cache.get(index);
     if (cachedResult != null)
     {
-      System.out.println("Using cached result for index: " + index);
       result.set(cachedResult);
       return result;
     }
 
+
     switch (index)
     {
     case 0:
+      // no point caching this, faster anyhow
       result.set(1);
       break;
     case 1:
@@ -125,14 +117,14 @@ public class JacobiPolynomialPrototype implements
       RealPolynomial lastP = seq.cache.get(index - 1);
       if (lastP != null)
       {
-        System.out.println( "Using cache lastP " + lastP + " at " + (index-1) );
+        // System.out.println( "Using cache lastP " + lastP + " at " + (index-1) );
         rp4.set(lastP);
       }
       else
       {
         if (P == null)
         {
-          System.out.println( "Constructing new element at " + (index-1) );
+          // System.out.println( "Constructing new element at " + (index-1) );
 
           P = constructNewElement(seq);
         }
@@ -142,7 +134,8 @@ public class JacobiPolynomialPrototype implements
       RealPolynomial PBeforeLast = seq.cache.get(index - 2);
       if (PBeforeLast != null)
       {
-        System.out.println( "Using cache PBeforeLast " + PBeforeLast + " at " + (index-2) );
+        // System.out.println( "Using cache PBeforeLast " + PBeforeLast + " at " +
+        // (index-2) );
 
         rp6.set(PBeforeLast);
       }
@@ -161,6 +154,8 @@ public class JacobiPolynomialPrototype implements
        .div(E.evaluate(r4.set(in), order, bits, r5), bits, result);
       break;
     }
+    System.out.format("evaluate(in=%s,order=%d,bits=%d,result=%s)\n", in, order, bits, result);
+
     seq.cache.set(index, result);
     return result;
   }
