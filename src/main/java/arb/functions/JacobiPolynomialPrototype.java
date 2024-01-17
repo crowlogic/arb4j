@@ -73,8 +73,11 @@ public class JacobiPolynomialPrototype implements
           JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(seq);)
     {
 
-      RealPolynomial p = Pn.evaluate(new Integer(4), 128, new RealPolynomial());
-      System.out.println( "p=" + p );
+      for (int n = 0; n < 5; n++)
+      {
+        RealPolynomial p = Pn.evaluate(new Integer(n), 128, new RealPolynomial());
+        System.out.format("P(%d)=%s\n", n, p);
+      }
     }
 
   }
@@ -98,7 +101,6 @@ public class JacobiPolynomialPrototype implements
       result.set(cachedResult);
       return result;
     }
-
 
     switch (index)
     {
@@ -154,7 +156,8 @@ public class JacobiPolynomialPrototype implements
        .div(E.evaluate(r4.set(in), order, bits, r5), bits, result);
       break;
     }
-    System.out.format("evaluate(in=%s,order=%d,bits=%d,result=%s)\n", in, order, bits, result);
+    // System.out.format("evaluate(in=%s,order=%d,bits=%d,result=%s)\n", in, order,
+    // bits, result);
 
     seq.cache.set(index, result);
     return result;
