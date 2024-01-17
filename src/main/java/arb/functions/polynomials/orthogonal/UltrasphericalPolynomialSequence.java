@@ -18,8 +18,8 @@ import arb.Real;
  * @param <J>the type of{
  * @link UltrasphericalPolynomial}s that this sequence*generates
  */
-public class UltrasphericalPolynomialSequence<J extends UltrasphericalPolynomial<?, ?>> extends
-                                             JacobiPolynomialSequence<J>
+public class UltrasphericalPolynomialSequence extends
+                                              JacobiPolynomialSequence
 {
 
   /**

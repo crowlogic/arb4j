@@ -7,52 +7,63 @@ import java.util.Collections;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.functions.polynomials.orthogonal.JacobiPolynomial;
 import arb.functions.polynomials.orthogonal.JacobiPolynomialSequence;
 
 /**
- * The prototype of what the code-generator generates for the
+ * The prototype of what the code-generatr generates for the
  * {@link JacobiPolynomialSequence}
  */
 public class JacobiPolynomialPrototype implements
                                        Function<Integer, RealPolynomial>
 {
-  public Real                                           α;
-  public Real                                           β;
+  public Real                              α;
+  public Real                              β;
 
-  public Real                                           r0  = new Real();
-  public Real                                           r1  = new Real();
-  public RealPolynomial                                 rp0 = new RealPolynomial();
-  public RealPolynomial                                 rp1 = new RealPolynomial();
-  public RealPolynomial                                 rp2 = new RealPolynomial();
-  public RealPolynomial                                 rp3 = new RealPolynomial();
-  public Integer                                        i0  = new Integer();
-  public RealPolynomial                                 rp4 = new RealPolynomial();
-  public RealPolynomial                                 rp5 = new RealPolynomial();
-  public Real                                           r2  = new Real();
-  public Real                                           r3  = new Real();
-  public Integer                                        i1  = new Integer();
-  public RealPolynomial                                 rp6 = new RealPolynomial();
-  public RealPolynomial                                 rp7 = new RealPolynomial();
-  public RealPolynomial                                 rp8 = new RealPolynomial();
-  public Real                                           r4  = new Real();
-  public Real                                           r5  = new Real();
-  public Function<Integer, RealPolynomial>              P   = null;
-  public Function<Integer, RealPolynomial>              A   = null;
-  public Function<Real, Real>                           B   = null;
-  public Function<Real, Real>                           C   = null;
-  public Function<Real, Real>                           E   = null;
-  public JacobiPolynomialSequence<JacobiPolynomial<?>> seq;
+  public Real                              r0  = new Real();
+  public Real                              r1  = new Real();
+  public RealPolynomial                    rp0 = new RealPolynomial();
+  public RealPolynomial                    rp1 = new RealPolynomial();
+  public RealPolynomial                    rp2 = new RealPolynomial();
+  public RealPolynomial                    rp3 = new RealPolynomial();
+  public Integer                           i0  = new Integer();
+  public RealPolynomial                    rp4 = new RealPolynomial();
+  public RealPolynomial                    rp5 = new RealPolynomial();
+  public Real                              r2  = new Real();
+  public Real                              r3  = new Real();
+  public Integer                           i1  = new Integer();
+  public RealPolynomial                    rp6 = new RealPolynomial();
+  public RealPolynomial                    rp7 = new RealPolynomial();
+  public RealPolynomial                    rp8 = new RealPolynomial();
+  public Real                              r4  = new Real();
+  public Real                              r5  = new Real();
+  public Function<Integer, RealPolynomial> P   = null;
+  public Function<Integer, RealPolynomial> A   = null;
+  public Function<Real, Real>              B   = null;
+  public Function<Real, Real>              C   = null;
+  public Function<Real, Real>              E   = null;
+  public JacobiPolynomialSequence          seq;
 
-  public JacobiPolynomialPrototype(JacobiPolynomialSequence<JacobiPolynomial<?>> seq)
+  public JacobiPolynomialPrototype(JacobiPolynomialSequence seq)
   {
     this.seq = seq;
   }
 
+  private Function<Integer, RealPolynomial> constructNewElement(JacobiPolynomialSequence seq)
+  {
+    var element = new JacobiPolynomialPrototype(seq);
+    element.α = seq.α;
+    element.β = seq.β;
+    element.A = seq.A;
+    element.C = seq.C;
+    element.B = seq.B;
+    element.E = seq.E;
+    return element;
+  }
+
   public static void main(String args[])
   {
-    try ( var seq = new JacobiPolynomialSequence<JacobiPolynomial<?>>(negHalf,
-                                                                      negHalf);
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
+                                                 negHalf);
           JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(seq);
           JacobiPolynomialPrototype PnMinus1 = new JacobiPolynomialPrototype(seq);
           JacobiPolynomialPrototype PnMinus2 = new JacobiPolynomialPrototype(seq);)
@@ -65,7 +76,10 @@ public class JacobiPolynomialPrototype implements
       PnMinus2.C = PnMinus1.C = Pn.C = seq.C;
       PnMinus2.B = PnMinus1.B = Pn.B = seq.B;
       PnMinus2.E = PnMinus1.E = Pn.E = seq.E;
-      for (int i = 4; i < 5; i++)
+      
+      //Pn.evaluate(new Integer(2), 128, new RealPolynomial())
+      
+      for (int i = 0; i < 5; i++)
       {
         var p = Pn.evaluate(new Integer(i), 128, new RealPolynomial());
         System.out.format("P(%d)=%s\n", i, p);
@@ -111,21 +125,33 @@ public class JacobiPolynomialPrototype implements
       RealPolynomial lastP = seq.cache.get(index - 1);
       if (lastP != null)
       {
+        System.out.println( "Using cache lastP " + lastP + " at " + (index-1) );
         rp4.set(lastP);
       }
       else
       {
-        assert P != null : "todo: construct a new JacobiPolynomial instance via the seq reference and assign it to P";
+        if (P == null)
+        {
+          System.out.println( "Constructing new element at " + (index-1) );
+
+          P = constructNewElement(seq);
+        }
         P.evaluate(in.sub(1, bits, i0), order, bits, rp4);
         seq.cache.set(index - 1, rp4);
       }
       RealPolynomial PBeforeLast = seq.cache.get(index - 2);
       if (PBeforeLast != null)
       {
+        System.out.println( "Using cache PBeforeLast " + PBeforeLast + " at " + (index-2) );
+
         rp6.set(PBeforeLast);
       }
       else
       {
+        if (P == null)
+        {
+          P = constructNewElement(seq);
+        }
         P.evaluate(in.sub(2, bits, i1), order, bits, rp6);
         seq.cache.set(index - 2, rp6);
       }

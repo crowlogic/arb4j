@@ -19,7 +19,7 @@ import static arb.RealConstants.negHalf;
  * @author ©2023 Stephen Crowley
  */
 public class Type1ChebyshevPolynomialSequence extends
-                                              UltrasphericalPolynomialSequence<Type1ChebyshevPolynomial>
+                                              UltrasphericalPolynomialSequence
 
 {
 

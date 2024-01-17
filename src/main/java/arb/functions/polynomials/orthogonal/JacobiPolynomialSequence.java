@@ -54,8 +54,8 @@ import arb.functions.real.RealFunction;
  * 
  * @author Stephen Crowley
  */
-public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends JacobiPolynomial<?>>> implements
-                                     OrthogonalBasis<Real, J>,
+public class JacobiPolynomialSequence implements
+                                     OrthogonalBasis<Real, RealPolynomial>,
                                      AutoCloseable
 {
   public int                                     bits    = 128;
@@ -116,7 +116,7 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
   }
 
   @Override
-  public Iterator<J> iterator()
+  public Iterator<RealPolynomial> iterator()
   {
     assert false : "TODO";
     return null;
@@ -148,5 +148,6 @@ public class JacobiPolynomialSequence<J extends JacobiPolynomial<? extends Jacob
     domain.close();
     G.close();
   }
+
 
 }
