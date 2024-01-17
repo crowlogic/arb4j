@@ -103,10 +103,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       mapping.domain       = getDomainType();
       mapping.name         = functionName;
       expression.recursive = true;
-      if ( "P".equals(functionName))
-      {
-        System.err.println( "wtf P " + this );
-      }
+     
     }
 
     if (contextual)
