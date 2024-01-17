@@ -1,12 +1,12 @@
 package arb.functions.polynomials.orthogonal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.stream.IntStream;
 
-import arb.*;
 import arb.Integer;
+import arb.OrthogonalBasis;
+import arb.Real;
+import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.expressions.Variables;
