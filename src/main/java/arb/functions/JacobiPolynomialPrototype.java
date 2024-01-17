@@ -73,7 +73,7 @@ public class JacobiPolynomialPrototype implements
           JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(seq);)
     {
 
-      for (int n = 0; n < 5; n++)
+      for (int n = 0; n < 9; n++)
       {
         RealPolynomial p = Pn.evaluate(new Integer(n), 128, new RealPolynomial());
         System.out.format("P(%d)=%s\n", n, p);

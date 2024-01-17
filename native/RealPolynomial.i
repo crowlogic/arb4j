@@ -180,9 +180,14 @@ import arb.exceptions.DivisionByZeroException;
   @Override
   public String toString()
   {
-    return String.format("RealPolynomial[length=%d, coeffs=%s, remainder=%s]", getLength(), getCoeffs(), remainder );
+    return remainder != null ? String.format("RealPolynomial[length=%d, coeffs=%s, remainder=%s]",
+                                             getLength(),
+                                             getCoeffs(),
+                                             remainder) : String.format("RealPolynomial[length=%d, coeffs=%s]",
+                                                                        getLength(),
+                                                                        getCoeffs());
   }
-  
+    
   /**
    * 
    * @return {@link arblib#arb_poly_is_zero(RealPolynomial)} != 0
