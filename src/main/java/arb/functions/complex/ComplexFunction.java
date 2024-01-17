@@ -1,8 +1,9 @@
 package arb.functions.complex;
 
-import static java.lang.Math.max;
-
-import arb.*;
+import arb.Complex;
+import arb.IntegrationOptions;
+import arb.Magnitude;
+import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;
 import arb.functions.Function;
@@ -71,35 +72,6 @@ public interface ComplexFunction extends
     return new RealPartOfHolomorphicMapping(this);
   }
 
-  /**
-   * Convenience method for this{@link #asRealToRealFunction()}
-   * 
-   * @return this{@link #asRealToRealFunction()}
-   */
-  public default RealFunction re()
-  {
-    return asRealToRealFunction();
-  }
-
-  /**
-   *
-   * 
-   * @return this{@link #asRealToComplexFunction()}{@link #realPart()}
-   */
-  public default RealFunction asRealToRealFunction()
-  {
-    return asRealToComplexFunction().realPart();
-  }
-
-  /**
-   * *
-   * 
-   * @return this{@link #asRealToComplexFunction()}{@link #imagPart()}
-   */
-  public default RealFunction asRealToImaginaryPart()
-  {
-    return asRealToComplexFunction().imagPart();
-  }
 
   /**
    * Calculates the line integral of this holomorphic function along a given curve
@@ -151,24 +123,6 @@ public interface ComplexFunction extends
 
   }
 
-  /**
-   * @return function which returns the absolute value of this function
-   */
-  public default Function<Complex, Real> abs()
-  {
-    Function<Complex, Real> function = (z, order, prec, w) ->
-    {
-      order = max(1, order);
-      assert order < 2 : "TODO: implement derivative which returns NaN at 0 and -1 when negative and +1 when positive";
-      try ( Complex x = new Complex())
-      {
-        ComplexFunction.this.evaluate(z, order, prec, x).abs(prec, w);
-      }
-      return w;
-    };
-    return function;
-  }
-
   public default ComplexFunction differential() throws NotDifferentiableException
   {
     return new TaylorShift<ComplexFunction>(this);
@@ -181,11 +135,6 @@ public interface ComplexFunction extends
   public default int getInverseBranchCount()
   {
     return 1;
-  }
-
-  public default ImaginaryHolomorphicPart<ComplexFunction> imaginaryPart()
-  {
-    return new ImaginaryHolomorphicPart<ComplexFunction>(this);
   }
 
   /**
