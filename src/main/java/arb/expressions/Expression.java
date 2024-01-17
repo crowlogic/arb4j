@@ -495,7 +495,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String getNextConstantFieldName()
   {
-    return "c" + constantCount++;
+
+    return "_c" + constantCount++;
   }
 
   public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();

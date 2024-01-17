@@ -1,11 +1,14 @@
 package arb.functions;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.negHalf;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import arb.Integer;
 import arb.Real;
-import arb.RealConstants;
 import arb.RealPolynomial;
+import arb.functions.polynomials.orthogonal.JacobiPolynomial;
 import arb.functions.polynomials.orthogonal.JacobiPolynomialSequence;
 
 /**
@@ -40,47 +43,90 @@ public class JacobiP implements
   public Function<Real, Real>              C   = null;
   public Function<Real, Real>              E   = null;
 
-  public static void main( String args[] )
+  public static void main(String args[])
   {
-    var seq = new JacobiPolynomialSequence<>(negHalf, negHalf, 5);
-    JacobiP P = new JacobiP();
-    P.P = P;
-    P.α = seq.α;
-    P.β = seq.β;
-    P.A = seq.A;
-    P.C = seq.C;
-    P.B = seq.B;
-    P.E = seq.E;
-    var p2 = P.evaluate(new Integer(2), 128, new RealPolynomial());
-    System.out.println( "P(2)=" + p2);
+    try ( var seq = new JacobiPolynomialSequence<JacobiPolynomial<?>>(negHalf,
+                                                                      negHalf,
+                                                                      5);
+          JacobiP P = new JacobiP();)
+    {
+
+      P.P = P;
+      P.α = seq.α;
+      P.β = seq.β;
+      P.A = seq.A;
+      P.C = seq.C;
+      P.B = seq.B;
+      P.E = seq.E;
+      var p2 = P.evaluate(new Integer(3), 128, new RealPolynomial());
+      System.out.println("P(2)=" + p2);
+    }
   }
-  
-  public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
+
+  ArrayList<RealPolynomial> cache = new ArrayList<>();
+
+  @Override
+  public RealPolynomial evaluate(final Integer in, int order, int bits, RealPolynomial result)
   {
-    switch (in.getSignedValue())
+    System.out.format("P.eval(in=%s, order=%s, bits=%s, result=%s)\n", in, order, bits, result);
+
+    final int index = in.getSignedValue();
+    assert index >= 0 : String.format("index = %d < 0", index);
+
+    if (index >= cache.size())
+    {
+      cache.addAll(Collections.nCopies(index + 1 - cache.size(), null));
+    }
+
+    RealPolynomial cachedResult = cache.get(index);
+    if (cachedResult != null)
+    {
+      result.set(cachedResult);
+      return result;
+    }
+
+    switch (index)
     {
     case 0:
-      return result.set(1);
-
+      result.set(1);
+      break;
     case 1:
-      return C.evaluate(r0.set(1), order, bits, r1)
-              .mul(result.identity(), bits, rp0)
-              .sub(β, bits, rp1)
-              .add(α, bits, rp2)
-              .div(2, bits, result);
-
+      C.evaluate(r0.set(1), order, bits, r1)
+       .mul(result.identity(), bits, rp0)
+       .sub(β, bits, rp1)
+       .add(α, bits, rp2)
+       .div(2, bits, result);
+      break;
     default:
-
-      // for n>=3 it fails due to the over-writing of the intermediate
-      // variables...memoization should fix this
-      return A.evaluate(in, order, bits, rp3)
-              .mul(P.evaluate(in.sub(1, bits, i0), order, bits, rp4), bits, rp5)
-              .sub(B.evaluate(r2.set(in), order, bits, r3)
-                    .mul(P.evaluate(in.sub(2, bits, i1), order, bits, rp6), bits, rp7),
-                   bits,
-                   rp8)
-              .div(E.evaluate(r4.set(in), order, bits, r5), bits, result);
+      RealPolynomial lastP = cache.get(index - 1);
+      if (lastP != null)
+      {
+        rp4.set(lastP);
+      }
+      else
+      {
+        P.evaluate(in.sub(1, bits, i0), order, bits, rp4);
+      }
+      RealPolynomial PBeforeLast = cache.get(index - 2);
+      if (PBeforeLast != null)
+      {
+        rp6.set(PBeforeLast);
+      }
+      else
+      {
+        int bah = in.getSignedValue() - 2;
+        assert bah >= 0 : String.format("index-2=%d < 0", bah);
+        Integer fuck = in.sub(2, bits, i1);
+        P.evaluate(fuck, order, bits, rp6);
+      }
+      A.evaluate(in, order, bits, rp3)
+       .mul(rp4, bits, rp5)
+       .sub(B.evaluate(r2.set(in), order, bits, r3).mul(rp6, bits, rp7), bits, rp8)
+       .div(E.evaluate(r4.set(in), order, bits, r5), bits, result);
+      break;
     }
+    cache.set(index, new RealPolynomial().set(result));
+    return result;
   }
 
   public void close()
