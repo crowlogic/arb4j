@@ -144,12 +144,6 @@ import arb.exceptions.DivisionByZeroException;
       return false;
     }
   }
-
-  public RealPolynomial set(int c1)
-  {
-    zero().get(0).set(c1);
-    return this;
-  }
     
   /**
    * Call this{@link #set(int, Real)} successively
@@ -483,6 +477,15 @@ import arb.exceptions.DivisionByZeroException;
     return this;
   }
   
+  public RealPolynomial set(int c1)
+  {
+    try ( Real tmp = new Real();)
+    {
+      zero().set(0, tmp.set(c1));
+    }
+    return this;
+  }
+    
   public RealPolynomial set(Integer c1)
   {
     try ( Real tmp = new Real();)

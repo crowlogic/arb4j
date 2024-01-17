@@ -1,8 +1,12 @@
 package arb.functions;
 
+import static arb.RealConstants.*;
+
 import arb.Integer;
 import arb.Real;
+import arb.RealConstants;
 import arb.RealPolynomial;
+import arb.functions.polynomials.orthogonal.JacobiPolynomialSequence;
 
 /**
  * bad *ASS*
@@ -36,6 +40,21 @@ public class JacobiP implements
   public Function<Real, Real>              C   = null;
   public Function<Real, Real>              E   = null;
 
+  public static void main( String args[] )
+  {
+    var seq = new JacobiPolynomialSequence<>(negHalf, negHalf, 5);
+    JacobiP P = new JacobiP();
+    P.P = P;
+    P.α = seq.α;
+    P.β = seq.β;
+    P.A = seq.A;
+    P.C = seq.C;
+    P.B = seq.B;
+    P.E = seq.E;
+    var p2 = P.evaluate(new Integer(2), 128, new RealPolynomial());
+    System.out.println( "P(2)=" + p2);
+  }
+  
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
     switch (in.getSignedValue())
