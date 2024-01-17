@@ -9,8 +9,7 @@ import arb.functions.real.RealFunction;
  * This is the 'same' function as the
  * {@link StandardGaussianCharacteristicFunction} but the density is a function
  * of a real variable (a {@link RealFunction} whereas the characteristic
- * function is a {@link ComplexFunction} whose
- * {@link ComplexFunction#realPart()} to be taken
+ * function is a {@link ComplexFunction} 
  * 
  * @author crow
  *

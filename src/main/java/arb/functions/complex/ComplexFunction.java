@@ -167,10 +167,6 @@ public interface ComplexFunction extends
     // uncertainty radius is there");
   }
 
-  public default RealHolomorphicPart<ComplexFunction> realPart()
-  {
-    return new RealHolomorphicPart<ComplexFunction>(this);
-  }
 
   /**
    * Calculate the simple quadrature f([a,b])*(b-a) where
