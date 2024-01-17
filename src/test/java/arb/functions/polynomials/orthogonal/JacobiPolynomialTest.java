@@ -26,8 +26,7 @@ public class JacobiPolynomialTest extends
   public static void testA()
   {
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-                                                   negHalf,
-                                                   N);
+                                                   negHalf);
           Real threeHalves = new Real("1.5",
                                       128);
           Integer n = new Integer())
@@ -46,8 +45,7 @@ public class JacobiPolynomialTest extends
   public static void testE()
   {
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-                                                   negHalf,
-                                                   N))
+                                                   negHalf))
     {
       try ( Real result = seq.E.evaluate(new Real("3",
                                                   128),
@@ -67,8 +65,7 @@ public class JacobiPolynomialTest extends
   public static void testB()
   {
     try ( var seq = new JacobiPolynomialSequence<>(half,
-                                                   oneQuarter,
-                                                   N))
+                                                   oneQuarter))
     {
 
       try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
@@ -83,8 +80,7 @@ public class JacobiPolynomialTest extends
   public static void testC()
   {
     try ( var seq = new JacobiPolynomialSequence<>(half,
-                                                   oneQuarter,
-                                                   N))
+                                                   oneQuarter))
     {
       try ( Real result = seq.C.evaluate(RealConstants.one, 1, bits, new Real()))
       {
@@ -98,8 +94,7 @@ public class JacobiPolynomialTest extends
   public static void testF()
   {
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-                                                   threeQuarters,
-                                                   N);)
+                                                   threeQuarters);)
     {
       Integer one = new Integer("1");
 
@@ -116,8 +111,7 @@ public class JacobiPolynomialTest extends
   public static void testG()
   {
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-                                                   threeQuarters,
-                                                   N))
+                                                   threeQuarters))
     {
       assertEquals(-.3125, seq.G.doubleValue());
     }
@@ -127,8 +121,7 @@ public class JacobiPolynomialTest extends
   {
 
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-                                                   negHalf,
-                                                   N))
+                                                   negHalf))
     {
       Integer won = new Integer("1");
 
@@ -150,8 +143,7 @@ public class JacobiPolynomialTest extends
   {
 
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-                                                   negHalf,
-                                                   N))
+                                                   negHalf))
     {
       Integer won = new Integer("0");
 
@@ -171,8 +163,7 @@ public class JacobiPolynomialTest extends
   {
 
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-                                                   negHalf,
-                                                   N))
+                                                   negHalf))
     {
       Integer too = new Integer("2");
 
@@ -190,13 +181,12 @@ public class JacobiPolynomialTest extends
     }
 
   }
-  
+
   public static void testP3()
   {
 
     try ( var seq = new JacobiPolynomialSequence<>(negHalf,
-                                                   negHalf,
-                                                   N))
+                                                   negHalf))
     {
       Integer too = new Integer("3");
 

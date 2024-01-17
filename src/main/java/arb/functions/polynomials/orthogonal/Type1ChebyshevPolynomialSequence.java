@@ -23,9 +23,9 @@ public class Type1ChebyshevPolynomialSequence extends
 
 {
 
-  public Type1ChebyshevPolynomialSequence(int N)
+  public Type1ChebyshevPolynomialSequence()
   {
-    super(negHalf,N);
+    super(negHalf);
   }
 
 }
