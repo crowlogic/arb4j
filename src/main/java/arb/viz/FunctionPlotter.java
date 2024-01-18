@@ -7,6 +7,9 @@ import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
+import io.fair_acc.chartfx.renderer.LineStyle;
+import io.fair_acc.chartfx.renderer.Renderer;
+import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -34,14 +37,19 @@ public class FunctionPlotter extends
   public final XYChart       chart     = new XYChart(xAxis,
                                                      yAxis);
 
+  boolean drawMarkers = false;
+
   public Stage createScene()
   {
-    Platform.setImplicitExit(false);
+    Platform.setImplicitExit(drawMarkers);
     stage = new Stage();
     initializeFuctions();
     root = new StackPane();
     configureChartPlugins();
     root.getChildren().add(chart);
+    ErrorDataSetRenderer renderer = (ErrorDataSetRenderer) (chart.getRenderers().get(0));
+    renderer.setDrawMarker(drawMarkers);
+        
     scene = new Scene(root,
                       1500,
                       750);

@@ -23,7 +23,7 @@ public class ShellFunctions
 
         // Clear existing datasets if needed
         plotter.chart.getDatasets().clear();
-
+        
         // Add the new dataset to FunctionPlotter's internal list
         plotter.chart.getDatasets().add(dataSet);
 
