@@ -148,8 +148,6 @@ public class RealMatrixTest extends
       A.getRow(2).set(3, 24, 90, 141);
       A.getRow(3).set(4, 29, 105, 265);
 
-      System.out.println(A);
-
       LongBuffer permutation   = ByteBuffer.allocateDirect(n * Long.BYTES)
                                            .order(ByteOrder.nativeOrder())
                                            .asLongBuffer();

@@ -1839,39 +1839,40 @@ public static String removeTrailingZeros(String decimal)
    * @param bits
    * @param result {@link Real} vector of dimension at least 2 to hold the slope
    *               and intercept
-   * @return result=[slope=(NΣ(xy) - ΣxΣy) / (N*Σ(x^2) - (Σx)^2),intercept=(Σy -
+   *
+   * @return result=[slope=(NΣ(xy) - ΣxΣy) / (N*Σ(x^2) - (Σx)^2), intercept=(Σy *
    *         m*Σx) / N]
+   * 
    */
-  public Real linearlyRegress(Real y, int bits, Real result)
+  public RealPolynomial linearlyRegress(Real y, int bits, RealPolynomial result)
   {
-    assert result.size() >= 2 : "result.dim must be >=2";
+    assert result.getLength() >= 2 : "result.dim must be >=2";
     final Real x = this;
     assert x.size() == y.size() : String.format("x.size=%d != y.size=%d", x.size(), y.size());
     final int n         = x.size();
-    Real      slope     = result.get(0);
-    Real      intercept = result.get(1);
+    Real      slope     = result.get(1);
+    Real      intercept = result.get(0);
 
-    try ( Real sumX = x.sum(bits, new Real());
-          Real sumY = y.sum(bits, new Real());
-          Real sumXY = x.dotProduct(y, bits, new Real());
-          Real sumXX = x.dotProduct(x, bits, new Real());
-          Real tmp = new Real();)
+    try ( Real sumX = x.sum(bits, new Real()); Real sumY = y.sum(bits, new Real());
+          Real sumXY = x.dotProduct(y, bits, new Real()); Real sumXX = x.dotProduct(x, bits, new Real());
+          Real pivot = new Real();)
     {
       // m = (N*Σ(xy) - Σx*Σy) / (N*Σ(x^2) - (Σx)^2)
       sumXY.mul(n, bits); // N*Σ(xy)
-      sumX.mul(sumY, bits, tmp); // Σx*Σy
-      sumXY.sub(tmp, bits, slope); // N*Σ(xy) - Σx*Σy
+      sumX.mul(sumY, bits, pivot); // Σx*Σy
+      sumXY.sub(pivot, bits, slope); // N*Σ(xy) - Σx*Σy
       sumXX.mul(n, bits, sumXY); // N*Σ(x^2)
-      sumX.pow(2, bits, tmp); // (Σx)^2
-      sumXY.sub(tmp, bits, intercept); // N*Σ(x^2) - (Σx)^2
+      sumX.pow(2, bits, pivot); // (Σx)^2
+      sumXY.sub(pivot, bits, intercept); // N*Σ(x^2) - (Σx)^2
       slope.div(intercept, bits); // (N*Σ(xy) - Σx*Σy) / (N*Σ(x^2) - (Σx)^2)
       // c = (Σy - m*Σx) / N
       slope.mul(sumX, bits, sumXY); // m*Σx
-      sumY.sub(sumXY, bits, tmp); // Σy - m*Σx
-      tmp.div(n, bits, intercept); // (Σy - m*Σx) / N
+      sumY.sub(sumXY, bits, pivot); // Σy - m*Σx
+      pivot.div(n, bits, intercept); // (Σy - m*Σx) / N
     }
     return result;
   }
+
   
   /**
    * Calculate the sum of the elements

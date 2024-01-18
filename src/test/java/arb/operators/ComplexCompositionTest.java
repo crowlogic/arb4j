@@ -14,7 +14,6 @@ public class ComplexCompositionTest extends
           Complex result = xFunc.evaluate(t, 1, 256, new Complex());)
     {
       t.set(0.1, 0.1);
-      System.out.println("result=" + result);
     }
   }
 
