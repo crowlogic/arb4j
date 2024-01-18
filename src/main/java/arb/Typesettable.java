@@ -1,5 +1,7 @@
 package arb;
 
+import org.scilab.forge.jlatexmath.LaTeXAtom;
+
 /**
  * instances of {@link Class}es implement this to provide {@link LaTeXAtom}
  */

@@ -7,8 +7,6 @@ import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
-import io.fair_acc.chartfx.renderer.LineStyle;
-import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
 import javafx.scene.Scene;

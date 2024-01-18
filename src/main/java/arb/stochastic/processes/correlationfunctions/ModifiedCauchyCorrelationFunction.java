@@ -1,8 +1,9 @@
 package arb.stochastic.processes.correlationfunctions;
 
+import static arb.functions.real.RealFunction.express;
+
 import arb.Real;
 import arb.functions.real.RealFunction;
-import static arb.functions.real.RealFunction.express;
 
 /**
  * The set of functions which can be represented by this function is the
