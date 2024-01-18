@@ -180,28 +180,35 @@ import arb.exceptions.DivisionByZeroException;
   @Override
   public String toString()
   {
-    StringBuilder builder = new StringBuilder();
-    for (int i = getLength()-1; i >= 0; --i)
+    if ( getLength() == 0 )
     {
-      if (i < getLength()-1)
-      {
-        builder.append(" + ");
-      }
+      return "∅";
+    }
+    StringBuilder builder = new StringBuilder();
+    for (int i = getLength() - 1; i >= 0; --i)
+    {
       Real xi = get(i);
-      if (!xi.isOne())
+      if (!xi.isZero())
       {
-        builder.append(xi);
-      }
-      if (i > 0)
-      {
-        builder.append("x");
-        if (i > 1)
+        if (i < getLength() - 1)
         {
-          builder.append("^" + i);
+          builder.append(xi.sign() >= 0 ? " + " : " ");
+        }
+        if (!xi.isOne())
+        {
+          builder.append(xi);
+        }
+        if (i > 0)
+        {
+          builder.append("*x");
+          if (i > 1)
+          {
+            builder.append("^" + i);
+          }
         }
       }
     }
-    return builder.toString() + (remainder != null ? " with remainder " + remainder : "");
+    return (builder.toString() + (remainder != null ? " with remainder " + remainder : "")).replaceAll("-", "- ");
   }
     
   /**
