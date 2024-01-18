@@ -30,7 +30,7 @@ public class FunctionPlotter extends
   public Stage               stage;
   private StackPane          root;
   private Scene              scene;
-  public boolean             darkStyle = true;
+  public boolean             darkStyle = false;
 
   private DefaultNumericAxis xAxis     = new DefaultNumericAxis();
   private DefaultNumericAxis yAxis     = new DefaultNumericAxis();

@@ -536,6 +536,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (recursive)
     {
+      assert false : "TODO: instantiate a new instance, we cant use the existing one because for the same reason its not thread-safe, is that intermediate variables are delcared as fields of the compiled expression";
       setFieldValue(functionName, instance);
     }
 
