@@ -6,9 +6,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 import java.util.HashSet;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
 import arb.Integer;
 import arb.Real;
@@ -91,6 +89,19 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
       out.flush();
     }
     expression.literalConstants.add(this);
+  }
+
+  /**
+   * Call {@link ClassVisitor#visitField(int, String, String, String, Object)}
+   * with {@link #fieldName} and type given by {@link #type()}
+   * 
+   * @param classVisitor
+   * @return classVisitor
+   */
+  public ClassVisitor declareField(ClassVisitor classVisitor)
+  {
+    classVisitor.visitField(ACC_PUBLIC, fieldName, type().descriptorString(), null, null);
+    return classVisitor;
   }
 
   @Override

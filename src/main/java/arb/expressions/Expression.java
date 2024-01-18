@@ -97,7 +97,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                      functionClass,
                                                      verbose,
                                                      functionName);
-    F                   func               = compiledExpression.instantiate();
+    F                   func               = compiledExpression.instantiate(true);
     if (mapping != null)
     {
       mapping.func = func;
@@ -118,7 +118,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                Class<F> functionClass,
                                                                boolean verbose)
   {
-    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
+    return compile(className,
+                   expression,
+                   context,
+                   domainClass,
+                   rangeClass,
+                   functionClass,
+                   verbose).instantiate(true);
   }
 
   public int                                      position              = -1;
@@ -272,62 +278,48 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ClassVisitor declareConstants(ClassVisitor classVisitor)
   {
-    if (verbose)
-    {
-      err.println("\nDeclaring constants: " + literalConstants + "\n\n");
-      err.flush();
-    }
+
     for (var constant : literalConstants)
     {
-      classVisitor.visitField(ACC_PUBLIC, constant.fieldName, constant.type().descriptorString(), null, null);
+      constant.declareField(classVisitor);
     }
     return classVisitor;
   }
 
   public ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
   {
-    if (verbose)
-    {
-      err.println("\nDeclaring referenced functions: " + referencedFunctions + "\n\n");
-      err.flush();
-    }
     referencedFunctions.forEach((name, function) ->
     {
-      String descriptor = function.functionInterface != null ? function.functionInterface.descriptorString() : function.func.getClass()
-                                                                                                                            .descriptorString();
-
-      classVisitor.visitField(ACC_PUBLIC,
-                              name,
-                              descriptor,
-                              getFunctionTypeSignature(function.domain, function.range),
-                              null);
+      declareFunctionReference(classVisitor, name, function);
     });
     return classVisitor;
   }
 
+  public void declareFunctionReference(ClassVisitor classVisitor, String name, Mapping<D, R> function)
+  {
+    String descriptor = function.functionInterface != null ? function.functionInterface.descriptorString() : function.func.getClass()
+                                                                                                                          .descriptorString();
+
+    classVisitor.visitField(ACC_PUBLIC,
+                            name,
+                            descriptor,
+                            getFunctionTypeSignature(function.domain, function.range),
+                            null);
+  }
+
   public void declareIntermediateVariables(ClassVisitor classVisitor)
   {
-    if (verbose)
-    {
-      err.println("\nDeclaring intermediate variables: " + intermediateVariables + "\n\n");
-      err.flush();
-    }
     for (var variable : intermediateVariables)
     {
-      classVisitor.visitField(ACC_PUBLIC, variable.name, variable.type.descriptorString(), null, null);
+      variable.declareField(classVisitor);
     }
   }
 
   public void declareReferencedVariables(ClassVisitor classVisitor)
   {
-    if (variables != null)
+    for (Variable<D, R, F> variable : referencedVariables.values())
     {
-      if (verbose)
-      {
-        err.println("Declaring variables: " + referencedVariables);
-        err.flush();
-      }
-      Compiler.declareVariables(classVisitor, referencedVariables.entrySet());
+      variable.declareField(classVisitor);
     }
   }
 
@@ -340,7 +332,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (verbose)
     {
-      out.println("Generating " + className + " from expression '" + expression + "'");
+      out.format("Generating %s from expression '%s'", className, expression);
       out.flush();
     }
 
@@ -358,11 +350,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       if (needsCloseMethod())
       {
-        if (verbose)
-        {
-          out.println("\nGenerating close method\n\n");
-          out.flush();
-        }
         generateCloseMethod(classVisitor);
       }
 
@@ -405,17 +392,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                   constant.fieldName,
                                                                   constant.type()));
 
-      if (!intermediateVariables.isEmpty())
-      {
-        if (verbose)
-        {
-          err.println("Closing intermediate variables : " + intermediateVariables);
-          err.flush();
-        }
+      intermediateVariables.forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                   intermediateVariable.name,
+                                                                                   intermediateVariable.type));
 
-        intermediateVariables.forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                                     intermediateVariable.name,
-                                                                                     intermediateVariable.type));
+      if (recursive)
+      {
+        generateCloseFieldCall(loadThisOntoStack(methodVisitor), functionName, functionClass);
       }
 
       methodVisitor.visitInsn(Opcodes.RETURN);
@@ -534,11 +517,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void injectContextualFunctionReferences() throws NoSuchFieldException, IllegalAccessException
   {
-    if (recursive)
-    {
-      assert false : "TODO: instantiate a new instance, we cant use the existing one because for the same reason its not thread-safe, is that intermediate variables are delcared as fields of the compiled expression";
-      setFieldValue(functionName, instance);
-    }
 
     if (context != null)
     {
@@ -586,25 +564,42 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * TODO: support multiple instances
    * 
+   * 
+   * @param primary TODO
    * @return a newly instantiated instance of the (equivalence) class of function
    *         defined by this {@link Expression}
    */
-  protected F instantiate()
+  protected F instantiate(boolean primary)
   {
     try
     {
-      instance = (compiledClass != null ? compiledClass : define()).getDeclaredConstructor().newInstance();
-      injectVariableReferences();
-      injectContextualFunctionReferences();
+      if (primary)
+      {
+
+        instance = (compiledClass != null ? compiledClass : define()).getDeclaredConstructor().newInstance();
+        injectVariableReferences();
+        injectContextualFunctionReferences();
+
+      }
+      else
+      {
+        assert compiledClass != null : "define() must be called before instantiating since automatically calling define() is only done for the primary instance";
+        return compiledClass.getDeclaredConstructor().newInstance();
+      }
+      return instance;
     }
     catch (Exception e)
     {
-      throw new RuntimeException(e.getMessage(),
-                                 e);
+      if (e instanceof RuntimeException)
+      {
+        throw (RuntimeException) e;
+      }
+      else
+      {
+        throw new RuntimeException(e);
+      }
     }
-    return instance;
   }
 
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> type)

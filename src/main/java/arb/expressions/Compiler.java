@@ -413,21 +413,6 @@ public class Compiler
 
   }
 
-  public static <D, R, F extends Function<D, R>>
-         ClassVisitor
-         declareVariables(ClassVisitor classVisitor, Iterable<Map.Entry<String, Variable<D, R, F>>> variables)
-  {
-    for (var variable : variables)
-    {
-      classVisitor.visitField(ACC_PUBLIC,
-                              variable.getKey(),
-                              variable.getValue().type().descriptorString(),
-                              null,
-                              null);
-    }
-    return classVisitor;
-  }
-
   public static String getIntermediateVariablePrefix(Class<?> type)
   {
     String prefix = "l";

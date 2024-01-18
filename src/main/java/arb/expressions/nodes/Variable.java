@@ -4,13 +4,12 @@ import static arb.expressions.Compiler.loadInput;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.out;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.Objects;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
 import arb.Real;
 import arb.exceptions.UndefinedReferenceException;
@@ -105,7 +104,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
         out.flush();
       }
       if (!"else".equals(reference.name))
-      {        
+      {
         expression.referencedVariables.put(reference.name, this);
       }
     }
@@ -276,6 +275,12 @@ public class Variable<D, R, F extends Function<D, R>> extends
   public String typeset()
   {
     return reference.typeset();
+  }
+
+  public ClassVisitor declareField(ClassVisitor classVisitor)
+  {
+    classVisitor.visitField(ACC_PUBLIC, reference.name, type().descriptorString(), null, null);
+    return classVisitor;
   }
 
 }

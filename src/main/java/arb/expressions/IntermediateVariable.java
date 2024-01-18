@@ -1,11 +1,8 @@
 package arb.expressions;
 
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.DUP;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
@@ -50,5 +47,11 @@ public class IntermediateVariable<D, R, F extends Function<D, R>>
     methodVisitor.visitMethodInsn(INVOKESPECIAL, intermediateTypeInternalName, "<init>", "()V", false);
     methodVisitor.visitFieldInsn(PUTFIELD, expression.className, name, type.descriptorString());
     return methodVisitor;
+  }
+
+  public ClassVisitor declareField(ClassVisitor classVisitor)
+  {
+    classVisitor.visitField(ACC_PUBLIC, name, type.descriptorString(), null, null);
+    return classVisitor;
   }
 }
