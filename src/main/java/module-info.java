@@ -50,7 +50,6 @@ module arb4j
   exports arb.exceptions;
   exports arb.functions;
   exports arb.operators;
-  exports arb.operators.integraltransforms;
   exports arb.functions.polynomials;  
   exports arb.functions.polynomials.orthogonal;
   exports arb.functions.real;
