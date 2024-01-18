@@ -1,32 +1,15 @@
 package arb.expressions;
 
 import static arb.expressions.Parser.expressionToUniqueClassname;
-import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.DUP2_X1;
-import static org.objectweb.asm.Opcodes.DUP_X1;
-import static org.objectweb.asm.Opcodes.DUP_X2;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.POP2;
-import static org.objectweb.asm.Opcodes.RETURN;
-import static org.objectweb.asm.Opcodes.SWAP;
-import static org.objectweb.asm.Opcodes.V21;
-import static org.objectweb.asm.Opcodes.V_PREVIEW;
+import static org.objectweb.asm.Opcodes.*;
 
-import java.util.Map;
-
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.signature.SignatureVisitor;
 import org.objectweb.asm.signature.SignatureWriter;
 
 import arb.*;
 import arb.Integer;
-import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
@@ -93,16 +76,14 @@ public class Compiler
 
   }
 
-  public static <D, R, F extends Function<D, R>>
-         Expression<D, R, F>
-         compile(String className,
-                 String expressionString,
-                 Context context,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> rangeClass,
-                 Class<? extends F> functionClass,
-                 boolean verbose,
-                 String functionName) 
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
+                                                                             String expressionString,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             boolean verbose,
+                                                                             String functionName)
   {
     Expression<D, R, F> expression = new Expression<D, R, F>(className,
                                                              domainClass,
@@ -122,15 +103,13 @@ public class Compiler
     return expression;
   }
 
-  public static <D, R, F extends Function<D, R>>
-         Expression<D, R, F>
-         compile(String className,
-                 String expressionString,
-                 Context context,
-                 Class<? extends D> domainClass,
-                 Class<? extends R> rangeClass,
-                 Class<? extends F> functionClass,
-                 boolean verbose)
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
+                                                                             String expressionString,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             boolean verbose)
   {
     return compile(className, expressionString, context, domainClass, rangeClass, functionClass, verbose, null);
   }
@@ -167,11 +146,7 @@ public class Compiler
   public static <D, R, F extends Function<D, R>> MethodVisitor generateConstructor(Expression<D, R, F> expression,
                                                                                    ClassVisitor classVisitor)
   {
-    if (expression.verbose)
-    {
-      out.println("Generating constructor for " + expression);
-      out.flush();
-    }
+
     MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
     methodVisitor.visitCode();
 
@@ -208,11 +183,6 @@ public class Compiler
          MethodVisitor
          initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
-    if (expression.verbose && expression.context != null && !expression.referencedFunctions.isEmpty())
-    {
-      err.println("Preparing function references: " + expression.referencedFunctions);
-      err.flush();
-    }
 
     if (expression.context != null)
     {
@@ -227,12 +197,6 @@ public class Compiler
          MethodVisitor
          initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
-    if (expression.verbose && !expression.literalConstants.isEmpty())
-    {
-
-      out.println("Preparing literal constants: " + expression.literalConstants);
-      out.flush();
-    }
 
     for (var literal : expression.literalConstants)
     {

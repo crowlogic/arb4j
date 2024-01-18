@@ -34,13 +34,10 @@ public class CircleTest extends
     Circle unitCircle = new Circle();
     Real   perimeter  = unitCircle.getArcLength(new Real().π(128), 128, new Real());
     assertEquals(Math.PI, perimeter.getMid().doubleValue(), pow(10, -17));
-    System.out.println("perimeter=" + perimeter);
     try ( Complex rotatedAndScaledPoint = dr.evaluate(Math.PI / 2, new Complex()))
     {
       basePoint.printPrecision = false;
-      System.out.println("basePoint=" + basePoint);
       rotatedAndScaledPoint.printPrecision = false;
-      System.out.println("rotatedAndScaledPoint=" + rotatedAndScaledPoint);
       assertEquals(0.2, rotatedAndScaledPoint.getReal().doubleValue(RoundingMode.Down), Math.pow(10, -17));
       assertEquals(0.9, rotatedAndScaledPoint.getImag().getMid().doubleValue(RoundingMode.Near), Math.pow(10, -17));
 
@@ -61,9 +58,7 @@ public class CircleTest extends
     try ( Complex rotatedAndScaledPoint = dr.evaluate(Math.PI / 2, new Complex()))
     {
       basePoint.printPrecision = false;
-      System.out.println("basePoint=" + basePoint);
       rotatedAndScaledPoint.printPrecision = false;
-      System.out.println("rotatedAndScaledPoint=" + rotatedAndScaledPoint);
       assertEquals(0.2, rotatedAndScaledPoint.getReal().doubleValue(RoundingMode.Down), Math.pow(10, -17));
       assertEquals(0.9, rotatedAndScaledPoint.getImag().getMid().doubleValue(RoundingMode.Near), Math.pow(10, -17));
 

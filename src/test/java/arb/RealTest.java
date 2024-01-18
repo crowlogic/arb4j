@@ -1,8 +1,6 @@
 package arb;
 
 import static arb.RealConstants.one;
-import static arb.utensils.Utensils.println;
-import static java.lang.System.out;
 
 import arb.stochastic.processes.CorrelatedRandomVectorGenerator;
 import junit.framework.TestCase;
@@ -41,8 +39,7 @@ public class RealTest extends
 
       Real shifted = realInstance.shift(5);
       assertEquals(5, shifted.size());
-      System.out.println("shifted=" + shifted);
-      System.out.println("orig=" + realInstance);
+
 
     }
   }
@@ -132,9 +129,6 @@ public class RealTest extends
         real2.get(i).set(i + 4);
       }
 
-      out.println("real1=" + real1);
-      out.println("real2=" + real2);
-
       // as per calculation, 1*4 + 2*5 + 3*6 = 32
       try ( Real expectedDotProduct = new Real(); Real result = new Real();)
       {
@@ -165,14 +159,12 @@ public class RealTest extends
       {
         rvgen.nextElement(prec, element);
       }
-      println("sqrt correlation=" + rvgen.getRootMatrix());
 
       Real dW1 = x.copyCol(0, Real.newVector(x.getNumRows())).normalize(prec);
       Real dW2 = x.copyCol(1, Real.newVector(x.getNumRows())).normalize(prec);
 
       Real cov = dW1.covariance(dW2, prec, new Real());
       cov.printPrecision = true;
-      println("covariance " + cov);
 
       assertEquals(covarianceMatrix.get(0, 1).doubleValue(), cov.doubleValue(), 0.006);
     }
@@ -210,7 +202,6 @@ public class RealTest extends
     r.get(1).set("2.3", prec);
     r.get(2).set("3.3", prec);
     Real rMinusOne = r.subScalar(one, 128, Real.newVector(3));
-    println(rMinusOne);
     assertEquals(3.9, rMinusOne.Σ(128, new Real()).doubleValue());
   }
 

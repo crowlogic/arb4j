@@ -17,7 +17,6 @@ public class RealRootIntervalTest extends
 
     RealRootInterval interval = new RealRootInterval(adouble,
                                                      bdouble);
-    out.println("interval=" + interval.getA());
     try ( Real real = new Real())
     {
       real.set(interval, 128);

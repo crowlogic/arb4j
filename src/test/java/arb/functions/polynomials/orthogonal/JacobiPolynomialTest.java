@@ -35,7 +35,6 @@ public class JacobiPolynomialTest extends
 
       try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
       {
-        out.println("A(3,1.5)=" + result);
         assertEquals(45.0, result.eval(threeHalves.doubleValue()));
       }
     }
@@ -53,7 +52,6 @@ public class JacobiPolynomialTest extends
                                          bits,
                                          new Real()))
       {
-        out.println("E(3)=" + result);
         assertEquals(18.0, result.doubleValue());
         assertTrue(result.isExact());
       }
@@ -70,7 +68,6 @@ public class JacobiPolynomialTest extends
 
       try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
       {
-        out.println("B(1)=" + result);
         assertEquals(0.34375, result.doubleValue());
         assertTrue(result.isExact());
       }
@@ -83,8 +80,7 @@ public class JacobiPolynomialTest extends
                                                    oneQuarter))
     {
       try ( Real result = seq.C.evaluate(RealConstants.one, 1, bits, new Real()))
-      {
-        out.println("C(1)=" + result);
+      {        
         assertEquals(2.75, result.doubleValue());
         assertTrue(result.isExact());
       }
@@ -100,7 +96,6 @@ public class JacobiPolynomialTest extends
 
       try ( Real result = seq.F.evaluate(one, 1, bits, new Real()))
       {
-        out.println("F(1)=" + result);
         assertEquals(0.5625, result.doubleValue());
         assertTrue(result.isExact());
       }
@@ -127,7 +122,6 @@ public class JacobiPolynomialTest extends
 
       try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
       {
-        out.println("p(1,x)=" + result);
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(RealConstants.half, valAtOne);
         Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
@@ -149,7 +143,6 @@ public class JacobiPolynomialTest extends
 
       try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
       {
-        out.println("p(0)=" + result);
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(RealConstants.one, valAtOne);
         Real valAtPi = result.evaluate(RealConstants.π, 128, new Real());
@@ -170,7 +163,6 @@ public class JacobiPolynomialTest extends
       try ( RealPolynomial result = seq.P.evaluate(too, 0, bits, new RealPolynomial()))
       {
         result.getCoeffs().printPrecision = true;
-        out.println("p(2,x)=" + result);
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(0.375, valAtOne.doubleValue());
         Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
@@ -197,7 +189,6 @@ public class JacobiPolynomialTest extends
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(0.375, valAtOne.doubleValue());
         Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
-        System.out.format("P(2.1)=%s\nP(2,2=%s)\n", valAtOne, valAtTwo);
         assertEquals(2.625, valAtTwo.doubleValue());
 
       }

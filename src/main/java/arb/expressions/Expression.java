@@ -448,12 +448,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     rootNode.generate(methodVisitor, rangeType);
 
-    if (verbose)
-    {
-      out.println("\nReturning from evaluate method...\n\n");
-      out.flush();
-    }
-
     methodVisitor.visitInsn(Opcodes.ARETURN);
     methodVisitor.visitLabel(endLabel);
 
@@ -635,11 +629,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     intermediateVariables.add(new IntermediateVariable<>(this,
                                                          intermediateVarName,
                                                          type));
-    if (verbose)
-    {
-      out.println("\nAllocating intermediate variable " + intermediateVarName + " at depth " + depth + "\n\n");
-      out.flush();
-    }
+
     return intermediateVarName;
   }
 
@@ -687,12 +677,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else if (ch == ')')
     {
       assert false : "wack";
-    }
-
-    if (verboseParser)
-    {
-      out.println("parse() returning " + node);
-      out.flush();
     }
 
     return node;
@@ -838,12 +822,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                     null,
                                                                     domainType),
                                                       0);
-      if (verbose)
-      {
-        out.println("independentVariableNode=" + independentVariableNode);
-        out.flush();
-      }
-      position = rightArrowIndex;
+
+      position                = rightArrowIndex;
 
     }
   }
@@ -1159,6 +1139,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       Files.write(Paths.get(file.toURI()), instructions);
       out.println("Wrote " + file.getAbsolutePath());
+
     }
     catch (IOException e)
     {
@@ -1172,12 +1153,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
          MethodVisitor
          initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
   {
-    if (!expression.intermediateVariables.isEmpty() && expression.verbose)
-    {
-      err.println("Preparing intermediate variables: " + expression.intermediateVariables);
-      err.flush();
-    }
-
     for (var intermediateVariable : expression.intermediateVariables)
     {
       intermediateVariable.initialize(methodVisitor);

@@ -14,18 +14,14 @@ public class RealPolynomialTest extends
     p.set(new Real().set(new Integer("10")));
     p.set(new Integer("10"));
 
-    System.out.println("p=" + p);
   }
 
   public static void testIdentity()
   {
     try ( RealPolynomial eye = new RealPolynomial())
     {
-      System.out.println("eye=" + eye);
       eye.zero();
-      System.out.println("eye=" + eye);
       eye.identity();
-      System.out.println("eye=" + eye);
     }
   }
 

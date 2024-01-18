@@ -14,7 +14,6 @@ public class CircleSTest extends
       Complex πOver2 = new Complex();
       πOver2.getReal().π(256).div(2, 256);
       Complex z = cs.evaluate(πOver2, 3, 256, Complex.newVector(3));
-      System.out.println("CircularS(π/2)=" + z);
       assertEquals(0.6, z.getReal().doubleValue(), Math.pow(10, -20));
       Real z1i = z.get(1).getImag();
       assertEquals(0.64, z1i.getMid().doubleValue(RoundingMode.Near), z1i.getRad().doubleValue());
@@ -33,9 +32,7 @@ public class CircleSTest extends
       Roots              turningPoints      = cs.realPart()
                                                 .asRealFunction(new Complex())
                                                 .locateRoots(rootLocatorOptions);
-      System.out.println("Located " + turningPoints);
       turningPoints.refine(cs.realPart().asRealFunction(new Complex()), 256, 50, true);
-      System.out.println("Refined " + turningPoints);
     }
   }
 }

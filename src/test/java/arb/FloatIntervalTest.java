@@ -11,7 +11,6 @@ public class FloatIntervalTest extends
   {
     FloatInterval interval = new FloatInterval(0,
                                                10);
-    System.out.println(interval);
 
     try ( RealPartition partition = new RealPartition(interval,
                                                       prec,

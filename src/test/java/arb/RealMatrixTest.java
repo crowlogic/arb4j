@@ -49,16 +49,11 @@ public class RealMatrixTest extends
     RealMatrix reconstructedCorrelation = RealMatrix.newMatrix(2, 2);
 
     sqrtCorrelation.mul(sqrtCorrelation.transpose(RealMatrix.newMatrix(2, 2)), prec, reconstructedCorrelation);
-    println("correlation=\n" + correlation);
-    println("√correlation=\n" + sqrtCorrelation);
-    println("reconstructedCorrelation=\n" + reconstructedCorrelation);
+
     assertTrue(reconstructedCorrelation.contains(correlation));
     assertTrue(reconstructedCorrelation.overlaps(correlation));
 
-    for (Real row : correlation)
-    {
-      println(row);
-    }
+
   }
 
   public void testDiagonal()
@@ -171,28 +166,13 @@ public class RealMatrixTest extends
 
       lowerFactor.mul(upperFactor, 128, B);
 
-      System.out.format("%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n", factorization, upperFactor, lowerFactor, A, B);
-
-      // B.permuteRows(permutation);
-      // System.out.println("permutations=" + getPermutationString(permutation));
-
-      // B.permute(permutation);
-      // LU.permute(permutation);
-
-      // System.out.println("after depermutation\n" + B);
-
-      System.out.println("permutations=" + getPermutationString(permutation));
-
-      // printRowPointers(LU);
 
       RealMatrix diff = A.sub(B, 128, factorization);
       diff.printPrecision = true;
-      out.println("diff=" + diff);
 
       try ( Real frobeniusNorm = new Real();)
       {
         diff.frobeniusNorm(128, frobeniusNorm);
-        out.println("frobenius norm=" + frobeniusNorm.doubleValue());
 
         assertTrue(frobeniusNorm.containsZero());
 
@@ -211,7 +191,6 @@ public class RealMatrixTest extends
             assertTrue(got == gotViaRow);
           }
         }
-        System.out.println();
 
       }
     }
@@ -231,22 +210,18 @@ public class RealMatrixTest extends
       A.getRow(2).set(3, 24, 90, 141);
       A.getRow(3).set(4, 29, 105, 265);
 
-      System.out.println(A);
       
       A.computeLowerUpperFactorization(128, lowerFactor, upperFactor);
 
       lowerFactor.mul(upperFactor, 128, B);
 
-      System.out.format("%s\n\n%s\n\n%s\n\n%s\n\n", upperFactor, lowerFactor, A, B);
 
       A.sub(B, 128, diff);
       diff.printPrecision = true;
-      out.println("diff=" + diff);
 
       try ( Real frobeniusNorm = new Real();)
       {
         diff.frobeniusNorm(128, frobeniusNorm);
-        out.println("frobenius norm=" + frobeniusNorm.doubleValue());
 
         assertTrue(frobeniusNorm.containsZero());
 

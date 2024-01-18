@@ -27,11 +27,6 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
       y.set(2, π);
       f.evaluate(x, 1, RealConstants.prec, z);
 
-      out.format("x + y = z\n");
-      out.println("x=" + x);
-      out.println("y=" + y);
-      out.println("z=" + z);
-      out.flush();
 
       assertEquals(correctZ, z);
     }
@@ -50,11 +45,7 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
     RealPolynomial         z        = f.evaluate(x, 1, RealConstants.prec, new RealPolynomial());
     RealPolynomial         correctZ = new RealPolynomial(3);
     correctZ.set(two, oneQuarter, π).neg().get(0).neg();
-    out.format("x - y = z\n");
-    out.println("x=" + x);
-    out.println("y=" + y);
-    out.println("z=" + z);
-    out.flush();
+
     assertEquals(correctZ, z);
   }
 
@@ -73,11 +64,6 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
       y.set(2, π);
       f.evaluate(x, 1, RealConstants.prec, z);
 
-      out.format("x * y = z\n");
-      out.println("x=" + x);
-      out.println("y=" + y);
-      out.println("z=" + z);
-      out.flush();
 
       assertEquals(correctZ, z);
     }
@@ -97,11 +83,6 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
       y.set(2, π);
       f.evaluate(x, 1, RealConstants.prec, z);
 
-      out.format("x / y = z\n");
-      out.println("x=" + x);
-      out.println("y=" + y);
-      out.println("z=" + z);
-      out.flush();
 
       assertTrue(z.isZero());
       assertEquals(x, z.remainder);

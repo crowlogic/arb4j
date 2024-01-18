@@ -26,7 +26,6 @@ public class LemniscateTest extends
        * 3.53e-22]i, l'(1)=[-0.93484966490787055089 +/- 2.02e-21]
        * [-0.54494583206781146610 +/- 1.23e-21]i]
        */
-      System.out.println("l(1)=" + w);
     }
     catch (Exception e)
     {
@@ -49,8 +48,7 @@ public class LemniscateTest extends
         Complex l1     = l.evaluate(ComplexConstants.one.getReal(), 2, 256, Complex.newVector(2));
         Complex dl1    = dl.evaluate(ComplexConstants.one.getReal(), 1, 256, Complex.newVector(1));
         Complex absdl1 = absdl.evaluate(ComplexConstants.one.getReal(), 1, 256, new Complex());
-        System.out.println("l'(1)=" + dl1);
-        System.out.println("|l'(1)|=" + absdl1);
+
         assertTrue(l1.get(1).sub(dl1, 256, new Complex()).containsZero());
       }
     }
@@ -90,18 +88,14 @@ public class LemniscateTest extends
     Real a = new Real();
     Real b = new Real();
     b.π(prec).div(2, prec, b);
-    out.println("a=" + a);
-    out.println("b=" + b);
     IntegrationOptions opts             = new IntegrationOptions();
     // opts.verbose = true;
     Complex            abslprimeonehalf = absdf.evaluate(half, 1, prec, new Complex());
-    System.out.format("|l'(1/2)|=%s\n", abslprimeonehalf);
     opts.useHeap = false;
     absdf.integrate(a, b, prec, absErr, opts, prec, integral);
     assertTrue(integral.getImag().isZero());
     integral.printPrecision           = true;
     integral.getReal().printPrecision = true;
-    System.out.format("int(|l'(x)|,x=%s..%s) is %s\n", a.toFixedString(), b.toFixedString(), integral);
     assertTrue(integral.getImag().isZero());
     double integralUncertainty = integral.getReal().getRad().doubleValue();
     assertEquals(2.62205755429211981046483958989111941368275495,
@@ -109,9 +103,7 @@ public class LemniscateTest extends
                  integralUncertainty);
     Real arcLengthPiOverTwo = f.getArcLength(new Real().π(prec).div(2, prec), prec, new Real());
     arcLengthPiOverTwo.printPrecision = true;
-    System.out.println("arcLengthPiOverTwo=" + arcLengthPiOverTwo.toString(100));
     integral.getReal().printPrecision = true;
-    System.out.println("integral uncertainty " + integralUncertainty + " < " + 2.02 * Math.pow(10, -75));
     assertTrue(integralUncertainty < 2.02 * Math.pow(10, -75));
     assertEquals(integral.getReal().doubleValue(), arcLengthPiOverTwo.doubleValue(), Math.pow(10, -18));
 

@@ -337,17 +337,6 @@ public class Integrators
                         Magnitude ms,
                         boolean debug)
   {
-    if (debug)
-    {
-      System.out.format("integrate(f=%s,relAccuracyBitsGoal=%s,absErrTolGoal=%s, prec=%s, res=%s, s=%s, u=%s)\n",
-                        f.getClass().getSimpleName(),
-                        relAccuracyBitsGoal,
-                        absErrorToleranceGoal,
-                        prec,
-                        res,
-                        s,
-                        u);
-    }
 
     int depth;
     int maxDepth;
@@ -367,28 +356,17 @@ public class Integrators
 
     while (depth >= 1)
     {
-      if (debug)
-      {
-        System.out.println("Depth: " + depth);
-      }
 
       top = useHeap ? 0 : depth - 1;
 
       Magnitude topm = ms.get(top);
       if (topm.compareTo(newTol) < 0 || Utensils.overlaps(u, as.get(top), bs.get(top), prec))
       {
-        if (debug)
-        {
-          System.out.println("Finished evaluating subinterval, preparing to accumulate.");
-        }
 
         depth--;
         Integrators.accumulateIntegrand(prec, s, depth, top, useHeap, as, bs, vs, ms);
 
-        if (debug)
-        {
-          System.out.println("Accumulated: " + s);
-        }
+
         continue;
       }
 
@@ -403,17 +381,8 @@ public class Integrators
                                                       evalCount,
                                                       u))
         {
-          if (debug)
-          {
-            System.out.println("Gauss-Legendre integral used.");
-          }
 
           depth--;
-
-          if (debug)
-          {
-            System.out.println("Accumulating Gauss-Legendre: " + s);
-          }
 
           Integrators.accumulateGaussLegendreQuadrature(relAccuracyBitsGoal,
                                                         prec,
@@ -437,11 +406,6 @@ public class Integrators
       if (depth >= allocation - 1)
       {
         allocation *= 2;
-
-        if (debug)
-        {
-          System.out.println("Resizing vectors. New allocation size: " + allocation);
-        }
 
         Utensils.resizeVectors(allocation, as, bs, vs, ms);
       }
