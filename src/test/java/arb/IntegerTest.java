@@ -28,9 +28,7 @@ public class IntegerTest extends
   {
     try ( Integer bfi = new Integer())
     {
-      System.out.println(bfi);
       bfi.set("1000000");
-      System.out.println(bfi);
       assertEquals(1000000, bfi.getSignedValue());
       assertEquals(1000000, bfi.getUnsignedValue());
     }

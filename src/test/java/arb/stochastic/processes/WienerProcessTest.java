@@ -1,9 +1,12 @@
 package arb.stochastic.processes;
 
-import static arb.RealConstants.*;
-import static arb.utensils.Utensils.println;
+import static arb.RealConstants.half;
+import static arb.RealConstants.one;
+import static arb.RealConstants.zero;
 
-import arb.*;
+import arb.Magnitude;
+import arb.RandomState;
+import arb.Real;
 import junit.framework.TestCase;
 
 public class WienerProcessTest extends
@@ -35,7 +38,6 @@ public class WienerProcessTest extends
       Real sqrtHalfTimesσ = half.sqrt(prec, new Real()).mul(three, prec);
       diffusion.printPrecision      = true;
       sqrtHalfTimesσ.printPrecision = true;
-      println("sqrtHalfTimesσ=" + sqrtHalfTimesσ.toString() + "\n     diffusion=" + diffusion.toString());
       assertTrue(diffusion.getRad().sub(sqrtHalfTimesσ.getRad(), new Magnitude()).doubleValue() < Math.pow(10, -45));
       assertTrue(diffusion.getMid().toString(80) + " != " + sqrtHalfTimesσ.getMid().toString(80),
                  diffusion.getMid().equals(sqrtHalfTimesσ.getMid()));

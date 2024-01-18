@@ -1,11 +1,11 @@
 package arb.stochastic.processes;
 
-import static arb.utensils.Utensils.println;
+import static arb.RealConstants.one;
+import static arb.RealConstants.zero;
 
 import arb.RandomState;
 import arb.Real;
 import junit.framework.TestCase;
-import static arb.RealConstants.*;
 
 public class OrnsteinUhlenbeckProcessTest extends
                                           TestCase
@@ -40,9 +40,7 @@ public class OrnsteinUhlenbeckProcessTest extends
       process.μ().evaluate(state, 1, prec, μi);
       process.σ().evaluate(state, 1, prec, σi);
 
-      println(state);
-      println("μi=" + μi);
-      println("σi=" + σi);
+
       assertTrue(μi.doubleValue() == 8.0);
       assertTrue(σi.doubleValue() == 3.0);
 

@@ -1,25 +1,36 @@
 package arb.utensils;
 
 import static arb.IntegerConstants.FLINT_BITS;
-import static arb.arblib.*;
+import static arb.arblib.acb_add_error_mag;
+import static arb.arblib.acb_calc_gl_node;
+import static arb.arblib.acb_init;
+import static arb.arblib.arb_get_mag;
+import static arb.arblib.arb_init;
+import static arb.arblib.mag_init;
 
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.IntFunction;
 
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
-import arb.*;
+import arb.Complex;
 import arb.Float;
+import arb.FloatInterval;
+import arb.Magnitude;
+import arb.Real;
+import arb.RealMatrix;
 import arb.RealRootInterval.RefinementResult;
+import arb.RoundingMode;
+import arb.arblib;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 public class Utensils
 {
 
-  public static Real
-         add(java.util.function.IntFunction<Real> func, int startInclusive, int stopExclusive, int bits, Real value)
+  public static Real add(IntFunction<Real> func, int startInclusive, int stopExclusive, int bits, Real value)
   {
     value.zero();
     for (int i = startInclusive; i < stopExclusive; i++)
@@ -36,7 +47,6 @@ public class Utensils
    * @param input a string
    * @return a string with the trailing zeros trimmed
    */
-
   public static String removeTrailingZeros(String input)
   {
     if (input == null || input.length() == 0)
@@ -69,36 +79,17 @@ public class Utensils
                                                             Real convergenceRegion,
                                                             Float convergenceFactor,
                                                             int extraPrec,
-                                                            int prec,
-                                                            boolean verbose)
+                                                            int prec)
   {
     int precs[] = new int[FLINT_BITS];
     int iters, startPrec = root.relAccuracyBits();
-
-    if (verbose)
-    {
-      System.out.format("The initial accuracy for the root of %s at %s is %d.\n", f, root, startPrec);
-    }
 
     if ((iters = determineNewtonStepScalingPrecisions(convergenceFactor, prec, precs, startPrec)) == -1)
     {
       return RefinementResult.ImpreciseInput;
     }
 
-    if (verbose)
-    {
-      System.out.format("The root of %s at %s in the convergence region %s where the convegence factor C is %s is about to be refined with %d iterations of the Newton step starting with %d bits of precision and adding %d extra bits of precision at each step  by scaling the goal precision of %d bits accordingly\n",
-                        f,
-                        root,
-                        convergenceRegion.get(0),
-                        convergenceFactor,
-                        iters,
-                        startPrec,
-                        extraPrec,
-                        prec);
-    }
-
-    return calculateNewtonSteps(f, root, convergenceRegion, convergenceFactor, extraPrec, verbose, precs, iters);
+    return calculateNewtonSteps(f, root, convergenceRegion, convergenceFactor, extraPrec, precs, iters);
   }
 
   public static RefinementResult calculateNewtonSteps(RealFunction f,
@@ -106,7 +97,6 @@ public class Utensils
                                                       Real convergenceRegion,
                                                       Float convergenceFactor,
                                                       int extraPrec,
-                                                      boolean verbose,
                                                       int[] precs,
                                                       int iters)
   {
@@ -115,16 +105,6 @@ public class Utensils
     for (i = iters - 1; i >= 0; i--)
     {
       workingPrecision = precs[i] + extraPrec;
-
-      if (verbose)
-      {
-        System.out.printf("Newton step: workingPrecision = %03d + %03d = %03d      r=%s digits=%s\n",
-                          precs[i],
-                          extraPrec,
-                          workingPrecision,
-                          root.toString(root.digits()),
-                          root.digits());
-      }
 
       if (!f.calculateNewtonStep(root, convergenceRegion, convergenceFactor, workingPrecision, root))
       {
@@ -342,14 +322,6 @@ public class Utensils
     return spreadFormula;
   }
 
-  /**
-   * 
-   * @param as
-   * @param bs
-   * @param vs
-   * @param ms
-   * @param n
-   */
   public static void heapUp(Real as, Real bs, Complex vs, Magnitude ms, int n)
   {
     int i, max, l, r;
@@ -379,14 +351,6 @@ public class Utensils
     }
   }
 
-  /**
-   * 
-   * @param as
-   * @param bs
-   * @param vs
-   * @param ms
-   * @param n
-   */
   public static void heapUp(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
   {
     int i, max, l, r;
@@ -415,14 +379,6 @@ public class Utensils
     }
   }
 
-  /**
-   * 
-   * @param as
-   * @param bs
-   * @param vs
-   * @param ms
-   * @param n
-   */
   public static void heapDown(Complex as, Complex bs, Complex vs, Magnitude ms, int n)
   {
     int k = n - 1;
@@ -439,16 +395,6 @@ public class Utensils
     }
   }
 
-  /**
-   * A version of {@link Real#overlaps(Real)} used by the integration code which
-   * is less accurate by design
-   * 
-   * @param tmp
-   * @param a
-   * @param b
-   * @param fidelity
-   * @return
-   */
   public static boolean overlaps(Real tmp, Real a, Real b, int fidelity)
   {
     return a.sub(b, fidelity, tmp).containsZero();
@@ -456,18 +402,18 @@ public class Utensils
 
   /**
    * A version of {@link Complex#overlaps(Complex)} used by the integration code
-   * which is less accurate by design
+   * which is less accurate by design in that it determines the regions to overlay
+   * they do so within a specified precision
    * 
    * @param tmp
    * @param a
    * @param b
    * @param prec
-   * @return
+   * @return (a-b).containsZero()
    */
   public static boolean overlaps(Complex tmp, Complex a, Complex b, int prec)
   {
-    acb_sub(tmp, a, b, prec);
-    return acb_contains_zero(tmp) != 0;
+    return a.sub(b, prec, tmp).containsZero();
   }
 
   /**
@@ -503,8 +449,7 @@ public class Utensils
                                        FloatInterval left,
                                        FloatInterval right,
                                        FloatInterval block,
-                                       int prec,
-                                       boolean verbose)
+                                       int prec)
   {
     try ( Real t = new Real(); Real m = new Real();)
     {
@@ -521,11 +466,6 @@ public class Utensils
       left.setB(u);
       right.setA(u);
       right.setB(block.getB());
-
-      if (verbose)
-      {
-        println(String.format("calculatePartition: u=%s sign=%s\n left=%s\n right=%s\n", u, sign, left, right));
-      }
 
       return sign;
     }

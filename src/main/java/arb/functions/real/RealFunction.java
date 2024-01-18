@@ -314,7 +314,7 @@ public interface RealFunction extends
                                                    int prec,
                                                    boolean verbose)
   {
-    return refineRootViaNewtonsMethod(this, root, convergenceRegion, convergenceFactor, extraPrec, prec, verbose);
+    return refineRootViaNewtonsMethod(this, root, convergenceRegion, convergenceFactor, extraPrec, prec);
   }
 
   /**
@@ -515,7 +515,7 @@ public interface RealFunction extends
    */
   public default int calculatePartition(FloatInterval left, FloatInterval right, FloatInterval block, int prec)
   {
-    return Utensils.calculatePartition(this, left, right, block, prec, verbose);
+    return Utensils.calculatePartition(this, left, right, block, prec);
   }
 
   /**
