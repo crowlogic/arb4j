@@ -22,14 +22,9 @@ public class FunctionPlotter extends
   @Override
   public void close()
   {
-    super.close();
-    if (stage != null)
-    {
-      stage.close();
-    }
   }
 
-  public Stage              stage;
+  public Stage               stage;
   private StackPane          root;
   private Scene              scene;
   public boolean             darkStyle = true;
@@ -41,8 +36,9 @@ public class FunctionPlotter extends
 
   public Stage createScene()
   {
+    Platform.setImplicitExit(false);
     stage = new Stage();
-    initialize();
+    initializeFuctions();
     root = new StackPane();
     configureChartPlugins();
     root.getChildren().add(chart);
@@ -57,7 +53,11 @@ public class FunctionPlotter extends
     {
       set(stage, evt ->
       {
-       //out.println( "Closing " + evt );
+        /**
+         * Called when there is an external request to close this {@code Window}. The
+         * installed event handler can prevent window closing by consuming the received
+         * event.
+         */
       });
     });
     return stage;
@@ -68,7 +68,7 @@ public class FunctionPlotter extends
     chart.getPlugins().addAll(new EditAxis(AxisMode.XY), new DataPointTooltip(), new Zoomer());
   }
 
-  public void initialize()
+  public void initializeFuctions()
   {
     refreshFunctionDatasets();
     resampleFunctions(false);

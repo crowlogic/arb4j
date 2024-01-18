@@ -79,17 +79,27 @@ public class ShellFunctions
     });
   }
 
+  private static boolean javaFxInitialized = false;
+
   public static void initializeJavaFxIfNecessary()
   {
-    try
+    if (!javaFxInitialized)
     {
-      Platform.startup(() ->
+      javaFxInitialized = true;
+      try
       {
-      });
-    }
-    catch (Exception e)
-    {
-
+        System.out.println( "Initializing JavaFX...");
+        System.out.flush();
+        Platform.startup(() ->
+        {
+          System.out.println( "JavaFX started");
+          System.out.flush();         
+        });
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace(System.err);
+      }
     }
   }
 
