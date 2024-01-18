@@ -585,6 +585,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
+  /**
+   * TODO: support multiple instances
+   * 
+   * @return a newly instantiated instance of the (equivalence) class of function
+   *         defined by this {@link Expression}
+   */
   protected F instantiate()
   {
     try
