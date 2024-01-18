@@ -180,12 +180,28 @@ import arb.exceptions.DivisionByZeroException;
   @Override
   public String toString()
   {
-    return remainder != null ? String.format("RealPolynomial[length=%d, coeffs=%s, remainder=%s]",
-                                             getLength(),
-                                             getCoeffs(),
-                                             remainder) : String.format("RealPolynomial[length=%d, coeffs=%s]",
-                                                                        getLength(),
-                                                                        getCoeffs());
+    StringBuilder builder = new StringBuilder();
+    for (int i = getLength()-1; i >= 0; --i)
+    {
+      if (i < getLength()-1)
+      {
+        builder.append(" + ");
+      }
+      Real xi = get(i);
+      if (!xi.isOne())
+      {
+        builder.append(xi);
+      }
+      if (i > 0)
+      {
+        builder.append("x");
+        if (i > 1)
+        {
+          builder.append("^" + i);
+        }
+      }
+    }
+    return builder.toString() + (remainder != null ? " with remainder " + remainder : "");
   }
     
   /**

@@ -60,6 +60,7 @@ public class LinearRegressionTest extends
     Real expectedIntercept = Real.valueOf(5);
     assertTrue(result.get(1).equals(expectedSlope));
     assertTrue(result.get(0).equals(expectedIntercept));
+    System.out.println( result );
   }
 
 }

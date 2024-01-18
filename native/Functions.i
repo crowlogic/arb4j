@@ -19,6 +19,8 @@
     }
 }
 
+int arb_is_one(const arb_t f);
+
 int fmpz_cmp(const fmpz_t f, const fmpz_t g);
 void fmpz_sub_si(fmpz_t f, const fmpz_t g, slong x);
 void arb_add_fmpz(arb_t z, const arb_t x, const fmpz_t y, slong prec);

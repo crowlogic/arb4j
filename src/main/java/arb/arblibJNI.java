@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native int arb_is_one(long jarg1, Real jarg1_);
   public final static native int fmpz_cmp(long jarg1, long jarg2);
   public final static native void fmpz_sub_si(long jarg1, long jarg2, int jarg3);
   public final static native void arb_add_fmpz(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);

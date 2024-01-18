@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int arb_is_one(Real f) {
+    return arblibJNI.arb_is_one(Real.getCPtr(f), f);
+  }
+
   public static int fmpz_cmp(long f, long g) {
     return arblibJNI.fmpz_cmp(f, g);
   }

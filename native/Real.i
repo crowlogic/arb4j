@@ -1660,6 +1660,19 @@ public static String removeTrailingZeros(String decimal)
     return r;
   }
   
+  /**
+   * @see arblib#arb_is_one(Real)
+   * @return
+   */
+  public boolean isOne()
+  {
+    return arb_is_one(this) != 0;
+  }
+
+  /**
+   * @see arblib#arb_is_zero(Real)
+   * @return
+   */
   public boolean isZero()
   {
     return arb_is_zero(this) != 0;
