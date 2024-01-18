@@ -69,12 +69,12 @@ import arb.functions.Function;
  * @param <R> range type
  * @param <F> the function type of the expression, extending {@link Function}
  * 
- * @author ©2024 Stephen Crowley
+ * @author ©2024 Stephen A. Crowley
  */
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
-  public static final String evaluateMethodDesc = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
                                                                Context context,
@@ -245,7 +245,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitMethodInsn(mapping.functionInterface != null ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(isInterface ? mapping.functionInterface : mapping.func.getClass()),
                                   "evaluate",
-                                  evaluateMethodDesc,
+                                  evaluationMethodDescriptor,
                                   isInterface);
     return Compiler.checkClassCast(methodVisitor, type);
   }
@@ -421,14 +421,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (verbose)
     {
       out.format("\nGenerating evaluate with methodDesc='%s' signature='%s'\n\n",
-                 evaluateMethodDesc,
+                 evaluationMethodDescriptor,
                  evaluateMethodSignature);
       out.flush();
     }
 
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                            "evaluate",
-                                                           evaluateMethodDesc,
+                                                           evaluationMethodDescriptor,
                                                            evaluateMethodSignature,
                                                            null);
 
@@ -490,7 +490,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     AtomicInteger counter = intermediateVariableCounters.get(prefix);
     if (counter == null)
     {
-      intermediateVariableCounters.put(prefix, counter = new AtomicInteger());
+      intermediateVariableCounters.put(prefix, counter = new AtomicInteger(1));
     }
     return prefix + counter.getAndIncrement();
   }
