@@ -284,18 +284,21 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
 
   public RealPolynomial mul( RealPolynomial that, int bits, RealPolynomial result )
   {
+    assert that != null : "operand is null;";
     arblib.arb_poly_mul(result, this, that, bits );
     return result;
   }
   
   public RealPolynomial mul( Real that, int bits, RealPolynomial result )
   {
+    assert that != null : "operand is null;";
     arblib.arb_poly_scalar_mul(result, this, that, bits );
     return result;
   }
   
   public RealPolynomial div( Real that, int bits, RealPolynomial result )
   {
+    assert that != null : "operand is null;";
     arblib.arb_poly_scalar_div(result, this, that, bits );
     return result;
   }
