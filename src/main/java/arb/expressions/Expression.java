@@ -1,24 +1,12 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.compile;
-import static arb.expressions.Compiler.defineFunctionClass;
-import static arb.expressions.Compiler.generateConstructor;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getFunctionTypeSignature;
-import static arb.expressions.Compiler.getIntermediateVariablePrefix;
-import static arb.expressions.Compiler.loadResult;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACONST_NULL;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,28 +19,16 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.ComplexPolynomial;
-import arb.Field;
+import arb.*;
 import arb.Integer;
-import arb.RealPolynomial;
-import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.Add;
-import arb.expressions.nodes.binary.Divide;
-import arb.expressions.nodes.binary.Exponentiate;
-import arb.expressions.nodes.binary.Multiply;
-import arb.expressions.nodes.binary.Subtract;
+import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
@@ -370,7 +346,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       declareFields(classVisitor);
 
-      generateConstructor(this, classVisitor);
+      generateDefaultConstructor(classVisitor);
+
+      if (recursive)
+      {
+        generateCopyConstructor(classVisitor);
+      }
 
       if (needsCloseMethod())
       {
@@ -1050,8 +1031,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       Node<D, R, F> condition = parse(depth + 1);
       if (!(condition instanceof LiteralConstant))
       {
-        throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable to an Integer LiteralConstant type, but got "
-                      + condition);
+        throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable to an "
+                      + "Integer LiteralConstant type, but got " + condition);
       }
       LiteralConstant<D, R, F> constant = (LiteralConstant<D, R, F>) condition;
       if (!parse(depth + 1, ','))
@@ -1078,7 +1059,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     boolean   isFunction = parse(depth, '(');
     if (verbose)
     {
-      err.format("\nresolveFunctionInvocationOrVariableReference(depth=%d): startPos=%s, position=%s, reference='%s', isFunction=%s\n\n",
+      err.format("\nresolveFunctionInvocationOrVariableReference(depth=%d): "
+                    + "startPos=%s, position=%s, reference='%s', isFunction=%s\n\n",
                  depth,
                  startPos,
                  position,
@@ -1105,7 +1087,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
         }
         else
         {
-          throw new RuntimeException(String.format("expected closing parenthesis at: startPos=%s, position=%s, identifier='%s', isFunction=%s, depth=%d\n, expression=%s\n",
+          throw new RuntimeException(String.format("expected closing parenthesis at: startPos=%s, position=%s,"
+                        + " identifier='%s', isFunction=%s, depth=%d\n, expression=%s\n",
                                                    startPos,
                                                    position,
                                                    reference,
@@ -1187,6 +1170,61 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return "Expression[" + expression + "]";
   }
 
+  public MethodVisitor initializeRegisteredFunctions(MethodVisitor methodVisitor)
+  {
+    referencedFunctions.values().forEach(mapping -> initializeRegisteredFunction(methodVisitor, mapping));
+    return methodVisitor;
+  }
+
+  public ClassVisitor generateCopyConstructor(ClassVisitor classVisitor)
+  {
+    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "(" + className + ")V", null, null);
+    methodVisitor.visitCode();
+
+    generateInvocationOfDefaultNoArgConstructor(methodVisitor);
+
+    for (Variable<D, R, F> variable : referencedVariables.values())
+    {
+      String variableName = variable.reference.name;
+      assert false : "TODO: GETFIELD/PUTFIELD";
+    }
+
+    methodVisitor.visitInsn(RETURN);
+    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitEnd();
+    return classVisitor;
+  }
+
+  public ClassVisitor generateDefaultConstructor(ClassVisitor classVisitor)
+  {
+
+    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+    methodVisitor.visitCode();
+
+    generateInvocationOfDefaultNoArgConstructor(methodVisitor);
+
+    initializeLiteralConstants(methodVisitor);
+
+    initializeIntermediateVariables(methodVisitor);
+
+    initializeRegisteredFunctions(methodVisitor);
+
+    methodVisitor.visitInsn(RETURN);
+    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitEnd();
+    return classVisitor;
+  }
+
+  public MethodVisitor initializeLiteralConstants(MethodVisitor methodVisitor)
+  {
+
+    for (var literal : literalConstants)
+    {
+      literal.initializeLiteralConstantWithString(methodVisitor);
+    }
+    return methodVisitor;
+  }
+
   @Override
   public String typeset()
   {
@@ -1209,11 +1247,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return this;
   }
 
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
-         initializeIntermediateVariables(Expression<D, R, F> expression, MethodVisitor methodVisitor)
+  public MethodVisitor initializeIntermediateVariables(MethodVisitor methodVisitor)
   {
-    for (var intermediateVariable : expression.intermediateVariables)
+    for (var intermediateVariable : intermediateVariables)
     {
       intermediateVariable.initialize(methodVisitor);
     }

@@ -45,12 +45,12 @@ public class JacobiPolynomialPrototype implements
   public JacobiPolynomialSequence          seq;
 
   @SuppressWarnings("resource")
-  public JacobiPolynomialPrototype(  JacobiPolynomialPrototype p )
+  public JacobiPolynomialPrototype(JacobiPolynomialPrototype p)
   {
     α = new Real().set(p.α);
-    β = new Real().set(p.β);    
+    β = new Real().set(p.β);
   }
- 
+
   public JacobiPolynomialPrototype(Real a, Real b)
   {
     seq = new JacobiPolynomialSequence(a,
@@ -64,8 +64,11 @@ public class JacobiPolynomialPrototype implements
 
   public static void main(String args[])
   {
-    try ( JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(negHalf,
-                                                                       negHalf);)
+    JacobiPolynomialSequence seq = new JacobiPolynomialSequence(negHalf,
+                                                                negHalf);
+
+    try ( JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(seq.α,
+                                                                       seq.β);)
     {
       RealPolynomial polys[] = new RealPolynomial[8];
       for (int n = 1; n < 9; n++)

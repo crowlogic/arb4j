@@ -143,27 +143,6 @@ public class Compiler
     }
   }
 
-  public static <D, R, F extends Function<D, R>> MethodVisitor generateConstructor(Expression<D, R, F> expression,
-                                                                                   ClassVisitor classVisitor)
-  {
-
-    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
-    methodVisitor.visitCode();
-
-    generateInvocationOfDefaultNoArgConstructor(methodVisitor);
-
-    initializeLiteralConstants(expression, methodVisitor);
-
-    Expression.initializeIntermediateVariables(expression, methodVisitor);
-
-    initializeRegisteredFunctions(expression, methodVisitor);
-
-    methodVisitor.visitInsn(RETURN);
-    methodVisitor.visitMaxs(0, 0);
-    methodVisitor.visitEnd();
-    return methodVisitor;
-  }
-
   public static void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
@@ -177,32 +156,6 @@ public class Compiler
     classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC, className, null, objectDesc, new String[]
     { expression.functionClassInternalName });
     return classVisitor;
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
-         initializeRegisteredFunctions(Expression<D, R, F> expression, MethodVisitor methodVisitor)
-  {
-
-    if (expression.context != null)
-    {
-      expression.referencedFunctions.values()
-                                    .forEach(mapping -> expression.initializeRegisteredFunction(methodVisitor,
-                                                                                                mapping));
-    }
-    return methodVisitor;
-  }
-
-  public static <D, R, F extends Function<D, R>>
-         MethodVisitor
-         initializeLiteralConstants(Expression<D, R, F> expression, MethodVisitor methodVisitor)
-  {
-
-    for (var literal : expression.literalConstants)
-    {
-      literal.initializeLiteralConstantWithString(methodVisitor);
-    }
-    return methodVisitor;
   }
 
   /**
