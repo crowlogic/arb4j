@@ -8,8 +8,8 @@ import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
+import static org.objectweb.asm.Opcodes.GETFIELD;
 
-import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -186,13 +186,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     if (func == null && mapping.functionInterface == null)
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
-    }
-    if (expression.recursive && functionName.equals(expression.functionName))
-    {
-      
-//      assert false : "generate the instructions to get "
-//                    + "call getClass(), construct a new instance using the copy-constructor so that the field values are assigned properly,  this="
-//                    + this;
     }
 
     loadFunctionFromField(methodVisitor,

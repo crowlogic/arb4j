@@ -436,6 +436,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
+  public MethodVisitor generateCopyConstructorInvocation(MethodVisitor mv, String classname)
+  {
+    mv.visitTypeInsn(Opcodes.NEW, classname);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitVarInsn(Opcodes.ALOAD, 1);
+    try
+    {
+      mv.visitMethodInsn(Opcodes.INVOKESPECIAL, classname, "<init>", format("(L%s;)V", classname), false);
+    }
+    catch (SecurityException e)
+    {
+      throw new RuntimeException(e);
+    }
+    return mv;
+  }
+
   public ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws ExpressionCompilerException
   {
 
