@@ -44,26 +44,22 @@ public class JacobiPolynomialPrototype implements
   public Function<Real, Real>              E   = null;
   public JacobiPolynomialSequence          seq;
 
-  public JacobiPolynomialPrototype(JacobiPolynomialSequence seq)
+  @SuppressWarnings("resource")
+  public JacobiPolynomialPrototype(  JacobiPolynomialPrototype p )
   {
-    this.seq = seq;
-    α        = seq.α;
-    β        = seq.β;
-    A        = seq.A;
-    C        = seq.C;
-    B        = seq.B;
-    E        = seq.E;
+    α = new Real().set(p.α);
+    β = new Real().set(p.β);    
   }
-
+ 
   public JacobiPolynomialPrototype(Real a, Real b)
   {
     seq = new JacobiPolynomialSequence(a,
                                        b);
   }
 
-  private Function<Integer, RealPolynomial> constructNewInstanceOfP(JacobiPolynomialSequence seq)
+  private Function<Integer, RealPolynomial> constructNewInstanceOfP()
   {
-    return new JacobiPolynomialPrototype(seq);
+    return new JacobiPolynomialPrototype(this);
   }
 
   public static void main(String args[])
@@ -129,7 +125,7 @@ public class JacobiPolynomialPrototype implements
         {
           // System.out.println( "Constructing new element at " + (index-1) );
 
-          P = constructNewInstanceOfP(seq);
+          P = constructNewInstanceOfP();
         }
         P.evaluate(in.sub(1, bits, i0), order, bits, rp4);
       }
@@ -145,7 +141,7 @@ public class JacobiPolynomialPrototype implements
       {
         if (P == null)
         {
-          P = constructNewInstanceOfP(seq);
+          P = constructNewInstanceOfP();
         }
         P.evaluate(in.sub(2, bits, i1), order, bits, rp6);
       }
