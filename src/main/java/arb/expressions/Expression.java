@@ -1195,14 +1195,28 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     for (Mapping<D, R> mapping : referencedFunctions.values())
     {
-      assert false : "TODO: construct new instances of each variable : " + referencedFunctions.keySet() + " and then do an assignment like is done for the copy constructor";;
-      
+      assert false : "TODO: construct new instances of each variable : " + referencedFunctions.keySet()
+                    + " and then do an assignment like is done for the copy constructor";
+      ;
+
     }
 
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(0, 0);
     methodVisitor.visitEnd();
     return classVisitor;
+  }
+
+  public static void generateNewField(MethodVisitor mv,
+                                      String fieldName,
+                                      String ownerClassInternalName,
+                                      String fieldTypeInternalName)
+  {
+    mv.visitVarInsn(ALOAD, 0);
+    mv.visitTypeInsn(NEW, fieldTypeInternalName);
+    mv.visitInsn(DUP);
+    mv.visitMethodInsn(INVOKESPECIAL, fieldTypeInternalName, "<init>", "()V", false);
+    mv.visitFieldInsn(PUTFIELD, ownerClassInternalName, fieldName, "L" + fieldTypeInternalName + ";");
   }
 
   public ClassVisitor generateDefaultConstructor(ClassVisitor classVisitor)

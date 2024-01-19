@@ -56,7 +56,7 @@ public class P implements
       var10000 = (RealPolynomial) this.A.evaluate((Integer) in, order, bits, this.rp4);
       if (this.P == null)
       {
-        this.P = new P((P)this);
+        this.P = new P(this);
       }
 
       var10000 = var10000.mul((RealPolynomial) this.P.evaluate(((Integer) in).sub(this._c1, bits, this.i1),
@@ -68,7 +68,7 @@ public class P implements
       Real var10001 = (Real) this.B.evaluate(this.r3.set((Integer) in), order, bits, this.r4);
       if (this.P == null)
       {
-        this.P = new P((P) this);
+        this.P = new P(this);
       }
 
       var10000 = var10000.sub(var10001.mul((RealPolynomial) this.P.evaluate(((Integer) in).sub(this._c2,
@@ -111,11 +111,11 @@ public class P implements
     this.rp9 = new RealPolynomial();
     this.r5  = new Real();
     this.r6  = new Real();
-    this.P   = null;
-    this.A   = null;
-    this.B   = null;
-    this.C   = null;
-    this.E   = null;
+    this.P   = this;
+//    this.A   = new A();
+//    this.B   = new B();;
+//    this.C   = new C();
+//    this.E   = new E();
   }
 
   public P(P var1)
