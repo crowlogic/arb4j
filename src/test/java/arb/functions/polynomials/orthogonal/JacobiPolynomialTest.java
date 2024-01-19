@@ -63,7 +63,7 @@ public class JacobiPolynomialTest extends
   public static void testB()
   {
     try ( var seq = new JacobiPolynomialSequence(half,
-                                                   oneQuarter))
+                                                 oneQuarter))
     {
 
       try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
@@ -77,10 +77,10 @@ public class JacobiPolynomialTest extends
   public static void testC()
   {
     try ( var seq = new JacobiPolynomialSequence(half,
-                                                   oneQuarter))
+                                                 oneQuarter))
     {
       try ( Real result = seq.C.evaluate(RealConstants.one, 1, bits, new Real()))
-      {        
+      {
         assertEquals(2.75, result.doubleValue());
         assertTrue(result.isExact());
       }
@@ -90,7 +90,7 @@ public class JacobiPolynomialTest extends
   public static void testF()
   {
     try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                   threeQuarters);)
+                                                 threeQuarters);)
     {
       Integer one = new Integer("1");
 
@@ -106,7 +106,7 @@ public class JacobiPolynomialTest extends
   public static void testG()
   {
     try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                   threeQuarters))
+                                                 threeQuarters))
     {
       assertEquals(-.3125, seq.G.doubleValue());
     }
@@ -116,7 +116,7 @@ public class JacobiPolynomialTest extends
   {
 
     try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                   negHalf))
+                                                 negHalf))
     {
       Integer won = new Integer("1");
 
@@ -137,7 +137,7 @@ public class JacobiPolynomialTest extends
   {
 
     try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                   negHalf))
+                                                 negHalf))
     {
       Integer won = new Integer("0");
 
@@ -151,12 +151,12 @@ public class JacobiPolynomialTest extends
     }
 
   }
-  
+
   public static void testP1()
   {
 
     try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                   negHalf))
+                                                 negHalf))
     {
       Integer won = new Integer("1");
 
@@ -171,33 +171,33 @@ public class JacobiPolynomialTest extends
 
   }
 
-//  public static void testP2()
-//  {
-//
-//    try ( var seq = new JacobiPolynomialSequence(negHalf,
-//                                                   negHalf))
-//    {
-//      Integer too = new Integer("2");
-//
-//      try ( RealPolynomial result = seq.P.evaluate(too, 0, bits, new RealPolynomial()))
-//      {
-//        result.getCoeffs().printPrecision = true;
-//        Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
-//        assertEquals(0.375, valAtOne.doubleValue());
-//        Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
-//        System.out.format("P(2.1)=%s\nP(2,2=%s)\n", valAtOne, valAtTwo);
-//        assertEquals(2.625, valAtTwo.doubleValue());
-//
-//      }
-//    }
-//
-//  }
+  public static void testP2()
+  {
+    assert false : "need to have function fields populated with new instances by calling the constructor in the constructor rather than injecting externally with reflection";
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
+                                                 negHalf))
+    {
+      Integer too = new Integer("2");
+
+      try ( RealPolynomial result = seq.P.evaluate(too, 0, bits, new RealPolynomial()))
+      {
+        result.getCoeffs().printPrecision = true;
+        Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
+        assertEquals(0.375, valAtOne.doubleValue());
+        Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
+        System.out.format("P(2.1)=%s\nP(2,2=%s)\n", valAtOne, valAtTwo);
+        assertEquals(2.625, valAtTwo.doubleValue());
+
+      }
+    }
+
+  }
 
   public static void testP3()
   {
 
     try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                   negHalf))
+                                                 negHalf))
     {
       Integer too = new Integer("3");
 
