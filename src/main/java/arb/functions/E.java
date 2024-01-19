@@ -18,22 +18,18 @@ public class E implements
 
   public Real evaluate(Real in, int order, int bits, Real result)
   {
-    return ((Real) in).mul((Real) this.C.evaluate(((Real) in).div(this._c0, bits, this.r1), order, bits, this.r2),
-                           bits,
-                           this.r3)
-                      .mul((Real) this.C.evaluate(((Real) in).sub(this._c1, bits, this.r4), order, bits, this.r5),
-                           bits,
-                           (Real) result);
+    return in.mul(C.evaluate(in.div(_c0, bits, r1), order, bits, r2), bits, r3)
+             .mul(C.evaluate(in.sub(_c1, bits, r4), order, bits, r5), bits, result);
   }
 
   public void close()
   {
-    this._c0.close();
-    this._c1.close();
-    this.r1.close();
-    this.r2.close();
-    this.r3.close();
-    this.r4.close();
-    this.r5.close();
+    _c0.close();
+    _c1.close();
+    r1.close();
+    r2.close();
+    r3.close();
+    r4.close();
+    r5.close();
   }
 }

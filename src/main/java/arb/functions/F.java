@@ -16,24 +16,17 @@ public class F implements
 
   public Real evaluate(Integer in, int order, int bits, Real result)
   {
-    return ((Real) this.C.evaluate(this.r1.set(((Integer) in).sub(this._c0, bits, this.i1)),
-                                   order,
-                                   bits,
-                                   this.r2)).mul((Real) this.C.evaluate(this.r3.set((Integer) in),
-                                                                        order,
-                                                                        bits,
-                                                                        this.r4),
-                                                 bits,
-                                                 (Real) result);
+    return C.evaluate(r1.set(in.sub(_c0, bits, i1)), order, bits, r2)
+            .mul(C.evaluate(r3.set(in), order, bits, r4), bits, result);
   }
 
   public void close()
   {
-    this._c0.close();
-    this.r1.close();
-    this.i1.close();
-    this.r2.close();
-    this.r3.close();
-    this.r4.close();
+    _c0.close();
+    r1.close();
+    i1.close();
+    r2.close();
+    r3.close();
+    r4.close();
   }
 }

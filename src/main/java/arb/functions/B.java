@@ -20,20 +20,20 @@ public class B implements
 
   public Real evaluate(Real in, int order, int bits, Real result)
   {
-    return ((Real) in).add(this.α, bits, this.r1)
-                      .sub(this._c0, bits, this.r2)
-                      .mul(((Real) in).add(this.β, bits, this.r3).sub(this._c0, bits, this.r4), bits, this.r5)
-                      .mul((Real) this.C.evaluate((Real) in, order, bits, this.r6), bits, (Real) result);
+    return in.add(α, bits, r1)
+             .sub(_c0, bits, r2)
+             .mul(in.add(β, bits, r3).sub(_c0, bits, r4), bits, r5)
+             .mul(C.evaluate(in, order, bits, r6), bits, result);
   }
 
   public void close()
   {
-    this._c0.close();
-    this.r1.close();
-    this.r2.close();
-    this.r3.close();
-    this.r4.close();
-    this.r5.close();
-    this.r6.close();
+    _c0.close();
+    r1.close();
+    r2.close();
+    r3.close();
+    r4.close();
+    r5.close();
+    r6.close();
   }
 }

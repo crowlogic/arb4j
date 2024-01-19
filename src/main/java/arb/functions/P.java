@@ -38,52 +38,36 @@ public class P implements
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
     RealPolynomial var10000;
-    switch (((Integer) in).getSignedValue())
+    switch (in.getSignedValue())
     {
     case 0:
-      var10000 = ((RealPolynomial) result).set(this._c1);
+      var10000 = result.set(_c1);
       break;
     case 1:
-      var10000 = ((Real) this.C.evaluate(this.r1.set(this._c1),
-                                         order,
-                                         bits,
-                                         this.r2)).mul(((RealPolynomial) result).identity(), bits, this.rp1)
-                                                  .sub(this.β, bits, this.rp2)
-                                                  .add(this.α, bits, this.rp3)
-                                                  .div(this._c2, bits, (RealPolynomial) result);
+      var10000 = C.evaluate(r1.set(_c1), order, bits, r2)
+                  .mul(result.identity(), bits, rp1)
+                  .sub(β, bits, rp2)
+                  .add(α, bits, rp3)
+                  .div(_c2, bits, result);
       break;
     default:
-      var10000 = (RealPolynomial) this.A.evaluate((Integer) in, order, bits, this.rp4);
-      if (this.P == null)
+      var10000 = A.evaluate(in, order, bits, rp4);
+      if (P == null)
       {
-        this.P = new P(this);
+        P = new P(this);
       }
 
-      var10000 = var10000.mul((RealPolynomial) this.P.evaluate(((Integer) in).sub(this._c1, bits, this.i1),
-                                                               order,
-                                                               bits,
-                                                               this.rp5),
-                              bits,
-                              this.rp6);
-      Real var10001 = (Real) this.B.evaluate(this.r3.set((Integer) in), order, bits, this.r4);
-      if (this.P == null)
+      var10000 = var10000.mul(P.evaluate(in.sub(_c1, bits, i1), order, bits, rp5), bits, rp6);
+      Real var10001 = B.evaluate(r3.set(in), order, bits, r4);
+      if (P == null)
       {
-        this.P = new P(this);
+        P = new P(this);
       }
 
-      var10000 = var10000.sub(var10001.mul((RealPolynomial) this.P.evaluate(((Integer) in).sub(this._c2,
-                                                                                               bits,
-                                                                                               this.i2),
-                                                                            order,
-                                                                            bits,
-                                                                            this.rp7),
-                                           bits,
-                                           this.rp8),
+      var10000 = var10000.sub(var10001.mul(P.evaluate(in.sub(_c2, bits, i2), order, bits, rp7), bits, rp8),
                               bits,
-                              this.rp9)
-                         .div((Real) this.E.evaluate(this.r5.set((Integer) in), order, bits, this.r6),
-                              bits,
-                              (RealPolynomial) result);
+                              rp9)
+                         .div(E.evaluate(r5.set(in), order, bits, r6), bits, result);
     }
 
     return var10000;
@@ -91,61 +75,61 @@ public class P implements
 
   public P()
   {
-    this._c0 = new Integer("0");
-    this._c1 = new Integer("1");
-    this._c2 = new Integer("2");
-    this.r1  = new Real();
-    this.r2  = new Real();
-    this.rp1 = new RealPolynomial();
-    this.rp2 = new RealPolynomial();
-    this.rp3 = new RealPolynomial();
-    this.rp4 = new RealPolynomial();
-    this.i1  = new Integer();
-    this.rp5 = new RealPolynomial();
-    this.rp6 = new RealPolynomial();
-    this.r3  = new Real();
-    this.r4  = new Real();
-    this.i2  = new Integer();
-    this.rp7 = new RealPolynomial();
-    this.rp8 = new RealPolynomial();
-    this.rp9 = new RealPolynomial();
-    this.r5  = new Real();
-    this.r6  = new Real();
-    this.A   = new A();
-    this.B   = new B();
-    this.C   = new C();
-    this.E   = new E();
+    _c0 = new Integer("0");
+    _c1 = new Integer("1");
+    _c2 = new Integer("2");
+    r1  = new Real();
+    r2  = new Real();
+    rp1 = new RealPolynomial();
+    rp2 = new RealPolynomial();
+    rp3 = new RealPolynomial();
+    rp4 = new RealPolynomial();
+    i1  = new Integer();
+    rp5 = new RealPolynomial();
+    rp6 = new RealPolynomial();
+    r3  = new Real();
+    r4  = new Real();
+    i2  = new Integer();
+    rp7 = new RealPolynomial();
+    rp8 = new RealPolynomial();
+    rp9 = new RealPolynomial();
+    r5  = new Real();
+    r6  = new Real();
+    A   = new A();
+    B   = new B();
+    C   = new C();
+    E   = new E();
   }
 
   public P(P var1)
   {
     this();
-    this.α = var1.α;
-    this.β = var1.β;
+    α = var1.α;
+    β = var1.β;
   }
 
   public void close()
   {
-    this._c0.close();
-    this._c1.close();
-    this._c2.close();
-    this.r1.close();
-    this.r2.close();
-    this.rp1.close();
-    this.rp2.close();
-    this.rp3.close();
-    this.rp4.close();
-    this.i1.close();
-    this.rp5.close();
-    this.rp6.close();
-    this.r3.close();
-    this.r4.close();
-    this.i2.close();
-    this.rp7.close();
-    this.rp8.close();
-    this.rp9.close();
-    this.r5.close();
-    this.r6.close();
-    this.P.close();
+    _c0.close();
+    _c1.close();
+    _c2.close();
+    r1.close();
+    r2.close();
+    rp1.close();
+    rp2.close();
+    rp3.close();
+    rp4.close();
+    i1.close();
+    rp5.close();
+    rp6.close();
+    r3.close();
+    r4.close();
+    i2.close();
+    rp7.close();
+    rp8.close();
+    rp9.close();
+    r5.close();
+    r6.close();
+    P.close();
   }
 }
