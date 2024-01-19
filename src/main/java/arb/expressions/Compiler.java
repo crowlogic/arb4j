@@ -363,10 +363,10 @@ public class Compiler
                                       String ownerClassInternalName,
                                       String fieldTypeInternalName,String genericFieldInternalName)
   {
-    System.out.format("generateNewField( fieldName=%s, ownerClassInternalName=%s, fieldTypeIntervalName=%s)\n",
-                      fieldName,
-                      ownerClassInternalName,
-                      fieldTypeInternalName);
+//    System.out.format("generateNewField( fieldName=%s, ownerClassInternalName=%s, fieldTypeIntervalName=%s)\n",
+//                      fieldName,
+//                      ownerClassInternalName,
+//                      fieldTypeInternalName);
     mv.visitVarInsn(ALOAD, 0);
     mv.visitTypeInsn(NEW, fieldTypeInternalName);
     mv.visitInsn(DUP);

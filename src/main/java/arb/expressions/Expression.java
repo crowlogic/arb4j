@@ -298,7 +298,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareIntermediateVariables(classVisitor);
 
-    err.println("Declaring function refs for " + this);
+    //err.println("Declaring function refs for " + this);
 
     declareFunctionReferences(classVisitor);
   }
@@ -326,7 +326,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     String descriptor = function.func == null ? format("L%s;", functionName) : function.func.getClass()
                                                                                             .descriptorString();
-    System.err.format("declareFunctionReference(name=%s, descriptor, function=%s)\n", name, descriptor, function);
+   // System.err.format("declareFunctionReference(name=%s, descriptor, function=%s)\n", name, descriptor, function);
 
     String functionTypeSignature = getFunctionTypeSignature(function.domain, function.range);
 

@@ -941,6 +941,8 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   
   public Complex add(Complex a, int prec, Complex res)
   {
+    assert a != null;
+    assert res != null;
     arblib.acb_add_arb(res, a, this, prec);
     return res;
   }

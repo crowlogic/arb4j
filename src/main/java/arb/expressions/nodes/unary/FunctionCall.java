@@ -207,7 +207,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                functionName,
                                expression.className,
                                functionName,
-                               expression.functionClass.descriptorString());
+                               format("L%s;", functionName));
 
       // functionName + " with copy constructor";
     }
