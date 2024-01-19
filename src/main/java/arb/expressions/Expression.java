@@ -1,12 +1,25 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.compile;
+import static arb.expressions.Compiler.defineFunctionClass;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getFunctionTypeSignature;
+import static arb.expressions.Compiler.getIntermediateVariablePrefix;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACONST_NULL;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,16 +32,28 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.*;
+import arb.ComplexPolynomial;
+import arb.Field;
 import arb.Integer;
+import arb.RealPolynomial;
+import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.binary.Add;
+import arb.expressions.nodes.binary.Divide;
+import arb.expressions.nodes.binary.Exponentiate;
+import arb.expressions.nodes.binary.Multiply;
+import arb.expressions.nodes.binary.Subtract;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
@@ -273,6 +298,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareIntermediateVariables(classVisitor);
 
+    err.println("Declaring function refs for " + this);
+
     declareFunctionReferences(classVisitor);
   }
 
@@ -297,14 +324,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareFunctionReference(ClassVisitor classVisitor, String name, Mapping<D, R> function)
   {
-    String descriptor = function.func == null ? function.functionInterface.descriptorString() : function.func.getClass()
-                                                                                                             .descriptorString();
+    String descriptor = function.func == null ? format("L%s;", functionName) : function.func.getClass()
+                                                                                            .descriptorString();
+    System.err.format("declareFunctionReference(name=%s, descriptor, function=%s)\n", name, descriptor, function);
 
-    classVisitor.visitField(ACC_PUBLIC,
-                            name,
-                            descriptor,
-                            getFunctionTypeSignature(function.domain, function.range),
-                            null);
+    String functionTypeSignature = getFunctionTypeSignature(function.domain, function.range);
+
+    // assert function.func != null : "function.func is null, function = " +
+    // function;
+
+    classVisitor.visitField(ACC_PUBLIC, name, descriptor, functionTypeSignature, null);
   }
 
   public void declareIntermediateVariables(ClassVisitor classVisitor)
@@ -503,13 +532,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(ACONST_NULL);
-    boolean isInterface = mapping.functionInterface != null;
-
+    // boolean isInterface = mapping.functionInterface != null;
     methodVisitor.visitFieldInsn(PUTFIELD,
                                  className,
                                  mapping.name,
-                                 isInterface ? mapping.functionInterface.descriptorString() : mapping.func.getClass()
-                                                                                                          .descriptorString());
+                                 mapping.func == null ? format("L%s;",
+                                                               functionName) : mapping.func.getClass()
+                                                                                           .descriptorString());
 
     return methodVisitor;
   }
@@ -598,11 +627,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
         throw new RuntimeException(e);
       }
     }
-  }
-
-  public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, Class<?> type)
-  {
-    return loadFieldOntoStack(methodVisitor, fieldName, type.descriptorString());
   }
 
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
@@ -1032,7 +1056,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
   {
     String intermediateVariableName = newIntermediateVariable(depth, type);
-    loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type);
+    loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type.descriptorString());
     return intermediateVariableName;
   }
 
@@ -1151,7 +1175,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
   @Override
   public String toString()
   {
-    return "Expression[" + expression + "]";
+    return String.format("Expression[expression=%s, className=%s, functionName=%s, recursive=%s]",
+                         expression,
+                         className,
+                         functionName,
+                         recursive);
   }
 
   public MethodVisitor initializeRegisteredFunctions(MethodVisitor methodVisitor)
@@ -1187,7 +1215,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       loadThisOntoStack(methodVisitor);
       methodVisitor.visitVarInsn(ALOAD, 1);
-      loadFieldOntoStack(methodVisitor, variableName, variable.type());
+      loadFieldOntoStack(methodVisitor, variableName, variable.type().descriptorString());
 
       methodVisitor.visitFieldInsn(PUTFIELD, className, variableName, variable.type().descriptorString());
 
@@ -1195,7 +1223,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     for (Mapping<D, R> mapping : referencedFunctions.values())
     {
-      Compiler.generateNewField(methodVisitor, mapping.name, className, mapping.name, functionClassInternalName);
+      Compiler.generateNewField(methodVisitor,
+                                mapping.name,
+                                className,
+                                mapping.name,
+                                mapping.func == null ? functionName : Type.getInternalName(mapping.func.getClass()));
 //      assert false : "TODO: construct new instances of each variable : " + referencedFunctions.keySet()
 //                    + " and then do an assignment like is done for the copy constructor";
 //      ;

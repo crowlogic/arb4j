@@ -152,7 +152,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
       // todo: https://github.com/crowlogic/arb4j/issues/222: use the primitive int ,
       // the signature of the method being invoked will also have to know this has
       // been done and change correspondingly
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, type());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, type().descriptorString());
     }
 
     if (isResult)

@@ -151,6 +151,25 @@ public class JacobiPolynomialTest extends
     }
 
   }
+  
+  public static void testP1()
+  {
+
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
+                                                   negHalf))
+    {
+      Integer won = new Integer("1");
+
+      try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
+      {
+        Real a = result.evaluate(RealConstants.one, 128, new Real());
+        assertEquals(RealConstants.half, a);
+        Real b = result.evaluate(RealConstants.half, 128, new Real());
+        assertEquals(RealConstants.oneQuarter, b);
+      }
+    }
+
+  }
 
   public static void testP2()
   {

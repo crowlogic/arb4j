@@ -162,7 +162,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type().descriptorString());
     }
 
     if (reference.index != null)

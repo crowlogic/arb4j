@@ -168,8 +168,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
   }
 
-  public static MethodVisitor
-         conditionallyInstantiate(MethodVisitor mv, String thisClassName, String className, String fieldName, String fieldType)
+  public static MethodVisitor conditionallyInstantiate(MethodVisitor mv,
+                                                       String thisClassName,
+                                                       String className,
+                                                       String fieldName,
+                                                       String fieldType)
   {
     mv.visitCode();
     mv.visitVarInsn(ALOAD, 0); // Load "this" onto the stack
@@ -213,8 +216,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
 
-    loadFunctionFromField(methodVisitor,
-                          mapping.functionInterface != null ? mapping.functionInterface : mapping.func.getClass());
+    expression.loadFieldOntoStack(loadThisOntoStack(methodVisitor),
+                                  functionName,
+                                  mapping.func != null ? mapping.func.getClass()
+                                                                     .descriptorString() : String.format("L%s;",
+                                                                                                         functionName));
 
     Class<?> argType                = arg.type();
     var      typeBefore             = argType;
@@ -257,11 +263,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public boolean isBuiltin()
   {
     return !contextual;
-  }
-
-  public void loadFunctionFromField(MethodVisitor methodVisitor, Class<?> type)
-  {
-    expression.loadFieldOntoStack(loadThisOntoStack(methodVisitor), functionName, type);
   }
 
   public Class<?> resultTypeFor(String functionName)
