@@ -1,14 +1,9 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBits;
-import static arb.expressions.Compiler.loadOrder;
-import static arb.expressions.Compiler.loadResult;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.GETFIELD;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -19,10 +14,7 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
-import arb.expressions.Context;
-import arb.expressions.Expression;
-import arb.expressions.Mapping;
-import arb.expressions.Parser;
+import arb.expressions.*;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
@@ -177,12 +169,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    var           expression = arg.expression;
-    boolean       verbose    = expression.verbose;
-    Class<?>      type       = type();
-    Mapping<D, R> mapping    = expression.context.functions.get(functionName);
-    F             func       = (F) mapping.func;
-
+    var           expression  = arg.expression;
+    boolean       verbose     = expression.verbose;
+    Class<?>      type        = type();
+    Mapping<D, R> mapping     = expression.context.functions.get(functionName);
+    F             func        = (F) mapping.func;
+    boolean       isRecursive = expression.recursive && functionName.equals(expression.functionName);
+    assert !isRecursive : "TODO: make new instance of recursive function " + functionName + " with copy constructor";
     if (func == null && mapping.functionInterface == null)
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
