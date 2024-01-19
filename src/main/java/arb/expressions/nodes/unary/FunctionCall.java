@@ -169,7 +169,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   }
 
   public static MethodVisitor
-         conditionallyInstantiate(MethodVisitor mv, String className, String fieldName, String fieldType)
+         conditionallyInstantiate(MethodVisitor mv, String thisClassName, String className, String fieldName, String fieldType)
   {
     mv.visitCode();
     mv.visitVarInsn(ALOAD, 0); // Load "this" onto the stack
@@ -183,7 +183,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     mv.visitVarInsn(Opcodes.ALOAD, 0);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, className, "<init>", format("(L%s;)V", className), false);
 
-    mv.visitFieldInsn(PUTFIELD, className, fieldName, fieldType); // Assign the new instance to the field
+    mv.visitFieldInsn(PUTFIELD, thisClassName, fieldName, fieldType); // Assign the new instance to the field
     mv.visitLabel(label);
     mv.visitFrame(F_SAME, 0, null, 0, null);
     return mv;
@@ -201,6 +201,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     if (isRecursive)
     {
       conditionallyInstantiate(methodVisitor,
+                               functionName,
                                expression.className,
                                functionName,
                                expression.functionClass.descriptorString());

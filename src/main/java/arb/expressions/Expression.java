@@ -1195,7 +1195,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     for (Mapping<D, R> mapping : referencedFunctions.values())
     {
-      assert false : "TODO: construct new instances of each variable : " + referencedFunctions.keySet();
+      assert false : "TODO: construct new instances of each variable : " + referencedFunctions.keySet() + " and then do an assignment like is done for the copy constructor";;
       
     }
 
