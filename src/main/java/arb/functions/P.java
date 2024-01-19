@@ -111,11 +111,11 @@ public class P implements
     this.rp9 = new RealPolynomial();
     this.r5  = new Real();
     this.r6  = new Real();
-    this.P   = this;
-//    this.A   = new A();
-//    this.B   = new B();;
-//    this.C   = new C();
-//    this.E   = new E();
+    this.P   = null;
+    this.A   = null;
+    this.B   = null;
+    this.C   = null;
+    this.E   = null;
   }
 
   public P(P var1)
@@ -123,6 +123,11 @@ public class P implements
     this();
     this.α = var1.α;
     this.β = var1.β;
+//    this.P = new P();
+//    this.A = new A();
+//    this.B = new B();
+//    this.C = new C();
+//    this.E = new E();
   }
 
   public void close()

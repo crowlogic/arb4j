@@ -297,8 +297,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareFunctionReference(ClassVisitor classVisitor, String name, Mapping<D, R> function)
   {
-    String descriptor = function.functionInterface != null ? function.functionInterface.descriptorString() : function.func.getClass()
-                                                                                                                          .descriptorString();
+    String descriptor = function.func == null ? function.functionInterface.descriptorString() : function.func.getClass()
+                                                                                                             .descriptorString();
 
     classVisitor.visitField(ACC_PUBLIC,
                             name,
@@ -1195,9 +1195,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     for (Mapping<D, R> mapping : referencedFunctions.values())
     {
-      assert false : "TODO: construct new instances of each variable : " + referencedFunctions.keySet()
-                    + " and then do an assignment like is done for the copy constructor";
-      ;
+      Compiler.generateNewField(methodVisitor, mapping.name, className, mapping.name, functionClassInternalName);
+//      assert false : "TODO: construct new instances of each variable : " + referencedFunctions.keySet()
+//                    + " and then do an assignment like is done for the copy constructor";
+//      ;
 
     }
 
@@ -1205,18 +1206,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitMaxs(0, 0);
     methodVisitor.visitEnd();
     return classVisitor;
-  }
-
-  public static void generateNewField(MethodVisitor mv,
-                                      String fieldName,
-                                      String ownerClassInternalName,
-                                      String fieldTypeInternalName)
-  {
-    mv.visitVarInsn(ALOAD, 0);
-    mv.visitTypeInsn(NEW, fieldTypeInternalName);
-    mv.visitInsn(DUP);
-    mv.visitMethodInsn(INVOKESPECIAL, fieldTypeInternalName, "<init>", "()V", false);
-    mv.visitFieldInsn(PUTFIELD, ownerClassInternalName, fieldName, "L" + fieldTypeInternalName + ";");
   }
 
   public ClassVisitor generateDefaultConstructor(ClassVisitor classVisitor)

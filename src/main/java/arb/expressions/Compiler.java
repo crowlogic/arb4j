@@ -358,4 +358,20 @@ public class Compiler
     return prefix;
   }
 
+  public static void generateNewField(MethodVisitor mv,
+                                      String fieldName,
+                                      String ownerClassInternalName,
+                                      String fieldTypeInternalName,String genericFieldInternalName)
+  {
+    System.out.format("generateNewField( fieldName=%s, ownerClassInternalName=%s, fieldTypeIntervalName=%s)\n",
+                      fieldName,
+                      ownerClassInternalName,
+                      fieldTypeInternalName);
+    mv.visitVarInsn(ALOAD, 0);
+    mv.visitTypeInsn(NEW, fieldTypeInternalName);
+    mv.visitInsn(DUP);
+    mv.visitMethodInsn(INVOKESPECIAL, fieldTypeInternalName, "<init>", "()V", false);
+    mv.visitFieldInsn(PUTFIELD, ownerClassInternalName, fieldName, "L" + genericFieldInternalName + ";");
+  }
+
 }
