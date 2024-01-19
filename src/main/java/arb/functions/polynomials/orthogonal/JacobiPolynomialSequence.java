@@ -123,6 +123,9 @@ public class JacobiPolynomialSequence implements
     a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
+    B.α = C.α = α;
+    B.β = C.β = β;
+    
   }
 
   @Override
