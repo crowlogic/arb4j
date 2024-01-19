@@ -187,7 +187,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                                   functionName;
 
-  boolean                                         save                  = false;
+  boolean                                         save                  = true;
 
   boolean                                         checkClass            = false;
 
@@ -318,7 +318,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public void declareReferencedVariables(ClassVisitor classVisitor)
   {
     for (Variable<D, R, F> variable : referencedVariables.values())
-    {
+    {     
       variable.declareField(classVisitor);
     }
   }
@@ -1178,7 +1178,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ClassVisitor generateCopyConstructor(ClassVisitor classVisitor)
   {
-    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "(" + className + ")V", null, null);
+    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "(L" + className + ";)V", null, null);
     methodVisitor.visitCode();
 
     generateInvocationOfDefaultNoArgConstructor(methodVisitor);
@@ -1186,7 +1186,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     for (Variable<D, R, F> variable : referencedVariables.values())
     {
       String variableName = variable.reference.name;
-      assert false : "TODO: GETFIELD/PUTFIELD";
+
+      loadThisOntoStack(methodVisitor);
+      methodVisitor.visitVarInsn(ALOAD, 1);
+      loadFieldOntoStack(methodVisitor, variableName, variable.type());
+
+      methodVisitor.visitFieldInsn(PUTFIELD, className, variableName, variable.type().descriptorString());
+
     }
 
     methodVisitor.visitInsn(RETURN);

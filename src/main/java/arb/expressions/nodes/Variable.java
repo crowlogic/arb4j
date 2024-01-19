@@ -104,7 +104,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
         out.format("%s: referenced %s\n", expression, reference);
         out.flush();
       }
-      if (!"else".equals(reference.name))
+      boolean isElse = "else".equals(reference.name);
+
+      if (!(isElse || isIndeterminant))
       {
         expression.referencedVariables.put(reference.name, this);
       }
