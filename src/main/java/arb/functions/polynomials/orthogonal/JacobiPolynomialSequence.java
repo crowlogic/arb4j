@@ -3,14 +3,13 @@ package arb.functions.polynomials.orthogonal;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import arb.Integer;
 import arb.OrthogonalBasis;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.expressions.Variables;
-import arb.functions.Function;
+import arb.functions.*;
 import arb.functions.real.RealFunction;
 
 /**
@@ -55,61 +54,72 @@ import arb.functions.real.RealFunction;
  * @author Stephen Crowley
  */
 public class JacobiPolynomialSequence implements
-                                     OrthogonalBasis<Real, RealPolynomial>,
-                                     AutoCloseable
+                                      OrthogonalBasis<Real, RealPolynomial>,
+                                      AutoCloseable
 {
-  public int                                     bits    = 128;
-  public Real                                    α       = new Real().setName("α");
-  public Real                                    β       = new Real().setName("β");
-  final public Real                              G       = new Real().setName("G");
-  final Variables                                vars    = new Variables(α,
-                                                                         β,
-                                                                         G);
+  public int                  bits    = 128;
+  public Real                 α       = new Real().setName("α");
+  public Real                 β       = new Real().setName("β");
+  final public Real           G       = new Real().setName("G");
+  final Variables             vars    = new Variables(α,
+                                                      β,
+                                                      G);
 
-  final Context                                  context = new Context(vars);
+  final Context               context = new Context(vars);
 
-  final public static boolean                    verbose = false;
+  final public static boolean verbose = false;
 
   /**
    * The C function is called with n/2 by the E function therefore its expressed
    * as RealFunction, that is, a Function from ℝ to ℝ
    */
-  final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
+  // final public RealFunction C = RealFunction.express("C", "2*n+α+β", context,
+  // verbose);
+  final public C              C       = new C();
 
-  final public Function<Integer, Real>           F       = Function.express(Integer.class,
-                                                                            Real.class,
-                                                                            "F",
-                                                                            "n➔C(n-1)*C(n)",
-                                                                            context,
-                                                                            verbose);
+  final public F              F       = new F();
 
-  final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
-                                                                            RealPolynomial.class,
-                                                                            "A",
-                                                                            "n➔(F(n)*x + G)*(C(n) - 1)/2",
-                                                                            context,
-                                                                            verbose);
+  final public E              E       = new E();
 
-  final public RealFunction                      E       = RealFunction.express("E",
-                                                                                "n➔n*C(n/2)*C(n-1)",
-                                                                                context,
-                                                                                verbose);
+  final public P              P       = new P();
 
-  final public RealFunction                      B       = RealFunction.express("B",
-                                                                                "n➔(n+α-1)*(n+β-1)*C(n)",
-                                                                                context,
-                                                                                verbose);
+  final public A              A       = new A();
+  final public B              B       = new B();
 
-  final public Function<Integer, RealPolynomial> P       = Function.express(Integer.class,
-                                                                            RealPolynomial.class,
-                                                                            "P",
-                                                                            "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
-                                                                            context,
-                                                                            verbose);
+//  final public Function<Integer, Real>           F       = Function.express(Integer.class,
+//                                                                            Real.class,
+//                                                                            "F",
+//                                                                            "n➔C(n-1)*C(n)",
+//                                                                            context,
+//                                                                            verbose);
+
+//  final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
+//                                                                            RealPolynomial.class,
+//                                                                            "A",
+//                                                                            "n➔(F(n)*x + G)*(C(n) - 1)/2",
+//                                                                            context,
+//                                                                            verbose);
+//
+//  final public RealFunction                      E       = RealFunction.express("E",
+//                                                                                "n➔n*C(n/2)*C(n-1)",
+//                                                                                context,
+//                                                                                verbose);
+//
+//  final public RealFunction                      B       = RealFunction.express("B",
+//                                                                                "n➔(n+α-1)*(n+β-1)*C(n)",
+//                                                                                context,
+//                                                                                verbose);
+//
+//  final public Function<Integer, RealPolynomial> P       = Function.express(Integer.class,
+//                                                                            RealPolynomial.class,
+//                                                                            "P",
+//                                                                            "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
+//                                                                            context,
+//                                                                            verbose);
 
   public JacobiPolynomialSequence(Real a, Real b)
   {
-    bits   = Math.max(128, Math.max(a.bits(), b.bits()));
+    bits = Math.max(128, Math.max(a.bits(), b.bits()));
     a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
@@ -122,8 +132,11 @@ public class JacobiPolynomialSequence implements
     return null;
   }
 
-  public final RealFunction orthogonalMeasure = RealFunction.express("w","x➔(1-x)^α*(1+x)^β", context, verbose);
-  public ArrayList<RealPolynomial> cache = new ArrayList<>();
+  public final RealFunction        orthogonalMeasure = RealFunction.express("w",
+                                                                            "x➔(1-x)^α*(1+x)^β",
+                                                                            context,
+                                                                            verbose);
+  public ArrayList<RealPolynomial> cache             = new ArrayList<>();
 
   @Override
   public RealFunction getOrthogonalMeasure()
@@ -148,6 +161,5 @@ public class JacobiPolynomialSequence implements
     domain.close();
     G.close();
   }
-
 
 }

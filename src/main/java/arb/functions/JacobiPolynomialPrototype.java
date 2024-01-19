@@ -51,9 +51,7 @@ public class JacobiPolynomialPrototype implements
     seq = new JacobiPolynomialSequence(α,
                                        β);
     C   = seq.C;
-    A   = seq.A;
-    B   = seq.B;
-    E   = seq.E;
+
   }
 
   public JacobiPolynomialPrototype(Real a, Real b)
@@ -63,9 +61,7 @@ public class JacobiPolynomialPrototype implements
     seq = new JacobiPolynomialSequence(a,
                                        b);
     C   = seq.C;
-    A   = seq.A;
-    B   = seq.B;
-    E   = seq.E;
+
 
   }
 

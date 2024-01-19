@@ -174,7 +174,7 @@ public class JacobiPolynomialTest extends
 
   public static void testP2()
   {
-    assert false : "need to have function fields populated with new instances by calling the constructor in the constructor rather than injecting externally with reflection";
+    //assert false : "need to have function fields populated with new instances by calling the constructor in the constructor rather than injecting externally with reflection";
     try ( var seq = new JacobiPolynomialSequence(negHalf,
                                                  negHalf))
     {

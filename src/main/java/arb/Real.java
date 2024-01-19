@@ -1310,6 +1310,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   public Real add(Real d, int prec, Real res)
   {
+    assert d != null : "addend is null";
     arblib.arb_add(res, this, d, prec );
     return res;
   }

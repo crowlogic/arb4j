@@ -1,25 +1,12 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.compile;
-import static arb.expressions.Compiler.defineFunctionClass;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getFunctionTypeSignature;
-import static arb.expressions.Compiler.getIntermediateVariablePrefix;
-import static arb.expressions.Compiler.loadResult;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACONST_NULL;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,28 +19,16 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.ComplexPolynomial;
-import arb.Field;
+import arb.*;
 import arb.Integer;
-import arb.RealPolynomial;
-import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.Add;
-import arb.expressions.nodes.binary.Divide;
-import arb.expressions.nodes.binary.Exponentiate;
-import arb.expressions.nodes.binary.Multiply;
-import arb.expressions.nodes.binary.Subtract;
+import arb.expressions.nodes.binary.*;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
@@ -298,7 +273,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareIntermediateVariables(classVisitor);
 
-    //err.println("Declaring function refs for " + this);
+    // err.println("Declaring function refs for " + this);
 
     declareFunctionReferences(classVisitor);
   }
@@ -324,9 +299,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareFunctionReference(ClassVisitor classVisitor, String name, Mapping<D, R> function)
   {
-    String descriptor = function.func == null ? format("L%s;", functionName) : function.func.getClass()
+    String descriptor = function.func == null ? format("L%s;", name) : function.func.getClass()
                                                                                             .descriptorString();
-   // System.err.format("declareFunctionReference(name=%s, descriptor, function=%s)\n", name, descriptor, function);
+    System.err.format("%s: declareFunctionReference(name=%s, descriptor,  function=%s) in %s\n",
+                      this.functionName,
+                      name,
+                      descriptor,
+                      function,
+                      functionName);
 
     String functionTypeSignature = getFunctionTypeSignature(function.domain, function.range);
 
@@ -528,46 +508,31 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class);
   }
 
-  public MethodVisitor initializeRegisteredFunction(MethodVisitor methodVisitor, Mapping<?, ?> mapping)
+  public MethodVisitor initializeRegisteredFunction(MethodVisitor mv, Mapping<?, ?> mapping)
   {
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitInsn(ACONST_NULL);
+    mv.visitVarInsn(ALOAD, 0);
+
+    if (mapping.func != null )
+    {
+      err.format( "%s: INVOKESPECIAL mapping=%s", this, mapping);
+      mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(mapping.func.getClass()));
+      mv.visitInsn(Opcodes.DUP);
+      mv.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(mapping.func.getClass()), "<init>", "()V", false);
+    }
+    else
+    {
+      mv.visitInsn(ACONST_NULL);
+    }
+
     // boolean isInterface = mapping.functionInterface != null;
-    methodVisitor.visitFieldInsn(PUTFIELD,
+    mv.visitFieldInsn(PUTFIELD,
                                  className,
                                  mapping.name,
-                                 mapping.func == null ? format("L%s;",
-                                                               functionName) : mapping.func.getClass()
-                                                                                           .descriptorString());
+                                 mapping.func == null ? format("%S",
+                                                               mapping.functionInterface.descriptorString()) : mapping.func.getClass()
+                                                                                                                           .descriptorString());
 
-    return methodVisitor;
-  }
-
-  public void injectContextualFunctionReferences() throws NoSuchFieldException, IllegalAccessException
-  {
-
-    if (context != null)
-    {
-      referencedFunctions.entrySet().forEach(entry ->
-      {
-        try
-        {
-          String                  functionName = entry.getKey();
-          java.lang.reflect.Field field        = compiledClass.getField(functionName);
-          Mapping<?, ?>           mapping      = entry.getValue();
-          if (!mapping.name.equals(this.functionName))
-          {
-            field.set(instance, mapping.func);
-          }
-
-        }
-        catch (Exception e)
-        {
-          throw new RuntimeException(e.getMessage(),
-                                     e);
-        }
-      });
-    }
+    return mv;
   }
 
   public void injectVariableReferences(F f) throws NoSuchFieldException, IllegalAccessException
@@ -613,7 +578,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
         f = compiledClass.getDeclaredConstructor().newInstance();
       }
       injectVariableReferences(f);
-      injectContextualFunctionReferences();
       return instance;
     }
     catch (Exception e)
@@ -1184,7 +1148,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor initializeRegisteredFunctions(MethodVisitor methodVisitor)
   {
-    referencedFunctions.values().forEach(mapping -> initializeRegisteredFunction(methodVisitor, mapping));
+    referencedFunctions.values().forEach(mapping ->
+    {
+      if (mapping.func != null)
+      {
+        initializeRegisteredFunction(methodVisitor, mapping);
+      }
+    });
+    
     return methodVisitor;
   }
 
@@ -1221,19 +1192,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     }
 
-    for (Mapping<D, R> mapping : referencedFunctions.values())
-    {
-      Compiler.generateNewField(methodVisitor,
-                                mapping.name,
-                                className,
-                                mapping.name,
-                                mapping.func == null ? functionName : Type.getInternalName(mapping.func.getClass()));
-//      assert false : "TODO: construct new instances of each variable : " + referencedFunctions.keySet()
-//                    + " and then do an assignment like is done for the copy constructor";
-//      ;
-
-    }
-
+   
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(0, 0);
     methodVisitor.visitEnd();
