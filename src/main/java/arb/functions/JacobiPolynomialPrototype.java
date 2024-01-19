@@ -44,17 +44,29 @@ public class JacobiPolynomialPrototype implements
   public Function<Real, Real>              E   = null;
   public JacobiPolynomialSequence          seq;
 
-  @SuppressWarnings("resource")
   public JacobiPolynomialPrototype(JacobiPolynomialPrototype p)
   {
-    α = new Real().set(p.α);
-    β = new Real().set(p.β);
+    α   = p.α;
+    β   = p.β;
+    seq = new JacobiPolynomialSequence(α,
+                                       β);
+    C   = seq.C;
+    A   = seq.A;
+    B   = seq.B;
+    E   = seq.E;
   }
 
   public JacobiPolynomialPrototype(Real a, Real b)
   {
+    α   = a;
+    β   = b;
     seq = new JacobiPolynomialSequence(a,
                                        b);
+    C   = seq.C;
+    A   = seq.A;
+    B   = seq.B;
+    E   = seq.E;
+
   }
 
   private Function<Integer, RealPolynomial> constructNewInstanceOfP()
@@ -71,13 +83,13 @@ public class JacobiPolynomialPrototype implements
                                                                        seq.β);)
     {
       RealPolynomial polys[] = new RealPolynomial[8];
-      for (int n = 1; n < 9; n++)
+      for (int n = 0; n < polys.length; n++)
       {
         RealPolynomial p = Pn.evaluate(new Integer(n), 128, new RealPolynomial());
-        polys[n - 1] = p;
+        polys[n] = p;
         System.out.format("P(%d)=%s\n", n, p);
       }
-      ShellFunctions.plot(-1, 1, 1000, polys);
+     ShellFunctions.plot(-1, 1, 1000, polys);
 
     }
   }
@@ -90,17 +102,17 @@ public class JacobiPolynomialPrototype implements
 
     assert index >= 0 : String.format("index = %d < 0", index);
 
-    if (index >= seq.cache.size())
-    {
-      seq.cache.addAll(Collections.nCopies(index + 1 - seq.cache.size(), null));
-    }
-
-    RealPolynomial cachedResult = seq.cache.get(index);
-    if (cachedResult != null)
-    {
-      result.set(cachedResult);
-      return result;
-    }
+//    if (index >= seq.cache.size())
+//    {
+//      seq.cache.addAll(Collections.nCopies(index + 1 - seq.cache.size(), null));
+//    }
+//
+//    RealPolynomial cachedResult = seq.cache.get(index);
+//    if (cachedResult != null)
+//    {
+//      result.set(cachedResult);
+//      return result;
+//    }
 
     switch (index)
     {
@@ -116,48 +128,23 @@ public class JacobiPolynomialPrototype implements
        .div(2, bits, result);
       break;
     default:
-      RealPolynomial lastP = seq.cache.get(index - 1);
-      if (lastP != null)
-      {
-        // System.out.println( "Using cache lastP " + lastP + " at " + (index-1) );
-        rp4.set(lastP);
-      }
-      else
-      {
-        if (P == null)
-        {
-          // System.out.println( "Constructing new element at " + (index-1) );
 
-          P = constructNewInstanceOfP();
-        }
-        P.evaluate(in.sub(1, bits, i0), order, bits, rp4);
-      }
-      RealPolynomial PBeforeLast = seq.cache.get(index - 2);
-      if (PBeforeLast != null)
+      if (P == null)
       {
-        // System.out.println( "Using cache PBeforeLast " + PBeforeLast + " at " +
-        // (index-2) );
+        P = constructNewInstanceOfP();
+      }
 
-        rp6.set(PBeforeLast);
-      }
-      else
-      {
-        if (P == null)
-        {
-          P = constructNewInstanceOfP();
-        }
-        P.evaluate(in.sub(2, bits, i1), order, bits, rp6);
-      }
+      P.evaluate(in.sub(1, bits, i0), order, bits, rp4);
+      P.evaluate(in.sub(2, bits, i1), order, bits, rp6);
+
       A.evaluate(in, order, bits, rp3)
        .mul(rp4, bits, rp5)
        .sub(B.evaluate(r2.set(in), order, bits, r3).mul(rp6, bits, rp7), bits, rp8)
        .div(E.evaluate(r4.set(in), order, bits, r5), bits, result);
       break;
     }
-    // System.out.format("evaluate(in=%s,order=%d,bits=%d,result=%s)\n", in, order,
-    // bits, result);
 
-    seq.cache.set(index, result);
+    //seq.cache.set(index, result);
     return result;
   }
 

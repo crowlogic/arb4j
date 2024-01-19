@@ -180,9 +180,13 @@ import arb.exceptions.DivisionByZeroException;
   @Override
   public String toString()
   {
-    if ( getLength() == 0 )
+    if (getLength() == 0)
     {
       return "∅";
+    }
+    if (getLength() == 1)
+    {
+      return get(0).toString();
     }
     StringBuilder builder = new StringBuilder();
     for (int i = getLength() - 1; i >= 0; --i)

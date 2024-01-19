@@ -1242,7 +1242,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     try
     {
       Files.write(Paths.get(file.toURI()), instructions);
-      out.println("Wrote " + file.getAbsolutePath());
+      //out.println("Wrote " + file.getAbsolutePath());
 
     }
     catch (IOException e)
