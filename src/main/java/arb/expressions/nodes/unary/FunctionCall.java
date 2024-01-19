@@ -1,6 +1,10 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBits;
+import static arb.expressions.Compiler.loadOrder;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
@@ -14,7 +18,10 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
-import arb.expressions.*;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.Mapping;
+import arb.expressions.Parser;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
@@ -100,7 +107,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       mapping.domain       = getDomainType();
       mapping.name         = functionName;
       expression.recursive = true;
-     
+
     }
 
     if (contextual)
@@ -178,6 +185,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     if (func == null && mapping.functionInterface == null)
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
+    }
+    if (expression.recursive && functionName.equals(expression.functionName))
+    {
+      assert false : "generate the instructions to get "
+                    + "call getClass(), construct a new instance using the copy-constructor so that the field values are assigned properly,  this="
+                    + this;
     }
 
     loadFunctionFromField(methodVisitor,

@@ -47,37 +47,35 @@ public class JacobiPolynomialPrototype implements
   public JacobiPolynomialPrototype(JacobiPolynomialSequence seq)
   {
     this.seq = seq;
-    cloneFunctionReferences(seq, this);
+    α        = seq.α;
+    β        = seq.β;
+    A        = seq.A;
+    C        = seq.C;
+    B        = seq.B;
+    E        = seq.E;
   }
 
-  private Function<Integer, RealPolynomial> constructNewElement(JacobiPolynomialSequence seq)
+  public JacobiPolynomialPrototype(Real a, Real b)
   {
-    var element = new JacobiPolynomialPrototype(seq);
-    cloneFunctionReferences(seq, element);
-    return element;
+    seq = new JacobiPolynomialSequence(a,
+                                       b);
   }
 
-  public void cloneFunctionReferences(JacobiPolynomialSequence seq, JacobiPolynomialPrototype element)
+  private Function<Integer, RealPolynomial> constructNewInstanceOfP(JacobiPolynomialSequence seq)
   {
-    element.α = seq.α;
-    element.β = seq.β;
-    element.A = seq.A;
-    element.C = seq.C;
-    element.B = seq.B;
-    element.E = seq.E;
+    return new JacobiPolynomialPrototype(seq);
   }
 
   public static void main(String args[])
   {
-    try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                 negHalf);
-          JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(seq);)
+    try ( JacobiPolynomialPrototype Pn = new JacobiPolynomialPrototype(negHalf,
+                                                                       negHalf);)
     {
-      RealPolynomial polys[]  = new RealPolynomial[8];
+      RealPolynomial polys[] = new RealPolynomial[8];
       for (int n = 1; n < 9; n++)
       {
         RealPolynomial p = Pn.evaluate(new Integer(n), 128, new RealPolynomial());
-        polys[n-1] = p;
+        polys[n - 1] = p;
         System.out.format("P(%d)=%s\n", n, p);
       }
       ShellFunctions.plot(-1, 1, 1000, polys);
@@ -131,10 +129,9 @@ public class JacobiPolynomialPrototype implements
         {
           // System.out.println( "Constructing new element at " + (index-1) );
 
-          P = constructNewElement(seq);
+          P = constructNewInstanceOfP(seq);
         }
         P.evaluate(in.sub(1, bits, i0), order, bits, rp4);
-        seq.cache.set(index - 1, rp4);
       }
       RealPolynomial PBeforeLast = seq.cache.get(index - 2);
       if (PBeforeLast != null)
@@ -148,10 +145,9 @@ public class JacobiPolynomialPrototype implements
       {
         if (P == null)
         {
-          P = constructNewElement(seq);
+          P = constructNewInstanceOfP(seq);
         }
         P.evaluate(in.sub(2, bits, i1), order, bits, rp6);
-        seq.cache.set(index - 2, rp6);
       }
       A.evaluate(in, order, bits, rp3)
        .mul(rp4, bits, rp5)

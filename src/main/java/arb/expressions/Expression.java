@@ -1,12 +1,24 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.compile;
+import static arb.expressions.Compiler.defineFunctionClass;
+import static arb.expressions.Compiler.generateConstructor;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getFunctionTypeSignature;
+import static arb.expressions.Compiler.getIntermediateVariablePrefix;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACONST_NULL;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,16 +31,28 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.util.CheckClassAdapter;
 
-import arb.*;
+import arb.ComplexPolynomial;
+import arb.Field;
 import arb.Integer;
+import arb.RealPolynomial;
+import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.*;
+import arb.expressions.nodes.binary.Add;
+import arb.expressions.nodes.binary.Divide;
+import arb.expressions.nodes.binary.Exponentiate;
+import arb.expressions.nodes.binary.Multiply;
+import arb.expressions.nodes.binary.Subtract;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
@@ -511,8 +535,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void injectContextualFunctionReferences() throws NoSuchFieldException, IllegalAccessException
   {
-    assert false : (functionName != null ? functionName : "this")
-                  + " is a recursive function.. instantiate a new instance and set";
+
     if (context != null)
     {
       referencedFunctions.entrySet().forEach(entry ->
@@ -537,7 +560,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public void injectVariableReferences() throws NoSuchFieldException, IllegalAccessException
+  public void injectVariableReferences(F f) throws NoSuchFieldException, IllegalAccessException
   {
     if (referencedVariables != null)
     {
@@ -547,7 +570,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         {
           String variableName = entry.getKey();
           R      value        = variables.get(variableName);
-          setFieldValue(variableName, value);
+          setFieldValue(f, variableName, value);
         }
         catch (Exception e)
         {
@@ -565,23 +588,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return a newly instantiated instance of the (equivalence) class of function
    *         defined by this {@link Expression}
    */
-  protected F instantiate(boolean primary)
+  public F instantiate(boolean primary)
   {
     try
     {
+      F f;
       if (primary)
       {
-
-        instance = (compiledClass != null ? compiledClass : define()).getDeclaredConstructor().newInstance();
-        injectVariableReferences();
-        injectContextualFunctionReferences();
-
+        f = instance = (compiledClass != null ? compiledClass : define()).getDeclaredConstructor().newInstance();
       }
       else
       {
         assert compiledClass != null : "define() must be called before instantiating since automatically calling define() is only done for the primary instance";
-        return compiledClass.getDeclaredConstructor().newInstance();
+        f = compiledClass.getDeclaredConstructor().newInstance();
       }
+      injectVariableReferences(f);
+      injectContextualFunctionReferences();
       return instance;
     }
     catch (Exception e)
@@ -1093,10 +1115,31 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public void setFieldValue(String variableName, Object value) throws NoSuchFieldException, IllegalAccessException
+  /**
+   * 
+   * @param variableName
+   * @param value
+   * @throws NoSuchFieldException
+   * @throws IllegalAccessException
+   */
+  public void setFieldValue(F f, String variableName, Object value)
   {
-    java.lang.reflect.Field field = compiledClass.getField(variableName);
-    field.set(instance, value);
+    java.lang.reflect.Field field;
+    try
+    {
+      field = compiledClass.getField(variableName);
+      field.set(f, value);
+    }
+    catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
+    {
+      if (e instanceof RuntimeException)
+      {
+        throw (RuntimeException) e;
+      }
+      else
+        throw new RuntimeException(e);
+
+    }
   }
 
   public MethodVisitor setResult(MethodVisitor methodVisitor, boolean swap, Class<?> inputType)
