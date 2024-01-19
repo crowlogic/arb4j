@@ -511,7 +511,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void injectContextualFunctionReferences() throws NoSuchFieldException, IllegalAccessException
   {
-
+    assert false : (functionName != null ? functionName : "this")
+                  + " is a recursive function.. instantiate a new instance and set";
     if (context != null)
     {
       referencedFunctions.entrySet().forEach(entry ->
