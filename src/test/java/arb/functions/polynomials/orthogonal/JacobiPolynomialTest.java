@@ -162,6 +162,7 @@ public class JacobiPolynomialTest extends
 
       try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
       {
+        // P(-half,-half)=ChebyshevType1 and when n=1 it equals x/2
         Real a = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(RealConstants.half, a);
         Real b = result.evaluate(RealConstants.half, 128, new Real());
