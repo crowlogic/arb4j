@@ -4,17 +4,19 @@ import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 
 import arb.Integer;
 import arb.Real;
-import arb.expressions.*;
+import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.Mapping;
+import arb.expressions.Parser;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
@@ -166,6 +168,27 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
   }
 
+  public static MethodVisitor
+         conditionallyInstantiate(MethodVisitor mv, String className, String fieldName, String fieldType)
+  {
+    mv.visitCode();
+    mv.visitVarInsn(ALOAD, 0); // Load "this" onto the stack
+    mv.visitFieldInsn(GETFIELD, className, fieldName, fieldType); // Get the field value
+    Label label = new Label();
+    mv.visitJumpInsn(IFNONNULL, label); // Jump if the field is not null
+    mv.visitVarInsn(ALOAD, 0); // Load "this" onto the stack
+
+    mv.visitTypeInsn(Opcodes.NEW, className);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitVarInsn(Opcodes.ALOAD, 0);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, className, "<init>", format("(L%s;)V", className), false);
+
+    mv.visitFieldInsn(PUTFIELD, className, fieldName, fieldType); // Assign the new instance to the field
+    mv.visitLabel(label);
+    mv.visitFrame(F_SAME, 0, null, 0, null);
+    return mv;
+  }
+
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
@@ -175,7 +198,15 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     Mapping<D, R> mapping     = expression.context.functions.get(functionName);
     F             func        = (F) mapping.func;
     boolean       isRecursive = expression.recursive && functionName.equals(expression.functionName);
-    assert !isRecursive : "TODO: make new instance of recursive function " + functionName + " with copy constructor";
+    if (isRecursive)
+    {
+      conditionallyInstantiate(methodVisitor,
+                               expression.className,
+                               functionName,
+                               expression.functionClass.descriptorString());
+
+      // functionName + " with copy constructor";
+    }
     if (func == null && mapping.functionInterface == null)
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));

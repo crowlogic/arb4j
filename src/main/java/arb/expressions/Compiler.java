@@ -143,12 +143,6 @@ public class Compiler
     }
   }
 
-  public static void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
-  }
-
   public static <D, R, F extends Function<D, R>>
          ClassVisitor
          generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor classVisitor)

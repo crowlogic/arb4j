@@ -318,7 +318,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public void declareReferencedVariables(ClassVisitor classVisitor)
   {
     for (Variable<D, R, F> variable : referencedVariables.values())
-    {     
+    {
       variable.declareField(classVisitor);
     }
   }
@@ -415,22 +415,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     return classVisitor;
-  }
-
-  public MethodVisitor generateCopyConstructorInvocation(MethodVisitor mv, String classname)
-  {
-    mv.visitTypeInsn(Opcodes.NEW, classname);
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitVarInsn(Opcodes.ALOAD, 1);
-    try
-    {
-      mv.visitMethodInsn(Opcodes.INVOKESPECIAL, classname, "<init>", format("(L%s;)V", classname), false);
-    }
-    catch (SecurityException e)
-    {
-      throw new RuntimeException(e);
-    }
-    return mv;
   }
 
   public ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws ExpressionCompilerException
@@ -1176,12 +1160,26 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return methodVisitor;
   }
 
+  public void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor, boolean object)
+  {
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                  object ? Type.getInternalName(Object.class) : className,
+                                  "<init>",
+                                  "()V",
+                                  false);
+  }
+
   public ClassVisitor generateCopyConstructor(ClassVisitor classVisitor)
   {
-    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "(L" + className + ";)V", null, null);
+    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC,
+                                                           "<init>",
+                                                           "(L" + className + ";)V",
+                                                           null,
+                                                           null);
     methodVisitor.visitCode();
 
-    generateInvocationOfDefaultNoArgConstructor(methodVisitor);
+    generateInvocationOfDefaultNoArgConstructor(methodVisitor, false);
 
     for (Variable<D, R, F> variable : referencedVariables.values())
     {
@@ -1193,6 +1191,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       methodVisitor.visitFieldInsn(PUTFIELD, className, variableName, variable.type().descriptorString());
 
+    }
+
+    for (Mapping<D, R> mapping : referencedFunctions.values())
+    {
+      assert false : "TODO: construct new instances of each variable : " + referencedFunctions.keySet();
+      
     }
 
     methodVisitor.visitInsn(RETURN);
@@ -1207,7 +1211,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
     methodVisitor.visitCode();
 
-    generateInvocationOfDefaultNoArgConstructor(methodVisitor);
+    generateInvocationOfDefaultNoArgConstructor(methodVisitor, true);
 
     initializeLiteralConstants(methodVisitor);
 
@@ -1242,7 +1246,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     try
     {
       Files.write(Paths.get(file.toURI()), instructions);
-      //out.println("Wrote " + file.getAbsolutePath());
+      // out.println("Wrote " + file.getAbsolutePath());
 
     }
     catch (IOException e)
