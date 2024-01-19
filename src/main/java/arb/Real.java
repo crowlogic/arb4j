@@ -941,8 +941,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   
   public Complex add(Complex a, int prec, Complex res)
   {
-    assert a != null;
-    assert res != null;
+  	assert a != null : "addend is null";
     arblib.acb_add_arb(res, a, this, prec);
     return res;
   }
@@ -1074,6 +1073,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
    */
   public Real addmul(Real that, int prec, Real result)
   {
+  	assert that != null : "operand is null";
     arblib.arb_addmul( result, this, that, prec );
     return result;
   }
@@ -1310,7 +1310,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   public Real add(Real d, int prec, Real res)
   {
-    assert d != null : "addend is null";
+  	assert d != null : "operand is null";
     arblib.arb_add(res, this, d, prec );
     return res;
   }
