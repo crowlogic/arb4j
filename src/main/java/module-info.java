@@ -31,7 +31,8 @@ module arb4j
   requires transitive io.fair_acc.chartfx;
   requires transitive io.fair_acc.dataset;
   requires transitive io.fair_acc.bench;
-  requires transitive org.fxyz3d.core;  
+  requires transitive org.fxyz3d.core;
+  requires transitive vineflower;  
 
   exports arb;
   exports arb.expressions;
