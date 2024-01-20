@@ -413,6 +413,7 @@ public class RealFunctionExpressionCompilerTest extends
   
   public void testSFunctionWithGreekInputSplitIntoTwoFunctions()
   {
+    Context context = new Context();
     express("yay","1+ρ^2", context);
     RealFunction expression = express("x->tanh(ln(yay(x)))", context);
     

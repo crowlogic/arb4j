@@ -483,7 +483,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     generateConditionalInitializater(methodVisitor);
 
-    addChecksForNullVariableReferences(methodVisitor);
+    addChecksForNullVariableReferences(methodVisitor, false);
 
     rootNode.generate(methodVisitor, rangeType);
 
@@ -516,13 +516,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
   }
 
-  public void addChecksForNullVariableReferences(MethodVisitor methodVisitor)
+  public void addChecksForNullVariableReferences(MethodVisitor methodVisitor, boolean all)
   {
     if (context != null)
     {
-      for (var variable : context.variables.map.keySet())
-
-      // for (var variable : referencedVariables.keySet())
+      for (var variable : all ? context.variables.map.keySet() : referencedVariables.keySet())
       {
         addCheckForNullField(methodVisitor, variable, true);
       }
@@ -602,13 +600,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     mv.visitFieldInsn(Opcodes.PUTFIELD, classType, functionFieldName, typeDesc);
 
     // Set fields in the new object
-    for (OrderedPair<String, Class<?>> assignment : variables)
+    for (OrderedPair<String, Class<?>> variable : variables)
     {
       mv.visitVarInsn(Opcodes.ALOAD, 0);
       mv.visitFieldInsn(Opcodes.GETFIELD, classType, functionFieldName, typeDesc);
       mv.visitVarInsn(Opcodes.ALOAD, 0);
-      String variableFieldName = assignment.getKey();
-      String variableFieldType = assignment.getValue().descriptorString();
+      String variableFieldName = variable.getKey();
+      String variableFieldType = variable.getValue().descriptorString();
       mv.visitFieldInsn(Opcodes.GETFIELD, classType, variableFieldName, variableFieldType);
       mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, variableFieldName, variableFieldType);
     }
@@ -644,7 +642,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     // boolean isInterface = mapping.functionInterface != null;
     mv.visitFieldInsn(PUTFIELD, className, mapping.name, mapping.func == null ?
-
                                                                               format("%S",
                                                                                      mapping.functionInterface.descriptorString()) : mapping.func.getClass()
                                                                                                                                                  .descriptorString());
@@ -705,7 +702,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         f = compiledClass.getDeclaredConstructor().newInstance();
       }
       injectVariableReferences(f);
-      compiledClass.getMethod(initializeContext).invoke(f);
+      
       return instance;
     }
     catch (Exception e)
@@ -1280,6 +1277,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     generateCodeToThrowErrorIfAlreadyInitialized(methodVisitor);
 
+    addChecksForNullVariableReferences(methodVisitor, true);
 
     referencedFunctions.values().forEach(mapping ->
     {
@@ -1344,7 +1342,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     generateInvocationOfDefaultNoArgConstructor(methodVisitor, false);
 
-    addChecksForNullVariableReferences(methodVisitor);
+    addChecksForNullVariableReferences(methodVisitor, true);
 
     for (Variable<D, R, F> variable : referencedVariables.values())
     {
