@@ -26,7 +26,7 @@ public class C implements
     }
     else
     {
-      return this.const1.mul(in, bits, this.r1).add(this.α, bits, this.r2).add(this.β, bits, result);
+      return this.const1.mul((Real) in, bits, this.r1).add(this.α, bits, this.r2).add(this.β, bits, (Real) result);
     }
   }
 
