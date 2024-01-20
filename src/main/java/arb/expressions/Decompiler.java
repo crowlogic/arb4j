@@ -15,6 +15,7 @@ public class Decompiler
 {
   public static void main(String[] args)
   {
+    
     IResultSaver        saver           = new DirectoryResultSaver(new File("."));
 
     IFernflowerLogger   logger          = new PrintStreamLogger(System.out);

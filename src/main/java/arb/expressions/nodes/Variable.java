@@ -133,11 +133,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (verbose)
-    {
-      out.println(this);
-      out.flush();
-    }
 
     if (isIndependent)
     {

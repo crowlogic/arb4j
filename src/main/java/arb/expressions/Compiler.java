@@ -1,6 +1,5 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.getFunctionTypeSignature;
 import static arb.expressions.Parser.expressionToUniqueClassname;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
@@ -148,20 +147,37 @@ public class Compiler
          ClassVisitor
          generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor classVisitor)
   {
-    String          classSignature = null;
-    SignatureWriter sw = new SignatureWriter();
+    String  classSignature    = null;
 
-//    // Interface Function<arb.Integer, arb.RealPolynomial>
-//    sw.visitInterface();
-//    sw.visitClassType(expression.functionClassInternalName);
-//    sw.visitTypeArgument('=').visitClassType(Type.getInternalName(expression.domainType));
-//    sw.visitEnd();
-//    sw.visitTypeArgument('=').visitClassType(Type.getInternalName(expression.rangeType));
-//    sw.visitEnd();
-//
-//    classSignature = sw.toString();
-//    out.println("Writing " + classSignature);
-    classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC, className, classSignature, objectDesc, new String[]
+    boolean isGenericFunction = false;
+    if (expression.functionClass.equals(Function.class))
+    {
+      isGenericFunction = true;
+    }
+
+    if (isGenericFunction)
+    {
+
+      SignatureWriter sw = new SignatureWriter();
+
+      // Superclass (Object)
+      sw.visitSuperclass().visitClassType(Type.getInternalName(Object.class));
+      sw.visitEnd();
+
+      // Interface Function<arb.Integer, arb.RealPolynomial>
+      sw.visitInterface();
+      sw.visitClassType(Type.getInternalName(Function.class));
+      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(expression.domainType));
+      sw.visitEnd();
+      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(expression.rangeType));
+      sw.visitEnd();
+      sw.visitEnd(); // End of interface
+
+      classSignature = sw.toString();
+
+    }
+
+    classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, new String[]
     { expression.functionClassInternalName });
     return classVisitor;
   }

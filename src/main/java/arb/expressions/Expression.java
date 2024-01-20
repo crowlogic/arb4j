@@ -273,8 +273,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareIntermediateVariables(classVisitor);
 
-    // err.println("Declaring function refs for " + this);
-
     declareFunctionReferences(classVisitor);
   }
 
@@ -299,19 +297,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareFunctionReference(ClassVisitor classVisitor, String name, Mapping<D, R> function)
   {
-    String descriptor = function.func == null ? format("L%s;", name) : function.func.getClass()
-                                                                                            .descriptorString();
-    System.err.format("%s: declareFunctionReference(name=%s, descriptor,  function=%s) in %s\n",
-                      this.functionName,
-                      name,
-                      descriptor,
-                      function,
-                      functionName);
+    String descriptor = function.func == null ? format("L%s;", name) : function.func.getClass().descriptorString();
+
 
     String functionTypeSignature = getFunctionTypeSignature(function.domain, function.range);
-
-    // assert function.func != null : "function.func is null, function = " +
-    // function;
 
     classVisitor.visitField(ACC_PUBLIC, name, descriptor, functionTypeSignature, null);
   }
@@ -339,11 +328,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Expression<D, R, F> generate() throws ExpressionCompilerException
   {
-    if (verbose)
-    {
-      out.format("Generating %s from expression '%s'", className, expression);
-      out.flush();
-    }
 
     ClassVisitor classVisitor = constructClassVisitor();
 
@@ -432,14 +416,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     Label startLabel = new Label();
     Label endLabel   = new Label();
 
-    if (verbose)
-    {
-      out.format("\nGenerating evaluate with methodDesc='%s' signature='%s'\n\n",
-                 evaluationMethodDescriptor,
-                 evaluateMethodSignature);
-      out.flush();
-    }
-
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                            "evaluate",
                                                            evaluationMethodDescriptor,
@@ -476,11 +452,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor declareLocalVariables(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
-    String objectClassDescriptor = Object.class.descriptorString();
-    methodVisitor.visitLocalVariable("in", objectClassDescriptor, domainClassDescriptor, startLabel, endLabel, 1);
+    //String objectClassDescriptor = Object.class.descriptorString();
+    methodVisitor.visitLocalVariable("in", domainType.descriptorString(), null, startLabel, endLabel, 1);
     methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
     methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
-    methodVisitor.visitLocalVariable("result", objectClassDescriptor, rangeClassDescriptor, startLabel, endLabel, 4);
+    methodVisitor.visitLocalVariable("result", rangeType.descriptorString(), null, startLabel, endLabel, 4);
     return methodVisitor;
   }
 
@@ -512,9 +488,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     mv.visitVarInsn(ALOAD, 0);
 
-    if (mapping.func != null )
+    if (mapping.func != null)
     {
-      err.format( "%s: INVOKESPECIAL mapping=%s", this, mapping);
       mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(mapping.func.getClass()));
       mv.visitInsn(Opcodes.DUP);
       mv.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(mapping.func.getClass()), "<init>", "()V", false);
@@ -526,11 +501,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     // boolean isInterface = mapping.functionInterface != null;
     mv.visitFieldInsn(PUTFIELD,
-                                 className,
-                                 mapping.name,
-                                 mapping.func == null ? format("%S",
-                                                               mapping.functionInterface.descriptorString()) : mapping.func.getClass()
-                                                                                                                           .descriptorString());
+                      className,
+                      mapping.name,
+                      mapping.func == null ? format("%S",
+                                                    mapping.functionInterface.descriptorString()) : mapping.func.getClass()
+                                                                                                                .descriptorString());
 
     return mv;
   }
@@ -1139,11 +1114,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
   @Override
   public String toString()
   {
-    return String.format("Expression[expression=%s, className=%s, functionName=%s, recursive=%s]",
+    return String.format("Expression[expression=%s, className=%s, functionName=%s, recursive=%s, className=%s, functionClass=%s]",
                          expression,
                          className,
                          functionName,
-                         recursive);
+                         recursive,
+                         className,
+                         functionClass
+                         );
   }
 
   public MethodVisitor initializeRegisteredFunctions(MethodVisitor methodVisitor)
@@ -1155,7 +1133,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         initializeRegisteredFunction(methodVisitor, mapping);
       }
     });
-    
+
     return methodVisitor;
   }
 
@@ -1192,7 +1170,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     }
 
-   
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(0, 0);
     methodVisitor.visitEnd();
