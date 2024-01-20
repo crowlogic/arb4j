@@ -4,7 +4,6 @@ import static arb.expressions.Compiler.addNullCheckForField;
 import static arb.expressions.Compiler.compile;
 import static arb.expressions.Compiler.defineFunctionClass;
 import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getFunctionTypeSignature;
 import static arb.expressions.Compiler.getIntermediateVariablePrefix;
 import static arb.expressions.Compiler.loadResult;
 import static arb.expressions.Compiler.loadThisOntoStack;
@@ -317,18 +316,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
+  @SuppressWarnings("unchecked")
   public ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
   {
-    referencedFunctions.forEach((name, function) ->
+    if (context != null)
     {
-      declareFunctionReference(classVisitor, name, function);
-    });
+      context.functions.map.forEach((name, function) ->
+      {
+        declareFunctionReference(classVisitor, name, (Mapping<D, R>) function);
+      });
+    }
     return classVisitor;
   }
 
   public void declareFunctionReference(ClassVisitor classVisitor, String name, Mapping<D, R> function)
   {
-    String descriptor            = "L" + function.name + ";";
+    String descriptor = "L" + function.name + ";";
     classVisitor.visitField(ACC_PUBLIC, name, descriptor, null, null);
   }
 
@@ -493,9 +496,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void addChecksForNullReferences(MethodVisitor methodVisitor)
   {
-    for (var variable : referencedVariables.keySet())
+    if (context != null)
     {
-      addCheckForNullField(methodVisitor, variable, true);
+      for (var variable : referencedVariables.keySet())
+      {
+        addCheckForNullField(methodVisitor, variable, true);
+      }
     }
     for (var variable : referencedFunctions.keySet())
     {
@@ -604,12 +610,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       instantiateFunctionReference(mv, mapping);
 
-      List<OrderedPair<String, Class<?>>> variableEntries = referencedVariables.entrySet()
-                                                                               .stream()
-                                                                               .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
-                                                                                                                               entry.getValue()
-                                                                                                                                    .type()))
-                                                                               .collect(Collectors.toList());
+      List<OrderedPair<String, Class<?>>> variableEntries = context.variables.map.entrySet()
+                                                                                 .stream()
+                                                                                 .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
+                                                                                                                                 entry.getValue()
+                                                                                                                                      .getClass()))
+                                                                                 .collect(Collectors.toList());
 
       instantiateAndInitialize(mv, className, Type.getInternalName(mapping.type()), mapping.name, variableEntries);
 

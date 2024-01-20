@@ -27,11 +27,11 @@ public class P implements Function<Integer, RealPolynomial> {
    public RealPolynomial rp9 = new RealPolynomial();
    public Real r5 = new Real();
    public Real r6 = new Real();
-   public Function<Integer, RealPolynomial> P;
-   public Function<Integer, RealPolynomial> A;
-   public Function<Real, Real> B;
-   public Function<Real, Real> C;
-   public Function<Real, Real> E;
+   public P P;
+   public A A;
+   public B B;
+   public C C;
+   public E E;
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
       if (this.α == null) {
@@ -83,21 +83,25 @@ public class P implements Function<Integer, RealPolynomial> {
       A var10001 = this.A = new A();
       this.A.α = this.α;
       this.A.β = this.β;
+      this.A.G = this.G;
       this.A.initializeContextualFunctions();
       this.A = var10001;
       B var1 = this.B = new B();
       this.B.α = this.α;
       this.B.β = this.β;
+      this.B.G = this.G;
       this.B.initializeContextualFunctions();
       this.B = var1;
       C var2 = this.C = new C();
       this.C.α = this.α;
       this.C.β = this.β;
+      this.C.G = this.G;
       this.C.initializeContextualFunctions();
       this.C = var2;
       E var3 = this.E = new E();
       this.E.α = this.α;
       this.E.β = this.β;
+      this.E.G = this.G;
       this.E.initializeContextualFunctions();
       this.E = var3;
    }

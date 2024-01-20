@@ -32,7 +32,7 @@ public class JacobiPolynomialTest extends
           Integer n = new Integer())
     {
       n.set("3");
-
+     
       try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
       {
         assertEquals(45.0, result.eval(threeHalves.doubleValue()));
@@ -175,7 +175,6 @@ public class JacobiPolynomialTest extends
 
   public static void testP2()
   {
-    //assert false : "need to have function fields populated with new instances by calling the constructor in the constructor rather than injecting externally with reflection";
     try ( var seq = new JacobiPolynomialSequence(negHalf,
                                                  negHalf))
     {

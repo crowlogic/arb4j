@@ -70,6 +70,8 @@ public class JacobiPolynomialSequence implements
 
   final public static boolean                    verbose = false;
 
+  boolean dynamic = true;
+//  
 //  final public C                                 C       = new C();
 //
 //  final public F                                 F       = new F();

@@ -9,12 +9,19 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.Objects;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.Real;
 import arb.exceptions.UndefinedReferenceException;
-import arb.expressions.*;
+import arb.expressions.Compiler;
 import arb.expressions.Context;
+import arb.expressions.Expression;
+import arb.expressions.Parser;
+import arb.expressions.Reference;
+import arb.expressions.Variables;
 import arb.functions.Function;
 
 /**
@@ -60,6 +67,8 @@ import arb.functions.Function;
 public class Variable<D, R, F extends Function<D, R>> extends
                      Node<D, R, F>
 {
+  private static final String caveat = "not allowed to name a variable the same name as the function if its a recursive function";
+
   @Override
   public Class<?> type()
   {
@@ -71,7 +80,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
   public final Variables     variables;
 
   public Expression<D, R, F> expression;
+
   public boolean             isIndependent   = false;
+
   public boolean             isIndeterminant = false;
 
   public final boolean       isMultivariate;
@@ -84,8 +95,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     this.reference  = reference;
     this.variables  = expression.variables;
     isMultivariate  = reference.isMultivariate();
-    assert !(expression.recursive
-                  && reference.name.equals(expression.functionName)) : "not allowed to name a variable the same name as the function if its a recursive function";
+    assert !(expression.recursive && reference.name.equals(expression.functionName)) : caveat;
 
     if (variables == null || !variables.map.containsKey(reference.name))
     {
@@ -136,17 +146,10 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (isIndependent)
     {
-      // assert expression.domainType.equals(resultType) : format("TODO: type
-      // conversion expression.domainType = %s != resultType = %s\n",
-      // expression.domainType,
-      // resultType);
-
       Compiler.checkClassCast(loadInput(mv), expression.domainType);
     }
     else if (isIndeterminant)
     {
-      // initialize with the identity polynomial
-      // expression.reserveIntermediateVariable(mv, depth, type());
       Compiler.checkClassCast(Compiler.loadResult(mv, verbose), expression.rangeType);
 
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
