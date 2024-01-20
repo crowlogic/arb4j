@@ -482,7 +482,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void addCheckForNullField(MethodVisitor methodVisitor, String varName, boolean variable)
   {
-    
+
     Class<?> fieldClass = variable ? context.variables.map.get(varName).getClass() : context.functions.get(varName)
                                                                                                       .type();
     String   fieldDesc  = fieldClass.descriptorString();
@@ -549,7 +549,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     String typeDesc = "L" + fieldType + ";";
     Label  label    = new Label();
     mv.visitLabel(label);
-
 
     // Instantiate new object and assign to field
     mv.visitVarInsn(Opcodes.ALOAD, 0);
@@ -620,9 +619,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void injectVariableReferences(F f) throws NoSuchFieldException, IllegalAccessException
   {
-    if (referencedVariables != null)
+    if (context != null)
     {
-      referencedVariables.entrySet().forEach(entry ->
+
+      context.variables.map.entrySet().forEach(entry ->
       {
         try
         {
