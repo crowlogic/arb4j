@@ -483,7 +483,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     generateConditionalInitializater(methodVisitor);
 
-    addChecksForNullVariableReferences(methodVisitor, false);
+    addChecksForNullVariableReferences(methodVisitor, false, false);
 
     rootNode.generate(methodVisitor, rangeType);
 
@@ -516,13 +516,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
   }
 
-  public void addChecksForNullVariableReferences(MethodVisitor methodVisitor, boolean all)
+  public void addChecksForNullVariableReferences(MethodVisitor mv, boolean all, boolean that )
   {
     if (context != null)
     {
       for (var variable : all ? context.variables.map.keySet() : referencedVariables.keySet())
       {
-        addCheckForNullField(methodVisitor, variable, true);
+        mv.visitVarInsn(Opcodes.ALOAD, that ? 1 : 0);
+        addCheckForNullField(mv, variable, true);
       }
     }
   }
@@ -589,8 +590,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                        List<OrderedPair<String, Class<?>>> variables)
   {
     String typeDesc = "L" + fieldType + ";";
-    Label  label    = new Label();
-    mv.visitLabel(label);
+
 
     // Instantiate new object and assign to field
     mv.visitVarInsn(Opcodes.ALOAD, 0);
@@ -1277,7 +1277,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     generateCodeToThrowErrorIfAlreadyInitialized(methodVisitor);
 
-    addChecksForNullVariableReferences(methodVisitor, true);
+    addChecksForNullVariableReferences(methodVisitor, true, false);
 
     referencedFunctions.values().forEach(mapping ->
     {
@@ -1342,7 +1342,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     generateInvocationOfDefaultNoArgConstructor(methodVisitor, false);
 
-    addChecksForNullVariableReferences(methodVisitor, true);
+    addChecksForNullVariableReferences(methodVisitor, true, true);
 
     for (Variable<D, R, F> variable : referencedVariables.values())
     {

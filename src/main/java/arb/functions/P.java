@@ -8,29 +8,29 @@ public class P implements
                Function<Integer, RealPolynomial>
 {
   private boolean       isInitialized;
-  public Integer        const1;
-  public Integer        const2;
-  public Integer        const3;
+  public Integer        const1 = new Integer("0");
+  public Integer        const2 = new Integer("1");
+  public Integer        const3 = new Integer("2");
   public Real           α;
   public Real           β;
   public Real           G;
-  public Real           r1;
-  public Real           r2;
-  public RealPolynomial rp1;
-  public RealPolynomial rp2;
-  public RealPolynomial rp3;
-  public RealPolynomial rp4;
-  public Integer        i1;
-  public RealPolynomial rp5;
-  public RealPolynomial rp6;
-  public Real           r3;
-  public Real           r4;
-  public Integer        i2;
-  public RealPolynomial rp7;
-  public RealPolynomial rp8;
-  public RealPolynomial rp9;
-  public Real           r5;
-  public Real           r6;
+  public Real           r1     = new Real();
+  public Real           r2     = new Real();
+  public RealPolynomial rp1    = new RealPolynomial();
+  public RealPolynomial rp2    = new RealPolynomial();
+  public RealPolynomial rp3    = new RealPolynomial();
+  public RealPolynomial rp4    = new RealPolynomial();
+  public Integer        i1     = new Integer();
+  public RealPolynomial rp5    = new RealPolynomial();
+  public RealPolynomial rp6    = new RealPolynomial();
+  public Real           r3     = new Real();
+  public Real           r4     = new Real();
+  public Integer        i2     = new Integer();
+  public RealPolynomial rp7    = new RealPolynomial();
+  public RealPolynomial rp8    = new RealPolynomial();
+  public RealPolynomial rp9    = new RealPolynomial();
+  public Real           r5     = new Real();
+  public Real           r6     = new Real();
   public P              P;
   public A              A;
   public B              B;
@@ -55,81 +55,51 @@ public class P implements
     }
     else
     {
-      RealPolynomial var10000;
-      switch (((Integer) in).getSignedValue())
+      return switch (in.getSignedValue())
       {
-      case 0:
-        var10000 = ((RealPolynomial) result).set(this.const2);
-        break;
-      case 1:
-        var10000 = ((Real) this.C.evaluate(this.r1.set(this.const2),
-                                           order,
-                                           bits,
-                                           this.r2)).mul(((RealPolynomial) result).identity(), bits, this.rp1)
-                                                    .sub(this.β, bits, this.rp2)
-                                                    .add(this.α, bits, this.rp3)
-                                                    .div(this.const3, bits, (RealPolynomial) result);
-        break;
-      default:
-        var10000 = (RealPolynomial) this.A.evaluate((Integer) in, order, bits, this.rp4);
+      case 0 -> result.set(this.const2);
+      case 1 -> ((Real) this.C.evaluate(this.r1.set(this.const2), order, bits, this.r2))
+                                                                                        .mul(result.identity(),
+                                                                                             bits,
+                                                                                             this.rp1)
+                                                                                        .sub(this.β, bits, this.rp2)
+                                                                                        .add(this.α, bits, this.rp3)
+                                                                                        .div(this.const3,
+                                                                                             bits,
+                                                                                             result);
+      default ->
+      {
+        RealPolynomial var5 = (RealPolynomial) this.A.evaluate(in, order, bits, this.rp4);
         if (this.P == null)
         {
           this.P = new P(this);
         }
 
-        var10000 = var10000.mul((RealPolynomial) this.P.evaluate(((Integer) in).sub(this.const2, bits, this.i1),
-                                                                 order,
-                                                                 bits,
-                                                                 this.rp5),
-                                bits,
-                                this.rp6);
-        Real var10001 = (Real) this.B.evaluate(this.r3.set((Integer) in), order, bits, this.r4);
+        var5 = var5.mul((RealPolynomial) this.P.evaluate(in.sub(this.const2, bits, this.i1), order, bits, this.rp5),
+                        bits,
+                        this.rp6);
+        Real var10001 = (Real) this.B.evaluate(this.r3.set(in), order, bits, this.r4);
         if (this.P == null)
         {
           this.P = new P(this);
         }
 
-        var10000 = var10000.sub(var10001.mul((RealPolynomial) this.P.evaluate(((Integer) in).sub(this.const3,
-                                                                                                 bits,
-                                                                                                 this.i2),
-                                                                              order,
-                                                                              bits,
-                                                                              this.rp7),
-                                             bits,
-                                             this.rp8),
-                                bits,
-                                this.rp9)
-                           .div((Real) this.E.evaluate(this.r5.set((Integer) in), order, bits, this.r6),
-                                bits,
-                                (RealPolynomial) result);
+        yield var5.sub(var10001.mul((RealPolynomial) this.P.evaluate(in.sub(this.const3, bits, this.i2),
+                                                                     order,
+                                                                     bits,
+                                                                     this.rp7),
+                                    bits,
+                                    this.rp8),
+                       bits,
+                       this.rp9)
+                  .div((Real) this.E.evaluate(this.r5.set(in), order, bits, this.r6), bits, result);
       }
-
-      return var10000;
+      };
     }
   }
 
   public P()
   {
-    this.const1 = new Integer("0");
-    this.const2 = new Integer("1");
-    this.const3 = new Integer("2");
-    this.r1     = new Real();
-    this.r2     = new Real();
-    this.rp1    = new RealPolynomial();
-    this.rp2    = new RealPolynomial();
-    this.rp3    = new RealPolynomial();
-    this.rp4    = new RealPolynomial();
-    this.i1     = new Integer();
-    this.rp5    = new RealPolynomial();
-    this.rp6    = new RealPolynomial();
-    this.r3     = new Real();
-    this.r4     = new Real();
-    this.i2     = new Integer();
-    this.rp7    = new RealPolynomial();
-    this.rp8    = new RealPolynomial();
-    this.rp9    = new RealPolynomial();
-    this.r5     = new Real();
-    this.r6     = new Real();
   }
 
   public void initializeContext()
@@ -137,6 +107,18 @@ public class P implements
     if (this.isInitialized)
     {
       throw new AssertionError("Already initialized");
+    }
+    else if (this.α == null)
+    {
+      throw new AssertionError("α is null");
+    }
+    else if (this.β == null)
+    {
+      throw new AssertionError("β is null");
+    }
+    else if (this.G == null)
+    {
+      throw new AssertionError("G is null");
     }
     else
     {
@@ -171,8 +153,23 @@ public class P implements
   public P(P var1)
   {
     this();
-    this.α = var1.α;
-    this.β = var1.β;
+    if (var1.α == null)
+    {
+      throw new AssertionError("α is null");
+    }
+    else if (var1.β == null)
+    {
+      throw new AssertionError("β is null");
+    }
+    else if (var1.G == null)
+    {
+      throw new AssertionError("G is null");
+    }
+    else
+    {
+      this.α = var1.α;
+      this.β = var1.β;
+    }
   }
 
   public void close()

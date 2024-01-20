@@ -7,20 +7,30 @@ import arb.functions.real.RealFunction;
 public class B implements
                RealFunction
 {
-  public Integer              const1 = new Integer("1");
-  public Real                 α;
-  public Real                 β;
-  public Real                 G;
-  public Real                 r1     = new Real();
-  public Real                 r2     = new Real();
-  public Real                 r3     = new Real();
-  public Real                 r4     = new Real();
-  public Real                 r5     = new Real();
-  public Real                 r6     = new Real();
-  public Function<Real, Real> C;
+  private boolean isInitialized;
+  public Integer  const1 = new Integer("1");
+  public Real     α;
+  public Real     β;
+  public Real     G;
+  public Real     r1     = new Real();
+  public Real     r2     = new Real();
+  public Real     r3     = new Real();
+  public Real     r4     = new Real();
+  public Real     r5     = new Real();
+  public Real     r6     = new Real();
+  public A        A;
+  public B        B;
+  public C        C;
+  public E        E;
+  public F        F;
 
   public Real evaluate(Real in, int order, int bits, Real result)
   {
+    if (!this.isInitialized)
+    {
+      this.initializeContext();
+    }
+
     if (this.α == null)
     {
       throw new AssertionError("α is null");
@@ -28,10 +38,6 @@ public class B implements
     else if (this.β == null)
     {
       throw new AssertionError("β is null");
-    }
-    else if (this.C == null)
-    {
-      throw new AssertionError("C is null");
     }
     else
     {
@@ -42,14 +48,34 @@ public class B implements
     }
   }
 
-  public B()
-  {
-    this.initializeContext();
-  }
-
   public void initializeContext()
   {
-    this.C = new C();
+    if (this.isInitialized)
+    {
+      throw new AssertionError("Already initialized");
+    }
+    else if (this.α == null)
+    {
+      throw new AssertionError("α is null");
+    }
+    else if (this.β == null)
+    {
+      throw new AssertionError("β is null");
+    }
+    else if (this.G == null)
+    {
+      throw new AssertionError("G is null");
+    }
+    else
+    {
+      C var10001 = this.C = new C();
+      this.C.α = this.α;
+      this.C.β = this.β;
+      this.C.G = this.G;
+      this.C.initializeContext();
+      this.C             = var10001;
+      this.isInitialized = true;
+    }
   }
 
   public void close()

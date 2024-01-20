@@ -1,7 +1,13 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.RealConstants.*;
+import static arb.RealConstants.half;
+import static arb.RealConstants.negHalf;
+import static arb.RealConstants.one;
+import static arb.RealConstants.oneQuarter;
+import static arb.RealConstants.threeQuarters;
 import static java.lang.System.out;
+
+import java.lang.reflect.InvocationTargetException;
 
 import arb.Integer;
 import arb.Real;
@@ -32,7 +38,7 @@ public class JacobiPolynomialTest extends
           Integer n = new Integer())
     {
       n.set("3");
-     
+
       try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
       {
         assertEquals(45.0, result.eval(threeHalves.doubleValue()));
@@ -120,6 +126,7 @@ public class JacobiPolynomialTest extends
     {
       Integer won = new Integer("1");
 
+      seq.P.getClass().getMethod("initializeContext").invoke(seq.P);
       try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
       {
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
@@ -129,6 +136,10 @@ public class JacobiPolynomialTest extends
         assertEquals(RealConstants.one, valAtTwo);
 
       }
+    }
+    catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException e)
+    {
+      throw new RuntimeException(e.getMessage());
     }
 
   }
@@ -159,8 +170,7 @@ public class JacobiPolynomialTest extends
                                                  negHalf))
     {
       Integer won = new Integer("1");
-     
-      
+
       try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
       {
         // P(-half,-half)=ChebyshevType1 and when n=1 it equals x/2

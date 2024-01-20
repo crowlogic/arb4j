@@ -57,7 +57,6 @@ public class Compiler
   {
     Label notNullLabel = new Label();
 
-    mv.visitVarInsn(Opcodes.ALOAD, 0);
 
     mv.visitFieldInsn(Opcodes.GETFIELD, className, fieldName, fieldDesc);
 

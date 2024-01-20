@@ -26,15 +26,12 @@ public class F implements
       this.initializeContext();
     }
 
-    return ((Real) this.C.evaluate(this.r1.set(((Integer) in).sub(this.const1, bits, this.i1)),
+    return ((Real) this.C.evaluate(this.r1.set(in.sub(this.const1, bits, this.i1)),
                                    order,
                                    bits,
-                                   this.r2)).mul((Real) this.C.evaluate(this.r3.set((Integer) in),
-                                                                        order,
-                                                                        bits,
-                                                                        this.r4),
+                                   this.r2)).mul((Real) this.C.evaluate(this.r3.set(in), order, bits, this.r4),
                                                  bits,
-                                                 (Real) result);
+                                                 result);
   }
 
   public void initializeContext()
@@ -42,6 +39,18 @@ public class F implements
     if (this.isInitialized)
     {
       throw new AssertionError("Already initialized");
+    }
+    else if (this.α == null)
+    {
+      throw new AssertionError("α is null");
+    }
+    else if (this.β == null)
+    {
+      throw new AssertionError("β is null");
+    }
+    else if (this.G == null)
+    {
+      throw new AssertionError("G is null");
     }
     else
     {

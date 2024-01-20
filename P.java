@@ -4,6 +4,7 @@ import arb.RealPolynomial;
 import arb.functions.Function;
 
 public class P implements Function<Integer, RealPolynomial> {
+   private boolean isInitialized;
    public Integer const1 = new Integer("0");
    public Integer const2 = new Integer("1");
    public Integer const3 = new Integer("2");
@@ -32,20 +33,17 @@ public class P implements Function<Integer, RealPolynomial> {
    public B B;
    public C C;
    public E E;
+   public F F;
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
+      if (!this.isInitialized) {
+         this.initializeContext();
+      }
+
       if (this.α == null) {
          throw new AssertionError("α is null");
       } else if (this.β == null) {
          throw new AssertionError("β is null");
-      } else if (this.A == null) {
-         throw new AssertionError("A is null");
-      } else if (this.B == null) {
-         throw new AssertionError("B is null");
-      } else if (this.C == null) {
-         throw new AssertionError("C is null");
-      } else if (this.E == null) {
-         throw new AssertionError("E is null");
       } else {
          return switch(in.getSignedValue()) {
             case 0 -> result.set(this.const2);
@@ -76,40 +74,58 @@ public class P implements Function<Integer, RealPolynomial> {
    }
 
    public P() {
-      this.initializeContextualFunctions();
    }
 
-   public void initializeContextualFunctions() {
-      A var10001 = this.A = new A();
-      this.A.α = this.α;
-      this.A.β = this.β;
-      this.A.G = this.G;
-      this.A.initializeContextualFunctions();
-      this.A = var10001;
-      B var1 = this.B = new B();
-      this.B.α = this.α;
-      this.B.β = this.β;
-      this.B.G = this.G;
-      this.B.initializeContextualFunctions();
-      this.B = var1;
-      C var2 = this.C = new C();
-      this.C.α = this.α;
-      this.C.β = this.β;
-      this.C.G = this.G;
-      this.C.initializeContextualFunctions();
-      this.C = var2;
-      E var3 = this.E = new E();
-      this.E.α = this.α;
-      this.E.β = this.β;
-      this.E.G = this.G;
-      this.E.initializeContextualFunctions();
-      this.E = var3;
+   public void initializeContext() {
+      if (this.isInitialized) {
+         throw new AssertionError("Already initialized");
+      } else if (this.α == null) {
+         throw new AssertionError("α is null");
+      } else if (this.β == null) {
+         throw new AssertionError("β is null");
+      } else if (this.G == null) {
+         throw new AssertionError("G is null");
+      } else {
+         A var10001 = this.A = new A();
+         this.A.α = this.α;
+         this.A.β = this.β;
+         this.A.G = this.G;
+         this.A.initializeContext();
+         this.A = var10001;
+         B var1 = this.B = new B();
+         this.B.α = this.α;
+         this.B.β = this.β;
+         this.B.G = this.G;
+         this.B.initializeContext();
+         this.B = var1;
+         C var2 = this.C = new C();
+         this.C.α = this.α;
+         this.C.β = this.β;
+         this.C.G = this.G;
+         this.C.initializeContext();
+         this.C = var2;
+         E var3 = this.E = new E();
+         this.E.α = this.α;
+         this.E.β = this.β;
+         this.E.G = this.G;
+         this.E.initializeContext();
+         this.E = var3;
+         this.isInitialized = true;
+      }
    }
 
    public P(P var1) {
       this();
-      this.α = var1.α;
-      this.β = var1.β;
+      if (var1.α == null) {
+         throw new AssertionError("α is null");
+      } else if (var1.β == null) {
+         throw new AssertionError("β is null");
+      } else if (var1.G == null) {
+         throw new AssertionError("G is null");
+      } else {
+         this.α = var1.α;
+         this.β = var1.β;
+      }
    }
 
    public void close() {
