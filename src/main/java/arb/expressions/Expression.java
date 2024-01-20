@@ -14,10 +14,9 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.objectweb.asm.*;
 import org.objectweb.asm.util.CheckClassAdapter;
@@ -161,7 +160,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   protected byte[]                                instructions;
 
-  public boolean                                  verbose               = true;
+  public boolean                                  verbose               = false;
 
   Class<F>                                        compiledClass;
 
@@ -319,6 +318,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (context != null)
     {
+      out.println(this + " declaring variables " + context.variables.map + "\n\n");
       for (var variable : context.variables.map.entrySet())
       {
         classVisitor.visitField(ACC_PUBLIC,
@@ -327,7 +327,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                 null,
                                 null);
 
-        // variable.declareField(classVisitor);
       }
     }
   }
@@ -483,14 +482,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void addCheckForNullField(MethodVisitor methodVisitor, String varName, boolean variable)
   {
-    addNullCheckForField(methodVisitor,
-                         className,
-                         varName,
-                         variable ? context.variables.map.get(varName)
-                                                         .getClass()
-                                                         .descriptorString() : (context.functions.get(varName)
-                                                                                                 .type()
-                                                                                                 .descriptorString()));
+    
+    Class<?> fieldClass = variable ? context.variables.map.get(varName).getClass() : context.functions.get(varName)
+                                                                                                      .type();
+    String   fieldDesc  = fieldClass.descriptorString();
+    addNullCheckForField(methodVisitor, className, varName, fieldDesc);
   }
 
   public MethodVisitor declareLocalVariables(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
@@ -539,36 +535,44 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public static void instantiateAndInitialize(MethodVisitor mv,
-                                              String ownerClass,
-                                              String fieldType,
-                                              String fieldName,
-                                              FieldAssignment[] fieldAssignments)
+  public void instantiateAndInitialize(MethodVisitor mv,
+                                       String classType,
+                                       String fieldType,
+                                       String functionFieldName,
+                                       List<OrderedPair<String, Class<?>>> variables)
   {
+    out.format("\ninstantiateAndInitialize(classType=%s, fieldType=%s, functionFieldName=%s, variables=%s)\n\n",
+               classType,
+               fieldType,
+               functionFieldName,
+               variables);
     String typeDesc = "L" + fieldType + ";";
     Label  label    = new Label();
     mv.visitLabel(label);
+
 
     // Instantiate new object and assign to field
     mv.visitVarInsn(Opcodes.ALOAD, 0);
     mv.visitTypeInsn(Opcodes.NEW, fieldType);
     mv.visitInsn(Opcodes.DUP);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, fieldType, "<init>", "()V", false);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, ownerClass, fieldName, typeDesc);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, classType, functionFieldName, typeDesc);
 
     // Set fields in the new object
-    for (FieldAssignment assignment : fieldAssignments)
+    for (OrderedPair<String, Class<?>> assignment : variables)
     {
       mv.visitVarInsn(Opcodes.ALOAD, 0);
-      mv.visitFieldInsn(Opcodes.GETFIELD, ownerClass, fieldName, typeDesc);
+      mv.visitFieldInsn(Opcodes.GETFIELD, classType, functionFieldName, typeDesc);
       mv.visitVarInsn(Opcodes.ALOAD, 0);
-      mv.visitFieldInsn(Opcodes.GETFIELD, ownerClass, assignment.fieldName, assignment.fieldDescriptor);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, assignment.fieldName, assignment.fieldDescriptor);
+      String variableFieldName = assignment.getKey();
+      String variableFieldType = assignment.getValue().descriptorString();
+      mv.visitFieldInsn(Opcodes.GETFIELD, classType, variableFieldName, variableFieldType);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, variableFieldName, variableFieldType);
     }
 
     // Call initializeContextualFunctions
     mv.visitVarInsn(Opcodes.ALOAD, 0);
-    mv.visitFieldInsn(Opcodes.GETFIELD, ownerClass, fieldName, typeDesc);
+    mv.visitFieldInsn(Opcodes.GETFIELD, classType, functionFieldName, typeDesc);
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, fieldType, "initializeContextualFunctions", "()V", false);
   }
 
@@ -579,15 +583,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       instantiateFunctionReference(mv, mapping);
 
-      assert false : "TODO:... ";
-      FieldAssignment[] assignmentsForA = new FieldAssignment[]
-      { new FieldAssignment("α",
-                            "Larb/Real;"),
-        new FieldAssignment("β",
-                            "Larb/Real;") };
+      List<OrderedPair<String, Class<?>>> variableEntries = referencedVariables.entrySet()
+                                                                               .stream()
+                                                                               .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
+                                                                                                                               entry.getValue()
+                                                                                                                                    .type()))
+                                                                               .collect(Collectors.toList());
 
-      instantiateAndInitialize(mv, "arb/functions/P", "arb/functions/A", "A", assignmentsForA);
-      // Repeat for B, C, E, etc.
+      instantiateAndInitialize(mv, className, Type.getInternalName(mapping.type()), mapping.name, variableEntries);
 
     }
     else

@@ -36,8 +36,7 @@ public class OrderedPair<A, B>
     return String.format("OrderedPair[a=%s, b=%s]", a, b);
   }
 
-  public OrderedPair(A a,
-                     B b)
+  public OrderedPair(A a, B b)
   {
     super();
     this.a = a;
@@ -46,5 +45,15 @@ public class OrderedPair<A, B>
 
   public A a;
   public B b;
+
+  public A getKey()
+  {
+    return a;
+  }
+
+  public B getValue()
+  {
+    return b;
+  }
 
 }
