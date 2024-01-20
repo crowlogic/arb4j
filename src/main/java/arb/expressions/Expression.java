@@ -76,7 +76,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 {
   private static final String contextualFunctionInitializationMethod = "initializeContextualFunctions";
 
-  public static final String evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String  evaluationMethodDescriptor             = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
                                                                Context context,
@@ -429,6 +429,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitCode();
     methodVisitor.visitLabel(startLabel);
 
+    
     Node<D, R, F> rootNode = parseRootNode();
 
     if (position < expression.length())
@@ -439,6 +440,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           expression,
                                                           expression.length()));
     }
+
+    addChecksForNullVariableReferences(methodVisitor);
 
     rootNode.generate(methodVisitor, rangeType);
 
@@ -452,6 +455,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitEnd();
 
     return classVisitor;
+  }
+
+  public void addChecksForNullVariableReferences(MethodVisitor methodVisitor)
+  {
+    for (var variable : referencedVariables.keySet())
+    {
+      addNullCheckForField(methodVisitor,
+                           className,
+                           variable,
+                           context.variables.map.get(variable).getClass().descriptorString());
+    }
   }
 
   public MethodVisitor declareLocalVariables(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
@@ -1191,7 +1205,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     initializeIntermediateVariables(methodVisitor);
 
-    loadThisOntoStack(methodVisitor).visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, contextualFunctionInitializationMethod, "()V", false);
+    loadThisOntoStack(methodVisitor).visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                                     className,
+                                                     contextualFunctionInitializationMethod,
+                                                     "()V",
+                                                     false);
 
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(0, 0);
@@ -1201,7 +1219,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
-    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, contextualFunctionInitializationMethod, "()V", null, null);
+    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                           contextualFunctionInitializationMethod,
+                                                           "()V",
+                                                           null,
+                                                           null);
     try
     {
       methodVisitor.visitCode();

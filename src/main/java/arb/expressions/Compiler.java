@@ -53,6 +53,34 @@ public class Compiler
 {
   public static final String objectDesc = Type.getInternalName(Object.class);
 
+  public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
+  {
+    Label notNullLabel = new Label();
+
+    // Load 'this' onto the stack
+    mv.visitVarInsn(Opcodes.ALOAD, 0);
+
+    // Get the field value
+    mv.visitFieldInsn(Opcodes.GETFIELD, className, fieldName, fieldDesc);
+
+    // Check if the field value is null
+    mv.visitJumpInsn(Opcodes.IFNONNULL, notNullLabel);
+
+    // If null, throw AssertionError
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(AssertionError.class));
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitLdcInsn(fieldName + " is null");
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL,
+                       Type.getInternalName(AssertionError.class),
+                       "<init>",
+                       "(Ljava/lang/Object;)V",
+                       false);
+    mv.visitInsn(Opcodes.ATHROW);
+
+    // Label for not null case
+    mv.visitLabel(notNullLabel);
+  }
+
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
                                                                              Context context,
                                                                              Class<? extends D> domainClass,
