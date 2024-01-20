@@ -149,7 +149,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ArrayList<IntermediateVariable<D, R, F>> intermediateVariables = new ArrayList<>();
 
-  int                                             constantCount;
+  int                                             constantCount = 1;
 
   public ArrayList<LiteralConstant<D, R, F>>      literalConstants      = new ArrayList<>();
 
@@ -463,7 +463,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public String getNextConstantFieldName()
   {
 
-    return "_c" + constantCount++;
+    return "const" + constantCount++;
   }
 
   public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
