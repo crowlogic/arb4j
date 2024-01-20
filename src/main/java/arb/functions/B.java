@@ -44,10 +44,10 @@ public class B implements
 
   public B()
   {
-    this.initializeContextualFunctions();
+    this.initializeContext();
   }
 
-  public void initializeContextualFunctions()
+  public void initializeContext()
   {
     this.C = new C();
   }

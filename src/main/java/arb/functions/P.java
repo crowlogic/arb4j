@@ -140,11 +140,10 @@ public class P implements
     this.rp9    = new RealPolynomial();
     this.r5     = new Real();
     this.r6     = new Real();
-    assert false : "move the call to initializeContextualFunctions to a conditional call at the entrance to the evaluate method ";
-    this.initializeContextualFunctions();
+    this.initializeContext();
   }
 
-  public void initializeContextualFunctions()
+  public void initializeContext()
   {
     A var10001 = this.A = new A();
     this.A.α = this.α;
@@ -156,7 +155,7 @@ public class P implements
     this.B.α = this.α;
     this.B.β = this.β;
     this.B.G = this.G;
-    this.B.initializeContextualFunctions();
+    this.B.initializeContext();
     this.B = var1;
     C var2 = this.C = new C();
     this.C.α = this.α;
@@ -168,7 +167,7 @@ public class P implements
     this.E.α = this.α;
     this.E.β = this.β;
     this.E.G = this.G;
-    this.E.initializeContextualFunctions();
+    this.E.initializeContext();
     this.E = var3;
   }
 
@@ -203,4 +202,5 @@ public class P implements
     this.r6.close();
     this.P.close();
   }
+
 }

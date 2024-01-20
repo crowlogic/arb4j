@@ -44,10 +44,10 @@ public class E implements
 
   public E()
   {
-    this.initializeContextualFunctions();
+    this.initializeContext();
   }
 
-  public void initializeContextualFunctions()
+  public void initializeContext()
   {
     C var10001 = this.C = new C();
     this.C.initializeContext();
