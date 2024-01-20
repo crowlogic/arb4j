@@ -74,6 +74,8 @@ import arb.functions.Function;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
+  private static final String contextualFunctionInitializationMethod = "initializeContextualFunctions";
+
   public static final String evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
@@ -340,6 +342,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       declareFields(classVisitor);
 
       generateDefaultConstructor(classVisitor);
+
+      generateInitializationMethod(classVisitor);
 
       if (recursive)
       {
@@ -1187,12 +1191,31 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     initializeIntermediateVariables(methodVisitor);
 
-    assert false : "FIXME: move this to an init function so that it can be called *after* the contextual variables have been injected, then when the contained functions are instantiated they can copy the references to the now-initialized variables";
-    initializeRegisteredFunctions(methodVisitor);
+    loadThisOntoStack(methodVisitor).visitMethodInsn(Opcodes.INVOKEVIRTUAL, className, contextualFunctionInitializationMethod, "()V", false);
 
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(0, 0);
     methodVisitor.visitEnd();
+    return classVisitor;
+  }
+
+  public ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
+  {
+    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, contextualFunctionInitializationMethod, "()V", null, null);
+    try
+    {
+      methodVisitor.visitCode();
+
+      initializeRegisteredFunctions(methodVisitor);
+
+      methodVisitor.visitInsn(Opcodes.RETURN);
+      methodVisitor.visitMaxs(0, 0);
+    }
+    finally
+    {
+      methodVisitor.visitEnd();
+    }
+
     return classVisitor;
   }
 
