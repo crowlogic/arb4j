@@ -150,7 +150,7 @@ public class P implements
     this.A.α = this.α;
     this.A.β = this.β;
     this.A.G = this.G;
-    this.A.initializeContextualFunctions();
+    this.A.initializeContext();
     this.A = var10001;
     B var1 = this.B = new B();
     this.B.α = this.α;
@@ -162,7 +162,7 @@ public class P implements
     this.C.α = this.α;
     this.C.β = this.β;
     this.C.G = this.G;
-    this.C.initializeContextualFunctions();
+    this.C.initializeContext();
     this.C = var2;
     E var3 = this.E = new E();
     this.E.α = this.α;

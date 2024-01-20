@@ -39,13 +39,13 @@ public class F implements
 
   public F()
   {
-    this.initializeContextualFunctions();
+    this.initializeContext();
   }
 
-  public void initializeContextualFunctions()
+  public void initializeContext()
   {
     C var10001 = this.C = new C();
-    this.C.initializeContextualFunctions();
+    this.C.initializeContext();
     this.C = var10001;
   }
 

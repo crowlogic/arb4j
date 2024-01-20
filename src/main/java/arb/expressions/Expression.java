@@ -102,9 +102,9 @@ import arb.functions.Function;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
-  private static final String contextualFunctionInitializationMethod = "initializeContextualFunctions";
+  private static final String initializeContext          = "initializeContext";
 
-  public static final String  evaluationMethodDescriptor             = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String  evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
                                                                Context context,
@@ -600,10 +600,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     // Call initializeContextualFunctions
     mv.visitVarInsn(Opcodes.ALOAD, 0);
     mv.visitFieldInsn(Opcodes.GETFIELD, classType, functionFieldName, typeDesc);
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, fieldType, "initializeContextualFunctions", "()V", false);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, fieldType, initializeContext, "()V", false);
   }
 
-  public MethodVisitor initializeContextualFunction(MethodVisitor mv, Mapping<?, ?> mapping)
+  public MethodVisitor initializeContext(MethodVisitor mv, Mapping<?, ?> mapping)
   {
 
     if (mapping.func != null)
@@ -1259,13 +1259,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
                          functionClass);
   }
 
-  public MethodVisitor initializeContextualFunctions(MethodVisitor methodVisitor)
+  public MethodVisitor initializeContext(MethodVisitor methodVisitor)
   {
     referencedFunctions.values().forEach(mapping ->
     {
       if (mapping.func != null)
       {
-        initializeContextualFunction(methodVisitor, mapping);
+        initializeContext(methodVisitor, mapping);
       }
     });
 
@@ -1325,7 +1325,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     loadThisOntoStack(methodVisitor).visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                                      className,
-                                                     contextualFunctionInitializationMethod,
+                                                     initializeContext,
                                                      "()V",
                                                      false);
 
@@ -1337,16 +1337,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
-    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                           contextualFunctionInitializationMethod,
-                                                           "()V",
-                                                           null,
-                                                           null);
+    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, initializeContext, "()V", null, null);
     try
     {
       methodVisitor.visitCode();
 
-      initializeContextualFunctions(methodVisitor);
+      initializeContext(methodVisitor);
 
       methodVisitor.visitInsn(Opcodes.RETURN);
       methodVisitor.visitMaxs(0, 0);

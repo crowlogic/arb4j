@@ -50,7 +50,7 @@ public class E implements
   public void initializeContextualFunctions()
   {
     C var10001 = this.C = new C();
-    this.C.initializeContextualFunctions();
+    this.C.initializeContext();
     this.C = var10001;
   }
 

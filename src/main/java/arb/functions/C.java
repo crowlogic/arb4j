@@ -32,10 +32,10 @@ public class C implements
 
   public C()
   {
-    this.initializeContextualFunctions();
+    this.initializeContext();
   }
 
-  public void initializeContextualFunctions()
+  public void initializeContext()
   {
   }
 
