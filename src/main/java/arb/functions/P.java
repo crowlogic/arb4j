@@ -3,118 +3,122 @@ package arb.functions;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.functions.real.RealFunction;
 
 public class P implements
                Function<Integer, RealPolynomial>
 {
-  public Integer        const1;
-  public Integer        const2;
-  public Integer        const3;
-  public Real           α;
-  public Real           β;
-  public Real           G;
-  public Real           r1;
-  public Real           r2;
-  public RealPolynomial rp1;
-  public RealPolynomial rp2;
-  public RealPolynomial rp3;
-  public RealPolynomial rp4;
-  public Integer        i1;
-  public RealPolynomial rp5;
-  public RealPolynomial rp6;
-  public Real           r3;
-  public Real           r4;
-  public Integer        i2;
-  public RealPolynomial rp7;
-  public RealPolynomial rp8;
-  public RealPolynomial rp9;
-  public Real           r5;
-  public Real           r6;
-  public P              P;
-  public A              A;
-  public B              B;
-  public C              C;
-  public E              E;
+  public Integer                           const1;
+  public Integer                           const2;
+  public Integer                           const3;
+  public Real                              α;
+  public Real                              β;
+  public Real                              G;
+  public Real                              r1;
+  public Real                              r2;
+  public RealPolynomial                    rp1;
+  public RealPolynomial                    rp2;
+  public RealPolynomial                    rp3;
+  public RealPolynomial                    rp4;
+  public Integer                           i1;
+  public RealPolynomial                    rp5;
+  public RealPolynomial                    rp6;
+  public Real                              r3;
+  public Real                              r4;
+  public Integer                           i2;
+  public RealPolynomial                    rp7;
+  public RealPolynomial                    rp8;
+  public RealPolynomial                    rp9;
+  public Real                              r5;
+  public Real                              r6;
+  public Function<Integer, RealPolynomial> P;
+  public Function<Integer, RealPolynomial> A;
+  public Function<Real, Real>              B;
+  public Function<Real, Real>              C;
+  public Function<Real, Real>              E;
 
-  public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
+  public RealPolynomial evaluate(final Integer in, final int order, final int bits, final RealPolynomial result)
   {
     if (this.α == null)
     {
-      throw new AssertionError("α is null");
+      throw new AssertionError((Object) "α is null");
     }
-    else if (this.β == null)
+    if (this.β == null)
     {
-      throw new AssertionError("β is null");
+      throw new AssertionError((Object) "β is null");
     }
-    else if (this.A == null)
+    if (this.A == null)
     {
-      throw new AssertionError("A is null");
+      throw new AssertionError((Object) "A is null");
     }
-    else if (this.B == null)
+    if (this.B == null)
     {
-      throw new AssertionError("B is null");
+      throw new AssertionError((Object) "B is null");
     }
-    else if (this.C == null)
+    if (this.C == null)
     {
-      throw new AssertionError("C is null");
+      throw new AssertionError((Object) "C is null");
     }
-    else if (this.E == null)
+    if (this.E == null)
     {
-      throw new AssertionError("E is null");
+      throw new AssertionError((Object) "E is null");
     }
-    else
+    return switch (in.getSignedValue())
     {
-      RealPolynomial var10000;
-      switch (((Integer) in).getSignedValue())
-      {
-      case 0:
-        var10000 = ((RealPolynomial) result).set(this.const2);
-        break;
-      case 1:
-        var10000 = ((Real) this.C.evaluate(this.r1.set(this.const2),
-                                           order,
-                                           bits,
-                                           this.r2)).mul(((RealPolynomial) result).identity(), bits, this.rp1)
-                                                    .sub(this.β, bits, this.rp2)
-                                                    .add(this.α, bits, this.rp3)
-                                                    .div(this.const3, bits, (RealPolynomial) result);
-        break;
-      default:
-        var10000 = (RealPolynomial) this.A.evaluate((Integer) in, order, bits, this.rp4);
-        if (this.P == null)
-        {
-          this.P = new P(this);
-        }
-
-        var10000 = var10000.mul((RealPolynomial) this.P.evaluate(((Integer) in).sub(this.const2, bits, this.i1),
-                                                                 order,
-                                                                 bits,
-                                                                 this.rp5),
-                                bits,
-                                this.rp6);
-        Real var10001 = (Real) this.B.evaluate(this.r3.set((Integer) in), order, bits, this.r4);
-        if (this.P == null)
-        {
-          this.P = new P(this);
-        }
-
-        var10000 = var10000.sub(var10001.mul((RealPolynomial) this.P.evaluate(((Integer) in).sub(this.const3,
-                                                                                                 bits,
-                                                                                                 this.i2),
-                                                                              order,
+    case 0 -> result.set(this.const2);
+    case 1 -> ((Real) ((RealFunction) this.C).evaluate((Object) this.r1.set(this.const2),
+                                                       order,
+                                                       bits,
+                                                       (Object) this.r2)).mul(result.identity(), bits, this.rp1)
+                                                                         .sub(this.β, bits, this.rp2)
+                                                                         .add(this.α, bits, this.rp3)
+                                                                         .div(this.const3,
                                                                               bits,
-                                                                              this.rp7),
-                                             bits,
-                                             this.rp8),
-                                bits,
-                                this.rp9)
-                           .div((Real) this.E.evaluate(this.r5.set((Integer) in), order, bits, this.r6),
-                                bits,
-                                (RealPolynomial) result);
+                                                                              (RealPolynomial) result);
+    default ->
+    {
+      final RealPolynomial realPolynomial2 = (RealPolynomial) ((Function) this.A).evaluate((Object) in,
+                                                                                           order,
+                                                                                           bits,
+                                                                                           (Object) this.rp4);
+      if (this.P == null)
+      {
+        this.P = new P(this);
       }
-
-      return var10000;
+      final RealPolynomial mul  = realPolynomial2.mul((RealPolynomial) ((Function) this.P).evaluate((Object) in.sub(this.const2,
+                                                                                                                    bits,
+                                                                                                                    this.i1),
+                                                                                                    order,
+                                                                                                    bits,
+                                                                                                    (Object) this.rp5),
+                                                      bits,
+                                                      this.rp6);
+      final Real           real = (Real) ((RealFunction) this.B).evaluate((Object) this.r3.set((Integer) in),
+                                                                          order,
+                                                                          bits,
+                                                                          (Object) this.r4);
+      if (this.P == null)
+      {
+        this.P = new P(this);
+      }
+      yield mul.sub(real.mul((RealPolynomial) ((Function) this.P).evaluate((Object) in.sub(this.const3,
+                                                                                           bits,
+                                                                                           this.i2),
+                                                                           order,
+                                                                           bits,
+                                                                           (Object) this.rp7),
+                             bits,
+                             this.rp8),
+                    bits,
+                    this.rp9)
+               .div((Real) ((RealFunction) this.E).evaluate((Object) this.r5.set((Integer) in),
+                                                            order,
+                                                            bits,
+                                                            (Object) this.r6),
+                    bits,
+                    (RealPolynomial) result);
     }
+    };
   }
 
   public P()
@@ -144,29 +148,37 @@ public class P implements
 
   public void initializeContextualFunctions()
   {
+    final A a = new A();
     this.A   = new A();
     this.A.α = this.α;
     this.A.β = this.β;
     this.A.initializeContextualFunctions();
+    this.A = a;
+    final B b = new B();
     this.B   = new B();
     this.B.α = this.α;
     this.B.β = this.β;
     this.B.initializeContextualFunctions();
+    this.B = b;
+    final C c = new C();
     this.C   = new C();
     this.C.α = this.α;
     this.C.β = this.β;
     this.C.initializeContextualFunctions();
+    this.C = c;
+    final E e = new E();
     this.E   = new E();
     this.E.α = this.α;
     this.E.β = this.β;
     this.E.initializeContextualFunctions();
+    this.E = e;
   }
 
-  public P(P var1)
+  public P(final P p)
   {
     this();
-    this.α = var1.α;
-    this.β = var1.β;
+    this.α = p.α;
+    this.β = p.β;
   }
 
   public void close()

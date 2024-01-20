@@ -59,7 +59,7 @@ public final class Mapping<D, R>
 
   public Class<?> type()
   {
-    return func != null ? func.getClass() : functionInterface;
+    return func == null ? functionInterface : func.getClass();
   }
 
 }

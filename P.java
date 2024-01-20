@@ -80,10 +80,26 @@ public class P implements Function<Integer, RealPolynomial> {
    }
 
    public void initializeContextualFunctions() {
-      this.A = new A();
-      this.B = new B();
-      this.C = new C();
-      this.E = new E();
+      A var10001 = this.A = new A();
+      this.A.α = this.α;
+      this.A.β = this.β;
+      this.A.initializeContextualFunctions();
+      this.A = var10001;
+      B var1 = this.B = new B();
+      this.B.α = this.α;
+      this.B.β = this.β;
+      this.B.initializeContextualFunctions();
+      this.B = var1;
+      C var2 = this.C = new C();
+      this.C.α = this.α;
+      this.C.β = this.β;
+      this.C.initializeContextualFunctions();
+      this.C = var2;
+      E var3 = this.E = new E();
+      this.E.α = this.α;
+      this.E.β = this.β;
+      this.E.initializeContextualFunctions();
+      this.E = var3;
    }
 
    public P(P var1) {
