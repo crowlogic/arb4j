@@ -7,15 +7,22 @@ import arb.functions.real.RealFunction;
 public class C implements
                RealFunction
 {
-  public Integer const1 = new Integer("2");
-  public Real    α;
-  public Real    β;
-  public Real    G;
-  public Real    r1     = new Real();
-  public Real    r2     = new Real();
+  private boolean isInitialized;
+  public Integer  const1 = new Integer("2");
+  public Real     α;
+  public Real     β;
+  public Real     G;
+  public Real     r1     = new Real();
+  public Real     r2     = new Real();
+  public C        C;
 
   public Real evaluate(Real in, int order, int bits, Real result)
   {
+    if (!this.isInitialized)
+    {
+      this.initializeContext();
+    }
+
     if (this.α == null)
     {
       throw new AssertionError("α is null");
@@ -30,13 +37,16 @@ public class C implements
     }
   }
 
-  public C()
-  {
-    this.initializeContext();
-  }
-
   public void initializeContext()
   {
+    if (this.isInitialized)
+    {
+      throw new AssertionError("Already initialized");
+    }
+    else
+    {
+      this.isInitialized = true;
+    }
   }
 
   public void close()

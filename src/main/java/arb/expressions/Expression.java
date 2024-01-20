@@ -295,15 +295,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return cw;
   }
 
-  public void declareFields(ClassVisitor classVisitor)
+  public void declareFields(ClassVisitor cw)
   {
-    declareConstants(classVisitor);
+    cw.visitField(Opcodes.ACC_PRIVATE, "isInitialized", "Z", null, null);
 
-    declareVariables(classVisitor);
+    declareConstants(cw);
 
-    declareIntermediateVariables(classVisitor);
+    declareVariables(cw);
 
-    declareFunctionReferences(classVisitor);
+    declareIntermediateVariables(cw);
+
+    declareFunctionReferences(cw);
+
   }
 
   public ClassVisitor declareConstants(ClassVisitor classVisitor)
@@ -478,11 +481,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           expression.length()));
     }
 
-    addChecksForNullReferences(methodVisitor);
+    generateConditionalInitializater(methodVisitor);
+
+    addChecksForNullVariableReferences(methodVisitor);
 
     rootNode.generate(methodVisitor, rangeType);
 
     methodVisitor.visitInsn(Opcodes.ARETURN);
+
     methodVisitor.visitLabel(endLabel);
 
     declareLocalVariables(methodVisitor, startLabel, endLabel);
@@ -494,22 +500,32 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  public void addChecksForNullReferences(MethodVisitor methodVisitor)
+  private void generateConditionalInitializater(MethodVisitor methodVisitor)
+  {
+    // FIXME: dont bother generating the initializing code if there is nothing to
+    // initialize
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitFieldInsn(GETFIELD, className, "isInitialized", "Z");
+    Label alreadyInitialized = new Label();
+    methodVisitor.visitJumpInsn(Opcodes.IFNE, alreadyInitialized);
+
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, className, "initializeContext", "()V", false);
+
+    methodVisitor.visitLabel(alreadyInitialized);
+    methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+  }
+
+  public void addChecksForNullVariableReferences(MethodVisitor methodVisitor)
   {
     if (context != null)
     {
-      for (var variable : referencedVariables.keySet())
+      for (var variable : context.variables.map.keySet())
+
+      // for (var variable : referencedVariables.keySet())
       {
         addCheckForNullField(methodVisitor, variable, true);
       }
-    }
-    for (var variable : referencedFunctions.keySet())
-    {
-      if (!variable.equals(functionName))
-      {
-        addCheckForNullField(methodVisitor, variable, false);
-      }
-
     }
   }
 
@@ -603,7 +619,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, fieldType, initializeContext, "()V", false);
   }
 
-  public MethodVisitor initializeContext(MethodVisitor mv, Mapping<?, ?> mapping)
+  public MethodVisitor generateContextInitializer(MethodVisitor mv, Mapping<?, ?> mapping)
   {
 
     if (mapping.func != null)
@@ -689,6 +705,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         f = compiledClass.getDeclaredConstructor().newInstance();
       }
       injectVariableReferences(f);
+      compiledClass.getMethod(initializeContext).invoke(f);
       return instance;
     }
     catch (Exception e)
@@ -1259,17 +1276,51 @@ public class Expression<D, R, F extends Function<D, R>> implements
                          functionClass);
   }
 
-  public MethodVisitor initializeContext(MethodVisitor methodVisitor)
+  public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
   {
+    generateCodeToThrowErrorIfAlreadyInitialized(methodVisitor);
+
+
     referencedFunctions.values().forEach(mapping ->
     {
       if (mapping.func != null)
       {
-        initializeContext(methodVisitor, mapping);
+        generateContextInitializer(methodVisitor, mapping);
       }
     });
 
+    generateCodeToSetIsInitializedToTrue(methodVisitor);
+
     return methodVisitor;
+  }
+
+  private void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor methodVisitor)
+  {
+
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitFieldInsn(GETFIELD, className, "isInitialized", "Z");
+    Label alreadyInitializedLabel = new Label();
+    methodVisitor.visitJumpInsn(Opcodes.IFEQ, alreadyInitializedLabel);
+
+    methodVisitor.visitTypeInsn(Opcodes.NEW, "java/lang/AssertionError");
+    methodVisitor.visitInsn(Opcodes.DUP);
+    methodVisitor.visitLdcInsn("Already initialized");
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                  "java/lang/AssertionError",
+                                  "<init>",
+                                  "(Ljava/lang/Object;)V",
+                                  false);
+    methodVisitor.visitInsn(Opcodes.ATHROW);
+    methodVisitor.visitLabel(alreadyInitializedLabel);
+    methodVisitor.visitLineNumber(15, alreadyInitializedLabel);
+    methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+  }
+
+  private void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitInsn(Opcodes.ICONST_1);
+    methodVisitor.visitFieldInsn(PUTFIELD, className, "isInitialized", "Z");
   }
 
   public void generateInvocationOfDefaultNoArgConstructor(MethodVisitor methodVisitor, boolean object)
@@ -1292,6 +1343,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitCode();
 
     generateInvocationOfDefaultNoArgConstructor(methodVisitor, false);
+
+    addChecksForNullVariableReferences(methodVisitor);
 
     for (Variable<D, R, F> variable : referencedVariables.values())
     {
@@ -1323,12 +1376,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     initializeIntermediateVariables(methodVisitor);
 
-    loadThisOntoStack(methodVisitor).visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                                     className,
-                                                     initializeContext,
-                                                     "()V",
-                                                     false);
-
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(0, 0);
     methodVisitor.visitEnd();
@@ -1340,9 +1387,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, initializeContext, "()V", null, null);
     try
     {
+
       methodVisitor.visitCode();
 
-      initializeContext(methodVisitor);
+      generateContextInitializer(methodVisitor);
 
       methodVisitor.visitInsn(Opcodes.RETURN);
       methodVisitor.visitMaxs(0, 0);

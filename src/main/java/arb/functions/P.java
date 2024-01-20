@@ -7,6 +7,7 @@ import arb.RealPolynomial;
 public class P implements
                Function<Integer, RealPolynomial>
 {
+  private boolean       isInitialized;
   public Integer        const1;
   public Integer        const2;
   public Integer        const3;
@@ -39,6 +40,11 @@ public class P implements
 
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
+    if (!this.isInitialized)
+    {
+      this.initializeContext();
+    }
+
     if (this.α == null)
     {
       throw new AssertionError("α is null");
@@ -46,22 +52,6 @@ public class P implements
     else if (this.β == null)
     {
       throw new AssertionError("β is null");
-    }
-    else if (this.A == null)
-    {
-      throw new AssertionError("A is null");
-    }
-    else if (this.B == null)
-    {
-      throw new AssertionError("B is null");
-    }
-    else if (this.C == null)
-    {
-      throw new AssertionError("C is null");
-    }
-    else if (this.E == null)
-    {
-      throw new AssertionError("E is null");
     }
     else
     {
@@ -140,35 +130,42 @@ public class P implements
     this.rp9    = new RealPolynomial();
     this.r5     = new Real();
     this.r6     = new Real();
-    this.initializeContext();
   }
 
   public void initializeContext()
   {
-    A var10001 = this.A = new A();
-    this.A.α = this.α;
-    this.A.β = this.β;
-    this.A.G = this.G;
-    this.A.initializeContext();
-    this.A = var10001;
-    B var1 = this.B = new B();
-    this.B.α = this.α;
-    this.B.β = this.β;
-    this.B.G = this.G;
-    this.B.initializeContext();
-    this.B = var1;
-    C var2 = this.C = new C();
-    this.C.α = this.α;
-    this.C.β = this.β;
-    this.C.G = this.G;
-    this.C.initializeContext();
-    this.C = var2;
-    E var3 = this.E = new E();
-    this.E.α = this.α;
-    this.E.β = this.β;
-    this.E.G = this.G;
-    this.E.initializeContext();
-    this.E = var3;
+    if (this.isInitialized)
+    {
+      throw new AssertionError("Already initialized");
+    }
+    else
+    {
+      A var10001 = this.A = new A();
+      this.A.α = this.α;
+      this.A.β = this.β;
+      this.A.G = this.G;
+      this.A.initializeContext();
+      this.A = var10001;
+      B var1 = this.B = new B();
+      this.B.α = this.α;
+      this.B.β = this.β;
+      this.B.G = this.G;
+      this.B.initializeContext();
+      this.B = var1;
+      C var2 = this.C = new C();
+      this.C.α = this.α;
+      this.C.β = this.β;
+      this.C.G = this.G;
+      this.C.initializeContext();
+      this.C = var2;
+      E var3 = this.E = new E();
+      this.E.α = this.α;
+      this.E.β = this.β;
+      this.E.G = this.G;
+      this.E.initializeContext();
+      this.E             = var3;
+      this.isInitialized = true;
+    }
   }
 
   public P(P var1)
@@ -202,5 +199,4 @@ public class P implements
     this.r6.close();
     this.P.close();
   }
-
 }

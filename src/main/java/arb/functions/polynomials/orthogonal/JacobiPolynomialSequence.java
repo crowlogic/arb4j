@@ -59,8 +59,8 @@ public class JacobiPolynomialSequence implements
                                       AutoCloseable
 {
   public int                                     bits    = 128;
-  public Real                                    α       = new Real().setName("α");
-  public Real                                    β       = new Real().setName("β");
+  public final Real                              α       = new Real().setName("α");
+  public final Real                              β       = new Real().setName("β");
   final public Real                              G       = new Real().setName("G");
   final Variables                                vars    = new Variables(α,
                                                                          β,
@@ -70,7 +70,7 @@ public class JacobiPolynomialSequence implements
 
   final public static boolean                    verbose = false;
 
-  boolean dynamic = true;
+  boolean                                        dynamic = true;
 //  
 //  final public C                                 C       = new C();
 //
