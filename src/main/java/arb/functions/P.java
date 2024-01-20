@@ -39,20 +39,14 @@ public class P implements
   {
     return switch (in.getSignedValue())
     {
-    case 0 ->
-    {
-      yield result.set(this._c1);
-    }
-    case 1 ->
-    {
-      yield ((Real) this.C.evaluate(this.r1.set(this._c1), order, bits, this.r2))
-                                                                                 .mul(result.identity(),
-                                                                                      bits,
-                                                                                      this.rp1)
-                                                                                 .sub(this.β, bits, this.rp2)
-                                                                                 .add(this.α, bits, this.rp3)
-                                                                                 .div(this._c2, bits, result);
-    }
+    case 0 -> result.set(this._c1);
+    case 1 -> ((Real) this.C.evaluate(this.r1.set(this._c1), order, bits, this.r2))
+                                                                                   .mul(result.identity(),
+                                                                                        bits,
+                                                                                        this.rp1)
+                                                                                   .sub(this.β, bits, this.rp2)
+                                                                                   .add(this.α, bits, this.rp3)
+                                                                                   .div(this._c2, bits, result);
     default ->
     {
       RealPolynomial var5 = (RealPolynomial) this.A.evaluate(in, order, bits, this.rp4);
