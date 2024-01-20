@@ -149,7 +149,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ArrayList<IntermediateVariable<D, R, F>> intermediateVariables = new ArrayList<>();
 
-  int                                             constantCount = 1;
+  int                                             constantCount         = 1;
 
   public ArrayList<LiteralConstant<D, R, F>>      literalConstants      = new ArrayList<>();
 
@@ -297,8 +297,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareFunctionReference(ClassVisitor classVisitor, String name, Mapping<D, R> function)
   {
-    String descriptor = function.func == null ? format("L%s;", name) : function.func.getClass().descriptorString();
-
+    String descriptor            = function.func == null ? format("L%s;", name) : function.func.getClass()
+                                                                                               .descriptorString();
 
     String functionTypeSignature = getFunctionTypeSignature(function.domain, function.range);
 
@@ -413,8 +413,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws ExpressionCompilerException
   {
 
-    Label startLabel = new Label();
-    Label endLabel   = new Label();
+    Label         startLabel    = new Label();
+    Label         endLabel      = new Label();
 
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                            "evaluate",
@@ -452,7 +452,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor declareLocalVariables(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
-    //String objectClassDescriptor = Object.class.descriptorString();
+    // String objectClassDescriptor = Object.class.descriptorString();
     methodVisitor.visitLocalVariable("in", domainType.descriptorString(), null, startLabel, endLabel, 1);
     methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
     methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
@@ -1120,8 +1120,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                          functionName,
                          recursive,
                          className,
-                         functionClass
-                         );
+                         functionClass);
   }
 
   public MethodVisitor initializeRegisteredFunctions(MethodVisitor methodVisitor)
@@ -1188,6 +1187,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     initializeIntermediateVariables(methodVisitor);
 
+    assert false : "FIXME: move this to an init function so that it can be called *after* the contextual variables have been injected, then when the contained functions are instantiated they can copy the references to the now-initialized variables";
     initializeRegisteredFunctions(methodVisitor);
 
     methodVisitor.visitInsn(RETURN);
