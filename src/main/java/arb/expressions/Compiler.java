@@ -57,16 +57,12 @@ public class Compiler
   {
     Label notNullLabel = new Label();
 
-    // Load 'this' onto the stack
     mv.visitVarInsn(Opcodes.ALOAD, 0);
 
-    // Get the field value
     mv.visitFieldInsn(Opcodes.GETFIELD, className, fieldName, fieldDesc);
 
-    // Check if the field value is null
     mv.visitJumpInsn(Opcodes.IFNONNULL, notNullLabel);
 
-    // If null, throw AssertionError
     mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(AssertionError.class));
     mv.visitInsn(Opcodes.DUP);
     mv.visitLdcInsn(fieldName + " is null");
@@ -77,7 +73,6 @@ public class Compiler
                        false);
     mv.visitInsn(Opcodes.ATHROW);
 
-    // Label for not null case
     mv.visitLabel(notNullLabel);
   }
 

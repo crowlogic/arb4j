@@ -57,4 +57,9 @@ public final class Mapping<D, R>
 
   public Class<?>       range;
 
+  public Class<?> type()
+  {
+    return func != null ? func.getClass() : functionInterface;
+  }
+
 }

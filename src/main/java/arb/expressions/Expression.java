@@ -429,7 +429,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitCode();
     methodVisitor.visitLabel(startLabel);
 
-    
     Node<D, R, F> rootNode = parseRootNode();
 
     if (position < expression.length())
@@ -441,7 +440,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           expression.length()));
     }
 
-    addChecksForNullVariableReferences(methodVisitor);
+    addChecksForNullReferences(methodVisitor);
 
     rootNode.generate(methodVisitor, rangeType);
 
@@ -457,15 +456,32 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  public void addChecksForNullVariableReferences(MethodVisitor methodVisitor)
+  public void addChecksForNullReferences(MethodVisitor methodVisitor)
   {
     for (var variable : referencedVariables.keySet())
     {
-      addNullCheckForField(methodVisitor,
-                           className,
-                           variable,
-                           context.variables.map.get(variable).getClass().descriptorString());
+      addCheckForNullField(methodVisitor, variable, true);
     }
+    for (var variable : referencedFunctions.keySet())
+    {
+      if (!variable.equals(functionName))
+      {
+        addCheckForNullField(methodVisitor, variable, false);
+      }
+
+    }
+  }
+
+  public void addCheckForNullField(MethodVisitor methodVisitor, String varName, boolean variable)
+  {
+    addNullCheckForField(methodVisitor,
+                         className,
+                         varName,
+                         variable ? context.variables.map.get(varName)
+                                                         .getClass()
+                                                         .descriptorString() : (context.functions.get(varName)
+                                                                                                 .type()
+                                                                                                 .descriptorString()));
   }
 
   public MethodVisitor declareLocalVariables(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
