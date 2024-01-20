@@ -2,11 +2,22 @@ package arb.functions;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealConstants;
 import arb.RealPolynomial;
 
 public class P implements
                Function<Integer, RealPolynomial>
 {
+  public static void main( String args[] )
+  {
+    P p = new P();  
+    p.α = RealConstants.negHalf;
+    p.β = RealConstants.negHalf;
+
+    RealPolynomial p0 = p.evaluate(new Integer(0), 0,128, new RealPolynomial());
+    System.out.println( "p0=" + p0);
+  }
+  
   private boolean       isInitialized;
   public Integer        const1 = new Integer("0");
   public Integer        const2 = new Integer("1");

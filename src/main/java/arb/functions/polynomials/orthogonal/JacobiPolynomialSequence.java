@@ -122,6 +122,7 @@ public class JacobiPolynomialSequence implements
   public JacobiPolynomialSequence(Real a, Real b)
   {
     bits = Math.max(128, Math.max(a.bits(), b.bits()));
+    assert false : "define G as a no-arg function rather than a variable: https://github.com/crowlogic/arb4j/issues/293";
     a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
