@@ -1,5 +1,6 @@
 package arb.expressions;
 
+import static arb.expressions.Compiler.getFunctionTypeSignature;
 import static arb.expressions.Parser.expressionToUniqueClassname;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
@@ -147,7 +148,20 @@ public class Compiler
          ClassVisitor
          generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor classVisitor)
   {
-    classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC, className, null, objectDesc, new String[]
+    String          classSignature = null;
+    SignatureWriter sw = new SignatureWriter();
+
+//    // Interface Function<arb.Integer, arb.RealPolynomial>
+//    sw.visitInterface();
+//    sw.visitClassType(expression.functionClassInternalName);
+//    sw.visitTypeArgument('=').visitClassType(Type.getInternalName(expression.domainType));
+//    sw.visitEnd();
+//    sw.visitTypeArgument('=').visitClassType(Type.getInternalName(expression.rangeType));
+//    sw.visitEnd();
+//
+//    classSignature = sw.toString();
+//    out.println("Writing " + classSignature);
+    classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC, className, classSignature, objectDesc, new String[]
     { expression.functionClassInternalName });
     return classVisitor;
   }
@@ -361,7 +375,8 @@ public class Compiler
   public static void generateNewField(MethodVisitor mv,
                                       String fieldName,
                                       String ownerClassInternalName,
-                                      String fieldTypeInternalName,String genericFieldInternalName)
+                                      String fieldTypeInternalName,
+                                      String genericFieldInternalName)
   {
 //    System.out.format("generateNewField( fieldName=%s, ownerClassInternalName=%s, fieldTypeIntervalName=%s)\n",
 //                      fieldName,
