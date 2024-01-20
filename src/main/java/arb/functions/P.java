@@ -144,26 +144,22 @@ public class P implements
 
   public void initializeContextualFunctions()
   {
-    A var10001 = this.A = new A();
+    this.A   = new A();
     this.A.α = this.α;
     this.A.β = this.β;
     this.A.initializeContextualFunctions();
-    this.A = var10001;
-    B var1 = this.B = new B();
+    this.B   = new B();
     this.B.α = this.α;
     this.B.β = this.β;
     this.B.initializeContextualFunctions();
-    this.B = var1;
-    C var2 = this.C = new C();
+    this.C   = new C();
     this.C.α = this.α;
     this.C.β = this.β;
     this.C.initializeContextualFunctions();
-    this.C = var2;
-    E var3 = this.E = new E();
+    this.E   = new E();
     this.E.α = this.α;
     this.E.β = this.β;
     this.E.initializeContextualFunctions();
-    this.E = var3;
   }
 
   public P(P var1)
