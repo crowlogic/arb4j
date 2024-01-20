@@ -9,6 +9,7 @@ public class P implements Function<Integer, RealPolynomial> {
    public Integer const3 = new Integer("2");
    public Real α;
    public Real β;
+   public Real G;
    public Real r1 = new Real();
    public Real r2 = new Real();
    public RealPolynomial rp1 = new RealPolynomial();

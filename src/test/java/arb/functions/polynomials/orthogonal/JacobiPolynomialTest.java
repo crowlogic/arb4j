@@ -159,7 +159,8 @@ public class JacobiPolynomialTest extends
                                                  negHalf))
     {
       Integer won = new Integer("1");
-
+     
+      
       try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
       {
         // P(-half,-half)=ChebyshevType1 and when n=1 it equals x/2

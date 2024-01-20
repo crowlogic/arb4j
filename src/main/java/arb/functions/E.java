@@ -7,6 +7,9 @@ import arb.functions.real.RealFunction;
 public class E implements
                RealFunction
 {
+  public Real                 α;
+  public Real                 β;
+  public Real                 G;
   public Integer              _c0 = new Integer("2");
   public Integer              _c1 = new Integer("1");
   public Real                 r1  = new Real();
@@ -31,5 +34,11 @@ public class E implements
     r3.close();
     r4.close();
     r5.close();
+  }
+
+  public void initializeContextualFunctions()
+  {
+    // TODO Auto-generated method stub
+    
   }
 }

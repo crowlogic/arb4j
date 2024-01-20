@@ -161,7 +161,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   protected byte[]                                instructions;
 
-  public boolean                                  verbose               = false;
+  public boolean                                  verbose               = true;
 
   Class<F>                                        compiledClass;
 
@@ -271,7 +271,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     declareConstants(classVisitor);
 
-    declareReferencedVariables(classVisitor);
+    declareVariables(classVisitor);
 
     declareIntermediateVariables(classVisitor);
 
@@ -315,11 +315,20 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public void declareReferencedVariables(ClassVisitor classVisitor)
+  public void declareVariables(ClassVisitor classVisitor)
   {
-    for (Variable<D, R, F> variable : referencedVariables.values())
+    if (context != null)
     {
-      variable.declareField(classVisitor);
+      for (var variable : context.variables.map.entrySet())
+      {
+        classVisitor.visitField(ACC_PUBLIC,
+                                variable.getKey(),
+                                variable.getValue().getClass().descriptorString(),
+                                null,
+                                null);
+
+        // variable.declareField(classVisitor);
+      }
     }
   }
 
@@ -518,30 +527,92 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class);
   }
 
-  public MethodVisitor initializeRegisteredFunction(MethodVisitor mv, Mapping<?, ?> mapping)
+  public static class FieldAssignment
   {
-    mv.visitVarInsn(ALOAD, 0);
+    String fieldName;
+    String fieldDescriptor;
+
+    public FieldAssignment(String fieldName, String fieldDescriptor)
+    {
+      this.fieldName       = fieldName;
+      this.fieldDescriptor = fieldDescriptor;
+    }
+  }
+
+  public static void instantiateAndInitialize(MethodVisitor mv,
+                                              String ownerClass,
+                                              String fieldType,
+                                              String fieldName,
+                                              FieldAssignment[] fieldAssignments)
+  {
+    String typeDesc = "L" + fieldType + ";";
+    Label  label    = new Label();
+    mv.visitLabel(label);
+
+    // Instantiate new object and assign to field
+    mv.visitVarInsn(Opcodes.ALOAD, 0);
+    mv.visitTypeInsn(Opcodes.NEW, fieldType);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, fieldType, "<init>", "()V", false);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, ownerClass, fieldName, typeDesc);
+
+    // Set fields in the new object
+    for (FieldAssignment assignment : fieldAssignments)
+    {
+      mv.visitVarInsn(Opcodes.ALOAD, 0);
+      mv.visitFieldInsn(Opcodes.GETFIELD, ownerClass, fieldName, typeDesc);
+      mv.visitVarInsn(Opcodes.ALOAD, 0);
+      mv.visitFieldInsn(Opcodes.GETFIELD, ownerClass, assignment.fieldName, assignment.fieldDescriptor);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, assignment.fieldName, assignment.fieldDescriptor);
+    }
+
+    // Call initializeContextualFunctions
+    mv.visitVarInsn(Opcodes.ALOAD, 0);
+    mv.visitFieldInsn(Opcodes.GETFIELD, ownerClass, fieldName, typeDesc);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, fieldType, "initializeContextualFunctions", "()V", false);
+  }
+
+  public MethodVisitor initializeContextualFunction(MethodVisitor mv, Mapping<?, ?> mapping)
+  {
 
     if (mapping.func != null)
     {
-      mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(mapping.func.getClass()));
-      mv.visitInsn(Opcodes.DUP);
-      mv.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(mapping.func.getClass()), "<init>", "()V", false);
+      instantiateFunctionReference(mv, mapping);
+
+      assert false : "TODO:... ";
+      FieldAssignment[] assignmentsForA = new FieldAssignment[]
+      { new FieldAssignment("α",
+                            "Larb/Real;"),
+        new FieldAssignment("β",
+                            "Larb/Real;") };
+
+      instantiateAndInitialize(mv, "arb/functions/P", "arb/functions/A", "A", assignmentsForA);
+      // Repeat for B, C, E, etc.
+
     }
     else
+
     {
       mv.visitInsn(ACONST_NULL);
     }
 
     // boolean isInterface = mapping.functionInterface != null;
-    mv.visitFieldInsn(PUTFIELD,
-                      className,
-                      mapping.name,
-                      mapping.func == null ? format("%S",
-                                                    mapping.functionInterface.descriptorString()) : mapping.func.getClass()
-                                                                                                                .descriptorString());
+    mv.visitFieldInsn(PUTFIELD, className, mapping.name, mapping.func == null ?
+
+                                                                              format("%S",
+                                                                                     mapping.functionInterface.descriptorString()) : mapping.func.getClass()
+                                                                                                                                                 .descriptorString());
 
     return mv;
+  }
+
+  public void instantiateFunctionReference(MethodVisitor mv, Mapping<?, ?> mapping)
+  {
+    mv.visitVarInsn(ALOAD, 0);
+
+    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(mapping.func.getClass()));
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(mapping.func.getClass()), "<init>", "()V", false);
   }
 
   public void injectVariableReferences(F f) throws NoSuchFieldException, IllegalAccessException
@@ -1157,13 +1228,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
                          functionClass);
   }
 
-  public MethodVisitor initializeRegisteredFunctions(MethodVisitor methodVisitor)
+  public MethodVisitor initializeContextualFunctions(MethodVisitor methodVisitor)
   {
     referencedFunctions.values().forEach(mapping ->
     {
       if (mapping.func != null)
       {
-        initializeRegisteredFunction(methodVisitor, mapping);
+        initializeContextualFunction(methodVisitor, mapping);
       }
     });
 
@@ -1244,7 +1315,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       methodVisitor.visitCode();
 
-      initializeRegisteredFunctions(methodVisitor);
+      initializeContextualFunctions(methodVisitor);
 
       methodVisitor.visitInsn(Opcodes.RETURN);
       methodVisitor.visitMaxs(0, 0);
