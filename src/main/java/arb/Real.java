@@ -1368,7 +1368,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
   
   public String toString()
   {
-    return ( name == null ? "" : name + " " ) + toString(digits());
+    return ( name == null ? "" : name + "=" ) + toString(digits());
   }
 
   public String name;

@@ -1341,7 +1341,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
   
   public String toString()
   {
-    return ( name == null ? "" : name + " " ) + toString(digits());
+    return ( name == null ? "" : name + "=" ) + toString(digits());
   }
 
   public String name;
