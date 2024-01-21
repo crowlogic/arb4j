@@ -114,7 +114,7 @@ public class JacobiPolynomialTest extends
     try ( var seq = new JacobiPolynomialSequence(negHalf,
                                                  threeQuarters))
     {
-      assertEquals(-.3125, seq.G.doubleValue());
+      assertEquals(-.3125, seq.G.evaluate(null, 0, 128, new Real()).doubleValue());
     }
   }
 

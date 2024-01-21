@@ -61,10 +61,8 @@ public class JacobiPolynomialSequence implements
   public int                                     bits    = 128;
   public final Real                              α       = new Real().setName("α");
   public final Real                              β       = new Real().setName("β");
-  final public Real                              G       = new Real().setName("G");
   final Variables                                vars    = new Variables(α,
-                                                                         β,
-                                                                         G);
+                                                                         β);
 
   final Context                                  context = new Context(vars);
 
@@ -119,14 +117,13 @@ public class JacobiPolynomialSequence implements
                                                                             context,
                                                                             verbose);
 
+  final public Function<Void,Real> G = Function.express(Void.class, Real.class, "G", "α²-β²",context,verbose);
+  
   public JacobiPolynomialSequence(Real a, Real b)
   {
     bits = Math.max(128, Math.max(a.bits(), b.bits()));
-    assert false : "define G as a no-arg function rather than a variable: https://github.com/crowlogic/arb4j/issues/293";
-    a.pow(2, bits, α).sub(b.pow(2, bits, β), bits, G);
     this.α.set(a);
     this.β.set(b);
-
   }
 
   @Override
