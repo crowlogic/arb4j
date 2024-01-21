@@ -516,7 +516,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
   }
 
-  public void addChecksForNullVariableReferences(MethodVisitor mv, boolean all, boolean that )
+  public void addChecksForNullVariableReferences(MethodVisitor mv, boolean all, boolean that)
   {
     if (context != null)
     {
@@ -591,7 +591,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     String typeDesc = "L" + fieldType + ";";
 
-
     // Instantiate new object and assign to field
     mv.visitVarInsn(Opcodes.ALOAD, 0);
     mv.visitTypeInsn(Opcodes.NEW, fieldType);
@@ -641,10 +640,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     // boolean isInterface = mapping.functionInterface != null;
-    mv.visitFieldInsn(PUTFIELD, className, mapping.name, mapping.func == null ?
-                                                                              format("%S",
-                                                                                     mapping.functionInterface.descriptorString()) : mapping.func.getClass()
-                                                                                                                                                 .descriptorString());
+    mv.visitFieldInsn(PUTFIELD,
+                      className,
+                      mapping.name,
+                      mapping.func == null ? format("%S",
+                                                    mapping.functionInterface.descriptorString()) : mapping.func.getClass()
+                                                                                                                .descriptorString());
 
     return mv;
   }
@@ -662,14 +663,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (context != null)
     {
-
+      err.println("Injecting references for " + context.variables.map + " into " + f);
       context.variables.map.entrySet().forEach(entry ->
       {
         try
         {
           String variableName = entry.getKey();
           R      value        = variables.get(variableName);
-          setFieldValue(f, variableName, value);
+          setFieldValue(f, variableName, value, false);
         }
         catch (Exception e)
         {
@@ -702,7 +703,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         f = compiledClass.getDeclaredConstructor().newInstance();
       }
       injectVariableReferences(f);
-      
+
       return instance;
     }
     catch (Exception e)
@@ -791,10 +792,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
       node = resolveFunctionInvocationOrVariableReference(depth, startPos);
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
     }
-    else if (ch == ')')
-    {
-      assert false : "wack";
-    }
+//    else if (ch == ')')
+//    {
+//      node = new Void<D, R, F>(this,
+//                               startPos);
+//    }
 
     return node;
   }
@@ -1215,16 +1217,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * 
    * @param variableName
    * @param value
+   * @param overwrite    TODO
    * @throws NoSuchFieldException
    * @throws IllegalAccessException
    */
-  public void setFieldValue(F f, String variableName, Object value)
+  public void setFieldValue(F f, String variableName, Object value, boolean overwrite)
   {
     java.lang.reflect.Field field;
     try
     {
       field = compiledClass.getField(variableName);
+      if (overwrite || field.get(f) != null)
+      {
+        throw new RuntimeException("Tried to overwrite " + variableName + " in " + f);
+      }
       field.set(f, value);
+
     }
     catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
     {

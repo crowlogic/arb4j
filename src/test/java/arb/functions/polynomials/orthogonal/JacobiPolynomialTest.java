@@ -25,14 +25,15 @@ public class JacobiPolynomialTest extends
                                   TestCase
 {
 
-  public static final int bits = 128;
+  JacobiPolynomialSequence seq  = new JacobiPolynomialSequence(negHalf,
+                                                               negHalf);
+  public static final int  bits = 128;
 
-  public static final int N    = 3;
+  public static final int  N    = 3;
 
-  public static void testA()
+  public  void testA()
   {
-    try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                 negHalf);
+    try (
           Real threeHalves = new Real("1.5",
                                       128);
           Integer n = new Integer())
@@ -47,10 +48,8 @@ public class JacobiPolynomialTest extends
 
   }
 
-  public static void testE()
+  public void testE()
   {
-    try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                 negHalf))
     {
       try ( Real result = seq.E.evaluate(new Real("3",
                                                   128),
@@ -118,15 +117,15 @@ public class JacobiPolynomialTest extends
     }
   }
 
-  public static void testP()
+  public static void
+         testP() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException
   {
 
-    try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                 negHalf))
+    var seq = new JacobiPolynomialSequence(negHalf,
+                                           negHalf);
     {
       Integer won = new Integer("1");
 
-      seq.P.getClass().getMethod("initializeContext").invoke(seq.P);
       try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
       {
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
@@ -136,10 +135,6 @@ public class JacobiPolynomialTest extends
         assertEquals(RealConstants.one, valAtTwo);
 
       }
-    }
-    catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException e)
-    {
-      throw new RuntimeException(e.getMessage());
     }
 
   }
@@ -163,11 +158,10 @@ public class JacobiPolynomialTest extends
 
   }
 
-  public static void testP1()
+  public void testP1()
   {
 
-    try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                 negHalf))
+  
     {
       Integer won = new Integer("1");
 

@@ -1,5 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -10,7 +11,14 @@ import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.expressions.Variables;
+import arb.functions.A;
+import arb.functions.B;
+import arb.functions.C;
+import arb.functions.E;
+import arb.functions.F;
 import arb.functions.Function;
+import arb.functions.G;
+import arb.functions.P;
 import arb.functions.real.RealFunction;
 
 /**
@@ -69,18 +77,20 @@ public class JacobiPolynomialSequence implements
   final public static boolean                    verbose = false;
 
   boolean                                        dynamic = true;
-//  
-//  final public C                                 C       = new C();
-//
-//  final public F                                 F       = new F();
-//
-//  final public E                                 E       = new E();
-//
-//  final public P                                 P       = new P();
-//
-//  final public A                                 A       = new A();
-//  final public B                                 B       = new B();
-//  
+
+  final public C                                 aC      = new C();
+
+  final public F                                 aF      = new F();
+
+  final public E                                 aE      = new E();
+
+  final public P                                 aP      = new P();
+
+  final public A                                 aA      = new A();
+  final public B                                 aB      = new B();
+
+  final public G                                 aG      = new G();
+
   /**
    * The C function is called with n/2 by the E function therefore its expressed
    * as RealFunction, that is, a Function from ℝ to ℝ
@@ -96,7 +106,7 @@ public class JacobiPolynomialSequence implements
   final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
                                                                             RealPolynomial.class,
                                                                             "A",
-                                                                            "n➔(F(n)*x + G)*(C(n) - 1)/2",
+                                                                            "n➔(F(n)*x + G())*(C(n) - 1)/2",
                                                                             context,
                                                                             verbose);
 
@@ -117,13 +127,36 @@ public class JacobiPolynomialSequence implements
                                                                             context,
                                                                             verbose);
 
-  final public Function<Void,Real> G = Function.express(Void.class, Real.class, "G", "α²-β²",context,verbose);
-  
+  final public Function<Void, Real>              G       = Function.express(Void.class,
+                                                                            Real.class,
+                                                                            "G",
+                                                                            "α²-β²",
+                                                                            context,
+                                                                            verbose);
+
   public JacobiPolynomialSequence(Real a, Real b)
   {
     bits = Math.max(128, Math.max(a.bits(), b.bits()));
-    this.α.set(a);
-    this.β.set(b);
+    try
+    {
+      P.getClass().getField("α").set(P, aP.α = α.set(a));
+      P.getClass().getField("β").set(P, aP.β = β.set(b));
+      P.getClass().getMethod("initializeContext").invoke(P);
+    }
+    catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException
+                  | InvocationTargetException | NoSuchMethodException e)
+    {
+      throw new RuntimeException(e.getMessage(),
+                                 e);
+    }
+//    aP.β = β.set(b);
+//    aP.initializeContext();
+//    aA.initializeContext();
+//    aB.initializeContext();
+//    aC.initializeContext();
+//    aE.initializeContext();
+//    aF.initializeContext();
+//    aG.initializeContext();
   }
 
   @Override
@@ -160,7 +193,6 @@ public class JacobiPolynomialSequence implements
     α.close();
     β.close();
     domain.close();
-    G.close();
   }
 
 }

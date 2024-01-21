@@ -10,7 +10,6 @@ public class P implements Function<Integer, RealPolynomial> {
    public Integer const3 = new Integer("2");
    public Real α;
    public Real β;
-   public Real G;
    public Real r1 = new Real();
    public Real r2 = new Real();
    public RealPolynomial rp1 = new RealPolynomial();
@@ -83,31 +82,25 @@ public class P implements Function<Integer, RealPolynomial> {
          throw new AssertionError("α is null");
       } else if (this.β == null) {
          throw new AssertionError("β is null");
-      } else if (this.G == null) {
-         throw new AssertionError("G is null");
       } else {
          A var10001 = this.A = new A();
          this.A.α = this.α;
          this.A.β = this.β;
-         this.A.G = this.G;
          this.A.initializeContext();
          this.A = var10001;
          B var1 = this.B = new B();
          this.B.α = this.α;
          this.B.β = this.β;
-         this.B.G = this.G;
          this.B.initializeContext();
          this.B = var1;
          C var2 = this.C = new C();
          this.C.α = this.α;
          this.C.β = this.β;
-         this.C.G = this.G;
          this.C.initializeContext();
          this.C = var2;
          E var3 = this.E = new E();
          this.E.α = this.α;
          this.E.β = this.β;
-         this.E.G = this.G;
          this.E.initializeContext();
          this.E = var3;
          this.isInitialized = true;
@@ -120,8 +113,6 @@ public class P implements Function<Integer, RealPolynomial> {
          throw new AssertionError("α is null");
       } else if (var1.β == null) {
          throw new AssertionError("β is null");
-      } else if (var1.G == null) {
-         throw new AssertionError("G is null");
       } else {
          this.α = var1.α;
          this.β = var1.β;

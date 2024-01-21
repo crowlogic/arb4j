@@ -231,6 +231,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       return RealPolynomial.class;
 
     }
+    assert Integer.class.equals( arb.Integer.class ) : "you forgot to import arb.Integer";
     assert false : String.format("TODO: handle resultant type for left=%s and right=%s in %s",
                                  left.type(),
                                  right.type(),
