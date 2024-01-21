@@ -11,9 +11,9 @@ import arb.functions.Function;
 
 /**
  * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
+ * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
+ * TeXmacs formatted versions of the same document respectively.
  */
 public abstract class UnaryOperation<D, R, F extends Function<D,R>>
                                     extends
@@ -83,12 +83,6 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
     {
       if (arg.isReusable())
       {
-        if (verbose)
-        {
-          err.println("\nPreparing stack to reuse its argument " + arg.toString(-1) + "\n");
-          err.flush();
-        }
-  
         arg.prepareStackForReuse(methodVisitor);
       }
       else
