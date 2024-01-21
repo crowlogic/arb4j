@@ -663,7 +663,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (context != null)
     {
-      err.println("Injecting references for " + context.variables.map + " into " + f);
+      err.println("Injecting references " + context.variables.map.values() + " into " + f);
       context.variables.map.entrySet().forEach(entry ->
       {
         try

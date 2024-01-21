@@ -8,16 +8,18 @@ import arb.RealPolynomial;
 public class P implements
                Function<Integer, RealPolynomial>
 {
-  public static void main( String args[] )
+  public static void main(String args[])
   {
-    P p = new P();  
-    p.α = RealConstants.negHalf;
-    p.β = RealConstants.negHalf;
+    try ( P p = new P())
+    {
+      p.α = RealConstants.negHalf;
+      p.β = RealConstants.negHalf;
 
-    RealPolynomial p0 = p.evaluate(new Integer(0), 0,128, new RealPolynomial());
-    System.out.println( "p0=" + p0);
+      RealPolynomial p0 = p.evaluate(new Integer(0), 0, 128, new RealPolynomial());
+      System.out.println("p0=" + p0);
+    }
   }
-  
+
   private boolean       isInitialized;
   public Integer        const1 = new Integer("0");
   public Integer        const2 = new Integer("1");
@@ -51,16 +53,16 @@ public class P implements
 
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initializeContext();
+      initializeContext();
     }
 
-    if (this.α == null)
+    if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
@@ -68,42 +70,25 @@ public class P implements
     {
       return switch (in.getSignedValue())
       {
-      case 0 -> result.set(this.const2);
-      case 1 -> ((Real) this.C.evaluate(this.r1.set(this.const2), order, bits, this.r2))
-                                                                                        .mul(result.identity(),
-                                                                                             bits,
-                                                                                             this.rp1)
-                                                                                        .sub(this.β, bits, this.rp2)
-                                                                                        .add(this.α, bits, this.rp3)
-                                                                                        .div(this.const3,
-                                                                                             bits,
-                                                                                             result);
+      case 0 -> result.set(const2);
+      case 1 -> C.evaluate(r1.set(const2), order, bits, r2)
+                 .mul(result.identity(), bits, rp1)
+                 .sub(β, bits, rp2)
+                 .add(α, bits, rp3)
+                 .div(const3, bits, result);
       default ->
       {
-        RealPolynomial var5 = (RealPolynomial) this.A.evaluate(in, order, bits, this.rp4);
-        if (this.P == null)
+        RealPolynomial var5 = A.evaluate(in, order, bits, rp4);
+        if (P == null)
         {
-          this.P = new P(this);
+          P = new P(this);
         }
 
-        var5 = var5.mul((RealPolynomial) this.P.evaluate(in.sub(this.const2, bits, this.i1), order, bits, this.rp5),
-                        bits,
-                        this.rp6);
-        Real var10001 = (Real) this.B.evaluate(this.r3.set(in), order, bits, this.r4);
-        if (this.P == null)
-        {
-          this.P = new P(this);
-        }
+        var5 = var5.mul(P.evaluate(in.sub(const2, bits, i1), order, bits, rp5), bits, rp6);
+        Real var10001 = B.evaluate(r3.set(in), order, bits, r4);
 
-        yield var5.sub(var10001.mul((RealPolynomial) this.P.evaluate(in.sub(this.const3, bits, this.i2),
-                                                                     order,
-                                                                     bits,
-                                                                     this.rp7),
-                                    bits,
-                                    this.rp8),
-                       bits,
-                       this.rp9)
-                  .div((Real) this.E.evaluate(this.r5.set(in), order, bits, this.r6), bits, result);
+        yield var5.sub(var10001.mul(P.evaluate(in.sub(const3, bits, i2), order, bits, rp7), bits, rp8), bits, rp9)
+                  .div(E.evaluate(r5.set(in), order, bits, r6), bits, result);
       }
       };
     }
@@ -115,49 +100,49 @@ public class P implements
 
   public void initializeContext()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
-    else if (this.G == null)
+    else if (G == null)
     {
       throw new AssertionError("G is null");
     }
     else
     {
-      A var10001 = this.A = new A();
-      this.A.α = this.α;
-      this.A.β = this.β;
-      this.A.G = this.G;
-      this.A.initializeContext();
-      this.A = var10001;
-      B var1 = this.B = new B();
-      this.B.α = this.α;
-      this.B.β = this.β;
-      this.B.G = this.G;
-      this.B.initializeContext();
-      this.B = var1;
-      C var2 = this.C = new C();
-      this.C.α = this.α;
-      this.C.β = this.β;
-      this.C.G = this.G;
-      this.C.initializeContext();
-      this.C = var2;
-      E var3 = this.E = new E();
-      this.E.α = this.α;
-      this.E.β = this.β;
-      this.E.G = this.G;
-      this.E.initializeContext();
-      this.E             = var3;
-      this.isInitialized = true;
+      A var10001 = A = new A();
+      A.α = α;
+      A.β = β;
+      A.G = G;
+      A.initializeContext();
+      A = var10001;
+      B var1 = B = new B();
+      B.α = α;
+      B.β = β;
+      B.G = G;
+      B.initializeContext();
+      B = var1;
+      C var2 = C = new C();
+      C.α = α;
+      C.β = β;
+      C.G = G;
+      C.initializeContext();
+      C = var2;
+      E var3 = E = new E();
+      E.α = α;
+      E.β = β;
+      E.G = G;
+      E.initializeContext();
+      E             = var3;
+      isInitialized = true;
     }
   }
 
@@ -178,33 +163,33 @@ public class P implements
     }
     else
     {
-      this.α = var1.α;
-      this.β = var1.β;
+      α = var1.α;
+      β = var1.β;
     }
   }
 
   public void close()
   {
-    this.const1.close();
-    this.const2.close();
-    this.const3.close();
-    this.r1.close();
-    this.r2.close();
-    this.rp1.close();
-    this.rp2.close();
-    this.rp3.close();
-    this.rp4.close();
-    this.i1.close();
-    this.rp5.close();
-    this.rp6.close();
-    this.r3.close();
-    this.r4.close();
-    this.i2.close();
-    this.rp7.close();
-    this.rp8.close();
-    this.rp9.close();
-    this.r5.close();
-    this.r6.close();
-    this.P.close();
+    const1.close();
+    const2.close();
+    const3.close();
+    r1.close();
+    r2.close();
+    rp1.close();
+    rp2.close();
+    rp3.close();
+    rp4.close();
+    i1.close();
+    rp5.close();
+    rp6.close();
+    r3.close();
+    r4.close();
+    i2.close();
+    rp7.close();
+    rp8.close();
+    rp9.close();
+    r5.close();
+    r6.close();
+    P.close();
   }
 }

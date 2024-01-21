@@ -30,7 +30,7 @@ import arb.functions.real.RealFunction;
  *  
  *  F(n) = C(n-1) ⋅ C(n)
  *  
- *  G = α² - β²
+ *  G() = α² - β²
  *  
  *  A(n, x) = (F(n) ⋅ x + G) ⋅ ((C(n) - 1) / 2)
  *  
@@ -103,6 +103,14 @@ public class JacobiPolynomialSequence implements
                                                                             "n➔C(n-1)*C(n)",
                                                                             context,
                                                                             verbose);
+
+  final public Function<Void, Real>              G       = Function.express(Void.class,
+                                                                            Real.class,
+                                                                            "G",
+                                                                            "α²-β²",
+                                                                            context,
+                                                                            verbose);
+  
   final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
                                                                             RealPolynomial.class,
                                                                             "A",
@@ -124,13 +132,6 @@ public class JacobiPolynomialSequence implements
                                                                             RealPolynomial.class,
                                                                             "P",
                                                                             "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
-                                                                            context,
-                                                                            verbose);
-
-  final public Function<Void, Real>              G       = Function.express(Void.class,
-                                                                            Real.class,
-                                                                            "G",
-                                                                            "α²-β²",
                                                                             context,
                                                                             verbose);
 
