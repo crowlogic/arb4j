@@ -91,7 +91,7 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
    *         {@link RealMatrix}, {@link ComplexMatrix}, {@link ComplexPolynomial},
    *         or {@link Integer}
    */
-  public abstract Class<?> type();
+  public abstract <C> Class<? extends C> type();
 
 
 

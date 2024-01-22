@@ -13,7 +13,6 @@ import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACONST_NULL;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.GETFIELD;
 import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
@@ -834,26 +833,26 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     while (true)
     {
-//      if (node == null)
-//      {
-//        node = new LiteralConstant<>(this,
-//                                     "0",
-//                                     depth);
-//      }
+      if (node == null)
+      {
+        node = new LiteralConstant<>(this,
+                                     "0",
+                                     depth);
+      }
 
       if (parse(depth, '+'))
       {
         node = new Addition<>(this,
-                         node,
-                         parseSecond(depth),
-                         depth);
+                              node,
+                              parseSecond(depth),
+                              depth);
       }
       else if (parse(depth, '-'))
       {
         node = new Subtraction<>(this,
-                              node,
-                              parseSecond(depth),
-                              depth);
+                                 node,
+                                 parseSecond(depth),
+                                 depth);
       }
       else
       {
@@ -866,7 +865,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (verboseParser)
     {
-      err.format("parseLast(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
+      err.format("parseThird(depth=%d): ch=%c position=%d\n", depth, ch, this.position);
       err.flush();
     }
 
@@ -997,17 +996,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (parse(depth, '*', '×'))
       {
         node = new Multiplication<>(this,
-                              node,
-                              parseThird(depth),
-                              depth);
+                                    node,
+                                    parseThird(depth),
+                                    depth);
 
       }
       else if (parse(depth, '/', '÷'))
       {
         node = new Division<>(this,
-                            node,
-                            parseThird(depth),
-                            depth);
+                              node,
+                              parseThird(depth),
+                              depth);
       }
       else
       {

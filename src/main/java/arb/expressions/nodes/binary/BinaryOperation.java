@@ -12,8 +12,10 @@ import org.objectweb.asm.Type;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
@@ -26,7 +28,7 @@ import arb.functions.Function;
 public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                      Node<D, R, F>
 {
-  
+
   @Override
   public String toString()
   {
@@ -38,7 +40,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   }
 
   public String toString(int depth)
-  {    
+  {
     return toString();
   }
 
@@ -83,6 +85,22 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     this.operation = operation;
     this.left      = left;
     this.depth     = depth;
+    assert right != null : "the right-hand-side of a binary operator should never be null";
+    if (left == null)
+    {
+      Class<? extends Object> rhsType = right.type();
+      if (Integer.class.equals(rhsType) || Real.class.equals(rhsType))
+      {
+        left = new LiteralConstant<>(expression,
+                                     Real.class.equals(rhsType) ? "0.0" : "0",
+                                     depth + 1);
+      }
+      else
+      {
+        throw new ExpressionCompilerException("Unhandled fill-in of left-hand-side of binary "
+                      + "operation when the right hand side is of type " + right.type() + ", this is where -x is translated to 0-x. that is what is meant by fill-in");
+      }
+    }
     assert left != null && right != null : "one or more of the operands to this were missing: " + this
                   + " set 0 value based on type here";
   }

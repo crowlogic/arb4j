@@ -62,14 +62,14 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
 {
 
-  public String        functionName;
-  public boolean       contextual                      = false;
+  public String                functionName;
+  public boolean               contextual                      = false;
   public FunctionMapping<D, R> mapping;
 
-  HashSet<String>      integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
+  HashSet<String>              integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
   { "sqrt", "tanh", "log" }));
 
-  Class<?>             targetResultType;
+  Class<?>                     targetResultType;
 
   @SuppressWarnings("unchecked")
   public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument, int depth)
@@ -207,11 +207,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    boolean       verbose     = expression.verbose;
-    Class<?>      type        = type();
+    boolean               verbose     = expression.verbose;
+    Class<?>              type        = type();
     FunctionMapping<D, R> mapping     = expression.context.functions.get(functionName);
-    F             func        = (F) mapping.func;
-    boolean       isRecursive = expression.recursive && functionName.equals(expression.functionName);
+    F                     func        = (F) mapping.func;
+    boolean               isRecursive = expression.recursive && functionName.equals(expression.functionName);
     if (isRecursive)
     {
       conditionallyInstantiate(methodVisitor,
@@ -256,10 +256,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
     Class<?> typeAfter = isVoid ? Void.class : arg.type();
 
-    assert typeBefore.equals(typeAfter) : String.format("%s: typeBefore=%s typeAfter=%s\n",
-                                                        this,
-                                                        typeBefore,
-                                                        typeAfter);
+    assert typeBefore.equals(typeAfter)
+                  || isVoid : String.format("%s: typeBefore=%s typeAfter=%s\n", this, typeBefore, typeAfter);
 
     if (needsArgTypeConversion)
     {
