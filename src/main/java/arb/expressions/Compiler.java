@@ -2,14 +2,37 @@ package arb.expressions;
 
 import static arb.expressions.Parser.expressionToUniqueClassname;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_SUPER;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.DUP2_X1;
+import static org.objectweb.asm.Opcodes.DUP_X1;
+import static org.objectweb.asm.Opcodes.DUP_X2;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.POP2;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.SWAP;
+import static org.objectweb.asm.Opcodes.V21;
+import static org.objectweb.asm.Opcodes.V_PREVIEW;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureVisitor;
 import org.objectweb.asm.signature.SignatureWriter;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexMatrix;
+import arb.ComplexPolynomial;
+import arb.Field;
 import arb.Integer;
+import arb.Real;
+import arb.RealMatrix;
+import arb.RealPolynomial;
 import arb.functions.Function;
 
 /**
@@ -56,7 +79,6 @@ public class Compiler
   public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
   {
     Label notNullLabel = new Label();
-
 
     mv.visitFieldInsn(Opcodes.GETFIELD, className, fieldName, fieldDesc);
 
@@ -315,8 +337,8 @@ public class Compiler
    *
    * SWAP: Swaps the top two operand stack values. (L, R, I) -> (L, I, R)
    *
-   * DUP_X1: Duplicates the top operand stack value and inserts it beneath the
-   * next-to-topmost value: (L, I, R) -> (L, R, I, R)
+   * DUP_X1: Duplicates the top(rightmost) operand stack value and inserts it
+   * beneath the next-to-top value: (L, I, R) -> (L, R, I, R)
    * 
    * @param methodVisitor The {@link MethodVisitor} to which instructions to
    *                      transform the stack are emitted
@@ -332,13 +354,8 @@ public class Compiler
 
   public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> inType, Class<?> outType, boolean verbose)
   {
-    if (verbose)
-    {
-      out.format("\ninvokeSetMethod( outType=%s, inType=%s, verbose=%s )\n\n", outType, inType, verbose);
-      out.flush();
-    }
     assert !outType.getClass().equals(Void.class) : "invokeSetMethod shouldnt be called for Void type";
-    
+
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(outType),
                        "set",
@@ -380,36 +397,39 @@ public class Compiler
 
   public static String getIntermediateVariablePrefix(Class<?> type)
   {
-    String prefix = "l";
     if (type.equals(Real.class))
     {
-      prefix = "r";
+      return "ℝ";
     }
     else if (type.equals(Integer.class))
     {
-      prefix = "i";
+      return "ℤ";
     }
     else if (type.equals(RealPolynomial.class))
     {
-      prefix = "rp";
+      return "𝕽";
     }
     else if (type.equals(ComplexPolynomial.class))
     {
-      prefix = "cp";
+      return "𝕮";
     }
     else if (type.equals(Complex.class))
     {
-      prefix = "c";
+      return "ℂ";
     }
     else if (type.equals(RealMatrix.class))
     {
-      prefix = "rm";
+
+      return "𝕽ᵐˣⁿ";
     }
     else if (type.equals(ComplexMatrix.class))
     {
-      prefix = "cm";
+      return "𝕮ᵐˣⁿ";
     }
-    return prefix;
+    else
+    {
+      throw new RuntimeException("unrecognized type " + type);
+    }
   }
 
   public static void generateNewField(MethodVisitor mv,

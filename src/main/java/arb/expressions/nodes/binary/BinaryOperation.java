@@ -1,9 +1,12 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.loadBits;
+import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
+import static arb.expressions.Compiler.prepareStackForReusingRightSide;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.Integer;
@@ -23,19 +26,19 @@ import arb.functions.Function;
 public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                      Node<D, R, F>
 {
-
+  
   @Override
   public String toString()
   {
     return String.format("BinaryOperation[left=%s, right=%s, operation=%s, generatedType=%s]",
-                         left == null ? "null" : left.typeset(),
-                         right == null ? "right" : right.typeset(),
+                         left == null ? "∅" : left.typeset(),
+                         right == null ? "∅" : right.typeset(),
                          operation,
                          generatedType != null ? generatedType.toString() : null);
   }
 
   public String toString(int depth)
-  {
+  {    
     return toString();
   }
 
@@ -80,7 +83,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     this.operation = operation;
     this.left      = left;
     this.depth     = depth;
-    assert left != null && right != null : "one or more of the operands to this were missing: " + this + " set 0 value based on type here";
+    assert left != null && right != null : "one or more of the operands to this were missing: " + this
+                  + " set 0 value based on type here";
   }
 
   @Override
@@ -120,9 +124,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     loadBits(mv);
     loadResult(mv, resultType, targetResultType);
 
-    Class<?> leftGeneratedType = left.getGeneratedType();
-
-    Class<?> overrideLeftType  = leftGeneratedType != null ? leftGeneratedType : left.type();
+    var leftGeneratedType = left.getGeneratedType();
+    var overrideLeftType  = leftGeneratedType != null ? leftGeneratedType : left.type();
     invokeBinaryOperationMethod(mv, operator, overrideLeftType, right.type(), resultType);
 
     return mv;
@@ -134,7 +137,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                    Class<?> rightType,
                                    Class<?> returnType)
   {
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+    mv.visitMethodInsn(INVOKEVIRTUAL,
                        Type.getInternalName(leftType),
                        operator,
                        String.format("(%sI%s)%s",
@@ -150,7 +153,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
     if (isResult)
     {
-      Compiler.checkClassCast(Compiler.loadResult(mv, verbose), resultType);
+      checkClassCast(Compiler.loadResult(mv, verbose), resultType);
     }
     else if ((reusableNode = getAReusableNode()) != null)
     {
@@ -202,7 +205,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
    * 
    * @param a
    * @param b
-   * @return true if (left,right) in { (a,b) , (b,a) }
+   * @return true if ({@link #left},{@link #right}) in { (a,b) , (b,a) }
    */
   public boolean typesSymmetryicallyEqual(Class<?> a, Class<?> b)
   {
