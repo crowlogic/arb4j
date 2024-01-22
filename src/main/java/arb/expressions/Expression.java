@@ -663,7 +663,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (context != null)
     {
-      err.println("Injecting references " + context.variables.map.values() + " into " + f);
       context.variables.map.entrySet().forEach(entry ->
       {
         try
@@ -743,6 +742,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String newIntermediateVariable(int depth, Class<?> type)
   {
+    assert type != Void.class : "dont generate a variable for the Void type";
     String intermediateVarName = getNextIntermediatevariableFieldName(depth, type);
     intermediateVariables.add(new IntermediateVariable<>(this,
                                                          intermediateVarName,
@@ -845,12 +845,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     while (true)
     {
-      if (node == null)
-      {
-        node = new LiteralConstant<>(this,
-                                     "0",
-                                     depth);
-      }
+//      if (node == null)
+//      {
+//        node = new LiteralConstant<>(this,
+//                                     "0",
+//                                     depth);
+//      }
 
       if (parse(depth, '+'))
       {

@@ -337,6 +337,8 @@ public class Compiler
       out.format("\ninvokeSetMethod( outType=%s, inType=%s, verbose=%s )\n\n", outType, inType, verbose);
       out.flush();
     }
+    assert !outType.getClass().equals(Void.class) : "invokeSetMethod shouldnt be called for Void type";
+    
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(outType),
                        "set",

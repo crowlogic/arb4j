@@ -1,15 +1,26 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBits;
+import static arb.expressions.Compiler.loadOrder;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.F_SAME;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.IFNONNULL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
@@ -66,9 +77,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     super(argument,
           expression,
           depth);
-    assert argument != null;
     this.functionName = Parser.replaceSubscriptsAndArrows(functionName).replace("ln", "log").replace("√", "sqrt");
     this.depth        = depth;
+    targetResultType  = resultTypeFor(functionName);
+
+    // assert argument == null && !targetResultType.equals(Void.class) : "argument
+    // is null for " + this;
     if (expression.context != null)
     {
       mapping    = (Mapping<D, R>) expression.context.functions.map.get(functionName);
@@ -78,8 +92,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
         expression.referencedFunctions.put(functionName, mapping);
       }
     }
-
-    targetResultType = resultTypeFor(functionName);
 
   }
 
@@ -195,7 +207,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    var           expression  = arg.expression;
     boolean       verbose     = expression.verbose;
     Class<?>      type        = type();
     Mapping<D, R> mapping     = expression.context.functions.get(functionName);
@@ -222,15 +233,20 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                                                      .descriptorString() : String.format("L%s;",
                                                                                                          functionName));
 
-    Class<?> argType                = arg.type();
+    Class<?> argType                = arg == null ? Void.class : arg.type();
     var      typeBefore             = argType;
     boolean  needsArgTypeConversion = !argType.equals(mapping.domain);
-    if (needsArgTypeConversion)
+    if (needsArgTypeConversion && !Void.class.equals(mapping.domain))
     {
       expression.reserveIntermediateVariable(methodVisitor, depth + 1, mapping.domain);
     }
-    arg.generate(methodVisitor, argType);
-
+    assert arg != null : "argType should be Void when arg is null but it is "
+                  + argType + " for " + this
+                  + " so the right thing to do is to generate the 0 element for the given type, this will be so that -x is interpreted as 0-x";
+    if (arg != null)
+    {
+      arg.generate(methodVisitor, argType);
+    }
     Class<?> typeAfter = arg.type();
 
     assert typeBefore.equals(typeAfter) : String.format("%s: typeBefore=%s typeAfter=%s\n",
@@ -267,6 +283,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
   public Class<?> resultTypeFor(String functionName)
   {
+    if (arg == null)
+    {
+      return Void.class;
+    }
     if (arg.type().equals(Integer.class) && integerFunctionsWithRealResults.contains(functionName))
     {
       return Real.class;
@@ -283,10 +303,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return contextual ? String.format("FunctionCall[name=%s,  function=%s, arg=%s, targetResultType=%s]",
                                       functionName,
                                       mapping,
-                                      arg.typeset(),
+                                      arg == null ? "null" : arg.typeset(),
                                       targetResultType != null ? targetResultType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
                                                                                                                     functionName,
-                                                                                                                    arg.typeset(),
+                                                                                                                    arg == null ? "null" : arg.typeset(),
                                                                                                                     targetResultType != null ? targetResultType.getName() : null);
   }
 
@@ -304,7 +324,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return format("%s(%s)", functionName.replace("√", "\\sqrt").replace("J0", "J_0"), arg.typeset());
+    return format("%s(%s)",
+                  functionName.replace("√", "\\sqrt").replace("J0", "J_0"),
+                  arg == null ? "" : arg.typeset());
   }
 
 }

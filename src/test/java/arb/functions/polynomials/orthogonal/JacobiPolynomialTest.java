@@ -31,6 +31,11 @@ public class JacobiPolynomialTest extends
 
   public static final int  N    = 3;
 
+  public static void main( String args[])
+  {
+    JacobiPolynomialTest test = new JacobiPolynomialTest();
+    test.testA();
+  }
   public  void testA()
   {
     try (

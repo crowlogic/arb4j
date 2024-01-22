@@ -28,8 +28,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   public String toString()
   {
     return String.format("BinaryOperation[left=%s, right=%s, operation=%s, generatedType=%s]",
-                         left.typeset(),
-                         right.typeset(),
+                         left == null ? "null" : left.typeset(),
+                         right == null ? "right" : right.typeset(),
                          operation,
                          generatedType != null ? generatedType.toString() : null);
   }
@@ -231,7 +231,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       return RealPolynomial.class;
 
     }
-    assert Integer.class.equals( arb.Integer.class ) : "you forgot to import arb.Integer";
+    assert Integer.class.equals(arb.Integer.class) : "you forgot to import arb.Integer";
     assert false : String.format("TODO: handle resultant type for left=%s and right=%s in %s",
                                  left.type(),
                                  right.type(),
