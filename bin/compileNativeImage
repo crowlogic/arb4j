@@ -1,0 +1,1 @@
+native-image --enable-preview -cp target/classes arb.functions.P -o cool
