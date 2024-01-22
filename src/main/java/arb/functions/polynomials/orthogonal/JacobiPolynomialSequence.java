@@ -90,7 +90,7 @@ public class JacobiPolynomialSequence implements
                                                                             "A",
                                                                             "n➔(F(n)*x + G())*(C(n) - 1)/2",
                                                                             context,
-                                                                            true);
+                                                                            verbose);
 
   final public RealFunction                      E       = RealFunction.express("E",
                                                                                 "n➔n*C(n/2)*C(n-1)",
