@@ -1,5 +1,7 @@
 package arb.functions;
 
+import static java.lang.System.out;
+
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
@@ -7,6 +9,22 @@ import arb.RealPolynomial;
 public class P implements
                Function<Integer, RealPolynomial>
 {
+  public static void main(String args[])
+  {
+    P P = new P();
+    P.α = new Real("-0.5",
+                   128);
+    P.β = new Real("-0.5",
+                   128);
+    P.initializeContext();
+    for (int n = 0; n < 10; n++)
+    {
+      RealPolynomial p = P.evaluate(new Integer(n), 128, new RealPolynomial());
+      out.format("P(%d,x)=%s\n", n, p);
+    }
+
+  }
+
   private boolean       isInitialized;
   public Integer        const1 = new Integer("0");
   public Integer        const2 = new Integer("1");
