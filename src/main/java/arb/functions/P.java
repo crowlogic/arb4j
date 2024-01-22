@@ -11,16 +11,18 @@ public class P implements
 {
   public static void main(String args[])
   {
-    P P = new P();
-    P.α = new Real("-0.5",
-                   128);
-    P.β = new Real("-0.5",
-                   128);
-    P.initializeContext();
-    for (int n = 0; n < 10; n++)
+    try ( P P = new P())
     {
-      RealPolynomial p = P.evaluate(new Integer(n), 128, new RealPolynomial());
-      out.format("P(%d,x)=%s\n", n, p);
+      P.α = new Real("-0.5",
+                     128);
+      P.β = new Real("-0.5",
+                     128);
+      P.initializeContext();
+      for (int n = 0; n < 10; n++)
+      {
+        RealPolynomial p = P.evaluate(new Integer(n), 128, new RealPolynomial());
+        out.format("P(%d,x)=%s\n", n, p);
+      }
     }
 
   }
