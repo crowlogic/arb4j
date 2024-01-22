@@ -631,14 +631,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else
 
     {
-      mv.visitInsn(ACONST_NULL);
+      assert nestedFunction.name.equals(functionName) : "nestedFunction.func should not be null if its not the recursive function referring to itself";
     }
 
-    String nestedFunctionClass = nestedFunction == null ? format("%S",
-                                                                 nestedFunction.functionInterface.descriptorString()) : nestedFunction.func.getClass()
-                                                                                                                                           .descriptorString();
-    mv.visitFieldInsn(PUTFIELD, className, nestedFunction.name, nestedFunctionClass);
-
+    if (nestedFunction.func != null)
+    {
+      mv.visitFieldInsn(PUTFIELD, className, nestedFunction.name, nestedFunction.func.getClass().descriptorString());
+    }
     return mv;
   }
 
@@ -1272,13 +1271,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     addChecksForNullVariableReferences(methodVisitor, true, false);
 
-    referencedFunctions.values().forEach(mapping ->
-    {
-      if (mapping.func != null)
-      {
-        generateContextInitializer(methodVisitor, mapping);
-      }
-    });
+    referencedFunctions.values().forEach(mapping -> generateContextInitializer(methodVisitor, mapping));
 
     generateCodeToSetIsInitializedToTrue(methodVisitor);
 
