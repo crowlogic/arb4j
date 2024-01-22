@@ -12,26 +12,22 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public class Add<D, R, F extends Function<D,R>> extends
-                BinaryOperation<D, R, F>
+public class Division<D, R, F extends Function<D,R>> extends
+                   BinaryOperation<D, R, F>
 {
-  
-  @Override
-  public String typeset()
-  {
-    return format("%s + %s", left.typeset(), right.typeset());
-  }
-  
-  public Add(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
+  public Division(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
   {
     super(expression,
           left,
-          "add",
+          "div",
           right,
           depth);
   }
 
+  @Override
+  public String typeset()
+  {
+    return format("\\frac{%s}{%s}", left.typeset(), right.typeset());
+  }
 
-
- 
 }

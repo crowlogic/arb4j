@@ -9,7 +9,7 @@ import arb.*;
 import arb.Integer;
 import arb.expressions.Expression;
 import arb.expressions.Variables;
-import arb.expressions.nodes.binary.Add;
+import arb.expressions.nodes.binary.Addition;
 import arb.expressions.nodes.binary.BinaryOperation;
 import arb.functions.Function;
 
@@ -69,7 +69,7 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
    * overridden by every subclass of {@link Node} to provide an appropriate
    * response. For {@link LiteralConstant} and {@link Variable} nodes, they would
    * always return false (since we cannot reuse them). For {@link BinaryOperation}
-   * nodes like {@link Add}, a method of determining whether they're reusable
+   * nodes like {@link Addition}, a method of determining whether they're reusable
    * based on the state of their operands.
    *
    * @return true if the node this reusable, false otherwise.

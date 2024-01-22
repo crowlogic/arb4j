@@ -52,11 +52,11 @@ import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
-import arb.expressions.nodes.binary.Add;
-import arb.expressions.nodes.binary.Divide;
+import arb.expressions.nodes.binary.Addition;
+import arb.expressions.nodes.binary.Division;
 import arb.expressions.nodes.binary.Exponentiate;
-import arb.expressions.nodes.binary.Multiply;
-import arb.expressions.nodes.binary.Subtract;
+import arb.expressions.nodes.binary.Multiplication;
+import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
@@ -841,14 +841,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       if (parse(depth, '+'))
       {
-        node = new Add<>(this,
+        node = new Addition<>(this,
                          node,
                          parseSecond(depth),
                          depth);
       }
       else if (parse(depth, '-'))
       {
-        node = new Subtract<>(this,
+        node = new Subtraction<>(this,
                               node,
                               parseSecond(depth),
                               depth);
@@ -994,7 +994,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       if (parse(depth, '*', '×'))
       {
-        node = new Multiply<>(this,
+        node = new Multiplication<>(this,
                               node,
                               parseThird(depth),
                               depth);
@@ -1002,7 +1002,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else if (parse(depth, '/', '÷'))
       {
-        node = new Divide<>(this,
+        node = new Division<>(this,
                             node,
                             parseThird(depth),
                             depth);
