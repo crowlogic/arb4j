@@ -15,8 +15,7 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs formatted versions of the same document respectively.
  */
-public abstract class UnaryOperation<D, R, F extends Function<D,R>>
-                                    extends
+public abstract class UnaryOperation<D, R, F extends Function<D, R>> extends
                                     Node<D, R, F>
 {
   @Override
@@ -64,7 +63,7 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
   @Override
   public boolean isReusable()
   {
-    return arg.isReusable() || arg.isResult;
+    return arg != null && (arg.isReusable() || arg.isResult);
   }
 
   @Override
@@ -73,7 +72,10 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
     return arg.generate(mv, resultType);
   }
 
-  protected void loadOutputVariableOntoStack(MethodVisitor methodVisitor, Expression<D, R, F> expression, boolean verbose, Class<?> resultType)
+  protected void loadOutputVariableOntoStack(MethodVisitor methodVisitor,
+                                             Expression<D, R, F> expression,
+                                             boolean verbose,
+                                             Class<?> resultType)
   {
     if (isResult)
     {
@@ -81,7 +83,7 @@ public abstract class UnaryOperation<D, R, F extends Function<D,R>>
     }
     else
     {
-      if (arg.isReusable())
+      if (arg != null && arg.isReusable())
       {
         arg.prepareStackForReuse(methodVisitor);
       }

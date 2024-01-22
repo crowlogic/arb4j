@@ -235,19 +235,26 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     Class<?> argType                = arg == null ? Void.class : arg.type();
     var      typeBefore             = argType;
-    boolean  needsArgTypeConversion = !argType.equals(mapping.domain);
-    if (needsArgTypeConversion && !Void.class.equals(mapping.domain))
+    boolean  isVoid                 = Void.class.equals(mapping.domain);
+    boolean  needsArgTypeConversion = !argType.equals(mapping.domain) && !isVoid;
+
+    if (needsArgTypeConversion)
     {
       expression.reserveIntermediateVariable(methodVisitor, depth + 1, mapping.domain);
     }
-    assert arg != null : "argType should be Void when arg is null but it is "
-                  + argType + " for " + this
-                  + " so the right thing to do is to generate the 0 element for the given type, this will be so that -x is interpreted as 0-x";
+//    assert arg != null : "argType should be Void when arg is null but it is "
+//                  + argType + " for " + this
+//                  + " so the right thing to do is to generate the 0 element for the given type, this will be so that -x is interpreted as 0-x";
     if (arg != null)
     {
       arg.generate(methodVisitor, argType);
     }
-    Class<?> typeAfter = arg.type();
+    else
+    {
+      methodVisitor.visitInsn(Opcodes.ACONST_NULL);
+
+    }
+    Class<?> typeAfter = isVoid ? Void.class : arg.type();
 
     assert typeBefore.equals(typeAfter) : String.format("%s: typeBefore=%s typeAfter=%s\n",
                                                         this,
