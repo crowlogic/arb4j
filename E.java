@@ -8,7 +8,6 @@ public class E implements RealFunction {
    public Integer const2 = new Integer("1");
    public Real α;
    public Real β;
-   public Real G;
    public Real r1 = new Real();
    public Real r2 = new Real();
    public Real r3 = new Real();
@@ -18,6 +17,7 @@ public class E implements RealFunction {
    public C C;
    public E E;
    public F F;
+   public G G;
 
    public Real evaluate(Real in, int order, int bits, Real result) {
       if (!this.isInitialized) {
@@ -35,13 +35,10 @@ public class E implements RealFunction {
          throw new AssertionError("α is null");
       } else if (this.β == null) {
          throw new AssertionError("β is null");
-      } else if (this.G == null) {
-         throw new AssertionError("G is null");
       } else {
          C var10001 = this.C = new C();
          this.C.α = this.α;
          this.C.β = this.β;
-         this.C.G = this.G;
          this.C.initializeContext();
          this.C = var10001;
          this.isInitialized = true;

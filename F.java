@@ -7,7 +7,6 @@ public class F implements Function<Integer, Real> {
    public Integer const1 = new Integer("1");
    public Real α;
    public Real β;
-   public Real G;
    public Real r1 = new Real();
    public Integer i1 = new Integer();
    public Real r2 = new Real();
@@ -32,13 +31,10 @@ public class F implements Function<Integer, Real> {
          throw new AssertionError("α is null");
       } else if (this.β == null) {
          throw new AssertionError("β is null");
-      } else if (this.G == null) {
-         throw new AssertionError("G is null");
       } else {
          C var10001 = this.C = new C();
          this.C.α = this.α;
          this.C.β = this.β;
-         this.C.G = this.G;
          this.C.initializeContext();
          this.C = var10001;
          this.isInitialized = true;

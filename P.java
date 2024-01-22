@@ -33,6 +33,7 @@ public class P implements Function<Integer, RealPolynomial> {
    public C C;
    public E E;
    public F F;
+   public G G;
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
       if (!this.isInitialized) {

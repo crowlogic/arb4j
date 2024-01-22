@@ -7,7 +7,6 @@ public class C implements RealFunction {
    public Integer const1 = new Integer("2");
    public Real α;
    public Real β;
-   public Real G;
    public Real r1 = new Real();
    public Real r2 = new Real();
    public C C;
@@ -33,8 +32,6 @@ public class C implements RealFunction {
          throw new AssertionError("α is null");
       } else if (this.β == null) {
          throw new AssertionError("β is null");
-      } else if (this.G == null) {
-         throw new AssertionError("G is null");
       } else {
          this.isInitialized = true;
       }
