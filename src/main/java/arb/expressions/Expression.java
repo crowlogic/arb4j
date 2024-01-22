@@ -103,9 +103,9 @@ import arb.functions.Function;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
-  private static final String initializeContext          = "initializeContext";
+  private static final String nameOfVariableInitializerFunction = "initializeVariableReferences";
 
-  public static final String  evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String  evaluationMethodDescriptor        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
                                                                Context context,
@@ -133,7 +133,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       mapping.func = func;
     }
-    
+
     if (verbose)
     {
       out.format("\ninstantiating $%s$\n\n", compiledExpression.rootNode.typeset());
@@ -506,7 +506,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitJumpInsn(Opcodes.IFNE, alreadyInitialized);
 
     methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, className, "initializeContext", "()V", false);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, className, nameOfVariableInitializerFunction, "()V", false);
 
     methodVisitor.visitLabel(alreadyInitialized);
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
@@ -1360,9 +1360,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     generateInvocationOfDefaultNoArgConstructor(methodVisitor, true);
 
-    initializeLiteralConstants(methodVisitor);
+    generateLiteralConstantInitializers(methodVisitor);
 
-    initializeIntermediateVariables(methodVisitor);
+    generateIntermediateVariableInitializers(methodVisitor);
 
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(0, 0);
@@ -1372,7 +1372,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
-    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, initializeContext, "()V", null, null);
+    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                           nameOfVariableInitializerFunction,
+                                                           "()V",
+                                                           null,
+                                                           null);
     try
     {
 
@@ -1391,12 +1395,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  public MethodVisitor initializeLiteralConstants(MethodVisitor methodVisitor)
+  public MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
   {
 
     for (var literal : literalConstants)
     {
-      literal.initializeLiteralConstantWithString(methodVisitor);
+      literal.generateLiteralConstantInitializerWithString(methodVisitor);
     }
     return methodVisitor;
   }
@@ -1423,11 +1427,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return this;
   }
 
-  public MethodVisitor initializeIntermediateVariables(MethodVisitor methodVisitor)
+  public MethodVisitor generateIntermediateVariableInitializers(MethodVisitor methodVisitor)
   {
     for (var intermediateVariable : intermediateVariables)
     {
-      intermediateVariable.initialize(methodVisitor);
+      intermediateVariable.generateInitializer(methodVisitor);
     }
     return methodVisitor;
   }

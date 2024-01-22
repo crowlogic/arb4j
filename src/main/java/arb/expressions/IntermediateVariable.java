@@ -38,7 +38,7 @@ public class IntermediateVariable<D, R, F extends Function<D, R>>
   public String   name;
   public Class<?> type;
 
-  public MethodVisitor initialize(MethodVisitor methodVisitor)
+  public MethodVisitor generateInitializer(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     String intermediateTypeInternalName = Type.getInternalName(type);

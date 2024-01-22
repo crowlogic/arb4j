@@ -3,6 +3,8 @@ package arb.functions;
 import static java.lang.System.out;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import arb.Integer;
 import arb.Real;
@@ -10,7 +12,8 @@ import arb.RealPolynomial;
 import arb.utensils.ShellFunctions;
 
 public class P implements
-               Function<Integer, RealPolynomial>
+               Function<Integer, RealPolynomial>,
+               AutoCloseable
 {
   public static final int precision = 128;
 
@@ -163,29 +166,22 @@ public class P implements
 
   public void close()
   {
-    const1.close();
-    const2.close();
-    const3.close();
-    ℝ1.close();
-    ℝ2.close();
-    r1.close();
-    r2.close();
-    r3.close();
-    r4.close();
-    ℤ1.close();
-    r5.close();
-    r6.close();
-    ℝ3.close();
-    ℝ4.close();
-    ℤ2.close();
-    r7.close();
-    r8.close();
-    r9.close();
-    ℝ5.close();
-    ℝ6.close();
-    if (P != null)
+    Stream.of(const1, const2, const3, r1, r2, r3, r4, r5, r6, r7, r8, r9, ℝ1, ℝ2, ℝ3, ℝ4, ℝ5, ℝ6, ℤ1, ℤ2, P)
+          .filter(Objects::nonNull)
+          .forEach(this::closeQuietly);
+
+  }
+
+  private void closeQuietly(AutoCloseable resource)
+  {
+    try
     {
-      P.close();
+      resource.close();
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace(System.err);
     }
   }
+
 }

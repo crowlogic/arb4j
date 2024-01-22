@@ -193,7 +193,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     }
   }
 
-  public MethodVisitor initializeLiteralConstantWithString(MethodVisitor methodVisitor)
+  public MethodVisitor generateLiteralConstantInitializerWithString(MethodVisitor methodVisitor)
   {
     Class<?> type = type();
     methodVisitor.visitVarInsn(ALOAD, 0);
