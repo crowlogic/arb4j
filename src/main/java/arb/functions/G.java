@@ -1,17 +1,15 @@
 package arb.functions;
 
-import arb.Integer;
 import arb.Real;
 
 public class G implements
                Function<Void, Real>
 {
   private boolean isInitialized;
-  public Integer  const1 = new Integer("2");
   public Real     α;
   public Real     β;
-  public Real     r1     = new Real();
-  public Real     r2     = new Real();
+  public Real     r1 = new Real();
+  public Real     r2 = new Real();
   public P        P;
   public A        A;
   public B        B;
@@ -22,49 +20,48 @@ public class G implements
 
   public Real evaluate(Void in, int order, int bits, Real result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initializeContext();
+      initializeContext();
     }
 
-    if (this.α == null)
+    if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      return this.α.pow(this.const1, bits, this.r1).sub(this.β.pow(this.const1, bits, this.r2), bits, result);
+      return α.pow(2, bits, r1).sub(β.pow(2, bits, r2), bits, result);
     }
   }
 
   public void initializeContext()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      this.isInitialized = true;
+      isInitialized = true;
     }
   }
 
   public void close()
   {
-    this.const1.close();
-    this.r1.close();
-    this.r2.close();
+    r1.close();
+    r2.close();
   }
 }

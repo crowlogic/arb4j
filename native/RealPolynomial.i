@@ -3,6 +3,7 @@ import static arb.arblib.*;
 import arb.functions.real.RealFunction;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
+import arb.utensils.Utensils;
 
 /**
  * <pre>
@@ -207,7 +208,7 @@ import arb.exceptions.DivisionByZeroException;
           builder.append("*x");
           if (i > 1)
           {
-            builder.append("^" + i);
+            builder.append(Utensils.toSuperscript(i));
           }
         }
       }

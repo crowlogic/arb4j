@@ -10,6 +10,7 @@ package arb;
 
 import static arb.arblib.*;
 import arb.functions.real.RealFunction;
+import arb.utensils.Utensils;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
 
@@ -234,7 +235,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
           builder.append("*x");
           if (i > 1)
           {
-            builder.append("^" + i);
+            builder.append(Utensils.toSuperscript(i));
           }
         }
       }

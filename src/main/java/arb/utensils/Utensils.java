@@ -36,6 +36,54 @@ import arb.functions.real.RealFunction;
 public class Utensils
 {
 
+  public static String toSuperscript(int number)
+  {
+    StringBuilder result    = new StringBuilder();
+    String numberStr = Integer.toString(number);
+
+    for (int i = 0; i < numberStr.length(); i++)
+    {
+      result.append( digitToSuperscript(numberStr.charAt(i)) );
+    }
+
+    return result.toString();
+  }
+
+  private static char digitToSuperscript(char digit)
+  {
+    switch (digit)
+    {
+    case '0':
+      return '\u2070';
+    case '1':
+      return '\u00B9';
+    case '2':
+      return '\u00B2';
+    case '3':
+      return '\u00B3';
+    case '4':
+      return '\u2074';
+    case '5':
+      return '\u2075';
+    case '6':
+      return '\u2076';
+    case '7':
+      return '\u2077';
+    case '8':
+      return '\u2078';
+    case '9':
+      return '\u2079';
+    default:
+      throw new IllegalArgumentException("Not a digit: " + digit);
+    }
+  }
+
+  public static void main(String[] args)
+  {
+    int number = 1234567890;
+    System.out.println("Superscript: " + toSuperscript(number));
+  }
+
   public static Real add(IntFunction<Real> func, int startInclusive, int stopExclusive, int bits, Real value)
   {
     value.zero();
