@@ -205,7 +205,7 @@ import arb.utensils.Utensils;
         }
         if (i > 0)
         {
-          builder.append("*x");
+          builder.append("x");
           if (i > 1)
           {
             builder.append(Utensils.toSuperscript(i));
