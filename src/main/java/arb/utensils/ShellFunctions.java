@@ -1,5 +1,7 @@
 package arb.utensils;
 
+import java.util.Arrays;
+
 import arb.Real;
 import arb.RealDataSet;
 import arb.SequenceDataSet;
@@ -23,7 +25,7 @@ public class ShellFunctions
 
         // Clear existing datasets if needed
         plotter.chart.getDatasets().clear();
-        
+
         // Add the new dataset to FunctionPlotter's internal list
         plotter.chart.getDatasets().add(dataSet);
 
@@ -88,12 +90,8 @@ public class ShellFunctions
       javaFxInitialized = true;
       try
       {
-        System.out.println( "Initializing JavaFX...");
-        System.out.flush();
         Platform.startup(() ->
         {
-          System.out.println( "JavaFX started");
-          System.out.flush();         
         });
       }
       catch (Exception e)
@@ -105,15 +103,18 @@ public class ShellFunctions
 
   public static void plot(double left, double right, int n, RealFunction... functions)
   {
+    plot(left, right, n, Arrays.asList(functions));
+  }
+
+  public static void plot(double left, double right, int n, Iterable<RealFunction> functions)
+  {
     initializeJavaFxIfNecessary();
     Platform.runLater(() ->
-    { // Create a SequenceDataSet from the Real sequence
-
+    {
       try ( FunctionPlotter plotter = new FunctionPlotter())
       {
         plotter.createScene();
 
-        // Clear existing datasets if needed
         plotter.chart.getDatasets().clear();
 
         for (RealFunction func : functions)
@@ -122,7 +123,6 @@ public class ShellFunctions
           plotter.chart.getDatasets().add(sample);
         }
 
-        // Create and show the scene if not already displayed
         if (plotter.stage == null)
         {
           plotter.stage.show();

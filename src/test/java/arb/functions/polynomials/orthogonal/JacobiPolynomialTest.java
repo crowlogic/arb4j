@@ -25,20 +25,20 @@ public class JacobiPolynomialTest extends
                                   TestCase
 {
 
-  JacobiPolynomialSequence seq  = new JacobiPolynomialSequence(negHalf,
-                                                               negHalf);
-  public static final int  bits = 128;
+  public static final int bits = 128;
 
-  public static final int  N    = 3;
+  public static final int N    = 3;
 
-  public static void main( String args[])
+  public static void main(String args[])
   {
     JacobiPolynomialTest test = new JacobiPolynomialTest();
     test.testA();
   }
-  public  void testA()
+
+  public void testA()
   {
-    try (
+    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(negHalf,
+                                                                      negHalf);
           Real threeHalves = new Real("1.5",
                                       128);
           Integer n = new Integer())
@@ -56,7 +56,9 @@ public class JacobiPolynomialTest extends
   public void testE()
   {
     {
-      try ( Real result = seq.E.evaluate(new Real("3",
+      try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(negHalf,
+                                                                        negHalf);
+            Real result = seq.E.evaluate(new Real("3",
                                                   128),
                                          1,
                                          bits,
@@ -166,18 +168,16 @@ public class JacobiPolynomialTest extends
   public void testP1()
   {
 
-  
+    try ( Integer won = new Integer("1"); JacobiPolynomialSequence seq = new JacobiPolynomialSequence(negHalf,
+                                                                                                      negHalf);
+          RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
     {
-      Integer won = new Integer("1");
+      // P(-half,-half)=ChebyshevType1 and when n=1 it equals x/2
+      Real a = result.evaluate(RealConstants.one, 128, new Real());
+      assertEquals(RealConstants.half, a);
+      Real b = result.evaluate(RealConstants.half, 128, new Real());
+      assertEquals(RealConstants.oneQuarter, b);
 
-      try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
-      {
-        // P(-half,-half)=ChebyshevType1 and when n=1 it equals x/2
-        Real a = result.evaluate(RealConstants.one, 128, new Real());
-        assertEquals(RealConstants.half, a);
-        Real b = result.evaluate(RealConstants.half, 128, new Real());
-        assertEquals(RealConstants.oneQuarter, b);
-      }
     }
 
   }

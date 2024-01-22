@@ -133,7 +133,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       mapping.func = func;
     }
-
+    
     if (verbose)
     {
       out.format("\ninstantiating $%s$\n\n", compiledExpression.rootNode.typeset());

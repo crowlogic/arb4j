@@ -10,9 +10,11 @@ public class RealPolynomialTest extends
 {
   public void testSetInt()
   {
-    RealPolynomial p = new RealPolynomial(1);
-    p.set(new Real().set(new Integer("10")));
-    p.set(new Integer("10"));
+    try ( RealPolynomial p = new RealPolynomial(1))
+    {
+      p.set(10);
+      assertEquals(10.0, p.get(0).doubleValue());
+    }
 
   }
 

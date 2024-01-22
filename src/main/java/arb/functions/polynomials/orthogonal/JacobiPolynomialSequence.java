@@ -1,7 +1,5 @@
 package arb.functions.polynomials.orthogonal;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import arb.Integer;
@@ -70,24 +68,7 @@ public class JacobiPolynomialSequence implements
   final public static boolean                    verbose = false;
 
   boolean                                        dynamic = true;
-//
-//  final public C                                 aC      = new C();
-//
-//  final public F                                 aF      = new F();
-//
-//  final public E                                 aE      = new E();
-//
-//  final public P                                 aP      = new P();
-//
-//  final public A                                 aA      = new A();
-//  final public B                                 aB      = new B();
-//
-//  final public G                                 aG      = new G();
 
-  /**
-   * The C function is called with n/2 by the E function therefore its expressed
-   * as RealFunction, that is, a Function from ℝ to ℝ
-   */
   final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
 
   final public Function<Integer, Real>           F       = Function.express(Integer.class,
@@ -127,30 +108,14 @@ public class JacobiPolynomialSequence implements
                                                                             "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
                                                                             context,
                                                                             verbose);
+  private RealFunction                           orthogonalityMeasure;
 
   public JacobiPolynomialSequence(Real a, Real b)
   {
     bits = Math.max(128, Math.max(a.bits(), b.bits()));
-    try
-    {
-      P.getClass().getField("α").set(P, α.set(a));
-      P.getClass().getField("β").set(P, β.set(b));
-      P.getClass().getMethod("initializeContext").invoke(P);
-    }
-    catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException
-                  | InvocationTargetException | NoSuchMethodException e)
-    {
-      throw new RuntimeException(e.getMessage(),
-                                 e);
-    }
-//    aP.β = β.set(b);
-//    aP.initializeContext();
-//    aA.initializeContext();
-//    aB.initializeContext();
-//    aC.initializeContext();
-//    aE.initializeContext();
-//    aF.initializeContext();
-//    aG.initializeContext();
+    this.α.set(a);
+    this.β.set(b);
+
   }
 
   @Override
@@ -160,16 +125,14 @@ public class JacobiPolynomialSequence implements
     return null;
   }
 
-  public final RealFunction        orthogonalMeasure = RealFunction.express("w",
-                                                                            "x➔(1-x)^α*(1+x)^β",
-                                                                            context,
-                                                                            verbose);
-  public ArrayList<RealPolynomial> cache             = new ArrayList<>();
-
   @Override
   public RealFunction getOrthogonalMeasure()
   {
-    return orthogonalMeasure;
+    if (orthogonalityMeasure == null)
+    {
+      orthogonalityMeasure = RealFunction.express("w", "x➔(1-x)^α*(1+x)^β", context, verbose);
+    }
+    return orthogonalityMeasure;
   }
 
   public static Real domain = new Real("0+/-1",
