@@ -26,7 +26,7 @@ import arb.Integer;
 import arb.Real;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.expressions.Mapping;
+import arb.expressions.FunctionMapping;
 import arb.expressions.Parser;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -64,7 +64,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
   public String        functionName;
   public boolean       contextual                      = false;
-  public Mapping<D, R> mapping;
+  public FunctionMapping<D, R> mapping;
 
   HashSet<String>      integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
   { "sqrt", "tanh", "log" }));
@@ -85,7 +85,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     // is null for " + this;
     if (expression.context != null)
     {
-      mapping    = (Mapping<D, R>) expression.context.functions.map.get(functionName);
+      mapping    = (FunctionMapping<D, R>) expression.context.functions.map.get(functionName);
       contextual = mapping != null;
       if (contextual)
       {
@@ -108,7 +108,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     if (functionName.equals(expression.functionName))
     {
       contextual           = true;
-      mapping              = new Mapping<>();
+      mapping              = new FunctionMapping<>();
       targetResultType     = expression.rangeType;
       mapping.range        = targetResultType;
       mapping.domain       = getDomainType();
@@ -209,7 +209,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     boolean       verbose     = expression.verbose;
     Class<?>      type        = type();
-    Mapping<D, R> mapping     = expression.context.functions.get(functionName);
+    FunctionMapping<D, R> mapping     = expression.context.functions.get(functionName);
     F             func        = (F) mapping.func;
     boolean       isRecursive = expression.recursive && functionName.equals(expression.functionName);
     if (isRecursive)

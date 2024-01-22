@@ -114,7 +114,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                boolean verbose,
                                                                String functionName)
   {
-    Mapping<?, ?> mapping = null;
+    FunctionMapping<?, ?> mapping = null;
     if (functionName != null)
     {
       mapping = context.registerFunctionMapping(functionName, null, domainClass, rangeClass, functionClass);
@@ -127,7 +127,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                      functionClass,
                                                      verbose,
                                                      functionName);
-    F                   func               = compiledExpression.instantiate(true);
+    F                   func               = compiledExpression.instantiate();
     if (mapping != null)
     {
       mapping.func = func;
@@ -148,13 +148,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                Class<F> functionClass,
                                                                boolean verbose)
   {
-    return compile(className,
-                   expression,
-                   context,
-                   domainClass,
-                   rangeClass,
-                   functionClass,
-                   verbose).instantiate(true);
+    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
   public int                                      position              = -1;
@@ -205,7 +199,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                                   functionClassDescriptor;
 
-  public HashMap<String, Mapping<D, R>>           referencedFunctions   = new HashMap<>();
+  public HashMap<String, FunctionMapping<D, R>>   referencedFunctions   = new HashMap<>();
 
   public HashMap<String, Variable<D, R, F>>       referencedVariables   = new HashMap<>();
 
@@ -269,7 +263,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.functionName              = functionName;
   }
 
-  public MethodVisitor callContextualUnaryFunction(MethodVisitor methodVisitor, Mapping<D, R> mapping, Class<?> type)
+  public MethodVisitor
+         callContextualUnaryFunction(MethodVisitor methodVisitor, FunctionMapping<D, R> mapping, Class<?> type)
   {
     boolean isInterface = mapping.functionInterface != null;
     methodVisitor.visitMethodInsn(mapping.functionInterface != null ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
@@ -326,13 +321,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       context.functions.map.forEach((name, function) ->
       {
-        declareFunctionReference(classVisitor, name, (Mapping<D, R>) function);
+        declareFunctionReference(classVisitor, name, (FunctionMapping<D, R>) function);
       });
     }
     return classVisitor;
   }
 
-  public void declareFunctionReference(ClassVisitor classVisitor, String name, Mapping<D, R> function)
+  public void declareFunctionReference(ClassVisitor classVisitor, String name, FunctionMapping<D, R> function)
   {
     String descriptor = "L" + function.name + ";";
     classVisitor.visitField(ACC_PUBLIC, name, descriptor, null, null);
@@ -583,11 +578,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public void instantiateAndInitialize(MethodVisitor mv,
-                                       String classType,
-                                       String fieldType,
-                                       String functionFieldName,
-                                       List<OrderedPair<String, Class<?>>> variables)
+  public void instantiateNestedFunctions(MethodVisitor mv,
+                                         String classType,
+                                         String fieldType,
+                                         String functionFieldName,
+                                         List<OrderedPair<String, Class<?>>> variables)
   {
     String typeDesc = "L" + fieldType + ";";
 
@@ -610,27 +605,27 @@ public class Expression<D, R, F extends Function<D, R>> implements
       mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, variableFieldName, variableFieldType);
     }
 
-    // Call initializeContextualFunctions
-    mv.visitVarInsn(Opcodes.ALOAD, 0);
-    mv.visitFieldInsn(Opcodes.GETFIELD, classType, functionFieldName, typeDesc);
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, fieldType, initializeContext, "()V", false);
   }
 
-  public MethodVisitor generateContextInitializer(MethodVisitor mv, Mapping<?, ?> mapping)
+  public MethodVisitor generateContextInitializer(MethodVisitor mv, FunctionMapping<?, ?> nestedFunction)
   {
 
-    if (mapping.func != null)
+    if (nestedFunction.func != null)
     {
-      instantiateFunctionReference(mv, mapping);
+      instantiateFunctionMapping(mv, nestedFunction);
 
-      List<OrderedPair<String, Class<?>>> variableEntries = context.variables.map.entrySet()
-                                                                                 .stream()
-                                                                                 .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
-                                                                                                                                 entry.getValue()
-                                                                                                                                      .getClass()))
-                                                                                 .collect(Collectors.toList());
+      var nestedFunctionsVariables = context.variables.map.entrySet()
+                                                          .stream()
+                                                          .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
+                                                                                                          entry.getValue()
+                                                                                                               .getClass()))
+                                                          .collect(Collectors.toList());
 
-      instantiateAndInitialize(mv, className, Type.getInternalName(mapping.type()), mapping.name, variableEntries);
+      instantiateNestedFunctions(mv,
+                                 className,
+                                 Type.getInternalName(nestedFunction.type()),
+                                 nestedFunction.name,
+                                 nestedFunctionsVariables);
 
     }
     else
@@ -639,18 +634,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
       mv.visitInsn(ACONST_NULL);
     }
 
-    // boolean isInterface = mapping.functionInterface != null;
-    mv.visitFieldInsn(PUTFIELD,
-                      className,
-                      mapping.name,
-                      mapping.func == null ? format("%S",
-                                                    mapping.functionInterface.descriptorString()) : mapping.func.getClass()
-                                                                                                                .descriptorString());
+    String nestedFunctionClass = nestedFunction == null ? format("%S",
+                                                                 nestedFunction.functionInterface.descriptorString()) : nestedFunction.func.getClass()
+                                                                                                                                           .descriptorString();
+    mv.visitFieldInsn(PUTFIELD, className, nestedFunction.name, nestedFunctionClass);
 
     return mv;
   }
 
-  public void instantiateFunctionReference(MethodVisitor mv, Mapping<?, ?> mapping)
+  public void instantiateFunctionMapping(MethodVisitor mv, FunctionMapping<?, ?> mapping)
   {
     mv.visitVarInsn(ALOAD, 0);
 
@@ -683,24 +675,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
   /**
    * 
    * 
-   * @param primary TODO
    * @return a newly instantiated instance of the (equivalence) class of function
    *         defined by this {@link Expression}
    */
-  public F instantiate(boolean primary)
+  public F instantiate()
   {
     try
     {
       F f;
-      if (primary)
-      {
-        f = instance = (compiledClass != null ? compiledClass : define()).getDeclaredConstructor().newInstance();
-      }
-      else
-      {
-        assert compiledClass != null : "define() must be called before instantiating since automatically calling define() is only done for the primary instance";
-        f = compiledClass.getDeclaredConstructor().newInstance();
-      }
+
+      f = instance = (compiledClass != null ? compiledClass : define()).getDeclaredConstructor().newInstance();
+
       injectVariableReferences(f);
 
       return instance;

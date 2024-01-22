@@ -110,7 +110,7 @@ public class Context
    * @throws IllegalArgumentException if a function of the same name already
    *                                  exists in this{@link #functions}
    */
-  public Mapping<?, ?> registerFunctionMapping(String functionName,
+  public FunctionMapping<?, ?> registerFunctionMapping(String functionName,
                                                Function<?, ?> function,
                                                Class<?> domainType,
                                                Class<?> rangeType,
@@ -133,7 +133,7 @@ public class Context
                                                 function));
     }
 
-    Mapping<?, ?> mapping = new Mapping<Object, Object>();
+    FunctionMapping<?, ?> mapping = new FunctionMapping<Object, Object>();
     mapping.name              = functionName;
     mapping.domain            = domainType;
     mapping.range             = rangeType;

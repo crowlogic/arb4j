@@ -94,7 +94,7 @@ public class P implements
         if (P == null)
         {
           P = new P(this);
-          P.initializeContext();
+          //P.initializeContext();
         }
 
         yield A.evaluate(in, order, bits, rp4)
@@ -140,22 +140,22 @@ public class P implements
       A var10001 = A = new A();
       A.α = α;
       A.β = β;
-      A.initializeContext();
+      //A.initializeContext();
       A = var10001;
       B var1 = B = new B();
       B.α = α;
       B.β = β;
-      B.initializeContext();
+      //B.initializeContext();
       B = var1;
       C var2 = C = new C();
       C.α = α;
       C.β = β;
-      C.initializeContext();
+     // C.initializeContext();
       C = var2;
       E var3 = E = new E();
       E.α = α;
       E.β = β;
-      E.initializeContext();
+      //E.initializeContext();
       E             = var3;
       isInitialized = true;
     }

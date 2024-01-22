@@ -14,7 +14,7 @@ import arb.functions.Function;
  * 
  * @author ©2024 Stephen Crowley
  */
-public final class Mapping<D, R>
+public final class FunctionMapping<D, R>
 {
   public Class<?> functionInterface;
 
@@ -44,7 +44,7 @@ public final class Mapping<D, R>
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Mapping<?, ?> other = (Mapping<?, ?>) obj;
+    FunctionMapping<?, ?> other = (FunctionMapping<?, ?>) obj;
     return Objects.equals(domain, other.domain) && Objects.equals(name, other.name)
                   && Objects.equals(range, other.range);
   }
