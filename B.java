@@ -7,12 +7,12 @@ public class B implements RealFunction {
    public Integer const1 = new Integer("1");
    public Real α;
    public Real β;
-   public Real r1 = new Real();
-   public Real r2 = new Real();
-   public Real r3 = new Real();
-   public Real r4 = new Real();
-   public Real r5 = new Real();
-   public Real r6 = new Real();
+   public Real ℝ1 = new Real();
+   public Real ℝ2 = new Real();
+   public Real ℝ3 = new Real();
+   public Real ℝ4 = new Real();
+   public Real ℝ5 = new Real();
+   public Real ℝ6 = new Real();
    public A A;
    public B B;
    public C C;
@@ -30,10 +30,10 @@ public class B implements RealFunction {
       } else if (this.β == null) {
          throw new AssertionError("β is null");
       } else {
-         return in.add(this.α, bits, this.r1)
-            .sub(this.const1, bits, this.r2)
-            .mul(in.add(this.β, bits, this.r3).sub(this.const1, bits, this.r4), bits, this.r5)
-            .mul((Real)this.C.evaluate(in, order, bits, this.r6), bits, result);
+         return in.add(this.α, bits, this.ℝ1)
+            .sub(this.const1, bits, this.ℝ2)
+            .mul(in.add(this.β, bits, this.ℝ3).sub(this.const1, bits, this.ℝ4), bits, this.ℝ5)
+            .mul((Real)this.C.evaluate(in, order, bits, this.ℝ6), bits, result);
       }
    }
 
@@ -48,7 +48,6 @@ public class B implements RealFunction {
          C var10001 = this.C = new C();
          this.C.α = this.α;
          this.C.β = this.β;
-         this.C.initializeContext();
          this.C = var10001;
          this.isInitialized = true;
       }
@@ -56,11 +55,11 @@ public class B implements RealFunction {
 
    public void close() {
       this.const1.close();
-      this.r1.close();
-      this.r2.close();
-      this.r3.close();
-      this.r4.close();
-      this.r5.close();
-      this.r6.close();
+      this.ℝ1.close();
+      this.ℝ2.close();
+      this.ℝ3.close();
+      this.ℝ4.close();
+      this.ℝ5.close();
+      this.ℝ6.close();
    }
 }

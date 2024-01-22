@@ -407,11 +407,11 @@ public class Compiler
     }
     else if (type.equals(RealPolynomial.class))
     {
-      return "𝕽";
+      return "r";
     }
     else if (type.equals(ComplexPolynomial.class))
     {
-      return "𝕮";
+      return "c";
     }
     else if (type.equals(Complex.class))
     {
@@ -419,7 +419,6 @@ public class Compiler
     }
     else if (type.equals(RealMatrix.class))
     {
-
       return "𝕽ᵐˣⁿ";
     }
     else if (type.equals(ComplexMatrix.class))

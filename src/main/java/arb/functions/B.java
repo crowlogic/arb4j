@@ -11,12 +11,12 @@ public class B implements
   public Integer  const1 = new Integer("1");
   public Real     α;
   public Real     β;
-  public Real     r1     = new Real();
-  public Real     r2     = new Real();
-  public Real     r3     = new Real();
-  public Real     r4     = new Real();
-  public Real     r5     = new Real();
-  public Real     r6     = new Real();
+  public Real     ℝ1     = new Real();
+  public Real     ℝ2     = new Real();
+  public Real     ℝ3     = new Real();
+  public Real     ℝ4     = new Real();
+  public Real     ℝ5     = new Real();
+  public Real     ℝ6     = new Real();
   public A        A;
   public B        B;
   public C        C;
@@ -26,61 +26,60 @@ public class B implements
 
   public Real evaluate(Real in, int order, int bits, Real result)
   {
-    if (!isInitialized)
+    if (!this.isInitialized)
     {
-      initializeContext();
+      this.initializeContext();
     }
 
-    if (α == null)
+    if (this.α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (β == null)
+    else if (this.β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      return in.add(α, bits, r1)
-               .sub(const1, bits, r2)
-               .mul(in.add(β, bits, r3).sub(const1, bits, r4), bits, r5)
-               .mul(C.evaluate(in, order, bits, r6), bits, result);
+      return in.add(this.α, bits, this.ℝ1)
+               .sub(this.const1, bits, this.ℝ2)
+               .mul(in.add(this.β, bits, this.ℝ3).sub(this.const1, bits, this.ℝ4), bits, this.ℝ5)
+               .mul((Real) this.C.evaluate(in, order, bits, this.ℝ6), bits, result);
     }
   }
 
   public void initializeContext()
   {
-    if (isInitialized)
+    if (this.isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (α == null)
+    else if (this.α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (β == null)
+    else if (this.β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      C var10001 = C = new C();
-      C.α = α;
-      C.β = β;
-      C.initializeContext();
-      C             = var10001;
-      isInitialized = true;
+      C var10001 = this.C = new C();
+      this.C.α           = this.α;
+      this.C.β           = this.β;
+      this.C             = var10001;
+      this.isInitialized = true;
     }
   }
 
   public void close()
   {
-    const1.close();
-    r1.close();
-    r2.close();
-    r3.close();
-    r4.close();
-    r5.close();
-    r6.close();
+    this.const1.close();
+    this.ℝ1.close();
+    this.ℝ2.close();
+    this.ℝ3.close();
+    this.ℝ4.close();
+    this.ℝ5.close();
+    this.ℝ6.close();
   }
 }

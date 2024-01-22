@@ -42,19 +42,19 @@ public class P implements
   public Real           β;
   public Real           ℝ1     = new Real();
   public Real           ℝ2     = new Real();
-  public RealPolynomial 𝕽1    = new RealPolynomial();
-  public RealPolynomial 𝕽2    = new RealPolynomial();
-  public RealPolynomial 𝕽3    = new RealPolynomial();
-  public RealPolynomial 𝕽4    = new RealPolynomial();
+  public RealPolynomial r1     = new RealPolynomial();
+  public RealPolynomial r2     = new RealPolynomial();
+  public RealPolynomial r3     = new RealPolynomial();
+  public RealPolynomial r4     = new RealPolynomial();
   public Integer        ℤ1     = new Integer();
-  public RealPolynomial 𝕽5    = new RealPolynomial();
-  public RealPolynomial 𝕽6    = new RealPolynomial();
+  public RealPolynomial r5     = new RealPolynomial();
+  public RealPolynomial r6     = new RealPolynomial();
   public Real           ℝ3     = new Real();
   public Real           ℝ4     = new Real();
   public Integer        ℤ2     = new Integer();
-  public RealPolynomial 𝕽7    = new RealPolynomial();
-  public RealPolynomial 𝕽8    = new RealPolynomial();
-  public RealPolynomial 𝕽9    = new RealPolynomial();
+  public RealPolynomial r7     = new RealPolynomial();
+  public RealPolynomial r8     = new RealPolynomial();
+  public RealPolynomial r9     = new RealPolynomial();
   public Real           ℝ5     = new Real();
   public Real           ℝ6     = new Real();
   public P              P;
@@ -88,23 +88,23 @@ public class P implements
       case 1 -> ((Real) this.C.evaluate(this.ℝ1.set(this.const2), order, bits, this.ℝ2))
                                                                                         .mul(result.identity(),
                                                                                              bits,
-                                                                                             this.𝕽1)
-                                                                                        .sub(this.β, bits, this.𝕽2)
-                                                                                        .add(this.α, bits, this.𝕽3)
+                                                                                             this.r1)
+                                                                                        .sub(this.β, bits, this.r2)
+                                                                                        .add(this.α, bits, this.r3)
                                                                                         .div(this.const3,
                                                                                              bits,
                                                                                              result);
       default ->
       {
-        RealPolynomial var5 = (RealPolynomial) this.A.evaluate(in, order, bits, this.𝕽4);
+        RealPolynomial var5 = (RealPolynomial) this.A.evaluate(in, order, bits, this.r4);
         if (this.P == null)
         {
           this.P = new P(this);
         }
 
-        var5 = var5.mul((RealPolynomial) this.P.evaluate(in.sub(this.const2, bits, this.ℤ1), order, bits, this.𝕽5),
+        var5 = var5.mul((RealPolynomial) this.P.evaluate(in.sub(this.const2, bits, this.ℤ1), order, bits, this.r5),
                         bits,
-                        this.𝕽6);
+                        this.r6);
         Real var10001 = (Real) this.B.evaluate(this.ℝ3.set(in), order, bits, this.ℝ4);
         if (this.P == null)
         {
@@ -114,11 +114,11 @@ public class P implements
         yield var5.sub(var10001.mul((RealPolynomial) this.P.evaluate(in.sub(this.const3, bits, this.ℤ2),
                                                                      order,
                                                                      bits,
-                                                                     this.𝕽7),
+                                                                     this.r7),
                                     bits,
-                                    this.𝕽8),
+                                    this.r8),
                        bits,
-                       this.𝕽9)
+                       this.r9)
                   .div((Real) this.E.evaluate(this.ℝ5.set(in), order, bits, this.ℝ6), bits, result);
       }
       };
@@ -190,21 +190,24 @@ public class P implements
     this.const3.close();
     this.ℝ1.close();
     this.ℝ2.close();
-    this.𝕽1.close();
-    this.𝕽2.close();
-    this.𝕽3.close();
-    this.𝕽4.close();
+    this.r1.close();
+    this.r2.close();
+    this.r3.close();
+    this.r4.close();
     this.ℤ1.close();
-    this.𝕽5.close();
-    this.𝕽6.close();
+    this.r5.close();
+    this.r6.close();
     this.ℝ3.close();
     this.ℝ4.close();
     this.ℤ2.close();
-    this.𝕽7.close();
-    this.𝕽8.close();
-    this.𝕽9.close();
+    this.r7.close();
+    this.r8.close();
+    this.r9.close();
     this.ℝ5.close();
     this.ℝ6.close();
-    this.P.close();
+    if (P != null)
+    {
+      this.P.close();
+    }
   }
 }
