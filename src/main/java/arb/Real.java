@@ -1375,8 +1375,9 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     
   public int digits()
   {
-   return 17;
+   return 22+42;
   }  
+ 
   
   public boolean  printPrecision = true;
     

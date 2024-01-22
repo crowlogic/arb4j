@@ -18,14 +18,14 @@ public class P implements
 
     try ( P P = new P())
     {
-      P.α = new Real("-0.5",
+      P.α = new Real("-0.50",
                      128);
-      P.β = new Real("-0.5",
+      P.β = new Real("-0.50",
                      128);
       P.initializeContext();
       for (int n = 0; n < 10; n++)
       {
-        RealPolynomial p = P.evaluate(new Integer(n), 128, new RealPolynomial());
+        RealPolynomial p = P.evaluate(new Integer(n), 1024, new RealPolynomial());
         polys.add(p);
         out.format("P(%d,x)=%s\n", n, p);
       }
