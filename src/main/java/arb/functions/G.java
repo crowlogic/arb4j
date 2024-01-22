@@ -1,15 +1,17 @@
 package arb.functions;
 
+import arb.Integer;
 import arb.Real;
 
 public class G implements
                Function<Void, Real>
 {
   private boolean isInitialized;
+  public Integer  const1 = new Integer("2");
   public Real     α;
   public Real     β;
-  public Real     r1 = new Real();
-  public Real     r2 = new Real();
+  public Real     r1     = new Real();
+  public Real     r2     = new Real();
   public P        P;
   public A        A;
   public B        B;
@@ -35,7 +37,7 @@ public class G implements
     }
     else
     {
-      return α.pow(2, bits, r1).sub(β.pow(2, bits, r2), bits, result);
+      return α.pow(const1, bits, r1).sub(β.pow(const1, bits, r2), bits, result);
     }
   }
 
@@ -61,6 +63,7 @@ public class G implements
 
   public void close()
   {
+    const1.close();
     r1.close();
     r2.close();
   }
