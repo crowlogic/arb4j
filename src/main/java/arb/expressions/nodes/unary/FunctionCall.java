@@ -187,19 +187,19 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                                        String fieldType)
   {
     mv.visitCode();
-    mv.visitVarInsn(ALOAD, 0); // Load "this" onto the stack
-    mv.visitFieldInsn(GETFIELD, className, fieldName, fieldType); // Get the field value
-    Label label = new Label();
-    mv.visitJumpInsn(IFNONNULL, label); // Jump if the field is not null
-    mv.visitVarInsn(ALOAD, 0); // Load "this" onto the stack
+    mv.visitVarInsn(ALOAD, 0);
+    mv.visitFieldInsn(GETFIELD, className, fieldName, fieldType);
+    Label fieldAlreadyPopulated = new Label();
+    mv.visitJumpInsn(IFNONNULL, fieldAlreadyPopulated);
+    mv.visitVarInsn(ALOAD, 0);
 
     mv.visitTypeInsn(Opcodes.NEW, className);
     mv.visitInsn(Opcodes.DUP);
     mv.visitVarInsn(Opcodes.ALOAD, 0);
     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, className, "<init>", format("(L%s;)V", className), false);
 
-    mv.visitFieldInsn(PUTFIELD, thisClassName, fieldName, fieldType); // Assign the new instance to the field
-    mv.visitLabel(label);
+    mv.visitFieldInsn(PUTFIELD, thisClassName, fieldName, fieldType);
+    mv.visitLabel(fieldAlreadyPopulated);
     mv.visitFrame(F_SAME, 0, null, 0, null);
     return mv;
   }
@@ -219,8 +219,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                expression.className,
                                functionName,
                                format("L%s;", functionName));
-
-      // functionName + " with copy constructor";
     }
     if (func == null && mapping.functionInterface == null)
     {
@@ -242,9 +240,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       expression.reserveIntermediateVariable(methodVisitor, depth + 1, mapping.domain);
     }
-//    assert arg != null : "argType should be Void when arg is null but it is "
-//                  + argType + " for " + this
-//                  + " so the right thing to do is to generate the 0 element for the given type, this will be so that -x is interpreted as 0-x";
+
     if (arg != null)
     {
       arg.generate(methodVisitor, argType);
@@ -276,9 +272,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     loadOutputVariableOntoStack(methodVisitor, expression, verbose, type);
 
-    expression.callContextualUnaryFunction(methodVisitor, mapping, type);
-
-    return methodVisitor;
+    return expression.callContextualUnaryFunction(methodVisitor, mapping, type);
   }
 
   public boolean isBuiltin()
