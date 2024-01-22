@@ -10,13 +10,9 @@ public class G implements
   public Integer  const1 = new Integer("2");
   public Real     α;
   public Real     β;
-  public Real     r1     = new Real();
-  public Real     r2     = new Real();
-  public P        P;
-  public A        A;
-  public B        B;
+  public Real     ℝ1     = new Real();
+  public Real     ℝ2     = new Real();
   public C        C;
-  public E        E;
   public F        F;
   public G        G;
 
@@ -37,7 +33,7 @@ public class G implements
     }
     else
     {
-      return this.α.pow(this.const1, bits, this.r1).sub(this.β.pow(this.const1, bits, this.r2), bits, result);
+      return this.α.pow(this.const1, bits, this.ℝ1).sub(this.β.pow(this.const1, bits, this.ℝ2), bits, result);
     }
   }
 
@@ -64,7 +60,7 @@ public class G implements
   public void close()
   {
     this.const1.close();
-    this.r1.close();
-    this.r2.close();
+    this.ℝ1.close();
+    this.ℝ2.close();
   }
 }
