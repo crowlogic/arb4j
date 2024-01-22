@@ -12,7 +12,6 @@ public class E implements
   public Integer  const2 = new Integer("1");
   public Real     α;
   public Real     β;
-  public Real     G;
   public Real     r1     = new Real();
   public Real     r2     = new Real();
   public Real     r3     = new Real();
@@ -22,56 +21,52 @@ public class E implements
   public C        C;
   public E        E;
   public F        F;
+  public G        G;
 
   public Real evaluate(Real in, int order, int bits, Real result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initializeContext();
+      initializeContext();
     }
 
-    return in.mul((Real) this.C.evaluate(in.div(this.const1, bits, this.r1), order, bits, this.r2), bits, this.r3)
-             .mul((Real) this.C.evaluate(in.sub(this.const2, bits, this.r4), order, bits, this.r5), bits, result);
+    return in.mul(C.evaluate(in.div(const1, bits, r1), order, bits, r2), bits, r3)
+             .mul(C.evaluate(in.sub(const2, bits, r4), order, bits, r5), bits, result);
   }
 
   public void initializeContext()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
-    else if (this.G == null)
-    {
-      throw new AssertionError("G is null");
-    }
     else
     {
-      C var10001 = this.C = new C();
-      this.C.α = this.α;
-      this.C.β = this.β;
-      this.C.G = this.G;
-      this.C.initializeContext();
-      this.C             = var10001;
-      this.isInitialized = true;
+      C var10001 = C = new C();
+      C.α = α;
+      C.β = β;
+      C.initializeContext();
+      C             = var10001;
+      isInitialized = true;
     }
   }
 
   public void close()
   {
-    this.const1.close();
-    this.const2.close();
-    this.r1.close();
-    this.r2.close();
-    this.r3.close();
-    this.r4.close();
-    this.r5.close();
+    const1.close();
+    const2.close();
+    r1.close();
+    r2.close();
+    r3.close();
+    r4.close();
+    r5.close();
   }
 }
