@@ -22,7 +22,7 @@ public class P implements
       P.β = new Real("-0.50",
                      128);
       P.initializeContext();
-      for (int n = 0; n < 10; n++)
+      for (int n = 0; n < 11; n++)
       {
         RealPolynomial p = P.evaluate(new Integer(n), 1024, new RealPolynomial());
         polys.add(p);

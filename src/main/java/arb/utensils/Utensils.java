@@ -39,11 +39,11 @@ public class Utensils
   public static String toSuperscript(int number)
   {
     StringBuilder result    = new StringBuilder();
-    String numberStr = Integer.toString(number);
+    String        numberStr = Integer.toString(number);
 
     for (int i = 0; i < numberStr.length(); i++)
     {
-      result.append( digitToSuperscript(numberStr.charAt(i)) );
+      result.append(digitToSuperscript(numberStr.charAt(i)));
     }
 
     return result.toString();
@@ -54,25 +54,25 @@ public class Utensils
     switch (digit)
     {
     case '0':
-      return '\u2070';
+      return '⁰';
     case '1':
-      return '\u00B9';
+      return '¹';
     case '2':
-      return '\u00B2';
+      return '²';
     case '3':
-      return '\u00B3';
+      return '³';
     case '4':
-      return '\u2074';
+      return '⁴';
     case '5':
-      return '\u2075';
+      return '⁵';
     case '6':
-      return '\u2076';
+      return '⁶';
     case '7':
-      return '\u2077';
+      return '⁷';
     case '8':
-      return '\u2078';
+      return '⁸';
     case '9':
-      return '\u2079';
+      return '⁹';
     default:
       throw new IllegalArgumentException("Not a digit: " + digit);
     }
