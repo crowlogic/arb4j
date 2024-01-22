@@ -80,7 +80,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     this.operation = operation;
     this.left      = left;
     this.depth     = depth;
-    assert left != null && right != null : "one or more of the operands to this were missing: " + this;
+    assert left != null && right != null : "one or more of the operands to this were missing: " + this + " set 0 value based on type here";
   }
 
   @Override
