@@ -129,6 +129,14 @@ public class P implements
     }
     else
     {
+      // FIXME: declare, initialize and use only the functions that are used by this
+      // function and are NOT recursive. If this is a recursive function, the
+      // independent copy of the function should be spawned just before use in the
+      // evaluate method.. ideally, the Context should be made a member of the
+      // generated class and intead of just doing new Function the object pool should
+      // be made to work with the context and then the function should get the new
+      // instance of the function object, use it, and then return it to the pool after
+      // its done
       A var10001 = A = new A();
       A.α = α;
       A.β = β;
