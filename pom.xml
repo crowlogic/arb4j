@@ -8,8 +8,8 @@
 	<properties>
 		<maven.javadoc.failOnError>false</maven.javadoc.failOnError>
 		<mdep.outputFile>class.path</mdep.outputFile>
-		<maven.compiler.source>21</maven.compiler.source>
-		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.source>20</maven.compiler.source>
+		<maven.compiler.target>20</maven.compiler.target>
 	</properties>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -38,6 +38,24 @@
 					</additionalJOptions>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>org.graalvm.nativeimage</groupId>
+                <artifactId>native-image-maven-plugin</artifactId>
+                <version>21.2.0</version>
+                <configuration>
+                    <mainClass>arb.functions.polynomials.orthogonal.JacobiPolynomialSequence</mainClass>
+                    <buildArgs>
+                    </buildArgs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>native-image</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -110,6 +128,11 @@
 			<groupId>com.massisframework</groupId>
 			<artifactId>j-text-utils</artifactId>
 			<version>0.3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.graalvm.sdk</groupId>
+			<artifactId>graal-sdk</artifactId>
+			<version>22.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.scilab.forge</groupId>
