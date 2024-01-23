@@ -42,14 +42,12 @@ public class ComplexTest extends
       x.get(i).getReal().set(xval);
       double yval = Math.cos(xval / 10.0);
       y.get(i).getReal().set(yval);
-      System.out.format("f[%s]=%s\n", x.get(i).getReal(), y.get(i).getReal());
     });
 
     ComplexPolynomial interpolator = x.interpolateNewton(y, 3, 256, new ComplexPolynomial());
     Complex           coeffs       = interpolator.getCoeffs();
 
-    System.out.format("interpolator=%s\n", interpolator);
-    System.out.format("Coeffs=%s\n", coeffs);
+   
     // TODO: make the Real class so that it can be constructed with a Stream<Real>
   }
 
