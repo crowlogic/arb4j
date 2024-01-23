@@ -38,27 +38,7 @@
           </additionalJOptions>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.graalvm.nativeimage</groupId>
-        <artifactId>native-image-maven-plugin</artifactId>
-        <version>21.2.0</version>
-        <configuration>
-          <mainClass>
-            arb.functions.polynomials.orthogonal.JacobiPolynomialSequence</mainClass>
-          <buildArgs>
-            <buildArg>--enable-preview</buildArg>
-          </buildArgs>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>native-image</goal>
-            </goals>
-            <phase>package</phase>
 
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -90,6 +70,35 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>native</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.nativeimage</groupId>
+            <artifactId>native-image-maven-plugin</artifactId>
+            <version>21.2.0</version>
+            <configuration>
+              <mainClass>
+                arb.functions.polynomials.orthogonal.JacobiPolynomialSequence</mainClass>
+              <buildArgs>
+                <buildArg>--enable-preview</buildArg>
+              </buildArgs>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>native-image</goal>
+                </goals>
+
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <dependencies>
 
     <dependency>
