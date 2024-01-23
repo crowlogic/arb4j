@@ -5,6 +5,7 @@ import static java.lang.Math.max;
 import arb.Complex;
 import arb.ComplexConstants;
 import arb.Real;
+import arb.functions.Function;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
@@ -93,7 +94,7 @@ public class Lemniscate implements
 
   @SuppressWarnings("unchecked")
   @Override
-  public ComplexFunction inverse(int branch)
+  public Function<Complex,Real> inverse(int branch)
   {
     switch (branch)
     {

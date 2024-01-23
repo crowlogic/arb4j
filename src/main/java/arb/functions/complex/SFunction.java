@@ -7,6 +7,9 @@ import arb.Complex;
 import arb.Real;
 import arb.RealConstants;
 import arb.exceptions.NotDifferentiableException;
+import arb.functions.F;
+import arb.functions.Function;
+import arb.functions.real.RealFunction;
 
 /**
  * The rational meromorphic quartic
@@ -128,9 +131,8 @@ public class SFunction implements
     return 4;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public synchronized ComplexFunction inverse(int branch)
+  public synchronized Function<Complex, Complex> inverse(int branch)
   {
     assert false : "TODO: redo with expression compiler";
     return null;

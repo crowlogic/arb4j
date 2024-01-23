@@ -2,10 +2,13 @@ package arb.functions;
 
 import static arb.expressions.Expression.instantiate;
 
+import arb.Complex;
+import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.complex.ComplexFunction;
+import arb.functions.real.RealFunction;
 
 @SuppressWarnings("unchecked")
 public interface Function<D, R> extends
@@ -114,7 +117,7 @@ public interface Function<D, R> extends
     return 0;
   }
 
-  public default <F extends Function<R, D>> F inverse(int branch)
+  public default Function<R, D> inverse(int branch)
   {
     assert false : "TODO: implement in " + getClass();
     return null;

@@ -1,6 +1,7 @@
 package arb.stochastic;
 
 import arb.Real;
+import arb.functions.Function;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.RandomVectorGenerator;
 
@@ -22,7 +23,7 @@ public interface ProbabilityDistributionFunction extends
    */
   public default Real sample(RandomVectorGenerator generator, int resolution, Real result)
   {
-    RealFunction inverse  = inverse();
+    Function<Real, Real> inverse  = inverse();
     Real         u        = result.random(generator.getRandomState(), resolution);
     Real         evaluate = inverse.evaluate(u, 1, resolution, result);
     return evaluate;
