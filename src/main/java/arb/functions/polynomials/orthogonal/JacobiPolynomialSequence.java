@@ -1,8 +1,10 @@
 package arb.functions.polynomials.orthogonal;
 
 import static java.lang.System.out;
+import static java.util.stream.Collectors.toList;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import arb.Integer;
@@ -14,6 +16,7 @@ import arb.expressions.Context;
 import arb.expressions.Variables;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
+import arb.utensils.ShellFunctions;
 
 /**
  *
@@ -63,30 +66,30 @@ public class JacobiPolynomialSequence implements
 {
   public static void main(String args[])
   {
-    JacobiPolynomialSequence P = new JacobiPolynomialSequence(Real.of("-0.5", 128),
-                                                              Real.of("-0.5", 128));
+    JacobiPolynomialSequence P     = new JacobiPolynomialSequence(Real.of("-0.5", 128),
+                                                                  Real.of("-0.5", 128));
 
-    IntStream.range(0, 10)
-             .mapToObj(n -> P.evaluate(new Integer(n), 128, new RealPolynomial()))
-             .forEach(p -> out.format("P(%d,x)=%s\n", p.getLength() - 1, p));
+    List<RealPolynomial>     polys = IntStream.range(0, 10)
+                                              .mapToObj(n -> P.evaluate(new Integer(n), 128, new RealPolynomial()))
+                                              .collect(toList());
 
-    // ShellFunctions.plot(-1, 1, 1000, polys.toArray(new
-    // RealPolynomial[polys.size()]));
+    polys.forEach(p -> out.format("P(%d,x)=%s\n", p.getLength() - 1, p));
+
+    ShellFunctions.plot(-1, 1, 1000, polys.toArray(new RealPolynomial[polys.size()]));
 
   }
 
-  public int                                     bits    = 128;
-  public final Real                              α       = new Real().setName("α");
-  public final Real                              β       = new Real().setName("β");
-  final Variables                                vars    = new Variables(α,
-                                                                         β);
+  public int                      bits    = 128;
+  public final Real               α       = new Real().setName("α");
+  public final Real               β       = new Real().setName("β");
+  final Variables                 vars    = new Variables(α,
+                                                          β);
 
   final arb.functions.generated.P P;
-  
-  final Context                                  context = new Context(vars);
 
-  final public static boolean                    verbose = false;
+  final Context                   context = new Context(vars);
 
+  final public static boolean     verbose = false;
 
 //  final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
 //
@@ -127,14 +130,14 @@ public class JacobiPolynomialSequence implements
 //                                                                            "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
 //                                                                            context,
 //                                                                            verbose);
-  private RealFunction                           orthogonalityMeasure;
+  private RealFunction            orthogonalityMeasure;
 
   public JacobiPolynomialSequence(Real a, Real b)
   {
     bits = Math.max(128, Math.max(a.bits(), b.bits()));
     this.α.set(a);
     this.β.set(b);
-    P = new arb.functions.generated.P();
+    P   = new arb.functions.generated.P();
     P.α = α;
     P.β = β;
   }

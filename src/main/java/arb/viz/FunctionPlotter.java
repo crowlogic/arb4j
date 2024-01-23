@@ -1,5 +1,7 @@
 package arb.viz;
 
+import static java.util.stream.Collectors.toList;
+
 import arb.functions.real.FunctionSampler;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
@@ -35,19 +37,23 @@ public class FunctionPlotter extends
   public final XYChart       chart     = new XYChart(xAxis,
                                                      yAxis);
 
-  boolean drawMarkers = false;
-
   public Stage createScene()
   {
-    Platform.setImplicitExit(drawMarkers);
+    Platform.setImplicitExit(false);
     stage = new Stage();
     initializeFuctions();
     root = new StackPane();
     configureChartPlugins();
     root.getChildren().add(chart);
-    ErrorDataSetRenderer renderer = (ErrorDataSetRenderer) (chart.getRenderers().get(0));
-    renderer.setDrawMarker(drawMarkers);
-        
+    for (var renderer : chart.getRenderers()
+                             .stream()
+                             .filter(renderer -> renderer instanceof ErrorDataSetRenderer)
+                             .collect(toList()))
+    {
+      ErrorDataSetRenderer ballDataRenderer = (ErrorDataSetRenderer) renderer;
+      ballDataRenderer.setDrawMarker(false);
+    }
+
     scene = new Scene(root,
                       1500,
                       750);
