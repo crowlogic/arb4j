@@ -84,6 +84,7 @@
                 arb.functions.polynomials.orthogonal.JacobiPolynomialSequence</mainClass>
               <buildArgs>
                 <buildArg>--enable-preview</buildArg>
+                <buildArg>-march=native</buildArg>
               </buildArgs>
             </configuration>
             <executions>
