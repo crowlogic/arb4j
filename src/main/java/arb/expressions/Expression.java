@@ -211,7 +211,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                                   functionName;
 
-  boolean                                         save                  = true;
+  boolean                                         save                  = false;
 
   boolean                                         checkClass            = false;
 
