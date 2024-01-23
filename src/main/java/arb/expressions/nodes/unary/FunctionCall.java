@@ -1,13 +1,11 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBits;
-import static arb.expressions.Compiler.loadOrder;
-import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadResultParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
-import static java.lang.System.err;
-import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.F_SAME;
 import static org.objectweb.asm.Opcodes.GETFIELD;
@@ -99,12 +97,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public MethodVisitor generate(MethodVisitor methodVisitor, Class<?> resultType)
   {
 
-    if (verbose)
-    {
-      out.format("\n%s: generate(resultType=%s)\n\n", this, resultType);
-      out.flush();
-    }
-
     if (functionName.equals(expression.functionName))
     {
       contextual           = true;
@@ -130,38 +122,21 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
     var     expression                = arg.expression;
-    boolean verbose                   = expression.verbose;
     boolean needsResultTypeConversion = !resultType.equals(type());
-    if (verbose)
-    {
-      out.format("\n%s: generateBuiltinFunctionCall(resultType=%s)\n\n", this, resultType);
-      out.flush();
-    }
+
     if (needsResultTypeConversion)
     {
-      loadResult(methodVisitor, verbose);
-    }
-    if (verbose)
-    {
-      out.format("\nGenerating arg of type %s\n   for\n%s\n\n", arg, this);
-      out.flush();
+      loadResultParameter(methodVisitor);
     }
 
     arg.generate(methodVisitor, expression.domainType);
-    loadBits(methodVisitor);
+    loadBitsParameter(methodVisitor);
 
-    loadOutputVariableOntoStack(methodVisitor, expression, verbose, resultType);
+    loadOutputVariableOntoStack(methodVisitor, expression, resultType);
 
     Class<?> domainType = getDomainType();
     Class<?> rangeType  = targetResultType;
-    if (verbose)
-    {
-      out.format("\ngenerateCallToBuiltinUnaryFunction(functionName=%s, domainType=%s, rangeType=%s\n\n",
-                 functionName,
-                 domainType,
-                 rangeType);
-      out.flush();
-    }
+
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
                                   functionName,
@@ -169,7 +144,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                   false);
     if (needsResultTypeConversion)
     {
-      invokeSetMethod(methodVisitor, targetResultType, resultType, true);
+      invokeSetMethod(methodVisitor, targetResultType, resultType);
 
     }
     return methodVisitor;
@@ -207,7 +182,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    boolean               verbose     = expression.verbose;
     Class<?>              type        = type();
     FunctionMapping<D, R> mapping     = expression.context.functions.get(functionName);
     F                     func        = (F) mapping.func;
@@ -241,15 +215,15 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       expression.reserveIntermediateVariable(methodVisitor, depth + 1, mapping.domain);
     }
 
-    if (arg != null)
+    if (isVoid)
     {
-      arg.generate(methodVisitor, argType);
+      methodVisitor.visitInsn(Opcodes.ACONST_NULL);
     }
     else
     {
-      methodVisitor.visitInsn(Opcodes.ACONST_NULL);
-
+      arg.generate(methodVisitor, argType);
     }
+
     Class<?> typeAfter = isVoid ? Void.class : arg.type();
 
     assert typeBefore.equals(typeAfter)
@@ -257,20 +231,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (needsArgTypeConversion)
     {
-      invokeSetMethod(methodVisitor, arg.type(), mapping.domain, verbose);
+      invokeSetMethod(methodVisitor, arg.type(), mapping.domain);
     }
 
-    loadOrder(methodVisitor);
-    loadBits(methodVisitor);
+    loadOrderParameter(methodVisitor);
+    loadBitsParameter(methodVisitor);
 
-    if (verbose)
-    {
-      err.format("\n%s: generateContextualFunctionCall(resultType=%s)\n", this, resultType);
-      err.flush();
-
-    }
-
-    loadOutputVariableOntoStack(methodVisitor, expression, verbose, type);
+    loadOutputVariableOntoStack(methodVisitor, expression, type);
 
     return expression.callContextualUnaryFunction(methodVisitor, mapping, type);
   }

@@ -1,6 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.loadInput;
+import static arb.expressions.Compiler.loadInputParameter;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.GOTO;
 
@@ -64,7 +64,7 @@ public class When<D, R, F extends Function<D, R>> extends
       });
       arg.isResult = isResult;
 
-      Compiler.checkClassCast(loadInput(mv), expression.domainType);
+      Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                          Type.getInternalName(Integer.class),
                          "getSignedValue",
@@ -206,7 +206,7 @@ public class When<D, R, F extends Function<D, R>> extends
                                                      expression.position,
                                                      expression,
                                                      expression.ch,
-                                                     expression.lastCh));
+                                                     expression.previousCharacter));
       }
 
       Node<D, R, F> condition = expression.parse(depth + 1);

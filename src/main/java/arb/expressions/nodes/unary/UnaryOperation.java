@@ -1,7 +1,7 @@
 package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.loadResultParameter;
 import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
 
 import org.objectweb.asm.MethodVisitor;
@@ -75,12 +75,11 @@ public abstract class UnaryOperation<D, R, F extends Function<D, R>> extends
 
   protected void loadOutputVariableOntoStack(MethodVisitor methodVisitor,
                                              Expression<D, R, F> expression,
-                                             boolean verbose,
                                              Class<?> resultType)
   {
     if (isResult)
     {
-      checkClassCast(loadResult(methodVisitor, verbose), resultType);
+      checkClassCast(loadResultParameter(methodVisitor), resultType);
     }
     else
     {

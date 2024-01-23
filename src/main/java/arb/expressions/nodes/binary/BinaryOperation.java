@@ -1,7 +1,7 @@
 package arb.expressions.nodes.binary;
 
 import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.loadBits;
+import static arb.expressions.Compiler.loadBitsParameter;
 import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
 import static arb.expressions.Compiler.prepareStackForReusingRightSide;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
@@ -110,11 +110,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
 
     generatedType = resultType;
-    if (verbose)
-    {
-      System.out.format("\n%s: generate(resultType=%s)\n\n", this, resultType);
-      System.out.flush();
-    }
 
     left.generate(mv, left.type());
     right.generate(mv, right.type());
@@ -139,7 +134,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     Class<?> targetResultType = expression.rangeType;
 
-    loadBits(mv);
+    loadBitsParameter(mv);
     loadResult(mv, resultType, targetResultType);
 
     var leftGeneratedType = left.getGeneratedType();
@@ -171,7 +166,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
     if (isResult)
     {
-      checkClassCast(Compiler.loadResult(mv, verbose), resultType);
+      checkClassCast(Compiler.loadResultParameter(mv), resultType);
     }
     else if ((reusableNode = getAReusableNode()) != null)
     {

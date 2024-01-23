@@ -4,27 +4,35 @@ import arb.functions.Function;
 
 public class F implements Function<Integer, Real> {
    private boolean isInitialized;
-   public Integer const1 = new Integer("1");
+   Integer const1;
    public Real α;
    public Real β;
-   public Real r1 = new Real();
-   public Integer i1 = new Integer();
-   public Real r2 = new Real();
-   public Real r3 = new Real();
-   public Real r4 = new Real();
-   public C C;
-   public F F;
+   public Real ℝ1;
+   public Integer ℤ1;
+   public Real ℝ2;
+   public Real ℝ3;
+   public Real ℝ4;
+   public final C C = new C();
 
    public Real evaluate(Integer in, int order, int bits, Real result) {
       if (!this.isInitialized) {
-         this.initializeContext();
+         this.initializeVariableReferences();
       }
 
-      return ((Real)this.C.evaluate(this.r1.set(in.sub(this.const1, bits, this.i1)), order, bits, this.r2))
-         .mul((Real)this.C.evaluate(this.r3.set(in), order, bits, this.r4), bits, result);
+      return ((Real)this.C.evaluate(this.ℝ1.set(in.sub(this.const1, bits, this.ℤ1)), order, bits, this.ℝ2))
+         .mul((Real)this.C.evaluate(this.ℝ3.set(in), order, bits, this.ℝ4), bits, result);
    }
 
-   public void initializeContext() {
+   public F() {
+      this.const1 = new Integer("1");
+      this.ℝ1 = new Real();
+      this.ℤ1 = new Integer();
+      this.ℝ2 = new Real();
+      this.ℝ3 = new Real();
+      this.ℝ4 = new Real();
+   }
+
+   public void initializeVariableReferences() {
       if (this.isInitialized) {
          throw new AssertionError("Already initialized");
       } else if (this.α == null) {
@@ -32,21 +40,18 @@ public class F implements Function<Integer, Real> {
       } else if (this.β == null) {
          throw new AssertionError("β is null");
       } else {
-         C var10001 = this.C = new C();
          this.C.α = this.α;
          this.C.β = this.β;
-         this.C.initializeContext();
-         this.C = var10001;
          this.isInitialized = true;
       }
    }
 
    public void close() {
       this.const1.close();
-      this.r1.close();
-      this.i1.close();
-      this.r2.close();
-      this.r3.close();
-      this.r4.close();
+      this.ℝ1.close();
+      this.ℤ1.close();
+      this.ℝ2.close();
+      this.ℝ3.close();
+      this.ℝ4.close();
    }
 }

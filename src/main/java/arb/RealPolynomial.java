@@ -8,14 +8,10 @@
 
 package arb;
 
-import static arb.arblib.arb_poly_clear;
-import static arb.arblib.arb_poly_evaluate;
-import static arb.arblib.arb_poly_evaluate2;
-import static arb.arblib.arb_poly_product_roots;
-
+import static arb.arblib.*;
+import arb.functions.real.RealFunction;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
-import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 
 /**

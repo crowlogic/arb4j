@@ -1,7 +1,7 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.loadThisOntoStack;
-import static java.lang.System.out;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.DUP;
@@ -25,9 +25,9 @@ import arb.functions.Function;
 
 /**
  * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
+ * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
+ * TeXmacs formatted versions of the same document respectively.
  */
 public class LiteralConstant<D, R, F extends Function<D, R>> extends
                             Node<D, R, F>
@@ -37,7 +37,6 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
     return isInt ? Integer.class : Real.class;
   }
 
@@ -65,6 +64,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   {
     super(expression,
           depth + 1);
+    assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
     value = constantValueString.trim();
     isInt = !((value.contains(".") || constantSymbols.contains(value)));
 
@@ -78,10 +78,6 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     {
       if (existingConstant.value.equals(value))
       {
-        if (verbose)
-        {
-          out.println("Reusing " + existingConstant);
-        }
         fieldName = existingConstant.fieldName;
         return;
       }
@@ -92,24 +88,12 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
       fieldName = expression.getNextConstantFieldName();
     }
 
-    if (verbose)
-    {
-      out.format("\nAdding constant %s of type %s to %s with value %s\n\n", fieldName, type(), expression, value);
-      out.flush();
-    }
     expression.literalConstants.add(this);
   }
 
-  /**
-   * Call {@link ClassVisitor#visitField(int, String, String, String, Object)}
-   * with {@link #fieldName} and type given by {@link #type()}
-   * 
-   * @param classVisitor
-   * @return classVisitor
-   */
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    classVisitor.visitField(ACC_PUBLIC, fieldName, type().descriptorString(), null, null);
+    classVisitor.visitField(ACC_PUBLIC & ACC_FINAL, fieldName, type().descriptorString(), null, null);
     return classVisitor;
   }
 
@@ -137,11 +121,6 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (verbose)
-    {
-      out.println(this);
-    }
-
     if (π.equals(fieldName))
     {
       mv.visitFieldInsn(Opcodes.GETSTATIC,

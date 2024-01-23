@@ -4,25 +4,20 @@ import arb.functions.real.RealFunction;
 
 public class B implements RealFunction {
    private boolean isInitialized;
-   public Integer const1 = new Integer("1");
+   Integer const1;
    public Real α;
    public Real β;
-   public Real ℝ1 = new Real();
-   public Real ℝ2 = new Real();
-   public Real ℝ3 = new Real();
-   public Real ℝ4 = new Real();
-   public Real ℝ5 = new Real();
-   public Real ℝ6 = new Real();
-   public A A;
-   public B B;
-   public C C;
-   public E E;
-   public F F;
-   public G G;
+   public Real ℝ1;
+   public Real ℝ2;
+   public Real ℝ3;
+   public Real ℝ4;
+   public Real ℝ5;
+   public Real ℝ6;
+   public final C C = new C();
 
    public Real evaluate(Real in, int order, int bits, Real result) {
       if (!this.isInitialized) {
-         this.initializeContext();
+         this.initializeVariableReferences();
       }
 
       if (this.α == null) {
@@ -37,7 +32,17 @@ public class B implements RealFunction {
       }
    }
 
-   public void initializeContext() {
+   public B() {
+      this.const1 = new Integer("1");
+      this.ℝ1 = new Real();
+      this.ℝ2 = new Real();
+      this.ℝ3 = new Real();
+      this.ℝ4 = new Real();
+      this.ℝ5 = new Real();
+      this.ℝ6 = new Real();
+   }
+
+   public void initializeVariableReferences() {
       if (this.isInitialized) {
          throw new AssertionError("Already initialized");
       } else if (this.α == null) {
@@ -45,10 +50,8 @@ public class B implements RealFunction {
       } else if (this.β == null) {
          throw new AssertionError("β is null");
       } else {
-         C var10001 = this.C = new C();
          this.C.α = this.α;
          this.C.β = this.β;
-         this.C = var10001;
          this.isInitialized = true;
       }
    }

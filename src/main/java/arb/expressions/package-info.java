@@ -1,19 +1,8 @@
 /**
- *
  * The arb.expression package provides classes and interfaces for representing,
  * transforming, and evaluating mathematical expressions. It's currently
  * designed to handle {@link arb.Real} numbered expressions, but future updates
  * will have expanded functionality to handle holomorphic functions as well.
- *
- * <h1>PRIORITIES</h1>
- * <ul>
- * <li>expression compiler: integer-valued literal-constants should map to
- * integer-versions of arblib calls if they exist #222</li>
- * <li>Complex types</li>
- * <li>Mixed Real -> Complex and Complex -> Real types</li>
- * <li>Other Fields like the Field of Rationals, which will require swig
- * mappings for the corresponding flint structures...</li>
- * </ul>
  * 
  * <p>
  * The package primarily revolves around the {@link arb.expressions.Expression}

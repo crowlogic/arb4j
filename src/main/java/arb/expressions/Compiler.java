@@ -1,18 +1,13 @@
 package arb.expressions;
 
 import static arb.expressions.Parser.expressionToUniqueClassname;
-import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_SUPER;
 import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.DUP;
 import static org.objectweb.asm.Opcodes.DUP2_X1;
 import static org.objectweb.asm.Opcodes.DUP_X1;
 import static org.objectweb.asm.Opcodes.DUP_X2;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.POP2;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
 import static org.objectweb.asm.Opcodes.SWAP;
 import static org.objectweb.asm.Opcodes.V21;
 import static org.objectweb.asm.Opcodes.V_PREVIEW;
@@ -28,7 +23,6 @@ import org.objectweb.asm.signature.SignatureWriter;
 import arb.Complex;
 import arb.ComplexMatrix;
 import arb.ComplexPolynomial;
-import arb.Field;
 import arb.Integer;
 import arb.Real;
 import arb.RealMatrix;
@@ -137,11 +131,6 @@ public class Compiler
                                                              context,
                                                              functionName);
 
-    if (verbose)
-    {
-      expression.verbose = true;
-    }
-
     expression.generate().define();
 
     return expression;
@@ -158,16 +147,6 @@ public class Compiler
     return compile(className, expressionString, context, domainClass, rangeClass, functionClass, verbose, null);
   }
 
-  /**
-   * Invokes {@link CompiledExpressionClassLoader} to define a {@link Class}
-   * extending {@link Function}
-   * 
-   * @param <D>       the type of {@link Field} of the domain
-   * @param <R>       the type of {@link Field} of the range
-   * @param <F>       the type of {@link Function}
-   * @param bytecodes the JVM opcodes defining the class
-   * @return a {@link Class} ready to be instantiated and evaluated
-   */
   @SuppressWarnings("unchecked")
   public static <D, R, F extends Function<? extends D, ? extends R>> Class<F> defineFunctionClass(String className,
                                                                                                   byte[] bytecodes,
@@ -201,30 +180,14 @@ public class Compiler
 
     if (isGenericFunction)
     {
-
-      SignatureWriter sw = new SignatureWriter();
-
-      // Superclass (Object)
-      sw.visitSuperclass().visitClassType(Type.getInternalName(Object.class));
-      sw.visitEnd();
-
-      // Interface Function<arb.Integer, arb.RealPolynomial>
-      sw.visitInterface();
-      sw.visitClassType(Type.getInternalName(Function.class));
-      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(expression.domainType));
-      sw.visitEnd();
-      sw.visitTypeArgument('=').visitClassType(Type.getInternalName(expression.rangeType));
-      sw.visitEnd();
-      sw.visitEnd(); // End of interface
-
-      classSignature = sw.toString();
-
+      classSignature = expression.getTypeSignature();
     }
 
     classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, new String[]
     { expression.functionClassInternalName });
     return classVisitor;
   }
+
 
   /**
    * Loads the 2nd argument (order) onto the stack
@@ -236,7 +199,7 @@ public class Compiler
    * 
    * @return methodVisitor the {@link MethodVisitor} parameter
    */
-  public static MethodVisitor loadOrder(MethodVisitor methodVisitor)
+  public static MethodVisitor loadOrderParameter(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(Opcodes.ILOAD, 2);
     return methodVisitor;
@@ -252,7 +215,7 @@ public class Compiler
    * 
    * @return methodVisitor the {@link MethodVisitor} parameter
    */
-  public static MethodVisitor loadBits(MethodVisitor methodVisitor)
+  public static MethodVisitor loadBitsParameter(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(Opcodes.ILOAD, 3);
     return methodVisitor;
@@ -268,7 +231,7 @@ public class Compiler
    * 
    * @return methodVisitor the {@link MethodVisitor} parameter
    */
-  public static MethodVisitor loadInput(MethodVisitor methodVisitor)
+  public static MethodVisitor loadInputParameter(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(Opcodes.ALOAD, 1);
     return methodVisitor;
@@ -285,13 +248,8 @@ public class Compiler
    * 
    * @return methodVisitor
    */
-  public static MethodVisitor loadResult(MethodVisitor methodVisitor, boolean verbose)
+  public static MethodVisitor loadResultParameter(MethodVisitor methodVisitor)
   {
-    if (verbose)
-    {
-      out.format("\nloadResult()\n\n");
-      out.flush();
-    }
     methodVisitor.visitVarInsn(Opcodes.ALOAD, 4);
     return methodVisitor;
   }
@@ -352,7 +310,7 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> inType, Class<?> outType, boolean verbose)
+  public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> inType, Class<?> outType)
   {
     assert !outType.getClass().equals(Void.class) : "invokeSetMethod shouldnt be called for Void type";
 
@@ -367,14 +325,12 @@ public class Compiler
   public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
   {
     String checking = Type.getInternalName(type);
-
     methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
     return methodVisitor;
   }
 
   public static String getFunctionTypeSignature(Class<?> domain, Class<?> range)
   {
-
     SignatureWriter signatureWriter = new SignatureWriter();
 
     signatureWriter.visitClassType(Type.getInternalName(Function.class));
@@ -395,7 +351,7 @@ public class Compiler
 
   }
 
-  public static String getIntermediateVariablePrefix(Class<?> type)
+  public static String getVariablePrefix(Class<?> type)
   {
     if (type.equals(Real.class))
     {
@@ -407,11 +363,11 @@ public class Compiler
     }
     else if (type.equals(RealPolynomial.class))
     {
-      return "r";
+      return "𝕽";
     }
     else if (type.equals(ComplexPolynomial.class))
     {
-      return "c";
+      return "𝕮";
     }
     else if (type.equals(Complex.class))
     {
@@ -429,23 +385,6 @@ public class Compiler
     {
       throw new RuntimeException("unrecognized type " + type);
     }
-  }
-
-  public static void generateNewField(MethodVisitor mv,
-                                      String fieldName,
-                                      String ownerClassInternalName,
-                                      String fieldTypeInternalName,
-                                      String genericFieldInternalName)
-  {
-//    System.out.format("generateNewField( fieldName=%s, ownerClassInternalName=%s, fieldTypeIntervalName=%s)\n",
-//                      fieldName,
-//                      ownerClassInternalName,
-//                      fieldTypeInternalName);
-    mv.visitVarInsn(ALOAD, 0);
-    mv.visitTypeInsn(NEW, fieldTypeInternalName);
-    mv.visitInsn(DUP);
-    mv.visitMethodInsn(INVOKESPECIAL, fieldTypeInternalName, "<init>", "()V", false);
-    mv.visitFieldInsn(PUTFIELD, ownerClassInternalName, fieldName, "L" + genericFieldInternalName + ";");
   }
 
 }

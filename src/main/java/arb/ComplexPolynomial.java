@@ -8,10 +8,7 @@
 
 package arb;
 
-import static arb.arblib.acb_poly_clear;
-import static arb.arblib.acb_poly_evaluate;
-import static arb.arblib.acb_poly_evaluate2;
-import static arb.arblib.acb_poly_product_roots;
+import static arb.arblib.*;
 
 import arb.functions.complex.ComplexFunction;
 

@@ -1,9 +1,8 @@
 package arb.expressions.nodes;
 
-import static arb.expressions.Compiler.loadInput;
+import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
-import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
@@ -109,11 +108,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (!isIndependent)
     {
-      if (verbose)
-      {
-        out.format("%s: referenced %s\n", expression, reference);
-        out.flush();
-      }
       boolean isElse = "else".equals(reference.name);
 
       if (!(isElse || isIndeterminant))
@@ -146,11 +140,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (isIndependent)
     {
-      Compiler.checkClassCast(loadInput(mv), expression.domainType);
+      Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
     }
     else if (isIndeterminant)
     {
-      Compiler.checkClassCast(Compiler.loadResult(mv, verbose), expression.rangeType);
+      Compiler.checkClassCast(Compiler.loadResultParameter(mv), expression.rangeType);
 
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                          Type.getInternalName(expression.rangeType),
@@ -227,11 +221,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
       if (expression.independentVariableNode == null)
       {
         expression.independentVariableNode = this;
-        if (verbose)
-        {
-          out.format("\n%s: Independent Variable declared to be: %s\n\n", expression, this);
-          out.flush();
-        }
       }
     }
     else
@@ -240,12 +229,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
       if (isIndeterminant = expression.hasPolynomialRange())
       {
         expression.indeterminate = this;
-
-        if (verbose)
-        {
-          out.format("\n%s: Indeterminate of polynomial declared to be: %s\n\n", expression, this);
-          out.flush();
-        }
       }
       else
       {

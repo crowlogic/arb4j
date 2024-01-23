@@ -8,24 +8,9 @@
 
 package arb;
 
-import static arb.IntegerConstants.ARB_RND;
-import static arb.IntegerConstants.ARF_RND_UP;
-import static arb.IntegerConstants.MAG_BITS;
-import static arb.IntegerConstants.PAGESIZE;
+import static arb.IntegerConstants.*;
 import static arb.RealConstants.zero;
-import static arb.arblib.arb_indeterminate;
-import static arb.arblib.arb_is_one;
-import static arb.arblib.arb_is_zero;
-import static arb.arblib.arb_mul_2exp_si;
-import static arb.arblib.arf_add;
-import static arb.arblib.arf_get_mag;
-import static arb.arblib.arf_is_neg_inf;
-import static arb.arblib.arf_is_pos_inf;
-import static arb.arblib.arf_mag_add_ulp;
-import static arb.arblib.arf_sgn;
-import static arb.arblib.arf_sub;
-import static arb.arblib.arf_zero;
-import static arb.arblib.mag_inf;
+import static arb.arblib.*;
 import static java.lang.String.format;
 
 import java.io.Serializable;
@@ -161,7 +146,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
  * arb4j is made available under the terms of the Business Source License™ v1.1
  * ©2023 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
+ * TeXmacs formatted versions of the same document respectively.
  */
 
 public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real> {
