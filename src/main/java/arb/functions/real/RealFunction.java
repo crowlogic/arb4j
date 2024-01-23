@@ -60,7 +60,8 @@ public interface RealFunction extends
       {
         try ( Real y = new Real())
         {
-          return evaluate(x, order, bits, result).add(that.evaluate(x, order, bits, y), bits, result);
+          return RealFunction.this.evaluate(x, order, bits, result)
+                                  .sub(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
@@ -83,7 +84,8 @@ public interface RealFunction extends
       {
         try ( Real y = new Real())
         {
-          return evaluate(x, order, bits, result).add(that.evaluate(x, order, bits, y), bits, result);
+          return RealFunction.this.evaluate(x, order, bits, result)
+                                  .add(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
@@ -106,7 +108,8 @@ public interface RealFunction extends
       {
         try ( Real y = new Real())
         {
-          return evaluate(x, order, bits, result).mul(that.evaluate(x, order, bits, y), bits, result);
+          return RealFunction.this.evaluate(x, order, bits, result)
+                                  .mul(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
@@ -129,7 +132,8 @@ public interface RealFunction extends
       {
         try ( Real y = new Real())
         {
-          return evaluate(x, order, bits, result).div(that.evaluate(x, order, bits, y), bits, result);
+          return RealFunction.this.evaluate(x, order, bits, result)
+                                  .div(that.evaluate(x, order, bits, y), bits, result);
         }
 
       }
