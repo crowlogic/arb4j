@@ -630,7 +630,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     }
     else
-
     {
       assert nestedFunction.name.equals(functionName) : "nestedFunction.func should not be null if its not the recursive function referring to itself";
       // FIXME: instantiate new instance of nestedFunction here but do not call its

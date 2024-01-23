@@ -102,44 +102,92 @@ public interface RealFunction extends
 
   public default RealFunction sub(RealFunction that)
   {
-    return (x, order, bits, result) ->
+    return new RealFunction()
     {
-      try ( Real y = new Real())
+
+      @Override
+      public String toString()
       {
-        return evaluate(x, order, bits, result).sub(that.evaluate(x, order, bits, y), bits, result);
+        return String.format("(%s) - (%s)", RealFunction.this.toString(), that);
+      }
+
+      @Override
+      public Real evaluate(Real x, int order, int bits, Real result)
+      {
+        try ( Real y = new Real())
+        {
+          return evaluate(x, order, bits, result).add(that.evaluate(x, order, bits, y), bits, result);
+        }
+
       }
     };
   }
 
   public default RealFunction add(RealFunction that)
   {
-    return (x, order, bits, result) ->
+    return new RealFunction()
     {
-      try ( Real y = new Real())
+
+      @Override
+      public String toString()
       {
-        return evaluate(x, order, bits, result).add(that.evaluate(x, order, bits, y), bits, result);
+        return String.format("(%s) + (%s)", RealFunction.this.toString(), that);
+      }
+
+      @Override
+      public Real evaluate(Real x, int order, int bits, Real result)
+      {
+        try ( Real y = new Real())
+        {
+          return evaluate(x, order, bits, result).add(that.evaluate(x, order, bits, y), bits, result);
+        }
+
       }
     };
   }
 
   public default RealFunction mul(RealFunction that)
   {
-    return (x, order, bits, result) ->
+    return new RealFunction()
     {
-      try ( Real y = new Real())
+
+      @Override
+      public String toString()
       {
-        return evaluate(x, order, bits, result).mul(that.evaluate(x, order, bits, y), bits, result);
+        return String.format("(%s) * (%s)", RealFunction.this.toString(), that);
+      }
+
+      @Override
+      public Real evaluate(Real x, int order, int bits, Real result)
+      {
+        try ( Real y = new Real())
+        {
+          return evaluate(x, order, bits, result).mul(that.evaluate(x, order, bits, y), bits, result);
+        }
+
       }
     };
   }
 
   public default RealFunction div(RealFunction that)
   {
-    return (x, order, bits, result) ->
+    return new RealFunction()
     {
-      try ( Real y = new Real())
+
+      @Override
+      public String toString()
       {
-        return evaluate(x, order, bits, result).div(that.evaluate(x, order, bits, y), bits, result);
+        return String.format("(%s) / (%s)", RealFunction.this.toString(), that);
+      }
+
+      @Override
+      public Real evaluate(Real x, int order, int bits, Real result)
+      {
+        try ( Real y = new Real())
+        {
+          return evaluate(x, order, bits, result).div(that.evaluate(x, order, bits, y), bits, result);
+        }
+
       }
     };
   }
