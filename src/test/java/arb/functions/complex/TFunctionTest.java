@@ -13,7 +13,6 @@ public class TFunctionTest extends
     {
       t.set(2, 0.2);
       Complex result = tFunction.evaluate(t, 2, 256, Complex.newVector(2));
-      System.out.format("S(%s)=%s\n", t, result);
 
       assertEquals(0.9272321871063992, result.getReal().doubleValue());
       assertEquals(0.023134949807849504, result.getImag().doubleValue());

@@ -1,7 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
 import static arb.RealConstants.negHalf;
-import static java.lang.System.out;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -98,7 +97,6 @@ public class JacobiPolynomialTest extends
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(0.375, valAtOne.doubleValue());
         Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
-        System.out.format("P(2.1)=%s\nP(2,2=%s)\n", valAtOne, valAtTwo);
         assertEquals(2.625, valAtTwo.doubleValue());
 
       }
@@ -117,7 +115,6 @@ public class JacobiPolynomialTest extends
       try ( RealPolynomial result = seq.P.evaluate(too, 0, bits, new RealPolynomial()))
       {
         result.getCoeffs().printPrecision = true;
-        out.println("p(3,x)=" + result);
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(0.3125, valAtOne.doubleValue());
         Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
@@ -139,7 +136,6 @@ public class JacobiPolynomialTest extends
       try ( RealPolynomial result = seq.P.evaluate(too, 0, bits, new RealPolynomial()))
       {
         result.getCoeffs().printPrecision = true;
-        out.println("p(4,x)=" + result);
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
         assertEquals(0.2734375, valAtOne.doubleValue());
         Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());

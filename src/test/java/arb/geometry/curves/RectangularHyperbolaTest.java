@@ -18,7 +18,6 @@ public class RectangularHyperbolaTest extends
     try ( RectangularHyperbola hyperbola = new RectangularHyperbola())
     {
       Complex w = hyperbola.evaluate(ComplexConstants.one.getReal(), 2, 256, Complex.newVector(2));
-      System.out.println("hyp(1)=" + w);
 
       assertEquals(1.85081571768092557, w.getReal().doubleValue(), 4.6232e-167);
       assertEquals(1.5574077246549023, w.getImag().doubleValue(), 1.9487e-167);

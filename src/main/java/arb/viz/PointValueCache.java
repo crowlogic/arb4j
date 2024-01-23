@@ -63,7 +63,6 @@ public class PointValueCache implements
    */
   public PointValueCache(String id, int numXpoints, int numYpoints)
   {
-    System.out.println("Opening " + id + ".arb" + " and .arb1");
     this.width  = numXpoints;
     this.height = numYpoints;
     byteSize    = Complex.BYTES * numXpoints * numYpoints;
@@ -132,7 +131,6 @@ public class PointValueCache implements
 
     public void close()
     {
-      System.out.println("Closing " + path);
       try
       {
         if (fileChannel != null)

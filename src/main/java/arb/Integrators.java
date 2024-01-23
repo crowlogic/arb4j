@@ -445,10 +445,7 @@ public class Integrators
 
     res.set(s);
 
-    if (debug)
-    {
-      System.out.println("Final result: " + res);
-    }
+
   }
 
   public static void accumulateIntegrand(int prec,
