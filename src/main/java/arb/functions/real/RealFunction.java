@@ -593,7 +593,7 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression, boolean verbose2)
   {
-    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, verbose, null);
+    return instantiate(expression, null, Real.class, Real.class, RealFunction.class, null);
   }
 
   public static RealFunction express(String expression)
@@ -603,12 +603,12 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression, Context context)
   {
-    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, false, null);
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, null);
   }
 
   /**
    * Returns the result of
-   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean, String)}
+   * {@link Expression#instantiate(String, Context, Class, Class, Class, String)}
    * afteRealFunction calling {@link Context#registerFunction(String, Function)}
    * to register the function by name in the specified {@link Context}
    * 
@@ -629,7 +629,6 @@ public interface RealFunction extends
                                     Real.class,
                                     Real.class,
                                     RealFunction.class,
-                                    verbose,
                                     functionName);
 
     return func;
@@ -637,7 +636,7 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression, Context context, boolean verbose)
   {
-    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, verbose, null);
+    return instantiate(expression, context, Real.class, Real.class, RealFunction.class, null);
   }
 
 }

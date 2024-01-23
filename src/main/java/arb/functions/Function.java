@@ -122,7 +122,7 @@ public interface Function<D, R> extends
 
   /**
    * Returns the result of
-   * {@link Expression#instantiate(String, Context, Class, Class, Class, boolean, String)}
+   * {@link Expression#instantiate(String, Context, Class, Class, Class, String)}
    * after calling {@link Context#registerFunction(String, Function)} to register
    * the function by name in the specified {@link Context}
    * 
@@ -144,21 +144,21 @@ public interface Function<D, R> extends
                                                            Context context,
                                                            boolean verbose)
   {
-    return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, verbose, functionName);
+    return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, functionName);
   }
 
   public static <D, R, F extends Function<D, R>>
          F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, Context context)
   {
-    return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, false, null);
+    return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, null);
   }
 
   public static <D, R, F extends Function<D, R>>
          F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, boolean verbose)
   {
-    return (F) instantiate(expression, null, domainClass, rangeClass, Function.class, verbose, null);
+    return (F) instantiate(expression, null, domainClass, rangeClass, Function.class, null);
   }
 
   public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
@@ -190,7 +190,7 @@ public interface Function<D, R> extends
                                                                   Context context,
                                                                   boolean verbose)
   {
-    return instantiate(expression, context, domainClass, rangeClass, Function.class, verbose, null);
+    return instantiate(expression, context, domainClass, rangeClass, Function.class, null);
   }
 
 }

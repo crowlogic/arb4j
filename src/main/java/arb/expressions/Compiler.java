@@ -98,7 +98,7 @@ public class Compiler
                                                                              Class<? extends F> functionClass,
                                                                              boolean verbose)
   {
-    return compile(expression, context, domainClass, rangeClass, functionClass, verbose, null);
+    return compile(expression, context, domainClass, rangeClass, functionClass, null);
   }
 
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
@@ -106,11 +106,10 @@ public class Compiler
                                                                              Class<? extends D> domainClass,
                                                                              Class<? extends R> rangeClass,
                                                                              Class<? extends F> functionClass,
-                                                                             boolean verbose,
                                                                              String functionName)
   {
     String className = functionName != null ? functionName : expressionToUniqueClassname(expression);
-    return compile(className, expression, context, domainClass, rangeClass, functionClass, verbose, functionName);
+    return compile(className, expression, context, domainClass, rangeClass, functionClass, functionName);
 
   }
 
@@ -120,7 +119,6 @@ public class Compiler
                                                                              Class<? extends D> domainClass,
                                                                              Class<? extends R> rangeClass,
                                                                              Class<? extends F> functionClass,
-                                                                             boolean verbose,
                                                                              String functionName)
   {
     Expression<D, R, F> expression = new Expression<D, R, F>(className,
@@ -144,7 +142,7 @@ public class Compiler
                                                                              Class<? extends F> functionClass,
                                                                              boolean verbose)
   {
-    return compile(className, expressionString, context, domainClass, rangeClass, functionClass, verbose, null);
+    return compile(className, expressionString, context, domainClass, rangeClass, functionClass, null);
   }
 
   @SuppressWarnings("unchecked")
@@ -170,15 +168,9 @@ public class Compiler
          ClassVisitor
          generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor classVisitor)
   {
-    String  classSignature    = null;
+    String classSignature = null;
 
-    boolean isGenericFunction = false;
     if (expression.functionClass.equals(Function.class))
-    {
-      isGenericFunction = true;
-    }
-
-    if (isGenericFunction)
     {
       classSignature = expression.getTypeSignature();
     }
@@ -187,7 +179,6 @@ public class Compiler
     { expression.functionClassInternalName });
     return classVisitor;
   }
-
 
   /**
    * Loads the 2nd argument (order) onto the stack

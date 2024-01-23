@@ -24,7 +24,6 @@ public interface IntegerToRealPolynomialFunction extends
                                                        Integer.class,
                                                        RealPolynomial.class,
                                                        IntegerToRealPolynomialFunction.class,
-                                                       verbose,
                                                        functionName);
 
     return func;
@@ -37,7 +36,6 @@ public interface IntegerToRealPolynomialFunction extends
                        Integer.class,
                        RealPolynomial.class,
                        IntegerToRealPolynomialFunction.class,
-                       verbose,
                        null);
   }
 }

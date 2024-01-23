@@ -19,7 +19,6 @@ public interface RealPolynomialFunction extends
                        RealPolynomial.class,
                        RealPolynomial.class,
                        RealPolynomialFunction.class,
-                       verbose2,
                        null);
   }
 
@@ -35,7 +34,6 @@ public interface RealPolynomialFunction extends
                        RealPolynomial.class,
                        RealPolynomial.class,
                        RealPolynomialFunction.class,
-                       false,
                        null);
   }
 
@@ -62,7 +60,6 @@ public interface RealPolynomialFunction extends
                                               RealPolynomial.class,
                                               RealPolynomial.class,
                                               RealPolynomialFunction.class,
-                                              verbose,
                                               functionName);
 
     return func;
@@ -75,7 +72,6 @@ public interface RealPolynomialFunction extends
                        RealPolynomial.class,
                        RealPolynomial.class,
                        RealPolynomialFunction.class,
-                       verbose,
                        null);
   }
 

@@ -10,7 +10,6 @@ import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
-import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
@@ -113,7 +112,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                Class<? extends D> domainClass,
                                                                Class<? extends R> rangeClass,
                                                                Class<? extends F> functionClass,
-                                                               boolean verbose,
                                                                String functionName)
   {
     FunctionMapping<?, ?> mapping = null;
@@ -127,7 +125,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                      domainClass,
                                                      rangeClass,
                                                      functionClass,
-                                                     verbose,
                                                      functionName);
     F                   func               = compiledExpression.instantiate();
     if (mapping != null)
@@ -135,10 +132,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
       mapping.func = func;
     }
 
-    if (verbose)
-    {
-      out.format("\ninstantiating $%s$\n\n", compiledExpression.rootNode.typeset());
-    }
     return func;
   }
 
@@ -320,10 +313,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (context != null)
     {
-      referencedFunctions.forEach((name, function) ->
-      {
-        declareFunctionReference(classVisitor, name, function);
-      });
+      referencedFunctions.forEach((name, function) -> declareFunctionReference(classVisitor, name, function));
     }
     return classVisitor;
   }
@@ -350,13 +340,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       for (var variable : context.variables.map.entrySet())
       {
-
         classVisitor.visitField(ACC_PUBLIC,
                                 variable.getKey(),
                                 variable.getValue().getClass().descriptorString(),
                                 null,
                                 null);
-
       }
     }
   }
@@ -505,8 +493,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   private void generateConditionalInitializater(MethodVisitor methodVisitor)
   {
-    // FIXME: dont bother generating the initializing code if there is nothing to
-    // initialize
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     Label alreadyInitialized = new Label();
@@ -533,7 +519,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void addCheckForNullField(MethodVisitor methodVisitor, String varName, boolean variable)
   {
-
     Class<?> fieldClass = variable ? context.variables.map.get(varName).getClass() : context.functions.get(varName)
                                                                                                       .type();
     String   fieldDesc  = fieldClass.descriptorString();
@@ -542,7 +527,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor declareLocalVariables(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
-    // String objectClassDescriptor = Object.class.descriptorString();
     methodVisitor.visitLocalVariable("in", domainType.descriptorString(), null, startLabel, endLabel, 1);
     methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
     methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
@@ -574,18 +558,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class);
   }
 
-  public static class FieldAssignment
-  {
-    String fieldName;
-    String fieldDescriptor;
-
-    public FieldAssignment(String fieldName, String fieldDescriptor)
-    {
-      this.fieldName       = fieldName;
-      this.fieldDescriptor = fieldDescriptor;
-    }
-  }
-
   public void initializeNestedFunctionVariableReferences(MethodVisitor mv,
                                                          String classType,
                                                          String fieldType,
@@ -594,14 +566,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     String typeDesc = "L" + fieldType + ";";
 
-    // Set fields in the new object
     for (OrderedPair<String, Class<?>> variable : variables)
     {
+      String variableFieldName = variable.getKey();
+      String variableFieldType = variable.getValue().descriptorString();
       mv.visitVarInsn(Opcodes.ALOAD, 0);
       mv.visitFieldInsn(Opcodes.GETFIELD, classType, functionFieldName, typeDesc);
       mv.visitVarInsn(Opcodes.ALOAD, 0);
-      String variableFieldName = variable.getKey();
-      String variableFieldType = variable.getValue().descriptorString();
       mv.visitFieldInsn(Opcodes.GETFIELD, classType, variableFieldName, variableFieldType);
       mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, variableFieldName, variableFieldType);
     }
@@ -656,12 +627,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  /**
-   * 
-   * 
-   * @return a newly instantiated instance of the (equivalence) class of function
-   *         defined by this {@link Expression}
-   */
   public F instantiate()
   {
     try
@@ -881,7 +846,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         if (!parse(depth, ')'))
         {
-          throw new RuntimeException(String.format("parsePower expected closing parenthesis at: position=%d, ch='%c'\n",
+          throw new ExpressionCompilerException(String.format("parseExponent expected closing parenthesis at: position=%d, ch='%c'\n",
                                                    position,
                                                    ch == -1 ? '?' : ch));
         }
@@ -1032,7 +997,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       field = compiledClass.getField(variableName);
       field.set(f, value);
-
     }
     catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
     {
@@ -1220,7 +1184,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor generateLiteralConstantInitializers(MethodVisitor methodVisitor)
   {
-
     for (var literal : literalConstants)
     {
       literal.generateLiteralConstantInitializerWithString(methodVisitor);
@@ -1239,8 +1202,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     try
     {
       Files.write(Paths.get(file.toURI()), instructions);
-      // out.println("Wrote " + file.getAbsolutePath());
-
     }
     catch (IOException e)
     {
