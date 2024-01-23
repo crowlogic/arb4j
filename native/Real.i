@@ -172,6 +172,11 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return res;
   }
 
+  public static Real of(String string, int bits)
+  {
+    return new Real(string,bits);
+  }
+
   public RealPolynomial sub(Real a, int bits, RealPolynomial res)
   {
     res.set(a);

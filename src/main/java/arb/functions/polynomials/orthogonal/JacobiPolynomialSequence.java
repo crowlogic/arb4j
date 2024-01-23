@@ -1,6 +1,9 @@
 package arb.functions.polynomials.orthogonal;
 
+import static java.lang.System.out;
+
 import java.util.Iterator;
+import java.util.stream.IntStream;
 
 import arb.Integer;
 import arb.OrthogonalBasis;
@@ -55,8 +58,23 @@ import arb.functions.real.RealFunction;
  */
 public class JacobiPolynomialSequence implements
                                       OrthogonalBasis<Real, RealPolynomial>,
+                                      Function<Integer, RealPolynomial>,
                                       AutoCloseable
 {
+  public static void main(String args[])
+  {
+    JacobiPolynomialSequence P = new JacobiPolynomialSequence(Real.of("-0.5", 128),
+                                                              Real.of("-0.5", 128));
+
+    IntStream.range(0, 10)
+             .mapToObj(n -> P.evaluate(new Integer(n), 128, new RealPolynomial()))
+             .forEach(p -> out.format("P(%d,x)=%s\n", p.getLength() - 1, p));
+
+    // ShellFunctions.plot(-1, 1, 1000, polys.toArray(new
+    // RealPolynomial[polys.size()]));
+
+  }
+
   public int                                     bits    = 128;
   public final Real                              α       = new Real().setName("α");
   public final Real                              β       = new Real().setName("β");
@@ -150,6 +168,12 @@ public class JacobiPolynomialSequence implements
     α.close();
     β.close();
     domain.close();
+  }
+
+  @Override
+  public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
+  {
+    return P.evaluate(t, order, bits, res);
   }
 
 }
