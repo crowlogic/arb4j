@@ -1,6 +1,6 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
+<style|<tuple|generic|alt-colors|boring-white|framed-theorems|maple>>
 
 <\body>
   <doc-data|<doc-title|Solutions to Specific Riccati
@@ -22,7 +22,7 @@
   Consider the Riccati equation given by
 
   <\equation>
-    y<rprime|'>=2*y+y<rsup|2>
+    <wide|y|\<dot\>><around*|(|x|)>=2*y<around*|(|x|)>+y<around*|(|x|)><rsup|2>
   </equation>
 
   The exact solution to this equation is
@@ -38,14 +38,20 @@
   Another interesting form of the Riccati equation is
 
   <\equation>
-    y<rprime|'>=y<rsup|2>+x
+    <wide|y|\<dot\>><around*|(|x|)>=y<around*|(|x|)><rsup|2>+x
   </equation>
 
   This equation can be transformed into Airy's differential equation. By
-  setting <math|y=-u<rprime|'>/u>, we obtain
+  setting
 
   <\equation>
-    u<rprime|''>-x*u=0
+    y<around*|(|x|)>=-<frac|<wide|u|\<dot\>><around*|(|x|)>|u<around*|(|x|)>>
+  </equation>
+
+  we obtain
+
+  <\equation>
+    <wide|u|\<ddot\>><around*|(|x|)>=x*u<around*|(|x|)>
   </equation>
 
   known as Airy's equation. The solution for the original Riccati equation

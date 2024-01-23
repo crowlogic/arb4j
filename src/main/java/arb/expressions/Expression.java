@@ -12,6 +12,8 @@ import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
 import static java.lang.System.err;
 import static java.lang.System.out;
+import static java.util.stream.Collectors.toList;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.GETFIELD;
@@ -29,9 +31,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -43,7 +43,6 @@ import org.objectweb.asm.util.CheckClassAdapter;
 
 import arb.ComplexPolynomial;
 import arb.Field;
-import arb.Integer;
 import arb.OrderedPair;
 import arb.RealPolynomial;
 import arb.Typesettable;
@@ -315,14 +314,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  @SuppressWarnings("unchecked")
   public ClassVisitor declareFunctionReferences(ClassVisitor classVisitor)
   {
     if (context != null)
     {
-      context.functions.map.forEach((name, function) ->
+      referencedFunctions.forEach((name, function) ->
       {
-        declareFunctionReference(classVisitor, name, (FunctionMapping<D, R>) function);
+        declareFunctionReference(classVisitor, name, function);
       });
     }
     return classVisitor;
@@ -331,7 +329,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public void declareFunctionReference(ClassVisitor classVisitor, String name, FunctionMapping<D, R> function)
   {
     String descriptor = "L" + function.name + ";";
-    classVisitor.visitField(ACC_PUBLIC, name, descriptor, null, null);
+    classVisitor.visitField(ACC_PUBLIC
+                  | (function.name.equals(functionName) ? 0 : ACC_FINAL), name, descriptor, null, null);
   }
 
   public void declareIntermediateVariables(ClassVisitor classVisitor)
@@ -579,20 +578,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public void instantiateNestedFunctions(MethodVisitor mv,
-                                         String classType,
-                                         String fieldType,
-                                         String functionFieldName,
-                                         List<OrderedPair<String, Class<?>>> variables)
+  public void initializeNestedFunctionVariableReferences(MethodVisitor mv,
+                                                         String classType,
+                                                         String fieldType,
+                                                         String functionFieldName,
+                                                         List<OrderedPair<String, Class<?>>> variables)
   {
     String typeDesc = "L" + fieldType + ";";
-
-    // Instantiate new object and assign to field
-    mv.visitVarInsn(Opcodes.ALOAD, 0);
-    mv.visitTypeInsn(Opcodes.NEW, fieldType);
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, fieldType, "<init>", "()V", false);
-    mv.visitFieldInsn(Opcodes.PUTFIELD, classType, functionFieldName, typeDesc);
 
     // Set fields in the new object
     for (OrderedPair<String, Class<?>> variable : variables)
@@ -613,44 +605,26 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (nestedFunction.func != null)
     {
-      instantiateFunctionMapping(mv, nestedFunction);
+      var entryStream              = context.variableEntryStream();
+      var nestedFunctionsVariables = entryStream.map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
+                                                                                                entry.getValue()
+                                                                                                     .getClass()))
+                                                .collect(toList());
 
-      var nestedFunctionsVariables = context.variables.map.entrySet()
-                                                          .stream()
-                                                          .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
-                                                                                                          entry.getValue()
-                                                                                                               .getClass()))
-                                                          .collect(Collectors.toList());
-
-      instantiateNestedFunctions(mv,
-                                 className,
-                                 Type.getInternalName(nestedFunction.type()),
-                                 nestedFunction.name,
-                                 nestedFunctionsVariables);
+      initializeNestedFunctionVariableReferences(loadThisOntoStack(mv),
+                                                 className,
+                                                 Type.getInternalName(nestedFunction.type()),
+                                                 nestedFunction.name,
+                                                 nestedFunctionsVariables);
 
     }
     else
     {
       assert nestedFunction.name.equals(functionName) : "nestedFunction.func should not be null if its not the recursive function referring to itself";
-      // FIXME: instantiate new instance of nestedFunction here but do not call its
-      // initializeContext because that will be done when as needed when evaluate as
-      // called so as to avoid unnecessarily allocating resources
+
     }
 
-    if (nestedFunction.func != null)
-    {
-      mv.visitFieldInsn(PUTFIELD, className, nestedFunction.name, nestedFunction.func.getClass().descriptorString());
-    }
     return mv;
-  }
-
-  public void instantiateFunctionMapping(MethodVisitor mv, FunctionMapping<?, ?> mapping)
-  {
-    mv.visitVarInsn(ALOAD, 0);
-
-    mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(mapping.func.getClass()));
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitMethodInsn(INVOKESPECIAL, Type.getInternalName(mapping.func.getClass()), "<init>", "()V", false);
   }
 
   public void injectVariableReferences(F f) throws NoSuchFieldException, IllegalAccessException
@@ -788,7 +762,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return node;
   }
 
-  int lastCh;
+  public int lastCh;
 
   public boolean parse(int depth, char... charsToparse)
   {
@@ -1043,94 +1017,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return node;
   }
 
-  public Node<D, R, F> parseWhen(int depth)
-  {
-    TreeMap<Integer, Node<D, R, F>> cases        = new TreeMap<>();
-    Node<D, R, F>                   defaultValue = null;
-
-    do
-    {
-      defaultValue = parseWhenCondition(depth, cases);
-    }
-    while (parse(depth + 1, ','));
-    if (!parse(depth + 1, ')'))
-    {
-      throw new ExpressionCompilerException("Closing parenthesis expected at position=" + position
-                    + " of expression=" + expression);
-    }
-    if (defaultValue == null)
-    {
-      throw new ExpressionCompilerException("default value of when function not specified with else keyword at position="
-                    + position + " of expression=" + expression);
-    }
-    return new When<D, R, F>(this,
-                             cases,
-                             defaultValue,
-                             depth + 1);
-  }
-
-  public Node<D, R, F> parseWhenCondition(int depth, TreeMap<Integer, Node<D, R, F>> cases)
-  {
-    Node<D, R, F> defaultValue = null;
-
-    Node<D, R, F> node         = parse(depth + 1);
-    if (!(node instanceof Variable))
-    {
-      throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
-                    + node);
-    }
-
-    Variable<D, R, F> variable = (Variable<D, R, F>) node;
-
-    if ("else".equals(variable.reference.name))
-    {
-      if (!parse(depth + 1, ','))
-      {
-        throw new ExpressionCompilerException(", expected after else condition");
-      }
-      defaultValue = parseFirst(depth + 1);
-
-      if (ch != ')')
-      {
-        throw new ExpressionCompilerException(format("expected closing ) of when statement after else at position=%d expression=%s",
-                                                     position,
-                                                     expression));
-      }
-    }
-    else
-    {
-      if (!variable.reference.equals(independentVariableNode.reference))
-      {
-        throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable which is "
-                      + independentVariableNode + " not " + variable);
-      }
-
-      if (!parse(depth + 1, '='))
-      {
-        throw new ExpressionCompilerException(format("= expected in condition of when function at pos=%d expression=%s but got ch=%c and lastCh=%c",
-                                                     position,
-                                                     expression,
-                                                     ch,
-                                                     lastCh));
-      }
-
-      Node<D, R, F> condition = parse(depth + 1);
-      if (!(condition instanceof LiteralConstant))
-      {
-        throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable to an "
-                      + "Integer LiteralConstant type, but got " + condition);
-      }
-      LiteralConstant<D, R, F> constant = (LiteralConstant<D, R, F>) condition;
-      if (!parse(depth + 1, ','))
-      {
-        throw new ExpressionCompilerException(", expected after condition of when function at pos=" + this.position);
-      }
-      Node<D, R, F> value = parseFirst(depth + 1);
-      cases.put(new Integer(constant.value), value);
-    }
-    return defaultValue;
-  }
-
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
   {
     String intermediateVariableName = newIntermediateVariable(depth, type);
@@ -1159,7 +1045,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       if ("when".equals(reference.name))
       {
-        return parseWhen(depth + 1);
+        return When.parse(this, depth + 1);
       }
       else
       {
@@ -1354,18 +1240,32 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public ClassVisitor generateDefaultConstructor(ClassVisitor classVisitor)
   {
 
-    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
-    methodVisitor.visitCode();
+    MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
+    mv.visitCode();
 
-    generateInvocationOfDefaultNoArgConstructor(methodVisitor, true);
+    generateInvocationOfDefaultNoArgConstructor(mv, true);
 
-    generateLiteralConstantInitializers(methodVisitor);
+    referencedFunctions.values().stream().filter(func -> func.func != null).forEach(mapping ->
+    {
+      String fieldType = Type.getInternalName(mapping.type());
+      String typeDesc  = "L" + fieldType + ";";
 
-    generateIntermediateVariableInitializers(methodVisitor);
+      // Instantiate new object. Fields will be initialized by the generated context
+      // initialization method
+      mv.visitVarInsn(Opcodes.ALOAD, 0);
+      mv.visitTypeInsn(Opcodes.NEW, fieldType);
+      mv.visitInsn(Opcodes.DUP);
+      mv.visitMethodInsn(Opcodes.INVOKESPECIAL, fieldType, "<init>", "()V", false);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className, mapping.name, typeDesc);
+    });
 
-    methodVisitor.visitInsn(RETURN);
-    methodVisitor.visitMaxs(0, 0);
-    methodVisitor.visitEnd();
+    generateLiteralConstantInitializers(mv);
+
+    generateIntermediateVariableInitializers(mv);
+
+    mv.visitInsn(RETURN);
+    mv.visitMaxs(0, 0);
+    mv.visitEnd();
     return classVisitor;
   }
 

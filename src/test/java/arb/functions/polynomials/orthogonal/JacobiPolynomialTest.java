@@ -218,9 +218,31 @@ public class JacobiPolynomialTest extends
         result.getCoeffs().printPrecision = true;
         out.println("p(3,x)=" + result);
         Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
-        assertEquals(0.375, valAtOne.doubleValue());
+        assertEquals(0.3125, valAtOne.doubleValue());
         Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
-        assertEquals(2.625, valAtTwo.doubleValue());
+        assertEquals(8.125, valAtTwo.doubleValue());
+
+      }
+    }
+
+  }
+
+  public static void testP4()
+  {
+
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
+                                                 negHalf))
+    {
+      Integer too = new Integer("4");
+
+      try ( RealPolynomial result = seq.P.evaluate(too, 0, bits, new RealPolynomial()))
+      {
+        result.getCoeffs().printPrecision = true;
+        out.println("p(4,x)=" + result);
+        Real valAtOne = result.evaluate(RealConstants.one, 128, new Real());
+        assertEquals(0.2734375, valAtOne.doubleValue());
+        Real valAtTwo = result.evaluate(RealConstants.two, 128, new Real());
+        assertEquals(26.5234375, valAtTwo.doubleValue());
 
       }
     }

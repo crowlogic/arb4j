@@ -5,39 +5,37 @@ import arb.functions.Function;
 
 public class P implements Function<Integer, RealPolynomial> {
    private boolean isInitialized;
-   public Integer const1 = new Integer("0");
-   public Integer const2 = new Integer("1");
-   public Integer const3 = new Integer("2");
+   public Integer const1;
+   public Integer const2;
+   public Integer const3;
    public Real α;
    public Real β;
-   public Real ℝ1 = new Real();
-   public Real ℝ2 = new Real();
-   public RealPolynomial r1 = new RealPolynomial();
-   public RealPolynomial r2 = new RealPolynomial();
-   public RealPolynomial r3 = new RealPolynomial();
-   public RealPolynomial r4 = new RealPolynomial();
-   public Integer ℤ1 = new Integer();
-   public RealPolynomial r5 = new RealPolynomial();
-   public RealPolynomial r6 = new RealPolynomial();
-   public Real ℝ3 = new Real();
-   public Real ℝ4 = new Real();
-   public Integer ℤ2 = new Integer();
-   public RealPolynomial r7 = new RealPolynomial();
-   public RealPolynomial r8 = new RealPolynomial();
-   public RealPolynomial r9 = new RealPolynomial();
-   public Real ℝ5 = new Real();
-   public Real ℝ6 = new Real();
+   public Real ℝ1;
+   public Real ℝ2;
+   public RealPolynomial r1;
+   public RealPolynomial r2;
+   public RealPolynomial r3;
+   public RealPolynomial r4;
+   public Integer ℤ1;
+   public RealPolynomial r5;
+   public RealPolynomial r6;
+   public Real ℝ3;
+   public Real ℝ4;
+   public Integer ℤ2;
+   public RealPolynomial r7;
+   public RealPolynomial r8;
+   public RealPolynomial r9;
+   public Real ℝ5;
+   public Real ℝ6;
    public P P;
-   public A A;
-   public B B;
-   public C C;
-   public E E;
-   public F F;
-   public G G;
+   public final A A = new A();
+   public final B B = new B();
+   public final C C = new C();
+   public final E E = new E();
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
       if (!this.isInitialized) {
-         this.initializeContext();
+         this.initializeVariableReferences();
       }
 
       if (this.α == null) {
@@ -74,9 +72,29 @@ public class P implements Function<Integer, RealPolynomial> {
    }
 
    public P() {
+      this.const1 = new Integer("0");
+      this.const2 = new Integer("1");
+      this.const3 = new Integer("2");
+      this.ℝ1 = new Real();
+      this.ℝ2 = new Real();
+      this.r1 = new RealPolynomial();
+      this.r2 = new RealPolynomial();
+      this.r3 = new RealPolynomial();
+      this.r4 = new RealPolynomial();
+      this.ℤ1 = new Integer();
+      this.r5 = new RealPolynomial();
+      this.r6 = new RealPolynomial();
+      this.ℝ3 = new Real();
+      this.ℝ4 = new Real();
+      this.ℤ2 = new Integer();
+      this.r7 = new RealPolynomial();
+      this.r8 = new RealPolynomial();
+      this.r9 = new RealPolynomial();
+      this.ℝ5 = new Real();
+      this.ℝ6 = new Real();
    }
 
-   public void initializeContext() {
+   public void initializeVariableReferences() {
       if (this.isInitialized) {
          throw new AssertionError("Already initialized");
       } else if (this.α == null) {
@@ -84,22 +102,18 @@ public class P implements Function<Integer, RealPolynomial> {
       } else if (this.β == null) {
          throw new AssertionError("β is null");
       } else {
-         A var10001 = this.A = new A();
+         new A();
          this.A.α = this.α;
          this.A.β = this.β;
-         this.A = var10001;
-         B var1 = this.B = new B();
+         new B();
          this.B.α = this.α;
          this.B.β = this.β;
-         this.B = var1;
-         C var2 = this.C = new C();
+         new C();
          this.C.α = this.α;
          this.C.β = this.β;
-         this.C = var2;
-         E var3 = this.E = new E();
+         new E();
          this.E.α = this.α;
          this.E.β = this.β;
-         this.E = var3;
          this.isInitialized = true;
       }
    }

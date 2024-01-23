@@ -3,6 +3,10 @@ package arb.expressions;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
+import java.util.Collection;
+import java.util.Map.Entry;
+import java.util.stream.Stream;
+
 import arb.Real;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -41,7 +45,6 @@ public class Context
 {
   public final FunctionMappings functions;
 
-
   public Context()
   {
     this.variables = new Variables();
@@ -66,12 +69,11 @@ public class Context
     this.functions = funcs;
   }
 
-  public Variables        variables;
-
+  public Variables variables;
 
   /**
-  public FunctionMappings functions;
-   * Adds a given variable to {@link #variables}
+   * public FunctionMappings functions; Adds a given variable to
+   * {@link #variables}
    * 
    * @param variable
    * @return variable
@@ -111,10 +113,10 @@ public class Context
    *                                  exists in this{@link #functions}
    */
   public FunctionMapping<?, ?> registerFunctionMapping(String functionName,
-                                               Function<?, ?> function,
-                                               Class<?> domainType,
-                                               Class<?> rangeType,
-                                               Class<?> functionClass)
+                                                       Function<?, ?> function,
+                                                       Class<?> domainType,
+                                                       Class<?> rangeType,
+                                                       Class<?> functionClass)
   {
 
     if (verbose)
@@ -141,5 +143,15 @@ public class Context
     mapping.functionInterface = functionClass;
     functions.map.put(functionName, mapping);
     return mapping;
+  }
+
+  public Collection<Entry<String, Object>> variableEntries()
+  {
+    return variables.map.entrySet();
+  }
+
+  public Stream<Entry<String, Object>> variableEntryStream()
+  {
+    return variableEntries().stream();
   }
 }

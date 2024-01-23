@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage{geometry,amsmath}
+\geometry{letterpaper}
+
+%%%%%%%%%% Start TeXmacs macros
+\newcommand{\tmaffiliation}[1]{\\ #1}
+\newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+%%%%%%%%%% End TeXmacs macros
+
+\begin{document}
+
+\title{Solutions to Specific Riccati Equations}
+
+\author{
+  Stephen Crowley
+  \tmaffiliation{January 22, 2024}
+}
+
+\maketitle
+
+\section{Introduction}
+
+In this document, we explore exact solutions to specific forms of the Riccati
+differential equation, particularly those involving Bessel functions. The
+Riccati equation, a nonlinear ordinary differential equation, has significant
+applications in various fields such as physics, engineering, and mathematics.
+
+\section{Riccati Equation with Constant Coefficients}
+
+Consider the Riccati equation given by
+\begin{equation}
+  y' = 2 y + y^2
+\end{equation}
+The exact solution to this equation is
+\begin{equation}
+  y (x) = - 2 \coth (2 x + C)
+\end{equation}
+where $C$ is an integration constant.
+
+\section{Riccati Equation and Airy Functions}
+
+Another interesting form of the Riccati equation is
+\begin{equation}
+  y' = y^2 + x
+\end{equation}
+This equation can be transformed into Airy's differential equation. By setting
+$y = - u' / u$, we obtain
+\begin{equation}
+  u'' - xu = 0
+\end{equation}
+known as Airy's equation. The solution for the original Riccati equation then
+depends on the Airy functions $\tmop{Ai} (x)$ and $\tmop{Bi} (x)$.
+
+\section{Riccati Equations Involving Bessel Functions}
+
+\subsection{Bessel Function Type}
+
+Consider the equation
+\begin{equation}
+  \dot{y} (x) + y (x)^2 = \frac{1}{4} x^2
+\end{equation}
+The solution is expressed using Bessel functions as
+\begin{equation}
+  y (x) = \pm \frac{1}{2 x} - x \frac{J_1 (x)}{J_0 (x)}
+\end{equation}
+where $J_0$ and $J_1$ are Bessel functions of the first kind of order 0 and 1,
+respectively.
+
+\subsection{Modified Bessel Function Type}
+
+Similarly, for the modified Bessel function type, we have
+\begin{equation}
+  \dot{y} (x) + y (x)^2 = - \frac{1}{4} x^2
+\end{equation}
+The solution in terms of modified Bessel functions is
+\begin{equation}
+  y (x) = \pm \frac{1}{2 x} - x \frac{I_1 (x)}{I_0 (x)}
+\end{equation}
+where $I_0$ and $I_1$ are modified Bessel functions of the first kind of order
+0 and 1, respectively.
+
+\section{Conclusion}
+
+This document provided detailed solutions to specific Riccati differential
+equations, illustrating their connection to classical functions like Bessel
+and Airy functions. Such equations find wide applications across various
+scientific and engineering disciplines.
+
+\end{document}
