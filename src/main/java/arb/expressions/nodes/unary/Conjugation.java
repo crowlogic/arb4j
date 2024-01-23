@@ -10,11 +10,11 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs formatted versions of the same document respectively.
  */
-public class Conjugate<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
-                      FunctionCall<D, R, F>
+public class Conjugation<D extends arb.Field<D>, R extends arb.Field<R>, F extends Function<D, R>> extends
+                        FunctionCall<D, R, F>
 {
 
-  public Conjugate(Expression<D, R, F> parser, String functionName, Node<D, R, F> argument, int depth)
+  public Conjugation(Expression<D, R, F> parser, String functionName, Node<D, R, F> argument, int depth)
   {
     super(parser,
           "neg",

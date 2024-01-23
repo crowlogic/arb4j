@@ -27,7 +27,7 @@ public class P implements
                      precision);
       P.β = new Real("-0.50",
                      precision);
-      for (int n = 0; n < 11; n++)
+      for (int n = 0; n < 21; n++)
       {
         ;
         RealPolynomial p = P.evaluate(index.set(n), precision, new RealPolynomial());
@@ -35,7 +35,7 @@ public class P implements
         out.format("P(%d,x)=%s\n", n, p);
       }
     }
-    ShellFunctions.plot(-1, 1, 1000, polys.toArray(new RealPolynomial[polys.size()]));
+  //  ShellFunctions.plot(-1, 1, 1000, polys.toArray(new RealPolynomial[polys.size()]));
 
   }
 
