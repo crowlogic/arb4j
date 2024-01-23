@@ -1,16 +1,29 @@
 package arb.functions.real;
 
 import static arb.expressions.Expression.instantiate;
-import static arb.utensils.Utensils.*;
+import static arb.utensils.Utensils.computeNewtonStep;
+import static arb.utensils.Utensils.println;
+import static arb.utensils.Utensils.refineRootViaNewtonsMethod;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
 import java.util.stream.IntStream;
 
-import arb.*;
 import arb.Float;
+import arb.FloatInterval;
 import arb.FloatInterval.RootStatus;
+import arb.IntegrationOptions;
+import arb.Integrators;
+import arb.Magnitude;
+import arb.Real;
+import arb.RealDataSet;
+import arb.RealPartition;
+import arb.RealRootInterval;
 import arb.RealRootInterval.RefinementResult;
+import arb.RootLocatorOptions;
+import arb.Roots;
+import arb.RoundingMode;
+import arb.arblib;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
@@ -25,80 +38,11 @@ import arb.utensils.Utensils;
  * {@link Function}<Real, Real> and includes default implementations of various
  * techniques, including Newton's method.
  * 
- * @author ©2023 Stephen Crowley
+ * @author ©2024 Stephen Crowley
  */
 public interface RealFunction extends
                               Function<Real, Real>
 {
-
-  /**
-   * It would be better to declare a generic argument R to RealFunction so that
-   * {@link RealFunction} could implement {@link arb.algebra.Ring} with
-   * {@link RealFunction} as the argument but that would conflict with
-   * {@link RealPolynomial}s implementation of {@link arb.algebra.Ring} with
-   * {@link RealPolynomial} arguments.If {@link RealFunction} had a generic
-   * argument type R then the Magma could be defined over this rather than
-   * directly over {@link RealPolynomial} and {@link RealFunction} which it
-   * implements
-   * 
-   * @return a newly constructed {@link Ring} referencing this
-   */
-  public default Ring ring()
-  {
-    return new Ring(this);
-  }
-
-  public static class Ring implements
-                           arb.algebra.Ring<RealFunction>
-  {
-    public RealFunction function;
-
-    public Ring(RealFunction realFunction)
-    {
-      this.function = realFunction;
-    }
-
-    @Override
-    public RealFunction mul(RealFunction operand, int bits, RealFunction result)
-    {
-      assert bits == 0
-                    && result == null : String.format("this is a functional, bits=%d must be 0 and result=%s must be null",
-                                                      bits,
-                                                      result);
-      return function.mul(operand);
-    }
-
-    @Override
-    public RealFunction div(RealFunction operand, int bits, RealFunction result)
-    {
-      assert bits == 0
-                    && result == null : String.format("this is a functional, bits=%d must be 0 and result=%s must be null",
-                                                      bits,
-                                                      result);
-      return function.div(operand);
-    }
-
-    @Override
-    public RealFunction add(RealFunction addend, int bits, RealFunction result)
-    {
-      assert bits == 0
-                    && result == null : String.format("this is a functional, bits=%d must be 0 and result=%s must be null",
-                                                      bits,
-                                                      result);
-      return function.add(addend);
-    }
-
-    @Override
-    public RealFunction sub(RealFunction subtrahend, int bits, RealFunction result)
-    {
-      assert bits == 0
-                    && result == null : String.format("this is a functional, bits=%d must be 0 and result=%s must be null",
-                                                      bits,
-                                                      result);
-      return function.add(subtrahend);
-    }
-
-  }
 
   public default RealFunction sub(RealFunction that)
   {
