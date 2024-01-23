@@ -1,6 +1,11 @@
 package arb.space.topological;
 
-import arb.*;
+import arb.Field;
+import arb.Metric;
+import arb.OpenSet;
+import arb.OrderedPair;
+import arb.Real;
+import arb.Set;
 import arb.space.bornological.BornologicalSpace;
 
 /**

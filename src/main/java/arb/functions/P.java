@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
-import arb.utensils.ShellFunctions;
 
 public class P implements
                Function<Integer, RealPolynomial>,
@@ -67,7 +66,7 @@ public class P implements
   public final B        B      = new B();
   public final C        C      = new C();
   public final E        E      = new E();
-  public final F        F      = new F();
+  public final eff        F      = new eff();
   public final G        G      = new G();
 
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)

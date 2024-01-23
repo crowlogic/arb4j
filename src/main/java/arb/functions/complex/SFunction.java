@@ -7,9 +7,7 @@ import arb.Complex;
 import arb.Real;
 import arb.RealConstants;
 import arb.exceptions.NotDifferentiableException;
-import arb.functions.F;
 import arb.functions.Function;
-import arb.functions.real.RealFunction;
 
 /**
  * The rational meromorphic quartic

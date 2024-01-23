@@ -5,8 +5,15 @@ import java.util.Collections;
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexMatrix;
+import arb.ComplexPolynomial;
+import arb.Field;
 import arb.Integer;
+import arb.Real;
+import arb.RealMatrix;
+import arb.RealPolynomial;
+import arb.Typesettable;
 import arb.expressions.Expression;
 import arb.expressions.Variables;
 import arb.expressions.nodes.binary.Addition;

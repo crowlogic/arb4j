@@ -6,7 +6,10 @@ import static org.objectweb.asm.Opcodes.GOTO;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.expressions.Compiler;

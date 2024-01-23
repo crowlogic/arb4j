@@ -1,13 +1,21 @@
 package arb.stochastic.processes.integrators;
 
+import arb.Float;
 import static arb.FloatConstants.half;
 import static arb.RealConstants.zero;
 import static arb.utensils.Utensils.println;
 
-import arb.*;
-import arb.Float;
+import arb.FloatConstants;
+import arb.FloatInterval;
+import arb.MagnitudeConstants;
+import arb.Real;
+import arb.RealPartition;
 import arb.stochastic.GaussianDistribution;
-import arb.stochastic.processes.*;
+import arb.stochastic.processes.DiffusionCoeffecientFunction;
+import arb.stochastic.processes.DiffusionProcess;
+import arb.stochastic.processes.DiffusionProcessState;
+import arb.stochastic.processes.DriftCoeffecientFunction;
+import arb.stochastic.processes.EvaluationSequence;
 
 /**
  * The {@code EulerIntegrator} class is an implementation of the Euler

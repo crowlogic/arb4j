@@ -6,7 +6,6 @@ import arb.Complex;
 import arb.ComplexConstants;
 import arb.Real;
 import arb.functions.Function;
-import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 /**
@@ -92,7 +91,6 @@ public class Lemniscate implements
     return 4;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public Function<Complex,Real> inverse(int branch)
   {

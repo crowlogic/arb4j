@@ -1,12 +1,40 @@
 package arb.functions;
 
-import static arb.arblib.*;
+import static arb.arblib.acb_add_error_mag;
+import static arb.arblib.acb_addmul_arb;
+import static arb.arblib.acb_calc_gl_node;
+import static arb.arblib.acb_get_mag;
+import static arb.arblib.acb_get_mag_lower;
+import static arb.arblib.acb_set;
+import static arb.arblib.arb_add;
+import static arb.arblib.arb_get_mag;
+import static arb.arblib.arb_mul_2exp_si;
+import static arb.arblib.mag_add_lower;
+import static arb.arblib.mag_div;
+import static arb.arblib.mag_hypot;
+import static arb.arblib.mag_inf;
+import static arb.arblib.mag_max;
+import static arb.arblib.mag_mul;
+import static arb.arblib.mag_mul_2exp_si;
+import static arb.arblib.mag_mul_lower;
+import static arb.arblib.mag_mul_ui_lower;
+import static arb.arblib.mag_one;
+import static arb.arblib.mag_pow_ui_lower;
+import static arb.arblib.mag_set;
+import static arb.arblib.mag_sqrt;
+import static arb.arblib.mag_sqrt_lower;
+import static arb.arblib.mag_sub;
+import static arb.arblib.mag_sub_lower;
 import static arb.utensils.Utensils.println;
 import static java.lang.String.format;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import arb.*;
+import arb.Complex;
+import arb.IntegrationOptions;
+import arb.Integrators;
+import arb.Magnitude;
+import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;

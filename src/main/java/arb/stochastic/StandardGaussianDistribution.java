@@ -27,7 +27,6 @@ public class StandardGaussianDistribution implements
     return 1;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public RealFunction inverse(int branch)
   {

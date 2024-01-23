@@ -40,7 +40,7 @@ public class Pnot implements
   public B              B;
   public C              C;
   public E              E;
-  public F              F;
+  public eff              F;
   public G              G;
 
   public static void main(String args[])

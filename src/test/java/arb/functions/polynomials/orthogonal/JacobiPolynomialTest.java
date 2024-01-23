@@ -128,9 +128,10 @@ public class JacobiPolynomialTest extends
          testP() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException
   {
 
-    var seq = new JacobiPolynomialSequence(negHalf,
-                                           negHalf);
+    try ( var seq = new JacobiPolynomialSequence(negHalf,
+                                                 negHalf))
     {
+
       Integer won = new Integer("1");
 
       try ( RealPolynomial result = seq.P.evaluate(won, 0, bits, new RealPolynomial()))
@@ -142,6 +143,7 @@ public class JacobiPolynomialTest extends
         assertEquals(RealConstants.one, valAtTwo);
 
       }
+
     }
 
   }

@@ -1,7 +1,5 @@
 package arb.stochastic;
 
-import static arb.RealConstants.prec;
-
 import arb.Real;
 import arb.RealConstants;
 import arb.functions.complex.ComplexFunction;
@@ -29,7 +27,6 @@ public class StandardGaussianDensityFunction implements
                                                                                    .log(prec)
                                                                                    .sqrt(prec);
 
-  @SuppressWarnings("unchecked")
   @Override
   public RealFunction inverse(int branch)
   {

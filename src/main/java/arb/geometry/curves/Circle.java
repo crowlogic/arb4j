@@ -2,7 +2,11 @@ package arb.geometry.curves;
 
 import static java.lang.Math.max;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.Real;
+import arb.RealConstants;
+import arb.arblib;
 import arb.geometry.Manifold;
 
 /**

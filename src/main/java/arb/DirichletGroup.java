@@ -8,7 +8,9 @@
 
 package arb;
 
-import static arb.arblib.*;
+import static arb.arblib.dirichlet_group_clear;
+import static arb.arblib.dirichlet_group_init;
+import static arb.arblib.dirichlet_subgroup_init;
 
 public class DirichletGroup implements AutoCloseable {
   protected long swigCPtr;

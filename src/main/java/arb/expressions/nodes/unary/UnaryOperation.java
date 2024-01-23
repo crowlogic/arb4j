@@ -1,7 +1,8 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
-import static java.lang.System.err;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.loadResult;
+import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
 
 import org.objectweb.asm.MethodVisitor;
 

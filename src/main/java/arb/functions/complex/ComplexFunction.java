@@ -1,8 +1,9 @@
 package arb.functions.complex;
 
-import static arb.RealConstants.prec;
-
-import arb.*;
+import arb.Complex;
+import arb.IntegrationOptions;
+import arb.Magnitude;
+import arb.Real;
 import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;
 import arb.functions.Function;

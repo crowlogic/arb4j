@@ -2,10 +2,10 @@ package arb.stochastic.processes;
 
 import static arb.RealConstants.zero;
 
-import arb.Float;
 import arb.Lockable;
 import arb.Real;
 import arb.dynamical.systems.State;
+import arb.Float;
 
 /**
  * 

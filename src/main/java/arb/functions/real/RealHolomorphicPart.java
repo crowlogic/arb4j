@@ -1,6 +1,10 @@
 package arb.functions.real;
 
-import arb.*;
+import arb.Complex;
+import arb.IntegrationOptions;
+import arb.Integrators;
+import arb.Magnitude;
+import arb.Real;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 

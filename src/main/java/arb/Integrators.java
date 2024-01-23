@@ -1,6 +1,17 @@
 package arb;
 
-import static arb.arblib.*;
+import static arb.arblib.acb_get_mag_lower;
+import static arb.arblib.mag_add_lower;
+import static arb.arblib.mag_hypot;
+import static arb.arblib.mag_inf;
+import static arb.arblib.mag_max;
+import static arb.arblib.mag_mul_2exp_si;
+import static arb.arblib.mag_mul_lower;
+import static arb.arblib.mag_mul_ui_lower;
+import static arb.arblib.mag_pow_ui_lower;
+import static arb.arblib.mag_set;
+import static arb.arblib.mag_sqrt_lower;
+import static arb.arblib.mag_sub_lower;
 
 import java.util.concurrent.atomic.AtomicLong;
 
