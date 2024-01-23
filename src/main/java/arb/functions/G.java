@@ -17,7 +17,7 @@ public class G implements
   public B        B;
   public C        C;
   public E        E;
-  public eff        F;
+  public wtf        F;
   public G        G;
 
   public Real evaluate(Void in, int order, int bits, Real result)

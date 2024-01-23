@@ -3,7 +3,7 @@ package arb.functions;
 import arb.Integer;
 import arb.Real;
 
-public class eff implements
+public class wtf implements
                Function<Integer, Real>
 {
   private boolean isInitialized;
@@ -16,7 +16,7 @@ public class eff implements
   public Real     r3     = new Real();
   public Real     r4     = new Real();
   public C        C;
-  public eff        F;
+  public wtf        F;
 
   public Real evaluate(Integer in, int order, int bits, Real result)
   {

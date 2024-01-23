@@ -66,7 +66,7 @@ public class P implements
   public final B        B      = new B();
   public final C        C      = new C();
   public final E        E      = new E();
-  public final eff        F      = new eff();
+  public final wtf        F      = new wtf();
   public final G        G      = new G();
 
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
