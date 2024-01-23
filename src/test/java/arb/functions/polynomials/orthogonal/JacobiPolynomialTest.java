@@ -1,10 +1,6 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.RealConstants.half;
 import static arb.RealConstants.negHalf;
-import static arb.RealConstants.one;
-import static arb.RealConstants.oneQuarter;
-import static arb.RealConstants.threeQuarters;
 import static java.lang.System.out;
 
 import java.lang.reflect.InvocationTargetException;
@@ -28,101 +24,6 @@ public class JacobiPolynomialTest extends
   public static final int bits = 128;
 
   public static final int N    = 3;
-
-  public static void main(String args[])
-  {
-    JacobiPolynomialTest test = new JacobiPolynomialTest();
-    test.testA();
-  }
-
-  public void testA()
-  {
-    try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(negHalf,
-                                                                      negHalf);
-          Real threeHalves = new Real("1.5",
-                                      128);
-          Integer n = new Integer())
-    {
-      n.set("3");
-
-      try ( RealPolynomial result = seq.A.evaluate(n, 1, bits, new RealPolynomial()))
-      {
-        assertEquals(45.0, result.eval(threeHalves.doubleValue()));
-      }
-    }
-
-  }
-
-  public void testE()
-  {
-    {
-      try ( JacobiPolynomialSequence seq = new JacobiPolynomialSequence(negHalf,
-                                                                        negHalf);
-            Real result = seq.E.evaluate(new Real("3",
-                                                  128),
-                                         1,
-                                         bits,
-                                         new Real()))
-      {
-        assertEquals(18.0, result.doubleValue());
-        assertTrue(result.isExact());
-      }
-    }
-
-  }
-
-//
-  public static void testB()
-  {
-    try ( var seq = new JacobiPolynomialSequence(half,
-                                                 oneQuarter))
-    {
-
-      try ( Real result = seq.B.evaluate(one, 1, bits, new Real()))
-      {
-        assertEquals(0.34375, result.doubleValue());
-        assertTrue(result.isExact());
-      }
-    }
-  }
-
-  public static void testC()
-  {
-    try ( var seq = new JacobiPolynomialSequence(half,
-                                                 oneQuarter))
-    {
-      try ( Real result = seq.C.evaluate(RealConstants.one, 1, bits, new Real()))
-      {
-        assertEquals(2.75, result.doubleValue());
-        assertTrue(result.isExact());
-      }
-    }
-  }
-
-  public static void testF()
-  {
-    try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                 threeQuarters);)
-    {
-      Integer one = new Integer("1");
-
-      try ( Real result = seq.F.evaluate(one, 1, bits, new Real()))
-      {
-        assertEquals(0.5625, result.doubleValue());
-        assertTrue(result.isExact());
-      }
-    }
-
-  }
-
-  public static void testG()
-  {
-    try ( var seq = new JacobiPolynomialSequence(negHalf,
-                                                 threeQuarters))
-    {
-      assertEquals(-.3125, seq.G.evaluate(null, 0, 128, new Real()).doubleValue());
-    }
-  }
 
   public static void
          testP() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException
