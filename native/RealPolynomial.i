@@ -167,7 +167,7 @@ import arb.utensils.Utensils;
   }
 
   /**
-   * Calculate the (indefinate) integral of this polynomial via term-by-term
+   * Calculate the (indefinite) integral of this polynomial via term-by-term
    * integration whereby coeff * x^i becomes coeff/(i+1) * x^(i+1)
    * 
    * @param bits
@@ -178,12 +178,7 @@ import arb.utensils.Utensils;
   public RealPolynomial integrate(int bits)
   {
     RealPolynomial integral = new RealPolynomial(getLength() + 1);
-
-    // Integrate term-by-term: coeff * x^i becomes coeff/(i+1) * x^(i+1)
     IntStream.range(0, getLength()).forEach(i -> get(i).div(i + 1, bits, integral.set(i + 1, RealConstants.zero)));
-
-    integral.get(0).zero();
-
     return integral;
   }
   
@@ -506,6 +501,11 @@ import arb.utensils.Utensils;
   
   public Real getCoeffs()
   {
+    if ( coeffsNative != null && coeffsNative.dim != getLength() )
+    {
+      coeffsNative.close();
+      coeffsNative = null;
+    }
     if (coeffsNative == null)
     {
       coeffsNative          = getCoeffsNative();
