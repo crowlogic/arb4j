@@ -8,8 +8,27 @@ import junit.framework.TestCase;
 public class RealPolynomialTest extends
                                 TestCase
 {
+  /**
+   * Assert that ∫5x + 10dx=2.5x² + 10x
+   */
+  public void testIntegral()
+  {
+    try ( RealPolynomial p = new RealPolynomial(2))
+    {
+      p.set(10);
+      p.set(1, 5);
+      RealPolynomial pIntegral = p.integrate(128);
+
+      assertEquals(2.5, pIntegral.get(2).doubleValue());
+      assertEquals(10.0, pIntegral.get(1).doubleValue());
+
+    }
+
+  }
+
   public void testSetInt()
   {
+
     try ( RealPolynomial p = new RealPolynomial(1))
     {
       p.set(10);

@@ -484,7 +484,11 @@ import arb.utensils.Utensils;
     
   public Real coeffsNative;
 
-
+  public Real set(int i, int val)
+  {
+    arblib.arb_poly_set_coeff_si(this, i, val);
+    return get(i);
+  }
 
   /**
    * Sets this to the polynomial y(x)=x whose coefficient vector is [0 1]

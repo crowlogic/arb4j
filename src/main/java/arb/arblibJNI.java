@@ -44,6 +44,7 @@ public class arblibJNI {
   public final static native void arb_poly_get_coeff_ptr(long jarg1, RealPolynomial jarg1_, int jarg2);
   public final static native void arb_poly_get_coeff_arb(long jarg1, Real jarg1_, long jarg2, RealPolynomial jarg2_, int jarg3);
   public final static native void arb_poly_set_coeff_arb(long jarg1, RealPolynomial jarg1_, int jarg2, long jarg3, Real jarg3_);
+  public final static native void arb_poly_set_coeff_si(long jarg1, RealPolynomial jarg1_, int jarg2, int jarg3);
   public final static native void arb_poly_set(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_);
   public final static native void _arb_poly_set_length(long jarg1, RealPolynomial jarg1_, int jarg2);
   public final static native void _arb_poly_normalise(long jarg1, RealPolynomial jarg1_);

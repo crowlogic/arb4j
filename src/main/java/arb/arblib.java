@@ -149,6 +149,10 @@ public class arblib {
     arblibJNI.arb_poly_set_coeff_arb(RealPolynomial.getCPtr(poly), poly, n, Real.getCPtr(numCols), numCols);
   }
 
+  public static void arb_poly_set_coeff_si(RealPolynomial poly, int n, int numCols) {
+    arblibJNI.arb_poly_set_coeff_si(RealPolynomial.getCPtr(poly), poly, n, numCols);
+  }
+
   public static void arb_poly_set(RealPolynomial dest, RealPolynomial src) {
     arblibJNI.arb_poly_set(RealPolynomial.getCPtr(dest), dest, RealPolynomial.getCPtr(src), src);
   }

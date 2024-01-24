@@ -77,7 +77,8 @@ void arb_poly_get_coeff_ptr(arb_poly_t poly, slong n);
 void arb_poly_get_coeff_arb(arb_t v, const arb_poly_t poly, slong n);
 
 void arb_poly_set_coeff_arb(arb_poly_t poly, slong n, const arb_t c);
- 
+void arb_poly_set_coeff_si(arb_poly_t poly, slong n, slong c);
+
 void arb_poly_set(arb_poly_t dest, const arb_poly_t src);
  
 void _arb_poly_set_length(arb_poly_t poly, slong len);
