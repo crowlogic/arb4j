@@ -35,6 +35,9 @@ void fmpz_sub(fmpz_t f, const fmpz_t g, const fmpz_t h);
 void arb_pow_fmpz(arb_t y, const arb_t b, const fmpz_t e, slong prec);
 void arb_div_fmpz(arb_t z, const arb_t x, const fmpz_t y, slong prec);
 
+void arb_poly_integral(arb_poly_t res, const arb_poly_t poly, slong prec);
+void arb_poly_derivative(arb_poly_t res, const arb_poly_t poly, slong prec);
+
 slong arb_poly_length(const arb_poly_t poly);
 
 void arb_set_fmpz(arb_t x, const fmpz_t y);

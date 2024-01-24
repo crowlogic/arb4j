@@ -26,6 +26,27 @@ public class RealPolynomialTest extends
 
   }
 
+  /**
+   * Assert that ∫5x + 10dx=2.5x² + 10x
+   */
+  public void testDifferentiateIntegral()
+  {
+    try ( RealPolynomial p = new RealPolynomial(2))
+    {
+      p.set(10);
+      p.set(1, 5);
+      RealPolynomial pIntegral = p.integrate(128);
+      RealPolynomial pToo      = pIntegral.differentiate(128);
+
+      assertEquals(5.0, pToo.get(1).doubleValue());
+      assertEquals(10.0, pToo.get(0).doubleValue());
+      assertEquals(2.5, pIntegral.get(2).doubleValue());
+      assertEquals(10.0, pIntegral.get(1).doubleValue());
+
+    }
+
+  }
+
   public void testSetInt()
   {
 

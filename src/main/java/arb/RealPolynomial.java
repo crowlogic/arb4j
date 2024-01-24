@@ -194,8 +194,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
   }
 
   /**
-   * Calculate the (indefinite) integral of this polynomial via term-by-term
-   * integration whereby coeff * x^i becomes coeff/(i+1) * x^(i+1)
+   * Calculate the integral of this polynomial
    * 
    * @param bits
    * @return new {@link RealPolynomial} containing the integral of this with the
@@ -205,8 +204,23 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
   public RealPolynomial integrate(int bits)
   {
     RealPolynomial integral = new RealPolynomial(getLength() + 1);
-    IntStream.range(0, getLength()).forEach(i -> get(i).div(i + 1, bits, integral.get(i + 1)));
+    arblib.arb_poly_integral(integral, this, bits);
     return integral;
+  }
+
+  /**
+   * Calculate the derivative of this polynomial 
+   * 
+   * @param bits
+   * @return new {@link RealPolynomial} containing the integral of this with the
+   *         integration of constant initialized to zero (note that this is NOT a
+   *         reference to this like many of the other methods are)
+   */
+  public RealPolynomial differentiate(int bits)
+  {
+    RealPolynomial derivative = new RealPolynomial(getLength() + 1);
+    arblib.arb_poly_derivative(derivative, this, bits);
+    return derivative;
   }
   
   /**

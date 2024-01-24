@@ -1,0 +1,11 @@
+var P = new JacobiPolynomialSequence(new Real(-0.5),new Real(-0.5));
+var p4 = P.evaluate(new Integer(4),0,128,new RealPolynomial());
+out.format("P(4,x)=%s\n",p4);
+var p4int = p4.integrate(128);
+var p4norm = p4int.evaluate(RealConstants.one,0,128,new Real()).sub(p4int.evaluate(RealConstants.negOne,0,128,new Real()),128,new Real());
+plot(-1,1,1000,p4,p4int);
+out.format("∫P(4,x)dx=%s\n",p4int);
+out.format("∫P(4,x)dx(-1,1)=%s\n",p4norm);
+var p4id = p4int.differentiate(128);
+p4id.eval(0.34);
+p4.eval(0.34);

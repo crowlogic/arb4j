@@ -61,6 +61,14 @@ public class arblib {
     arblibJNI.arb_div_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
+  public static void arb_poly_integral(RealPolynomial res, RealPolynomial poly, int prec) {
+    arblibJNI.arb_poly_integral(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly, prec);
+  }
+
+  public static void arb_poly_derivative(RealPolynomial res, RealPolynomial poly, int prec) {
+    arblibJNI.arb_poly_derivative(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly, prec);
+  }
+
   public static int arb_poly_length(RealPolynomial poly) {
     return arblibJNI.arb_poly_length(RealPolynomial.getCPtr(poly), poly);
   }
