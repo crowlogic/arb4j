@@ -1,5 +1,6 @@
 %typemap(javaimports) arb_poly_struct %{
 import static arb.arblib.*;
+import java.util.stream.IntStream;
 import arb.functions.real.RealFunction;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
@@ -164,18 +165,39 @@ import arb.utensils.Utensils;
     }
     return this;
   }
+
+  /**
+   * Calculate the (indefinate) integral of this polynomial via term-by-term
+   * integration whereby coeff * x^i becomes coeff/(i+1) * x^(i+1)
+   * 
+   * @param bits
+   * @return new {@link RealPolynomial} containing the integral of this with the
+   *         integration of constant initialized to zero (note that this is NOT a
+   *         reference to this like many of the other methods are)
+   */
+  public RealPolynomial integrate(int bits)
+  {
+    RealPolynomial integral = new RealPolynomial(getLength() + 1);
+
+    // Integrate term-by-term: coeff * x^i becomes coeff/(i+1) * x^(i+1)
+    IntStream.range(0, getLength()).forEach(i -> get(i).div(i + 1, bits, integral.set(i + 1, RealConstants.zero)));
+
+    integral.get(0).zero();
+
+    return integral;
+  }
   
   /**
    * Set the value of the i-th element of this polynomial's coefficients
    * 
-   * @param i index which must be less than this{@link #getLength()}
+   * @param i   index which must be less than this{@link #getLength()}
    * @param val value to be set
-   * @return this
+   * @return the ith element (the one that represents the polynomial, not the one passed in an as argument)
    */
   public Real set(int i, Real val)
   {
     arblib.arb_poly_set_coeff_arb(this, i, val);
-    return val;
+    return get(i);
   }
   
   @Override
