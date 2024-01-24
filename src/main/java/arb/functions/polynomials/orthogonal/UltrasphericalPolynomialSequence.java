@@ -15,8 +15,6 @@ import arb.Real;
  * </pre>
  * 
  * @author ©2024 Stephen Crowley
- * @param <J>the type of{
- * @link UltrasphericalPolynomial}s that this sequence*generates
  */
 public class UltrasphericalPolynomialSequence extends
                                               JacobiPolynomialSequence

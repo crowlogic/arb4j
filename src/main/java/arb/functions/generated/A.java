@@ -28,79 +28,71 @@ public class A implements
 
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initializeVariableReferences();
+      initializeVariableReferences();
     }
 
-    return ((Real) this.F.evaluate(in, order, bits, this.ℝ1)).mul(result.identity(), bits, this.𝕽1)
-                                                             .add((Real) this.G.evaluate(null, order, bits, this.ℝ2),
-                                                                  bits,
-                                                                  this.𝕽2)
-                                                             .mul(((Real) this.C.evaluate(this.ℝ3.set(in),
-                                                                                          order,
-                                                                                          bits,
-                                                                                          this.ℝ4)).sub(this.const2,
-                                                                                                        bits,
-                                                                                                        this.ℝ5),
-                                                                  bits,
-                                                                  this.𝕽3)
-                                                             .div(this.const3, bits, result);
+    return F.evaluate(in, order, bits, ℝ1)
+            .mul(result.identity(), bits, 𝕽1)
+            .add(G.evaluate(null, order, bits, ℝ2), bits, 𝕽2)
+            .mul(C.evaluate(ℝ3.set(in), order, bits, ℝ4).sub(const2, bits, ℝ5), bits, 𝕽3)
+            .div(const3, bits, result);
   }
 
   public A()
   {
-    this.const1 = new Integer("0");
-    this.const2 = new Integer("1");
-    this.const3 = new Integer("2");
-    this.ℝ1     = new Real();
-    this.𝕽1    = new RealPolynomial();
-    this.ℝ2     = new Real();
-    this.𝕽2    = new RealPolynomial();
-    this.ℝ3     = new Real();
-    this.ℝ4     = new Real();
-    this.ℝ5     = new Real();
-    this.𝕽3    = new RealPolynomial();
+    const1 = new Integer("0");
+    const2 = new Integer("1");
+    const3 = new Integer("2");
+    ℝ1     = new Real();
+    𝕽1    = new RealPolynomial();
+    ℝ2     = new Real();
+    𝕽2    = new RealPolynomial();
+    ℝ3     = new Real();
+    ℝ4     = new Real();
+    ℝ5     = new Real();
+    𝕽3    = new RealPolynomial();
   }
 
   public void initializeVariableReferences()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      this.C.α           = this.α;
-      this.C.β           = this.β;
-      this.F.α           = this.α;
-      this.F.β           = this.β;
-      this.G.α           = this.α;
-      this.G.β           = this.β;
-      this.isInitialized = true;
+      C.α           = α;
+      C.β           = β;
+      F.α           = α;
+      F.β           = β;
+      G.α           = α;
+      G.β           = β;
+      isInitialized = true;
     }
   }
 
   public void close()
   {
-    this.const1.close();
-    this.const2.close();
-    this.const3.close();
-    this.ℝ1.close();
-    this.𝕽1.close();
-    this.ℝ2.close();
-    this.𝕽2.close();
-    this.ℝ3.close();
-    this.ℝ4.close();
-    this.ℝ5.close();
-    this.𝕽3.close();
+    const1.close();
+    const2.close();
+    const3.close();
+    ℝ1.close();
+    𝕽1.close();
+    ℝ2.close();
+    𝕽2.close();
+    ℝ3.close();
+    ℝ4.close();
+    ℝ5.close();
+    𝕽3.close();
   }
 }

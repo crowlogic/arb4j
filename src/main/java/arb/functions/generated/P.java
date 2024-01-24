@@ -28,7 +28,7 @@ public class P implements
   public Integer        ℤ2;
   public RealPolynomial 𝕽7;
   public RealPolynomial 𝕽8;
-  public RealPolynomial 𝕽9;
+  public RealPolynomial r9;
   public Real           ℝ5;
   public Real           ℝ6;
   public P              P;
@@ -39,16 +39,16 @@ public class P implements
 
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initializeVariableReferences();
+      initializeVariableReferences();
     }
 
-    if (this.α == null)
+    if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
@@ -56,42 +56,26 @@ public class P implements
     {
       return switch (in.getSignedValue())
       {
-      case 0 -> result.set(this.const2);
-      case 1 -> ((Real) this.C.evaluate(this.ℝ1.set(this.const2), order, bits, this.ℝ2))
-                                                                                        .mul(result.identity(),
-                                                                                             bits,
-                                                                                             this.𝕽1)
-                                                                                        .sub(this.β, bits, this.𝕽2)
-                                                                                        .add(this.α, bits, this.𝕽3)
-                                                                                        .div(this.const3,
-                                                                                             bits,
-                                                                                             result);
+      case 0 -> result.set(const2);
+      case 1 -> C.evaluate(ℝ1.set(const2), order, bits, ℝ2)
+                 .mul(result.identity(), bits, 𝕽1)
+                 .sub(β, bits, 𝕽2)
+                 .add(α, bits, 𝕽3)
+                 .div(const3, bits, result);
       default ->
       {
-        RealPolynomial var5 = (RealPolynomial) this.A.evaluate(in, order, bits, this.𝕽4);
-        if (this.P == null)
+        if (P == null)
         {
-          this.P = new P(this);
+          P = new P(this);
         }
 
-        var5 = var5.mul((RealPolynomial) this.P.evaluate(in.sub(this.const2, bits, this.ℤ1), order, bits, this.𝕽5),
-                        bits,
-                        this.𝕽6);
-        Real var10001 = (Real) this.B.evaluate(this.ℝ3.set(in), order, bits, this.ℝ4);
-        if (this.P == null)
-        {
-          this.P = new P(this);
-        }
-
-        yield var5.sub(var10001.mul((RealPolynomial) this.P.evaluate(in.sub(this.const3, bits, this.ℤ2),
-                                                                     order,
-                                                                     bits,
-                                                                     this.𝕽7),
-                                    bits,
-                                    this.𝕽8),
-                       bits,
-                       this.𝕽9)
-                  .div((Real) this.E.evaluate(this.ℝ5.set(in), order, bits, this.ℝ6), bits, result);
+        yield A.evaluate(in, order, bits, 𝕽4)
+               .mul(P.evaluate(in.sub(const2, bits, ℤ1), order, bits, 𝕽5), bits, 𝕽6)
+               .sub(B.evaluate(ℝ3.set(in), order, bits, ℝ4)
+                     .mul(P.evaluate(in.sub(const3, bits, ℤ2), order, bits, 𝕽7), bits, 𝕽8),
+                    bits,
+                    r9)
+               .div(E.evaluate(ℝ5.set(in), order, bits, ℝ6), bits, result);
       }
       };
     }
@@ -99,53 +83,47 @@ public class P implements
 
   public P()
   {
-    this.const1 = new Integer("0");
-    this.const2 = new Integer("1");
-    this.const3 = new Integer("2");
-    this.ℝ1     = new Real();
-    this.ℝ2     = new Real();
-    this.𝕽1    = new RealPolynomial();
-    this.𝕽2    = new RealPolynomial();
-    this.𝕽3    = new RealPolynomial();
-    this.𝕽4    = new RealPolynomial();
-    this.ℤ1     = new Integer();
-    this.𝕽5    = new RealPolynomial();
-    this.𝕽6    = new RealPolynomial();
-    this.ℝ3     = new Real();
-    this.ℝ4     = new Real();
-    this.ℤ2     = new Integer();
-    this.𝕽7    = new RealPolynomial();
-    this.𝕽8    = new RealPolynomial();
-    this.𝕽9    = new RealPolynomial();
-    this.ℝ5     = new Real();
-    this.ℝ6     = new Real();
+    const1 = new Integer("0");
+    const2 = new Integer("1");
+    const3 = new Integer("2");
+    ℝ1     = new Real();
+    ℝ2     = new Real();
+    𝕽1    = new RealPolynomial();
+    𝕽2    = new RealPolynomial();
+    𝕽3    = new RealPolynomial();
+    𝕽4    = new RealPolynomial();
+    ℤ1     = new Integer();
+    𝕽5    = new RealPolynomial();
+    𝕽6    = new RealPolynomial();
+    ℝ3     = new Real();
+    ℝ4     = new Real();
+    ℤ2     = new Integer();
+    𝕽7    = new RealPolynomial();
+    𝕽8    = new RealPolynomial();
+    r9     = new RealPolynomial();
+    ℝ5     = new Real();
+    ℝ6     = new Real();
   }
 
   public void initializeVariableReferences()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      this.A.α           = this.α;
-      this.A.β           = this.β;
-      this.B.α           = this.α;
-      this.B.β           = this.β;
-      this.C.α           = this.α;
-      this.C.β           = this.β;
-      this.E.α           = this.α;
-      this.E.β           = this.β;
-      this.isInitialized = true;
+      A.α           = B.α = C.α = E.α = α;
+      A.β           = B.β = C.β = E.β = β;
+      isInitialized = true;
     }
   }
 
@@ -162,33 +140,33 @@ public class P implements
     }
     else
     {
-      this.α = var1.α;
-      this.β = var1.β;
+      α = var1.α;
+      β = var1.β;
     }
   }
 
   public void close()
   {
-    this.const1.close();
-    this.const2.close();
-    this.const3.close();
-    this.ℝ1.close();
-    this.ℝ2.close();
-    this.𝕽1.close();
-    this.𝕽2.close();
-    this.𝕽3.close();
-    this.𝕽4.close();
-    this.ℤ1.close();
-    this.𝕽5.close();
-    this.𝕽6.close();
-    this.ℝ3.close();
-    this.ℝ4.close();
-    this.ℤ2.close();
-    this.𝕽7.close();
-    this.𝕽8.close();
-    this.𝕽9.close();
-    this.ℝ5.close();
-    this.ℝ6.close();
-    this.P.close();
+    const1.close();
+    const2.close();
+    const3.close();
+    ℝ1.close();
+    ℝ2.close();
+    𝕽1.close();
+    𝕽2.close();
+    𝕽3.close();
+    𝕽4.close();
+    ℤ1.close();
+    𝕽5.close();
+    𝕽6.close();
+    ℝ3.close();
+    ℝ4.close();
+    ℤ2.close();
+    𝕽7.close();
+    𝕽8.close();
+    r9.close();
+    ℝ5.close();
+    ℝ6.close();
+    P.close();
   }
 }
