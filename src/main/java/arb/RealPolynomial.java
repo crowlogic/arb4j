@@ -8,11 +8,14 @@
 
 package arb;
 
-import static arb.arblib.*;
-import java.util.stream.IntStream;
-import arb.functions.real.RealFunction;
+import static arb.arblib.arb_poly_clear;
+import static arb.arblib.arb_poly_evaluate;
+import static arb.arblib.arb_poly_evaluate2;
+import static arb.arblib.arb_poly_product_roots;
+
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
+import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 
 /**
