@@ -66,16 +66,18 @@ public class JacobiPolynomialSequence implements
 {
   public static void main(String args[])
   {
-    JacobiPolynomialSequence P     = new JacobiPolynomialSequence(Real.of("-0.5", 128),
-                                                                  Real.of("-0.5", 128));
+    JacobiPolynomialSequence P = new JacobiPolynomialSequence(Real.of("-0.5", 128),
+                                                              Real.of("-0.5", 128));
+    try ( Integer index = new Integer())
+    {
+      var polys = IntStream.range(0, 10)
+                           .mapToObj(n -> P.evaluate(index.set(n), 128, new RealPolynomial()))
+                           .collect(toList());
 
-    List<RealPolynomial>     polys = IntStream.range(0, 10)
-                                              .mapToObj(n -> P.evaluate(new Integer(n), 128, new RealPolynomial()))
-                                              .collect(toList());
+      polys.forEach(p -> out.format("P(%d,x)=%s\n", p.getLength() - 1, p));
 
-    polys.forEach(p -> out.format("P(%d,x)=%s\n", p.getLength() - 1, p));
-
-    ShellFunctions.plot(-1, 1, 1000, polys.toArray(new RealPolynomial[polys.size()]));
+      ShellFunctions.plot(-1, 1, 1000, polys.toArray(new RealPolynomial[polys.size()]));
+    }
 
   }
 

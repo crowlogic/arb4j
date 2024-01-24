@@ -14,7 +14,7 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public class Exponentiate<D, R, F extends Function<D, R>> extends
+public class Exponentiation<D, R, F extends Function<D, R>> extends
                          BinaryOperation<D, R, F>
 {
 
@@ -24,7 +24,7 @@ public class Exponentiate<D, R, F extends Function<D, R>> extends
     return format("{%s}^{%s}", left.typeset(), right.typeset());
   }
 
-  public Exponentiate(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent, int depth)
+  public Exponentiation(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent, int depth)
   {
     super(expression,
           base,
