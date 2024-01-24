@@ -8,16 +8,11 @@
 
 package arb;
 
-import static arb.arblib.arb_poly_clear;
-import static arb.arblib.arb_poly_evaluate;
-import static arb.arblib.arb_poly_evaluate2;
-import static arb.arblib.arb_poly_product_roots;
-
+import static arb.arblib.*;
 import java.util.stream.IntStream;
-
+import arb.functions.real.RealFunction;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
-import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 
 /**
@@ -71,31 +66,22 @@ import arb.utensils.Utensils;
  * TeXmacs format of the same document respectively.
  */
 
-public class RealPolynomial implements
-                            AutoCloseable,
-                            RealFunction,
-                            Ring<RealPolynomial>
-{
-  protected long    swigCPtr;
+public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolynomial> {
+  protected long swigCPtr;
   protected boolean swigCMemOwn;
 
-  public RealPolynomial(long cPtr, boolean cMemoryOwn)
-  {
+  public RealPolynomial(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
-    swigCPtr    = cPtr;
+    swigCPtr = cPtr;
   }
 
-  public static long getCPtr(RealPolynomial obj)
-  {
+  public static long getCPtr(RealPolynomial obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
-  public synchronized void delete()
-  {
-    if (swigCPtr != 0)
-    {
-      if (swigCMemOwn)
-      {
+  public synchronized void delete() {
+    if (swigCPtr != 0) {
+      if (swigCMemOwn) {
         swigCMemOwn = false;
         arblibJNI.delete_RealPolynomial(swigCPtr);
       }
@@ -103,12 +89,10 @@ public class RealPolynomial implements
     }
   }
 
-  static
-  {
-    System.loadLibrary("arblib");
-  }
 
-  /**
+  static { System.loadLibrary("arblib"); }
+
+ /**
    * TODO: add some 'spare' functionality to RealPolynomial so that the temporary
    * variables can live there and possibly be managed more efficiently rather than
    * being allocated and freed upon each invocation of
@@ -154,18 +138,18 @@ public class RealPolynomial implements
       return this;
     }
   }
-
+    
   public RealPolynomial add(Real g, int bits, RealPolynomial res)
   {
-    return g.add(this, bits, res);
+    return g.add(this, bits, res);   
   }
-
-  public RealPolynomial fitLength()
+  
+  public RealPolynomial fitLength( )
   {
     arblib.arb_poly_fit_length(remainder, getLength());
     return this;
   }
-
+    
   /**
    * 
    * @param that
@@ -175,7 +159,7 @@ public class RealPolynomial implements
   {
     return arblib.arb_poly_overlaps(this, that) != 0;
   }
-
+  
   @Override
   public boolean equals(Object obj)
   {
@@ -189,7 +173,7 @@ public class RealPolynomial implements
       return false;
     }
   }
-
+    
   /**
    * Call this{@link #set(int, Real)} successively
    * 
@@ -224,21 +208,20 @@ public class RealPolynomial implements
     IntStream.range(0, getLength()).forEach(i -> get(i).div(i + 1, bits, integral.get(i + 1)));
     return integral;
   }
-
+  
   /**
    * Set the value of the i-th element of this polynomial's coefficients
    * 
    * @param i   index which must be less than this{@link #getLength()}
    * @param val value to be set
-   * @return the ith element (the one that represents the polynomial, not the one
-   *         passed in an as argument)
+   * @return the ith element (the one that represents the polynomial, not the one passed in an as argument)
    */
   public Real set(int i, Real val)
   {
     arblib.arb_poly_set_coeff_arb(this, i, val);
     return get(i);
   }
-
+  
   @Override
   public String toString()
   {
@@ -276,7 +259,7 @@ public class RealPolynomial implements
     }
     return (builder.toString() + (remainder != null ? " with remainder " + remainder : "")).replaceAll("-", "- ");
   }
-
+    
   /**
    * 
    * @return {@link arblib#arb_poly_is_zero(RealPolynomial)} != 0
@@ -285,20 +268,20 @@ public class RealPolynomial implements
   {
     return arblib.arb_poly_is_zero(this) != 0;
   }
-
+  
   /**
    * Performs polynomial division with remainder, computing a quotient and a
-   * remainder such that the implementation reverses the inputs and performs power
-   * series division.
+   * remainder such that the implementation reverses the inputs and performs 
+   * power series division.
    * 
-   * If the leading coefficient of the divisor contains zero (or if is identically
-   * zero), then a {@link DivisionByZeroException} is thrown. Otherwise, the
-   * {@link RealPolynomial} quotient will be calculated
+   * If the leading coefficient of the divisor contains zero (or if is
+   * identically zero), then a {@link DivisionByZeroException} is thrown.
+   * Otherwise, the {@link RealPolynomial} quotient will be calculated
    * 
-   * If there is a remainder then the {@link RealPolynomial#remainder} will be
-   * populated and will have its {@link AutoCloseable#close()} method called by
-   * the {@link RealPolynomial} quotient being returned as the result when its
-   * {@link AutoCloseable#close()} method is called, otherwise the quotients
+   * If there is a remainder then the {@link RealPolynomial#remainder} will be 
+   * populated and will have its {@link AutoCloseable#close()} method called by 
+   * the {@link RealPolynomial} quotient being returned as the result when its 
+   * {@link AutoCloseable#close()} method is called, otherwise the quotients 
    * {@link RealPolynomial#remainder} will be null.
    */
   @Override
@@ -317,27 +300,27 @@ public class RealPolynomial implements
     return resultingQuotient;
   }
 
-  public RealPolynomial mul(RealPolynomial that, int bits, RealPolynomial result)
+  public RealPolynomial mul( RealPolynomial that, int bits, RealPolynomial result )
   {
     assert that != null : "operand is null;";
-    arblib.arb_poly_mul(result, this, that, bits);
+    arblib.arb_poly_mul(result, this, that, bits );
     return result;
   }
-
-  public RealPolynomial mul(Real that, int bits, RealPolynomial result)
+  
+  public RealPolynomial mul( Real that, int bits, RealPolynomial result )
   {
     assert that != null : "operand is null;";
-    arblib.arb_poly_scalar_mul(result, this, that, bits);
+    arblib.arb_poly_scalar_mul(result, this, that, bits );
     return result;
   }
-
-  public RealPolynomial div(Real that, int bits, RealPolynomial result)
+  
+  public RealPolynomial div( Real that, int bits, RealPolynomial result )
   {
     assert that != null : "operand is null;";
-    arblib.arb_poly_scalar_div(result, this, that, bits);
+    arblib.arb_poly_scalar_div(result, this, that, bits );
     return result;
   }
-
+  
   /**
    * @see arblib#arb_poly_shift_left(RealPolynomial, RealPolynomial, int)
    * 
@@ -361,19 +344,18 @@ public class RealPolynomial implements
    */
   public RealPolynomial shiftRight(int n, RealPolynomial result)
   {
-    assert result != this : "aliasing not allowed";
+    assert result != this : "aliasing not allowed";    
     arblib.arb_poly_shift_right(result, this, n);
     return result;
   }
-
+ 
   public Real get(int i)
   {
     return i < getLength() ? getCoeffs().get(i) : null;
   }
-
+   
   /**
-   * Sets {C, max(lenThis, lenThat)} to the sum of {this, thisLen} and {that,
-   * thatLen} by calling
+   * Sets {C, max(lenThis, lenThat)} to the sum of {this, thisLen} and {that, thatLen} by calling
    * {@link arblib#arb_poly_add(RealPolynomial, RealPolynomial, RealPolynomial, int)}<br>
    * 
    * Allows aliasing of the input and output operands.
@@ -396,9 +378,9 @@ public class RealPolynomial implements
     return l3;
   }
 
+
   /**
-   * Sets {C, max(lenThis, lenThat)} to the difference of {this, thisLen} and
-   * {that, thatLen} by calling
+   * Sets {C, max(lenThis, lenThat)} to the difference of {this, thisLen} and {that, thatLen} by calling
    * {@link arblib#arb_poly_sub(RealPolynomial, RealPolynomial, RealPolynomial, int)}<br>
    * 
    * Allows aliasing of the input and output operands.
@@ -413,7 +395,7 @@ public class RealPolynomial implements
     arblib.arb_poly_sub(result, this, that, prec);
     return result;
   }
-
+  
   /**
    * Calls {@link arb#arb_clear(Real)}
    * 
@@ -421,7 +403,7 @@ public class RealPolynomial implements
    */
   public RealPolynomial clear()
   {
-    if (swigCMemOwn)
+    if ( swigCMemOwn )
     {
       arb_poly_clear(this);
     }
@@ -432,7 +414,7 @@ public class RealPolynomial implements
   public void close()
   {
     clear();
-    if (remainder != null)
+    if ( remainder != null )
     {
       remainder.close();
       remainder = null;
@@ -440,8 +422,8 @@ public class RealPolynomial implements
   }
 
   public RealPolynomial remainder;
-
-  /**
+  
+ /**
    * @see arb#arb_poly_product_roots(RealPolynomial, Real, int, int)
    * 
    * @param xs
@@ -453,7 +435,7 @@ public class RealPolynomial implements
     arb_poly_product_roots(this, xs, xs.dim, prec);
     return this;
   }
-
+  
   @Override
   public Real evaluate(Real z, int order, int prec, Real w)
   {
@@ -470,19 +452,18 @@ public class RealPolynomial implements
       throw new UnsupportedOperationException("derivatives beyond the first are not yet implemented");
     }
   }
-
+  
   public double eval(double d)
   {
-    try ( Real t = new Real(); Real s = new Real())
+    try ( Real t = new Real(); Real s = new Real() )
     {
       t.set(d);
       return evaluate(t, 1, 70, s).doubleValue();
     }
   }
-
+  
   /**
    * Calls this{@link #init(int)}
-   * 
    * @param order
    */
   public RealPolynomial(int order)
@@ -508,8 +489,9 @@ public class RealPolynomial implements
   public RealPolynomial set(RealPolynomial a)
   {
     arblib.arb_poly_set(this, a);
-    return this;
+    return this;    
   }
+
 
   /**
    * Calls {@link arblib#arb_poly_init2(RealPolynomial, int)} which calls
@@ -526,8 +508,14 @@ public class RealPolynomial implements
     arblib.arb_poly_init2(this, order);
     return this;
   }
-
+    
   public Real coeffsNative;
+
+  public Real set(int i, int val)
+  {
+    arblib.arb_poly_set_coeff_si(this, i, val);
+    return get(i);
+  }
 
   /**
    * Sets this to the polynomial y(x)=x whose coefficient vector is [0 1]
@@ -541,34 +529,34 @@ public class RealPolynomial implements
     set(1, RealConstants.one);
     return this;
   }
-
+  
   public Real getCoeffs()
   {
-    if (coeffsNative != null && coeffsNative.dim != getLength())
+    if ( coeffsNative != null && coeffsNative.dim != getLength() )
     {
       coeffsNative.close();
       coeffsNative = null;
     }
     if (coeffsNative == null)
     {
-      coeffsNative = getCoeffsNative();
+      coeffsNative          = getCoeffsNative();
       if (coeffsNative != null)
       {
         coeffsNative.dim      = getLength();
         coeffsNative.elements = new Real[coeffsNative.dim];
-      }
+      }      
     }
     return coeffsNative;
   }
-
+  
   public RealPolynomial neg()
   {
     return neg(this);
   }
-
-  public RealPolynomial neg(RealPolynomial result)
+  
+  public RealPolynomial neg( RealPolynomial result )
   {
-    arblib.arb_poly_neg(result, this);
+    arblib.arb_poly_neg( result, this );
     return this;
   }
 
@@ -577,7 +565,7 @@ public class RealPolynomial implements
     setLength(0);
     return this;
   }
-
+  
   public RealPolynomial set(int c1)
   {
     try ( Real tmp = new Real();)
@@ -586,7 +574,7 @@ public class RealPolynomial implements
     }
     return this;
   }
-
+    
   public RealPolynomial set(Integer c1)
   {
     try ( Real tmp = new Real();)
@@ -596,38 +584,26 @@ public class RealPolynomial implements
     return this;
   }
 
-  public void setCoeffsNative(Real value)
-  {
+
+  public void setCoeffsNative(Real value) {
     arblibJNI.RealPolynomial_coeffsNative_set(swigCPtr, this, Real.getCPtr(value), value);
   }
 
-  public Real getCoeffsNative()
-  {
+  public Real getCoeffsNative() {
     long cPtr = arblibJNI.RealPolynomial_coeffsNative_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new Real(cPtr,
-                                         false);
+    return (cPtr == 0) ? null : new Real(cPtr, false);
   }
 
-  public void setLength(int value)
-  {
+  public void setLength(int value) {
     arblibJNI.RealPolynomial_length_set(swigCPtr, this, value);
   }
 
-  public int getLength()
-  {
+  public int getLength() {
     return arblibJNI.RealPolynomial_length_get(swigCPtr, this);
   }
 
-  public RealPolynomial()
-  {
-    this(arblibJNI.new_RealPolynomial(),
-         true);
-  }
-
-  public Real set(int i, int val)
-  {
-    arblib.arb_poly_set_coeff_si(this, i, val);
-    return get(i);
+  public RealPolynomial() {
+    this(arblibJNI.new_RealPolynomial(), true);
   }
 
 }

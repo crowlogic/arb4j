@@ -178,7 +178,7 @@ import arb.utensils.Utensils;
   public RealPolynomial integrate(int bits)
   {
     RealPolynomial integral = new RealPolynomial(getLength() + 1);
-    IntStream.range(0, getLength()).forEach(i -> get(i).div(i + 1, bits, integral.set(i + 1, RealConstants.zero)));
+    IntStream.range(0, getLength()).forEach(i -> get(i).div(i + 1, bits, integral.get(i + 1)));
     return integral;
   }
   
