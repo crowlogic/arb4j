@@ -51,7 +51,7 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.expressions.nodes.binary.Addition;
 import arb.expressions.nodes.binary.Division;
-import arb.expressions.nodes.binary.Exponentiate;
+import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
 import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.unary.FunctionCall;
@@ -838,7 +838,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         parenthetical = true;
       }
-      node = new Exponentiate<>(this,
+      node = new Exponentiation<>(this,
                                 node,
                                 parenthetical ? parseFirst(depth) : parse(depth),
                                 depth + 1);
@@ -907,7 +907,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (parse(depth + 1, superscript))
     {
-      node = new Exponentiate<>(this,
+      node = new Exponentiation<>(this,
                                 node,
                                 new LiteralConstant<>(this,
                                                       digit,
@@ -1222,6 +1222,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String getTypeSignature()
   {
+    
     String          classSignature;
     SignatureWriter sw = new SignatureWriter();
 

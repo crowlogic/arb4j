@@ -70,7 +70,7 @@ public class Parser
    *         something to the 1st power because thats the identity operation
    * 
    */
-  public static boolean isPowerCharacter(int ch)
+  public static boolean isExponent(int ch)
   {
     return ch == '^' || ch == '⁰' || ch == '¹' || ch == '²' || ch == '³' || (ch >= '⁴' && ch <= '⁹');
   }
