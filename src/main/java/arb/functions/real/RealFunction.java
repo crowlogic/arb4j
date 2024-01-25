@@ -37,8 +37,13 @@ import arb.utensils.Utensils;
  * factors, and locating roots within intervals. The interface extends
  * {@link Function}<Real, Real> and includes default implementations of various
  * techniques, including Newton's method.
+ *
+ * arb4j is made available under the terms of the Business Source License™ v1.1
+ * ©2024 which can be found in the root directory of this project in a file
+ * named License.pdf, License.txt, or License.tm which are the pdf, text, and
+ * TeXmacs formatted versions of the same document respectively.
  * 
- * @author ©2024 Stephen Crowley
+ * @author Stephen Crowley
  */
 public interface RealFunction extends
                               Function<Real, Real>
@@ -531,7 +536,7 @@ public interface RealFunction extends
    * @return the first inverse branch, oRealFunction the only one if there is only
    *         one, which is the case if the function is properly invertible
    */
-  public default Function<Real,Real> inverse()
+  public default Function<Real, Real> inverse()
   {
     return inverse(0);
   }
@@ -624,12 +629,7 @@ public interface RealFunction extends
 
   public static RealFunction express(String functionName, String expression, Context context, boolean verbose)
   {
-    RealFunction func = instantiate(expression,
-                                    context,
-                                    Real.class,
-                                    Real.class,
-                                    RealFunction.class,
-                                    functionName);
+    RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, functionName);
 
     return func;
   }
