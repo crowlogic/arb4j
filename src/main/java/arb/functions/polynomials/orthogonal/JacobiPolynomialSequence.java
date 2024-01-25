@@ -4,7 +4,6 @@ import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.stream.IntStream;
 
 import arb.Integer;

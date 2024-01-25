@@ -20,58 +20,54 @@ public class F implements
 
   public Real evaluate(Integer in, int order, int bits, Real result)
   {
-    if (!this.isInitialized)
+    if (!isInitialized)
     {
-      this.initializeVariableReferences();
+      initializeVariableReferences();
     }
 
-    return ((Real) this.C.evaluate(this.ℝ1.set(in.sub(this.const1, bits, this.ℤ1)),
-                                   order,
-                                   bits,
-                                   this.ℝ2)).mul((Real) this.C.evaluate(this.ℝ3.set(in), order, bits, this.ℝ4),
-                                                 bits,
-                                                 result);
+    return C.evaluate(ℝ1.set(in.sub(const1, bits, ℤ1)), order, bits, ℝ2)
+            .mul(C.evaluate(ℝ3.set(in), order, bits, ℝ4), bits, result);
   }
 
   public F()
   {
-    this.const1 = new Integer("1");
-    this.ℝ1     = new Real();
-    this.ℤ1     = new Integer();
-    this.ℝ2     = new Real();
-    this.ℝ3     = new Real();
-    this.ℝ4     = new Real();
+    const1 = new Integer("1");
+    ℝ1     = new Real();
+    ℤ1     = new Integer();
+    ℝ2     = new Real();
+    ℝ3     = new Real();
+    ℝ4     = new Real();
   }
 
   public void initializeVariableReferences()
   {
-    if (this.isInitialized)
+    if (isInitialized)
     {
       throw new AssertionError("Already initialized");
     }
-    else if (this.α == null)
+    else if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      this.C.α           = this.α;
-      this.C.β           = this.β;
-      this.isInitialized = true;
+      C.α           = α;
+      C.β           = β;
+      isInitialized = true;
     }
   }
 
   public void close()
   {
-    this.const1.close();
-    this.ℝ1.close();
-    this.ℤ1.close();
-    this.ℝ2.close();
-    this.ℝ3.close();
-    this.ℝ4.close();
+    const1.close();
+    ℝ1.close();
+    ℤ1.close();
+    ℝ2.close();
+    ℝ3.close();
+    ℝ4.close();
   }
 }

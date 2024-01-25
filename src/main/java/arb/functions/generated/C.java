@@ -15,24 +15,24 @@ public class C implements
 
   public Real evaluate(Real in, int order, int bits, Real result)
   {
-    if (this.α == null)
+    if (α == null)
     {
       throw new AssertionError("α is null");
     }
-    else if (this.β == null)
+    else if (β == null)
     {
       throw new AssertionError("β is null");
     }
     else
     {
-      return this.const1.mul(in, bits, this.ℝ1).add(this.α, bits, this.ℝ2).add(this.β, bits, result);
+      return const1.mul(in, bits, ℝ1).add(α, bits, ℝ2).add(β, bits, result);
     }
   }
 
   public void close()
   {
-    this.const1.close();
-    this.ℝ1.close();
-    this.ℝ2.close();
+    const1.close();
+    ℝ1.close();
+    ℝ2.close();
   }
 }

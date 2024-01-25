@@ -123,17 +123,11 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   {
     if (π.equals(fieldName))
     {
-      mv.visitFieldInsn(Opcodes.GETSTATIC,
-                        Type.getInternalName(RealConstants.class),
-                        fieldName,
-                        expression.domainClassDescriptor);
+      getStaticField(mv,π);
     }
     else if (half.equals(fieldName))
     {
-      mv.visitFieldInsn(Opcodes.GETSTATIC,
-                        Type.getInternalName(RealConstants.class),
-                        "half",
-                        expression.domainClassDescriptor);
+      getStaticField(mv,"half");
     }
     else
     {
@@ -149,6 +143,14 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     }
 
     return mv;
+  }
+
+  private void getStaticField(MethodVisitor mv, String fn)
+  {
+    mv.visitFieldInsn(Opcodes.GETSTATIC,
+                      Type.getInternalName(RealConstants.class),
+                      fn,
+                      expression.domainClassDescriptor);
   }
 
   @Override
