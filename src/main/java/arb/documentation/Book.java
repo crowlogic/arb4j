@@ -13,7 +13,7 @@ public record Book(String author,
 
   public String cite(String by)
   {
-    return String.format("@book{%s,\n author = {%s},\n title = {%s},\n year = {%s},\n publisher = {%s},\n address = {%s}\n}",
+    return String.format("@Book{%s,\n author = {%s},\n title = {%s},\n year = {%s},\n publisher = {%s},\n address = {%s}\n}",
                          by,
                          author(),
                          title(),

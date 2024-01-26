@@ -43,7 +43,7 @@ public record Article(String author,
   @Override
   public String cite(String by)
   {
-    return String.format("@orthogonalPolynomialFourierTransforms{%s,%s\n title = {%s},\n year = {%s},\n publisher = {%s}\n%s}",
+    return String.format("@Article  {%s,%s\n title = {%s},\n year = {%s},\n publisher = {%s}\n%s}",
                          by,
                          author() == null ? "" : String.format("\n author = {%s},", author()),
                          title(),
