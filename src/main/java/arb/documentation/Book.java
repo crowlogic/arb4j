@@ -51,4 +51,16 @@ public record Book(String author,
     return this;
   }
 
+  public Book setSeries(String string)
+  {
+    series.set(string);
+    return this;
+  }
+
+  public Book setEdition(String string)
+  {
+    edition.set(string);
+    return this;
+  }
+
 }

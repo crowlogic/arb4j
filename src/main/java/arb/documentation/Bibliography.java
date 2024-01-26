@@ -13,20 +13,22 @@ public class Bibliography
   }
 
   public final Reference orthogonalPolynomialFourierTransforms = new Article("Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
-                                                                           "The finite Fourier transform of classical polynomials",
-                                                                           "2015",
-                                                                           "Journal of the Australian Mathematical Society",
-                                                                           "98",
-                                                                           "145--160").setPublisher("Cambridge University Press");
+                                                                             "The finite Fourier transform of classical polynomials",
+                                                                             "2015",
+                                                                             "Journal of the Australian Mathematical Society",
+                                                                             "98",
+                                                                             "145--160").setPublisher("Cambridge University Press");
 
-  public final Book    stochasticFiniteElements              = new Book("Ghanem, Roger G. and Spanos, Pol D.",
-                                                                        "Stochastic finite elements: a spectral approach",
-                                                                        "1991").setPublisher("Springer-Verlag")
-                                                                               .setAddress("Berlin, Heidelberg");
+  public final Book      stochasticFiniteElements              = new Book("Ghanem, Roger G. and Spanos, Pol D.",
+                                                                          "Stochastic finite elements: a spectral approach",
+                                                                          "1991").setPublisher("Springer-Verlag")
+                                                                                 .setAddress("Berlin, Heidelberg");
 
-  public final Book    stochasticProcessInferenceTheory      = new Book("Stochastic Processes: Inference Theory",
-                                                                        "Malempati M. Rao",
-                                                                        "2014").setPublisher("Springer");
+  public final Book      stochasticProcessInferenceTheory      = new Book("Stochastic Processes: Inference Theory",
+                                                                          "Malempati M. Rao",
+                                                                          "2014").setPublisher("Springer")
+                                                                                 .setEdition("2nd")
+                                                                                 .setSeries("Springer Monographs in Mathematics");
 
   @Override
   public String toString()
