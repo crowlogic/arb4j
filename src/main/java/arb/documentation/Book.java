@@ -6,20 +6,25 @@ public record Book(String author,
                    String title,
                    String year,
                    AtomicReference<String> publisher,
-                   AtomicReference<String> address)
+                   AtomicReference<String> address,
+                   AtomicReference<String> series,
+                   AtomicReference<String> edition)
                   implements
                   Reference
 {
 
   public String cite(String by)
   {
-    return String.format("@Book{%s,\n author = {%s},\n title = {%s},\n year = {%s},\n publisher = {%s},\n address = {%s}\n}",
+    return String.format("@Book{%s,%s%s%s%s%s%s%s}",
                          by,
-                         author(),
-                         title(),
-                         year(),
-                         publisher(),
-                         address());
+                         Reference.conditionallyInsertField("author", author()),
+                         Reference.conditionallyInsertField("title", title()),
+                         Reference.conditionallyInsertField("year", year()),
+                         Reference.conditionallyInsertField("publisher", publisher.get()),
+                         Reference.conditionallyInsertField("address", address.get()),
+                         Reference.conditionallyInsertField("series", series.get()),
+                         Reference.conditionallyInsertField("edition", edition.get()))
+                 .replace(",}", "}");
   }
 
   public Book(String author, String title, String year)
@@ -27,6 +32,8 @@ public record Book(String author,
     this(author,
          title,
          year,
+         new AtomicReference<>(),
+         new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>());
   }

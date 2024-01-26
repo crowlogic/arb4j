@@ -12,7 +12,7 @@ public class Bibliography
     System.out.println(bibiography);
   }
 
-  public final Article orthogonalPolynomialFourierTransforms = new Article("Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
+  public final Reference orthogonalPolynomialFourierTransforms = new Article("Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
                                                                            "The finite Fourier transform of classical polynomials",
                                                                            "2015",
                                                                            "Journal of the Australian Mathematical Society",
@@ -23,6 +23,10 @@ public class Bibliography
                                                                         "Stochastic finite elements: a spectral approach",
                                                                         "1991").setPublisher("Springer-Verlag")
                                                                                .setAddress("Berlin, Heidelberg");
+
+  public final Book    stochasticProcessInferenceTheory      = new Book("Stochastic Processes: Inference Theory",
+                                                                        "Malempati M. Rao",
+                                                                        "2014").setPublisher("Springer");
 
   @Override
   public String toString()

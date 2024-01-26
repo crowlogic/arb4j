@@ -14,6 +14,22 @@ public record Article(String author,
                      Reference
 {
 
+  @Override
+  public String cite(String by)
+  {
+    return String.format("@Article{%s,%s%s%s%s%s%s%s%s}",
+                         by,
+                         Reference.conditionallyInsertField("author", author()),
+                         Reference.conditionallyInsertField("title", title()),
+                         Reference.conditionallyInsertField("year", year()),
+                         Reference.conditionallyInsertField("journal", journal()),
+                         Reference.conditionallyInsertField("volume", volume()),
+                         Reference.conditionallyInsertField("pages", pages()),
+                         Reference.conditionallyInsertField("publisher", publisher.get()),
+                         Reference.conditionallyInsertField("address", address.get()))
+                 .replace(",}", "}");
+  }
+
   public Article(String author, String title, String year, String journal, String volume, String address)
   {
     this(author,
@@ -27,7 +43,7 @@ public record Article(String author,
   }
 
   @Override
-  public Article setPublisher(String publisher)
+  public Reference setPublisher(String publisher)
   {
     this.publisher.set(publisher);
     return this;
@@ -38,18 +54,6 @@ public record Article(String author,
   {
     this.address.set(address);
     return this;
-  }
-
-  @Override
-  public String cite(String by)
-  {
-    return String.format("@Article{%s,%s\n title = {%s},\n year = {%s},\n publisher = {%s}\n%s}",
-                         by,
-                         author() == null ? "" : String.format("\n author = {%s},", author()),
-                         title(),
-                         year(),
-                         publisher().get(),
-                         address().get() == null ? "" : String.format("\n address = {%s}", address().get()));
   }
 
 }
