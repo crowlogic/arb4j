@@ -57,9 +57,8 @@ public class JacobiPolynomialSequence implements
 
   public static void main(String args[])
   {
-//    JacobiPolynomialSequence P = new JacobiPolynomialSequence(Real.of("-0.5", 128),
-//                                                              Real.of("-0.5", 128));
-    Type1ChebyshevPolynomialSequence P = new Type1ChebyshevPolynomialSequence();
+    JacobiPolynomialSequence P = new JacobiPolynomialSequence(Real.of("-0.5", 128),
+                                                              Real.of("-0.5", 128));
 
     try ( Integer index = new Integer())
     {
