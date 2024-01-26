@@ -25,7 +25,7 @@ public class HypergeometricFunctionSequence implements
   final public Function<Integer, RealPolynomial> F = Function.express(Integer.class,
                                                                       RealPolynomial.class,
                                                                       "F",
-                                                                      "n➔when(n=0,1,else,x*F(n-1))",
+                                                                      "n➔when(n=0,1,else,x*F(n-1)...)",
                                                                       context);
 
   @Override
