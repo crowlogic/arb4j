@@ -134,15 +134,13 @@ public interface Function<D, R> extends
    * @param functionName
    * @param expression
    * @param context
-   * @param verbose
    * @return
    */
   public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
                                                            Class<? extends R> rangeClass,
                                                            String functionName,
                                                            String expression,
-                                                           Context context,
-                                                           boolean verbose)
+                                                           Context context)
   {
     return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, functionName);
   }
@@ -166,22 +164,6 @@ public interface Function<D, R> extends
                                                                   String expression)
   {
     return express(domainClass, rangeClass, expression, null);
-  }
-
-  /**
-   * @see {@link #express(Class, Class, String, String, Context, boolean)}
-   * @param functionName
-   * @param expression
-   * @param context
-   * @return
-   */
-  public static <D, R> Function<D, R> express(Class<? extends D> domainClass,
-                                              Class<? extends R> rangeClass,
-                                              String functionName,
-                                              String expression,
-                                              Context context)
-  {
-    return express(domainClass, rangeClass, functionName, expression, context, false);
   }
 
   public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,

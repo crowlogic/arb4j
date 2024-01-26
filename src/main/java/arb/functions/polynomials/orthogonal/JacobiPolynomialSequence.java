@@ -89,22 +89,19 @@ public class JacobiPolynomialSequence implements
                                                                             Real.class,
                                                                             "F",
                                                                             "n➔C(n-1)*C(n)",
-                                                                            context,
-                                                                            verbose);
+                                                                            context);
 
   final public Function<Void, Real>              G       = Function.express(Void.class,
                                                                             Real.class,
                                                                             "G",
                                                                             "α²-β²",
-                                                                            context,
-                                                                            verbose);
+                                                                            context);
 
   final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
                                                                             RealPolynomial.class,
                                                                             "A",
                                                                             "n➔(F(n)*x + G())*(C(n) - 1)/2",
-                                                                            context,
-                                                                            verbose);
+                                                                            context);
 
   final public RealFunction                      E       = RealFunction.express("E",
                                                                                 "n➔n*C(n/2)*C(n-1)",
@@ -119,8 +116,7 @@ public class JacobiPolynomialSequence implements
                                                                             RealPolynomial.class,
                                                                             "P",
                                                                             "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
-                                                                            context,
-                                                                            verbose);
+                                                                            context);
 
   private RealFunction                           orthogonalityMeasure;
 

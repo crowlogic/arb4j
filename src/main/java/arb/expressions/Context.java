@@ -69,6 +69,11 @@ public class Context
     this.functions = funcs;
   }
 
+  public Context(Real... vars)
+  {
+    this(new Variables(vars));
+  }
+
   public Variables variables;
 
   /**

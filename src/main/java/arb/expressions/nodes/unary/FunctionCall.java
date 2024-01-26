@@ -44,7 +44,7 @@ import arb.functions.Function;
  * For the function to be callable from another function via a shared
  * {@link Context} either the
  * {@link Function#express(Class, Class, String, String, Context)} or
- * {@link Function#express(Class, Class, String, String, Context, boolean)}
+ * {@link Function#express(Class, Class, String, String, Context)}
  * methods that accepts another {@link String} argument specifying the name of
  * the function should be used.<br>
  * <br>
