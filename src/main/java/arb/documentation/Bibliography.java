@@ -4,13 +4,11 @@ import java.lang.reflect.Field;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Run this class, it will print out a BibTeX format bibliography
+ */
 public class Bibliography
 {
-  public static void main(String args[])
-  {
-    Bibliography bibiography = new Bibliography();
-    System.out.println(bibiography);
-  }
 
   public final Reference orthogonalPolynomialFourierTransforms = new Article("Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
                                                                              "The finite Fourier transform of classical polynomials",
@@ -29,6 +27,12 @@ public class Bibliography
                                                                           "2014").setPublisher("Springer")
                                                                                  .setEdition("2nd")
                                                                                  .setSeries("Springer Monographs in Mathematics");
+
+  public static void main(String args[])
+  {
+    Bibliography bibiography = new Bibliography();
+    System.out.println(bibiography);
+  }
 
   @Override
   public String toString()
