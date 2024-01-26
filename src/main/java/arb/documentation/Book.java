@@ -13,9 +13,13 @@ public record Book(String author,
 
   public String cite(String by)
   {
-    return String.format("@book{%s,\n"
-                  + " author = {%s},\n" + " title = {%s},\n" + " year = {%s},\n" + " publisher = {%s},\n"
-                  + " address = {%s}\n" + "}", by, author(), title(), year(), publisher(), address());
+    return String.format("@book{%s,\n author = {%s},\n title = {%s},\n year = {%s},\n publisher = {%s},\n address = {%s}\n}",
+                         by,
+                         author(),
+                         title(),
+                         year(),
+                         publisher(),
+                         address());
   }
 
   public Book(String author, String title, String year)
