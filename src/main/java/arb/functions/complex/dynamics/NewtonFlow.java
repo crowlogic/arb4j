@@ -39,11 +39,11 @@ public class NewtonFlow implements
   @Override
   public Complex evaluate(Complex t, int order, int bits, Complex res)
   {
-    assert order >= 2 : "order must be >=2";
-    try ( Complex zt = new Complex(); Complex ft = Complex.newVector(2))
+    assert order == 1 : "only order=2 supported presently";
+    try ( Complex zt = Complex.newVector(order); Complex ft = Complex.newVector(order))
     {
-      z.evaluate(t, bits, zt);
-      f.evaluate(zt, order, bits, ft);
+      z.evaluate(t, order, bits, zt);
+      f.evaluate(zt, order+1, bits, ft);
       return ft.get(0).div(ft.get(1), bits, res).neg();
     }
   }

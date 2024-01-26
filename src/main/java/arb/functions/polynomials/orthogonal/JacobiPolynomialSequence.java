@@ -69,7 +69,7 @@ public class JacobiPolynomialSequence implements
 
       polys.forEach(p -> out.format("P(%d,x)=%s\n", p.getLength() - 1, p));
 
-      ShellFunctions.plot(-1, 1, 1000, polys.toArray(new RealPolynomial[polys.size()]));
+       //      ShellFunctions.plot(-1, 1, 1000, polys.toArray(new RealPolynomial[polys.size()]));
     }
 
   }
