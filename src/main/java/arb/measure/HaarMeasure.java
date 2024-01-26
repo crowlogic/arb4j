@@ -1,12 +1,10 @@
-package arb.measures;
+package arb.measure;
 
 /**
- * TODO: furnish with methods to make the class be what Haar measures are
- * 
- * @param <Σ>
+ * TODO
  */
-public interface HaarMeasure<Σ> extends
-                            RadonMeasure<Σ>
+public interface HaarMeasure<X, Σ extends σField<X>> extends
+                            RadonMeasure<X, Σ>
 {
 
 }

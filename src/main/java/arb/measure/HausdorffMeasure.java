@@ -1,4 +1,4 @@
-package arb.measures;
+package arb.measure;
 
 /**
  * Hausdorff measure is a generalization of the traditional notions of area and
@@ -20,8 +20,8 @@ package arb.measures;
  * 
  *
  */
-public interface HausdorffMeasure<X> extends
-                                  Measure<X>
+public interface HausdorffMeasure<X, Σ extends σField<X>> extends
+                                 Measure<X, Σ>
 {
 
 }

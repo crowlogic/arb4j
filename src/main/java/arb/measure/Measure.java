@@ -1,23 +1,20 @@
-package arb.measures;
+package arb.measure;
 
 import arb.Real;
-import arb.Set;
 import arb.functions.Function;
 
 /**
- * Let X a {@link Set} and Σ a σ-algebra over X . A set function μ: from Σ to
- * the extended {@link Real} real number line is called a {@link Measure} if it
+ * A (set) {@link Function} from Σ to {@link Real} is a {@link Measure} if it
  * satisfies the following properties:
  * 
- * <b>Non-negativity<b>: For all E in Σ , we have μ (E)≥0.<br>
- * </b>Null empty set</b>: μ(∅)=0.<br>
- * <b>σ-additivity</b></b>: For all countable collections {Eₖ}(k=1..∞) of
- * pairwise disjoint sets in Σ we have μ(∑Eₖ(k=1..∞))=∑μ(Eₖ)(k=1..∞)
+ * Non-negativity: μ(E)≥0 ∀ E∈Σ Null empty set: μ(∅)=0 σ-additivity :
+ * μ(∑Eₖ(k=1..∞))=∑μ(Eₖ)(k=1..∞) ∀ countable collections of pairwise disjoint
+ * subsets {Eₖ}⊂Σ
  *
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Measure_(mathematics)">Wikipedia</a>
  */
-public interface Measure<Σ> extends
+public interface Measure<X, Σ extends σField<X>> extends
                         Function<Σ, Real>
 {
 

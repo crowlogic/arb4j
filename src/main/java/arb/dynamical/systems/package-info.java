@@ -1,7 +1,7 @@
 /**
  * A {@link arb.dynamical.systems.DynamicalSystem} may be defined formally as a
- * {@link arb.measures.Measure}-preserving transformation of a
- * {@link arb.measures.MeasureSpace}, the triplet (T, (X, Σ, μ), Φ). Here, T is
+ * {@link arb.measure.Measure}-preserving transformation of a
+ * {@link arb.measure.MeasureSpace}, the triplet (T, (X, Σ, μ), Φ). Here, T is
  * a monoid (usually the non-negative integers), X is a set, and (X, Σ, μ) is a
  * {@link arb.space.topological.ProbabilitySpace}, meaning that Σ is a
  * sigma-algebra on X and μ is a finite measure on (X, Σ). A map Φ: X → X is
@@ -9,7 +9,7 @@
  * . A map Φ is said to preserve the measure if and only if, for every σ in Σ,
  * one has μ(Φ^(−1))=μ(σ) . Combining the above, a map Φ is said to be a
  * measure-preserving transformation of X , if it is a map from X to itself, it
- * is a Σ-{@link arb.measures.MeasurableSpace} , and is measure-preserving. The
+ * is a Σ-{@link arb.measure.MeasurableSpace} , and is measure-preserving. The
  * triplet (T, (X, Σ, μ), Φ), for such a Φ, is then defined to be a
  * {@link arb.dynamical.systems.DynamicalSystem}.
  * 

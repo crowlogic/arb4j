@@ -1,13 +1,10 @@
-package arb.measures;
+package arb.measure;
 
 /**
- * TODO: provision this class with methods to make the class be what Radon
- * measures are
- * 
- * @param <Σ>
+ * TODO
  */
-public interface RadonMeasure<Σ> extends
-                             Measure<Σ>
+public interface RadonMeasure<X, Σ extends σField<X>> extends
+                             Measure<X, Σ>
 {
 
 }

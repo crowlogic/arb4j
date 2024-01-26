@@ -1,7 +1,7 @@
 package arb.space.topological;
 
 import arb.Set;
-import arb.measures.MeasurableSpace;
+import arb.measure.MeasurableSpace;
 
 /**
  * The sample space (or <b>possibility</b> space) of an experiment or random

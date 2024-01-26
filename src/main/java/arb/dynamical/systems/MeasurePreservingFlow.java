@@ -1,10 +1,10 @@
 package arb.dynamical.systems;
 
-import arb.Field;
-import arb.measures.Measure;
+import arb.measure.Measure;
+import arb.measure.σField;
 
-public interface MeasurePreservingFlow<X extends Field<X>, M extends Measure<X>> extends
-                                      Flow
+public interface MeasurePreservingFlow<X, Σ extends σField<X>> extends
+                                      Measure<X, Σ>
 {
 
 }
