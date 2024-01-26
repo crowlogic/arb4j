@@ -73,11 +73,8 @@ public class Compiler
   public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
   {
     Label notNullLabel = new Label();
-
     mv.visitFieldInsn(Opcodes.GETFIELD, className, fieldName, fieldDesc);
-
     mv.visitJumpInsn(Opcodes.IFNONNULL, notNullLabel);
-
     mv.visitTypeInsn(Opcodes.NEW, Type.getInternalName(AssertionError.class));
     mv.visitInsn(Opcodes.DUP);
     mv.visitLdcInsn(fieldName + " is null");
@@ -87,8 +84,14 @@ public class Compiler
                        "(Ljava/lang/Object;)V",
                        false);
     mv.visitInsn(Opcodes.ATHROW);
-
     mv.visitLabel(notNullLabel);
+  }
+
+  public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
+  {
+    String checking = Type.getInternalName(type);
+    methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
+    return methodVisitor;
   }
 
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String expression,
@@ -119,6 +122,17 @@ public class Compiler
                                                                              Class<? extends D> domainClass,
                                                                              Class<? extends R> rangeClass,
                                                                              Class<? extends F> functionClass,
+                                                                             boolean verbose)
+  {
+    return compile(className, expressionString, context, domainClass, rangeClass, functionClass, null);
+  }
+
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
+                                                                             String expressionString,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
                                                                              String functionName)
   {
     Expression<D, R, F> expression = new Expression<D, R, F>(className,
@@ -132,17 +146,6 @@ public class Compiler
     expression.generate().define();
 
     return expression;
-  }
-
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
-                                                                             String expressionString,
-                                                                             Context context,
-                                                                             Class<? extends D> domainClass,
-                                                                             Class<? extends R> rangeClass,
-                                                                             Class<? extends F> functionClass,
-                                                                             boolean verbose)
-  {
-    return compile(className, expressionString, context, domainClass, rangeClass, functionClass, null);
   }
 
   @SuppressWarnings("unchecked")
@@ -180,20 +183,68 @@ public class Compiler
     return classVisitor;
   }
 
-  /**
-   * Loads the 2nd argument (order) onto the stack
-   * 
-   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
-   * methods is (this,order,bits,result)
-   * 
-   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
-   * 
-   * @return methodVisitor the {@link MethodVisitor} parameter
-   */
-  public static MethodVisitor loadOrderParameter(MethodVisitor methodVisitor)
+  public static String getFunctionTypeSignature(Class<?> domain, Class<?> range)
   {
-    methodVisitor.visitVarInsn(Opcodes.ILOAD, 2);
-    return methodVisitor;
+    SignatureWriter signatureWriter = new SignatureWriter();
+    signatureWriter.visitClassType(Type.getInternalName(Function.class));
+    SignatureVisitor functionType = signatureWriter.visitTypeArgument('=')
+                                                   .visitTypeArgument(SignatureVisitor.INSTANCEOF);
+    functionType.visitClassType(Type.getInternalName(domain));
+    functionType.visitEnd();
+    SignatureVisitor rangeTypeArg = functionType.visitTypeArgument(SignatureVisitor.INSTANCEOF);
+    rangeTypeArg.visitClassType(Type.getInternalName(range));
+    rangeTypeArg.visitEnd();
+    functionType.visitEnd();
+    return signatureWriter.toString();
+
+  }
+
+  public static String getVariablePrefix(Class<?> type)
+  {
+    if (type.equals(Real.class))
+    {
+      return "ℝ";
+    }
+    else if (type.equals(Complex.class))
+    {
+      return "ℂ";
+    }
+    else if (type.equals(Integer.class))
+    {
+      return "ℤ";
+    }
+    else if (type.equals(RealPolynomial.class))
+    {
+      return "r̅";
+    }
+    else if (type.equals(ComplexPolynomial.class))
+    {
+      return "c̅";
+    }
+    else if (type.equals(RealMatrix.class))
+    {
+      return "ℝᵐˣⁿ";
+    }
+    else if (type.equals(ComplexMatrix.class))
+    {
+      return "ℂᵐˣⁿ";
+    }
+    else
+    {
+      throw new RuntimeException("unrecognized type " + type);
+    }
+  }
+
+  public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> inType, Class<?> outType)
+  {
+    assert !outType.getClass().equals(Void.class) : "invokeSetMethod shouldnt be called for Void type";
+
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       Type.getInternalName(outType),
+                       "set",
+                       Type.getMethodDescriptor(Type.getType(outType), Type.getType(inType)),
+                       false);
+    return mv;
   }
 
   /**
@@ -225,6 +276,22 @@ public class Compiler
   public static MethodVisitor loadInputParameter(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(Opcodes.ALOAD, 1);
+    return methodVisitor;
+  }
+
+  /**
+   * Loads the 2nd argument (order) onto the stack
+   * 
+   * The argument pattern for {@link Function#evaluate(Object, int, int, Object)}
+   * methods is (this,order,bits,result)
+   * 
+   * @param methodVisitor the {@link MethodVisitor} to receive the instructions
+   * 
+   * @return methodVisitor the {@link MethodVisitor} parameter
+   */
+  public static MethodVisitor loadOrderParameter(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitVarInsn(Opcodes.ILOAD, 2);
     return methodVisitor;
   }
 
@@ -299,83 +366,6 @@ public class Compiler
     methodVisitor.visitInsn(SWAP);
     methodVisitor.visitInsn(DUP_X1);
     return methodVisitor;
-  }
-
-  public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> inType, Class<?> outType)
-  {
-    assert !outType.getClass().equals(Void.class) : "invokeSetMethod shouldnt be called for Void type";
-
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(outType),
-                       "set",
-                       Type.getMethodDescriptor(Type.getType(outType), Type.getType(inType)),
-                       false);
-    return mv;
-  }
-
-  public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
-  {
-    String checking = Type.getInternalName(type);
-    methodVisitor.visitTypeInsn(Opcodes.CHECKCAST, checking);
-    return methodVisitor;
-  }
-
-  public static String getFunctionTypeSignature(Class<?> domain, Class<?> range)
-  {
-    SignatureWriter signatureWriter = new SignatureWriter();
-
-    signatureWriter.visitClassType(Type.getInternalName(Function.class));
-
-    SignatureVisitor functionType = signatureWriter.visitTypeArgument('=')
-                                                   .visitTypeArgument(SignatureVisitor.INSTANCEOF);
-    functionType.visitClassType(Type.getInternalName(domain));
-    functionType.visitEnd();
-
-    SignatureVisitor rangeTypeArg = functionType.visitTypeArgument(SignatureVisitor.INSTANCEOF);
-
-    rangeTypeArg.visitClassType(Type.getInternalName(range));
-    rangeTypeArg.visitEnd();
-
-    functionType.visitEnd();
-
-    return signatureWriter.toString();
-
-  }
-
-  public static String getVariablePrefix(Class<?> type)
-  {
-    if (type.equals(Real.class))
-    {
-      return "ℝ";
-    }
-    else if (type.equals(Integer.class))
-    {
-      return "ℤ";
-    }
-    else if (type.equals(RealPolynomial.class))
-    {
-      return "𝕽";
-    }
-    else if (type.equals(ComplexPolynomial.class))
-    {
-      return "𝕮";
-    }
-    else if (type.equals(Complex.class))
-    {
-      return "ℂ";
-    }
-    else if (type.equals(RealMatrix.class))
-    {
-      return "𝕽ᵐˣⁿ";
-    }
-    else if (type.equals(ComplexMatrix.class))
-    {
-      return "𝕮ᵐˣⁿ";
-    }
-    else
-    {
-      throw new RuntimeException("unrecognized type " + type);
-    }
   }
 
 }

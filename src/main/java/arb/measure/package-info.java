@@ -27,7 +27,7 @@
  *
  * This package is intended as a theoretical backbone for the application of measure theory in various domains. 
  * It allows for the extension and customization in practical implementations, serving as a versatile toolkit 
- * for research, development and applications.
+ * for research, and application development.
  * </pre>
  */
 package arb.measure;

@@ -57,7 +57,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
-          <argLine>--enable-native-access=arb4j --enable-preview
+          <argLine>-ea --enable-native-access=arb4j --enable-preview
             -Djava.library.path=.</argLine>
         </configuration>
         <dependencies>
@@ -70,36 +70,7 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>native</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.graalvm.nativeimage</groupId>
-            <artifactId>native-image-maven-plugin</artifactId>
-            <version>21.2.0</version>
-            <configuration>
-              <mainClass>
-                arb.functions.polynomials.orthogonal.JacobiPolynomialSequence</mainClass>
-              <buildArgs>
-                <buildArg>--enable-preview</buildArg>
-                <buildArg>-march=native</buildArg>
-              </buildArgs>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>native-image</goal>
-                </goals>
-
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+  
   <dependencies>
 
     <dependency>

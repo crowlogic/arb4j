@@ -2,12 +2,11 @@
  * A high-performance Java API for <a href="http://arblib.org">arblib</a>
  * 
  * @see <a href="https://github.com/crowlogic/arb4j/">the arb4j homepage on
- *      github</a>
- *      /**
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
+ *      github</a> /** arb4j is made available under the terms of the Business
+ *      Source License™ v1.1 ©2023 which can be found in the root directory of
+ *      this project in a file named License.pdf, License.txt, or License.tm
+ *      which are the pdf, text, and TeXmacs format of the same document
+ *      respectively.
  */
 module arb4j
 {
@@ -16,11 +15,11 @@ module arb4j
   requires transitive java.desktop;
   requires transitive java.instrument;
   requires transitive java.logging;
-  requires transitive javafx.base;  
+  requires transitive javafx.base;
   requires transitive javafx.fxml;
   requires transitive javafx.graphics;
   requires transitive javafx.controls;
-  requires transitive javafx.swing;  
+  requires transitive javafx.swing;
   requires transitive junit;
   requires transitive j.text.utils;
   requires transitive jlatexmath;
@@ -32,12 +31,13 @@ module arb4j
   requires transitive io.fair_acc.dataset;
   requires transitive io.fair_acc.bench;
   requires transitive org.fxyz3d.core;
-  requires transitive vineflower;  
+  requires transitive vineflower;
 
   exports arb;
   exports arb.expressions;
+  exports arb.expressions.decompiler;
   exports arb.expressions.nodes;
-  exports arb.expressions.nodes.binary;  
+  exports arb.expressions.nodes.binary;
   exports arb.expressions.nodes.unary;
   exports arb.algebra;
   exports arb.algebraic.geometry;
@@ -51,7 +51,7 @@ module arb4j
   exports arb.exceptions;
   exports arb.functions;
   exports arb.operators;
-  exports arb.functions.polynomials;  
+  exports arb.functions.polynomials;
   exports arb.functions.polynomials.orthogonal;
   exports arb.functions.real;
   exports arb.functions.complex;
@@ -71,5 +71,5 @@ module arb4j
   exports arb.stochastic.processes.integrators;
   exports arb.utensils;
   exports arb.viz;
-  
+
 }

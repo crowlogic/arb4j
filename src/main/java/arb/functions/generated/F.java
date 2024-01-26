@@ -25,8 +25,12 @@ public class F implements
       initializeVariableReferences();
     }
 
-    return C.evaluate(ℝ1.set(in.sub(const1, bits, ℤ1)), order, bits, ℝ2)
-            .mul(C.evaluate(ℝ3.set(in), order, bits, ℝ4), bits, result);
+    return (C.evaluate(ℝ1.set(in.sub(const1, bits, ℤ1)), order, bits, ℝ2)).mul(C.evaluate(ℝ3.set(in),
+                                                                                          order,
+                                                                                          bits,
+                                                                                          ℝ4),
+                                                                               bits,
+                                                                               result);
   }
 
   public F()

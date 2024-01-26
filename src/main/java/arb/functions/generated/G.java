@@ -8,8 +8,8 @@ public class G implements
 {
   public Real α;
   public Real β;
-  public Real ℝ1     = new Real();
-  public Real ℝ2     = new Real();
+  public Real ℝ1 = new Real();
+  public Real ℝ2 = new Real();
 
   public Real evaluate(Void in, int order, int bits, Real result)
   {
