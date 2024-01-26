@@ -1,2 +1,4 @@
-import arb.documentation.Book;
 var book = new Book("Ghanem, Roger G. and Spanos, Pol D.", "Stochastic finite elements: a spectral approach","1991").setPublisher("Springer-Verlag").setAddress("Berlin, Heidelberg");
+out.printf("Constructed %s\n", book );
+var bib = new Bibliography();
+out.println(bib);
