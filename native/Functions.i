@@ -19,6 +19,9 @@
     }
 }
 
+void arb_hypgeom_rising_ui(arb_t res, const arb_t x, ulong n, slong prec);
+void arb_hypgeom_rising(arb_t res, const arb_t x, const arb_t n, slong prec);
+
 int arb_is_one(const arb_t f);
 
 int fmpz_cmp(const fmpz_t f, const fmpz_t g);

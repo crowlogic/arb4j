@@ -9,6 +9,14 @@
 package arb;
 
 public class arblib {
+  public static void arb_hypgeom_rising_ui(Real res, Real x, long n, int prec) {
+    arblibJNI.arb_hypgeom_rising_ui(Real.getCPtr(res), res, Real.getCPtr(x), x, n, prec);
+  }
+
+  public static void arb_hypgeom_rising(Real res, Real x, Real n, int prec) {
+    arblibJNI.arb_hypgeom_rising(Real.getCPtr(res), res, Real.getCPtr(x), x, Real.getCPtr(n), n, prec);
+  }
+
   public static int arb_is_one(Real f) {
     return arblibJNI.arb_is_one(Real.getCPtr(f), f);
   }
