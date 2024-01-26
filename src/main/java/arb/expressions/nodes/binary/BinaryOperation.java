@@ -242,6 +242,14 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     {
       return RealPolynomial.class;
     }
+    else if (typesSymmetryicallyEqual(int.class, RealPolynomial.class))
+    {
+      return RealPolynomial.class;
+    }
+    else if (typesSymmetryicallyEqual(int.class, Real.class))
+    {
+      return Real.class;
+    }
     else if (typesSymmetryicallyEqual(Real.class, RealPolynomial.class))
     {
       return RealPolynomial.class;
