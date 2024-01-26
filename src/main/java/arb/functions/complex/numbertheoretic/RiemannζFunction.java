@@ -12,7 +12,7 @@ import arb.functions.complex.ComplexFunction;
  * 
  * Leonhard Euler first introduced and studied the function over the
  * {@link Real}s in the first half of the eighteenth century. Bernhard Riemann's
- * 1859 article "On the Number of Primes Less Than a Given Magnitude" extended
+ * 1859 orthogonalPolynomialFourierTransforms "On the Number of Primes Less Than a Given Magnitude" extended
  * the Euler definition to a {@link Complex} variable, proved its meromorphic
  * continuation and functional equation, and established a relation between its
  * zeros and the distribution of prime numbers. This paper also contained the

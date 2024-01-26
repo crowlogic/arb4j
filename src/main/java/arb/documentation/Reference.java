@@ -6,6 +6,8 @@ public interface Reference
 
   public String title();
 
+  public String cite(String by);
+  
   public default String journal()
   {
     return null;
@@ -28,5 +30,8 @@ public interface Reference
     return null;
   }
 
+  Reference setPublisher(String string);
+
+  Reference setAddress(String address);
   
 }

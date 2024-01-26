@@ -23,7 +23,7 @@ import arb.space.topological.TangentSpace;
  * transformation, that is, linearly via the Jacobian matrix of the
  * transformation.[1]
  * 
- * This article presents an introduction to the covariant derivative of a vector
+ * This orthogonalPolynomialFourierTransforms presents an introduction to the covariant derivative of a vector
  * field with respect to a vector field, both in a coordinate free language and
  * using a local coordinate system and the traditional index notation. The
  * covariant derivative of a tensor field is presented as an extension of the

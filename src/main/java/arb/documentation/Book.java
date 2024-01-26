@@ -31,6 +31,7 @@ public record Book(String author,
          new AtomicReference<>());
   }
 
+  @Override
   public Book setPublisher(String string)
   {
     publisher.set(string);
