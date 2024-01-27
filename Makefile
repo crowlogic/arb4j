@@ -21,5 +21,5 @@ libarblib.so: $(SOURCES)
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint  
 
 clean:
-	rm -rf libarblib.so *.o native/arb_wrap.c target
+	rm -rf libarblib.so *.o native/arb_wrap.c target/*.jar
 

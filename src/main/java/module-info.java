@@ -3,10 +3,10 @@
  * 
  * @see <a href="https://github.com/crowlogic/arb4j/">the arb4j homepage on
  *      github</a> /** arb4j is made available under the terms of the Business
- *      Source License™ v1.1 ©2023 which can be found in the root directory of
+ *      Source License™ v1.1 ©2024 which can be found in the root directory of
  *      this project in a file named License.pdf, License.txt, or License.tm
- *      which are the pdf, text, and TeXmacs format of the same document
- *      respectively.
+ *      which are the pdf, text, and TeXmacs formatted versions of the same
+ *      document respectively.
  */
 module arb4j
 {
@@ -33,7 +33,6 @@ module arb4j
   requires transitive org.fxyz3d.core;
   requires transitive vineflower;
 
-  
   exports arb;
   exports arb.documentation;
   exports arb.expressions;
