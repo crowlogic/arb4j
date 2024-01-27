@@ -154,6 +154,49 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return a.mul(this, bits, res);
   }
 
+ /**
+   * Calculate the rising factorial this_(power)
+   * 
+   * @param power
+   * @param bits
+   * @param result
+   * @return
+   */
+  public Real risingFactorial(Real power, int bits, Real result)
+  {
+    arblib.arb_hypgeom_rising(result, this, power, bits);
+    return result;
+
+  }
+
+  /**
+   * Calculate the rising factorial this_(power)
+   * 
+   * @param power
+   * @param bits
+   * @param result
+   * @return
+   */
+  public Real risingFactorial(Integer power, int bits, Real result)
+  {
+    arblib.arb_hypgeom_rising_ui(result, this, power.getUnsignedValue(), bits);
+    return result;
+  }
+
+  /**
+   * Calculate the rising factorial this_(power)
+   * 
+   * @param power
+   * @param bits
+   * @param result
+   * @return
+   */
+  public Real risingFactorial(long power, int bits, Real result)
+  {
+    arblib.arb_hypgeom_rising_ui(result, this, power, bits);
+    return result;
+  }
+  
   public Real div(Integer operand, int prec)
   {
      return div(operand,prec,this);
