@@ -1,7 +1,6 @@
 package arb.measure;
 
 import arb.domains.Domain;
-import arb.space.topological.ProbabilitySpace;
 
 /**
  * Consider a {@link ProbabilitySpace} specified by the triple (Ω,Σ,P),

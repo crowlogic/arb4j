@@ -3,7 +3,7 @@
  * {@link arb.measure.Measure}-preserving transformation of a
  * {@link arb.measure.MeasureSpace}, the triplet (T, (X, Σ, μ), Φ). Here, T is
  * a monoid (usually the non-negative integers), X is a set, and (X, Σ, μ) is a
- * {@link arb.space.topological.ProbabilitySpace}, meaning that Σ is a
+ * {@link arb.measure.ProbabilitySpace}, meaning that Σ is a
  * sigma-algebra on X and μ is a finite measure on (X, Σ). A map Φ: X → X is
  * said to be Σ-measurable if and only if, for every σ in Σ, one has Φ^(−1)*σ∈Σ
  * . A map Φ is said to preserve the measure if and only if, for every σ in Σ,

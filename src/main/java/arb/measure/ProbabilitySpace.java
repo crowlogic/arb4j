@@ -1,7 +1,6 @@
-package arb.space.topological;
+package arb.measure;
 
-import arb.measure.MeasureSpace;
-import arb.measure.σField;
+import arb.space.topological.SampleSpace;
 import arb.stochastic.ProbabilityDistributionFunction;
 
 /**

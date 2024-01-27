@@ -101,11 +101,11 @@ import arb.functions.Function;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
-  private static final String IS_INITIALIZED                    = "isInitialized";
+  private static final String IS_INITIALIZED             = "isInitialized";
 
-  private static final String nameOfVariableInitializerFunction = "initializeVariableReferences";
+  private static final String nameOfInitializerFunction  = "initialize";
 
-  public static final String  evaluationMethodDescriptor        = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String  evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
                                                                Context context,
@@ -499,7 +499,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitJumpInsn(Opcodes.IFNE, alreadyInitialized);
 
     methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, className, nameOfVariableInitializerFunction, "()V", false);
+    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, className, nameOfInitializerFunction, "()V", false);
 
     methodVisitor.visitLabel(alreadyInitialized);
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
@@ -536,8 +536,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String getNextConstantFieldName()
   {
-
-    return "const" + constantCount++;
+    return "c" + constantCount++;
   }
 
   public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
@@ -839,16 +838,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
         parenthetical = true;
       }
       node = new Exponentiation<>(this,
-                                node,
-                                parenthetical ? parseFirst(depth) : parse(depth),
-                                depth + 1);
+                                  node,
+                                  parenthetical ? parseFirst(depth) : parse(depth),
+                                  depth + 1);
       if (parenthetical)
       {
         if (!parse(depth, ')'))
         {
           throw new ExpressionCompilerException(String.format("parseExponent expected closing parenthesis at: position=%d, ch='%c'\n",
-                                                   position,
-                                                   ch == -1 ? '?' : ch));
+                                                              position,
+                                                              ch == -1 ? '?' : ch));
         }
       }
 
@@ -908,11 +907,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (parse(depth + 1, superscript))
     {
       node = new Exponentiation<>(this,
-                                node,
-                                new LiteralConstant<>(this,
-                                                      digit,
-                                                      depth + 2),
-                                depth + 1);
+                                  node,
+                                  new LiteralConstant<>(this,
+                                                        digit,
+                                                        depth + 2),
+                                  depth + 1);
     }
     return node;
   }
@@ -1160,7 +1159,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
   {
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                           nameOfVariableInitializerFunction,
+                                                           nameOfInitializerFunction,
                                                            "()V",
                                                            null,
                                                            null);
@@ -1222,7 +1221,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String getTypeSignature()
   {
-    
+
     String          classSignature;
     SignatureWriter sw = new SignatureWriter();
 

@@ -1,6 +1,5 @@
 package arb.measure;
 
-import arb.space.topological.ProbabilitySpace;
 import arb.space.topological.TopologicalSpace;
 
 /**
