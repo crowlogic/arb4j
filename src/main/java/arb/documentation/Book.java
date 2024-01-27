@@ -13,6 +13,18 @@ public record Book(String author,
                   implements
                   Reference
 {
+  
+  public Book(String author, String title, String year)
+  {
+    this(author,
+         title,
+         year,
+         new AtomicReference<>(),
+         new AtomicReference<>(),
+         new AtomicReference<>(),
+         new AtomicReference<>(),
+         new AtomicReference<>());
+  }
 
   public String cite(String by)
   {
@@ -29,17 +41,7 @@ public record Book(String author,
                  .replace(",}", "}");
   }
 
-  public Book(String author, String title, String year)
-  {
-    this(author,
-         title,
-         year,
-         new AtomicReference<>(),
-         new AtomicReference<>(),
-         new AtomicReference<>(),
-         new AtomicReference<>(),
-         new AtomicReference<>());
-  }
+
 
   @Override
   public Book setPublisher(String string)

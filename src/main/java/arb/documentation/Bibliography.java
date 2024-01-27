@@ -8,14 +8,14 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
-  public Book    functionalAnalysisYosida              = new Book("Functional Analysis",
-                                                                  "吉田 耕作(Kōsaku Yosida)",
+  public Book    functionalAnalysisYosida              = new Book("吉田 耕作(Kōsaku Yosida)",
+                                                                  "Functional Analysis",
                                                                   "1995").setPublisher("Springer Berlin Heidelberg")
                                                                          .setSeries("Classics in Mathematics")
                                                                          .setEdition("Reprint of the 1980 Edition");
 
-  public Book    linearTransformationsInHilbertSpace   = new Book("Linear Transformations in Hilbert Space",
-                                                                  "Marshall Harvey Stone",
+  public Book    linearTransformationsInHilbertSpace   = new Book("Marshall Harvey Stone",
+                                                                  "Linear Transformations in Hilbert Space",
                                                                   "1932").setEdition("4th Printing (1951)")
                                                                          .setVolume("XV")
                                                                          .setSeries("Colloquium Publications")
@@ -29,8 +29,8 @@ public class Bibliography extends
                                                                      "98",
                                                                      "145--160").setPublisher("Cambridge University Press");
 
-  public Book    functionalAnalysisRieszNagy           = new Book("Functional Analysis",
-                                                                  "Frigyes Riesz and Béla Sz.-Nagy",
+  public Book    functionalAnalysisRieszNagy           = new Book("Frigyes Riesz and Béla Sz.-Nagy",
+                                                                  "Functional Analysis",
                                                                   "2012").setPublisher("Dover Publications")
                                                                          .setSeries("Dover Books on Mathematics");
 
@@ -39,8 +39,8 @@ public class Bibliography extends
                                                                   "1991").setPublisher("Springer-Verlag")
                                                                          .setAddress("Berlin, Heidelberg");
 
-  public Book    stochasticProcessInferenceTheory      = new Book("Stochastic Processes: Inference Theory",
-                                                                  "Malempati M. Rao",
+  public Book    stochasticProcessInferenceTheory      = new Book("Malempati M. Rao",
+                                                                  "Stochastic Processes: Inference Theory",
                                                                   "2014").setPublisher("Springer")
                                                                          .setEdition("2nd")
                                                                          .setSeries("Springer Monographs in Mathematics");

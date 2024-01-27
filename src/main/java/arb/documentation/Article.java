@@ -31,14 +31,14 @@ public record Article(String author,
                  .replace(",}", "}");
   }
 
-  public Article(String author, String title, String year, String journal, String volume, String address)
+  public Article(String author, String title, String year, String journal, String volume, String pages)
   {
     this(author,
          title,
          year,
          journal,
          new AtomicReference<>(volume),
-         address,
+         pages,
          new AtomicReference<>(),
          new AtomicReference<>());
   }
