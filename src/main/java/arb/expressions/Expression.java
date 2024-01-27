@@ -692,8 +692,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       node = parseFirst(depth + 1);
       if (!parse(depth + 1, ')'))
       {
-        throw new ExpressionCompilerException(format("expected closing parenthesis at: depth=%d startPos=%s, position=%s in "
-                      + "expression '%s' of length %d", depth, startPos, position, expression, expression.length()));
+        throw new ExpressionCompilerException(format("expected closing parenthesis, instead got %c at position %s in "
+                      + "expression '%s'", ch, startPos, expression));
       }
 
     }
