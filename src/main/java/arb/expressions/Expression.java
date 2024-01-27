@@ -41,7 +41,6 @@ import org.objectweb.asm.signature.SignatureWriter;
 import org.objectweb.asm.util.CheckClassAdapter;
 
 import arb.ComplexPolynomial;
-import arb.Field;
 import arb.OrderedPair;
 import arb.RealPolynomial;
 import arb.Typesettable;
@@ -62,12 +61,11 @@ import arb.functions.Function;
 /**
  * <p>
  * The <code>Expression</code> class in the <code>arb.expressions</code> package
- * is a versatile and dynamic expression compiler and evaluator which generates
- * high-performance {@link Function} implementations on-the-fly.
+ * is a versatile and dynamic expression {@link Compiler} which produces
+ * high-performance {@link Function} implementations instantly using ASM's
+ * {@link MethodVisitor} and {@link ClassVisitor} for bytecode generation.
  *
- * <p>
- * Key features:
- * </p>
+ * <h2>Key features</h2>
  * <ul>
  * <li>Compiles mathematical expressions dynamically into Java bytecodes.</li>
  * <li>Manages variables, constants, and function calls within expressions.</li>
@@ -75,22 +73,19 @@ import arb.functions.Function;
  * <li>Injects variable and function references into compiled instances.</li>
  * <li>Includes methods for parsing, evaluating, and generating necessary
  * bytecode for expressions.</li>
- * <li>Verbose mode for detailed logging during the compilation process.</li>
  * </ul>
- *
- * <p>
- * This class is integrated with other components of the <code>arb4j</code>
- * library, such as {@link Field}, {@link Function}, and various {@link Node}
- * types. It uses ASM's {@link MethodVisitor} and {@link ClassVisitor} for
- * bytecode generation.
- * </p>
- *
+ * 
+ * TODO: sum ⅀, factorial and Γ function
+ * 
+ * <h2>System Properties</h2>
+ * <ul>
+ * <li>expressionCompiler.saveClasses=true|false</li>
+ * </ul>
+ * 
  * arb4j is made available under the terms of the Business Source License™ v1.1
  * ©2024 which can be found in the root directory of this project in a file
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs formatted versions of the same document respectively.
- * 
- * TODO: sum ⅀
  * 
  * @param <D> domain type
  * @param <R> range type
