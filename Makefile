@@ -5,14 +5,19 @@ JAVA_HOME=$(shell readlink -f /usr/bin/javac | sed "s:bin/javac::")
 C_INCLUDES=-I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I/usr/local/include -I/usr/local/include/flint
 CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion
 SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
+VERSION=0.81
 
-all: libarblib.so
+all: libarblib.so target/arb4j-$(VERSION).jar
 
-native/arb_wrap.c: native/*.i
+target/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find native)
+	mvn package
+
+native/arb_wrap.c: $(shell find native -name "*.i") 
 	swig $(SWIGFLAGS) $(INCLUDES) native/arb.i
 
 libarblib.so: $(SOURCES)
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint  
 
 clean:
-	rm -f libarblib.so *.o native/arb_wrap.c
+	rm -rf libarblib.so *.o native/arb_wrap.c target
+
