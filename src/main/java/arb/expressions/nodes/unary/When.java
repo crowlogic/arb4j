@@ -166,7 +166,7 @@ public class When<D, R, F extends Function<D, R>> extends
          Node<D, R, F>
          evaluateCondition(Expression<D, R, F> expression, int depth, TreeMap<Integer, Node<D, R, F>> cases)
   {
-    Node<D, R, F> defaultValue = null;
+    Node<D, R, F> value = null;
 
     Node<D, R, F> node         = expression.evaluate(depth + 1);
     if (!(node instanceof Variable))
@@ -179,13 +179,13 @@ public class When<D, R, F extends Function<D, R>> extends
 
     if ("else".equals(variable.reference.name))
     {
-      defaultValue = evaluateDefaultValue(expression, depth);
+      value = evaluateDefaultValue(expression, depth);
     }
     else
     {
       evaluateConditionalValue(expression, depth, cases, variable);
     }
-    return defaultValue;
+    return value;
   }
 
   private static <D, F extends Function<D, R>, R>
