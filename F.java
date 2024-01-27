@@ -1,57 +1,60 @@
 import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.functions.Function;
 
-public class F implements Function<Integer, Real> {
+public class F implements Function<Integer, RealPolynomial> {
    private boolean isInitialized;
-   Integer const1;
+   Integer c1 = new Integer("0");
+   Integer c2 = new Integer("1");
    public Real α;
    public Real β;
-   public Real ℝ1;
-   public Integer ℤ1;
-   public Real ℝ2;
-   public Real ℝ3;
-   public Real ℝ4;
-   public final C C = new C();
+   public Integer ℤ1 = new Integer();
+   public RealPolynomial r̅1 = new RealPolynomial();
+   public F F;
 
-   public Real evaluate(Integer in, int order, int bits, Real result) {
+   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
       if (!isInitialized) {
-         initializeVariableReferences();
+         initialize();
       }
+      return switch(in.getSignedValue()) {
+         case 0 -> result.set(c2);
+         default -> {
+            RealPolynomial var5 = result.identity();
+            if (F == null) {
+               F = new F(this);
+            }
 
-      return (C.evaluate(ℝ1.set(in.sub(const1, bits, ℤ1)), order, bits, ℝ2))
-         .mul(C.evaluate(ℝ3.set(in), order, bits, ℝ4), bits, result);
+            yield var5.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, result);
+         }
+      };
    }
 
    public F() {
-      const1 = new Integer("1");
-      ℝ1 = new Real();
-      ℤ1 = new Integer();
-      ℝ2 = new Real();
-      ℝ3 = new Real();
-      ℝ4 = new Real();
    }
 
-   public void initializeVariableReferences() {
+   public void initialize() {
       if (isInitialized) {
          throw new AssertionError("Already initialized");
-      } else if (α == null) {
-         throw new AssertionError("α is null");
-      } else if (β == null) {
-         throw new AssertionError("β is null");
       } else {
-         C.α = α;
-         C.β = β;
          isInitialized = true;
       }
    }
 
+   public F(F var1) {
+      this();
+      if (var1.α == null) {
+         throw new AssertionError("α is null");
+      } else if (var1.β == null) {
+         throw new AssertionError("β is null");
+      }
+   }
+
    public void close() {
-      const1.close();
-      ℝ1.close();
+      c1.close();
+      c2.close();
       ℤ1.close();
-      ℝ2.close();
-      ℝ3.close();
-      ℝ4.close();
+      r̅1.close();
+      F.close();
    }
 }

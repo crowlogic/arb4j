@@ -204,7 +204,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                                   functionName;
 
-  boolean                                         save                  = false;
+  boolean                                         save                  = true;
 
   boolean                                         checkClass            = false;
 
@@ -609,6 +609,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (context != null)
     {
+      // referencedVariables.entrySet().forEach(entry ->
       context.variables.map.entrySet().forEach(entry ->
       {
         try
@@ -1045,11 +1046,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
                          functionClass);
   }
 
-  public MethodVisitor generateContextInitializer(MethodVisitor methodVisitor)
+  public MethodVisitor generateContextInitializationCode(MethodVisitor methodVisitor)
   {
     generateCodeToThrowErrorIfAlreadyInitialized(methodVisitor);
 
-    addChecksForNullVariableReferences(methodVisitor, true, false);
+    addChecksForNullVariableReferences(methodVisitor, false, false);
 
     if (!referencedFunctions.isEmpty())
     {
@@ -1110,7 +1111,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     generateInvocationOfDefaultNoArgConstructor(methodVisitor, false);
 
-    addChecksForNullVariableReferences(methodVisitor, true, true);
+    addChecksForNullVariableReferences(methodVisitor, false, true);
 
     for (Variable<D, R, F> variable : referencedVariables.values())
     {
@@ -1138,12 +1139,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     referencedFunctions.values().stream().filter(func -> func.func != null).forEach(mapping ->
     {
       String fieldType = Type.getInternalName(mapping.type());
-      String typeDesc  = "L" + fieldType + ";";
       mv.visitVarInsn(Opcodes.ALOAD, 0);
       mv.visitTypeInsn(Opcodes.NEW, fieldType);
       mv.visitInsn(Opcodes.DUP);
       mv.visitMethodInsn(Opcodes.INVOKESPECIAL, fieldType, "<init>", "()V", false);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className, mapping.name, typeDesc);
+      mv.visitFieldInsn(Opcodes.PUTFIELD, className, mapping.name, "L" + fieldType + ";");
     });
 
     generateLiteralConstantInitializers(mv);
@@ -1168,7 +1168,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       methodVisitor.visitCode();
 
-      generateContextInitializer(methodVisitor);
+      generateContextInitializationCode(methodVisitor);
 
       methodVisitor.visitInsn(Opcodes.RETURN);
       methodVisitor.visitMaxs(0, 0);

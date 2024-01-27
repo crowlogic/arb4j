@@ -83,9 +83,22 @@ import arb.functions.complex.ComplexFunction;
 
   public Complex getCoeffs()
   {
-    Complex coeffsNative = getCoeffsNative();
-    coeffsNative.dim = getLength();
-    coeffsNative.elements = new Complex[coeffsNative.dim];
-    return coeffsNative;
-  }  
+    if (coeffs != null && (coeffs.dim != getLength() || coeffs.swigCPtr != swigCPtr))
+    {
+      coeffs.close();
+      coeffs = null;
+    }
+    if (coeffs == null)
+    {
+      coeffs = getCoeffsNative();
+      if (coeffs != null)
+      {
+        coeffs.dim      = getLength();
+        coeffs.elements = new Complex[coeffs.dim];
+      }
+    }
+    return coeffs;
+  }
+
+  public Complex coeffs;
 %};

@@ -3,7 +3,7 @@
 
 BASEDIR=$(dirname $(readlink -f $0))/..
 
-$BASEDIR/bin/run arb.expressions.Decompiler $@
+$BASEDIR/bin/run arb.expressions.decompiler.Decompiler $@
 
 
 

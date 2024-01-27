@@ -523,8 +523,6 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     return this;
   }
     
-  public Real coeffsNative;
-
   public Real set(int i, int val)
   {
     arblib.arb_poly_set_coeff_si(this, i, val);
@@ -546,22 +544,24 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
   
   public Real getCoeffs()
   {
-    if ( coeffsNative != null && coeffsNative.dim != getLength() )
+    if (coeffs != null && (coeffs.dim != getLength() || coeffs.swigCPtr != swigCPtr))
     {
-      coeffsNative.close();
-      coeffsNative = null;
+      coeffs.close();
+      coeffs = null;
     }
-    if (coeffsNative == null)
+    if (coeffs == null)
     {
-      coeffsNative          = getCoeffsNative();
-      if (coeffsNative != null)
+      coeffs = getCoeffsNative();
+      if (coeffs != null)
       {
-        coeffsNative.dim      = getLength();
-        coeffsNative.elements = new Real[coeffsNative.dim];
-      }      
+        coeffs.dim      = getLength();
+        coeffs.elements = new Real[coeffs.dim];
+      }
     }
-    return coeffsNative;
+    return coeffs;
   }
+
+  public Real coeffs;
   
   public RealPolynomial neg()
   {

@@ -17,6 +17,7 @@ public record Article(String author,
   @Override
   public String cite(String by)
   {
+    // TODO: do this via reflection like is done for the Bibliography
     return String.format("@Article{%s,%s%s%s%s%s%s%s%s}",
                          by,
                          Reference.conditionallyInsertField("author", author()),
@@ -43,14 +44,14 @@ public record Article(String author,
   }
 
   @Override
-  public Reference setPublisher(String publisher)
+  public Article setPublisher(String publisher)
   {
     this.publisher.set(publisher);
     return this;
   }
 
   @Override
-  public Reference setAddress(String address)
+  public Article setAddress(String address)
   {
     this.address.set(address);
     return this;
