@@ -81,6 +81,14 @@ public class arblib {
     arblibJNI.arb_poly_derivative(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly, prec);
   }
 
+  public static void arb_rising(Real z, Real x, Real n, int prec) {
+    arblibJNI.arb_rising(Real.getCPtr(z), z, Real.getCPtr(x), x, Real.getCPtr(n), n, prec);
+  }
+
+  public static void arb_rising_ui(Real z, Real x, long n, int prec) {
+    arblibJNI.arb_rising_ui(Real.getCPtr(z), z, Real.getCPtr(x), x, n, prec);
+  }
+
   public static int arb_poly_length(RealPolynomial poly) {
     return arblibJNI.arb_poly_length(RealPolynomial.getCPtr(poly), poly);
   }
