@@ -7,7 +7,9 @@ CFLAGS=-g -O3 -fPIC -shared -Wno-int-conversion
 SWIGFLAGS=-v -java -package arb -outdir src/main/java/arb
 VERSION=0.81
 
-all: libarblib.so target/arb4j-$(VERSION).jar
+all: libarblib.so
+
+jar: target/arb4j-$(VERSION).jar
 
 target/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find native)
 	mvn package
