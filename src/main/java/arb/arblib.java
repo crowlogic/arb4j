@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void arb_fac_ui(Real z, long n, int prec) {
+    arblibJNI.arb_fac_ui(Real.getCPtr(z), z, n, prec);
+  }
+
   public static void arb_hypgeom_rising_ui(Real res, Real x, long n, int prec) {
     arblibJNI.arb_hypgeom_rising_ui(Real.getCPtr(res), res, Real.getCPtr(x), x, n, prec);
   }

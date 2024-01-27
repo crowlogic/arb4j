@@ -6,6 +6,13 @@ public class IntegerTest extends
                          TestCase
 {
 
+  public static void testFactorial()
+  {
+    Real factorialOfThree = Integer.factorial(4, 128, new Real());
+    assertTrue(factorialOfThree.isExact());
+    assertTrue(factorialOfThree.doubleValue() == 24.0);
+  }
+
   public static void testSubtraction()
   {
     try ( Integer a = new Integer(10); Integer b = new Integer(3); Integer result = new Integer();)

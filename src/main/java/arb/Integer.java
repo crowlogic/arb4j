@@ -31,6 +31,18 @@ public class Integer implements
                      Ring<Integer>
 {
 
+  public Real factorial( int bits, Real result)
+  {
+    arblib.arb_fac_ui(result, getUnsignedValue(), bits);
+    return result;
+  }
+
+  public static Real factorial(long n, int bits, Real result)
+  {
+    arblib.arb_fac_ui(result, n, bits);
+    return result;
+  }
+
   public Real tanh(int bits, Real result)
   {
     return result.set(this).tanh(bits, result);
