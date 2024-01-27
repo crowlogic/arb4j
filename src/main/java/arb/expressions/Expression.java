@@ -204,7 +204,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                                   functionName;
 
-  boolean                                         save                  = true;
+  public static boolean                           save                  = Boolean.valueOf(System.getProperty("expressionCompiler.saveClasses",
+                                                                                                             "false"));
 
   boolean                                         checkClass            = false;
 
