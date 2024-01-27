@@ -38,7 +38,7 @@ public class HypergeometricFunctionSequence implements
 
   public final Function<Integer, RealPolynomial> F;
 
-  public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1))";
+  public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1)*(∏αₖ(k=1..p)/∏βₖ(k=1..q))";
 
   public HypergeometricFunctionSequence(int p, int q)
   {
