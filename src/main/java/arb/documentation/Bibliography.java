@@ -17,6 +17,11 @@ public class Bibliography
                                                                              "98",
                                                                              "145--160").setPublisher("Cambridge University Press");
 
+  public final Book      functionalAnalysisRieszNagy           = new Book("Functional Analysis",
+                                                                          "Frigyes Riesz and Béla Sz.-Nagy",
+                                                                          "2012").setPublisher("Dover Publications")
+                                                                                 .setSeries("Dover Books on Mathematics");
+
   public final Book      stochasticFiniteElements              = new Book("Ghanem, Roger G. and Spanos, Pol D.",
                                                                           "Stochastic finite elements: a spectral approach",
                                                                           "1991").setPublisher("Springer-Verlag")
