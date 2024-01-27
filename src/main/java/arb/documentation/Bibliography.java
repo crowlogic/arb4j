@@ -8,6 +8,12 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public Book    functionalAnalysisYosida              = new Book("Functional Analysis",
+                                                                  "吉田 耕作(Kōsaku Yosida)",
+                                                                  "1995").setPublisher("Springer Berlin Heidelberg")
+                                                                         .setSeries("Classics in Mathematics")
+                                                                         .setEdition("Reprint of the 1980 Edition");
+
   public Book    linearTransformationsInHilbertSpace   = new Book("Linear Transformations in Hilbert Space",
                                                                   "Marshall Harvey Stone",
                                                                   "1932").setEdition("4th Printing (1951)")
