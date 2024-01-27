@@ -8,7 +8,28 @@ import junit.framework.TestCase;
 public class RealTest extends
                       TestCase
 {
- 
+  public void testRisingFactorialLong()
+  {
+    try ( Real real = new Real("6.9",
+                               128))
+    {
+      Real y = real.risingFactorial(3, 128, new Real());
+      assertEquals(485.139, y.doubleValue());
+    }
+  }
+
+  public void testRisingFactorialReal()
+  {
+    try ( Real real = new Real("6.9",
+                               128);
+          Real three = new Real("3",
+                                128);)
+    {
+      Real y = real.risingFactorial(three, 128, new Real());
+      assertEquals(485.139, y.doubleValue());
+    }
+  }
+
   public void testAddOneAndOne()
   {
     try ( Real real = new Real();)
@@ -39,7 +60,6 @@ public class RealTest extends
 
       Real shifted = realInstance.shift(5);
       assertEquals(5, shifted.size());
-
 
     }
   }
