@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public record Book(String author,
                    String title,
                    String year,
+                   AtomicReference<String> volume,
                    AtomicReference<String> publisher,
                    AtomicReference<String> address,
                    AtomicReference<String> series,
@@ -15,7 +16,7 @@ public record Book(String author,
 
   public String cite(String by)
   {
-    return String.format("@Book{%s,%s%s%s%s%s%s%s}",
+    return String.format("@Book{%s,%s%s%s%s%s%s%s%s}",
                          by,
                          Reference.conditionallyInsertField("author", author()),
                          Reference.conditionallyInsertField("title", title()),
@@ -23,7 +24,8 @@ public record Book(String author,
                          Reference.conditionallyInsertField("publisher", publisher.get()),
                          Reference.conditionallyInsertField("address", address.get()),
                          Reference.conditionallyInsertField("series", series.get()),
-                         Reference.conditionallyInsertField("edition", edition.get()))
+                         Reference.conditionallyInsertField("edition", edition.get()),
+                         Reference.conditionallyInsertField("volume", volume.get()))
                  .replace(",}", "}");
   }
 
@@ -32,6 +34,7 @@ public record Book(String author,
     this(author,
          title,
          year,
+         new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>(),
@@ -60,6 +63,12 @@ public record Book(String author,
   public Book setEdition(String string)
   {
     edition.set(string);
+    return this;
+  }
+
+  public Book setVolume(String string)
+  {
+    volume.set(string);
     return this;
   }
 

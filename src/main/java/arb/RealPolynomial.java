@@ -9,7 +9,6 @@
 package arb;
 
 import static arb.arblib.*;
-import java.util.stream.IntStream;
 import arb.functions.real.RealFunction;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;

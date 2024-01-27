@@ -8,6 +8,13 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public Book    linearTransformationsInHilbertSpace   = new Book("Linear Transformations in Hilbert Space",
+                                                                  "Marshall Harvey Stone",
+                                                                  "1932").setEdition("4th Printing (1951)")
+                                                                         .setVolume("XV")
+                                                                         .setSeries("Colloquium Publications")
+                                                                         .setPublisher("American Mathematical Society")
+                                                                         .setAddress("501 West 116th Street");
 
   public Article orthogonalPolynomialFourierTransforms = new Article("Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
                                                                      "The finite Fourier transform of classical polynomials",

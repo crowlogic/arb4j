@@ -15,21 +15,23 @@ public interface Reference
 
   public String author();
 
-  public default String volume()
+  public default String getVolume()
   {
     return null;
   }
 
-  public default String number()
+  public default String getNumber()
   {
     return null;
   }
 
-  public default String pages()
+  public default String getPages()
   {
     return null;
   }
 
+  Reference setVolume( String volume );
+  
   Reference setPublisher(String string);
 
   Reference setAddress(String address);

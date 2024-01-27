@@ -15,7 +15,6 @@ import arb.expressions.Context;
 import arb.expressions.Variables;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
-import arb.utensils.ShellFunctions;
 
 /**
  *

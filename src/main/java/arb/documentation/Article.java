@@ -6,7 +6,7 @@ public record Article(String author,
                       String title,
                       String year,
                       String journal,
-                      String volume,
+                      AtomicReference<String> volume,
                       String pages,
                       AtomicReference<String> publisher,
                       AtomicReference<String> address)
@@ -24,8 +24,8 @@ public record Article(String author,
                          Reference.conditionallyInsertField("title", title()),
                          Reference.conditionallyInsertField("year", year()),
                          Reference.conditionallyInsertField("journal", journal()),
-                         Reference.conditionallyInsertField("volume", volume()),
-                         Reference.conditionallyInsertField("pages", pages()),
+                         Reference.conditionallyInsertField("volume", getVolume()),
+                         Reference.conditionallyInsertField("pages", getPages()),
                          Reference.conditionallyInsertField("publisher", publisher.get()),
                          Reference.conditionallyInsertField("address", address.get()))
                  .replace(",}", "}");
@@ -37,7 +37,7 @@ public record Article(String author,
          title,
          year,
          journal,
-         volume,
+         new AtomicReference<>(volume),
          address,
          new AtomicReference<>(),
          new AtomicReference<>());
@@ -54,6 +54,13 @@ public record Article(String author,
   public Article setAddress(String address)
   {
     this.address.set(address);
+    return this;
+  }
+
+  @Override
+  public Article setVolume(String string)
+  {
+    volume.set(string);
     return this;
   }
 
