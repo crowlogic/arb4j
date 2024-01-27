@@ -681,16 +681,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
     ch = (++position < expression.length()) ? expression.charAt(position) : -1;
   }
 
-  public Node<D, R, F> parse(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> evaluate(int depth) throws ExpressionCompilerException
   {
     Node<D, R, F> node     = null;
 
     int           startPos = position;
 
-    if (parse(depth + 1, '('))
+    if (evaluate(depth + 1, '('))
     {
-      node = parseFirst(depth + 1);
-      if (!parse(depth + 1, ')'))
+      node = exponentiateMultiplyAndDivideAddAndSubtract(depth + 1);
+
+      if (!evaluate(depth + 1, ')'))
       {
         throw new ExpressionCompilerException(format("expected closing parenthesis, instead got %c at position %s in "
                       + "expression '%s'", ch, startPos, expression));
@@ -713,7 +714,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public int previousCharacter;
 
-  public boolean parse(int depth, char... expectedCharacters)
+  public boolean evaluate(int depth, char... expectedCharacters)
   {
     skipSpaces();
     for (int expectedCharacter : expectedCharacters)
@@ -729,14 +730,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return false;
   }
 
-  public Node<D, R, F> parseFirst(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> exponentiateMultiplyAndDivideAddAndSubtract(int depth) throws ExpressionCompilerException
   {
-    Node<D, R, F> node = parseSecond(depth);
+    Node<D, R, F> node = exponentiateMultiplyAndDivide(depth);
 
-    return parseAdditionAndSubtractionOperations(depth, node);
+    return addAndSubtract(depth, node);
   }
 
-  public Node<D, R, F> parseAdditionAndSubtractionOperations(int depth, Node<D, R, F> node)
+  public Node<D, R, F> addAndSubtract(int depth, Node<D, R, F> node)
   {
     while (true)
     {
@@ -747,18 +748,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                      depth);
       }
 
-      if (parse(depth, '+'))
+      if (evaluate(depth, '+'))
       {
         node = new Addition<>(this,
                               node,
-                              parseSecond(depth),
+                              exponentiateMultiplyAndDivide(depth),
                               depth);
       }
-      else if (parse(depth, '-'))
+      else if (evaluate(depth, '-'))
       {
         node = new Subtraction<>(this,
                                  node,
-                                 parseSecond(depth),
+                                 exponentiateMultiplyAndDivide(depth),
                                  depth);
       }
       else
@@ -768,9 +769,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public Node<D, R, F> parseFinally(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> exponentiate(int depth) throws ExpressionCompilerException
   {
-    return parseExponent(depth, parse(depth));
+    return exponentiate(depth, evaluate(depth));
   }
 
   public Reference parseName(int depth, int startPos)
@@ -781,11 +782,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     String identifier = expression.substring(startPos, position).trim();
     String index      = null;
-    if (parse(depth, '['))
+    if (evaluate(depth, '['))
     {
       int indexPosition = position;
 
-      while (!parse(depth, ']') && position < expression.length())
+      while (!evaluate(depth, ']') && position < expression.length())
       {
         nextCharacter();
       }
@@ -825,22 +826,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  private Node<D, R, F> parseExponent(int depth, Node<D, R, F> node) throws ExpressionCompilerException
+  private Node<D, R, F> exponentiate(int depth, Node<D, R, F> node) throws ExpressionCompilerException
   {
-    if (parse(depth, '^'))
+    if (evaluate(depth, '^'))
     {
       boolean parenthetical = false;
-      if (parse(depth, '('))
+      if (evaluate(depth, '('))
       {
         parenthetical = true;
       }
       node = new Exponentiation<>(this,
                                   node,
-                                  parenthetical ? parseFirst(depth) : parse(depth),
+                                  parenthetical ? exponentiateMultiplyAndDivideAddAndSubtract(depth) : evaluate(depth),
                                   depth + 1);
       if (parenthetical)
       {
-        if (!parse(depth, ')'))
+        if (!evaluate(depth, ')'))
         {
           throw new ExpressionCompilerException(String.format("parseExponent expected closing parenthesis at: position=%d, ch='%c'\n",
                                                               position,
@@ -860,36 +861,36 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     parseOptionalIndependentVariableSpecification();
     nextCharacter();
-    rootNode = parseFirst(0);
+    rootNode = exponentiateMultiplyAndDivideAddAndSubtract(0);
     assert rootNode != null : "parseRootNode: parseFirst() returned null, expression='" + expression + "'";
     rootNode.isResult = true;
     return rootNode;
   }
 
-  public Node<D, R, F> parseSecond(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> exponentiateMultiplyAndDivide(int depth) throws ExpressionCompilerException
   {
-    Node<D, R, F> node = parseFinally(depth);
+    Node<D, R, F> node = exponentiate(depth);
 
-    return parseMultiplicationAndDivisionOperations(depth, node);
+    return multiplyAndDivide(depth, node);
   }
 
-  public Node<D, R, F> parseMultiplicationAndDivisionOperations(int depth, Node<D, R, F> node)
+  public Node<D, R, F> multiplyAndDivide(int depth, Node<D, R, F> node)
   {
     while (true)
     {
-      if (parse(depth, '*', '×'))
+      if (evaluate(depth, '*', '×'))
       {
         node = new Multiplication<>(this,
                                     node,
-                                    parseFinally(depth),
+                                    exponentiate(depth),
                                     depth);
 
       }
-      else if (parse(depth, '/', '÷'))
+      else if (evaluate(depth, '/', '÷'))
       {
         node = new Division<>(this,
                               node,
-                              parseFinally(depth),
+                              exponentiate(depth),
                               depth);
       }
       else
@@ -901,7 +902,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F> parseSuperscript(int depth, Node<D, R, F> node, char superscript, String digit)
   {
-    if (parse(depth + 1, superscript))
+    if (evaluate(depth + 1, superscript))
     {
       node = new Exponentiation<>(this,
                                   node,
@@ -939,18 +940,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                     int startPos) throws ExpressionCompilerException
   {
     Reference reference  = parseName(depth, startPos);
-    boolean   isFunction = parse(depth, '(');
+    boolean   isFunction = evaluate(depth, '(');
 
     if (isFunction)
     {
       if ("when".equals(reference.name))
       {
-        return When.parse(this, depth + 1);
+        return When.evaluate(this, depth + 1);
       }
       else
       {
-        Node<D, R, F> arg = parseFirst(depth + 1);
-        if (parse(depth + 1, ')'))
+        Node<D, R, F> arg = exponentiateMultiplyAndDivideAddAndSubtract(depth + 1);
+        if (evaluate(depth + 1, ')'))
         {
           return new FunctionCall<>(this,
                                     reference.name,
