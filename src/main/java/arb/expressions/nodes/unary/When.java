@@ -132,12 +132,6 @@ public class When<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public String typeset()
-  {
-    return "when";
-  }
-
-  @Override
   public Class<?> type()
   {
     return expression.rangeType;
@@ -145,7 +139,6 @@ public class When<D, R, F extends Function<D, R>> extends
 
   public void evaluateValue(int depth, TreeMap<Integer, Node<D, R, F>> cases2)
   {
-
     Node<D, R, F> node = expression.evaluate(depth + 1);
     if (!(node instanceof Variable))
     {
@@ -187,6 +180,15 @@ public class When<D, R, F extends Function<D, R>> extends
                                                    expression.previousCharacter));
     }
 
+    LiteralConstant<D, R, F> constant = evaluateCondition(expression, depth);
+    Node<D, R, F>            value    = expression.exponentiateMultiplyAndDivideAddAndSubtract(depth + 1);
+    cases.put(new Integer(constant.value), value);
+  }
+
+  private static <R, F extends Function<D, R>, D>
+          LiteralConstant<D, R, F>
+          evaluateCondition(Expression<D, R, F> expression, int depth)
+  {
     Node<D, R, F> condition = expression.evaluate(depth + 1);
     if (!(condition instanceof LiteralConstant))
     {
@@ -199,8 +201,7 @@ public class When<D, R, F extends Function<D, R>> extends
       throw new ExpressionCompilerException(", expected after condition of when function at pos="
                     + expression.position);
     }
-    Node<D, R, F> value = expression.exponentiateMultiplyAndDivideAddAndSubtract(depth + 1);
-    cases.put(new Integer(constant.value), value);
+    return constant;
   }
 
   private static <D, R, F extends Function<D, R>> Node<D, R, F> evaluateDefaultValue(Expression<D, R, F> expression,
@@ -220,6 +221,13 @@ public class When<D, R, F extends Function<D, R>> extends
                                                    expression));
     }
     return defaultValue;
+  }
+
+  @Override
+  public String typeset()
+  {
+    return cases.entrySet().stream().map(entry -> entry.getValue().typeset()).collect(Collectors.joining(", "))
+                  + " \text{otherwise} " + arg.typeset();
   }
 
 }
