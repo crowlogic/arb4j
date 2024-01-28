@@ -8,6 +8,12 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public Book    randomMatrices                        = new Book("Madan Lal Mehta",
+                                                                  "Random Matrices",
+                                                                  "2004").setEdition("3rd")
+                                                                         .setSeries("Pure and Applied Mathematics")
+                                                                         .setVolume("142");
+
   public Book    functionalAnalysisYosida              = new Book("吉田 耕作(Kōsaku Yosida)",
                                                                   "Functional Analysis",
                                                                   "1995").setPublisher("Springer Berlin Heidelberg")
