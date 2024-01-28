@@ -143,10 +143,10 @@ public class When<D, R, F extends Function<D, R>> extends
 
     do
     {
-      defaultValue = evaluateCondition(expression, depth, cases);
+      defaultValue = evaluateValue(expression, depth, cases);
     }
-    while (expression.evaluate(depth + 1, ','));
-    if (!expression.evaluate(depth + 1, ')'))
+    while (expression.nextCharacterIs(depth + 1, ','));
+    if (!expression.nextCharacterIs(depth + 1, ')'))
     {
       throw new ExpressionCompilerException("Closing parenthesis expected at position=" + expression.position
                     + " of expression=" + expression);
@@ -162,13 +162,13 @@ public class When<D, R, F extends Function<D, R>> extends
                              depth + 1);
   }
 
-  public static <D, R, F extends Function<D, R>>
-         Node<D, R, F>
-         evaluateCondition(Expression<D, R, F> expression, int depth, TreeMap<Integer, Node<D, R, F>> cases)
+  public static <D, R, F extends Function<D, R>> Node<D, R, F> evaluateValue(Expression<D, R, F> expression,
+                                                                             int depth,
+                                                                             TreeMap<Integer, Node<D, R, F>> cases)
   {
     Node<D, R, F> value = null;
 
-    Node<D, R, F> node         = expression.evaluate(depth + 1);
+    Node<D, R, F> node  = expression.evaluate(depth + 1);
     if (!(node instanceof Variable))
     {
       throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
@@ -201,7 +201,7 @@ public class When<D, R, F extends Function<D, R>> extends
                     + expression.independentVariableNode + " not " + variable);
     }
 
-    if (!expression.evaluate(depth + 1, '='))
+    if (!expression.nextCharacterIs(depth + 1, '='))
     {
       throw new ExpressionCompilerException(format("= expected in condition of when function at pos=%d expression=%s but got ch=%c and lastCh=%c",
                                                    expression.position,
@@ -217,7 +217,7 @@ public class When<D, R, F extends Function<D, R>> extends
                     + "Integer LiteralConstant type, but got " + condition);
     }
     LiteralConstant<D, R, F> constant = (LiteralConstant<D, R, F>) condition;
-    if (!expression.evaluate(depth + 1, ','))
+    if (!expression.nextCharacterIs(depth + 1, ','))
     {
       throw new ExpressionCompilerException(", expected after condition of when function at pos="
                     + expression.position);
@@ -230,7 +230,7 @@ public class When<D, R, F extends Function<D, R>> extends
                                                                                      int depth)
   {
     Node<D, R, F> defaultValue;
-    if (!expression.evaluate(depth + 1, ','))
+    if (!expression.nextCharacterIs(depth + 1, ','))
     {
       throw new ExpressionCompilerException(", expected after else condition");
     }
