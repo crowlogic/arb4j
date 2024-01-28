@@ -786,16 +786,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
       nextCharacter();
     }
     String identifier = expression.substring(startPos, position).trim();
-    String index      = evaluateConditionalSquareBracketedIndex(depth);
+    String index      = evaluatePossibleSquareBracketedIndex(depth);
     if (index == null)
     {
-      index = evaluateConditionalSubscriptedIndex(depth);
+      index = evaluatePossibleSubscriptedIndex(depth);
     }
     return new Reference(identifier,
                          index);
   }
 
-  private String evaluateConditionalSubscriptedIndex(int depth)
+  private String evaluatePossibleSubscriptedIndex(int depth)
   {
     StringBuilder index = new StringBuilder();
 
@@ -812,7 +812,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return nextCharacterIs(depth, SUBSCRIPT_CHARACTERS);
   }
 
-  private String evaluateConditionalSquareBracketedIndex(int depth)
+  private String evaluatePossibleSquareBracketedIndex(int depth)
   {
     String index = null;
     if (nextCharacterIs(depth, '['))
