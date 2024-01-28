@@ -143,7 +143,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public int                                      position              = -1;
 
-  public int                                      ch                    = 0;
+  public char                                     character             = 0;
 
   public String                                   expression;
 
@@ -459,7 +459,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (position < expression.length())
     {
       throw new ExpressionCompilerException(String.format("unexpected '%c' character at position=%s in expression '%s' of length %d\n",
-                                                          ch,
+                                                          character,
                                                           position,
                                                           expression,
                                                           expression.length()));
@@ -678,7 +678,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void nextCharacter()
   {
-    ch = (++position < expression.length()) ? expression.charAt(position) : -1;
+    character = (++position < expression.length()) ? expression.charAt(position) : Character.MIN_VALUE;
   }
 
   public Node<D, R, F> evaluate(int depth) throws ExpressionCompilerException
@@ -694,16 +694,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (!nextCharacterIs(depth + 1, ')'))
       {
         throw new ExpressionCompilerException(format("expected closing parenthesis, instead got %c at position %s in "
-                      + "expression '%s'", ch, startPos, expression));
+                      + "expression '%s'", character, startPos, expression));
       }
 
     }
-    else if (Parser.isNumeric(ch))
+    else if (Parser.isNumeric(character))
     {
       node = parseNumber(depth, startPos);
       assert node != null : "parseNumber returned null";
     }
-    else if (Parser.isLatinOrGreek(ch, false))
+    else if (Parser.isLatinOrGreek(character, false))
     {
       node = resolveFunctionInvocationOrVariableReference(depth, startPos);
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
@@ -717,11 +717,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public boolean nextCharacterIs(int depth, char... expectedCharacters)
   {
     skipSpaces();
-    for (int expectedCharacter : expectedCharacters)
+    for (char expectedCharacter : expectedCharacters)
     {
-      if (ch == expectedCharacter)
+      if (character == expectedCharacter)
       {
-        previousCharacter = ch;
+        previousCharacter = character;
         nextCharacter();
         return true;
       }
@@ -776,7 +776,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Reference parseName(int depth, int startPos)
   {
-    while (isLatinOrGreek(ch, true))
+    while (isLatinOrGreek(character, true))
     {
       nextCharacter();
     }
@@ -799,7 +799,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F> parseNumber(int depth, int startPos)
   {
-    while (isNumeric(ch))
+    while (isNumeric(character))
     {
       nextCharacter();
     }
@@ -845,7 +845,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         {
           throw new ExpressionCompilerException(String.format("parseExponent expected closing parenthesis at: position=%d, ch='%c'\n",
                                                               position,
-                                                              ch == -1 ? '?' : ch));
+                                                              character == -1 ? '?' : character));
         }
       }
 
@@ -862,7 +862,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
     rootNode = exponentiateMultiplyAndDivideAddAndSubtract(0);
-    assert rootNode != null : "evaluateRootNode: parseFirst() returned null, expression='" + expression + "'";
+    assert rootNode != null : "evaluateRootNode: exponentiateMultiplyAndDivideAddAndSubtract() returned null, expression='"
+                  + expression + "'";
     rootNode.isResult = true;
     return rootNode;
   }
@@ -892,6 +893,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
                               node,
                               exponentiate(depth),
                               depth);
+      }
+      else if (nextCharacterIs(depth, 'Π', '∏'))
+      {
+        assert false : "TODO: create Product node and return  it here";
       }
       else
       {
@@ -1025,7 +1030,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   void skipSpaces()
   {
-    while (ch == ' ')
+    while (character == ' ')
     {
       nextCharacter();
     }

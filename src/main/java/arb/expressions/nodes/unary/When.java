@@ -206,7 +206,7 @@ public class When<D, R, F extends Function<D, R>> extends
       throw new ExpressionCompilerException(format("= expected in condition of when function at pos=%d expression=%s but got ch=%c and lastCh=%c",
                                                    expression.position,
                                                    expression,
-                                                   expression.ch,
+                                                   expression.character,
                                                    expression.previousCharacter));
     }
 
@@ -236,7 +236,7 @@ public class When<D, R, F extends Function<D, R>> extends
     }
     defaultValue = expression.exponentiateMultiplyAndDivideAddAndSubtract(depth + 1);
 
-    if (expression.ch != ')')
+    if (expression.character != ')')
     {
       throw new ExpressionCompilerException(format("expected closing ) of when statement after else at position=%d expression=%s",
                                                    expression.position,
