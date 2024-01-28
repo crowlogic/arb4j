@@ -808,7 +808,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (nextCharacterIs(depth, '['))
     {
       int indexPosition = position;
-      while (!nextCharacterIs(depth, ']') && position < expression.length());
+      while (!nextCharacterIs(depth, ']') && position < expression.length())
+      {
+        nextCharacter();
+      }
       index = expression.substring(indexPosition, position - 1);
     }
     return index;
