@@ -797,19 +797,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   private String evaluatePossibleSubscriptedIndex(int depth)
   {
-    StringBuilder index = new StringBuilder();
-
-    while (nextCharacterIsSubscript(depth))
-    {
-      index.append(previousCharacter);
-    }
-
-    return index.length() > 0 ? index.toString() : null;
-  }
-
-  private boolean nextCharacterIsSubscript(int depth)
-  {
-    return nextCharacterIs(depth, SUBSCRIPT_CHARACTERS);
+    int indexPosition = position;
+    while (nextCharacterIs(depth, SUBSCRIPT_CHARACTERS) && position < expression.length());
+    return position > indexPosition ? expression.substring(indexPosition, position) : null;
   }
 
   private String evaluatePossibleSquareBracketedIndex(int depth)
@@ -818,11 +808,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (nextCharacterIs(depth, '['))
     {
       int indexPosition = position;
-
-      while (!nextCharacterIs(depth, ']') && position < expression.length())
-      {
-        nextCharacter();
-      }
+      while (!nextCharacterIs(depth, ']') && position < expression.length());
       index = expression.substring(indexPosition, position - 1);
     }
     return index;
