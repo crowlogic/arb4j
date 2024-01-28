@@ -70,13 +70,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   Class<?>                     targetResultType;
 
   @SuppressWarnings("unchecked")
-  public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument, int depth)
+  public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
   {
     super(argument,
-          expression,
-          depth);
+          expression);
     this.functionName = Parser.replaceSubscriptsAndArrows(functionName).replace("ln", "log").replace("√", "sqrt");
-    this.depth        = depth;
     targetResultType  = resultTypeFor(functionName);
 
     // assert argument == null && !targetResultType.equals(Void.class) : "argument
@@ -212,7 +210,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (needsArgTypeConversion)
     {
-      expression.reserveIntermediateVariable(methodVisitor, depth + 1, mapping.domain);
+      expression.reserveIntermediateVariable(methodVisitor, mapping.domain);
     }
 
     if (isVoid)

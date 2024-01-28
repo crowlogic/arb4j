@@ -75,16 +75,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   public BinaryOperation(Expression<D, R, F> expression,
                          Node<D, R, F> left,
                          String operation,
-                         Node<D, R, F> right,
-                         int depth)
+                         Node<D, R, F> right)
   {
-    super(expression,
-          depth + 1);
+    super(expression);
 
     this.right     = right;
     this.operation = operation;
     this.left      = left;
-    this.depth     = depth;
     assert right != null : "the right-hand-side of a binary operator should never be null";
     if (left == null)
     {
@@ -92,8 +89,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       if (Integer.class.equals(rhsType) || Real.class.equals(rhsType))
       {
         left = new LiteralConstant<>(expression,
-                                     Real.class.equals(rhsType) ? "0.0" : "0",
-                                     depth + 1);
+                                     Real.class.equals(rhsType) ? "0.0" : "0");
       }
       else
       {
@@ -183,7 +179,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.reserveIntermediateVariable(mv, depth, resultType);
+      expression.reserveIntermediateVariable(mv, resultType);
       return true;
 
     }

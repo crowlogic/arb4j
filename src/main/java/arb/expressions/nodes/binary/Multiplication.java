@@ -15,13 +15,12 @@ import arb.functions.Function;
 public class Multiplication<D, R, F extends Function<D, R>> extends
                            BinaryOperation<D, R, F>
 {
-  public Multiplication(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
+  public Multiplication(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
           left,
           "mul",
-          right,
-          depth);
+          right);
   }
 
   @Override

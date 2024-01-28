@@ -34,10 +34,9 @@ public abstract class UnaryOperation<D, R, F extends Function<D, R>> extends
 
   protected Node<D, R, F> arg;
 
-  public UnaryOperation(Node<D, R, F> node, Expression<D, R, F> expression, int depth)
+  public UnaryOperation(Node<D, R, F> node, Expression<D, R, F> expression)
   {
-    super(expression,
-          depth + 1);
+    super(expression);
     this.arg = node;
   }
 
@@ -89,7 +88,7 @@ public abstract class UnaryOperation<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        expression.reserveIntermediateVariable(methodVisitor, depth, resultType);
+        expression.reserveIntermediateVariable(methodVisitor, resultType);
       }
     }
   }

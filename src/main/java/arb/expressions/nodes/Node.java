@@ -33,7 +33,7 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
 
   public boolean             isResult = false;
 
-  public Node(Expression<D, R, F> expression, int depth)
+  public Node(Expression<D, R, F> expression)
   {
     this.expression = expression;
     this.namespace  = expression.variables;
@@ -56,8 +56,6 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
   public abstract String toString(int depth);
 
   public int bits = 128;
-
-  public int depth;
 
   /**
    * Determines whether this {@link Expression} {@link Node} is reusable. If it's

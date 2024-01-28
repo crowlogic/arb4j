@@ -53,6 +53,14 @@ public class arblib {
     arblibJNI.fmpz_fac_ui(f, n);
   }
 
+  public static void fmpz_rfac_ui(long numRows, long x, long k) {
+    arblibJNI.fmpz_rfac_ui(numRows, x, k);
+  }
+
+  public static void fmpz_rfac_uiui(long numRows, long x, long k) {
+    arblibJNI.fmpz_rfac_uiui(numRows, x, k);
+  }
+
   public static void fmpz_mul(long f, long g, long h) {
     arblibJNI.fmpz_mul(f, g, h);
   }

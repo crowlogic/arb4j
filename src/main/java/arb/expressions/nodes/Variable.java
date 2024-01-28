@@ -86,10 +86,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public final boolean       isMultivariate;
 
-  public Variable(Expression<D, R, F> expression, Reference reference, int depth)
+  public Variable(Expression<D, R, F> expression, Reference reference)
   {
-    super(expression,
-          depth + 1);
+    super(expression);
     this.expression = expression;
     this.reference  = reference;
     this.variables  = expression.variables;

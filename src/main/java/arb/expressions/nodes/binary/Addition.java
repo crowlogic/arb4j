@@ -22,13 +22,12 @@ public class Addition<D, R, F extends Function<D, R>> extends
     return format("%s + %s", left.typeset(), right.typeset());
   }
 
-  public Addition(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
+  public Addition(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
           left,
           "add",
-          right,
-          depth);
+          right);
   }
 
 }

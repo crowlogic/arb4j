@@ -10,11 +10,10 @@ public class Product<D, R, F extends Function<D, R>> extends
                     Node<D, R, F>
 {
 
-  public Product(Expression<D, R, F> expression, int depth)
+  public Product(Expression<D, R, F> expression)
   {
-    super(expression,
-          depth);
-    Node<D, R, F> node = expression.evaluate(depth + 1);
+    super(expression);
+    Node<D, R, F> node = expression.evaluate();
 
     assert false : "TODO:  subscripted variables should be uppercased... construct Product... node=" + node;
   }

@@ -60,10 +60,9 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     return constantSymbols.contains(var);
   }
 
-  public LiteralConstant(Expression<D, R, F> expression, String constantValueString, int depth)
+  public LiteralConstant(Expression<D, R, F> expression, String constantValueString)
   {
-    super(expression,
-          depth + 1);
+    super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
     value = constantValueString.trim();
     isInt = !((value.contains(".") || constantSymbols.contains(value)));
@@ -100,11 +99,10 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("%s[fieldName=%s, value=%s, depth=%s, type=%s]",
+    return String.format("%s[fieldName=%s, value=%s, type=%s]",
                          getClass().getSimpleName(),
                          fieldName,
                          value,
-                         depth,
                          type() != null ? type().getName() : null);
   }
 

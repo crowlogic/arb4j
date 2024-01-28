@@ -542,7 +542,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  public String getNextIntermediatevariableFieldName(int depth, Class<?> type)
+  public String getNextIntermediatevariableFieldName(Class<?> type)
   {
     String        prefix  = getVariablePrefix(type);
     AtomicInteger counter = intermediateVariableCounters.get(prefix);
@@ -670,10 +670,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return !literalConstants.isEmpty() | !intermediateVariables.isEmpty();
   }
 
-  public String newIntermediateVariable(int depth, Class<?> type)
+  public String newIntermediateVariable(Class<?> type)
   {
     assert type != Void.class : "dont generate a variable for the Void type";
-    String intermediateVarName = getNextIntermediatevariableFieldName(depth, type);
+    String intermediateVarName = getNextIntermediatevariableFieldName(type);
     intermediateVariables.add(new IntermediateVariable<>(this,
                                                          intermediateVarName,
                                                          type));
@@ -686,17 +686,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
     character = (++position < expression.length()) ? expression.charAt(position) : Character.MIN_VALUE;
   }
 
-  public Node<D, R, F> evaluate(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> evaluate() throws ExpressionCompilerException
   {
     Node<D, R, F> node     = null;
 
     int           startPos = position;
 
-    if (nextCharacterIs(depth + 1, '('))
+    if (nextCharacterIs('('))
     {
-      node = exponentiateMultiplyAndDivideAddAndSubtract(depth + 1);
+      node = reckon();
 
-      if (!nextCharacterIs(depth + 1, ')'))
+      if (!nextCharacterIs(')'))
       {
         throw new ExpressionCompilerException(format("expected closing parenthesis, instead got %c at position %s in "
                       + "expression '%s'", character, startPos, expression));
@@ -705,12 +705,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else if (Parser.isNumeric(character))
     {
-      node = evaluateNumber(depth, startPos);
+      node = evaluateNumber(startPos);
       assert node != null : "parseNumber returned null";
     }
     else if (Parser.isLatinOrGreek(character, false))
     {
-      node = resolveFunctionInvocationOrVariableReference(depth, startPos);
+      node = resolveFunctionInvocationOrVariableReference(startPos);
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
     }
 
@@ -719,7 +719,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public int previousCharacter;
 
-  public boolean nextCharacterIs(int depth, char... expectedCharacters)
+  public boolean nextCharacterIs(char... expectedCharacters)
   {
     skipSpaces();
     for (char expectedCharacter : expectedCharacters)
@@ -735,37 +735,45 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return false;
   }
 
-  public Node<D, R, F> exponentiateMultiplyAndDivideAddAndSubtract(int depth) throws ExpressionCompilerException
+  /**
+   * reckon: To make an enumeration or computation; to engage in numbering or
+   * computing.problem solving that involves numbers or quantities [syn:
+   * {calculation}, {computation}, {figuring}, {reckoning}]. Applies the usual
+   * order of operations of mathematical expressions commonly referred to by the
+   * acronym PEMDAS (parenthesis, exponentials, multiplication, division,
+   * addition, subtraction)
+   * 
+   * @return
+   * @throws ExpressionCompilerException
+   */
+  public Node<D, R, F> reckon() throws ExpressionCompilerException
   {
-    Node<D, R, F> node = exponentiateMultiplyAndDivide(depth);
+    Node<D, R, F> node = exponentiateMultiplyAndDivide();
 
-    return addAndSubtract(depth, node);
+    return addAndSubtract(node);
   }
 
-  public Node<D, R, F> addAndSubtract(int depth, Node<D, R, F> node)
+  public Node<D, R, F> addAndSubtract(Node<D, R, F> node)
   {
     while (true)
     {
       if (node == null)
       {
         node = new LiteralConstant<>(this,
-                                     "0",
-                                     depth);
+                                     "0");
       }
 
-      if (nextCharacterIs(depth, '+'))
+      if (nextCharacterIs('+'))
       {
         node = new Addition<>(this,
                               node,
-                              exponentiateMultiplyAndDivide(depth),
-                              depth);
+                              exponentiateMultiplyAndDivide());
       }
-      else if (nextCharacterIs(depth, '-'))
+      else if (nextCharacterIs('-'))
       {
         node = new Subtraction<>(this,
                                  node,
-                                 exponentiateMultiplyAndDivide(depth),
-                                 depth);
+                                 exponentiateMultiplyAndDivide());
       }
       else
       {
@@ -774,41 +782,41 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public Node<D, R, F> exponentiate(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> exponentiate() throws ExpressionCompilerException
   {
-    return exponentiate(depth, evaluate(depth));
+    return exponentiate(evaluate());
   }
 
-  public Reference evaluateName(int depth, int startPos)
+  public Reference evaluateName(int startPos)
   {
     while (isLatinOrGreek(character, true))
     {
       nextCharacter();
     }
     String identifier = expression.substring(startPos, position).trim();
-    String index      = evaluatePossibleSquareBracketedIndex(depth);
+    String index      = evaluatePossibleSquareBracketedIndex();
     if (index == null)
     {
-      index = evaluatePossibleSubscriptedIndex(depth);
+      index = evaluatePossibleSubscriptedIndex();
     }
     return new Reference(identifier,
                          index);
   }
 
-  private String evaluatePossibleSubscriptedIndex(int depth)
+  private String evaluatePossibleSubscriptedIndex()
   {
     int indexPosition = position;
-    while (nextCharacterIs(depth, SUBSCRIPT_CHARACTERS) && position < expression.length());
+    while (nextCharacterIs(SUBSCRIPT_CHARACTERS) && position < expression.length());
     return position > indexPosition ? expression.substring(indexPosition, position) : null;
   }
 
-  private String evaluatePossibleSquareBracketedIndex(int depth)
+  private String evaluatePossibleSquareBracketedIndex()
   {
     String index = null;
-    if (nextCharacterIs(depth, '['))
+    if (nextCharacterIs('['))
     {
       int indexPosition = position;
-      while (!nextCharacterIs(depth, ']') && position < expression.length())
+      while (!nextCharacterIs(']') && position < expression.length())
       {
         nextCharacter();
       }
@@ -817,7 +825,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return index;
   }
 
-  public Node<D, R, F> evaluateNumber(int depth, int startPos)
+  public Node<D, R, F> evaluateNumber(int startPos)
   {
     while (isNumeric(character))
     {
@@ -825,8 +833,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     return new LiteralConstant<>(this,
-                                 expression.substring(startPos, position),
-                                 depth);
+                                 expression.substring(startPos, position));
   }
 
   public void evaluateOptionalIndependentVariableSpecification()
@@ -838,30 +845,28 @@ public class Expression<D, R, F extends Function<D, R>> implements
       independentVariableNode = new Variable<D, R, F>(this,
                                                       new Reference(expression.substring(0, rightArrowIndex),
                                                                     null,
-                                                                    domainType),
-                                                      0);
+                                                                    domainType));
 
       position                = rightArrowIndex;
 
     }
   }
 
-  private Node<D, R, F> exponentiate(int depth, Node<D, R, F> node) throws ExpressionCompilerException
+  private Node<D, R, F> exponentiate(Node<D, R, F> node) throws ExpressionCompilerException
   {
-    if (nextCharacterIs(depth, '^'))
+    if (nextCharacterIs('^'))
     {
       boolean parenthetical = false;
-      if (nextCharacterIs(depth, '('))
+      if (nextCharacterIs('('))
       {
         parenthetical = true;
       }
       node = new Exponentiation<>(this,
                                   node,
-                                  parenthetical ? exponentiateMultiplyAndDivideAddAndSubtract(depth) : evaluate(depth),
-                                  depth + 1);
+                                  parenthetical ? reckon() : evaluate());
       if (parenthetical)
       {
-        if (!nextCharacterIs(depth, ')'))
+        if (!nextCharacterIs(')'))
         {
           throw new ExpressionCompilerException(String.format("parseExponent expected closing parenthesis at: position=%d, ch='%c'\n",
                                                               position,
@@ -873,7 +878,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else
     {
-      return parseSuperscripts(depth, node);
+      return parseSuperscripts(node);
     }
   }
 
@@ -881,43 +886,40 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
-    rootNode = exponentiateMultiplyAndDivideAddAndSubtract(0);
+    rootNode = reckon();
     assert rootNode != null : "evaluateRootNode: exponentiateMultiplyAndDivideAddAndSubtract() returned null, expression='"
                   + expression + "'";
     rootNode.isResult = true;
     return rootNode;
   }
 
-  public Node<D, R, F> exponentiateMultiplyAndDivide(int depth) throws ExpressionCompilerException
+  public Node<D, R, F> exponentiateMultiplyAndDivide() throws ExpressionCompilerException
   {
-    Node<D, R, F> node = exponentiate(depth);
+    Node<D, R, F> node = exponentiate();
 
-    return multiplyAndDivide(depth, node);
+    return multiplyAndDivide(node);
   }
 
-  public Node<D, R, F> multiplyAndDivide(int depth, Node<D, R, F> node)
+  public Node<D, R, F> multiplyAndDivide(Node<D, R, F> node)
   {
     while (true)
     {
-      if (nextCharacterIs(depth, '*', '×'))
+      if (nextCharacterIs('*', '×'))
       {
         node = new Multiplication<>(this,
                                     node,
-                                    exponentiate(depth),
-                                    depth);
+                                    exponentiate());
 
       }
-      else if (nextCharacterIs(depth, '/', '÷'))
+      else if (nextCharacterIs('/', '÷'))
       {
         node = new Division<>(this,
                               node,
-                              exponentiate(depth),
-                              depth);
+                              exponentiate());
       }
-      else if (nextCharacterIs(depth, 'Π', '∏'))
+      else if (nextCharacterIs('Π', '∏'))
       {
-        node = new Product<>(this,
-                             depth);
+        node = new Product<>(this);
       }
       else
       {
@@ -926,74 +928,68 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public Node<D, R, F> parseSuperscript(int depth, Node<D, R, F> node, char superscript, String digit)
+  public Node<D, R, F> parseSuperscript(Node<D, R, F> node, char superscript, String digit)
   {
-    if (nextCharacterIs(depth + 1, superscript))
+    if (nextCharacterIs(superscript))
     {
       node = new Exponentiation<>(this,
                                   node,
                                   new LiteralConstant<>(this,
-                                                        digit,
-                                                        depth + 2),
-                                  depth + 1);
+                                                        digit));
     }
     return node;
   }
 
-  public Node<D, R, F> parseSuperscripts(int depth, Node<D, R, F> node)
+  public Node<D, R, F> parseSuperscripts(Node<D, R, F> node)
   {
-    node = parseSuperscript(depth + 1, node, '⁰', "0");
-    node = parseSuperscript(depth + 1, node, '¹', "1");
-    node = parseSuperscript(depth + 1, node, '²', "2");
-    node = parseSuperscript(depth + 1, node, '³', "3");
-    node = parseSuperscript(depth + 1, node, '⁴', "4");
-    node = parseSuperscript(depth + 1, node, '⁵', "5");
-    node = parseSuperscript(depth + 1, node, '⁶', "6");
-    node = parseSuperscript(depth + 1, node, '⁷', "7");
-    node = parseSuperscript(depth + 1, node, '⁸', "8");
-    node = parseSuperscript(depth + 1, node, '⁹', "9");
+    node = parseSuperscript(node, '⁰', "0");
+    node = parseSuperscript(node, '¹', "1");
+    node = parseSuperscript(node, '²', "2");
+    node = parseSuperscript(node, '³', "3");
+    node = parseSuperscript(node, '⁴', "4");
+    node = parseSuperscript(node, '⁵', "5");
+    node = parseSuperscript(node, '⁶', "6");
+    node = parseSuperscript(node, '⁷', "7");
+    node = parseSuperscript(node, '⁸', "8");
+    node = parseSuperscript(node, '⁹', "9");
     return node;
   }
 
-  public String reserveIntermediateVariable(MethodVisitor methodVisitor, int depth, Class<?> type)
+  public String reserveIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
   {
-    String intermediateVariableName = newIntermediateVariable(depth, type);
+    String intermediateVariableName = newIntermediateVariable(type);
     loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type.descriptorString());
     return intermediateVariableName;
   }
 
-  public Node<D, R, F> resolveFunctionInvocationOrVariableReference(int depth,
-                                                                    int startPos) throws ExpressionCompilerException
+  public Node<D, R, F> resolveFunctionInvocationOrVariableReference(int startPos) throws ExpressionCompilerException
   {
-    Reference reference  = evaluateName(depth, startPos);
-    boolean   isFunction = nextCharacterIs(depth, '(');
+    Reference reference  = evaluateName(startPos);
+    boolean   isFunction = nextCharacterIs('(');
 
     if (isFunction)
     {
       if ("when".equals(reference.name))
       {
-        return new When<>(this,
-                          depth);
+        return new When<>(this);
       }
       else
       {
-        Node<D, R, F> arg = exponentiateMultiplyAndDivideAddAndSubtract(depth + 1);
-        if (nextCharacterIs(depth + 1, ')'))
+        Node<D, R, F> arg = reckon();
+        if (nextCharacterIs(')'))
         {
           return new FunctionCall<>(this,
                                     reference.name,
-                                    arg,
-                                    depth + 1);
+                                    arg);
         }
         else
         {
           throw new RuntimeException(String.format("expected closing parenthesis at: startPos=%s, position=%s,"
-                        + " identifier='%s', isFunction=%s, depth=%d\n, expression=%s\n",
+                        + " identifier='%s', isFunction=%s, expression=%s\n",
                                                    startPos,
                                                    position,
                                                    reference,
                                                    isFunction,
-                                                   depth,
                                                    expression));
         }
       }
@@ -1001,16 +997,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else if (LiteralConstant.constantSymbols.contains(reference.name))
     {
       return new LiteralConstant<>(this,
-                                   reference.name,
-                                   depth + 1);
+                                   reference.name);
     }
     else
     {
       var contextVar = context == null ? null : context.variables.get(reference.name);
       reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
       return new Variable<D, R, F>(this,
-                                   reference,
-                                   depth + 1);
+                                   reference);
     }
   }
 

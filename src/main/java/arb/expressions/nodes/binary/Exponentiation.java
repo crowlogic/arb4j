@@ -24,12 +24,11 @@ public class Exponentiation<D, R, F extends Function<D, R>> extends
     return format("{%s}^{%s}", left.typeset(), right.typeset());
   }
 
-  public Exponentiation(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent, int depth)
+  public Exponentiation(Expression<D, R, F> expression, Node<D, R, F> base, Node<D, R, F> exponent)
   {
     super(expression,
           base,
           "pow",
-          exponent,
-          depth);
+          exponent);
   }
 }

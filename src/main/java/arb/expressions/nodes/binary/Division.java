@@ -15,13 +15,12 @@ import arb.functions.Function;
 public class Division<D, R, F extends Function<D, R>> extends
                      BinaryOperation<D, R, F>
 {
-  public Division(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
+  public Division(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
           left,
           "div",
-          right,
-          depth);
+          right);
   }
 
   @Override
