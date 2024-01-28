@@ -14,7 +14,9 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
     super(expression,
           depth);
-    assert false : "TODO: construct Product whose syntax is like this ∏αₖ₍ₙ₎{k=1…p} where αₖ₍ₙ₎=α[k].risingFactorial(n) in this example";
+    Node<D, R, F> node = expression.evaluate(depth + 1);
+
+    assert false : "TODO: construct Product... node=" + node;
   }
 
   @Override

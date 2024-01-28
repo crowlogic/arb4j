@@ -98,7 +98,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       else
       {
         throw new ExpressionCompilerException("Unhandled fill-in of left-hand-side of binary "
-                      + "operation when the right hand side is of type " + right.type() + ", this is where -x is translated to 0-x. that is what is meant by fill-in");
+                      + "operation when the right hand side is of type " + right.type()
+                      + ", this is where -x is translated to 0-x. that is what is meant by fill-in");
       }
     }
     assert left != null && right != null : "one or more of the operands to this were missing: " + this

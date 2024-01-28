@@ -15,7 +15,7 @@ import arb.functions.Function;
  * TeXmacs format of the same document respectively.
  */
 public class Exponentiation<D, R, F extends Function<D, R>> extends
-                         BinaryOperation<D, R, F>
+                           BinaryOperation<D, R, F>
 {
 
   @Override

@@ -28,10 +28,24 @@ import arb.algebra.Ring;
 public class Integer implements
                      AutoCloseable,
                      Comparable<Integer>,
-                     Ring<Integer>
+                     Ring<Integer>,
+                     HasName
 {
 
-  public Real factorial( int bits, Real result)
+  public String name;
+
+  public String getName()
+  {
+    return name;
+  }
+
+  public Integer setName(String name)
+  {
+    this.name = name;
+    return this;
+  }
+
+  public Real factorial(int bits, Real result)
   {
     arblib.arb_fac_ui(result, getUnsignedValue(), bits);
     return result;

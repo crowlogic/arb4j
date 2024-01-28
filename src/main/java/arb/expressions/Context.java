@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
 
+import arb.HasName;
 import arb.Real;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -69,7 +70,7 @@ public class Context
     this.functions = funcs;
   }
 
-  public Context(Real... vars)
+  public Context(HasName... vars)
   {
     this(new Variables(vars));
   }

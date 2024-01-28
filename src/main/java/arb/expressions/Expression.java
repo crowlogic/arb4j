@@ -97,6 +97,10 @@ import arb.functions.Function;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
+  private static final char[] SUBSCRIPT_CHARACTERS       = new char[]
+  { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
+    'ₜ' };
+
   private static final String IS_INITIALIZED             = "isInitialized";
 
   private static final String nameOfInitializerFunction  = "initialize";
@@ -701,7 +705,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else if (Parser.isNumeric(character))
     {
-      node = parseNumber(depth, startPos);
+      node = evaluateNumber(depth, startPos);
       assert node != null : "parseNumber returned null";
     }
     else if (Parser.isLatinOrGreek(character, false))
@@ -775,14 +779,42 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return exponentiate(depth, evaluate(depth));
   }
 
-  public Reference parseName(int depth, int startPos)
+  public Reference evaluateName(int depth, int startPos)
   {
     while (isLatinOrGreek(character, true))
     {
       nextCharacter();
     }
     String identifier = expression.substring(startPos, position).trim();
-    String index      = null;
+    String index      = evaluateConditionalSquareBracketedIndex(depth);
+    if (index == null)
+    {
+      index = evaluateConditionalSubscriptedIndex(depth);
+    }
+    return new Reference(identifier,
+                         index);
+  }
+
+  private String evaluateConditionalSubscriptedIndex(int depth)
+  {
+    StringBuilder index = new StringBuilder();
+
+    while (nextCharacterIsSubscript(depth))
+    {
+      index.append(previousCharacter);
+    }
+
+    return index.length() > 0 ? index.toString() : null;
+  }
+
+  private boolean nextCharacterIsSubscript(int depth)
+  {
+    return nextCharacterIs(depth, SUBSCRIPT_CHARACTERS);
+  }
+
+  private String evaluateConditionalSquareBracketedIndex(int depth)
+  {
+    String index = null;
     if (nextCharacterIs(depth, '['))
     {
       int indexPosition = position;
@@ -793,12 +825,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       index = expression.substring(indexPosition, position - 1);
     }
-
-    return new Reference(identifier,
-                         index);
+    return index;
   }
 
-  public Node<D, R, F> parseNumber(int depth, int startPos)
+  public Node<D, R, F> evaluateNumber(int depth, int startPos)
   {
     while (isNumeric(character))
     {
@@ -946,14 +976,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public Node<D, R, F> resolveFunctionInvocationOrVariableReference(int depth,
                                                                     int startPos) throws ExpressionCompilerException
   {
-    Reference reference  = parseName(depth, startPos);
+    Reference reference  = evaluateName(depth, startPos);
     boolean   isFunction = nextCharacterIs(depth, '(');
 
     if (isFunction)
     {
       if ("when".equals(reference.name))
       {
-        return new When<>(this, depth);
+        return new When<>(this,
+                          depth);
       }
       else
       {

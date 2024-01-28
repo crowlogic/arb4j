@@ -13,7 +13,7 @@ import arb.functions.Function;
  * TeXmacs format of the same document respectively.
  */
 public class Multiplication<D, R, F extends Function<D, R>> extends
-                     BinaryOperation<D, R, F>
+                           BinaryOperation<D, R, F>
 {
   public Multiplication(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right, int depth)
   {
