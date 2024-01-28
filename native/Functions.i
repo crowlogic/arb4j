@@ -32,6 +32,9 @@ void arb_add_fmpz(arb_t z, const arb_t x, const fmpz_t y, slong prec);
 int fmpz_pow_fmpz(fmpz_t a, const fmpz_t b, const fmpz_t e);
 void arb_mul_fmpz(arb_t z, const arb_t x, const fmpz_t y, slong prec);
 void arb_sub_fmpz(arb_t z, const arb_t x, const fmpz_t y, slong prec);
+void fmpz_fac_ui(fmpz_t f, ulong n);
+void fmpz_rfac_ui(fmpz_t r, const fmpz_t x, ulong k);
+void fmpz_rfac_uiui(fmpz_t r, ulong x, ulong k);
 
 void fmpz_mul(fmpz_t f, const fmpz_t g, const fmpz_t h);
 void fmpz_divexact(fmpz_t f, const fmpz_t g, const fmpz_t h);

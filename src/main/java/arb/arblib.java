@@ -49,6 +49,10 @@ public class arblib {
     arblibJNI.arb_sub_fmpz(Real.getCPtr(z), z, Real.getCPtr(x), x, y, prec);
   }
 
+  public static void fmpz_fac_ui(long f, long n) {
+    arblibJNI.fmpz_fac_ui(f, n);
+  }
+
   public static void fmpz_mul(long f, long g, long h) {
     arblibJNI.fmpz_mul(f, g, h);
   }

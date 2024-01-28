@@ -51,6 +51,24 @@ public class Integer implements
     return result;
   }
 
+  public static Integer factorial(long n, Integer result)
+  {
+    arblib.fmpz_fac_ui(result.swigCPtr, n);
+    return result;
+  }
+
+  /**
+   * Calls this{@link #factorial(long, Integer)} putting the result into a newly
+   * instantiated Integer
+   * 
+   * @param n
+   * @return
+   */
+  public static Integer factorial(long n)
+  {
+    return factorial(n, new Integer());
+  }
+
   public static Real factorial(long n, int bits, Real result)
   {
     arblib.arb_fac_ui(result, n, bits);
@@ -263,6 +281,24 @@ public class Integer implements
   {
     arblib.fmpz_pow_fmpz(result.swigCPtr, this.swigCPtr, operand.swigCPtr);
     return result;
+  }
+
+  /**
+   * Shortcut for this{@link #div(Integer, int, Integer)} since it doesnt need
+   * bits
+   * 
+   * @param operand
+   * @param result
+   * @return
+   */
+  public Integer div(Integer operand, Integer result)
+  {
+    return div(operand, 0, result);
+  }
+  
+  public Integer div(Integer operand)
+  {
+    return div(operand,this);
   }
 
   /**
