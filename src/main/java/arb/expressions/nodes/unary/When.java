@@ -52,12 +52,6 @@ public class When<D, R, F extends Function<D, R>> extends
                     .collect(Collectors.toList())
                     .toArray(new Label[cases.size()]);
 
-      cases.entrySet()
-           .stream()
-           .map(entry -> new Label())
-           .collect(Collectors.toList())
-           .toArray(new Label[cases.size()]);
-
       cases.values().forEach(val ->
       {
         val.isResult = isResult;
@@ -113,15 +107,28 @@ public class When<D, R, F extends Function<D, R>> extends
           depth);
   }
 
-  public When(Expression<D, R, F> expression,
-              TreeMap<Integer, Node<D, R, F>> cases,
-              Node<D, R, F> defaultValue,
-              int depth)
+  public When(Expression<D, R, F> expression, int depth)
   {
-    super(defaultValue,
+    super(null,
           expression,
           depth);
-    this.cases = cases;
+    cases = new TreeMap<>();
+
+    do
+    {
+      evaluateValue(depth, cases);
+    }
+    while (expression.nextCharacterIs(depth + 1, ','));
+    if (!expression.nextCharacterIs(depth + 1, ')'))
+    {
+      throw new ExpressionCompilerException("Closing parenthesis expected at position=" + expression.position
+                    + " of expression=" + expression);
+    }
+    if (arg == null)
+    {
+      throw new ExpressionCompilerException("default value of when function not specified with else keyword at position="
+                    + expression.position + " of expression=" + expression);
+    }
   }
 
   @Override
@@ -136,39 +143,10 @@ public class When<D, R, F extends Function<D, R>> extends
     return expression.rangeType;
   }
 
-  public static <D, R, F extends Function<D, R>> Node<D, R, F> evaluate(Expression<D, R, F> expression, int depth)
+  public void evaluateValue(int depth, TreeMap<Integer, Node<D, R, F>> cases2)
   {
-    TreeMap<Integer, Node<D, R, F>> cases        = new TreeMap<>();
-    Node<D, R, F>                   defaultValue = null;
 
-    do
-    {
-      defaultValue = evaluateValue(expression, depth, cases);
-    }
-    while (expression.nextCharacterIs(depth + 1, ','));
-    if (!expression.nextCharacterIs(depth + 1, ')'))
-    {
-      throw new ExpressionCompilerException("Closing parenthesis expected at position=" + expression.position
-                    + " of expression=" + expression);
-    }
-    if (defaultValue == null)
-    {
-      throw new ExpressionCompilerException("default value of when function not specified with else keyword at position="
-                    + expression.position + " of expression=" + expression);
-    }
-    return new When<D, R, F>(expression,
-                             cases,
-                             defaultValue,
-                             depth + 1);
-  }
-
-  public static <D, R, F extends Function<D, R>> Node<D, R, F> evaluateValue(Expression<D, R, F> expression,
-                                                                             int depth,
-                                                                             TreeMap<Integer, Node<D, R, F>> cases)
-  {
-    Node<D, R, F> value = null;
-
-    Node<D, R, F> node  = expression.evaluate(depth + 1);
+    Node<D, R, F> node = expression.evaluate(depth + 1);
     if (!(node instanceof Variable))
     {
       throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
@@ -179,13 +157,12 @@ public class When<D, R, F extends Function<D, R>> extends
 
     if ("else".equals(variable.reference.name))
     {
-      value = evaluateDefaultValue(expression, depth);
+      arg = evaluateDefaultValue(expression, depth);
     }
     else
     {
-      evaluateConditionalValue(expression, depth, cases, variable);
+      evaluateConditionalValue(expression, depth, cases2, variable);
     }
-    return value;
   }
 
   private static <D, F extends Function<D, R>, R>

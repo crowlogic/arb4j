@@ -953,7 +953,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       if ("when".equals(reference.name))
       {
-        return When.evaluate(this, depth + 1);
+        return new When<>(this, depth);
       }
       else
       {
