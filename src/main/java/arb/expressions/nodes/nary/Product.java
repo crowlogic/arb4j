@@ -16,7 +16,7 @@ public class Product<D, R, F extends Function<D, R>> extends
           depth);
     Node<D, R, F> node = expression.evaluate(depth + 1);
 
-    assert false : "TODO: construct Product... node=" + node;
+    assert false : "TODO:  subscripted variables should be uppercased... construct Product... node=" + node;
   }
 
   @Override
