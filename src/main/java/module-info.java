@@ -38,6 +38,7 @@ module arb4j
   exports arb.expressions;
   exports arb.expressions.decompiler;
   exports arb.expressions.nodes;
+  exports arb.expressions.nodes.nary;
   exports arb.expressions.nodes.binary;
   exports arb.expressions.nodes.unary;
   exports arb.algebra;

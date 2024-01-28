@@ -53,6 +53,7 @@ import arb.expressions.nodes.binary.Division;
 import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
 import arb.expressions.nodes.binary.Subtraction;
+import arb.expressions.nodes.nary.Product;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
@@ -896,7 +897,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else if (nextCharacterIs(depth, 'Π', '∏'))
       {
-        assert false : "TODO: create Product node and return  it here";
+        node = new Product<>(this,
+                             depth);
       }
       else
       {
