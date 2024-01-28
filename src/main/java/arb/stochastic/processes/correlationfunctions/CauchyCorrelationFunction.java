@@ -54,7 +54,7 @@ public class CauchyCorrelationFunction implements
 
   public Context  context = new Context(vars);
 
-  public RealFunction c       = express("((1+|h|)^α)^(-(β/α))", context);
+  public RealFunction c       = express("((1+|h|)ᵅ)^(-(β/α))", context);
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)

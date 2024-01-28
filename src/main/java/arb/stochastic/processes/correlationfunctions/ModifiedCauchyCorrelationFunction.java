@@ -3,6 +3,8 @@ package arb.stochastic.processes.correlationfunctions;
 import static arb.functions.real.RealFunction.express;
 
 import arb.Real;
+import arb.expressions.Context;
+import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
 /**
@@ -16,7 +18,29 @@ public class ModifiedCauchyCorrelationFunction extends
                                                CauchyCorrelationFunction
 {
 
-  public RealFunction c = express("((1+|h|)^a)^(-(β/α)-1)*(1+(1-β)*|h|^α)", context);
+  @Override
+  public void close()
+  {
+    α.close();
+    β.close();
+  }
+
+  /**
+   * α∈(0,2)
+   */
+  public final Real   α       = new Real().setName("α");
+
+  /**
+   * β≥0
+   */
+  public final Real   β       = new Real().setName("β");
+
+  public Variables    vars    = new Variables(α,
+                                              β);
+
+  public Context      context = new Context(vars);
+
+  public RealFunction c       = express("((1+|h|)ᵅ)^(-(β/α)-1)*(1+(1-β)*|h|^α)", context);
 
   @Override
   public Real evaluate(Real t, int order, int bits, Real res)
