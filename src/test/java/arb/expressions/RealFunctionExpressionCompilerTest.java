@@ -151,7 +151,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testFunctionInvolvingABesselFunction()
   {
-    RealFunction expression = express("a-b*J₀(λ*t)", context);
+    RealFunction expression = express("a-b*J0(λ*t)", context);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
       assertEquals(0.23480231344203345, evaluatedX.doubleValue());

@@ -53,7 +53,7 @@ public class VariableReference
 
   public VariableReference(String name, String index)
   {
-    this.name  = name == null ? null : name.trim();
+    this.name  = name == null ? null : normalizeSubscriptedDigits(name.trim());
     this.index = index != null ? normalizeSubscriptedDigits(index) : null;
   }
 
