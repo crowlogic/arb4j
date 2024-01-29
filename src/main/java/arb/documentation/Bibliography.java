@@ -8,6 +8,11 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book    stochasticMethodsInQuantumMechanics            = new Book("Stochastic Methods in Quantum Mechanics",
+                                                                                  "Stanley P. Gudder",
+                                                                                  "1979").setSeries("North Holland Series in Probability and Applied Mathematics")
+                                                                                         .setPublisher("Elsevier North Holland");
+
   public static Book    stationaryCorrelationFunctions                 = new Book("Correlation Theory of Stationary and Related Random Functions",
                                                                                   "Yaglom, A.M.",
                                                                                   "1987").setSeries("Applied Probability")
