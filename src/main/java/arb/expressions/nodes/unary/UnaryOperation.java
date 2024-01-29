@@ -43,21 +43,7 @@ public abstract class UnaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return toString(0);
-  }
-
-  public String toString(int depth)
-  {
-    String indent      = depth < 0 ? "" : indent(depth);
-    String childIndent = depth < 0 ? "" : indent(depth + 1);
-    return String.format(depth < 0 ? "%s%s[name=%s,%sarg=%s%s%s]" : "%s%s[name=%s,\n%sarg=\n %s%s\n%s]",
-                         indent,
-                         getClass().getSimpleName(),
-                         arg,
-                         childIndent,
-                         childIndent,
-                         arg.toString(depth < 0 ? depth : (depth + 1)),
-                         indent);
+    return String.format("[name=%s,arg=%s]", getClass().getSimpleName(), arg);
   }
 
   @Override

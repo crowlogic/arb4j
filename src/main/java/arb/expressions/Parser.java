@@ -13,15 +13,35 @@ package arb.expressions;
 public class Parser
 {
 
+  public static char subscriptedDigitToRegular(char c)
+  {
+    return switch (c)
+    {
+    case '₀' -> '0';
+    case '₁' -> '1';
+    case '₂' -> '2';
+    case '₃' -> '3';
+    case '₄' -> '4';
+    case '₅' -> '5';
+    case '₆' -> '6';
+    case '₇' -> '7';
+    case '₈' -> '8';
+    case '₉' -> '9';
+    default -> c;
+    };
+  }
+
   /**
    * Checks whether a given character is a digit, a decimal point, or '½'
    * 
    * @param ch The character to check
    * @return true if the character is a digit or a decimal point; false otherwise
    */
-  static boolean isNumeric(int ch)
+  static boolean isNumeric(char ch)
   {
-    return (ch >= '0' && ch <= '9') || ch == '.' || ch == '½';
+    char desubscripted = subscriptedDigitToRegular(ch);
+
+    return (ch >= '0' && ch <= '9') || ch == '.' || ch == '½' || (desubscripted >= '0' && desubscripted <= '9');
   }
 
   /**

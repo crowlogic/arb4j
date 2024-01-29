@@ -53,8 +53,6 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
     return null;
   }
 
-  public abstract String toString(int depth);
-
   public int bits = 128;
 
   /**

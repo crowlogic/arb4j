@@ -4,10 +4,10 @@ import static java.lang.System.out;
 
 import org.objectweb.asm.MethodVisitor;
 
+import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
-import arb.utensils.Utensils;
 
 public class Product<D, R, F extends Function<D, R>> extends
                     Node<D, R, F>
@@ -40,18 +40,21 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     if (expression.nextCharacterIs('₌'))
     {
-      int startPos = expression.position;
-      while (expression.nextCharacterIs(ALPHANUMERIC_AND_SUBSCRIPT_CHARACTERS));
-      rangeString = expression.expression.substring(startPos, expression.position);
-      String[] interval = rangeString.split("…");
-      for ( int i = 0; i < interval.length; i++ )
+      Node<D, R, F> startIndex = expression.evaluate();
+
+      if (!expression.nextCharacterIs('…'))
       {
-        interval[i] = Utensils.subscriptToRegular(interval[i]);
+        throw new ExpressionCompilerException(String.format("range format is expected to be startIndex…endIndex but got %c character at index %s of %s and startIndex=%s\n",
+                                                            expression.character,
+                                                            expression.position,
+                                                            expression,startIndex));
       }
-      assert interval.length == 2 : "range format is expected to be startIndex…endIndex but got '" + rangeString
-                    + "'";
-      range = new Range();
-      out.println("product ranges from " + interval[0] + " to " + interval[1]);
+      Node<D, R, F> endIndex = expression.evaluate();
+
+      range            = new Range();
+      range.firstIndex = startIndex;
+      range.lastIndex  = endIndex;
+      out.println("product ranges from " + startIndex + " to " + endIndex);
     }
 
     int startPos = expression.position;
@@ -63,28 +66,19 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : "TODO: Auto-generated method stub: resultType=" + resultType + " expr=" + expr;
-    return null;
-  }
-
-  @Override
-  public String toString(int depth)
-  {
-    assert false : "TODO: Auto-generated method stub";
+    assert false : "TODO: Auto-generated method stub for generate: resultType=" + resultType + " expr=" + expr;
     return null;
   }
 
   @Override
   public boolean isReusable()
   {
-    assert false : "TODO: Auto-generated method stub";
     return false;
   }
 
   @Override
   public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
-    assert false : "TODO: Auto-generated method stub";
     return null;
   }
 
