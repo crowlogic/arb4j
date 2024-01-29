@@ -49,9 +49,11 @@ import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.expressions.nodes.binary.Addition;
+import arb.expressions.nodes.binary.BinaryOperation;
 import arb.expressions.nodes.binary.Division;
 import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
+import arb.expressions.nodes.binary.RisingFactorial;
 import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.nary.Product;
 import arb.expressions.nodes.unary.FunctionCall;
@@ -709,7 +711,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       node = evaluateNumber(startPos);
       assert node != null : "parseNumber returned null";
     }
-    else if (Parser.isLatinOrGreek(character, false) || Parser.isAlphabeticalSubscript(character))
+    else if (Parser.isLatinOrGreek(character, false) || Parser.isAlphabeticalSubscript(character)
+                  || Parser.isSubscriptedParenthesis(character))
     {
       node = resolveFunctionInvocationOrVariableReference(startPos);
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
@@ -960,9 +963,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F> resolveFunctionInvocationOrVariableReference(int startPos) throws ExpressionCompilerException
   {
-    VariableReference reference  = evaluateName(startPos);
-    boolean           isFunction = nextCharacterIs('(');
-
+    VariableReference reference         = evaluateName(startPos);
+    boolean           isFunction        = nextCharacterIs('(');
+    boolean           isRisingFactorial = nextCharacterIs('₍');
     if (isFunction)
     {
       if ("when".equals(reference.name))
@@ -988,6 +991,36 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                    isFunction,
                                                    expression));
         }
+      }
+    }
+    else if (isRisingFactorial)
+    {
+      Node<D, R, F> arg = determine();
+      if (nextCharacterIs('₎'))
+      {
+        return new BinaryOperation<D, R, F>(this,
+                                            arg,
+                                            "risingFactorial",
+                                            arg)
+        {
+
+          @Override
+          public String typeset()
+          {
+            assert false : "TODO: Auto-generated method stub";
+            return null;
+          }
+        };
+      }
+      else
+      {
+        throw new RuntimeException(String.format("expected closing parenthesis at: startPos=%s, position=%s,"
+                      + " identifier='%s', isFunction=%s, expression=%s\n",
+                                                 startPos,
+                                                 position,
+                                                 reference,
+                                                 isFunction,
+                                                 expression));
       }
     }
     else if (LiteralConstant.constantSymbols.contains(reference.name))

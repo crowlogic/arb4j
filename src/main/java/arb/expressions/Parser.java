@@ -102,15 +102,13 @@ public class Parser
   static public boolean isLatinOrGreek(char ch, boolean digit)
   {
 
-    return isAlphabetical(ch) || isGreek(ch) || ch == '√' || ch == '₀'
-                  || (digit && (ch >= '0' && ch <= '9'));
+    return isAlphabetical(ch) || isGreek(ch) || ch == '√' || ch == '₀' || (digit && (ch >= '0' && ch <= '9'));
   }
 
   public static boolean isAlphabetical(char ch)
   {
     return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
   }
-  
 
   public static boolean isAlphabeticalSubscript(char ch)
   {
@@ -184,5 +182,9 @@ public class Parser
                      .replace("½", "half");
   }
 
+  public static boolean isSubscriptedParenthesis(char character)
+  {
+    return character == '₍' || character == '₎';
+  }
 
 }

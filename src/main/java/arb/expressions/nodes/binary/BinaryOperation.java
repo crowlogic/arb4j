@@ -102,6 +102,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                   + " set 0 value based on type here";
   }
 
+
+  
   @Override
   public final MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {

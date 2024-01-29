@@ -220,6 +220,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
    */
   public Real risingFactorial(long power, int bits, Real result)
   {
+    assert power >= 0 : "power must be non-negative, was " + power;
     arblib.arb_hypgeom_rising_ui(result, this, power, bits);
     return result;
   }
