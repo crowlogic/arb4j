@@ -15,7 +15,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     super(expression);
     Node<D, R, F> node = expression.evaluate();
 
-    assert false : "TODO:  subscripted variables should be uppercased... construct Product... node=" + node;
+    assert false : "TODO:   Product... node=" + node + " from " + expression;
   }
 
   @Override
