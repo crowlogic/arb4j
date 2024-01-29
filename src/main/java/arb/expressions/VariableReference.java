@@ -2,6 +2,8 @@ package arb.expressions;
 
 import java.util.Objects;
 
+import arb.utensils.Utensils;
+
 /**
  * <pre>
  * arb4j is made available under the terms of the Business Source License™ v1.1
@@ -47,35 +49,22 @@ public class VariableReference
 
   public VariableReference(String name)
   {
+    assert !name.isEmpty() : "name is empty";
     this.name  = name == null ? null : name.trim();
     this.index = null;
   }
 
   public VariableReference(String name, String index)
   {
-    this.name  = name == null ? null : normalizeSubscriptedDigits(name.trim());
-    this.index = index != null ? normalizeSubscriptedDigits(index) : null;
-  }
-
-  public static String normalizeSubscriptedDigits(String subscript)
-  {
-    return subscript.replace("₀", "0")
-                    .replace("₁", "1")
-                    .replace("₂", "2")
-                    .replace("₃", "3")
-                    .replace("₄", "4")
-                    .replace("₅", "5")
-                    .replace("₆", "6")
-                    .replace("₇", "7")
-                    .replace("₈", "8")
-                    .replace("₉", "9");
+    assert !name.isEmpty() : "name is empty";
+    this.name  = name == null ? null : Utensils.subscriptToRegular(name.trim());
+    this.index = index != null ? Utensils.subscriptToRegular(index) : null;
   }
 
   public VariableReference(String name, String index, Class<?> type)
   {
     this(name,
          index);
-
     this.type = type;
   }
 

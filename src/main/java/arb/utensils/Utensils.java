@@ -563,4 +563,18 @@ public class Utensils
     return correlation;
   }
 
+  public static String normalizeSubscriptedDigits(String subscript)
+  {
+    return subscript.replace("₀", "0")
+                    .replace("₁", "1")
+                    .replace("₂", "2")
+                    .replace("₃", "3")
+                    .replace("₄", "4")
+                    .replace("₅", "5")
+                    .replace("₆", "6")
+                    .replace("₇", "7")
+                    .replace("₈", "8")
+                    .replace("₉", "9");
+  }
+
 }

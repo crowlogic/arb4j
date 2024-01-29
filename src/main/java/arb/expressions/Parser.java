@@ -13,6 +13,42 @@ package arb.expressions;
 public class Parser
 {
 
+  public static char subscriptedCharToRegular(char c)
+  {
+    return switch (c)
+    {
+    case '₀' -> '0';
+    case '₁' -> '1';
+    case '₂' -> '2';
+    case '₃' -> '3';
+    case '₄' -> '4';
+    case '₅' -> '5';
+    case '₆' -> '6';
+    case '₇' -> '7';
+    case '₈' -> '8';
+    case '₉' -> '9';
+    // Alphabetical subscripts
+    case 'ₐ' -> 'a';
+    case 'ₑ' -> 'e';
+    case 'ₕ' -> 'h';
+    case 'ᵢ' -> 'i';
+    case 'ⱼ' -> 'j';
+    case 'ₖ' -> 'k';
+    case 'ₗ' -> 'l';
+    case 'ₘ' -> 'm';
+    case 'ₙ' -> 'n';
+    case 'ₒ' -> 'o';
+    case 'ₚ' -> 'p';
+    case 'ᵣ' -> 'r';
+    case 'ₛ' -> 's';
+    case 'ₜ' -> 't';
+    case 'ᵤ' -> 'u';
+    case 'ᵥ' -> 'v';
+    case 'ₓ' -> 'x';
+    default -> c;
+    };
+  }
+
   public static char subscriptedDigitToRegular(char c)
   {
     return switch (c)
@@ -63,10 +99,23 @@ public class Parser
    * @return true if the character is a Latin or Greek alphabet character; false
    *         otherwise
    */
-  static public boolean isLatinOrGreek(int ch, boolean digit)
+  static public boolean isLatinOrGreek(char ch, boolean digit)
   {
-    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || isGreek(ch) || ch == '√' || ch == '₀'
+
+    return isAlphabetical(ch) || isGreek(ch) || ch == '√' || ch == '₀'
                   || (digit && (ch >= '0' && ch <= '9'));
+  }
+
+  public static boolean isAlphabetical(char ch)
+  {
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
+  }
+  
+
+  public static boolean isAlphabeticalSubscript(char ch)
+  {
+    ch = subscriptedCharToRegular(ch);
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
   }
 
   /**
@@ -134,5 +183,6 @@ public class Parser
                      .replace("➔", "")
                      .replace("½", "half");
   }
+
 
 }

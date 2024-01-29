@@ -58,6 +58,7 @@ import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * <p>
@@ -708,7 +709,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       node = evaluateNumber(startPos);
       assert node != null : "parseNumber returned null";
     }
-    else if (Parser.isLatinOrGreek(character, false))
+    else if (Parser.isLatinOrGreek(character, false) || Parser.isAlphabeticalSubscript(character))
     {
       node = resolveFunctionInvocationOrVariableReference(startPos);
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
@@ -777,11 +778,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public VariableReference evaluateName(int startPos)
   {
-    while (isLatinOrGreek(character, true))
+    while (isLatinOrGreek(character, true) || Parser.isAlphabeticalSubscript(character))
     {
       nextCharacter();
     }
-    String identifier = expression.substring(startPos, position).trim();
+    assert position > startPos : "barfed at " + startPos + " ch=" + character;
+    String identifier = Utensils.subscriptToRegular(expression.substring(startPos, position).trim());
     String index      = evaluatePossibleSquareBracketedIndex();
     if (index == null)
     {
