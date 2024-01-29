@@ -35,6 +35,36 @@ import arb.functions.real.RealFunction;
  */
 public class Utensils
 {
+  public static String subscriptToRegular(String input)
+  {
+    return input.replace("₀", "0")
+                .replace("₁", "1")
+                .replace("₂", "2")
+                .replace("₃", "3")
+                .replace("₄", "4")
+                .replace("₅", "5")
+                .replace("₆", "6")
+                .replace("₇", "7")
+                .replace("₈", "8")
+                .replace("₉", "9")
+                .replace("ₐ", "a")
+                .replace("ₑ", "e")
+                .replace("ₕ", "h")
+                .replace("ᵢ", "i")
+                .replace("ⱼ", "j")
+                .replace("ₖ", "k")
+                .replace("ₗ", "l")
+                .replace("ₘ", "m")
+                .replace("ₙ", "n")
+                .replace("ₒ", "o")
+                .replace("ₚ", "p")
+                .replace("ᵣ", "r")
+                .replace("ₛ", "s")
+                .replace("ₜ", "t")
+                .replace("ᵤ", "u")
+                .replace("ᵥ", "v")
+                .replace("ₓ", "x");
+  }
 
   public static String toSuperscript(int number)
   {

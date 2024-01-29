@@ -1,10 +1,13 @@
 package arb.expressions.nodes.nary;
 
+import static java.lang.System.out;
+
 import org.objectweb.asm.MethodVisitor;
 
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 public class Product<D, R, F extends Function<D, R>> extends
                     Node<D, R, F>
@@ -17,10 +20,19 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   Node<D, R, F>               factor;
 
-  String                      range;
+  String                      rangeString;
 
-  String expr;
-  
+  String                      expr;
+
+  Range                       range;
+
+  public class Range
+  {
+
+    public Node<D, R, F> firstIndex;
+    public Node<D, R, F> lastIndex;
+  }
+
   public Product(Expression<D, R, F> expression)
   {
     super(expression);
@@ -30,13 +42,22 @@ public class Product<D, R, F extends Function<D, R>> extends
     {
       int startPos = expression.position;
       while (expression.nextCharacterIs(ALPHANUMERIC_AND_SUBSCRIPT_CHARACTERS));
-      range = expression.expression.substring(startPos, expression.position);
+      rangeString = expression.expression.substring(startPos, expression.position);
+      String[] interval = rangeString.split("…");
+      for ( int i = 0; i < interval.length; i++ )
+      {
+        interval[i] = Utensils.subscriptToRegular(interval[i]);
+      }
+      assert interval.length == 2 : "range format is expected to be startIndex…endIndex but got '" + rangeString
+                    + "'";
+      range = new Range();
+      out.println("product ranges from " + interval[0] + " to " + interval[1]);
     }
 
     int startPos = expression.position;
     while (expression.nextCharacter() != ')' && expression.position < expression.expression.length());
     expr = expression.expression.substring(startPos, expression.position);
-    System.out.format("Product(factor=%s, range=%s, expr=%s)\n", factor, range, expr);
+    System.out.format("Product(factor=%s, range=%s, expr=%s)\n", factor, rangeString, expr);
   }
 
   @Override
@@ -70,7 +91,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-   return String.format("product(%s,%s=%s)", factor, expr, range );
+    return String.format("product(%s,%s=%s)", factor, expr, rangeString);
   }
 
   @Override
