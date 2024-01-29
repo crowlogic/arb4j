@@ -778,11 +778,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public VariableReference evaluateName(int startPos)
   {
-    while (isLatinOrGreek(character, true) || Parser.isAlphabeticalSubscript(character))
+    boolean entirelySubscripted = true;
+    boolean isLatinOrGreek;
+    while ((isLatinOrGreek = isLatinOrGreek(character, true))
+                  || (entirelySubscripted && !isLatinOrGreek && Parser.isAlphabeticalSubscript(character)))
     {
       nextCharacter();
+      if (isLatinOrGreek)
+      {
+        entirelySubscripted = false;
+      }
     }
-    assert position > startPos : "barfed at " + startPos + " ch=" + character;
     String identifier = Utensils.subscriptToRegular(expression.substring(startPos, position).trim());
     String index      = evaluatePossibleSquareBracketedIndex();
     if (index == null)
