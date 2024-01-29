@@ -38,7 +38,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     @Override
     public String toString()
     {
-      return String.format("Range[%s…%s]", firstIndex, lastIndex);
+      return String.format("Range[%s…%s]", firstIndex.typeset(), lastIndex.typeset());
     }
     public Node<D, R, F> firstIndex;
     public Node<D, R, F> lastIndex;

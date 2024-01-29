@@ -22,6 +22,7 @@ import arb.Real;
 import arb.RealConstants;
 import arb.expressions.Expression;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * arb4j is made available under the terms of the Business Source License™ v1.1
@@ -64,7 +65,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
-    value = constantValueString.trim();
+    value = Utensils.subscriptToRegular(constantValueString.trim());
     isInt = !((value.contains(".") || constantSymbols.contains(value)));
 
     if (isConstant(constantValueString))
