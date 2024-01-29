@@ -178,7 +178,7 @@ public class When<D, R, F extends Function<D, R>> extends
     }
 
     LiteralConstant<D, R, F> constant = evaluateCondition(expression);
-    Node<D, R, F>            value    = expression.reckon();
+    Node<D, R, F>            value    = expression.determine();
     cases.put(new Integer(constant.value), value);
   }
 
@@ -208,7 +208,7 @@ public class When<D, R, F extends Function<D, R>> extends
     {
       throw new ExpressionCompilerException(", expected after else condition");
     }
-    defaultValue = expression.reckon();
+    defaultValue = expression.determine();
 
     if (expression.character != ')')
     {

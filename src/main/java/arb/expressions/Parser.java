@@ -1,7 +1,5 @@
 package arb.expressions;
 
-import arb.functions.real.BesselFunctionOfTheFirstKind;
-
 /**
  * <pre>
  * arb4j is made available under the terms of the Business Source License™ v1.1

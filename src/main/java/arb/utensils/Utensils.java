@@ -49,7 +49,7 @@ public class Utensils
     return result.toString();
   }
 
-  private static char digitToSuperscript(char digit)
+  public static char digitToSuperscript(char digit)
   {
     switch (digit)
     {

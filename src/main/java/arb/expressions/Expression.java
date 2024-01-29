@@ -694,7 +694,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (nextCharacterIs('('))
     {
-      node = reckon();
+      node = determine();
 
       if (!nextCharacterIs(')'))
       {
@@ -735,21 +735,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return false;
   }
 
-  /**
-   * reckon: To make an enumeration or computation; to engage in numbering or
-   * computing.problem solving that involves numbers or quantities [syn:
-   * {calculation}, {computation}, {figuring}, {reckoning}]. Applies the usual
-   * order of operations of mathematical expressions commonly referred to by the
-   * acronym PEMDAS (parenthesis, exponentials, multiplication, division,
-   * addition, subtraction)
-   * 
-   * @return
-   * @throws ExpressionCompilerException
-   */
-  public Node<D, R, F> reckon() throws ExpressionCompilerException
+  public Node<D, R, F> determine() throws ExpressionCompilerException
   {
     Node<D, R, F> node = exponentiateMultiplyAndDivide();
-
     return addAndSubtract(node);
   }
 
@@ -800,7 +788,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       index = evaluatePossibleSubscriptedIndex();
     }
     return new VariableReference(identifier,
-                         index);
+                                 index);
   }
 
   private String evaluatePossibleSubscriptedIndex()
@@ -844,8 +832,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       independentVariableNode = new Variable<D, R, F>(this,
                                                       new VariableReference(expression.substring(0, rightArrowIndex),
-                                                                    null,
-                                                                    domainType));
+                                                                            null,
+                                                                            domainType));
 
       position                = rightArrowIndex;
 
@@ -863,7 +851,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       node = new Exponentiation<>(this,
                                   node,
-                                  parenthetical ? reckon() : evaluate());
+                                  parenthetical ? determine() : evaluate());
       if (parenthetical)
       {
         if (!nextCharacterIs(')'))
@@ -886,7 +874,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
-    rootNode = reckon();
+    rootNode = determine();
     assert rootNode != null : "evaluateRootNode: exponentiateMultiplyAndDivideAddAndSubtract() returned null, expression='"
                   + expression + "'";
     rootNode.isResult = true;
@@ -965,7 +953,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public Node<D, R, F> resolveFunctionInvocationOrVariableReference(int startPos) throws ExpressionCompilerException
   {
     VariableReference reference  = evaluateName(startPos);
-    boolean   isFunction = nextCharacterIs('(');
+    boolean           isFunction = nextCharacterIs('(');
 
     if (isFunction)
     {
@@ -975,7 +963,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else
       {
-        Node<D, R, F> arg = reckon();
+        Node<D, R, F> arg = determine();
         if (nextCharacterIs(')'))
         {
           return new FunctionCall<>(this,
