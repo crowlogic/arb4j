@@ -18,13 +18,12 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
     return String.format("Product[factor=%s, expr=%s, range=%s]", factor, expr, range);
   }
-  
+
   @Override
   public String typeset()
   {
     return String.format("product(%s,%s=%s)", factor, expr, range);
   }
-
 
   Node<D, R, F> factor;
 
@@ -40,6 +39,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     {
       return String.format("Range[%s…%s]", firstIndex.typeset(), lastIndex.typeset());
     }
+
     public Node<D, R, F> firstIndex;
     public Node<D, R, F> lastIndex;
   }
@@ -49,6 +49,8 @@ public class Product<D, R, F extends Function<D, R>> extends
     super(expression);
     factor = expression.evaluate();
 
+    assert false : "subsume this into expression.evaluate where it puts the range in a new field Node.range so as to facilitate a more terse syntax for product specification";
+    
     if (expression.nextCharacterIs('₌'))
     {
       Node<D, R, F> startIndex = expression.evaluate();
@@ -67,7 +69,6 @@ public class Product<D, R, F extends Function<D, R>> extends
       range.lastIndex  = endIndex;
       out.println("\nproduct ranges from\n \n" + startIndex + "\n to \n" + endIndex + "\n");
     }
-
     int startPos = expression.position;
     while (expression.nextCharacter() != ')' && expression.position < expression.expression.length());
     expr = expression.expression.substring(startPos, expression.position);
@@ -92,7 +93,6 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
     return null;
   }
-
 
   @Override
   public <C> Class<? extends C> type()
