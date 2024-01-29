@@ -19,7 +19,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.Parser;
-import arb.expressions.Reference;
+import arb.expressions.VariableReference;
 import arb.expressions.Variables;
 import arb.functions.Function;
 
@@ -74,7 +74,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return isIndeterminant ? expression.rangeType : reference.type();
   }
 
-  public final Reference     reference;
+  public final VariableReference     reference;
 
   public final Variables     variables;
 
@@ -86,7 +86,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public final boolean       isMultivariate;
 
-  public Variable(Expression<D, R, F> expression, Reference reference)
+  public Variable(Expression<D, R, F> expression, VariableReference reference)
   {
     super(expression);
     this.expression = expression;
@@ -211,7 +211,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
    * 
    * @param reference
    */
-  public void resolveReference(Reference reference)
+  public void resolveReference(VariableReference reference)
   {
     var inputVariable = expression.independentVariableNode;
 

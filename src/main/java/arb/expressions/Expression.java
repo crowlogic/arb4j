@@ -787,7 +787,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return exponentiate(evaluate());
   }
 
-  public Reference evaluateName(int startPos)
+  public VariableReference evaluateName(int startPos)
   {
     while (isLatinOrGreek(character, true))
     {
@@ -799,7 +799,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       index = evaluatePossibleSubscriptedIndex();
     }
-    return new Reference(identifier,
+    return new VariableReference(identifier,
                          index);
   }
 
@@ -843,7 +843,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (rightArrowIndex != -1)
     {
       independentVariableNode = new Variable<D, R, F>(this,
-                                                      new Reference(expression.substring(0, rightArrowIndex),
+                                                      new VariableReference(expression.substring(0, rightArrowIndex),
                                                                     null,
                                                                     domainType));
 
@@ -964,7 +964,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F> resolveFunctionInvocationOrVariableReference(int startPos) throws ExpressionCompilerException
   {
-    Reference reference  = evaluateName(startPos);
+    VariableReference reference  = evaluateName(startPos);
     boolean   isFunction = nextCharacterIs('(');
 
     if (isFunction)

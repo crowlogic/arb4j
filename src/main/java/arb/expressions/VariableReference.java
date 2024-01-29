@@ -12,7 +12,7 @@ import java.util.Objects;
  * 
  * @author ©2024 Stephen Crowley
  */
-public class Reference
+public class VariableReference
 {
 
   @Override
@@ -38,23 +38,23 @@ public class Reference
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Reference other = (Reference) obj;
+    VariableReference other = (VariableReference) obj;
     return Objects.equals(index, other.index) && Objects.equals(name, other.name);
   }
 
-  public Reference(String name)
+  public VariableReference(String name)
   {
     this.name  = name == null ? null : name.trim();
     this.index = null;
   }
 
-  public Reference(String name, String index)
+  public VariableReference(String name, String index)
   {
     this.name  = name == null ? null : name.trim();
     this.index = index;
   }
 
-  public Reference(String name, String index, Class<?> type)
+  public VariableReference(String name, String index, Class<?> type)
   {
     this.name  = name == null ? null : name.trim();
     this.index = index;

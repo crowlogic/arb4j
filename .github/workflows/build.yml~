@@ -1,0 +1,57 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: mavenJars
+
+    - name: 'Set up archived Oracle JDK 20.0.1'
+      uses: oracle-actions/setup-java@v1
+      with:
+        website: oracle.com
+        release: 20
+        version: 21.0.1
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y swig4.0 clang-15 make libflint-dev libflint-arb-dev
+    - name: Run make
+      run: make
+      
+    - name: Build with Maven
+      run: mvn -B test --file pom.xml
+      continue-on-error: true
+      
+    - name: Check test results
+      id: check-results
+      run: |
+        if grep -q "Tests run: .* Failures: .*" target/surefire-reports/*.txt; then
+          echo "Some tests failed."
+          echo "::set-output name=failed::true"
+        else
+          echo "All tests passed."
+          echo "::set-output name=failed::false"
+        fi
+    - name: Upload test results
+      if: steps.check-results.outputs.failed == 'true'
+      uses: actions/upload-artifact@v2
+      with:
+        name: Test Results
+        path: target/surefire-reports
+      env:
+        UPLOAD_FAILED_TESTS: ${{ steps.check-results.outputs.failed }}
