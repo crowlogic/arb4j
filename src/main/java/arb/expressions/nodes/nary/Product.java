@@ -15,14 +15,14 @@ public class Product<D, R, F extends Function<D, R>> extends
     'w', 'x', 'y', 'z', '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₕ', 'ᵢ', 'ⱼ', 'ₖ', 'ₗ', 'ₘ',
     'ₙ', 'ₒ', 'ₚ', 'ᵣ', 'ₛ', 'ₜ', 'ᵤ', 'ᵥ', 'ₓ', '…' };
 
-  Node<D, R, F>               index;
+  Node<D, R, F>               factor;
 
   String                      range;
 
   public Product(Expression<D, R, F> expression)
   {
     super(expression);
-    index = expression.evaluate();
+    factor = expression.evaluate();
 
     if (expression.nextCharacterIs('₌'))
     {
@@ -34,13 +34,13 @@ public class Product<D, R, F extends Function<D, R>> extends
     int startPos = expression.position;
     while (expression.nextCharacter() != ')' && expression.position < expression.expression.length());
     String expr = expression.expression.substring(startPos, expression.position);
-    System.out.format("Product(index=%s, range=%s, expr=%s)\n", index, range, expr);
+    System.out.format("Product(factor=%s, range=%s, expr=%s)\n", factor, range, expr);
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : "TODO: Auto-generated method stub";
+    assert false : "TODO: Auto-generated method stub: resultType=" + resultType;
     return null;
   }
 
@@ -75,8 +75,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public <C> Class<? extends C> type()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return factor.type();
   }
 
 }
