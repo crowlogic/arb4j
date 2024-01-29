@@ -19,6 +19,8 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   String                      range;
 
+  String expr;
+  
   public Product(Expression<D, R, F> expression)
   {
     super(expression);
@@ -33,14 +35,14 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     int startPos = expression.position;
     while (expression.nextCharacter() != ')' && expression.position < expression.expression.length());
-    String expr = expression.expression.substring(startPos, expression.position);
+    expr = expression.expression.substring(startPos, expression.position);
     System.out.format("Product(factor=%s, range=%s, expr=%s)\n", factor, range, expr);
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : "TODO: Auto-generated method stub: resultType=" + resultType;
+    assert false : "TODO: Auto-generated method stub: resultType=" + resultType + " expr=" + expr;
     return null;
   }
 
@@ -68,8 +70,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+   return String.format("product(%s,%s=%s)", factor, expr, range );
   }
 
   @Override
