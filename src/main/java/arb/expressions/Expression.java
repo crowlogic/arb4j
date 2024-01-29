@@ -763,18 +763,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       if (nextCharacterIs('₍'))
       {
-        var rhs = lastNode;
-        Node<D, R, F> arg = determine();
+        var           lhs   = lastNode;
+        Node<D, R, F> power = determine();
         if (nextCharacterIs('₎'))
         {
           return new RisingFactorial<D, R, F>(this,
-                                              rhs,
-                                              arg);
+                                              lhs,
+                                              power);
         }
         else
         {
-          throw new RuntimeException(String.format("expected closing parenthesis at:  position=%s,"
-                        + "  expression=%s\n", position, expression));
+          throw new RuntimeException(String.format("expected closing subscripted parenthesis ₎ at:  position=%s but got char '%c' instead where "
+                        + "  expression=%s\n", position, character, expression));
         }
       }
       else if (nextCharacterIs('+', '₊'))
