@@ -47,9 +47,8 @@ public class Product<D, R, F extends Function<D, R>> extends
   public Product(Expression<D, R, F> expression)
   {
     super(expression);
+    assert false : "TODO: extend Expression.evaluate to recognize subscripted paranthesis as the rising factorial: https://github.com/crowlogic/arb4j/issues/311";
     factor = expression.evaluate();
-
-    assert false : "subsume this into expression.evaluate where it puts the range in a new field Node.range so as to facilitate a more terse syntax for product specification";
     
     if (expression.nextCharacterIs('₌'))
     {
