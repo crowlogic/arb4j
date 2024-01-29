@@ -18,7 +18,10 @@ public class VariableReference
   @Override
   public String toString()
   {
-    return String.format("Reference[name=%s, index=%s, type=%s]", name, index, type != null ? type.getName() : null);
+    return String.format("VariableReference[name=%s, index=%s, type=%s]",
+                         name,
+                         index,
+                         type != null ? type.getName() : null);
   }
 
   public Class<?> type;
@@ -51,14 +54,29 @@ public class VariableReference
   public VariableReference(String name, String index)
   {
     this.name  = name == null ? null : name.trim();
-    this.index = index;
+    this.index = index != null ? normalizeSubscriptedDigits(index) : null;
+  }
+
+  public static String normalizeSubscriptedDigits(String subscript)
+  {
+    return subscript.replace("₀", "0")
+                    .replace("₁", "1")
+                    .replace("₂", "2")
+                    .replace("₃", "3")
+                    .replace("₄", "4")
+                    .replace("₅", "5")
+                    .replace("₆", "6")
+                    .replace("₇", "7")
+                    .replace("₈", "8")
+                    .replace("₉", "9");
   }
 
   public VariableReference(String name, String index, Class<?> type)
   {
-    this.name  = name == null ? null : name.trim();
-    this.index = index;
-    this.type  = type;
+    this(name,
+         index);
+
+    this.type = type;
   }
 
   public String name;
@@ -77,10 +95,6 @@ public class VariableReference
     }
   }
 
-  /**
-   * 
-   * @return true if this{@link #name} starts with ( and ends with )
-   */
   public boolean isMultivariate()
   {
     return name.startsWith("(") && name.endsWith(")");

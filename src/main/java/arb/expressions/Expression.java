@@ -245,7 +245,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
     this.functionClassDescriptor   = functionClass.descriptorString();
-    this.expression                = Parser.replaceSubscriptsAndArrows(expression);
+    this.expression                = Parser.replaceArrow(expression);
     this.context                   = context;
     this.variables                 = context != null ? context.variables : null;
     evaluateMethodSignature        = String.format("(L%s;IIL%s;)L%s;",

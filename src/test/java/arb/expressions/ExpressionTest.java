@@ -18,7 +18,6 @@ public class ExpressionTest extends
     α.set(0, RealConstants.π);
     Real twoPi = f.evaluate(RealConstants.two, 128, new Real());
     assertTrue(RealConstants.twoπ.approximatelyEquals(twoPi, 257));
-    out.println("2π=" + twoPi);
   }
   
   public void testVariableIndexedByASubscript()
@@ -29,6 +28,5 @@ public class ExpressionTest extends
     α.set(0, RealConstants.π);
     Real twoPi = f.evaluate(RealConstants.two, 128, new Real());
     assertTrue(RealConstants.twoπ.approximatelyEquals(twoPi, 257));
-    out.println("2π=" + twoPi);
   }
 }
