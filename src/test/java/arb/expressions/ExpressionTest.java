@@ -17,7 +17,6 @@ public class ExpressionTest extends
                                         128,
                                         new Real());
     assertEquals(210.0, result.doubleValue());
-
   }
 
   public void testVariableIndexedByASquareBracketedConstant()

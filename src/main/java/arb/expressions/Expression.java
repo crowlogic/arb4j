@@ -1038,10 +1038,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else
     {
+      // TODO: move RisingFactorial code here
       var contextVar = context == null ? null : context.variables.get(reference.name);
       reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
-      return new Variable<D, R, F>(this,
-                                   reference);
+      Variable<D, R, F> variable = new Variable<D, R, F>(this,
+                                                         reference);
+      if ( nextCharacterIs('₍'))
+      {
+        assert false : "TODO: instantiate RisingFactorial here";
+      }
+
+      return variable;
     }
   }
 
