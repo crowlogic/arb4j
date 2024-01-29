@@ -710,8 +710,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
         }
         Product<D, R, F> product = (Product<D, R, F>) node;
 
+        String indexRangeString = expression.substring(position, expression.indexOf('}', position));
         throw new ExpressionCompilerException("Index of " + product + " is ...TODO, read index chars fro position "
-                      + position + " onwards..");
+                      + position + " to closing }.." + " which is "
+                      + indexRangeString);
       }
 
       if (!nextCharacterIs(')'))
