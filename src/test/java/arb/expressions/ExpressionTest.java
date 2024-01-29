@@ -1,7 +1,5 @@
 package arb.expressions;
 
-import static java.lang.System.out;
-
 import arb.Real;
 import arb.RealConstants;
 import arb.functions.real.RealFunction;
@@ -13,13 +11,12 @@ public class ExpressionTest extends
   public static void testRisingFactorial()
   {
     RealFunction func   = RealFunction.express("x₍₃₎");
-    RealFunction twoTen = func;
-    Real         result = twoTen.evaluate(new Real("5",
-                                                   128),
-                                          0,
-                                          128,
-                                          new Real());
-    assertEquals( 210.0, result.doubleValue() );
+    Real         result = func.evaluate(new Real("5",
+                                                 128),
+                                        0,
+                                        128,
+                                        new Real());
+    assertEquals(210.0, result.doubleValue());
 
   }
 
