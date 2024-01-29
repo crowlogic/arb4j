@@ -710,7 +710,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         }
         Product<D, R, F> product = (Product<D, R, F>) node;
 
-        throw new ExpressionCompilerException("Index for " + product + " is ...TODO, read index chars fro position "
+        throw new ExpressionCompilerException("Index of " + product + " is ...TODO, read index chars fro position "
                       + position + " onwards..");
       }
 
