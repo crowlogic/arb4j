@@ -11,6 +11,11 @@ all: libarblib.so
 
 jar: target/arb4j-$(VERSION).jar
 
+doc: target/site/apidocs
+
+target/site/apidocs: $(shell find src)
+	mvn javadoc:javadoc
+
 target/arb4j-$(VERSION).jar: libarblib.so $(shell find src) $(shell find native)
 	mvn package
 
@@ -21,5 +26,5 @@ libarblib.so: $(SOURCES)
 	clang $(CFLAGS) $(SOURCES) $(C_INCLUDES) -olibarblib.so -lflint  
 
 clean:
-	rm -rf libarblib.so *.o native/arb_wrap.c target/*.jar
+	rm -rf libarblib.so *.o native/arb_wrap.c target/*.jar target/site/apidocs
 
