@@ -681,9 +681,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return intermediateVarName;
   }
 
-  public void nextCharacter()
+  public char nextCharacter()
   {
-    character = (++position < expression.length()) ? expression.charAt(position) : Character.MIN_VALUE;
+    return character = (++position < expression.length()) ? expression.charAt(position) : Character.MIN_VALUE;
   }
 
   public Node<D, R, F> evaluate() throws ExpressionCompilerException

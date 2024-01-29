@@ -1,7 +1,5 @@
 package arb.expressions.nodes.nary;
 
-import static java.lang.System.out;
-
 import org.objectweb.asm.MethodVisitor;
 
 import arb.expressions.Expression;
@@ -36,8 +34,10 @@ public class Product<D, R, F extends Function<D, R>> extends
       range = expression.expression.substring(startPos, expression.position);
     }
 
-    // TODO: parse remaining up to end of string or encountering a closing
-    // paranthesis that wasnt started here
+    int startPos = expression.position;
+    while (expression.nextCharacter() != ')' && expression.position < expression.expression.length());
+    String expr = expression.expression.substring(startPos, expression.position);
+    System.out.format("Product(index=%s, range=%s, expr=%s)\n", index, range, expr);
   }
 
   @Override
