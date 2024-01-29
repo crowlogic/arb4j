@@ -6,6 +6,16 @@ public class IntegerTest extends
                          TestCase
 {
 
+  public static void testRisingFactorial()
+  {
+    try ( Integer five = new Integer("5"); Integer three = new Integer(3);)
+    {
+      Real twoTen = five.risingFactorial(three, 128, new Real());
+      assertTrue(twoTen.isExact());
+      assertTrue(twoTen.doubleValue() == 210.0);
+    }
+  }
+
   public static void testFactorial()
   {
     Real factorialOfThree = Integer.factorial(4, 128, new Real());

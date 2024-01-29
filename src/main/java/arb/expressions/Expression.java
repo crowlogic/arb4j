@@ -49,10 +49,10 @@ import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.expressions.nodes.binary.Addition;
-import arb.expressions.nodes.binary.BinaryOperation;
 import arb.expressions.nodes.binary.Division;
 import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
+import arb.expressions.nodes.binary.RisingFactorial;
 import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.nary.Product;
 import arb.expressions.nodes.unary.FunctionCall;
@@ -544,6 +544,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
+  private Node<D, R, F>                 lastNode;
+
   public String getNextIntermediatevariableFieldName(Class<?> type)
   {
     String        prefix  = getVariablePrefix(type);
@@ -701,7 +703,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (!nextCharacterIs(')'))
       {
         throw new ExpressionCompilerException(format("expected closing parenthesis, instead got %c at position %s in "
-                      + "expression '%s'", character, startPos, expression));
+                      + "expression '%s' but got %c at pos %d",
+                                                     character,
+                                                     startPos,
+                                                     expression,
+                                                     character,
+                                                     position));
       }
 
     }
@@ -716,6 +723,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
     }
 
+    lastNode = node;
     return node;
   }
 
@@ -758,19 +766,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
         Node<D, R, F> arg = determine();
         if (nextCharacterIs('₎'))
         {
-          return new BinaryOperation<D, R, F>(this,
+          return new RisingFactorial<D, R, F>(this,
                                               arg,
-                                              "risingFactorial",
-                                              arg)
-          {
-
-            @Override
-            public String typeset()
-            {
-              assert false : "TODO: Auto-generated method stub";
-              return null;
-            }
-          };
+                                              arg);
         }
         else
         {
@@ -778,13 +776,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
                         + "  expression=%s\n", position, expression));
         }
       }
-      else if (nextCharacterIs('+'))
+      else if (nextCharacterIs('+', '₊'))
       {
         node = new Addition<>(this,
                               node,
                               exponentiateMultiplyAndDivide());
       }
-      else if (nextCharacterIs('-'))
+      else if (nextCharacterIs('-', '₋'))
       {
         node = new Subtraction<>(this,
                                  node,
@@ -926,22 +924,25 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     while (true)
     {
-      if (nextCharacterIs('*', '×'))
+      if (nextCharacterIs('*', '×', 'ₓ'))
       {
-        node = new Multiplication<>(this,
-                                    node,
-                                    exponentiate());
+        lastNode = node;
+        node     = new Multiplication<>(this,
+                                        node,
+                                        exponentiate());
 
       }
       else if (nextCharacterIs('/', '÷'))
       {
-        node = new Division<>(this,
-                              node,
-                              exponentiate());
+        lastNode = node;
+        node     = new Division<>(this,
+                                  node,
+                                  exponentiate());
       }
       else if (nextCharacterIs('Π', '∏'))
       {
-        node = new Product<>(this);
+        lastNode = node;
+        node     = new Product<>(this);
       }
       else
       {
@@ -1017,6 +1018,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
     }
     else if (LiteralConstant.constantSymbols.contains(reference.name))
+
     {
       return new LiteralConstant<>(this,
                                    reference.name);

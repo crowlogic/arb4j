@@ -13,13 +13,11 @@ import arb.functions.Function;
  * TeXmacs formatted versions of the same document respectively.
  * </pre>
  */
-public class RisingFactorial<D, R> extends
-                            BinaryOperation<D, R, Function<D,R>>
+public class RisingFactorial<D, R, F extends Function<D, R>> extends
+                            BinaryOperation<D, R, F>
 {
 
-  public RisingFactorial(Expression<D, R, Function<D, R>> expression,
-                         Node<D, R, Function<D, R>> left,
-                         Node<D, R, Function<D, R>> right)
+  public RisingFactorial(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
           left,
