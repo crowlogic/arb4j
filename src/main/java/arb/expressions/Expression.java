@@ -703,7 +703,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (!nextCharacterIs(')'))
       {
         throw new ExpressionCompilerException(format("expected closing parenthesis, instead got %c at position %s in "
-                      + "expression '%s'", character, startPos, expression));
+                      + "expression '%s' but got %c at pos %d",
+                                                     character,
+                                                     startPos,
+                                                     expression,
+                                                     character,
+                                                     position));
       }
 
     }
@@ -757,13 +762,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                      "0");
       }
 
-      if (nextCharacterIs('+'))
+      if (nextCharacterIs('+', '₊'))
       {
         node = new Addition<>(this,
                               node,
                               exponentiateMultiplyAndDivide());
       }
-      else if (nextCharacterIs('-'))
+      else if (nextCharacterIs('-', '₋'))
       {
         node = new Subtraction<>(this,
                                  node,
@@ -905,8 +910,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     while (true)
     {
-      if (nextCharacterIs('*', '×'))
+      if (nextCharacterIs('*', '×', 'ₓ'))
       {
+        lastNode = node;
         node = new Multiplication<>(this,
                                     node,
                                     exponentiate());
@@ -914,12 +920,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else if (nextCharacterIs('/', '÷'))
       {
+        lastNode = node;
         node = new Division<>(this,
                               node,
                               exponentiate());
       }
       else if (nextCharacterIs('Π', '∏'))
       {
+        lastNode = node;
         node = new Product<>(this);
       }
       else
@@ -998,7 +1006,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else if (isRisingFactorial)
     {
       Node<D, R, F> arg = determine();
-      assert false : "TODO: need general sub-expression evaluator";
       if (nextCharacterIs('₎'))
       {
         return new RisingFactorial<D, R, F>(this,

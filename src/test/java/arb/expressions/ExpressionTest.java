@@ -14,12 +14,12 @@ public class ExpressionTest extends
   {
     RealFunction func   = RealFunction.express("x₍₃₎");
     RealFunction twoTen = func;
-    twoTen.evaluate(new Real("5",
-                             128),
-                    0,
-                    128,
-                    new Real());
-    out.println("twoTen=" + twoTen);
+    Real         result = twoTen.evaluate(new Real("5",
+                                                   128),
+                                          0,
+                                          128,
+                                          new Real());
+    out.println("twoTen=" + result);
 
   }
 
