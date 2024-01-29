@@ -702,14 +702,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       if (nextCharacterIs('{'))
       {
-        Node<D, R, F> product = node;
 
-        if (!(product instanceof Product))
+        if (!(node instanceof Product))
         {
           throw new ExpressionCompilerException("{k=a..b} is used to specify the range of the index of a product like so: ∏f(k){k=1…q} so the preceeding node should be a Product but instead got "
                         + node);
         }
-        throw new ExpressionCompilerException("Index for " + node);
+        Product<D, R, F> product = (Product<D, R, F>) node;
+
+        throw new ExpressionCompilerException("Index for " + product + " is ...TODO, read index chars fro position "
+                      + position + " onwards..");
       }
 
       if (!nextCharacterIs(')'))
@@ -773,23 +775,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                      "0");
       }
 
-      if (nextCharacterIs('₍'))
-      {
-        var           lhs   = lastNode;
-        Node<D, R, F> power = determine();
-        if (nextCharacterIs('₎'))
-        {
-          return new RisingFactorial<D, R, F>(this,
-                                              lhs,
-                                              power);
-        }
-        else
-        {
-          throw new RuntimeException(String.format("expected closing subscripted parenthesis ₎ at:  position=%s but got char '%c' instead where "
-                        + "  expression=%s\n", position, character, expression));
-        }
-      }
-      else if (nextCharacterIs('+', '₊'))
+      if (nextCharacterIs('+', '₊'))
       {
         node = new Addition<>(this,
                               node,
@@ -1043,9 +1029,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
       reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
       Variable<D, R, F> variable = new Variable<D, R, F>(this,
                                                          reference);
-      if ( nextCharacterIs('₍'))
+      if (nextCharacterIs('₍'))
       {
-        assert false : "TODO: instantiate RisingFactorial here";
+        Node<D, R, F> power = determine();
+        if (nextCharacterIs('₎'))
+        {
+          return new RisingFactorial<D, R, F>(this,
+                                              variable,
+                                              power);
+        }
       }
 
       return variable;
