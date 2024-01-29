@@ -544,7 +544,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  private Node<D, R, F> lastNode;
+  private Node<D, R, F>                 lastNode;
 
   public String getNextIntermediatevariableFieldName(Class<?> type)
   {
@@ -998,6 +998,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else if (isRisingFactorial)
     {
       Node<D, R, F> arg = determine();
+      assert false : "TODO: need general sub-expression evaluator";
       if (nextCharacterIs('₎'))
       {
         return new RisingFactorial<D, R, F>(this,
@@ -1015,13 +1016,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else
       {
-        throw new RuntimeException(String.format("expected closing parenthesis at: startPos=%s, position=%s,"
-                      + " identifier='%s', isFunction=%s, expression=%s\n",
+        throw new RuntimeException(String.format("expected closing subscripted parenthesis ₎ at: startPos=%s, position=%s,"
+                      + " identifier='%s', isFunction=%s, expression=%s instead got ch=%c which is followed by %s\n",
                                                  startPos,
                                                  position,
                                                  reference,
                                                  isFunction,
-                                                 expression));
+                                                 expression,
+                                                 character,
+                                                 expression.substring(position, expression.length())));
       }
     }
     else if (LiteralConstant.constantSymbols.contains(reference.name))

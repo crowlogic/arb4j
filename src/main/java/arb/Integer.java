@@ -45,6 +45,17 @@ public class Integer implements
     return this;
   }
 
+  public Real risingFactorial(Integer n, int bits, Real result)
+  {
+    assert n.getSignedValue() >= 0 : "power must be non-negative";
+    
+    try ( Real x = new Real();)
+    {
+      arblib.arb_rising_ui(result, x.set(n), bits, bits);
+    }
+    return result;
+  }
+
   public Real factorial(int bits, Real result)
   {
     arblib.arb_fac_ui(result, getUnsignedValue(), bits);
