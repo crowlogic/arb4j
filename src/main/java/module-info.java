@@ -35,6 +35,7 @@ module arb4j
 
   exports arb;
   exports arb.documentation;
+  exports arb.documentation.examples.quantum.mechanics;
   exports arb.expressions;
   exports arb.expressions.decompiler;
   exports arb.expressions.nodes;
