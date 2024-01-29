@@ -49,7 +49,6 @@ import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.expressions.nodes.binary.Addition;
-import arb.expressions.nodes.binary.BinaryOperation;
 import arb.expressions.nodes.binary.Division;
 import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
@@ -545,6 +544,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
+  private Node<D, R, F> lastNode;
+
   public String getNextIntermediatevariableFieldName(Class<?> type)
   {
     String        prefix  = getVariablePrefix(type);
@@ -718,6 +719,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
     }
 
+    lastNode = node;
     return node;
   }
 
@@ -998,9 +1000,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       Node<D, R, F> arg = determine();
       if (nextCharacterIs('₎'))
       {
-        return new BinaryOperation<D, R, F>(this,
-                                            arg,
-                                            "risingFactorial",
+        return new RisingFactorial<D, R, F>(this,
+                                            lastNode,
                                             arg)
         {
 
