@@ -10,6 +10,19 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public static void testRisingFactorial()
+  {
+    RealFunction func   = RealFunction.express("x₍₃₎");
+    RealFunction twoTen = func;
+    twoTen.evaluate(new Real("5",
+                             128),
+                    0,
+                    128,
+                    new Real());
+    out.println("twoTen=" + twoTen);
+
+  }
+
   public void testVariableIndexedByASquareBracketedConstant()
   {
     Real         α       = Real.newVector(3);
@@ -19,7 +32,7 @@ public class ExpressionTest extends
     Real twoPi = f.evaluate(RealConstants.two, 128, new Real());
     assertTrue(RealConstants.twoπ.approximatelyEquals(twoPi, 257));
   }
-  
+
   public void testVariableIndexedByASubscript()
   {
     Real         α       = Real.newVector(3);
