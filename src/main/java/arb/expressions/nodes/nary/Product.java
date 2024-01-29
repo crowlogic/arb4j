@@ -10,13 +10,10 @@ public class Product<D, R, F extends Function<D, R>> extends
                     Node<D, R, F>
 {
 
-  private static final char[] ALPHANUMERIC_SUBSCRIPT_CHARACTERS = new char[]
-  { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₕ', 'ᵢ', 'ⱼ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₒ', 'ₚ', 'ᵣ',
-    'ₛ', 'ₜ', 'ᵤ', 'ᵥ', 'ₓ', '…' };
-
-  private static final char[] SUBSCRIPT_CHARACTERS              = new char[]
-  { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
-    'ₜ' };
+  private static final char[] ALPHANUMERIC_AND_SUBSCRIPT_CHARACTERS = new char[]
+  { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+    'w', 'x', 'y', 'z', '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₕ', 'ᵢ', 'ⱼ', 'ₖ', 'ₗ', 'ₘ',
+    'ₙ', 'ₒ', 'ₚ', 'ᵣ', 'ₛ', 'ₜ', 'ᵤ', 'ᵥ', 'ₓ', '…' };
 
   Node<D, R, F>               index;
 
@@ -30,7 +27,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     if (expression.nextCharacterIs('₌'))
     {
       int startPos = expression.position;
-      while (expression.nextCharacterIs(ALPHANUMERIC_SUBSCRIPT_CHARACTERS));
+      while (expression.nextCharacterIs(ALPHANUMERIC_AND_SUBSCRIPT_CHARACTERS));
       range = expression.expression.substring(startPos, expression.position);
     }
 
