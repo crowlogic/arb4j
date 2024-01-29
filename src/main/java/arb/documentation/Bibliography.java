@@ -8,7 +8,7 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
-  public static Book    stationaryCorrelationFunctions                 = new Book("Correlation Theory of Stationary and Related Random Functions: Volume I: Basic Results",
+  public static Book    stationaryCorrelationFunctions                 = new Book("Correlation Theory of Stationary and Related Random Functions",
                                                                                   "Yaglom, A.M.",
                                                                                   "1987").setSeries("Applied Probability")
                                                                                          .setPublisher("Springer New York")
