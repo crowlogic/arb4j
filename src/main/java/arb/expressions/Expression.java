@@ -763,11 +763,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       if (nextCharacterIs('₍'))
       {
+        var rhs = lastNode;
         Node<D, R, F> arg = determine();
         if (nextCharacterIs('₎'))
         {
           return new RisingFactorial<D, R, F>(this,
-                                              arg,
+                                              rhs,
                                               arg);
         }
         else
