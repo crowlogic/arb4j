@@ -28,6 +28,8 @@ import arb.functions.Function;
 public abstract class Node<D, R, F extends Function<D, R>> implements
                           Typesettable
 {
+ 
+  public Node<D, R, F>       containedBy;
 
   public Expression<D, R, F> expression;
 

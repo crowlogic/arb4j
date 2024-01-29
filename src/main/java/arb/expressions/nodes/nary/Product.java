@@ -46,9 +46,9 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
     super(expression);
     factor = expression.evaluate();
-    
-   
-    System.err.println(this);
+    factor.containedBy = this;
+   // assert false: falling factorial should be the content.. (a_k)_f not a_k
+    System.err.println("factor of " + this + " is " + factor );
   }
 
   @Override

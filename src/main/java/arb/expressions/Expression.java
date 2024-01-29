@@ -700,6 +700,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       node = determine();
 
+      if (nextCharacterIs('{'))
+      {
+        Node<D, R, F> product = node;
+
+        if (!(product instanceof Product))
+        {
+          throw new ExpressionCompilerException("{k=a..b} is used to specify the range of the index of a product like so: ∏f(k){k=1…q} so the preceeding node should be a Product but instead got "
+                        + node);
+        }
+        throw new ExpressionCompilerException("Index for " + node);
+      }
+
       if (!nextCharacterIs(')'))
       {
         throw new ExpressionCompilerException(format("expected closing parenthesis, instead got %c at position %s in "
