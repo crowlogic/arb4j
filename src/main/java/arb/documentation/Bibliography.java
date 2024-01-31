@@ -8,6 +8,12 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book    oneParameterSemigroups             = new Book("One-Parameter Semigroups",
+                                                                      "E.B. Davies",
+                                                                      "1980").setPublisher("Academic Press")
+                                                                             .setAddress("111 Fifth Avenue New York, New York 10003")
+                                                                             .setSeries("L.M.S. Monographs");
+
   public static Book    extremesOfRandomProcesses          = new Book("Extremes and Related Properties of Random Sequences and Processes",
                                                                       "Georg Lindgren, Holger Rootzén, and M. R. Leadbetter",
                                                                       "1983").setSeries("Springer Series in Statistics")
