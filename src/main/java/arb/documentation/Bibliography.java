@@ -8,6 +8,10 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book    stationaryAndRelatedProcesses      = new Book("Stationary and Related Processes: Sample Function Properties and Their Applications",
+                                                                      "Harald Cramér and M.R. Leadbetter",
+                                                                      "1967").setSeries("Wiley Series in Probability and Mathematical Statistics");
+
   public static Book    stochasticQuantumMechanicalMethods = new Book("Stochastic Methods in Quantum Mechanics",
                                                                       "Stanley P. Gudder",
                                                                       "1979").setSeries("North Holland Series in Probability and Applied Mathematics")
