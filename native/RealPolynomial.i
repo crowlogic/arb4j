@@ -245,15 +245,6 @@ import arb.utensils.Utensils;
     }
     return (builder.toString() + (remainder != null ? " with remainder " + remainder : "")).replaceAll("-", "- ");
   }
-    
-  /**
-   * 
-   * @return {@link arblib#arb_poly_is_zero(RealPolynomial)} != 0
-   */
-  public boolean isZero()
-  {
-    return arblib.arb_poly_is_zero(this) != 0;
-  }
   
   /**
    * Performs polynomial division with remainder, computing a quotient and a
