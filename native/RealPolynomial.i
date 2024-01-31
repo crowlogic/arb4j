@@ -551,21 +551,55 @@ import arb.utensils.Utensils;
     return result;
   }
 
+  /**
+   * 
+   * @return true if this{@link #getLength()} is zero
+   */
+  public boolean isEmpty()
+  {
+    return getLength() == 0;
+  }
+
+  /**
+   * 
+   * @return {@link arblib#arb_poly_is_zero(RealPolynomial)} != 0
+   */
+  public boolean isZero()
+  {
+    return arblib.arb_poly_is_zero(this) != 0;
+  }
+
+  /**
+   * Sets this polynomial to 0 length, the empty set
+   * 
+   * @return
+   */
   public RealPolynomial empty()
   {
     setLength(0);
     return this;
   }
-  
+
+  /**
+   * Sets this polynomial to degree 0 (length 1 coeff array consisting of a single
+   * constant) and sets it to zero
+   * 
+   * @return
+   */
   public RealPolynomial zero()
   {
     setLength(1);
-    fitLength(1); 
+    fitLength(1);
     get(0).zero();
     return this;
   }
-  
-  
+
+  /**
+   * TODO: this can be improved to not use the temp var
+   * 
+   * @param c1
+   * @return
+   */
   public RealPolynomial set(int c1)
   {
     try ( Real tmp = new Real();)
