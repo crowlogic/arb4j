@@ -1,180 +1,64 @@
 package arb.expressions.nodes.nary;
 
 import org.objectweb.asm.MethodVisitor;
-import static org.objectweb.asm.Opcodes.*;
-
-import org.objectweb.asm.Label;
 
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
+import arb.functions.real.ProductGenerator;
 
 public class Product<D, R, F extends Function<D, R>> extends
                     Node<D, R, F>
 {
 
-  private static final int THIS_LOCAL_VARIABLE_INDEX           = 0;
-  private static final int DUMMY_VARIABLE_LOCAL_VARIABLE_INDEX = 1;
-  private static final int ORDER_LOCAL_VARIABLE_INDEX          = 2;
-  private static final int BITS_LOCAL_VARIABLE_INDEX           = 3;
-  private static final int RESULT_LOCAL_VARIABLE_INDEX         = 4;
-  private static final int INDEX_LOCAL_VARIABLE_INDEX          = 5;
-
-  Label                    beginLabel                          = new Label();
-  Label                    endLoopIndex                        = new Label();
-  Label                    beginLoopLabel                      = new Label();
-  Label                    endLabel                            = new Label();
-
-  @Override
-  public String toString()
-  {
-    return String.format("Product[factor=%s, k=%s..%s]", factor, startIndex, endIndex);
-  }
-
-  @Override
-  public String typeset()
-  {
-    return String.format("product(%s,%s)", factor, startIndex, endIndex);
-  }
-
-  Node<D, R, F>           factor;
 
   public Product<D, R, F> indexVar;
-
-  public Node<D, R, F>    startIndex;
-
-  public Node<D, R, F>    endIndex;
-
+  public Node<D, R, F> startIndex;
+  public Node<D, R, F> endIndex;
   public Product(Expression<D, R, F> expression)
   {
     super(expression);
-    factor = expression.evaluate();
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-
-    mv.visitCode();
-
-    initializeProductToTheIdentity(mv);
-    loadThis(mv);
-    mv.visitFieldInsn(GETFIELD, expression.className, "startIndex", "I");
-    mv.visitVarInsn(ISTORE, INDEX_LOCAL_VARIABLE_INDEX);
-    mv.visitJumpInsn(GOTO, endLoopIndex);
-    mv.visitLabel(beginLoopLabel);
-    mv.visitFrame(F_APPEND, 1, new Object[]
-    { INTEGER }, 0, null);
-    loadResult(mv);
-
-    getField(loadThis(mv), "factor", "Larb/functions/Function;");
-
-    getField(loadThis(mv), "index", "Larb/Integer;");
-    getLocalVariable(mv, INDEX_LOCAL_VARIABLE_INDEX);
-    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "set", "(I)Larb/Integer;", false);
-
-    getLocalVariable(mv, BITS_LOCAL_VARIABLE_INDEX);
-    getField(loadThis(mv), "value", "Larb/Real;");
-    mv.visitMethodInsn(INVOKEINTERFACE,
-                       "arb/functions/Function",
-                       "evaluate",
-                       "(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;",
-                       true);
-    mv.visitTypeInsn(CHECKCAST, "arb/Real");
-    mv.visitVarInsn(ILOAD, BITS_LOCAL_VARIABLE_INDEX);
-    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "mul", "(Larb/Field;I)Larb/Field;", false);
-    mv.visitInsn(POP);
-    incrementIndexVariable(mv);
-    mv.visitLabel(endLoopIndex);
-    mv.visitFrame(F_SAME, 0, null, 0, null);
-    mv.visitVarInsn(ILOAD, INDEX_LOCAL_VARIABLE_INDEX);
-
-    getField(loadThis(mv), "endIndex", "I");
-    mv.visitFieldInsn(GETFIELD, expression.className, "endIndex", "I");
-    mv.visitJumpInsn(IF_ICMPLE, beginLoopLabel);
-    loadResult(mv);
-    mv.visitInsn(ARETURN);
-    mv.visitLabel(endLabel);
-
-    defineLocalVariables(mv);
-    mv.visitEnd();
+    ProductGenerator generator = new ProductGenerator();
+    generator.generateProductMethod(mv);
+    assert false : "TODO: Auto-generated method stub";
     return mv;
   }
 
   @Override
   public boolean isReusable()
   {
-    return false;
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
+    return isResult;
   }
 
   @Override
   public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
+    return mv;
+  }
+
+  @Override
+  public String typeset()
+  {
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
     return null;
   }
 
   @Override
   public <C> Class<? extends C> type()
   {
-    return factor.type();
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 
-  private void getLocalVariable(MethodVisitor methodVisitor, int localVariableIndex)
-  {
-    methodVisitor.visitVarInsn(ILOAD, localVariableIndex);
-  }
-
-  private void defineLocalVariables(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitLocalVariable("this",
-                                     "Larb/functions/real/Product;",
-                                     null,
-                                     beginLabel,
-                                     endLabel,
-                                     THIS_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("t",
-                                     "Ljava/lang/Void;",
-                                     null,
-                                     beginLabel,
-                                     endLabel,
-                                     DUMMY_VARIABLE_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("order", "I", null, beginLabel, endLabel, ORDER_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("bits", "I", null, beginLabel, endLabel, BITS_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("product",
-                                     "Larb/Real;",
-                                     null,
-                                     beginLabel,
-                                     endLabel,
-                                     RESULT_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("k", "I", null, beginLabel, endLabel, INDEX_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitMaxs(5, 6);
-  }
-
-  private void initializeProductToTheIdentity(MethodVisitor methodVisitor)
-  {
-    loadResult(methodVisitor);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "one", "()Larb/Real;", false);
-    methodVisitor.visitInsn(POP);
-  }
-
-  private void incrementIndexVariable(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitIincInsn(INDEX_LOCAL_VARIABLE_INDEX, 1);
-  }
-
-  private void getField(MethodVisitor methodVisitor, String field, String sig)
-  {
-    methodVisitor.visitFieldInsn(GETFIELD, expression.className, field, sig);
-  }
-
-  private MethodVisitor loadThis(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    return methodVisitor;
-  }
-
-  private void loadResult(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitVarInsn(ALOAD, RESULT_LOCAL_VARIABLE_INDEX);
-  }
 }

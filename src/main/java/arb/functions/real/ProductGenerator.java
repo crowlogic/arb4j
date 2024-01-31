@@ -22,116 +22,98 @@ public class ProductGenerator implements
   Label                       beginLoopLabel                      = new Label();
   Label                       endLabel                            = new Label();
 
-  public byte[] dump(ClassWriter classWriter) throws Exception
+  public void  generateProductMethod(MethodVisitor mv)
   {
-    MethodVisitor mv = classWriter.visitMethod(ACC_PUBLIC,
-                                                          "evaluate",
-                                                          "(Ljava/lang/Void;IILarb/Real;)Larb/Real;",
-                                                          null,
-                                                          null);
-    mv.visitCode();
 
-    initializeProductToTheIdentity(mv);
-    loadThis(mv);
-    mv.visitFieldInsn(GETFIELD, INTERNAL_CLASSNAME, "startIndex", "I");
-    mv.visitVarInsn(ISTORE, INDEX_LOCAL_VARIABLE_INDEX);
-    mv.visitJumpInsn(GOTO, endLoopIndex);
-    mv.visitLabel(beginLoopLabel);
-    mv.visitFrame(Opcodes.F_APPEND, 1, new Object[]
-    { Opcodes.INTEGER }, 0, null);
+
+    initializeProductToIdentity(mv);
+    setupLoop(mv);
+
+    Label loopStart = new Label();
+    Label loopEnd   = new Label();
+
+    mv.visitJumpInsn(GOTO, loopEnd);
+    mv.visitLabel(loopStart);
+
+    multiplyProductWithFactor(mv);
+
+    incrementIndexVariable(mv);
+
+    mv.visitLabel(loopEnd);
+    mv.visitVarInsn(ILOAD, INDEX_LOCAL_VARIABLE_INDEX);
+    loadField(mv, "endIndex", "I");
+    mv.visitJumpInsn(IF_ICMPLE, loopStart);
+
     loadResult(mv);
+    mv.visitInsn(ARETURN);
 
-    getField(loadThis(mv), "factor", "Larb/functions/Function;");
+    defineLocalVariables(mv);
+    mv.visitMaxs(5, 6); // Update stack and local variables size if needed
+    mv.visitEnd();
 
-    getField(loadThis(mv), "index", "Larb/Integer;");
-    getLocalVariable(mv, INDEX_LOCAL_VARIABLE_INDEX);
+  }
+
+  private void initializeProductToIdentity(MethodVisitor mv)
+  {
+    loadResult(mv);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "one", "()Larb/Real;", false);
+    mv.visitInsn(POP);
+  }
+
+  private void setupLoop(MethodVisitor mv)
+  {
+    mv.visitVarInsn(ALOAD, 0);
+    loadField(mv, "startIndex", "I");
+    mv.visitVarInsn(ISTORE, INDEX_LOCAL_VARIABLE_INDEX);
+  }
+
+  private void multiplyProductWithFactor(MethodVisitor mv)
+  {
+    loadField(mv, "factor", "Larb/functions/Function;");
+    loadField(mv, "index", "Larb/Integer;");
+    mv.visitVarInsn(ILOAD, INDEX_LOCAL_VARIABLE_INDEX);
     mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "set", "(I)Larb/Integer;", false);
-
-    getLocalVariable(mv, BITS_LOCAL_VARIABLE_INDEX);
-    getField(loadThis(mv), "value", "Larb/Real;");
+    mv.visitVarInsn(ILOAD, BITS_LOCAL_VARIABLE_INDEX);
+    loadField(mv, "value", "Larb/Real;");
     mv.visitMethodInsn(INVOKEINTERFACE,
-                                  "arb/functions/Function",
-                                  "evaluate",
-                                  "(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;",
-                                  true);
+                       "arb/functions/Function",
+                       "evaluate",
+                       "(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;",
+                       true);
     mv.visitTypeInsn(CHECKCAST, "arb/Real");
     mv.visitVarInsn(ILOAD, BITS_LOCAL_VARIABLE_INDEX);
     mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "mul", "(Larb/Field;I)Larb/Field;", false);
     mv.visitInsn(POP);
-    incrementIndexVariable(mv);
-    mv.visitLabel(endLoopIndex);
-    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-    mv.visitVarInsn(ILOAD, INDEX_LOCAL_VARIABLE_INDEX);
-
-    getField(loadThis(mv), "endIndex", "I");
-    mv.visitFieldInsn(GETFIELD, INTERNAL_CLASSNAME, "endIndex", "I");
-    mv.visitJumpInsn(IF_ICMPLE, beginLoopLabel);
-    loadResult(mv);
-    mv.visitInsn(ARETURN);
-    mv.visitLabel(endLabel);
-
-    defineLocalVariables(mv);
-    mv.visitEnd();
-
-    return classWriter.toByteArray();
   }
 
-  private void getLocalVariable(MethodVisitor methodVisitor, int localVariableIndex)
+  private void incrementIndexVariable(MethodVisitor mv)
   {
-    methodVisitor.visitVarInsn(ILOAD, localVariableIndex);
+    mv.visitIincInsn(INDEX_LOCAL_VARIABLE_INDEX, 1);
   }
 
-  private void defineLocalVariables(MethodVisitor methodVisitor)
+  private void loadField(MethodVisitor mv, String fieldName, String descriptor)
   {
-    methodVisitor.visitLocalVariable("this",
-                                     "Larb/functions/real/Product;",
-                                     null,
-                                     beginLabel,
-                                     endLabel,
-                                     THIS_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("t",
-                                     "Ljava/lang/Void;",
-                                     null,
-                                     beginLabel,
-                                     endLabel,
-                                     DUMMY_VARIABLE_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("order", "I", null, beginLabel, endLabel, ORDER_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("bits", "I", null, beginLabel, endLabel, BITS_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("product",
-                                     "Larb/Real;",
-                                     null,
-                                     beginLabel,
-                                     endLabel,
-                                     RESULT_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitLocalVariable("k", "I", null, beginLabel, endLabel, INDEX_LOCAL_VARIABLE_INDEX);
-    methodVisitor.visitMaxs(5, 6);
+    mv.visitVarInsn(ALOAD, 0);
+    mv.visitFieldInsn(GETFIELD, INTERNAL_CLASSNAME, fieldName, descriptor);
   }
 
-  private void initializeProductToTheIdentity(MethodVisitor methodVisitor)
+  private void loadResult(MethodVisitor mv)
   {
-    loadResult(methodVisitor);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "one", "()Larb/Real;", false);
-    methodVisitor.visitInsn(POP);
+    mv.visitVarInsn(ALOAD, RESULT_LOCAL_VARIABLE_INDEX);
   }
 
-  private void incrementIndexVariable(MethodVisitor methodVisitor)
+  private void defineLocalVariables(MethodVisitor mv)
   {
-    methodVisitor.visitIincInsn(INDEX_LOCAL_VARIABLE_INDEX, 1);
-  }
-
-  private void getField(MethodVisitor methodVisitor, String field, String sig)
-  {
-    methodVisitor.visitFieldInsn(GETFIELD, INTERNAL_CLASSNAME, field, sig);
-  }
-
-  private MethodVisitor loadThis(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    return methodVisitor;
-  }
-
-  private void loadResult(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitVarInsn(ALOAD, RESULT_LOCAL_VARIABLE_INDEX);
+    mv.visitLocalVariable("this",
+                          "Larb/functions/real/Product;",
+                          null,
+                          beginLabel,
+                          endLabel,
+                          THIS_LOCAL_VARIABLE_INDEX);
+    mv.visitLocalVariable("t", "Ljava/lang/Void;", null, beginLabel, endLabel, DUMMY_VARIABLE_LOCAL_VARIABLE_INDEX);
+    mv.visitLocalVariable("order", "I", null, beginLabel, endLabel, ORDER_LOCAL_VARIABLE_INDEX);
+    mv.visitLocalVariable("bits", "I", null, beginLabel, endLabel, BITS_LOCAL_VARIABLE_INDEX);
+    mv.visitLocalVariable("product", "Larb/Real;", null, beginLabel, endLabel, RESULT_LOCAL_VARIABLE_INDEX);
+    mv.visitLocalVariable("k", "I", null, beginLabel, endLabel, INDEX_LOCAL_VARIABLE_INDEX);
   }
 }
