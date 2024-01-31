@@ -43,6 +43,18 @@ public record Article(String author,
          new AtomicReference<>());
   }
 
+  public Article(String author, String title, String year, String journal)
+  {
+    this(author,
+         title,
+         year,
+         journal,
+         new AtomicReference<>(),
+         null,
+         new AtomicReference<>(),
+         new AtomicReference<>());
+  }
+
   @Override
   public Article setPublisher(String publisher)
   {
@@ -62,6 +74,18 @@ public record Article(String author,
   {
     volume.set(string);
     return this;
+  }
+
+  @Override
+  public String getVolume()
+  {
+    return volume.get();    
+  }
+  
+  @Override
+  public String getPages()
+  {
+    return pages();
   }
 
 }
