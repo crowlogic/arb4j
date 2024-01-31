@@ -570,7 +570,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
   public RealPolynomial neg( RealPolynomial result )
   {
     arblib.arb_poly_neg( result, this );
-    return this;
+    return result;
   }
 
   public RealPolynomial zero()

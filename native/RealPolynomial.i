@@ -543,7 +543,7 @@ import arb.utensils.Utensils;
   public RealPolynomial neg( RealPolynomial result )
   {
     arblib.arb_poly_neg( result, this );
-    return this;
+    return result;
   }
 
   public RealPolynomial zero()
