@@ -116,9 +116,9 @@ import arb.utensils.Utensils;
     return g.add(this, bits, res);   
   }
   
-  public RealPolynomial fitLength( )
+  public RealPolynomial fitLength( int n )
   {
-    arblib.arb_poly_fit_length(remainder, getLength());
+    arblib.arb_poly_fit_length(this, n);
     return this;
   }
     
@@ -337,7 +337,12 @@ import arb.utensils.Utensils;
  
   public Real get(int i)
   {
-    return i < getLength() ? getCoeffs().get(i) : null;
+    Real coeff = getCoeffs();
+    if  (coeff == null )
+    {
+      return null;
+    }
+    return i < coeff.size() ? coeff.get(i) : null;
   }
    
   /**
@@ -546,11 +551,20 @@ import arb.utensils.Utensils;
     return result;
   }
 
-  public RealPolynomial zero()
+  public RealPolynomial empty()
   {
     setLength(0);
     return this;
   }
+  
+  public RealPolynomial zero()
+  {
+    setLength(1);
+    fitLength(1); 
+    get(0).zero();
+    return this;
+  }
+  
   
   public RealPolynomial set(int c1)
   {

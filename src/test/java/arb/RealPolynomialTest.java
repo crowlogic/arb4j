@@ -62,7 +62,6 @@ public class RealPolynomialTest extends
   {
     try ( RealPolynomial eye = new RealPolynomial())
     {
-      eye.zero();
       eye.identity();
     }
   }
