@@ -8,6 +8,10 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book    probabilityAndSchrodingerMechanics = new Book("Probability and Schrödingers Mechanics",
+                                                                      "David B. Cook",
+                                                                      "2002").setPublisher("World Scientific");
+
   public static Book    oneParameterSemigroups             = new Book("One-Parameter Semigroups",
                                                                       "E.B. Davies",
                                                                       "1980").setPublisher("Academic Press")
