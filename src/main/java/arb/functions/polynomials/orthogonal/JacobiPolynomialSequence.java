@@ -12,7 +12,6 @@ import arb.Real;
 import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.expressions.Context;
-import arb.expressions.Variables;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -61,13 +60,14 @@ public class JacobiPolynomialSequence implements
 
     try ( Integer index = new Integer())
     {
-      var polys = IntStream.range(0, 10)
+      var polys = IntStream.range(0, 20)
                            .mapToObj(n -> P.evaluate(index.set(n), 128, new RealPolynomial()))
                            .collect(toList());
 
       polys.forEach(p -> out.format("P(%d,x)=%s\n", p.getLength() - 1, p));
 
-       //      ShellFunctions.plot(-1, 1, 1000, polys.toArray(new RealPolynomial[polys.size()]));
+      // ShellFunctions.plot(-1, 1, 1000, polys.toArray(new
+      // RealPolynomial[polys.size()]));
     }
 
   }
@@ -77,10 +77,8 @@ public class JacobiPolynomialSequence implements
 
   public final Real                              β       = new Real().setName("β");
 
-  final Variables                                vars    = new Variables(α,
-                                                                         β);
-
-  final Context                                  context = new Context(vars);
+  final Context                                  context = new Context(α,
+                                                                       β);
 
   final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
 
