@@ -247,7 +247,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.domainClassInternalName   = Type.getInternalName(domainClass);
     this.functionClassInternalName = Type.getInternalName(functionClass);
     this.functionClassDescriptor   = functionClass.descriptorString();
-    this.expression                = Parser.replaceArrow(expression);
+    this.expression                = Parser.replaceArrowsAndEllipses(expression);
     this.context                   = context;
     this.variables                 = context != null ? context.variables : null;
     evaluateMethodSignature        = String.format("(L%s;IIL%s;)L%s;",
@@ -702,29 +702,21 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       if (nextCharacterIs('{'))
       {
+        evaluateProductRangeSpecification(node);
 
-        if (!(node instanceof Product))
+        if (!nextCharacterIs('}'))
         {
-          throw new ExpressionCompilerException("{k=a..b} is used to specify the range of the index of a product like so: ∏f(k){k=1…q} so the preceeding node should be a Product but instead got "
-                        + node);
+          throw new ExpressionCompilerException(format("expected closing } in product index specification Πf(k){k=a..b}, instead got %c at position %s in "
+                        + "expression '%s' ", character, position, expression));
         }
-        Product<D, R, F> product = (Product<D, R, F>) node;
-
-        String indexRangeString = expression.substring(position, expression.indexOf('}', position));
-        throw new ExpressionCompilerException("Index of " + product + " is ...TODO, read index chars fro position "
-                      + position + " to closing }.." + " which is "
-                      + indexRangeString);
+        
+        
       }
 
       if (!nextCharacterIs(')'))
       {
         throw new ExpressionCompilerException(format("expected closing parenthesis, instead got %c at position %s in "
-                      + "expression '%s' but got %c at pos %d",
-                                                     character,
-                                                     startPos,
-                                                     expression,
-                                                     character,
-                                                     position));
+                      + "expression '%s' ", character, position, expression));
       }
 
     }
@@ -741,6 +733,48 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     lastNode = node;
     return node;
+  }
+
+  private void evaluateProductRangeSpecification(Node<D, R, F> node)
+  {
+    if (!(node instanceof Product))
+    {
+      throw new ExpressionCompilerException("{k=a..b} is used to specify the range of the index of a product like so: ∏f(k){k=1…q} so the preceeding node should be a Product but instead got "
+                    + node);
+    }
+    Product<D, R, F> product = (Product<D, R, F>) node;
+    evaluateProductRangeSpecification(product);
+    System.out.println( "hmm " + product);
+  }
+
+  private Product<D, R, F> evaluateProductRangeSpecification(Product<D, R, F> product)
+  {
+    var indexVar = determine();
+    if (!(indexVar instanceof Variable<D, R, F>))
+    {
+      throw new ExpressionCompilerException("Expected the first element of the product range specification {...} in ∏f(k){k=a…b} to be a Variable but got "
+                    + indexVar);
+    }
+    product.indexVar = (Product<D, R, F>) product;
+    if (!nextCharacterIs('='))
+    {
+      throw new ExpressionCompilerException(format("Expected an = character after the index variable specification {k=a..b} in ∏f(k){k=a..b} but instead got '%c' at position %d in %s",
+                                                   character,
+                                                   position,
+                                                   expression));
+    }
+    product.startIndex = determine();
+    if (!nextCharacterIs('…'))
+    {
+      throw new ExpressionCompilerException(format("Expected an … character after the start index a in the index specification {k=a..b} in ∏f(k){k=a..b} but instead got '%c' at position %d in %s",
+                                                   character,
+                                                   position,
+                                                   expression));
+
+    }
+    product.endIndex = determine();
+
+    return product;
   }
 
   public int previousCharacter;

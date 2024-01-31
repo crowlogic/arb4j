@@ -1,10 +1,7 @@
 package arb.expressions.nodes.nary;
 
-import static java.lang.System.out;
-
 import org.objectweb.asm.MethodVisitor;
 
-import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
@@ -16,45 +13,33 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("Product[factor=%s, range=%s]", factor, range);
+    return String.format("Product[factor=%s, k=%s..%s]", factor, startIndex, endIndex);
   }
 
   @Override
   public String typeset()
   {
-    return String.format("product(%s,%s)", factor, range);
+    return String.format("product(%s,%s)", factor, startIndex, endIndex);
   }
 
-  Node<D, R, F> factor;
+  Node<D, R, F>           factor;
 
-  Range         range;
+  public Product<D, R, F> indexVar;
 
-  public class Range
-  {
+  public Node<D, R, F>    startIndex;
 
-    @Override
-    public String toString()
-    {
-      return String.format("Range[%s…%s]", firstIndex.typeset(), lastIndex.typeset());
-    }
-
-    public Node<D, R, F> firstIndex;
-    public Node<D, R, F> lastIndex;
-  }
+  public Node<D, R, F>    endIndex;
 
   public Product(Expression<D, R, F> expression)
   {
     super(expression);
-    factor = expression.evaluate();
-    factor.containedBy = this;
-   // assert false: falling factorial should be the content.. (a_k)_f not a_k
-    System.err.println("factor of " + this + " is " + factor );
+    factor             = expression.evaluate();
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert false : "TODO: Auto-generated method stub: resultType=" + resultType ;
+    assert false : "TODO: generate code to evaluate " + this;
     return null;
   }
 

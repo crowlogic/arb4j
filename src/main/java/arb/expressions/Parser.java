@@ -143,15 +143,15 @@ public class Parser
   /**
    * Replaces the two character ascii arrow version -> with ➔ used to declare the
    * independent variable or declare a multivariate function "(n,x)->n*x" for
-   * instance becomes "(n,x)➔n*x"
+   * instance becomes "(n,x)➔n*x" and replaces ... with …
    * 
    * @param expression
    * 
    * @return expression with 0-9 substituted in place of ₀-₉
    */
-  public static String replaceArrow(String expression)
+  public static String replaceArrowsAndEllipses(String expression)
   {
-    return expression.replace("->", "➔");
+    return expression.replace("->", "➔").replace("...", "…");
   }
 
   static String expressionToUniqueClassname(String expression)
