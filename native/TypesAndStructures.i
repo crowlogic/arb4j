@@ -49,6 +49,15 @@ typedef long int		mp_size_t;
 %}
 
 
+typedef struct
+{
+    fmpz num;
+    fmpz den;
+}
+fmpq;
+
+typedef fmpq fmpq_t[1];
+
 /* Available random number generation algorithms.  */
 typedef enum
 {

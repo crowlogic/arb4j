@@ -494,6 +494,12 @@ public class arblibJNI {
   public final static native void arb_asin(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_acos(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_atanh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
+  public final static native void Rational_num_set(long jarg1, Rational jarg1_, long jarg2);
+  public final static native long Rational_num_get(long jarg1, Rational jarg1_);
+  public final static native void Rational_den_set(long jarg1, Rational jarg1_, long jarg2);
+  public final static native long Rational_den_get(long jarg1, Rational jarg1_);
+  public final static native long new_Rational();
+  public final static native void delete_Rational(long jarg1);
   public final static native long GMPRandomState_algorithmData_get(long jarg1, GMPRandomState jarg1_);
   public final static native long new_GMPRandomState();
   public final static native void delete_GMPRandomState(long jarg1);
