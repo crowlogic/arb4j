@@ -446,6 +446,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
+  public boolean checkForNullsBeforeEvaluating = false;
+
   public ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws ExpressionCompilerException
   {
 
@@ -477,7 +479,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
       generateConditionalInitializater(methodVisitor);
     }
 
-    addChecksForNullVariableReferences(methodVisitor, false, false);
+    if (checkForNullsBeforeEvaluating)
+    {
+      addChecksForNullVariableReferences(methodVisitor, false, false);
+    }
 
     rootNode.generate(classVisitor, methodVisitor, rangeType);
 
