@@ -8,139 +8,151 @@
     <date|>
   </author-affiliation>>>>
 
-  <section|Aronszajn's Theorem><label|aronszajns-theorem><label|aronszajns-theorem>
+  <\theorem>
+    <strong|Aronszajn's Theorem:> <cite-detail|stochasticProcessInferenceTheory|5.1
+    Sets of Admissable Signals or Translates p.252>
 
-  Given a kernel function <math|K<around|(|x,y|)>> defined for all <math|x,y>
-  in a non-empty set <math|X> and satisfying:
+    Given a kernel function <math|K<around|(|x,y|)>> defined
+    <math|\<forall\>><math|x,y\<in\>X> where X is any set
 
-  <\enumerate>
-    <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>>
+    <\enumerate>
+      \;
 
-    <item><with|font-series|bold|Symmetry>:
-    <math|K<around|(|x,y|)>=<wide|K<around|(|y,x|)>|\<bar\>>> for all
-    <math|x,y\<in\>X>. (Here, <math|<wide|z|\<bar\>>> denotes the complex
-    conjugate of <math|z>.) This definition is crucial as it extends the
-    theorem to complex-valued functions, going beyond the common real-valued
-    case.
+      <item><with|font-series|bold|Symmetry>:
+      <math|K<around|(|x,y|)>=<wide|K<around|(|y,x|)>|\<bar\>>> for all
+      <math|x,y\<in\>X>. (Here, <math|<wide|z|\<bar\>>> denotes the complex
+      conjugate of <math|z>.) This definition is crucial as it extends the
+      theorem to complex-valued functions, going beyond the common
+      real-valued case.
 
-    <item><with|font-series|bold|Positive Definiteness>: For any finite set
-    of points <math|<around|{|x<rsub|1>,x<rsub|2>,...,x<rsub|n>|}>\<subset\>X>
-    and any set of complex numbers <math|<around|{|c<rsub|1>,c<rsub|2>,...,c<rsub|n>|}>>,
-    the following inequality holds:
-  </enumerate>
+      <item><with|font-series|bold|Positive Definiteness>: For any finite set
+      of points <math|<around|{|x<rsub|1>,x<rsub|2>,...,x<rsub|n>|}>\<subset\>X>
+      and any set of complex numbers <math|<around|{|c<rsub|1>,c<rsub|2>,...,c<rsub|n>|}>>,
+      the following inequality holds:
+    </enumerate>
 
-  <\equation>
-    <big|sum><rsub|i=1><rsup|n><big|sum><rsub|j=1><rsup|n>c<rsub|i><wide|c<rsub|j>|\<bar\>>K<around|(|x<rsub|i>,x<rsub|j>|)>\<geq\>0
-  </equation>
+    <\equation>
+      <big|sum><rsub|i=1><rsup|n><big|sum><rsub|j=1><rsup|n>c<rsub|i><wide|c<rsub|j>|\<bar\>>K<around|(|x<rsub|i>,x<rsub|j>|)>\<geq\>0
+    </equation>
 
-  Positive definiteness is key for constructing a Hilbert space as it ensures
-  the non-negativity and non-degeneracy of the inner product.
+    Then, a unique Hilbert space of functions
+    <math|f:X\<rightarrow\>\<bbb-C\>> (or <math|\<bbb-R\>> in the real case)
+    exists, characterized by:
 
-  Then, a unique Hilbert space of functions <math|f:X\<rightarrow\>\<bbb-C\>>
-  (or <math|\<bbb-R\>> in the real case) exists, characterized by:
+    <\enumerate>
+      <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>>
 
-  <\enumerate>
-    <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>>
+      <item><with|font-series|bold|Reproducing Kernel Property>:
+      <math|K<around|(|x,\<cdot\>|)>> is in the Hilbert space for every
+      <math|x> in <math|X>, and for every function <math|f> in the Hilbert
+      space and for all <math|x\<in\>X>, the reproducing property holds:
+    </enumerate>
 
-    <item><with|font-series|bold|Reproducing Kernel Property>:
-    <math|K<around|(|x,\<cdot\>|)>> is in the Hilbert space for every
-    <math|x> in <math|X>, and for every function <math|f> in the Hilbert
-    space and for all <math|x\<in\>X>, the reproducing property holds:
-  </enumerate>
+    <\equation>
+      f<around|(|x|)>=\<langle\>f,K(x,\<cdot\><around|)||\<rangle\>>
+    </equation>
 
-  <\equation>
-    f<around|(|x|)>=\<langle\>f,K(x,\<cdot\><around|)||\<rangle\>>
-  </equation>
+    This property enables the evaluation of functions in the Hilbert space at
+    any point in <math|X> through inner products.
 
-  This property enables the evaluation of functions in the Hilbert space at
-  any point in <math|X> through inner products.
+    <\enumerate>
+      <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>><assign|enumi-nr|1>
 
-  <\enumerate>
-    <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>><assign|enumi-nr|1>
+      <item><with|font-series|bold|Spanning Property>: The space is spanned
+      by the functions <math|K<around|(|x,\<cdot\>|)>>, meaning that every
+      function in the Hilbert space can be approximated arbitrarily well by
+      finite linear combinations of these basis functions.
+    </enumerate>
+  </theorem>
 
-    <item><with|font-series|bold|Spanning Property>: The space is spanned by
-    the functions <math|K<around|(|x,\<cdot\>|)>>, meaning that every
-    function in the Hilbert space can be approximated arbitrarily well by
-    finite linear combinations of these basis functions.
-  </enumerate>
+  <\proof>
+    <\enumerate>
+      <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>>
 
-  <section|Enhanced Proof><label|enhanced-proof><label|enhanced-proof>
+      <item><with|font-series|bold|Construct the Hilbert Space <math|H>>:
 
-  <\enumerate>
-    <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>>
+      <\itemize>
+        <item>Define <math|K<rsub|x>=K<around|(|x,\<cdot\>|)>> for each
+        <math|x> <math|\<in\>> <math|X>. Let <math|H<rsub|0>> be the linear
+        span of <math|<around|{|K<rsub|x>:x*\<in\>*X|}>>.
 
-    <item><with|font-series|bold|Construct the Hilbert Space <math|H>>:
+        <item>Define an inner product on <math|H<rsub|0>> by:
+      </itemize>
+    </enumerate>
 
-    <\itemize>
-      <item>Define <math|K<rsub|x>=K<around|(|x,\<cdot\>|)>> for each
-      <math|x> in <math|X>. Let <math|H<rsub|0>> be the linear span of
-      <math|<around|{|K<rsub|x>:x*\<in\>*X|}>>.
+    <\equation>
+      <around*|\<langle\>|<big|sum><rsub|j=1><rsup|n>b<rsub|j>*K<rsub|y<rsub|j>>,<big|sum><rsub|i=1><rsup|m>a<rsub|i>*K<rsub|x<rsub|i>>|\<rangle\>><rsub|H<rsub|0>>=<big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|n>a<rsub|i>*b<rsub|j>*K<around|(|y<rsub|j>,x<rsub|i>|)>
+    </equation>
 
-      <item>Define an inner product on <math|H<rsub|0>> by:
-    </itemize>
-  </enumerate>
+    This inner product is symmetric due to the symmetry of <math|K>, and its
+    non-degeneracy stems from <math|K> being positive definite. - The
+    completion of <math|H<rsub|0>> with respect to this inner product forms
+    <math|H>, consisting of functions like:
 
-  <\equation>
-    <around*|\<langle\>|<big|sum><rsub|j=1><rsup|n>b<rsub|j>*K<rsub|y<rsub|j>>,<big|sum><rsub|i=1><rsup|m>a<rsub|i>*K<rsub|x<rsub|i>>|\<rangle\>><rsub|H<rsub|0>>=<big|sum><rsub|i=1><rsup|m><big|sum><rsub|j=1><rsup|n>a<rsub|i>*b<rsub|j>*K<around|(|y<rsub|j>,x<rsub|i>|)>
-  </equation>
+    <\equation>
+      f<around|(|x|)>=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*K<rsub|x<rsub|i>><around|(|x|)>
+    </equation>
 
-  This inner product is symmetric due to the symmetry of <math|K>, and its
-  non-degeneracy stems from <math|K> being positive definite. - The
-  completion of <math|H<rsub|0>> with respect to this inner product forms
-  <math|H>, consisting of functions like:
+    where the convergence is in the norm of <math|H<rsub|0>>.\ 
 
-  <\equation>
-    f<around|(|x|)>=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*K<rsub|x<rsub|i>><around|(|x|)>
-  </equation>
+    <\enumerate>
+      <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>><assign|enumi-nr|1>
 
-  where the convergence is in the norm of <math|H<rsub|0>>. This completion
-  step ensures <math|H> is a complete space, thus a true Hilbert space.
+      <item><with|font-series|bold|Verification of Reproducing Property>:
 
-  <\enumerate>
-    <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>><assign|enumi-nr|1>
+      <\itemize>
+        <item>\<forall\><math|f> \<in\> <math|H> and
+        \<forall\><math|x\<in\>X>:
+      </itemize>
+    </enumerate>
 
-    <item><with|font-series|bold|Verification of Reproducing Property>:
+    <\equation>
+      <around|\<langle\>|f,K<rsub|x>|\<rangle\>><rsub|H>=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*<around|\<langle\>|K<rsub|x<rsub|i>>,K<rsub|x>|\<rangle\>><rsub|H<rsub|0>>=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*K<around|(|x<rsub|i>,x|)>=f<around|(|x|)>
+    </equation>
 
-    <\itemize>
-      <item>For any <math|f> in <math|H> and any <math|x\<in\>X>:
-    </itemize>
-  </enumerate>
+    This shows how the inner product in <math|H> can be used to evaluate
+    functions at any point in <math|X>.
 
-  <\equation>
-    <around|\<langle\>|f,K<rsub|x>|\<rangle\>><rsub|H>=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*<around|\<langle\>|K<rsub|x<rsub|i>>,K<rsub|x>|\<rangle\>><rsub|H<rsub|0>>=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*K<around|(|x<rsub|i>,x|)>=f<around|(|x|)>
-  </equation>
+    <\enumerate>
+      <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>><assign|enumi-nr|2>
 
-  This shows how the inner product in <math|H> can be used to evaluate
-  functions at any point in <math|X>.
+      <item><with|font-series|bold|Proof of Uniqueness>:
 
-  <\enumerate>
-    <assign|labelenumi|<macro|<number|<enumi-nr>|arabic>.>><assign|enumi-nr|2>
+      <\itemize>
+        <item>Assume <math|G> is another Hilbert space with <math|K> as its
+        reproducing kernel. For every <math|x,y\<in\>X>:
+      </itemize>
+    </enumerate>
 
-    <item><with|font-series|bold|Proof of Uniqueness>:
+    <\equation>
+      <around|\<langle\>|K<rsub|x>,K<rsub|y>|\<rangle\>><rsub|H>=K<around|(|x,y|)>=<around|\<langle\>|K<rsub|x>,K<rsub|y>|\<rangle\>><rsub|G>
+    </equation>
 
-    <\itemize>
-      <item>Assume <math|G> is another Hilbert space with <math|K> as its
-      reproducing kernel. For every <math|x,y\<in\>X>:
-    </itemize>
-  </enumerate>
+    This implies <math|<around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>><rsub|H>=<around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>><rsub|G>>
+    on the span of <math|<around|{|K<rsub|x>:x*\<in\>*X|}>>, leading to
+    <math|H\<subset\>G>. - To show every element of <math|G> is in <math|H>,
+    \<forall\><math|f\<in\>G>, constitute <math|f> by combining
+    <math|f<rsub|H>\<in\>H> and <math|f<rsub|H<rsup|\<bot\>>>\<in\>H<rsup|\<bot\>>>:
 
-  <\equation>
-    <around|\<langle\>|K<rsub|x>,K<rsub|y>|\<rangle\>><rsub|H>=K<around|(|x,y|)>=<around|\<langle\>|K<rsub|x>,K<rsub|y>|\<rangle\>><rsub|G>
-  </equation>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|f<around|(|x|)>>|<cell|=<around|\<langle\>|K<rsub|x>,f|\<rangle\>><rsub|G>>>|<row|<cell|>|<cell|=<around|\<langle\>|K<rsub|x>,f<rsub|H>|\<rangle\>><rsub|G>+<around|\<langle\>|K<rsub|x>,f<rsub|H<rsup|\<bot\>>>|\<rangle\>><rsub|G>>>|<row|<cell|>|<cell|=<around|\<langle\>|K<rsub|x>,f<rsub|H>|\<rangle\>><rsub|G>>>|<row|<cell|>|<cell|=<around|\<langle\>|K<rsub|x>,f<rsub|H>|\<rangle\>><rsub|H>>>|<row|<cell|>|<cell|=f<rsub|H><around|(|x|)>>>>>>
+    </equation>
 
-  This implies <math|<around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>><rsub|H>=<around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>><rsub|G>>
-  on the span of <math|<around|{|K<rsub|x>:x*i*n*X|}>>, leading to
-  <math|H\<subset\>G>. - To show every element of <math|G> is in <math|H>,
-  for any <math|f\<in\>G>, decompose <math|f> into <math|f<rsub|H>\<in\>H>
-  and <math|f<rsub|H<rsup|\<bot\>>>\<in\>H<rsup|\<bot\>>>:
+    The inner product <math|<around|\<langle\>|K<rsub|x>,f<rsub|H<rsup|\<bot\>>>|\<rangle\>><rsub|G>>
+    with <math|f<rsub|H<rsup|\<bot\>>>>\<in\><math|G> is zero since
+    <math|K<rsub|x>>\<in\><math|H>. This demonstrates
+    <math|f<around*|(|x|)>=f<rsub|H><around*|(|x|)>><math|\<forall\>x\<in\>G>,
+    confirming the uniqueness of <math|H>.
+  </proof>
 
-  <\equation>
-    f<around|(|x|)>=<around|\<langle\>|K<rsub|x>,f|\<rangle\>><rsub|G>=<around|\<langle\>|K<rsub|x>,f<rsub|H>|\<rangle\>><rsub|G>+<around|\<langle\>|K<rsub|x>,f<rsub|H<rsup|\<bot\>>>|\<rangle\>><rsub|G>=<around|\<langle\>|K<rsub|x>,f<rsub|H>|\<rangle\>><rsub|G>=<around|\<langle\>|K<rsub|x>,f<rsub|H>|\<rangle\>><rsub|H>=f<rsub|H><around|(|x|)>
-  </equation>
-
-  Since <math|K<rsub|x>> is in <math|H>, the inner product with
-  <math|f<rsub|H<rsup|\<bot\>>>> in <math|G> is zero. This demonstrates
-  <math|f=f<rsub|H>> in <math|G>, confirming the uniqueness of <math|H>.
+  <\bibliography|bib|tm-plain|refs2>
+    <\bib-list|1>
+      <bibitem*|1><label|bib-stochasticProcessInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
+      <newblock><with|font-shape|italic|Stochastic Processes: Inference
+      Theory>. <newblock>Springer Monographs in Mathematics. Springer,
+      2nd<localize| edition>, 2014.<newblock>
+    </bib-list>
+  </bibliography>
 </body>
 
 <\initial>
@@ -155,23 +167,20 @@
 
 <\references>
   <\collection>
-    <associate|aronszajns-theorem|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_7.tm>>
-    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_7.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_7.tm>>
-    <associate|enhanced-proof|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_7.tm>>
+    <associate|auto-1|<tuple|7|2>>
+    <associate|bib-stochasticProcessInferenceTheory|<tuple|1|2>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
+    <\associate|bib>
+      stochasticProcessInferenceTheory
+    </associate>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Aronszajn's
-      Theorem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
-
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Enhanced
-      Proof> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
