@@ -8,6 +8,11 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book    extremesOfRandomProcesses          = new Book("Extremes and Related Properties of Random Sequences and Processes",
+                                                                      "Georg Lindgren, Holger Rootzén, and M. R. Leadbetter",
+                                                                      "1983").setSeries("Springer Series in Statistics")
+                                                                             .setPublisher("Springer-Verlag New York Inc.");
+
   public static Book    functionalAnalysisRieszNagy        = new Book("Frigyes Riesz and Béla Sz.-Nagy",
                                                                       "Functional Analysis",
                                                                       "2012").setPublisher("Dover Publications")
