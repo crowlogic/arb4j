@@ -13,22 +13,24 @@ public class Product implements
   {
     index.close();
     value.close();
+    startIndex.close();
+    endIndex.close();
   }
 
   Function<Integer, Real> factor;
-  int                     startIndex;
-  int                     endIndex;
+  final Integer           startIndex = new Integer();
+  final Integer           endIndex   = new Integer();
 
-  Integer                 index       = new Integer();
-  Real                    value = new Real();
+  final Integer           index      = new Integer();
+  final Real              value      = new Real();
 
   @Override
   public Real evaluate(Void t, int order, int bits, Real product)
   {
     product.one();
-    for (int k = startIndex; k <= endIndex; k++)
+    for (index.set(startIndex); index.compareTo(endIndex) <= 0;)
     {
-      product.mul(factor.evaluate(index.set(k), bits, value), bits);
+      product.mul(factor.evaluate(index.increment(), bits, value), bits);
     }
     return product;
   }

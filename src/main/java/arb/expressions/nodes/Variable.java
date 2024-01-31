@@ -43,7 +43,7 @@ import arb.functions.Function;
  *
  * <p>
  * This class is also responsible for generating bytecode for this variable node
- * through its {@link #generate(MethodVisitor, Class)} method.
+ * through its {@link #generate(ClassVisitor, MethodVisitor, Class)} method.
  * </p>
  * 
  * arb4j is made available under the terms of the Business Source License™ v1.1
@@ -134,7 +134,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
 
     if (isIndependent)

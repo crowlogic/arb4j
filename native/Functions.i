@@ -20,6 +20,7 @@
 }
 
  void arb_fac_ui(arb_t z, ulong n, slong prec);
+void fmpz_add_si(fmpz_t f, const fmpz_t g, slong x);
 
 void arb_hypgeom_rising_ui(arb_t res, const arb_t x, ulong n, slong prec);
 void arb_hypgeom_rising(arb_t res, const arb_t x, const arb_t n, slong prec);

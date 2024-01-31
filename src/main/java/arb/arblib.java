@@ -13,6 +13,10 @@ public class arblib {
     arblibJNI.arb_fac_ui(Real.getCPtr(z), z, n, prec);
   }
 
+  public static void fmpz_add_si(long f, long g, int x) {
+    arblibJNI.fmpz_add_si(f, g, x);
+  }
+
   public static void arb_hypgeom_rising_ui(Real res, Real x, long n, int prec) {
     arblibJNI.arb_hypgeom_rising_ui(Real.getCPtr(res), res, Real.getCPtr(x), x, n, prec);
   }

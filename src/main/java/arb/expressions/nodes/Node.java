@@ -2,6 +2,7 @@ package arb.expressions.nodes;
 
 import java.util.Collections;
 
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 
@@ -41,7 +42,7 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
 
   final Variables namespace;
 
-  public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
+  public abstract MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType);
 
   protected static String indent(int depth)
   {

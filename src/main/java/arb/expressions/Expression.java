@@ -479,7 +479,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     addChecksForNullVariableReferences(methodVisitor, false, false);
 
-    rootNode.generate(methodVisitor, rangeType);
+    rootNode.generate(classVisitor, methodVisitor, rangeType);
 
     methodVisitor.visitInsn(Opcodes.ARETURN);
 

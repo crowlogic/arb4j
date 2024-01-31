@@ -398,4 +398,24 @@ public class Integer implements
     return arblib.fmpz_cmp(swigCPtr, o.swigCPtr);
   }
 
+  /**
+   * 
+   * @return this += 1
+   */
+  public Integer increment()
+  {
+    arblib.fmpz_add_si(swigCPtr, swigCPtr, 1);
+    return this;
+  }
+
+  /**
+   * 
+   * @return this += i
+   */
+  public Integer increment(int i)
+  {
+    arblib.fmpz_add_si(swigCPtr, swigCPtr, i);
+    return this;
+  }
+
 }

@@ -6,6 +6,7 @@ import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
 import static arb.expressions.Compiler.prepareStackForReusingRightSide;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
@@ -105,13 +106,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   
   @Override
-  public final MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  public final MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
 
     generatedType = resultType;
 
-    left.generate(mv, left.type());
-    right.generate(mv, right.type());
+    left.generate(classVisitor, mv, left.type());
+    right.generate(classVisitor, mv, right.type());
     return invokeMethod(mv, operation, resultType);
   }
 
