@@ -107,7 +107,7 @@
     </enumerate>
 
     <\equation>
-      <around|\<langle\>|f,K<rsub|x>|\<rangle\>><rsub|H>=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*<around|\<langle\>|K<rsub|x<rsub|i>>,K<rsub|x>|\<rangle\>><rsub|H<rsub|0>>=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*K<around|(|x<rsub|i>,x|)>=f<around|(|x|)>
+      <tabular|<tformat|<table|<row|<cell|<around|\<langle\>|f,K<rsub|x>|\<rangle\>><rsub|H>>|<cell|=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*<around|\<langle\>|K<rsub|x<rsub|i>>,K<rsub|x>|\<rangle\>><rsub|H<rsub|0>>>>|<row|<cell|>|<cell|=<big|sum><rsub|i=1><rsup|\<infty\>>a<rsub|i>*K<around|(|x<rsub|i>,x|)>>>|<row|<cell|>|<cell|=f<around|(|x|)>>>>>>
     </equation>
 
     This shows how the inner product in <math|H> can be used to evaluate
@@ -125,12 +125,17 @@
     </enumerate>
 
     <\equation>
-      <around|\<langle\>|K<rsub|x>,K<rsub|y>|\<rangle\>><rsub|H>=K<around|(|x,y|)>=<around|\<langle\>|K<rsub|x>,K<rsub|y>|\<rangle\>><rsub|G>
+      <tabular|<tformat|<table|<row|<cell|<around|\<langle\>|K<rsub|x>,K<rsub|y>|\<rangle\>><rsub|H>>|<cell|=K<around|(|x,y|)>>>|<row|<cell|>|<cell|=<around|\<langle\>|K<rsub|x>,K<rsub|y>|\<rangle\>><rsub|G>>>>>>
     </equation>
 
-    This implies <math|<around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>><rsub|H>=<around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>><rsub|G>>
-    on the span of <math|<around|{|K<rsub|x>:x*\<in\>*X|}>>, leading to
-    <math|H\<subset\>G>. - To show every element of <math|G> is in <math|H>,
+    This implies
+
+    <\equation>
+      <around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>><rsub|H>=<around|\<langle\>|\<cdummy\>,\<cdummy\>|\<rangle\>><rsub|G>
+    </equation>
+
+    on the span of <math|<around|{|K<rsub|x>:x*\<in\>*X|}>>, thus
+    <math|H\<subset\>G>. To show every element of <math|G> is in <math|H>,
     \<forall\><math|f\<in\>G>, constitute <math|f> by combining
     <math|f<rsub|H>\<in\>H> and <math|f<rsub|H<rsup|\<bot\>>>\<in\>H<rsup|\<bot\>>>:
 
@@ -138,11 +143,20 @@
       <tabular|<tformat|<table|<row|<cell|f<around|(|x|)>>|<cell|=<around|\<langle\>|K<rsub|x>,f|\<rangle\>><rsub|G>>>|<row|<cell|>|<cell|=<around|\<langle\>|K<rsub|x>,f<rsub|H>|\<rangle\>><rsub|G>+<around|\<langle\>|K<rsub|x>,f<rsub|H<rsup|\<bot\>>>|\<rangle\>><rsub|G>>>|<row|<cell|>|<cell|=<around|\<langle\>|K<rsub|x>,f<rsub|H>|\<rangle\>><rsub|G>>>|<row|<cell|>|<cell|=<around|\<langle\>|K<rsub|x>,f<rsub|H>|\<rangle\>><rsub|H>>>|<row|<cell|>|<cell|=f<rsub|H><around|(|x|)>>>>>>
     </equation>
 
-    The inner product <math|<around|\<langle\>|K<rsub|x>,f<rsub|H<rsup|\<bot\>>>|\<rangle\>><rsub|G>>
-    with <math|f<rsub|H<rsup|\<bot\>>>>\<in\><math|G> is zero since
-    <math|K<rsub|x>>\<in\><math|H>. This demonstrates
-    <math|f<around*|(|x|)>=f<rsub|H><around*|(|x|)>><math|\<forall\>x\<in\>G>,
-    confirming the uniqueness of <math|H>.
+    The inner product <math|K<rsub|x>> with
+    <math|f<rsub|H<rsup|\<bot\>>>>\<in\><math|G> is
+
+    <\equation>
+      <around|\<langle\>|K<rsub|x>,f<rsub|H<rsup|\<bot\>>>|\<rangle\>><rsub|G>=0
+    </equation>
+
+    \ since <math|K<rsub|x>>\<in\><math|H>. This demonstrates
+
+    <\equation>
+      f<around*|(|x|)>=f<rsub|H><around*|(|x|)>\<forall\>x\<in\>X
+    </equation>
+
+    <math|>confirming the uniqueness of <math|H>.
   </proof>
 
   <\bibliography|bib|tm-plain|refs2>
@@ -167,8 +181,8 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|7|2>>
-    <associate|bib-stochasticProcessInferenceTheory|<tuple|1|2>>
+    <associate|auto-1|<tuple|10|3>>
+    <associate|bib-stochasticProcessInferenceTheory|<tuple|1|3>>
   </collection>
 </references>
 
