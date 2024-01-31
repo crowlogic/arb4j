@@ -41,30 +41,32 @@ public class ProductGenerator<D, R, F extends Function<D, R>> implements
     generateCloseMethod();
     generateEvaluateMethod();
     generateSyntheticBridgeMethod(classVisitor);
-    classVisitor.visitEnd();
-
   }
 
   private void generateEvaluateMethod()
   {
-    MethodVisitor methodVisitor = mv;
-    Label         beginLabel    = new Label();
+    MethodVisitor methodVisitor                = mv;
+    Label         loopInitializationLabel      = new Label();
+    Label         loopConditionEvaluationLabel = new Label();
+    Label         beginFactorEvaluationLabel   = new Label();
+    Label         beginLabel                   = new Label();
+    Label         endLoopLabel                 = new Label();
+    Label         endLabel                     = new Label();
+
     methodVisitor.visitLabel(beginLabel);
     methodVisitor.visitVarInsn(ALOAD, RESULT_LOCAL_VARIABLE_INDEX);
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "one", "()Larb/Real;", false);
     methodVisitor.visitInsn(POP);
-    Label label1 = new Label();
-    methodVisitor.visitLabel(label1);
+    methodVisitor.visitLabel(loopInitializationLabel);
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, "arb/functions/real/Product", "index", "Larb/Integer;");
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, "arb/functions/real/Product", "startIndex", "Larb/Integer;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "set", "(Larb/Integer;)Larb/Integer;", false);
     methodVisitor.visitInsn(POP);
-    Label label2 = new Label();
-    methodVisitor.visitJumpInsn(GOTO, label2);
-    Label label3 = new Label();
-    methodVisitor.visitLabel(label3);
+
+    methodVisitor.visitJumpInsn(GOTO, loopConditionEvaluationLabel);
+    methodVisitor.visitLabel(beginFactorEvaluationLabel);
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
     methodVisitor.visitVarInsn(ALOAD, RESULT_LOCAL_VARIABLE_INDEX);
     methodVisitor.visitVarInsn(ALOAD, 0);
@@ -84,20 +86,25 @@ public class ProductGenerator<D, R, F extends Function<D, R>> implements
     methodVisitor.visitVarInsn(ILOAD, 3);
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "mul", "(Larb/Field;I)Larb/Field;", false);
     methodVisitor.visitInsn(POP);
-    methodVisitor.visitLabel(label2);
+    methodVisitor.visitLabel(loopConditionEvaluationLabel);
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, "arb/functions/real/Product", "index", "Larb/Integer;");
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, "arb/functions/real/Product", "endIndex", "Larb/Integer;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "compareTo", "(Larb/Integer;)I", false);
-    methodVisitor.visitJumpInsn(IFLE, label3);
-    Label label4 = new Label();
-    methodVisitor.visitLabel(label4);
+    methodVisitor.visitJumpInsn(IFLE, beginFactorEvaluationLabel);
+
+    methodVisitor.visitLabel(endLoopLabel);
     methodVisitor.visitVarInsn(ALOAD, RESULT_LOCAL_VARIABLE_INDEX);
     methodVisitor.visitInsn(ARETURN);
-    Label endLabel = new Label();
     methodVisitor.visitLabel(endLabel);
+    declareLocalVariables(methodVisitor, beginLabel, endLabel);
+    methodVisitor.visitEnd();
+  }
+
+  private void declareLocalVariables(MethodVisitor methodVisitor, Label beginLabel, Label endLabel)
+  {
     methodVisitor.visitLocalVariable("this", "Larb/functions/real/Product;", null, beginLabel, endLabel, 0);
     methodVisitor.visitLocalVariable("t", "Ljava/lang/Void;", null, beginLabel, endLabel, 1);
     methodVisitor.visitLocalVariable("order", "I", null, beginLabel, endLabel, 2);
@@ -109,7 +116,6 @@ public class ProductGenerator<D, R, F extends Function<D, R>> implements
                                      endLabel,
                                      RESULT_LOCAL_VARIABLE_INDEX);
     methodVisitor.visitMaxs(5, 5);
-    methodVisitor.visitEnd();
   }
 
   private void generateSyntheticBridgeMethod(ClassVisitor ClassVisitor)
@@ -148,31 +154,22 @@ public class ProductGenerator<D, R, F extends Function<D, R>> implements
     methodVisitor.visitCode();
     Label label0 = new Label();
     methodVisitor.visitLabel(label0);
-    methodVisitor.visitLineNumber(14, label0);
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, "arb/functions/real/Product", "index", "Larb/Integer;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "close", "()V", false);
-    Label label1 = new Label();
-    methodVisitor.visitLabel(label1);
-    methodVisitor.visitLineNumber(15, label1);
+
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, "arb/functions/real/Product", "value", "Larb/Real;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "close", "()V", false);
-    Label label2 = new Label();
-    methodVisitor.visitLabel(label2);
-    methodVisitor.visitLineNumber(16, label2);
+
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, "arb/functions/real/Product", "startIndex", "Larb/Integer;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "close", "()V", false);
-    Label label3 = new Label();
-    methodVisitor.visitLabel(label3);
-    methodVisitor.visitLineNumber(17, label3);
+
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, "arb/functions/real/Product", "endIndex", "Larb/Integer;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "close", "()V", false);
-    Label label4 = new Label();
-    methodVisitor.visitLabel(label4);
-    methodVisitor.visitLineNumber(18, label4);
+
     methodVisitor.visitInsn(RETURN);
     Label label5 = new Label();
     methodVisitor.visitLabel(label5);
@@ -188,44 +185,34 @@ public class ProductGenerator<D, R, F extends Function<D, R>> implements
     methodVisitor.visitCode();
     Label label0 = new Label();
     methodVisitor.visitLabel(label0);
-    methodVisitor.visitLineNumber(7, label0);
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
     Label label1 = new Label();
     methodVisitor.visitLabel(label1);
-    methodVisitor.visitLineNumber(21, label1);
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitTypeInsn(NEW, "arb/Integer");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "arb/Integer", "<init>", "()V", false);
     methodVisitor.visitFieldInsn(PUTFIELD, "arb/functions/real/Product", "startIndex", "Larb/Integer;");
-    Label label2 = new Label();
-    methodVisitor.visitLabel(label2);
-    methodVisitor.visitLineNumber(22, label2);
+   
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitTypeInsn(NEW, "arb/Integer");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "arb/Integer", "<init>", "()V", false);
     methodVisitor.visitFieldInsn(PUTFIELD, "arb/functions/real/Product", "endIndex", "Larb/Integer;");
-    Label label3 = new Label();
-    methodVisitor.visitLabel(label3);
-    methodVisitor.visitLineNumber(24, label3);
+
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitTypeInsn(NEW, "arb/Integer");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "arb/Integer", "<init>", "()V", false);
     methodVisitor.visitFieldInsn(PUTFIELD, "arb/functions/real/Product", "index", "Larb/Integer;");
-    Label label4 = new Label();
-    methodVisitor.visitLabel(label4);
-    methodVisitor.visitLineNumber(25, label4);
+
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitTypeInsn(NEW, "arb/Real");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "arb/Real", "<init>", "()V", false);
     methodVisitor.visitFieldInsn(PUTFIELD, "arb/functions/real/Product", "value", "Larb/Real;");
-    Label label5 = new Label();
-    methodVisitor.visitLabel(label5);
-    methodVisitor.visitLineNumber(7, label5);
+
     methodVisitor.visitInsn(RETURN);
     Label label6 = new Label();
     methodVisitor.visitLabel(label6);
