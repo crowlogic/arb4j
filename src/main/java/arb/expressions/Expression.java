@@ -544,8 +544,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  private Node<D, R, F>                 lastNode;
-
   public String getNextIntermediatevariableFieldName(Class<?> type)
   {
     String        prefix  = getVariablePrefix(type);
@@ -603,7 +601,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else
     {
-      assert nestedFunction.name.equals(functionName) : "nestedFunction.func should not be null if its not the recursive function referring to itself";
+      assert nestedFunction.name.equals(functionName) : "nestedFunction.func should not be null if its"
+                    + " not the recursive function referring to itself";
 
     }
 
@@ -706,17 +705,19 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
         if (!nextCharacterIs('}'))
         {
-          throw new ExpressionCompilerException(format("expected closing } in product index specification Πf(k){k=a..b}, instead got %c at position %s in "
-                        + "expression '%s' ", character, position, expression));
+          throw new ExpressionCompilerException(format("expected closing } in product index specification"
+                        + " Πf(k){k=a..b}, instead got %c at position %s in " + "expression '%s' ",
+                                                       character,
+                                                       position,
+                                                       expression));
         }
-        
-        
+
       }
 
       if (!nextCharacterIs(')'))
       {
-        throw new ExpressionCompilerException(format("expected closing parenthesis, instead got %c at position %s in "
-                      + "expression '%s' ", character, position, expression));
+        throw new ExpressionCompilerException(format("expected closing parenthesis, instead "
+                      + "got %c at position %s in " + "expression '%s' ", character, position, expression));
       }
 
     }
@@ -731,7 +732,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
     }
 
-    lastNode = node;
     return node;
   }
 
@@ -739,12 +739,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (!(node instanceof Product))
     {
-      throw new ExpressionCompilerException("{k=a..b} is used to specify the range of the index of a product like so: ∏f(k){k=1…q} so the preceeding node should be a Product but instead got "
-                    + node);
+      throw new ExpressionCompilerException("{k=a..b} is used to specify the range of the index of a product "
+                    + "like so: ∏f(k){k=1…q} so the preceeding node should be a Product but instead got " + node);
     }
     Product<D, R, F> product = (Product<D, R, F>) node;
     evaluateProductRangeSpecification(product);
-    System.out.println( "hmm " + product);
   }
 
   private Product<D, R, F> evaluateProductRangeSpecification(Product<D, R, F> product)
@@ -752,13 +751,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     var indexVar = determine();
     if (!(indexVar instanceof Variable<D, R, F>))
     {
-      throw new ExpressionCompilerException("Expected the first element of the product range specification {...} in ∏f(k){k=a…b} to be a Variable but got "
-                    + indexVar);
+      throw new ExpressionCompilerException("Expected the first element of the product range specification"
+                    + " {...} in ∏f(k){k=a…b} to be a Variable but got " + indexVar);
     }
     product.indexVar = (Product<D, R, F>) product;
     if (!nextCharacterIs('='))
     {
-      throw new ExpressionCompilerException(format("Expected an = character after the index variable specification {k=a..b} in ∏f(k){k=a..b} but instead got '%c' at position %d in %s",
+      throw new ExpressionCompilerException(format("Expected an = character after the index variable specification {k=a..b} "
+                    + "in ∏f(k){k=a..b} but instead got '%c' at position %d in %s",
                                                    character,
                                                    position,
                                                    expression));
@@ -766,7 +766,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     product.startIndex = determine();
     if (!nextCharacterIs('…'))
     {
-      throw new ExpressionCompilerException(format("Expected an … character after the start index a in the index specification {k=a..b} in ∏f(k){k=a..b} but instead got '%c' at position %d in %s",
+      throw new ExpressionCompilerException(format("Expected an … character after the start index a in the "
+                    + "index specification {k=a..b} in ∏f(k){k=a..b} but instead got '%c' at position %d in %s",
                                                    character,
                                                    position,
                                                    expression));
@@ -961,23 +962,20 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       if (nextCharacterIs('*', '×', 'ₓ'))
       {
-        lastNode = node;
-        node     = new Multiplication<>(this,
-                                        node,
-                                        exponentiate());
+        node = new Multiplication<>(this,
+                                    node,
+                                    exponentiate());
 
       }
       else if (nextCharacterIs('/', '÷'))
       {
-        lastNode = node;
-        node     = new Division<>(this,
-                                  node,
-                                  exponentiate());
+        node = new Division<>(this,
+                              node,
+                              exponentiate());
       }
       else if (nextCharacterIs('Π', '∏'))
       {
-        lastNode = node;
-        node     = new Product<>(this);
+        node = new Product<>(this);
       }
       else
       {
@@ -1060,11 +1058,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else
     {
-      // TODO: move RisingFactorial code here
-      var contextVar = context == null ? null : context.variables.get(reference.name);
-      reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
-      Variable<D, R, F> variable = new Variable<D, R, F>(this,
-                                                         reference);
+      Variable<D, R, F> variable = newVariable(reference);
+
       if (nextCharacterIs('₍'))
       {
         Node<D, R, F> power = determine();
@@ -1078,6 +1073,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       return variable;
     }
+  }
+
+  private Variable<D, R, F> newVariable(VariableReference reference)
+  {
+    var contextVar = context == null ? null : context.variables.get(reference.name);
+    reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
+    Variable<D, R, F> variable = new Variable<D, R, F>(this,
+                                                       reference);
+    return variable;
   }
 
   public void setFieldValue(F f, String variableName, Object value, boolean overwrite)
