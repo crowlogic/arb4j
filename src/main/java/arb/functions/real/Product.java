@@ -17,7 +17,7 @@ public class Product implements
     endIndex.close();
   }
 
-  Function<Integer, Real> factor;
+  public Function<Integer, Real> factor;
   final Integer           startIndex = new Integer();
   final Integer           endIndex   = new Integer();
 

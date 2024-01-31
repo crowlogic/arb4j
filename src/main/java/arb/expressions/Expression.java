@@ -699,27 +699,25 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       node = determine();
 
-      if (nextCharacterIs('{'))
-      {
-        evaluateProductRangeSpecification(node);
-
-        if (!nextCharacterIs('}'))
-        {
-          throw new ExpressionCompilerException(format("expected closing } in product index specification"
-                        + " Πf(k){k=a..b}, instead got %c at position %s in " + "expression '%s' ",
-                                                       character,
-                                                       position,
-                                                       expression));
-        }
-
-      }
-
       if (!nextCharacterIs(')'))
       {
         throw new ExpressionCompilerException(format("expected closing parenthesis, instead "
-                      + "got %c at position %s in " + "expression '%s' ", character, position, expression));
+                      + "got %c at position %s in " + "expression '%s' node=%s which is fllowed by %s ",
+                                                     character,
+                                                     position,
+                                                     expression,
+                                                     node,
+                                                     expression.substring(position, expression.length())));
       }
 
+    }
+    else if (nextCharacterIs('Π', '∏'))
+    {
+      var aa = determine();
+      node = new Product<D, R, F>(this,
+                                  aa,
+                                  aa);
+      node = evaluateProductRangeSpecification(node);
     }
     else if (Parser.isNumeric(character))
     {
@@ -735,7 +733,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return node;
   }
 
-  private void evaluateProductRangeSpecification(Node<D, R, F> node)
+  private Product<D, R, F> evaluateProductRangeSpecification(Node<D, R, F> node)
   {
     if (!(node instanceof Product))
     {
@@ -744,17 +742,24 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     Product<D, R, F> product = (Product<D, R, F>) node;
     evaluateProductRangeSpecification(product);
+    return product;
   }
 
   private Product<D, R, F> evaluateProductRangeSpecification(Product<D, R, F> product)
   {
+    String rem = remaining();
+    if (!nextCharacterIs('{'))
+    {
+      throw new ExpressionCompilerException("Expected the opening curly brace { of the product range specification {k=a..b} in Πf(k){k=a..b}"
+                    + " to follow the operand definition, instead got '%c' with remaining " + rem);
+    }
     var indexVar = determine();
     if (!(indexVar instanceof Variable<D, R, F>))
     {
       throw new ExpressionCompilerException("Expected the first element of the product range specification"
-                    + " {...} in ∏f(k){k=a…b} to be a Variable but got " + indexVar);
+                    + " {...} in ∏f(k){k=a…b} to be a Variable but got " + indexVar + " with remaining " + rem);
     }
-    product.indexVar = (Product<D, R, F>) product;
+    product.indexVar = (Variable<D, R, F>) indexVar;
     if (!nextCharacterIs('='))
     {
       throw new ExpressionCompilerException(format("Expected an = character after the index variable specification {k=a..b} "
@@ -774,8 +779,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     }
     product.endIndex = determine();
+    if (!nextCharacterIs('}'))
+    {
+      throw new ExpressionCompilerException("Expected the closing curly brace } of the range specification {k=a..b} in Πf(k){k=a..b}"
+                    + " to follow the ending index parameter b, instead got '%c' with remaining " + rem);
+    }
 
     return product;
+  }
+
+  private String remaining()
+  {
+    return expression.substring(position, expression.length());
   }
 
   public int previousCharacter;
@@ -824,6 +839,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                  node,
                                  exponentiateMultiplyAndDivide());
       }
+
       else
       {
         return node;
@@ -972,10 +988,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
         node = new Division<>(this,
                               node,
                               exponentiate());
-      }
-      else if (nextCharacterIs('Π', '∏'))
-      {
-        node = new Product<>(this);
       }
       else
       {
