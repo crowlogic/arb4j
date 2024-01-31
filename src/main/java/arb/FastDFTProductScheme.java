@@ -39,12 +39,12 @@ public class FastDFTProductScheme {
     return arblibJNI.FastDFTProductScheme_n_get(swigCPtr, this);
   }
 
-  public void setNum(int value) {
-    arblibJNI.FastDFTProductScheme_num_set(swigCPtr, this, value);
+  public void setNumerator(int value) {
+    arblibJNI.FastDFTProductScheme_numerator_set(swigCPtr, this, value);
   }
 
-  public int getNum() {
-    return arblibJNI.FastDFTProductScheme_num_get(swigCPtr, this);
+  public int getNumerator() {
+    return arblibJNI.FastDFTProductScheme_numerator_get(swigCPtr, this);
   }
 
   public void setCyc(FastDFTStepScheme value) {

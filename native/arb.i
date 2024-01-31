@@ -48,6 +48,8 @@ typedef unsigned long* unsigned_long_ptr;
 %rename (numRows) r;
 %rename (numCols) c;
 
+%rename (denominator) den;
+%rename (numerator) num;
 %rename (Rational) fmpq;
 %rename (rowPointers) rows;
 %rename (initialValue) gmp_init;

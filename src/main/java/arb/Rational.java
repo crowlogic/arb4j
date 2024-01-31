@@ -36,20 +36,20 @@ public class Rational {
     }
   }
 
-  public void setNum(SWIGTYPE_p_fmpz value) {
-    arblibJNI.Rational_num_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
+  public void setNumerator(SWIGTYPE_p_fmpz value) {
+    arblibJNI.Rational_numerator_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
   }
 
-  public SWIGTYPE_p_fmpz getNum() {
-    return new SWIGTYPE_p_fmpz(arblibJNI.Rational_num_get(swigCPtr, this), true);
+  public SWIGTYPE_p_fmpz getNumerator() {
+    return new SWIGTYPE_p_fmpz(arblibJNI.Rational_numerator_get(swigCPtr, this), true);
   }
 
-  public void setDen(SWIGTYPE_p_fmpz value) {
-    arblibJNI.Rational_den_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
+  public void setDenominator(SWIGTYPE_p_fmpz value) {
+    arblibJNI.Rational_denominator_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
   }
 
-  public SWIGTYPE_p_fmpz getDen() {
-    return new SWIGTYPE_p_fmpz(arblibJNI.Rational_den_get(swigCPtr, this), true);
+  public SWIGTYPE_p_fmpz getDenominator() {
+    return new SWIGTYPE_p_fmpz(arblibJNI.Rational_denominator_get(swigCPtr, this), true);
   }
 
   public Rational() {

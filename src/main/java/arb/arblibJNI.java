@@ -494,10 +494,10 @@ public class arblibJNI {
   public final static native void arb_asin(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_acos(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
   public final static native void arb_atanh(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3);
-  public final static native void Rational_num_set(long jarg1, Rational jarg1_, long jarg2);
-  public final static native long Rational_num_get(long jarg1, Rational jarg1_);
-  public final static native void Rational_den_set(long jarg1, Rational jarg1_, long jarg2);
-  public final static native long Rational_den_get(long jarg1, Rational jarg1_);
+  public final static native void Rational_numerator_set(long jarg1, Rational jarg1_, long jarg2);
+  public final static native long Rational_numerator_get(long jarg1, Rational jarg1_);
+  public final static native void Rational_denominator_set(long jarg1, Rational jarg1_, long jarg2);
+  public final static native long Rational_denominator_get(long jarg1, Rational jarg1_);
   public final static native long new_Rational();
   public final static native void delete_Rational(long jarg1);
   public final static native long GMPRandomState_algorithmData_get(long jarg1, GMPRandomState jarg1_);
@@ -561,8 +561,8 @@ public class arblibJNI {
   public final static native long DirichletGroup_phi_q_get(long jarg1, DirichletGroup jarg1_);
   public final static native void DirichletGroup_neven_set(long jarg1, DirichletGroup jarg1_, int jarg2);
   public final static native int DirichletGroup_neven_get(long jarg1, DirichletGroup jarg1_);
-  public final static native void DirichletGroup_num_set(long jarg1, DirichletGroup jarg1_, int jarg2);
-  public final static native int DirichletGroup_num_get(long jarg1, DirichletGroup jarg1_);
+  public final static native void DirichletGroup_numerator_set(long jarg1, DirichletGroup jarg1_, int jarg2);
+  public final static native int DirichletGroup_numerator_get(long jarg1, DirichletGroup jarg1_);
   public final static native void DirichletGroup_expo_set(long jarg1, DirichletGroup jarg1_, long jarg2);
   public final static native long DirichletGroup_expo_get(long jarg1, DirichletGroup jarg1_);
   public final static native void DirichletGroup_P_set(long jarg1, DirichletGroup jarg1_, long jarg2, DirichletPrimeGroup jarg2_);
@@ -627,8 +627,8 @@ public class arblibJNI {
   public final static native long FastDFTCyclicScheme_z_get(long jarg1, FastDFTCyclicScheme jarg1_);
   public final static native void FastDFTCyclicScheme_zclear_set(long jarg1, FastDFTCyclicScheme jarg1_, int jarg2);
   public final static native int FastDFTCyclicScheme_zclear_get(long jarg1, FastDFTCyclicScheme jarg1_);
-  public final static native void FastDFTCyclicScheme_num_set(long jarg1, FastDFTCyclicScheme jarg1_, int jarg2);
-  public final static native int FastDFTCyclicScheme_num_get(long jarg1, FastDFTCyclicScheme jarg1_);
+  public final static native void FastDFTCyclicScheme_numerator_set(long jarg1, FastDFTCyclicScheme jarg1_, int jarg2);
+  public final static native int FastDFTCyclicScheme_numerator_get(long jarg1, FastDFTCyclicScheme jarg1_);
   public final static native void FastDFTCyclicScheme_cyc_set(long jarg1, FastDFTCyclicScheme jarg1_, long jarg2, FastDFTStepScheme jarg2_);
   public final static native long FastDFTCyclicScheme_cyc_get(long jarg1, FastDFTCyclicScheme jarg1_);
   public final static native long new_FastDFTCyclicScheme();
@@ -659,8 +659,8 @@ public class arblibJNI {
   public final static native void delete_FastDFTBluesteinScheme(long jarg1);
   public final static native void FastDFTProductScheme_n_set(long jarg1, FastDFTProductScheme jarg1_, int jarg2);
   public final static native int FastDFTProductScheme_n_get(long jarg1, FastDFTProductScheme jarg1_);
-  public final static native void FastDFTProductScheme_num_set(long jarg1, FastDFTProductScheme jarg1_, int jarg2);
-  public final static native int FastDFTProductScheme_num_get(long jarg1, FastDFTProductScheme jarg1_);
+  public final static native void FastDFTProductScheme_numerator_set(long jarg1, FastDFTProductScheme jarg1_, int jarg2);
+  public final static native int FastDFTProductScheme_numerator_get(long jarg1, FastDFTProductScheme jarg1_);
   public final static native void FastDFTProductScheme_cyc_set(long jarg1, FastDFTProductScheme jarg1_, long jarg2, FastDFTStepScheme jarg2_);
   public final static native long FastDFTProductScheme_cyc_get(long jarg1, FastDFTProductScheme jarg1_);
   public final static native long new_FastDFTProductScheme();
