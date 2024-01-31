@@ -8,9 +8,13 @@
     <date|>
   </author-affiliation>>>>
 
+  Aronszajn's theorem basically states that positive definite kernels are
+  reproducing kernels and thereforefore a reproducing kernel Hilbert space
+  for the kernel exists. \ <cite-detail|stochasticProcessInferenceTheory|5.1,
+  p.252> <cite-detail|functionalAnalysisYosida|9 Theorem 1, p.96>
+
   <\theorem>
-    <strong|Aronszajn's Theorem:> <cite-detail|stochasticProcessInferenceTheory|5.1
-    Sets of Admissable Signals or Translates p.252>
+    <strong|Aronszajn's Theorem:>
 
     Given a kernel function <math|K<around|(|x,y|)>> defined
     <math|\<forall\>><math|x,y\<in\>X> where X is any set
@@ -160,11 +164,17 @@
   </proof>
 
   <\bibliography|bib|tm-plain|refs2>
-    <\bib-list|1>
+    <\bib-list|2>
       <bibitem*|1><label|bib-stochasticProcessInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
       <newblock><with|font-shape|italic|Stochastic Processes: Inference
       Theory>. <newblock>Springer Monographs in Mathematics. Springer,
       2nd<localize| edition>, 2014.<newblock>
+
+      <bibitem*|2><label|bib-functionalAnalysisYosida><with|font|roman|\<#5409\>\<#7530\>
+      \<#8015\>\<#4F5C\>>(K\<#14D\>saku Yosida).
+      <newblock><with|font-shape|italic|Functional Analysis>.
+      <newblock>Classics in Mathematics. Springer Berlin Heidelberg, Reprint
+      of the 1980 Edition<localize| edition>, 1995.<newblock>
     </bib-list>
   </bibliography>
 </body>
@@ -182,6 +192,7 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|10|3>>
+    <associate|bib-functionalAnalysisYosida|<tuple|2|3>>
     <associate|bib-stochasticProcessInferenceTheory|<tuple|1|3>>
   </collection>
 </references>
@@ -190,6 +201,8 @@
   <\collection>
     <\associate|bib>
       stochasticProcessInferenceTheory
+
+      functionalAnalysisYosida
     </associate>
     <\associate|toc>
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
