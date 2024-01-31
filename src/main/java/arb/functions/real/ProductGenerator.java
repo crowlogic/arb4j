@@ -1,70 +1,44 @@
-package arb.expressions.nodes.nary;
+package arb.functions.real;
 
-import org.objectweb.asm.MethodVisitor;
-import static org.objectweb.asm.Opcodes.*;
-
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
-import arb.expressions.Expression;
-import arb.expressions.nodes.Node;
-import arb.functions.Function;
-
-public class Product<D, R, F extends Function<D, R>> extends
-                    Node<D, R, F>
+public class ProductGenerator implements
+                              Opcodes
 {
+  private static final int    THIS_LOCAL_VARIABLE_INDEX           = 0;
+  private static final int    DUMMY_VARIABLE_LOCAL_VARIABLE_INDEX = 1;
+  private static final int    ORDER_LOCAL_VARIABLE_INDEX          = 2;
+  private static final int    BITS_LOCAL_VARIABLE_INDEX           = 3;
+  private static final int    RESULT_LOCAL_VARIABLE_INDEX         = 4;
+  private static final int    INDEX_LOCAL_VARIABLE_INDEX          = 5;
 
-  private static final int THIS_LOCAL_VARIABLE_INDEX           = 0;
-  private static final int DUMMY_VARIABLE_LOCAL_VARIABLE_INDEX = 1;
-  private static final int ORDER_LOCAL_VARIABLE_INDEX          = 2;
-  private static final int BITS_LOCAL_VARIABLE_INDEX           = 3;
-  private static final int RESULT_LOCAL_VARIABLE_INDEX         = 4;
-  private static final int INDEX_LOCAL_VARIABLE_INDEX          = 5;
+  private static final String INTERNAL_CLASSNAME                  = "arb/functions/real/Product";
 
-  Label                    beginLabel                          = new Label();
-  Label                    endLoopIndex                        = new Label();
-  Label                    beginLoopLabel                      = new Label();
-  Label                    endLabel                            = new Label();
+  Label                       beginLabel                          = new Label();
+  Label                       endLoopIndex                        = new Label();
+  Label                       beginLoopLabel                      = new Label();
+  Label                       endLabel                            = new Label();
 
-  @Override
-  public String toString()
+  public byte[] dump(ClassWriter classWriter) throws Exception
   {
-    return String.format("Product[factor=%s, k=%s..%s]", factor, startIndex, endIndex);
-  }
-
-  @Override
-  public String typeset()
-  {
-    return String.format("product(%s,%s)", factor, startIndex, endIndex);
-  }
-
-  Node<D, R, F>           factor;
-
-  public Product<D, R, F> indexVar;
-
-  public Node<D, R, F>    startIndex;
-
-  public Node<D, R, F>    endIndex;
-
-  public Product(Expression<D, R, F> expression)
-  {
-    super(expression);
-    factor = expression.evaluate();
-  }
-
-  @Override
-  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
-  {
-
+    MethodVisitor mv = classWriter.visitMethod(ACC_PUBLIC,
+                                                          "evaluate",
+                                                          "(Ljava/lang/Void;IILarb/Real;)Larb/Real;",
+                                                          null,
+                                                          null);
     mv.visitCode();
 
     initializeProductToTheIdentity(mv);
     loadThis(mv);
-    mv.visitFieldInsn(GETFIELD, expression.className, "startIndex", "I");
+    mv.visitFieldInsn(GETFIELD, INTERNAL_CLASSNAME, "startIndex", "I");
     mv.visitVarInsn(ISTORE, INDEX_LOCAL_VARIABLE_INDEX);
     mv.visitJumpInsn(GOTO, endLoopIndex);
     mv.visitLabel(beginLoopLabel);
-    mv.visitFrame(F_APPEND, 1, new Object[]
-    { INTEGER }, 0, null);
+    mv.visitFrame(Opcodes.F_APPEND, 1, new Object[]
+    { Opcodes.INTEGER }, 0, null);
     loadResult(mv);
 
     getField(loadThis(mv), "factor", "Larb/functions/Function;");
@@ -76,21 +50,21 @@ public class Product<D, R, F extends Function<D, R>> extends
     getLocalVariable(mv, BITS_LOCAL_VARIABLE_INDEX);
     getField(loadThis(mv), "value", "Larb/Real;");
     mv.visitMethodInsn(INVOKEINTERFACE,
-                       "arb/functions/Function",
-                       "evaluate",
-                       "(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;",
-                       true);
+                                  "arb/functions/Function",
+                                  "evaluate",
+                                  "(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;",
+                                  true);
     mv.visitTypeInsn(CHECKCAST, "arb/Real");
     mv.visitVarInsn(ILOAD, BITS_LOCAL_VARIABLE_INDEX);
     mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "mul", "(Larb/Field;I)Larb/Field;", false);
     mv.visitInsn(POP);
     incrementIndexVariable(mv);
     mv.visitLabel(endLoopIndex);
-    mv.visitFrame(F_SAME, 0, null, 0, null);
+    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
     mv.visitVarInsn(ILOAD, INDEX_LOCAL_VARIABLE_INDEX);
 
     getField(loadThis(mv), "endIndex", "I");
-    mv.visitFieldInsn(GETFIELD, expression.className, "endIndex", "I");
+    mv.visitFieldInsn(GETFIELD, INTERNAL_CLASSNAME, "endIndex", "I");
     mv.visitJumpInsn(IF_ICMPLE, beginLoopLabel);
     loadResult(mv);
     mv.visitInsn(ARETURN);
@@ -98,25 +72,8 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     defineLocalVariables(mv);
     mv.visitEnd();
-    return mv;
-  }
 
-  @Override
-  public boolean isReusable()
-  {
-    return false;
-  }
-
-  @Override
-  public MethodVisitor prepareStackForReuse(MethodVisitor mv)
-  {
-    return null;
-  }
-
-  @Override
-  public <C> Class<? extends C> type()
-  {
-    return factor.type();
+    return classWriter.toByteArray();
   }
 
   private void getLocalVariable(MethodVisitor methodVisitor, int localVariableIndex)
@@ -164,7 +121,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void getField(MethodVisitor methodVisitor, String field, String sig)
   {
-    methodVisitor.visitFieldInsn(GETFIELD, expression.className, field, sig);
+    methodVisitor.visitFieldInsn(GETFIELD, INTERNAL_CLASSNAME, field, sig);
   }
 
   private MethodVisitor loadThis(MethodVisitor methodVisitor)
