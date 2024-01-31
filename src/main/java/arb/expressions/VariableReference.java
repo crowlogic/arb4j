@@ -76,7 +76,7 @@ public class VariableReference
   {
     if (index != null)
     {
-      return String.format("%s[%s]", name, index);
+      return String.format("%s_{%s}", name, index);
     }
     else
     {

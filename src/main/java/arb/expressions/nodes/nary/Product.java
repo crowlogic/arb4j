@@ -1,10 +1,8 @@
 package arb.expressions.nodes.nary;
 
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
@@ -20,11 +18,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("Product[factor=%s, indexVar=%s, startIndex=%s, endIndex=%s]",
-                         factor,
-                         indexVar,
-                         startIndex,
-                         endIndex);
+    return typeset();
   }
 
   public Variable<D, R, F> indexVar;
@@ -42,11 +36,22 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
+
+    assert startIndex.type().equals(Integer.class) : "startIndex must be an Integer but it is a "
+                  + startIndex.type();
+    assert endIndex.type().equals(Integer.class) : "endIndex must be an Integer but it is a " + endIndex.type();
+    Label loopStartLabel = new Label();
+    Label loopEndLabel   = new Label();
+
+    // TODO; store startIndex in local variable index 1 and store endIndex in local
+    // variable index 2
     startIndex.generate(classVisitor, mv, Integer.class);
     endIndex.generate(classVisitor, mv, Integer.class);
-    Type   intType                = Type.getType(Integer.class);
-    String produceMethodSignature = Type.getMethodDescriptor(Type.getType(Real.class), intType, intType);
-    mv.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(Product.class), "produce", produceMethodSignature, false);
+
+    mv.visitLabel(loopStartLabel);
+    factor.generate(classVisitor, mv, factor.type());
+    mv.visitLabel(loopEndLabel);
+
     assert false : "TODO: generate calculation " + this;
     return mv;
   }
@@ -67,7 +72,11 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return toString();
+    return String.format("\\prod_{%s = %s}^{%s}{%s}",
+                         indexVar.typeset(),
+                         startIndex.typeset(),
+                         endIndex.typeset(),
+                         factor.typeset());
   }
 
   @Override

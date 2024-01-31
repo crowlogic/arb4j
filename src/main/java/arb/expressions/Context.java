@@ -109,6 +109,8 @@ public class Context
 
   public final CompiledExpressionClassLoader classLoader = new CompiledExpressionClassLoader();
 
+  public boolean saveClasses = false;
+
   /**
    * 
    * @param functionName

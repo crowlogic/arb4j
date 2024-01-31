@@ -28,7 +28,7 @@ public class RisingFactorial<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return String.format("(%s)_{%s}", left, right);
+    return String.format("(%s)_{%s}", left.typeset(), right.typeset());
   }
 
 }

@@ -255,6 +255,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                    rangeClassInternalName,
                                                    rangeClassInternalName);
     this.functionName              = functionName;
+    if ( context != null && context.saveClasses )
+    {
+      save = true;
+    }
   }
 
   public MethodVisitor
