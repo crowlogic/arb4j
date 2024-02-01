@@ -16,8 +16,14 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
-public class Product<D, R, F extends Function<D, R>> extends
-                    Node<D, R, F>
+/**
+ * 
+ * @param <D>
+ * @param <R>
+ * @param <F>
+ */
+public class RepeatedMultiplication<D, R, F extends Function<D, R>> extends
+                                   Node<D, R, F>
 {
 
   @Override
@@ -26,17 +32,22 @@ public class Product<D, R, F extends Function<D, R>> extends
     return typeset();
   }
 
-  public Variable<D, R, F> indexVar;
+  public Variable<D, R, F> index;
   public Node<D, R, F>     startIndex;
   public Node<D, R, F>     endIndex;
   private Node<D, R, F>    factor;
 
-  public Product(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> node)
+  public RepeatedMultiplication(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> node)
   {
     super(expression);
     factor = node;
 
   }
+
+  int indexVarIndex      = 0;
+  int startIndexVarIndex = 1;
+  int endIndexVarIndex   = 2;
+  int productVarIndex    = 3;
 
   @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
@@ -44,40 +55,47 @@ public class Product<D, R, F extends Function<D, R>> extends
     Label loopStartLabel = new Label();
     Label loopEndLabel   = new Label();
 
-    // Initialize the product accumulator as an arb.Integer object
-    // Assuming a constructor or a factory method to create an arb.Integer instance
-    // This part of the code needs to instantiate a new arb.Integer and store it in
-    // productVarIndex
-    // For simplicity, let's assume we have a static method to get an arb.Integer
-    // instance for '1'
-    // Example: mv.visitMethodInsn(INVOKESTATIC, "arb/Integer", "one",
-    // "()Larb/Integer;", false);
-    mv.visitVarInsn(ASTORE, productVarIndex);
+    index.generate(classVisitor, mv, Integer.class);
+    mv.visitVarInsn(ASTORE, indexVarIndex);
+
+    startIndex.generate(classVisitor, mv, Integer.class);
+    mv.visitVarInsn(ASTORE, startIndexVarIndex);
+
+    endIndex.generate(classVisitor, mv, Integer.class);
+    mv.visitVarInsn(ASTORE, endIndexVarIndex);
 
     mv.visitLabel(loopStartLabel);
 
-    // Load indexVar and endIndex for comparison
-    // Assuming methods in arb.Integer to compare two instances, e.g., compareTo
+    /**
+     * Load indexVar and endIndex for comparison Assuming methods in arb.Integer to
+     * compare two instances, e.g., compareTo
+     */
     mv.visitVarInsn(ALOAD, indexVarIndex);
-    mv.visitVarInsn(ALOAD, endIndexVarindex);
-    // Assuming compareTo returns an int comparison result
+    mv.visitVarInsn(ALOAD, endIndexVarIndex);
+    /** Assuming compareTo returns an int comparison result */
     mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "compareTo", "(Larb/Integer;)I", false);
     mv.visitJumpInsn(IF_ICMPGE, loopEndLabel);
 
-    // Load the factor and multiply with the current product
-    // Assuming factor.generate(...) correctly handles the multiplication and leaves
-    // the result on the stack
+    /**
+     * Load the factor and multiply with the current product Assuming
+     * factor.generate(...) correctly handles the multiplication and leaves the
+     * result on the stack
+     */
     factor.generate(classVisitor, mv, factor.type());
-    // Assuming a method to multiply two arb.Integer instances
-    // This might involve loading the product accumulator, invoking the
-    // multiplication, and storing the result back
+
+    /**
+     * Assuming a method to multiply two arb.Integer instances This might involve
+     * loading the product accumulator, invoking the multiplication, and storing the
+     * result back
+     */
     mv.visitVarInsn(ALOAD, productVarIndex);
     mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "multiply", "(Larb/Integer;)Larb/Integer;", false);
     mv.visitVarInsn(ASTORE, productVarIndex);
 
-    // Increment the indexVar
-    // Assuming indexVar is already an arb.Integer object and there's a method to
-    // increment
+    /**
+     * Increment the indexVar Assuming indexVar is already an arb.Integer object and
+     * there's a method to increment
+     */
     mv.visitVarInsn(ALOAD, indexVarIndex);
     mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "increment", "()Larb/Integer;", false);
     mv.visitVarInsn(ASTORE, indexVarIndex);
@@ -86,17 +104,14 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     mv.visitLabel(loopEndLabel);
 
-    // At this point, the product is stored in the variable at productVarIndex
-    // Depending on the method's expected behavior, you might need to return or
-    // process the product further
+    /**
+     * At this point, the product is stored in the variable at productVarIndex
+     * Depending on the method's expected behavior, you might need to return or
+     * process the product further
+     */
 
     return mv;
   }
-
-  int indexVarIndex      = 0;
-  int startIndexVarIndex = 1;
-  int endIndexVarindex   = 2;
-  int productVarIndex    = 3;
 
   @Override
   public boolean isReusable()
@@ -115,7 +130,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   public String typeset()
   {
     return String.format("\\prod_{%s = %s}^{%s}{%s}",
-                         indexVar.typeset(),
+                         index.typeset(),
                          startIndex.typeset(),
                          endIndex.typeset(),
                          factor.typeset());

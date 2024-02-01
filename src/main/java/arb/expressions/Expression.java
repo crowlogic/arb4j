@@ -54,7 +54,7 @@ import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
 import arb.expressions.nodes.binary.RisingFactorial;
 import arb.expressions.nodes.binary.Subtraction;
-import arb.expressions.nodes.nary.Product;
+import arb.expressions.nodes.nary.RepeatedMultiplication;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
@@ -99,10 +99,6 @@ import arb.utensils.Utensils;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
-  private static final char[] SUBSCRIPT_CHARACTERS       = new char[]
-  { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
-    'ₜ' };
-
   private static final String IS_INITIALIZED             = "isInitialized";
 
   private static final String nameOfInitializerFunction  = "initialize";
@@ -255,7 +251,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                    rangeClassInternalName,
                                                    rangeClassInternalName);
     this.functionName              = functionName;
-    if ( context != null && context.saveClasses )
+    if (context != null && context.saveClasses)
     {
       save = true;
     }
@@ -433,17 +429,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
       intermediateVariables.forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
                                                                                    intermediateVariable.name,
                                                                                    intermediateVariable.type));
-
       if (recursive)
       {
         generateCloseFieldCall(loadThisOntoStack(methodVisitor), functionName, functionClass);
       }
 
-      methodVisitor.visitInsn(Opcodes.RETURN);
-      methodVisitor.visitMaxs(0, 0);
     }
     finally
     {
+      methodVisitor.visitInsn(Opcodes.RETURN);
+      methodVisitor.visitMaxs(0, 0);
       methodVisitor.visitEnd();
     }
 
@@ -622,7 +617,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (context != null)
     {
-      // referencedVariables.entrySet().forEach(entry ->
       context.variables.map.entrySet().forEach(entry ->
       {
         try
@@ -723,7 +717,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else if (nextCharacterIs('Π', '∏'))
     {
       var aa = determine();
-      node = new Product<D, R, F>(this,
+      node = new RepeatedMultiplication<D, R, F>(this,
                                   aa,
                                   aa);
       node = evaluateProductRangeSpecification(node);
@@ -742,19 +736,19 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return node;
   }
 
-  private Product<D, R, F> evaluateProductRangeSpecification(Node<D, R, F> node)
+  private RepeatedMultiplication<D, R, F> evaluateProductRangeSpecification(Node<D, R, F> node)
   {
-    if (!(node instanceof Product))
+    if (!(node instanceof RepeatedMultiplication))
     {
       throw new ExpressionCompilerException("{k=a..b} is used to specify the range of the index of a product "
                     + "like so: ∏f(k){k=1…q} so the preceeding node should be a Product but instead got " + node);
     }
-    Product<D, R, F> product = (Product<D, R, F>) node;
+    RepeatedMultiplication<D, R, F> product = (RepeatedMultiplication<D, R, F>) node;
     evaluateProductRangeSpecification(product);
     return product;
   }
 
-  private Product<D, R, F> evaluateProductRangeSpecification(Product<D, R, F> product)
+  private RepeatedMultiplication<D, R, F> evaluateProductRangeSpecification(RepeatedMultiplication<D, R, F> product)
   {
     String rem = remaining();
     if (!nextCharacterIs('{'))
@@ -768,7 +762,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       throw new ExpressionCompilerException("Expected the first element of the product range specification"
                     + " {...} in ∏f(k){k=a…b} to be a Variable but got " + indexVar + " with remaining " + rem);
     }
-    product.indexVar = (Variable<D, R, F>) indexVar;
+    product.index = (Variable<D, R, F>) indexVar;
     if (!nextCharacterIs('='))
     {
       throw new ExpressionCompilerException(format("Expected an = character after the index variable specification {k=a..b} "
@@ -887,7 +881,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   private String evaluatePossibleSubscriptedIndex()
   {
     int indexPosition = position;
-    while (nextCharacterIs(SUBSCRIPT_CHARACTERS) && position < expression.length());
+    while (nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS) && position < expression.length());
     return position > indexPosition ? expression.substring(indexPosition, position) : null;
   }
 

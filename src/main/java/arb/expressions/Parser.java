@@ -187,4 +187,8 @@ public class Parser
     return character == '₍' || character == '₎';
   }
 
+  static final char[] SUBSCRIPT_CHARACTERS       = new char[]
+  { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
+    'ₜ' };
+
 }
