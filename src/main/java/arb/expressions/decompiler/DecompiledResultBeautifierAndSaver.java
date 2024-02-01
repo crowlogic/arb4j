@@ -94,6 +94,7 @@ public final class DecompiledResultBeautifierAndSaver implements
   {
     content = content.replaceAll("this\\.", "")
                      .replaceAll("\\(Real\\)", "")
+                     .replaceAll("\\(Rational\\)", "")
                      .replaceAll("\\(Complex\\)", "")
                      .replaceAll("\\(RealPolynomial\\)", "")
                      .replaceAll("\\(ComplexPolynomial\\)", "")
