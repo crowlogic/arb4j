@@ -36,20 +36,51 @@ public class Rational {
     }
   }
 
-  public void setNumerator(SWIGTYPE_p_fmpz value) {
-    arblibJNI.Rational_numerator_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
+  Integer numerator;
+  Integer denominator;
+  
+  public Integer getDenominator()
+  {
+    if (denominator == null)
+    {
+      denominator = new Integer(getLongDenominator(),
+                                false);
+    }
+    else
+    {
+      denominator.swigCPtr = getLongDenominator();
+    }
+    return numerator;
   }
 
-  public SWIGTYPE_p_fmpz getNumerator() {
-    return new SWIGTYPE_p_fmpz(arblibJNI.Rational_numerator_get(swigCPtr, this), true);
+  public Integer getNumerator()
+  {
+    if (numerator == null)
+    {
+      numerator = new Integer(getLongNumerator(),
+                              false);
+    }
+    else
+    {
+      numerator.swigCPtr = getLongNumerator();
+    }
+    return numerator;
   }
 
-  public void setDenominator(SWIGTYPE_p_fmpz value) {
-    arblibJNI.Rational_denominator_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
+  public void setLongNumerator(long value) {
+    arblibJNI.Rational_longNumerator_set(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_fmpz getDenominator() {
-    return new SWIGTYPE_p_fmpz(arblibJNI.Rational_denominator_get(swigCPtr, this), true);
+  public long getLongNumerator() {
+    return arblibJNI.Rational_longNumerator_get(swigCPtr, this);
+  }
+
+  public void setLongDenominator(long value) {
+    arblibJNI.Rational_longDenominator_set(swigCPtr, this, value);
+  }
+
+  public long getLongDenominator() {
+    return arblibJNI.Rational_longDenominator_get(swigCPtr, this);
   }
 
   public Rational() {

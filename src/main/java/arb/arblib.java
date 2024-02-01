@@ -1488,8 +1488,8 @@ public class arblib {
     return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 
-  public static SWIGTYPE_p_void flint_calloc(long numerator, long size) {
-    long cPtr = arblibJNI.flint_calloc(numerator, size);
+  public static SWIGTYPE_p_void flint_calloc(long longNumerator, long size) {
+    long cPtr = arblibJNI.flint_calloc(longNumerator, size);
     return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 

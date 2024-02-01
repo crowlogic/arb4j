@@ -106,12 +106,12 @@ public class DirichletGroup implements AutoCloseable {
     return arblibJNI.DirichletGroup_neven_get(swigCPtr, this);
   }
 
-  public void setNumerator(int value) {
-    arblibJNI.DirichletGroup_numerator_set(swigCPtr, this, value);
+  public void setLongNumerator(int value) {
+    arblibJNI.DirichletGroup_longNumerator_set(swigCPtr, this, value);
   }
 
-  public int getNumerator() {
-    return arblibJNI.DirichletGroup_numerator_get(swigCPtr, this);
+  public int getLongNumerator() {
+    return arblibJNI.DirichletGroup_longNumerator_get(swigCPtr, this);
   }
 
   public void setExpo(long value) {

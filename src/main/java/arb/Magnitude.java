@@ -296,12 +296,12 @@ public class Magnitude implements AutoCloseable,Comparable<Magnitude> {
   }  
   
 
-  public void setExp(SWIGTYPE_p_fmpz value) {
-    arblibJNI.Magnitude_exp_set(swigCPtr, this, SWIGTYPE_p_fmpz.getCPtr(value));
+  public void setExp(long value) {
+    arblibJNI.Magnitude_exp_set(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_fmpz getExp() {
-    return new SWIGTYPE_p_fmpz(arblibJNI.Magnitude_exp_get(swigCPtr, this), true);
+  public long getExp() {
+    return arblibJNI.Magnitude_exp_get(swigCPtr, this);
   }
 
   public void setMan(long value) {

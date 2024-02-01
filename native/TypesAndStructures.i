@@ -51,8 +51,8 @@ typedef long int		mp_size_t;
 
 typedef struct
 {
-    fmpz num;
-    fmpz den;
+    jlong num;
+    jlong den;
 }
 fmpq;
 
@@ -125,7 +125,7 @@ typedef const arf_interval_struct * arf_interval_srcptr;
 
 typedef struct
 {
-    fmpz exp;
+    jlong exp;
     mp_limb_t man;
 }
 mag_struct;
@@ -221,7 +221,7 @@ mantissa_struct;
 
 typedef struct
 {
-    fmpz exp;
+    jlong exp;
     mp_size_t size;
     mantissa_struct d;
 }

@@ -68,16 +68,6 @@ import arb.utensils.Utensils;
 
   public String name;
 
-  public void setExp(Integer value) {
-    getExponent().set(value);
-  }
-  
-  Integer expInt = null;
-  
-  public Integer getExponent() {
-    return ( expInt != null ? expInt : ( expInt = new Integer(swigCPtr,false) ) );
-  }
-  
   public Float setName(String name)
   {
     this.name = name;

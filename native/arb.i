@@ -4,6 +4,7 @@
  
 %include "init.i"
 
+
 %typemap(javabody) SWIGTYPE (CLASS::Real) %{
   protected long swigCPtr;
   protected boolean swigCMemOwn;
@@ -48,8 +49,8 @@ typedef unsigned long* unsigned_long_ptr;
 %rename (numRows) r;
 %rename (numCols) c;
 
-%rename (denominator) den;
-%rename (numerator) num;
+%rename (longDenominator) den;
+%rename (longNumerator) num;
 %rename (Rational) fmpq;
 %rename (rowPointers) rows;
 %rename (initialValue) gmp_init;
@@ -142,7 +143,7 @@ typedef unsigned long* unsigned_long_ptr;
 
 %include "RandomState.i"
 
+%include "Rational.i"
+ 
 %include "TypesAndStructures.i"
 
-
-   
