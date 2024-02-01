@@ -1,4 +1,5 @@
 %typemap(javainterfaces) fmpq "AutoCloseable"
+%typemap(javafinalize) fmpq ""
 
 %typemap(javacode) fmpq %{
   static
