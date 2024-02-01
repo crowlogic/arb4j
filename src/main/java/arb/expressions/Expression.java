@@ -38,7 +38,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
-import org.objectweb.asm.util.CheckClassAdapter;
 
 import arb.ComplexPolynomial;
 import arb.OrderedPair;
@@ -57,7 +56,6 @@ import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.nary.Product;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
-import arb.expressions.trace.FlushingTraceClassVisitor;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
@@ -205,7 +203,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public static boolean                           save                  = Boolean.valueOf(System.getProperty("expressionCompiler.saveClasses",
                                                                                                              "false"));
 
-  boolean                                         checkClass            = false;
 
   public boolean                                  recursive             = false;
 
@@ -269,20 +266,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return Compiler.checkClassCast(methodVisitor, type);
   }
 
-  public boolean traceBytecodeGeneration = false;
-
   public ClassVisitor constructClassVisitor()
   {
     ClassVisitor cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-    if (checkClass)
-    {
-      cw = new CheckClassAdapter(cw);
-    }
-    if (traceBytecodeGeneration)
-    {
-      cw = new FlushingTraceClassVisitor(cw,
-                                         new PrintWriter(System.err));
-    }
     return cw;
   }
 
@@ -391,10 +377,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     finally
     {
       classVisitor.visitEnd();
-      if (classVisitor instanceof FlushingTraceClassVisitor)
-      {
-        classVisitor = ((FlushingTraceClassVisitor) classVisitor).getDelegate();
-      }
     }
 
     instructions = ((ClassWriter) classVisitor).toByteArray();

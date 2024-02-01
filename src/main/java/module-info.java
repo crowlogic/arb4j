@@ -24,14 +24,13 @@ module arb4j
   requires transitive j.text.utils;
   requires transitive jlatexmath;
   requires transitive jdk.unsupported;
-  requires transitive org.objectweb.asm;
-  requires transitive org.objectweb.asm.util;
   requires transitive jdk.jshell;
   requires transitive io.fair_acc.chartfx;
   requires transitive io.fair_acc.dataset;
   requires transitive io.fair_acc.bench;
   requires transitive org.fxyz3d.core;
   requires transitive vineflower;
+  requires transitive org.objectweb.asm;
 
   exports arb;
   exports arb.documentation;
