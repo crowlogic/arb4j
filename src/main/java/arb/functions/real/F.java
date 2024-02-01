@@ -38,19 +38,19 @@ public class F implements
     case 0 -> result.set(c2);
     default ->
     {
-      RealPolynomial var5 = result.identity();
       if (F == null)
       {
         F = new arb.functions.real.F(this);
       }
       // TODO: had to rename ℝ3 and ℝ2 from RealPolynomial types.. check the
       // resultType
-      yield var5.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2)
-                .div(α.get(k)
-                      .risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ2)
-                      .div(β.get(k).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ3), bits, ℝ1),
-                     bits,
-                     result);
+      yield result.identity()
+                  .mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2)
+                  .div(α.get(k)
+                        .risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ2)
+                        .div(β.get(k).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ3), bits, ℝ1),
+                       bits,
+                       result);
     }
     };
   }

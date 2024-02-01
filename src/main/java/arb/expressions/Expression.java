@@ -22,7 +22,6 @@ import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -202,7 +201,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public static boolean                           save                  = Boolean.valueOf(System.getProperty("expressionCompiler.saveClasses",
                                                                                                              "false"));
-
 
   public boolean                                  recursive             = false;
 
@@ -473,7 +471,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareLocalVariables(methodVisitor, startLabel, endLabel);
 
-    methodVisitor.visitMaxs(0,0);
+    methodVisitor.visitMaxs(0, 0);
 
     methodVisitor.visitEnd();
 
@@ -572,11 +570,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (nestedFunction.func != null)
     {
-      var entryStream              = context.variableEntryStream();
-      var nestedFunctionsVariables = entryStream.map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
-                                                                                                entry.getValue()
-                                                                                                     .getClass()))
-                                                .collect(toList());
+      var nestedFunctionsVariables = context.variableEntryStream()
+                                            .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
+                                                                                            entry.getValue()
+                                                                                                 .getClass()))
+                                            .collect(toList());
 
       initializeNestedFunctionVariableReferences(loadThisOntoStack(mv),
                                                  className,
@@ -698,7 +696,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      node = evaluateProduct();
+      return new Product<D, R, F>(this,
+                                  determine()).evaluateRangeSpecification();
     }
     else if (Parser.isNumeric(character))
     {
@@ -714,71 +713,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return node;
   }
 
-  private Product<D, R, F> evaluateProduct()
-  {
-    Node<D, R, F> node = determine();
-    node = new Product<D, R, F>(this,
-                                               node);
-    node = evaluateProductRangeSpecification(node);
-    return (Product<D, R, F>) node;
-  }
-
-  private Product<D, R, F> evaluateProductRangeSpecification(Node<D, R, F> node)
-  {
-    if (!(node instanceof Product))
-    {
-      throw new ExpressionCompilerException("{k=a..b} is used to specify the range of the index of a product "
-                    + "like so: ∏f(k){k=1…q} so the preceeding node should be a Product but instead got " + node);
-    }
-    Product<D, R, F> product = (Product<D, R, F>) node;
-    evaluateProductRangeSpecification(product);
-    return product;
-  }
-
-  private Product<D, R, F> evaluateProductRangeSpecification(Product<D, R, F> product)
-  {
-    String rem = remaining();
-    if (!nextCharacterIs('{'))
-    {
-      throw new ExpressionCompilerException("Expected the opening curly brace { of the product range specification {k=a..b} in Πf(k){k=a..b}"
-                    + " to follow the operand definition, instead got '%c' with remaining " + rem);
-    }
-    var indexVar = determine();
-    if (!(indexVar instanceof Variable<D, R, F>))
-    {
-      throw new ExpressionCompilerException("Expected the first element of the product range specification"
-                    + " {...} in ∏f(k){k=a…b} to be a Variable but got " + indexVar + " with remaining " + rem);
-    }
-    product.index = (Variable<D, R, F>) indexVar;
-    if (!nextCharacterIs('='))
-    {
-      throw new ExpressionCompilerException(format("Expected an = character after the index variable specification {k=a..b} "
-                    + "in ∏f(k){k=a..b} but instead got '%c' at position %d in %s",
-                                                   character,
-                                                   position,
-                                                   expression));
-    }
-    product.startIndex = determine();
-    if (!nextCharacterIs('…'))
-    {
-      throw new ExpressionCompilerException(format("Expected an … character after the start index a in the "
-                    + "index specification {k=a..b} in ∏f(k){k=a..b} but instead got '%c' at position %d in %s",
-                                                   character,
-                                                   position,
-                                                   expression));
-
-    }
-    product.endIndex = determine();
-    if (!nextCharacterIs('}'))
-    {
-      throw new ExpressionCompilerException("Expected the closing curly brace } of the range specification {k=a..b} in Πf(k){k=a..b}"
-                    + " to follow the ending index parameter b, instead got '%c' with remaining " + rem);
-    }
-
-    return product;
-  }
-
-  private String remaining()
+  public String remaining()
   {
     return expression.substring(position, expression.length());
   }
