@@ -9,7 +9,8 @@ public record Article(String author,
                       AtomicReference<String> volume,
                       String pages,
                       AtomicReference<String> publisher,
-                      AtomicReference<String> address)
+                      AtomicReference<String> address,
+                      AtomicReference<String> number)
                      implements
                      Reference
 {
@@ -18,7 +19,7 @@ public record Article(String author,
   public String cite(String by)
   {
     // TODO: do this via reflection like is done for the Bibliography
-    return String.format("@Article{%s,%s%s%s%s%s%s%s%s}",
+    return String.format("@Article{%s,%s%s%s%s%s%s%s%s%s}",
                          by,
                          Reference.conditionallyInsertField("author", author()),
                          Reference.conditionallyInsertField("title", title()),
@@ -27,7 +28,8 @@ public record Article(String author,
                          Reference.conditionallyInsertField("volume", getVolume()),
                          Reference.conditionallyInsertField("pages", getPages()),
                          Reference.conditionallyInsertField("publisher", publisher.get()),
-                         Reference.conditionallyInsertField("address", address.get()))
+                         Reference.conditionallyInsertField("address", address.get()),
+                         Reference.conditionallyInsertField("number", number.get()))
                  .replace(",}", "}");
   }
 
@@ -40,6 +42,7 @@ public record Article(String author,
          new AtomicReference<>(volume),
          pages,
          new AtomicReference<>(),
+         new AtomicReference<>(),
          new AtomicReference<>());
   }
 
@@ -51,6 +54,7 @@ public record Article(String author,
          journal,
          new AtomicReference<>(),
          null,
+         new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>());
   }
@@ -79,13 +83,25 @@ public record Article(String author,
   @Override
   public String getVolume()
   {
-    return volume.get();    
+    return volume.get();
   }
-  
+
   @Override
   public String getPages()
   {
     return pages();
+  }
+
+  @Override
+  public String getNumber()
+  {
+    return number.get();
+  }
+
+  public Article setNumber(String string)
+  {
+    number.set(string);
+    return this;
   }
 
 }

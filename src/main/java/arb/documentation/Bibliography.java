@@ -8,6 +8,13 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article simpleSymbolManipulation              = new Article("ALGLIB, a simple symbol-manipulation package",
+                                                                            "J. M. Shearer and M. A. Wolfe",
+                                                                            "1985",
+                                                                            "Communications of the ACM",
+                                                                            "28",
+                                                                            "820–825").setNumber("8");
+
   public static Article randomProcessWithStationaryIncrements = new Article("A note on processes with random stationary increments",
                                                                             "Haimeng Zhang and Chunfeng Huang",
                                                                             "2014",

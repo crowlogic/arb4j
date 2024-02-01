@@ -30,8 +30,8 @@ public interface Reference
     return null;
   }
 
-  Reference setVolume( String volume );
-  
+  Reference setVolume(String volume);
+
   Reference setPublisher(String string);
 
   Reference setAddress(String address);
@@ -40,4 +40,5 @@ public interface Reference
   {
     return fieldValue == null ? "" : String.format("\n %s = {%s},", fieldName, fieldValue);
   }
+
 }
