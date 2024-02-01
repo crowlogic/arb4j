@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void fmpq_add(Rational res, Rational op1, Rational op2) {
+    arblibJNI.fmpq_add(Rational.getCPtr(res), res, Rational.getCPtr(op1), op1, Rational.getCPtr(op2), op2);
+  }
+
   public static void arb_fac_ui(Real z, long n, int prec) {
     arblibJNI.arb_fac_ui(Real.getCPtr(z), z, n, prec);
   }
@@ -721,6 +725,10 @@ public class arblib {
     return arblibJNI.arb_mat_inv(RealMatrix.getCPtr(X), X, RealMatrix.getCPtr(A), A, prec);
   }
 
+  public static void fmpq_one(Rational res) {
+    arblibJNI.fmpq_one(Rational.getCPtr(res), res);
+  }
+
   public static int getpagesize() {
     return arblibJNI.getpagesize();
   }
@@ -732,35 +740,6 @@ public class arblib {
 
   public static int errorNumber() {
     return arblibJNI.errorNumber();
-  }
-
-  public static int close(int __fd) {
-    return arblibJNI.close(__fd);
-  }
-
-  public static int open(String file, int oflag) {
-    return arblibJNI.open__SWIG_0(file, oflag);
-  }
-
-  public static int creat(String pathname, long mode) {
-    return arblibJNI.creat(pathname, mode);
-  }
-
-  public static int open(String pathname, int flags, long mode) {
-    return arblibJNI.open__SWIG_1(pathname, flags, mode);
-  }
-
-  public static int msync(SWIGTYPE_p_void addr, long length, int flags) {
-    return arblibJNI.msync(SWIGTYPE_p_void.getCPtr(addr), length, flags);
-  }
-
-  public static int munmap(SWIGTYPE_p_void addr, long length) {
-    return arblibJNI.munmap(SWIGTYPE_p_void.getCPtr(addr), length);
-  }
-
-  public static SWIGTYPE_p_void mmap(SWIGTYPE_p_void addr, long len, int prot, int flags, int fd, int offset) {
-    long cPtr = arblibJNI.mmap(SWIGTYPE_p_void.getCPtr(addr), len, prot, flags, fd, offset);
-    return (cPtr == 0) ? null : new SWIGTYPE_p_void(cPtr, false);
   }
 
   public static int mprotect(SWIGTYPE_p_void addr, long len, int prot) {

@@ -5,6 +5,7 @@
 #include <flint/fmpz.h>
 #include <mpfr.h>
 #include <flint/flint.h>
+#include <flint/fmpq.h>
 #include <arf.h>
 #include <arb.h>
 #include <acb.h>

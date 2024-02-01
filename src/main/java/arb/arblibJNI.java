@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpq_add(long jarg1, Rational jarg1_, long jarg2, Rational jarg2_, long jarg3, Rational jarg3_);
   public final static native void arb_fac_ui(long jarg1, Real jarg1_, long jarg2, int jarg3);
   public final static native void fmpz_add_si(long jarg1, long jarg2, int jarg3);
   public final static native void arb_hypgeom_rising_ui(long jarg1, Real jarg1_, long jarg2, Real jarg2_, long jarg3, int jarg4);
@@ -187,16 +188,10 @@ public class arblibJNI {
   public final static native void arb_mat_transpose(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_);
   public final static native void arb_mat_printd(long jarg1, RealMatrix jarg1_, int jarg2);
   public final static native int arb_mat_inv(long jarg1, RealMatrix jarg1_, long jarg2, RealMatrix jarg2_, int jarg3);
+  public final static native void fmpq_one(long jarg1, Rational jarg1_);
   public final static native int getpagesize();
   public final static native long memalign(long jarg1, long jarg2);
   public final static native int errorNumber();
-  public final static native int close(int jarg1);
-  public final static native int open__SWIG_0(String jarg1, int jarg2);
-  public final static native int creat(String jarg1, long jarg2);
-  public final static native int open__SWIG_1(String jarg1, int jarg2, long jarg3);
-  public final static native int msync(long jarg1, long jarg2, int jarg3);
-  public final static native int munmap(long jarg1, long jarg2);
-  public final static native long mmap(long jarg1, long jarg2, int jarg3, int jarg4, int jarg5, int jarg6);
   public final static native int mprotect(long jarg1, long jarg2, int jarg3);
   public final static native long memset(long jarg1, int jarg2, long jarg3);
   public final static native void arb_dot_simple(long jarg1, Real jarg1_, long jarg2, Real jarg2_, int jarg3, long jarg4, Real jarg4_, int jarg5, long jarg6, Real jarg6_, int jarg7, int jarg8, int jarg9);

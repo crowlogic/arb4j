@@ -3,21 +3,10 @@
 
 #include <gmp.h>
 #include <arb_mat.h>
+#include <flint/fmpq.h>
 
-%typemap(jtype) slong* "java.nio.LongBuffer"
-%typemap(jstype) slong* "java.nio.LongBuffer"
-%typemap(javain) slong* "$javainput"
-%typemap(in) long* {
-    if ( $input != 0 )
-    {
-     $1 = (long *)(*jenv)->GetDirectBufferAddress(jenv, $input);    
-     if (!$1) SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Direct buffer is null");
-    }
-    else
-    {
-     $1 = 0;
-    }
-}
+
+void fmpq_add(fmpq_t res, const fmpq_t op1, const fmpq_t op2);
 
  void arb_fac_ui(arb_t z, ulong n, slong prec);
 void fmpz_add_si(fmpz_t f, const fmpz_t g, slong x);
@@ -334,20 +323,15 @@ void arb_mat_mul(arb_mat_t res, const arb_mat_t mat1, const arb_mat_t mat2, slon
 void arb_mat_printd(const arb_mat_t mat, slong digits);
 
 int arb_mat_inv(arb_mat_t X, const arb_mat_t A, slong prec);
-  
+ void fmpq_one(fmpq_t res);
+   
 int getpagesize(void);
 void *memalign(size_t alignment, size_t size);
        
 int errorNumber();
-int close (int __fd);
-int open (const char *file, int oflag, ...);
-int creat(const char *pathname, unsigned int mode);
-int open(const char *pathname, int flags, unsigned int mode);
-int msync(void *addr, size_t length, int flags);
-int munmap(void *addr, size_t length);
-void *mmap (void *addr, size_t len, int prot, int flags, int fd, __off_t offset);		   
 int mprotect (void *addr, size_t len, int prot);
 
+// TODO: use {@link MemorySegment#allocateNative(java.lang.foreign.MemoryLayout, java.lang.foreign.MemorySession)} instead of {@link arblibJNI#memalign(long, long)}
 
 void *memset(void *s, int c, size_t n);
 

@@ -18,7 +18,8 @@
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 %}
-  
+
+
 #define __signed__
 #define slong signed long 
 #define ulong unsigned long 
@@ -107,6 +108,21 @@ typedef unsigned long* unsigned_long_ptr;
 %typemap(javafinalize) mantissa_ptr_struct ""
 %typemap(javafinalize) mantissa_noptr_struct ""
  
+%typemap(jtype) slong* "java.nio.LongBuffer"
+%typemap(jstype) slong* "java.nio.LongBuffer"
+%typemap(javain) slong* "$javainput"
+%typemap(in) long* {
+    if ( $input != 0 )
+    {
+     $1 = (long *)(*jenv)->GetDirectBufferAddress(jenv, $input);    
+     if (!$1) SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Direct buffer is null");
+    }
+    else
+    {
+     $1 = 0;
+    }
+}
+
 %include "Magnitude.i"
 
 %include "Float.i"

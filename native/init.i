@@ -1,5 +1,6 @@
 
 %wrapper %{
+#include <flint/fmpq.h>
 
 extern int errorNumber();
 

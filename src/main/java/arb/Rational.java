@@ -8,7 +8,7 @@
 
 package arb;
 
-public class Rational {
+public class Rational implements AutoCloseable {
   protected long swigCPtr;
   protected boolean swigCMemOwn;
 
@@ -36,36 +36,59 @@ public class Rational {
     }
   }
 
+  static
+  {
+    System.loadLibrary("arblib");
+  }
+  
   Integer numerator;
   Integer denominator;
+
+  public Rational add(Rational that, Rational result)
+  {
+    arblib.fmpq_add(result, this, that);
+    return result;
+  }
+    
+ public Rational one()
+  {
+    arblib.fmpq_one(this);
+    return this;
+  }
   
   public Integer getDenominator()
   {
     if (denominator == null)
     {
-      denominator = new Integer(getLongDenominator(),
+      denominator = new Integer(swigCPtr + Long.BYTES,
                                 false);
     }
     else
     {
-      denominator.swigCPtr = getLongDenominator();
+      denominator.swigCPtr = swigCPtr + Long.BYTES;
     }
-    return numerator;
+    return denominator;
   }
 
   public Integer getNumerator()
   {
     if (numerator == null)
     {
-      numerator = new Integer(getLongNumerator(),
+      numerator = new Integer(swigCPtr,
                               false);
     }
     else
     {
-      numerator.swigCPtr = getLongNumerator();
+      numerator.swigCPtr = swigCPtr;
     }
     return numerator;
   }
+  
+  @Override
+  public void close() 
+  {
+    delete();
+  }  
 
   public void setLongNumerator(long value) {
     arblibJNI.Rational_longNumerator_set(swigCPtr, this, value);
