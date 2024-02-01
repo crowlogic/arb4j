@@ -1161,7 +1161,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ClassVisitor generateDefaultConstructor(ClassVisitor classVisitor)
   {
-
     MethodVisitor mv = classVisitor.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
     mv.visitCode();
 
@@ -1196,7 +1195,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                            null);
     try
     {
-
       methodVisitor.visitCode();
 
       generateContextInitializationCode(methodVisitor);
@@ -1250,7 +1248,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return methodVisitor;
   }
 
-  public String getTypeSignature()
+  public String getFunctionClassTypeSignature()
   {
 
     String          classSignature;

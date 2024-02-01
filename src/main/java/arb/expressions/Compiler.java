@@ -175,7 +175,7 @@ public class Compiler
 
     if (expression.functionClass.equals(Function.class))
     {
-      classSignature = expression.getTypeSignature();
+      classSignature = expression.getFunctionClassTypeSignature();
     }
 
     classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, new String[]
