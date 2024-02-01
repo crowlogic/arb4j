@@ -8,20 +8,6 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
-  public static Article simpleSymbolManipulation              = new Article("ALGLIB, a simple symbol-manipulation package",
-                                                                            "J. M. Shearer and M. A. Wolfe",
-                                                                            "1985",
-                                                                            "Communications of the ACM",
-                                                                            "28",
-                                                                            "820–825").setNumber("8");
-
-  public static Article randomProcessWithStationaryIncrements = new Article("A note on processes with random stationary increments",
-                                                                            "Haimeng Zhang and Chunfeng Huang",
-                                                                            "2014",
-                                                                            "Statistics and Probabiltiy Letters",
-                                                                            "94",
-                                                                            "153-161");
-
   public static Book    extremesOfRandomProcesses             = new Book("Extremes and Related Properties of Random Sequences and Processes",
                                                                          "Georg Lindgren, Holger Rootzén, and M. R. Leadbetter",
                                                                          "1983").setSeries("Springer Series in Statistics")
@@ -68,6 +54,20 @@ public class Bibliography extends
                                                                          "2004").setEdition("3rd")
                                                                                 .setSeries("Pure and Applied Mathematics")
                                                                                 .setVolume("142");
+
+  public static Article randomProcessWithStationaryIncrements = new Article("A note on processes with random stationary increments",
+                                                                            "Haimeng Zhang and Chunfeng Huang",
+                                                                            "2014",
+                                                                            "Statistics and Probabiltiy Letters",
+                                                                            "94",
+                                                                            "153-161");
+
+  public static Article simpleSymbolManipulation              = new Article("ALGLIB, a simple symbol-manipulation package",
+                                                                            "J. M. Shearer and M. A. Wolfe",
+                                                                            "1985",
+                                                                            "Communications of the ACM",
+                                                                            "28",
+                                                                            "820–825").setNumber("8");
 
   public static Book    skewOrthogonalRandomMatrices          = new Book("Saugata Ghosh",
                                                                          "Skew-Orthogonal Polynomials and Random Matrix Theory",
