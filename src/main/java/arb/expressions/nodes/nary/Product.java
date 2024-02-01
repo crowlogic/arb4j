@@ -22,7 +22,7 @@ import arb.functions.Function;
  * @param <R>
  * @param <F>
  */
-public class RepeatedMultiplication<D, R, F extends Function<D, R>> extends
+public class Product<D, R, F extends Function<D, R>> extends
                                    Node<D, R, F>
 {
 
@@ -37,7 +37,7 @@ public class RepeatedMultiplication<D, R, F extends Function<D, R>> extends
   public Node<D, R, F>     endIndex;
   private Node<D, R, F>    factor;
 
-  public RepeatedMultiplication(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> node)
+  public Product(Expression<D, R, F> expression, Node<D, R, F> node)
   {
     super(expression);
     factor = node;

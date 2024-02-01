@@ -54,7 +54,7 @@ import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
 import arb.expressions.nodes.binary.RisingFactorial;
 import arb.expressions.nodes.binary.Subtraction;
-import arb.expressions.nodes.nary.RepeatedMultiplication;
+import arb.expressions.nodes.nary.Product;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.expressions.trace.FlushingTraceClassVisitor;
@@ -716,11 +716,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      var aa = determine();
-      node = new RepeatedMultiplication<D, R, F>(this,
-                                  aa,
-                                  aa);
-      node = evaluateProductRangeSpecification(node);
+      node = evaluateProduct();
     }
     else if (Parser.isNumeric(character))
     {
@@ -736,19 +732,28 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return node;
   }
 
-  private RepeatedMultiplication<D, R, F> evaluateProductRangeSpecification(Node<D, R, F> node)
+  private Product<D, R, F> evaluateProduct()
   {
-    if (!(node instanceof RepeatedMultiplication))
+    Node<D, R, F> node = determine();
+    node = new Product<D, R, F>(this,
+                                               node);
+    node = evaluateProductRangeSpecification(node);
+    return (Product<D, R, F>) node;
+  }
+
+  private Product<D, R, F> evaluateProductRangeSpecification(Node<D, R, F> node)
+  {
+    if (!(node instanceof Product))
     {
       throw new ExpressionCompilerException("{k=a..b} is used to specify the range of the index of a product "
                     + "like so: ∏f(k){k=1…q} so the preceeding node should be a Product but instead got " + node);
     }
-    RepeatedMultiplication<D, R, F> product = (RepeatedMultiplication<D, R, F>) node;
+    Product<D, R, F> product = (Product<D, R, F>) node;
     evaluateProductRangeSpecification(product);
     return product;
   }
 
-  private RepeatedMultiplication<D, R, F> evaluateProductRangeSpecification(RepeatedMultiplication<D, R, F> product)
+  private Product<D, R, F> evaluateProductRangeSpecification(Product<D, R, F> product)
   {
     String rem = remaining();
     if (!nextCharacterIs('{'))
