@@ -36,6 +36,7 @@ public class HypergeometricFunctionSequence implements
       for (int n = 0; n < 5; n++)
       {
         RealPolynomial fn = F.F.evaluate(index.set(n), 0, 128, new RealPolynomial());
+        
         out.format("F(%d,x)=%s\n", n, fn);
       }
     }

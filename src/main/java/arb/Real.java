@@ -176,6 +176,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   static { System.loadLibrary( "arblib" ); }
 
+  public Real get(Integer k)
+  {
+    return get(k.getSignedValue());
+  }
+  
   public RealPolynomial mul(RealPolynomial a, int bits, RealPolynomial res)
   {
     return a.mul(this, bits, res);
@@ -2022,6 +2027,13 @@ public static String removeTrailingZeros(String decimal)
 
   public Real() {
     this(arblibJNI.new_Real(), true);
+  }
+
+  public RealPolynomial risingFactorial(Integer sub, int bits, RealPolynomial result)
+  {
+   result.zero();
+   risingFactorial(sub, bits, result.get(0));
+   return result;
   }
 
 }
