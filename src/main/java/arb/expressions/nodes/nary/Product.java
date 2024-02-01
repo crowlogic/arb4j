@@ -1,5 +1,12 @@
 package arb.expressions.nodes.nary;
 
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.IF_ICMPGE;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.IRETURN;
+import static org.objectweb.asm.Opcodes.ISTORE;
+
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -54,6 +61,77 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     assert false : "TODO: generate calculation " + this;
     return mv;
+  }
+
+  int indexVarIndex      = 0;
+  int startIndexVarIndex = 1;
+  int endIndexVarindex   = 2;
+  int productVarIndex    = 3;
+
+  public void generateLoopClass(ClassVisitor cv, MethodVisitor mv)
+  {
+    Label loopStart = new Label();
+    Label loopEnd   = new Label();
+
+    instantiateNewIndexVariable(mv);
+    loadStartIndex(mv);
+    callIntegerSetMethod(mv);
+
+    mv.visitVarInsn(ISTORE, productVarIndex);
+
+    mv.visitLabel(loopStart);
+
+    mv.visitVarInsn(ALOAD, indexVarIndex);
+    mv.visitVarInsn(ALOAD, endIndexVarindex);
+    mv.visitJumpInsn(IF_ICMPGE, loopEnd);
+
+    factor.generate(cv, mv, factor.type());
+    multiplyAccumulator(cv, mv);
+
+    mv.visitLabel(loopEnd);
+
+    mv.visitVarInsn(ALOAD, productVarIndex);
+    callIntegerIncrementMethod(cv, mv);
+
+    mv.visitJumpInsn(GOTO, loopStart);
+
+    mv.visitLabel(loopEnd);
+    mv.visitVarInsn(ILOAD, productVarIndex);
+    mv.visitInsn(IRETURN);
+
+    mv.visitMaxs(-1, -1);
+    mv.visitEnd();
+
+  }
+
+  private void callIntegerIncrementMethod(ClassVisitor cv, MethodVisitor mv)
+  {
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
+  }
+
+  private void multiplyAccumulator(ClassVisitor cv, MethodVisitor mv)
+  {
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
+  }
+
+  private void callIntegerSetMethod(MethodVisitor mv)
+  {
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
+  }
+
+  private void loadStartIndex(MethodVisitor mv)
+  {
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
+  }
+
+  private void instantiateNewIndexVariable(MethodVisitor mv)
+  {
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
   }
 
   @Override
