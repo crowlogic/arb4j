@@ -473,7 +473,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareLocalVariables(methodVisitor, startLabel, endLabel);
 
-    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitMaxs(0,0);
 
     methodVisitor.visitEnd();
 

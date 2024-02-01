@@ -68,8 +68,8 @@ public class Product<D, R, F extends Function<D, R>> extends
      * let's assume 'index' is a field of type YourMutableIntegerClass and we're
      * comparing it to 'endIndex'
      */
-    String owner        = expression.className;
-    String integerClass = Type.getInternalName(Integer.class);
+    String owner        = Type.getInternalName(expression.functionClass);
+    String integerClass = Integer.class.descriptorString();
     getField(mv, owner, "index", integerClass); // Load 'index'
     getField(mv, owner, "endIndex", integerClass); // Load 'endIndex'
     mv.visitMethodInsn(INVOKEVIRTUAL, integerClass, "compareTo", "(LYourMutableIntegerClass;)I", false);
@@ -91,7 +91,6 @@ public class Product<D, R, F extends Function<D, R>> extends
     /** Jump back to the start of the loop */
     mv.visitJumpInsn(GOTO, loopStart);
     mv.visitLabel(afterLoop);
-
     return mv;
   }
 
