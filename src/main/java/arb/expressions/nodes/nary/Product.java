@@ -1,15 +1,17 @@
 package arb.expressions.nodes.nary;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ASTORE;
+import static org.objectweb.asm.Opcodes.GETFIELD;
 import static org.objectweb.asm.Opcodes.GOTO;
-import static org.objectweb.asm.Opcodes.IF_ICMPGE;
+import static org.objectweb.asm.Opcodes.IFGE;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
+import arb.Integer;
 import arb.Real;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -23,7 +25,7 @@ import arb.functions.Function;
  * @param <F>
  */
 public class Product<D, R, F extends Function<D, R>> extends
-                                   Node<D, R, F>
+                    Node<D, R, F>
 {
 
   @Override
@@ -50,67 +52,59 @@ public class Product<D, R, F extends Function<D, R>> extends
   int productVarIndex    = 3;
 
   @Override
-  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor generate(ClassVisitor classWriter, MethodVisitor mv, Class<?> resultType)
   {
-    Label loopStartLabel = new Label();
-    Label loopEndLabel   = new Label();
 
-    index.generate(classVisitor, mv, Integer.class);
-    mv.visitVarInsn(ASTORE, indexVarIndex);
+    loadResult(mv);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "one", "()Larb/Real;", false);
 
-    startIndex.generate(classVisitor, mv, Integer.class);
-    mv.visitVarInsn(ASTORE, startIndexVarIndex);
-
-    endIndex.generate(classVisitor, mv, Integer.class);
-    mv.visitVarInsn(ASTORE, endIndexVarIndex);
-
-    mv.visitLabel(loopStartLabel);
+    /** Define the start of the loop */
+    Label loopStart = new Label();
+    Label afterLoop = new Label();
+    mv.visitLabel(loopStart);
 
     /**
-     * Load indexVar and endIndex for comparison Assuming methods in arb.Integer to
-     * compare two instances, e.g., compareTo
+     * Assuming 'index' and 'endIndex' comparison logic here For demonstration,
+     * let's assume 'index' is a field of type YourMutableIntegerClass and we're
+     * comparing it to 'endIndex'
      */
-    mv.visitVarInsn(ALOAD, indexVarIndex);
-    mv.visitVarInsn(ALOAD, endIndexVarIndex);
-    /** Assuming compareTo returns an int comparison result */
-    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "compareTo", "(Larb/Integer;)I", false);
-    mv.visitJumpInsn(IF_ICMPGE, loopEndLabel);
+    String owner        = expression.className;
+    String integerClass = Type.getInternalName(Integer.class);
+    getField(mv, owner, "index", integerClass); // Load 'index'
+    getField(mv, owner, "endIndex", integerClass); // Load 'endIndex'
+    mv.visitMethodInsn(INVOKEVIRTUAL, integerClass, "compareTo", "(LYourMutableIntegerClass;)I", false);
+    mv.visitJumpInsn(IFGE, afterLoop); // If 'index' >= 'endIndex', jump to the end of the loop
 
     /**
-     * Load the factor and multiply with the current product Assuming
-     * factor.generate(...) correctly handles the multiplication and leaves the
-     * result on the stack
+     * Apply the 'factor' function to the Real instance, using the current 'index'
+     * This assumes 'factor' is a method in 'YourClass' that operates on 'Real'
      */
-    factor.generate(classVisitor, mv, factor.type());
+    mv.visitVarInsn(ALOAD, 0); // Load 'this'
+    loadResult(mv);
+    getField(mv, owner, "index", integerClass); // Load 'index'
+    mv.visitMethodInsn(INVOKEVIRTUAL, owner, "factor", "(Larb/Real;LYourMutableIntegerClass;)Larb/Real;", false);
 
-    /**
-     * Assuming a method to multiply two arb.Integer instances This might involve
-     * loading the product accumulator, invoking the multiplication, and storing the
-     * result back
-     */
-    mv.visitVarInsn(ALOAD, productVarIndex);
-    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "multiply", "(Larb/Integer;)Larb/Integer;", false);
-    mv.visitVarInsn(ASTORE, productVarIndex);
+    /** Increment 'index' */
+    getField(mv, owner, "index", integerClass); // Load 'index'
+    mv.visitMethodInsn(INVOKEVIRTUAL, integerClass, "increment", "()V", false);
 
-    /**
-     * Increment the indexVar Assuming indexVar is already an arb.Integer object and
-     * there's a method to increment
-     */
-    mv.visitVarInsn(ALOAD, indexVarIndex);
-    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "increment", "()Larb/Integer;", false);
-    mv.visitVarInsn(ASTORE, indexVarIndex);
-
-    mv.visitJumpInsn(GOTO, loopStartLabel);
-
-    mv.visitLabel(loopEndLabel);
-
-    /**
-     * At this point, the product is stored in the variable at productVarIndex
-     * Depending on the method's expected behavior, you might need to return or
-     * process the product further
-     */
+    /** Jump back to the start of the loop */
+    mv.visitJumpInsn(GOTO, loopStart);
+    mv.visitLabel(afterLoop);
 
     return mv;
+  }
+
+  private void loadResult(MethodVisitor mv)
+  {
+    mv.visitVarInsn(ALOAD, 1); // Load the 'Real' instance
+  }
+
+  private static void getField(MethodVisitor mv, String owner, String name, String descriptor)
+  {
+    mv.visitVarInsn(ALOAD, 0); // Load 'this'
+    mv.visitFieldInsn(GETFIELD, owner, name, descriptor);
+
   }
 
   @Override
