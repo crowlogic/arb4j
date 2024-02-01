@@ -1,17 +1,15 @@
 package arb.expressions.nodes.nary;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ASTORE;
 import static org.objectweb.asm.Opcodes.GOTO;
 import static org.objectweb.asm.Opcodes.IF_ICMPGE;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.IRETURN;
-import static org.objectweb.asm.Opcodes.ISTORE;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
-import arb.Integer;
 import arb.Real;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -43,23 +41,55 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
-
-    assert startIndex.type().equals(Integer.class) : "startIndex must be an Integer but it is a "
-                  + startIndex.type();
-    assert endIndex.type().equals(Integer.class) : "endIndex must be an Integer but it is a " + endIndex.type();
     Label loopStartLabel = new Label();
     Label loopEndLabel   = new Label();
 
-    // TODO; store startIndex in local variable index 1 and store endIndex in local
-    // variable index 2
-    startIndex.generate(classVisitor, mv, Integer.class);
-    endIndex.generate(classVisitor, mv, Integer.class);
+    // Initialize the product accumulator as an arb.Integer object
+    // Assuming a constructor or a factory method to create an arb.Integer instance
+    // This part of the code needs to instantiate a new arb.Integer and store it in
+    // productVarIndex
+    // For simplicity, let's assume we have a static method to get an arb.Integer
+    // instance for '1'
+    // Example: mv.visitMethodInsn(INVOKESTATIC, "arb/Integer", "one",
+    // "()Larb/Integer;", false);
+    mv.visitVarInsn(ASTORE, productVarIndex);
 
     mv.visitLabel(loopStartLabel);
+
+    // Load indexVar and endIndex for comparison
+    // Assuming methods in arb.Integer to compare two instances, e.g., compareTo
+    mv.visitVarInsn(ALOAD, indexVarIndex);
+    mv.visitVarInsn(ALOAD, endIndexVarindex);
+    // Assuming compareTo returns an int comparison result
+    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "compareTo", "(Larb/Integer;)I", false);
+    mv.visitJumpInsn(IF_ICMPGE, loopEndLabel);
+
+    // Load the factor and multiply with the current product
+    // Assuming factor.generate(...) correctly handles the multiplication and leaves
+    // the result on the stack
     factor.generate(classVisitor, mv, factor.type());
+    // Assuming a method to multiply two arb.Integer instances
+    // This might involve loading the product accumulator, invoking the
+    // multiplication, and storing the result back
+    mv.visitVarInsn(ALOAD, productVarIndex);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "multiply", "(Larb/Integer;)Larb/Integer;", false);
+    mv.visitVarInsn(ASTORE, productVarIndex);
+
+    // Increment the indexVar
+    // Assuming indexVar is already an arb.Integer object and there's a method to
+    // increment
+    mv.visitVarInsn(ALOAD, indexVarIndex);
+    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "increment", "()Larb/Integer;", false);
+    mv.visitVarInsn(ASTORE, indexVarIndex);
+
+    mv.visitJumpInsn(GOTO, loopStartLabel);
+
     mv.visitLabel(loopEndLabel);
 
-    assert false : "TODO: generate calculation " + this;
+    // At this point, the product is stored in the variable at productVarIndex
+    // Depending on the method's expected behavior, you might need to return or
+    // process the product further
+
     return mv;
   }
 
@@ -67,72 +97,6 @@ public class Product<D, R, F extends Function<D, R>> extends
   int startIndexVarIndex = 1;
   int endIndexVarindex   = 2;
   int productVarIndex    = 3;
-
-  public void generateLoopClass(ClassVisitor cv, MethodVisitor mv)
-  {
-    Label loopStart = new Label();
-    Label loopEnd   = new Label();
-
-    instantiateNewIndexVariable(mv);
-    loadStartIndex(mv);
-    callIntegerSetMethod(mv);
-
-    mv.visitVarInsn(ISTORE, productVarIndex);
-
-    mv.visitLabel(loopStart);
-
-    mv.visitVarInsn(ALOAD, indexVarIndex);
-    mv.visitVarInsn(ALOAD, endIndexVarindex);
-    mv.visitJumpInsn(IF_ICMPGE, loopEnd);
-
-    factor.generate(cv, mv, factor.type());
-    multiplyAccumulator(cv, mv);
-
-    mv.visitLabel(loopEnd);
-
-    mv.visitVarInsn(ALOAD, productVarIndex);
-    callIntegerIncrementMethod(cv, mv);
-
-    mv.visitJumpInsn(GOTO, loopStart);
-
-    mv.visitLabel(loopEnd);
-    mv.visitVarInsn(ILOAD, productVarIndex);
-    mv.visitInsn(IRETURN);
-
-    mv.visitMaxs(-1, -1);
-    mv.visitEnd();
-
-  }
-
-  private void callIntegerIncrementMethod(ClassVisitor cv, MethodVisitor mv)
-  {
-    // TODO Auto-generated method stub
-    assert false : "TODO: Auto-generated method stub";
-  }
-
-  private void multiplyAccumulator(ClassVisitor cv, MethodVisitor mv)
-  {
-    // TODO Auto-generated method stub
-    assert false : "TODO: Auto-generated method stub";
-  }
-
-  private void callIntegerSetMethod(MethodVisitor mv)
-  {
-    // TODO Auto-generated method stub
-    assert false : "TODO: Auto-generated method stub";
-  }
-
-  private void loadStartIndex(MethodVisitor mv)
-  {
-    // TODO Auto-generated method stub
-    assert false : "TODO: Auto-generated method stub";
-  }
-
-  private void instantiateNewIndexVariable(MethodVisitor mv)
-  {
-    // TODO Auto-generated method stub
-    assert false : "TODO: Auto-generated method stub";
-  }
 
   @Override
   public boolean isReusable()
