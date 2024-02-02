@@ -17,10 +17,13 @@ public class Product<D, R, F extends Function<D, R>> extends
                     Node<D, R, F>
 {
 
-  public Node<D, R, F>     factor;
-  public Variable<D, R, F> index;
-  public Node<D, R, F>     startIndex;
   public Node<D, R, F>     endIndex;
+
+  public Node<D, R, F>     factor;
+
+  public Variable<D, R, F> index;
+
+  public Node<D, R, F>     startIndex;
 
   public Product(Expression<D, R, F> expression, Node<D, R, F> node)
   {
@@ -138,6 +141,18 @@ public class Product<D, R, F extends Function<D, R>> extends
     return Real.class;
   }
 
+  private static final String MISSING_CLOSING_CURLY_BRACE = "Expected the closing curly brace } of the range specification {k=a..b} in Πf(k){k=a..b}"
+                + " to follow the ending index parameter b, instead got '%s' with remaining";
+  private static final String MISSING_ELLIPSIS            = "Expected an … character after the start index a in the "
+                + "index specification {k=a..b} in ∏f(k){k=a..b} but instead got '%c' at position %d in %s";
+  private static final String MISSING_EQUALS              = "Expected an = character after the index variable specification {k=a..b} "
+                + "in ∏f(k){k=a..b} but instead got '%c' at position %d in %s";
+  private static final String MISSING_OPENING_CURLY_BRACE = "Expected the opening curly brace { of the product range specification {k=a..b} in Πf(k){k=a..b}"
+                + " to follow the operand definition, instead got '%c' with remaining %s";
+
+  private static final String NONVARIABLE_MSG             = "Expected the first element of the product range specification"
+                + " {...} in ∏f(k){k=a…b} to be a Variable but got %s with remaining %s";
+
   @Override
   public String typeset()
   {
@@ -147,19 +162,4 @@ public class Product<D, R, F extends Function<D, R>> extends
                          endIndex.typeset(),
                          factor.typeset());
   }
-
-  private static final String MISSING_OPENING_CURLY_BRACE = "Expected the opening curly brace { of the product range specification {k=a..b} in Πf(k){k=a..b}"
-                + " to follow the operand definition, instead got '%c' with remaining %s";
-
-  private static final String NONVARIABLE_MSG             = "Expected the first element of the product range specification"
-                + " {...} in ∏f(k){k=a…b} to be a Variable but got %s with remaining %s";
-
-  private static final String MISSING_EQUALS              = "Expected an = character after the index variable specification {k=a..b} "
-                + "in ∏f(k){k=a..b} but instead got '%c' at position %d in %s";
-
-  private static final String MISSING_ELLIPSIS            = "Expected an … character after the start index a in the "
-                + "index specification {k=a..b} in ∏f(k){k=a..b} but instead got '%c' at position %d in %s";
-
-  private static final String MISSING_CLOSING_CURLY_BRACE = "Expected the closing curly brace } of the range specification {k=a..b} in Πf(k){k=a..b}"
-                + " to follow the ending index parameter b, instead got '%s' with remaining";
 }
