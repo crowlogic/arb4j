@@ -5,6 +5,10 @@ import arb.Real;
 import arb.RealPolynomial;
 import arb.functions.Function;
 
+/**
+ * FIXME: make this a prototype then run asmifier on it then work back from there
+ * 
+ */
 public class F implements
                Function<Integer, RealPolynomial>
 {
