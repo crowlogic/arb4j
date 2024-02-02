@@ -272,7 +272,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareFields(ClassVisitor cw)
   {
-    if (!referencedFunctions.isEmpty())
+    if (needsInitializer())
     {
       cw.visitField(Opcodes.ACC_PRIVATE, IS_INITIALIZED, "Z", null, null);
     }
@@ -356,7 +356,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       generateDefaultConstructor(classVisitor);
 
-      if (!referencedFunctions.isEmpty())
+      if (needsInitializer())
       {
         generateInitializationMethod(classVisitor);
       }
@@ -386,6 +386,19 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     return this;
+  }
+
+  private boolean needsInitializer()
+  {
+    String onlyReferencedFunctionName = null;
+
+    if (referencedFunctions.size() == 1)
+    {
+      onlyReferencedFunctionName = referencedFunctions.entrySet().iterator().next().getKey();
+    }
+    
+    return !referencedFunctions.isEmpty()
+                  && (functionName != null && !functionName.equals(onlyReferencedFunctionName));
   }
 
   public MethodVisitor generateCloseFieldCall(MethodVisitor methodVisitor, String name, Class<?> type)
@@ -453,7 +466,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           expression.length()));
     }
 
-    if (!referencedFunctions.isEmpty())
+    if (needsInitializer())
     {
       generateConditionalInitializater(methodVisitor);
     }
@@ -1083,7 +1096,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     addChecksForNullVariableReferences(methodVisitor, false, false);
 
-    if (!referencedFunctions.isEmpty())
+    if (needsInitializer())
     {
       referencedFunctions.values().forEach(mapping -> generateContextInitializer(methodVisitor, mapping));
 
