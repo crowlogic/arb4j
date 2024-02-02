@@ -8,6 +8,13 @@ package arb.documentation;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book    psychologyOfMathematicalInvention     = new Book("The Psychology of Invention in the Mathematical Field",
+                                                                         "Jacques Hadamard",
+                                                                         "1954").setSeries("Dover books on advanced mathematics")
+                                                                                .setEdition("enlarged, unaltered, and unabridged 1949 edition reprint")
+                                                                                .setPublisher("Dover publications, Inc.")
+                                                                                .setAddress("180 Varick Street New York, N.Y. 10014");
+
   public static Book    extremesOfRandomProcesses             = new Book("Extremes and Related Properties of Random Sequences and Processes",
                                                                          "Georg Lindgren, Holger Rootzén, and M. R. Leadbetter",
                                                                          "1983").setSeries("Springer Series in Statistics")
