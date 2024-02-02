@@ -6,7 +6,6 @@ import static java.lang.String.format;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.SWAP;
 
 import java.util.Objects;
 
@@ -150,21 +149,19 @@ public class Variable<D, R, F extends Function<D, R>> extends
   {
     generateReference(mv);
 
-    Class indexType = null;
+    Class<?> indexType = null;
     if (reference.index != null)
     {
       indexType = reference.index.type();
 
       reference.index.generate(null, mv, indexType);
-      out.println("generateIndexAccess : " + reference.index + " ref.index.type() = " + indexType);
 
     }
-    
 
     if (Integer.class.equals(indexType))
     {
       mv.visitMethodInsn(INVOKEVIRTUAL,
-                         expression.domainClassInternalName,
+                         Type.getInternalName(reference.type()),
                          "get",
                          Type.getMethodDescriptor(Type.getType(reference.type()), Type.getType(indexType)),
                          false);
@@ -198,7 +195,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      out.println("Loading " + reference);
       expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type().descriptorString());
     }
   }
