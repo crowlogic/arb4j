@@ -5,8 +5,8 @@ import static java.lang.String.format;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
+import arb.Integer;
 import arb.Real;
-import arb.RealPolynomial;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
@@ -72,7 +72,21 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
-    factor.generate(classVisitor, mv, RealPolynomial.class);
+    assert index.reference.index == null : "only non-indexed variable references can be used as the index for a Product";
+    indexVariableName = index.reference.name;
+    Object existingIndex = expression.context.getVariable(indexVariableName);
+    if (existingIndex != null && !existingIndex.getClass().equals(Integer.class))
+    {
+      throw new ExpressionCompilerException("index variable " + indexVariableName + " of a type "
+                    + existingIndex.getClass() + " which is not arb.Integer already exists in the context");
+    }
+    else if (existingIndex == null)
+    {
+      assert !expression.variablesDeclared : "variables have already been declared";
+      expression.context.registerVariable(indexVariableName, new Integer());
+    }
+    index.generate(classVisitor, mv, Integer.class);
+    factor.generate(classVisitor, mv, Real.class);
     return mv;
 //    loadOutputVariableOntoStack(mv, expression, Real.class); // Prepare the stack for the result
 //
@@ -109,19 +123,6 @@ public class Product<D, R, F extends Function<D, R>> extends
     return false;
   }
 
-  protected void loadOutputVariableOntoStack(MethodVisitor mv, Expression<D, R, F> expression, Class<?> resultType)
-  {
-    if (isReusable())
-    {
-      // Logic for direct reuse
-    }
-    else
-    {
-      // Reserve an intermediate variable if the result can't be reused
-      expression.reserveIntermediateVariable(mv, resultType);
-    }
-  }
-
   @Override
   public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
@@ -152,6 +153,8 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private static final String NONVARIABLE_MSG             = "Expected the first element of the product range specification"
                 + " {...} in ∏f(k){k=a…b} to be a Variable but got %s with remaining %s";
+
+  private String              indexVariableName;
 
   @Override
   public String typeset()

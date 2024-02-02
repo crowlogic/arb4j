@@ -320,6 +320,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
+  public boolean variablesDeclared = false;
+  
   public void declareVariables(ClassVisitor classVisitor)
   {
     if (context != null)
@@ -334,6 +336,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                 null);
       }
     }
+    
+    variablesDeclared = true;
   }
 
   public Class<F> define()

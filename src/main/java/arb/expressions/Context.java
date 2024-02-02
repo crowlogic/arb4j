@@ -46,13 +46,14 @@ public class Context
 {
   public final FunctionMappings functions;
 
+
   public Context()
   {
     this.variables = new Variables();
     this.functions = new FunctionMappings();
   }
 
-  public Context(Variables variables, FunctionMappings functions)
+  public Context( Variables variables, FunctionMappings functions)
   {
     this.variables = variables;
     this.functions = functions;
@@ -77,6 +78,11 @@ public class Context
 
   public Variables variables;
 
+  public <R> R getVariable( String name )
+  {
+    return variables.get(name);
+  }
+  
   /**
    * public FunctionMappings functions; Adds a given variable to
    * {@link #variables}
@@ -91,15 +97,19 @@ public class Context
   {
     assert name != null : "name cannot be null";
     assert variable != null : "variable cannot be null";
-
+    
     R existing = null;
     if ((existing = variables.get(name)) != null)
     {
-      boolean same = existing == variable;
-      throw new IllegalArgumentException(format("A variable named %s of type %s is already registered and it %s equal to the same object passed to registerVariable\n",
-                                                name,
-                                                variable.getClass(),
-                                                same ? "IS" : "IS NOT"));
+      boolean same = existing.getClass().equals(variable.getClass());
+      if (!same)
+      {
+        throw new IllegalArgumentException(format("A variable named %s of type %s having value %s is already registered and it %s equal to the same object passed to registerVariable\n",
+                                                  name,
+                                                  variable.getClass(),
+                                                  variable,
+                                                  same ? "IS" : "IS NOT"));
+      }
     }
     variables.put(name, variable);
     return variable;
@@ -109,7 +119,7 @@ public class Context
 
   public final CompiledExpressionClassLoader classLoader = new CompiledExpressionClassLoader();
 
-  public boolean saveClasses = false;
+  public boolean                             saveClasses = false;
 
   /**
    * 
