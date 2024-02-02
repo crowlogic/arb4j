@@ -85,6 +85,7 @@ public class Product<D, R, F extends Function<D, R>> extends
       assert !expression.variablesDeclared : "variables have already been declared";
       expression.context.registerVariable(indexVariableName, new Integer());
     }
+    expression.loadFieldOntoStack(mv, index.reference.name, Integer.class.descriptorString());
     index.generate(classVisitor, mv, Integer.class);
     factor.generate(classVisitor, mv, Real.class);
     return mv;
