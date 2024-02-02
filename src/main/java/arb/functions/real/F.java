@@ -25,36 +25,23 @@ public class F implements
   public Real           ℝ2  = new Real();
   public F              F;
 
-  public static void main(String args[])
-  {
-    int p = 2;
-    int q = 1;
-    F   f = new F();
-    f.p = new Integer(p);
-    f.q = new Integer(q);
-    (f.α = Real.newVector(p)).set(3, -3);
-    (f.β = Real.newVector(q)).set(0.5);
-    for (int i = 0; i < 10; i++)
-    {
-      RealPolynomial fk = f.evaluate(new Integer(i), 128, new RealPolynomial());
-      System.out.format("f[%d]=%s\n", i, fk);
-    }
-  }
-
   public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result)
   {
-    if (F == null)
-    {
-      F = new F(this);
-    }
     return switch (in.getSignedValue())
-
     {
     case 0 -> result.set(c2);
-    default -> result.identity()
-                     .mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2)
-                     .mul(α.get(k.getSignedValue()).risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1), bits, r̅3)
-                     .div(β.get(k.getSignedValue()).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, result);
+    default ->
+    {
+      RealPolynomial var5 = result.identity();
+      if (F == null)
+      {
+        F = new F(this);
+      }
+
+      yield var5.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2)
+                .mul(α.get(c1).risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1), bits, r̅3)
+                .div(β.get(c1).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, result);
+    }
     };
   }
 

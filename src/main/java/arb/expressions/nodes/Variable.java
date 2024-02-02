@@ -3,8 +3,10 @@ package arb.expressions.nodes;
 import static arb.expressions.Compiler.loadInputParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
+import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.SWAP;
 
 import java.util.Objects;
 
@@ -19,7 +21,6 @@ import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.expressions.Parser;
 import arb.expressions.VariableReference;
 import arb.expressions.Variables;
 import arb.functions.Function;
@@ -67,6 +68,12 @@ import arb.functions.Function;
 public class Variable<D, R, F extends Function<D, R>> extends
                      Node<D, R, F>
 {
+  @Override
+  public Class<?> getGeneratedType()
+  {
+    return generatedType;
+  }
+
   private static final String caveat = "variable name clashes with "
                 + "the function name since its a recursve function";
 
@@ -87,6 +94,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
   public boolean                 isIndeterminant = false;
 
   public final boolean           isMultivariate;
+
+  private Class<?>               generatedType;
 
   public Variable(Expression<D, R, F> expression, VariableReference reference)
   {
@@ -135,10 +144,44 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return Objects.equals(reference, other.reference);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
+    generateReference(mv);
 
+    Class indexType = null;
+    if (reference.index != null)
+    {
+      indexType = reference.index.type();
+
+      reference.index.generate(null, mv, indexType);
+      out.println("generateIndexAccess : " + reference.index + " ref.index.type() = " + indexType);
+
+    }
+    
+
+    if (Integer.class.equals(indexType))
+    {
+      mv.visitMethodInsn(INVOKEVIRTUAL,
+                         expression.domainClassInternalName,
+                         "get",
+                         Type.getMethodDescriptor(Type.getType(reference.type()), Type.getType(indexType)),
+                         false);
+
+    }
+
+    generatedType = type();
+    if (isResult)
+    {
+      expression.setResult(mv, true, generatedType);
+    }
+
+    return mv;
+  }
+
+  private void generateReference(MethodVisitor mv)
+  {
     if (isIndependent)
     {
       Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
@@ -155,47 +198,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
+      out.println("Loading " + reference);
       expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type().descriptorString());
     }
-
-    if (reference.index != null)
-    {
-      generateIndexAccess(mv,null);
-    }
-
-    if (isResult)
-    {
-      expression.setResult(mv, true, type());
-    }
-
-    return mv;
-  }
-
-  public void generateIndexAccess(MethodVisitor mv, Class<?> indexType)
-  {
-    if (Parser.isDigit(reference.index.charAt(0)))
-    {
-      mv.visitLdcInsn(java.lang.Integer.parseInt(reference.index) - 1);
-    }
-    else
-    {
-      expression.loadIndexField(loadThisOntoStack(mv), reference.index);
-    }
-    if (Integer.class.equals(indexType))
-    {
-      mv.visitMethodInsn(INVOKEVIRTUAL,
-                         Type.getInternalName(Integer.class),
-                         "getSignedValue",
-                         Type.getMethodDescriptor(Type.getType(int.class)),
-                         false);
-    }
-
-    mv.visitMethodInsn(INVOKEVIRTUAL,
-                       expression.domainClassInternalName,
-                       "get",
-                       "(I)" + expression.domainClassDescriptor,
-                       false);
-
   }
 
   @Override
@@ -222,7 +227,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
    * 
    * @param reference
    */
-  public void resolveReference(VariableReference reference)
+  public void resolveReference(VariableReference<D, R, F> reference)
   {
     var inputVariable = expression.independentVariableNode;
 

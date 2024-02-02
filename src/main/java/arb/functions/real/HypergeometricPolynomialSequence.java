@@ -13,8 +13,8 @@ import arb.functions.Function;
  * ...
  */
 public class HypergeometricPolynomialSequence implements
-                                            Function<Integer, RealPolynomial>,
-                                            Verifiable
+                                              Function<Integer, RealPolynomial>,
+                                              Verifiable
 {
 
   @Override
@@ -29,7 +29,7 @@ public class HypergeometricPolynomialSequence implements
   public static void main(String... args)
   {
     try ( var F = new HypergeometricPolynomialSequence(3,
-                                                     1);
+                                                       1);
           var index = new Integer())
     {
       F.α.set(1, 4, -4);
@@ -52,6 +52,8 @@ public class HypergeometricPolynomialSequence implements
 
   public final Function<Integer, RealPolynomial> F;
 
+  // public static final String Fdef =
+  // "n➔when(n=0,1,else,x*F(n-1)*∏αₖ₍ₙ₋₁₎{k=1…p})";
   public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1)*∏αₖ₍ₙ₋₁₎{k=1…p}/∏βₖ₍ₙ₋₁₎{k=1…q})";
 
   @SuppressWarnings("resource")
