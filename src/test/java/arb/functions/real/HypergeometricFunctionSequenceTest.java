@@ -11,7 +11,7 @@ public class HypergeometricFunctionSequenceTest extends
 {
   public static void test3F1()
   {
-    try ( HypergeometricFunctionSequence F = new HypergeometricFunctionSequence(3,
+    try ( HypergeometricPolynomialSequence F = new HypergeometricPolynomialSequence(3,
                                                                           1))
     {
       F.α.set(1, 4, -4);

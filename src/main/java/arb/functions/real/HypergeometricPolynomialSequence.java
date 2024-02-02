@@ -5,14 +5,16 @@ import static java.lang.System.out;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.Verifiable;
 import arb.expressions.Context;
 import arb.functions.Function;
 
 /**
  * ...
  */
-public class HypergeometricFunctionSequence implements
-                                            Function<Integer, RealPolynomial>
+public class HypergeometricPolynomialSequence implements
+                                            Function<Integer, RealPolynomial>,
+                                            Verifiable
 {
 
   @Override
@@ -26,7 +28,7 @@ public class HypergeometricFunctionSequence implements
 
   public static void main(String... args)
   {
-    try ( var F = new HypergeometricFunctionSequence(3,
+    try ( var F = new HypergeometricPolynomialSequence(3,
                                                      1);
           var index = new Integer())
     {
@@ -36,7 +38,7 @@ public class HypergeometricFunctionSequence implements
       for (int n = 0; n < 5; n++)
       {
         RealPolynomial fn = F.F.evaluate(index.set(n), 0, 128, new RealPolynomial());
-        
+
         out.format("F(%d,x)=%s\n", n, fn);
       }
     }
@@ -50,10 +52,10 @@ public class HypergeometricFunctionSequence implements
 
   public final Function<Integer, RealPolynomial> F;
 
-  public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1)/(∏αₖ₍ₙ₋₁₎{k=1…p}/∏βₖ₍ₙ₋₁₎{k=1…q}))";
+  public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1)*∏αₖ₍ₙ₋₁₎{k=1…p}/∏βₖ₍ₙ₋₁₎{k=1…q})";
 
   @SuppressWarnings("resource")
-  public HypergeometricFunctionSequence(int p, int q)
+  public HypergeometricPolynomialSequence(int p, int q)
   {
     context             = new Context(this.p = new Integer(p).setName("p"),
                                       this.q = new Integer(q).setName("q"),
@@ -68,5 +70,14 @@ public class HypergeometricFunctionSequence implements
   {
     return F.evaluate(n, order, bits, f);
   }
+
+  /**
+   * 
+   */
+  @Override
+  public boolean verify()
+  {
+    return α.stream().anyMatch(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative());
+  };
 
 }

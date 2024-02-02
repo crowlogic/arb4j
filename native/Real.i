@@ -174,6 +174,11 @@ import arb.stochastic.ProbabilityDistributionFunction;
 
   }
 
+  public boolean isInteger()
+  {
+    return arblib.arb_is_int(this) != 0;
+  }
+  
   /**
    * Calculate the rising factorial this_(power)
    * 

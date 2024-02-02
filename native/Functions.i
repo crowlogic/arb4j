@@ -5,7 +5,8 @@
 #include <arb_mat.h>
 #include <flint/fmpq.h>
 
-
+ int arb_is_int(const arb_t x);
+ 
 void fmpq_add(fmpq_t res, const fmpq_t op1, const fmpq_t op2);
 
  void arb_fac_ui(arb_t z, ulong n, slong prec);

@@ -22,26 +22,27 @@ public class F implements Function<Integer, RealPolynomial> {
    public F F;
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
-      RealPolynomial var10000;
-      switch(in.getSignedValue()) {
-         case 0:
-            var10000 = result.set(c2);
-            break;
-         default:
-            var10000 = result.identity();
+      return switch(in.getSignedValue()) {
+         case 0 -> result.set(c2);
+         default -> {
+            RealPolynomial var5 = result.identity();
             if (F == null) {
                F = new F(this);
             }
 
-            var10000 = var10000.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2);
-            result.identity();
-            α
-               .get(super.k)
-               .risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1)
-               .div(result.identity().div(β.get(super.k).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, ℝ3), bits, result);
-      }
-
-      return var10000;
+            yield var5.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2)
+               .k
+               .div(
+                  α
+                     .get(super.k)
+                     .risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1)
+                     .k
+                     .div(β.get(super.k).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, ℝ3),
+                  bits,
+                  result
+               );
+         }
+      };
    }
 
    public F() {

@@ -86,7 +86,6 @@ public class Product<D, R, F extends Function<D, R>> extends
       expression.context.registerVariable(indexVariableName, new Integer());
     }
     expression.loadFieldOntoStack(mv, index.reference.name, Integer.class.descriptorString());
-    index.generate(classVisitor, mv, Integer.class);
     factor.generate(classVisitor, mv, Real.class);
     return mv;
 //    loadOutputVariableOntoStack(mv, expression, Real.class); // Prepare the stack for the result

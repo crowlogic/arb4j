@@ -201,6 +201,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   }
 
+  public boolean isInteger()
+  {
+    return arblib.arb_is_int(this) != 0;
+  }
+  
   /**
    * Calculate the rising factorial this_(power)
    * 

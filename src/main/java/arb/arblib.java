@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static int arb_is_int(Real x) {
+    return arblibJNI.arb_is_int(Real.getCPtr(x), x);
+  }
+
   public static void fmpq_add(Rational res, Rational op1, Rational op2) {
     arblibJNI.fmpq_add(Rational.getCPtr(res), res, Rational.getCPtr(op1), op1, Rational.getCPtr(op2), op2);
   }

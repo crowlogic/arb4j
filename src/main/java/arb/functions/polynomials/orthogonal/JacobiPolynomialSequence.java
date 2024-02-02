@@ -13,6 +13,7 @@ import arb.RealPolynomial;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.functions.Function;
+import arb.functions.real.HypergeometricPolynomialSequence;
 import arb.functions.real.RealFunction;
 
 /**
@@ -23,6 +24,9 @@ import arb.functions.real.RealFunction;
  * (1-x)^α*(1+x)^β
  * 
  * over the interval [-1,1] when α,β>-1 and are recursively defined by
+ * 
+ * The Jacobi polynomials are also known as a
+ * {@link HypergeometricPolynomialSequence}s
  * 
  * <pre>
  *  C(n)=2n+α+β
