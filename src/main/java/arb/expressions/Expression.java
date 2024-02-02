@@ -39,6 +39,7 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
 
 import arb.ComplexPolynomial;
+import arb.Integer;
 import arb.OrderedPair;
 import arb.RealPolynomial;
 import arb.Typesettable;
@@ -159,7 +160,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   final public String                             rangeClassDescriptor;
 
-  final public String                             functionClassInternalName;
+  final public String                             genericFunctionClassInternalName;
 
   public ArrayList<IntermediateVariable<D, R, F>> intermediateVariables = new ArrayList<>();
 
@@ -228,24 +229,24 @@ public class Expression<D, R, F extends Function<D, R>> implements
                     Context context,
                     String functionName)
   {
-    this.rangeClassDescriptor      = rangeClass.descriptorString();
-    this.domainClassDescriptor     = domainClass.descriptorString();
-    this.className                 = className;
-    this.domainType                = domainClass;
-    this.rangeType                 = rangeClass;
-    this.functionClass             = functionClass;
-    this.rangeClassInternalName    = Type.getInternalName(rangeClass);
-    this.domainClassInternalName   = Type.getInternalName(domainClass);
-    this.functionClassInternalName = Type.getInternalName(functionClass);
-    this.functionClassDescriptor   = functionClass.descriptorString();
-    this.expression                = Parser.replaceArrowsAndEllipses(expression);
-    this.context                   = context;
-    this.variables                 = context != null ? context.variables : null;
-    evaluateMethodSignature        = String.format("(L%s;IIL%s;)L%s;",
-                                                   domainClassInternalName,
-                                                   rangeClassInternalName,
-                                                   rangeClassInternalName);
-    this.functionName              = functionName;
+    this.rangeClassDescriptor             = rangeClass.descriptorString();
+    this.domainClassDescriptor            = domainClass.descriptorString();
+    this.className                        = className;
+    this.domainType                       = domainClass;
+    this.rangeType                        = rangeClass;
+    this.functionClass                    = functionClass;
+    this.rangeClassInternalName           = Type.getInternalName(rangeClass);
+    this.domainClassInternalName          = Type.getInternalName(domainClass);
+    this.genericFunctionClassInternalName = Type.getInternalName(functionClass);
+    this.functionClassDescriptor          = functionClass.descriptorString();
+    this.expression                       = Parser.replaceArrowsAndEllipses(expression);
+    this.context                          = context;
+    this.variables                        = context != null ? context.variables : null;
+    evaluateMethodSignature               = String.format("(L%s;IIL%s;)L%s;",
+                                                          domainClassInternalName,
+                                                          rangeClassInternalName,
+                                                          rangeClassInternalName);
+    this.functionName                     = functionName;
     if (context != null && context.saveClasses)
     {
       save = true;
@@ -321,7 +322,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   public boolean variablesDeclared = false;
-  
+
   public void declareVariables(ClassVisitor classVisitor)
   {
     if (context != null)
@@ -336,7 +337,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                 null);
       }
     }
-    
+
     variablesDeclared = true;
   }
 
@@ -400,7 +401,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       onlyReferencedFunctionName = referencedFunctions.entrySet().iterator().next().getKey();
     }
-    
+
     return !referencedFunctions.isEmpty()
                   && (functionName != null && !functionName.equals(onlyReferencedFunctionName));
   }
@@ -664,7 +665,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor loadIndexField(MethodVisitor methodVisitor, String indexFieldName)
   {
-    methodVisitor.visitFieldInsn(GETFIELD, functionClassInternalName, indexFieldName, "I");
+    System.out.format("loadIndexField: indexFieldName=%s className=%s\n", indexFieldName, className);
+    methodVisitor.visitFieldInsn(GETFIELD, className, indexFieldName, Integer.class.descriptorString());
     return methodVisitor;
   }
 
@@ -807,8 +809,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
         entirelySubscripted = false;
       }
     }
-    String identifier = Utensils.subscriptToRegular(expression.substring(startPos, position).trim());
-    String index      = evaluatePossibleSquareBracketedIndex();
+    String        identifier = Utensils.subscriptToRegular(expression.substring(startPos, position).trim());
+    Node<D, R, F> index      = evaluatePossibleSquareBracketedIndex();
     if (index == null)
     {
       index = evaluatePossibleSubscriptedIndex();
@@ -817,24 +819,32 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                  index);
   }
 
-  private String evaluatePossibleSubscriptedIndex()
+  private Node<D, R, F> evaluatePossibleSubscriptedIndex()
   {
-    int indexPosition = position;
-    while (nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS) && position < expression.length());
-    return position > indexPosition ? expression.substring(indexPosition, position) : null;
+    if (nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS))
+    {
+      return determine();
+    }
+    else
+    {
+      return null;
+    }
   }
 
-  private String evaluatePossibleSquareBracketedIndex()
+  private Node<D, R, F> evaluatePossibleSquareBracketedIndex()
   {
-    String index = null;
+    Node<D, R, F> index = null;
     if (nextCharacterIs('['))
     {
-      int indexPosition = position;
-      while (!nextCharacterIs(']') && position < expression.length())
+      index = determine();
+      if (!nextCharacterIs(']'))
       {
-        nextCharacter();
+        throw new ExpressionCompilerException(format("Expected closing ] at position %d in %s but got %c and the rest is %s",
+                                                     position,
+                                                     expression,
+                                                     character,
+                                                     remaining()));
       }
-      index = expression.substring(indexPosition, position - 1);
     }
     return index;
   }

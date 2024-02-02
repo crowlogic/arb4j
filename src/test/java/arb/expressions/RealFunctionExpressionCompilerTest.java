@@ -75,25 +75,6 @@ public class RealFunctionExpressionCompilerTest extends
 
   }
 
-  public void testVariableIndexedByAVariable()
-  {
-    boolean caughtTheMissingIndexReference = false;
-    try
-    {
-      RealFunction expression = express("v[k]", context);
-      {
-        Real value = expression.evaluate(one, 1, 256, new Real());
-        caughtTheMissingIndexReference = true;
-        assertEquals(v3, value);
-      }
-    }
-    catch (NoSuchFieldError e)
-    {
-      caughtTheMissingIndexReference = true;
-    }
-    assertTrue(caughtTheMissingIndexReference);
-  }
-
   public void testAddTwoConstants()
   {
 

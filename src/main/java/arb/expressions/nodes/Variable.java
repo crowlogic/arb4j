@@ -13,6 +13,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import arb.Integer;
 import arb.Real;
 import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.Compiler;
@@ -66,7 +67,8 @@ import arb.functions.Function;
 public class Variable<D, R, F extends Function<D, R>> extends
                      Node<D, R, F>
 {
-  private static final String caveat = "not allowed to name a variable the same name as the function if its a recursive function";
+  private static final String caveat = "variable name clashes with "
+                + "the function name since its a recursve function";
 
   @Override
   public Class<?> type()
@@ -74,17 +76,17 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return isIndeterminant ? expression.rangeType : reference.type();
   }
 
-  public final VariableReference     reference;
+  public final VariableReference reference;
 
-  public final Variables     variables;
+  public final Variables         variables;
 
-  public Expression<D, R, F> expression;
+  public Expression<D, R, F>     expression;
 
-  public boolean             isIndependent   = false;
+  public boolean                 isIndependent   = false;
 
-  public boolean             isIndeterminant = false;
+  public boolean                 isIndeterminant = false;
 
-  public final boolean       isMultivariate;
+  public final boolean           isMultivariate;
 
   public Variable(Expression<D, R, F> expression, VariableReference reference)
   {
@@ -158,7 +160,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (reference.index != null)
     {
-      generateIndexAccess(mv);
+      generateIndexAccess(mv,null);
     }
 
     if (isResult)
@@ -169,15 +171,23 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return mv;
   }
 
-  public void generateIndexAccess(MethodVisitor mv)
+  public void generateIndexAccess(MethodVisitor mv, Class<?> indexType)
   {
     if (Parser.isDigit(reference.index.charAt(0)))
     {
-      mv.visitLdcInsn(Integer.parseInt(reference.index) - 1);
+      mv.visitLdcInsn(java.lang.Integer.parseInt(reference.index) - 1);
     }
     else
     {
       expression.loadIndexField(loadThisOntoStack(mv), reference.index);
+    }
+    if (Integer.class.equals(indexType))
+    {
+      mv.visitMethodInsn(INVOKEVIRTUAL,
+                         Type.getInternalName(Integer.class),
+                         "getSignedValue",
+                         Type.getMethodDescriptor(Type.getType(int.class)),
+                         false);
     }
 
     mv.visitMethodInsn(INVOKEVIRTUAL,
@@ -185,6 +195,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
                        "get",
                        "(I)" + expression.domainClassDescriptor,
                        false);
+
   }
 
   @Override
@@ -231,10 +242,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        throw new UndefinedReferenceException(format("Undefined reference to variable '%s' in %s, independent variable is %s",
-                                                     reference,
-                                                     expression,
-                                                     inputVariable));
+        throw new UndefinedReferenceException(format("Undefined reference to variable"
+                      + " '%s' in %s, independent variable is %s", reference, expression, inputVariable));
       }
     }
   }

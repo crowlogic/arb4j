@@ -2,6 +2,8 @@ package arb.expressions;
 
 import java.util.Objects;
 
+import arb.expressions.nodes.Node;
+import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
@@ -13,8 +15,9 @@ import arb.utensils.Utensils;
  * </pre>
  * 
  * @author ©2024 Stephen Crowley
+ * @param <F>
  */
-public class VariableReference
+public class VariableReference<D, R, F extends Function<D, R>>
 {
 
   @Override
@@ -34,6 +37,7 @@ public class VariableReference
     return Objects.hash(index, name);
   }
 
+  @SuppressWarnings("rawtypes")
   @Override
   public boolean equals(Object obj)
   {
@@ -54,23 +58,23 @@ public class VariableReference
     this.index = null;
   }
 
-  public VariableReference(String name, String index)
+  public VariableReference(String name, Node<D, R, F> index)
   {
     assert !name.isEmpty() : "name is empty";
     this.name  = name == null ? null : Utensils.subscriptToRegular(name.trim());
-    this.index = index != null ? Utensils.subscriptToRegular(index) : null;
+    this.index = index;
   }
 
-  public VariableReference(String name, String index, Class<?> type)
+  public VariableReference(String name, Node<D, R, F> index, Class<?> type)
   {
     this(name,
          index);
     this.type = type;
   }
 
-  public String name;
+  public String        name;
 
-  public String index;
+  public Node<D, R, F> index;
 
   public String typeset()
   {

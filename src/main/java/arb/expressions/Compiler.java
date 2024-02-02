@@ -179,7 +179,7 @@ public class Compiler
     }
 
     classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, new String[]
-    { expression.functionClassInternalName });
+    { expression.genericFunctionClassInternalName });
     return classVisitor;
   }
 

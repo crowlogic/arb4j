@@ -16,9 +16,9 @@ public class F implements Function<Integer, RealPolynomial> {
    public RealPolynomial r̅2 = new RealPolynomial();
    public Integer ℤ2 = new Integer();
    public Real ℝ1 = new Real();
+   public RealPolynomial r̅3 = new RealPolynomial();
    public Integer ℤ3 = new Integer();
    public Real ℝ2 = new Real();
-   public Real ℝ3 = new Real();
    public F F;
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
@@ -31,16 +31,8 @@ public class F implements Function<Integer, RealPolynomial> {
             }
 
             yield var5.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2)
-               .k
-               .div(
-                  α
-                     .get(super.k)
-                     .risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1)
-                     .k
-                     .div(β.get(super.k).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, ℝ3),
-                  bits,
-                  result
-               );
+               .mul(α.get(k.getSignedValue()).risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1), bits, r̅3)
+               .div(β.get(k.getSignedValue()).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, result);
          }
       };
    }
@@ -74,9 +66,9 @@ public class F implements Function<Integer, RealPolynomial> {
       r̅2.close();
       ℤ2.close();
       ℝ1.close();
+      r̅3.close();
       ℤ3.close();
       ℝ2.close();
-      ℝ3.close();
       F.close();
    }
 }

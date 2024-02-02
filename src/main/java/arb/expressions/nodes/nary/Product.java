@@ -8,6 +8,7 @@ import org.objectweb.asm.MethodVisitor;
 import arb.Integer;
 import arb.Real;
 import arb.exceptions.ExpressionCompilerException;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -85,7 +86,11 @@ public class Product<D, R, F extends Function<D, R>> extends
       assert !expression.variablesDeclared : "variables have already been declared";
       expression.context.registerVariable(indexVariableName, new Integer());
     }
-    expression.loadFieldOntoStack(mv, index.reference.name, Integer.class.descriptorString());
+    
+//    expression.loadFieldOntoStack(mv, index.reference.name, Integer.class.descriptorString());
+//    startIndex.generate(classVisitor, mv, Integer.class);
+//    Compiler.invokeSetMethod(mv, Integer.class, Integer.class);
+    
     factor.generate(classVisitor, mv, Real.class);
     return mv;
 //    loadOutputVariableOntoStack(mv, expression, Real.class); // Prepare the stack for the result
