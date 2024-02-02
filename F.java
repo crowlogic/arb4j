@@ -10,6 +10,7 @@ public class F implements Function<Integer, RealPolynomial> {
    public Integer q;
    public Real α;
    public Real β;
+   public Integer k;
    public Integer ℤ1 = new Integer();
    public RealPolynomial r̅1 = new RealPolynomial();
    public RealPolynomial r̅2 = new RealPolynomial();
