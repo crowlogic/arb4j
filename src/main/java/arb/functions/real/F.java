@@ -6,7 +6,8 @@ import arb.RealPolynomial;
 import arb.functions.Function;
 
 /**
- * FIXME: make this a prototype then run asmifier on it then work back from there
+ * FIXME: make this a prototype then isolate the product part of it then run
+ * asmifier on it then work back from there
  * 
  */
 public class F implements
