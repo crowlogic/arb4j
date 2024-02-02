@@ -2029,11 +2029,4 @@ public static String removeTrailingZeros(String decimal)
     this(arblibJNI.new_Real(), true);
   }
 
-  public RealPolynomial risingFactorial(Integer sub, int bits, RealPolynomial result)
-  {
-   result.zero();
-   risingFactorial(sub, bits, result.get(0));
-   return result;
-  }
-
 }
