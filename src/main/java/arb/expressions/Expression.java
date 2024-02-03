@@ -200,7 +200,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String                                   functionName;
 
-  public static boolean                           save                  = Boolean.valueOf(System.getProperty("expressionCompiler.saveClasses",
+  public static boolean                           saveClasses           = Boolean.valueOf(System.getProperty("expressionCompiler.saveClasses",
                                                                                                              "false"));
 
   public boolean                                  recursive             = false;
@@ -249,7 +249,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.functionName                     = functionName;
     if (context != null && context.saveClasses)
     {
-      save = true;
+      saveClasses = true;
     }
   }
 
@@ -384,7 +384,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     instructions = ((ClassWriter) classVisitor).toByteArray();
 
-    if (save)
+    if (saveClasses)
     {
       File file = new File(className + ".class");
       writeBytecodes(file);
@@ -863,9 +863,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   private Node<D, R, F> evaluatePossibleSubscriptedIndex()
   {
-    if (nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS_ARRAY))
+    if (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
     {
-      if (!nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS_ARRAY))
+      if (!nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
       {
         return new LiteralConstant<D, R, F>(this,
                                             String.valueOf(previousCharacter));

@@ -54,7 +54,7 @@ public class HypergeometricPolynomialSequence implements
 
   // public static final String Fdef =
   // "n➔when(n=0,1,else,x*F(n-1)*∏αₖ₍ₙ₋₁₎{k=1…p})";
-  public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1)*∏αₖ₍ₙ₋₁₎{k=1…p}/∏βₖ₍ₙ₋₁₎{k=1…q})";
+  public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1)*∏α[k]₍ₙ₋₁₎{k=1…p}/∏β[k]₍ₙ₋₁₎{k=1…q})";
 
   @SuppressWarnings("resource")
   public HypergeometricPolynomialSequence(int p, int q)

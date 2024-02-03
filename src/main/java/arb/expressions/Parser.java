@@ -200,5 +200,7 @@ public class Parser
   public static final char[]             SUBSCRIPT_CHARACTERS_ARRAY = new char[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
     'ₜ' };
+  public static final char[]             SUBSCRIPT_DIGITS_ARRAY = new char[]
+                { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉' };
 
 }

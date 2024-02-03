@@ -37,7 +37,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     String rem = expression.remaining();
     if (!expression.nextCharacterIs('{'))
     {
-      throw new ExpressionCompilerException(format(MISSING_OPENING_CURLY_BRACE, rem));
+      throw new ExpressionCompilerException(format(MISSING_OPENING_CURLY_BRACE, expression.character, rem));
     }
     var indexVar = expression.determine();
     if (!(indexVar instanceof Variable<D, R, F>))
