@@ -2,8 +2,8 @@ package arb.documentation;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public record Book(String author,
-                   String title,
+public record Book(String title,
+                   String author,
                    String year,
                    AtomicReference<String> volume,
                    AtomicReference<String> publisher,
@@ -13,7 +13,7 @@ public record Book(String author,
                   implements
                   Reference
 {
-  
+
   public Book(String author, String title, String year)
   {
     this(author,
@@ -40,8 +40,6 @@ public record Book(String author,
                          Reference.conditionallyInsertField("volume", volume.get()))
                  .replace(",}", "}");
   }
-
-
 
   @Override
   public Book setPublisher(String string)

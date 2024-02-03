@@ -13,19 +13,19 @@ public class Bibliography extends
                                                                          "1983").setSeries("Springer Series in Statistics")
                                                                                 .setPublisher("Springer-Verlag New York Inc.");
 
-  public static Book    functionalAnalysisRieszNagy           = new Book("Frigyes Riesz and Béla Sz.-Nagy",
-                                                                         "Functional Analysis",
+  public static Book    functionalAnalysisRieszNagy           = new Book("Functional Analysis",
+                                                                         "Frigyes Riesz and Béla Sz.-Nagy",
                                                                          "2012").setPublisher("Dover Publications")
                                                                                 .setSeries("Dover Books on Mathematics");
 
-  public static Book    functionalAnalysisYosida              = new Book("吉田 耕作(Kōsaku Yosida)",
-                                                                         "Functional Analysis",
+  public static Book    functionalAnalysisYosida              = new Book("Functional Analysis",
+                                                                         "吉田 耕作(Kōsaku Yosida)",
                                                                          "1995").setPublisher("Springer Berlin Heidelberg")
                                                                                 .setSeries("Classics in Mathematics")
                                                                                 .setEdition("Reprint of the 1980 Edition");
 
-  public static Book    linearHilbertSpaceTransforms          = new Book("Marshall Harvey Stone",
-                                                                         "Linear Transformations in Hilbert Space",
+  public static Book    linearHilbertSpaceTransforms          = new Book("Linear Transformations in Hilbert Space",
+                                                                         "Marshall Harvey Stone",
                                                                          "1932").setEdition("4th Printing (1951)")
                                                                                 .setVolume("XV")
                                                                                 .setSeries("Colloquium Publications")
@@ -38,8 +38,8 @@ public class Bibliography extends
                                                                                 .setAddress("111 Fifth Avenue New York, New York 10003")
                                                                                 .setSeries("L.M.S. Monographs");
 
-  public static Article orthopolyFourierTransforms            = new Article("Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
-                                                                            "The finite Fourier transform of classical polynomials",
+  public static Article orthopolyFourierTransforms            = new Article("The finite Fourier transform of classical polynomials",
+                                                                            "Dixit, Atul and Jiu, Lin and Moll, Victor H and Vignat, Christophe",
                                                                             "2015",
                                                                             "Journal of the Australian Mathematical Society",
                                                                             "98",
@@ -56,8 +56,8 @@ public class Bibliography extends
                                                                                 .setPublisher("Dover publications, Inc.")
                                                                                 .setAddress("180 Varick Street New York, N.Y. 10014");
 
-  public static Book    randomMatrices                        = new Book("Madan Lal Mehta",
-                                                                         "Random Matrices",
+  public static Book    randomMatrices                        = new Book("Random Matrices",
+                                                                         "Madan Lal Mehta",
                                                                          "2004").setEdition("3rd")
                                                                                 .setSeries("Pure and Applied Mathematics")
                                                                                 .setVolume("142");
@@ -76,8 +76,8 @@ public class Bibliography extends
                                                                             "28",
                                                                             "820–825").setNumber("8");
 
-  public static Book    skewOrthogonalRandomMatrices          = new Book("Saugata Ghosh",
-                                                                         "Skew-Orthogonal Polynomials and Random Matrix Theory",
+  public static Book    skewOrthogonalRandomMatrices          = new Book("Skew-Orthogonal Polynomials and Random Matrix Theory",
+                                                                         "Saugata Ghosh",
                                                                          "2009").setSeries("CRM Monograph Series")
                                                                                 .setVolume("28")
                                                                                 .setPublisher("American Mathematical Society");
@@ -92,13 +92,13 @@ public class Bibliography extends
                                                                                 .setPublisher("Springer New York")
                                                                                 .setVolume("I: Basic Results");
 
-  public static Book    stochasticFiniteElements              = new Book("Ghanem, Roger G. and Spanos, Pol D.",
-                                                                         "Stochastic finite elements: a spectral approach",
+  public static Book    stochasticFiniteElements              = new Book("Stochastic finite elements: a spectral approach",
+                                                                         "Ghanem, Roger G. and Spanos, Pol D.",
                                                                          "1991").setPublisher("Springer-Verlag")
                                                                                 .setAddress("Berlin, Heidelberg");
 
-  public static Book    stochasticProcessInferenceTheory      = new Book("Malempati M. Rao",
-                                                                         "Stochastic Processes: Inference Theory",
+  public static Book    stochasticProcessInferenceTheory      = new Book("Stochastic Processes: Inference Theory",
+                                                                         "Malempati M. Rao",
                                                                          "2014").setPublisher("Springer")
                                                                                 .setEdition("2nd")
                                                                                 .setSeries("Springer Monographs in Mathematics");

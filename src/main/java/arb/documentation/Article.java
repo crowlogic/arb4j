@@ -2,8 +2,8 @@ package arb.documentation;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public record Article(String author,
-                      String title,
+public record Article(String title,
+                      String author,
                       String year,
                       String journal,
                       AtomicReference<String> volume,
