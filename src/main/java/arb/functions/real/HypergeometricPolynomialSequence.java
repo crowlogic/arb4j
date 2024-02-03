@@ -28,11 +28,11 @@ public class HypergeometricPolynomialSequence implements
 
   public static void main(String... args)
   {
-    try ( var F = new HypergeometricPolynomialSequence(3,
+    try ( var F = new HypergeometricPolynomialSequence(2,
                                                        1);
           var index = new Integer())
     {
-      F.α.set(1, 4, -4);
+      F.α.set(4, -4);
       F.β.set(0.5);
 
       for (int n = 0; n < 5; n++)
@@ -54,7 +54,7 @@ public class HypergeometricPolynomialSequence implements
 
   // public static final String Fdef =
   // "n➔when(n=0,1,else,x*F(n-1)*∏αₖ₍ₙ₋₁₎{k=1…p})";
-  public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1)*∏α[k]₍ₙ₋₁₎{k=1…p}/∏β[k]₍ₙ₋₁₎{k=1…q})";
+  public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1)*∏α[k]₍ₙ₋₁₎{k=1…p}/((n-1)!*∏β[k]₍ₙ₋₁₎{k=1…q}))";
 
   @SuppressWarnings("resource")
   public HypergeometricPolynomialSequence(int p, int q)
