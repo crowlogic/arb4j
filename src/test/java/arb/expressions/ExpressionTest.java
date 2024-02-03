@@ -2,12 +2,14 @@ package arb.expressions;
 
 import arb.Real;
 import arb.RealConstants;
+import arb.expressions.nodes.Node;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 public class ExpressionTest extends
                             TestCase
 {
+
   public static void testRisingFactorial()
   {
     RealFunction func   = RealFunction.express("x₍₃₎");
@@ -29,10 +31,11 @@ public class ExpressionTest extends
     assertTrue(RealConstants.twoπ.approximatelyEquals(twoPi, 257));
   }
 
-  public void testVariableIndexedByASubscript()
+  public void testVariableIndexedByASubscriptAndMultipliedByTheDefactoInput()
   {
     Real         α       = Real.newVector(3);
     Context      context = new Context(α.setName("α"));
+    // RealFunction f = RealFunction.express("α[1]*t", context);
     RealFunction f       = RealFunction.express("α₁*t", context);
     α.set(0, RealConstants.π);
     Real twoPi = f.evaluate(RealConstants.two, 128, new Real());

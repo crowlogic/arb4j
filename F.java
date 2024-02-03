@@ -6,6 +6,7 @@ import arb.functions.Function;
 public class F implements Function<Integer, RealPolynomial> {
    Integer c1 = new Integer("0");
    Integer c2 = new Integer("1");
+   Integer c3 = new Integer("k");
    public Integer p;
    public Integer q;
    public Real α;
@@ -31,8 +32,8 @@ public class F implements Function<Integer, RealPolynomial> {
             }
 
             yield var5.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2)
-               .mul(α.get(c1).risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1), bits, r̅3)
-               .div(β.get(c1).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, result);
+               .mul(α.get(c3).risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1), bits, r̅3)
+               .div(β.get(c3).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, result);
          }
       };
    }
@@ -61,6 +62,7 @@ public class F implements Function<Integer, RealPolynomial> {
    public void close() {
       c1.close();
       c2.close();
+      c3.close();
       ℤ1.close();
       r̅1.close();
       r̅2.close();

@@ -10,7 +10,6 @@ import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
-import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
@@ -666,7 +665,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor loadIndexField(MethodVisitor methodVisitor, String indexFieldName)
   {
-    System.out.format("loadIndexField: indexFieldName=%s className=%s\n", indexFieldName, className);
     methodVisitor.visitFieldInsn(GETFIELD, className, indexFieldName, Integer.class.descriptorString());
     return methodVisitor;
   }
@@ -849,16 +847,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
         entirelySubscripted = false;
       }
     }
-    String substring        = expression.substring(startPos, position);
-    String trimmedSubstring = substring.trim();
-    String identifier       = Utensils.subscriptToRegular(trimmedSubstring);
-    System.out.format("evaluateName( startPos=%d) position=%d substring=%s trimmedSubstring=%s identifier=%s\n",
-                      startPos,
-                      position,
-                      substring,
-                      trimmedSubstring,
-                      identifier);
-    Node<D, R, F> index = evaluatePossibleSquareBracketedIndex();
+    String        substring        = expression.substring(startPos, position);
+    String        trimmedSubstring = substring.trim();
+    String        identifier       = Utensils.subscriptToRegular(trimmedSubstring);
+
+    Node<D, R, F> index            = evaluatePossibleSquareBracketedIndex();
     if (index == null)
     {
       index = evaluatePossibleSubscriptedIndex();
@@ -872,8 +865,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS_ARRAY))
     {
-      out.println("evaluating subscripted index remaining=" + remaining());
-      return determine();
+      if (!nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS_ARRAY))
+      {
+        return new LiteralConstant<D, R, F>(this,
+                                            String.valueOf(previousCharacter));
+      }
+      else
+      {
+        throw new ExpressionCompilerException(String.format("TODO: handle subscripted index starting with lastCharacter=%c\n"));
+      }
     }
     else
     {
@@ -1034,11 +1034,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F> resolveFunctionOrVariableReference(int startPos) throws ExpressionCompilerException
   {
-    VariableReference<D, R, F> reference = evaluateName(startPos);
-    System.out.format("resolveFunctionOrVariableReference(startPos=%d) reference=%s\n", position, reference);
-    System.out.flush();
+    VariableReference<D, R, F> reference  = evaluateName(startPos);
 
-    boolean isFunction = nextCharacterIs('(');
+    boolean                    isFunction = nextCharacterIs('(');
 
     if (isFunction)
     {
