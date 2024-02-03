@@ -4,6 +4,7 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import arb.Integer;
 import arb.Real;
@@ -87,9 +88,9 @@ public class Product<D, R, F extends Function<D, R>> extends
       expression.context.registerVariable(indexVariableName, new Integer());
     }
     
-//    expression.loadFieldOntoStack(mv, index.reference.name, Integer.class.descriptorString());
-//    startIndex.generate(classVisitor, mv, Integer.class);
-//    Compiler.invokeSetMethod(mv, Integer.class, Integer.class);
+    expression.loadFieldOntoStack(mv, indexVariableName, Integer.class.descriptorString());
+    startIndex.generate(classVisitor, mv, Integer.class);
+    Compiler.invokeSetMethod(mv, Integer.class, Integer.class);
     
     factor.generate(classVisitor, mv, Real.class);
     return mv;

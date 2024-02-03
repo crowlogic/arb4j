@@ -6,7 +6,6 @@ import arb.functions.Function;
 public class F implements Function<Integer, RealPolynomial> {
    Integer c1 = new Integer("0");
    Integer c2 = new Integer("1");
-   Integer c3 = new Integer("k");
    public Integer p;
    public Integer q;
    public Real α;
@@ -23,19 +22,23 @@ public class F implements Function<Integer, RealPolynomial> {
    public F F;
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
-      return switch(in.getSignedValue()) {
-         case 0 -> result.set(c2);
-         default -> {
+      Object var10000;
+      switch(in.getSignedValue()) {
+         case 0:
+            var10000 = result.set(c2);
+            break;
+         default:
             RealPolynomial var5 = result.identity();
             if (F == null) {
                F = new F(this);
             }
 
-            yield var5.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2)
-               .mul(α.get(c3).risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1), bits, r̅3)
-               .div(β.get(c3).risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, result);
-         }
-      };
+            var10000 = var5.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2).k.set(c2);
+            α.mul(result.identity().risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1), bits, r̅3).k.set(c2);
+            β.div(result.identity().risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, result);
+      }
+
+      return var10000;
    }
 
    public F() {
@@ -62,7 +65,6 @@ public class F implements Function<Integer, RealPolynomial> {
    public void close() {
       c1.close();
       c2.close();
-      c3.close();
       ℤ1.close();
       r̅1.close();
       r̅2.close();

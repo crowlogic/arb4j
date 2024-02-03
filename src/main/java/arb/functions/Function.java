@@ -159,7 +159,7 @@ public interface Function<D, R> extends
     return (F) instantiate(expression, null, domainClass, rangeClass, Function.class, null);
   }
 
-  public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
+  public static <D, R> Function<D,R> express(Class<? extends D> domainClass,
                                                                   Class<? extends R> rangeClass,
                                                                   String expression)
   {

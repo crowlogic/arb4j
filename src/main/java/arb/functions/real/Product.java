@@ -5,10 +5,15 @@ import arb.Real;
 import arb.functions.Function;
 
 public class Product implements
-                     Function<Void, Real>,
-                     AutoCloseable
+                     AutoCloseable,
+                     NullaryFunction<Real>
 {
-  @Override
+  public Function<Integer, Real> factor;
+  Integer                        startIndex = new Integer();
+  Integer                        endIndex   = new Integer();
+  Integer                        index      = new Integer();
+  Real                           value      = new Real();
+
   public void close()
   {
     index.close();
@@ -17,22 +22,18 @@ public class Product implements
     endIndex.close();
   }
 
-  public Function<Integer, Real> factor;
-  final Integer           startIndex = new Integer();
-  final Integer           endIndex   = new Integer();
-
-  final Integer           index      = new Integer();
-  final Real              value      = new Real();
-
   @Override
-  public Real evaluate(Void t, int order, int bits, Real product)
+  public Real evaluate(int bits, Real product)
   {
     product.one();
-    for (index.set(startIndex); index.compareTo(endIndex) <= 0;)
+    index.set(startIndex);
+
+    while (index.compareTo(endIndex) <= 0)
     {
-      product.mul(factor.evaluate(index.increment(), bits, value), bits);
+      product.mul(factor.evaluate(index, bits, value), bits);
+      index.increment();
     }
+
     return product;
   }
-
 }
