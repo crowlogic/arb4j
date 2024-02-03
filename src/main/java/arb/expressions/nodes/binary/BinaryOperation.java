@@ -62,11 +62,13 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     }
   }
 
-  protected final Node<D, R, F> right, left;
+  public Node<D, R, F> right;
 
-  private String                operation;
+  public Node<D, R, F> left;
 
-  private Class<?>              generatedType;
+  public String                operation;
+
+  public Class<?>              generatedType;
 
   public Class<?> getGeneratedType()
   {
@@ -106,7 +108,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   
   @Override
-  public final MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
 
     generatedType = resultType;
@@ -228,7 +230,9 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public final Class<?> type()
   {
-
+    assert left != null : "left is null: " + this + " for expr=" + expression;
+    assert right != null : "right is null: " + this + " for expr=" + expression;
+    
     if (left.type().equals(right.type()))
     {
       boolean integerDivision = operation.equals("div") && left.type().equals(Integer.class);

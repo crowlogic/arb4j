@@ -2,7 +2,11 @@ package arb.expressions.nodes.binary;
 
 import static java.lang.String.format;
 
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
@@ -15,6 +19,17 @@ import arb.functions.Function;
 public class Subtraction<D, R, F extends Function<D, R>> extends
                         BinaryOperation<D, R, F>
 {
+
+  @Override
+  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
+  {
+    if (left == null)
+    {
+      left = new LiteralConstant<>(expression,
+                                   "0");
+    }
+    return super.generate(classVisitor, mv, resultType);
+  }
 
   @Override
   public String typeset()

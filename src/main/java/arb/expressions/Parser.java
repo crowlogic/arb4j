@@ -1,5 +1,8 @@
 package arb.expressions;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 /**
  * <pre>
  * arb4j is made available under the terms of the Business Source License™ v1.1
@@ -110,10 +113,9 @@ public class Parser
     return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
   }
 
-  public static boolean isAlphabeticalSubscript(char ch)
+  public static boolean isAlphaNumericSubscript(char ch)
   {
-    ch = subscriptedCharToRegular(ch);
-    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
+    return SUBSCRIPT_CHARACTERS.contains(ch);
   }
 
   /**
@@ -135,9 +137,14 @@ public class Parser
    *         something to the 1st power because thats the identity operation
    * 
    */
-  public static boolean isExponent(int ch)
+  public static boolean isExponent(char ch)
   {
-    return ch == '^' || ch == '⁰' || ch == '¹' || ch == '²' || ch == '³' || (ch >= '⁴' && ch <= '⁹');
+    return ch == '^' || isNumericSuperscript(ch);
+  }
+
+  private static boolean isNumericSuperscript(char ch)
+  {
+    return ch == '⁰' || ch == '¹' || ch == '²' || ch == '³' || (ch >= '⁴' && ch <= '⁹');
   }
 
   /**
@@ -187,7 +194,10 @@ public class Parser
     return character == '₍' || character == '₎';
   }
 
-  static final char[] SUBSCRIPT_CHARACTERS       = new char[]
+  public static final HashSet<Character> SUBSCRIPT_CHARACTERS       = new HashSet<Character>(Arrays.asList(new Character[]
+  { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
+    'ₜ' }));
+  public static final char[]             SUBSCRIPT_CHARACTERS_ARRAY = new char[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
     'ₜ' };
 

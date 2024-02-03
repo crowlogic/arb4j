@@ -724,10 +724,41 @@ public class Expression<D, R, F extends Function<D, R>> implements
       node = evaluateNumber(startPos);
       assert node != null : "parseNumber returned null";
     }
-    else if (Parser.isLatinOrGreek(character, false) || Parser.isAlphabeticalSubscript(character))
+    else if (Parser.isLatinOrGreek(character, false) || Parser.isAlphaNumericSubscript(character))
     {
-      node = resolveFunctionInvocationOrVariableReference(startPos);
+      node = resolveFunctionOrVariableReference(startPos);
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
+    }
+
+    node = resolvePostfixOperators(node);
+    return node;
+  }
+
+  private Node<D, R, F> resolvePostfixOperators(Node<D, R, F> node)
+  {
+    node = resolveRisingFactorial(node);
+    return node;
+  }
+
+  private Node<D, R, F> resolveRisingFactorial(Node<D, R, F> node)
+  {
+    if (nextCharacterIs('₍'))
+    {
+      Node<D, R, F> power = determine();
+      if (nextCharacterIs('₎'))
+      {
+        node = new RisingFactorial<D, R, F>(this,
+                                            node,
+                                            power);
+      }
+      else
+      {
+        throw new ExpressionCompilerException(String.format("Expected ₎ not found at position %d in %s instead got %c with remaining %s\n",
+                                                            position,
+                                                            expression,
+                                                            character,
+                                                            remaining()));
+      }
     }
 
     return node;
@@ -738,7 +769,20 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return expression.substring(position, expression.length());
   }
 
-  public int previousCharacter;
+  public char previousCharacter;
+
+  public boolean prevCharacterWas(char... expectedCharacters)
+  {
+    for (char expectedCharacter : expectedCharacters)
+    {
+      if (expectedCharacter == previousCharacter)
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   public boolean nextCharacterIs(char... expectedCharacters)
   {
@@ -766,11 +810,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     while (true)
     {
-      if (node == null)
-      {
-        node = new LiteralConstant<>(this,
-                                     "0");
-      }
 
       if (nextCharacterIs('+', '₊'))
       {
@@ -802,7 +841,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     boolean entirelySubscripted = true;
     boolean isLatinOrGreek;
     while ((isLatinOrGreek = isLatinOrGreek(character, true))
-                  || (entirelySubscripted && !isLatinOrGreek && Parser.isAlphabeticalSubscript(character)))
+                  || (entirelySubscripted && !isLatinOrGreek && Parser.isAlphaNumericSubscript(character)))
     {
       nextCharacter();
       if (isLatinOrGreek)
@@ -810,8 +849,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
         entirelySubscripted = false;
       }
     }
-    String        identifier = Utensils.subscriptToRegular(expression.substring(startPos, position).trim());
-    Node<D, R, F> index      = evaluatePossibleSquareBracketedIndex();
+    String substring        = expression.substring(startPos, position);
+    String trimmedSubstring = substring.trim();
+    String identifier       = Utensils.subscriptToRegular(trimmedSubstring);
+    System.out.format("evaluateName( startPos=%d) position=%d substring=%s trimmedSubstring=%s identifier=%s\n",
+                      startPos,
+                      position,
+                      substring,
+                      trimmedSubstring,
+                      identifier);
+    Node<D, R, F> index = evaluatePossibleSquareBracketedIndex();
     if (index == null)
     {
       index = evaluatePossibleSubscriptedIndex();
@@ -823,9 +870,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   private Node<D, R, F> evaluatePossibleSubscriptedIndex()
   {
-    if (nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS))
+    if (nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS_ARRAY))
     {
-      out.println( "evaluating subscripted index remaining=" + remaining() );
+      out.println("evaluating subscripted index remaining=" + remaining());
       return determine();
     }
     else
@@ -985,40 +1032,19 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return intermediateVariableName;
   }
 
-  public Node<D, R, F> resolveFunctionInvocationOrVariableReference(int startPos) throws ExpressionCompilerException
+  public Node<D, R, F> resolveFunctionOrVariableReference(int startPos) throws ExpressionCompilerException
   {
-    VariableReference reference  = evaluateName(startPos);
-    boolean           isFunction = nextCharacterIs('(');
+    VariableReference<D, R, F> reference = evaluateName(startPos);
+    System.out.format("resolveFunctionOrVariableReference(startPos=%d) reference=%s\n", position, reference);
+    System.out.flush();
+
+    boolean isFunction = nextCharacterIs('(');
 
     if (isFunction)
     {
-      if ("when".equals(reference.name))
-      {
-        return new When<>(this);
-      }
-      else
-      {
-        Node<D, R, F> arg = determine();
-        if (nextCharacterIs(')'))
-        {
-          return new FunctionCall<>(this,
-                                    reference.name,
-                                    arg);
-        }
-        else
-        {
-          throw new RuntimeException(String.format("expected closing parenthesis at: startPos=%s, position=%s,"
-                        + " identifier='%s', isFunction=%s, expression=%s\n",
-                                                   startPos,
-                                                   position,
-                                                   reference,
-                                                   isFunction,
-                                                   expression));
-        }
-      }
+      return resolveFunction(startPos, reference);
     }
     else if (LiteralConstant.constantSymbols.contains(reference.name))
-
     {
       return new LiteralConstant<>(this,
                                    reference.name);
@@ -1027,22 +1053,34 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       Variable<D, R, F> variable = newVariable(reference);
 
-      if (nextCharacterIs('₍'))
-      {
-        Node<D, R, F> power = determine();
-        if (nextCharacterIs('₎'))
-        {
-          return new RisingFactorial<D, R, F>(this,
-                                              variable,
-                                              power);
-        }
-      }
-
       return variable;
     }
   }
 
-  private Variable<D, R, F> newVariable(VariableReference reference)
+  private Node<D, R, F> resolveFunction(int startPos, VariableReference<D, R, F> reference)
+  {
+    if ("when".equals(reference.name))
+    {
+      return new When<>(this);
+    }
+    else
+    {
+      Node<D, R, F> arg = determine();
+      if (nextCharacterIs(')'))
+      {
+        return new FunctionCall<>(this,
+                                  reference.name,
+                                  arg);
+      }
+      else
+      {
+        throw new RuntimeException(String.format("expected closing parenthesis at: startPos=%s, position=%s,"
+                      + " identifier='%s', expression=%s\n", startPos, position, reference, expression));
+      }
+    }
+  }
+
+  private Variable<D, R, F> newVariable(VariableReference<D, R, F> reference)
   {
     var contextVar = context == null ? null : context.variables.get(reference.name);
     reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();

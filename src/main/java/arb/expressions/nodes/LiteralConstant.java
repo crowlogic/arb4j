@@ -33,23 +33,11 @@ import arb.utensils.Utensils;
 public class LiteralConstant<D, R, F extends Function<D, R>> extends
                             Node<D, R, F>
 {
-  public boolean isInt = false;
-
-  @Override
-  public Class<?> type()
-  {
-    return isInt ? Integer.class : Real.class;
-  }
-
-  public final String           value;
-  public String                 fieldName;
-
   public static final String    π               = "π";
 
   public static final String    half            = "½";
 
   public static HashSet<String> constantSymbols = new HashSet<String>();
-
   static
   {
     constantSymbols.add(π);
@@ -60,6 +48,12 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   {
     return constantSymbols.contains(var);
   }
+
+  public boolean isInt = false;
+
+  public final String           value;
+
+  public String                 fieldName;
 
   public LiteralConstant(Expression<D, R, F> expression, String constantValueString)
   {
@@ -98,25 +92,6 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public String toString()
-  {
-    return String.format("%s[fieldName=%s, value=%s, type=%s]",
-                         getClass().getSimpleName(),
-                         fieldName,
-                         value,
-                         type() != null ? type().getName() : null);
-  }
-
-  public String toString(int depth)
-  {
-    return String.format("%s[fieldName=%s, value=%s, depth=%s]",
-                         getClass().getSimpleName(),
-                         fieldName,
-                         value,
-                         depth);
-  }
-
-  @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
     if (π.equals(fieldName))
@@ -143,6 +118,27 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     return mv;
   }
 
+  public MethodVisitor generateLiteralConstantInitializerWithString(MethodVisitor methodVisitor)
+  {
+    Class<?> type = type();
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
+    methodVisitor.visitInsn(DUP);
+    methodVisitor.visitLdcInsn(value);
+    boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
+    if (needsBitsPassedToStringConstructor)
+    {
+      methodVisitor.visitIntInsn(SIPUSH, bits);
+    }
+    methodVisitor.visitMethodInsn(INVOKESPECIAL,
+                                  Type.getInternalName(type),
+                                  "<init>",
+                                  needsBitsPassedToStringConstructor ? "(Ljava/lang/String;I)V" : "(Ljava/lang/String;)V",
+                                  false);
+    methodVisitor.visitFieldInsn(PUTFIELD, expression.className, fieldName, type.descriptorString());
+    return methodVisitor;
+  }
+
   private void getStaticField(MethodVisitor mv, String fn)
   {
     mv.visitFieldInsn(Opcodes.GETSTATIC,
@@ -165,6 +161,31 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   }
 
   @Override
+  public String toString()
+  {
+    return String.format("%s[fieldName=%s, value=%s, type=%s]",
+                         getClass().getSimpleName(),
+                         fieldName,
+                         value,
+                         type() != null ? type().getName() : null);
+  }
+
+  public String toString(int depth)
+  {
+    return String.format("%s[fieldName=%s, value=%s, depth=%s]",
+                         getClass().getSimpleName(),
+                         fieldName,
+                         value,
+                         depth);
+  }
+
+  @Override
+  public Class<?> type()
+  {
+    return isInt ? Integer.class : Real.class;
+  }
+
+  @Override
   public String typeset()
   {
     if (π.equals(value))
@@ -179,26 +200,5 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     {
       return value;
     }
-  }
-
-  public MethodVisitor generateLiteralConstantInitializerWithString(MethodVisitor methodVisitor)
-  {
-    Class<?> type = type();
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitTypeInsn(NEW, Type.getInternalName(type));
-    methodVisitor.visitInsn(DUP);
-    methodVisitor.visitLdcInsn(value);
-    boolean needsBitsPassedToStringConstructor = type.equals(Real.class);
-    if (needsBitsPassedToStringConstructor)
-    {
-      methodVisitor.visitIntInsn(SIPUSH, bits);
-    }
-    methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                  Type.getInternalName(type),
-                                  "<init>",
-                                  needsBitsPassedToStringConstructor ? "(Ljava/lang/String;I)V" : "(Ljava/lang/String;)V",
-                                  false);
-    methodVisitor.visitFieldInsn(PUTFIELD, expression.className, fieldName, type.descriptorString());
-    return methodVisitor;
   }
 }
