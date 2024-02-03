@@ -82,7 +82,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return isIndeterminant ? expression.rangeType : reference.type();
   }
 
-  public final VariableReference reference;
+  public final VariableReference<D,R,F> reference;
 
   public final Variables         variables;
 
@@ -96,7 +96,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   private Class<?>               generatedType;
 
-  public Variable(Expression<D, R, F> expression, VariableReference reference)
+  public Variable(Expression<D, R, F> expression, VariableReference<D,R,F> reference)
   {
     super(expression);
     this.expression = expression;
@@ -143,7 +143,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return Objects.equals(reference, other.reference);
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {

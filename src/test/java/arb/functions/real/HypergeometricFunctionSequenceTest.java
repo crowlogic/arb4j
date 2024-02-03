@@ -15,7 +15,7 @@ public class HypergeometricFunctionSequenceTest extends
                                                                                     1))
     {
       F.α.set(-3, 3);
-      F.β.set(-0.5);
+      F.β.set(0.5);
 
       try ( var index = new Integer())
       {
