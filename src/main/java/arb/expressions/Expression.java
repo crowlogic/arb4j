@@ -10,6 +10,7 @@ import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static java.lang.String.format;
+import static java.lang.System.out;
 import static java.util.stream.Collectors.toList;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
@@ -796,7 +797,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return exponentiate(evaluate());
   }
 
-  public VariableReference evaluateName(int startPos)
+  public VariableReference<D, R, F> evaluateName(int startPos)
   {
     boolean entirelySubscripted = true;
     boolean isLatinOrGreek;
@@ -815,14 +816,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       index = evaluatePossibleSubscriptedIndex();
     }
-    return new VariableReference(identifier,
-                                 index);
+    VariableReference<D, R, F> variableReference = new VariableReference<D, R, F>(identifier,
+                                                                                  index);
+    return variableReference;
   }
 
   private Node<D, R, F> evaluatePossibleSubscriptedIndex()
   {
     if (nextCharacterIs(Parser.SUBSCRIPT_CHARACTERS))
     {
+      out.println( "evaluating subscripted index remaining=" + remaining() );
       return determine();
     }
     else

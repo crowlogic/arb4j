@@ -37,17 +37,16 @@
     so
 
     <\equation>
-      <around|\||f<around|(|y<rsub|0>|)>|\|>\<leq\><around|\<\|\|\>|f|\<\|\|\>>\<cdot\><around|(|K<around|(|y<rsub|0>,y<rsub|0>|)>|)><rsup|1/2>.
+      <around|\||f<around|(|y<rsub|0>|)>|\|>\<leq\><around|\<\|\|\>|f|\<\|\|\>><sqrt|K<around|(|y<rsub|0>,y<rsub|0>|)>>
     </equation>
 
     The "if" part is proved by applying F. Riesz' representation theorem to
     the linear functional <math|F<rsub|y<rsub|0>><around|(|f|)>=f<around|(|y<rsub|0>|)>>
     of <math|f\<in\>X>. Thus, there exists a uniquely determined vector
-    <math|g<rsub|y<rsub|0>><around|(|x|)>> of <math|X> such that, for every
-    <math|f\<in\>X>,
+    <math|g<rsub|y<rsub|0>><around|(|x|)>> of <math|X> such that
 
     <\equation>
-      f<around|(|y<rsub|0>|)>=F<rsub|y<rsub|0>><around|(|f|)>=<around|(|f,g<rsub|y<rsub|0>><around|(|x|)>|)>,
+      f<around|(|y<rsub|0>|)>=F<rsub|y<rsub|0>><around|(|f|)>=<around|(|f,g<rsub|y<rsub|0>><around|(|x|)>|)>\<forall\>f\<in\>X<label|fy0>
     </equation>
 
     and so <math|g<rsub|y<rsub|0>><around|(|x|)>=K<around|(|x,y<rsub|0>|)>>
@@ -80,8 +79,13 @@
       1=\<alpha\><around|(|K<around|(|x,y<rsub|0>|)>,K|(>\<cdot\>,y<rsub|0>))<rsup|2>=<around|\||\<alpha\>|\|><rsup|2><around|(|K<around|(|y<rsub|0>,y<rsub|0>|)>|)><rsup|2>
     </equation>
 
-    that is, <math|<around|\||\<alpha\>|\|>=<frac|1|<sqrt|K<around|(|y<rsub|0>,y<rsub|0>|)>>>>.
-    Hence the equality sign in (5) is attained by
+    that is
+
+    <\equation>
+      <around|\||\<alpha\>|\|>=<frac|1|<sqrt|K<around|(|y<rsub|0>,y<rsub|0>|)>>>
+    </equation>
+
+    Hence the equality sign in (<reference|fy0>) is attained by
     <math|f<rsub|0><around|(|x|)>>.
   </proof>
 
@@ -91,7 +95,7 @@
     (4) in Chapter I, 9)
 
     <\equation>
-      <around|\||f<around|(|z<rsub|0>|)>|\|><rsup|2>\<leq\>*<frac|<big|int><rsub|<around|\||z-z<rsub|0>|\|>\<leq\>r><around|\||f<around|(|z|)>|\|><rsup|2>*<space|0.17em>\<mathd\>x*\<mathd\>y|\<pi\>*r<rsup|2>>*<space|1em><around|(|z=x+i*y|)>.
+      <around|\||f<around|(|z<rsub|0>|)>|\|><rsup|2>\<leq\>*<frac|<big|int><rsub|<around|\||z-z<rsub|0>|\|>\<leq\>r><around|\||f<around|(|z|)>|\|><rsup|2>*<space|0.17em>\<mathd\>x*\<mathd\>y|\<pi\>*r<rsup|2>>*<space|1em><around|(|z=x+i*y|)>
     </equation>
 
     Thus <math|A<rsup|2><around|(|G|)>> has the reproducing kernel which will
@@ -123,9 +127,9 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|9|1|../../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-2|<tuple|9|2|../../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|bib-functionalAnalysisYosida|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|auto-1|<tuple|10|2>>
+    <associate|bib-functionalAnalysisYosida|<tuple|1|2>>
+    <associate|fy0|<tuple|5|1>>
   </collection>
 </references>
 
@@ -135,14 +139,9 @@
       functionalAnalysisYosida
     </associate>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|III.
-      The Orthogonal Projection and F. Riesz' Representation Theorem>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1><vspace|0.5fn>
-
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2><vspace|0.5fn>
+      <no-break><pageref|auto-1><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
