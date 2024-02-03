@@ -109,8 +109,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
 
   public String toString(int depth)
   {
-    return String.format("%s%s[fieldName=%s, value=%s, depth=%s]",
-                         depth < 0 ? "" : indent(depth),
+    return String.format("%s[fieldName=%s, value=%s, depth=%s]",
                          getClass().getSimpleName(),
                          fieldName,
                          value,

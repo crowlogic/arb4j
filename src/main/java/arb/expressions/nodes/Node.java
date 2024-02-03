@@ -44,11 +44,6 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
 
   public abstract MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType);
 
-  protected static String indent(int depth)
-  {
-    return String.join("", Collections.nCopies(Math.max(depth, 0), " "));
-  }
-
   public Class<?> getGeneratedType()
   {
     return null;
