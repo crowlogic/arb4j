@@ -74,7 +74,9 @@ public class HypergeometricPolynomialSequence implements
   }
 
   /**
-   * 
+   * @return true if there is at least one strictly nonnegative integer in the
+   *         numerator (the condition ensuring the finite number of non-zero terms
+   *         in the hypergeometric series this function generates)
    */
   @Override
   public boolean verify()
