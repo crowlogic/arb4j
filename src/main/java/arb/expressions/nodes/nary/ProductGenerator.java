@@ -4,8 +4,7 @@ import static arb.expressions.Compiler.invokeSetMethod;
 
 import org.objectweb.asm.*;
 
-import com.sun.jdi.Field;
-
+import arb.Field;
 import arb.Real;
 import arb.expressions.nodes.unary.Function;
 import arb.utensils.Utensils;
