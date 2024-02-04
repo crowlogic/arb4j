@@ -2,7 +2,6 @@ package arb.expressions;
 
 import arb.Real;
 import arb.RealConstants;
-import arb.expressions.nodes.Node;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 

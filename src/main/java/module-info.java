@@ -42,7 +42,6 @@ module arb4j
   exports arb.expressions.nodes.binary;
   exports arb.expressions.nodes.unary;
   exports arb.algebra;
-  exports arb.algebraic.geometry;
   exports arb.geometry;
   exports arb.geometry.symplectic;
   exports arb.geometry.curves;
@@ -65,7 +64,6 @@ module arb4j
   exports arb.groups;
   exports arb.space.bornological;
   exports arb.space.topological;
-  exports arb.topology;
   exports arb.measure;
   exports arb.stochastic;
   exports arb.stochastic.processes;

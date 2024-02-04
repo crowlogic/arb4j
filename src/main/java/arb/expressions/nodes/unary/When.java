@@ -16,7 +16,6 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.exceptions.ExpressionCompilerException;
-import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;

@@ -4,7 +4,6 @@ import static java.lang.String.format;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import arb.Integer;
 import arb.Real;

@@ -1,7 +1,5 @@
 package arb.expressions.nodes;
 
-import java.util.Collections;
-
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
