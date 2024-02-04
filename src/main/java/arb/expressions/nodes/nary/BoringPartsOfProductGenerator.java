@@ -19,31 +19,31 @@ public abstract class BoringPartsOfProductGenerator
 
   protected static final String factorFunction                = "factor";
   protected static final String factorValue                   = "value";
-  protected static final String THIS_CLASS_INTERNAL_NAME      = "arb/GeneratedProductClass";
+  String                        functionClass      ;
 
-  protected static void generateCloseMethod(ClassWriter classWriter)
+  protected void generateCloseMethod(ClassWriter classWriter)
   {
     MethodVisitor methodVisitor;
     methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "close", "()V", null, null);
     methodVisitor.visitCode();
     loadThis(methodVisitor);
-    methodVisitor.visitFieldInsn(GETFIELD, THIS_CLASS_INTERNAL_NAME, "index", "Larb/Integer;");
+    methodVisitor.visitFieldInsn(GETFIELD, functionClass, "index", "Larb/Integer;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "close", "()V", false);
     loadThis(methodVisitor);
-    methodVisitor.visitFieldInsn(GETFIELD, THIS_CLASS_INTERNAL_NAME, factorValue, "Larb/Real;");
+    methodVisitor.visitFieldInsn(GETFIELD, functionClass, factorValue, "Larb/Real;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Real", "close", "()V", false);
     loadThis(methodVisitor);
-    methodVisitor.visitFieldInsn(GETFIELD, THIS_CLASS_INTERNAL_NAME, "startIndex", "Larb/Integer;");
+    methodVisitor.visitFieldInsn(GETFIELD, functionClass, "startIndex", "Larb/Integer;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "close", "()V", false);
     loadThis(methodVisitor);
-    methodVisitor.visitFieldInsn(GETFIELD, THIS_CLASS_INTERNAL_NAME, "endIndex", "Larb/Integer;");
+    methodVisitor.visitFieldInsn(GETFIELD, functionClass, "endIndex", "Larb/Integer;");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "close", "()V", false);
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(1, 1);
     methodVisitor.visitEnd();
   }
 
-  protected static void generateConstructor(ClassWriter classWriter)
+  protected void generateConstructor(ClassWriter classWriter)
   {
     MethodVisitor methodVisitor;
     methodVisitor = classWriter.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
@@ -53,30 +53,30 @@ public abstract class BoringPartsOfProductGenerator
     methodVisitor.visitTypeInsn(NEW, "arb/Integer");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "arb/Integer", "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD, THIS_CLASS_INTERNAL_NAME, "startIndex", "Larb/Integer;");
+    methodVisitor.visitFieldInsn(PUTFIELD, functionClass, "startIndex", "Larb/Integer;");
     loadThis(methodVisitor);
     methodVisitor.visitTypeInsn(NEW, "arb/Integer");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "arb/Integer", "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD, THIS_CLASS_INTERNAL_NAME, "endIndex", "Larb/Integer;");
+    methodVisitor.visitFieldInsn(PUTFIELD, functionClass, "endIndex", "Larb/Integer;");
     loadThis(methodVisitor);
     methodVisitor.visitTypeInsn(NEW, "arb/Integer");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "arb/Integer", "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD, THIS_CLASS_INTERNAL_NAME, "index", "Larb/Integer;");
+    methodVisitor.visitFieldInsn(PUTFIELD, functionClass, "index", "Larb/Integer;");
     loadThis(methodVisitor);
     methodVisitor.visitTypeInsn(NEW, "arb/Real");
     methodVisitor.visitInsn(DUP);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "arb/Real", "<init>", "()V", false);
-    methodVisitor.visitFieldInsn(PUTFIELD, THIS_CLASS_INTERNAL_NAME, factorValue, "Larb/Real;");
+    methodVisitor.visitFieldInsn(PUTFIELD, functionClass, factorValue, "Larb/Real;");
     methodVisitor.visitInsn(RETURN);
     methodVisitor.visitMaxs(3, 1);
     methodVisitor.visitEnd();
   }
 
-  protected static void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
+  protected void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
   {
-    getField(methodVisitor, THIS_CLASS_INTERNAL_NAME, fieldName, fieldTypeSignature);
+    getField(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
 
   protected static MethodVisitor
@@ -90,6 +90,7 @@ public abstract class BoringPartsOfProductGenerator
                                           String fieldName,
                                           String fieldTypeSignature)
   {
+    assert thisClassInternalName != null : "thisClassInternalName is null";
     loadThis(methodVisitor).visitFieldInsn(GETFIELD, thisClassInternalName, fieldName, fieldTypeSignature);
     return methodVisitor;
   }
@@ -105,7 +106,7 @@ public abstract class BoringPartsOfProductGenerator
     methodVisitor.visitVarInsn(ILOAD, 1);
   }
 
-  protected static void loadEndIndex(MethodVisitor methodVisitor)
+  protected void loadEndIndex(MethodVisitor methodVisitor)
   {
     getField(methodVisitor, "endIndex", "Larb/Integer;");
   }
@@ -117,7 +118,7 @@ public abstract class BoringPartsOfProductGenerator
 
     classWriter.visit(-65471,
                       ACC_PUBLIC | ACC_SUPER,
-                      THIS_CLASS_INTERNAL_NAME,
+                      functionClass,
                       "Ljava/lang/Object;Ljava/lang/AutoCloseable;Larb/functions/real/NullaryFunction<Larb/Real;>;",
                       "java/lang/Object",
                       new String[]
@@ -135,7 +136,7 @@ public abstract class BoringPartsOfProductGenerator
 
   abstract void generateEvaluateMethod(ClassWriter classWriter);
 
-  protected static void loadFactorFunction(MethodVisitor methodVisitor)
+  protected void loadFactorFunction(MethodVisitor methodVisitor)
   {
     loadFieldFromThis(methodVisitor, factorFunction, Function.class);
   }
@@ -159,7 +160,7 @@ public abstract class BoringPartsOfProductGenerator
     loadResultingProductVariable(methodVisitor);
     methodVisitor.visitTypeInsn(CHECKCAST, "arb/Real");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-                                  THIS_CLASS_INTERNAL_NAME,
+                                  functionClass,
                                   evaluate,
                                   "(ILarb/Real;)Larb/Real;",
                                   false);
@@ -186,9 +187,9 @@ public abstract class BoringPartsOfProductGenerator
     invokeMethod(methodVisitor, classInternalName, methodName, methodSignature, false);
   }
 
-  protected static MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
+  protected MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
   {
-    return getField(mv, THIS_CLASS_INTERNAL_NAME, fieldName, type);
+    return getField(mv, functionClass, fieldName, type);
   }
 
   protected void generateEvaluationBridgeMethods(ClassWriter classWriter)
@@ -256,7 +257,7 @@ public abstract class BoringPartsOfProductGenerator
     methodVisitor.visitVarInsn(ALOAD, 2);
   }
 
-  protected static void loadStartIndex(MethodVisitor methodVisitor)
+  protected void loadStartIndex(MethodVisitor methodVisitor)
   {
     getField(methodVisitor, "startIndex", "Larb/Integer;");
   }

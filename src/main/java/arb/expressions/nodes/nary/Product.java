@@ -2,13 +2,10 @@ package arb.expressions.nodes.nary;
 
 import static java.lang.String.format;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.*;
 
-import arb.Integer;
 import arb.Real;
 import arb.exceptions.ExpressionCompilerException;
-import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -70,56 +67,15 @@ public class Product<D, R, F extends Function<D, R>> extends
     return this;
   }
 
+  private ProductGenerator productGenerator = new ProductGenerator(Type.getInternalName(expression.functionClass));
+
   @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
-    assert index.reference.index == null : "only non-indexed variable references can be used as the index for a Product";
-    indexVariableName = index.reference.name;
-    Object existingIndex = expression.context.getVariable(indexVariableName);
-    if (existingIndex != null && !existingIndex.getClass().equals(Integer.class))
-    {
-      throw new ExpressionCompilerException("index variable " + indexVariableName + " of a type "
-                    + existingIndex.getClass() + " which is not arb.Integer already exists in the context");
-    }
-    else if (existingIndex == null)
-    {
-      assert !expression.variablesDeclared : "variables have already been declared";
-      expression.context.registerVariable(indexVariableName, new Integer());
-    }
-    
-    expression.loadFieldOntoStack(mv, indexVariableName, Integer.class.descriptorString());
-    startIndex.generate(classVisitor, mv, Integer.class);
-    Compiler.invokeSetMethod(mv, Integer.class, Integer.class);
-    
-    factor.generate(classVisitor, mv, Real.class);
+    productGenerator.generateProduct(new MethodVisitInterceptor(Opcodes.ASM9,
+                                                                mv));
     return mv;
-//    loadOutputVariableOntoStack(mv, expression, Real.class); // Prepare the stack for the result
-//
-//    Label loopStart = new Label();
-//    Label afterLoop = new Label();
-//    mv.visitLabel(loopStart);
-//
-//    // Generate start and end index values onto the stack
-//    startIndex.generate(classVisitor, mv, Integer.class); // Load start index
-//    endIndex.generate(classVisitor, mv, Integer.class); // Load end index
-//
-//    // Compare start index with end index
-//    mv.visitMethodInsn(INVOKEVIRTUAL, "arb/Integer", "compareTo", "(Larb/Integer;)I", false);
-//    mv.visitJumpInsn(IFGE, afterLoop); // Exit loop if start index >= end index
-//
-//    // Apply the 'factor' within the loop
-//    factor.generate(classVisitor, mv, Real.class); // Apply factor to the product
-//
-//    // Increment the index logic here
-//    // Assuming an increment method or operation updates the index within the factor
-//    // or elsewhere
-//
-//    mv.visitJumpInsn(GOTO, loopStart);
-//    mv.visitLabel(afterLoop);
-//
-//    // Finalization code if needed
-//
-//    return mv; // Return MethodVisitor for potential further modifications
+
   }
 
   @Override

@@ -31,10 +31,15 @@ public class ProductGenerator extends
                               Opcodes
 {
 
+  public ProductGenerator(String functionClass)
+  {
+    this.functionClass = functionClass;
+  }
+
   public static void main(String[] args)
   {
     // Instantiate the ProductGenerator
-    ProductGenerator generator   = new ProductGenerator();
+    ProductGenerator generator   = new ProductGenerator("arb/GeneratedProductClass");
 
     // Create a ClassWriter to generate a new class bytecode
     ClassWriter      classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
@@ -48,7 +53,7 @@ public class ProductGenerator extends
                       "java/lang/Object",
                       null);
 
-    BoringPartsOfProductGenerator.generateConstructor(classWriter);
+    generator.generateConstructor(classWriter);
 
     generator.declareFields(classWriter);
 
@@ -100,7 +105,7 @@ public class ProductGenerator extends
     methodVisitor.visitEnd();
   }
 
-  static void loadLoopIndexVariable(MethodVisitor methodVisitor)
+  void loadLoopIndexVariable(MethodVisitor methodVisitor)
   {
     getField(methodVisitor, "index", "Larb/Integer;");
   }
@@ -125,9 +130,16 @@ public class ProductGenerator extends
   public void generateEvaluateMethod(ClassWriter classWriter)
   {
     MethodVisitor methodVisitor = beginEvaluationCode(classWriter);
+
+    generateProduct(methodVisitor);
+
+    returnResult(methodVisitor);
+  }
+
+  public void generateProduct(MethodVisitor methodVisitor)
+  {
     initializeProductResultToItsIdentity(methodVisitor);
     setIndexToTheStartIndex(methodVisitor);
-
     jumpTo(methodVisitor, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
     designateLabel(methodVisitor, beginningOfTheLoop);
     loadResultingProductVariable(methodVisitor);
@@ -136,8 +148,6 @@ public class ProductGenerator extends
     incrementIndex(methodVisitor);
     designateLabel(methodVisitor, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
     jumpToLoopBeginningIfThatWasntTheLastFactor(methodVisitor);
-
-    returnResult(methodVisitor);
   }
 
   private void returnResult(MethodVisitor methodVisitor)
