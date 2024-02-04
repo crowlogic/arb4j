@@ -151,7 +151,7 @@ public abstract class BoringPartsOfProductGenerator
     methodVisitor.visitCode();
     loadThis(methodVisitor);
     loadBits(methodVisitor);
-    loadResultVariable(methodVisitor);
+    loadResultingProductVariable(methodVisitor);
     methodVisitor.visitTypeInsn(CHECKCAST, "arb/Real");
     methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
                                   THIS_CLASS_INTERNAL_NAME,
@@ -233,7 +233,7 @@ public abstract class BoringPartsOfProductGenerator
     }
   }
 
-  protected static void loadResultVariable(MethodVisitor methodVisitor)
+  protected static void loadResultingProductVariable(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(ALOAD, 2);
   }
@@ -249,9 +249,9 @@ public abstract class BoringPartsOfProductGenerator
     return methodVisitor;
   }
 
-  protected Label afterLoop  = new Label();
+  protected Label justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot  = new Label();
 
-  protected Label beforeLoop = new Label();
+  protected Label beginningOfTheLoop = new Label();
 
   public BoringPartsOfProductGenerator()
   {
