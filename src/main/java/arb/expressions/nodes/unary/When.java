@@ -1,5 +1,6 @@
 package arb.expressions.nodes.unary;
 
+import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.GOTO;
@@ -38,124 +39,8 @@ public class When<D, R, F extends Function<D, R>> extends
                  UnaryOperation<D, R, F>
 {
 
-  @Override
-  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
-  {
-    assert expression.domainType.equals(Integer.class) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
-                                                                       expression.domainType);
-    try
-    {
-      mv.visitCode();
-
-      labels = cases.entrySet()
-                    .stream()
-                    .map(entry -> new Label())
-                    .collect(Collectors.toList())
-                    .toArray(new Label[cases.size()]);
-
-      cases.values().forEach(val ->
-      {
-        val.isResult = isResult;
-      });
-      arg.isResult = isResult;
-
-      Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         Type.getInternalName(Integer.class),
-                         "getSignedValue",
-                         Type.getMethodDescriptor(Type.getType(int.class)),
-                         false);
-      mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
-      var branches = cases.values().stream().collect(Collectors.toList());
-
-      for (int i = 0; i < labels.length; i++)
-      {
-        mv.visitLabel(labels[i]);
-        branches.get(i).generate(classVisitor, mv, expression.rangeType);
-        mv.visitJumpInsn(GOTO, endSwitch);
-
-      }
-
-      mv.visitLabel(defaultLabel);
-      super.generate(classVisitor, mv, resultType);
-      mv.visitLabel(endSwitch);
-
-    }
-    finally
-    {
-      mv.visitEnd();
-
-    }
-
-    return mv;
-  }
-
-  @Override
-  public String toString()
-  {
-    return String.format("When[cases=%s,default=%s]", cases, arg);
-  }
-
-  public TreeMap<Integer, Node<D, R, F>> cases;
-  private Label                          endSwitch    = new Label();
-  private Label                          defaultLabel = new Label();
-  private Label[]                        labels       = null;
-
-  public When(Node<D, R, F> node, Expression<D, R, F> expression, int depth)
-  {
-    super(node,
-          expression);
-  }
-
-  public When(Expression<D, R, F> expression)
-  {
-    super(null,
-          expression);
-    cases = new TreeMap<>();
-
-    do
-    {
-      evaluateCases();
-    }
-    while (expression.nextCharacterIs(','));
-    if (!expression.nextCharacterIs(')'))
-    {
-      throw new ExpressionCompilerException("Closing parenthesis expected at position=" + expression.position
-                    + " of expression=" + expression);
-    }
-    if (arg == null)
-    {
-      throw new ExpressionCompilerException("default value of when function not specified with else keyword at position="
-                    + expression.position + " of expression=" + expression);
-    }
-  }
-
-  @Override
-  public Class<?> type()
-  {
-    return expression.rangeType;
-  }
-
-  public void evaluateCases()
-  {
-    Node<D, R, F> node = expression.evaluate();
-    if (!(node instanceof Variable))
-    {
-      throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
-                    + node);
-    }
-
-    Variable<D, R, F> variable = (Variable<D, R, F>) node;
-
-    if ("else".equals(variable.reference.name))
-    {
-      arg = evaluateDefaultCase(expression);
-    }
-    else
-    {
-      evaluateCase(expression, cases, variable);
-    }
-  }
+  private static final String INTEGER_CLASS_INTERNAL_NAME = Type.getInternalName(Integer.class);
+  private static final String INT_METHOD_DESCRIPTOR       = Type.getMethodDescriptor(Type.getType(int.class));
 
   private static <D, F extends Function<D, R>, R> void evaluateCase(Expression<D, R, F> expression,
                                                                     TreeMap<Integer, Node<D, R, F>> cases,
@@ -216,6 +101,130 @@ public class When<D, R, F extends Function<D, R>> extends
                                                    expression));
     }
     return defaultValue;
+  }
+
+  public TreeMap<Integer, Node<D, R, F>> cases;
+  private Label                          defaultLabel = new Label();
+  private Label                          endSwitch    = new Label();
+
+  private Label[]                        labels       = null;
+
+  public When(Expression<D, R, F> expression)
+  {
+    super(null,
+          expression);
+    cases = new TreeMap<>();
+
+    do
+    {
+      evaluateCases();
+    }
+    while (expression.nextCharacterIs(','));
+    if (!expression.nextCharacterIs(')'))
+    {
+      throw new ExpressionCompilerException("Closing parenthesis expected at position=" + expression.position
+                    + " of expression=" + expression);
+    }
+    if (arg == null)
+    {
+      throw new ExpressionCompilerException("default value of when function not specified with else keyword at position="
+                    + expression.position + " of expression=" + expression);
+    }
+  }
+
+  public When(Node<D, R, F> node, Expression<D, R, F> expression, int depth)
+  {
+    super(node,
+          expression);
+  }
+
+  public void evaluateCases()
+  {
+    Node<D, R, F> node = expression.evaluate();
+    if (!(node instanceof Variable))
+    {
+      throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
+                    + node);
+    }
+
+    Variable<D, R, F> variable = (Variable<D, R, F>) node;
+
+    if ("else".equals(variable.reference.name))
+    {
+      arg = evaluateDefaultCase(expression);
+    }
+    else
+    {
+      evaluateCase(expression, cases, variable);
+    }
+  }
+
+  @Override
+  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
+  {
+    assert expression.domainType.equals(Integer.class) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
+                                                                       expression.domainType);
+    try
+    {
+      mv.visitCode();
+
+      labels = new Label[cases.size()];
+
+      cases.values().forEach(val -> val.isResult = isResult);    
+      arg.isResult = isResult;
+
+      generateIndex(mv);
+
+      for (int i = 0; i < labels.length; i++)
+      {
+        labels[i] = new Label();
+      }
+      
+      mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
+      var branches = cases.values().stream().collect(Collectors.toList());
+
+      for (int i = 0; i < labels.length; i++)
+      {
+        mv.visitLabel(labels[i]);
+        branches.get(i).generate(classVisitor, mv, expression.rangeType);
+        mv.visitJumpInsn(GOTO, endSwitch);
+
+      }
+
+      mv.visitLabel(defaultLabel);
+      super.generate(classVisitor, mv, resultType);
+      mv.visitLabel(endSwitch);
+
+    }
+    finally
+    {
+      mv.visitEnd();
+
+    }
+
+    return mv;
+  }
+
+  private void generateIndex(MethodVisitor mv)
+  {
+    checkClassCast(loadInputParameter(mv), expression.domainType);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       INTEGER_CLASS_INTERNAL_NAME,
+                       "getSignedValue",
+                       INT_METHOD_DESCRIPTOR,
+                       false);
+  }
+
+  @Override
+  public String toString()
+  {
+    return String.format("When[cases=%s,default=%s]", cases, arg);
+  }
+
+  @Override
+  public Class<?> type()
+  {
+    return expression.rangeType;
   }
 
   @Override
