@@ -14,23 +14,7 @@ import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
- * <pre>
- * Generates bytecode for evaluating the product of factors using the ASM
- * library. This class extends {@link BoringPartsOfProductGenerator} and
- * implements specific bytecode generation techniques to dynamically calculate
- * the product of an arbitrary number of {@link arb.Real} factors at runtime.
- * 
- * It utilizes the ASM framework to construct a method within the bytecode of a
- * dynamically generated class. This method iterates over factors, evaluates
- * each one, and accumulates their product. The class defines the structure and
- * logic for this process, including initializing the product value, managing
- * the iteration over factors, and handling the multiplication logic.
- *
- * Key functionalities include: 
- * - Setting up the method structure for product evaluation. 
- * - Dynamically loading factors and calculating their product. 
- * - Managing loop control for iteration over factors. 
- * </pre>
+ * TODO: now to adapt this to inject this inline an already open MethodVisitor
  * 
  * <pre>
  * arb4j is made available under the terms of the Business Source License™ v1.1
@@ -56,13 +40,18 @@ public class ProductGenerator extends
     ClassWriter      classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 
     // Start class definition
-    
-    classWriter.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER, "arb/GeneratedProductClass", null, "java/lang/Object", null);
+
+    classWriter.visit(Opcodes.V1_8,
+                      Opcodes.ACC_PUBLIC | Opcodes.ACC_SUPER,
+                      "arb/GeneratedProductClass",
+                      null,
+                      "java/lang/Object",
+                      null);
 
     BoringPartsOfProductGenerator.generateConstructor(classWriter);
 
     generator.declareFields(classWriter);
-    
+
     // Generate the evaluate method or other necessary methods using
     // ProductGenerator
     generator.generateEvaluateMethod(classWriter);
@@ -128,17 +117,13 @@ public class ProductGenerator extends
     loadLoopIndexVariable(methodVisitor);
     loadBits(methodVisitor);
     loadVariableThatHoldsTheEvaluatedFactor(methodVisitor);
-    invokeMethod(methodVisitor, Function.class, evaluate, factorEvaluateMethodSignature,true);
+    invokeMethod(methodVisitor, Function.class, evaluate, factorEvaluateMethodSignature, true);
     checkClassCast(methodVisitor, Real.class);
   }
-
 
   @Override
   public void generateEvaluateMethod(ClassWriter classWriter)
   {
-    /**
-     * TODO: now to adapt this to inject this inline an already open MethodVisitor
-     */
     MethodVisitor methodVisitor = beginEvaluationCode(classWriter);
     initializeProductResultToItsIdentity(methodVisitor);
     setIndexToTheStartIndex(methodVisitor);
@@ -176,7 +161,7 @@ public class ProductGenerator extends
   void initializeProductResultToItsIdentity(MethodVisitor methodVisitor)
   {
     loadResultingProductVariable(methodVisitor);
-    invokeMethod(methodVisitor, "arb/Real", "one", "()Larb/Real;");
+    invokeMethod(methodVisitor, Real.class, "one", Utensils.getMethodDescriptor(Real.class), false);
     pop(methodVisitor);
   }
 
@@ -184,7 +169,7 @@ public class ProductGenerator extends
   {
     methodVisitor.visitJumpInsn(IFLE, label);
   }
- 
+
   void jumpToLoopBeginningIfThatWasntTheLastFactor(MethodVisitor methodVisitor)
   {
     compareLoopIndexToEndIndex(methodVisitor);
