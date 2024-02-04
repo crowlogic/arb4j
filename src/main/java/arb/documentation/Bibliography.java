@@ -3,6 +3,16 @@ package arb.documentation;
 /**
  * A list of {@link Reference}s
  * 
+ * @Electronic{oeisA001790, author = {OEIS Foundation Inc.}, title = {A001790
+ *                          Numerators in (the) expansion of 1/sqrt(1-x)}, year
+ *                          = {2024}, url = {https://oeis.org/A001790}, note =
+ *                          {This sequence gives the numerators of the Maclaurin
+ *                          series of the Lorentz factor (see Wikipedia link) of
+ *                          1/sqrt(1-b^2) = dt/dtau where b=u/c is the velocity
+ *                          in terms of the speed of light c, u is the velocity
+ *                          as observed in the reference frame where time t is
+ *                          measured and tau is the proper time. - Stephen
+ *                          Crowley, Apr 03 2007}}
  * 
  */
 public class Bibliography extends
