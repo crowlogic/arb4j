@@ -68,7 +68,14 @@ public class Integer implements
     return result;
   }
 
+  public static Real factorial(Integer n, int bits, Real result)
+  {
+    arblib.arb_fac_ui(result, n.getUnsignedValue(), bits);
+    return result;
+  }
 
+
+  
   public static Real factorial(long n, int bits, Real result)
   {
     arblib.arb_fac_ui(result, n, bits);
@@ -405,6 +412,17 @@ public class Integer implements
   {
     arblib.fmpz_add_si(swigCPtr, swigCPtr, i);
     return this;
+  }
+
+  public static Integer factorial(Integer n, Integer result)
+  {
+    arblib.fmpz_fac_ui(result.swigCPtr, n.getUnsignedValue());
+    return result;
+  }
+  
+  public Integer factorial()
+  {
+    return factorial(this, this);
   }
 
 }

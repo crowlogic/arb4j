@@ -1786,6 +1786,10 @@ public class arblib {
     arblibJNI.acb_elliptic_k(Complex.getCPtr(res), res, Complex.getCPtr(m), m, prec);
   }
 
+  public static int arb_get_unique_fmpz(long z, Real x) {
+    return arblibJNI.arb_get_unique_fmpz(z, Real.getCPtr(x), x);
+  }
+
   public static void acb_get_mid(Complex m, Complex x) {
     arblibJNI.acb_get_mid(Complex.getCPtr(m), m, Complex.getCPtr(x), x);
   }

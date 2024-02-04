@@ -165,6 +165,24 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return a.mul(this, bits, res);
   }
 
+  public Real factorial(int bits, Real result)
+  {
+    if (!isInteger())
+    {
+      throw new RuntimeException(this + " is not an integer");
+    }
+    try ( Integer intVal = integerValue(new Integer()))
+    {
+      return intVal.factorial(bits, result);
+    }
+  }
+
+  public Integer integerValue(Integer integer)
+  {
+    arblib.arb_get_unique_fmpz(integer.swigCPtr, this);
+    return integer;
+  }
+  
  /**
    * Calculate the rising factorial this_(power)
    * 

@@ -16,11 +16,29 @@ public class IntegerTest extends
     }
   }
 
+  public static void testFactorialStatic()
+  {
+    Real factorialOfFour = Integer.factorial(4, 128, new Real());
+    assertTrue(factorialOfFour.isExact());
+    assertTrue(factorialOfFour.doubleValue() == 24.0);
+  }
+
   public static void testFactorial()
   {
-    Real factorialOfThree = Integer.factorial(4, 128, new Real());
-    assertTrue(factorialOfThree.isExact());
-    assertTrue(factorialOfThree.doubleValue() == 24.0);
+    try ( Integer four = new Integer(4); Integer factorialOfFour = four.factorial())
+    {
+      assertTrue(factorialOfFour.getSignedValue() == 24);
+      assertTrue(factorialOfFour.getUnsignedValue() == 24);
+    }
+  }
+
+  public static void testFactorialReal()
+  {
+    try ( Integer four = new Integer(4); Real factorialOfFour = four.factorial(128, new Real()))
+    {
+      assertTrue(factorialOfFour.isExact());
+      assertTrue(factorialOfFour.doubleValue() == 24.0);
+    }
   }
 
   public static void testSubtraction()

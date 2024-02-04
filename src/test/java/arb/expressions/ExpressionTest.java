@@ -9,6 +9,20 @@ public class ExpressionTest extends
                             TestCase
 {
 
+  public static void testFactorial()
+  {
+    RealFunction func   = RealFunction.express("4!");
+    Real         result = func.evaluate(null, 0, 128, new Real());
+    assertEquals(24.0, result.doubleValue());
+  }
+
+  public static void testFactorialToo()
+  {
+    RealFunction func   = RealFunction.express("x!");
+    Real         result = func.evaluate(new Real("4",128), 0, 128, new Real());
+    assertEquals(24.0, result.doubleValue());
+  }
+  
   public static void testRisingFactorial()
   {
     RealFunction func   = RealFunction.express("x₍₃₎");

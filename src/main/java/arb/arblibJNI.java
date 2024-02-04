@@ -451,6 +451,7 @@ public class arblibJNI {
   public final static native void acb_div_arb(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, long jarg3, Real jarg3_, int jarg4);
   public final static native void arb_set(long jarg1, Real jarg1_, long jarg2, Real jarg2_);
   public final static native void acb_elliptic_k(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_, int jarg3);
+  public final static native int arb_get_unique_fmpz(long jarg1, long jarg2, Real jarg2_);
   public final static native void acb_get_mid(long jarg1, Complex jarg1_, long jarg2, Complex jarg2_);
   public final static native void arb_const_pi(long jarg1, Real jarg1_, int jarg2);
   public final static native int arb_is_finite(long jarg1, Real jarg1_);
