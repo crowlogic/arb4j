@@ -4,6 +4,7 @@ import static arb.expressions.Compiler.addNullCheckForField;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.generateFunctionInterface;
 import static arb.expressions.Compiler.getVariablePrefix;
+import static arb.expressions.Compiler.invokeSetMethod;
 import static arb.expressions.Compiler.loadFunctionClass;
 import static arb.expressions.Compiler.loadResultParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
@@ -1071,20 +1072,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
       f = instance = (compiledClass != null ? compiledClass : load()).getDeclaredConstructor().newInstance();
 
       injectVariableReferences(f);
-
-      return instance;
     }
     catch (Exception e)
     {
-      if (e instanceof RuntimeException)
-      {
-        throw (RuntimeException) e;
-      }
-      else
-      {
-        throw new RuntimeException(e);
-      }
+      wrapOrThrow(e);
     }
+
+    return instance;
   }
 
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
@@ -1350,29 +1344,26 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
     {
-      if (e instanceof RuntimeException)
-      {
-        throw (RuntimeException) e;
-      }
-      else
-      {
-        throw new RuntimeException(e);
-      }
+      wrapOrThrow(e);
+    }
+  }
+
+  public static void wrapOrThrow(Throwable e)
+  {
+    if (e instanceof RuntimeException)
+    {
+      throw (RuntimeException) e;
+    }
+    else
+    {
+      throw new RuntimeException(e);
     }
   }
 
   public MethodVisitor setResult(MethodVisitor methodVisitor, Class<?> inputType)
   {
-    checkClassCast(loadResultParameter(methodVisitor), rangeType);
-
-    methodVisitor.visitInsn(Opcodes.SWAP);
-
-    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  rangeClassInternalName,
-                                  "set",
-                                  format("(%s)%s", inputType.descriptorString(), rangeClassDescriptor),
-                                  false);
-    return methodVisitor;
+    checkClassCast(loadResultParameter(methodVisitor), rangeType).visitInsn(Opcodes.SWAP);
+    return invokeSetMethod(methodVisitor, inputType, rangeType);
   }
 
   void skipSpaces()
