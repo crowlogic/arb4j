@@ -30,7 +30,8 @@ public class Product implements
 
     while (index.compareTo(endIndex) <= 0)
     {
-      product.mul(factor.evaluate(index.increment(), bits, factorValue), bits);
+      product.mul(factor.evaluate(index, bits, factorValue), bits);
+      index.increment();
     }
 
     return product;
