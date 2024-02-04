@@ -735,9 +735,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
   private Node<D, R, F> resolvePostfixOperators(Node<D, R, F> node)
   {
     node = resolveRisingFactorial(node);
+    node = resolveFactorial(node);
     return node;
   }
 
+  private Node<D,R,F> resolveFactorial( Node<D,R,F> node )
+  {
+    if ( nextCharacterIs('!'))
+    {
+      assert false : "factorial!";
+    }
+    return node;
+  }
   private Node<D, R, F> resolveRisingFactorial(Node<D, R, F> node)
   {
     if (nextCharacterIs('₍'))
