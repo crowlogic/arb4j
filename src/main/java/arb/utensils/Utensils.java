@@ -10,7 +10,9 @@ import static arb.arblib.mag_init;
 
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.IntFunction;
+import java.util.stream.Stream;
 
+import org.objectweb.asm.Type;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
@@ -575,6 +577,11 @@ public class Utensils
                     .replace("₇", "7")
                     .replace("₈", "8")
                     .replace("₉", "9");
+  }
+
+  public static String getMethodDescriptor(Class<?> ret, Class<?>... args)
+  {
+    return Type.getMethodDescriptor(Type.getType(ret), Stream.of(args).map(Type::getType).toArray(n -> new Type[n]));
   }
 
 }
