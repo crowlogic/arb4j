@@ -4,21 +4,22 @@ import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.*;
 
+import arb.Integer;
 import arb.Real;
-import arb.expressions.nodes.unary.Function;
+import arb.functions.Function;
 
 public abstract class BoringPartsOfProductGenerator
 {
-  protected static final String evaluate                 = "evaluate";
+  protected static final String evaluate                      = "evaluate";
 
-  protected static String       evaluateMethodSignature  = Type.getMethodDescriptor(Type.getType(Real.class),
-                                                                                    Type.getType(Integer.class),
-                                                                                    Type.getType(int.class),
-                                                                                    Type.getType(Real.class));
+  protected static String       factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(Object.class),
+                                                                                         Type.getType(Object.class),
+                                                                                         Type.getType(int.class),
+                                                                                         Type.getType(Object.class));
 
-  protected static final String factorFunction           = "factor";
-  protected static final String factorValue              = "value";
-  protected static final String THIS_CLASS_INTERNAL_NAME = "arb/functions/real/Product";
+  protected static final String factorFunction                = "factor";
+  protected static final String factorValue                   = "value";
+  protected static final String THIS_CLASS_INTERNAL_NAME      = "arb/GeneratedProductClass";
 
   protected static void generateCloseMethod(ClassWriter classWriter)
   {
@@ -139,9 +140,13 @@ public abstract class BoringPartsOfProductGenerator
     loadFieldFromThis(methodVisitor, factorFunction, Function.class);
   }
 
-  void invokeMethod(MethodVisitor methodVisitor, Class<?> thisClass, String functionName, String methodSignature)
+  void invokeMethod(MethodVisitor methodVisitor,
+                    Class<?> thisClass,
+                    String functionName,
+                    String methodSignature,
+                    boolean isInterface)
   {
-    invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature);
+    invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature, isInterface);
   }
 
   void generateEvaluationBridgeMethod(ClassWriter classWriter)
@@ -163,9 +168,22 @@ public abstract class BoringPartsOfProductGenerator
     methodVisitor.visitEnd();
   }
 
+  void invokeMethod(MethodVisitor methodVisitor,
+                    String classInternalName,
+                    String methodName,
+                    String methodSignature,
+                    boolean isInterface)
+  {
+    methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL,
+                                  classInternalName,
+                                  methodName,
+                                  methodSignature,
+                                  isInterface);
+  }
+
   void invokeMethod(MethodVisitor methodVisitor, String classInternalName, String methodName, String methodSignature)
   {
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, classInternalName, methodName, methodSignature, false);
+    invokeMethod(methodVisitor, classInternalName, methodName, methodSignature, false);
   }
 
   protected static MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
@@ -216,15 +234,15 @@ public abstract class BoringPartsOfProductGenerator
       fieldVisitor.visitEnd();
     }
     {
-      fieldVisitor = classWriter.visitField(0, "startIndex", "Larb/Integer;", null, null);
+      fieldVisitor = classWriter.visitField(ACC_PUBLIC, "startIndex", "Larb/Integer;", null, null);
       fieldVisitor.visitEnd();
     }
     {
-      fieldVisitor = classWriter.visitField(0, "endIndex", "Larb/Integer;", null, null);
+      fieldVisitor = classWriter.visitField(ACC_PUBLIC, "endIndex", "Larb/Integer;", null, null);
       fieldVisitor.visitEnd();
     }
     {
-      fieldVisitor = classWriter.visitField(0, "index", "Larb/Integer;", null, null);
+      fieldVisitor = classWriter.visitField(ACC_PUBLIC, "index", "Larb/Integer;", null, null);
       fieldVisitor.visitEnd();
     }
     {
@@ -249,9 +267,9 @@ public abstract class BoringPartsOfProductGenerator
     return methodVisitor;
   }
 
-  protected Label justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot  = new Label();
+  protected Label justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot = new Label();
 
-  protected Label beginningOfTheLoop = new Label();
+  protected Label beginningOfTheLoop                                                            = new Label();
 
   public BoringPartsOfProductGenerator()
   {

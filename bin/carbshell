@@ -1,0 +1,13 @@
+#!/bin/sh 
+
+
+BASEDIR=$(dirname $(readlink -f $0))/..
+CLASSPATH=`cat $BASEDIR/class.path`
+
+LD_LIBRARY_PATH=$BASEDIR jshell -q -R--enable-native-access=arb4j --enable-preview -R-ea --class-path $CLASSPATH:$BASEDIR/target/classes --startup $BASEDIR/shell.start $@
+
+
+
+
+
+
