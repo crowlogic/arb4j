@@ -1257,7 +1257,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (nextCharacterIs('!'))
     {
-      return new Factorial<D,R,F>(this, node);
+      return new Factorial<D, R, F>(this,
+                                    node);
     }
     return node;
   }
@@ -1362,12 +1363,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor setResult(MethodVisitor methodVisitor, Class<?> inputType)
   {
-    checkClassCast(loadResultParameter(methodVisitor),
-                   rangeType).visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                              rangeClassInternalName,
-                                              "set",
-                                              format("(%s)%s", inputType.descriptorString(), rangeClassDescriptor),
-                                              false);
+    checkClassCast(loadResultParameter(methodVisitor), rangeType);
+
+    methodVisitor.visitInsn(Opcodes.SWAP);
+
+    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                  rangeClassInternalName,
+                                  "set",
+                                  format("(%s)%s", inputType.descriptorString(), rangeClassDescriptor),
+                                  false);
     return methodVisitor;
   }
 
