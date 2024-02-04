@@ -22,11 +22,6 @@ jlong openOrCreateMemoryMappedFile(jobject path, int *fd, int bytes);
 
 int errorNumber();
 
-void  color_function(double * R, double * G, double * B, const acb_t z, int mode);
-
-void nthHardyZero( arb_t res, int n, slong prec );
-
-
 void *allocate(size_t size)
 {
   void *ptr = malloc(size);

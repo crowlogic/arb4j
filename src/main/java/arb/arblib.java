@@ -1612,10 +1612,6 @@ public class arblib {
     arblibJNI.acb_tanh(Complex.getCPtr(y), y, Complex.getCPtr(x), x, prec);
   }
 
-  public static void color_function(double[] R, double[] G, double[] B, Complex z, int mode) {
-    arblibJNI.color_function(R, G, B, Complex.getCPtr(z), z, mode);
-  }
-
   public static void arb_set_d(Real x, double y) {
     arblibJNI.arb_set_d(Real.getCPtr(x), x, y);
   }

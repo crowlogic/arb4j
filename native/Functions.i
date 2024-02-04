@@ -813,8 +813,6 @@ arf_mul_si(arf_ptr z, arf_srcptr x, slong y, slong prec, arf_rnd_t rnd);
 
  void acb_tanh(acb_t y, const acb_t x, slong prec);
 
- void color_function(double * R, double * G, double * B, const acb_t z, int mode);
-
  void arb_set_d(arb_t x, double y);
         
  void acb_dirichlet_hurwitz(acb_t res, const acb_t s, const acb_t a, slong prec);
