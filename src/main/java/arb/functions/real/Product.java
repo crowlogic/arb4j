@@ -9,15 +9,15 @@ public class Product implements
                      NullaryFunction<Real>
 {
   public Function<Integer, Real> factor;
-  Integer                        startIndex = new Integer();
-  Integer                        endIndex   = new Integer();
-  Integer                        index      = new Integer();
-  Real                           value      = new Real();
+  public final Integer           startIndex  = new Integer();
+  public final Integer           endIndex    = new Integer();
+  public final Integer           index       = new Integer();
+  public final Real              factorValue = new Real();
 
   public void close()
   {
     index.close();
-    value.close();
+    factorValue.close();
     startIndex.close();
     endIndex.close();
   }
@@ -30,8 +30,7 @@ public class Product implements
 
     while (index.compareTo(endIndex) <= 0)
     {
-      product.mul(factor.evaluate(index, bits, value), bits);
-      index.increment();
+      product.mul(factor.evaluate(index.increment(), bits, factorValue), bits);
     }
 
     return product;

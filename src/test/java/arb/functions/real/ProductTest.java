@@ -12,9 +12,9 @@ public class ProductTest extends
   {
     try ( Product product = new Product())
     {
-      product.factor     = Function.express(Integer.class, Real.class, "n");
-      product.startIndex = new Integer(1);
-      product.endIndex   = new Integer(3);
+      product.factor = Function.express(Integer.class, Real.class, "n");
+      product.startIndex.set(1);
+      product.endIndex.set(3);
       Real prod = product.evaluate(128, new Real());
       assertEquals(6.0, prod.doubleValue());
       assertTrue(prod.isExact());
