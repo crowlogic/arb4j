@@ -1,9 +1,11 @@
 package arb.expressions.nodes.nary;
 
 import static java.lang.String.format;
+import static java.lang.System.out;
 
 import org.objectweb.asm.*;
 
+import arb.Integer;
 import arb.Real;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Expression;
@@ -67,11 +69,49 @@ public class Product<D, R, F extends Function<D, R>> extends
     return this;
   }
 
-  private ProductGenerator productGenerator = new ProductGenerator(Type.getInternalName(expression.functionClass));
+  private ProductGenerator productGenerator = new ProductGenerator(Type.getInternalName(expression.functionClass))
+  {
+
+    @Override
+    public void evaluateFactor(MethodVisitor methodVisitor)
+    {
+      out.format( "Evaluate %s\n", factor);
+      factor.generate(null, methodVisitor, type());
+    }
+
+    @Override
+    public String getIndexFieldName()
+    {
+      assert index.reference.index == null : "the index field cannot itself be indexed";
+      return index.reference.name;
+    }
+
+    @Override
+    void loadResultingProductVariable(MethodVisitor methodVisitor)
+    {
+      loadFieldFromThis(methodVisitor, intermediateProductResultVariable, type());
+    }
+  };
+
+  public Product(Expression<D, R, F> expression)
+  {
+
+    super(expression);
+    {
+
+      expression.context.registerVariable(productGenerator.getIndexFieldName(), new Integer());
+    }
+
+  }
+
+  private String intermediateProductResultVariable;
 
   @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
+    intermediateProductResultVariable = expression.reserveIntermediateVariable(mv, type());
+    System.out.println( "generateProduct: expr=" + expression );
+
     productGenerator.generateProduct(new MethodVisitInterceptor(Opcodes.ASM9,
                                                                 mv));
     return mv;

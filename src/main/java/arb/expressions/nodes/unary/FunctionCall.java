@@ -161,7 +161,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                                        String fieldName,
                                                        String fieldType)
   {
-    mv.visitCode();
     mv.visitVarInsn(ALOAD, 0);
     mv.visitFieldInsn(GETFIELD, className, fieldName, fieldType);
     Label fieldAlreadyPopulated = new Label();
