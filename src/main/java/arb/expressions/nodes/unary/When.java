@@ -115,7 +115,7 @@ public class When<D, R, F extends Function<D, R>> extends
 
     do
     {
-      evaluateValue(cases);
+      evaluateCases();
     }
     while (expression.nextCharacterIs(','));
     if (!expression.nextCharacterIs(')'))
@@ -136,7 +136,7 @@ public class When<D, R, F extends Function<D, R>> extends
     return expression.rangeType;
   }
 
-  public void evaluateValue(TreeMap<Integer, Node<D, R, F>> cases2)
+  public void evaluateCases()
   {
     Node<D, R, F> node = expression.evaluate();
     if (!(node instanceof Variable))
@@ -149,19 +149,17 @@ public class When<D, R, F extends Function<D, R>> extends
 
     if ("else".equals(variable.reference.name))
     {
-      arg = evaluateDefaultValue(expression);
+      arg = evaluateDefaultCase(expression);
     }
     else
     {
-      evaluateConditionalValue(expression, cases2, variable);
+      evaluateCase(expression, cases, variable);
     }
   }
 
-  private static <D, F extends Function<D, R>, R>
-          void
-          evaluateConditionalValue(Expression<D, R, F> expression,
-                                   TreeMap<Integer, Node<D, R, F>> cases,
-                                   Variable<D, R, F> variable)
+  private static <D, F extends Function<D, R>, R> void evaluateCase(Expression<D, R, F> expression,
+                                                                    TreeMap<Integer, Node<D, R, F>> cases,
+                                                                    Variable<D, R, F> variable)
   {
     if (!variable.reference.equals(expression.independentVariableNode.reference))
     {
@@ -202,7 +200,7 @@ public class When<D, R, F extends Function<D, R>> extends
     return constant;
   }
 
-  private static <D, R, F extends Function<D, R>> Node<D, R, F> evaluateDefaultValue(Expression<D, R, F> expression)
+  private static <D, R, F extends Function<D, R>> Node<D, R, F> evaluateDefaultCase(Expression<D, R, F> expression)
   {
     Node<D, R, F> defaultValue;
     if (!expression.nextCharacterIs(','))
