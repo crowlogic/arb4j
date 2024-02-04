@@ -68,17 +68,6 @@ public class Integer implements
     return result;
   }
 
-  /**
-   * Calls this{@link #factorial(long, Integer)} putting the result into a newly
-   * instantiated Integer
-   * 
-   * @param n
-   * @return
-   */
-  public static Integer factorial(long n)
-  {
-    return factorial(n, new Integer());
-  }
 
   public static Real factorial(long n, int bits, Real result)
   {
@@ -88,7 +77,7 @@ public class Integer implements
 
   public Real tanh(int bits, Real result)
   {
-    return result.set(this).tanh(bits, result);
+    return result.set(this).tanh(bits);
   }
 
   public Complex tanh(int bits, Complex result)

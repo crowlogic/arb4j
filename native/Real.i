@@ -224,6 +224,11 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return result;
   }
 
+  public Real tanh(int bits)
+  {
+    return tanh(bits, this);
+  }
+  
   public RealPolynomial add(RealPolynomial a, int bits, RealPolynomial res)
   {
     res.set(a);

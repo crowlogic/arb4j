@@ -122,7 +122,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
          generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType, ClassVisitor classVisitor)
   {
     var     expression                = arg.expression;
-    boolean needsResultTypeConversion = !resultType.equals(type());
+    boolean needsResultTypeConversion = !resultType.equals(targetResultType);
 
     if (needsResultTypeConversion)
     {

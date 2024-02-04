@@ -18,14 +18,17 @@ public class F implements Function<Integer, RealPolynomial> {
    public Real ℝ1 = new Real();
    public RealPolynomial r̅3 = new RealPolynomial();
    public Integer ℤ3 = new Integer();
+   public Integer ℤ4 = new Integer();
+   public Integer ℤ5 = new Integer();
    public Real ℝ2 = new Real();
+   public Real ℝ3 = new Real();
    public F F;
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
       Object var10000;
       switch(in.getSignedValue()) {
          case 0:
-            var10000 = result.set(c2);
+            var10000 = c2.set(result);
             break;
          default:
             RealPolynomial var5 = result.identity();
@@ -34,8 +37,11 @@ public class F implements Function<Integer, RealPolynomial> {
             }
 
             var10000 = var5.mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2).k.set(c2);
-            α.mul(result.identity().risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1), bits, r̅3).k.set(c2);
-            β.div(result.identity().risingFactorial(in.sub(c2, bits, ℤ3), bits, ℝ2), bits, result);
+            α.mul(result.identity().risingFactorial(in.sub(c2, bits, ℤ2), bits, ℝ1), bits, r̅3);
+            result.set(in.sub(c2, bits, ℤ3).factorial(bits, ℤ4))
+               .k
+               .set(c2)
+               .div(β.mul(result.identity().risingFactorial(in.sub(c2, bits, ℤ5), bits, ℝ2), bits, ℝ3), bits, result);
       }
 
       return var10000;
@@ -72,7 +78,10 @@ public class F implements Function<Integer, RealPolynomial> {
       ℝ1.close();
       r̅3.close();
       ℤ3.close();
+      ℤ4.close();
+      ℤ5.close();
       ℝ2.close();
+      ℝ3.close();
       F.close();
    }
 }

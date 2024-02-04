@@ -251,6 +251,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return result;
   }
 
+  public Real tanh(int bits)
+  {
+    return tanh(bits, this);
+  }
+  
   public RealPolynomial add(RealPolynomial a, int bits, RealPolynomial res)
   {
     res.set(a);

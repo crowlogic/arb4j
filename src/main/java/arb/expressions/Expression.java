@@ -1,6 +1,7 @@
 package arb.expressions;
 
 import static arb.expressions.Compiler.addNullCheckForField;
+import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.generateFunctionInterface;
 import static arb.expressions.Compiler.getVariablePrefix;
 import static arb.expressions.Compiler.loadFunctionClass;
@@ -54,6 +55,7 @@ import arb.expressions.nodes.binary.Multiplication;
 import arb.expressions.nodes.binary.RisingFactorial;
 import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.nary.Product;
+import arb.expressions.nodes.unary.Factorial;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.functions.Function;
@@ -709,29 +711,24 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public ClassVisitor generateCloseMethod(ClassVisitor classVisitor)
   {
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC, "close", "()V", null, null);
-    try
+
+    methodVisitor.visitCode();
+
+    literalConstants.forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                constant.fieldName,
+                                                                constant.type()));
+
+    intermediateVariables.forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
+                                                                                 intermediateVariable.name,
+                                                                                 intermediateVariable.type));
+    if (recursive)
     {
-      methodVisitor.visitCode();
-
-      literalConstants.forEach(constant -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                  constant.fieldName,
-                                                                  constant.type()));
-
-      intermediateVariables.forEach(intermediateVariable -> generateCloseFieldCall(loadThisOntoStack(methodVisitor),
-                                                                                   intermediateVariable.name,
-                                                                                   intermediateVariable.type));
-      if (recursive)
-      {
-        generateCloseFieldCall(loadThisOntoStack(methodVisitor), functionName, functionClass);
-      }
-
+      generateCloseFieldCall(loadThisOntoStack(methodVisitor), functionName, functionClass);
     }
-    finally
-    {
-      methodVisitor.visitInsn(Opcodes.RETURN);
-      methodVisitor.visitMaxs(0, 0);
-      methodVisitor.visitEnd();
-    }
+
+    methodVisitor.visitInsn(Opcodes.RETURN);
+    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitEnd();
 
     return classVisitor;
   }
@@ -745,7 +742,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   private void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor methodVisitor)
   {
-
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     Label alreadyInitializedLabel = new Label();
@@ -1261,7 +1257,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (nextCharacterIs('!'))
     {
-      assert false : "factorial!";
+      return new Factorial<D,R,F>(this, node);
     }
     return node;
   }
@@ -1364,18 +1360,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public MethodVisitor setResult(MethodVisitor methodVisitor, boolean swap, Class<?> inputType)
+  public MethodVisitor setResult(MethodVisitor methodVisitor, Class<?> inputType)
   {
-    Compiler.checkClassCast(loadResultParameter(methodVisitor), rangeType);
-    if (swap)
-    {
-      methodVisitor.visitInsn(Opcodes.SWAP);
-    }
-    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  rangeClassInternalName,
-                                  "set",
-                                  format("(%s)%s", inputType.descriptorString(), rangeClassDescriptor),
-                                  false);
+    checkClassCast(loadResultParameter(methodVisitor),
+                   rangeType).visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                              rangeClassInternalName,
+                                              "set",
+                                              format("(%s)%s", inputType.descriptorString(), rangeClassDescriptor),
+                                              false);
     return methodVisitor;
   }
 

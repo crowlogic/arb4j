@@ -112,7 +112,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
 
     if (isResult)
     {
-      expression.setResult(mv, true, type());
+      expression.setResult(mv, type());
     }
 
     return mv;

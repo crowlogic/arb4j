@@ -170,7 +170,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     generatedType = type();
     if (isResult)
     {
-      expression.setResult(mv, true, generatedType);
+      expression.setResult(mv, generatedType);
     }
 
     return mv;

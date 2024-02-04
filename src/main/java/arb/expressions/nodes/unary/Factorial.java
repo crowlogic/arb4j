@@ -10,14 +10,20 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs formatted versions of the same document respectively.
  */
-public class Conjugation<D, R, F extends Function<D, R>> extends
-                        FunctionCall<D, R, F>
+public class Factorial<D, R, F extends Function<D, R>> extends
+                      FunctionCall<D, R, F>
 {
 
-  public Conjugation(Expression<D, R, F> parser, String functionName, Node<D, R, F> argument, int depth)
+  @Override
+  public Class<?> type()
+  {
+    return arb.Integer.class;
+  }
+
+  public Factorial(Expression<D, R, F> parser, Node<D, R, F> argument)
   {
     super(parser,
-          "neg",
+          "factorial",
           argument);
   }
 
