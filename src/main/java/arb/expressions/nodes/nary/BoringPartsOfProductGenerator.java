@@ -111,28 +111,7 @@ public abstract class BoringPartsOfProductGenerator
     getField(methodVisitor, "endIndex", "Larb/Integer;");
   }
 
-  public byte[] generate() throws Exception
-  {
 
-    ClassWriter classWriter = new ClassWriter(0);
-
-    classWriter.visit(-65471,
-                      ACC_PUBLIC | ACC_SUPER,
-                      functionClass,
-                      "Ljava/lang/Object;Ljava/lang/AutoCloseable;Larb/functions/real/NullaryFunction<Larb/Real;>;",
-                      "java/lang/Object",
-                      new String[]
-                      { "java/lang/AutoCloseable", "arb/functions/real/NullaryFunction" });
-
-    declareFields(classWriter);
-    generateConstructor(classWriter);
-    generateCloseMethod(classWriter);
-    generateEvaluateMethod(classWriter);
-    generateEvaluationBridgeMethods(classWriter);
-    classWriter.visitEnd();
-
-    return classWriter.toByteArray();
-  }
 
   abstract void generateEvaluateMethod(ClassWriter classWriter);
 
@@ -150,24 +129,7 @@ public abstract class BoringPartsOfProductGenerator
     invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature, isInterface);
   }
 
-  void generateEvaluationBridgeMethod(ClassWriter classWriter)
-  {
-    MethodVisitor methodVisitor = classWriter.visitMethod(ACC_PUBLIC | ACC_BRIDGE
-                  | ACC_SYNTHETIC, evaluate, "(ILjava/lang/Object;)Ljava/lang/Object;", null, null);
-    methodVisitor.visitCode();
-    loadThis(methodVisitor);
-    loadBits(methodVisitor);
-    loadResultingProductVariable(methodVisitor);
-    methodVisitor.visitTypeInsn(CHECKCAST, "arb/Real");
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL,
-                                  functionClass,
-                                  evaluate,
-                                  "(ILarb/Real;)Larb/Real;",
-                                  false);
-    methodVisitor.visitInsn(ARETURN);
-    methodVisitor.visitMaxs(3, 3);
-    methodVisitor.visitEnd();
-  }
+
 
   void invokeMethod(MethodVisitor methodVisitor,
                     String classInternalName,
@@ -192,68 +154,10 @@ public abstract class BoringPartsOfProductGenerator
     return getField(mv, functionClass, fieldName, type);
   }
 
-  protected void generateEvaluationBridgeMethods(ClassWriter classWriter)
-  {
-    generateEvaluationBridgeMethod(classWriter);
-    generateSyntheticEvaluationBridgeMethod(classWriter);
-  }
 
-  protected void generateSyntheticEvaluationBridgeMethod(ClassWriter classWriter)
+  void loadResultingProductVariable(MethodVisitor methodVisitor)
   {
-    MethodVisitor methodVisitor = classWriter.visitMethod(ACC_PUBLIC | ACC_BRIDGE | ACC_SYNTHETIC,
-                                                          evaluate,
-                                                          "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;",
-                                                          null,
-                                                          null);
-    methodVisitor.visitCode();
-    loadThis(methodVisitor);
-    methodVisitor.visitVarInsn(ALOAD, 1);
-    methodVisitor.visitTypeInsn(CHECKCAST, "java/lang/Void");
-    methodVisitor.visitVarInsn(ILOAD, 2);
-    methodVisitor.visitVarInsn(ILOAD, 3);
-    methodVisitor.visitVarInsn(ALOAD, 4);
-    methodVisitor.visitTypeInsn(CHECKCAST, "java/lang/Object");
-    methodVisitor.visitMethodInsn(INVOKEINTERFACE,
-                                  "arb/functions/real/NullaryFunction",
-                                  evaluate,
-                                  "(Ljava/lang/Void;IILjava/lang/Object;)Ljava/lang/Object;",
-                                  true);
-    methodVisitor.visitInsn(ARETURN);
-    methodVisitor.visitMaxs(5, 5);
-    methodVisitor.visitEnd();
-  }
-
-  protected void declareFields(ClassWriter classWriter)
-  {
-    FieldVisitor fieldVisitor;
-    {
-      fieldVisitor = classWriter.visitField(ACC_PUBLIC,
-                                            factorFunction,
-                                            "Larb/functions/Function;",
-                                            "Larb/functions/Function<Larb/Integer;Larb/Real;>;",
-                                            null);
-      fieldVisitor.visitEnd();
-    }
-    {
-      fieldVisitor = classWriter.visitField(ACC_PUBLIC, "startIndex", "Larb/Integer;", null, null);
-      fieldVisitor.visitEnd();
-    }
-    {
-      fieldVisitor = classWriter.visitField(ACC_PUBLIC, "endIndex", "Larb/Integer;", null, null);
-      fieldVisitor.visitEnd();
-    }
-    {
-      fieldVisitor = classWriter.visitField(ACC_PUBLIC, "index", "Larb/Integer;", null, null);
-      fieldVisitor.visitEnd();
-    }
-    {
-      fieldVisitor = classWriter.visitField(0, factorValue, "Larb/Real;", null, null);
-      fieldVisitor.visitEnd();
-    }
-  }
-
-  protected static void loadResultingProductVariable(MethodVisitor methodVisitor)
-  {
+    System.out.println( "loadResultingProductVariable/n");
     methodVisitor.visitVarInsn(ALOAD, 2);
   }
 

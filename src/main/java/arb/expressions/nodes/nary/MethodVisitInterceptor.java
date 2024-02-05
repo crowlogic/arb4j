@@ -7,13 +7,21 @@ import java.util.HashMap;
 import org.objectweb.asm.MethodVisitor;
 
 public final class MethodVisitInterceptor extends
-                                                 MethodVisitor
+                                          MethodVisitor
 {
+
+  @Override
+  public void visitVarInsn(int opcode, int varIndex)
+  {
+    out.format("visitVarInsn(opcode=%s, varIndex=%s)\n", reverse(opcode), varIndex);
+    super.visitVarInsn(opcode, varIndex);
+  }
 
   private HashMap<Integer, String> reverseOpcodes = new HashMap<>();
 
   {
     reverseOpcodes.put(Integer.valueOf(87), "POP");
+    reverseOpcodes.put(Integer.valueOf(25), "ALOAD");
 
     reverseOpcodes.put(Integer.valueOf(185), "INVOKEINTERFACE");
     reverseOpcodes.put(Integer.valueOf(182), "INVOKEVIRTUAL");

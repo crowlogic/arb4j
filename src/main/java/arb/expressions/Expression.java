@@ -340,7 +340,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ClassVisitor constructClassVisitor()
   {
-    ClassVisitor cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+    ClassVisitor cw = new ClassWriter(false ? ClassWriter.COMPUTE_FRAMES : 0 );
     return cw;
   }
 

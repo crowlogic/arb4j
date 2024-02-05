@@ -169,7 +169,7 @@ public class When<D, R, F extends Function<D, R>> extends
 
       labels = new Label[cases.size()];
 
-      cases.values().forEach(val -> val.isResult = isResult);    
+      cases.values().forEach(val -> val.isResult = isResult);
       arg.isResult = isResult;
 
       generateIndex(mv);
@@ -178,7 +178,7 @@ public class When<D, R, F extends Function<D, R>> extends
       {
         labels[i] = new Label();
       }
-      
+
       mv.visitTableSwitchInsn(0, cases.size() - 1, defaultLabel, labels);
       var branches = cases.values().stream().collect(Collectors.toList());
 
