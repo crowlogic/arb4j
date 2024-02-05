@@ -1,5 +1,10 @@
 package arb.documentation;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * A list of {@link Reference}s
  * 
@@ -19,23 +24,6 @@ public class Bibliography extends
                           AbstractBibliography
 {
 
-  public static Book          introductionToQuantumGravitationalEffects = new Book("Introduction to quantum effects in gravity",
-                                                                                   "Viatcheslav Mukhanov, Sergei Winitzki",
-                                                                                   "2007").setEdition("1ˢᵗ")
-                                                                                          .setPublisher("Cambridge University Press");
-
-  public static Miscellaneous oeisA001790                               = new Miscellaneous("A001790 Numerators in (the) expansion of 1/sqrt(1-x)",
-                                                                                            "OEIS Foundation Inc.",
-                                                                                            "2024",
-                                                                                            "\\url{http://oeis.org/A001790}",
-                                                                                            "This sequence gives the numerators of the Maclaurin series of the "
-                                                                                                          + "Lorentz factor (see Wikipedia link) of 1/sqrt(1-b^2) = dt/dtau "
-                                                                                                          + "where b=u/c is the velocity in terms of the speed of light c, "
-                                                                                                          + "u is the velocity as observed in the reference frame where time "
-                                                                                                          + "t is measured and tau is the proper time. "
-                                                                                                          + "- Stephen Crowley, Apr 03 2007",
-                                                                                            "http://oeis.org/A001790");
-
   public static Book          extremesOfRandomProcesses                 = new Book("Extremes and Related Properties of Random Sequences and Processes",
                                                                                    "Georg Lindgren, Holger Rootzén, and M. R. Leadbetter",
                                                                                    "1983").setSeries("Springer Series in Statistics")
@@ -52,6 +40,11 @@ public class Bibliography extends
                                                                                           .setSeries("Classics in Mathematics")
                                                                                           .setEdition("Reprint of the 1980 Edition");
 
+  public static Book          introductionToQuantumGravitationalEffects = new Book("Introduction to quantum effects in gravity",
+                                                                                   "Viatcheslav Mukhanov, Sergei Winitzki",
+                                                                                   "2007").setEdition("1ˢᵗ")
+                                                                                          .setPublisher("Cambridge University Press");
+
   public static Book          linearHilbertSpaceTransforms              = new Book("Linear Transformations in Hilbert Space",
                                                                                    "Marshall Harvey Stone",
                                                                                    "1932").setEdition("4th Printing (1951)")
@@ -59,6 +52,18 @@ public class Bibliography extends
                                                                                           .setSeries("Colloquium Publications")
                                                                                           .setPublisher("American Mathematical Society")
                                                                                           .setAddress("501 West 116th Street");
+
+  public static Miscellaneous oeisA001790                               = new Miscellaneous("A001790 Numerators in (the) expansion of 1/sqrt(1-x)",
+                                                                                            "OEIS Foundation Inc.",
+                                                                                            "2024",
+                                                                                            "\\url{http://oeis.org/A001790}",
+                                                                                            "This sequence gives the numerators of the Maclaurin series of the "
+                                                                                                          + "Lorentz factor (see Wikipedia link) of 1/sqrt(1-b^2) = dt/dtau "
+                                                                                                          + "where b=u/c is the velocity in terms of the speed of light c, "
+                                                                                                          + "u is the velocity as observed in the reference frame where time "
+                                                                                                          + "t is measured and tau is the proper time. "
+                                                                                                          + "- Stephen Crowley, Apr 03 2007",
+                                                                                            "http://oeis.org/A001790");
 
   public static Book          oneParameterSemigroups                    = new Book("One-Parameter Semigroups",
                                                                                    "E.B. Davies",
@@ -136,10 +141,12 @@ public class Bibliography extends
                                                                                    "1979").setSeries("North Holland Series in Probability and Applied Mathematics")
                                                                                           .setPublisher("Elsevier North Holland");
 
-  public static void main(String args[])
+  public static void main(String args[]) throws IOException
   {
     Bibliography bibiography = new Bibliography();
     System.out.println(bibiography);
-  };
-
+    Path path = Paths.get("docs/refs2.bib");
+    Files.write(path, bibiography.toString().getBytes());  
+    System.out.println( "wrote " + path );
+  }
 }
