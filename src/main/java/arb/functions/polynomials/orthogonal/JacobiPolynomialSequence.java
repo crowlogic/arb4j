@@ -16,6 +16,7 @@ import arb.functions.Function;
 import arb.functions.real.HypergeometricPolynomialSequence;
 import arb.functions.real.NullaryFunction;
 import arb.functions.real.RealFunction;
+import arb.functions.real.RealNullaryFunction;
 
 /**
  *
@@ -93,10 +94,7 @@ public class JacobiPolynomialSequence implements
                                                                             "n➔C(n-1)*C(n)",
                                                                             context);
 
-  final public NullaryFunction<Real>             G       = NullaryFunction.express(Real.class,
-                                                                                   "G",
-                                                                                   "α²-β²",
-                                                                                   context);
+  final public RealNullaryFunction               G       = RealNullaryFunction.express("G", "α²-β²", context);
 
   final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
                                                                             RealPolynomial.class,
