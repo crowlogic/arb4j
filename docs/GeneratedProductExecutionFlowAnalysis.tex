@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{unicode-math}
+
+% Setup for listings package to handle code formatting
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape=true,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+
+% Command to ensure math symbols are correctly handled within listings
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+
+\begin{document}
+\title{Execution Flow and Stack Analysis of the Product Operator's Generated Evaluation Code}
+\maketitle
+
+\begin{lstlisting}
+0: aload_0                       // Stack: [this]
+1: getfield $\R$1                    // Stack: [$\R$]
+4: aload_0                       // Stack: [$\R$, this]
+5: getfield $\R$1                    // Stack: [$\R$, $\R$]
+8: invokevirtual one:$\R$            // Stack: [$\R$, $\R$] 
+11: pop                          // Stack: [$\R$]
+12: aload_0                      // Stack: [$\R$, this]
+13: getfield k:Larb/Integer;     // Stack: [$\R$, k]
+16: aload_0                      // Stack: [$\R$, k, this]
+17: getfield startIndex          // Stack: [$\R$, k, startIndex]
+20: invokevirtual set;           // Stack: [$\R$, Integer]
+23: pop                          // Stack: [$\R$]
+24: goto 52                      // Stack: []
+27: aload_0                      // Stack: [this] 
+28: getfield ℝ1:Larb/Real;        // Stack: [$\R$]
+31: aload_1                      // Stack: [$\R$, in]
+32: checkcast java/lang/Void     // Stack: [$\R$, in]
+35: iload_2                      // Stack: [$\R$, in, order]
+36: aload_0                      // Stack: [$\R$, in, order, this]
+37: getfield ℝ1:Larb/Real;        // Stack: [$\R$, in, order, $\R$]
+40: invokevirtual mul;           // Stack: [$\R$, Real] 
+43: pop                          // Stack: [$\R$]
+44: aload_0                      // Stack: [$\R$, this]
+45: getfield k:Larb/Integer;     // Stack: [$\R$, k]
+48: invokevirtual increment;     // Stack: [$\R$, Integer] 
+51: pop                          // Stack: [$\R$]
+52: aload_0                      // Stack: [$\R$, this]
+53: getfield k:Larb/Integer;     // Stack: [$\R$, k]
+56: aload_0                      // Stack: [$\R$, k, this]
+57: getfield endIndex;           // Stack: [$\R$, k, endIndex]
+60: invokevirtual compareTo      // Stack: [$\R$, comparisonResult]
+63: ifle goto 27                 // Stack: [$\R$]
+66: areturn                      // Return result
+\end{lstlisting}
+\end{document}
