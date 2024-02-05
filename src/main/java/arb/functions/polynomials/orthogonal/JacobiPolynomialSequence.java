@@ -83,7 +83,7 @@ public class JacobiPolynomialSequence implements
 
   public final Real                              β       = new Real().setName("β");
 
-  final Context                                  context = new Context(α,
+  final public Context                                  context = new Context(α,
                                                                        β);
 
   final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
