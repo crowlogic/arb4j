@@ -94,7 +94,7 @@ public class JacobiPolynomialSequence implements
                                                                             "n➔C(n-1)*C(n)",
                                                                             context);
 
-  final public RealNullaryFunction               G       = RealNullaryFunction.express("G", "α²-β²", context);
+  final public NullaryFunction<Real>             G       = RealNullaryFunction.express("G","α²-β²", context);
 
   final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
                                                                             RealPolynomial.class,

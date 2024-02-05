@@ -2,6 +2,7 @@ package arb.expressions.nodes.nary;
 
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.functions.real.NullaryFunction;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
 
@@ -14,7 +15,7 @@ public class ProductTest extends
 {
   public static void testOneTimesTwoTimesThreeEqualsSix()
   {
-    RealNullaryFunction prod = RealNullaryFunction.express("∏k{k=1..3}");
+    NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1..3}");
     assertEquals(6.0, prod.evaluate(128, new Real()));
   }
 }

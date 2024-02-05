@@ -11,17 +11,17 @@ import arb.expressions.Context;
 public interface RealNullaryFunction extends
                                      NullaryFunction<Real>
 {
-  public static RealNullaryFunction express(String functionName, String expression, Context context)
+  public static NullaryFunction<Real> express(String functionName, String expression, Context context)
   {
     return NullaryFunction.express(Real.class, functionName, expression, context);
   }
 
-  public static RealNullaryFunction express(String expression, Context context)
+  public static NullaryFunction<Real> express(String expression, Context context)
   {
     return NullaryFunction.express(Real.class, null, expression, context);
   }
 
-  public static RealNullaryFunction express(String expression)
+  public static NullaryFunction<Real> express(String expression)
   {
     return NullaryFunction.express(Real.class, null, expression, null);
   }
