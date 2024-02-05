@@ -20,6 +20,7 @@ import arb.RealDataSet;
 import arb.RealPartition;
 import arb.RealRootInterval;
 import arb.RealRootInterval.RefinementResult;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.RootLocatorOptions;
 import arb.Roots;
 import arb.RoundingMode;
@@ -44,6 +45,8 @@ import arb.utensils.Utensils;
  * TeXmacs formatted versions of the same document respectively.
  * 
  * @author Stephen Crowley
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne for © terms
  */
 public interface RealFunction extends
                               Function<Real, Real>

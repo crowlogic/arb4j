@@ -4,10 +4,14 @@ import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.*;
 
-import arb.Integer;
-import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne copyright terms governing the
+ *      {@link TheArb4jLibrary} 
+ */
 public abstract class BoringPartsOfProductGenerator
 {
   protected static final String evaluate                      = "evaluate";
@@ -19,7 +23,7 @@ public abstract class BoringPartsOfProductGenerator
 
   protected static final String factorFunction                = "factor";
   protected static final String factorValue                   = "value";
-  String                        functionClass      ;
+  String                        functionClass;
 
   protected void generateCloseMethod(ClassWriter classWriter)
   {
@@ -111,8 +115,6 @@ public abstract class BoringPartsOfProductGenerator
     getField(methodVisitor, "endIndex", "Larb/Integer;");
   }
 
-
-
   abstract void generateEvaluateMethod(ClassWriter classWriter);
 
   protected void loadFactorFunction(MethodVisitor methodVisitor)
@@ -128,8 +130,6 @@ public abstract class BoringPartsOfProductGenerator
   {
     invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature, isInterface);
   }
-
-
 
   void invokeMethod(MethodVisitor methodVisitor,
                     String classInternalName,
@@ -154,10 +154,9 @@ public abstract class BoringPartsOfProductGenerator
     return getField(mv, functionClass, fieldName, type);
   }
 
-
   void loadResultingProductVariable(MethodVisitor methodVisitor)
   {
-    System.out.println( "loadResultingProductVariable/n");
+    System.out.println("loadResultingProductVariable/n");
     methodVisitor.visitVarInsn(ALOAD, 2);
   }
 

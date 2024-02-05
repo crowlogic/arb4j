@@ -5,6 +5,8 @@ import arb.IntegrationOptions;
 import arb.Integrators;
 import arb.Magnitude;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.RealToComplexFunction;
 import arb.functions.complex.ComplexFunction;
 
@@ -16,6 +18,9 @@ import arb.functions.complex.ComplexFunction;
  * of precision.
  *
  * @param <F> A generic type that extends {@link ComplexFunction}
+ *
+ * @see BusinessSourceLicenseVersionOnePointOne copyright terms governing the
+ *      {@link TheArb4jLibrary}
  */
 public class RealHolomorphicPart<F extends ComplexFunction> extends
                                 ComplexHolomorphicPart<F>

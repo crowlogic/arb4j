@@ -2,9 +2,14 @@ package arb.functions.real;
 
 import arb.Real;
 import arb.arblib;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * todo: add some sort of root enumeration interface that this implements
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne copyright terms governing the
+ *      {@link TheArb4jLibrary}
  * 
  */
 public class Type1BesselFunction implements
