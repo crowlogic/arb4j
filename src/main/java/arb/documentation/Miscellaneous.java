@@ -1,6 +1,7 @@
 package arb.documentation;
 
-public record Electronic(String title, String author, String year, String url, String note) implements
+public record Miscellaneous(String title, String author, String year, String howpublished, String note, String url)
+                           implements
                            Reference
 {
 
@@ -8,14 +9,14 @@ public record Electronic(String title, String author, String year, String url, S
   public String cite(String by)
   {
     // TODO: do this via reflection like is done for the Bibliography
-    return String.format("@Electronic{%s,%s%s%s%s%s}",
+    return String.format("@Misc{%s,%s%s%s%s%s%s}",
                          by,
                          Reference.conditionallyInsertField("author", author()),
                          Reference.conditionallyInsertField("title", title()),
                          Reference.conditionallyInsertField("year", year()),
-                         Reference.conditionallyInsertField("url",
-                                                            url),
-                         Reference.conditionallyInsertField("note", note))
+                         Reference.conditionallyInsertField("howpublished", howpublished),
+                         Reference.conditionallyInsertField("note", note),
+                         Reference.conditionallyInsertField("url", url))
                  .replace(",}", "}");
   }
 
@@ -38,6 +39,12 @@ public record Electronic(String title, String author, String year, String url, S
   {
     assert false : "not supported";
     return this;
+  }
+
+  public Miscellaneous setURL(String string)
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
