@@ -158,7 +158,7 @@ public class Parser
    */
   public static String replaceArrowsAndEllipses(String expression)
   {
-    return expression.replace("->", "➔").replace("...", "…");
+    return expression.replace("->", "➔").replace("..", "…");
   }
 
   static String expressionToUniqueClassname(String expression)

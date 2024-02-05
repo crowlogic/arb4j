@@ -1,5 +1,7 @@
 package arb.documentation;
 
+import arb.documentation.references.Reference;
+
 public abstract class Example
 {
  public Example(Reference reference, String name, String number, String page)

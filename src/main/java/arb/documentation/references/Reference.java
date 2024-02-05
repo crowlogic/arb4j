@@ -1,4 +1,4 @@
-package arb.documentation;
+package arb.documentation.references;
 
 public interface Reference
 {

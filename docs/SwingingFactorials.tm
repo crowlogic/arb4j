@@ -31,7 +31,7 @@
   involves factorials and the floor function:
 
   <\equation>
-    a<around|(|n|)>=<frac|n!|<around*|(|<around|\<lfloor\>|<frac|n|2>|\<rfloor\>>!|)><rsup|2>>.
+    a<around|(|n|)>=<frac|n!|<around|\<lfloor\>|<frac|n|2>|\<rfloor\>>!<rsup|2>>
   </equation>
 
   <section|Properties>

@@ -1,4 +1,4 @@
-package arb.documentation;
+package arb.documentation.references;
 
 public record Miscellaneous(String title, String author, String year, String howpublished, String note, String url)
                            implements

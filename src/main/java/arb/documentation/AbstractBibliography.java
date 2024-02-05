@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import arb.documentation.references.Reference;
+
 /**
  * See {@link Bibliography} for an example implementation.. just declare the
  * {@link Reference}s as public member variables and the this{@link #toString()}

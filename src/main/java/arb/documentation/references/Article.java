@@ -1,4 +1,4 @@
-package arb.documentation;
+package arb.documentation.references;
 
 import java.util.concurrent.atomic.AtomicReference;
 
