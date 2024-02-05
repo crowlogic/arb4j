@@ -94,12 +94,10 @@
   <section*|Formulas>
 
   <\align*>
-    <tformat|<table|<row|<cell|a<around|(|n|)>>|<cell|=<big|sum><rsub|k=0><rsup|<around|\<lfloor\>|n/2|\<rfloor\>>><binom|n|2*k><modulo|2>-<text|Paul
-    Barry, Jan 03 2005, Edited by Harry J. Smith, Sep 15
-    2009>>>|<row|<cell|a<around|(|n|)>>|<cell|=<text|gcd><around|(|A*056040<around|(|n|)>,2<rsup|n>|)>-<text|Peter
-    Luschny, Jun 30 2011>>>|<row|<cell|<text|Generating
-    function:>>|<cell|<around|(|1+x|)>\<cdot\><big|prod><rsub|k\<geq\>0><around|(|1+2*x<rsup|2<rsup|k+1>>|)>-<text|Ilya
-    Gutkovskiy, Jul 19 2019>>>>>
+    <tformat|<table|<row|<cell|>|<cell|>>|<row|<cell|a<around|(|n|)>>|<cell|=<big|sum><rsub|k=0><rsup|<around|\<lfloor\>|<frac|n|2>|\<rfloor\>>><binom|n|2*k><modulo|2><\footnote>
+      <text|Paul Barry, Jan 03 2005, Edited by Harry J. Smith, Sep 15 2009>
+    </footnote>>>|<row|<cell|>|<cell|>>|<row|<cell|a<around|(|n|)>>|<cell|=<text|gcd><around|(|A*056040<around|(|n|)>,2<rsup|n>|)>>>|<row|<cell|>|<cell|>>|<row|<cell|<text|Generating
+    function:>>|<cell|<around|(|1+x|)>\<cdot\><big|prod><rsub|k\<geq\>0><around|(|1+2*x<rsup|2<rsup|k+1>>|)>>>>>
   </align*>
 
   <section*|Example>
@@ -168,9 +166,9 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-10|<tuple|<with|mode|<quote|math>|\<bullet\>>|3|../../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-11|<tuple|<with|mode|<quote|math>|\<bullet\>>|3|../../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-12|<tuple|<with|mode|<quote|math>|\<bullet\>>|3|../../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|auto-10|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|auto-11|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|auto-12|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_23.tm>>
     <associate|auto-13|<tuple|<with|mode|<quote|math>|\<bullet\>>|3|../../.TeXmacs/texts/scratch/no_name_23.tm>>
     <associate|auto-2|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_23.tm>>
     <associate|auto-3|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_23.tm>>
@@ -178,8 +176,10 @@
     <associate|auto-5|<tuple|<with|mode|<quote|math>|\<bullet\>>|2|../../.TeXmacs/texts/scratch/no_name_23.tm>>
     <associate|auto-6|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_23.tm>>
     <associate|auto-7|<tuple|<with|mode|<quote|math>|\<bullet\>>|2|../../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-8|<tuple|<with|mode|<quote|math>|\<bullet\>>|2|../../.TeXmacs/texts/scratch/no_name_23.tm>>
-    <associate|auto-9|<tuple|<with|mode|<quote|math>|\<bullet\>>|3|../../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|auto-8|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|auto-9|<tuple|1|3|../../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|footnote-1|<tuple|1|?|../../.TeXmacs/texts/scratch/no_name_23.tm>>
+    <associate|footnr-1|<tuple|1|?|../../.TeXmacs/texts/scratch/no_name_23.tm>>
   </collection>
 </references>
 
