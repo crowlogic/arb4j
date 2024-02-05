@@ -9,8 +9,8 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne copyright terms governing the
- *      {@link TheArb4jLibrary} 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public abstract class BoringPartsOfProductGenerator
 {

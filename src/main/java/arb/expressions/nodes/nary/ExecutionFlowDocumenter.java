@@ -6,32 +6,30 @@ import java.util.HashMap;
 
 import org.objectweb.asm.*;
 
-public final class MethodVisitInterceptor extends
-                                          MethodVisitor
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
+public class ExecutionFlowDocumenter extends
+                                     MethodVisitor
 {
-  private HashMap<Integer, String> reverseOpcodes = new HashMap<>();
+  public static HashMap<Integer, String> opcodes = new HashMap<>();
 
   {
-    reverseOpcodes.put(Integer.valueOf(87), "POP");
-    reverseOpcodes.put(Integer.valueOf(25), "ALOAD");
-    reverseOpcodes.put(Integer.valueOf(185), "INVOKEINTERFACE");
-    reverseOpcodes.put(Integer.valueOf(182), "INVOKEVIRTUAL");
-    reverseOpcodes.put(Integer.valueOf(180), "GETFIELD");
+    opcodes.put(Integer.valueOf(87), "POP");
+    opcodes.put(Integer.valueOf(25), "ALOAD");
+    opcodes.put(Integer.valueOf(185), "INVOKEINTERFACE");
+    opcodes.put(Integer.valueOf(182), "INVOKEVIRTUAL");
+    opcodes.put(Integer.valueOf(180), "GETFIELD");
   }
 
-  MethodVisitInterceptor(int api, MethodVisitor methodVisitor)
+  ExecutionFlowDocumenter(int api, MethodVisitor methodVisitor)
   {
     super(api,
           methodVisitor);
-  }
-
-  @Override
-  public MethodVisitor getDelegate()
-  {
-    // This method does not delegate to superclass but you might want to implement
-    // it as needed.
-    assert false : "getDelegate() method is not designed to delegate to a superclass method.";
-    return mv;
   }
 
   @Override
@@ -112,14 +110,14 @@ public final class MethodVisitInterceptor extends
   @Override
   public void visitIntInsn(int opcode, int operand)
   {
-    out.format("visitIntInsn(opcode=%s, operand=%d)\n", reverse(opcode), operand);
+    out.format("visitIntInsn(opcode=%s, operand=%d)\n", getHumanReadableOpcode(opcode), operand);
     super.visitIntInsn(opcode, operand);
   }
 
   @Override
   public void visitTypeInsn(int opcode, String type)
   {
-    out.format("visitTypeInsn(opcode=%s, type=%s)\n", reverse(opcode), type);
+    out.format("visitTypeInsn(opcode=%s, type=%s)\n", getHumanReadableOpcode(opcode), type);
     super.visitTypeInsn(opcode, type);
   }
 
@@ -140,7 +138,7 @@ public final class MethodVisitInterceptor extends
   @Override
   public void visitJumpInsn(int opcode, Label label)
   {
-    out.format("visitJumpInsn(opcode=%s, label=%s)\n", reverse(opcode), label);
+    out.format("visitJumpInsn(opcode=%s, label=%s)\n", getHumanReadableOpcode(opcode), label);
     super.visitJumpInsn(opcode, label);
   }
 
@@ -273,14 +271,14 @@ public final class MethodVisitInterceptor extends
   @Override
   public void visitVarInsn(int opcode, int varIndex)
   {
-    out.format("visitVarInsn(opcode=%s, varIndex=%s)\n", reverse(opcode), varIndex);
+    out.format("visitVarInsn(opcode=%s, varIndex=%s)\n", getHumanReadableOpcode(opcode), varIndex);
     super.visitVarInsn(opcode, varIndex);
   }
 
   @Override
   public void visitInsn(int opcode)
   {
-    out.format("visitInsn(opcode=%s)\n", reverse(opcode));
+    out.format("visitInsn(opcode=%s)\n", getHumanReadableOpcode(opcode));
     super.visitInsn(opcode);
   }
 
@@ -288,7 +286,7 @@ public final class MethodVisitInterceptor extends
   public void visitMethodInsn(int opcode, String owner, String name, String descriptor)
   {
     out.format("visitMethodInsn(opcode=%s, owner=%s, name=%s, descriptor=%s)\n",
-               reverse(opcode),
+               getHumanReadableOpcode(opcode),
                owner,
                name,
                descriptor);
@@ -299,7 +297,7 @@ public final class MethodVisitInterceptor extends
   public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface)
   {
     out.format("visitMethodInsn(opcode=%s, owner=%s, name=%s, descriptor=%s, isInterface=%s)\n",
-               reverse(opcode),
+               getHumanReadableOpcode(opcode),
                owner,
                name,
                descriptor,
@@ -311,23 +309,23 @@ public final class MethodVisitInterceptor extends
   public void visitFieldInsn(int opcode, String owner, String name, String descriptor)
   {
     out.format("visitFieldInsn(opcode=%s, owner=%s, name=%s, descriptor=%s)\n",
-               reverse(opcode),
+               getHumanReadableOpcode(opcode),
                owner,
                name,
                descriptor);
     super.visitFieldInsn(opcode, owner, name, descriptor);
   }
 
-  public String reverse(int opcode)
+  public static String getHumanReadableOpcode(int opcode)
   {
-    String str = reverseOpcodes.get(opcode);
+    String str = opcodes.get(opcode);
     if (str != null)
     {
       return str;
     }
     else
     {
-      return String.format("%d", opcode);
+      return String.format("%d(0x%x)", opcode, opcode);
     }
   }
 }

@@ -1,18 +1,27 @@
 package arb.expressions.nodes.nary;
 
 import static java.lang.String.format;
-import static java.lang.System.out;
 
 import org.objectweb.asm.*;
 
 import arb.Integer;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
+/**
+ * @param <D> domain
+ * @param <R> range
+ * @param <F> {@link Function}
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class Product<D, R, F extends Function<D, R>> extends
                     Node<D, R, F>
 {
@@ -73,13 +82,6 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
 
     @Override
-    public void evaluateFactor(MethodVisitor methodVisitor)
-    {
-      out.format( "Evaluate %s\n", factor);
-      factor.generate(null, methodVisitor, type());
-    }
-
-    @Override
     public String getIndexFieldName()
     {
       assert index.reference.index == null : "the index field cannot itself be indexed";
@@ -110,10 +112,10 @@ public class Product<D, R, F extends Function<D, R>> extends
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
     intermediateProductResultVariable = expression.reserveIntermediateVariable(mv, type());
-    System.out.println( "generateProduct: expr=" + expression );
+    System.out.println("generateProduct: expr=" + expression);
 
-    productGenerator.generateProduct(new MethodVisitInterceptor(Opcodes.ASM9,
-                                                                mv));
+    productGenerator.generateProduct(new ExecutionFlowDocumenter(Opcodes.ASM9,
+                                                                 mv));
     return mv;
 
   }
@@ -154,8 +156,6 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private static final String NONVARIABLE_MSG             = "Expected the first element of the product range specification"
                 + " {...} in ∏f(k){k=a…b} to be a Variable but got %s with remaining %s";
-
-  private String              indexVariableName;
 
   @Override
   public String typeset()

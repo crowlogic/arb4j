@@ -3,33 +3,26 @@ package arb.expressions.nodes.nary;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.invokeSetMethod;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import org.objectweb.asm.*;
 
 import arb.Integer;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
- * TODO: now to adapt this to inject this inline an already open MethodVisitor
  * 
- * <pre>
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
- * </pre>
- * 
- * @author Stephen Crowley <stephencrowley214@gmail.com>
- * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary} *
  */
 public class ProductGenerator extends
                               BoringPartsOfProductGenerator implements
                               Opcodes
 {
+
+  private static final String MUL_METHOD_DESCRIPTOR = Utensils.getMethodDescriptor(Real.class, Real.class, int.class, Real.class);
 
   public ProductGenerator(String functionClass)
   {
@@ -44,15 +37,16 @@ public class ProductGenerator extends
     return methodVisitor;
   }
 
-  void compareLoopIndexToEndIndex(MethodVisitor methodVisitor)
+  MethodVisitor compareIndexToEndIndex(MethodVisitor methodVisitor)
   {
-    loadLoopIndexVariable(methodVisitor);
+    loadIndexVariable(methodVisitor);
     loadEndIndex(methodVisitor);
     invokeMethod(methodVisitor,
                  Integer.class,
                  "compareTo",
                  Utensils.getMethodDescriptor(int.class, Integer.class),
                  false);
+    return methodVisitor;
   }
 
   static void endEvaluationCode(MethodVisitor methodVisitor)
@@ -62,7 +56,7 @@ public class ProductGenerator extends
     methodVisitor.visitEnd();
   }
 
-  void loadLoopIndexVariable(MethodVisitor methodVisitor)
+  void loadIndexVariable(MethodVisitor methodVisitor)
   {
     getField(methodVisitor, getIndexFieldName(), "Larb/Integer;");
   }
@@ -78,16 +72,6 @@ public class ProductGenerator extends
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
   }
 
-  public void evaluateFactor(MethodVisitor methodVisitor)
-  {
-    loadFactorFunction(methodVisitor);
-    loadLoopIndexVariable(methodVisitor);
-    loadBits(methodVisitor);
-    loadVariableThatHoldsTheEvaluatedFactor(methodVisitor);
-    invokeMethod(methodVisitor, Function.class, evaluate, factorEvaluateMethodSignature, true);
-    checkClassCast(methodVisitor, Real.class);
-  }
-
   @Override
   public void generateEvaluateMethod(ClassWriter classWriter)
   {
@@ -100,17 +84,44 @@ public class ProductGenerator extends
 
   public void generateProduct(MethodVisitor methodVisitor)
   {
-    initializeProductResultToItsIdentity(methodVisitor);
+    generateInitializer(methodVisitor);
+
+    generateInnerLoop(methodVisitor);
+
+    generateConditionalBranchJumpBackToTheBeginningOfTheLoop(methodVisitor);
+  }
+
+  private void generateConditionalBranchJumpBackToTheBeginningOfTheLoop(MethodVisitor methodVisitor)
+  {
+    designateLabel(methodVisitor, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
+    jumpToLoopBeginningIfNotLastFactor(methodVisitor);
+  }
+
+  private void generateInitializer(MethodVisitor methodVisitor)
+  {
+    initializeResultToItsIdentity(methodVisitor);
     setIndexToTheStartIndex(methodVisitor);
     jumpTo(methodVisitor, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
     designateLabel(methodVisitor, beginningOfTheLoop);
+  }
+
+  /**
+   * TODO; go over this the bug is here most
+   * 
+   * @param methodVisitor
+   */
+  public void generateInnerLoop(MethodVisitor methodVisitor)
+  {
+    loadIndexVariable(methodVisitor);
     loadResultingProductVariable(methodVisitor);
-    evaluateFactor(methodVisitor);
+    loadFactorFunction(methodVisitor);
+    loadIndexVariable(methodVisitor);
+    loadBits(methodVisitor);
+    loadVariableThatHoldsTheEvaluatedFactor(methodVisitor);
+    invokeMethod(methodVisitor, Function.class, evaluate, factorEvaluateMethodSignature, true);
+    checkClassCast(methodVisitor, Real.class);
     multiplyResultingProductVariableByFactor(methodVisitor);
     incrementIndex(methodVisitor);
-    designateLabel(methodVisitor, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
-    jumpToLoopBeginningIfThatWasntTheLastFactor(methodVisitor);
-
   }
 
   private void returnResult(MethodVisitor methodVisitor)
@@ -126,27 +137,27 @@ public class ProductGenerator extends
 
   void incrementIndex(MethodVisitor methodVisitor)
   {
-    loadLoopIndexVariable(methodVisitor);
+    loadIndexVariable(methodVisitor);
     invokeMethod(methodVisitor, "arb/Integer", "increment", "()Larb/Integer;");
     pop(methodVisitor);
   }
 
-  void initializeProductResultToItsIdentity(MethodVisitor methodVisitor)
+  void initializeResultToItsIdentity(MethodVisitor methodVisitor)
   {
     loadResultingProductVariable(methodVisitor);
     invokeMethod(methodVisitor, Real.class, "one", Utensils.getMethodDescriptor(Real.class), false);
     pop(methodVisitor);
   }
 
-  void jumpToIfLessThanOrEquals(MethodVisitor methodVisitor, Label label)
+  MethodVisitor jumpToIfLessThanOrEquals(MethodVisitor methodVisitor, Label label)
   {
     methodVisitor.visitJumpInsn(IFLE, label);
+    return methodVisitor;
   }
 
-  void jumpToLoopBeginningIfThatWasntTheLastFactor(MethodVisitor methodVisitor)
+  void jumpToLoopBeginningIfNotLastFactor(MethodVisitor methodVisitor)
   {
-    compareLoopIndexToEndIndex(methodVisitor);
-    jumpToIfLessThanOrEquals(methodVisitor, beginningOfTheLoop);
+    jumpToIfLessThanOrEquals(compareIndexToEndIndex(methodVisitor), beginningOfTheLoop);
   }
 
   void loadVariableThatHoldsTheEvaluatedFactor(MethodVisitor methodVisitor)
@@ -161,14 +172,14 @@ public class ProductGenerator extends
     invokeMethod(methodVisitor,
                  Real.class,
                  "mul",
-                 Utensils.getMethodDescriptor(Real.class, Real.class, int.class, Real.class),
+                 MUL_METHOD_DESCRIPTOR,
                  false);
     pop(methodVisitor);
   }
 
   void setIndexToTheStartIndex(MethodVisitor methodVisitor)
   {
-    loadLoopIndexVariable(methodVisitor);
+    loadIndexVariable(methodVisitor);
     loadStartIndex(methodVisitor);
     invokeSetMethod(methodVisitor, Integer.class, Integer.class);
     pop(methodVisitor);
