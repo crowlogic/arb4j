@@ -1,4 +1,5 @@
 package arb.expressions;
+
 import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
@@ -112,9 +113,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                            .findFirst()
                                                            .get();
 
-    
-      analyzer.analyze(classNode.name, evaluateMethod);
- 
+    analyzer.analyze(classNode.name, evaluateMethod);
+
     Analyzer.printResult(evaluateMethod, analyzer, new PrintWriter(System.out));
   }
 
@@ -353,9 +353,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return Compiler.checkClassCast(methodVisitor, type);
   }
 
-  public static boolean computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
-                                                                           "true"));
-
   public ClassVisitor constructClassVisitor()
   {
     ClassVisitor cw = new ClassWriter(computeFrames ? ClassWriter.COMPUTE_FRAMES : 0);
@@ -438,11 +435,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
     variablesDeclared = true;
   }
 
+  public static boolean analyze       = Boolean.valueOf(System.getProperty("expressionCompiler.analyze", "false"));
+
+  public static boolean computeFrames = !analyze;
+
   public Class<F> load()
   {
     assert instructions != null : "the instructions field is null indicating that the expression has not been compiled";
 
-    analyze();
+    if (analyze)
+    {
+      analyze();
+    }
 
     return compiledClass = loadFunctionClass(className, instructions, context);
   }
