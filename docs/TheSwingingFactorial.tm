@@ -20,91 +20,58 @@
 
   <section*|Properties and Formulas>
 
-  <\itemize>
-    <item>The offset is <math|0,3>.
+  <section*|Equations>
 
-    <item><math|a<around|(|n|)>> represents the number of 'swinging
-    orbitals', enumerated by the trinomial <math|n> over
-    <math|<around|[|<around|\<lfloor\>|n/2|\<rfloor\>>,n<modulo|2>,<around|\<lfloor\>|n/2|\<rfloor\>>|]>>.
+  <\enumerate>
+    <item><math|a<around|(|n|)>=<frac|n!|<around*|\<lfloor\>|<frac|n|2>|\<rfloor\>>!<rsup|2>>>.
 
-    <item>For <math|n\<gtr\>0>, <math|a<around|(|n|)>=<text|lcm><around|(|A*001405*<around|(|n-1|)>,A*001405<around|(|n|)>|)>>.
+    <item><math|a<around|(|0|)>=1>, <math|a<around|(|n|)>=n<rsup|<around|(|n<modulo|2>|)>><around*|(|<frac|4|n>|)><rsup|<around|(|n+1<modulo|2>|)>>*a*<around|(|n-1|)>>
+    for <math|n\<geq\>1>.
 
-    <item><math|A*055773<around|(|n|)>> divides <math|a<around|(|n|)>>, and
-    <math|A*001316<around|(|<around|\<lfloor\>|n/2|\<rfloor\>>|)>> divides
-    <math|a<around|(|n|)>>.
+    <item>Exponential generating function (e.g.f.):
+    <math|<around|(|1+x|)>*I<rsub|0>*<around|(|2*x|)>> where <math|I<rsub|0>>
+    is the modified Bessel function of the first kind.
 
-    <item><math|a<around|(|n|)>> is also the number of vertices of the
-    polytope resulting from the intersection of an <math|n>-hypercube with
-    the hyperplane perpendicular to and bisecting one of its long diagonals.
+    <item>Ordinary generating function (o.g.f.):
 
-    <item>The generating functions include:
+    \ <math|a<around|(|n|)>=<text|SeriesCoeff><rsub|n><around*|(|<frac|1+z/<around|(|1-4*z<rsup|2>|)>|<sqrt|1-4*z<rsup|2>>>|)>>.
 
-    <\align*>
-      <tformat|<table|<row|<cell|<text|E.g.f.:>>|<cell|<space|1em><around|(|1+x|)>*I<rsub|0><around|(|2*x|)>.>>|<row|<cell|<text|O.g.f.:>>|<cell|<space|1em>a<around|(|n|)>=<text|SeriesCoeff><rsub|n><around*|(|<frac|1+z/<around|(|1-4*z<rsup|2>|)>|<sqrt|1-4*z<rsup|2>>>|)>.>>|<row|<cell|<text|P.g.f.:>>|<cell|<space|1em>a<around|(|n|)>=<text|PolyCoeff><rsub|n><around*|(|<around|(|1+z<rsup|2>|)><rsup|n>+n*z*<around|(|1+z<rsup|2>|)><rsup|n-1>|)>.>>>>
-    </align*>
+    <item>Probability generating function (p.g.f.):\ 
 
-    <item>The recurrence relation is given by:
+    <math|a<around|(|n|)>=<text|PolyCoeff><rsub|n><around*|(|<around|(|1+z<rsup|2>|)><rsup|n>+n*z*<around|(|1+z<rsup|2>|)><rsup|n-1>|)>>.
 
-    <\equation*>
-      n*a<around|(|n|)>+<around|(|n-2|)>*a*<around|(|n-1|)>+4*<around|(|-2*n+3|)>*a*<around|(|n-2|)>+4*<around|(|-n+1|)>*a*<around|(|n-3|)>+16*<around|(|n-3|)>*a*<around|(|n-4|)>=0.
-    </equation*>
+    <item><math|a*<around|(|2*n+1|)>=A*046212*<around|(|2*n+1|)>=A*100071*<around|(|2*n+1|)>>
 
-    <item><math|a*<around|(|2*n|)>=<binom|2*n|n>>; for odd indices,
-    <math|a*<around|(|2*n+1|)>=<around|(|2*n+1|)><binom|2*n|n>>.
-  </itemize>
+    <item><math|a*<around|(|2*n|)>=<binom|2*n|n>>;
+    <math|a*<around|(|2*n+1|)>=<around|(|2*n+1|)><binom|2*n|n>>
 
-  <section*|Examples>
+    <item>D-finite with recurrence:
 
-  <\itemize>
-    <item><math|a<around|(|10|)>=10!/5!<rsup|2>=<text|trinomial><around|(|10,<around|[|5,0,5|]>|)>>.
+    \ <math|n\<cdot\>a<around|(|n|)>+<around|(|n-2|)>\<cdot\>a*<around|(|n-1|)>+4*<around|(|-2*n+3|)>\<cdot\>a*<around|(|n-2|)>+4*<around|(|-n+1|)>\<cdot\>a*<around|(|n-3|)>+16*<around|(|n-3|)>\<cdot\>a*<around|(|n-4|)>=0>.
 
-    <item><math|a<around|(|11|)>=11!/5!<rsup|2>=<text|trinomial><around|(|11,<around|[|5,1,5|]>|)>>.
-  </itemize>
+    <item><math|<big|sum><rsub|n\<geq\>0><frac|1|a<around|(|n|)>>=<frac|4|3>+<frac|8*\<pi\>|9*<sqrt|3>>>.
 
-  <subsection*|MAPLE>
+    <item>Exponential generating function (e.g.f.): <math|U<around|(|0|)>>
+    where\ 
 
-  <\verbatim>
-    \;
+    <\equation>
+      U<around|(|k|)>=1+<frac|x|1-<frac|x|x+<frac|<around|(|k+1|)><rsup|2>|U<around|(|k+1|)>>>>
+    </equation>
 
-    SeriesCoeff := proc(s, n) series(s(w, n), w, n+2);
+    \ (continued fraction, 3-step).
 
-    convert(%, polynom); coeff(%, w, n) end;
+    <item>Central column of the coefficients of the swinging polynomials
+    A162246.
 
-    a1 := proc(n) local k;
+    <item><math|a<around|(|n|)>=<big|sum><rsub|k=0><rsup|n>a<around|(|n|)>>
+    where <math|a<around*|(|n+1|)>=ceil<around*|(|<frac|a<around*|(|n|)><rsup|2>|a<around*|(|n-1|)>>|)>-1>
 
-    2^(n-(n mod 2))*mul(k^((-1)^(k+1)), k=1..n) end:
+    <item><math|a<around|(|n|)>=<text|hypergeometric><around|(|<around|[|-n,-n-1,<frac|1|2>|]>,<around|[|-n-2,1|]>,2|)>\<cdot\>2<rsup|n-1>\<cdot\><around|(|n+2|)>>
 
-    a2 := proc(n) option remember;
+    <item><math|a<around|(|n|)>=4<rsup|<around|\<lfloor\>|<frac|n|2>|\<rfloor\>>>\<cdot\><text|hypergeometric><around|(|<around|[|-<around|\<lfloor\>|<frac|n|2>|\<rfloor\>>,<frac|<around|(|-1|)><rsup|n>|2>|]>,<around|[|1|]>,1|)>>.
 
-    `if`(n=0, 1, n^irem(n, 2)*(4/n)^irem(n+1, 2)*a2(n-1)) end;
-
-    a3 := n -\<gtr\> n!/iquo(n, 2)!^2;
-
-    g4 := z -\<gtr\> BesselI(0, 2*z)*(1+z);
-
-    a4 := n -\<gtr\> n!*SeriesCoeff(g4, n);
-
-    g5 := z -\<gtr\> (1+z/(1-4*z^2))/sqrt(1-4*z^2);
-
-    a5 := n -\<gtr\> SeriesCoeff(g5, n);
-
-    g6 := (z, n) -\<gtr\> (1+z^2)^n+n*z*(1+z^2)^(n-1);
-
-    a6 := n -\<gtr\> SeriesCoeff(g6, n);
-
-    a7 := n -\<gtr\> combinat[multinomial](n, floor(n/2), n mod 2,
-    floor(n/2));
-
-    h := n -\<gtr\> binomial(n, floor(n/2)); # A001405
-
-    a8 := n -\<gtr\> ilcm(h(n-1), h(n));
-
-    F := [a1, a2, a3, a4, a5, a6, a7, a8];
-
-    for a in F do seq(a(i), i=0..32) od;
-
-    \;
-  </verbatim>
+    <item><math|<big|sum><rsub|n\<geq\>0><frac|<around|(|-1|)><rsup|n>|a<around|(|n|)>>=<frac|4|3>-<frac|4*\<pi\>|9*<sqrt|3>>>.
+  </enumerate>
 
   \;
 </body>
@@ -122,13 +89,9 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|?|1>>
-    <associate|auto-2|<tuple|<with|mode|<quote|math>|\<bullet\>>|2>>
-    <associate|auto-3|<tuple|<with|mode|<quote|math>|\<bullet\>>|2>>
+    <associate|auto-2|<tuple|?|1>>
+    <associate|auto-3|<tuple|15|2>>
     <associate|auto-4|<tuple|<with|mode|<quote|math>|\<bullet\>>|2>>
-    <associate|auto-5|<tuple|<with|mode|<quote|math>|\<bullet\>>|3>>
-    <associate|auto-6|<tuple|<with|mode|<quote|math>|\<bullet\>>|3>>
-    <associate|auto-7|<tuple|<with|mode|<quote|math>|\<bullet\>>|3>>
-    <associate|auto-8|<tuple|<with|mode|<quote|math>|\<bullet\>>|3>>
   </collection>
 </references>
 
@@ -139,30 +102,16 @@
       and Formulas> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Examples>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Equations>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Implementation>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Examples>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
 
       <with|par-left|<quote|1tab>|MAPLE <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
-
-      <with|par-left|<quote|1tab>|MATHEMATICA
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5>>
-
-      <with|par-left|<quote|1tab>|PARI/GP
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6>>
-
-      <with|par-left|<quote|1tab>|Magma <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7>>
-
-      <with|par-left|<quote|1tab>|Sage <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
     </associate>
   </collection>
 </auxiliary>
