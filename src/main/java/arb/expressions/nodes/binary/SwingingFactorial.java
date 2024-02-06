@@ -5,8 +5,10 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * The swinging factorial ≀
  * 
+ * 
+ * <a href="https://oeis.org/A056040">The swinging factorial, n≀ = 2^(n-(n
+ *       mod 2))*∏{k=1..n} k^((-1)^(k+1))</a>
  * @apiNote <a href="https://github.com/crowlogic/arb4j/issues/319"> implement
  *          swinging factorial #319</a>
  * 
