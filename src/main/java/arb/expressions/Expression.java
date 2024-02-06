@@ -28,7 +28,6 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.analysis.BasicValue;
 
 import arb.ComplexPolynomial;
 import arb.Integer;
@@ -37,6 +36,7 @@ import arb.RealPolynomial;
 import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.executionflow.Analyzer;
+import arb.expressions.executionflow.BasicValue;
 import arb.expressions.executionflow.SimpleVerifier;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
