@@ -2,6 +2,13 @@ package arb.documentation.references;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ * {@link TheArb4jLibrary}
+ */
 public record Article(String title,
                       String author,
                       String year,
