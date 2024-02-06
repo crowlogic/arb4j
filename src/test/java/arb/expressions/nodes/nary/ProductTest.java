@@ -1,13 +1,11 @@
 package arb.expressions.nodes.nary;
 
-import org.objectweb.asm.*;
-import org.objectweb.asm.tree.*;
-import org.objectweb.asm.tree.analysis.*;
-import org.objectweb.asm.util.*;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.analysis.AnalyzerException;
 
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
-import arb.expressions.executionflow.Analyzer;
 import arb.functions.real.NullaryFunction;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;

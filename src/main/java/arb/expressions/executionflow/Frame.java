@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.*;
-import org.objectweb.asm.tree.analysis.*;
+
+
+
 
 /**
  * A symbolic execution stack frame. A stack frame contains a set of local
@@ -187,7 +188,7 @@ public class Frame<V extends Value>
     return values[index];
   }
 
-  /**
+ /**
    * Sets the value of the given local variable. Long and double values are
    * represented with two variables.
    *
@@ -199,7 +200,7 @@ public class Frame<V extends Value>
   {
     if (index >= numLocals)
     {
-      throw new IndexOutOfBoundsException("Trying to set an inexistant local variable " + index);
+      throw new IndexOutOfBoundsException("Trying to set an inexistant local variable " + index + "this=" + this );
     }
     values[index] = value;
   }
