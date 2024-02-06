@@ -1,6 +1,12 @@
 package arb.documentation;
 
-public interface Work extends Notion
+/**
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
+public interface Work extends
+                      Notion
 {
 
 }

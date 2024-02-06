@@ -1,8 +1,14 @@
 package arb.functions;
 
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ * {@link TheArb4jLibrary}
+ */
 public class ImaginaryPart extends
                            RealToComplexPart implements
                            RealFunction,
@@ -10,8 +16,7 @@ public class ImaginaryPart extends
 {
   public ImaginaryPart(RealToComplexFunction realToComplexFunction)
   {
-    super(
-          realToComplexFunction);
+    super(realToComplexFunction);
   }
 
   @Override

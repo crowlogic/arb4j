@@ -2,8 +2,14 @@ package arb.functions;
 
 import arb.Complex;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.RealFunction;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public abstract class RealToComplexPart implements
                                         RealFunction,
                                         AutoCloseable

@@ -35,10 +35,16 @@ import arb.IntegrationOptions;
 import arb.Integrators;
 import arb.Magnitude;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.real.RealFunction;
 import arb.utensils.Utensils;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public interface RealToComplexFunction extends
                                        Function<Real, Complex>
 {

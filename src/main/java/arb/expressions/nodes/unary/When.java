@@ -15,6 +15,8 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.Integer;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstant;
@@ -29,10 +31,9 @@ import arb.functions.Function;
  * <code>Function&lt;Integer,Real> f = Function.express(Real.class,Integer.class,"when(n=0,1,n=1,tanh(ln(x)),else,-1)", context);</code>
  * <br>
  * <br>
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class When<D, R, F extends Function<D, R>> extends
                  UnaryOperation<D, R, F>
