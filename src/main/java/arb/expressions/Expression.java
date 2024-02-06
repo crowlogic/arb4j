@@ -338,9 +338,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return Compiler.checkClassCast(methodVisitor, type);
   }
 
+  public static boolean computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
+                                                                           "true"));
+
   public ClassVisitor constructClassVisitor()
   {
-    ClassVisitor cw = new ClassWriter(true ? ClassWriter.COMPUTE_FRAMES : 0 );
+    ClassVisitor cw = new ClassWriter(computeFrames ? ClassWriter.COMPUTE_FRAMES : 0);
     return cw;
   }
 
