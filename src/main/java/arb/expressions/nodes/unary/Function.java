@@ -23,6 +23,8 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.FunctionMapping;
@@ -30,10 +32,10 @@ import arb.expressions.Parser;
 import arb.expressions.nodes.Node;
 
 /**
- * {@link Function} is a {@link Node} in the {@link Expression} that
- * represents a call to either a builtin or a contextual function. A built-in
- * function is one that is a member of the type of the domain or range of the
- * function, such as {@link Real#tanh(int, Real)}. <br>
+ * {@link Function} is a {@link Node} in the {@link Expression} that represents
+ * a call to either a builtin or a contextual function. A built-in function is
+ * one that is a member of the type of the domain or range of the function, such
+ * as {@link Real#tanh(int, Real)}. <br>
  * <br>
  * A contextual function is one that is shared thru a mutual {@link Context} by
  * constructing one and passing it to the
@@ -49,15 +51,11 @@ import arb.expressions.nodes.Node;
  * should be used.<br>
  * <br>
  * 
- * <pre>
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
- * </pre>
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class Function<D, R, F extends arb.functions.Function<D, R>> extends
-                         UnaryOperation<D, R, F>
+                     UnaryOperation<D, R, F>
 {
 
   public String                functionName;

@@ -2,11 +2,20 @@ package arb.functions;
 
 import static arb.expressions.Expression.instantiate;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotDifferentiableException;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.complex.ComplexFunction;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ * {@link TheArb4jLibrary}
+ * 
+ * @param <D>
+ * @param <R>
+ */
 @SuppressWarnings("unchecked")
 public interface Function<D, R> extends
                          AutoCloseable
@@ -159,9 +168,9 @@ public interface Function<D, R> extends
     return (F) instantiate(expression, null, domainClass, rangeClass, Function.class, null);
   }
 
-  public static <D, R> Function<D,R> express(Class<? extends D> domainClass,
-                                                                  Class<? extends R> rangeClass,
-                                                                  String expression)
+  public static <D, R> Function<D, R> express(Class<? extends D> domainClass,
+                                              Class<? extends R> rangeClass,
+                                              String expression)
   {
     return express(domainClass, rangeClass, expression, null);
   }
