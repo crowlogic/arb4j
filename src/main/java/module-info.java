@@ -31,6 +31,8 @@ module arb4j
   requires transitive org.fxyz3d.core;
   requires transitive vineflower;
   requires transitive org.objectweb.asm;
+  requires transitive org.objectweb.asm.tree.analysis;
+  requires transitive org.objectweb.asm.tree;
 
   exports arb;
   exports arb.logic;
