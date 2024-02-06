@@ -62,13 +62,13 @@ public class Bibliography extends
                                                                                                    .setPublisher("American Mathematical Society")
                                                                                                    .setAddress("501 West 116th Street");
 
-  public static Miscellaneous oeisA001790                                        = new Miscellaneous("A001790 Numerators in (the) expansion of 1/sqrt(1-x)",
+  public static Miscellaneous oeisA001790                                        = new Miscellaneous("A001790 Numerators in the expansion of $\\frac{1}{\\sqrt{1-x}}$",
                                                                                                      "OEIS Foundation Inc.",
                                                                                                      "2024",
                                                                                                      "\\url{http://oeis.org/A001790}",
                                                                                                      "This sequence gives the numerators of the Maclaurin series of the "
-                                                                                                                   + "Lorentz factor (see Wikipedia link) of 1/sqrt(1-b^2) = dt/dtau "
-                                                                                                                   + "where b=u/c is the velocity in terms of the speed of light c, "
+                                                                                                                   + "Lorentz factor (see Wikipedia link) of $\\frac{1}{\\sqrt{1-b^2}} = \\frac{dt}{d\\tau}$ "
+                                                                                                                   + "where $b=\\frac{u}{c}$ is the velocity in terms of the speed of light c, "
                                                                                                                    + "u is the velocity as observed in the reference frame where time "
                                                                                                                    + "t is measured and tau is the proper time. "
                                                                                                                    + "- Stephen Crowley, Apr 03 2007",
