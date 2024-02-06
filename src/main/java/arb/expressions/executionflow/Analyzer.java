@@ -16,6 +16,153 @@ public class Analyzer<V extends Value> implements
                      Opcodes
 {
 
+  public static void analyzeMethod(Class<?> superType,
+                                    Class<?>[] interfaces,
+                                    byte[] bytecode,
+                                    ClassNode classNode,
+                                    MethodNode method) throws AnalyzerException
+  {
+    ClassReader classReader = new ClassReader(bytecode);
+  
+    classReader.accept(classNode, ClassReader.SKIP_DEBUG);
+  
+    SimpleVerifier       verifier = new SimpleVerifier(Type.getObjectType(classNode.name),
+                                                       Type.getType(superType),
+                                                       classTypes(interfaces),
+                                                       (classNode.access & Opcodes.ACC_INTERFACE) != 0);
+    
+    Analyzer<BasicValue> analyzer = new Analyzer<>(verifier);
+  
+    analyzer.analyze(classNode.name, method);
+  
+    Analyzer.printAnalyzerResult(method, analyzer, new PrintWriter(System.out));
+  }
+
+  /**
+   * Computes and returns the maximum number of local variables used in the given
+   * method.
+   *
+   * @param method a method.
+   * @return the maximum number of local variables used in the given method.
+   */
+  private static int computeMaxLocals(final MethodNode method)
+  {
+    int maxLocals = Type.getArgumentsAndReturnSizes(method.desc) >> 2;
+    if ((method.access & Opcodes.ACC_STATIC) != 0)
+    {
+      maxLocals -= 1;
+    }
+    for (AbstractInsnNode insnNode : method.instructions)
+    {
+      if (insnNode instanceof VarInsnNode)
+      {
+        int local = ((VarInsnNode) insnNode).var;
+        int size  = (insnNode.getOpcode() == Opcodes.LLOAD || insnNode.getOpcode() == Opcodes.DLOAD
+                      || insnNode.getOpcode() == Opcodes.LSTORE || insnNode.getOpcode() == Opcodes.DSTORE) ? 2 : 1;
+        maxLocals = Math.max(maxLocals, local + size);
+      }
+      else if (insnNode instanceof IincInsnNode)
+      {
+        int local = ((IincInsnNode) insnNode).var;
+        maxLocals = Math.max(maxLocals, local + 1);
+      }
+    }
+    return maxLocals;
+  }
+
+  /**
+   * Computes and returns the maximum stack size of a method, given its stack map
+   * frames.
+   *
+   * @param frames the stack map frames of a method.
+   * @return the maximum stack size of the given method.
+   */
+  private static int computeMaxStack(final Frame<?>[] frames)
+  {
+    int maxStack = 0;
+    for (Frame<?> frame : frames)
+    {
+      if (frame != null)
+      {
+        int stackSize = 0;
+        for (int i = 0; i < frame.getStackSize(); ++i)
+        {
+          stackSize += frame.getStack(i).getSize();
+        }
+        maxStack = Math.max(maxStack, stackSize);
+      }
+    }
+    return maxStack;
+  }
+
+  private static String getUnqualifiedName(final String name)
+  {
+    int lastSlashIndex = name.lastIndexOf('/');
+    if (lastSlashIndex == -1)
+    {
+      return name;
+    }
+    else
+    {
+      int endIndex = name.length();
+      if (name.charAt(endIndex - 1) == ';')
+      {
+        endIndex--;
+      }
+      int lastBracketIndex = name.lastIndexOf('[');
+      if (lastBracketIndex == -1)
+      {
+        return name.substring(lastSlashIndex + 1, endIndex);
+      }
+      return name.substring(0, lastBracketIndex + 1) + name.substring(lastSlashIndex + 1, endIndex);
+    }
+  }
+
+  public static void printAnalyzerResult(final MethodNode method,
+                                  final Analyzer<BasicValue> analyzer,
+                                  final PrintWriter printWriter)
+  {
+    Textifier          textifier          = new Textifier();
+    TraceMethodVisitor traceMethodVisitor = new TraceMethodVisitor(textifier);
+  
+    printWriter.println(method.name + method.desc);
+    for (int i = 0; i < method.instructions.size(); ++i)
+    {
+      method.instructions.get(i).accept(traceMethodVisitor);
+  
+      StringBuilder     stringBuilder = new StringBuilder();
+      Frame<BasicValue> frame         = analyzer.getFrames()[i];
+      if (frame == null)
+      {
+        stringBuilder.append('?');
+      }
+      else
+      {
+        for (int j = 0; j < frame.getLocals(); ++j)
+        {
+          stringBuilder.append(getUnqualifiedName(frame.getLocal(j).toString())).append(' ');
+        }
+        stringBuilder.append(" : ");
+        for (int j = 0; j < frame.getStackSize(); ++j)
+        {
+          stringBuilder.append(getUnqualifiedName(frame.getStack(j).toString())).append(' ');
+        }
+      }
+      while (stringBuilder.length() < method.maxStack + method.maxLocals + 1)
+      {
+        stringBuilder.append(' ');
+      }
+      printWriter.print(Integer.toString(i + 100000).substring(1));
+      printWriter.print(" " + stringBuilder + " : " + textifier.text.get(textifier.text.size() - 1));
+    }
+    for (TryCatchBlockNode tryCatchBlock : method.tryCatchBlocks)
+    {
+      tryCatchBlock.accept(traceMethodVisitor);
+      printWriter.print(" " + textifier.text.get(textifier.text.size() - 1));
+    }
+    printWriter.println();
+  }
+
   /**
    * The interpreter to use to symbolically interpret the bytecode instructions.
    */
@@ -339,113 +486,42 @@ public class Analyzer<V extends Value> implements
   }
 
   /**
-   * Computes and returns the maximum number of local variables used in the given
-   * method.
+   * Computes the initial execution stack frame of the given method.
    *
-   * @param method a method.
-   * @return the maximum number of local variables used in the given method.
+   * @param owner  the internal name of the class to which 'method' belongs (see
+   *               {@link Type#getInternalName()}).
+   * @param method the method to be analyzed.
+   * @return the initial execution stack frame of the 'method'.
    */
-  private static int computeMaxLocals(final MethodNode method)
+  private Frame<V> computeInitialFrame(final String owner, final MethodNode method)
   {
-    int maxLocals = Type.getArgumentsAndReturnSizes(method.desc) >> 2;
-    if ((method.access & Opcodes.ACC_STATIC) != 0)
+    Frame<V> frame            = newFrame(method.maxLocals, method.maxStack);
+    int      currentLocal     = 0;
+    boolean  isInstanceMethod = (method.access & ACC_STATIC) == 0;
+    if (isInstanceMethod)
     {
-      maxLocals -= 1;
+      Type ownerType = Type.getObjectType(owner);
+      frame.setLocal(currentLocal, interpreter.newParameterValue(isInstanceMethod, currentLocal, ownerType));
+      currentLocal++;
     }
-    for (AbstractInsnNode insnNode : method.instructions)
+    Type[] argumentTypes = Type.getArgumentTypes(method.desc);
+    for (Type argumentType : argumentTypes)
     {
-      if (insnNode instanceof VarInsnNode)
+      frame.setLocal(currentLocal, interpreter.newParameterValue(isInstanceMethod, currentLocal, argumentType));
+      currentLocal++;
+      if (argumentType.getSize() == 2)
       {
-        int local = ((VarInsnNode) insnNode).var;
-        int size  = (insnNode.getOpcode() == Opcodes.LLOAD || insnNode.getOpcode() == Opcodes.DLOAD
-                      || insnNode.getOpcode() == Opcodes.LSTORE || insnNode.getOpcode() == Opcodes.DSTORE) ? 2 : 1;
-        maxLocals = Math.max(maxLocals, local + size);
-      }
-      else if (insnNode instanceof IincInsnNode)
-      {
-        int local = ((IincInsnNode) insnNode).var;
-        maxLocals = Math.max(maxLocals, local + 1);
-      }
-    }
-    return maxLocals;
-  }
-
-  /**
-   * Computes and returns the maximum stack size of a method, given its stack map
-   * frames.
-   *
-   * @param frames the stack map frames of a method.
-   * @return the maximum stack size of the given method.
-   */
-  private static int computeMaxStack(final Frame<?>[] frames)
-  {
-    int maxStack = 0;
-    for (Frame<?> frame : frames)
-    {
-      if (frame != null)
-      {
-        int stackSize = 0;
-        for (int i = 0; i < frame.getStackSize(); ++i)
-        {
-          stackSize += frame.getStack(i).getSize();
-        }
-        maxStack = Math.max(maxStack, stackSize);
+        frame.setLocal(currentLocal, interpreter.newEmptyValue(currentLocal));
+        currentLocal++;
       }
     }
-    return maxStack;
-  }
-
-  /**
-   * Finds the subroutines of the currently analyzed method and stores them in
-   * {@link #subroutines}.
-   *
-   * @param maxLocals the maximum number of local variables of the currently
-   *                  analyzed method (long and double values count for two
-   *                  variables).
-   * @throws AnalyzerException if the control flow graph can fall off the end of
-   *                           the code.
-   */
-  private void findSubroutines(final int maxLocals) throws AnalyzerException
-  {
-    // For each instruction, compute the subroutine to which it belongs.
-    // Follow the main 'subroutine', and collect the jsr instructions to nested
-    // subroutines.
-    Subroutine             main     = new Subroutine(null,
-                                                     maxLocals,
-                                                     null);
-    List<AbstractInsnNode> jsrInsns = new ArrayList<>();
-    findSubroutine(0, main, jsrInsns);
-    // Follow the nested subroutines, and collect their own nested subroutines,
-    // until all
-    // subroutines are found.
-    Map<LabelNode, Subroutine> jsrSubroutines = new HashMap<>();
-    while (!jsrInsns.isEmpty())
+    while (currentLocal < method.maxLocals)
     {
-      JumpInsnNode jsrInsn    = (JumpInsnNode) jsrInsns.remove(0);
-      Subroutine   subroutine = jsrSubroutines.get(jsrInsn.label);
-      if (subroutine == null)
-      {
-        subroutine = new Subroutine(jsrInsn.label,
-                                    maxLocals,
-                                    jsrInsn);
-        jsrSubroutines.put(jsrInsn.label, subroutine);
-        findSubroutine(insnList.indexOf(jsrInsn.label), subroutine, jsrInsns);
-      }
-      else
-      {
-        subroutine.callers.add(jsrInsn);
-      }
+      frame.setLocal(currentLocal, interpreter.newEmptyValue(currentLocal));
+      currentLocal++;
     }
-    // Clear the main 'subroutine', which is not a real subroutine (and was used
-    // only as an
-    // intermediate step above to find the real ones).
-    for (int i = 0; i < insnListSize; ++i)
-    {
-      if (subroutines[i] != null && subroutines[i].start == null)
-      {
-        subroutines[i] = null;
-      }
-    }
+    frame.setReturn(interpreter.newReturnTypeValue(Type.getReturnType(method.desc)));
+    return frame;
   }
 
   /**
@@ -553,42 +629,56 @@ public class Analyzer<V extends Value> implements
   }
 
   /**
-   * Computes the initial execution stack frame of the given method.
+   * Finds the subroutines of the currently analyzed method and stores them in
+   * {@link #subroutines}.
    *
-   * @param owner  the internal name of the class to which 'method' belongs (see
-   *               {@link Type#getInternalName()}).
-   * @param method the method to be analyzed.
-   * @return the initial execution stack frame of the 'method'.
+   * @param maxLocals the maximum number of local variables of the currently
+   *                  analyzed method (long and double values count for two
+   *                  variables).
+   * @throws AnalyzerException if the control flow graph can fall off the end of
+   *                           the code.
    */
-  private Frame<V> computeInitialFrame(final String owner, final MethodNode method)
+  private void findSubroutines(final int maxLocals) throws AnalyzerException
   {
-    Frame<V> frame            = newFrame(method.maxLocals, method.maxStack);
-    int      currentLocal     = 0;
-    boolean  isInstanceMethod = (method.access & ACC_STATIC) == 0;
-    if (isInstanceMethod)
+    // For each instruction, compute the subroutine to which it belongs.
+    // Follow the main 'subroutine', and collect the jsr instructions to nested
+    // subroutines.
+    Subroutine             main     = new Subroutine(null,
+                                                     maxLocals,
+                                                     null);
+    List<AbstractInsnNode> jsrInsns = new ArrayList<>();
+    findSubroutine(0, main, jsrInsns);
+    // Follow the nested subroutines, and collect their own nested subroutines,
+    // until all
+    // subroutines are found.
+    Map<LabelNode, Subroutine> jsrSubroutines = new HashMap<>();
+    while (!jsrInsns.isEmpty())
     {
-      Type ownerType = Type.getObjectType(owner);
-      frame.setLocal(currentLocal, interpreter.newParameterValue(isInstanceMethod, currentLocal, ownerType));
-      currentLocal++;
-    }
-    Type[] argumentTypes = Type.getArgumentTypes(method.desc);
-    for (Type argumentType : argumentTypes)
-    {
-      frame.setLocal(currentLocal, interpreter.newParameterValue(isInstanceMethod, currentLocal, argumentType));
-      currentLocal++;
-      if (argumentType.getSize() == 2)
+      JumpInsnNode jsrInsn    = (JumpInsnNode) jsrInsns.remove(0);
+      Subroutine   subroutine = jsrSubroutines.get(jsrInsn.label);
+      if (subroutine == null)
       {
-        frame.setLocal(currentLocal, interpreter.newEmptyValue(currentLocal));
-        currentLocal++;
+        subroutine = new Subroutine(jsrInsn.label,
+                                    maxLocals,
+                                    jsrInsn);
+        jsrSubroutines.put(jsrInsn.label, subroutine);
+        findSubroutine(insnList.indexOf(jsrInsn.label), subroutine, jsrInsns);
+      }
+      else
+      {
+        subroutine.callers.add(jsrInsn);
       }
     }
-    while (currentLocal < method.maxLocals)
+    // Clear the main 'subroutine', which is not a real subroutine (and was used
+    // only as an
+    // intermediate step above to find the real ones).
+    for (int i = 0; i < insnListSize; ++i)
     {
-      frame.setLocal(currentLocal, interpreter.newEmptyValue(currentLocal));
-      currentLocal++;
+      if (subroutines[i] != null && subroutines[i].start == null)
+      {
+        subroutines[i] = null;
+      }
     }
-    frame.setReturn(interpreter.newReturnTypeValue(Type.getReturnType(method.desc)));
-    return frame;
   }
 
   /**
@@ -630,130 +720,6 @@ public class Analyzer<V extends Value> implements
   protected void init(final String owner, final MethodNode method) throws AnalyzerException
   {
     // Nothing to do.
-  }
-
-  /**
-   * Constructs a new frame with the given size.
-   *
-   * @param numLocals the maximum number of local variables of the frame.
-   * @param numStack  the maximum stack size of the frame.
-   * @return the created frame.
-   */
-  protected Frame<V> newFrame(final int numLocals, final int numStack)
-  {
-    return new Frame<>(numLocals,
-                       numStack);
-  }
-
-  /**
-   * Constructs a copy of the given frame.
-   *
-   * @param frame a frame.
-   * @return the created frame.
-   */
-  protected Frame<V> newFrame(final Frame<? extends V> frame)
-  {
-    return new Frame<>(frame);
-  }
-
-  /**
-   * Creates a control flow graph edge. The default implementation of this method
-   * does nothing. It can be overridden in order to construct the control flow
-   * graph of a method (this method is called by the {@link #analyze} method
-   * during its visit of the method's code).
-   *
-   * @param insnIndex      an instruction index.
-   * @param successorIndex index of a successor instruction.
-   */
-  protected void newControlFlowEdge(final int insnIndex, final int successorIndex)
-  {
-    // Nothing to do.
-  }
-
-  /**
-   * Creates a control flow graph edge corresponding to an exception handler. The
-   * default implementation of this method does nothing. It can be overridden in
-   * order to construct the control flow graph of a method (this method is called
-   * by the {@link #analyze} method during its visit of the method's code).
-   *
-   * @param insnIndex      an instruction index.
-   * @param successorIndex index of a successor instruction.
-   * @return true if this edge must be considered in the data flow analysis
-   *         performed by this analyzer, or false otherwise. The default
-   *         implementation of this method always returns true.
-   */
-  protected boolean newControlFlowExceptionEdge(final int insnIndex, final int successorIndex)
-  {
-    return true;
-  }
-
-  /**
-   * Creates a control flow graph edge corresponding to an exception handler. The
-   * default implementation of this method delegates to
-   * {@link #newControlFlowExceptionEdge(int, int)}. It can be overridden in order
-   * to construct the control flow graph of a method (this method is called by the
-   * {@link #analyze} method during its visit of the method's code).
-   *
-   * @param insnIndex     an instruction index.
-   * @param tryCatchBlock TryCatchBlockNode corresponding to this edge.
-   * @return true if this edge must be considered in the data flow analysis
-   *         performed by this analyzer, or false otherwise. The default
-   *         implementation of this method delegates to
-   *         {@link #newControlFlowExceptionEdge(int, int)}.
-   */
-  protected boolean newControlFlowExceptionEdge(final int insnIndex, final TryCatchBlockNode tryCatchBlock)
-  {
-    return newControlFlowExceptionEdge(insnIndex, insnList.indexOf(tryCatchBlock.handler));
-  }
-
-  // -----------------------------------------------------------------------------------------------
-
-  /**
-   * Merges the given frame and subroutine into the frame and subroutines at the
-   * given instruction index. If the frame or the subroutine at the given
-   * instruction index changes as a result of this merge, the instruction index is
-   * added to the list of instructions to process (if it is not already the case).
-   *
-   * @param insnIndex  an instruction index.
-   * @param frame      a frame. This frame is left unchanged by this method.
-   * @param subroutine a subroutine. This subroutine is left unchanged by this
-   *                   method.
-   * @throws AnalyzerException if the frames have incompatible sizes.
-   */
-  private void merge(final int insnIndex, final Frame<V> frame, final Subroutine subroutine) throws AnalyzerException
-  {
-    boolean  changed;
-    Frame<V> oldFrame = frames[insnIndex];
-    if (oldFrame == null)
-    {
-      frames[insnIndex] = newFrame(frame);
-      changed           = true;
-    }
-    else
-    {
-      changed = oldFrame.merge(frame, interpreter);
-    }
-    Subroutine oldSubroutine = subroutines[insnIndex];
-    if (oldSubroutine == null)
-    {
-      if (subroutine != null)
-      {
-        subroutines[insnIndex] = new Subroutine(subroutine);
-        changed                = true;
-      }
-    }
-    else
-    {
-      if (subroutine != null)
-      {
-        changed |= oldSubroutine.merge(subroutine);
-      }
-    }
-    if (changed && !inInstructionsToProcess[insnIndex])
-    {
-      inInstructionsToProcess[insnIndex]                = true;
-      instructionsToProcess[numInstructionsToProcess++] = insnIndex;
-    }
   }
 
   /**
@@ -809,93 +775,127 @@ public class Analyzer<V extends Value> implements
     }
   }
 
-  public static void printAnalyzerResult(final MethodNode method,
-                                  final Analyzer<BasicValue> analyzer,
-                                  final PrintWriter printWriter)
+  /**
+   * Merges the given frame and subroutine into the frame and subroutines at the
+   * given instruction index. If the frame or the subroutine at the given
+   * instruction index changes as a result of this merge, the instruction index is
+   * added to the list of instructions to process (if it is not already the case).
+   *
+   * @param insnIndex  an instruction index.
+   * @param frame      a frame. This frame is left unchanged by this method.
+   * @param subroutine a subroutine. This subroutine is left unchanged by this
+   *                   method.
+   * @throws AnalyzerException if the frames have incompatible sizes.
+   */
+  private void merge(final int insnIndex, final Frame<V> frame, final Subroutine subroutine) throws AnalyzerException
   {
-    Textifier          textifier          = new Textifier();
-    TraceMethodVisitor traceMethodVisitor = new TraceMethodVisitor(textifier);
-  
-    printWriter.println(method.name + method.desc);
-    for (int i = 0; i < method.instructions.size(); ++i)
+    boolean  changed;
+    Frame<V> oldFrame = frames[insnIndex];
+    if (oldFrame == null)
     {
-      method.instructions.get(i).accept(traceMethodVisitor);
-  
-      StringBuilder     stringBuilder = new StringBuilder();
-      Frame<BasicValue> frame         = analyzer.getFrames()[i];
-      if (frame == null)
-      {
-        stringBuilder.append('?');
-      }
-      else
-      {
-        for (int j = 0; j < frame.getLocals(); ++j)
-        {
-          stringBuilder.append(getUnqualifiedName(frame.getLocal(j).toString())).append(' ');
-        }
-        stringBuilder.append(" : ");
-        for (int j = 0; j < frame.getStackSize(); ++j)
-        {
-          stringBuilder.append(getUnqualifiedName(frame.getStack(j).toString())).append(' ');
-        }
-      }
-      while (stringBuilder.length() < method.maxStack + method.maxLocals + 1)
-      {
-        stringBuilder.append(' ');
-      }
-      printWriter.print(Integer.toString(i + 100000).substring(1));
-      printWriter.print(" " + stringBuilder + " : " + textifier.text.get(textifier.text.size() - 1));
-    }
-    for (TryCatchBlockNode tryCatchBlock : method.tryCatchBlocks)
-    {
-      tryCatchBlock.accept(traceMethodVisitor);
-      printWriter.print(" " + textifier.text.get(textifier.text.size() - 1));
-    }
-    printWriter.println();
-  }
-
-  private static String getUnqualifiedName(final String name)
-  {
-    int lastSlashIndex = name.lastIndexOf('/');
-    if (lastSlashIndex == -1)
-    {
-      return name;
+      frames[insnIndex] = newFrame(frame);
+      changed           = true;
     }
     else
     {
-      int endIndex = name.length();
-      if (name.charAt(endIndex - 1) == ';')
+      changed = oldFrame.merge(frame, interpreter);
+    }
+    Subroutine oldSubroutine = subroutines[insnIndex];
+    if (oldSubroutine == null)
+    {
+      if (subroutine != null)
       {
-        endIndex--;
+        subroutines[insnIndex] = new Subroutine(subroutine);
+        changed                = true;
       }
-      int lastBracketIndex = name.lastIndexOf('[');
-      if (lastBracketIndex == -1)
+    }
+    else
+    {
+      if (subroutine != null)
       {
-        return name.substring(lastSlashIndex + 1, endIndex);
+        changed |= oldSubroutine.merge(subroutine);
       }
-      return name.substring(0, lastBracketIndex + 1) + name.substring(lastSlashIndex + 1, endIndex);
+    }
+    if (changed && !inInstructionsToProcess[insnIndex])
+    {
+      inInstructionsToProcess[insnIndex]                = true;
+      instructionsToProcess[numInstructionsToProcess++] = insnIndex;
     }
   }
 
-  public static void analyzeMethod(Class<?> superType,
-                                    Class<?>[] interfaces,
-                                    byte[] bytecode,
-                                    ClassNode classNode,
-                                    MethodNode method) throws AnalyzerException
+  // -----------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a control flow graph edge. The default implementation of this method
+   * does nothing. It can be overridden in order to construct the control flow
+   * graph of a method (this method is called by the {@link #analyze} method
+   * during its visit of the method's code).
+   *
+   * @param insnIndex      an instruction index.
+   * @param successorIndex index of a successor instruction.
+   */
+  protected void newControlFlowEdge(final int insnIndex, final int successorIndex)
   {
-    ClassReader classReader = new ClassReader(bytecode);
-  
-    classReader.accept(classNode, ClassReader.SKIP_DEBUG);
-  
-    SimpleVerifier       verifier = new SimpleVerifier(Type.getObjectType(classNode.name),
-                                                       Type.getType(superType),
-                                                       classTypes(interfaces),
-                                                       (classNode.access & Opcodes.ACC_INTERFACE) != 0);
-    
-    Analyzer<BasicValue> analyzer = new Analyzer<>(verifier);
-  
-    analyzer.analyze(classNode.name, method);
-  
-    Analyzer.printAnalyzerResult(method, analyzer, new PrintWriter(System.out));
+    // Nothing to do.
+  }
+
+  /**
+   * Creates a control flow graph edge corresponding to an exception handler. The
+   * default implementation of this method does nothing. It can be overridden in
+   * order to construct the control flow graph of a method (this method is called
+   * by the {@link #analyze} method during its visit of the method's code).
+   *
+   * @param insnIndex      an instruction index.
+   * @param successorIndex index of a successor instruction.
+   * @return true if this edge must be considered in the data flow analysis
+   *         performed by this analyzer, or false otherwise. The default
+   *         implementation of this method always returns true.
+   */
+  protected boolean newControlFlowExceptionEdge(final int insnIndex, final int successorIndex)
+  {
+    return true;
+  }
+
+  /**
+   * Creates a control flow graph edge corresponding to an exception handler. The
+   * default implementation of this method delegates to
+   * {@link #newControlFlowExceptionEdge(int, int)}. It can be overridden in order
+   * to construct the control flow graph of a method (this method is called by the
+   * {@link #analyze} method during its visit of the method's code).
+   *
+   * @param insnIndex     an instruction index.
+   * @param tryCatchBlock TryCatchBlockNode corresponding to this edge.
+   * @return true if this edge must be considered in the data flow analysis
+   *         performed by this analyzer, or false otherwise. The default
+   *         implementation of this method delegates to
+   *         {@link #newControlFlowExceptionEdge(int, int)}.
+   */
+  protected boolean newControlFlowExceptionEdge(final int insnIndex, final TryCatchBlockNode tryCatchBlock)
+  {
+    return newControlFlowExceptionEdge(insnIndex, insnList.indexOf(tryCatchBlock.handler));
+  }
+
+  /**
+   * Constructs a copy of the given frame.
+   *
+   * @param frame a frame.
+   * @return the created frame.
+   */
+  protected Frame<V> newFrame(final Frame<? extends V> frame)
+  {
+    return new Frame<>(frame);
+  }
+
+  /**
+   * Constructs a new frame with the given size.
+   *
+   * @param numLocals the maximum number of local variables of the frame.
+   * @param numStack  the maximum stack size of the frame.
+   * @return the created frame.
+   */
+  protected Frame<V> newFrame(final int numLocals, final int numStack)
+  {
+    return new Frame<>(numLocals,
+                       numStack);
   }
 }
