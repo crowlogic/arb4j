@@ -1,11 +1,16 @@
 package arb.expressions.executionflow;
 
+import static arb.utensils.Utensils.classTypes;
+
+import java.io.PrintWriter;
 import java.util.*;
 
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
+import org.objectweb.asm.*;
 import org.objectweb.asm.tree.*;
 import org.objectweb.asm.tree.analysis.*;
+import org.objectweb.asm.tree.analysis.Frame;
+import org.objectweb.asm.util.Textifier;
+import org.objectweb.asm.util.TraceMethodVisitor;
 
 public class Analyzer<V extends Value> implements
                      Opcodes
@@ -802,5 +807,95 @@ public class Analyzer<V extends Value> implements
       inInstructionsToProcess[insnIndex]                = true;
       instructionsToProcess[numInstructionsToProcess++] = insnIndex;
     }
+  }
+
+  public static void printAnalyzerResult(final MethodNode method,
+                                  final Analyzer<BasicValue> analyzer,
+                                  final PrintWriter printWriter)
+  {
+    Textifier          textifier          = new Textifier();
+    TraceMethodVisitor traceMethodVisitor = new TraceMethodVisitor(textifier);
+  
+    printWriter.println(method.name + method.desc);
+    for (int i = 0; i < method.instructions.size(); ++i)
+    {
+      method.instructions.get(i).accept(traceMethodVisitor);
+  
+      StringBuilder     stringBuilder = new StringBuilder();
+      Frame<BasicValue> frame         = analyzer.getFrames()[i];
+      if (frame == null)
+      {
+        stringBuilder.append('?');
+      }
+      else
+      {
+        for (int j = 0; j < frame.getLocals(); ++j)
+        {
+          stringBuilder.append(getUnqualifiedName(frame.getLocal(j).toString())).append(' ');
+        }
+        stringBuilder.append(" : ");
+        for (int j = 0; j < frame.getStackSize(); ++j)
+        {
+          stringBuilder.append(getUnqualifiedName(frame.getStack(j).toString())).append(' ');
+        }
+      }
+      while (stringBuilder.length() < method.maxStack + method.maxLocals + 1)
+      {
+        stringBuilder.append(' ');
+      }
+      printWriter.print(Integer.toString(i + 100000).substring(1));
+      printWriter.print(" " + stringBuilder + " : " + textifier.text.get(textifier.text.size() - 1));
+    }
+    for (TryCatchBlockNode tryCatchBlock : method.tryCatchBlocks)
+    {
+      tryCatchBlock.accept(traceMethodVisitor);
+      printWriter.print(" " + textifier.text.get(textifier.text.size() - 1));
+    }
+    printWriter.println();
+  }
+
+  private static String getUnqualifiedName(final String name)
+  {
+    int lastSlashIndex = name.lastIndexOf('/');
+    if (lastSlashIndex == -1)
+    {
+      return name;
+    }
+    else
+    {
+      int endIndex = name.length();
+      if (name.charAt(endIndex - 1) == ';')
+      {
+        endIndex--;
+      }
+      int lastBracketIndex = name.lastIndexOf('[');
+      if (lastBracketIndex == -1)
+      {
+        return name.substring(lastSlashIndex + 1, endIndex);
+      }
+      return name.substring(0, lastBracketIndex + 1) + name.substring(lastSlashIndex + 1, endIndex);
+    }
+  }
+
+  public static void analyzeMethod(Class<?> superType,
+                                    Class<?>[] interfaces,
+                                    byte[] bytecode,
+                                    ClassNode classNode,
+                                    MethodNode method) throws AnalyzerException
+  {
+    ClassReader classReader = new ClassReader(bytecode);
+  
+    classReader.accept(classNode, ClassReader.SKIP_DEBUG);
+  
+    SimpleVerifier       verifier = new SimpleVerifier(Type.getObjectType(classNode.name),
+                                                       Type.getType(superType),
+                                                       classTypes(interfaces),
+                                                       (classNode.access & Opcodes.ACC_INTERFACE) != 0);
+    
+    Analyzer<BasicValue> analyzer = new Analyzer<>(verifier);
+  
+    analyzer.analyze(classNode.name, method);
+  
+    Analyzer.printAnalyzerResult(method, analyzer, new PrintWriter(System.out));
   }
 }

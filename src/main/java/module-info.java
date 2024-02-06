@@ -33,6 +33,7 @@ module arb4j
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.tree.analysis;
   requires transitive org.objectweb.asm.tree;
+  requires transitive org.objectweb.asm.util;
 
   exports arb;
   exports arb.logic;

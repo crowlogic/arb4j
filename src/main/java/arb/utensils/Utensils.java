@@ -8,8 +8,10 @@ import static arb.arblib.arb_get_mag;
 import static arb.arblib.arb_init;
 import static arb.arblib.mag_init;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.IntFunction;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.objectweb.asm.Type;
@@ -579,9 +581,14 @@ public class Utensils
                     .replace("₉", "9");
   }
 
+  public static List<Type> classTypes(Class<?>... args)
+  {
+    return Stream.of(args).map(Type::getType).collect(Collectors.toList());
+  }
+
   public static String getMethodDescriptor(Class<?> ret, Class<?>... args)
   {
-    return Type.getMethodDescriptor(Type.getType(ret), Stream.of(args).map(Type::getType).toArray(n -> new Type[n]));
+    return Type.getMethodDescriptor(Type.getType(ret), classTypes(args).toArray(new Type[args.length]));
   }
 
 }
