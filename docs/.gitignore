@@ -16,5 +16,9 @@
 /ProductionExecutionFlowAnalysis.log
 /GeneratedProductExecutionFlowAnalysis.aux
 /GeneratedProductExecutionFlowAnalysis.log
+<<<<<<< HEAD
 /ConjugacyClasses.tm~
 /TheQuestionOfTheBesselPolynomialMoments.tm~
+=======
+/AronszajnsTheoremYosida.tm~
+>>>>>>> branch 'master' of git@github.com:crowlogic/arb4j.git
