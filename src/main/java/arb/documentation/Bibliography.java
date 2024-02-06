@@ -25,6 +25,12 @@ import arb.documentation.references.*;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       theBesselPolynomialMoments                = new Article("The Besel Polynomial Moment Problem",
+                                                                                      "A.M. Krall",
+                                                                                      "1981",
+                                                                                      "Acta Mathematica Academiae Scientiarum Hungarica",
+                                                                                      "38",
+                                                                                      "105-107");
 
   public static Book          extremesOfRandomProcesses                 = new Book("Extremes and Related Properties of Random Sequences and Processes",
                                                                                    "Georg Lindgren, Holger Rootzén, and M. R. Leadbetter",
@@ -148,7 +154,7 @@ public class Bibliography extends
     Bibliography bibiography = new Bibliography();
     System.out.println(bibiography);
     Path path = Paths.get("docs/refs2.bib");
-    Files.write(path, bibiography.toString().getBytes());  
-    System.out.println( "wrote " + path );
+    Files.write(path, bibiography.toString().getBytes());
+    System.out.println("wrote " + path);
   }
 }
