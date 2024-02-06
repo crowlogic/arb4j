@@ -1,30 +1,15 @@
 package arb.expressions;
-
-import static arb.expressions.Compiler.addNullCheckForField;
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getVariablePrefix;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadFunctionClass;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
-import static arb.expressions.Compiler.reify;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
+import static arb.utensils.Utensils.classTypes;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -32,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -39,6 +25,9 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.analysis.BasicValue;
 
 import arb.ComplexPolynomial;
 import arb.Integer;
@@ -46,6 +35,8 @@ import arb.OrderedPair;
 import arb.RealPolynomial;
 import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
+import arb.expressions.executionflow.Analyzer;
+import arb.expressions.executionflow.SimpleVerifier;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -100,6 +91,32 @@ import arb.utensils.Utensils;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
+  public void analyze()
+  {
+    ClassNode   classNode   = new ClassNode();
+
+    ClassReader classReader = new ClassReader(instructions);
+
+    classReader.accept(classNode, ClassReader.SKIP_DEBUG);
+
+    SimpleVerifier       verifier       = new SimpleVerifier(Type.getObjectType(classNode.name),
+                                                             Type.getType(Object.class),
+                                                             classTypes(new Class[]
+                                                             { functionClass }),
+                                                             (classNode.access & Opcodes.ACC_INTERFACE) != 0);
+
+    Analyzer<BasicValue> analyzer       = new Analyzer<BasicValue>(verifier);
+
+    MethodNode           evaluateMethod = classNode.methods.stream()
+                                                           .filter(method -> method.name.equals("evaluate"))
+                                                           .findFirst()
+                                                           .get();
+
+    
+      analyzer.analyze(classNode.name, evaluateMethod);
+ 
+    Analyzer.printResult(evaluateMethod, analyzer, new PrintWriter(System.out));
+  }
 
   public static final String  evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
@@ -182,8 +199,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public final String                             domainClassInternalName;
 
   final public Class<? extends D>                 domainType;
-
-  protected Method                                evaluateMethod;
 
   public final String                             evaluateMethodSignature;
 
@@ -426,6 +441,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public Class<F> load()
   {
     assert instructions != null : "the instructions field is null indicating that the expression has not been compiled";
+
+    analyze();
+
     return compiledClass = loadFunctionClass(className, instructions, context);
   }
 
@@ -693,6 +711,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       classVisitor.visitEnd();
     }
+
+    // Analyzer.analyzeMethod(superType, interfaces, bytecode, classNode, method);
 
     instructions = ((ClassWriter) classVisitor).toByteArray();
 

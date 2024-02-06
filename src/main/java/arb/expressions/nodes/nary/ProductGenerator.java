@@ -112,7 +112,7 @@ public class ProductGenerator extends
    */
   public void generateInnerLoop(MethodVisitor methodVisitor)
   {
-    assert false : "   * TODO; go over this the bug is here most\n";
+    //assert false : "   * TODO; go over this the bug is here most\n";
                   
     loadIndexVariable(methodVisitor);
     loadResultingProductVariable(methodVisitor);

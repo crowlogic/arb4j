@@ -11,7 +11,7 @@ import org.objectweb.asm.tree.LabelNode;
  *
  * @author Eric Bruneton
  */
-final class Subroutine
+public final class Subroutine
 {
 
   /** The start of this subroutine. */

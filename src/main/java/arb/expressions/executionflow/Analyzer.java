@@ -1,42 +1,32 @@
 package arb.expressions.executionflow;
 
-import static arb.utensils.Utensils.classTypes;
-
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.objectweb.asm.*;
-import org.objectweb.asm.tree.*;
-import org.objectweb.asm.tree.analysis.*;
-import org.objectweb.asm.tree.analysis.Frame;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.IincInsnNode;
+import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.JumpInsnNode;
+import org.objectweb.asm.tree.LabelNode;
+import org.objectweb.asm.tree.LookupSwitchInsnNode;
+import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.TableSwitchInsnNode;
+import org.objectweb.asm.tree.TryCatchBlockNode;
+import org.objectweb.asm.tree.VarInsnNode;
+import org.objectweb.asm.tree.analysis.AnalyzerException;
+import org.objectweb.asm.tree.analysis.BasicValue;
+import org.objectweb.asm.tree.analysis.Value;
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
 
 public class Analyzer<V extends Value> implements
                      Opcodes
 {
-
-  public static void analyzeMethod(Class<?> superType,
-                                    Class<?>[] interfaces,
-                                    byte[] bytecode,
-                                    ClassNode classNode,
-                                    MethodNode method) throws AnalyzerException
-  {
-    ClassReader classReader = new ClassReader(bytecode);
-  
-    classReader.accept(classNode, ClassReader.SKIP_DEBUG);
-  
-    SimpleVerifier       verifier = new SimpleVerifier(Type.getObjectType(classNode.name),
-                                                       Type.getType(superType),
-                                                       classTypes(interfaces),
-                                                       (classNode.access & Opcodes.ACC_INTERFACE) != 0);
-    
-    Analyzer<BasicValue> analyzer = new Analyzer<>(verifier);
-  
-    analyzer.analyze(classNode.name, method);
-  
-    Analyzer.printAnalyzerResult(method, analyzer, new PrintWriter(System.out));
-  }
 
   /**
    * Computes and returns the maximum number of local variables used in the given
@@ -118,18 +108,17 @@ public class Analyzer<V extends Value> implements
     }
   }
 
-  public static void printAnalyzerResult(final MethodNode method,
-                                  final Analyzer<BasicValue> analyzer,
-                                  final PrintWriter printWriter)
+  public static void
+         printResult(final MethodNode method, final Analyzer<BasicValue> analyzer, final PrintWriter printWriter)
   {
     Textifier          textifier          = new Textifier();
     TraceMethodVisitor traceMethodVisitor = new TraceMethodVisitor(textifier);
-  
+
     printWriter.println(method.name + method.desc);
     for (int i = 0; i < method.instructions.size(); ++i)
     {
       method.instructions.get(i).accept(traceMethodVisitor);
-  
+
       StringBuilder     stringBuilder = new StringBuilder();
       Frame<BasicValue> frame         = analyzer.getFrames()[i];
       if (frame == null)
@@ -164,15 +153,10 @@ public class Analyzer<V extends Value> implements
   }
 
   /**
-   * The interpreter to use to symbolically interpret the bytecode instructions.
+   * The execution stack frames of the currently analyzed method (one per
+   * instruction index).
    */
-  private final Interpreter<V>      interpreter;
-
-  /** The instructions of the currently analyzed method. */
-  private InsnList                  insnList;
-
-  /** The size of {@link #insnList}. */
-  private int                       insnListSize;
+  private Frame<V>[]                frames;
 
   /**
    * The exception handlers of the currently analyzed method (one list per
@@ -181,20 +165,15 @@ public class Analyzer<V extends Value> implements
   private List<TryCatchBlockNode>[] handlers;
 
   /**
-   * The execution stack frames of the currently analyzed method (one per
-   * instruction index).
-   */
-  private Frame<V>[]                frames;
-
-  /**
-   * The subroutines of the currently analyzed method (one per instruction index).
-   */
-  private Subroutine[]              subroutines;
-
-  /**
    * The instructions that remain to process (one boolean per instruction index).
    */
   private boolean[]                 inInstructionsToProcess;
+
+  /** The instructions of the currently analyzed method. */
+  private InsnList                  insnList;
+
+  /** The size of {@link #insnList}. */
+  private int                       insnListSize;
 
   /**
    * The indices of the instructions that remain to process in the currently
@@ -203,20 +182,35 @@ public class Analyzer<V extends Value> implements
   private int[]                     instructionsToProcess;
 
   /**
+   * The interpreter to use to symbolically interpret the bytecode instructions.
+   */
+  private final Interpreter<V>      interpreter;
+
+  /**
    * The number of instructions that remain to process in the currently analyzed
    * method.
    */
   private int                       numInstructionsToProcess;
 
   /**
-   * Constructs a new {@link Analyzer}.
-   *
-   * @param interpreter the interpreter to use to symbolically interpret the
-   *                    bytecode instructions.
+   * The subroutines of the currently analyzed method (one per instruction index).
    */
-  public Analyzer(final Interpreter<V> interpreter)
+  private Subroutine[]              subroutines;
+
+//  /**
+//   * Constructs a new {@link Analyzer}.
+//   *
+//   * @param interpreter the interpreter to use to symbolically interpret the
+//   *                    bytecode instructions.
+//   */
+//  public Analyzer(final Interpreter<V> interpreter)
+//  {
+//    this.interpreter = interpreter;
+//  }
+
+  public Analyzer(Interpreter<V> verifier)
   {
-    this.interpreter = interpreter;
+    this.interpreter = verifier;
   }
 
   /**
@@ -234,7 +228,7 @@ public class Analyzer<V extends Value> implements
    * @throws AnalyzerException if a problem occurs during the analysis.
    */
   @SuppressWarnings("unchecked")
-  public Frame<V>[] analyze(final String owner, final MethodNode method) throws AnalyzerException
+  public Frame<V>[] analyze(final String owner, final MethodNode method)
   {
     if ((method.access & (ACC_ABSTRACT | ACC_NATIVE)) != 0)
     {
@@ -275,19 +269,10 @@ public class Analyzer<V extends Value> implements
 
     // Initializes the data structures for the control flow analysis.
     Frame<V> currentFrame;
-    try
-    {
-      currentFrame = computeInitialFrame(owner, method);
-      merge(0, currentFrame, null);
-      init(owner, method);
-    }
-    catch (RuntimeException e)
-    {
-      // DontCheck(IllegalCatch): can't be fixed, for backward compatibility.
-      throw new AnalyzerException(insnList.get(0),
-                                  "Error at instruction 0: " + e.getMessage(),
-                                  e);
-    }
+
+    currentFrame = computeInitialFrame(owner, method);
+    mergeFrameAndSubroutine(0, currentFrame, null);
+    init(owner, method);
 
     // Control flow analysis.
     while (numInstructionsToProcess > 0)
@@ -299,163 +284,46 @@ public class Analyzer<V extends Value> implements
       inInstructionsToProcess[insnIndex] = false;
 
       // Simulate the execution of this instruction.
-      AbstractInsnNode insnNode = null;
-      try
+      AbstractInsnNode insnNode   = method.instructions.get(insnIndex);
+      int              insnOpcode = insnNode.getOpcode();
+      int              insnType   = insnNode.getType();
+
+      if (insnType == AbstractInsnNode.LABEL || insnType == AbstractInsnNode.LINE
+                    || insnType == AbstractInsnNode.FRAME)
       {
-        insnNode = method.instructions.get(insnIndex);
-        int insnOpcode = insnNode.getOpcode();
-        int insnType   = insnNode.getType();
+        analyzeLabelLineNumberOrFrame(insnIndex, oldFrame, subroutine);
+      }
+      else
+      {
+        currentFrame.init(oldFrame).execute(insnNode, interpreter);
+        subroutine = subroutine == null ? null : new Subroutine(subroutine);
 
-        if (insnType == AbstractInsnNode.LABEL || insnType == AbstractInsnNode.LINE
-                      || insnType == AbstractInsnNode.FRAME)
+        if (insnNode instanceof JumpInsnNode)
         {
-          merge(insnIndex + 1, oldFrame, subroutine);
-          newControlFlowEdge(insnIndex, insnIndex + 1);
+          analyzeJumpInstruction(method, currentFrame, insnIndex, subroutine, insnNode, insnOpcode);
         }
-        else
+        else if (insnNode instanceof LookupSwitchInsnNode)
         {
-          currentFrame.init(oldFrame).execute(insnNode, interpreter);
-          subroutine = subroutine == null ? null : new Subroutine(subroutine);
-
-          if (insnNode instanceof JumpInsnNode)
-          {
-            JumpInsnNode jumpInsn = (JumpInsnNode) insnNode;
-            if (insnOpcode != GOTO && insnOpcode != JSR)
-            {
-              currentFrame.initJumpTarget(insnOpcode, /* target = */ null);
-              merge(insnIndex + 1, currentFrame, subroutine);
-              newControlFlowEdge(insnIndex, insnIndex + 1);
-            }
-            int jumpInsnIndex = insnList.indexOf(jumpInsn.label);
-            currentFrame.initJumpTarget(insnOpcode, jumpInsn.label);
-            if (insnOpcode == JSR)
-            {
-              merge(jumpInsnIndex,
-                    currentFrame,
-                    new Subroutine(jumpInsn.label,
-                                   method.maxLocals,
-                                   jumpInsn));
-            }
-            else
-            {
-              merge(jumpInsnIndex, currentFrame, subroutine);
-            }
-            newControlFlowEdge(insnIndex, jumpInsnIndex);
-          }
-          else if (insnNode instanceof LookupSwitchInsnNode)
-          {
-            LookupSwitchInsnNode lookupSwitchInsn = (LookupSwitchInsnNode) insnNode;
-            int                  targetInsnIndex  = insnList.indexOf(lookupSwitchInsn.dflt);
-            currentFrame.initJumpTarget(insnOpcode, lookupSwitchInsn.dflt);
-            merge(targetInsnIndex, currentFrame, subroutine);
-            newControlFlowEdge(insnIndex, targetInsnIndex);
-            for (int i = 0; i < lookupSwitchInsn.labels.size(); ++i)
-            {
-              LabelNode label = lookupSwitchInsn.labels.get(i);
-              targetInsnIndex = insnList.indexOf(label);
-              currentFrame.initJumpTarget(insnOpcode, label);
-              merge(targetInsnIndex, currentFrame, subroutine);
-              newControlFlowEdge(insnIndex, targetInsnIndex);
-            }
-          }
-          else if (insnNode instanceof TableSwitchInsnNode)
-          {
-            TableSwitchInsnNode tableSwitchInsn = (TableSwitchInsnNode) insnNode;
-            int                 targetInsnIndex = insnList.indexOf(tableSwitchInsn.dflt);
-            currentFrame.initJumpTarget(insnOpcode, tableSwitchInsn.dflt);
-            merge(targetInsnIndex, currentFrame, subroutine);
-            newControlFlowEdge(insnIndex, targetInsnIndex);
-            for (int i = 0; i < tableSwitchInsn.labels.size(); ++i)
-            {
-              LabelNode label = tableSwitchInsn.labels.get(i);
-              currentFrame.initJumpTarget(insnOpcode, label);
-              targetInsnIndex = insnList.indexOf(label);
-              merge(targetInsnIndex, currentFrame, subroutine);
-              newControlFlowEdge(insnIndex, targetInsnIndex);
-            }
-          }
-          else if (insnOpcode == RET)
-          {
-            if (subroutine == null)
-            {
-              throw new AnalyzerException(insnNode,
-                                          "RET instruction outside of a subroutine");
-            }
-            for (int i = 0; i < subroutine.callers.size(); ++i)
-            {
-              JumpInsnNode caller       = subroutine.callers.get(i);
-              int          jsrInsnIndex = insnList.indexOf(caller);
-              if (frames[jsrInsnIndex] != null)
-              {
-                merge(jsrInsnIndex + 1,
-                      frames[jsrInsnIndex],
-                      currentFrame,
-                      subroutines[jsrInsnIndex],
-                      subroutine.localsUsed);
-                newControlFlowEdge(insnIndex, jsrInsnIndex + 1);
-              }
-            }
-          }
-          else if (insnOpcode != ATHROW && (insnOpcode < IRETURN || insnOpcode > RETURN))
-          {
-            if (subroutine != null)
-            {
-              if (insnNode instanceof VarInsnNode)
-              {
-                int varIndex = ((VarInsnNode) insnNode).var;
-                subroutine.localsUsed[varIndex] = true;
-                if (insnOpcode == LLOAD || insnOpcode == DLOAD || insnOpcode == LSTORE || insnOpcode == DSTORE)
-                {
-                  subroutine.localsUsed[varIndex + 1] = true;
-                }
-              }
-              else if (insnNode instanceof IincInsnNode)
-              {
-                int varIndex = ((IincInsnNode) insnNode).var;
-                subroutine.localsUsed[varIndex] = true;
-              }
-            }
-            merge(insnIndex + 1, currentFrame, subroutine);
-            newControlFlowEdge(insnIndex, insnIndex + 1);
-          }
+          analyzeLookupSwitchInstruction(currentFrame, insnIndex, subroutine, insnNode, insnOpcode);
         }
-
-        List<TryCatchBlockNode> insnHandlers = handlers[insnIndex];
-        if (insnHandlers != null)
+        else if (insnNode instanceof TableSwitchInsnNode)
         {
-          for (TryCatchBlockNode tryCatchBlock : insnHandlers)
-          {
-            Type catchType;
-            if (tryCatchBlock.type == null)
-            {
-              catchType = Type.getObjectType("java/lang/Throwable");
-            }
-            else
-            {
-              catchType = Type.getObjectType(tryCatchBlock.type);
-            }
-            if (newControlFlowExceptionEdge(insnIndex, tryCatchBlock))
-            {
-              Frame<V> handler = newFrame(oldFrame);
-              handler.clearStack();
-              handler.push(interpreter.newExceptionValue(tryCatchBlock, handler, catchType));
-              merge(insnList.indexOf(tryCatchBlock.handler), handler, subroutine);
-            }
-          }
+          analyzeTableSwitchInstruction(currentFrame, insnIndex, subroutine, insnNode, insnOpcode);
+        }
+        else if (insnOpcode == RET)
+        {
+          analyzeReturnFromSubroutine(currentFrame, insnIndex, subroutine, insnNode);
+        }
+        else if (insnOpcode != ATHROW && (insnOpcode < IRETURN || insnOpcode > RETURN))
+        {
+          analyzeReturnFromSubroutine(currentFrame, insnIndex, subroutine, insnNode, insnOpcode);
         }
       }
-      catch (AnalyzerException e)
+
+      List<TryCatchBlockNode> insnHandlers = handlers[insnIndex];
+      if (insnHandlers != null)
       {
-        throw new AnalyzerException(e.node,
-                                    "Error at instruction " + insnIndex + ": " + e.getMessage(),
-                                    e);
-      }
-      catch (RuntimeException e)
-      {
-        // DontCheck(IllegalCatch): can't be fixed, for backward compatibility.
-        throw new AnalyzerException(insnNode,
-                                    "Error at instruction " + insnIndex + ": " + e.getMessage(),
-                                    e);
+        analyzeTryCatchBlock(insnIndex, oldFrame, subroutine, insnHandlers);
       }
     }
 
@@ -483,6 +351,158 @@ public class Analyzer<V extends Value> implements
     analyze(owner, method);
     method.maxStack = computeMaxStack(frames);
     return frames;
+  }
+
+  private void analyzeJumpInstruction(final MethodNode method,
+                                      Frame<V> currentFrame,
+                                      int insnIndex,
+                                      Subroutine subroutine,
+                                      AbstractInsnNode insnNode,
+                                      int insnOpcode)
+  {
+    JumpInsnNode jumpInsn = (JumpInsnNode) insnNode;
+    if (insnOpcode != GOTO && insnOpcode != JSR)
+    {
+      currentFrame.initJumpTarget(insnOpcode, /* target = */ null);
+      analyzeLabelLineNumberOrFrame(insnIndex, currentFrame, subroutine);
+    }
+    int jumpInsnIndex = insnList.indexOf(jumpInsn.label);
+    currentFrame.initJumpTarget(insnOpcode, jumpInsn.label);
+    if (insnOpcode == JSR)
+    {
+      mergeFrameAndSubroutine(jumpInsnIndex,
+                              currentFrame,
+                              new Subroutine(jumpInsn.label,
+                                             method.maxLocals,
+                                             jumpInsn));
+    }
+    else
+    {
+      mergeFrameAndSubroutine(jumpInsnIndex, currentFrame, subroutine);
+    }
+    newControlFlowEdge(insnIndex, jumpInsnIndex);
+  }
+
+  private void analyzeLabelLineNumberOrFrame(int insnIndex, Frame<V> oldFrame, Subroutine subroutine)
+  {
+    mergeFrameAndSubroutine(insnIndex + 1, oldFrame, subroutine);
+    newControlFlowEdge(insnIndex, insnIndex + 1);
+  }
+
+  private void analyzeLookupSwitchInstruction(Frame<V> currentFrame,
+                                              int insnIndex,
+                                              Subroutine subroutine,
+                                              AbstractInsnNode insnNode,
+                                              int insnOpcode)
+  {
+    LookupSwitchInsnNode lookupSwitchInsn = (LookupSwitchInsnNode) insnNode;
+    int                  targetInsnIndex  = insnList.indexOf(lookupSwitchInsn.dflt);
+    currentFrame.initJumpTarget(insnOpcode, lookupSwitchInsn.dflt);
+    mergeFrameAndSubroutine(targetInsnIndex, currentFrame, subroutine);
+    newControlFlowEdge(insnIndex, targetInsnIndex);
+    for (int i = 0; i < lookupSwitchInsn.labels.size(); ++i)
+    {
+      LabelNode label = lookupSwitchInsn.labels.get(i);
+      targetInsnIndex = insnList.indexOf(label);
+      currentFrame.initJumpTarget(insnOpcode, label);
+      mergeFrameAndSubroutine(targetInsnIndex, currentFrame, subroutine);
+      newControlFlowEdge(insnIndex, targetInsnIndex);
+    }
+  }
+
+  private void analyzeReturnFromSubroutine(Frame<V> currentFrame,
+                                           int insnIndex,
+                                           Subroutine subroutine,
+                                           AbstractInsnNode insnNode)
+  {
+    if (subroutine == null)
+    {
+      throw new RuntimeException(insnNode + ": " + "RET instruction outside of a subroutine");
+    }
+    for (int i = 0; i < subroutine.callers.size(); ++i)
+    {
+      JumpInsnNode caller       = subroutine.callers.get(i);
+      int          jsrInsnIndex = insnList.indexOf(caller);
+      if (frames[jsrInsnIndex] != null)
+      {
+        mergeFrameAndSubroutineForRETInstruction(jsrInsnIndex
+                      + 1, frames[jsrInsnIndex], currentFrame, subroutines[jsrInsnIndex], subroutine.localsUsed);
+        newControlFlowEdge(insnIndex, jsrInsnIndex + 1);
+      }
+    }
+  }
+
+  private void analyzeReturnFromSubroutine(Frame<V> currentFrame,
+                                           int insnIndex,
+                                           Subroutine subroutine,
+                                           AbstractInsnNode insnNode,
+                                           int insnOpcode)
+  {
+    if (subroutine != null)
+    {
+      if (insnNode instanceof VarInsnNode)
+      {
+        int varIndex = ((VarInsnNode) insnNode).var;
+        subroutine.localsUsed[varIndex] = true;
+        if (insnOpcode == LLOAD || insnOpcode == DLOAD || insnOpcode == LSTORE || insnOpcode == DSTORE)
+        {
+          subroutine.localsUsed[varIndex + 1] = true;
+        }
+      }
+      else if (insnNode instanceof IincInsnNode)
+      {
+        int varIndex = ((IincInsnNode) insnNode).var;
+        subroutine.localsUsed[varIndex] = true;
+      }
+    }
+    analyzeLabelLineNumberOrFrame(insnIndex, currentFrame, subroutine);
+  }
+
+  private void analyzeTableSwitchInstruction(Frame<V> currentFrame,
+                                             int insnIndex,
+                                             Subroutine subroutine,
+                                             AbstractInsnNode insnNode,
+                                             int insnOpcode)
+  {
+    TableSwitchInsnNode tableSwitchInsn = (TableSwitchInsnNode) insnNode;
+    int                 targetInsnIndex = insnList.indexOf(tableSwitchInsn.dflt);
+    currentFrame.initJumpTarget(insnOpcode, tableSwitchInsn.dflt);
+    mergeFrameAndSubroutine(targetInsnIndex, currentFrame, subroutine);
+    newControlFlowEdge(insnIndex, targetInsnIndex);
+    for (int i = 0; i < tableSwitchInsn.labels.size(); ++i)
+    {
+      LabelNode label = tableSwitchInsn.labels.get(i);
+      currentFrame.initJumpTarget(insnOpcode, label);
+      targetInsnIndex = insnList.indexOf(label);
+      mergeFrameAndSubroutine(targetInsnIndex, currentFrame, subroutine);
+      newControlFlowEdge(insnIndex, targetInsnIndex);
+    }
+  }
+
+  private void analyzeTryCatchBlock(int insnIndex,
+                                    Frame<V> oldFrame,
+                                    Subroutine subroutine,
+                                    List<TryCatchBlockNode> insnHandlers)
+  {
+    for (TryCatchBlockNode tryCatchBlock : insnHandlers)
+    {
+      Type catchType;
+      if (tryCatchBlock.type == null)
+      {
+        catchType = Type.getObjectType("java/lang/Throwable");
+      }
+      else
+      {
+        catchType = Type.getObjectType(tryCatchBlock.type);
+      }
+      if (newControlFlowExceptionEdge(insnIndex, tryCatchBlock))
+      {
+        Frame<V> handler = newFrame(oldFrame);
+        handler.clearStack();
+        handler.push(interpreter.newExceptionValue(tryCatchBlock, handler, catchType));
+        mergeFrameAndSubroutine(insnList.indexOf(tryCatchBlock.handler), handler, subroutine);
+      }
+    }
   }
 
   /**
@@ -538,9 +558,8 @@ public class Analyzer<V extends Value> implements
    * @throws AnalyzerException if the control flow graph can fall off the end of
    *                           the code.
    */
-  private void findSubroutine(final int insnIndex,
-                              final Subroutine subroutine,
-                              final List<AbstractInsnNode> jsrInsns) throws AnalyzerException
+  private void
+          findSubroutine(final int insnIndex, final Subroutine subroutine, final List<AbstractInsnNode> jsrInsns)
   {
     ArrayList<Integer> instructionIndicesToProcess = new ArrayList<>();
     instructionIndicesToProcess.add(insnIndex);
@@ -549,8 +568,7 @@ public class Analyzer<V extends Value> implements
       int currentInsnIndex = instructionIndicesToProcess.remove(instructionIndicesToProcess.size() - 1);
       if (currentInsnIndex < 0 || currentInsnIndex >= insnListSize)
       {
-        throw new AnalyzerException(null,
-                                    "Execution can fall off the end of the code");
+        throw new RuntimeException("Execution can fall off the end of the code");
       }
       if (subroutines[currentInsnIndex] != null)
       {
@@ -638,7 +656,7 @@ public class Analyzer<V extends Value> implements
    * @throws AnalyzerException if the control flow graph can fall off the end of
    *                           the code.
    */
-  private void findSubroutines(final int maxLocals) throws AnalyzerException
+  private void findSubroutines(final int maxLocals)
   {
     // For each instruction, compute the subroutine to which it belongs.
     // Follow the main 'subroutine', and collect the jsr instructions to nested
@@ -717,62 +735,9 @@ public class Analyzer<V extends Value> implements
    * @param method the method to be analyzed.
    * @throws AnalyzerException if a problem occurs.
    */
-  protected void init(final String owner, final MethodNode method) throws AnalyzerException
+  protected void init(final String owner, final MethodNode method)
   {
     // Nothing to do.
-  }
-
-  /**
-   * Merges the given frame and subroutine into the frame and subroutines at the
-   * given instruction index (case of a RET instruction). If the frame or the
-   * subroutine at the given instruction index changes as a result of this merge,
-   * the instruction index is added to the list of instructions to process (if it
-   * is not already the case).
-   *
-   * @param insnIndex           the index of an instruction immediately following
-   *                            a jsr instruction.
-   * @param frameBeforeJsr      the execution stack frame before the jsr
-   *                            instruction. This frame is merged into
-   *                            'frameAfterRet'.
-   * @param frameAfterRet       the execution stack frame after a ret instruction
-   *                            of the subroutine. This frame is merged into the
-   *                            frame at 'insnIndex' (after it has itself been
-   *                            merge with 'frameBeforeJsr').
-   * @param subroutineBeforeJsr if the jsr is itself part of a subroutine (case of
-   *                            nested subroutine), the subroutine it belongs to.
-   * @param localsUsed          the local variables read or written in the
-   *                            subroutine.
-   * @throws AnalyzerException if the frames have incompatible sizes.
-   */
-  private void merge(final int insnIndex,
-                     final Frame<V> frameBeforeJsr,
-                     final Frame<V> frameAfterRet,
-                     final Subroutine subroutineBeforeJsr,
-                     final boolean[] localsUsed) throws AnalyzerException
-  {
-    frameAfterRet.merge(frameBeforeJsr, localsUsed);
-
-    boolean  changed;
-    Frame<V> oldFrame = frames[insnIndex];
-    if (oldFrame == null)
-    {
-      frames[insnIndex] = newFrame(frameAfterRet);
-      changed           = true;
-    }
-    else
-    {
-      changed = oldFrame.merge(frameAfterRet, interpreter);
-    }
-    Subroutine oldSubroutine = subroutines[insnIndex];
-    if (oldSubroutine != null && subroutineBeforeJsr != null)
-    {
-      changed |= oldSubroutine.merge(subroutineBeforeJsr);
-    }
-    if (changed && !inInstructionsToProcess[insnIndex])
-    {
-      inInstructionsToProcess[insnIndex]                = true;
-      instructionsToProcess[numInstructionsToProcess++] = insnIndex;
-    }
   }
 
   /**
@@ -787,7 +752,7 @@ public class Analyzer<V extends Value> implements
    *                   method.
    * @throws AnalyzerException if the frames have incompatible sizes.
    */
-  private void merge(final int insnIndex, final Frame<V> frame, final Subroutine subroutine) throws AnalyzerException
+  private boolean mergeFrameAndSubroutine(final int insnIndex, final Frame<V> frame, final Subroutine subroutine)
   {
     boolean  changed;
     Frame<V> oldFrame = frames[insnIndex];
@@ -815,6 +780,60 @@ public class Analyzer<V extends Value> implements
       {
         changed |= oldSubroutine.merge(subroutine);
       }
+    }
+    if (changed && !inInstructionsToProcess[insnIndex])
+    {
+      inInstructionsToProcess[insnIndex]                = true;
+      instructionsToProcess[numInstructionsToProcess++] = insnIndex;
+    }
+    return changed;
+  }
+
+  /**
+   * Merges the given frame and subroutine into the frame and subroutines at the
+   * given instruction index (case of a RET instruction). If the frame or the
+   * subroutine at the given instruction index changes as a result of this merge,
+   * the instruction index is added to the list of instructions to process (if it
+   * is not already the case).
+   *
+   * @param insnIndex           the index of an instruction immediately following
+   *                            a jsr instruction.
+   * @param frameBeforeJsr      the execution stack frame before the jsr
+   *                            instruction. This frame is merged into
+   *                            'frameAfterRet'.
+   * @param frameAfterRet       the execution stack frame after a ret instruction
+   *                            of the subroutine. This frame is merged into the
+   *                            frame at 'insnIndex' (after it has itself been
+   *                            merge with 'frameBeforeJsr').
+   * @param subroutineBeforeJsr if the jsr is itself part of a subroutine (case of
+   *                            nested subroutine), the subroutine it belongs to.
+   * @param localsUsed          the local variables read or written in the
+   *                            subroutine.
+   * @throws AnalyzerException if the frames have incompatible sizes.
+   */
+  private void mergeFrameAndSubroutineForRETInstruction(final int insnIndex,
+                                                        final Frame<V> frameBeforeJsr,
+                                                        final Frame<V> frameAfterRet,
+                                                        final Subroutine subroutineBeforeJsr,
+                                                        final boolean[] localsUsed)
+  {
+    frameAfterRet.merge(frameBeforeJsr, localsUsed);
+
+    boolean  changed;
+    Frame<V> oldFrame = frames[insnIndex];
+    if (oldFrame == null)
+    {
+      frames[insnIndex] = newFrame(frameAfterRet);
+      changed           = true;
+    }
+    else
+    {
+      changed = oldFrame.merge(frameAfterRet, interpreter);
+    }
+    Subroutine oldSubroutine = subroutines[insnIndex];
+    if (oldSubroutine != null && subroutineBeforeJsr != null)
+    {
+      changed |= oldSubroutine.merge(subroutineBeforeJsr);
     }
     if (changed && !inInstructionsToProcess[insnIndex])
     {
