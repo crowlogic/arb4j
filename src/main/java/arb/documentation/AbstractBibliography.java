@@ -8,15 +8,13 @@ import arb.documentation.references.Reference;
 
 /**
  * See {@link Bibliography} for an example implementation.. just declare the
- * {@link Reference}s as public member variables and the this{@link #toString()}
+ * {@link Reference}s as public member variables and the {@link #toString()}
  * method will harness the power of Java's reflection API to generate a BiBTeX
  * representation without having to otherwise manually build a list of all the
  * references
  * 
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public abstract class AbstractBibliography
 {

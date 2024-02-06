@@ -5,6 +5,9 @@ import arb.logic.Clause;
 /**
  * {@link BusinessSourceLicenseVersionOnePointOne#getText()} returns the text of
  * the copyright terms that {@link TheArb4jLibrary} is made available under
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class BusinessSourceLicenseVersionOnePointOne implements
                                                      License
