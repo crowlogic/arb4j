@@ -153,15 +153,15 @@
   <\bibliography|bib|tm-plain|refs2>
     <\bib-list|1>
       <bibitem*|1><label|bib-oeisA001790>OEIS<nbsp>Foundation Inc.
-      <newblock>A001790 numerators in (the) expansion of
-      <math|<frac|1|<sqrt|1-x>>>. <newblock><slink|https://oeis.org/A001790>,
+      <newblock>A001790 numerators in the expansion of
+      <math|<frac|1|<sqrt|1-x>>>. <newblock><slink|http://oeis.org/A001790>,
       2024. <newblock>This sequence gives the numerators of the Maclaurin
       series of the Lorentz factor (see Wikipedia link) of
       <math|<frac|1|<sqrt|1-b<rsup|2>>>=<frac|d*t|d*\<tau\>>> where
-      <math|b=<frac|u|c>> is the velocity in terms of the speed of light
-      <math|c>, <math|u> is the velocity as observed in the reference frame
-      where time <math|t> is measured and <math|\<tau\>> is the proper time.
-      - Stephen Crowley, Apr 03 2007.<newblock>
+      <math|b=<frac|u|c>> is the velocity in terms of the speed of light c, u
+      is the velocity as observed in the reference frame where time t is
+      measured and tau is the proper time. - Stephen Crowley, Apr 03
+      2007.<newblock>
     </bib-list>
   </bibliography>
 </body>

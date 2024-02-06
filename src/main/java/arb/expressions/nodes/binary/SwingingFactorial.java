@@ -5,7 +5,11 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- *  
+ * The swinging factorial ≀
+ * 
+ * @apiNote {@linkplain} <a href="https://github.com/crowlogic/arb4j/issues/319">
+ *      implement swinging factorial #319</a>
+ * 
  * @param <D>
  * @param <R>
  * @param <F>
