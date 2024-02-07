@@ -28,7 +28,9 @@
 package arb.expressions.executionflow.nodes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;
@@ -48,6 +50,39 @@ import org.objectweb.asm.TypePath;
 public class MethodNode extends
                         MethodVisitor
 {
+
+  @Override
+  public String toString()
+  {
+    return String.format("MethodNode[access=%s, name=%s, desc=%s, signature=%s, exceptions=%s, parameters=%s, visibleAnnotations=%s, invisibleAnnotations=%s, visibleTypeAnnotations=%s, invisibleTypeAnnotations=%s, attrs=%s, annotationDefault=%s, visibleAnnotableParameterCount=%s, visibleParameterAnnotations=%s, invisibleAnnotableParameterCount=%s, invisibleParameterAnnotations=%s, instructions=%s, tryCatchBlocks=%s, maxStack=%s, maxLocals=%s, localVariables=%s, visibleLocalVariableAnnotations=%s, invisibleLocalVariableAnnotations=%s, visited=%s, api=%s, mv=%s, getDelegate()=%s]",
+                         access,
+                         name,
+                         desc,
+                         signature,
+                         exceptions,
+                         parameters,
+                         visibleAnnotations,
+                         invisibleAnnotations,
+                         visibleTypeAnnotations,
+                         invisibleTypeAnnotations,
+                         attrs,
+                         annotationDefault,
+                         visibleAnnotableParameterCount,
+                         Arrays.toString(visibleParameterAnnotations),
+                         invisibleAnnotableParameterCount,
+                         Arrays.toString(invisibleParameterAnnotations),
+                         instructions,
+                         tryCatchBlocks,
+                         maxStack,
+                         maxLocals,
+                         localVariables,
+                         visibleLocalVariableAnnotations,
+                         invisibleLocalVariableAnnotations,
+                         visited,
+                         api,
+                         mv,
+                         getDelegate());
+  }
 
   /**
    * The method's access flags (see {@link Opcodes}). This field also indicates if
