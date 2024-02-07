@@ -3,7 +3,7 @@
 <style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|The Arzelà-Ascoli Theorem>>
+  <doc-data|<doc-title|The Arzelà-Ascoli Theorem>>4
 
   <section|Proof of the Arzelà-Ascoli Theorem>
 
@@ -65,10 +65,10 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|1>>
-    <associate|auto-2|<tuple|1|1>>
-    <associate|auto-3|<tuple|1|1>>
-    <associate|auto-4|<tuple|1|1>>
+    <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_25.tm>>
+    <associate|auto-2|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_25.tm>>
+    <associate|auto-3|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_25.tm>>
+    <associate|auto-4|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_25.tm>>
   </collection>
 </references>
 

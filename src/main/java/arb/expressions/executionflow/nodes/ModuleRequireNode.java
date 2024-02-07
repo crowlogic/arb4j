@@ -27,62 +27,52 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package arb.expressions.executionflow.nodes;
 
-import java.util.Map;
-import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.ModuleVisitor;
 
 /**
- * A node that represents an instruction with a single int operand.
+ * A node that represents a required module with its name and access of a module
+ * descriptor.
  *
- * @author Eric Bruneton
+ * @author Remi Forax
  */
-public class IntInsnNode extends
-                         AbstractInsnNode
+public class ModuleRequireNode
 {
 
-  /** The operand of this instruction. */
-  public int operand;
+  /** The fully qualified name (using dots) of the dependence. */
+  public String module;
 
   /**
-   * Constructs a new {@link IntInsnNode}.
-   *
-   * @param opcode  the opcode of the instruction to be constructed. This opcode
-   *                must be BIPUSH, SIPUSH or NEWARRAY.
-   * @param operand the operand of the instruction to be constructed.
+   * The access flag of the dependence among {@code ACC_TRANSITIVE},
+   * {@code ACC_STATIC_PHASE}, {@code ACC_SYNTHETIC} and {@code ACC_MANDATED}.
    */
-  public IntInsnNode(final int opcode, final int operand)
+  public int    access;
+
+  /** The module version at compile time, or {@literal null}. */
+  public String version;
+
+  /**
+   * Constructs a new {@link ModuleRequireNode}.
+   *
+   * @param module  the fully qualified name (using dots) of the dependence.
+   * @param access  the access flag of the dependence among
+   *                {@code ACC_TRANSITIVE}, {@code
+   *     ACC_STATIC_PHASE}, {@code ACC_SYNTHETIC} and {@code ACC_MANDATED}.
+   * @param version the module version at compile time, or {@literal null}.
+   */
+  public ModuleRequireNode(final String module, final int access, final String version)
   {
-    super(opcode);
-    this.operand = operand;
+    this.module  = module;
+    this.access  = access;
+    this.version = version;
   }
 
   /**
-   * Sets the opcode of this instruction.
+   * Makes the given module visitor visit this require directive.
    *
-   * @param opcode the new instruction opcode. This opcode must be BIPUSH, SIPUSH
-   *               or NEWARRAY.
+   * @param moduleVisitor a module visitor.
    */
-  public void setOpcode(final int opcode)
+  public void accept(final ModuleVisitor moduleVisitor)
   {
-    this.opcode = opcode;
-  }
-
-  @Override
-  public int getType()
-  {
-    return INT_INSN;
-  }
-
-  @Override
-  public void accept(final MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitIntInsn(opcode, operand);
-    acceptAnnotations(methodVisitor);
-  }
-
-  @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
-  {
-    return new IntInsnNode(opcode,
-                           operand).cloneAnnotations(this);
+    moduleVisitor.visitRequire(module, access, version);
   }
 }

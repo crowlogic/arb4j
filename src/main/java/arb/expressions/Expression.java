@@ -26,8 +26,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.MethodNode;
 
 import arb.ComplexPolynomial;
 import arb.Integer;
@@ -38,6 +36,8 @@ import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.executionflow.Analyzer;
 import arb.expressions.executionflow.SimpleVerifier;
 import arb.expressions.executionflow.nodes.BasicValue;
+import arb.expressions.executionflow.nodes.ClassNode;
+import arb.expressions.executionflow.nodes.MethodNode;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;

@@ -31,68 +31,54 @@ import java.util.Map;
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * A node that represents a jump instruction. A jump instruction is an
- * instruction that may jump to another instruction.
+ * A node that represents a line number declaration. These nodes are pseudo
+ * instruction nodes in order to be inserted in an instruction list.
  *
  * @author Eric Bruneton
  */
-public class JumpInsnNode extends
-                          AbstractInsnNode
+public class LineNumberNode extends
+                            AbstractInsnNode
 {
 
   /**
-   * The operand of this instruction. This operand is a label that designates the
-   * instruction to which this instruction may jump.
+   * A line number. This number refers to the source file from which the class was
+   * compiled.
    */
-  public LabelNode label;
+  public int       line;
+
+  /** The first instruction corresponding to this line number. */
+  public LabelNode start;
 
   /**
-   * Constructs a new {@link JumpInsnNode}.
+   * Constructs a new {@link LineNumberNode}.
    *
-   * @param opcode the opcode of the type instruction to be constructed. This
-   *               opcode must be IFEQ, IFNE, IFLT, IFGE, IFGT, IFLE, IF_ICMPEQ,
-   *               IF_ICMPNE, IF_ICMPLT, IF_ICMPGE, IF_ICMPGT, IF_ICMPLE,
-   *               IF_ACMPEQ, IF_ACMPNE, GOTO, JSR, IFNULL or IFNONNULL.
-   * @param label  the operand of the instruction to be constructed. This operand
-   *               is a label that designates the instruction to which the jump
-   *               instruction may jump.
+   * @param line  a line number. This number refers to the source file from which
+   *              the class was compiled.
+   * @param start the first instruction corresponding to this line number.
    */
-  public JumpInsnNode(final int opcode, final LabelNode label)
+  public LineNumberNode(final int line, final LabelNode start)
   {
-    super(opcode);
-    this.label = label;
-  }
-
-  /**
-   * Sets the opcode of this instruction.
-   *
-   * @param opcode the new instruction opcode. This opcode must be IFEQ, IFNE,
-   *               IFLT, IFGE, IFGT, IFLE, IF_ICMPEQ, IF_ICMPNE, IF_ICMPLT,
-   *               IF_ICMPGE, IF_ICMPGT, IF_ICMPLE, IF_ACMPEQ, IF_ACMPNE, GOTO,
-   *               JSR, IFNULL or IFNONNULL.
-   */
-  public void setOpcode(final int opcode)
-  {
-    this.opcode = opcode;
+    super(-1);
+    this.line  = line;
+    this.start = start;
   }
 
   @Override
   public int getType()
   {
-    return JUMP_INSN;
+    return LINE;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitJumpInsn(opcode, label.getLabel());
-    acceptAnnotations(methodVisitor);
+    methodVisitor.visitLineNumber(line, start.getLabel());
   }
 
   @Override
   public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new JumpInsnNode(opcode,
-                            clone(label, clonedLabels)).cloneAnnotations(this);
+    return new LineNumberNode(line,
+                              clone(start, clonedLabels));
   }
 }

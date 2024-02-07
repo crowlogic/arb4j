@@ -1,9 +1,34 @@
+// ASM: a very small and fast Java bytecode manipulation framework
+// Copyright (c) 2000-2011 INRIA, France Telecom
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+// 3. Neither the name of the copyright holders nor the names of its
+//    contributors may be used to endorse or promote products derived from
+//    this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+// THE POSSIBILITY OF SUCH DAMAGE.
 package arb.expressions.executionflow.nodes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -14,14 +39,6 @@ import org.objectweb.asm.ModuleVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.RecordComponentVisitor;
 import org.objectweb.asm.TypePath;
-import org.objectweb.asm.tree.AnnotationNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.InnerClassNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.ModuleNode;
-import org.objectweb.asm.tree.RecordComponentNode;
-import org.objectweb.asm.tree.TypeAnnotationNode;
-import org.objectweb.asm.tree.UnsupportedClassVersionException;
 
 /**
  * A node that represents a class.
@@ -86,7 +103,7 @@ public class ClassNode extends
   /**
    * The internal name of the enclosing class of this class (see
    * {@link org.objectweb.asm.Type#getInternalName()}). Must be {@literal null} if
-   * this class has no enclosing class, or if it is a local or anonymous class.
+   * this class is not a local or anonymous class.
    */
   public String                    outerClass;
 
@@ -205,7 +222,7 @@ public class ClassNode extends
     this.name       = name;
     this.signature  = signature;
     this.superName  = superName;
-    this.interfaces = Arrays.asList(interfaces);
+    this.interfaces = Util.asArrayList(interfaces);
   }
 
   @Override
@@ -244,11 +261,11 @@ public class ClassNode extends
     AnnotationNode annotation = new AnnotationNode(descriptor);
     if (visible)
     {
-      visibleAnnotations.add(annotation);
+      visibleAnnotations = Util.add(visibleAnnotations, annotation);
     }
     else
     {
-      invisibleAnnotations.add(annotation);
+      invisibleAnnotations = Util.add(invisibleAnnotations, annotation);
     }
     return annotation;
   }
@@ -264,11 +281,11 @@ public class ClassNode extends
                                                                descriptor);
     if (visible)
     {
-      visibleTypeAnnotations.add(typeAnnotation);
+      visibleTypeAnnotations = Util.add(visibleTypeAnnotations, typeAnnotation);
     }
     else
     {
-      invisibleTypeAnnotations.add(typeAnnotation);
+      invisibleTypeAnnotations = Util.add(invisibleTypeAnnotations, typeAnnotation);
     }
     return typeAnnotation;
   }
@@ -276,19 +293,19 @@ public class ClassNode extends
   @Override
   public void visitAttribute(final Attribute attribute)
   {
-    attrs.add(attribute);
+    attrs = Util.add(attrs, attribute);
   }
 
   @Override
   public void visitNestMember(final String nestMember)
   {
-    nestMembers.add(nestMember);
+    nestMembers = Util.add(nestMembers, nestMember);
   }
 
   @Override
   public void visitPermittedSubclass(final String permittedSubclass)
   {
-    permittedSubclasses.add(permittedSubclass);
+    permittedSubclasses = Util.add(permittedSubclasses, permittedSubclass);
   }
 
   @Override
@@ -308,7 +325,7 @@ public class ClassNode extends
     RecordComponentNode recordComponent = new RecordComponentNode(name,
                                                                   descriptor,
                                                                   signature);
-    recordComponents.add(recordComponent);
+    recordComponents = Util.add(recordComponents, recordComponent);
     return recordComponent;
   }
 

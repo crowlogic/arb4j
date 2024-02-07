@@ -27,62 +27,63 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package arb.expressions.executionflow.nodes;
 
-import java.util.Map;
-import org.objectweb.asm.MethodVisitor;
+import java.util.List;
+import org.objectweb.asm.ModuleVisitor;
 
 /**
- * A node that represents an instruction with a single int operand.
+ * A node that represents an opened package with its name and the module that
+ * can access it.
  *
- * @author Eric Bruneton
+ * @author Remi Forax
  */
-public class IntInsnNode extends
-                         AbstractInsnNode
+public class ModuleOpenNode
 {
 
-  /** The operand of this instruction. */
-  public int operand;
+  /**
+   * The internal name of the opened package (see
+   * {@link org.objectweb.asm.Type#getInternalName()}).
+   */
+  public String       packaze;
 
   /**
-   * Constructs a new {@link IntInsnNode}.
-   *
-   * @param opcode  the opcode of the instruction to be constructed. This opcode
-   *                must be BIPUSH, SIPUSH or NEWARRAY.
-   * @param operand the operand of the instruction to be constructed.
+   * The access flag of the opened package, valid values are among
+   * {@code ACC_SYNTHETIC} and {@code
+   * ACC_MANDATED}.
    */
-  public IntInsnNode(final int opcode, final int operand)
+  public int          access;
+
+  /**
+   * The fully qualified names (using dots) of the modules that can use deep
+   * reflection to the classes of the open package, or {@literal null}.
+   */
+  public List<String> modules;
+
+  /**
+   * Constructs a new {@link ModuleOpenNode}.
+   *
+   * @param packaze the internal name of the opened package (see
+   *                {@link org.objectweb.asm.Type#getInternalName()}).
+   * @param access  the access flag of the opened package, valid values are among
+   *                {@code
+   *     ACC_SYNTHETIC} and {@code ACC_MANDATED}.
+   * @param modules the fully qualified names (using dots) of the modules that can
+   *                use deep reflection to the classes of the open package, or
+   *                {@literal null}.
+   */
+  public ModuleOpenNode(final String packaze, final int access, final List<String> modules)
   {
-    super(opcode);
-    this.operand = operand;
+    this.packaze = packaze;
+    this.access  = access;
+    this.modules = modules;
   }
 
   /**
-   * Sets the opcode of this instruction.
+   * Makes the given module visitor visit this opened package.
    *
-   * @param opcode the new instruction opcode. This opcode must be BIPUSH, SIPUSH
-   *               or NEWARRAY.
+   * @param moduleVisitor a module visitor.
    */
-  public void setOpcode(final int opcode)
+  public void accept(final ModuleVisitor moduleVisitor)
   {
-    this.opcode = opcode;
-  }
-
-  @Override
-  public int getType()
-  {
-    return INT_INSN;
-  }
-
-  @Override
-  public void accept(final MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitIntInsn(opcode, operand);
-    acceptAnnotations(methodVisitor);
-  }
-
-  @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
-  {
-    return new IntInsnNode(opcode,
-                           operand).cloneAnnotations(this);
+    moduleVisitor.visitOpen(packaze, access, modules == null ? null : modules.toArray(new String[0]));
   }
 }

@@ -1,9 +1,34 @@
+// ASM: a very small and fast Java bytecode manipulation framework
+// Copyright (c) 2000-2011 INRIA, France Telecom
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+//    notice, this list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the distribution.
+// 3. Neither the name of the copyright holders nor the names of its
+//    contributors may be used to endorse or promote products derived from
+//    this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+// THE POSSIBILITY OF SUCH DAMAGE.
 package arb.expressions.executionflow.nodes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;
@@ -14,17 +39,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.TypePath;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.LineNumberNode;
-import org.objectweb.asm.tree.LocalVariableAnnotationNode;
-import org.objectweb.asm.tree.LocalVariableNode;
-import org.objectweb.asm.tree.LookupSwitchInsnNode;
-import org.objectweb.asm.tree.TypeAnnotationNode;
-import org.objectweb.asm.tree.UnsupportedClassVersionException;
-
-import arb.expressions.executionflow.InvokeDynamicInsnNode;
-import arb.expressions.executionflow.MultiANewArrayInsnNode;
-
 
 /**
  * A node that represents a method.
@@ -243,7 +257,7 @@ public class MethodNode extends
     this.name       = name;
     this.desc       = descriptor;
     this.signature  = signature;
-    this.exceptions = Arrays.asList(exceptions);
+    this.exceptions = Util.asArrayList(exceptions);
     if ((access & Opcodes.ACC_ABSTRACT) == 0)
     {
       this.localVariables = new ArrayList<>(5);
@@ -288,11 +302,11 @@ public class MethodNode extends
     AnnotationNode annotation = new AnnotationNode(descriptor);
     if (visible)
     {
-      visibleAnnotations.add(annotation);
+      visibleAnnotations = Util.add(visibleAnnotations, annotation);
     }
     else
     {
-      invisibleAnnotations.add(annotation);
+      invisibleAnnotations = Util.add(invisibleAnnotations, annotation);
     }
     return annotation;
   }
@@ -308,11 +322,11 @@ public class MethodNode extends
                                                                descriptor);
     if (visible)
     {
-      visibleTypeAnnotations.add(typeAnnotation);
+      visibleTypeAnnotations = Util.add(visibleTypeAnnotations, typeAnnotation);
     }
     else
     {
-      invisibleTypeAnnotations.add(typeAnnotation);
+      invisibleTypeAnnotations = Util.add(invisibleTypeAnnotations, typeAnnotation);
     }
     return typeAnnotation;
   }
@@ -343,7 +357,7 @@ public class MethodNode extends
         int params = Type.getArgumentCount(desc);
         visibleParameterAnnotations = (List<AnnotationNode>[]) new List<?>[params];
       }
-      visibleParameterAnnotations[parameter].add(annotation);
+      visibleParameterAnnotations[parameter] = Util.add(visibleParameterAnnotations[parameter], annotation);
     }
     else
     {
@@ -352,7 +366,7 @@ public class MethodNode extends
         int params = Type.getArgumentCount(desc);
         invisibleParameterAnnotations = (List<AnnotationNode>[]) new List<?>[params];
       }
-      invisibleParameterAnnotations[parameter].add(annotation);
+      invisibleParameterAnnotations[parameter] = Util.add(invisibleParameterAnnotations[parameter], annotation);
     }
     return annotation;
   }
@@ -360,7 +374,7 @@ public class MethodNode extends
   @Override
   public void visitAttribute(final Attribute attribute)
   {
-    attrs.add(attribute);
+    attrs = Util.add(attrs, attribute);
   }
 
   @Override
@@ -522,11 +536,11 @@ public class MethodNode extends
                                                                descriptor);
     if (visible)
     {
-      currentInsn.visibleTypeAnnotations.add(typeAnnotation);
+      currentInsn.visibleTypeAnnotations = Util.add(currentInsn.visibleTypeAnnotations, typeAnnotation);
     }
     else
     {
-      currentInsn.invisibleTypeAnnotations.add(typeAnnotation);
+      currentInsn.invisibleTypeAnnotations = Util.add(currentInsn.invisibleTypeAnnotations, typeAnnotation);
     }
     return typeAnnotation;
   }
@@ -538,7 +552,7 @@ public class MethodNode extends
                                                             getLabelNode(end),
                                                             getLabelNode(handler),
                                                             type);
-    tryCatchBlocks.add(tryCatchBlock);
+    tryCatchBlocks = Util.add(tryCatchBlocks, tryCatchBlock);
   }
 
   @Override
@@ -553,11 +567,11 @@ public class MethodNode extends
                                                                descriptor);
     if (visible)
     {
-      tryCatchBlock.visibleTypeAnnotations.add(typeAnnotation);
+      tryCatchBlock.visibleTypeAnnotations = Util.add(tryCatchBlock.visibleTypeAnnotations, typeAnnotation);
     }
     else
     {
-      tryCatchBlock.invisibleTypeAnnotations.add(typeAnnotation);
+      tryCatchBlock.invisibleTypeAnnotations = Util.add(tryCatchBlock.invisibleTypeAnnotations, typeAnnotation);
     }
     return typeAnnotation;
   }
@@ -576,7 +590,7 @@ public class MethodNode extends
                                                             getLabelNode(start),
                                                             getLabelNode(end),
                                                             index);
-    localVariables.add(localVariable);
+    localVariables = Util.add(localVariables, localVariable);
   }
 
   @Override
@@ -596,11 +610,11 @@ public class MethodNode extends
                                                                                           descriptor);
     if (visible)
     {
-      visibleLocalVariableAnnotations.add(localVariableAnnotation);
+      visibleLocalVariableAnnotations = Util.add(visibleLocalVariableAnnotations, localVariableAnnotation);
     }
     else
     {
-      invisibleLocalVariableAnnotations.add(localVariableAnnotation);
+      invisibleLocalVariableAnnotations = Util.add(invisibleLocalVariableAnnotations, localVariableAnnotation);
     }
     return localVariableAnnotation;
   }
