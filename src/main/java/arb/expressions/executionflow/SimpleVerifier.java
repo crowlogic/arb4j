@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.analysis.BasicValue;
+
+import arb.expressions.executionflow.nodes.BasicValue;
 
 /**
  * An extended {@link BasicVerifier} that performs more precise verifications.

@@ -6,6 +6,10 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.analysis.AnalyzerException;
 
+import arb.expressions.executionflow.nodes.AbstractInsnNode;
+import arb.expressions.executionflow.nodes.TryCatchBlockNode;
+import arb.expressions.executionflow.nodes.Value;
+
 /**
  * A semantic bytecode interpreter. More precisely, this interpreter only
  * manages the computation of values from other values: it does not manage the

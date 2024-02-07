@@ -19,6 +19,14 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Article       newBesselFunctionIdentity                          = new Article("Circular motion analogue Unruh effect in a 2+1 thermal bath: robbing from the rich and giving to the poor",
+                                                                                               "D Bunney, Cameron R and Louko, Jorma",
+                                                                                               "2023",
+                                                                                               "Classical and Quantum Gravity",
+                                                                                               "40",
+                                                                                               "155001 (27 pages)").setNumber("15");
+
   public static Article       theDistributionOfCertainMatrixEnsemblesEigenvalues = new Article("On the distribution of eigenvalues of certain matrix ensembles",
                                                                                                "{Bogomolny}, E. and {Bohigas}, O. and {Pato}, M.~P.",
                                                                                                "1997",

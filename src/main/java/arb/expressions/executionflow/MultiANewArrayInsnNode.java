@@ -5,6 +5,9 @@ import java.util.Map;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import arb.expressions.executionflow.nodes.AbstractInsnNode;
+import arb.expressions.executionflow.nodes.LabelNode;
+
 /**
  * A node that represents a MULTIANEWARRAY instruction.
  *

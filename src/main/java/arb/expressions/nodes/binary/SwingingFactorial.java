@@ -7,7 +7,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * 
+ * n≀=2^(n-(n mod 2))*∏(k=1..n)k^((-1)^(k+1))=n!/⌊n/2⌋!²
  * 
  * <a href="https://oeis.org/A056040">The swinging factorial, n≀ = 2^(n-(n mod
  * 2))*∏{k=1..n} k^((-1)^(k+1))</a>

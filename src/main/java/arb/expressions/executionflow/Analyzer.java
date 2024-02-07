@@ -8,12 +8,21 @@ import java.util.Map;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.JumpInsnNode;
-import org.objectweb.asm.tree.LookupSwitchInsnNode;
-import org.objectweb.asm.tree.TableSwitchInsnNode;
-import org.objectweb.asm.tree.analysis.AnalyzerException;
+
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
+
+import arb.expressions.executionflow.nodes.AbstractInsnNode;
+import arb.expressions.executionflow.nodes.BasicValue;
+import arb.expressions.executionflow.nodes.IincInsnNode;
+import arb.expressions.executionflow.nodes.InsnList;
+import arb.expressions.executionflow.nodes.JumpInsnNode;
+import arb.expressions.executionflow.nodes.LabelNode;
+import arb.expressions.executionflow.nodes.MethodNode;
+import arb.expressions.executionflow.nodes.TableSwitchInsnNode;
+import arb.expressions.executionflow.nodes.TryCatchBlockNode;
+import arb.expressions.executionflow.nodes.Value;
+import arb.expressions.executionflow.nodes.VarInsnNode;
 
 public class Analyzer<V extends Value> implements
                      Opcodes
@@ -295,7 +304,7 @@ public class Analyzer<V extends Value> implements
         {
           analyzeJumpInstruction(method, currentFrame, insnIndex, subroutine, insnNode, insnOpcode);
         }
-        else if (insnNode instanceof LookupSwitchInsnNode)
+        else if (insnNode instanceof TableSwitchInsnNode)
         {
           analyzeLookupSwitchInstruction(currentFrame, insnIndex, subroutine, insnNode, insnOpcode);
         }
@@ -337,7 +346,7 @@ public class Analyzer<V extends Value> implements
    *         cannot be reached (dead code).
    * @throws AnalyzerException if a problem occurs during the analysis.
    */
-  public Frame<V>[] analyzeAndComputeMaxs(final String owner, final MethodNode method) throws AnalyzerException
+  public Frame<V>[] analyzeAndComputeMaxs(final String owner, final MethodNode method)
   {
     method.maxLocals = computeMaxLocals(method);
     method.maxStack  = -1;

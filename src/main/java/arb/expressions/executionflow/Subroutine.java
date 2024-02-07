@@ -3,8 +3,9 @@ package arb.expressions.executionflow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.objectweb.asm.tree.JumpInsnNode;
-import org.objectweb.asm.tree.LabelNode;
+import arb.expressions.executionflow.nodes.JumpInsnNode;
+import arb.expressions.executionflow.nodes.LabelNode;
+
 
 /**
  * A method subroutine (corresponds to a JSR instruction).
