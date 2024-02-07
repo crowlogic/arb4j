@@ -18,6 +18,7 @@ import arb.expressions.executionflow.nodes.IincInsnNode;
 import arb.expressions.executionflow.nodes.InsnList;
 import arb.expressions.executionflow.nodes.JumpInsnNode;
 import arb.expressions.executionflow.nodes.LabelNode;
+import arb.expressions.executionflow.nodes.LookupSwitchInsnNode;
 import arb.expressions.executionflow.nodes.MethodNode;
 import arb.expressions.executionflow.nodes.TableSwitchInsnNode;
 import arb.expressions.executionflow.nodes.TryCatchBlockNode;
