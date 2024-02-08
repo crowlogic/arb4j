@@ -29,68 +29,53 @@ package arb.expressions.executionflow.nodes;
 
 import java.util.Map;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
- * A node that represents a local variable instruction. A local variable
- * instruction is an instruction that loads or stores the value of a local
- * variable.
+ * A node that represents an IINC instruction.
  *
  * @author Eric Bruneton
  */
-public class VarInsnNode extends
-                         AbstractInsnNode
+public class IncrementLocalVariableByConstantNode extends
+                          AbstractInstructionNode
 {
 
-  /**
-   * The operand of this instruction. This operand is the index of a local
-   * variable.
-   */
+  /** Index of the local variable to be incremented. */
   public int var;
 
-  /**
-   * Constructs a new {@link VarInsnNode}.
-   *
-   * @param opcode   the opcode of the local variable instruction to be
-   *                 constructed. This opcode must be ILOAD, LLOAD, FLOAD, DLOAD,
-   *                 ALOAD, ISTORE, LSTORE, FSTORE, DSTORE, ASTORE or RET.
-   * @param varIndex the operand of the instruction to be constructed. This
-   *                 operand is the index of a local variable.
-   */
-  public VarInsnNode(final int opcode, final int varIndex)
-  {
-    super(opcode);
-    this.var = varIndex;
-  }
+  /** Amount to increment the local variable by. */
+  public int incr;
 
   /**
-   * Sets the opcode of this instruction.
+   * Constructs a new {@link IncrementLocalVariableByConstantNode}.
    *
-   * @param opcode the new instruction opcode. This opcode must be ILOAD, LLOAD,
-   *               FLOAD, DLOAD, ALOAD, ISTORE, LSTORE, FSTORE, DSTORE, ASTORE or
-   *               RET.
+   * @param varIndex index of the local variable to be incremented.
+   * @param incr     increment amount to increment the local variable by.
    */
-  public void setOpcode(final int opcode)
+  public IncrementLocalVariableByConstantNode(final int varIndex, final int incr)
   {
-    this.opcode = opcode;
+    super(Opcodes.IINC);
+    this.var  = varIndex;
+    this.incr = incr;
   }
 
   @Override
   public int getType()
   {
-    return VAR_INSN;
+    return IINC_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitVarInsn(opcode, var);
+    methodVisitor.visitIincInsn(var, incr);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new VarInsnNode(opcode,
-                           var).cloneAnnotations(this);
+    return new IncrementLocalVariableByConstantNode(var,
+                            incr).cloneAnnotations(this);
   }
 }

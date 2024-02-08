@@ -32,50 +32,51 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 /**
- * A node that represents an IINC instruction.
+ * A node that represents a MULTIANEWARRAY instruction.
  *
  * @author Eric Bruneton
  */
-public class IincInsnNode extends
-                          AbstractInsnNode
+public class MultiANewArrayInstructionNode extends
+                                           AbstractInstructionNode
 {
 
-  /** Index of the local variable to be incremented. */
-  public int var;
+  /** An array type descriptor (see {@link org.objectweb.asm.Type}). */
+  public String desc;
 
-  /** Amount to increment the local variable by. */
-  public int incr;
+  /** Number of dimensions of the array to allocate. */
+  public int    dims;
 
   /**
-   * Constructs a new {@link IincInsnNode}.
+   * Constructs a new {@link MultiANewArrayInstructionNode}.
    *
-   * @param varIndex index of the local variable to be incremented.
-   * @param incr     increment amount to increment the local variable by.
+   * @param descriptor    an array type descriptor (see
+   *                      {@link org.objectweb.asm.Type}).
+   * @param numDimensions the number of dimensions of the array to allocate.
    */
-  public IincInsnNode(final int varIndex, final int incr)
+  public MultiANewArrayInstructionNode(final String descriptor, final int numDimensions)
   {
-    super(Opcodes.IINC);
-    this.var  = varIndex;
-    this.incr = incr;
+    super(Opcodes.MULTIANEWARRAY);
+    this.desc = descriptor;
+    this.dims = numDimensions;
   }
 
   @Override
   public int getType()
   {
-    return IINC_INSN;
+    return MULTIANEWARRAY_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitIincInsn(var, incr);
+    methodVisitor.visitMultiANewArrayInsn(desc, dims);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new IincInsnNode(var,
-                            incr).cloneAnnotations(this);
+    return new MultiANewArrayInstructionNode(desc,
+                                             dims).cloneAnnotations(this);
   }
 }

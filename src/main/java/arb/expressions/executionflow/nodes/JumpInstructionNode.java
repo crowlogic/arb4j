@@ -28,66 +28,71 @@
 package arb.expressions.executionflow.nodes;
 
 import java.util.Map;
-import org.objectweb.asm.ConstantDynamic;
-import org.objectweb.asm.Handle;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 
 /**
- * A node that represents an LDC instruction.
+ * A node that represents a jump instruction. A jump instruction is an
+ * instruction that may jump to another instruction.
  *
  * @author Eric Bruneton
  */
-public class LdcInsnNode extends
-                         AbstractInsnNode
+public class JumpInstructionNode extends
+                          AbstractInstructionNode
 {
 
   /**
-   * The constant to be loaded on the stack. This field must be a non null
-   * {@link Integer}, a {@link Float}, a {@link Long}, a {@link Double}, a
-   * {@link String}, a {@link Type} of OBJECT or ARRAY sort for {@code .class}
-   * constants, for classes whose version is 49, a {@link Type} of METHOD sort for
-   * MethodType, a {@link Handle} for MethodHandle constants, for classes whose
-   * version is 51 or a {@link ConstantDynamic} for a constant dynamic for classes
-   * whose version is 55.
+   * The operand of this instruction. This operand is a label that designates the
+   * instruction to which this instruction may jump.
    */
-  public Object cst;
+  public LabelNode label;
 
   /**
-   * Constructs a new {@link LdcInsnNode}.
+   * Constructs a new {@link JumpInstructionNode}.
    *
-   * @param value the constant to be loaded on the stack. This parameter mist be a
-   *              non null {@link Integer}, a {@link Float}, a {@link Long}, a
-   *              {@link Double}, a {@link String}, a {@link Type} of OBJECT or
-   *              ARRAY sort for {@code .class} constants, for classes whose
-   *              version is 49, a {@link Type} of METHOD sort for MethodType, a
-   *              {@link Handle} for MethodHandle constants, for classes whose
-   *              version is 51 or a {@link ConstantDynamic} for a constant
-   *              dynamic for classes whose version is 55.
+   * @param opcode the opcode of the type instruction to be constructed. This
+   *               opcode must be IFEQ, IFNE, IFLT, IFGE, IFGT, IFLE, IF_ICMPEQ,
+   *               IF_ICMPNE, IF_ICMPLT, IF_ICMPGE, IF_ICMPGT, IF_ICMPLE,
+   *               IF_ACMPEQ, IF_ACMPNE, GOTO, JSR, IFNULL or IFNONNULL.
+   * @param label  the operand of the instruction to be constructed. This operand
+   *               is a label that designates the instruction to which the jump
+   *               instruction may jump.
    */
-  public LdcInsnNode(final Object value)
+  public JumpInstructionNode(final int opcode, final LabelNode label)
   {
-    super(Opcodes.LDC);
-    this.cst = value;
+    super(opcode);
+    this.label = label;
+  }
+
+  /**
+   * Sets the opcode of this instruction.
+   *
+   * @param opcode the new instruction opcode. This opcode must be IFEQ, IFNE,
+   *               IFLT, IFGE, IFGT, IFLE, IF_ICMPEQ, IF_ICMPNE, IF_ICMPLT,
+   *               IF_ICMPGE, IF_ICMPGT, IF_ICMPLE, IF_ACMPEQ, IF_ACMPNE, GOTO,
+   *               JSR, IFNULL or IFNONNULL.
+   */
+  public void setOpcode(final int opcode)
+  {
+    this.opcode = opcode;
   }
 
   @Override
   public int getType()
   {
-    return LDC_INSN;
+    return JUMP_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitLdcInsn(cst);
+    methodVisitor.visitJumpInsn(opcode, label.getLabel());
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new LdcInsnNode(cst).cloneAnnotations(this);
+    return new JumpInstructionNode(opcode,
+                            clone(label, clonedLabels)).cloneAnnotations(this);
   }
 }

@@ -1,7 +1,9 @@
 // ASM: a very small and fast Java bytecode manipulation framework
-package arb.expressions.executionflow.nodes;
+package arb.expressions.executionflow;
 
 import org.objectweb.asm.Type;
+
+import arb.expressions.executionflow.nodes.Value;
 
 /**
  * A {@link Value} that is represented with its type in a seven types type

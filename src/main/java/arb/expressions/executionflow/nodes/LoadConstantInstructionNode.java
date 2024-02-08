@@ -28,55 +28,66 @@
 package arb.expressions.executionflow.nodes;
 
 import java.util.Map;
+import org.objectweb.asm.ConstantDynamic;
+import org.objectweb.asm.Handle;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 /**
- * A node that represents a MULTIANEWARRAY instruction.
+ * A node that represents an LDC instruction.
  *
  * @author Eric Bruneton
  */
-public class MultiANewArrayInsnNode extends
-                                    AbstractInsnNode
+public class LoadConstantInstructionNode extends
+                         AbstractInstructionNode
 {
 
-  /** An array type descriptor (see {@link org.objectweb.asm.Type}). */
-  public String desc;
-
-  /** Number of dimensions of the array to allocate. */
-  public int    dims;
+  /**
+   * The constant to be loaded on the stack. This field must be a non null
+   * {@link Integer}, a {@link Float}, a {@link Long}, a {@link Double}, a
+   * {@link String}, a {@link Type} of OBJECT or ARRAY sort for {@code .class}
+   * constants, for classes whose version is 49, a {@link Type} of METHOD sort for
+   * MethodType, a {@link Handle} for MethodHandle constants, for classes whose
+   * version is 51 or a {@link ConstantDynamic} for a constant dynamic for classes
+   * whose version is 55.
+   */
+  public Object cst;
 
   /**
-   * Constructs a new {@link MultiANewArrayInsnNode}.
+   * Constructs a new {@link LoadConstantInstructionNode}.
    *
-   * @param descriptor    an array type descriptor (see
-   *                      {@link org.objectweb.asm.Type}).
-   * @param numDimensions the number of dimensions of the array to allocate.
+   * @param value the constant to be loaded on the stack. This parameter mist be a
+   *              non null {@link Integer}, a {@link Float}, a {@link Long}, a
+   *              {@link Double}, a {@link String}, a {@link Type} of OBJECT or
+   *              ARRAY sort for {@code .class} constants, for classes whose
+   *              version is 49, a {@link Type} of METHOD sort for MethodType, a
+   *              {@link Handle} for MethodHandle constants, for classes whose
+   *              version is 51 or a {@link ConstantDynamic} for a constant
+   *              dynamic for classes whose version is 55.
    */
-  public MultiANewArrayInsnNode(final String descriptor, final int numDimensions)
+  public LoadConstantInstructionNode(final Object value)
   {
-    super(Opcodes.MULTIANEWARRAY);
-    this.desc = descriptor;
-    this.dims = numDimensions;
+    super(Opcodes.LDC);
+    this.cst = value;
   }
 
   @Override
   public int getType()
   {
-    return MULTIANEWARRAY_INSN;
+    return LDC_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitMultiANewArrayInsn(desc, dims);
+    methodVisitor.visitLdcInsn(cst);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new MultiANewArrayInsnNode(desc,
-                                      dims).cloneAnnotations(this);
+    return new LoadConstantInstructionNode(cst).cloneAnnotations(this);
   }
 }

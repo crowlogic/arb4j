@@ -1,5 +1,3 @@
-package arb.expressions.executionflow.nodes;
-
 // ASM: a very small and fast Java bytecode manipulation framework
 // Copyright (c) 2000-2011 INRIA, France Telecom
 // All rights reserved.
@@ -27,78 +25,83 @@ package arb.expressions.executionflow.nodes;
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
+package arb.expressions.executionflow.nodes;
 
-import java.util.List;
 import java.util.Map;
 
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 /**
- * A node that represents a LOOKUPSWITCH instruction.
+ * A node that represents a field instruction. A field instruction is an
+ * instruction that loads or stores the value of a field of an object.
  *
  * @author Eric Bruneton
  */
-public class LookupSwitchInsnNode extends
-                                  AbstractInsnNode
+public class FieldInstructionNode extends
+                                  AbstractInstructionNode
 {
 
-  /** Beginning of the default handler block. */
-  public LabelNode       dflt;
+  /**
+   * The internal name of the field's owner class (see
+   * {@link org.objectweb.asm.Type#getInternalName()}).
+   */
+  public String owner;
 
-  /** The values of the keys. */
-  public List<Integer>   keys;
+  /** The field's name. */
+  public String name;
 
-  /** Beginnings of the handler blocks. */
-  public List<LabelNode> labels;
+  /** The field's descriptor (see {@link org.objectweb.asm.Type}). */
+  public String desc;
 
   /**
-   * Constructs a new {@link LookupSwitchInsnNode}.
+   * Constructs a new {@link FieldInstructionNode}.
    *
-   * @param dflt   beginning of the default handler block.
-   * @param keys   the values of the keys.
-   * @param labels beginnings of the handler blocks. {@code labels[i]} is the
-   *               beginning of the handler block for the {@code keys[i]} key.
+   * @param opcode     the opcode of the type instruction to be constructed. This
+   *                   opcode must be GETSTATIC, PUTSTATIC, GETFIELD or PUTFIELD.
+   * @param owner      the internal name of the field's owner class (see
+   *                   {@link org.objectweb.asm.Type#getInternalName()}).
+   * @param name       the field's name.
+   * @param descriptor the field's descriptor (see
+   *                   {@link org.objectweb.asm.Type}).
    */
-  public LookupSwitchInsnNode(final LabelNode dflt, final int[] keys, final LabelNode[] labels)
+  public FieldInstructionNode(final int opcode, final String owner, final String name, final String descriptor)
   {
-    super(Opcodes.LOOKUPSWITCH);
-    this.dflt   = dflt;
-    this.keys   = Util.asArrayList(keys);
-    this.labels = Util.asArrayList(labels);
+    super(opcode);
+    this.owner = owner;
+    this.name  = name;
+    this.desc  = descriptor;
+  }
+
+  /**
+   * Sets the opcode of this instruction.
+   *
+   * @param opcode the new instruction opcode. This opcode must be GETSTATIC,
+   *               PUTSTATIC, GETFIELD or PUTFIELD.
+   */
+  public void setOpcode(final int opcode)
+  {
+    this.opcode = opcode;
   }
 
   @Override
   public int getType()
   {
-    return LOOKUPSWITCH_INSN;
+    return FIELD_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    int[] keysArray = new int[this.keys.size()];
-    for (int i = 0, n = keysArray.length; i < n; ++i)
-    {
-      keysArray[i] = this.keys.get(i).intValue();
-    }
-    Label[] labelsArray = new Label[this.labels.size()];
-    for (int i = 0, n = labelsArray.length; i < n; ++i)
-    {
-      labelsArray[i] = this.labels.get(i).getLabel();
-    }
-    methodVisitor.visitLookupSwitchInsn(dflt.getLabel(), keysArray, labelsArray);
+    methodVisitor.visitFieldInsn(opcode, owner, name, desc);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    LookupSwitchInsnNode clone = new LookupSwitchInsnNode(clone(dflt, clonedLabels),
-                                                          null,
-                                                          clone(labels, clonedLabels));
-    clone.keys.addAll(keys);
-    return clone.cloneAnnotations(this);
+    return new FieldInstructionNode(opcode,
+                                    owner,
+                                    name,
+                                    desc).cloneAnnotations(this);
   }
 }

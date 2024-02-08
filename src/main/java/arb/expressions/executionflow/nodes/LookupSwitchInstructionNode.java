@@ -1,3 +1,5 @@
+package arb.expressions.executionflow.nodes;
+
 // ASM: a very small and fast Java bytecode manipulation framework
 // Copyright (c) 2000-2011 INRIA, France Telecom
 // All rights reserved.
@@ -25,80 +27,78 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
-package arb.expressions.executionflow.nodes;
 
 import java.util.List;
 import java.util.Map;
+
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 /**
- * A node that represents a TABLESWITCH instruction.
+ * A node that represents a LOOKUPSWITCH instruction.
  *
  * @author Eric Bruneton
  */
-public class TableSwitchInsnNode extends
-                                 AbstractInsnNode
+public class LookupSwitchInstructionNode extends
+                                         AbstractInstructionNode
 {
-
-  /** The minimum key value. */
-  public int             min;
-
-  /** The maximum key value. */
-  public int             max;
 
   /** Beginning of the default handler block. */
   public LabelNode       dflt;
 
-  /**
-   * Beginnings of the handler blocks. This list is a list of {@link LabelNode}
-   * objects.
-   */
+  /** The values of the keys. */
+  public List<Integer>   keys;
+
+  /** Beginnings of the handler blocks. */
   public List<LabelNode> labels;
 
   /**
-   * Constructs a new {@link TableSwitchInsnNode}.
+   * Constructs a new {@link LookupSwitchInstructionNode}.
    *
-   * @param min    the minimum key value.
-   * @param max    the maximum key value.
    * @param dflt   beginning of the default handler block.
+   * @param keys   the values of the keys.
    * @param labels beginnings of the handler blocks. {@code labels[i]} is the
-   *               beginning of the handler block for the {@code min + i} key.
+   *               beginning of the handler block for the {@code keys[i]} key.
    */
-  public TableSwitchInsnNode(final int min, final int max, final LabelNode dflt, final LabelNode... labels)
+  public LookupSwitchInstructionNode(final LabelNode dflt, final int[] keys, final LabelNode[] labels)
   {
-    super(Opcodes.TABLESWITCH);
-    this.min    = min;
-    this.max    = max;
+    super(Opcodes.LOOKUPSWITCH);
     this.dflt   = dflt;
+    this.keys   = Util.asArrayList(keys);
     this.labels = Util.asArrayList(labels);
   }
 
   @Override
   public int getType()
   {
-    return TABLESWITCH_INSN;
+    return LOOKUPSWITCH_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
+    int[] keysArray = new int[this.keys.size()];
+    for (int i = 0, n = keysArray.length; i < n; ++i)
+    {
+      keysArray[i] = this.keys.get(i).intValue();
+    }
     Label[] labelsArray = new Label[this.labels.size()];
     for (int i = 0, n = labelsArray.length; i < n; ++i)
     {
       labelsArray[i] = this.labels.get(i).getLabel();
     }
-    methodVisitor.visitTableSwitchInsn(min, max, dflt.getLabel(), labelsArray);
+    methodVisitor.visitLookupSwitchInsn(dflt.getLabel(), keysArray, labelsArray);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new TableSwitchInsnNode(min,
-                                   max,
-                                   clone(dflt, clonedLabels),
-                                   clone(labels, clonedLabels)).cloneAnnotations(this);
+    LookupSwitchInstructionNode clone = new LookupSwitchInstructionNode(clone(dflt, clonedLabels),
+                                                                        null,
+                                                                        clone(labels, clonedLabels));
+    clone.keys.addAll(keys);
+    return clone.cloneAnnotations(this);
   }
 }

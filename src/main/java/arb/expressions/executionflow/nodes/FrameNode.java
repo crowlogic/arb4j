@@ -48,7 +48,7 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class FrameNode extends
-                       AbstractInsnNode
+                       AbstractInstructionNode
 {
 
   /**
@@ -165,7 +165,7 @@ public class FrameNode extends
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
     FrameNode clone = new FrameNode();
     clone.type = type;

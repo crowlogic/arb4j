@@ -175,7 +175,7 @@ public class MethodNode extends
   public List<AnnotationNode>[]            invisibleParameterAnnotations;
 
   /** The instructions of this method. */
-  public InsnList                          instructions;
+  public InstructionList                          instructions;
 
   /** The try catch blocks of this method. */
   public List<TryCatchBlockNode>           tryCatchBlocks;
@@ -229,7 +229,7 @@ public class MethodNode extends
   public MethodNode(final int api)
   {
     super(api);
-    this.instructions = new InsnList();
+    this.instructions = new InstructionList();
   }
 
   /**
@@ -298,7 +298,7 @@ public class MethodNode extends
       this.localVariables = new ArrayList<>(5);
     }
     this.tryCatchBlocks = new ArrayList<>();
-    this.instructions   = new InsnList();
+    this.instructions   = new InstructionList();
   }
 
   // -----------------------------------------------------------------------------------------------
@@ -435,34 +435,34 @@ public class MethodNode extends
   @Override
   public void visitInsn(final int opcode)
   {
-    instructions.add(new InsnNode(opcode));
+    instructions.add(new InstructionNode(opcode));
   }
 
   @Override
   public void visitIntInsn(final int opcode, final int operand)
   {
-    instructions.add(new IntInsnNode(opcode,
+    instructions.add(new IntegerInstructionNode(opcode,
                                      operand));
   }
 
   @Override
   public void visitVarInsn(final int opcode, final int varIndex)
   {
-    instructions.add(new VarInsnNode(opcode,
+    instructions.add(new LocalVariableInstructionNode(opcode,
                                      varIndex));
   }
 
   @Override
   public void visitTypeInsn(final int opcode, final String type)
   {
-    instructions.add(new TypeInsnNode(opcode,
+    instructions.add(new TypeInstructionNode(opcode,
                                       type));
   }
 
   @Override
   public void visitFieldInsn(final int opcode, final String owner, final String name, final String descriptor)
   {
-    instructions.add(new FieldInsnNode(opcode,
+    instructions.add(new FieldInstructionNode(opcode,
                                        owner,
                                        name,
                                        descriptor));
@@ -483,7 +483,7 @@ public class MethodNode extends
     }
     int opcode = opcodeAndSource & ~Opcodes.SOURCE_MASK;
 
-    instructions.add(new MethodInsnNode(opcode,
+    instructions.add(new MethodInstructionNode(opcode,
                                         owner,
                                         name,
                                         descriptor,
@@ -496,7 +496,7 @@ public class MethodNode extends
                                      final Handle bootstrapMethodHandle,
                                      final Object... bootstrapMethodArguments)
   {
-    instructions.add(new InvokeDynamicInsnNode(name,
+    instructions.add(new InvokeDynamicInstructionNode(name,
                                                descriptor,
                                                bootstrapMethodHandle,
                                                bootstrapMethodArguments));
@@ -505,7 +505,7 @@ public class MethodNode extends
   @Override
   public void visitJumpInsn(final int opcode, final Label label)
   {
-    instructions.add(new JumpInsnNode(opcode,
+    instructions.add(new JumpInstructionNode(opcode,
                                       getLabelNode(label)));
   }
 
@@ -518,20 +518,20 @@ public class MethodNode extends
   @Override
   public void visitLdcInsn(final Object value)
   {
-    instructions.add(new LdcInsnNode(value));
+    instructions.add(new LoadConstantInstructionNode(value));
   }
 
   @Override
   public void visitIincInsn(final int varIndex, final int increment)
   {
-    instructions.add(new IincInsnNode(varIndex,
+    instructions.add(new IncrementLocalVariableByConstantNode(varIndex,
                                       increment));
   }
 
   @Override
   public void visitTableSwitchInsn(final int min, final int max, final Label dflt, final Label... labels)
   {
-    instructions.add(new TableSwitchInsnNode(min,
+    instructions.add(new TableSwitchInstructionNode(min,
                                              max,
                                              getLabelNode(dflt),
                                              getLabelNodes(labels)));
@@ -540,7 +540,7 @@ public class MethodNode extends
   @Override
   public void visitLookupSwitchInsn(final Label dflt, final int[] keys, final Label[] labels)
   {
-    instructions.add(new LookupSwitchInsnNode(getLabelNode(dflt),
+    instructions.add(new LookupSwitchInstructionNode(getLabelNode(dflt),
                                               keys,
                                               getLabelNodes(labels)));
   }
@@ -548,7 +548,7 @@ public class MethodNode extends
   @Override
   public void visitMultiANewArrayInsn(final String descriptor, final int numDimensions)
   {
-    instructions.add(new MultiANewArrayInsnNode(descriptor,
+    instructions.add(new MultiANewArrayInstructionNode(descriptor,
                                                 numDimensions));
   }
 
@@ -560,7 +560,7 @@ public class MethodNode extends
   {
     // Find the last real instruction, i.e. the instruction targeted by this
     // annotation.
-    AbstractInsnNode currentInsn = instructions.getLast();
+    AbstractInstructionNode currentInsn = instructions.getLast();
     while (currentInsn.getOpcode() == -1)
     {
       currentInsn = currentInsn.getPrevious();
@@ -763,7 +763,7 @@ public class MethodNode extends
       }
       for (int i = instructions.size() - 1; i >= 0; --i)
       {
-        AbstractInsnNode insn = instructions.get(i);
+        AbstractInstructionNode insn = instructions.get(i);
         if (insn.visibleTypeAnnotations != null && !insn.visibleTypeAnnotations.isEmpty())
         {
           throw new UnsupportedClassVersionException();
@@ -772,17 +772,17 @@ public class MethodNode extends
         {
           throw new UnsupportedClassVersionException();
         }
-        if (insn instanceof MethodInsnNode)
+        if (insn instanceof MethodInstructionNode)
         {
-          boolean isInterface = ((MethodInsnNode) insn).itf;
+          boolean isInterface = ((MethodInstructionNode) insn).itf;
           if (isInterface != (insn.opcode == Opcodes.INVOKEINTERFACE))
           {
             throw new UnsupportedClassVersionException();
           }
         }
-        else if (insn instanceof LdcInsnNode)
+        else if (insn instanceof LoadConstantInstructionNode)
         {
-          Object value = ((LdcInsnNode) insn).cst;
+          Object value = ((LoadConstantInstructionNode) insn).cst;
           if (value instanceof Handle || (value instanceof Type && ((Type) value).getSort() == Type.METHOD))
           {
             throw new UnsupportedClassVersionException();
@@ -802,10 +802,10 @@ public class MethodNode extends
     {
       for (int i = instructions.size() - 1; i >= 0; --i)
       {
-        AbstractInsnNode insn = instructions.get(i);
-        if (insn instanceof LdcInsnNode)
+        AbstractInstructionNode insn = instructions.get(i);
+        if (insn instanceof LoadConstantInstructionNode)
         {
-          Object value = ((LdcInsnNode) insn).cst;
+          Object value = ((LoadConstantInstructionNode) insn).cst;
           if (value instanceof ConstantDynamic)
           {
             throw new UnsupportedClassVersionException();

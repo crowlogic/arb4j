@@ -28,57 +28,70 @@
 package arb.expressions.executionflow.nodes;
 
 import java.util.Map;
+
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * A node that represents a zero operand instruction.
+ * A node that represents a local variable instruction. A local variable
+ * instruction is an instruction that loads or stores the value of a local
+ * variable.
  *
  * @author Eric Bruneton
  */
-public class InsnNode extends
-                      AbstractInsnNode
+public class LocalVariableInstructionNode extends
+                         AbstractInstructionNode
 {
 
   /**
-   * Constructs a new {@link InsnNode}.
-   *
-   * @param opcode the opcode of the instruction to be constructed. This opcode
-   *               must be NOP, ACONST_NULL, ICONST_M1, ICONST_0, ICONST_1,
-   *               ICONST_2, ICONST_3, ICONST_4, ICONST_5, LCONST_0, LCONST_1,
-   *               FCONST_0, FCONST_1, FCONST_2, DCONST_0, DCONST_1, IALOAD,
-   *               LALOAD, FALOAD, DALOAD, AALOAD, BALOAD, CALOAD, SALOAD,
-   *               IASTORE, LASTORE, FASTORE, DASTORE, AASTORE, BASTORE, CASTORE,
-   *               SASTORE, POP, POP2, DUP, DUP_X1, DUP_X2, DUP2, DUP2_X1,
-   *               DUP2_X2, SWAP, IADD, LADD, FADD, DADD, ISUB, LSUB, FSUB, DSUB,
-   *               IMUL, LMUL, FMUL, DMUL, IDIV, LDIV, FDIV, DDIV, IREM, LREM,
-   *               FREM, DREM, INEG, LNEG, FNEG, DNEG, ISHL, LSHL, ISHR, LSHR,
-   *               IUSHR, LUSHR, IAND, LAND, IOR, LOR, IXOR, LXOR, I2L, I2F, I2D,
-   *               L2I, L2F, L2D, F2I, F2L, F2D, D2I, D2L, D2F, I2B, I2C, I2S,
-   *               LCMP, FCMPL, FCMPG, DCMPL, DCMPG, IRETURN, LRETURN, FRETURN,
-   *               DRETURN, ARETURN, RETURN, ARRAYLENGTH, ATHROW, MONITORENTER, or
-   *               MONITOREXIT.
+   * The operand of this instruction. This operand is the index of a local
+   * variable.
    */
-  public InsnNode(final int opcode)
+  public int var;
+
+  /**
+   * Constructs a new {@link LocalVariableInstructionNode}.
+   *
+   * @param opcode   the opcode of the local variable instruction to be
+   *                 constructed. This opcode must be ILOAD, LLOAD, FLOAD, DLOAD,
+   *                 ALOAD, ISTORE, LSTORE, FSTORE, DSTORE, ASTORE or RET.
+   * @param varIndex the operand of the instruction to be constructed. This
+   *                 operand is the index of a local variable.
+   */
+  public LocalVariableInstructionNode(final int opcode, final int varIndex)
   {
     super(opcode);
+    this.var = varIndex;
+  }
+
+  /**
+   * Sets the opcode of this instruction.
+   *
+   * @param opcode the new instruction opcode. This opcode must be ILOAD, LLOAD,
+   *               FLOAD, DLOAD, ALOAD, ISTORE, LSTORE, FSTORE, DSTORE, ASTORE or
+   *               RET.
+   */
+  public void setOpcode(final int opcode)
+  {
+    this.opcode = opcode;
   }
 
   @Override
   public int getType()
   {
-    return INSN;
+    return VAR_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitInsn(opcode);
+    methodVisitor.visitVarInsn(opcode, var);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new InsnNode(opcode).cloneAnnotations(this);
+    return new LocalVariableInstructionNode(opcode,
+                           var).cloneAnnotations(this);
   }
 }
