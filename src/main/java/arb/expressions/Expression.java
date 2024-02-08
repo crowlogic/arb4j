@@ -98,8 +98,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     ClassReader classReader = new ClassReader(instructions);
 
-    classNode.
-    classReader.accept(classNode, ClassReader.EXPAND_FRAMES);
+    classReader.accept(classNode, 0);
 
     SimpleVerifier       verifier       = new SimpleVerifier(Type.getObjectType(classNode.name),
                                                              Type.getType(Object.class),
