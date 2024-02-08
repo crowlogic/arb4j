@@ -10,7 +10,8 @@ import arb.expressions.executionflow.nodes.AbstractInstructionNode;
 import arb.expressions.executionflow.nodes.IncrementLocalVariableByConstantInstructionNode;
 import arb.expressions.executionflow.nodes.LabelNode;
 import arb.expressions.executionflow.nodes.MethodInstructionNode;
-import arb.expressions.executionflow.nodes.VariableInstructionNode;
+import arb.expressions.executionflow.nodes.Value;
+import arb.expressions.executionflow.nodes.LocalVariableInstructionNode;
 
 
 
@@ -337,7 +338,7 @@ public class Frame<V extends Value>
     case Opcodes.FLOAD:
     case Opcodes.DLOAD:
     case Opcodes.ALOAD:
-      push(interpreter.copyOperation(insn, getLocal(((VariableInstructionNode) insn).var)));
+      push(interpreter.copyOperation(insn, getLocal(((LocalVariableInstructionNode) insn).var)));
       break;
     case Opcodes.ISTORE:
     case Opcodes.LSTORE:
@@ -345,7 +346,7 @@ public class Frame<V extends Value>
     case Opcodes.DSTORE:
     case Opcodes.ASTORE:
       value1 = interpreter.copyOperation(insn, pop());
-      varIndex = ((VariableInstructionNode) insn).var;
+      varIndex = ((LocalVariableInstructionNode) insn).var;
       setLocal(varIndex, value1);
       if (value1.getSize() == 2)
       {

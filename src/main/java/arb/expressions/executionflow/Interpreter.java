@@ -8,6 +8,7 @@ import org.objectweb.asm.tree.analysis.AnalyzerException;
 
 import arb.expressions.executionflow.nodes.AbstractInstructionNode;
 import arb.expressions.executionflow.nodes.TryCatchBlockNode;
+import arb.expressions.executionflow.nodes.Value;
 
 /**
  * A semantic bytecode interpreter. More precisely, this interpreter only

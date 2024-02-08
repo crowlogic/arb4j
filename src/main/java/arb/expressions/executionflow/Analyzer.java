@@ -22,7 +22,8 @@ import arb.expressions.executionflow.nodes.LookupSwitchInstructionNode;
 import arb.expressions.executionflow.nodes.MethodNode;
 import arb.expressions.executionflow.nodes.TableSwitchInstructionNode;
 import arb.expressions.executionflow.nodes.TryCatchBlockNode;
-import arb.expressions.executionflow.nodes.VariableInstructionNode;
+import arb.expressions.executionflow.nodes.Value;
+import arb.expressions.executionflow.nodes.LocalVariableInstructionNode;
 
 public class Analyzer<V extends Value> implements
                      Opcodes
@@ -44,9 +45,9 @@ public class Analyzer<V extends Value> implements
     }
     for (AbstractInstructionNode insnNode : method.instructions)
     {
-      if (insnNode instanceof VariableInstructionNode)
+      if (insnNode instanceof LocalVariableInstructionNode)
       {
-        int local = ((VariableInstructionNode) insnNode).var;
+        int local = ((LocalVariableInstructionNode) insnNode).var;
         int size  = (insnNode.getOpcode() == Opcodes.LLOAD || insnNode.getOpcode() == Opcodes.DLOAD
                       || insnNode.getOpcode() == Opcodes.LSTORE || insnNode.getOpcode() == Opcodes.DSTORE) ? 2 : 1;
         maxLocals = Math.max(maxLocals, local + size);
@@ -442,9 +443,9 @@ public class Analyzer<V extends Value> implements
   {
     if (subroutine != null)
     {
-      if (insnNode instanceof VariableInstructionNode)
+      if (insnNode instanceof LocalVariableInstructionNode)
       {
-        int varIndex = ((VariableInstructionNode) insnNode).var;
+        int varIndex = ((LocalVariableInstructionNode) insnNode).var;
         subroutine.localsUsed[varIndex] = true;
         if (insnOpcode == LLOAD || insnOpcode == DLOAD || insnOpcode == LSTORE || insnOpcode == DSTORE)
         {
