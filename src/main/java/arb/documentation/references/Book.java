@@ -9,7 +9,8 @@ public record Book(String title,
                    AtomicReference<String> publisher,
                    AtomicReference<String> address,
                    AtomicReference<String> series,
-                   AtomicReference<String> edition)
+                   AtomicReference<String> edition,
+                   AtomicReference<String> isbn)
                   implements
                   Reference
 {
@@ -23,12 +24,13 @@ public record Book(String title,
          new AtomicReference<>(),
          new AtomicReference<>(),
          new AtomicReference<>(),
+         new AtomicReference<>(),
          new AtomicReference<>());
   }
 
   public String cite(String by)
   {
-    return String.format("@Book{%s,%s%s%s%s%s%s%s%s}",
+    return String.format("@Book{%s,%s%s%s%s%s%s%s%s%s}",
                          by,
                          Reference.conditionallyInsertField("author", author()),
                          Reference.conditionallyInsertField("title", title()),
@@ -37,7 +39,8 @@ public record Book(String title,
                          Reference.conditionallyInsertField("address", address.get()),
                          Reference.conditionallyInsertField("series", series.get()),
                          Reference.conditionallyInsertField("edition", edition.get()),
-                         Reference.conditionallyInsertField("volume", volume.get()))
+                         Reference.conditionallyInsertField("volume", volume.get()),
+                         Reference.conditionallyInsertField("isbn", isbn.get()))
                  .replace(",}", "}");
   }
 
@@ -69,6 +72,12 @@ public record Book(String title,
   public Book setVolume(String string)
   {
     volume.set(string);
+    return this;
+  }
+
+  public Book setIsbn(String string)
+  {
+    isbn.set(string);
     return this;
   }
 
