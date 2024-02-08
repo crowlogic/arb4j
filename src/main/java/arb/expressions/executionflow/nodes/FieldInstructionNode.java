@@ -28,38 +28,55 @@
 package arb.expressions.executionflow.nodes;
 
 import java.util.Map;
+
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * A node that represents an instruction with a single int operand.
+ * A node that represents a field instruction. A field instruction is an
+ * instruction that loads or stores the value of a field of an object.
  *
  * @author Eric Bruneton
  */
-public class IntInsnNode extends
-                         AbstractInsnNode
+public class FieldInstructionNode extends
+                                  AbstractInstructionNode
 {
 
-  /** The operand of this instruction. */
-  public int operand;
+  /**
+   * The internal name of the field's owner class (see
+   * {@link org.objectweb.asm.Type#getInternalName()}).
+   */
+  public String owner;
+
+  /** The field's name. */
+  public String name;
+
+  /** The field's descriptor (see {@link org.objectweb.asm.Type}). */
+  public String desc;
 
   /**
-   * Constructs a new {@link IntInsnNode}.
+   * Constructs a new {@link FieldInstructionNode}.
    *
-   * @param opcode  the opcode of the instruction to be constructed. This opcode
-   *                must be BIPUSH, SIPUSH or NEWARRAY.
-   * @param operand the operand of the instruction to be constructed.
+   * @param opcode     the opcode of the type instruction to be constructed. This
+   *                   opcode must be GETSTATIC, PUTSTATIC, GETFIELD or PUTFIELD.
+   * @param owner      the internal name of the field's owner class (see
+   *                   {@link org.objectweb.asm.Type#getInternalName()}).
+   * @param name       the field's name.
+   * @param descriptor the field's descriptor (see
+   *                   {@link org.objectweb.asm.Type}).
    */
-  public IntInsnNode(final int opcode, final int operand)
+  public FieldInstructionNode(final int opcode, final String owner, final String name, final String descriptor)
   {
     super(opcode);
-    this.operand = operand;
+    this.owner = owner;
+    this.name  = name;
+    this.desc  = descriptor;
   }
 
   /**
    * Sets the opcode of this instruction.
    *
-   * @param opcode the new instruction opcode. This opcode must be BIPUSH, SIPUSH
-   *               or NEWARRAY.
+   * @param opcode the new instruction opcode. This opcode must be GETSTATIC,
+   *               PUTSTATIC, GETFIELD or PUTFIELD.
    */
   public void setOpcode(final int opcode)
   {
@@ -69,20 +86,22 @@ public class IntInsnNode extends
   @Override
   public int getType()
   {
-    return INT_INSN;
+    return FIELD_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitIntInsn(opcode, operand);
+    methodVisitor.visitFieldInsn(opcode, owner, name, desc);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new IntInsnNode(opcode,
-                           operand).cloneAnnotations(this);
+    return new FieldInstructionNode(opcode,
+                                    owner,
+                                    name,
+                                    desc).cloneAnnotations(this);
   }
 }

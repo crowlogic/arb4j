@@ -27,70 +27,78 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package arb.expressions.executionflow.nodes;
 
+import java.util.List;
 import java.util.Map;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
- * A node that represents a local variable instruction. A local variable
- * instruction is an instruction that loads or stores the value of a local
- * variable.
+ * A node that represents a TABLESWITCH instruction.
  *
  * @author Eric Bruneton
  */
-public class VarInsnNode extends
-                         AbstractInsnNode
+public class TableSwitchInstructionNode extends
+                                 AbstractInstructionNode
 {
 
-  /**
-   * The operand of this instruction. This operand is the index of a local
-   * variable.
-   */
-  public int var;
+  /** The minimum key value. */
+  public int             min;
+
+  /** The maximum key value. */
+  public int             max;
+
+  /** Beginning of the default handler block. */
+  public LabelNode       dflt;
 
   /**
-   * Constructs a new {@link VarInsnNode}.
-   *
-   * @param opcode   the opcode of the local variable instruction to be
-   *                 constructed. This opcode must be ILOAD, LLOAD, FLOAD, DLOAD,
-   *                 ALOAD, ISTORE, LSTORE, FSTORE, DSTORE, ASTORE or RET.
-   * @param varIndex the operand of the instruction to be constructed. This
-   *                 operand is the index of a local variable.
+   * Beginnings of the handler blocks. This list is a list of {@link LabelNode}
+   * objects.
    */
-  public VarInsnNode(final int opcode, final int varIndex)
-  {
-    super(opcode);
-    this.var = varIndex;
-  }
+  public List<LabelNode> labels;
 
   /**
-   * Sets the opcode of this instruction.
+   * Constructs a new {@link TableSwitchInstructionNode}.
    *
-   * @param opcode the new instruction opcode. This opcode must be ILOAD, LLOAD,
-   *               FLOAD, DLOAD, ALOAD, ISTORE, LSTORE, FSTORE, DSTORE, ASTORE or
-   *               RET.
+   * @param min    the minimum key value.
+   * @param max    the maximum key value.
+   * @param dflt   beginning of the default handler block.
+   * @param labels beginnings of the handler blocks. {@code labels[i]} is the
+   *               beginning of the handler block for the {@code min + i} key.
    */
-  public void setOpcode(final int opcode)
+  public TableSwitchInstructionNode(final int min, final int max, final LabelNode dflt, final LabelNode... labels)
   {
-    this.opcode = opcode;
+    super(Opcodes.TABLESWITCH);
+    this.min    = min;
+    this.max    = max;
+    this.dflt   = dflt;
+    this.labels = Util.asArrayList(labels);
   }
 
   @Override
   public int getType()
   {
-    return VAR_INSN;
+    return TABLESWITCH_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitVarInsn(opcode, var);
+    Label[] labelsArray = new Label[this.labels.size()];
+    for (int i = 0, n = labelsArray.length; i < n; ++i)
+    {
+      labelsArray[i] = this.labels.get(i).getLabel();
+    }
+    methodVisitor.visitTableSwitchInsn(min, max, dflt.getLabel(), labelsArray);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new VarInsnNode(opcode,
-                           var).cloneAnnotations(this);
+    return new TableSwitchInstructionNode(min,
+                                   max,
+                                   clone(dflt, clonedLabels),
+                                   clone(labels, clonedLabels)).cloneAnnotations(this);
   }
 }

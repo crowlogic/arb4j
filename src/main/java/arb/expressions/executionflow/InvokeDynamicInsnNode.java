@@ -65,7 +65,7 @@ import org.objectweb.asm.Handle;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import arb.expressions.executionflow.nodes.AbstractInsnNode;
+import arb.expressions.executionflow.nodes.AbstractInstructionNode;
 import arb.expressions.executionflow.nodes.LabelNode;
 
 /**
@@ -74,7 +74,7 @@ import arb.expressions.executionflow.nodes.LabelNode;
  * @author Remi Forax
  */
 public class InvokeDynamicInsnNode extends
-                                   AbstractInsnNode
+                                   AbstractInstructionNode
 {
 
   /** The method's name. */
@@ -134,7 +134,7 @@ public class InvokeDynamicInsnNode extends
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
     return new InvokeDynamicInsnNode(name,
                                      desc,

@@ -6,9 +6,8 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.analysis.AnalyzerException;
 
-import arb.expressions.executionflow.nodes.AbstractInsnNode;
+import arb.expressions.executionflow.nodes.AbstractInstructionNode;
 import arb.expressions.executionflow.nodes.TryCatchBlockNode;
-import arb.expressions.executionflow.nodes.Value;
 
 /**
  * A semantic bytecode interpreter. More precisely, this interpreter only
@@ -152,7 +151,7 @@ public abstract class Interpreter<V extends Value>
    * @return the result of the interpretation of the given instruction.
    * @throws AnalyzerException if an error occurred during the interpretation.
    */
-  public abstract V newOperation(AbstractInsnNode insn) ;
+  public abstract V newOperation(AbstractInstructionNode insn) ;
 
   /**
    * Interprets a bytecode instruction that moves a value on the stack or to or
@@ -168,7 +167,7 @@ public abstract class Interpreter<V extends Value>
    *         returned value must be {@code equal} to the given value.
    * @throws AnalyzerException if an error occurred during the interpretation.
    */
-  public abstract V copyOperation(AbstractInsnNode insn, V value);
+  public abstract V copyOperation(AbstractInstructionNode insn, V value);
 
   /**
    * Interprets a bytecode instruction with a single argument. This method is
@@ -186,7 +185,7 @@ public abstract class Interpreter<V extends Value>
    * @return the result of the interpretation of the given instruction.
    * @throws AnalyzerException if an error occurred during the interpretation.
    */
-  public abstract V unaryOperation(AbstractInsnNode insn, V value);
+  public abstract V unaryOperation(AbstractInstructionNode insn, V value);
 
   /**
    * Interprets a bytecode instruction with two arguments. This method is called
@@ -206,7 +205,7 @@ public abstract class Interpreter<V extends Value>
    * @return the result of the interpretation of the given instruction.
    * @throws AnalyzerException if an error occurred during the interpretation.
    */
-  public abstract V binaryOperation(AbstractInsnNode insn, V value1, V value2);
+  public abstract V binaryOperation(AbstractInstructionNode insn, V value1, V value2);
 
   /**
    * Interprets a bytecode instruction with three arguments. This method is called
@@ -222,7 +221,7 @@ public abstract class Interpreter<V extends Value>
    * @return the result of the interpretation of the given instruction.
    * @throws AnalyzerException if an error occurred during the interpretation.
    */
-  public abstract V ternaryOperation(AbstractInsnNode insn, V value1, V value2, V value3);
+  public abstract V ternaryOperation(AbstractInstructionNode insn, V value1, V value2, V value3);
 
   /**
    * Interprets a bytecode instruction with a variable number of arguments. This
@@ -237,7 +236,7 @@ public abstract class Interpreter<V extends Value>
    * @return the result of the interpretation of the given instruction.
    * @throws AnalyzerException if an error occurred during the interpretation.
    */
-  public abstract V naryOperation(AbstractInsnNode insn, List<? extends V> values);
+  public abstract V naryOperation(AbstractInstructionNode insn, List<? extends V> values);
 
   /**
    * Interprets a bytecode return instruction. This method is called for the
@@ -251,7 +250,7 @@ public abstract class Interpreter<V extends Value>
    * @param expected the expected return type of the analyzed method.
    * @throws AnalyzerException if an error occurred during the interpretation.
    */
-  public abstract void returnOperation(AbstractInsnNode insn, V value, V expected);
+  public abstract void returnOperation(AbstractInstructionNode insn, V value, V expected);
 
   /**
    * Merges two values. The merge operation must return a value that represents

@@ -3,7 +3,7 @@ package arb.expressions.executionflow;
 import java.util.ArrayList;
 import java.util.List;
 
-import arb.expressions.executionflow.nodes.JumpInsnNode;
+import arb.expressions.executionflow.nodes.JumpInstructionNode;
 import arb.expressions.executionflow.nodes.LabelNode;
 
 
@@ -26,7 +26,7 @@ public final class Subroutine
   final boolean[]          localsUsed;
 
   /** The JSR instructions that jump to this subroutine. */
-  final List<JumpInsnNode> callers;
+  final List<JumpInstructionNode> callers;
 
   /**
    * Constructs a new {@link Subroutine}.
@@ -36,7 +36,7 @@ public final class Subroutine
    *                  subroutine.
    * @param caller    a JSR instruction that jump to this subroutine.
    */
-  Subroutine(final LabelNode start, final int maxLocals, final JumpInsnNode caller)
+  Subroutine(final LabelNode start, final int maxLocals, final JumpInstructionNode caller)
   {
     this.start      = start;
     this.localsUsed = new boolean[maxLocals];
@@ -81,7 +81,7 @@ public final class Subroutine
     {
       for (int i = 0; i < subroutine.callers.size(); ++i)
       {
-        JumpInsnNode caller = subroutine.callers.get(i);
+        JumpInstructionNode caller = subroutine.callers.get(i);
         if (!callers.contains(caller))
         {
           callers.add(caller);

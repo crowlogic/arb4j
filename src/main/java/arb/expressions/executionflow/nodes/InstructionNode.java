@@ -28,80 +28,57 @@
 package arb.expressions.executionflow.nodes;
 
 import java.util.Map;
-
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * A node that represents a field instruction. A field instruction is an
- * instruction that loads or stores the value of a field of an object.
+ * A node that represents a zero operand instruction.
  *
  * @author Eric Bruneton
  */
-public class FieldInsnNode extends
-                           AbstractInsnNode
+public class InstructionNode extends
+                      AbstractInstructionNode
 {
 
   /**
-   * The internal name of the field's owner class (see
-   * {@link org.objectweb.asm.Type#getInternalName()}).
-   */
-  public String owner;
-
-  /** The field's name. */
-  public String name;
-
-  /** The field's descriptor (see {@link org.objectweb.asm.Type}). */
-  public String desc;
-
-  /**
-   * Constructs a new {@link FieldInsnNode}.
+   * Constructs a new {@link InstructionNode}.
    *
-   * @param opcode     the opcode of the type instruction to be constructed. This
-   *                   opcode must be GETSTATIC, PUTSTATIC, GETFIELD or PUTFIELD.
-   * @param owner      the internal name of the field's owner class (see
-   *                   {@link org.objectweb.asm.Type#getInternalName()}).
-   * @param name       the field's name.
-   * @param descriptor the field's descriptor (see
-   *                   {@link org.objectweb.asm.Type}).
+   * @param opcode the opcode of the instruction to be constructed. This opcode
+   *               must be NOP, ACONST_NULL, ICONST_M1, ICONST_0, ICONST_1,
+   *               ICONST_2, ICONST_3, ICONST_4, ICONST_5, LCONST_0, LCONST_1,
+   *               FCONST_0, FCONST_1, FCONST_2, DCONST_0, DCONST_1, IALOAD,
+   *               LALOAD, FALOAD, DALOAD, AALOAD, BALOAD, CALOAD, SALOAD,
+   *               IASTORE, LASTORE, FASTORE, DASTORE, AASTORE, BASTORE, CASTORE,
+   *               SASTORE, POP, POP2, DUP, DUP_X1, DUP_X2, DUP2, DUP2_X1,
+   *               DUP2_X2, SWAP, IADD, LADD, FADD, DADD, ISUB, LSUB, FSUB, DSUB,
+   *               IMUL, LMUL, FMUL, DMUL, IDIV, LDIV, FDIV, DDIV, IREM, LREM,
+   *               FREM, DREM, INEG, LNEG, FNEG, DNEG, ISHL, LSHL, ISHR, LSHR,
+   *               IUSHR, LUSHR, IAND, LAND, IOR, LOR, IXOR, LXOR, I2L, I2F, I2D,
+   *               L2I, L2F, L2D, F2I, F2L, F2D, D2I, D2L, D2F, I2B, I2C, I2S,
+   *               LCMP, FCMPL, FCMPG, DCMPL, DCMPG, IRETURN, LRETURN, FRETURN,
+   *               DRETURN, ARETURN, RETURN, ARRAYLENGTH, ATHROW, MONITORENTER, or
+   *               MONITOREXIT.
    */
-  public FieldInsnNode(final int opcode, final String owner, final String name, final String descriptor)
+  public InstructionNode(final int opcode)
   {
     super(opcode);
-    this.owner = owner;
-    this.name  = name;
-    this.desc  = descriptor;
-  }
-
-  /**
-   * Sets the opcode of this instruction.
-   *
-   * @param opcode the new instruction opcode. This opcode must be GETSTATIC,
-   *               PUTSTATIC, GETFIELD or PUTFIELD.
-   */
-  public void setOpcode(final int opcode)
-  {
-    this.opcode = opcode;
   }
 
   @Override
   public int getType()
   {
-    return FIELD_INSN;
+    return INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitFieldInsn(opcode, owner, name, desc);
+    methodVisitor.visitInsn(opcode);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new FieldInsnNode(opcode,
-                             owner,
-                             name,
-                             desc).cloneAnnotations(this);
+    return new InstructionNode(opcode).cloneAnnotations(this);
   }
 }

@@ -28,46 +28,40 @@
 package arb.expressions.executionflow.nodes;
 
 import java.util.Map;
+
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.tree.IntInsnNode;
 
 /**
- * A node that represents a type instruction. A type instruction is an
- * instruction which takes an internal name as parameter (see
- * {@link org.objectweb.asm.Type#getInternalName()}).
+ * A node that represents an instruction with a single int operand.
  *
  * @author Eric Bruneton
  */
-public class TypeInsnNode extends
-                          AbstractInsnNode
+public class IntegerInstructionNode extends
+                                    AbstractInstructionNode
 {
 
-  /**
-   * The operand of this instruction. Despite its name (due to historical
-   * reasons), this operand is an internal name (see
-   * {@link org.objectweb.asm.Type#getInternalName()}).
-   */
-  public String desc;
+  /** The operand of this instruction. */
+  public int operand;
 
   /**
-   * Constructs a new {@link TypeInsnNode}.
+   * Constructs a new {@link IntInsnNode}.
    *
-   * @param opcode the opcode of the type instruction to be constructed. This
-   *               opcode must be NEW, ANEWARRAY, CHECKCAST or INSTANCEOF.
-   * @param type   the operand of the instruction to be constructed. This operand
-   *               is an internal name (see
-   *               {@link org.objectweb.asm.Type#getInternalName()}).
+   * @param opcode  the opcode of the instruction to be constructed. This opcode
+   *                must be BIPUSH, SIPUSH or NEWARRAY.
+   * @param operand the operand of the instruction to be constructed.
    */
-  public TypeInsnNode(final int opcode, final String type)
+  public IntegerInstructionNode(final int opcode, final int operand)
   {
     super(opcode);
-    this.desc = type;
+    this.operand = operand;
   }
 
   /**
    * Sets the opcode of this instruction.
    *
-   * @param opcode the new instruction opcode. This opcode must be NEW, ANEWARRAY,
-   *               CHECKCAST or INSTANCEOF.
+   * @param opcode the new instruction opcode. This opcode must be BIPUSH, SIPUSH
+   *               or NEWARRAY.
    */
   public void setOpcode(final int opcode)
   {
@@ -77,20 +71,20 @@ public class TypeInsnNode extends
   @Override
   public int getType()
   {
-    return TYPE_INSN;
+    return INT_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitTypeInsn(opcode, desc);
+    methodVisitor.visitIntInsn(opcode, operand);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new TypeInsnNode(opcode,
-                            desc).cloneAnnotations(this);
+    return new IntegerInstructionNode(opcode,
+                                      operand).cloneAnnotations(this);
   }
 }

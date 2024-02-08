@@ -31,9 +31,9 @@ import java.util.Map;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
-/** An {@link AbstractInsnNode} that encapsulates a {@link Label}. */
+/** An {@link AbstractInstructionNode} that encapsulates a {@link Label}. */
 public class LabelNode extends
-                       AbstractInsnNode
+                       AbstractInstructionNode
 {
 
   private Label value;
@@ -77,7 +77,7 @@ public class LabelNode extends
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
     return clonedLabels.get(this);
   }

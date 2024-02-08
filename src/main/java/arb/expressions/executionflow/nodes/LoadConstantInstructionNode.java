@@ -28,57 +28,66 @@
 package arb.expressions.executionflow.nodes;
 
 import java.util.Map;
+import org.objectweb.asm.ConstantDynamic;
+import org.objectweb.asm.Handle;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 /**
- * A node that represents a zero operand instruction.
+ * A node that represents an LDC instruction.
  *
  * @author Eric Bruneton
  */
-public class InsnNode extends
-                      AbstractInsnNode
+public class LoadConstantInstructionNode extends
+                         AbstractInstructionNode
 {
 
   /**
-   * Constructs a new {@link InsnNode}.
-   *
-   * @param opcode the opcode of the instruction to be constructed. This opcode
-   *               must be NOP, ACONST_NULL, ICONST_M1, ICONST_0, ICONST_1,
-   *               ICONST_2, ICONST_3, ICONST_4, ICONST_5, LCONST_0, LCONST_1,
-   *               FCONST_0, FCONST_1, FCONST_2, DCONST_0, DCONST_1, IALOAD,
-   *               LALOAD, FALOAD, DALOAD, AALOAD, BALOAD, CALOAD, SALOAD,
-   *               IASTORE, LASTORE, FASTORE, DASTORE, AASTORE, BASTORE, CASTORE,
-   *               SASTORE, POP, POP2, DUP, DUP_X1, DUP_X2, DUP2, DUP2_X1,
-   *               DUP2_X2, SWAP, IADD, LADD, FADD, DADD, ISUB, LSUB, FSUB, DSUB,
-   *               IMUL, LMUL, FMUL, DMUL, IDIV, LDIV, FDIV, DDIV, IREM, LREM,
-   *               FREM, DREM, INEG, LNEG, FNEG, DNEG, ISHL, LSHL, ISHR, LSHR,
-   *               IUSHR, LUSHR, IAND, LAND, IOR, LOR, IXOR, LXOR, I2L, I2F, I2D,
-   *               L2I, L2F, L2D, F2I, F2L, F2D, D2I, D2L, D2F, I2B, I2C, I2S,
-   *               LCMP, FCMPL, FCMPG, DCMPL, DCMPG, IRETURN, LRETURN, FRETURN,
-   *               DRETURN, ARETURN, RETURN, ARRAYLENGTH, ATHROW, MONITORENTER, or
-   *               MONITOREXIT.
+   * The constant to be loaded on the stack. This field must be a non null
+   * {@link Integer}, a {@link Float}, a {@link Long}, a {@link Double}, a
+   * {@link String}, a {@link Type} of OBJECT or ARRAY sort for {@code .class}
+   * constants, for classes whose version is 49, a {@link Type} of METHOD sort for
+   * MethodType, a {@link Handle} for MethodHandle constants, for classes whose
+   * version is 51 or a {@link ConstantDynamic} for a constant dynamic for classes
+   * whose version is 55.
    */
-  public InsnNode(final int opcode)
+  public Object cst;
+
+  /**
+   * Constructs a new {@link LoadConstantInstructionNode}.
+   *
+   * @param value the constant to be loaded on the stack. This parameter mist be a
+   *              non null {@link Integer}, a {@link Float}, a {@link Long}, a
+   *              {@link Double}, a {@link String}, a {@link Type} of OBJECT or
+   *              ARRAY sort for {@code .class} constants, for classes whose
+   *              version is 49, a {@link Type} of METHOD sort for MethodType, a
+   *              {@link Handle} for MethodHandle constants, for classes whose
+   *              version is 51 or a {@link ConstantDynamic} for a constant
+   *              dynamic for classes whose version is 55.
+   */
+  public LoadConstantInstructionNode(final Object value)
   {
-    super(opcode);
+    super(Opcodes.LDC);
+    this.cst = value;
   }
 
   @Override
   public int getType()
   {
-    return INSN;
+    return LDC_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitInsn(opcode);
+    methodVisitor.visitLdcInsn(cst);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new InsnNode(opcode).cloneAnnotations(this);
+    return new LoadConstantInstructionNode(cst).cloneAnnotations(this);
   }
 }

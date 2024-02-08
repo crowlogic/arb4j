@@ -37,8 +37,8 @@ import org.objectweb.asm.Opcodes;
  *
  * @author Eric Bruneton
  */
-public class MethodInsnNode extends
-                            AbstractInsnNode
+public class MethodInstructionNode extends
+                            AbstractInstructionNode
 {
 
   /**
@@ -60,7 +60,7 @@ public class MethodInsnNode extends
   public boolean itf;
 
   /**
-   * Constructs a new {@link MethodInsnNode}.
+   * Constructs a new {@link MethodInstructionNode}.
    *
    * @param opcode     the opcode of the type instruction to be constructed. This
    *                   opcode must be INVOKEVIRTUAL, INVOKESPECIAL, INVOKESTATIC
@@ -71,7 +71,7 @@ public class MethodInsnNode extends
    * @param descriptor the method's descriptor (see
    *                   {@link org.objectweb.asm.Type}).
    */
-  public MethodInsnNode(final int opcode, final String owner, final String name, final String descriptor)
+  public MethodInstructionNode(final int opcode, final String owner, final String name, final String descriptor)
   {
     this(opcode,
          owner,
@@ -81,7 +81,7 @@ public class MethodInsnNode extends
   }
 
   /**
-   * Constructs a new {@link MethodInsnNode}.
+   * Constructs a new {@link MethodInstructionNode}.
    *
    * @param opcode      the opcode of the type instruction to be constructed. This
    *                    opcode must be INVOKEVIRTUAL, INVOKESPECIAL, INVOKESTATIC
@@ -93,7 +93,7 @@ public class MethodInsnNode extends
    *                    {@link org.objectweb.asm.Type}).
    * @param isInterface if the method's owner class is an interface.
    */
-  public MethodInsnNode(final int opcode,
+  public MethodInstructionNode(final int opcode,
                         final String owner,
                         final String name,
                         final String descriptor,
@@ -131,9 +131,9 @@ public class MethodInsnNode extends
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new MethodInsnNode(opcode,
+    return new MethodInstructionNode(opcode,
                               owner,
                               name,
                               desc,

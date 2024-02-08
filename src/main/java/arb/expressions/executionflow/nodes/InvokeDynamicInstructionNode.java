@@ -37,8 +37,8 @@ import org.objectweb.asm.Opcodes;
  *
  * @author Remi Forax
  */
-public class InvokeDynamicInsnNode extends
-                                   AbstractInsnNode
+public class InvokeDynamicInstructionNode extends
+                                          AbstractInstructionNode
 {
 
   /** The method's name. */
@@ -54,7 +54,7 @@ public class InvokeDynamicInsnNode extends
   public Object[] bsmArgs;
 
   /**
-   * Constructs a new {@link InvokeDynamicInsnNode}.
+   * Constructs a new {@link InvokeDynamicInstructionNode}.
    *
    * @param name                     the method's name.
    * @param descriptor               the method's descriptor (see
@@ -70,10 +70,10 @@ public class InvokeDynamicInsnNode extends
    *                                 caller should expect that this array may
    *                                 change.
    */
-  public InvokeDynamicInsnNode(final String name,
-                               final String descriptor,
-                               final Handle bootstrapMethodHandle,
-                               final Object... bootstrapMethodArguments)
+  public InvokeDynamicInstructionNode(final String name,
+                                      final String descriptor,
+                                      final Handle bootstrapMethodHandle,
+                                      final Object... bootstrapMethodArguments)
   {
     super(Opcodes.INVOKEDYNAMIC);
     this.name    = name;
@@ -96,11 +96,11 @@ public class InvokeDynamicInsnNode extends
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new InvokeDynamicInsnNode(name,
-                                     desc,
-                                     bsm,
-                                     bsmArgs).cloneAnnotations(this);
+    return new InvokeDynamicInstructionNode(name,
+                                            desc,
+                                            bsm,
+                                            bsmArgs).cloneAnnotations(this);
   }
 }

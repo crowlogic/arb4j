@@ -5,7 +5,7 @@ import java.util.Map;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import arb.expressions.executionflow.nodes.AbstractInsnNode;
+import arb.expressions.executionflow.nodes.AbstractInstructionNode;
 import arb.expressions.executionflow.nodes.LabelNode;
 
 /**
@@ -13,7 +13,7 @@ import arb.expressions.executionflow.nodes.LabelNode;
  *
  * @author Eric Bruneton
  */
-public class MultiANewArrayInsnNode extends AbstractInsnNode {
+public class MultiANewArrayInsnNode extends AbstractInstructionNode {
 
   /** An array type descriptor (see {@link org.objectweb.asm.Type}). */
   public String desc;
@@ -45,7 +45,7 @@ public class MultiANewArrayInsnNode extends AbstractInsnNode {
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels) {
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels) {
     return new MultiANewArrayInsnNode(desc, dims).cloneAnnotations(this);
   }
 }

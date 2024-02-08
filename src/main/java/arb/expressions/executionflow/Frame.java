@@ -6,12 +6,11 @@ import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.expressions.executionflow.nodes.AbstractInsnNode;
-import arb.expressions.executionflow.nodes.IincInsnNode;
+import arb.expressions.executionflow.nodes.AbstractInstructionNode;
+import arb.expressions.executionflow.nodes.IncrementLocalVariableByConstantInstructionNode;
 import arb.expressions.executionflow.nodes.LabelNode;
-import arb.expressions.executionflow.nodes.MethodInsnNode;
-import arb.expressions.executionflow.nodes.Value;
-import arb.expressions.executionflow.nodes.VarInsnNode;
+import arb.expressions.executionflow.nodes.MethodInstructionNode;
+import arb.expressions.executionflow.nodes.VariableInstructionNode;
 
 
 
@@ -301,7 +300,7 @@ public class Frame<V extends Value>
    *                           execution frame (e.g. a POP on an empty operand
    *                           stack).
    */
-  public void execute(final AbstractInsnNode insn, final Interpreter<V> interpreter) 
+  public void execute(final AbstractInstructionNode insn, final Interpreter<V> interpreter) 
   {
     V   value1;
     V   value2;
@@ -338,7 +337,7 @@ public class Frame<V extends Value>
     case Opcodes.FLOAD:
     case Opcodes.DLOAD:
     case Opcodes.ALOAD:
-      push(interpreter.copyOperation(insn, getLocal(((VarInsnNode) insn).var)));
+      push(interpreter.copyOperation(insn, getLocal(((VariableInstructionNode) insn).var)));
       break;
     case Opcodes.ISTORE:
     case Opcodes.LSTORE:
@@ -346,7 +345,7 @@ public class Frame<V extends Value>
     case Opcodes.DSTORE:
     case Opcodes.ASTORE:
       value1 = interpreter.copyOperation(insn, pop());
-      varIndex = ((VarInsnNode) insn).var;
+      varIndex = ((VariableInstructionNode) insn).var;
       setLocal(varIndex, value1);
       if (value1.getSize() == 2)
       {
@@ -578,7 +577,7 @@ public class Frame<V extends Value>
       push(interpreter.unaryOperation(insn, pop()));
       break;
     case Opcodes.IINC:
-      varIndex = ((IincInsnNode) insn).var;
+      varIndex = ((IncrementLocalVariableByConstantInstructionNode) insn).var;
       setLocal(varIndex, interpreter.unaryOperation(insn, getLocal(varIndex)));
       break;
     case Opcodes.I2L:
@@ -659,7 +658,7 @@ public class Frame<V extends Value>
     case Opcodes.INVOKESPECIAL:
     case Opcodes.INVOKESTATIC:
     case Opcodes.INVOKEINTERFACE:
-      executeInvokeInsn(insn, ((MethodInsnNode) insn).desc, interpreter);
+      executeInvokeInsn(insn, ((MethodInstructionNode) insn).desc, interpreter);
       break;
     case Opcodes.INVOKEDYNAMIC:
       executeInvokeInsn(insn, ((InvokeDynamicInsnNode) insn).desc, interpreter);
@@ -701,7 +700,7 @@ public class Frame<V extends Value>
     }
   }
 
-  private boolean executeDupX2(final AbstractInsnNode insn,
+  private boolean executeDupX2(final AbstractInstructionNode insn,
                                final V value1,
                                final Interpreter<V> interpreter)
   {
@@ -728,7 +727,7 @@ public class Frame<V extends Value>
     return false;
   }
 
-  private void executeInvokeInsn(final AbstractInsnNode insn,
+  private void executeInvokeInsn(final AbstractInstructionNode insn,
                                  final String methodDescriptor,
                                  final Interpreter<V> interpreter) 
   {

@@ -5,11 +5,10 @@ import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.expressions.executionflow.nodes.AbstractInsnNode;
+import arb.expressions.executionflow.nodes.AbstractInstructionNode;
 import arb.expressions.executionflow.nodes.BasicValue;
-import arb.expressions.executionflow.nodes.FieldInsnNode;
-import arb.expressions.executionflow.nodes.MethodInsnNode;
-import arb.expressions.executionflow.nodes.Value;
+import arb.expressions.executionflow.nodes.FieldInstructionNode;
+import arb.expressions.executionflow.nodes.MethodInstructionNode;
 
 
 /**
@@ -50,7 +49,7 @@ public class BasicVerifier extends
   }
 
   @Override
-  public BasicValue copyOperation(final AbstractInsnNode insn, final BasicValue value)
+  public BasicValue copyOperation(final AbstractInstructionNode insn, final BasicValue value)
   {
     Value expected;
     switch (insn.getOpcode())
@@ -94,7 +93,7 @@ public class BasicVerifier extends
   }
 
   @Override
-  public BasicValue unaryOperation(final AbstractInsnNode insn, final BasicValue value)
+  public BasicValue unaryOperation(final AbstractInstructionNode insn, final BasicValue value)
   {
     BasicValue expected;
     switch (insn.getOpcode())
@@ -142,7 +141,7 @@ public class BasicVerifier extends
       expected = BasicValue.DOUBLE_VALUE;
       break;
     case GETFIELD:
-      expected = newValue(Type.getObjectType(((FieldInsnNode) insn).owner));
+      expected = newValue(Type.getObjectType(((FieldInstructionNode) insn).owner));
       break;
     case ARRAYLENGTH:
       if (!isArrayValue(value))
@@ -165,7 +164,7 @@ public class BasicVerifier extends
       }
       return super.unaryOperation(insn, value);
     case PUTSTATIC:
-      expected = newValue(Type.getType(((FieldInsnNode) insn).desc));
+      expected = newValue(Type.getType(((FieldInstructionNode) insn).desc));
       break;
     default:
       throw new AssertionError();
@@ -179,7 +178,7 @@ public class BasicVerifier extends
   }
 
   @Override
-  public BasicValue binaryOperation(final AbstractInsnNode insn, final BasicValue value1, final BasicValue value2)
+  public BasicValue binaryOperation(final AbstractInstructionNode insn, final BasicValue value1, final BasicValue value2)
   {
     BasicValue expected1;
     BasicValue expected2;
@@ -288,7 +287,7 @@ public class BasicVerifier extends
       expected2 = BasicValue.REFERENCE_VALUE;
       break;
     case PUTFIELD:
-      FieldInsnNode fieldInsn = (FieldInsnNode) insn;
+      FieldInstructionNode fieldInsn = (FieldInstructionNode) insn;
       expected1 = newValue(Type.getObjectType(fieldInsn.owner));
       expected2 = newValue(Type.getType(fieldInsn.desc));
       break;
@@ -315,7 +314,7 @@ public class BasicVerifier extends
   }
 
   @Override
-  public BasicValue ternaryOperation(final AbstractInsnNode insn,
+  public BasicValue ternaryOperation(final AbstractInstructionNode insn,
                                      final BasicValue value1,
                                      final BasicValue value2,
                                      final BasicValue value3)
@@ -382,7 +381,7 @@ public class BasicVerifier extends
   }
 
   @Override
-  public BasicValue naryOperation(final AbstractInsnNode insn, final List<? extends BasicValue> values)
+  public BasicValue naryOperation(final AbstractInstructionNode insn, final List<? extends BasicValue> values)
   {
     int opcode = insn.getOpcode();
     if (opcode == MULTIANEWARRAY)
@@ -401,13 +400,13 @@ public class BasicVerifier extends
       int j = 0;
       if (opcode != INVOKESTATIC && opcode != INVOKEDYNAMIC)
       {
-        Type owner = Type.getObjectType(((MethodInsnNode) insn).owner);
+        Type owner = Type.getObjectType(((MethodInstructionNode) insn).owner);
         if (!isSubTypeOf(values.get(i++), newValue(owner)))
         {
           throw new RuntimeException(insn.toString() + "Method owner" + newValue(owner) + values.get(0));
         }
       }
-      String methodDescriptor = (opcode == INVOKEDYNAMIC) ? ((InvokeDynamicInsnNode) insn).desc : ((MethodInsnNode) insn).desc;
+      String methodDescriptor = (opcode == INVOKEDYNAMIC) ? ((InvokeDynamicInsnNode) insn).desc : ((MethodInstructionNode) insn).desc;
       Type[] args             = Type.getArgumentTypes(methodDescriptor);
       while (i < values.size())
       {
@@ -423,7 +422,7 @@ public class BasicVerifier extends
   }
 
   @Override
-  public void returnOperation(final AbstractInsnNode insn, final BasicValue value, final BasicValue expected)
+  public void returnOperation(final AbstractInstructionNode insn, final BasicValue value, final BasicValue expected)
   {
     if (!isSubTypeOf(value, expected))
     {

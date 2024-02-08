@@ -12,18 +12,17 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
 
-import arb.expressions.executionflow.nodes.AbstractInsnNode;
+import arb.expressions.executionflow.nodes.AbstractInstructionNode;
 import arb.expressions.executionflow.nodes.BasicValue;
-import arb.expressions.executionflow.nodes.IincInsnNode;
-import arb.expressions.executionflow.nodes.InsnList;
-import arb.expressions.executionflow.nodes.JumpInsnNode;
+import arb.expressions.executionflow.nodes.IncrementLocalVariableByConstantInstructionNode;
+import arb.expressions.executionflow.nodes.InstructionList;
+import arb.expressions.executionflow.nodes.JumpInstructionNode;
 import arb.expressions.executionflow.nodes.LabelNode;
-import arb.expressions.executionflow.nodes.LookupSwitchInsnNode;
+import arb.expressions.executionflow.nodes.LookupSwitchInstructionNode;
 import arb.expressions.executionflow.nodes.MethodNode;
-import arb.expressions.executionflow.nodes.TableSwitchInsnNode;
+import arb.expressions.executionflow.nodes.TableSwitchInstructionNode;
 import arb.expressions.executionflow.nodes.TryCatchBlockNode;
-import arb.expressions.executionflow.nodes.Value;
-import arb.expressions.executionflow.nodes.VarInsnNode;
+import arb.expressions.executionflow.nodes.VariableInstructionNode;
 
 public class Analyzer<V extends Value> implements
                      Opcodes
@@ -43,18 +42,18 @@ public class Analyzer<V extends Value> implements
     {
       maxLocals -= 1;
     }
-    for (AbstractInsnNode insnNode : method.instructions)
+    for (AbstractInstructionNode insnNode : method.instructions)
     {
-      if (insnNode instanceof VarInsnNode)
+      if (insnNode instanceof VariableInstructionNode)
       {
-        int local = ((VarInsnNode) insnNode).var;
+        int local = ((VariableInstructionNode) insnNode).var;
         int size  = (insnNode.getOpcode() == Opcodes.LLOAD || insnNode.getOpcode() == Opcodes.DLOAD
                       || insnNode.getOpcode() == Opcodes.LSTORE || insnNode.getOpcode() == Opcodes.DSTORE) ? 2 : 1;
         maxLocals = Math.max(maxLocals, local + size);
       }
-      else if (insnNode instanceof IincInsnNode)
+      else if (insnNode instanceof IncrementLocalVariableByConstantInstructionNode)
       {
-        int local = ((IincInsnNode) insnNode).var;
+        int local = ((IncrementLocalVariableByConstantInstructionNode) insnNode).var;
         maxLocals = Math.max(maxLocals, local + 1);
       }
     }
@@ -171,7 +170,7 @@ public class Analyzer<V extends Value> implements
   private boolean[]                 inInstructionsToProcess;
 
   /** The instructions of the currently analyzed method. */
-  private InsnList                  insnList;
+  private InstructionList                  insnList;
 
   /** The size of {@link #insnList}. */
   private int                       insnListSize;
@@ -287,12 +286,12 @@ public class Analyzer<V extends Value> implements
       inInstructionsToProcess[insnIndex] = false;
 
       // Simulate the execution of this instruction.
-      AbstractInsnNode insnNode   = method.instructions.get(insnIndex);
+      AbstractInstructionNode insnNode   = method.instructions.get(insnIndex);
       int              insnOpcode = insnNode.getOpcode();
       int              insnType   = insnNode.getType();
 
-      if (insnType == AbstractInsnNode.LABEL || insnType == AbstractInsnNode.LINE
-                    || insnType == AbstractInsnNode.FRAME)
+      if (insnType == AbstractInstructionNode.LABEL || insnType == AbstractInstructionNode.LINE
+                    || insnType == AbstractInstructionNode.FRAME)
       {
         analyzeLabelLineNumberOrFrame(insnIndex, oldFrame, subroutine);
       }
@@ -301,15 +300,15 @@ public class Analyzer<V extends Value> implements
         currentFrame.init(oldFrame).execute(insnNode, interpreter);
         subroutine = subroutine == null ? null : new Subroutine(subroutine);
 
-        if (insnNode instanceof JumpInsnNode)
+        if (insnNode instanceof JumpInstructionNode)
         {
           analyzeJumpInstruction(method, currentFrame, insnIndex, subroutine, insnNode, insnOpcode);
         }
-        else if (insnNode instanceof TableSwitchInsnNode)
+        else if (insnNode instanceof TableSwitchInstructionNode)
         {
           analyzeLookupSwitchInstruction(currentFrame, insnIndex, subroutine, insnNode, insnOpcode);
         }
-        else if (insnNode instanceof TableSwitchInsnNode)
+        else if (insnNode instanceof TableSwitchInstructionNode)
         {
           analyzeTableSwitchInstruction(currentFrame, insnIndex, subroutine, insnNode, insnOpcode);
         }
@@ -360,10 +359,10 @@ public class Analyzer<V extends Value> implements
                                       Frame<V> currentFrame,
                                       int insnIndex,
                                       Subroutine subroutine,
-                                      AbstractInsnNode insnNode,
+                                      AbstractInstructionNode insnNode,
                                       int insnOpcode)
   {
-    JumpInsnNode jumpInsn = (JumpInsnNode) insnNode;
+    JumpInstructionNode jumpInsn = (JumpInstructionNode) insnNode;
     if (insnOpcode != GOTO && insnOpcode != JSR)
     {
       currentFrame.initJumpTarget(insnOpcode, /* target = */ null);
@@ -395,10 +394,10 @@ public class Analyzer<V extends Value> implements
   private void analyzeLookupSwitchInstruction(Frame<V> currentFrame,
                                               int insnIndex,
                                               Subroutine subroutine,
-                                              AbstractInsnNode insnNode,
+                                              AbstractInstructionNode insnNode,
                                               int insnOpcode)
   {
-    LookupSwitchInsnNode lookupSwitchInsn = (LookupSwitchInsnNode) insnNode;
+    LookupSwitchInstructionNode lookupSwitchInsn = (LookupSwitchInstructionNode) insnNode;
     int                  targetInsnIndex  = insnList.indexOf(lookupSwitchInsn.dflt);
     currentFrame.initJumpTarget(insnOpcode, lookupSwitchInsn.dflt);
     mergeFrameAndSubroutine(targetInsnIndex, currentFrame, subroutine);
@@ -416,7 +415,7 @@ public class Analyzer<V extends Value> implements
   private void analyzeReturnFromSubroutine(Frame<V> currentFrame,
                                            int insnIndex,
                                            Subroutine subroutine,
-                                           AbstractInsnNode insnNode)
+                                           AbstractInstructionNode insnNode)
   {
     if (subroutine == null)
     {
@@ -424,7 +423,7 @@ public class Analyzer<V extends Value> implements
     }
     for (int i = 0; i < subroutine.callers.size(); ++i)
     {
-      JumpInsnNode caller       = subroutine.callers.get(i);
+      JumpInstructionNode caller       = subroutine.callers.get(i);
       int          jsrInsnIndex = insnList.indexOf(caller);
       if (frames[jsrInsnIndex] != null)
       {
@@ -438,23 +437,23 @@ public class Analyzer<V extends Value> implements
   private void analyzeReturnFromSubroutine(Frame<V> currentFrame,
                                            int insnIndex,
                                            Subroutine subroutine,
-                                           AbstractInsnNode insnNode,
+                                           AbstractInstructionNode insnNode,
                                            int insnOpcode)
   {
     if (subroutine != null)
     {
-      if (insnNode instanceof VarInsnNode)
+      if (insnNode instanceof VariableInstructionNode)
       {
-        int varIndex = ((VarInsnNode) insnNode).var;
+        int varIndex = ((VariableInstructionNode) insnNode).var;
         subroutine.localsUsed[varIndex] = true;
         if (insnOpcode == LLOAD || insnOpcode == DLOAD || insnOpcode == LSTORE || insnOpcode == DSTORE)
         {
           subroutine.localsUsed[varIndex + 1] = true;
         }
       }
-      else if (insnNode instanceof IincInsnNode)
+      else if (insnNode instanceof IncrementLocalVariableByConstantInstructionNode)
       {
-        int varIndex = ((IincInsnNode) insnNode).var;
+        int varIndex = ((IncrementLocalVariableByConstantInstructionNode) insnNode).var;
         subroutine.localsUsed[varIndex] = true;
       }
     }
@@ -464,10 +463,10 @@ public class Analyzer<V extends Value> implements
   private void analyzeTableSwitchInstruction(Frame<V> currentFrame,
                                              int insnIndex,
                                              Subroutine subroutine,
-                                             AbstractInsnNode insnNode,
+                                             AbstractInstructionNode insnNode,
                                              int insnOpcode)
   {
-    TableSwitchInsnNode tableSwitchInsn = (TableSwitchInsnNode) insnNode;
+    TableSwitchInstructionNode tableSwitchInsn = (TableSwitchInstructionNode) insnNode;
     int                 targetInsnIndex = insnList.indexOf(tableSwitchInsn.dflt);
     currentFrame.initJumpTarget(insnOpcode, tableSwitchInsn.dflt);
     mergeFrameAndSubroutine(targetInsnIndex, currentFrame, subroutine);
@@ -562,7 +561,7 @@ public class Analyzer<V extends Value> implements
    *                           the code.
    */
   private void
-          findSubroutine(final int insnIndex, final Subroutine subroutine, final List<AbstractInsnNode> jsrInsns)
+          findSubroutine(final int insnIndex, final Subroutine subroutine, final List<AbstractInstructionNode> jsrInsns)
   {
     ArrayList<Integer> instructionIndicesToProcess = new ArrayList<>();
     instructionIndicesToProcess.add(insnIndex);
@@ -578,10 +577,10 @@ public class Analyzer<V extends Value> implements
         continue;
       }
       subroutines[currentInsnIndex] = new Subroutine(subroutine);
-      AbstractInsnNode currentInsn = insnList.get(currentInsnIndex);
+      AbstractInstructionNode currentInsn = insnList.get(currentInsnIndex);
 
       // Push the normal successors of currentInsn onto instructionIndicesToProcess.
-      if (currentInsn instanceof JumpInsnNode)
+      if (currentInsn instanceof JumpInstructionNode)
       {
         if (currentInsn.getOpcode() == JSR)
         {
@@ -590,13 +589,13 @@ public class Analyzer<V extends Value> implements
         }
         else
         {
-          JumpInsnNode jumpInsn = (JumpInsnNode) currentInsn;
+          JumpInstructionNode jumpInsn = (JumpInstructionNode) currentInsn;
           instructionIndicesToProcess.add(insnList.indexOf(jumpInsn.label));
         }
       }
-      else if (currentInsn instanceof TableSwitchInsnNode)
+      else if (currentInsn instanceof TableSwitchInstructionNode)
       {
-        TableSwitchInsnNode tableSwitchInsn = (TableSwitchInsnNode) currentInsn;
+        TableSwitchInstructionNode tableSwitchInsn = (TableSwitchInstructionNode) currentInsn;
         findSubroutine(insnList.indexOf(tableSwitchInsn.dflt), subroutine, jsrInsns);
         for (int i = tableSwitchInsn.labels.size() - 1; i >= 0; --i)
         {
@@ -604,9 +603,9 @@ public class Analyzer<V extends Value> implements
           instructionIndicesToProcess.add(insnList.indexOf(labelNode));
         }
       }
-      else if (currentInsn instanceof LookupSwitchInsnNode)
+      else if (currentInsn instanceof LookupSwitchInstructionNode)
       {
-        LookupSwitchInsnNode lookupSwitchInsn = (LookupSwitchInsnNode) currentInsn;
+        LookupSwitchInstructionNode lookupSwitchInsn = (LookupSwitchInstructionNode) currentInsn;
         findSubroutine(insnList.indexOf(lookupSwitchInsn.dflt), subroutine, jsrInsns);
         for (int i = lookupSwitchInsn.labels.size() - 1; i >= 0; --i)
         {
@@ -667,7 +666,7 @@ public class Analyzer<V extends Value> implements
     Subroutine             main     = new Subroutine(null,
                                                      maxLocals,
                                                      null);
-    List<AbstractInsnNode> jsrInsns = new ArrayList<>();
+    List<AbstractInstructionNode> jsrInsns = new ArrayList<>();
     findSubroutine(0, main, jsrInsns);
     // Follow the nested subroutines, and collect their own nested subroutines,
     // until all
@@ -675,7 +674,7 @@ public class Analyzer<V extends Value> implements
     Map<LabelNode, Subroutine> jsrSubroutines = new HashMap<>();
     while (!jsrInsns.isEmpty())
     {
-      JumpInsnNode jsrInsn    = (JumpInsnNode) jsrInsns.remove(0);
+      JumpInstructionNode jsrInsn    = (JumpInstructionNode) jsrInsns.remove(0);
       Subroutine   subroutine = jsrSubroutines.get(jsrInsn.label);
       if (subroutine == null)
       {

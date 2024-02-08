@@ -1,4 +1,4 @@
-package arb.expressions.executionflow.nodes;
+package arb.expressions.executionflow;
 
 /**
  * An immutable symbolic value for the semantic interpretation of bytecode.

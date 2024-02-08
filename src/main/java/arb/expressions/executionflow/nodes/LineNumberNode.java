@@ -37,7 +37,7 @@ import org.objectweb.asm.MethodVisitor;
  * @author Eric Bruneton
  */
 public class LineNumberNode extends
-                            AbstractInsnNode
+                            AbstractInstructionNode
 {
 
   /**
@@ -76,7 +76,7 @@ public class LineNumberNode extends
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
     return new LineNumberNode(line,
                               clone(start, clonedLabels));

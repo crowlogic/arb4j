@@ -1,5 +1,3 @@
-package arb.expressions.executionflow.nodes;
-
 // ASM: a very small and fast Java bytecode manipulation framework
 // Copyright (c) 2000-2011 INRIA, France Telecom
 // All rights reserved.
@@ -27,78 +25,57 @@ package arb.expressions.executionflow.nodes;
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
+package arb.expressions.executionflow.nodes;
 
-import java.util.List;
 import java.util.Map;
-
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 /**
- * A node that represents a LOOKUPSWITCH instruction.
+ * A node that represents an IINC instruction.
  *
  * @author Eric Bruneton
  */
-public class LookupSwitchInsnNode extends
-                                  AbstractInsnNode
+public class IncrementLocalVariableByConstantInstructionNode extends
+                                                             AbstractInstructionNode
 {
 
-  /** Beginning of the default handler block. */
-  public LabelNode       dflt;
+  /** Index of the local variable to be incremented. */
+  public int var;
 
-  /** The values of the keys. */
-  public List<Integer>   keys;
-
-  /** Beginnings of the handler blocks. */
-  public List<LabelNode> labels;
+  /** Amount to increment the local variable by. */
+  public int incr;
 
   /**
-   * Constructs a new {@link LookupSwitchInsnNode}.
+   * Constructs a new {@link IncrementLocalVariableByConstantInstructionNode}.
    *
-   * @param dflt   beginning of the default handler block.
-   * @param keys   the values of the keys.
-   * @param labels beginnings of the handler blocks. {@code labels[i]} is the
-   *               beginning of the handler block for the {@code keys[i]} key.
+   * @param varIndex index of the local variable to be incremented.
+   * @param incr     increment amount to increment the local variable by.
    */
-  public LookupSwitchInsnNode(final LabelNode dflt, final int[] keys, final LabelNode[] labels)
+  public IncrementLocalVariableByConstantInstructionNode(final int varIndex, final int incr)
   {
-    super(Opcodes.LOOKUPSWITCH);
-    this.dflt   = dflt;
-    this.keys   = Util.asArrayList(keys);
-    this.labels = Util.asArrayList(labels);
+    super(Opcodes.IINC);
+    this.var  = varIndex;
+    this.incr = incr;
   }
 
   @Override
   public int getType()
   {
-    return LOOKUPSWITCH_INSN;
+    return IINC_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    int[] keysArray = new int[this.keys.size()];
-    for (int i = 0, n = keysArray.length; i < n; ++i)
-    {
-      keysArray[i] = this.keys.get(i).intValue();
-    }
-    Label[] labelsArray = new Label[this.labels.size()];
-    for (int i = 0, n = labelsArray.length; i < n; ++i)
-    {
-      labelsArray[i] = this.labels.get(i).getLabel();
-    }
-    methodVisitor.visitLookupSwitchInsn(dflt.getLabel(), keysArray, labelsArray);
+    methodVisitor.visitIincInsn(var, incr);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    LookupSwitchInsnNode clone = new LookupSwitchInsnNode(clone(dflt, clonedLabels),
-                                                          null,
-                                                          clone(labels, clonedLabels));
-    clone.keys.addAll(keys);
-    return clone.cloneAnnotations(this);
+    return new IncrementLocalVariableByConstantInstructionNode(var,
+                                                               incr).cloneAnnotations(this);
   }
 }

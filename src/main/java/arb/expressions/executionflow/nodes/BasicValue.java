@@ -3,6 +3,8 @@ package arb.expressions.executionflow.nodes;
 
 import org.objectweb.asm.Type;
 
+import arb.expressions.executionflow.Value;
+
 /**
  * A {@link Value} that is represented with its type in a seven types type
  * system. This type system distinguishes the UNINITIALZED, INT, FLOAT, LONG,

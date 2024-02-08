@@ -31,45 +31,43 @@ import java.util.Map;
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * A node that represents a jump instruction. A jump instruction is an
- * instruction that may jump to another instruction.
+ * A node that represents a type instruction. A type instruction is an
+ * instruction which takes an internal name as parameter (see
+ * {@link org.objectweb.asm.Type#getInternalName()}).
  *
  * @author Eric Bruneton
  */
-public class JumpInsnNode extends
-                          AbstractInsnNode
+public class TypeInstructionNode extends
+                          AbstractInstructionNode
 {
 
   /**
-   * The operand of this instruction. This operand is a label that designates the
-   * instruction to which this instruction may jump.
+   * The operand of this instruction. Despite its name (due to historical
+   * reasons), this operand is an internal name (see
+   * {@link org.objectweb.asm.Type#getInternalName()}).
    */
-  public LabelNode label;
+  public String desc;
 
   /**
-   * Constructs a new {@link JumpInsnNode}.
+   * Constructs a new {@link TypeInstructionNode}.
    *
    * @param opcode the opcode of the type instruction to be constructed. This
-   *               opcode must be IFEQ, IFNE, IFLT, IFGE, IFGT, IFLE, IF_ICMPEQ,
-   *               IF_ICMPNE, IF_ICMPLT, IF_ICMPGE, IF_ICMPGT, IF_ICMPLE,
-   *               IF_ACMPEQ, IF_ACMPNE, GOTO, JSR, IFNULL or IFNONNULL.
-   * @param label  the operand of the instruction to be constructed. This operand
-   *               is a label that designates the instruction to which the jump
-   *               instruction may jump.
+   *               opcode must be NEW, ANEWARRAY, CHECKCAST or INSTANCEOF.
+   * @param type   the operand of the instruction to be constructed. This operand
+   *               is an internal name (see
+   *               {@link org.objectweb.asm.Type#getInternalName()}).
    */
-  public JumpInsnNode(final int opcode, final LabelNode label)
+  public TypeInstructionNode(final int opcode, final String type)
   {
     super(opcode);
-    this.label = label;
+    this.desc = type;
   }
 
   /**
    * Sets the opcode of this instruction.
    *
-   * @param opcode the new instruction opcode. This opcode must be IFEQ, IFNE,
-   *               IFLT, IFGE, IFGT, IFLE, IF_ICMPEQ, IF_ICMPNE, IF_ICMPLT,
-   *               IF_ICMPGE, IF_ICMPGT, IF_ICMPLE, IF_ACMPEQ, IF_ACMPNE, GOTO,
-   *               JSR, IFNULL or IFNONNULL.
+   * @param opcode the new instruction opcode. This opcode must be NEW, ANEWARRAY,
+   *               CHECKCAST or INSTANCEOF.
    */
   public void setOpcode(final int opcode)
   {
@@ -79,20 +77,20 @@ public class JumpInsnNode extends
   @Override
   public int getType()
   {
-    return JUMP_INSN;
+    return TYPE_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitJumpInsn(opcode, label.getLabel());
+    methodVisitor.visitTypeInsn(opcode, desc);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new JumpInsnNode(opcode,
-                            clone(label, clonedLabels)).cloneAnnotations(this);
+    return new TypeInstructionNode(opcode,
+                            desc).cloneAnnotations(this);
   }
 }

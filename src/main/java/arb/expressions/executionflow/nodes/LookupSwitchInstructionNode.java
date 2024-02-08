@@ -1,3 +1,5 @@
+package arb.expressions.executionflow.nodes;
+
 // ASM: a very small and fast Java bytecode manipulation framework
 // Copyright (c) 2000-2011 INRIA, France Telecom
 // All rights reserved.
@@ -25,58 +27,78 @@
 // CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 // THE POSSIBILITY OF SUCH DAMAGE.
-package arb.expressions.executionflow.nodes;
 
+import java.util.List;
 import java.util.Map;
+
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 /**
- * A node that represents a MULTIANEWARRAY instruction.
+ * A node that represents a LOOKUPSWITCH instruction.
  *
  * @author Eric Bruneton
  */
-public class MultiANewArrayInsnNode extends
-                                    AbstractInsnNode
+public class LookupSwitchInstructionNode extends
+                                  AbstractInstructionNode
 {
 
-  /** An array type descriptor (see {@link org.objectweb.asm.Type}). */
-  public String desc;
+  /** Beginning of the default handler block. */
+  public LabelNode       dflt;
 
-  /** Number of dimensions of the array to allocate. */
-  public int    dims;
+  /** The values of the keys. */
+  public List<Integer>   keys;
+
+  /** Beginnings of the handler blocks. */
+  public List<LabelNode> labels;
 
   /**
-   * Constructs a new {@link MultiANewArrayInsnNode}.
+   * Constructs a new {@link LookupSwitchInstructionNode}.
    *
-   * @param descriptor    an array type descriptor (see
-   *                      {@link org.objectweb.asm.Type}).
-   * @param numDimensions the number of dimensions of the array to allocate.
+   * @param dflt   beginning of the default handler block.
+   * @param keys   the values of the keys.
+   * @param labels beginnings of the handler blocks. {@code labels[i]} is the
+   *               beginning of the handler block for the {@code keys[i]} key.
    */
-  public MultiANewArrayInsnNode(final String descriptor, final int numDimensions)
+  public LookupSwitchInstructionNode(final LabelNode dflt, final int[] keys, final LabelNode[] labels)
   {
-    super(Opcodes.MULTIANEWARRAY);
-    this.desc = descriptor;
-    this.dims = numDimensions;
+    super(Opcodes.LOOKUPSWITCH);
+    this.dflt   = dflt;
+    this.keys   = Util.asArrayList(keys);
+    this.labels = Util.asArrayList(labels);
   }
 
   @Override
   public int getType()
   {
-    return MULTIANEWARRAY_INSN;
+    return LOOKUPSWITCH_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitMultiANewArrayInsn(desc, dims);
+    int[] keysArray = new int[this.keys.size()];
+    for (int i = 0, n = keysArray.length; i < n; ++i)
+    {
+      keysArray[i] = this.keys.get(i).intValue();
+    }
+    Label[] labelsArray = new Label[this.labels.size()];
+    for (int i = 0, n = labelsArray.length; i < n; ++i)
+    {
+      labelsArray[i] = this.labels.get(i).getLabel();
+    }
+    methodVisitor.visitLookupSwitchInsn(dflt.getLabel(), keysArray, labelsArray);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
-  public AbstractInsnNode clone(final Map<LabelNode, LabelNode> clonedLabels)
+  public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new MultiANewArrayInsnNode(desc,
-                                      dims).cloneAnnotations(this);
+    LookupSwitchInstructionNode clone = new LookupSwitchInstructionNode(clone(dflt, clonedLabels),
+                                                          null,
+                                                          clone(labels, clonedLabels));
+    clone.keys.addAll(keys);
+    return clone.cloneAnnotations(this);
   }
 }

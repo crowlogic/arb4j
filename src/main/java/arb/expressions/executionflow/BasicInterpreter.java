@@ -7,13 +7,13 @@ import org.objectweb.asm.Handle;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import arb.expressions.executionflow.nodes.AbstractInsnNode;
+import arb.expressions.executionflow.nodes.AbstractInstructionNode;
 import arb.expressions.executionflow.nodes.BasicValue;
-import arb.expressions.executionflow.nodes.FieldInsnNode;
-import arb.expressions.executionflow.nodes.IntInsnNode;
-import arb.expressions.executionflow.nodes.LdcInsnNode;
-import arb.expressions.executionflow.nodes.MethodInsnNode;
-import arb.expressions.executionflow.nodes.TypeInsnNode;
+import arb.expressions.executionflow.nodes.FieldInstructionNode;
+import arb.expressions.executionflow.nodes.IntegerInstructionNode;
+import arb.expressions.executionflow.nodes.LoadConstantInstructionNode;
+import arb.expressions.executionflow.nodes.MethodInstructionNode;
+import arb.expressions.executionflow.nodes.TypeInstructionNode;
 
 /**
  * An {@link Interpreter} for {@link BasicValue} values.
@@ -90,7 +90,7 @@ public class BasicInterpreter extends
   }
 
   @Override
-  public BasicValue newOperation(final AbstractInsnNode insn)
+  public BasicValue newOperation(final AbstractInstructionNode insn)
   {
     switch (insn.getOpcode())
     {
@@ -118,7 +118,7 @@ public class BasicInterpreter extends
     case SIPUSH:
       return BasicValue.INT_VALUE;
     case LDC:
-      Object value = ((LdcInsnNode) insn).cst;
+      Object value = ((LoadConstantInstructionNode) insn).cst;
       if (value instanceof Integer)
       {
         return BasicValue.INT_VALUE;
@@ -170,22 +170,22 @@ public class BasicInterpreter extends
     case JSR:
       return BasicValue.RETURNADDRESS_VALUE;
     case GETSTATIC:
-      return newValue(Type.getType(((FieldInsnNode) insn).desc));
+      return newValue(Type.getType(((FieldInstructionNode) insn).desc));
     case NEW:
-      return newValue(Type.getObjectType(((TypeInsnNode) insn).desc));
+      return newValue(Type.getObjectType(((TypeInstructionNode) insn).desc));
     default:
       throw new AssertionError();
     }
   }
 
   @Override
-  public BasicValue copyOperation(final AbstractInsnNode insn, final BasicValue value)
+  public BasicValue copyOperation(final AbstractInstructionNode insn, final BasicValue value)
   {
     return value;
   }
 
   @Override
-  public BasicValue unaryOperation(final AbstractInsnNode insn, final BasicValue value)
+  public BasicValue unaryOperation(final AbstractInstructionNode insn, final BasicValue value)
   {
     switch (insn.getOpcode())
     {
@@ -229,9 +229,9 @@ public class BasicInterpreter extends
     case PUTSTATIC:
       return null;
     case GETFIELD:
-      return newValue(Type.getType(((FieldInsnNode) insn).desc));
+      return newValue(Type.getType(((FieldInstructionNode) insn).desc));
     case NEWARRAY:
-      switch (((IntInsnNode) insn).operand)
+      switch (((IntegerInstructionNode) insn).operand)
       {
       case T_BOOLEAN:
         return newValue(Type.getType("[Z"));
@@ -254,13 +254,13 @@ public class BasicInterpreter extends
       }
       throw new RuntimeException(insn + "Invalid array type");
     case ANEWARRAY:
-      return newValue(Type.getType("[" + Type.getObjectType(((TypeInsnNode) insn).desc)));
+      return newValue(Type.getType("[" + Type.getObjectType(((TypeInstructionNode) insn).desc)));
     case ARRAYLENGTH:
       return BasicValue.INT_VALUE;
     case ATHROW:
       return null;
     case CHECKCAST:
-      return newValue(Type.getObjectType(((TypeInsnNode) insn).desc));
+      return newValue(Type.getObjectType(((TypeInstructionNode) insn).desc));
     case INSTANCEOF:
       return BasicValue.INT_VALUE;
     case MONITORENTER:
@@ -274,7 +274,7 @@ public class BasicInterpreter extends
   }
 
   @Override
-  public BasicValue binaryOperation(final AbstractInsnNode insn, final BasicValue value1, final BasicValue value2)
+  public BasicValue binaryOperation(final AbstractInstructionNode insn, final BasicValue value1, final BasicValue value2)
   {
     switch (insn.getOpcode())
     {
@@ -345,7 +345,7 @@ public class BasicInterpreter extends
   }
 
   @Override
-  public BasicValue ternaryOperation(final AbstractInsnNode insn,
+  public BasicValue ternaryOperation(final AbstractInstructionNode insn,
                                      final BasicValue value1,
                                      final BasicValue value2,
                                      final BasicValue value3)
@@ -354,7 +354,7 @@ public class BasicInterpreter extends
   }
 
   @Override
-  public BasicValue naryOperation(final AbstractInsnNode insn, final List<? extends BasicValue> values)
+  public BasicValue naryOperation(final AbstractInstructionNode insn, final List<? extends BasicValue> values)
   {
     int opcode = insn.getOpcode();
     if (opcode == MULTIANEWARRAY)
@@ -367,12 +367,12 @@ public class BasicInterpreter extends
     }
     else
     {
-      return newValue(Type.getReturnType(((MethodInsnNode) insn).desc));
+      return newValue(Type.getReturnType(((MethodInstructionNode) insn).desc));
     }
   }
 
   @Override
-  public void returnOperation(final AbstractInsnNode insn, final BasicValue value, final BasicValue expected)
+  public void returnOperation(final AbstractInstructionNode insn, final BasicValue value, final BasicValue expected)
   {
     // Nothing to do.
   }

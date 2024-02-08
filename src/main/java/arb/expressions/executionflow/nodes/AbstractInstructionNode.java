@@ -35,53 +35,53 @@ import org.objectweb.asm.MethodVisitor;
 
 /**
  * A node that represents a bytecode instruction. <i>An instruction can appear
- * at most once in at most one {@link InsnList} at a time</i>.
+ * at most once in at most one {@link Instructions} at a time</i>.
  *
  * @author Eric Bruneton
  */
-public abstract class AbstractInsnNode
+public abstract class AbstractInstructionNode
 {
 
-  /** The type of {@link InsnNode} instructions. */
+  /** The type of {@link InstructionNode} instructions. */
   public static final int         INSN                = 0;
 
   /** The type of {@link IntInsnNode} instructions. */
   public static final int         INT_INSN            = 1;
 
-  /** The type of {@link VarInsnNode} instructions. */
+  /** The type of {@link VariableInstructionNode} instructions. */
   public static final int         VAR_INSN            = 2;
 
-  /** The type of {@link TypeInsnNode} instructions. */
+  /** The type of {@link TypeInstructionNode} instructions. */
   public static final int         TYPE_INSN           = 3;
 
-  /** The type of {@link FieldInsnNode} instructions. */
+  /** The type of {@link FieldInstructionNode} instructions. */
   public static final int         FIELD_INSN          = 4;
 
-  /** The type of {@link MethodInsnNode} instructions. */
+  /** The type of {@link MethodInstructionNode} instructions. */
   public static final int         METHOD_INSN         = 5;
 
-  /** The type of {@link InvokeDynamicInsnNode} instructions. */
+  /** The type of {@link InvokeDynamicInstructionNode} instructions. */
   public static final int         INVOKE_DYNAMIC_INSN = 6;
 
-  /** The type of {@link JumpInsnNode} instructions. */
+  /** The type of {@link JumpInstructionNode} instructions. */
   public static final int         JUMP_INSN           = 7;
 
   /** The type of {@link LabelNode} "instructions". */
   public static final int         LABEL               = 8;
 
-  /** The type of {@link LdcInsnNode} instructions. */
+  /** The type of {@link LoadConstantInstructionNode} instructions. */
   public static final int         LDC_INSN            = 9;
 
-  /** The type of {@link IincInsnNode} instructions. */
+  /** The type of {@link IncrementLocalVariableByConstantInstructionNode} instructions. */
   public static final int         IINC_INSN           = 10;
 
-  /** The type of {@link TableSwitchInsnNode} instructions. */
+  /** The type of {@link TableSwitchInstructionNode} instructions. */
   public static final int         TABLESWITCH_INSN    = 11;
 
-  /** The type of {@link LookupSwitchInsnNode} instructions. */
+  /** The type of {@link LookupSwitchInstructionNode} instructions. */
   public static final int         LOOKUPSWITCH_INSN   = 12;
 
-  /** The type of {@link MultiANewArrayInsnNode} instructions. */
+  /** The type of {@link MultiANewArrayInstructionNode} instructions. */
   public static final int         MULTIANEWARRAY_INSN = 13;
 
   /** The type of {@link FrameNode} "instructions". */
@@ -113,25 +113,25 @@ public abstract class AbstractInsnNode
   public List<TypeAnnotationNode> invisibleTypeAnnotations;
 
   /** The previous instruction in the list to which this instruction belongs. */
-  AbstractInsnNode                previousInsn;
+  AbstractInstructionNode                previousInsn;
 
   /** The next instruction in the list to which this instruction belongs. */
-  AbstractInsnNode                nextInsn;
+  AbstractInstructionNode                nextInsn;
 
   /**
    * The index of this instruction in the list to which it belongs. The value of
-   * this field is correct only when {@link InsnList#cache} is not null. A value
+   * this field is correct only when {@link Instructions#cache} is not null. A value
    * of -1 indicates that this instruction does not belong to any
-   * {@link InsnList}.
+   * {@link Instructions}.
    */
   int                             index;
 
   /**
-   * Constructs a new {@link AbstractInsnNode}.
+   * Constructs a new {@link AbstractInstructionNode}.
    *
    * @param opcode the opcode of the instruction to be constructed.
    */
-  protected AbstractInsnNode(final int opcode)
+  protected AbstractInstructionNode(final int opcode)
   {
     this.opcode = opcode;
     this.index  = -1;
@@ -163,7 +163,7 @@ public abstract class AbstractInsnNode
    * @return the previous instruction in the list to which this instruction
    *         belongs, if any. May be {@literal null}.
    */
-  public AbstractInsnNode getPrevious()
+  public AbstractInstructionNode getPrevious()
   {
     return previousInsn;
   }
@@ -175,7 +175,7 @@ public abstract class AbstractInsnNode
    * @return the next instruction in the list to which this instruction belongs,
    *         if any. May be {@literal null}.
    */
-  public AbstractInsnNode getNext()
+  public AbstractInstructionNode getNext()
   {
     return nextInsn;
   }
@@ -223,9 +223,9 @@ public abstract class AbstractInsnNode
    *
    * @param clonedLabels a map from LabelNodes to cloned LabelNodes.
    * @return a copy of this instruction. The returned instruction does not belong
-   *         to any {@link InsnList}.
+   *         to any {@link Instructions}.
    */
-  public abstract AbstractInsnNode clone(Map<LabelNode, LabelNode> clonedLabels);
+  public abstract AbstractInstructionNode clone(Map<LabelNode, LabelNode> clonedLabels);
 
   /**
    * Returns the clone of the given label.
@@ -262,7 +262,7 @@ public abstract class AbstractInsnNode
    * @param insnNode the source instruction.
    * @return this instruction.
    */
-  protected final AbstractInsnNode cloneAnnotations(final AbstractInsnNode insnNode)
+  protected final AbstractInstructionNode cloneAnnotations(final AbstractInstructionNode insnNode)
   {
     if (insnNode.visibleTypeAnnotations != null)
     {
