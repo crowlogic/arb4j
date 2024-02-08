@@ -86,10 +86,7 @@ public class BasicVerifier extends
     default:
       return value;
     }
-    if (!expected.equals(value))
-    {
-      throw new RuntimeException(insn.toString() + expected + value);
-    }
+    assert expected.equals(value) : String.format("expected=%s != value=%s<n", expected, value );
     return value;
   }
 

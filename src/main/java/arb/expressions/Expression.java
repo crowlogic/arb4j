@@ -98,7 +98,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     ClassReader classReader = new ClassReader(instructions);
 
-    classReader.accept(classNode, ClassReader.SKIP_DEBUG);
+    classNode.
+    classReader.accept(classNode, ClassReader.EXPAND_FRAMES);
 
     SimpleVerifier       verifier       = new SimpleVerifier(Type.getObjectType(classNode.name),
                                                              Type.getType(Object.class),
@@ -947,10 +948,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareLocalVariables(methodVisitor, startLabel, endLabel);
 
-    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitMaxs(0,0);
 
     methodVisitor.visitEnd();
 
+    
     return classVisitor;
   }
 
