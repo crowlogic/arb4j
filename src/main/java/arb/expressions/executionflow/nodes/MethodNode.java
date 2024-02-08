@@ -175,7 +175,7 @@ public class MethodNode extends
   public List<AnnotationNode>[]            invisibleParameterAnnotations;
 
   /** The instructions of this method. */
-  public InstructionList                          instructions;
+  public InstructionList                   instructions;
 
   /** The try catch blocks of this method. */
   public List<TryCatchBlockNode>           tryCatchBlocks;
@@ -442,30 +442,30 @@ public class MethodNode extends
   public void visitIntInsn(final int opcode, final int operand)
   {
     instructions.add(new IntegerInstructionNode(opcode,
-                                     operand));
+                                                operand));
   }
 
   @Override
   public void visitVarInsn(final int opcode, final int varIndex)
   {
     instructions.add(new LocalVariableInstructionNode(opcode,
-                                     varIndex));
+                                                      varIndex));
   }
 
   @Override
   public void visitTypeInsn(final int opcode, final String type)
   {
     instructions.add(new TypeInstructionNode(opcode,
-                                      type));
+                                             type));
   }
 
   @Override
   public void visitFieldInsn(final int opcode, final String owner, final String name, final String descriptor)
   {
     instructions.add(new FieldInstructionNode(opcode,
-                                       owner,
-                                       name,
-                                       descriptor));
+                                              owner,
+                                              name,
+                                              descriptor));
   }
 
   @Override
@@ -484,10 +484,10 @@ public class MethodNode extends
     int opcode = opcodeAndSource & ~Opcodes.SOURCE_MASK;
 
     instructions.add(new MethodInstructionNode(opcode,
-                                        owner,
-                                        name,
-                                        descriptor,
-                                        isInterface));
+                                               owner,
+                                               name,
+                                               descriptor,
+                                               isInterface));
   }
 
   @Override
@@ -497,16 +497,16 @@ public class MethodNode extends
                                      final Object... bootstrapMethodArguments)
   {
     instructions.add(new InvokeDynamicInstructionNode(name,
-                                               descriptor,
-                                               bootstrapMethodHandle,
-                                               bootstrapMethodArguments));
+                                                      descriptor,
+                                                      bootstrapMethodHandle,
+                                                      bootstrapMethodArguments));
   }
 
   @Override
   public void visitJumpInsn(final int opcode, final Label label)
   {
     instructions.add(new JumpInstructionNode(opcode,
-                                      getLabelNode(label)));
+                                             getLabelNode(label)));
   }
 
   @Override
@@ -524,32 +524,32 @@ public class MethodNode extends
   @Override
   public void visitIincInsn(final int varIndex, final int increment)
   {
-    instructions.add(new IncrementLocalVariableByConstantNode(varIndex,
-                                      increment));
+    instructions.add(new IncrementLocalVariableByConstantInstructionNode(varIndex,
+                                                                         increment));
   }
 
   @Override
   public void visitTableSwitchInsn(final int min, final int max, final Label dflt, final Label... labels)
   {
     instructions.add(new TableSwitchInstructionNode(min,
-                                             max,
-                                             getLabelNode(dflt),
-                                             getLabelNodes(labels)));
+                                                    max,
+                                                    getLabelNode(dflt),
+                                                    getLabelNodes(labels)));
   }
 
   @Override
   public void visitLookupSwitchInsn(final Label dflt, final int[] keys, final Label[] labels)
   {
     instructions.add(new LookupSwitchInstructionNode(getLabelNode(dflt),
-                                              keys,
-                                              getLabelNodes(labels)));
+                                                     keys,
+                                                     getLabelNodes(labels)));
   }
 
   @Override
   public void visitMultiANewArrayInsn(final String descriptor, final int numDimensions)
   {
     instructions.add(new MultiANewArrayInstructionNode(descriptor,
-                                                numDimensions));
+                                                       numDimensions));
   }
 
   @Override

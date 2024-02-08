@@ -35,7 +35,7 @@ import org.objectweb.asm.MethodVisitor;
 
 /**
  * A node that represents a bytecode instruction. <i>An instruction can appear
- * at most once in at most one {@link InstructionList} at a time</i>.
+ * at most once in at most one {@link Instructions} at a time</i>.
  *
  * @author Eric Bruneton
  */
@@ -45,10 +45,10 @@ public abstract class AbstractInstructionNode
   /** The type of {@link InstructionNode} instructions. */
   public static final int         INSN                = 0;
 
-  /** The type of {@link IntegerInstructionNode} instructions. */
+  /** The type of {@link IntInsnNode} instructions. */
   public static final int         INT_INSN            = 1;
 
-  /** The type of {@link LocalVariableInstructionNode} instructions. */
+  /** The type of {@link VariableInstructionNode} instructions. */
   public static final int         VAR_INSN            = 2;
 
   /** The type of {@link TypeInstructionNode} instructions. */
@@ -72,7 +72,7 @@ public abstract class AbstractInstructionNode
   /** The type of {@link LoadConstantInstructionNode} instructions. */
   public static final int         LDC_INSN            = 9;
 
-  /** The type of {@link IncrementLocalVariableByConstantNode} instructions. */
+  /** The type of {@link IncrementLocalVariableByConstantInstructionNode} instructions. */
   public static final int         IINC_INSN           = 10;
 
   /** The type of {@link TableSwitchInstructionNode} instructions. */
@@ -113,16 +113,16 @@ public abstract class AbstractInstructionNode
   public List<TypeAnnotationNode> invisibleTypeAnnotations;
 
   /** The previous instruction in the list to which this instruction belongs. */
-  AbstractInstructionNode         previousInsn;
+  AbstractInstructionNode                previousInsn;
 
   /** The next instruction in the list to which this instruction belongs. */
-  AbstractInstructionNode         nextInsn;
+  AbstractInstructionNode                nextInsn;
 
   /**
    * The index of this instruction in the list to which it belongs. The value of
-   * this field is correct only when {@link InstructionList#cache} is not null. A
-   * value of -1 indicates that this instruction does not belong to any
-   * {@link InstructionList}.
+   * this field is correct only when {@link Instructions#cache} is not null. A value
+   * of -1 indicates that this instruction does not belong to any
+   * {@link Instructions}.
    */
   int                             index;
 
@@ -223,7 +223,7 @@ public abstract class AbstractInstructionNode
    *
    * @param clonedLabels a map from LabelNodes to cloned LabelNodes.
    * @return a copy of this instruction. The returned instruction does not belong
-   *         to any {@link InstructionList}.
+   *         to any {@link Instructions}.
    */
   public abstract AbstractInstructionNode clone(Map<LabelNode, LabelNode> clonedLabels);
 

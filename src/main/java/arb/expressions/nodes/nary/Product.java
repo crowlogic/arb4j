@@ -114,8 +114,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     intermediateProductResultVariable = expression.reserveIntermediateVariable(mv, type());
     System.out.println("generateProduct: expr=" + expression);
 
-    productGenerator.generateProduct(new ExecutionFlowDocumenter(Opcodes.ASM9,
-                                                                 mv));
+    productGenerator.generateProduct(mv);
     return mv;
 
   }

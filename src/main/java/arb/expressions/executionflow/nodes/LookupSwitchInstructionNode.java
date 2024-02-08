@@ -41,7 +41,7 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class LookupSwitchInstructionNode extends
-                                         AbstractInstructionNode
+                                  AbstractInstructionNode
 {
 
   /** Beginning of the default handler block. */
@@ -96,8 +96,8 @@ public class LookupSwitchInstructionNode extends
   public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
     LookupSwitchInstructionNode clone = new LookupSwitchInstructionNode(clone(dflt, clonedLabels),
-                                                                        null,
-                                                                        clone(labels, clonedLabels));
+                                                          null,
+                                                          clone(labels, clonedLabels));
     clone.keys.addAll(keys);
     return clone.cloneAnnotations(this);
   }

@@ -5,16 +5,16 @@ import java.util.List;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.analysis.AnalyzerException;
 
 import arb.expressions.executionflow.nodes.AbstractInstructionNode;
-import arb.expressions.executionflow.nodes.IncrementLocalVariableByConstantNode;
-import arb.expressions.executionflow.nodes.InvokeDynamicInstructionNode;
+import arb.expressions.executionflow.nodes.IncrementLocalVariableByConstantInstructionNode;
 import arb.expressions.executionflow.nodes.LabelNode;
-import arb.expressions.executionflow.nodes.LocalVariableInstructionNode;
 import arb.expressions.executionflow.nodes.MethodInstructionNode;
-import arb.expressions.executionflow.nodes.MultiANewArrayInstructionNode;
 import arb.expressions.executionflow.nodes.Value;
+import arb.expressions.executionflow.nodes.LocalVariableInstructionNode;
+
+
+
 
 /**
  * A symbolic execution stack frame. A stack frame contains a set of local
@@ -195,7 +195,7 @@ public class Frame<V extends Value>
     return values[index];
   }
 
-  /**
+ /**
    * Sets the value of the given local variable. Long and double values are
    * represented with two variables.
    *
@@ -207,7 +207,7 @@ public class Frame<V extends Value>
   {
     if (index >= numLocals)
     {
-      throw new IndexOutOfBoundsException("Trying to set an inexistant local variable " + index + "this=" + this);
+      throw new IndexOutOfBoundsException("Trying to set an inexistant local variable " + index + "this=" + this );
     }
     values[index] = value;
   }
@@ -301,7 +301,7 @@ public class Frame<V extends Value>
    *                           execution frame (e.g. a POP on an empty operand
    *                           stack).
    */
-  public void execute(final AbstractInstructionNode insn, final Interpreter<V> interpreter)
+  public void execute(final AbstractInstructionNode insn, final Interpreter<V> interpreter) 
   {
     V   value1;
     V   value2;
@@ -377,20 +377,23 @@ public class Frame<V extends Value>
     case Opcodes.POP:
       if (pop().getSize() == 2)
       {
-        throw new RuntimeException(insn + "Illegal use of POP");
+        throw new RuntimeException(insn+
+                                    "Illegal use of POP");
       }
       break;
     case Opcodes.POP2:
       if (pop().getSize() == 1 && pop().getSize() != 1)
       {
-        throw new RuntimeException(insn + "Illegal use of POP2");
+        throw new RuntimeException(insn+
+                                    "Illegal use of POP2");
       }
       break;
     case Opcodes.DUP:
       value1 = pop();
       if (value1.getSize() != 1)
       {
-        throw new RuntimeException(insn + "Illegal use of DUP");
+        throw new RuntimeException(insn+
+                                    "Illegal use of DUP");
       }
       push(value1);
       push(interpreter.copyOperation(insn, value1));
@@ -400,7 +403,8 @@ public class Frame<V extends Value>
       value2 = pop();
       if (value1.getSize() != 1 || value2.getSize() != 1)
       {
-        throw new RuntimeException(insn + "Illegal use of DUP_X1");
+        throw new RuntimeException(insn+
+                                    "Illegal use of DUP_X1");
       }
       push(interpreter.copyOperation(insn, value1));
       push(value2);
@@ -412,7 +416,8 @@ public class Frame<V extends Value>
       {
         break;
       }
-      throw new RuntimeException(insn + "Illegal use of DUP_X2");
+      throw new RuntimeException(insn+
+                                  "Illegal use of DUP_X2");
     case Opcodes.DUP2:
       value1 = pop();
       if (value1.getSize() == 1)
@@ -433,7 +438,8 @@ public class Frame<V extends Value>
         push(interpreter.copyOperation(insn, value1));
         break;
       }
-      throw new RuntimeException(insn + "Illegal use of DUP2");
+      throw new RuntimeException(insn+
+                                  "Illegal use of DUP2");
     case Opcodes.DUP2_X1:
       value1 = pop();
       if (value1.getSize() == 1)
@@ -464,7 +470,8 @@ public class Frame<V extends Value>
           break;
         }
       }
-      throw new RuntimeException(insn + "Illegal use of DUP2_X1");
+      throw new RuntimeException(insn+
+                                  "Illegal use of DUP2_X1");
     case Opcodes.DUP2_X2:
       value1 = pop();
       if (value1.getSize() == 1)
@@ -502,13 +509,15 @@ public class Frame<V extends Value>
       {
         break;
       }
-      throw new RuntimeException(insn + "Illegal use of DUP2_X2");
+      throw new RuntimeException(insn+
+                                  "Illegal use of DUP2_X2");
     case Opcodes.SWAP:
       value2 = pop();
       value1 = pop();
       if (value1.getSize() != 1 || value2.getSize() != 1)
       {
-        throw new RuntimeException(insn + "Illegal use of SWAP");
+        throw new RuntimeException(insn+
+                                    "Illegal use of SWAP");
       }
       push(interpreter.copyOperation(insn, value2));
       push(interpreter.copyOperation(insn, value1));
@@ -569,7 +578,7 @@ public class Frame<V extends Value>
       push(interpreter.unaryOperation(insn, pop()));
       break;
     case Opcodes.IINC:
-      varIndex = ((IncrementLocalVariableByConstantNode) insn).var;
+      varIndex = ((IncrementLocalVariableByConstantInstructionNode) insn).var;
       setLocal(varIndex, interpreter.unaryOperation(insn, getLocal(varIndex)));
       break;
     case Opcodes.I2L:
@@ -633,7 +642,8 @@ public class Frame<V extends Value>
     case Opcodes.RETURN:
       if (returnValue != null)
       {
-        throw new RuntimeException(insn + "Incompatible return type");
+        throw new RuntimeException(insn+
+                                    "Incompatible return type");
       }
       break;
     case Opcodes.GETSTATIC:
@@ -652,7 +662,7 @@ public class Frame<V extends Value>
       executeInvokeInsn(insn, ((MethodInstructionNode) insn).desc, interpreter);
       break;
     case Opcodes.INVOKEDYNAMIC:
-      executeInvokeInsn(insn, ((InvokeDynamicInstructionNode) insn).desc, interpreter);
+      executeInvokeInsn(insn, ((InvokeDynamicInsnNode) insn).desc, interpreter);
       break;
     case Opcodes.NEW:
       push(interpreter.newOperation(insn));
@@ -675,7 +685,7 @@ public class Frame<V extends Value>
       break;
     case Opcodes.MULTIANEWARRAY:
       List<V> valueList = new ArrayList<>();
-      for (int i = ((MultiANewArrayInstructionNode) insn).dims; i > 0; --i)
+      for (int i = ((MultiANewArrayInsnNode) insn).dims; i > 0; --i)
       {
         valueList.add(0, pop());
       }
@@ -686,11 +696,14 @@ public class Frame<V extends Value>
       interpreter.unaryOperation(insn, pop());
       break;
     default:
-      throw new RuntimeException(insn + "Illegal opcode " + insn.getOpcode());
+      throw new RuntimeException(insn+
+                                  "Illegal opcode " + insn.getOpcode());
     }
   }
 
-  private boolean executeDupX2(final AbstractInstructionNode insn, final V value1, final Interpreter<V> interpreter)
+  private boolean executeDupX2(final AbstractInstructionNode insn,
+                               final V value1,
+                               final Interpreter<V> interpreter)
   {
     V value2 = pop();
     if (value2.getSize() == 1)
@@ -717,7 +730,7 @@ public class Frame<V extends Value>
 
   private void executeInvokeInsn(final AbstractInstructionNode insn,
                                  final String methodDescriptor,
-                                 final Interpreter<V> interpreter)
+                                 final Interpreter<V> interpreter) 
   {
     ArrayList<V> valueList = new ArrayList<>();
     for (int i = Type.getArgumentCount(methodDescriptor); i > 0; --i)

@@ -34,8 +34,8 @@ import arb.RealPolynomial;
 import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.executionflow.Analyzer;
-import arb.expressions.executionflow.BasicValue;
 import arb.expressions.executionflow.SimpleVerifier;
+import arb.expressions.executionflow.nodes.BasicValue;
 import arb.expressions.executionflow.nodes.ClassNode;
 import arb.expressions.executionflow.nodes.MethodNode;
 import arb.expressions.nodes.LiteralConstant;
@@ -98,7 +98,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     ClassReader classReader = new ClassReader(instructions);
 
-    classReader.accept(classNode, ClassReader.SKIP_DEBUG);
+    classReader.accept(classNode, 0);
 
     SimpleVerifier       verifier       = new SimpleVerifier(Type.getObjectType(classNode.name),
                                                              Type.getType(Object.class),
@@ -947,10 +947,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareLocalVariables(methodVisitor, startLabel, endLabel);
 
-    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitMaxs(0,0);
 
     methodVisitor.visitEnd();
 
+    
     return classVisitor;
   }
 

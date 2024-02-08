@@ -35,9 +35,13 @@
     The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-3>>
 
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>To
+    Be Continued> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5><vspace|0.5fn>
+
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-5><vspace|0.5fn>
+    <no-break><pageref|auto-6><vspace|0.5fn>
   </table-of-contents>
 
   <section|The Type-I Chebyshev Polynomials <math|T<rsub|n><around*|(|x|)>>>
@@ -54,7 +58,7 @@
   </equation>
 
   where <math|<rsub|2>F<rsub|1>> is the (Gauss) hypergeometric function.
-  <cite-detail|ArfkenWeber2005|(13.140)>
+  <cite|higherTranscendentalFunctions>
 
   <subsection|The Fourier Transforms <math|<wide|T|^><rsub|n><around|(|y|)>>
   of <math|T<rsub|n><around*|(|x|)>>>
@@ -147,14 +151,14 @@
   <big-table|<math|<around*|[|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-halign|c>|<cwith|1|-1|3|3|cell-halign|c>|<cwith|1|-1|4|4|cell-halign|c>|<cwith|1|-1|5|5|cell-halign|c>|<cwith|1|-1|6|6|cell-halign|c>|<cwith|1|-1|7|7|cell-halign|c>|<cwith|1|-1|7|7|cell-rborder|0ln>|<table|<row|<cell|-3>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|15>|<cell|-6>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|105>|<cell|-45>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-945>|<cell|420>|<cell|-15>|<cell|0>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-10395>|<cell|4725>|<cell|-210>|<cell|1>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|135135>|<cell|-62370>|<cell|3150>|<cell|-28>|<cell|0>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|2027025>|<cell|-945945>|<cell|51975>|<cell|-630>|<cell|1>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-34459425>|<cell|16216200>|<cell|-945945>|<cell|13860>|<cell|-45>|<cell|0>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|-654729075>|<cell|310134825>|<cell|-18918900>|<cell|315315>|<cell|-1485>|<cell|1>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|13749310575>|<cell|-6547290750>|<cell|413513100>|<cell|-7567560>|<cell|45045>|<cell|-66>|<cell|0>|<cell|\<ldots\>>>|<row|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>|<cell|\<ldots\>>>>>>|]>>|The
   first 10 row-vectors of <label|A><math|A<rsub|k,n>> matrix>
 
-  <text-dots>to be continued<text-dots>
+  <section|To Be Continued>
 
-  <\bibliography|bib|tm-plain|refs>
+  <\bibliography|bib|tm-plain|refs2>
     <\bib-list|2>
-      <bibitem*|1><label|bib-ArfkenWeber2005>G.<nbsp>Arfken<localize| and
-      >H.<nbsp>Weber. <newblock><with|font-shape|italic|Mathematical Methods
-      for Physicists>. <newblock>Elsevier AP, Boston, 6th<localize| edition>,
-      2005.<newblock>
+      <bibitem*|1><label|bib-higherTranscendentalFunctions>Fritz<nbsp>Oberhettinger,<nbsp>Francesco<nbsp>G.<nbsp>Tricomi
+      Arthur Erdélyi, Wilhelm Magnus. <newblock><with|font-shape|italic|Higher
+      Transcendental Functions>, <localize|volume> III. <newblock>McGraw-Hill
+      Book Company, Inc., New York-Toronto-London, 1955.<newblock>
 
       <bibitem*|2><label|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials>Atul
       Dixit, Lin Jiu, Victor<nbsp>H Moll<localize|, and >Christophe Vignat.
@@ -163,8 +167,6 @@
       Mathematical Society>, 98:145\U160, 2015.<newblock>
     </bib-list>
   </bibliography>
-
-  \;
 </body>
 
 <\initial>
@@ -189,16 +191,17 @@
     <associate|auto-2|<tuple|1.1|2|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
     <associate|auto-3|<tuple|1.2|2|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
     <associate|auto-4|<tuple|1|3|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|auto-5|<tuple|1|3|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|bib-ArfkenWeber2005|<tuple|1|?|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|2|?|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
+    <associate|auto-5|<tuple|2|3|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
+    <associate|auto-6|<tuple|2|?|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
+    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|2|3|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
+    <associate|bib-higherTranscendentalFunctions|<tuple|1|?|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
-      ArfkenWeber2005
+      higherTranscendentalFunctions
 
       finiteFourierTransformsOfClassicalOrthogonalPolynomials
     </associate>
@@ -226,9 +229,13 @@
       Via The Gram-Schmidt Process <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
 
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>To
+      Be Continued> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-5><vspace|0.5fn>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5><vspace|0.5fn>
+      <no-break><pageref|auto-6><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

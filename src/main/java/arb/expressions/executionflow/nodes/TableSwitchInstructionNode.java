@@ -29,7 +29,6 @@ package arb.expressions.executionflow.nodes;
 
 import java.util.List;
 import java.util.Map;
-
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -40,7 +39,7 @@ import org.objectweb.asm.Opcodes;
  * @author Eric Bruneton
  */
 public class TableSwitchInstructionNode extends
-                                        AbstractInstructionNode
+                                 AbstractInstructionNode
 {
 
   /** The minimum key value. */
@@ -98,8 +97,8 @@ public class TableSwitchInstructionNode extends
   public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
     return new TableSwitchInstructionNode(min,
-                                          max,
-                                          clone(dflt, clonedLabels),
-                                          clone(labels, clonedLabels)).cloneAnnotations(this);
+                                   max,
+                                   clone(dflt, clonedLabels),
+                                   clone(labels, clonedLabels)).cloneAnnotations(this);
   }
 }

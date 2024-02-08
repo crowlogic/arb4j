@@ -6,8 +6,8 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.expressions.executionflow.nodes.AbstractInstructionNode;
+import arb.expressions.executionflow.nodes.BasicValue;
 import arb.expressions.executionflow.nodes.FieldInstructionNode;
-import arb.expressions.executionflow.nodes.InvokeDynamicInstructionNode;
 import arb.expressions.executionflow.nodes.MethodInstructionNode;
 import arb.expressions.executionflow.nodes.Value;
 
@@ -86,10 +86,7 @@ public class BasicVerifier extends
     default:
       return value;
     }
-    if (!expected.equals(value))
-    {
-      throw new RuntimeException(insn.toString() + expected + value);
-    }
+    assert expected.equals(value) : String.format("expected=%s != value=%s<n", expected, value );
     return value;
   }
 
@@ -407,7 +404,7 @@ public class BasicVerifier extends
           throw new RuntimeException(insn.toString() + "Method owner" + newValue(owner) + values.get(0));
         }
       }
-      String methodDescriptor = (opcode == INVOKEDYNAMIC) ? ((InvokeDynamicInstructionNode) insn).desc : ((MethodInstructionNode) insn).desc;
+      String methodDescriptor = (opcode == INVOKEDYNAMIC) ? ((InvokeDynamicInsnNode) insn).desc : ((MethodInstructionNode) insn).desc;
       Type[] args             = Type.getArgumentTypes(methodDescriptor);
       while (i < values.size())
       {

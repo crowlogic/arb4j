@@ -36,11 +36,11 @@ import org.objectweb.asm.MethodVisitor;
  * implementation is not thread safe</i>.
  */
 public class InstructionList implements
-                      Iterable<AbstractInstructionNode>
+                             Iterable<AbstractInstructionNode>
 {
 
   /** The number of instructions in this list. */
-  private int              size;
+  private int                     size;
 
   /** The first instruction in this list. May be {@literal null}. */
   private AbstractInstructionNode firstInsn;
@@ -193,7 +193,7 @@ public class InstructionList implements
    */
   public AbstractInstructionNode[] toArray()
   {
-    int                currentInsnIndex = 0;
+    int                       currentInsnIndex = 0;
     AbstractInstructionNode   currentInsn      = firstInsn;
     AbstractInstructionNode[] insnNodeArray    = new AbstractInstructionNode[size];
     while (currentInsn != null)

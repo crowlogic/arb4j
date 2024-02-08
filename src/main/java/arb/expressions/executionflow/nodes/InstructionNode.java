@@ -36,7 +36,7 @@ import org.objectweb.asm.MethodVisitor;
  * @author Eric Bruneton
  */
 public class InstructionNode extends
-                             AbstractInstructionNode
+                      AbstractInstructionNode
 {
 
   /**

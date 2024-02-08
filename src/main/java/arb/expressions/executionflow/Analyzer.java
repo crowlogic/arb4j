@@ -13,7 +13,8 @@ import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
 
 import arb.expressions.executionflow.nodes.AbstractInstructionNode;
-import arb.expressions.executionflow.nodes.IncrementLocalVariableByConstantNode;
+import arb.expressions.executionflow.nodes.BasicValue;
+import arb.expressions.executionflow.nodes.IncrementLocalVariableByConstantInstructionNode;
 import arb.expressions.executionflow.nodes.InstructionList;
 import arb.expressions.executionflow.nodes.JumpInstructionNode;
 import arb.expressions.executionflow.nodes.LabelNode;
@@ -51,9 +52,9 @@ public class Analyzer<V extends Value> implements
                       || insnNode.getOpcode() == Opcodes.LSTORE || insnNode.getOpcode() == Opcodes.DSTORE) ? 2 : 1;
         maxLocals = Math.max(maxLocals, local + size);
       }
-      else if (insnNode instanceof IncrementLocalVariableByConstantNode)
+      else if (insnNode instanceof IncrementLocalVariableByConstantInstructionNode)
       {
-        int local = ((IncrementLocalVariableByConstantNode) insnNode).var;
+        int local = ((IncrementLocalVariableByConstantInstructionNode) insnNode).var;
         maxLocals = Math.max(maxLocals, local + 1);
       }
     }
@@ -451,9 +452,9 @@ public class Analyzer<V extends Value> implements
           subroutine.localsUsed[varIndex + 1] = true;
         }
       }
-      else if (insnNode instanceof IncrementLocalVariableByConstantNode)
+      else if (insnNode instanceof IncrementLocalVariableByConstantInstructionNode)
       {
-        int varIndex = ((IncrementLocalVariableByConstantNode) insnNode).var;
+        int varIndex = ((IncrementLocalVariableByConstantInstructionNode) insnNode).var;
         subroutine.localsUsed[varIndex] = true;
       }
     }

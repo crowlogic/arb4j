@@ -25,6 +25,21 @@ public class Bibliography extends
                                                                                                         .setAddress("New York-Toronto-London")
                                                                                                         .setVolume("III");
 
+  public static Book          stochasticProcessesHarmonizableTheory                   = new Book("Stochastic Processes: Harmonizable Theory",
+                                                                                                 "M.M. Rao",
+                                                                                                 "2020").setPublisher("World Scientific Publishing Co. Pte. Ltd.")
+                                                                                                        .setAddress("Hackensack, NJ")
+                                                                                                        .setSeries("Series on Multivariate Analysis")
+                                                                                                        .setVolume("12")
+                                                                                                        .setIsbn("9789811213656");
+
+  public static Article       theApproximateSolutionOfRiccatiEquation                 = new Article("The Approximate Solution of Riccati's Equation",
+                                                                                                    "F. Max Stein and R. G. Huffstutler",
+                                                                                                    "1966",
+                                                                                                    "SIAM Journal on Numerical Analysis",
+                                                                                                    "3",
+                                                                                                    "425-434").setNumber("3");
+
   public static Article       newBesselFunctionIdentity                               = new Article("Circular motion analogue Unruh effect in a 2+1 thermal bath: robbing from the rich and giving to the poor",
                                                                                                     "D Bunney, Cameron R and Louko, Jorma",
                                                                                                     "2023",

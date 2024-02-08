@@ -19,6 +19,11 @@ public class ProductTest extends
 {
   public static void testOneTimesTwoTimesThreeEqualsSix() throws AnalyzerException
   {
+    Class<?>    superType   = null;
+    Class<?>[]  interfaces  = null;
+    byte[]      bytecode    = null;
+    ClassNode   classNode   = new ClassNode();
+    MethodNode  method      = new MethodNode();
 
 
     NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1..3}");

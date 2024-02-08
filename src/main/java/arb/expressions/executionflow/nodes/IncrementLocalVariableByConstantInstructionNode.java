@@ -28,63 +28,54 @@
 package arb.expressions.executionflow.nodes;
 
 import java.util.Map;
-
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.tree.IntInsnNode;
+import org.objectweb.asm.Opcodes;
 
 /**
- * A node that represents an instruction with a single int operand.
+ * A node that represents an IINC instruction.
  *
  * @author Eric Bruneton
  */
-public class IntegerInstructionNode extends
-                                    AbstractInstructionNode
+public class IncrementLocalVariableByConstantInstructionNode extends
+                                                             AbstractInstructionNode
 {
 
-  /** The operand of this instruction. */
-  public int operand;
+  /** Index of the local variable to be incremented. */
+  public int var;
+
+  /** Amount to increment the local variable by. */
+  public int incr;
 
   /**
-   * Constructs a new {@link IntInsnNode}.
+   * Constructs a new {@link IncrementLocalVariableByConstantInstructionNode}.
    *
-   * @param opcode  the opcode of the instruction to be constructed. This opcode
-   *                must be BIPUSH, SIPUSH or NEWARRAY.
-   * @param operand the operand of the instruction to be constructed.
+   * @param varIndex index of the local variable to be incremented.
+   * @param incr     increment amount to increment the local variable by.
    */
-  public IntegerInstructionNode(final int opcode, final int operand)
+  public IncrementLocalVariableByConstantInstructionNode(final int varIndex, final int incr)
   {
-    super(opcode);
-    this.operand = operand;
-  }
-
-  /**
-   * Sets the opcode of this instruction.
-   *
-   * @param opcode the new instruction opcode. This opcode must be BIPUSH, SIPUSH
-   *               or NEWARRAY.
-   */
-  public void setOpcode(final int opcode)
-  {
-    this.opcode = opcode;
+    super(Opcodes.IINC);
+    this.var  = varIndex;
+    this.incr = incr;
   }
 
   @Override
   public int getType()
   {
-    return INT_INSN;
+    return IINC_INSN;
   }
 
   @Override
   public void accept(final MethodVisitor methodVisitor)
   {
-    methodVisitor.visitIntInsn(opcode, operand);
+    methodVisitor.visitIincInsn(var, incr);
     acceptAnnotations(methodVisitor);
   }
 
   @Override
   public AbstractInstructionNode clone(final Map<LabelNode, LabelNode> clonedLabels)
   {
-    return new IntegerInstructionNode(opcode,
-                                      operand).cloneAnnotations(this);
+    return new IncrementLocalVariableByConstantInstructionNode(var,
+                                                               incr).cloneAnnotations(this);
   }
 }

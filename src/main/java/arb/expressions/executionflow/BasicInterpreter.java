@@ -8,12 +8,11 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.expressions.executionflow.nodes.AbstractInstructionNode;
+import arb.expressions.executionflow.nodes.BasicValue;
 import arb.expressions.executionflow.nodes.FieldInstructionNode;
 import arb.expressions.executionflow.nodes.IntegerInstructionNode;
-import arb.expressions.executionflow.nodes.InvokeDynamicInstructionNode;
 import arb.expressions.executionflow.nodes.LoadConstantInstructionNode;
 import arb.expressions.executionflow.nodes.MethodInstructionNode;
-import arb.expressions.executionflow.nodes.MultiANewArrayInstructionNode;
 import arb.expressions.executionflow.nodes.TypeInstructionNode;
 
 /**
@@ -360,11 +359,11 @@ public class BasicInterpreter extends
     int opcode = insn.getOpcode();
     if (opcode == MULTIANEWARRAY)
     {
-      return newValue(Type.getType(((MultiANewArrayInstructionNode) insn).desc));
+      return newValue(Type.getType(((MultiANewArrayInsnNode) insn).desc));
     }
     else if (opcode == INVOKEDYNAMIC)
     {
-      return newValue(Type.getReturnType(((InvokeDynamicInstructionNode) insn).desc));
+      return newValue(Type.getReturnType(((InvokeDynamicInsnNode) insn).desc));
     }
     else
     {
