@@ -9,7 +9,7 @@
     <date|1966>
   </author-affiliation>>>>
 
-  <section|Introduction>
+  \<cdot\><section|Introduction>
 
   Bessel functions of the zeroth order possess the property that their
   derivatives give Bessel functions of the first order; i.e.,
@@ -411,6 +411,241 @@
   </equation>
 
   \;
+
+  <assign|section-nr|4><assign|page-nr|431>
+
+  Note that <math|\<eta\>> depends on <math|n>; however, it is not so
+  indicated in the following discussion. The statement in (12) is possible by
+  Theorem 3 and is true for all values of <math|x> in <math|I>, where
+  <math|y<around|(|x|)>> is the solution of the Riccati equation. Let
+  <math|r<rsub|n><around|(|x|)>=y<around|(|x|)>-g<rsub|n><around|(|x|)>>, and
+  let <math|Q<rsub|n><around|(|x|)>=S<rsub|n><around|(|x|)>-g<rsub|n><around|(|x|)>>,
+  where <math|S<rsub|n><around|(|x|)>> is the sum of zeroth order Bessel
+  functions which satisfies the boundary condition and which makes
+
+  <\equation>
+    v<rsub|n>=<big|int><rsub|0><rsup|1><around|\||R<around|(|x|)>-L<around|[|S<rsub|n><around|(|x|)>|]>|\|>*<space|0.17em>d*x\<forall\>fixed<space|1em>m\<gtr\>0
+  </equation>
+
+  a minimum. It is possible that <math|Q<rsub|n><around|(|x|)>=0>, since
+  <math|S<rsub|n><around|(|x|)>> and <math|g<rsub|n><around|(|x|)>> both
+  satisfy the boundary condition, and <math|0> is a sum of zeroth order
+  Bessel functions trivially; note that the boundary condition for
+  <math|Q<rsub|n><around|(|x|)>> is <math|0>. Thus using (13) and (2) we can
+  write
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|v<rsub|n>>|<cell|=<big|int><rsub|0><rsup|1><around|\||R<around|(|x|)>-L<around|[|S<rsub|n><around|(|x|)>|]>*<around|\||<space|0.17em>d*x|\<nobracket\>>*|\<nobracket\>>>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|1><around*|\||L<around|(|y|)>-L<around|(|S<rsub|n>|)>|\|>\<mathd\>
+    x>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|1><around|\||L*<around|(|y-S<rsub|n>|)>-2*Q*S<rsub|n>*<around|(|y-S<rsub|n>|)>|\|>*<space|0.17em>d
+    x>>|<row|<cell|>|<cell|\<leq\><big|int><rsub|0><rsup|1><around|\||L<around|(|r<rsub|n>|)>-2*Q*S<rsub|n>*r<rsub|n>|\|>*<space|0.17em>d
+    x>>>>>
+  </equation>
+
+  assuming <math|Q<rsub|n><around|(|x|)>=0> as a possibility. The final step
+  in (14) is permissible since <math|S<rsub|n><around|(|x|)>> is the
+  minimizing sum for <math|y<around|(|x|)>>, and the value of the integral is
+  no less for any other sum. Then since
+
+  <\equation>
+    L<around|(|r<rsub|n>|)>=<wide|r|\<dot\>><rsub|n>-P<around|(|x|)>*r<rsub|n>-Q<around|(|x|)>*r<rsub|n><rsup|2><text|>
+  </equation>
+
+  we have that
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|<around|\||L<around|(|r<rsub|n>|)>|\|>>|<cell|\<leq\><around|\||r<rsub|n>|\|>+<around|\||P|\|>\|r<rsub|n>\|+<around|\||Q|\|><around|\||r<rsub|n><rsup|2>|\|>>>|<row|<cell|>|<cell|\<leq\>\<eta\>+M<rsub|1>*\<eta\>+M<rsub|2>*\<eta\><rsup|2>\<leq\>N*\<eta\><text|>>>>>>
+  </equation>
+
+  where <math|M<rsub|1>> and <math|M<rsub|2>> are the upper bounds for
+  <math|<around|\||P<around|(|x|)>|\|>> and
+  <math|<around|\||Q<around|(|x|)>|\|>> over <math|I>, and <math|N> is a
+  constant.
+
+  Also since <math|S<rsub|n><around|(|x|)>> satisfies the conditions of Lemma
+  3, then <math|<around|\||S<rsub|n><around|(|x|)>|\|>\<leq\>w>,
+  <math|<around|(|w=max <around|{|<around|\||S<rsub|n><around|(|x|)>|\|>,<around|\||g<rsub|n><around|(|x|)>|\|>,<around|\||Q<rsub|n><around|(|x|)>|\|>:x\<in\>I|}>|)>>,
+  and we have from (12), (14), and (15) that
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|v<rsub|n>>|<cell|=<big|int><rsub|0><rsup|1><around|\||L<around|(|r<rsub|n>|)>-2*Q*S<rsub|n>*r<rsub|n>|\|>*<space|0.17em>d*x>>|<row|<cell|>|<cell|\<leq\><big|int><rsub|0><rsup|1><around|(|<around|\||L<around|(|r<rsub|n>|)>*<around|\||+2|\|>*Q<around|\|||\|>*S<rsub|n>*r<rsub|n>|\|>|)>*<space|0.17em>d*x<text|>>>|<row|<cell|>|<cell|\<leq\><big|int><rsub|0><rsup|1><around|(|N*\<eta\>+2*M<rsub|2>*w*\<eta\>|)>*<space|0.17em>d*x>>|<row|<cell|>|<cell|=N<rsub|1>*\<eta\>*m>>>>>
+  </equation>
+
+  where <math|N<rsub|1>> is a constant. Let <math|x<rsub|1>> be the point in
+  <math|I> where <math|<around|\||L<around|[|Q<rsub|n>|]>|\|>> reaches its
+  maximum, and denote this maximum by <math|A*\<lambda\><rsub|n>*w<rsup|2>>,
+  <math|A> a constant. Then by the mean value theorem we have that
+
+  <\equation>
+    <around|\||L<around|[|Q<rsub|n><around|(|x|)>|]>-L<around|[|Q<rsub|n><around|(|x<rsub|1>|)>|]>|\|>\<leq\><around|\||x-x<rsub|1>|\|>*max<rsub|x\<in\>I><around|\||<wide|L|\<dot\>><around|[|Q<rsub|n><around|(|X|)>|]>|\|>\<leq\><frac|A*\<lambda\><rsub|n>*w<rsup|2>|2*B<rsub|n>><text|>
+  </equation>
+
+  for <math|<around|\||x-x<rsub|1>|\|>\<leq\>1> and
+  <math|<around|\||x-x<rsub|1>|\|>\<leq\><frac|A|2>*B<rsub|n>>. Let us choose
+  an interval about <math|x<rsub|1>> such that
+  <math|<around|\||x-x<rsub|1>|\|>\<leq\>A/2*B<rsub|n>>, or the part of the
+  interval that is contained in <math|<around|[|0,1|]>>, if <math|x<rsub|1>>
+  is nearer to <math|0> or <math|1> by less than <math|A/2*B<rsub|n>>, where
+  <math|A> and <math|B> are constants. Then upon applying conclusion (b) of
+  Lemma 3 we have that
+
+  <\equation>
+    <around|\||L<around|[|Q<rsub|n><around|(|x|)>|]>-L<around|[|Q<rsub|n><around|(|x<rsub|1>|)>|]>|\|>\<leq\><frac|A*\<lambda\><rsub|n>*w<rsup|2>|2><text|>
+  </equation>
+
+  Hence,
+
+  <\equation>
+    <around|\||L<around|[|Q<rsub|n><around|(|x|)>|]>|\|>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>x
+  </equation>
+
+  for <math|x> in <math|I>.
+
+  Now by (15) <math|<around|\||L<around|[|r<rsub|n>|]>|\|>\<leq\>N*\<eta\>>.
+  Thus if <math|n> is chosen large enough so that
+  <math|\<lambda\><rsub|n>\<gtr\>16*M<rsub|2>/A> and if <math|\<eta\>> is
+  chosen so that <math|n\<leq\><around|(|A*\<lambda\><rsub|n>-16*M<rsub|2>|)>/<around|(|16*M<rsub|2>*w|)>>,
+  and recalling that <math|\<eta\>\<less\>1>, then either
+  <math|N*\<eta\>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>> or
+  <math|N*\<eta\>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>>.
+
+  First, by assuming that <math|N*\<eta\>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>>,
+  we have that
+
+  <\align*>
+    <tformat|<table|<row|<cell|<around|\||L<around|(|y|)>-L<around|(|S<rsub|n>|)>|\|>>|<cell|=<around|\||L*<around|(|r<rsub|n>+g<rsub|n>|)>-L*<around|(|Q<rsub|n>+g<rsub|n>|)>|\|><rsup|2>>>|<row|<cell|>|<cell|=<around|\||r<rsub|n><rprime|'>+g<rsub|n><rprime|'>-P*r<rsub|n>-P*g<rsub|n>-Q*r<rsub|n><rsup|2>-Q*g<rsub|n><rsup|2>-2*Q*r<rsub|n>*g<rsub|n>|\|>>>|<row|<cell|>|<cell|=<around|\||L<around|(|r<rsub|n>|)>+L<around|(|g<rsub|n>|)>-2*Q*g<rsub|n>*r<rsub|n>-P*Q<rsub|n>-P*g<rsub|n>-Q*Q<rsub|n><rsup|2>-Q*g<rsub|n><rsup|2>-2*Q*Q<rsub|n>*g<rsub|n>|\|>>>|<row|<cell|>|<cell|\<geq\><around|\||L<around|(|Q<rsub|n>|)>|\|>-<around|\||L<around|(|r<rsub|n>|)>*<around|\||-2|\|>*Q<around|\|||\|>*g<rsub|n>|\|>*<around|\||r<rsub|n>-Q<rsub|n>|\|>>>|<row|<cell|>|<cell|\<geq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>-<frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>-2*M<rsub|2>*w*<around|(|\<eta\>+w|)>\<geq\><frac|1|4>*A*\<lambda\><rsub|n>*w<rsup|2>>>>>
+  </align*>
+
+  Note that use is made of the fact that <math|<around|\||r<rsub|n>-Q<rsub|n>|\|>\<leq\><around|\||r<rsub|n>|\|>+<around|\||Q<rsub|n>|\|>\<leq\>\<eta\>+w>,
+  since <math|Q<rsub|n>> satisfies the conditions of Lemma 3. Therefore
+
+  <\equation>
+    v<rsub|n>=<big|int><rsub|0><rsup|1><around|\||L<around|(|y|)>-L<around|(|S<rsub|n>|)>*<around|\||<space|0.17em>d*x\<geq\><big|int><rsub|x<rsub|1>-A/2*B<rsub|n>><rsup|x<rsub|1>+A/2*B<rsub|n>>|\|>*L<around|(|y|)>-L<around|(|S<rsub|n>|)>|\|>*<space|0.17em>d*x\<geq\><frac|A*\<lambda\><rsub|n>*w<rsup|2>|2><text|>
+  </equation>
+
+  where <math|N<rsub|1>> is a constant. In the contrary case if we assume
+  that <math|N*\<eta\>\<geq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>>, then
+
+  <\equation*>
+    w<rsup|2>\<leq\><frac|4*N*\<eta\>|A*\<lambda\><rsub|n>>
+  </equation*>
+
+  directly. Thus in either event we have that
+
+  <\equation>
+    w<rsup|2>\<leq\><around*|[|<frac|8|A*\<lambda\><rsub|n>><around*|(|<frac|B*v<rsub|n>|A>|)><rsup|m>|]><rsup|1/m>*<space|1em>
+  </equation>
+
+  <\equation>
+    w<rsup|2>\<leq\><around*|[|<frac|8|A*\<lambda\><rsub|n>><around*|(|<frac|<wide|B|\<ddot\>>|A>|)><rsup|m>*N<rsub|1><rsup|1/m>*\<eta\><rsup|1/m>|]><rsup|1/m>
+  </equation>
+
+  <\equation>
+    w<rsup|2>\<leq\><frac|4*N*\<eta\>|A*\<lambda\><rsub|n>>
+  </equation>
+
+  by application of (16). Finally, since <math|\<lambda\><rsub|n>\<gtr\>1>,
+  we can write
+
+  <\equation>
+    w<rsup|2>\<leq\>C<rsub|1>*\<lambda\><rsub|n><rsup|-m>*\<eta\><rsup|1/m>,
+  </equation>
+
+  where <math|C<rsub|1>> is a constant. Using the fact that
+
+  <\equation>
+    <around|\||r<rsub|n><rsup|<around|(|k|)>>-Q<rsub|n><rsup|<around|(|k|)>>|\|>\<leq\><around|\||r<rsub|n><rsup|<around|(|k|)>>|\|>+<around|\||Q<rsub|n><rsup|<around|(|k|)>>|\|>\<leq\>\<eta\>+w<text|>
+  </equation>
+
+  for <math|k=0,1>, and the conditions of Lemma 3, we have that from (12) and
+  (17) and the fact that <math|Q<rsub|n>> satisfies the conditions of Lemma
+  3, then
+
+  <\equation>
+    <around|\||r<rsub|n><rsup|<around|(|k|)>>-Q<rsub|n><rsup|<around|(|k|)>>|\|>\<leq\>\<eta\>+C<rsub|1>*\<lambda\><rsub|n><rsup|-m>*\<eta\><rsup|1/m>\<leq\>C<rsub|2>*\<lambda\><rsub|n><rsup|-1/2>*\<eta\><rsup|1/2><text|>
+  </equation>
+
+  where <math|C<rsub|2>> is a constant and <math|\<eta\>\<leq\>min
+  <around*|{|1,<around*|(|<frac|A*\<lambda\><rsub|n>-16*M<rsub|2>|16*M<rsub|2>>|)>*w|}>>,
+  and <math|\<eta\>> is given by (12).
+
+  We can thus state the following theorem.
+
+  <with|font-series|bold|Theorem 4.> If <math|y<around|(|x|)>> is the unique
+  continuous solution of the Riccati equation in <math|I> which satisfies the
+  boundary condition <math|y<rsub|0>=y<around|(|x<rsub|0>|)>> and has a
+  continuous first derivative and a second derivative of bounded variation,
+  and if <math|y=S<rsub|n><around|(|x|)>> is a sum of <math|n> terms of
+  zeroth order Bessel functions such that
+  <math|y<rsub|0>=S<rsub|n><around|(|x<rsub|0>|)>> and also such that
+  <math|S<rsub|n><around|(|x|)>> makes (3) a minimum for fixed <math|m>, a
+  sufficient condition for the uniform convergence of
+  <math|S<rsub|n><around|(|x|)>> to <math|y<around|(|x|)>> and
+  <math|S<rsub|n><rprime|'><around|(|x|)>> to
+  <math|y<rprime|'><around|(|x|)>> throughout <math|I> is that
+
+  <\equation>
+    lim<rsub|n\<to\>\<infty\>> \<lambda\><rsub|n><rsup|1/2*m>*\<eta\><rsub|n>=0<text|>
+  </equation>
+
+  where <math|\<eta\><rsub|n>=C*<sqrt|v<rsub|n>>>, <math|\<eta\>\<leq\>min
+  <around*|{|1,<around*|(|<frac|A*\<lambda\><rsub|n>-16*M<rsub|2>|16*M<rsub|2>>|)>*w|}>>,
+  and <math|\<eta\><rsub|n>> is given by (12).
+
+  <section|Conclusion>
+
+  We have shown in Theorem 3 that a suitably restricted function
+  <math|f<around|(|x|)>> can be uniformly approximated by a sum
+  <math|S<rsub|n><around|(|x|)>> of zeroth order Bessel functions and at the
+  same time its derivative <math|f<rprime|'><around|(|x|)>> can be uniformly
+  approximated by <math|S<rsub|n><rprime|'><around|(|x|)>>. In Theorem 4 are
+  given the conditions for convergence of <math|S<rsub|n><around|(|x|)>> and
+  <math|S<rsub|n><rprime|'><around|(|x|)>> to <math|y<around|(|x|)>> and
+  <math|y<rprime|'><around|(|x|)>>, the solution of Riccati's equation and
+  its derivative respectively, as the number of terms in
+  <math|S<rsub|n><around|(|x|)>> increases without bound. By the analogues of
+  Jackson's work [3], the minimizing sum <math|S<rsub|n><around|(|x|)>>
+  exists and is unique. Thus <math|S<rsub|n><around|(|x|)>> is the best
+  approximation to the solution of (2) in the sense given by (3), and the
+  solution of (2) can be expanded directly in a series of zeroth order Bessel
+  functions under the assumptions of Theorem 4.
+
+  <subsection*|References>
+
+  <\enumerate>
+    <item>F. Bowman, <with|font-shape|italic|Introduction to Bessel
+    Functions>, Dover Publications, New York, 1958.
+
+    <item>E. A. Coddington and N. Levinson, <with|font-shape|italic|Theory of
+    Ordinary Differential Equations>, McGraw-Hill, New York, 1955.
+
+    <item>D. Jackson, <with|font-shape|italic|Proofs of closest
+    approximation>, Trans. Amer. Math. Soc., 22 (1921), pp. 117\U158.
+
+    <item>W. H. McEwen, <with|font-shape|italic|Problems of closest
+    approximation connected with the solution of linear differential
+    equations>, Ibid., 33 (1931), pp. 979\U997.
+
+    <item>C. N. Moore, <with|font-shape|italic|The summability of the
+    developments in Bessel functions with applications>, Ibid., 10 (1909),
+    pp. 391\U435.
+
+    <item>\V, <with|font-shape|italic|On the uniform convergence of the
+    developments in Bessel's functions>, Ibid., 12 (1911), pp. 181\U206.
+
+    <item>E. N. Oberg, <with|font-shape|italic|The approximate solution of
+    integral equations>, Bull. Amer. Math. Soc., 41 (1935), pp. 276\U284.
+
+    <item>M. G. Scherberg, <with|font-shape|italic|The degree of convergence
+    of a series of Bessel functions>, Trans. Amer. Math. Soc., 35 (1933), pp.
+    172\U183.
+
+    <item>F. Max Stein, <with|font-shape|italic|The approximate solution of
+    integro-differential equations>, Ph.D. dissertation, State University of
+    Iowa, 1955, pp. 1\U66.
+
+    <item>G. N. Watson, <with|font-shape|italic|A Treatise on the Theory of
+    Bessel Functions>, Cambridge Press, Cambridge, 1922.
+  </enumerate>
 </body>
 
 <\initial>
@@ -426,14 +661,15 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-10|<tuple|5|434|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_26.tm>>
-    <associate|auto-3|<tuple|3|1|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-3|<tuple|3|426|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-4|<tuple|3|426|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-5|<tuple|4|427|../../.TeXmacs/texts/scratch/no_name_26.tm>>
-    <associate|auto-6|<tuple|5|427|../../.TeXmacs/texts/scratch/no_name_26.tm>>
-    <associate|auto-7|<tuple|6|?|../../.TeXmacs/texts/scratch/no_name_26.tm>>
-    <associate|auto-8|<tuple|7|?|../../.TeXmacs/texts/scratch/no_name_26.tm>>
-    <associate|auto-9|<tuple|9|?|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-6|<tuple|5|428|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-7|<tuple|6|430|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-8|<tuple|7|430|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-9|<tuple|5|434|../../.TeXmacs/texts/scratch/no_name_26.tm>>
   </collection>
 </references>
 
@@ -464,6 +700,23 @@
       of sums of Bessel functions to a given function>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|6<space|2spc>Existence
+      and uniqueness of minimizing sums> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-7><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|7<space|2spc>The
+      approximate solution of Riccati's equation>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-8><vspace|0.5fn>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Conclusion>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-9><vspace|0.5fn>
+
+      <with|par-left|<quote|1tab>|References
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-10>>
     </associate>
   </collection>
 </auxiliary>
