@@ -15,14 +15,17 @@ import arb.utensils.Utensils;
 /**
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- *      {@link TheArb4jLibrary} *
+ *      {@link TheArb4jLibrary}
  */
 public class ProductGenerator extends
                               BoringPartsOfProductGenerator implements
                               Opcodes
 {
 
-  private static final String MUL_METHOD_DESCRIPTOR = Utensils.getMethodDescriptor(Real.class, Real.class, int.class, Real.class);
+  private static final String MUL_METHOD_DESCRIPTOR = Utensils.getMethodDescriptor(Real.class,
+                                                                                   Real.class,
+                                                                                   int.class,
+                                                                                   Real.class);
 
   public ProductGenerator(String functionClass)
   {
@@ -112,8 +115,8 @@ public class ProductGenerator extends
    */
   public void generateInnerLoop(MethodVisitor methodVisitor)
   {
-    //assert false : "   * TODO; go over this the bug is here most\n";
-                  
+    // assert false : " * TODO; go over this the bug is here most\n";
+
     loadIndexVariable(methodVisitor);
     loadResultingProductVariable(methodVisitor);
     loadFactorFunction(methodVisitor);
@@ -171,11 +174,7 @@ public class ProductGenerator extends
   {
     loadBits(methodVisitor);
     loadResultingProductVariable(methodVisitor);
-    invokeMethod(methodVisitor,
-                 Real.class,
-                 "mul",
-                 MUL_METHOD_DESCRIPTOR,
-                 false);
+    invokeMethod(methodVisitor, Real.class, "mul", MUL_METHOD_DESCRIPTOR, false);
     pop(methodVisitor);
   }
 

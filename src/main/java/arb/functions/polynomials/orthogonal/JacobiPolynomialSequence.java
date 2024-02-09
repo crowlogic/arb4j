@@ -10,6 +10,8 @@ import arb.Integer;
 import arb.OrthogonalBasis;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.functions.Function;
@@ -40,14 +42,13 @@ import arb.functions.real.RealNullaryFunction;
  *  P(0,x)=1
  *  P(1,x)=(C(1)x+α-β)/2  
  *  P(n,x)=(A(n,x)*P(n-1,x)-B(n)*P(n-2,x))/E(n)∀n≥2
- *  
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
+ * 
  * </pre>
  * 
  * @author Stephen Crowley
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class JacobiPolynomialSequence implements
                                       OrthogonalBasis<Real, RealPolynomial>,
@@ -83,7 +84,7 @@ public class JacobiPolynomialSequence implements
 
   public final Real                              β       = new Real().setName("β");
 
-  final public Context                                  context = new Context(α,
+  final public Context                           context = new Context(α,
                                                                        β);
 
   final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
@@ -94,7 +95,7 @@ public class JacobiPolynomialSequence implements
                                                                             "n➔C(n-1)*C(n)",
                                                                             context);
 
-  final public NullaryFunction<Real>             G       = RealNullaryFunction.express("G","α²-β²", context);
+  final public NullaryFunction<Real>             G       = RealNullaryFunction.express("G", "α²-β²", context);
 
   final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
                                                                             RealPolynomial.class,
