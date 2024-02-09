@@ -22,7 +22,7 @@
   nonlinear differential equation, the Riccati equation,
 
   <\equation>
-    L<around|(|y|)>=<wide|y|\<dot\>><around*|(|x|)>-P<around|(|x|)>*y<around*|(|x|)>-Q<around|(|x|)>*y<around*|(|x|)><rsup|2>=R<around|(|x|)>
+    L<around|(|y<around*|(|x|)>|)>=<wide|y|\<dot\>><around*|(|x|)>-P<around|(|x|)>*y<around*|(|x|)>-Q<around|(|x|)>*y<around*|(|x|)><rsup|2>=R<around|(|x|)>
   </equation>
 
   by a sum <math|S<rsub|n><around|(|x|)>> of <math|n> terms of Bessel
@@ -300,9 +300,9 @@
 
   Then from Theorem 2 we have that
 
-  <\equation*>
+  <\equation>
     <around|\||f<around|(|x|)>-Q<rsub|n><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>
-  </equation*>
+  </equation>
 
   Next define <math|R<rsub|n><around|(|x|)>> by
 
@@ -319,21 +319,98 @@
 
   Therefore
 
-  <\equation*>
+  <\equation>
     <around|\||f<around|(|x|)>-R<rsub|n><around|(|x|)>|\|>=<around*|\||<big|int><rsub|0><rsup|x><around*|[|f<rprime|'><around|(|t|)>-Q<rsub|n><around|(|t|)>|]>*<space|0.17em>d*t|\|>=<around|(|1-0|)><sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>
-  </equation*>
+  </equation>
 
   and
 
-  <\equation*>
-    <around|\||f<rprime|'><around|(|x|)>-R<rsub|n><rprime|'><around|(|x|)>|\|>=<frac|<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>|<sqrt|\<lambda\><rsub|n>>><rsup|>,
-  </equation*>
+  <\equation>
+    <around|\||f<rprime|'><around|(|x|)>-R<rsub|n><rprime|'><around|(|x|)>|\|>=<frac|<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>|<sqrt|\<lambda\><rsub|n>>><rsup|>
+  </equation>
 
   since <math|R<rsub|n><rprime|'><around|(|x|)>=Q<rsub|n><around|(|x|)>> from
   (11). From these two equations we see that <math|f<around|(|x|)>> can be
   uniformly approximated by a sum of zeroth order Bessel functions such that
   <math|f<around|(|x|)>> is, at the same time, uniformly approximated by the
   derivative of this sum, and the theorem is proved.
+
+  <section|Existence and uniqueness of minimizing sums>
+
+  The proof of existence of sums of zeroth order Bessel functions that will
+  minimize (3) can be shown in a manner analogous to the discussion of the
+  least mth power approximation by Jackson [3] and McEwen [4] who used other
+  types of functions; this proof is omitted here.
+
+  Also omitted is the proof of the uniqueness of a minimizing sum for the
+  case when <math|m\<gtr\>1>. The usual proof by contradiction can be used.
+  Two sums that make (3) a minimum are assumed, and by considering their
+  arithmetic mean one is led to the required contradiction (see [3]).
+
+  <section|The approximate solution of Riccati's equation>
+
+  Before we arrive at the principal theorem of the paper, we state a lemma
+  that is a special case of a theorem due to Oberg [7]. His theorem for sums
+  of orthonormal functions says that if
+
+  <\equation>
+    S<rsub|n><around|(|x|)>=<big|sum><rsub|i=1><rsup|n>a<rsub|i>*\<phi\><rsub|i><around|(|x|)>
+  </equation>
+
+  is a sum of orthonormal functions, and if <math|w<rsub|0>> is the maximum
+  of <math|<around|\||S<rsub|n><around|(|x|)>|\|>> for all <math|x> in the
+  interval <math|<around|[|a,b|]>>, then
+
+  <\equation>
+    <around*|\||<frac|d*S<rsub|n><around|(|x|)>|d*x>|\|>\<leq\>*<frac|M
+    w<rsub|0>|<sqrt|b-a>>*
+  </equation>
+
+  where <math|M> is a constant and <math|\<lambda\><rsub|n>> is a variable
+  which increases with <math|n>. Also, the theorem is similar to one
+  developed by Stein [9] in approximating the solutions of
+  integro-differential equations.
+
+  <with|font-series|bold|Lemma 3.> If <math|g<rsub|n><around|(|x|)>> is a sum
+  of <math|n> terms of zeroth order Bessel functions that satisfies a
+  boundary condition such as <math|y<rsub|0>=g<rsub|n><around|(|x<rsub|0>|)>>,
+  if <math|<wide|P*|\<dot\>><around|(|x|)>> and
+  <math|<wide|Q|\<dot\>><around|(|x|)>> of (2) are bounded
+  \<forall\><math|x\<in\>><math|I>, and further if <math|<wide|w|~>> is the
+  maximum for <math|<around|\||g<rsub|n><around|(|x|)>|\|>> for <math|x> in
+  this interval, then
+
+  <\enumerate>
+    <item*|(a)><math|<around*|\||L<around|[|g<rsub|n><around|(|x|)>|]>|\|>\<leq\>A*\<lambda\><rsub|n><rsup|2>*<wide|w|~>>
+    and
+
+    <item*|(b)><math|<around*|\||<frac|d*L<around|[|g<rsub|n><around|(|x|)>|]>|d*x>|\|>\<leq\>B*\<lambda\><rsub|n><rsup|2>*<wide|w|~><rsup|2>>
+  </enumerate>
+
+  for all <math|x> in <math|I>, where <math|A> and <math|B> are positive
+  constants not depending on <math|n>, and <math|L> is defined by (2).
+
+  The proof of this theorem follows that of Oberg [7] and is not included.
+
+  We are now ready to consider the approximate solution of the Riccati
+  equation, with the boundary condition <math|y<rsub|0>=y<around|(|x<rsub|0>|)>>,
+  by a sum of zeroth order Bessel functions. That is, we want to find the
+  conditions on the sum <math|S<rsub|n><around|(|x|)>> which satisfies
+  <math|y<rsub|0>=S<rsub|n><around|(|x<rsub|0>|)>> and which approximates the
+  solution <math|y<around|(|x|)>> such that the integral in (3) is a minimum;
+  the sum <math|S<rsub|n><around|(|x|)>> is called the
+  <with|font-shape|italic|minimizing sum> for <math|y<around|(|x|)>> and is
+  the <with|font-shape|italic|best approximation> for fixed <math|m> in (3).
+
+  Let <math|g<rsub|n><around|(|x|)>> be an arbitrary sum of zeroth order
+  Bessel functions that satisfies the boundary condition
+  <math|y<rsub|0>=g<rsub|n><around|(|x<rsub|0>|)>> and is such that
+
+  <\equation>
+    <around*|\||y<rsup|<around|(|k|)>><around|(|x|)>-g<rsub|n><rsup|<around|(|k|)>><around|(|x|)>|\|>\<leq\>\<eta\><rsub|n>\<forall\>\<eta\><rsub|n>\<less\>1,k=0,1<space|1em>
+  </equation>
+
+  \;
 </body>
 
 <\initial>
@@ -354,6 +431,9 @@
     <associate|auto-4|<tuple|3|426|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-5|<tuple|4|427|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-6|<tuple|5|427|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-7|<tuple|6|?|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-8|<tuple|7|?|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-9|<tuple|9|?|../../.TeXmacs/texts/scratch/no_name_26.tm>>
   </collection>
 </references>
 
