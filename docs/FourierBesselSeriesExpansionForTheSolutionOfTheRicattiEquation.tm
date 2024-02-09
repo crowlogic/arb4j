@@ -274,7 +274,66 @@
     <around|\||f<around|(|x|)>-S<rsub|n><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|n>|)>>
   </equation>
 
-  since <math|a-b> is of the order of the larger of <math|a> and <math|b>.
+  since <math|a-b> is of the order of the larger of <math|a> and
+  <math|b>.<assign|page-nr|429> We now consider the degree of convergence of
+  sums of Bessel functions to a given function <math|f<around|(|x|)>> and the
+  derivative of these sums as they converge to
+  <math|f<rprime|'><around|(|x|)>>.
+
+  <with|font-series|bold|Theorem 3.> If <math|f<around|(|x|)>> and
+  <math|f<rprime|'><around|(|x|)>> are such that
+  <math|f<rprime|''><around|(|x|)>> exists and has bounded variation in
+  <math|I>, then there exists a sum of zeroth order Bessel functions such
+  that
+
+  <\equation>
+    <around|\||f<rsup|<around|(|k|)>><around|(|x|)>-S<rsub|n><rsup|<around|(|k|)>><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>><rsup|><space|1em>k=0,1.
+  </equation>
+
+  <with|font-shape|italic|Proof.> Assume <math|f<around|(|x|)>> is a function
+  of <math|x> as described by Theorem 2 and that
+  <math|Q<rsub|n><around|(|x|)>> is a sum of Bessel functions
+
+  <\equation>
+    Q<rsub|n><around|(|x|)>=<big|sum><rsub|m=1><rsup|n>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>
+  </equation>
+
+  Then from Theorem 2 we have that
+
+  <\equation*>
+    <around|\||f<around|(|x|)>-Q<rsub|n><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>
+  </equation*>
+
+  Next define <math|R<rsub|n><around|(|x|)>> by
+
+  <\equation>
+    R<rsub|n><around|(|x|)>=f<around|(|0|)>+<big|int><rsub|0><rsup|x>Q<rsub|n><around|(|t|)>*<space|0.17em>d*t
+  </equation>
+
+  That is, <math|R<rsub|n><around|(|x|)>> is a sum of zeroth order Bessel
+  functions. From (11) we can write
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|f<around|(|x|)>-R<rsub|n><around|(|x|)>>|<cell|=f<around|(|x|)>-f<around|(|0|)>-<big|int><rsub|0><rsup|x>Q<rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|x><wide|f|\<dot\>><around|(|t|)>*<space|0.17em>d*t-<big|int><rsub|0><rsup|x>Q<rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|x><around*|[|<wide|f|\<dot\>><around|(|t|)>-Q<rsub|n><around|(|t|)>|]>*<space|0.17em>d*t>>>>>
+  </equation>
+
+  Therefore
+
+  <\equation*>
+    <around|\||f<around|(|x|)>-R<rsub|n><around|(|x|)>|\|>=<around*|\||<big|int><rsub|0><rsup|x><around*|[|f<rprime|'><around|(|t|)>-Q<rsub|n><around|(|t|)>|]>*<space|0.17em>d*t|\|>=<around|(|1-0|)><sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>
+  </equation*>
+
+  and
+
+  <\equation*>
+    <around|\||f<rprime|'><around|(|x|)>-R<rsub|n><rprime|'><around|(|x|)>|\|>=<frac|<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>|<sqrt|\<lambda\><rsub|n>>><rsup|>,
+  </equation*>
+
+  since <math|R<rsub|n><rprime|'><around|(|x|)>=Q<rsub|n><around|(|x|)>> from
+  (11). From these two equations we see that <math|f<around|(|x|)>> can be
+  uniformly approximated by a sum of zeroth order Bessel functions such that
+  <math|f<around|(|x|)>> is, at the same time, uniformly approximated by the
+  derivative of this sum, and the theorem is proved.
 </body>
 
 <\initial>
