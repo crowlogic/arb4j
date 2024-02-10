@@ -32,7 +32,29 @@
   </abstract>
 
   <surround||<new-page>|<\table-of-contents|toc>
-    \;
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>Introduction>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <with|par-left|1tab|1.1<space|2spc>Notation
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2>>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|2<space|2spc>Riemann-Hilbert
+    representations> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|3<space|2spc>Christoffel-Darboux
+    formula> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|4<space|2spc>A
+    dynamical system> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7><vspace|0.5fn>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8><vspace|0.5fn>
   </table-of-contents>>
 
   <section|Introduction>
@@ -419,7 +441,7 @@
     To demonstrate both claims it is sufficient to demonstrate that
 
     <\align*>
-      <tformat|<table|<row|<cell|<math-up|pf><around*|(|<around|\<langle\>|<with|math-font|cal*|X><rsup|i-1>,<with|math-font|cal*|X><rsup|j-1>|\<rangle\>><rsub|4>|)><rsub|i,j=1><rsup|2*n>\<gtr\>0>|<cell|>|<cell|\<forall\>n\<geq\>1>>>>
+      <tformat|<table|<row|<cell|<math-up|pf><around*|(|<around|\<langle\>|<with|math-font|cal*|X><rsup|i-1>,<with|math-font|cal*|X><rsup|j-1>|\<rangle\>><rsub|4>|)><rsub|i,j=1><rsup|2*n>\<gtr\>0>|<cell|>|<cell|\<forall\>n\<geq\>1<text|>>>>>
     </align*>
 
     where <math|<math-up|pf>> is the Pfaffian. This follows from one of de
@@ -2346,7 +2368,169 @@
   information. This completes the proof of Theorem
   <reference|skewtoda>.<new-page>
 
-  <bibliography|SkewOrthogRef.bib|>
+  <\bibliography|bib|tm-plain|SkewOrthogRef>
+    <\bib-list|31>
+      <bibitem*|1><label|bib-Adler:2000aa>M.<nbsp>Adler,
+      P.<nbsp>J.<nbsp>Forrester, T.<nbsp>Nagao<localize|, and
+      >P.<nbsp>van<nbsp>Moerbeke. <newblock>Classical skew orthogonal
+      polynomials and random matrices. <newblock><with|font-shape|italic|Journal
+      of Statistical Physics>, 99(1):141\U170, 2000.<newblock>
+
+      <bibitem*|2><label|bib-Adler1999ThePL>M.<nbsp>Adler,
+      E.<nbsp>Horozov<localize|, and >P.<nbsp>van<nbsp>Moerbeke.
+      <newblock>The Pfaff lattice and skew-orthogonal polynomials.
+      <newblock><with|font-shape|italic|International Mathematics Research
+      Notices>, 1999:569\U588, 1999.<newblock>
+
+      <bibitem*|3><label|bib-adler1999pfaff>M.<nbsp>Adler<localize| and
+      >P.<nbsp>van<nbsp>Moerbeke. <newblock>The Pfaff lattice, matrix
+      integrals and a map from Toda to Pfaff. <newblock>1999.<newblock>
+
+      <bibitem*|4><label|bib-Its>P.<nbsp>Bleher<localize| and >A.<nbsp>Its.
+      <newblock>Semiclassical asymptotics of orthogonal polynomials,
+      Riemann-Hilbert problem, and universality in the matrix model.
+      <newblock><with|font-shape|italic|Annals of Mathematics>,
+      150(1):185\U266, 1999.<newblock>
+
+      <bibitem*|5><label|bib-debruijn>N.<nbsp>G.<nbsp>de<nbsp>Bruijn.
+      <newblock>On some multiple integrals involving determinants.
+      <newblock><with|font-shape|italic|The Journal of the Indian
+      Mathematical Society>, 19:133\U151, 1955.<newblock>
+
+      <bibitem*|6><label|bib-deiftbook>P.<nbsp>Deift.
+      <newblock><with|font-shape|italic|Orthogonal Polynomials and Random
+      Matrices: A Riemann-Hilbert Approach>. <newblock>Courant Lecture Notes,
+      AMS, 2000.<newblock>
+
+      <bibitem*|7><label|bib-deift2019riemannhilbert>P.<nbsp>Deift.
+      <newblock>Riemann-Hilbert problems. <newblock>2019.<newblock>
+
+      <bibitem*|8><label|bib-deiftuniversality>P.<nbsp>Deift<localize| and
+      >D.<nbsp>Gioev. <newblock><with|font-shape|italic|Random Matrix Theory:
+      Invariant Ensembles and Universality>. <newblock>Courant Lecture Notes,
+      AMS, 2009.<newblock>
+
+      <bibitem*|9><label|bib-Deift:2007aa>P.<nbsp>Deift, D.<nbsp>Gioev,
+      T.<nbsp>Kriecherbauer<localize|, and >M.<nbsp>Vanlessen.
+      <newblock>Universality for orthogonal and symplectic Laguerre-Type
+      ensembles. <newblock><with|font-shape|italic|Journal of Statistical
+      Physics>, 129(5):949\U1053, 2007.<newblock>
+
+      <bibitem*|10><label|bib-deift>P.<nbsp>Deift, T.<nbsp>Kriecherbauer,
+      K.<nbsp>T-R McLaughlin<localize|, and >S.<nbsp>Venakides.
+      <newblock>Asymptotics for polynomials orthogonal with respect to
+      varying exponential weights. <newblock><with|font-shape|italic|International
+      Mathematics Research Notices>, 1997(16):759\U782, 1997.<newblock>
+
+      <bibitem*|11><label|bib-deift2>P.<nbsp>Deift, T.<nbsp>Kriecherbauer,
+      K.<nbsp>T-R McLaughlin, S.<nbsp>Venakides<localize|, and >X.<nbsp>Zhou.
+      <newblock>Strong asymptotics of orthogonal polynomials with respect to
+      exponential weights. <newblock><with|font-shape|italic|Communications
+      on Pure and Applied Mathematics>, 52(12):1491\U1552, 1999.<newblock>
+
+      <bibitem*|12><label|bib-deift3>P.<nbsp>Deift, T.<nbsp>Kriecherbauer,
+      K.<nbsp>T-R McLaughlin, S.<nbsp>Venakides<localize|, and >X.<nbsp>Zhou.
+      <newblock>Uniform asymptotics for polynomials orthogonal with respect
+      to varying exponential weights and applications to universality
+      questions in random matrix theory. <newblock><with|font-shape|italic|Communications
+      on Pure and Applied Mathematics>, 52(11):1335\U1425, 1999.<newblock>
+
+      <bibitem*|13><label|bib-10.2307/2946540>P.<nbsp>Deift<localize| and
+      >X.<nbsp>Zhou. <newblock>A steepest descent method for oscillatory
+      Riemann-Hilbert problems. Asymptotics for the MKdV equation.
+      <newblock><with|font-shape|italic|Annals of Mathematics>,
+      137(2):295\U368, 1993.<newblock>
+
+      <bibitem*|14><label|bib-Dyson3>F.<nbsp>J.<nbsp>Dyson. <newblock>The
+      Threefold Way. Algebraic Structure of Symmetry Groups and Ensembles in
+      Quantum Mechanics. <newblock><with|font-shape|italic|Journal of
+      Mathematical Physics>, 3(6):1199\U1215, 1962.<newblock>
+
+      <bibitem*|15><label|bib-Dyson>F.<nbsp>J.<nbsp>Dyson. <newblock>A class
+      of matrix ensembles. <newblock><with|font-shape|italic|Journal of
+      Mathematical Physics>, 13(90), 1972.<newblock>
+
+      <bibitem*|16><label|bib-Eynard:2001aa>B.<nbsp>Eynard.
+      <newblock>Asymptotics of skew orthogonal polynomials.
+      <newblock><with|font-shape|italic|Journal of Physics A, Mathematical
+      and General>, 34(37):7591\U7605, 2001.<newblock>
+
+      <bibitem*|17><label|bib-fokas>A.<nbsp>S.<nbsp>Fokas,
+      A.<nbsp>R.<nbsp>Its<localize|, and >A.<nbsp>V.<nbsp>Kitaev.
+      <newblock>Discrete Painlevé equations and their appearance in quantum
+      gravity. <newblock><with|font-shape|italic|Communications in
+      Mathematical Physics>, 142(2):313\U344, 1991.<newblock>
+
+      <bibitem*|18><label|bib-loggases>P.<nbsp>Forrester.
+      <newblock><with|font-shape|italic|Log-Gases and Random Matrices>.
+      <newblock>LMS Monographs, Princeton University Press, 2010.<newblock>
+
+      <bibitem*|19><label|bib-itsRH>A.<nbsp>Its. <newblock>The
+      Riemann-Hilbert problem and integrable systems.
+      <newblock><with|font-shape|italic|Notices of the AMS>, 50(11), December
+      2003.<newblock>
+
+      <bibitem*|20><label|bib-kriecherbauer2010fluctuations>T.<nbsp>Kriecherbauer<localize|
+      and >M.<nbsp>Shcherbina. <newblock>Fluctuations of eigenvalues of
+      matrix models and their applications. <newblock>2010.<newblock>
+
+      <bibitem*|21><label|bib-Martinez_Finkelshtein_2016>A.<nbsp>Martinez-Finkelshtein<localize|
+      and >W.<nbsp>Van Assche. <newblock>WHAT IS...A multiple orthogonal
+      polynomial? <newblock><with|font-shape|italic|Notices of the American
+      Mathematical Society>, 63(09):1029\U1031, oct 2016.<newblock>
+
+      <bibitem*|22><label|bib-mehta>M.<nbsp>L.<nbsp>Mehta.
+      <newblock><with|font-shape|italic|Random Matrices>. <newblock>Elsevier,
+      Third<localize| edition>, 2004.<newblock>
+
+      <bibitem*|23><label|bib-singular>N.<nbsp>I.<nbsp>Muskhelishvili.
+      <newblock><with|font-shape|italic|Singular Integral Equations>.
+      <newblock>Springer Dordrecht, 1958.<newblock>
+
+      <bibitem*|24><label|bib-Pastur:1997aa>L.<nbsp>Pastur<localize| and
+      >M.<nbsp>Shcherbina. <newblock>Universality of the local eigenvalue
+      statistics for a class of unitary invariant random matrix ensembles.
+      <newblock><with|font-shape|italic|Journal of Statistical Physics>,
+      86(1):109\U147, 1997.<newblock>
+
+      <bibitem*|25><label|bib-PIERCE2008230>V.<nbsp>U.<nbsp>Pierce.
+      <newblock>A Riemann-Hilbert problem for skew-orthogonal polynomials.
+      <newblock><with|font-shape|italic|Journal of Computational and Applied
+      Mathematics>, 215(1):230\U241, 2008.<newblock>
+
+      <bibitem*|26><label|bib-Shcherbina:2009ab>M.<nbsp>Shcherbina.
+      <newblock>Edge universality for orthogonal ensembles of random
+      matrices. <newblock><with|font-shape|italic|Journal of Statistical
+      Physics>, 136(1):35\U50, 2009.<newblock>
+
+      <bibitem*|27><label|bib-Shcherbina:2009aa>M.<nbsp>Shcherbina.
+      <newblock>On universality for orthogonal ensembles of random matrices.
+      <newblock><with|font-shape|italic|Communications in Mathematical
+      Physics>, 285(3):957\U974, 2009.<newblock>
+
+      <bibitem*|28><label|bib-Shcherbina:2011aa>M.<nbsp>Shcherbina.
+      <newblock>Orthogonal and symplectic matrix models: universality and
+      other properties. <newblock><with|font-shape|italic|Communications in
+      Mathematical Physics>, 307(3):761\U790, 2011.<newblock>
+
+      <bibitem*|29><label|bib-Stojanovic:2000aa>A.<nbsp>Stojanovic.
+      <newblock>Universality in orthogonal and symplectic invariant matrix
+      models with quartic potential. <newblock><with|font-shape|italic|Mathematical
+      Physics, Analysis and Geometry>, 3(4):339\U373, 2000.<newblock>
+
+      <bibitem*|30><label|bib-VanAssche2001>W.<nbsp>Van Assche,
+      J.<nbsp>S.<nbsp>Geronimo<localize|, and
+      >A.<nbsp>B.<nbsp>J.<nbsp>Kuijlaars.
+      <newblock><with|font-shape|italic|Riemann-Hilbert Problems for Multiple
+      Orthogonal Polynomials>, <localize|pages >23\U59. <newblock>Springer
+      Netherlands, Dordrecht, 2001.<newblock>
+
+      <bibitem*|31><label|bib-Widom:1999aa>H.<nbsp>Widom. <newblock>On the
+      relation between orthogonal, symplectic and unitary matrix ensembles.
+      <newblock><with|font-shape|italic|Journal of Statistical Physics>,
+      94(3):347\U363, 1999.<newblock>
+    </bib-list>
+  </bibliography>
 </body>
 
 <\initial>
@@ -2361,73 +2545,104 @@
 
 <\references>
   <\collection>
-    <associate|12Ahat|<tuple|22|25>>
-    <associate|22Ahat|<tuple|23|25>>
-    <associate|CD|<tuple|25|27>>
-    <associate|EvenSolution|<tuple|17|16>>
-    <associate|EvenSymmetry|<tuple|10|16>>
-    <associate|Hermite|<tuple|21|22>>
-    <associate|Laxpair1|<tuple|40|36>>
-    <associate|Laxpair2|<tuple|41|36>>
-    <associate|OddSymmetry|<tuple|18|21>>
-    <associate|alpha|<tuple|15|15>>
-    <associate|auto-1|<tuple|1|2>>
-    <associate|auto-2|<tuple|1.1|6>>
-    <associate|auto-3|<tuple|2|8>>
-    <associate|auto-4|<tuple|1|9>>
-    <associate|auto-5|<tuple|2|18>>
-    <associate|auto-6|<tuple|3|27>>
-    <associate|auto-7|<tuple|4|32>>
-    <associate|auto-8|<tuple|54|41>>
-    <associate|beta|<tuple|16|15>>
-    <associate|christoffelsection|<tuple|3|27>>
-    <associate|compatibility|<tuple|42|37>>
-    <associate|constant|<tuple|45|37>>
-    <associate|constant12|<tuple|51|39>>
-    <associate|constant2|<tuple|49|39>>
-    <associate|constant21|<tuple|50|39>>
-    <associate|contour|<tuple|5|12>>
-    <associate|contour1|<tuple|10|9>>
-    <associate|contour2|<tuple|11|9>>
-    <associate|contours|<tuple|1|9>>
-    <associate|deduce1|<tuple|35|34>>
-    <associate|deduce2|<tuple|36|34>>
-    <associate|defb|<tuple|33|32>>
-    <associate|deformation|<tuple|32|32>>
-    <associate|dual|<tuple|8|8>>
-    <associate|dynamicsection|<tuple|4|32>>
-    <associate|evenrhp|<tuple|6|13>>
-    <associate|exactsolution|<tuple|38|34>>
-    <associate|formula|<tuple|28|29>>
-    <associate|gamma|<tuple|13|13>>
-    <associate|i2Ahat|<tuple|24|25>>
-    <associate|identity|<tuple|34|33>>
-    <associate|identity1|<tuple|47|38>>
-    <associate|identity2|<tuple|48|38>>
-    <associate|identity3|<tuple|52|40>>
-    <associate|identity4|<tuple|53|40>>
-    <associate|integrals|<tuple|12|10>>
-    <associate|intriguing|<tuple|29|29>>
-    <associate|linear|<tuple|44|37>>
-    <associate|linearexpansion|<tuple|46|37>>
-    <associate|linindep|<tuple|8|15>>
-    <associate|morecontours|<tuple|2|18>>
-    <associate|nequal0|<tuple|31|38>>
-    <associate|oddrhp|<tuple|11|17>>
-    <associate|orthog|<tuple|19|22>>
-    <associate|pointprocess|<tuple|2|3>>
-    <associate|polyunique|<tuple|3|9>>
-    <associate|prekernel|<tuple|5|4>>
-    <associate|probmeas|<tuple|1|2>>
-    <associate|recurrence|<tuple|30|36>>
-    <associate|representation|<tuple|4|10>>
-    <associate|rhpsection|<tuple|2|8>>
-    <associate|skewprod|<tuple|4|3>>
-    <associate|skewtoda|<tuple|26|33>>
-    <associate|typeI|<tuple|21|26>>
-    <associate|typeII|<tuple|20|23>>
-    <associate|uniqueness|<tuple|7|14>>
-    <associate|zero|<tuple|17|21>>
+    <associate|12Ahat|<tuple|22|24|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|22Ahat|<tuple|23|24|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|CD|<tuple|25|26|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|EvenSolution|<tuple|17|15|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|EvenSymmetry|<tuple|10|16|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|Hermite|<tuple|21|22|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|Laxpair1|<tuple|40|35|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|Laxpair2|<tuple|41|35|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|OddSymmetry|<tuple|18|20|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|alpha|<tuple|15|15|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|auto-1|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|auto-2|<tuple|1.1|6|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|auto-3|<tuple|2|8|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|auto-4|<tuple|1|9|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|auto-5|<tuple|2|18|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|auto-6|<tuple|3|26|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|auto-7|<tuple|4|31|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|auto-8|<tuple|54|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|beta|<tuple|16|15|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-10.2307/2946540|<tuple|13|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Adler1999ThePL|<tuple|2|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Adler:2000aa|<tuple|1|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Deift:2007aa|<tuple|9|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Dyson|<tuple|15|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Dyson3|<tuple|14|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Eynard:2001aa|<tuple|16|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Its|<tuple|4|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Martinez_Finkelshtein_2016|<tuple|21|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-PIERCE2008230|<tuple|25|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Pastur:1997aa|<tuple|24|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Shcherbina:2009aa|<tuple|27|41|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Shcherbina:2009ab|<tuple|26|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Shcherbina:2011aa|<tuple|28|41|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Stojanovic:2000aa|<tuple|29|41|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-VanAssche2001|<tuple|30|41|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-Widom:1999aa|<tuple|31|41|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-adler1999pfaff|<tuple|3|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-debruijn|<tuple|5|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-deift|<tuple|10|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-deift2|<tuple|11|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-deift2019riemannhilbert|<tuple|7|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-deift3|<tuple|12|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-deiftbook|<tuple|6|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-deiftuniversality|<tuple|8|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-fokas|<tuple|17|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-itsRH|<tuple|19|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-kriecherbauer2010fluctuations|<tuple|20|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-loggases|<tuple|18|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-mehta|<tuple|22|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|bib-singular|<tuple|23|40|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|christoffelsection|<tuple|3|26|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|compatibility|<tuple|42|36|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|constant|<tuple|45|36|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|constant12|<tuple|51|38|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|constant2|<tuple|49|38|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|constant21|<tuple|50|38|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|contour|<tuple|5|11|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|contour1|<tuple|10|9|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|contour2|<tuple|11|9|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|contours|<tuple|1|9|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|deduce1|<tuple|35|33|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|deduce2|<tuple|36|33|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|defb|<tuple|33|31|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|deformation|<tuple|32|31|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|dual|<tuple|8|8|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|dynamicsection|<tuple|4|31|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|evenrhp|<tuple|6|12|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|exactsolution|<tuple|38|33|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|formula|<tuple|28|28|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|gamma|<tuple|13|12|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|i2Ahat|<tuple|24|24|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|identity|<tuple|34|32|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|identity1|<tuple|47|37|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|identity2|<tuple|48|37|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|identity3|<tuple|52|39|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|identity4|<tuple|53|39|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|integrals|<tuple|12|9|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|intriguing|<tuple|29|28|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|linear|<tuple|44|36|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|linearexpansion|<tuple|46|36|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|linindep|<tuple|8|15|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|morecontours|<tuple|2|18|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|nequal0|<tuple|31|37|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|oddrhp|<tuple|11|17|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|orthog|<tuple|19|21|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|pointprocess|<tuple|2|3|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|polyunique|<tuple|3|9|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|prekernel|<tuple|5|4|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|probmeas|<tuple|1|2|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|recurrence|<tuple|30|35|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|representation|<tuple|4|9|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|rhpsection|<tuple|2|8|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|skewprod|<tuple|4|3|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|skewtoda|<tuple|26|32|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|typeI|<tuple|21|25|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|typeII|<tuple|20|22|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|uniqueness|<tuple|7|13|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|zero|<tuple|17|20|../../.TeXmacs/texts/scratch/no_name_27.tm>>
   </collection>
 </references>
 
