@@ -2,7 +2,11 @@ package arb.expressions.nodes.nary;
 
 import static java.lang.String.format;
 
+import java.io.PrintWriter;
+
 import org.objectweb.asm.*;
+import org.objectweb.asm.util.Textifier;
+import org.objectweb.asm.util.TraceClassVisitor;
 
 import arb.Integer;
 import arb.Real;
@@ -45,40 +49,39 @@ public class Product<D, R, F extends Function<D, R>> extends
     String rem = expression.remaining();
     if (!expression.nextCharacterIs('{'))
     {
-      throw new ExpressionCompilerException(format(MISSING_OPENING_CURLY_BRACE, expression.character, rem));
+      throwException(format(MISSING_OPENING_CURLY_BRACE, expression.character, rem));
     }
     var indexVar = expression.determine();
     if (!(indexVar instanceof Variable<D, R, F>))
     {
-      throw new ExpressionCompilerException(format(NONVARIABLE_MSG, indexVar, rem));
+      throwException(format(NONVARIABLE_MSG, indexVar, rem));
     }
     index = (Variable<D, R, F>) indexVar;
     if (!expression.nextCharacterIs('='))
     {
-      throw new ExpressionCompilerException(format(MISSING_EQUALS,
-                                                   expression.character,
-                                                   expression.position,
-                                                   expression));
+      throwException(format(MISSING_EQUALS, expression.character, expression.position, expression));
     }
     startIndex = expression.determine();
     if (!expression.nextCharacterIs('…'))
     {
-      throw new ExpressionCompilerException(format(MISSING_ELLIPSIS,
-                                                   expression.character,
-                                                   expression.position,
-                                                   expression));
+      throwException(format(MISSING_ELLIPSIS, expression.character, expression.position, expression));
 
     }
     endIndex = expression.determine();
     if (!expression.nextCharacterIs('}'))
     {
-      throw new ExpressionCompilerException(format(MISSING_CLOSING_CURLY_BRACE, rem));
+      throwException(format(MISSING_CLOSING_CURLY_BRACE, rem));
     }
 
     return this;
   }
 
-  private ProductGenerator productGenerator = new ProductGenerator(Type.getInternalName(expression.functionClass))
+  private void throwException(String msg)
+  {
+    throw new ExpressionCompilerException(msg);
+  }
+
+  private ProductGenerator productGenerator = new ProductGenerator(this, Type.getInternalName(expression.functionClass))
   {
 
     @Override
@@ -101,13 +104,11 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   }
 
-  private String intermediateProductResultVariable;
-
   @Override
   public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
   {
-    intermediateProductResultVariable = expression.reserveIntermediateVariable(mv, type());
     System.out.println("generateProduct: expr=" + expression);
+
 
     productGenerator.generateProduct(mv);
     return mv;
@@ -123,7 +124,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor prepareStackForReuse(MethodVisitor mv)
   {
-
+    assert false : "not recycleable";
     return mv;
   }
 

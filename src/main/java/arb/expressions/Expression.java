@@ -26,6 +26,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
+import org.objectweb.asm.util.Textifier;
+import org.objectweb.asm.util.TraceClassVisitor;
 
 import arb.ComplexPolynomial;
 import arb.Integer;
@@ -437,7 +439,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public static boolean analyze       = Boolean.valueOf(System.getProperty("expressionCompiler.analyze", "false"));
 
-  public static boolean computeFrames = !analyze;
+  public static boolean computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
+                                                                           "false"));
+
+  public PrintWriter printWriter;;
 
   public Class<F> load()
   {
@@ -685,6 +690,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     ClassVisitor classVisitor = constructClassVisitor();
 
+    printWriter = new PrintWriter(System.out,
+                                                false);
+
+    classVisitor = new TraceClassVisitor(classVisitor,
+                                         new Textifier(),
+                                         printWriter);
+
     try
     {
       generateFunctionInterface(this, className, classVisitor);
@@ -716,8 +728,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
       classVisitor.visitEnd();
     }
 
-    // Analyzer.analyzeMethod(superType, interfaces, bytecode, classNode, method);
-
+    if (classVisitor instanceof TraceClassVisitor)
+    {
+      classVisitor = ((TraceClassVisitor) classVisitor).getDelegate();
+    }
+    
     instructions = ((ClassWriter) classVisitor).toByteArray();
 
     if (saveClasses)
@@ -947,11 +962,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareLocalVariables(methodVisitor, startLabel, endLabel);
 
-    methodVisitor.visitMaxs(0,0);
+    methodVisitor.visitMaxs(0, 0);
 
     methodVisitor.visitEnd();
 
-    
     return classVisitor;
   }
 

@@ -1,0 +1,79 @@
+// class version 65.65535 (-65471)
+// access flags 0x21
+// signature Ljava/lang/Object;Ljava/lang/AutoCloseable;Larb/functions/real/NullaryFunction<Larb/Real;>;
+// declaration: arb/functions/real/Product implements java.lang.AutoCloseable, arb.functions.real.NullaryFunction<arb.Real>
+public class arb/functions/real/Product implements java/lang/AutoCloseable arb/functions/real/NullaryFunction {
+
+  // compiled from: Product.java
+
+  // access flags 0x1
+  // signature Larb/functions/Function<Larb/Integer;Larb/Real;>;
+  // declaration: factor extends arb.functions.Function<arb.Integer, arb.Real>
+  public Larb/functions/Function; factor
+
+  // access flags 0x11
+  public final Larb/Integer; startIndex
+
+  // access flags 0x11
+  public final Larb/Integer; endIndex
+
+  // access flags 0x11
+  public final Larb/Integer; index
+
+  // access flags 0x11
+  public final Larb/Real; factorValue
+
+  // access flags 0x1
+  public evaluate(ILarb/Real;)Larb/Real;
+   L0
+    LINENUMBER 28 L0
+    ALOAD 2
+    INVOKEVIRTUAL arb/Real.one ()Larb/Real;
+    POP
+   L1
+    LINENUMBER 29 L1
+    ALOAD 0
+    GETFIELD arb/functions/real/Product.index : Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/Product.startIndex : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+   L2
+    LINENUMBER 33 L2
+   FRAME SAME
+    ALOAD 2
+    ALOAD 0
+    GETFIELD arb/functions/real/Product.factor : Larb/functions/Function;
+    ALOAD 0
+    GETFIELD arb/functions/real/Product.index : Larb/Integer;
+    ILOAD 1
+    ALOAD 0
+    GETFIELD arb/functions/real/Product.factorValue : Larb/Real;
+    INVOKEINTERFACE arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; (itf)
+    CHECKCAST arb/Real
+    ILOAD 1
+    INVOKEVIRTUAL arb/Real.mul (Larb/Field;I)Larb/Field;
+    POP
+   L3
+    LINENUMBER 35 L3
+    ALOAD 0
+    GETFIELD arb/functions/real/Product.index : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.increment ()Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/Product.endIndex : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.compareTo (Larb/Integer;)I
+   L4
+    LINENUMBER 31 L4
+    IFLE L2
+   L5
+    LINENUMBER 37 L5
+    ALOAD 2
+    ARETURN
+   L6
+    LOCALVARIABLE this Larb/functions/real/Product; L0 L6 0
+    LOCALVARIABLE bits I L0 L6 1
+    LOCALVARIABLE product Larb/Real; L0 L6 2
+    MAXSTACK = 5
+    MAXLOCALS = 3
+
+}

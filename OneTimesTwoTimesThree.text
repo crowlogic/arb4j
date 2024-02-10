@@ -1,0 +1,97 @@
+// class version 65.65535 (-65471)
+// access flags 0x21
+public class ∏k{k=OnePointPointThree} implements arb/functions/real/NullaryFunction {
+
+
+  // access flags 0x0
+  Larb/Integer; c1
+
+  // access flags 0x0
+  Larb/Integer; c2
+
+  // access flags 0x1
+  // signature (Ljava/lang/Void;IILarb/Real;)Larb/Real;
+  // declaration: arb.Real evaluate(java.lang.Void, int, int, arb.Real)
+  public evaluate(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;
+   L0
+    ALOAD 2
+    INVOKEVIRTUAL arb/Real.one ()Larb/Real;
+    POP
+    ALOAD 0
+    GETFIELD arb/functions/real/NullaryFunction.k : Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/NullaryFunction.startIndex : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+    GOTO L1
+   L2
+   FRAME SAME
+    ALOAD 0
+    GETFIELD arb/functions/real/NullaryFunction.k : Larb/Integer;
+    ALOAD 2
+    ALOAD 0
+    GETFIELD arb/functions/real/NullaryFunction.factor : Larb/functions/Function;
+    ALOAD 0
+    GETFIELD arb/functions/real/NullaryFunction.k : Larb/Integer;
+    ILOAD 1
+    ALOAD 0
+    GETFIELD arb/functions/real/NullaryFunction.value : Larb/Real;
+    INVOKEINTERFACE arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; (itf)
+    CHECKCAST arb/Real
+    ILOAD 1
+    ALOAD 2
+    INVOKEVIRTUAL arb/Real.mul (Larb/Real;ILarb/Real;)Larb/Real;
+    POP
+    ALOAD 0
+    GETFIELD arb/functions/real/NullaryFunction.k : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.increment ()Larb/Integer;
+    POP
+   L1
+   FRAME SAME
+    ALOAD 0
+    GETFIELD arb/functions/real/NullaryFunction.k : Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/NullaryFunction.endIndex : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.compareTo (Larb/Integer;)I
+    IFLE L2
+    ARETURN
+   L3
+    LOCALVARIABLE in Ljava/lang/Void; L0 L3 1
+    LOCALVARIABLE order I L0 L3 2
+    LOCALVARIABLE bits I L0 L3 3
+    LOCALVARIABLE result Larb/Real; L0 L3 4
+    MAXSTACK = 0
+    MAXLOCALS = 0
+
+  // access flags 0x1
+  public <init>()V
+    ALOAD 0
+    INVOKESPECIAL java/lang/Object.<init> ()V
+    ALOAD 0
+    NEW arb/Integer
+    DUP
+    LDC "1"
+    INVOKESPECIAL arb/Integer.<init> (Ljava/lang/String;)V
+    PUTFIELD ∏k{k=OnePointPointThree}.c1 : Larb/Integer;
+    ALOAD 0
+    NEW arb/Integer
+    DUP
+    LDC "3"
+    INVOKESPECIAL arb/Integer.<init> (Ljava/lang/String;)V
+    PUTFIELD ∏k{k=OnePointPointThree}.c2 : Larb/Integer;
+    RETURN
+    MAXSTACK = 0
+    MAXLOCALS = 0
+
+  // access flags 0x1
+  public close()V
+    ALOAD 0
+    GETFIELD ∏k{k=OnePointPointThree}.c1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.close ()V
+    ALOAD 0
+    GETFIELD ∏k{k=OnePointPointThree}.c2 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.close ()V
+    RETURN
+    MAXSTACK = 0
+    MAXLOCALS = 0
+}

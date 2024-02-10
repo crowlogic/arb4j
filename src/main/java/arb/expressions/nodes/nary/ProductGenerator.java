@@ -13,6 +13,8 @@ import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.expressions.Expression;
+import arb.expressions.nodes.Node;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
@@ -21,7 +23,7 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ProductGenerator extends
+public class ProductGenerator<D, R, F extends Function<D, R>> extends
                               BoringPartsOfProductGenerator implements
                               Opcodes
 {
@@ -30,10 +32,14 @@ public class ProductGenerator extends
                                                                                    Real.class,
                                                                                    int.class,
                                                                                    Real.class);
+  private Node<D, R, F> product;
+  private Expression<D, R, F> expression;
 
-  public ProductGenerator(String functionClass)
+  public  ProductGenerator(Node<D, R, F> product, String internalName)
   {
-    this.functionClass = functionClass;
+    this.product =product;
+    this.functionClass = internalName;
+    this.expression = product.expression;
   }
 
   static MethodVisitor beginEvaluationCode(ClassWriter classWriter)
@@ -95,7 +101,8 @@ public class ProductGenerator extends
 
   public void generateProduct(MethodVisitor methodVisitor)
   {
-    out.println("-----begin generateProduct------");
+    expression.printWriter.println("-----begin generateProduct------");
+    out.flush();
 
     generateInitializer(methodVisitor);
 
