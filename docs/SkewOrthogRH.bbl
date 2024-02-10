@@ -1,0 +1,152 @@
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{10}
+
+\bibitem{Adler:2000aa}
+M.~Adler, P.~J. Forrester, T.~Nagao, and P.~van Moerbeke, \emph{Classical skew
+  orthogonal polynomials and random matrices}, Journal of Statistical Physics
+  \textbf{99} (2000), no.~1, 141--170.
+
+\bibitem{Adler1999ThePL}
+M.~Adler, E.~Horozov, and P.~van Moerbeke, \emph{The {Pfaff} lattice and
+  skew-orthogonal polynomials}, International Mathematics Research Notices
+  \textbf{1999} (1999), 569--588.
+
+\bibitem{adler1999pfaff}
+M.~Adler and P.~van Moerbeke, \emph{The {Pfaff} lattice, matrix integrals and a
+  map from {Toda} to {Pfaff}}, 1999.
+
+\bibitem{Its}
+P.~Bleher and A.~Its, \emph{Semiclassical asymptotics of orthogonal
+  polynomials, {Riemann-Hilbert} problem, and universality in the matrix
+  model.}, Annals of Mathematics \textbf{150} (1999), no.~1, 185--266.
+
+\bibitem{debruijn}
+N.~G. de~Bruijn, \emph{On some multiple integrals involving determinants}, The
+  Journal of the Indian Mathematical Society \textbf{19} (1955), 133--151.
+
+\bibitem{deiftbook}
+P.~Deift, \emph{Orthogonal polynomials and random matrices: A {Riemann-Hilbert}
+  approach}, Courant Lecture Notes, AMS, 2000.
+
+\bibitem{deift2019riemannhilbert}
+\bysame, \emph{{Riemann-Hilbert} problems}, 2019.
+
+\bibitem{deiftuniversality}
+P.~Deift and D.~Gioev, \emph{Random matrix theory: Invariant ensembles and
+  universality}, Courant Lecture Notes, AMS, 2009.
+
+\bibitem{Deift:2007aa}
+P.~Deift, D.~Gioev, T.~Kriecherbauer, and M.~Vanlessen, \emph{Universality for
+  orthogonal and symplectic {Laguerre}-type ensembles}, Journal of Statistical
+  Physics \textbf{129} (2007), no.~5, 949--1053.
+
+\bibitem{deift}
+P.~Deift, T.~Kriecherbauer, K.~T-R McLaughlin, and S.~Venakides,
+  \emph{Asymptotics for polynomials orthogonal with respect to varying
+  exponential weights}, International Mathematics Research Notices
+  \textbf{1997} (1997), no.~16, 759--782.
+
+\bibitem{deift2}
+P.~Deift, T.~Kriecherbauer, K.~T-R McLaughlin, S.~Venakides, and X.~Zhou,
+  \emph{Strong asymptotics of orthogonal polynomials with respect to
+  exponential weights}, Communications on Pure and Applied Mathematics
+  \textbf{52} (1999), no.~12, 1491--1552.
+
+\bibitem{deift3}
+\bysame, \emph{Uniform asymptotics for polynomials orthogonal with respect to
+  varying exponential weights and applications to universality questions in
+  random matrix theory}, Communications on Pure and Applied Mathematics
+  \textbf{52} (1999), no.~11, 1335--1425.
+
+\bibitem{10.2307/2946540}
+P.~Deift and X.~Zhou, \emph{A steepest descent method for oscillatory
+  {Riemann-Hilbert} problems. {A}symptotics for the {MKdV} equation}, Annals of
+  Mathematics \textbf{137} (1993), no.~2, 295--368.
+
+\bibitem{Dyson3}
+F.~J. Dyson, \emph{{The Threefold Way. Algebraic Structure of Symmetry Groups
+  and Ensembles in Quantum Mechanics}}, Journal of Mathematical Physics
+  \textbf{3} (1962), no.~6, 1199--1215.
+
+\bibitem{Dyson}
+\bysame, \emph{A class of matrix ensembles}, Journal of Mathematical Physics
+  \textbf{13} (1972), no.~90.
+
+\bibitem{Eynard:2001aa}
+B.~Eynard, \emph{Asymptotics of skew orthogonal polynomials}, Journal of
+  Physics A, Mathematical and General \textbf{34} (2001), no.~37, 7591--7605.
+
+\bibitem{fokas}
+A.~S. Fokas, A.~R. Its, and A.~V. Kitaev, \emph{Discrete {P}ainlev{\'e}
+  equations and their appearance in quantum gravity}, Communications in
+  Mathematical Physics \textbf{142} (1991), no.~2, 313--344.
+
+\bibitem{loggases}
+P.~Forrester, \emph{Log-gases and random matrices}, LMS Monographs, Princeton
+  University Press, 2010.
+
+\bibitem{itsRH}
+A.~Its, \emph{The {Riemann-Hilbert} problem and integrable systems}, Notices of
+  the AMS \textbf{50} (2003), no.~11.
+
+\bibitem{kriecherbauer2010fluctuations}
+T.~Kriecherbauer and M.~Shcherbina, \emph{Fluctuations of eigenvalues of matrix
+  models and their applications}, 2010.
+
+\bibitem{Martinez_Finkelshtein_2016}
+A.~Martinez-Finkelshtein and W.~Van Assche, \emph{{WHAT} {IS}...a multiple
+  orthogonal polynomial?}, Notices of the American Mathematical Society
+  \textbf{63} (2016), no.~09, 1029--1031.
+
+\bibitem{mehta}
+M.~L. Mehta, \emph{Random matrices}, third ed., Elsevier, 2004.
+
+\bibitem{singular}
+N.~I. Muskhelishvili, \emph{Singular integral equations}, Springer Dordrecht,
+  1958.
+
+\bibitem{Pastur:1997aa}
+L.~Pastur and M.~Shcherbina, \emph{Universality of the local eigenvalue
+  statistics for a class of unitary invariant random matrix ensembles}, Journal
+  of Statistical Physics \textbf{86} (1997), no.~1, 109--147.
+
+\bibitem{PIERCE2008230}
+V.~U. Pierce, \emph{A {Riemann-Hilbert} problem for skew-orthogonal
+  polynomials}, Journal of Computational and Applied Mathematics \textbf{215}
+  (2008), no.~1, 230--241.
+
+\bibitem{Shcherbina:2009ab}
+M.~Shcherbina, \emph{Edge universality for orthogonal ensembles of random
+  matrices}, Journal of Statistical Physics \textbf{136} (2009), no.~1, 35--50.
+
+\bibitem{Shcherbina:2009aa}
+\bysame, \emph{On universality for orthogonal ensembles of random matrices},
+  Communications in Mathematical Physics \textbf{285} (2009), no.~3, 957--974.
+
+\bibitem{Shcherbina:2011aa}
+\bysame, \emph{Orthogonal and symplectic matrix models: Universality and other
+  properties}, Communications in Mathematical Physics \textbf{307} (2011),
+  no.~3, 761--790.
+
+\bibitem{Stojanovic:2000aa}
+A.~Stojanovic, \emph{Universality in orthogonal and symplectic invariant matrix
+  models with quartic potential}, Mathematical Physics, Analysis and Geometry
+  \textbf{3} (2000), no.~4, 339--373.
+
+\bibitem{VanAssche2001}
+W.~Van~Assche, J.~S. Geronimo, and A.~B.~J. Kuijlaars, \emph{{Riemann-Hilbert}
+  problems for multiple orthogonal polynomials}, pp.~23--59, Springer
+  Netherlands, Dordrecht, 2001.
+
+\bibitem{Widom:1999aa}
+H.~Widom, \emph{On the relation between orthogonal, symplectic and unitary
+  matrix ensembles}, Journal of Statistical Physics \textbf{94} (1999), no.~3,
+  347--363.
+
+\end{thebibliography}

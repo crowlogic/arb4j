@@ -1,0 +1,1271 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage}
+\usepackage{csquotes}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{blindtext}
+\usepackage{enumitem}
+\usepackage{braket}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage{centernot}
+\usepackage{hyperref}
+\usepackage{titling}
+\usepackage{graphicx}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{suffix}
+\usepackage{mathtools}
+\setlength\arraycolsep{4pt}
+\usepackage{physics}
+\usepackage{amsthm}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{mathrsfs} 
+\usepackage{hieroglf}
+\usepackage{amsmath}
+
+\makeatletter
+\def\widebreve{\mathpalette\wide@breve}
+\def\wide@breve#1#2{\sbox\z@{$#1#2$}%
+     \mathop{\vbox{\m@th\ialign{##\crcr
+\kern0.08em\brevefill#1{0.8\wd\z@}\crcr\noalign{\nointerlineskip}%
+                    $\hss#1#2\hss$\crcr}}}\limits}
+\def\brevefill#1#2{$\m@th\sbox\tw@{$#1($}%
+  \hss\resizebox{#2}{\wd\tw@}{\rotatebox[origin=c]{90}{\upshape(}}\hss$}
+\makeatletter
+
+
+
+\makeatletter
+% Based on https://tex.stackexchange.com/questions/7032/good-way-to-make-textcircled-numbers
+%
+\usepackage{pict2e,picture}
+\pgfkeys{/csteps/inner ysep/.initial=4pt,
+    /csteps/inner xsep/.initial=4pt,
+    /csteps/inner color/.initial=red,
+    /csteps/outer color/.initial=blue,
+}
+\newsavebox\csteps@CBox
+\newlength\csteps@XLength \newlength\csteps@YLength \newlength\csteps@YDepth \newlength\csteps@tmplen
+\def\csteps@CircledParam#1#2{\sbox\csteps@CBox{#2}%
+    \csteps@XLength=\wd\csteps@CBox\advance\csteps@XLength by\pgfkeysvalueof{/csteps/inner xsep}\relax
+    \csteps@tmplen=\pgfkeysvalueof{/csteps/inner ysep}\relax
+    \csteps@YDepth=\dp\csteps@CBox\advance\csteps@YDepth by 0.5\csteps@tmplen\relax
+    \csteps@YLength=\ht\csteps@CBox\advance\csteps@YLength by\dp\csteps@CBox\advance\csteps@YLength by\pgfkeysvalueof{/csteps/inner ysep}\relax
+    \typeout{DBG:#2\space X\space\the\csteps@XLength\space Y:\the\csteps@YLength\space D:\the\csteps@YDepth}%
+    \raisebox{-#1\csteps@YDepth}{%
+    \ifdim\csteps@XLength>\csteps@YLength
+    \makebox[\csteps@XLength]{% X bigger than Y
+        \makebox(0,\csteps@YLength){%
+            \color{\pgfkeysvalueof{/csteps/outer color}}\put(0,0){\oval(\csteps@XLength,\csteps@YLength)}%
+        }%
+    \makebox(0,\csteps@YLength){%
+        \put(-.5\wd\csteps@CBox,0){\textcolor{\pgfkeysvalueof{/csteps/inner color}}{#2}}%
+    }}%
+    \else
+    \makebox[\csteps@YLength]{%
+        \makebox(0,\csteps@YLength){%
+            \color{\pgfkeysvalueof{/csteps/outer color}}\put(0,0){\circle{\csteps@YLength}}%
+        }%
+    \makebox(0,\csteps@YLength){%
+        \put(-.5\wd\csteps@CBox,0){\textcolor{\pgfkeysvalueof{/csteps/inner color}}{#2}}%
+     }}%
+    \fi
+    }%
+}
+\def\Circled#1{\csteps@CircledParam{1}{#1}}
+\def\CircledTop#1{\csteps@CircledParam{0}{#1}}
+\makeatother
+
+\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
+
+\tikzset{/csteps/inner ysep=10pt}
+\tikzset{/csteps/inner xsep=10pt}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand\bigzero{\makebox(0,0){\text{\huge0}}}
+\newcommand*{\bord}{\multicolumn{1}{c|}{}}
+
+\newtheorem{rhp}[theorem]{Riemann-Hilbert problem}
+
+
+
+
+\theoremstyle{definition}
+\newtheorem{exmp}{Example}[section]
+
+\begin{document}
+\title{A Riemann-Hilbert approach to skew-orthogonal polynomials of symplectic type\thanks{The author would like to express his gratitude to Thomas Bothner and Mattia Cafasso, whose comments and suggestions have been invaluable for this paper. This work was supported by the UK Engineering and Physical Sciences Research Council through grant EP/T013893/2 and by the European Research Council (ERC) under the European Union Horizon 2020 research and innovation program (grant agreement No. 884584).}}
+\author{Alex Little\thanks{Electronic address: \texttt{alexander.little@ens-lyon.fr}}\\
+Unité de Mathématiques Pures et Appliquées\\ ENS de Lyon}
+
+
+
+\maketitle
+
+
+\abstract{We present a representation of skew-orthogonal polynomials of symplectic type ($\beta=4$) in terms of a matrix Riemann-Hilbert problem, for weights of the form $e^{-V(z)}$ where $V$ is a polynomial of even degree and positive leading coefficient.  This is done by representing skew-orthogonality as a kind of multiple-orthogonality.  From this we derive a $\beta=4$ analogue of the Christoffel-Darboux formula.  Finally, our Riemann-Hilbert representation allows us to derive a Lax pair whose compatibility condition may be viewed as a $\beta=4$ analogue of the Toda lattice. } 
+
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+In this paper we develop a Riemann-Hilbert approach to the theory of skew-orthogonal polynomials of symplectic type.  In order to motivate our work let us recall the basic theory of orthogonal polynomials.  One begins with a measurable function $w : \mathbb{R}\to [0,+\infty)$ with finite moments to all orders, that is $\int_\mathbb{R} |x|^k w(x) \, dx < +\infty$ for all $k \in \mathbb{N}$.  Then one constructs a Hermitian form
+$$\langle P, Q \rangle_2 = \int_\mathbb{R} P(x)Q(x) w(x) \, dx$$
+for (real) polynomials $P$ and $Q$.  We would like that $\langle \cdot ,  \cdot \rangle_2$ be nondegenerate on the linear space of real polynomials so that we can make it into an inner product,  which would be true if $w$ is continuous and has positive mass $\int_\mathbb{R} w \, dx > 0$.  Given such an inner product there is a unique sequence of polynomials $\{ P_n \}_{n \in \mathbb{N}}$ such that $P_n(x) = x^n + \mathcal{O}(x^{n-1})$ and $\langle P_n , P_m \rangle_2 = 0$ for $n \neq m$, constructable by a Gram-Schmidt procedure.  $w$ is referred to as the \textit{weight function} and $P_n$ is called the $n$th monic orthogonal polynomial with respect to $w$. 
+
+The applications of orthogonal polynomials are extremely diverse, however in this work we shall be interested solely in their application to \textit{random matrix theory} (see e.g. \cite{deiftbook}). Let $M$ be an $n\times n$ Hermitian random matrix distributed according to a probability measure
+\begin{equation}\label{probmeas}
+\frac{1}{Z_n} e^{- \mathrm{tr} \, V(M)} \, dM
+\end{equation}
+where $dM = \prod_{k=1}^n dM_{kk} \prod_{1 \leq i < j \leq n} d \Re M_{ij} d \Im M_{ij}$,  $V$ is a real-valued analytic function on $\mathbb{R}$ and $Z_n > 0$ is a constant of normalisation. For this measure to be normalisable $V(x) \to +\infty$ as $x \to \pm \infty$ sufficiently rapidly,  more precisely, $\liminf_{x \to \pm \infty} \frac{V(x)}{\log|x|} = +\infty$. This condition would be satisfied if $V$ was a polynomial of even degree and positive leading coefficient, as will be the case in this paper. 
+
+A remarkable calculation (see Ch. 5 of \cite{mehta} or Ch. 5 of \cite{loggases}) then shows that the correlation functions of the eigenvalues of such an ensemble are expressible entirely in terms of the orthogonal polynomials $P_n$ and $P_{n-1}$ and their respective norms, $\| P_n \|$ and $\| P_{n-1} \|$, with respect to the weight function $w(x) = e^{-V(x)}$. Thus to make an asymptotic analysis of the correlation functions as $n \to \infty$ it is necessary to make an asymptotic analysis of orthogonal polynomials with respect to more or less arbitrary weight functions. For certain \enquote{classical} weight functions this can be done by classical steepest descent techniques, however the general case required the discovery of a \textit{Riemann-Hilbert} representation of orthogonal polynomials \cite{fokas} and the development of the \textit{nonlinear steepest descent} technique \cite{10.2307/2946540}.  A Riemann-Hilbert representation involves representing an object of interest in terms of the solution to a boundary value problem in the complex plane with prescribed behaviour at infinity, and can be regarded as a generalisation of the notion of a contour integral \cite{itsRH}. This led to a proof of universality of local correlations in the bulk and at the edge of the spectrum for ensembles of type (\ref{probmeas}) by means of the so-called Deift-McLaughlin-Kriecherbauer-Venakides-Zhou (DMKVZ) scheme \cite{deift,deift2,deift3}, building off earlier work of Pastur-Shcherbina \cite{Pastur:1997aa} and Bleher-Its \cite{Its}.
+
+Motivated by, amongst others, applications to quantum mechanical systems with time-reversal invariance (see Ch. 2 of \cite{mehta}),  random matrix theorists have also been interested for a long time in studying not only Hermitian but also real symmetric and quaternion self-dual random matrices with probability measures of the form of (\ref{probmeas}).  These three cases, real symmetric, complex Hermitian and quaternion self-dual, correspond to the three finite-dimensional, associative division algebras over the real numbers, $\mathbb{R}$, $\mathbb{C}$ and $\mathbb{H}$ respectively \cite{Dyson3}.  These are often labelled by the \enquote{Dyson index} $\beta=1,2,4$ respectively. 
+
+In this work we shall be interested in the case of $\beta = 4$, the so-called symplectic case, since the probability measure is invariant under conjugation by elements of the compact symplectic group,  and since we prefer to think of an $n\times n$ quaternion matrix as a $2n \times 2n$ matrix where the quaternions are represented by $2 \times 2$ blocks. For such a $2n \times 2n$ matrix there are, with probability 1, only $n$ distinct eigenvalues since every eigenvalue occurs with multiplicity $2$ (known in the physics literature as Kramers' degeneracy).  These $n$ eigenvalues have the joint PDF
+\begin{align}\label{pointprocess}
+\rho_n(x_1, \dots, x_n) = \frac{1}{\tilde{Z}_n} \prod_{1 \leq i < j \leq n}|x_i - x_j|^4 \prod_{k=1}^{n} e^{-2V(x_k)}
+\end{align}
+where $\tilde{Z}_n $ is a normalisation constant.  We shall furthermore restrict to the case of $V$ being a real polynomial of even degree $D$ and leading coefficient $\gamma > 0$
+\begin{align}
+V(x) = \gamma x^D + \mathcal{O}(x^{D-1})
+\end{align}
+Here the classical approach (see Ch. 5 of \cite{mehta},  Ch. 6 of \cite{loggases}) involves finding an analogue of orthogonal polynomials and this is supplied by \textit{skew-orthogonal polynomials}.  Here the inner product $\langle \cdot, \cdot \rangle_2$ is replaced by a skew-symmetric nondegenerate bilinear form $\langle \cdot, \cdot \rangle_4$, where
+\begin{equation}\label{skewprod}
+\langle P, Q \rangle_4 = \frac{1}{2} \int_{\mathbb{R}} \left( P(x) Q^\prime(x)-P^\prime(x) Q(x) \right) e^{-2V(x)}\, dx
+\end{equation}
+for $P$ and $Q$ real polynomials.  By \enquote{non-degenerate} we mean the following. Let $\mathscr{P}_k^\mathbb{R}$ be the space of real polynomials of degree $\leq k$.  Then we say $\langle \cdot, \cdot \rangle_4$ is non-degenerate if for all $n \in \mathbb{N}$,  we have the implication
+\begin{align*}
+\forall P \in \mathscr{P}_{2n+1}^\mathbb{R} \, \,  \bigg(  \langle P, Q \rangle_4 = 0 \quad \forall Q \in  \mathscr{P}_{2n+1}^\mathbb{R} & &  \Longrightarrow & & P = 0\bigg)
+\end{align*}
+
+Then a sequence of monic polynomials $\{ P_n \}_{n \in \mathbb{N}}$,  $P_n(x) = x^n + \mathcal{O}(x^{n-1})$,  is said to be skew-orthogonal with respect to $\langle \cdot, \cdot \rangle_4$ if the following holds.
+\begin{enumerate}
+\item $\langle P_{2n}, P_{2m} \rangle_4 = \langle P_{2n+1}, P_{2m+1} \rangle_4  = 0$ for all $n,m \in \mathbb{N}$.
+\item $\langle P_{2n}, P_{2m+1} \rangle_4 = 0$ for all $n, m \in \mathbb{N}$, $n\neq m$.
+\end{enumerate}
+The existence of such a sequence is guaranteed by non-degeneracy (it can be constructed by a procedure analogous to Gram-Schmidt), however these properties do not uniquely define the sequence because one can replace $P_{2n+1} \mapsto P_{2n+1} + \alpha P_{2n}$ for any constant $\alpha \in \mathbb{R}$. This degree of freedom may be fixed by demanding that the next-to-leading coefficient of $P_{2n+1}$ is equal to a specified value (it is common to choose this value to be zero however this will not be the most convenient choice for us).  It can then be verified that with this extra constraint the sequence is unique. 
+
+The importance of skew-orthogonal polynomials for random matrix theory can be seen by the following. Let $h_n = \langle P_{2n}, P_{2n+1} \rangle_4$ be the \enquote{skew norm.} Then (see Prop. 6.1.6 and Prop. 6.1.7 of \cite{loggases}) all eigenvalue correlation functions associated to the point process (\ref{pointprocess}) may be expressed in terms of the so-called \textit{pre-kernel}
+\begin{equation}\label{prekernel}
+S_n(x,y) = \sum_{k=0}^{n-1} \frac{ P_{2k}(x) e^{-V(x)} \frac{d}{dy}\left( P_{2k+1}(y) e^{-V(y)} \right) - P_{2k+1}(x) e^{-V(x)} \frac{d}{dy}\left( P_{2k}(y) e^{-V(y)} \right)}{2 h_k}
+\end{equation}
+Precisely, from $S_n$ one constructs a $2 \times 2$ matrix \enquote{kernel}, and then the $k$-point correlation function of the ensemble is written as a $2k \times 2k$ Pfaffian, or equivalently,  quaternion determinant (see Ch. 6 of \cite{loggases}). In particular, the 1-point correlation function $R_n^{(1)}(x) = S_n(x,x)$. A similar treatment in terms of skew-orthogonal polynomials, though with a different skew-inner product than (\ref{skewprod}), can be done in the case of real symmetric matrices ($\beta =1$).
+
+The importance of understanding skew-orthogonal polynomials of real and symplectic type ($\beta = 1,4$) was stressed by Dyson \cite{Dyson} when he wrote
+\begin{quote}
+[W]e need to develop the theory of skew-orthogonal polynomials until it becomes a working tool as handy as the existing theory of orthogonal polynomials.
+\end{quote}
+Unfortunately this theory remains comparatively underdeveloped relative to that of orthogonal polynomials ($\beta =2$). Nevertheless let us state some known results.  Adler, Horozov and van Moerbeke \cite{Adler1999ThePL} give Pfaffian formulæ for the even and odd skew-orthogonal polynomials for $\beta=1,4$. Eynard \cite{Eynard:2001aa} derives Heine-type multiple integral formulæ for even and odd skew-orthogonal polynomials for $\beta =1,4$ and he uses a non-rigorous but intriguing resolvent method to obtain $n \to \infty$ asymptotics for the case of a one-cut polynomial potential.  These multiple-integral formulæ are morally equivalent to the Pfaffian formulæ since the two may be related by de Bruijn identities \cite{debruijn}. In the case of $V^\prime$ being rational, Adler and van Moerbeke \cite{adler1999pfaff} find a natural basis of orthogonal polynomials in which to express the corresponding skew-orthogonal polynomials and Adler, Forrester, Nagao and van Moerbeke \cite{Adler:2000aa} use this to write simple expressions for the skew-orthogonal polynomials in the classical (Hermite, Laguerre and Jacobi) cases. A key inspiration for the present paper is the paper of Pierce \cite{PIERCE2008230} in which a Riemann-Hilbert representation for skew-orthogonal polynomials of real type ($\beta = 1$) with a polynomial $V$ is derived; unfortunately  this work has not received nearly the same attention as the corresponding problem for orthogonal polynomials because there is no known Christoffel-Darboux-type formula to express the pre-kernel in terms of the Riemann-Hilbert problem, and even if there was, the complexity of the jump matrix makes it unclear how to perform a nonlinear steepest descent analysis.
+
+The difficulty of working with skew-orthogonal polynomials has led some to believe that they are the wrong way to approach $\beta = 1,4$ ensembles and to develop a different formalism that avoids skew-orthogonal polynomials entirely. This is the Widom formalism \cite{Widom:1999aa}, presented and developed in the excellent book of Deift and Gioev \cite{deiftuniversality}, and it is this formalism that has yielded proofs of universality of local correlations for $\beta=1,4$ \cite{Stojanovic:2000aa,Deift:2007aa,Shcherbina:2009aa,Shcherbina:2009ab,kriecherbauer2010fluctuations,Shcherbina:2011aa}. One of the aims of this paper is to show that an approach involving skew-orthogonal polynomials can nevertheless be highly fruitful.
+
+Let us now state our results.  Given the sequence of skew-orthogonal polynomials $\{ P_n \}_{n \in \mathbb{N}}$ we define the \enquote{dual} polynomials as $\Psi_n(x) =  - \frac{1}{\gamma D} e^{V(x)} \frac{d}{dx}\left( P_{n}(x) e^{-V(x)} \right)$.
+\begin{enumerate}
+\item In Section \ref{rhpsection} we show how $\Psi_{2n}$ and $\Psi_{2n+1}$ may be thought of as \enquote{multiple-orthogonal polynomials of Type II} (Corollary \ref{typeII}). This yields two families of Riemann-Hilbert problems $A_n$ (\ref{evenrhp}) and $B_n$ (\ref{oddrhp}),  where $\Psi_{2n}$ and $\Psi_{2n+1}$ appear as the $(1,1)$ matrix element of $A_n$ and $B_n$ respectively.  $A_n$ has dimension $D+1$ and $B_n$ has dimension $D+2$. Furthermore, we find that $P_{2n}$ is the $(2,2)$ matrix element of $A_n^{-1}$,  however, somewhat contrary to what one might expect,  neither $P_{2n+1}$ nor any multiple of it appears as a matrix element of $B_n^{-1}$.  This seems to be related to the fact that $P_{2n}$ can be thought of as a multiple-orthogonal polynomial of Type I (Corollary \ref{typeI}), but we are not aware of a way to represent $P_{2n+1}$ in such a way.
+\item In Section \ref{christoffelsection} we prove an analogue of the Christoffel-Darboux formula, namely
+\begin{equation}
+\boxed{S_n(x,y) = - \frac{1}{4\pi i} e^{-V(x) - V(y)} \frac{\left( A_n^{-1}(x) A_n(y) \right)_{21}}{x-y} }
+\end{equation}
+where $S_n$ is the pre-kernel (\ref{prekernel}) and $A_n$ is the solution of RHP \ref{evenrhp}. If a nonlinear steepest descent analysis could be carried out for $A_n$ we would thus obtain a new proof of universality for $\beta = 4$. It is also interesting to remark that the pre-kernel is expressible entirely in terms of the \enquote{even} Riemann-Hilbert problem $A_n$, i.e. from the point of view of random matrix theory the odd problem $B_n$ can be ignored.
+\item In Section \ref{dynamicsection} we show how the $A_n$ problem may be transformed to have constant jump matrices.  Then allowing the potential $V$ to depend on a parameter $t \in \mathbb{R}$ by $V(z,t) = V_0(z) + zt$, we derive an $(n,t)$ Lax pair. The linear system in $n$ could be regarded as a $\beta = 4$ analogue of the \enquote{three term recurrence} which appears in the theory of orthogonal polynomials (Remark \ref{recurrence}). The compatibility condition of this Lax pair yields a dynamical system which one could regard as a $\beta=4$ analogue of the Toda lattice (Theorem \ref{skewtoda}). In the $D=2$ case an exact solution can be given (Example \ref{exactsolution}).  We should remark that an analogue of the Toda lattice for $\beta = 1,4$, with connections to skew-orthogonal polynomials, already exists in the literature under the name of the \enquote{Pfaff lattice} \cite{Adler1999ThePL}.  The relationship between the Pfaff lattice and our dynamical system is left as a topic for future investigation. 
+\end{enumerate}
+
+\newpage
+\subsection{Notation}
+
+\begin{enumerate}
+\item We shall use the notation $\mathscr{X}^k$ to stand for the rational function
+\begin{align*}
+\mathscr{X}^k(x) = x^k , & & k \in \mathbb{Z}.
+\end{align*}
+\item For $k \in \mathbb{N}$ define the space of real polynomials of degree at most $k$ as
+$$\mathscr{P}_{k}^\mathbb{R} = \mathrm{span}_\mathbb{R}\{ \mathscr{X}^0 , \mathscr{X}^1 , \dots, \mathscr{X}^k \}$$
+and let
+$$\mathscr{P}^\mathbb{R} = \bigcup_{k=0}^\infty \mathscr{P}_k^\mathbb{R}$$
+be the space of all real polynomials. Similarly,  let $\mathscr{P}^\mathbb{C}_k$  be the space of polynomials with complex coefficients of degree $\leq k$ and $\mathscr{P}^\mathbb{C} = \cup_{k \geq 0} \mathscr{P}^\mathbb{C}_k$. 
+\item For $m$ a positive integer and $\mathbb{F}$ a field (in our case always $\mathbb{R}$ or $\mathbb{C}$) we let $\mathcal{M}_m (\mathbb{F})$ be the space of $m \times m$ matrices with entries in $\mathbb{F}$.
+\item We use the convention that $0 \in \mathbb{N}$. 
+\item We denote the 1-torus as $\mathbb{T} = \{ z \in \mathbb{C} \, : \, |z|=1 \}$.
+\item We let $\chi_A$ be the indicator function of the set $A$, i.e. $\chi_A(x) = 1$ if $x \in A$ and $\chi_A(x) = 0$ otherwise.
+\item Let $\Gamma \subset \mathbb{C}$ be a locally rectifiable contour in $\mathbb{C}$. Then the \textit{Cauchy transform} of the measurable function $f : \Gamma \to \mathbb{C}$ is defined as
+\begin{align*}
+C_\Gamma (f) (z) = \frac{1}{2\pi i}\int_\Gamma \frac{f(x)}{x-z}\, dx & & z \in \mathbb{C}\setminus \Gamma
+\end{align*}
+whenever this integral exists. In our case we will always consider sufficiently \enquote{nice} functions $f$ and contours $\Gamma$ such that the Cauchy transform is well-defined and analytic for all $z \in \mathbb{C}\setminus \Gamma$.  Furthermore, we shall always consider functions with finite moments $\int_\Gamma |x|^k |f(x)| \, |dx| < +\infty$ for all $k\geq 0$ and for which $C_\Gamma (f)$ admits the asymptotic expansion in the sense of Poincaré
+\begin{align*}
+C_\Gamma (f)(z) \sim - \frac{1}{2\pi i} \sum_{k=0}^\infty z^{-k-1} \int_\Gamma x^k f(x) \, dx & & (z \to \infty)
+\end{align*}
+More precisely, for every $K \in \mathbb{N}$ we have
+\begin{align*}
+C_\Gamma (f)(z) =  - \frac{1}{2\pi i} \sum_{k=0}^K z^{-k-1} \int_\Gamma x^k f(x) \, dx +\frac{z^{-K-1}}{2\pi i }  \int_\Gamma \frac{ x^{K+1}  f(x)}{x-z} \, dx 
+\end{align*}
+If $\mathrm{dist}(z,\Gamma) \geq \epsilon > 0$ we find that $\int_\Gamma \frac{ x^{K+1}  f(x)}{x-z} \, dx$ is bounded. However if $f$ is analytic we may deform the contour to achieve boundedness in a full neighbourhood of (complex) infinity. This will be the case in all the Cauchy integrals that appear in this paper. The general theory of such Cauchy integrals for functions of varying degrees of decay and regularity is discussed in notes of Deift \cite{deift2019riemannhilbert} and the book of Muskhelishvilli \cite{singular}.
+\end{enumerate}
+\newpage
+\section{Riemann-Hilbert representations}\label{rhpsection}
+
+Before proceeding let us demonstrate that the problem we are considering is well-posed. The following proposition is of course known to experts and is implicit in the discussion of skew-orthogonal polynomials found in textbooks, however we could not find an explicit statement of it and so we record it here.
+\begin{proposition} The skew-symmetric bilinear form defined by (\ref{skewprod}) is non-degenerate. Furthermore the skew-norms are all positive, i.e. $h_n = \langle P_{2n}, P_{2n+1} \rangle_4 > 0$, for all $n \geq 0$.
+\end{proposition}
+\begin{proof}
+To demonstrate both claims it is sufficient to demonstrate that
+\begin{align*}
+\mathrm{pf} \left( \langle \mathscr{X}^{i-1}, \mathscr{X}^{j-1} \rangle_4 \right)_{i,j=1}^{2n} > 0 & & \forall n \geq 1
+\end{align*}
+where $\mathrm{pf}$ is the Pfaffian.  This follows from one of de Bruijn's identities \cite{debruijn}.
+$$\mathrm{pf} \left( \langle \mathscr{X}^{i-1}, \mathscr{X}^{j-1} \rangle_4 \right)_{i,j=1}^{2n} = \frac{1}{n!} \int_{\mathbb{R}^n} \prod_{1 \leq i < j \leq n} |x_i - x_j|^4 \prod_{k=1}^n e^{-2V(x_k)} \, d x_1 \dots d x_n  > 0 $$
+\end{proof}
+
+We begin by observing that the symplectic inner product (\ref{skewprod}) can be re-written
+\begin{align}
+\langle P, Q \rangle_4 = \int_{\mathbb{R}} P(x) e^{-V(x)} \frac{d}{dx}\left( Q(x) e^{-V(x)} \right) \, dx 
+\end{align}
+\begin{definition}[Dual skew-orthogonal polynomials]
+Given a sequence of skew-orthogonal polynomials $\{ P_n \}_{n \in \mathbb{N}}$ let us introduce the sequence of \enquote{dual} polynomials $\{ \Psi_n \}_{n \in \mathbb{N}}$ where
+\begin{align}\label{dual}
+\Psi_n(x) := -\frac{1}{\gamma D} e^{V(x)}\frac{d}{dx}\left( e^{-V(x)} P_n(x) \right) = x^{n+D-1} + \mathcal{O}(x^{n+D-2}) & & (x \to \infty)
+\end{align}
+\end{definition}
+The monic skew-orthogonal polynomials can be reconstructed from the dual polynomials by integration.
+\begin{align}
+P_n(x) = \gamma D e^{V(x)} \int_{x}^{+\infty} e^{-V(y)} \Psi_n(y) \, dy
+\end{align}
+In order to characterise $\Psi_n$ let us ask the following question. Given a polynomial $Q \in \mathscr{P}^\mathbb{C}$, under what conditions will
+$$ e^{V(x)} \int_{x}^{+\infty} e^{-V(y)} Q(y) \, dy$$
+also be a polynomial? Note that this is equivalent to the question of whether $Q$ can be written $Q(x) = e^{V(x)} \frac{d}{dx} \left( P(x) e^{-V(x)} \right)$ for some polynomial $P$. Let us now proceed to answer this question.
+
+\begin{remark}\label{polyunique} Note that the map $P \mapsto e^V \frac{d}{dx}(P e^{-V})$ which maps $\mathscr{P}^\mathbb{C}\to \mathscr{P}^\mathbb{C}$ is linear and injective. Thus if $Q = e^V \frac{d}{dx}(P e^{-V})$ then this $P$ is unique. 
+\end{remark}
+
+Consider the contours
+\begin{align}\label{contour1}
+C_k = e^{2\pi i\frac{k}{D}} [0,+\infty) & & k=0,\dots, D-1
+\end{align}
+Let us orient these contours so $C_0=[0,+\infty)$ has left to right orientation, whereas the remaining contours $C_1, \dots, C_{D-1}$ have orientation towards the origin. Then let
+\begin{align}\label{contour2}
+\Gamma_k = C_0 \cup C_k & & k=1, \dots, D-1
+\end{align}
+For example, when $k=\frac{D}{2}$ (recall $D$ is even and positive),  $\Gamma_k = \mathbb{R}$ with standard left to right orientation. These contours are depicted in Figure \ref{contours} for the case $D=8$.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+		\draw[blue, thick,->] (0,0) -- (2,0);
+		\draw[blue, thick] (0,0) -- (4,0);
+		\draw[blue, thick] (2,0) -- node[below] {$C_0$}(4,0);
+		\draw[blue,thick,->] (0,4) -- node[right] {$C_2$}(0,2);
+		\draw[blue, thick] (0,0) -- (0,4);
+		\draw[blue,thick] (0,0) -- (2*99/70,2*99/70);
+		\draw[blue,thick,->] (2*99/70,2*99/70) -- node[right] {$C_1$} (99/70,99/70);
+		\draw[blue, thick] (0,0) -- (-4,0);
+		\draw[blue, thick,->] (-4,0) -- node[below] {$C_4$} (-2,0);
+		\draw[blue,thick,->] (0,-4) -- node[right] {$C_6$} (0,-2);
+		\draw[blue,thick] (0,0) -- (0,-4);
+		\draw[blue,thick] (0,0) -- (-2*99/70,-2*99/70);
+		\draw[blue, thick,->] (-2*99/70,-2*99/70) -- node[right] {$C_5$} (-99/70,-99/70);
+		\draw[blue,thick] (0,0) -- (-2*99/70,2*99/70);
+		\draw[blue, thick,->] (-2*99/70,2*99/70) -- node[left] {$C_3$} (-99/70,99/70);
+		\draw[blue, thick] (0,0) -- (2*99/70,-2*99/70);
+		\draw[blue, thick,->] (2*99/70,-2*99/70) -- node[left] {$C_7$} (99/70,-99/70);
+\end{tikzpicture}
+\end{center}
+\caption{This figure depicts the contours $C_0, \dots, C_{D-1}$ in the case $D=8$.  The arrows denote the orientation of the contours. Note the outgoing orientation of $C_0$.}\label{contours}
+\end{figure}
+
+
+
+
+\begin{proposition}\label{representation} Let $Q \in \mathscr{P}^\mathbb{C}$ be a polynomial.  $Q$ can written as
+$$Q(x) = e^{V(x)} \frac{d}{dx}\left(e^{-V(x)} P(x) \right)$$
+for some polynomial $P \in \mathscr{P}^\mathbb{C}$ if and only if the following integrals vanish.
+\begin{align}\label{integrals}
+\int_{\Gamma_k} Q(z)e^{-V(z)} \, dz = 0 & & \forall k=1, \dots, D-1
+\end{align}
+\end{proposition}
+\begin{proof}
+\enquote{Only if} is trivial since for $z \in C_k \setminus \{ 0 \}$, $z^{D} > 0$, hence $P(z)e^{-V(z)}$ is rapidly decreasing, hence
+\begin{align*}
+\int_{\Gamma_k} Q(z)e^{-V(z)} \, dz = \int_{\Gamma_k} \frac{d}{dz}\left(P(z)e^{-V(z)}\right) \, dz =0  &  & \forall k = 1, \dots , D-1
+\end{align*}
+
+For the converse claim,  suppose the integrals (\ref{integrals}) all vanish.  Let us then divide $D$ into $\deg Q+1$ with remainder, so that $\deg Q+1 = D \ell + r$ where $\ell , r \in \mathbb{N}$ and $r \leq D-1$. 
+
+We will construct a certain polynomial $R$ as follows. If $\deg Q \leq D-2$ then $R:=Q$, so we may assume $\deg Q \geq D-1$.  We can then factorise
+$$Q(x) = F_1 (x) V^\prime(x) + G_1(x)$$
+where $F_1 \in \mathscr{P}^\mathbb{C}$ has degree $\deg Q - D+1$ and $G_1 \in \mathscr{P}^\mathbb{C}$ has degree at most $D-2$.  We can then repeat the procedure.
+\begin{align*}
+F_1^\prime(x) &= F_2(x) V^\prime(x) + G_2(x) \\
+F_2^\prime(x) &= F_3(x) V^\prime(x) + G_3(x) \\
+&\vdots \\
+F_{\ell-1}^\prime(x) &= F_{\ell}(x) V^\prime(x) + G_{\ell}(x)
+\end{align*}
+$F_j \in \mathscr{P}^\mathbb{C}$ has degree $\deg Q-Dj+1$ and $G_j \in \mathscr{P}^\mathbb{C}$ has degree at most $D-2$ for $j=1, \dots , \ell$.  In particular $F_\ell$ has degree $r$ and so the process terminates at this stage.  Let $$R(x) := G_1(x) + \dots + G_\ell(x) + F_\ell^\prime(x)$$ $R$ has degree at most $D-2$. 
+
+By repeated integration by parts we see that
+\begin{align*}
+\int_{\Gamma_k} R(x) e^{-V(x)} \, dx = 0 & & \forall k = 1, \dots, D-1
+\end{align*}
+We now claim that $R \equiv 0$. Consider the function
+$$C(z) := e^{V(z)}\int_z^{+\infty} R(x) e^{-V(x)} \, dx $$
+where the integration path is from $z \in \mathbb{C}$ to $0$ then from $0$ to $+\infty$. $C$ is clearly an entire function. We claim that as $|z| \to +\infty$, $C(z) \to 0$, uniformly in $\mathrm{arg} \, z $.  Hence by Liouville's theorem $C \equiv 0$, and hence $R \equiv 0$.
+
+From our assumptions
+\begin{align*}
+\int_z^{+\infty} R(x) e^{-V(x)} \, dx = \int_z^{(+\infty) \cdot e^{2\pi i \frac{k}{D}}} R(x) e^{-V(x)} \, dx & & \forall k = 1, \dots, D-1
+\end{align*}
+Now introduce the function $\varphi(z) = \tilde{V}(z)^\frac{1}{D}$ (where $\tilde{V}(z) = \frac{1}{\gamma}V(z)$) which is holomorphic and injective so long as $|z|$ is sufficiently large, i.e. on a neighbourhood of (complex) infinity.  Let us choose $k \in \{0, \dots, D-1\}$ so that $ 2\pi \frac{k-\frac{1}{2}}{D} \leq \arg \varphi(z) \leq 2\pi \frac{k+\frac{1}{2}}{D}$ (this $k$ may not be unique but this doesn't matter).  Let us also define $\arg$ so that there is no branch cut through this sector.  Finally, let us choose the contour such that $\Re V(z)$ is always non-decreasing along the contour. The existence of such a contour is proven in Lemma \ref{contour}. Integrating by parts we find
+\begin{align*}
+\int_z^{(+\infty) \cdot e^{2\pi i \frac{k}{D}}} R(x) e^{-V(x)} \, dx = \frac{R(z)}{V^\prime(z)} e^{-V(z)}+ \int_z^{(+\infty) \cdot e^{2\pi i \frac{k}{D}}}  \frac{d}{dx}\left( \frac{R(x)}{V^\prime(x)} \right) e^{-V(x)} \, dx
+\end{align*}
+$\frac{d}{dx}\left( \frac{R(x)}{V^\prime(x)} \right)$ is a rational function which scales like $x^{-2}$ and so for $|x|$ sufficiently large there is a constant $\kappa>0$ such that $\left| \frac{d}{dx}\left( \frac{R(x)}{V^\prime(x)} \right)\right| \leq \kappa |x|^{-2}$. Thus
+$$\left|e^{V(z)} \int_z^{(+\infty) \cdot e^{2\pi i \frac{k}{D}}} R(x) e^{-V(x)} \, dx\right| \leq \frac{|R(z)|}{|V^\prime(z)|}+ \kappa\int_z^{(+\infty) \cdot e^{2\pi i \frac{k}{D}}}|x|^{-2} |dx| \to 0$$
+as $z \to \infty$.  This limit holds so long as $z$ is confined to the sector $ 2\pi \frac{k-\frac{1}{2}}{D} \leq \arg \varphi(z) \leq 2\pi \frac{k+\frac{1}{2}}{D}$, however since there are only finitely many such sectors this limit thus holds uniformly in $\mathrm{arg} \, \varphi(z)$ (and so uniformly in $\mathrm{arg} \, z$).  Thus $R \equiv 0$.
+
+Finally, this shows that $e^{V(z)} \int_z^{+\infty} Q(x) e^{-V(x)}\, dx$ is a polynomial, since if we factorise $Q$ and integrate by parts we find 
+$$e^{V(z)} \int_z^{+\infty} Q(x) e^{-V(x)}\, dx  = F_1(z) + \dots + F_\ell(z)$$
+which is a polynomial of degree $\deg Q - D + 1$.
+\end{proof}
+\begin{lemma}\label{contour} Let $\tilde{V}(w) = \frac{1}{\gamma}V(w) = w^D + \mathcal{O}(w^{D-1})$ and let $\varphi(w) := \tilde{V}(w)^\frac{1}{D}$. There exists a $\varrho > 0$ sufficiently large such that $\varphi$ is analytic and injective on $U_\varrho := \{ z \in \mathbb{C}\, : \, |z| > \varrho \}$ and such that the following holds.  For each $z \in U_\varrho$  such that 
+$\frac{2\pi ( k - \frac{1}{2})}{D} \leq \arg \varphi(z) \leq \frac{2\pi ( k + \frac{1}{2})}{D}$
+there is a of contour $\tau_z$ starting at $z$ and tending to $(+\infty) \cdot e^{2\pi i \frac{k}{D}}$ such that $\Re V(w)$ is non-decreasing along the contour and $\int_{\tau_z}|x|^{-2} |dx| \to 0$ as $|z| \to \infty$ uniformly in $\mathrm{arg} \, z$.
+\end{lemma}
+\begin{proof}
+Let
+$$\tilde{\tau} (s) =
+\begin{cases}
+ |\varphi(z)| \exp\left(i (1-s)\arg \varphi(z) + is\frac{2\pi k}{D} \right) & s \in [0,1] \\
+ (|\varphi(z)|+s-1) \exp(i \frac{2\pi k}{D} ) & s \in [1,\infty) \\
+\end{cases}
+$$
+Then we choose our contour to be the preimage of $\tilde{\tau}$,  that is $\tau= \varphi^{-1} \circ \tilde{\tau}$. From this we see that $V(\tau(s)) = \gamma \tilde{\tau}(s)^D$. A short calculation then shows that for $s \in (0,1)$
+$$\frac{d}{ds} \Re  V(\tau(s)) = \gamma |\varphi(z)|^D D \left( \arg \varphi(z) - \frac{2\pi k}{D} \right) \sin\left( D (1-s) \left( \arg \varphi(z) - \frac{2\pi k}{D} \right) \right)  \geq 0$$
+It is also easy to show for $s \in (1,\infty)$, $\frac{d}{ds} \Re  \tilde{\tau}(s)^D \geq 0$. Furthermore $\varphi(w) = w (1+o(1))$ and $\varphi^\prime(w) = 1+o(1)$ uniformly on $U_\varrho$  as $\varrho \to +\infty$,  and so $\int_\tau |x|^{-2} |dx| \to 0$ as $|z| \to \infty$ uniformly in $\mathrm{arg} \, z$.
+\end{proof}
+
+\begin{proposition}
+$\Psi_{2n}$ has at least $2n+1$ real zeros (not counting multiplicity), of which at least $2n+2-\frac{D}{2}$ must be simple. $\Psi_{2n+1}$ has at least $2n$ real zeros (not counting multiplicity), of which $2n - \frac{D}{2}$ must be simple.
+\end{proposition}
+\begin{proof}
+Let $ x_1, \dots, x_\ell$ be the collection of real zeros of $\Psi_{2n}$ with odd multiplicity, i.e. exactly those points on $\mathbb{R}$ at which $\Psi_{2n}$ changes sign, where we do not repeat according to multiplicity. Then $\Psi_{2n}(x)(x-x_1)\dots (x-x_\ell)$ has the same sign everywhere and vanishes only on a finite set, hence
+$$\int_\mathbb{R} \Psi_{2n}(x)(x-x_1)\dots (x-x_\ell) e^{-2V(x)} \, dx \neq 0 $$
+However if $\ell \leq 2n$ then the above integral vanishes, thus $\ell \geq 2n+1$.  Furthermore it is easily seen that at least $2n+2-\frac{D}{2}$ of these must be simple. A similar argument works for $\Psi_{2n+1}$.
+\end{proof}
+
+We now arrive at a pair of Riemann-Hilbert problems,  for the even and odd dual skew-orthogonal polynomials respectively.  In what follows, it is more convenient to ensure the uniqueness of the sequence by fixing the next-to-leading coefficient of $\Psi_{2n+1}$ to be zero rather than $P_{2n+1}$. We begin with the \enquote{even problem,} so called because the $(1,1)$ matrix element of the solution will turn out to be $\Psi_{2n}$.
+
+\begin{rhp}[Even problem]\label{evenrhp} Let $V$ be a real polynomial of even degree $D \geq 2$ and positive leading coefficient, $\Gamma_j$ be defined by (\ref{contour1}) and (\ref{contour2}), and
+\begin{equation}\label{gamma}
+\Gamma = \bigcup_{j=1}^{D-1} \Gamma_j
+\end{equation}
+with the orientations of $\Gamma_j$ inherited by $\Gamma$ (see e.g. Figure \ref{contours}). We look for a $(D+1) \times (D+1)$ matrix valued function $$A_{n} : \mathbb{C}\setminus \Gamma \to  \mathcal{M}_{D+1}(\mathbb{C})$$ such that
+\begin{enumerate}
+\item $A_{n}$ is analytic on $\mathbb{C}\setminus \Gamma$ (that is, its matrix elements are analytic on $\mathbb{C}\setminus \Gamma$).
+\item $A_{n}$ has continuous boundary values up to $\Gamma \setminus \{ 0 \}$. That is,  given $x \in \Gamma \setminus \{ 0 \}$,  as $\mathbb{C}\setminus \Gamma  \ni  z \to x$ from either the $+$ (left) side or $-$ (right) side non-tangentially,  the limit of $A_{n}(z)$ exists. These limits are denoted
+\begin{align*}
+A_{n}^+ : \Gamma \setminus \{ 0 \} \to \mathcal{M}_{D+1}(\mathbb{C})  \\
+A_{n}^- : \Gamma \setminus \{ 0 \} \to \mathcal{M}_{D+1}(\mathbb{C})
+\end{align*}
+and are continuous functions.  \enquote{Left} and \enquote{right} mean relative to the orientation of the contour. 
+\item $A_{n}$ is bounded in a neighbourhood of $0$.
+\item The boundary values are related by the \enquote{jump matrix}
+\begin{align}
+A_{n}^{+}(x) = A_{n}^{-}(x)\left(
+\begin{array}{ccccccccccccccccccc}
+1 \,  & \, e^{-2V} \chi_\mathbb{R} \,  & \,  e^{-V} \chi_{\Gamma_1} \,   & \,  \dots \,  & \,  e^{-V} \chi_{\Gamma_{D-1}}   \\
+& 1 \\
+& & 1 \\
+& & & \ddots \\
+& & & & 1 \\
+\end{array} \right), & & x \in \Gamma \setminus \{ 0 \}
+\end{align}
+\item We have the normalisation
+\begin{align*}
+A_{n}(z) = \left(\mathbb{I}+ \mathcal{O}(z^{-1})\right) \left(\begin{matrix}
+z^{2n+D-1} \\
+& z^{-2n} \\
+& & z^{-1} \\
+& & & \ddots  \\
+& & & & z^{-1}
+\end{matrix} \right) & & (z \to \infty)
+\end{align*}
+\end{enumerate}
+\end{rhp}
+\begin{lemma}\label{uniqueness} If a solution to the Riemann-Hilbert problem (\ref{evenrhp}) exists, then it is unique.
+\end{lemma}
+\begin{proof}
+This method is standard but we repeat it for completeness. We note that the jump matrix has determinant $1$ so $\det A_{n}(z) $ has no jump across $\Gamma \setminus \{ 0 \}$ and takes continuous boundary values, so by Morera's theorem is analytic everywhere except possibly at $0$.  However the requirement of boundedness in a neighbourhood of $0$ implies that the singularity at $0$ is removable.  Hence $z \mapsto \det A_{n}(z)$ is entire.  Furthermore we have the normalisation $$\det A_{n}(z)  = 1 + \mathcal{O}(z^{-1}),$$ as $z \to \infty$ and so $$\det A_{n}(z)  \equiv 1$$
+Then let $\tilde{A}_{n}$ be another solution. Then the function $$z \mapsto \tilde{A}_{n}(z) A_{n}^{-1}(z)$$ has no jump across $\Gamma \setminus \{0 \}$ and obtains continuous boundary values, so by Morera's theorem is analytic everywhere except possibly at $0$.  Again by the requirement of boundedness in a neighbourhood of $0$ we see that the singularity at $0$ is removable.  Hence $z \mapsto \tilde{A}_{n}(z) A_{n}^{-1}(z)$ is actually entire.  Finally, since $$\tilde{A}_{n}(z) A_{n}^{-1}(z) = \mathbb{I}+\mathcal{O}(z^{-1})$$ we find that $\tilde{A}_{n}(z) A_{n}^{-1}(z) \equiv \mathbb{I}$.
+\end{proof}
+The jump condition implies that $(A_{n})_{11}$ is an entire function which scales like $z^{2n+D-1}$ as $z \to \infty$. It is therefore a monic polynomial of degree $2n+D-1$ by Liouville's theorem, $$(A_{n})_{11} := Q \in \mathscr{P}_{2n+D-1}^\mathbb{C}$$
+The Plemelj formula then implies that the first row of $A_{n}$ is
+$$\left(\begin{array}{ccccccccccccc} Q & \,  , \,&  C_{\mathbb{R}}(e^{-2V}  Q) & \, , \,& C_{\Gamma_1}(e^{-V}  Q) & \, , \,& \, \dots & \,  , \,& C_{\Gamma_{D-1}}(e^{-V}  Q) \\
+\end{array}\right)
+ $$
+ From the asymptotic condition 
+ \begin{align*}
+ C_{\Gamma_j}(e^{-V}  Q)(z) = \mathcal{O}(z^{-2}) & & \forall j=1, \dots, D-1
+ \end{align*}
+we see, by Proposition \ref{representation}, that there exists a unique $P \in \mathscr{P}^\mathbb{C}$ of degree exactly $2n$ such that $Q = e^{V} \frac{d}{dx}(P e^{-V})$.  Finally, the normalisation
+\begin{align*}
+C_{\mathbb{R}}(e^{-2V}  Q)(z) = \mathcal{O}(z^{-2n-1}) & & (z \to \infty)
+\end{align*}
+implies that $\langle \mathscr{X}^k , P\rangle_4 =0 $ for $k=0, \dots, 2n-1$,  and so $P$ is skew-orthogonal. Thus $Q = \Psi_{2n}$.
+
+For the second row, we see that $(A_{n})_{21} := \tilde{Q}$ is a polynomial of degree at most $2n+D-2$. Following the same procedure as above, we see that the second row is
+$$\left(\begin{array}{ccccccccccccc} \tilde{Q} & \,  , \,&  C_{\mathbb{R}}(e^{-2V}  \tilde{Q}) & \, , \,& C_{\Gamma_1}(e^{-V}  \tilde{Q}) & \, , \,& \, \dots & \,  , \,& C_{\Gamma_{D-1}}(e^{-V}  \tilde{Q}) \\
+\end{array}\right)
+ $$
+where now $\tilde{Q} = - \frac{2\pi i \gamma D}{h_{n-2}}  \Psi_{2n-2}$. For the remaining rows, we see that $(A_n)_{j+2,1} := R^{(j)}_n \in \mathscr{P}^{\mathbb{C}}_{2n+D-2}$ must be a polynomial of degree at most $2n+D-2$. To show there exists a unique solution to RHP (\ref{evenrhp}), let us introduce the following linear functionals, 
+\begin{align*}
+&\alpha_j :  \mathscr{P}^{\mathbb{C}}_{2n+D-2} \to \mathbb{C} \\
+&\beta_j :  \mathscr{P}^{\mathbb{C}}_{2n+D-2} \to \mathbb{C}
+\end{align*}
+where
+\begin{align}
+\alpha_j(P) &= \int_\mathbb{R} e^{-2V(x)} x^j P(x) \, dx &  & j = 0, \dots, 2n-1 \label{alpha} \\
+\beta_j(P) &= -\frac{1}{2\pi i} \int_{\Gamma_j} e^{-V(x)} P(x) \, dx &  & j = 1, \dots, D-1 \label{beta}
+\end{align}
+\begin{lemma}\label{linindep}$\alpha_0, \dots, \alpha_{2n-1}, \beta_1, \dots, \beta_{D-1}$ form a linearly independent set (and thus span $(\mathscr{P}_{2n+D-2}^{\mathbb{C}})^\ast$). 
+\end{lemma}
+\begin{proof}
+To show this we need only show that
+$$\bigcap_{j=0}^{2n-1} \ker \alpha_j \cap  \bigcap_{k=1}^{D-1} \ker \beta_k = 0$$
+Thus let $Q \in \mathscr{P}^\mathbb{C}_{2n+D-2}$ be such that $\alpha_0(Q) = \dots = \alpha_{2n-1}(Q)= \beta_1(Q) = \dots = \beta_{D-1}(Q)=0$.  Thus by Proposition \ref{representation}, $Q = e^V \frac{d}{dx}\left( P e^{-V}\right)$ for some $P \in \mathscr{P}^\mathbb{C}_{2n-1}$. Furthermore $\langle \mathscr{X}^0, P \rangle_4 = \dots = \langle \mathscr{X}^{2n-1}, P \rangle_4 = 0$. Hence $P$ is skew-orthogonal to all of $\mathscr{P}^\mathbb{C}_{2n-1}$. Thus by the non-degeneracy of the inner product $\langle \cdot,\cdot \rangle_4$, $P \equiv 0$ and hence $Q \equiv 0$.
+\end{proof}
+Let $R^{(j)}_n \in \mathscr{P}^\mathbb{C}_{2n+D-2}$ be the unique polynomial such that $$\alpha_0(R^{(j)}_n) = \dots = \alpha_{2n-1}(R^{(j)}_n) = 0$$
+and
+\begin{align*}
+\beta_k(R^{(j)}_n) = \delta_{kj} & & \forall  k = 1, \dots, D-1
+\end{align*}
+That such a polynomial exists and is unique follows from the linear independence of these functionals.
+
+\begin{theorem}
+The unique solution of the \textit{even} Riemann-Hilbert problem (\ref{evenrhp}) is 
+\begin{equation}\label{EvenSolution}
+\begin{split}
+&A_{n} = \\
+&\left(\begin{matrix}
+\Psi_{2n} & C_\mathbb{R}(e^{-2V}\Psi_{2n}) & C_{\Gamma_1}(e^{-V}\Psi_{2n}) & \dots & C_{\Gamma_{D-1}}(e^{-V}\Psi_{2n}) \\
+- \frac{2\pi i \gamma D}{h_{n-1}}\Psi_{2n-2} & - \frac{2\pi i \gamma D}{h_{n-1}} C_\mathbb{R}(e^{-2V}\Psi_{2n-2}) & - \frac{2\pi i \gamma D}{h_{n-1}} C_{\Gamma_1}(e^{-V}\Psi_{2n-2}) & \dots & - \frac{2\pi i \gamma D}{h_{n-1}} C_{\Gamma_{D-1}}(e^{-V}\Psi_{2n-2}) \\
+R^{(1)}_n & C_\mathbb{R}(e^{-2V}R^{(1)}_n) & C_{\Gamma_1}(e^{-V}R^{(1)}_n) & \dots & C_{\Gamma_{D-1}}(e^{-V}R^{(1)}_n) \\
+\vdots \\
+R^{(D-1)}_n & C_\mathbb{R}(e^{-2V}R^{(D-1)}_n ) & C_{\Gamma_1}(e^{-V}R^{(D-1)}_n ) & \dots & C_{\Gamma_{D-1}}(e^{-V}R^{(D-1)}_n ) \\
+\end{matrix}\right)
+\end{split}
+\end{equation}
+\end{theorem}
+
+\begin{lemma}[Symmetry for even case]\label{EvenSymmetry} Let $P \in \mathcal{M}_{D-1}(\mathbb{R})$ be the permutation matrix on $\mathbb{R}^{D-1}$ for which $P e_k = e_{D-k}$ for $k = 1, \dots, D-1$. Here $e_k = (0, \dots, 0, 1, 0, \dots, 0)^\mathsf{T}$ where the $1$ lies in the $k$th entry. Let $$Q = \mathrm{diag}(-1,1) \oplus P = \left( \begin{matrix} -1 & 0 & \bord & \\
+0 & 1 & \bord &\\ \hline
+& & \bord & P\end{matrix} \right) \in \mathcal{M}_{D+1}(\mathbb{R})$$ Note that $Q = Q^\mathsf{T} = Q^{-1}$ is an orthogonal matrix.  Then we have the relation
+$$A_{n}(z) = Q \overline{A_{n}(\overline{z}) } Q$$
+\end{lemma}
+\begin{proof}
+Let $\tilde{A}_{n}(z) = Q \overline{A_{n}(\overline{z})}  Q$. We show that $\tilde{A}_{n}$ solves the even Riemann-Hilbert problem and thus by uniqueness (see Lemma \ref{uniqueness}) $\tilde{A}_{n} = A_{n}$. Clearly $\tilde{A}_{n}$ is analytic on $\mathbb{C}\setminus \Gamma$ and it is easy to see that
+\begin{align*}
+\tilde{A}_{n}(z) = \left(\mathbb{I}+ \mathcal{O}(z^{-1})\right) \left(\begin{matrix}
+z^{2n+D-1} \\
+& z^{-2n} \\
+& & z^{-1} \\
+& & & \ddots  \\
+& & & & z^{-1}
+\end{matrix} \right) & & (z \to \infty)
+\end{align*}
+Furthermore $\tilde{A}_{n}$ is clearly bounded at $0$ since $A_{n}$ is.
+
+Because $V$ is a polynomial with real coefficients, $\overline{V(\overline{x})} = V(x)$. Furthermore, $\chi_\mathbb{R}(\overline{x}) = \chi_\mathbb{R}(x)$ and $\chi_{\Gamma_k}(\overline{x}) = \chi_{\Gamma_{D-k}}(x)$.  Now for $x \in \Gamma \setminus \{ 0 \}$ we have
+\begin{align*}
+\left(\tilde{A}_{n} \right)_+(x) &= Q \overline{\left( A_{n}\right)_- (\overline{x})}  Q \\
+&= Q \overline{\left( A_{n}\right)_+ (\overline{x})} \left(\begin{array}{ccccccccccccccccccc}
+1 \,  & \, -e^{-2V} \chi_\mathbb{R} \,  & \,  -e^{-V} \chi_{\Gamma_{D-1}} \,   & \,  \dots \,  & \,  -e^{-V} \chi_{\Gamma_{1}}   \\
+& 1 \\
+& & 1 \\
+& & & \ddots \\
+& & & & 1 \\
+\end{array} \right)  Q \\
+&=\left(\tilde{A}_{n} \right)_-(x)\left(\begin{array}{ccccccccccccccccccc}
+1 \,  & \, e^{-2V} \chi_\mathbb{R} \,  & \,  e^{-V} \chi_{\Gamma_{1}} \,   & \,  \dots \,  & \,  e^{-V} \chi_{\Gamma_{D-1}}   \\
+& 1 \\
+& & 1 \\
+& & & \ddots \\
+& & & & 1 \\
+\end{array} \right)
+\end{align*}
+Thus $\tilde{A}_{n} = A_{n}$.
+\end{proof}
+
+\begin{remark} Our method assumes $V$ is a polynomial, however there are interesting cases, e.g. Jacobi weights, that do not fit into this class.  How might our analysis be extended? The natural way would be to redefine $\Psi_n$ and $R_n^{(j)}$ so that these are no longer polynomials. For example if $V^\prime$ was rational with simple poles at $\lambda_1, \dots, \lambda_k$,  then $\Psi_n$ would also be rational with simple poles, with the property that $\mathrm{Res}_{z = \lambda_i} \Psi_{n}(z) e^{-V(z)} = 0$ for all $i=1,\dots, k$ and similarly for the auxiliary functions $R^{(j)}_n$. Investigation of this is left as a topic for future research.
+\end{remark}
+We now move onto the \enquote{odd problem,} so called because it will later turn out that the $(1,1)$ matrix element of the solution is $\Psi_{2n+1}$.
+\begin{rhp}[Odd problem]\label{oddrhp}
+Let $V$ be a polynomial of even and positive degree and positive leading coefficient,  and let $$\Sigma = \mathbb{T} \cup  \bigcup_{j=1}^{D-1} \Gamma_j $$ where $\Gamma_j$ have the specified orientations and $\mathbb{T}$ is positively oriented.  These contours are depicted in Figure \ref{morecontours}.  Let $\omega = e^{\frac{2\pi i }{D}}$ be a primitive root of unity and let $$S = \{ 0, 1, \omega, \omega^2, \dots, \omega^{D-1} \}$$ be the points of self-intersection of $\Sigma$. We look for a $(D+2) \times (D+2)$ matrix valued function $$B_{n} : \mathbb{C}\setminus \Sigma \to  \mathcal{M}_{D+2}(\mathbb{C})$$ such that
+\begin{enumerate}
+\item $B_{n}$ is analytic on $\mathbb{C}\setminus \Sigma$ (that is, its matrix elements are analytic on $\mathbb{C}\setminus \Sigma$).
+\item $B_{n}$ has continuous boundary values up to $\Sigma \setminus S$. That is,  given $x \in \Sigma \setminus S$,  as $\mathbb{C}\setminus \Sigma  \ni  z \to x$ from either the $+$ (left) side or $-$ (right) side non-tangentially,  the limit of $B_{n}(z)$ exists. These limits are denoted
+\begin{align*}
+B_{n}^+ : \Sigma \setminus S \to \mathcal{M}_{D+2}(\mathbb{C})\\
+B_{n}^- : \Sigma \setminus S \to \mathcal{M}_{D+2}(\mathbb{C})
+\end{align*}
+and are continuous functions.  \enquote{Left} and \enquote{right} mean relative to the orientation of the contour. 
+\item $B_{n}$ is bounded in a neighbourhood of $S$.
+\item The boundary values are related by the \enquote{jump matrix}
+\begin{align*}
+B_{n}^{+}(x) = B_{n}^{-}(x)\left(
+\begin{array}{ccccccccccccccccccc}
+1 \,  & \, e^{-2V} \chi_\mathbb{R} \,  & \,  e^{-V} \chi_{\Gamma_1} \,   & \,  \dots \,  & \,  e^{-V} \chi_{\Gamma_{D-1}} \, & \, \mathscr{X}^{-2n-D} \chi_\mathbb{T}   \\
+& 1 \\
+& & 1 \\
+& & & \ddots \\
+& & & & 1 \\
+& & & & & 1 \\
+\end{array} \right) & & x \in \Sigma \setminus S
+\end{align*}
+\item We have the normalisation
+\begin{align}
+B_{n}(z) = \left(\mathbb{I}+ \mathcal{O}(z^{-1})\right) \left(\begin{matrix}
+z^{2n+D} \\
+& z^{-2n} \\
+& & z^{-1} \\
+& & & \ddots  \\
+& & & & z^{-1}
+\end{matrix} \right) & & (z \to \infty)
+\end{align}
+\end{enumerate}
+\end{rhp}
+
+\begin{figure}
+\label{morecontours}
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+\draw[blue, thick,->] (0,0) -- (1,0);
+		\draw[blue, thick,->] (1,0) -- (3,0);
+		\draw[blue, thick] (3,0) -- node[below] {$C_0$}(4,0);
+		\draw[blue, thick] (0,0) -- (4,0);
+		\draw[blue,thick,->] (0,4) -- node[right] {$C_2$}(0,3);
+		\draw[blue,thick,->] (0,3) -- (0,1);
+		\draw[blue, thick] (0,0) -- (0,4);
+		\draw[blue,thick] (0,0) -- (99/70,99/70);
+		
+		\draw[blue,thick,->] (2*99/70,2*99/70) -- node[right] {$C_1$} (1.5*99/70,1.5*99/70);
+		
+		\draw[blue,thick,->] (2*99/70,2*99/70) -- (0.5*99/70,0.5*99/70);
+		\draw[blue, thick] (0,0) -- (-4,0);
+		\draw[blue, thick,->] (-4,0) -- node[below] {$C_4$} (-3,0);
+		\draw[blue, thick,->] (-3,0) -- (-1,0);
+		
+		\draw[blue, thick,->] (-2*99/70,2*99/70) -- node[left] {$C_3$} (-1.5*99/70,1.5*99/70);
+		\draw[blue, thick,->] (-2*99/70,2*99/70) -- (-0.5*99/70,0.5*99/70);
+		\draw[blue, thick] (0,0) -- (-2*99/70,2*99/70);
+		
+		\draw[blue,thick,->] (-2*99/70,-2*99/70) -- node[right] {$C_5$} (-1.5*99/70,-1.5*99/70);
+		\draw[blue,thick] (-2*99/70,-2*99/70) --  (0,0);
+		\draw[blue,thick,->] (-2*99/70,-2*99/70) -- (-0.5*99/70,-0.5*99/70);
+		
+		\draw[blue,thick,->] (0,-4) -- node[right] {$C_6$}(0,-3);
+		\draw[blue,thick,->] (0,-3) -- (0,-1);
+		\draw[blue, thick] (0,0) -- (0,-4);
+		
+
+		\draw[blue, thick,->] (2*99/70,-2*99/70) -- node[left] {$C_7$} (1.5*99/70,-1.5*99/70);
+		\draw[blue, thick,->] (2*99/70,-2*99/70) -- (0.5*99/70,-0.5*99/70);
+		\draw[blue, thick] (0,0) -- (2*99/70,-2*99/70);
+		
+		\draw[blue, thick,->](2*0.92387,-2*0.38268) arc (-22.5:22.5:2);
+		\draw[blue, thick,->](2*0.92387,2*0.382683) arc (22.5:45+22.5:2);
+		\draw[blue, thick,->](2*0.92387,2*0.382683) arc (22.5:45+22.5:2);
+		\draw[blue, thick,->](2*0.92387,2*0.382683) arc (22.5:45+22.5:2);
+		\draw[blue, thick,->](2*0.382683,2*0.923879) arc (45+22.5:45+45+22.5:2);
+		\draw[blue, thick,->](-2*0.38268,2*0.92387) arc (45+45+22.5:45+45+45+22.5:2);
+		\draw[blue, thick,->](-2*0.92387,2*0.3826834) arc (45+45+45+22.5:45+45+45+45+22.5:2);
+		\draw[blue, thick,->](-2*0.923879,-2*0.382683) arc (45+45+45+45+22.5:45+45+45+45+45+22.5:2);
+		\draw[blue, thick,->](-2*0.382683,-2*0.92387) arc (45+45+45+45+45+22.5:45+45+45+45+45+45+22.5:2);
+		\draw[blue, thick,->](2*0.3826834,-2*0.923879) arc (45+45+45+45+45+45+22.5:45+45+45+45+45+45+45+22.5:2);
+		\draw[blue, thick,->] (0,0) circle (2);
+		\node[blue] at (2*0.92387+0.35,2*0.382683) {$\mathbb{T}$}; 
+\end{tikzpicture}
+\end{center}
+\caption{The contours of the odd Riemann-Hilbert problem, here shown for the case $D=8$.  Orientations of the contours are indicated by arrows.}
+\end{figure}
+
+The method of solution of this Riemann-Hilbert problem is very similar to the even case.  The asymptotic condition implies that $(B_{n})_{11} = Q$ is a monic polynomial of degree $2n+D$. From the jump condition and the Plemelj formula we find that the first row is
+$$\left(\begin{array}{ccccccccccccc} Q &  ,  &  C_{\mathbb{R}}(e^{-2V} Q) & , & C_{\Gamma_1}(e^{-V}  Q) & , & \dots & , & C_{\Gamma_{D-1}}(e^{-V}  Q) & , & C_{\mathbb{T}}( \mathscr{X}^{-2n-D}  Q) \\
+\end{array}\right)
+ $$
+From the normalisation $C_{\Gamma_{j}}(e^{-V} Q)(z) = \mathcal{O}(z^{-2})$ for all $j=1, \dots, D-1$ we find that there exists a polynomial $P$ of degree $2n+1$ such that $Q = e^V \frac{d}{dx}( P e^{-V})$. 
+\begin{remark} The normalisation $C_{\mathbb{T}}( \mathscr{X}^{-2n-D} Q)(z) = \mathcal{O}(z^{-2})$ implies that
+\begin{align*}
+Q(x) = x^{2n+D} + \mathcal{O}(x^{2n+D-2}) & & (z \to \infty) 
+\end{align*}
+This fixes the next-to-leading coefficient of $P$ (where $Q = e^V \frac{d}{dx}\left( P e^{-V} \right)$) though not necessarily to $0$. This explains the remark made in the introduction that fixing the next-to-leading coefficient of $P$ to $0$ is not always the most convenient choice. The addition of the contour $\mathbb{T}$ could also be done for the Riemann-Hilbert problem of Pierce \cite{PIERCE2008230} in order to guarantee a unique solution.
+\end{remark}
+
+Finally, the scaling $C_{\mathbb{R}}(e^{-2V}  Q)(z) = \mathcal{O}(z^{-2n-1})$ implies that $\langle \mathscr{X}^{0}, P \rangle_4 = \dots = \langle \mathscr{X}^{2n-1}, P \rangle_4 = 0$, so $P$ is indeed skew-orthogonal. Thus $Q = \Psi_{2n+1}$.
+
+In the same manner as for the even case we find that the second row is
+$$\left(\begin{array}{ccccccccccccc} \tilde{Q} &,&  C_{\mathbb{R}}(e^{-2V}  \tilde{Q}) &, & C_{\Gamma_1}(e^{-V} \tilde{Q}) & ,& \dots & ,& C_{\Gamma_{D-1}}(e^{-V}  \tilde{Q}) & ,& C_{\mathbb{T}}( \mathscr{X}^{-2n-D} \tilde{Q}) \\
+\end{array}\right)
+ $$
+ where $\tilde{Q} = -\frac{2\pi i \gamma D}{h_{n-1}} \Psi_{2n-2}$. Indeed the remaining rows except the final one are the same as in the even case. To show a unique solution in all remaining rows let us introduce the linear functional $\beta_D : \mathscr{P}^\mathbb{C}_{2n+D-2} \to \mathbb{C}$ defined by
+\begin{align}
+\beta_D(P) =- \frac{1}{2\pi i} \oint_\mathbb{T} P(z) z^{-2n-D} \, dz
+\end{align}
+Now let $\alpha_0, \dots, \alpha_{2n-1}$ and $\beta_1, \dots, \beta_{D-1}$ act on $\mathscr{P}^\mathbb{C}_{2n+D-1}$ according to the formulas given in (\ref{alpha}) and (\ref{beta}). That the 2nd to $(D+2)$th rows have a unique solution follows from the lemma below.
+\begin{lemma} Consider the linear functionals $\alpha_0, \dots, \alpha_{2n-1}$ and $\beta_1, \dots, \beta_{D}$ viewed as acting on $\mathscr{P}^\mathbb{C}_{2n+D-1}$ according to (\ref{alpha}) and (\ref{beta}). Then
+$$\bigcap_{j=0}^{2n-1} \ker \alpha_j \cap  \bigcap_{k=1}^{D} \ker \beta_k = 0$$
+\end{lemma}
+\begin{proof}
+If $\beta_D (Q) = 0$ then $Q \in \mathscr{P}^\mathbb{C}_{2n+D-2}$.  The proof then reduces to that of Lemma \ref{linindep}.
+\end{proof}
+\begin{theorem}
+The unique solution of the \textit{odd} Riemann-Hilbert problem (\ref{oddrhp}) is then
+\begin{equation}
+\begin{split}
+&B_{n} =  \\
+&\left(\begin{matrix}
+\Psi_{2n+1} & C_\mathbb{R}(e^{-2V}\Psi_{2n+1}) & C_{\Gamma_1}(e^{-V}\Psi_{2n+1}) & \dots &  C_{\mathbb{T}}(\mathscr{X}^{-2n-D}\Psi_{2n+1})  \\
+- \frac{2\pi i \gamma D}{h_{n-1}}\Psi_{2n-2} & - \frac{2\pi i \gamma D}{h_{n-1}} C_\mathbb{R}(e^{-2V}\Psi_{2n-2}) & - \frac{2\pi i \gamma D}{h_{n-1}} C_{\Gamma_1}(e^{-V}\Psi_{2n-2}) & \dots & - \frac{2\pi i \gamma D}{h_{n-1}} C_{\mathbb{T}}(\mathscr{X}^{-2n-D}\Psi_{2n-2}) \\
+R^{(1)}_n & C_\mathbb{R}(e^{-2V}R^{(1)}_n) & C_{\Gamma_1}(e^{-V}R^{(1)}_n) & \dots & C_{\mathbb{T}}(\mathscr{X}^{-2n-D}R^{(1)}_n) \\
+\vdots \\
+R^{(D-1)}_n & C_\mathbb{R}(e^{-2V}R^{(D-1)}_n) & C_{\Gamma_1}(e^{-V}R^{(D-1)}_n) & \dots & C_{\mathbb{T}}(\mathscr{X}^{-2n-D}R^{(D-1)}_n) \\
+R^{(D)}_n & C_\mathbb{R}(e^{-2V}R^{(D)}_n) & C_{\Gamma_1}(e^{-V}R^{(D)}_n) & \dots & C_{\mathbb{T}}(\mathscr{X}^{-2n-D} R^{(D)}_n)
+\end{matrix}\right)
+\end{split}
+\end{equation}
+\end{theorem}
+Note that these polynomials $R^{(1)}_n, \dots, R^{(D-1)}_n$ are the same polynomials that appear in the even problem, so we have not made a confusion of notation.  Note also that the integrals in the final column can be computed explicitly.
+
+\begin{proposition} $R^{(D)}_n = - \Psi_{2n}$. 
+\end{proposition}
+\begin{proof}
+From the normalisation we see that $R^{(D)}_n$ is a polynomial of degree at most $2n+D-1$ and from $C_\mathbb{T}( \mathscr{X}^{-2n-D} R^{(D)}_n)(z) = z^{-1}+\mathcal{O}(z^{-2})$ we find that that $R^{(D)}_n(x) = - Q(x)$ where $Q$ is a monic polynomial of degree $2n+D-1$. From the fact that $\beta_1(R^{(D)}_n) = \dots = \beta_{D-1}(R^{(D)}_n) = 0$ we find that $Q = e^V \frac{d}{dx}( P e^{-V})$ for some polynomial $P$ of degree exactly $2n$. Finally, the requirement that $\alpha_0(R^{(D)}_n) = \dots = \alpha_{2n-1}(R^{(D)}_n) = 0$ implies that $P$ is skew-orthogonal to all of $\mathscr{P}_{2n-1}^\mathbb{C}$. 
+\end{proof}
+From this one might think the $B_n$ problem is strictly superior to the $A_n$ problem, since the former encodes both $\Psi_{2n+1}$ and $\Psi_{2n}$, however our Christoffel-Darboux formula (\ref{CD}) implies that from the point of view of random matrix theory it is completely sufficient to study $A_n$.
+\begin{lemma} $ 2n \leq  \deg R_n^{(j)} \leq 2n+D-2$ for $j=1,\dots, D-1$.
+\end{lemma}
+\begin{proof}
+Suppose by way of contradiction that $ \deg R_n^{(j)} \leq 2n-1$. Then by the conditions $\alpha_0 (R_n^{(j)}) = \dots = \alpha_{2n-1}( R_n^{(j)} ) = 0$ we find that $R_n^{(j)} \equiv 0$. But this contradicts $\beta_j (R_n^{(j)}) = 1$.
+\end{proof}
+\begin{remark}\label{zero} For the case $n=0$, the polynomials $R_0^{(1)} , \dots, R_0^{(D-1)}$ can be constructed as follows.  Let $M$ be the matrix
+$$M = (M_{ij})_{i,j=1}^{D-1} =  \left( \int_{\Gamma_i} x^{j-1} e^{-V(x)} \, dx \right)_{i,j=1}^{D-1} , $$
+then we have
+$$R^{(j)}_0(x) = - 2\pi i \sum_{k=1}^{D-1} (M^{-1})_{kj} x^{k-1} .$$
+\end{remark}
+
+\begin{lemma}[Symmetry for odd problem]\label{OddSymmetry} Let $P \in \mathcal{M}_{D-1}(\mathbb{R})$ be defined as in Lemma \ref{EvenSymmetry}  and let $$Q = \mathrm{diag}(-1,1) \oplus P \oplus (-1) = \left( \begin{array}{ccccccc} -1 & 0 & \bord & \\
+0 & 1 &  \bord & &\\ \cline{1-5}
+& &  \bord & \, \,  \, P & \bord & \\\cline{4-6}
+& & & & \bord & -1 \end{array} \right) \in \mathcal{M}_{D+2}(\mathbb{R}) $$ Note that $Q = Q^\mathsf{T}= Q^{-1}$ is an orthogonal matrix.  Then we have the relation
+$$B_{n}(z) = Q \overline{B_{n}(\overline{z}) } Q$$
+\end{lemma}
+\begin{proof}
+Morally the same as for the even case.
+\end{proof}
+
+
+Finally, our results allow us to characterise the \enquote{dual} skew-orthogonal polynomials $\Psi_{2n}$ and auxiliary polynomials $R^{(j)}_n$ in terms of the corresponding sequence of \textit{orthogonal} polynomials. This is morally the same construction as in Remark \ref{zero}.
+
+\begin{corollary}[Skew-orthogonal polynomials in terms of orthogonal polynomials]\label{orthog} Let $\{ H_n \}_{n \in \mathbb{N}}$ be the sequence of monic orthogonal polynomials corresponding to the weight $e^{-2V}$ where $V(x) = \gamma x^D+ \mathcal{O}(x^{D-1})$ is a real polynomial of even degree $D \geq 2$ and $\gamma > 0$. That is, $$H_n(x) = x^n + \mathcal{O}(x^{n-1})$$ and
+\begin{align*}
+\int_\mathbb{R}H_n(x) H_m(x) e^{-2V(x)} \, dx = 0 & &\forall n,m \in \mathbb{N},  \, n \neq m
+\end{align*}
+Let $M$ be the matrix
+$$M = \left( M_{jk}\right)_{j,k=1}^{D-1} = \left( \int_{\Gamma_j} H_{2n+k-1}(z) e^{-V(z)}\, dz \right)_{j,k=1}^{D-1}$$
+and let $\lambda_n$ be the next-to-leading coefficient of $H_{n+D}$, i.e. $$H_{n+D}(x) = x^{n+D}+\lambda_n x^{n+D-1} + \mathcal{O}(x^{n+D-2})$$ Then the corresponding \enquote{dual} skew-orthogonal polynomials and auxiliary polynomials may be expressed
+\begin{align*}
+\Psi_{2n} &= H_{2n+D-1} - \sum_{k,j=1}^{D-1} \left[  (M^{-1})_{kj}\int_{\Gamma_j} H_{2n+D-1}(z)e^{-V(z)}\, dz \right] H_{2n+k-1} \\
+\Psi_{2n+1} &= H_{2n+D} - \lambda_n H_{2n+D-1} \\
+&\quad- \sum_{k,j=1}^{D-1} \left[  (M^{-1})_{kj}\int_{\Gamma_j} (H_{2n+D}(z) - \lambda_n H_{2n+D-1}(z))e^{-V(z)}\, dz \right] H_{2n+k-1} \\
+R^{(j)}_n &= - 2\pi i \sum_{k=1}^{D-1} (M^{-1})_{kj} H_{2n+k-1}
+\end{align*}
+\end{corollary}
+Indeed, these $\{ H_k \}_{k \in \mathbb{N}}$ are exactly the \enquote{natural basis} identified by Adler and van Moerbeke \cite{adler1999pfaff}.
+\begin{exmp}
+In the case $D=2$, for the potential $V(z) = \frac{1}{2}z^2$ we can write the corresponding orthogonal polynomials explicitly as
+\begin{equation}\label{Hermite}
+H_n(z) = \frac{(-1)^n}{2^n} e^{z^2} \frac{d^n}{dz^n} e^{-z^2}
+\end{equation}
+Then using $\int_\mathbb{R}H_{2n}(x) e^{-\frac{1}{2}x^2}\, dx =  \sqrt{2} \left( n - \frac{1}{2} \right)! $ one finds that
+\begin{align*}
+\Psi_{2n} &= H_{2n+1} \\
+\Psi_{2n+1} &= H_{2n+2} - \left( n +\frac{1}{2} \right) H_{2n} \\
+R^{(1)}_n &= -\frac{2\pi i }{ \sqrt{2} \left( n - \frac{1}{2} \right)!} H_{2n} \\
+P_{2n} &= n! \sum_{k=0}^n \frac{1}{k!} H_{2k} \\
+P_{2n+1} &= H_{2n+1}
+\end{align*}
+\end{exmp}
+What we have done in the preceding discussion amounts to representing $\Psi_{2n}$ and $\Psi_{2n+1}$ as \enquote{multiple-orthogonal polynomials of Type II} (see e.g. \cite{Martinez_Finkelshtein_2016} for a definition of this term). Let us summarise this with the following corollary.
+\begin{corollary}[Dual skew-orthogonal polynomials as Type II multiple-orthogonal polynomials]\label{typeII} Consider the following problem. Find a monic polynomial $Q$ of degree exactly $2n+D-1$ such that
+\begin{align*}
+\int_\mathbb{R} x^k Q(x) e^{-2V(x)}\, dx &= 0 & & \forall k = 0, \dots, 2n-1 \\
+\int_{\Gamma_j} Q(x) e^{-2V(x)}\, dx &= 0 & & \forall j=1,\dots, D-1
+\end{align*}
+Then this problem is uniquely solved by $Q = \Psi_{2n}$. Similarly if we are asked to find a monic polynomial $Q$ of degree exactly $2n+D$ such that
+\begin{align*}
+\int_\mathbb{R} x^k Q(x) e^{-2V(x)}\, dx &= 0 & & \forall k = 0, \dots, 2n-1 \\
+\int_{\Gamma_j} Q(x) e^{-2V(x)}\, dx &= 0 & & \forall j=1,\dots, D-1 \\
+\int_{\mathbb{T}} Q(x) x^{-2n-D} \, dx &= 0
+\end{align*}
+then this problem is uniquely solved by $Q = \Psi_{2n+1}$. We should note that our case differs from usual multiple-orthogonality because our \enquote{measures} are not all supported on $\mathbb{R}$.
+\end{corollary}
+Following the standard theory of multiple-orthogonal polynomials \cite{VanAssche2001} it is natural to consider the Riemann-Hilbert problems satisfied by $\widehat{A_n} = A_n^{- \mathsf{T}}$ and $\widehat{B_n} = B_n^{- \mathsf{T}}$ (inverse transpose). 
+\begin{rhp}[Dual even problem] By virtue of the fact that $\det A_n \equiv 1$, $\widehat{A_n}:=A_n^{-\mathsf{T}}$ satisfies the following Riemann-Hilbert problem.
+\begin{enumerate}
+\item $\widehat{A_{n}}$ is analytic on $\mathbb{C}\setminus \Gamma$ (that is, its matrix elements are analytic on $\mathbb{C}\setminus \Gamma$). 
+\item $\widehat{A_{n}}$ has continuous boundary values up to $\Gamma \setminus \{ 0 \}$. That is,  given $x \in \Gamma \setminus \{ 0 \}$,  as $\mathbb{C}\setminus \Gamma  \ni  z \to x$ from either the $+$ (left) side or $-$ (right) side non-tangentially,  the limit of $\widehat{A_{n}}(z)$ exists. These limits are denoted
+\begin{align*}
+\widehat{A_{n}}^+ : \Gamma \setminus \{ 0 \} \to \mathcal{M}_{D+1}(\mathbb{C}) \\
+\widehat{A_{n}}^- : \Gamma \setminus \{ 0 \} \to \mathcal{M}_{D+1}(\mathbb{C})
+\end{align*}
+and are continuous functions.  \enquote{Left} and \enquote{right} mean relative to the orientation of the contour. 
+\item $\widehat{A_{n}}$ is bounded in a neighbourhood of $0$. 
+\item The boundary values are related by the \enquote{jump matrix}
+\begin{align*}
+\widehat{A_{n}}^{+}(x) = \widehat{A_{n}}^{-}(x)\left(
+\begin{array}{ccccccccccccccccccc}
+1 \,  & & &  \\
+- e^{-2V} \chi_\mathbb{R}  & 1 \\
+- e^{-V} \chi_{\Gamma_1}   & & & 1 \\
+\vdots  & & & & &   \ddots \\
+- e^{-V} \chi_{\Gamma_{D-1}}  \,  & & & & & &  &  1 \\
+\end{array} \right) & & x \in \Gamma \setminus \{ 0 \}
+\end{align*}
+\item We have the scaling as $z \to \infty$
+$$\widehat{A_{n}}(z) = \left(\mathbb{I}+ \mathcal{O}(z^{-1})\right) \left(\begin{matrix}
+z^{-2n-D+1} \\
+& z^{2n} \\
+& & z \\
+& & & \ddots  \\
+& & & & z
+\end{matrix} \right)$$
+\end{enumerate}
+\end{rhp}
+In what follows we shall only be interested in computing the second column of $\widehat{A_n}$ (the motivation for this is that this column will appear in the upcoming Christoffel-Darboux formula), though it is an easy exercise for the reader to compute the remaining columns. By virtue of the jump condition, the 2nd to $(D+1)$th columns all have no jump across $\Gamma \setminus \{ 0 \}$ and by boundedness around $0$ we see that the singularity at $0$ is removable. Hence the 2nd to $(D+1)$th columns are entire functions, indeed polynomials by the asymptotic condition. 
+\begin{align*}
+\left( \widehat{A_n} \right)_{i2} (z) &= z^{2n} \, \delta_{i,2}+\mathcal{O}(z^{2n-1}) & &  i=1, \dots, D+1 \\
+\left( \widehat{A_n} \right)_{ij} (z) &= z \, \delta_{ij} + c_{ij} & &  i=1,\dots, D+1 \text{ and } j=3, \dots,D+1
+\end{align*}
+where the $c_{ij}$ are constants. The jump condition on the first column may be solved by Plemelj's formula.
+\begin{align*}
+\left( \widehat{A_n} \right)_{i1} = - C_\mathbb{R}\left( \left(\widehat{A_n}\right)_{i2} e^{-2V} \right)  - \sum_{j=3}^{D+1} c_{ij} \, C_{\Gamma_{j-2}}\left( e^{-V}\right) - \chi_{i \geq 3} C_{\Gamma_{i-2}}\left( \mathscr{X} e^{-V} \right) & &  i = 1, \dots,  D+1
+\end{align*}
+The asymptotic condition $\left( \widehat{A_n} \right)_{11}(z) = z^{-2n-D+1}(1 + \mathcal{O}(z^{-1}))$ yields the conditions
+\begin{align*}
+\int_\mathbb{R} \left(\widehat{A_n}\right)_{12}(x) x^k e^{-2V(x)}\, dx + \sum_{j=3}^{D+1} c_{1j} \int_{\Gamma_{j-2}} x^k e^{-V(x)}\, dx = 0 & & \forall k =0 , \dots, 2n+D-3
+\end{align*}
+By taking linear combinations of these equations we can replace $x^k$ with any polynomial of degree $\leq 2n+D-3$, in particular we can replace it with $\Psi_0, \dots, \Psi_{2n-2}$. This implies that $\left(\widehat{A_n}\right)_{12}$ is a scalar multiple of $P_{2n-2}$.  This multiple is fixed by
+\begin{align*}
+\int_\mathbb{R} \left(\widehat{A_n}\right)_{12}(x) \Psi_{2n-1}(x) e^{-2V(x)}\, dx = 2 \pi i 
+\end{align*}
+and so
+\begin{align}\label{12Ahat}
+\left(\widehat{A_n}\right)_{12} = - \frac{2\pi i \gamma D}{h_{n-1}} P_{2n-2}
+\end{align}
+By a similar argument we see that 
+\begin{align}\label{22Ahat}
+\left(\widehat{A_n}\right)_{22} = P_{2n}
+\end{align}
+The remaining entries in the second column are polynomials of degree at most $2n-1$.  These satisfy the conditions
+\begin{align*}
+\int_\mathbb{R} \left(\widehat{A_n}\right)_{i2}(x) \Psi_k(x) e^{-2V(x)}\, dx + \int_{\Gamma_{i-2}} x \Psi_k(x) e^{-V(x)}\, dx = 0 & & \forall k =0 , \dots, 2n-1 \text{ and } i\geq 3
+\end{align*}
+Expanding this in the basis $P_0, \dots, P_{2n-1}$ we find
+\begin{align}\label{i2Ahat}
+\left(\widehat{A_{n}}\right)_{i2} =\gamma D \sum_{k=0}^{n-1} h_k^{-1} \left( P_{2k} \int_{\Gamma_{i-2}} x \Psi_{2k +1}(x) e^{-V(x)}\, dx - P_{2k+1} \int_{\Gamma_{i-2}} x \Psi_{2k}(x) e^{-V(x)}\, dx \right) & & i\geq 3
+\end{align}
+What the above calculation demonstrates is that $P_{2n}$ may be thought of as a Type I multiple-orthogonal polynomial (again see \cite{Martinez_Finkelshtein_2016} for a definition of this term).  Let us formalise this with the following corollary.
+\begin{corollary}[Even skew-orthogonal polynomials as Type I multiple-orthogonal polynomials]\label{typeI} Consider the following problem. Find a monic polynomial $P$ of degree exactly $2n$ and a collection of constants $c_1, \dots, c_{D-1}$ such that
+\begin{align*}
+\int_{\mathbb{R}} x^k P(x) e^{-2V(x)} \, dx + \sum_{j=1}^{D-1} c_j \int_{\Gamma_j} x^k e^{-V(x)}\, dx = 0 & & \forall k=0 , \dots, 2n+D-2
+\end{align*}
+Then this problem has a unique solution $(P, c_1, \dots, c_{D-1})$, where $P=P_{2n}$.
+\end{corollary}
+On the other hand, it is not clear if it is possible to think of $P_{2n+1}$ as a Type I multiple-orthogonal polynomial and, as we shall soon see, $P_{2n+1}$ (or any multiple of it) doesn't appear as a matrix element of $B_n^{-1}$.  It is possible to characterise $P_{2n+1}$ by a \textit{combination} of both Type I and Type II orthogonality conditions, as follows. We look for a monic polynomial $P$ of degree $2n+1$ and a collection of constants $c_1, \dots, c_{D-1}$ such that
+\begin{align*}
+\int_\mathbb{R} P(x) x^k e^{-2V(x)}\, dx + \sum_{j=1}^{D-1} c_j \int_{\Gamma_j} x^k e^{-V(x)} \, dx = 0 & & \forall k = 0,\dots, 2n+D-2
+\end{align*}
+and
+$$ \int_\mathbb{T} P(x) e^{-V(x)} \frac{d}{dx}\left( x^{-2n-D} e^{V(x)} \right) \, dx = 0$$
+$(P, c_1, \dots, c_{D-1})=(P_{2n+1}, \ast, \dots, \ast)$ is the unique solution of this problem. However this construction seems somewhat ugly and we shall not investigate the implications of this here.
+\begin{rhp}[Dual odd problem] By virtue of the fact that $\det B_n \equiv 1$, $\widehat{B_n}:=B_n^{-\mathsf{T}}$ satisfies the following Riemann-Hilbert problem.
+\begin{enumerate}
+\item $\widehat{B_{n}}$ is analytic on $\mathbb{C}\setminus \Sigma$ (that is, its matrix elements are analytic on $\mathbb{C}\setminus \Sigma$).
+\item $\widehat{B_{n}}$ has continuous boundary values up to $\Sigma \setminus S$. That is,  given $x \in \Sigma \setminus S$,  as $\mathbb{C}\setminus \Sigma  \ni  z \to x$ from either the $+$ (left) side or $-$ (right) side non-tangentially,  the limit of $\widehat{B_{n}}(z)$ exists. These limits are denoted
+\begin{align*}
+\widehat{B_{n}}^+ : \Sigma \setminus S \to \mathcal{M}_{D+2}(\mathbb{C}) \\
+\widehat{B_{n}}^- : \Sigma \setminus S \to  \mathcal{M}_{D+2}(\mathbb{C})
+\end{align*}
+and are continuous functions.  \enquote{Left} and \enquote{right} mean relative to the orientation of the contour. 
+\item $\widehat{B_{n}}$ is bounded in a neighbourhood of $S$.
+\item The boundary values are related by the \enquote{jump matrix}
+\begin{align*}
+\widehat{B_{n}}^{+}(x) = \widehat{B_{n}}^{-}(x)\left(
+\begin{array}{ccccccccccccccccccc}
+1 \,  & & &  \\
+- e^{-2V} \chi_\mathbb{R}  & 1 \\
+- e^{-V} \chi_{\Gamma_1}   & & & 1 \\
+\vdots  & & & & &   \ddots \\
+- e^{-V} \chi_{\Gamma_{D-1}}  \,  & & & & & &  &  1 \\
+- \mathscr{X}^{-2n-D} \chi_{\mathbb{T}}  \,  & & & & & &  &  &  1 \\
+\end{array} \right) & & x \in \Sigma \setminus S
+\end{align*}
+\item We have the normalisation
+\begin{align*}
+\widehat{B_{n}}(z) = \left(\mathbb{I}+ \mathcal{O}(z^{-1})\right) \left(\begin{matrix}
+z^{-2n-D} \\
+& z^{2n} \\
+& & z \\
+& & & \ddots  \\
+& & & & z
+\end{matrix} \right) & & (z \to \infty)
+\end{align*}
+\end{enumerate}
+\end{rhp}
+Here again we restrict ourselves to computing the second column.  We shall simply state the result since the calculation is practically the same as in the case of $\widehat{A_n}$.
+\begin{align*}
+\left(\widehat{B_n}\right)_{12} &= 0 \\
+\left(\widehat{B_n}\right)_{22} &= P_{2n} \\
+\left(\widehat{B_n}\right)_{i2} &= \left(\widehat{A_n}\right)_{i2} & & i=3, \dots, D+1 \\
+\left(\widehat{B_n}\right)_{D+2,2} &= \frac{2\pi i \gamma D}{h_{n-1}} P_{2n-2}
+\end{align*}
+
+\section{Christoffel-Darboux formula}\label{christoffelsection}
+
+In this section we prove the following theorem.
+\begin{theorem}[Christoffel-Darboux]
+Let the pre-kernel $S_n$ be defined by (\ref{prekernel}). Then
+\begin{equation}\label{CD}
+\boxed{S_n(x,y) = -\frac{1}{4\pi i} e^{-V(x)-V(y)} \frac{\left( A_n^{-1}(x) A_n(y) \right)_{21}}{x-y}}
+\end{equation}
+where $A_n$ is the unique solution of Riemann-Hilbert problem \ref{evenrhp}.
+\end{theorem}
+\begin{remark} We call this a \enquote{Christoffel-Darboux} formula because an analogous formula appears in the theory of orthogonal polynomials ($\beta = 2$), i.e. if one takes $A_n$ to be the $2\times 2$ Fokas-Its-Kitaev \cite{fokas} RHP, then (\ref{CD}) yields the classical Christoffel-Darboux formula, up to a factor of $\frac{1}{2}$.
+\end{remark}
+
+\begin{remark} We could, if we like, have expressed the Christoffel-Darboux formula (\ref{CD}) in terms of the solution of the odd problem (\ref{oddrhp}), since we see from our solution to $B_n$ and $\widehat{B_n}$ that $( A_n^{-1}(x) A_n(y) )_{21} = ( B_n^{-1}(x) B_n(y) )_{21}$.
+\end{remark}
+
+To prove this result we need to derive a variety of relations. First note that the polynomial $R_k^{(j)}- R_n^{(j)}$ for $k=0, \dots, n-1$ is in the kernel of $\beta_j$ for all $j$ and has degree at most $2n+D-2$.  It is therefore in the span of $\Psi_0 , \dots, \Psi_{2n-1}$. Thus write
+$R_k^{(j)}- R_n^{(j)} = \sum_{i=0}^{n-1} \eta_{ik}^{(j)} \Psi_{2i}+\sum_{i=0}^{n-1} \xi_{ik}^{(j)} \Psi_{2i+1}$. We then have
+\begin{align*}
+\eta_{ik}^{(j)} = \frac{\gamma D}{h_i}\int_\mathbb{R} R_k^{(j)} P_{2i+1} e^{-2V} \, dx \\
+\xi_{ik}^{(j)} = - \frac{\gamma D}{h_i} \int_\mathbb{R} R_k^{(j)} P_{2i} e^{-2V} \, dx
+\end{align*}
+Note that for $i \leq k-1$ we have $\eta_{ik}^{(j)} = \xi_{ik}^{(j)}  = 0$. We may thus write
+\begin{align}
+R_k^{(j)} = R_n^{(j)}+ \sum_{i=k}^{n-1} \eta_{ik}^{(j)} \Psi_{2i}+\sum_{i=k}^{n-1} \xi_{ik}^{(j)} \Psi_{2i+1}
+\end{align}
+
+Next consider $\mathscr{X} \Psi_{2k+1} - \Psi_{2k+2}$.  This has degree at most $2n+D$ and is orthogonal to $\mathscr{P}_{2k-2}^\mathbb{C}$. Then $\mathscr{X} \Psi_{2k+1}- \Psi_{2k+2} - \sum_{j=1}^{D-1} \beta_j ( \mathscr{X} \Psi_{2k+1}) R_k^{(j)}$ has degree at most $2n+D$ and is in the kernel of $\beta_j$ for all $j=1, \dots, D-1$. It is thus a linear combination of $\Psi_{2k-2}$, $\Psi_{2k}$ and $\Psi_{2k+1}$. We thus find
+\begin{equation}
+\begin{split}
+\mathscr{X} \Psi_{2k+1} &=  \Psi_{2k+2} + \sum_{j=1}^{D-1} \beta_j ( \mathscr{X} \Psi_{2k+1}) R_k^{(j)} + a_k  \Psi_{2k+1} + b_k \Psi_{2k} + c_k \Psi_{2k-2} \\
+&= \Psi_{2k+2} + a_k  \Psi_{2k+1} + b_k \Psi_{2k} + c_k \Psi_{2k-2} \\
+&\quad + \sum_{j=1}^{D-1} \beta_j ( \mathscr{X} \Psi_{2k+1}) R_n^{(j)} + \sum_{j=1}^{D-1} \beta_j ( \mathscr{X} \Psi_{2k+1}) \sum_{i=k}^{n-1} \eta_{ik}^{(j)} \Psi_{2i} \\
+&\quad + \sum_{j=1}^{D-1} \beta_j ( \mathscr{X} \Psi_{2k+1}) \sum_{i=k}^{n-1} \xi_{ik}^{(j)} \Psi_{2i+1} .
+\end{split}
+\end{equation}
+These coefficients $a_k$, $b_k$ and $c_k$ are unique as can be seen from the formulæ
+\begin{align*}
+a_k &= 
+ - \frac{\gamma D}{h_k} \int_\mathbb{R} x P_{2k} \Psi_{2k+1} e^{-2V} \, dx -\sum_{j=1}^{D-1} \beta_j ( \mathscr{X} \Psi_{2k+1}) \xi^{(j)}_{kk} , \\
+b_k &= \frac{\gamma D}{h_k} \int_\mathbb{R} x \Psi_{2k+1} P_{2k+1} e^{-2V} \, dx -  \sum_{j=1}^{D-1}\beta_j( \mathscr{X} \Psi_{2k+1}) \eta^{(j)}_{kk} , \\
+c_k &= - \frac{h_k}{h_{k-1}} .
+\end{align*}
+Similarly $\mathscr{X} \Psi_{2k}- \Psi_{2k+1}$ has degree at most $2n+D-1$ and is orthogonal to $ \mathscr{P}_{2k-1}^\mathbb{C}$. Thus $\mathscr{X}\Psi_{2k} -  \Psi_{2k+1} - \sum_{j=1}^{D-1} \beta_j(\mathscr{X}\Psi_{2k} ) R_k^{(j)}$ is in the kernel of all $\beta_j$ and is orthogonal to $\mathscr{P}_{2k-1}^\mathbb{C}$. Thus it must be proportional to $\Psi_{2k}$. This gives
+\begin{equation}\label{formula}
+\begin{split}
+\mathscr{X}\Psi_{2k} &=  \Psi_{2k+1}+ \sum_{j=1}^{D-1} \beta_j(\mathscr{X}\Psi_{2k} ) R_k^{(j)} + \tilde{a}_k \Psi_{2k} \\
+&= \Psi_{2k+1} + \tilde{a}_k \Psi_{2k} \\
+&\quad + \sum_{j=1}^{D-1} \beta_j(\mathscr{X}\Psi_{2k} ) R_n^{(j)} + \sum_{j=1}^{D-1} \beta_j(\mathscr{X}\Psi_{2k} ) \sum_{i=k}^{n-1} \eta_{ik}^{(j)} \Psi_{2i} \\
+&\quad  + \sum_{j=1}^{D-1} \beta_j(\mathscr{X}\Psi_{2k} ) \sum_{i=k}^{n-1} \xi_{ik}^{(j)} \Psi_{2i+1}
+\end{split}
+\end{equation}
+As before $\tilde{a}_k$ is unique and may be written
+\begin{align*}
+\tilde{a}_k &= \frac{\gamma D}{h_k}\int_\mathbb{R} x \Psi_{2k} P_{2k+1} e^{-2V}\, dx  -  \sum_{j=1}^{D-1} \beta_j(\mathscr{X}\Psi_{2k} ) \eta^{(j)}_{kk}
+\end{align*}
+(\ref{formula}) also implies the intriguing identity,
+\begin{align}\label{intriguing}
+2  = - \sum_{j=1}^{D-1} \beta_j(\mathscr{X}\Psi_{2k} )  \xi_{kk}^{(j)}
+\end{align}
+
+These formulæ imply \enquote{dual} formulæ for $P_{2k}$ and $P_{2k+1}$. Let us begin with the even case. $\mathscr{X} P_{2k}$ is monic of degree $2k+1$. Thus consider $\mathscr{X} P_{2k} - P_{2k+1}$ which has degree at most $2k$. Thus we may expand
+\begin{align}
+\mathscr{X} P_{2k} - P_{2k+1} = \sum_{m= 0}^{k} \mu_{mk} P_{2m} +  \sum_{m = 0}^{k-1} \lambda_{mk} P_{2m+1}
+\end{align}
+We then find
+\begin{align*}
+\mu_{mk} &= -\frac{\gamma D}{h_m} \int_\mathbb{R} x P_{2k} \Psi_{2m+1} e^{-2V}\, dx = \frac{h_k}{h_m}  \sum_{j=1}^{D-1} \beta_j(\mathscr{X} \Psi_{2m+1}) \xi_{km}^{(j)} + a_k \delta_{km} \\
+\lambda_{mk} & =  \frac{\gamma D}{h_m}\int_\mathbb{R} x P_{2k} \Psi_{2m} e^{-2V} \, dx =  - \frac{h_k}{h_m}  \sum_{j=1}^{D-1} \beta_j( \mathscr{X} \Psi_{2m})\xi_{km}^{(j)}
+\end{align*}
+
+Finally, consider $ \mathscr{X} P_{2k+1} - P_{2k+2}$. This has degree at most $2k+1$ and so may be expanded as follows.
+\begin{align}
+ \mathscr{X} P_{2k+1} - P_{2k+2} = \sum_{m=0}^k \tilde{\mu}_{mk} P_{2m} + \sum_{m=0}^k \tilde{\lambda}_{mk} P_{2m+1}
+\end{align}
+Then after a calculation we find
+\begin{align*}
+\tilde{\mu}_{mk} &= \delta_{k,m+1}c_k -  \frac{h_k}{h_m} \sum_{j=1}^{D-1} \beta_j(\mathscr{X} \Psi_{2m+1}) \eta_{km}^{(j)} - b_k \delta_{km} \\
+\tilde{\lambda}_{mk} &= \frac{h_k}{h_m}  \sum_{j=1}^{D-1} \beta_j (\mathscr{X} \Psi_{2m}) \eta_{km}^{(j)} + \tilde{a}_k \delta_{km}
+\end{align*}
+
+Let us now derive a Christoffel-Darboux type formula for the pre-kernel (\ref{prekernel}). Note that the pre-kernel may be written
+$$S_n(x,y) = - \frac{1}{2} \gamma D e^{-V(x) - V(y)} \sum_{k=0}^{n-1} \frac{P_{2k}(x) \Psi_{2k+1}(y) - P_{2k+1}(x) \Psi_{2k}(y)}{h_k} $$
+Then applying our recursion formulæ we find
+\begin{align*}
+(x-y) S_n(x,y)  = - \frac{1}{2} \gamma D e^{-V(x) - V(y)} \sum_{k=0}^{n-1} \left( \Circled{1}_k - \Circled{2}_k - \Circled{3}_k+\Circled{4}_k \right)
+\end{align*}
+where
+\begin{align*}
+\Circled{1}_k &= h_k^{-1} \left( P_{2k+1}(x) + \sum_{m=0}^k \mu_{mk}  P_{2m}(x) + \sum_{m=0}^{k-1} \lambda_{mk} P_{2m+1}(x) \right) \Psi_{2k+1}(y) \\
+\Circled{2}_k &= h_k^{-1} P_{2k}(x) \Bigg( \sum_{i=k}^{n-1} \sum_{j=1}^{D-1} \beta_j(\mathscr{X}  \Psi_{2k+1}) \left[ \eta_{ik}^{(j)} \Psi_{2i}(y) +  \xi_{ik}^{(j)} \Psi_{2i+1}(y) \right] \\
+&\quad +  \Psi_{2k+2}(y) + a_k \Psi_{2k+1}(y) + b_k \Psi_{2k}(y) + c_k \Psi_{2k-2}(y) + \sum_{j=1}^{D-1} \beta_j (\mathscr{X} \Psi_{2k+1}) R^{(j)}_n(y)  \Bigg) \\
+\Circled{3}_k &= h_k^{-1} \left( P_{2k+2}(x) + \sum_{m=0}^k \tilde{\mu}_{mk} P_{2m}(x) + \sum_{m=0}^k \tilde{\lambda}_{mk} P_{2m+1}(x) \right) \Psi_{2k}(y) \\
+\Circled{4}_k &= h_k^{-1} P_{2k+1}(x) \Bigg( \Psi_{2k+1}(y) + \tilde{a}_k \Psi_{2k}(y) + \sum_{j=1}^{D-1} \beta_j (\mathscr{X} \Psi_{2k}) R_n^{(j)}(y) \\
+&\quad + \sum_{i=k}^{n-1} \sum_{j=1}^{D-1} \beta_j(\mathscr{X} \Psi_{2k}) \left[  \eta_{ik}^{(j)} \Psi_{2i}(y) +  \xi_{ik}^{(j)} \Psi_{2i+1}(y) \right] \Bigg)
+\end{align*}
+Let us then write
+\begin{align*}
+\sum_{k=0}^{n-1} \Circled{2}_k &= h_{n-1}^{-1} P_{2n-2}(x) \Psi_{2n}(y) + h_{n-1}^{-1} P_{2n}(x) \Psi_{2n-2}(y) \\
+&\quad + \sum_{j=1}^{D-1} \sum_{k=0}^{n-1}  \beta_j (\mathscr{X} \Psi_{2k+1}) h_k^{-1} P_{2k}(x) R^{(j)}_n(y) + \sum_{k=0}^{n-1} \Circled{5}_k
+\end{align*}
+where
+\begin{align*}
+\Circled{5}_k &= h_{k-1}^{-1} P_{2k-2}(x) \Psi_{2k}(y) + h_k^{-1} P_{2k}(x) \left(  a_k  \Psi_{2k+1}(y) + b_k  \Psi_{2k}(y)\right) -  h_{k}^{-1} P_{2k+2}(x) \Psi_{2k}(y) \\
+&\quad + \sum_{m=0}^{k}  h_m^{-1} P_{2m}(x) \sum_{j=1}^{D-1} \beta_j(\mathscr{X}  \Psi_{2m+1}) \left[  \eta_{km}^{(j)} \Psi_{2k}(y) +  \xi_{km}^{(j)} \Psi_{2k+1}(y) \right]
+\end{align*}
+and similarly we may write
+\begin{align*}
+\sum_{k=0}^{n-1} \Circled{4}_k &= \sum_{j=1}^{D-1} \sum_{k=0}^{n-1} h_k^{-1} P_{2k+1}(x)  \beta_j (\mathscr{X} \Psi_{2k}) R_n^{(j)}(y) + \sum_{k=0}^{n-1} \Circled{6}_k
+\end{align*}
+where
+\begin{align*}
+\Circled{6}_k &= h_k^{-1} P_{2k+1}(x) \Psi_{2k+1}(y) + \tilde{a}_k h_k^{-1} P_{2k+1}(x) \Psi_{2k}(y)  \\
+&\quad + \sum_{m=0}^k  h_m^{-1} P_{2m+1}(x) \sum_{j=1}^{D-1} \beta_j (\mathscr{X} \Psi_{2m}) \left[  \eta^{(j)}_{km} \Psi_{2k}(y) + \ \xi^{(j)}_{km} \Psi_{2k+1}(y) \right]
+\end{align*}
+Thus
+\begin{align*}
+(x-y) S_n(x,y)  &=   \frac{\gamma D}{2} e^{-V(x) - V(y)} \Bigg( h_{n-1}^{-1} P_{2n-2}(x) \Psi_{2n}(y) + h_{n-1}^{-1} P_{2n}(x) \Psi_{2n-2}(y) \\
+&\quad + \sum_{j=1}^{D-1} \sum_{k=0}^{n-1} h_k^{-1}  \left[   \beta_j (\mathscr{X} \Psi_{2k+1}) P_{2k}(x) -    \beta_j (\mathscr{X} \Psi_{2k}) P_{2k+1}(x) \right] R^{(j)}_n(y)   \Bigg) \\
+&\quad +  \frac{\gamma D}{2} e^{-V(x) - V(y)} \sum_{k=0}^{n-1} \left( - \Circled{1}_k + \Circled{5}_k + \Circled{3}_k - \Circled{6}_k  \right)
+\end{align*}
+The reader may verify that a miraculous cancellation occurs so that $- \Circled{1}_k + \Circled{5}_k + \Circled{3}_k - \Circled{6}_k = 0$.  Finally using our solutions of $A_n$ and $\widehat{A_n}$
+\begin{align*}
+(x-y) S_n(x,y)  &=   \frac{\gamma D}{2} e^{-V(x) - V(y)} \Bigg( h_{n-1}^{-1} P_{2n-2}(x) \Psi_{2n}(y) + h_{n-1}^{-1} P_{2n}(x) \Psi_{2n-2}(y) \\
+&\quad +  \sum_{j=1}^{D-1} \sum_{k=0}^{n-1} h_k^{-1}  \left[   \beta_j (\mathscr{X} \Psi_{2k+1}) P_{2k}(x) -    \beta_j (\mathscr{X} \Psi_{2k}) P_{2k+1}(x) \right] R^{(j)}_n(y)   \Bigg)  \\
+&= - \frac{e^{-V(x) - V(y)}}{4\pi i} \left( A^{-1}_n(x) A_n(y) \right)_{21}
+\end{align*}
+\begin{remark}
+We refer to this cancellation as \enquote{miraculous,} however one could have predicted that some sort of cancellation must occur simply from the form of the pre-kernel (\ref{prekernel}).  Introduce the integral operator $\mathbb{S}_n :L^2(\mathbb{R}) \to L^2(\mathbb{R})$ which acts by
+\begin{align*}
+(\mathbb{S}_n \psi)(x) = \int_\mathbb{R} S_n(x,y) \psi(y) \, dy & & \psi \in L^2(\mathbb{R})
+\end{align*}
+It is then easily seen that if $\{ H_k \}_{k \in \mathbb{N}}$ is the sequence of \textit{orthogonal} polynomials with respect to the weight $w = e^{-2V}$, then $\mathbb{S}_n ( H_k e^{-V}) = \frac{1}{2} H_k e^{-V}$ for $k \leq 2n-1$ and $\mathbb{S}_n ( H_k e^{-V}) = 0$ for $k \geq 2n+D-1$. It thus follows that 
+$$\mathbb{S}_n  = \frac{1}{2} \mathbb{K}_n + \sum_{j=2n}^{2n+D-2} \frac{1}{\nu_j} \mathbb{S}_n(H_j e^{-V}) \otimes H_j e^{-V} $$
+where $\mathbb{K}_n = \sum_{k=0}^{n-1} \frac{1}{\nu_k} H_k \otimes H_k$ for $\nu_k = \int_\mathbb{R} H_k^2 e^{-2V}\, dx$. By the classical Christoffel-Darboux formula for orthogonal polynomials it follows that $(x-y) S_n(x,y)$ has rank at most $D+1$.  Indeed, this is one of the ideas behind Widom's method.
+\end{remark}
+
+\section{A dynamical system}\label{dynamicsection}
+
+Our Riemann-Hilbert problems can be used to yield an analogue of the Toda lattice for skew-orthogonal polynomials of symplectic type.  We introduce a $t \in \mathbb{R}$ dependence into the potential as
+\begin{equation}\label{deformation}
+ V(z,t) := V_0(z) + tz
+\end{equation}
+Let $\widehat{A_{n}}(z,t)$ have the expansion
+\begin{align*}
+&\widehat{A_{n}}(z,t) \\
+&= \left( \mathbb{I}+ z^{-1} A_{n}^{(1)}(t) + z^{-2} A_{n}^{(2)}(t) + \mathcal{O}(z^{-3}) \right) \left(\begin{matrix}
+z^{-2n-D+1} \\
+& z^{2n} \\
+& & z \\
+& & & \ddots  \\
+& & & & z
+\end{matrix} \right) & & (z \to \infty)
+\end{align*}
+Strictly speaking we should write $\widehat{A}_n^{(1)}$ and $\widehat{A}_n^{(2)}$ to emphasise that these matrices come from the expansion of $\widehat{A_n}$ rather than $A_n$ however we shall not do this to reduce notational clutter. Introduce the variables $a_{ij}^{(1)}(n,t) := A_{n}^{(1)}(t)_{ij}$ and $a_{ij}^{(2)}(n,t) := A_{n}^{(2)}(t)_{ij}$ for $i,j=1, \dots, D+1$.  In what follows we shall often not write the dependence on $t$ since this is always understood. Furthermore, introduce the variable
+\begin{align}\label{defb}
+b_j(n) := \sum_{k=3}^{D+1} a_{2k}^{(1)}(n) a_{kj}^{(1)}(n) & & j=3, \dots, D+1 
+\end{align}
+\begin{theorem}\label{skewtoda} The matrix elements $a^{(1)}_{22}$,  $a^{(1)}_{2i}$, $a^{(1)}_{i2}$,  $a^{(2)}_{22}$,  $a^{(2)}_{12}$,  $a^{(2)}_{i2}$  and $b_i$, for $i=3, \dots, D+1$,  satisfy the following first order dynamical system ($n \geq 0$,  $t \in \mathbb{R}$).
+\begin{allowdisplaybreaks}
+\begin{align*}
+\frac{d a_{22}^{(1)}(n) }{dt} &= \sum_{k=3}^{D+1} a_{2k}^{(1)}(n) a_{k2}^{(1)}(n) \\
+\frac{d a_{2i}^{(1)}(n)}{dt} &= b_i(n) & i=3, \dots, D+1 \\
+\frac{d a_{i2}^{(1)}(n)}{dt} &= a_{i2}^{(2)}(n) - a_{i2}^{(1)}(n) a_{22}^{(1)}(n)  & i = 3, \dots, D+1 \\
+\frac{d a_{22}^{(2)}(n)}{dt} &= \sum_{k=3}^{D+1} a_{2k}^{(1)}(n)a_{k2}^{(2)}(n) \\
+ \frac{d}{dt} \ln  a_{12}^{(2)}(n+1) &=2a_{22}^{(1)}(n) -\sum_{j=3}^{D+1} a_{2j}^{(1)}(n)a_{j2}^{(2)}(n+1)  \\
+\frac{d}{dt}a_{i2}^{(2)}(n+1)  &=   a_{i2}^{(2)}(n+1) a_{22}^{(1)}(n) + a_{i2}^{(1)}(n+1)a_{22}^{(2)}(n) & i=3, \dots, D+1 \\
+&\quad+ a_{i2}^{(1)}(n) - a_{i2}^{(1)}(n+1) a_{22}^{(2)}(n+1)  \\
+&\quad +  a_{i2}^{(1)}(n+2)\frac{ a_{12}^{(2)}(n+1)}{a_{12}^{(2)}(n+2)} -  a_{i2}^{(1)}(n+1) a_{22}^{(1)}(n)^2  \\
+&\quad - a_{i2}^{(1)}(n+1) \sum_{k=3}^{D+1} a_{2k}^{(1)}(n) a_{k2}^{(1)}(n) 
+\end{align*}
+\end{allowdisplaybreaks}
+and for $n \geq 1$ and $t \in \mathbb{R}$,
+\begin{align*}
+\frac{d b_i(n)}{dt}  &= \frac{a_{12}^{(2)}(n) }{a_{12}^{(2)}(n+1)}a_{2i}^{(1)}(n-1) + a_{22}^{(1)}(n+1) a_{22}^{(1)}(n) a_{2i}^{(1)}(n)  & i=3, \dots, D+1\\
+&\quad+ a_{2i}^{(1)}(n+1)-a_{22}^{(2)}(n+1)a_{2i}^{(1)}(n) + a_{22}^{(2)}(n) a_{2i}^{(1)}(n) \\
+&\quad -a_{2i}^{(1)}(n) \left( a_{22}^{(1)}(n) \right)^2  -  a_{22}^{(1)}(n) b_i(n)\\
+&\quad - 2 a_{2i}^{(1)}(n) \sum_{k=3}^{D+1}a_{2k}^{(1)}(n) a_{k2}^{(1)}(n) +  a_{22}^{(1)}(n+1) b_i(n)
+\end{align*}
+Note that $a_{12}^{(2)}(n+1) \neq 0$ so the above is well defined. The above dynamics are furthermore constrained by the relation
+\begin{align}\label{identity}
+\sum_{j=3}^{D+1} a_{2j}^{(1)}(n) a_{j2}^{(1)}(n+1) &= 2
+\end{align}
+Our \enquote{initial data} with respect to $n$ must satisfy $a_{22}^{(1)}(0,t) = a_{i2}^{(1)}(0,t) = a_{22}^{(2)}(0,t) = a_{12}^{(2)}(0,t) = a_{i2}^{(2)}(0,t) = b_i(0,t)=0$ for $i \geq 3$.
+\end{theorem}
+
+The identity (\ref{identity}) may be seen as analogous to (\ref{intriguing}).
+
+\begin{remark} Note that repeated differentiation of (\ref{identity}) yields an infinite number of identities, so that the $k$th derivative of (\ref{identity}) yields an identity involving matrix elements at $k$ different values of $n$.
+\end{remark}
+
+\begin{remark}
+Some of the matrix elements not included in Theorem \ref{skewtoda} may be related to those included by the following identities.
+\begin{align}
+a_{i1}^{(1)}(n) &= a_{21}^{(2)}(n) a_{i2}^{(1)}(n+1) & & i = 3, \dots, D+1 \label{deduce1} \\
+a_{1i}^{(1)}(n+1) &= a_{12}^{(2)}(n+1) a_{2i}^{(1)}(n) & & i = 3, \dots, D+1 \label{deduce2}  \\
+1 &= a_{21}^{(2)}(n) a_{12}^{(2)}(n+1) \\
+0 &= a_{12}^{(1)}(n) = a_{21}^{(1)}(n) = a_{ij}^{(2)}(n) & & i = 1, \dots, D+1, \, j=3, \dots, D+1
+\end{align}
+These identities can be seen directly from the solution, though (\ref{deduce1}) and (\ref{deduce2}) we will deduce in the course of proving Theorem \ref{skewtoda}. The matrix elements $a^{(2)}_{i1}$ for $i\neq 2$ are left undetermined by these relations.  Furthermore $a_{ij}^{(1)}(n,t)$, for $i,j \geq 3$ do not enter into the dynamical system on their own but only in the combination of the variable $b_i(n,t)$ (\ref{defb}).
+\end{remark}
+
+\begin{exmp}\label{exactsolution} In the case $D=2$ it is possible to give an exact solution.  Without loss of generality (by shifting and rescaling) one can take $V_0(z) = \frac{1}{2}z^2$.  With this initial condition one finds the following.
+\begin{align*}
+A_{n}^{(1)}(t) &= \left( \begin{matrix}
+-t (2n+1) & 0 & \frac{2\pi i e^{-\frac{1}{2}t^2}}{\sqrt{2}\left( n-\frac{1}{2} \right)!}  \\
+0 & 2nt &  - \frac{e^{\frac{1}{2}t^2}n!}{\sqrt{2}}  \\
+ \frac{e^{\frac{1}{2}t^2} 2 \sqrt{2} \left( n + \frac{1}{2} \right)!}{2\pi i }  &- \frac{2\sqrt{2} e^{-\frac{1}{2}t^2}}{(n-1)!} & t\end{matrix} \right) \\
+A_{n}^{(2)}(t) &= \left( \begin{matrix}
+  \ast & - i \sqrt{\pi} \frac{2^{2n} e^{-t^2}}{(2n-1)!} & 0 \\
+ -\frac{(2n+1)! \sqrt{\pi}}{2^{2n+1}} \frac{e^{t^2}}{2\pi i} & n(2n-1)(t^2 - \frac{1}{2})+n & 0 \\
+\ast & - \frac{2\sqrt{2}(2n-1) t e^{-\frac{1}{2}t^2}}{(n-1)!} &  0 \end{matrix} \right)
+\end{align*}
+We find also $b_3(n,t) =  - \frac{t e^{\frac{1}{2}t^2}n!}{\sqrt{2}}$. The reader may verify that this is an exact solution of the dynamical system in Theorem \ref{skewtoda} for the case $D=2$. 
+\end{exmp}
+
+Let us introduce the $(D+1) \times (D+1)$ matrices
+\begin{align*}
+E_1 &= \mathrm{diag}(1,\underbrace{0, \dots, 0}_{D \text{ times}}) \\
+E_2 &= \mathrm{diag}(0,1,\underbrace{0, \dots, 0}_{D-1 \text{ times}}) \\
+\sigma &= E_1 - E_2
+\end{align*}
+Let us then define
+\begin{align}
+\widebreve{A}_{n}(z,t) := \widehat{A_{n}}(z,t) \, e^{ V(z,t) \sigma} 
+\end{align}
+It is then easy to see that $\widebreve{A}_{n}$ satisfies the following RHP.
+\begin{rhp} Let $\Gamma$ be as in (\ref{gamma}). Then $\widebreve{A}_{n}$ has the following properties.
+
+\begin{enumerate}
+\item $z\mapsto \widebreve{A}_{n}(z,t)$ is an analytic function on $\mathbb{C}\setminus \Gamma$.
+\item $z\mapsto \widebreve{A}_{n}(z,t)$ has continuous left ($+$) and right ($-$) non-tangential boundary values $ x \mapsto \widebreve{A}_{n}^{\pm}(x,t)$ for $x \in \Gamma \setminus \{ 0 \}$ which are related by the jump condition
+\begin{align*}
+\widebreve{A}_{n}^{+}(x,t) = \widebreve{A}_{n}^{-}(x,t) \left(
+\begin{array}{ccccccccccccccccccc}
+1 \,  & \,   \,  & \,   \,   & \,   \,  & \,     \\
+-\chi_\mathbb{R} & 1 \\
+-\chi_{\Gamma_1} & & 1 \\
+\vdots & & & \ddots \\
+-\chi_{\Gamma_{D-1}} & & & & 1 \\
+\end{array} \right) & & x \in \Gamma \setminus \{ 0 \}
+\end{align*}
+\item For each $t \in \mathbb{R}$, the function $z \mapsto \widebreve{A}_{n}(z,t)$ is bounded in a neighbourhood of $0 \in \mathbb{C}$.
+\item For each $t \in \mathbb{R}$, $z \mapsto \widebreve{A}_{n}(z,t)$ satisfies the normalisation
+\begin{align*}
+\widebreve{A}_{n}(z,t) = \left(\mathbb{I}+ \mathcal{O}(z^{-1})\right) \left(\begin{matrix}
+z^{-2n-D+1} \\
+& z^{2n} \\
+& & z \\
+& & & \ddots  \\
+& & & & z
+\end{matrix} \right) e^{V(z,t) \sigma}  & &  (z \to \infty)
+\end{align*}
+\end{enumerate}
+\end{rhp}
+Because the jump matrix is independent of both $n$ and $t$, standard Riemann-Hilbert theory now enables us to derive a dynamical system. In particular $\widebreve{A}_{n+1}(z,t)$ and $\frac{\partial \widebreve{A}_{n}(z,t)}{\partial t}$ both satisfy the first to third properties, differing only on the fourth property.  Because of the continuity of the boundary values and boundedness at $0$ we find that
+\begin{align*}
+z &\mapsto \widebreve{A}_{n+1}(z,t)\widebreve{A}_{n}(z,t)^{-1} \\
+z &\mapsto \frac{\partial \widebreve{A}_{n}(z,t)}{\partial t}
+\widebreve{A}_{n}(z,t)^{-1}
+\end{align*}
+extend to entire functions on $\mathbb{C}$.  Let us write the asymptotic expansion ($z \to \infty$)
+\begin{align*}
+&\widebreve{A}_{n}(z,t) \\
+&= \left(\mathbb{I}+ z^{-1} A_{n}^{(1)}(t) + z^{-2} A_{n}^{(2)}(t) + \mathcal{O}(z^{-3})   \right) \left(\begin{matrix}
+z^{-2n-D+1} \\
+& z^{2n} \\
+& & z \\
+& & & \ddots  \\
+& & & & z
+\end{matrix} \right) e^{ V(z,t) \sigma}
+\end{align*}
+A short calculation yields the \textit{Lax pair},
+\begin{align}
+\widebreve{A}_{n+1}(z,t) &= \left( z^2 E_2 + z \rho_n^{(1)}(t) + \rho_n^{(2)}(t) \right) \widebreve{A}_{n}(z,t) \label{Laxpair1} \\
+\frac{\partial \widebreve{A}_{n}(z,t)}{\partial t} &= \left( z \sigma + \kappa_n(t)   \right) \widebreve{A}_{n}(z,t) \label{Laxpair2}
+\end{align}
+where
+\begin{align*}
+\rho_n^{(1)}(t) &= A_{n+1}^{(1)}(t) E_2 - E_2 A_{n}^{(1)}(t) \\
+\rho_n^{(2)}(t) &= \mathbb{I} - E_1 - E_2 + A_{n+1}^{(2)}(t) E_2 + E_2 \left( A_{n}^{(1)}(t)^2 - A_{n}^{(2)}(t) \right) - A_{n+1}^{(1)}(t) E_2 A_{n}^{(1)}(t) \\
+\kappa_n(t) &= [A_{n}^{(1)}(t),\sigma]
+\end{align*}
+\begin{remark} The reader will observe that the jump matrices of $\widebreve{A}_n$ are not only independent of $n$ and $t$ but also independent of $z$. Thus one could also derive $(n,z)$ and $(t,z)$ Lax pairs.  Indeed one could consider more general deformations than (\ref{deformation}).
+\end{remark}
+
+\begin{remark}[Analogue of Three Term Recurrence]\label{recurrence} We note that (\ref{Laxpair1}) implies a similar equation for $\widehat{A_n}$, i.e.
+$$\widehat{A_{n+1}}(z) = \left( z^2 E_2 + z \rho_n^{(1)} + \rho_n^{(2)} \right) \widehat{A_{n}}(z) $$
+Considering the second column of both sides yields a recursion relation, quadratic in $z$, which may be regarded as a $\beta = 4$ analogue of the three term recurrence for orthogonal polynomials (recall equations (\ref{12Ahat}),(\ref{22Ahat}),(\ref{i2Ahat})).
+\end{remark}
+
+Before proceeding we must indicate a point of rigour.  To compute this Lax pair we have exchanged a $z \to \infty$ limit with a derivative with respect to $t$. How can this be justified? The proof is somewhat tedious and so we only sketch how this is done.  The solution of our even problem $\widehat{A_n}$ is expressible as rational combinations of integrals of the form $\int_{\Gamma_j} x^k e^{-V(x,t)} \,dx$,  $\int_{\mathbb{R}} x^k e^{-2V(x,t)} \,dx$, $\int_{\Gamma_j} \frac{x^k}{x-z} e^{-V(x,t)} \,dx$ and $\int_{\mathbb{R}} \frac{x^k}{x-z} e^{-2V(x,t)} \,dx$. The proof reduces to showing that such integrals are $\mathcal{C}^\infty$ functions of $t$ and that we can differentiate under the integral sign. Both can be justified by a dominated convergence argument. This implies that $A_n^{(1)}$ and $A_n^{(2)}$ are $\mathscr{C}^\infty$ functions of $t$.
+
+Moving forward, let us write
+\begin{align*}
+\rho(z,t,n) &= z^2 E_2 + z \rho_n^{(1)}(t) + \rho_n^{(2)}(t) \\
+\lambda(z,t,n) &= z \sigma + \kappa_n(t) 
+\end{align*}
+Then the compatibility condition (or \textit{zero curvature condition}) of the above Lax pair (\ref{Laxpair1} and \ref{Laxpair2}) is
+\begin{align}\label{compatibility}
+\frac{\partial \rho(z,t,n)}{\partial t}  + \rho(z,t,n) \lambda(z,t,n)-\lambda(z,t,n+1) \rho(z,t,n)=0 & & \forall z \in \mathbb{C} 
+\end{align}
+The left hand side is at most a cubic polynomial in $z$, all of whose coefficients must vanish. In fact the coefficient of $z^3$ is $[E_2, \sigma] = 0$ which yields no information. The coefficient of $z^2$ yields the equation
+\begin{align}
+E_2 \kappa_n(t) - \kappa_{n+1}(t) E_2 + [ \rho_n^{(1)}(t),\sigma] = 0
+\end{align}
+However when we substitute in our formulæ for $\rho_n^{(1)}$ and $\kappa_n$ we find that the left hand side is identically zero. So the quadratic coefficient also yields no information. Thus the left hand side of 
+(\ref{compatibility}) is in fact a linear polynomial in $z$.
+
+The coefficient of $z$ in (\ref{compatibility}) yields
+\begin{align}\label{linear}
+\frac{d \rho_n^{(1)}(t)}{dt} + \rho_n^{(1)}(t) \kappa_n(t)  - \kappa_{n+1}(t) \rho_n^{(1)}(t) + [\rho_n^{(2)}(t),\sigma] = 0
+\end{align}
+while the constant term gives
+\begin{align}\label{constant}
+\frac{d \rho_n^{(2)}(t)}{dt}+\rho_n^{(2)}(t)\kappa_n(t)-\kappa_{n+1}(t) \rho_n^{(2)}(t)=0
+\end{align}
+(\ref{linear}), after substituting our expressions for $\rho^{(1)}_{n}(t)$ and $\rho^{(2)}_n(t)$,  yields
+\begin{equation}\label{linearexpansion}
+\begin{split}
+&-A^{(2)}_{n+1} E_2 + A^{(1)}_{n+1} E_2 A^{(1)}_{n+1} E_2 - E_1 A^{(2)}_{n+1} E_2 - E_2 A^{(2)}_n + E_2 A^{(2)}_n E_2 - E_2 A^{(2)}_n E_1 \\
+&+E_2 A^{(2)}_{n+1} E_2 - E_2  \frac{d A^{(1)}_n}{dt} - E_2 (A^{(1)}_{n + 1})^2 E_2 \\
+&-E_2 A^{(1)}_{n} E_2 A^{(1)}_n + E_2 (A^{(1)}_n)^2 + \frac{d A^{(1)}_{n+1}}{dt} E_2 + E_1 (A^{(1)}_{n+1})^2 E_2 = 0
+\end{split}
+\end{equation}
+The $(1,1)$ matrix element of (\ref{linearexpansion}) is $0$. The $(1,2)$ matrix element yields the identity
+\begin{equation}\label{identity1}
+2 a_{12}^{(2)} (n) =\sum_{k=3}^{D+1}  a_{1k}^{(1)} (n) a_{k2}^{(1)}(n)
+\end{equation}
+The $(2,1)$ matrix element yields
+\begin{equation}\label{identity2}
+2 a_{21}^{(2)} (n) =\sum_{k=3}^{D+1}  a_{2k}^{(1)} (n) a_{k1}^{(1)}(n)
+\end{equation}
+The $(2,2)$ element gives that the quantity
+$$(n,t) \mapsto \frac{d}{dt}a_{22}^{(1)}(n,t) - \sum_{k=3}^{D+1} a_{2k}^{(1)}(n,t) a_{k2}^{(1)}(n,t)  $$
+is independent of $n$.
+\begin{lemma}\label{nequal0}
+$$\frac{d}{dt}a_{22}^{(1)}(n) = \sum_{k=3}^{D+1} a_{2k}^{(1)}(n) a_{k2}^{(1)}(n)  $$
+\end{lemma}
+\begin{proof}
+To show this we need only show that
+$$\frac{d}{dt}a_{22}^{(1)}(0,t) - \sum_{k=3}^{D+1} a_{2k}^{(1)}(0,t) a_{k2}^{(1)}(0,t) = 0$$
+However when $n=0$, the $(\widehat{A_n})_{22} = P_{2n} = P_0 = 1$, and hence $a_{22}^{(1)}(0,t) = 0$. Similarly $(\widehat{A_n})_{k2} = 0$ for $k \geq 3$ and so $a_{k2}^{(1)}(0,t) = 0$.
+\end{proof}
+The $(1,i)$ and $(i,1)$ matrix elements for $i\geq 3$ give $0$.  The $(2,i)$ matrix element for $i \geq 3$ gives
+\begin{align*}
+\frac{d a_{2i}^{(1)}(n)}{dt} = \sum_{k=3}^{D+1} a_{2k}^{(1)}(n) a_{ki}^{(1)}(n) & & (i \geq 3)
+\end{align*}
+Finally the $(i,2)$ matrix element ($i\geq 3$) gives the equation
+\begin{align*}
+\frac{d a_{i2}^{(1)}(n,t)}{dt} = a_{i2}^{(2)}(n,t) - a_{i2}^{(1)}(n,t) a_{22}^{(1)}(n,t) & & (i \geq 3)
+\end{align*}
+Next let us move onto the constant term (\ref{constant}), which gives us the complicated expression,
+\begin{equation}\label{constant2}
+\begin{split} 
+&\quad\quad  E_2 A^{(2)}_n E_1 A^{(1)}_n - E_2 A^{(2)}_n A^{(1)}_n E_1 + E_2 A^{(2)}_n A^{(1)}_n  E_2 - E_2 A^{(1)}_{n+1} A^{(2)}_{n+1} E_2  \\
+&\quad + E_2 A^{(1)}_{n+1} E_2 - E_2 (A^{(1)}_n)^3 E_2 
+- A^{(1)}_{n+1} E_2 A^{(1)}_n  E_2 A^{(1)}_n - A^{(2)}_{n+1} E_2 A^{(1)}_n  E_2 
+ \\
+ &\quad + E_2 A^{(1)}_{n+1} E_2 A^{(2)}_n + E_1 A^{(1)}_{n+1} A^{(2)}_{n+1} E_2 - A^{(1)}_{n+1} E_2 (A^{(1)}_n)^2 E_1 + E_2 A^{(1)}_n \frac{d A^{(1)}_n }{dt} \\
+&\quad  - E_1 (A^{(1)}_{n+1})^2 E_2 A^{(1)}_n - E_2 \frac{ d A^{(2)}_n}{dt}
+- E_2 A^{(1)}_{n+1} E_2 (A^{(1)}_n )^2 - E_1 A^{(1)}_n E_1 + E_2 \frac{ d A^{(1)}_n}{dt} A^{(1)}_n \\
+&\quad - A^{(1)}_{n+1} E_2 \frac{ d A^{(1)}_n}{dt} + \frac{ d A^{(2)}_{n+1}}{dt} E_2 - E_2 A^{(1)}_{n+1}
+- E_2 (A^{(1)}_n )^2 E_1 A^{(1)}_n \\
+&\quad + E_2 (A^{(1)}_{n+1})^2 E_2 A^{(1)}_n + A^{(2)}_{n+1} E_2 A^{(1)}_n 
++ A^{(1)}_n E_1 - A^{(1)}_{n+1} E_2 A^{(2)}_n  \\
+&\quad - A^{(1)}_n  E_2 + E_2 A^{(1)}_n  E_2
++ E_2 (A^{(1)}_n)^2 E_2 A^{(1)}_n - A^{(1)}_{n+1}  E_2 A^{(1)}_{n+1} E_2 A^{(1)}_n \\
+&\quad - \frac{d A^{(1)}_{n+1}}{dt} E_2 A^{(1)}_n + A^{(1)}_{n+1} E_2 A^{(2)}_{n+1} E_2
++ E_2 (A^{(1)}_n)^3 E_1 + E_1 A^{(1)}_{n+1} \\
+&\quad + A^{(1)}_{n+1} E_2 (A^{(1)}_n)^2 E_2
++ A^{(1)}_{n+1} E_2 (A^{(1)}_n)^2 \\
+&\quad -E_2 A^{(2)}_n E_2 A^{(1)}_n - E_1 A^{(1)}_{n+1} E_1 - A^{(1)}_{n+1} E_1 A^{(2)}_{n+1} E_2 = 0
+\end{split}
+\end{equation}
+The $(1,1)$ matrix element of (\ref{constant2}) is $0$. The $(2,2)$ matrix element yields, after some simplification, the relation 
+\begin{align*}
+\frac{da_{22}^{(2)}(n+1)}{dt} - \sum_{k=3}^{D+1} a_{2k}^{(1)}(n+1)a_{k2}^{(2)}(n+1) = \frac{d a_{22}^{(2)}(n)}{dt}  - \sum_{k=3}^{D+1} a_{2k}^{(1)}(n)a_{k2}^{(2)}(n)
+\end{align*}
+\begin{lemma}
+$$\frac{d a_{22}^{(2)}(n)}{dt} = \sum_{k=3}^{D+1} a_{2k}^{(1)}(n)a_{k2}^{(2)}(n)$$
+\end{lemma}
+\begin{proof}
+Follows by the same observations as in Lemma \ref{nequal0}.
+\end{proof}
+The $(2,1)$ matrix element of (\ref{constant2}) gives the following equation.
+\begin{equation}\label{constant21}
+ 2 (a_{22}^{(1)}(n) - a_{22}^{(1)}(n+1) )a_{21}^{(2)}(n) + \frac{d}{dt} a_{21}^{(2)}(n)
++ \sum_{j=3}^{D+1} b_j(n) a_{j1}^{(1)}(n) = 0
+\end{equation}
+The $(1,2)$ matrix element gives
+\begin{equation}\label{constant12}
+  \frac{d}{dt} a_{12}^{(2)}(n+1)+\sum_{k=3}^{D+1} a_{1k}^{(1)}(n+1)a_{k2}^{(2)}(n+1) - 2 a_{22}^{(1)}(n) a_{12}^{(2)}(n+1)   = 0
+\end{equation}
+The $(i,1)$ matrix element for $i\geq 3$ gives
+\begin{align}\label{identity3}
+a_{i1}^{(1)}(n) = a_{21}^{(2)}(n) a_{i2}^{(1)}(n+1) & & (i \geq 3)
+\end{align}
+The $(1,i)$ matrix element gives
+\begin{align}\label{identity4}
+a_{1i}^{(1)}(n+1) = a_{12}^{(2)}(n+1) a_{2i}^{(1)}(n) & & (i \geq 3)
+\end{align}
+The $(i,2)$ matrix element yields after some simplification
+\begin{align*}
+\frac{d}{dt}a_{i2}^{(2)}(n+1) &=  a_{i2}^{(2)}(n+1) a_{22}^{(1)}(n) + a_{i2}^{(1)}(n+1)a_{22}^{(2)}(n) + a_{i2}^{(1)}(n) & (i \geq 3) \\
+&\quad - a_{i2}^{(1)}(n+1) a_{22}^{(2)}(n+1) - a_{i2}^{(1)}(n+1) \sum_{k=3}^{D+1} a_{2k}^{(1)}(n) a_{k2}^{(1)}(n) \\
+&\quad +  a_{21}^{(2)}(n+1) a_{i2}^{(1)}(n+2) a_{12}^{(2)}(n+1) -  a_{i2}^{(1)}(n+1) a_{22}^{(1)}(n)^2
+\end{align*}
+The $(2,i)$ matrix element gives
+\begin{align*}
+&\quad -a^{(2)}_{21}(n) a_{12}^{(2)}(n) a_{2i}^{(1)}(n-1) - a_{22}^{(1)}(n+1) a_{22}^{(1)}(n) a_{2i}^{(1)}(n)  - a_{2i}^{(1)}(n+1) & & (i \geq 3) \\
+&\quad +a_{22}^{(2)}(n+1)a_{2i}^{(1)}(n) +a_{2i}^{(1)}(n) \left( a_{22}^{(1)}(n) \right)^2 + 2 a_{2i}^{(1)}(n) \sum_{k=3}^{D+1}a_{2k}^{(1)}(n) a_{k2}^{(1)}(n) \\
+&\quad + \frac{d b_i(n)}{dt} +  (a_{22}^{(1)}(n) -  a_{22}^{(1)}(n+1)) b_i(n) - a_{22}^{(2)}(n) a_{2i}^{(1)}(n) = 0
+\end{align*}
+Let us now combine our formulæ.  Substituting (\ref{identity3}) into (\ref{identity2}) we find
+\begin{equation}
+\sum_{k=3}^{D+1} a_{2k}^{(1)}(n) a_{k2}^{(1)}(n+1) = 2
+\end{equation}
+We would have found the same if we had substituted (\ref{identity4}) into (\ref{identity1}). 
+Note that if we combine (\ref{constant21}) and (\ref{constant12}) we find
+\begin{align*}
+\frac{d}{dt}   \ln a_{21}^{(2)}(n) + \frac{d}{dt}   \ln a_{12}^{(2)}(n+1)  &= 2 a_{22}^{(1)}(n+1)  - \sum_{k=3}^{D+1} b_k(n) a_{k2}^{(1)}(n+1) - \sum_{k=3}^{D+1} a_{2k}^{(1)}(n) a_{k2}^{(2)}(n+1) \\
+&= - \frac{d}{dt}\underbrace{ \sum_{k=3}^{D+1} a_{2k}^{(1)}(n) a_{k2}^{(1)}(n+1)}_{=2}   = 0
+\end{align*}
+which we already knew since $a_{21}^{(2)}(n) a_{12}^{(2)}(n+1) = 1$.  Finally, the $(i,j)$ matrix element of (\ref{constant2}) for $i,j \geq 3$, after substituting the identities we have derived so far, is identically zero so yields no further information. This completes the proof of Theorem \ref{skewtoda}.
+\newpage
+
+\bibliography{SkewOrthogRef.bib}{}
+\bibliographystyle{amsplain}
+\end{document}
