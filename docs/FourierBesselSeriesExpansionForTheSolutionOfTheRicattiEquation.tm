@@ -9,7 +9,7 @@
     <date|1966>
   </author-affiliation>>>>
 
-  \<cdot\><section|Introduction>
+  <section|Introduction>
 
   Bessel functions of the zeroth order possess the property that their
   derivatives give Bessel functions of the first order; i.e.,
@@ -124,7 +124,7 @@
   roots of
 
   <\equation>
-    J<rsub|1><around|(|x|)>=<wide|J|\<dot\>><rsub|0><around|(|x|)>=0
+    -J<rsub|1><around|(|x|)>=<wide|J|\<dot\>><rsub|0><around|(|x|)>=0
   </equation>
 
   and the <math|B<rsub|m>>'s are as given in (6) with <math|n=0>. Thus we
@@ -149,21 +149,25 @@
   <math|\<lambda\><rsub|i>\<gtr\>1> and <math|\<lambda\><rsub|i>> is of the
   order of <math|i>.
 
-  <with|font-series|bold|Lemma 1.> If <math|F<around|(|x|)>> is a function
-  such that <math|<frac|F<around|(|x|)>|x>> has bounded variation
-  \<forall\><math|x\<in\>I>, then
+  <\lemma>
+    If <math|F<around|(|x|)>> is a function such that
+    <math|<frac|F<around|(|x|)>|x>> has bounded variation
+    \<forall\><math|x\<in\>I>, then
 
-  <\equation>
-    <big|int><rsub|0><rsup|1>F<around|(|x|)>*J<rsub|m>*<around|(|\<lambda\>*x|)>*<space|0.17em>d*x=O<around*|(|<frac|1|\<lambda\><rsub|m>>|)><rsup|<frac|3|2>>
-  </equation>
+    <\equation>
+      <big|int><rsub|0><rsup|1>F<around|(|x|)>*J<rsub|m>*<around|(|\<lambda\>*x|)>*<space|0.17em>d*x=O<around*|(|<frac|1|\<lambda\><rsub|m>>|)><rsup|<frac|3|2>>
+    </equation>
+  </lemma>
 
-  <with|font-series|bold|Lemma 2.> For <math|x\<in\>><math|I> let the
-  function <math|f<around|(|x|)>> be such that it has bounded variation. Then
-  the general coefficient <math|B<rsub|m>> in (7) is such that
+  <\lemma>
+    \ For <math|x\<in\>><math|I> let the function <math|f<around|(|x|)>> be
+    such that it has bounded variation. Then the general coefficient
+    <math|B<rsub|m>> in (7) is such that
 
-  <\equation>
-    B<rsub|m>=O<around*|(|<frac|1|\<lambda\><rsub|m>>|)><rsup|<frac|3|2>>
-  </equation>
+    <\equation>
+      B<rsub|m>=O<around*|(|<frac|1|\<lambda\><rsub|m>>|)><rsup|<frac|3|2>>
+    </equation>
+  </lemma>
 
   <section|Convergence of sums of Bessel functions to a given function>
 
@@ -175,86 +179,90 @@
   Bessel functions and <math|f<around|(|x|)>>, the derivative of the function
   <math|f<around|(|x|)>> given in the first of these theorems.
 
-  <with|font-series|bold|Theorem 1.> If <math|f<around|(|x|)>> exists and has
-  bounded variation for <math|x> in <math|I>, then
+  <\theorem>
+    If <math|f<around|(|x|)>> exists and has bounded variation for <math|x>
+    in <math|I>, then
 
-  <\equation>
-    <around|\||f<around|(|x|)>-S<rsub|n><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|n>|)>>
-  </equation>
+    <\equation>
+      <around|\||f<around|(|x|)>-S<rsub|n><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|n>|)>>
+    </equation>
 
-  where
+    where
 
-  <\equation>
-    S<rsub|n><around|(|x|)>=<big|sum><rsub|m=1><rsup|n>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>
-  </equation>
+    <\equation>
+      S<rsub|n><around|(|x|)>=<big|sum><rsub|m=1><rsup|n>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>
+    </equation>
 
-  and
+    and
 
-  <\equation>
-    B<rsub|m>=O<around*|(|<frac|1|\<lambda\><rsub|m>>|)><rsup|<frac|3|2>>
-  </equation>
+    <\equation>
+      B<rsub|m>=O<around*|(|<frac|1|\<lambda\><rsub|m>>|)><rsup|<frac|3|2>>
+    </equation>
+  </theorem>
 
-  <with|font-shape|italic|Proof.> From Lemma 2 the coefficient of the general
-  term of <math|S<rsub|n><around|(|x|)>> is such that
-  <math|B<rsub|m>=O<around|(|<frac|1|\<lambda\><rsub|m>>|)><rsup|<frac|3|2>>>,
-  so that we have
+  <\proof>
+    From Lemma 2 the coefficient of the general term of
+    <math|S<rsub|n><around|(|x|)>> is such that
+    <math|B<rsub|m>=O<around|(|<frac|1|\<lambda\><rsub|m>>|)><rsup|<frac|3|2>>>,
+    so that we have
 
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|f<around|(|x|)>-S<rsub|n><around|(|x|)>>|<cell|=<big|sum><rsub|m=n+1><rsup|\<infty\>>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>-<big|sum><rsub|m=1><rsup|n>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|m=n+1><rsup|\<infty\>>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)><text|>>>|<row|<cell|>|<cell|=<big|sum><rsub|m=n+1><rsup|\<infty\>>O<around*|(|<frac|1|m>|)><rsup|<frac|3|2>>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>>>>>>
-  </equation>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|f<around|(|x|)>-S<rsub|n><around|(|x|)>>|<cell|=<big|sum><rsub|m=n+1><rsup|\<infty\>>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>-<big|sum><rsub|m=1><rsup|n>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|m=n+1><rsup|\<infty\>>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)><text|>>>|<row|<cell|>|<cell|=<big|sum><rsub|m=n+1><rsup|\<infty\>>O<around*|(|<frac|1|m>|)><rsup|<frac|3|2>>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>>>>>>
+    </equation>
 
-  However, <math|<around|\||J<rsub|0><around|(|t|)>|\|>\<leq\>1> for all
-  values of <math|t> so that
+    However, <math|<around|\||J<rsub|0><around|(|t|)>|\|>\<leq\>1> for all
+    values of <math|t> so that
 
-  <\equation>
-    <around|\||f<around|(|x|)>-S<rsub|n><around|(|x|)>|\|>=<big|sum><rsub|m=n+1><rsup|\<infty\>>O<around*|(|<frac|1|m>|)><rsup|<frac|3|2>>*\<lambda\><rsub|m>=O<around*|(|<big|sum><rsub|m=n+1><rsup|\<infty\>><frac|1|m<rsup|<frac|3|2>>>|)>
-  </equation>
+    <\equation>
+      <around|\||f<around|(|x|)>-S<rsub|n><around|(|x|)>|\|>=<big|sum><rsub|m=n+1><rsup|\<infty\>>O<around*|(|<frac|1|m>|)><rsup|<frac|3|2>>*\<lambda\><rsub|m>=O<around*|(|<big|sum><rsub|m=n+1><rsup|\<infty\>><frac|1|m<rsup|<frac|3|2>>>|)>
+    </equation>
 
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|Q<rsub|1><around|(|x|)>>|<cell|=<frac|f<around|(|x|)>-f<rsub|c><around|(|x|)>|x>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)>><rsup|>>>|<row|<cell|Q<rsub|c><around|(|x|)>>|<cell|=<frac|f<rsub|c><around|(|x|)>-S<rsub|n><around|(|x|)>|x>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)><rsup|>>>>>>>
-  </equation>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|Q<rsub|1><around|(|x|)>>|<cell|=<frac|f<around|(|x|)>-f<rsub|c><around|(|x|)>|x>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)>><rsup|>>>|<row|<cell|Q<rsub|c><around|(|x|)>>|<cell|=<frac|f<rsub|c><around|(|x|)>-S<rsub|n><around|(|x|)>|x>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)><rsup|>>>>>>>
+    </equation>
 
-  where <math|f<rsub|c><around|(|x|)>> is the sum of the first <math|n> terms
-  of the expansion of <math|f<around|(|x|)>> by sums of Bessel functions. We
-  have
+    where <math|f<rsub|c><around|(|x|)>> is the sum of the first <math|n>
+    terms of the expansion of <math|f<around|(|x|)>> by sums of Bessel
+    functions. We have
 
-  <\equation>
-    <big|int><rsub|0><rsup|1><around|\||Q<rsub|1><around|(|x|)>|\|><rsup|2>*<space|0.17em>d*x=O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)><text|>
-  </equation>
+    <\equation>
+      <big|int><rsub|0><rsup|1><around|\||Q<rsub|1><around|(|x|)>|\|><rsup|2>*<space|0.17em>d*x=O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)><text|>
+    </equation>
 
-  <\equation>
-    <big|int><rsub|0><rsup|1><around|\||Q<rsub|c><around|(|x|)>|\|><rsup|2>*<space|0.17em>d*x=O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)>
-  </equation>
+    <\equation>
+      <big|int><rsub|0><rsup|1><around|\||Q<rsub|c><around|(|x|)>|\|><rsup|2>*<space|0.17em>d*x=O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)>
+    </equation>
 
-  Hence
+    Hence
 
-  <\align*>
-    <tformat|<table|<row|<cell|<around|\||f<around|(|x|)>-S<rsub|n><around|(|x|)>|\|>>|<cell|=<around|\||x*<around|(|Q<rsub|1><around|(|x|)>+Q<rsub|c><around|(|x|)>|)>|\|>,>>|<row|<cell|>|<cell|\<leq\>x*<around|(|<around|\||Q<rsub|1><around|(|x|)>|\|>+<around|\||Q<rsub|c><around|(|x|)>|\|>|)>>>|<row|<cell|>|<cell|=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)>>>>>>
-  </align*>
+    <\align*>
+      <tformat|<table|<row|<cell|<around|\||f<around|(|x|)>-S<rsub|n><around|(|x|)>|\|>>|<cell|=<around|\||x*<around|(|Q<rsub|1><around|(|x|)>+Q<rsub|c><around|(|x|)>|)>|\|>,>>|<row|<cell|>|<cell|\<leq\>x*<around|(|<around|\||Q<rsub|1><around|(|x|)>|\|>+<around|\||Q<rsub|c><around|(|x|)>|\|>|)>>>|<row|<cell|>|<cell|=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)>>>>>>
+    </align*>
 
-  Thus by defining <math|Q<rsub|c><around|(|x|)>> as the sum of the first
-  <math|n> terms of the expansion of <math|f<around|(|x|)>> by Bessel
-  functions, we have
+    Thus by defining <math|Q<rsub|c><around|(|x|)>> as the sum of the first
+    <math|n> terms of the expansion of <math|f<around|(|x|)>> by Bessel
+    functions, we have
 
-  <\equation>
-    <frac|f<rsub|c><around|(|x|)>|x>-<frac|S<rsub|n><around|(|x|)>|x>=<big|sum><rsub|m=1><rsup|n><frac|B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>|x><text|>
-  </equation>
+    <\equation>
+      <frac|f<rsub|c><around|(|x|)>|x>-<frac|S<rsub|n><around|(|x|)>|x>=<big|sum><rsub|m=1><rsup|n><frac|B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>|x><text|>
+    </equation>
 
-  and hence
+    and hence
 
-  <\equation>
-    <frac|f<around|(|x|)>|x>-<frac|S<rsub|n><around|(|x|)>|x>=Q<rsub|1><around|(|x|)>+<big|sum><rsub|m=1><rsup|n><frac|B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>|x><text|>
-  </equation>
+    <\equation>
+      <frac|f<around|(|x|)>|x>-<frac|S<rsub|n><around|(|x|)>|x>=Q<rsub|1><around|(|x|)>+<big|sum><rsub|m=1><rsup|n><frac|B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>|x><text|>
+    </equation>
 
-  It follows that
+    It follows that
 
-  <\equation>
-    <big|int><rsub|0><rsup|1><around*|\||<frac|f<around|(|x|)>|x>-<frac|S<rsub|n><around|(|x|)>|x>|\|><rsup|2>*<space|0.17em>d*x=O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)><text|>
-  </equation>
+    <\equation>
+      <big|int><rsub|0><rsup|1><around*|\||<frac|f<around|(|x|)>|x>-<frac|S<rsub|n><around|(|x|)>|x>|\|><rsup|2>*<space|0.17em>d*x=O<around*|(|<frac|1|\<lambda\><rsub|n+1>>|)><text|>
+    </equation>
 
-  where <math|f<rsub|c><around|(|x|)>> is the sum of the first <math|n> terms
-  of the expansion of <math|f<around|(|x|)>> by Bessel functions. This
-  completes the proof of Theorem 1.
+    where <math|f<rsub|c><around|(|x|)>> is the sum of the first <math|n>
+    terms of the expansion of <math|f<around|(|x|)>> by Bessel functions.
+    This completes the proof of Theorem 1.
+  </proof>
 
   The proof of Theorem 1 is completed by the result of Lemma 2, that is,
 
@@ -278,62 +286,65 @@
   <math|b>.<assign|page-nr|429> We now consider the degree of convergence of
   sums of Bessel functions to a given function <math|f<around|(|x|)>> and the
   derivative of these sums as they converge to
-  <math|f<rprime|'><around|(|x|)>>.
+  <math|f<rprime|'><around|(|x|)>>
 
-  <with|font-series|bold|Theorem 3.> If <math|f<around|(|x|)>> and
-  <math|f<rprime|'><around|(|x|)>> are such that
-  <math|f<rprime|''><around|(|x|)>> exists and has bounded variation in
-  <math|I>, then there exists a sum of zeroth order Bessel functions such
-  that
+  <\theorem>
+    If <math|f<around|(|x|)>> and <math|f<rprime|'><around|(|x|)>> are such
+    that <math|f<rprime|''><around|(|x|)>> exists and has bounded variation
+    in <math|I>, then there exists a sum of zeroth order Bessel functions
+    such that
 
-  <\equation>
-    <around|\||f<rsup|<around|(|k|)>><around|(|x|)>-S<rsub|n><rsup|<around|(|k|)>><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>><rsup|><space|1em>k=0,1.
-  </equation>
+    <\equation>
+      <around|\||f<rsup|<around|(|k|)>><around|(|x|)>-S<rsub|n><rsup|<around|(|k|)>><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>><rsup|><space|1em>k=0,1.
+    </equation>
+  </theorem>
 
-  <with|font-shape|italic|Proof.> Assume <math|f<around|(|x|)>> is a function
-  of <math|x> as described by Theorem 2 and that
-  <math|Q<rsub|n><around|(|x|)>> is a sum of Bessel functions
+  <\proof>
+    Assume <math|f<around|(|x|)>> is a function of <math|x> as described by
+    Theorem 2 and that <math|Q<rsub|n><around|(|x|)>> is a sum of Bessel
+    functions
 
-  <\equation>
-    Q<rsub|n><around|(|x|)>=<big|sum><rsub|m=1><rsup|n>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>
-  </equation>
+    <\equation>
+      Q<rsub|n><around|(|x|)>=<big|sum><rsub|m=1><rsup|n>B<rsub|m>*J<rsub|0>*<around|(|\<lambda\><rsub|m>*x|)>
+    </equation>
 
-  Then from Theorem 2 we have that
+    Then from Theorem 2 we have that
 
-  <\equation>
-    <around|\||f<around|(|x|)>-Q<rsub|n><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>
-  </equation>
+    <\equation>
+      <around|\||f<around|(|x|)>-Q<rsub|n><around|(|x|)>|\|>=<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>
+    </equation>
 
-  Next define <math|R<rsub|n><around|(|x|)>> by
+    Next define <math|R<rsub|n><around|(|x|)>> by
 
-  <\equation>
-    R<rsub|n><around|(|x|)>=f<around|(|0|)>+<big|int><rsub|0><rsup|x>Q<rsub|n><around|(|t|)>*<space|0.17em>d*t
-  </equation>
+    <\equation>
+      R<rsub|n><around|(|x|)>=f<around|(|0|)>+<big|int><rsub|0><rsup|x>Q<rsub|n><around|(|t|)>*<space|0.17em>d*t
+    </equation>
 
-  That is, <math|R<rsub|n><around|(|x|)>> is a sum of zeroth order Bessel
-  functions. From (11) we can write
+    That is, <math|R<rsub|n><around|(|x|)>> is a sum of zeroth order Bessel
+    functions. From (11) we can write
 
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|f<around|(|x|)>-R<rsub|n><around|(|x|)>>|<cell|=f<around|(|x|)>-f<around|(|0|)>-<big|int><rsub|0><rsup|x>Q<rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|x><wide|f|\<dot\>><around|(|t|)>*<space|0.17em>d*t-<big|int><rsub|0><rsup|x>Q<rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|x><around*|[|<wide|f|\<dot\>><around|(|t|)>-Q<rsub|n><around|(|t|)>|]>*<space|0.17em>d*t>>>>>
-  </equation>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|f<around|(|x|)>-R<rsub|n><around|(|x|)>>|<cell|=f<around|(|x|)>-f<around|(|0|)>-<big|int><rsub|0><rsup|x>Q<rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|x><wide|f|\<dot\>><around|(|t|)>*<space|0.17em>d*t-<big|int><rsub|0><rsup|x>Q<rsub|n><around|(|t|)>*<space|0.17em>d*t>>|<row|<cell|>|<cell|=<big|int><rsub|0><rsup|x><around*|[|<wide|f|\<dot\>><around|(|t|)>-Q<rsub|n><around|(|t|)>|]>*<space|0.17em>d*t>>>>>
+    </equation>
 
-  Therefore
+    Therefore
 
-  <\equation>
-    <around|\||f<around|(|x|)>-R<rsub|n><around|(|x|)>|\|>=<around*|\||<big|int><rsub|0><rsup|x><around*|[|f<rprime|'><around|(|t|)>-Q<rsub|n><around|(|t|)>|]>*<space|0.17em>d*t|\|>=<around|(|1-0|)><sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>
-  </equation>
+    <\equation>
+      <around|\||f<around|(|x|)>-R<rsub|n><around|(|x|)>|\|>=<around*|\||<big|int><rsub|0><rsup|x><around*|[|<wide|f|\<dot\>><around|(|t|)>-Q<rsub|n><around|(|t|)>|]>*<space|0.17em>d*t|\|>=<around|(|1-0|)><sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>
+    </equation>
 
-  and
+    and
 
-  <\equation>
-    <around|\||f<rprime|'><around|(|x|)>-R<rsub|n><rprime|'><around|(|x|)>|\|>=<frac|<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>|<sqrt|\<lambda\><rsub|n>>><rsup|>
-  </equation>
+    <\equation>
+      <around|\||<wide|f|\<dot\>><around|(|x|)>-<wide|R|\<dot\>><rsub|n><around|(|x|)>|\|>=<frac|<sqrt|O<around*|(|<frac|1|\<lambda\><rsub|n>>|)>>|<sqrt|\<lambda\><rsub|n>>><rsup|>
+    </equation>
 
-  since <math|R<rsub|n><rprime|'><around|(|x|)>=Q<rsub|n><around|(|x|)>> from
-  (11). From these two equations we see that <math|f<around|(|x|)>> can be
-  uniformly approximated by a sum of zeroth order Bessel functions such that
-  <math|f<around|(|x|)>> is, at the same time, uniformly approximated by the
-  derivative of this sum, and the theorem is proved.
+    since <math|R<rsub|n><rprime|'><around|(|x|)>=Q<rsub|n><around|(|x|)>>
+    from (11). From these two equations we see that <math|f<around|(|x|)>>
+    can be uniformly approximated by a sum of zeroth order Bessel functions
+    such that <math|f<around|(|x|)>> is, at the same time, uniformly
+    approximated by the derivative of this sum, and the theorem is proved.
+  </proof>
 
   <section|Existence and uniqueness of minimizing sums>
 
@@ -371,26 +382,30 @@
   developed by Stein [9] in approximating the solutions of
   integro-differential equations.
 
-  <with|font-series|bold|Lemma 3.> If <math|g<rsub|n><around|(|x|)>> is a sum
-  of <math|n> terms of zeroth order Bessel functions that satisfies a
-  boundary condition such as <math|y<rsub|0>=g<rsub|n><around|(|x<rsub|0>|)>>,
-  if <math|<wide|P*|\<dot\>><around|(|x|)>> and
-  <math|<wide|Q|\<dot\>><around|(|x|)>> of (2) are bounded
-  \<forall\><math|x\<in\>><math|I>, and further if <math|<wide|w|~>> is the
-  maximum for <math|<around|\||g<rsub|n><around|(|x|)>|\|>> for <math|x> in
-  this interval, then
+  <\lemma>
+    If <math|g<rsub|n><around|(|x|)>> is a sum of <math|n> terms of zeroth
+    order Bessel functions that satisfies a boundary condition such as
+    <math|y<rsub|0>=g<rsub|n><around|(|x<rsub|0>|)>>, if
+    <math|<wide|P*|\<dot\>><around|(|x|)>> and
+    <math|<wide|Q|\<dot\>><around|(|x|)>> of (2) are bounded
+    \<forall\><math|x\<in\>><math|I>, and further if <math|<wide|w|~>> is the
+    maximum for <math|<around|\||g<rsub|n><around|(|x|)>|\|>> for <math|x> in
+    this interval, then
 
-  <\enumerate>
-    <item*|(a)><math|<around*|\||L<around|[|g<rsub|n><around|(|x|)>|]>|\|>\<leq\>A*\<lambda\><rsub|n><rsup|2>*<wide|w|~>>
-    and
+    <\enumerate>
+      <item*|(a)><math|<around*|\||L<around|[|g<rsub|n><around|(|x|)>|]>|\|>\<leq\>A*\<lambda\><rsub|n><rsup|2>*<wide|w|~>>
+      and
 
-    <item*|(b)><math|<around*|\||<frac|d*L<around|[|g<rsub|n><around|(|x|)>|]>|d*x>|\|>\<leq\>B*\<lambda\><rsub|n><rsup|2>*<wide|w|~><rsup|2>>
-  </enumerate>
+      <item*|(b)><math|<around*|\||<frac|d*L<around|[|g<rsub|n><around|(|x|)>|]>|d*x>|\|>\<leq\>B*\<lambda\><rsub|n><rsup|2>*<wide|w|~><rsup|2>>
+    </enumerate>
 
-  for all <math|x> in <math|I>, where <math|A> and <math|B> are positive
-  constants not depending on <math|n>, and <math|L> is defined by (2).
+    for all <math|x> in <math|I>, where <math|A> and <math|B> are positive
+    constants not depending on <math|n>, and <math|L> is defined by (2).
+  </lemma>
 
-  The proof of this theorem follows that of Oberg [7] and is not included.
+  <\proof>
+    The proof of this theorem follows that of Oberg [7] and is not included.
+  </proof>
 
   We are now ready to consider the approximate solution of the Riccati
   equation, with the boundary condition <math|y<rsub|0>=y<around|(|x<rsub|0>|)>>,
@@ -409,10 +424,6 @@
   <\equation>
     <around*|\||y<rsup|<around|(|k|)>><around|(|x|)>-g<rsub|n><rsup|<around|(|k|)>><around|(|x|)>|\|>\<leq\>\<eta\><rsub|n>\<forall\>\<eta\><rsub|n>\<less\>1,k=0,1<space|1em>
   </equation>
-
-  \;
-
-  <assign|section-nr|4><assign|page-nr|431>
 
   Note that <math|\<eta\>> depends on <math|n>; however, it is not so
   indicated in the following discussion. The statement in (12) is possible by
@@ -495,24 +506,39 @@
   Hence,
 
   <\equation>
-    <around|\||L<around|[|Q<rsub|n><around|(|x|)>|]>|\|>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>x
+    <around|\||L<around|[|Q<rsub|n><around|(|x|)>|]>|\|>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>x\<forall\>x\<in\>I
   </equation>
-
-  for <math|x> in <math|I>.
 
   Now by (15) <math|<around|\||L<around|[|r<rsub|n>|]>|\|>\<leq\>N*\<eta\>>.
   Thus if <math|n> is chosen large enough so that
-  <math|\<lambda\><rsub|n>\<gtr\>16*M<rsub|2>/A> and if <math|\<eta\>> is
-  chosen so that <math|n\<leq\><around|(|A*\<lambda\><rsub|n>-16*M<rsub|2>|)>/<around|(|16*M<rsub|2>*w|)>>,
+
+  <\equation>
+    \<lambda\><rsub|n>\<gtr\><frac|16*M<rsub|2>|A>
+  </equation>
+
+  \ and if <math|\<eta\>> is chosen so that
+
+  <\equation>
+    n\<leq\><frac|A*\<lambda\><rsub|n>-16*M<rsub|2>|16*M<rsub|2>*w>
+  </equation>
+
   and recalling that <math|\<eta\>\<less\>1>, then either
-  <math|N*\<eta\>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>> or
-  <math|N*\<eta\>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>>.
+
+  <\equation>
+    N*\<eta\>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>
+  </equation>
+
+  \ or
+
+  <\equation>
+    N*\<eta\>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>
+  </equation>
 
   First, by assuming that <math|N*\<eta\>\<leq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>>,
   we have that
 
   <\align*>
-    <tformat|<table|<row|<cell|<around|\||L<around|(|y|)>-L<around|(|S<rsub|n>|)>|\|>>|<cell|=<around|\||L*<around|(|r<rsub|n>+g<rsub|n>|)>-L*<around|(|Q<rsub|n>+g<rsub|n>|)>|\|><rsup|2>>>|<row|<cell|>|<cell|=<around|\||r<rsub|n><rprime|'>+g<rsub|n><rprime|'>-P*r<rsub|n>-P*g<rsub|n>-Q*r<rsub|n><rsup|2>-Q*g<rsub|n><rsup|2>-2*Q*r<rsub|n>*g<rsub|n>|\|>>>|<row|<cell|>|<cell|=<around|\||L<around|(|r<rsub|n>|)>+L<around|(|g<rsub|n>|)>-2*Q*g<rsub|n>*r<rsub|n>-P*Q<rsub|n>-P*g<rsub|n>-Q*Q<rsub|n><rsup|2>-Q*g<rsub|n><rsup|2>-2*Q*Q<rsub|n>*g<rsub|n>|\|>>>|<row|<cell|>|<cell|\<geq\><around|\||L<around|(|Q<rsub|n>|)>|\|>-<around|\||L<around|(|r<rsub|n>|)>*<around|\||-2|\|>*Q<around|\|||\|>*g<rsub|n>|\|>*<around|\||r<rsub|n>-Q<rsub|n>|\|>>>|<row|<cell|>|<cell|\<geq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>-<frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>-2*M<rsub|2>*w*<around|(|\<eta\>+w|)>\<geq\><frac|1|4>*A*\<lambda\><rsub|n>*w<rsup|2>>>>>
+    <tformat|<table|<row|<cell|<around|\||L<around|(|y|)>-L<around|(|S<rsub|n>|)>|\|>>|<cell|=<around|\||L*<around|(|r<rsub|n>+g<rsub|n>|)>-L*<around|(|Q<rsub|n>+g<rsub|n>|)>|\|><rsup|2>>>|<row|<cell|>|<cell|=<around|\||r<rsub|n><rprime|'>+g<rsub|n><rprime|'>-P*r<rsub|n>-P*g<rsub|n>-Q*r<rsub|n><rsup|2>-Q*g<rsub|n><rsup|2>-2*Q*r<rsub|n>*g<rsub|n>|\|>>>|<row|<cell|>|<cell|=<around|\||L<around|(|r<rsub|n>|)>+L<around|(|g<rsub|n>|)>-2*Q*g<rsub|n>*r<rsub|n>-P*Q<rsub|n>-P*g<rsub|n>-Q*Q<rsub|n><rsup|2>-Q*g<rsub|n><rsup|2>-2*Q*Q<rsub|n>*g<rsub|n>|\|>>>|<row|<cell|>|<cell|\<geq\><around|\||L<around|(|Q<rsub|n>|)>|\|>-<around|\||L<around|(|r<rsub|n>|)>*<around|\||-2|\|>*Q<around|\|||\|>*g<rsub|n>|\|>*<around|\||r<rsub|n>-Q<rsub|n>|\|>>>|<row|<cell|>|<cell|\<geq\><frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>-<frac|3|4>*A*\<lambda\><rsub|n>*w<rsup|2>-2*M<rsub|2>*w*<around|(|\<eta\>+w|)>>>|<row|<cell|>|<cell|\<geq\><frac|1|4>*A*\<lambda\><rsub|n>*w<rsup|2>>>>>
   </align*>
 
   Note that use is made of the fact that <math|<around|\||r<rsub|n>-Q<rsub|n>|\|>\<leq\><around|\||r<rsub|n>|\|>+<around|\||Q<rsub|n>|\|>\<leq\>\<eta\>+w>,
@@ -547,7 +573,7 @@
   we can write
 
   <\equation>
-    w<rsup|2>\<leq\>C<rsub|1>*\<lambda\><rsub|n><rsup|-m>*\<eta\><rsup|1/m>,
+    w<rsup|2>\<leq\>C<rsub|1>*\<lambda\><rsub|n><rsup|-m>*\<eta\><rsup|1/m>
   </equation>
 
   where <math|C<rsub|1>> is a constant. Using the fact that
@@ -564,32 +590,41 @@
     <around|\||r<rsub|n><rsup|<around|(|k|)>>-Q<rsub|n><rsup|<around|(|k|)>>|\|>\<leq\>\<eta\>+C<rsub|1>*\<lambda\><rsub|n><rsup|-m>*\<eta\><rsup|1/m>\<leq\>C<rsub|2>*\<lambda\><rsub|n><rsup|-1/2>*\<eta\><rsup|1/2><text|>
   </equation>
 
-  where <math|C<rsub|2>> is a constant and <math|\<eta\>\<leq\>min
-  <around*|{|1,<around*|(|<frac|A*\<lambda\><rsub|n>-16*M<rsub|2>|16*M<rsub|2>>|)>*w|}>>,
+  where <math|C<rsub|2>> is a constant and\ 
+
+  <\equation>
+    \<eta\>\<leq\>min <around*|{|1,<around*|(|<frac|A*\<lambda\><rsub|n>-16*M<rsub|2>|16*M<rsub|2>>|)>*w|}>
+  </equation>
+
   and <math|\<eta\>> is given by (12).
 
   We can thus state the following theorem.
 
-  <with|font-series|bold|Theorem 4.> If <math|y<around|(|x|)>> is the unique
-  continuous solution of the Riccati equation in <math|I> which satisfies the
-  boundary condition <math|y<rsub|0>=y<around|(|x<rsub|0>|)>> and has a
-  continuous first derivative and a second derivative of bounded variation,
-  and if <math|y=S<rsub|n><around|(|x|)>> is a sum of <math|n> terms of
-  zeroth order Bessel functions such that
-  <math|y<rsub|0>=S<rsub|n><around|(|x<rsub|0>|)>> and also such that
-  <math|S<rsub|n><around|(|x|)>> makes (3) a minimum for fixed <math|m>, a
-  sufficient condition for the uniform convergence of
-  <math|S<rsub|n><around|(|x|)>> to <math|y<around|(|x|)>> and
-  <math|S<rsub|n><rprime|'><around|(|x|)>> to
-  <math|y<rprime|'><around|(|x|)>> throughout <math|I> is that
+  <\theorem>
+    If <math|y<around|(|x|)>> is the unique continuous solution of the
+    Riccati equation in <math|I> which satisfies the boundary condition
+    <math|y<rsub|0>=y<around|(|x<rsub|0>|)>> and has a continuous first
+    derivative and a second derivative of bounded variation, and if
+    <math|y=S<rsub|n><around|(|x|)>> is a sum of <math|n> terms of zeroth
+    order Bessel functions such that <math|y<rsub|0>=S<rsub|n><around|(|x<rsub|0>|)>>
+    and also such that <math|S<rsub|n><around|(|x|)>> makes (3) a minimum for
+    fixed <math|m>, a sufficient condition for the uniform convergence of
+    <math|S<rsub|n><around|(|x|)>> to <math|y<around|(|x|)>> and
+    <math|S<rsub|n><rprime|'><around|(|x|)>> to
+    <math|y<rprime|'><around|(|x|)>> throughout <math|I> is that
 
-  <\equation>
-    lim<rsub|n\<to\>\<infty\>> \<lambda\><rsub|n><rsup|1/2*m>*\<eta\><rsub|n>=0<text|>
-  </equation>
+    <\equation>
+      lim<rsub|n\<to\>\<infty\>> \<lambda\><rsub|n><rsup|1/2*m>*\<eta\><rsub|n>=0<text|>
+    </equation>
 
-  where <math|\<eta\><rsub|n>=C*<sqrt|v<rsub|n>>>, <math|\<eta\>\<leq\>min
-  <around*|{|1,<around*|(|<frac|A*\<lambda\><rsub|n>-16*M<rsub|2>|16*M<rsub|2>>|)>*w|}>>,
-  and <math|\<eta\><rsub|n>> is given by (12).
+    where <math|\<eta\><rsub|n>=C*<sqrt|v<rsub|n>>>,\ 
+
+    <\equation>
+      \<eta\>\<leq\>min <around*|{|1,<around*|(|<frac|A*\<lambda\><rsub|n>-16*M<rsub|2>|16*M<rsub|2>>|)>*w|}>
+    </equation>
+
+    and <math|\<eta\><rsub|n>> is given by (12)
+  </theorem>
 
   <section|Conclusion>
 
@@ -661,7 +696,8 @@
 <\references>
   <\collection>
     <associate|auto-1|<tuple|1|1|../../.TeXmacs/texts/scratch/no_name_26.tm>>
-    <associate|auto-10|<tuple|5|434|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-10|<tuple|8|434|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-11|<tuple|8|?|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-3|<tuple|3|426|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-4|<tuple|3|426|../../.TeXmacs/texts/scratch/no_name_26.tm>>
@@ -669,7 +705,7 @@
     <associate|auto-6|<tuple|5|428|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-7|<tuple|6|430|../../.TeXmacs/texts/scratch/no_name_26.tm>>
     <associate|auto-8|<tuple|7|430|../../.TeXmacs/texts/scratch/no_name_26.tm>>
-    <associate|auto-9|<tuple|5|434|../../.TeXmacs/texts/scratch/no_name_26.tm>>
+    <associate|auto-9|<tuple|8|434|../../.TeXmacs/texts/scratch/no_name_26.tm>>
   </collection>
 </references>
 
