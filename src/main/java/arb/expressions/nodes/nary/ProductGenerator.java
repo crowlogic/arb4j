@@ -46,7 +46,8 @@ public class ProductGenerator<D, R, F extends Function<D, R>> extends
   {
     MethodVisitor methodVisitor;
     methodVisitor = classWriter.visitMethod(ACC_PUBLIC, evaluate, "(ILarb/Real;)Larb/Real;", null, null);
-    methodVisitor.visitCode();
+    methodVisitor = new ExecutionFlowDocumenter(ASM9, methodVisitor);
+    methodVisitor.visitCode();;
     return methodVisitor;
   }
 
