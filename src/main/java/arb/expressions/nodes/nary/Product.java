@@ -2,11 +2,9 @@ package arb.expressions.nodes.nary;
 
 import static java.lang.String.format;
 
-import java.io.PrintWriter;
-
-import org.objectweb.asm.*;
-import org.objectweb.asm.util.Textifier;
-import org.objectweb.asm.util.TraceClassVisitor;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;

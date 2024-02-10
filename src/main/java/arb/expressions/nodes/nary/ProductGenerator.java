@@ -8,6 +8,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
@@ -23,31 +24,32 @@ import arb.utensils.Utensils;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ProductGenerator<D, R, F extends Function<D, R>> extends
-                              BoringPartsOfProductGenerator implements
-                              Opcodes
+public class ProductGenerator<D, R, F extends Function<D, R>> implements
+                             Opcodes
 {
 
   private static final String MUL_METHOD_DESCRIPTOR = Utensils.getMethodDescriptor(Real.class,
                                                                                    Real.class,
                                                                                    int.class,
                                                                                    Real.class);
-  private Node<D, R, F> product;
+  private Node<D, R, F>       product;
   private Expression<D, R, F> expression;
 
-  public  ProductGenerator(Node<D, R, F> product, String internalName)
+  public ProductGenerator(Node<D, R, F> product, String internalName)
   {
-    this.product =product;
+    this.product       = product;
     this.functionClass = internalName;
-    this.expression = product.expression;
+    this.expression    = product.expression;
   }
 
   static MethodVisitor beginEvaluationCode(ClassWriter classWriter)
   {
     MethodVisitor methodVisitor;
     methodVisitor = classWriter.visitMethod(ACC_PUBLIC, evaluate, "(ILarb/Real;)Larb/Real;", null, null);
-    methodVisitor = new ExecutionFlowDocumenter(ASM9, methodVisitor);
-    methodVisitor.visitCode();;
+    methodVisitor = new ExecutionFlowDocumenter(ASM9,
+                                                methodVisitor);
+    methodVisitor.visitCode();
+    ;
     return methodVisitor;
   }
 
@@ -90,7 +92,6 @@ public class ProductGenerator<D, R, F extends Function<D, R>> extends
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
   }
 
-  @Override
   public void generateEvaluateMethod(ClassWriter classWriter)
   {
     MethodVisitor methodVisitor = beginEvaluationCode(classWriter);
@@ -246,5 +247,127 @@ public class ProductGenerator<D, R, F extends Function<D, R>> extends
     pop(methodVisitor);
     out.println("-----endsetIndexToTheStartIndex------");
 
+  }
+
+  protected static final String evaluate                      = "evaluate";
+
+  protected static String       factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(Object.class),
+                                                                                         Type.getType(Object.class),
+                                                                                         Type.getType(int.class),
+                                                                                         Type.getType(Object.class));
+
+  protected static final String factorFunction                = "factor";
+  protected static final String factorValue                   = "value";
+  String                        functionClass;
+
+  protected void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
+  {
+    out.format("getField(fieldName=%s, fieldTypeSignature=%s\n", fieldName, fieldTypeSignature);
+    getField(methodVisitor, functionClass, fieldName, fieldTypeSignature);
+  }
+
+  protected static MethodVisitor
+            getField(MethodVisitor mv, String thisClassInternalName, String fieldName, Class<?> type)
+  {
+    return getField(mv, thisClassInternalName, fieldName, type.descriptorString());
+  }
+
+  protected static MethodVisitor getField(MethodVisitor methodVisitor,
+                                          String thisClassInternalName,
+                                          String fieldName,
+                                          String fieldTypeSignature)
+  {
+    assert thisClassInternalName != null : "thisClassInternalName is null";
+    loadThis(methodVisitor).visitFieldInsn(GETFIELD, thisClassInternalName, fieldName, fieldTypeSignature);
+    System.out.format("GET %s field of type %s\n", fieldName, fieldTypeSignature, thisClassInternalName);
+    return methodVisitor;
+  }
+
+  protected static void loadBits(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitVarInsn(ILOAD, 1);
+  }
+
+  protected void loadEndIndex(MethodVisitor methodVisitor)
+  {
+    getField(methodVisitor, "endIndex", "Larb/Integer;");
+  }
+
+  protected void loadFactorFunction(MethodVisitor methodVisitor)
+  {
+    loadFieldFromThis(methodVisitor, factorFunction, Function.class);
+  }
+
+  void invokeMethod(MethodVisitor methodVisitor,
+                    Class<?> thisClass,
+                    String functionName,
+                    String methodSignature,
+                    boolean isInterface)
+  {
+    invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature, isInterface);
+  }
+
+  void invokeMethod(MethodVisitor methodVisitor,
+                    String classInternalName,
+                    String methodName,
+                    String methodSignature,
+                    boolean isInterface)
+  {
+    System.out.format("INVOKE%s %s.%s methodSignature=%s\n",
+                      isInterface ? "INTERFACE" : "VIRTUAL",
+                      classInternalName,
+                      methodName,
+                      methodSignature);
+
+    methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL,
+                                  classInternalName,
+                                  methodName,
+                                  methodSignature,
+                                  isInterface);
+  }
+
+  void invokeMethod(MethodVisitor methodVisitor, String classInternalName, String methodName, String methodSignature)
+  {
+
+    invokeMethod(methodVisitor, classInternalName, methodName, methodSignature, false);
+  }
+
+  protected MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
+  {
+    return getField(mv, functionClass, fieldName, type);
+  }
+
+  /**
+   * Emits ALOAD 2
+   * 
+   * @param methodVisitor
+   */
+  void loadResultingProductVariable(MethodVisitor methodVisitor)
+  {
+    System.out.println("loadResultingProductVariable ALOAD 2");
+    methodVisitor.visitVarInsn(ALOAD, 2);
+  }
+
+  protected void loadStartIndex(MethodVisitor methodVisitor)
+  {
+    getField(methodVisitor, "startIndex", "Larb/Integer;");
+  }
+
+  protected static MethodVisitor loadThis(MethodVisitor methodVisitor)
+  {
+    System.out.println("loadThis ALOAD 0");
+
+    methodVisitor.visitVarInsn(ALOAD, 0);
+    return methodVisitor;
+  }
+
+  protected Label justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot = new Label();
+
+  protected Label beginningOfTheLoop                                                            = new Label();
+
+  protected void pop(MethodVisitor methodVisitor)
+  {
+    out.println("POP");
+    methodVisitor.visitInsn(POP);
   }
 }
