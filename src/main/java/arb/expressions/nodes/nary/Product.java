@@ -88,11 +88,6 @@ public class Product<D, R, F extends Function<D, R>> extends
       return index.reference.name;
     }
 
-    @Override
-    void loadResultingProductVariable(MethodVisitor methodVisitor)
-    {
-      loadFieldFromThis(methodVisitor, intermediateProductResultVariable, type());
-    }
   };
 
   public Product(Expression<D, R, F> expression)

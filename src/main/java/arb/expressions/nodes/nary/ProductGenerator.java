@@ -2,8 +2,12 @@ package arb.expressions.nodes.nary;
 
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.invokeSetMethod;
+import static java.lang.System.out;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import arb.Integer;
 import arb.Real;
@@ -42,6 +46,8 @@ public class ProductGenerator extends
 
   MethodVisitor compareIndexToEndIndex(MethodVisitor methodVisitor)
   {
+    out.println("-----begin compareIndexToEndIndex------");
+
     loadIndexVariable(methodVisitor);
     loadEndIndex(methodVisitor);
     invokeMethod(methodVisitor,
@@ -49,13 +55,15 @@ public class ProductGenerator extends
                  "compareTo",
                  Utensils.getMethodDescriptor(int.class, Integer.class),
                  false);
+    out.println("-----end compareIndexToEndIndex------");
     return methodVisitor;
+
   }
 
   static void endEvaluationCode(MethodVisitor methodVisitor)
   {
     methodVisitor.visitInsn(ARETURN);
-    methodVisitor.visitMaxs(5, 3);
+    methodVisitor.visitMaxs(6, 4);
     methodVisitor.visitEnd();
   }
 
@@ -87,11 +95,15 @@ public class ProductGenerator extends
 
   public void generateProduct(MethodVisitor methodVisitor)
   {
+    out.println("-----begin generateProduct------");
+
     generateInitializer(methodVisitor);
 
     generateInnerLoop(methodVisitor);
 
     generateConditionalBranchJumpBackToTheBeginningOfTheLoop(methodVisitor);
+
+    out.println("-----end generateProduct------");
   }
 
   private void generateConditionalBranchJumpBackToTheBeginningOfTheLoop(MethodVisitor methodVisitor)
@@ -102,10 +114,24 @@ public class ProductGenerator extends
 
   private void generateInitializer(MethodVisitor methodVisitor)
   {
+    out.println("-----begin generateInitializer------");
+
+    /**
+     * <pre>
+     * ALOAD 2 via this{@link #loadResultingProductVariable(MethodVisitor)}
+     * INVOKE "one" via this{@link #invokeMethod(MethodVisitor, String, String, String)}
+     * POP
+     * </pre>
+     */
     initializeResultToItsIdentity(methodVisitor);
+
     setIndexToTheStartIndex(methodVisitor);
+
     jumpTo(methodVisitor, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
+
     designateLabel(methodVisitor, beginningOfTheLoop);
+    out.println("-----end generateInitializer------");
+
   }
 
   /**
@@ -115,6 +141,8 @@ public class ProductGenerator extends
    */
   public void generateInnerLoop(MethodVisitor methodVisitor)
   {
+    out.println("-----begin generateInnerLoop------");
+
     // assert false : " * TODO; go over this the bug is here most\n";
 
     loadIndexVariable(methodVisitor);
@@ -127,6 +155,7 @@ public class ProductGenerator extends
     checkClassCast(methodVisitor, Real.class);
     multiplyResultingProductVariableByFactor(methodVisitor);
     incrementIndex(methodVisitor);
+    out.println("-----end generateInnerLoop------");
   }
 
   private void returnResult(MethodVisitor methodVisitor)
@@ -137,25 +166,44 @@ public class ProductGenerator extends
 
   private void jumpTo(MethodVisitor methodVisitor, Label label)
   {
+    out.format("GOTO %s\n", label);
     methodVisitor.visitJumpInsn(GOTO, label);
   }
 
   void incrementIndex(MethodVisitor methodVisitor)
   {
+    out.println("-----begin incrementIndex------");
     loadIndexVariable(methodVisitor);
     invokeMethod(methodVisitor, "arb/Integer", "increment", "()Larb/Integer;");
     pop(methodVisitor);
+    out.println("-----end incrementIndex------");
   }
 
+  /**
+   * Emits
+   * 
+   * <pre>
+   * ALOAD 2 via this{@link #loadResultingProductVariable(MethodVisitor)}
+   * INVOKE "one" via this{@link #invokeMethod(MethodVisitor, String, String, String)}
+   * POP
+   * </pre>
+   * 
+   * @param methodVisitor
+   */
   void initializeResultToItsIdentity(MethodVisitor methodVisitor)
   {
+    out.println("-----begin initializeResultToItsIdentity------");
+
     loadResultingProductVariable(methodVisitor);
     invokeMethod(methodVisitor, Real.class, "one", Utensils.getMethodDescriptor(Real.class), false);
     pop(methodVisitor);
+    out.println("-----end initializeResultToItsIdentity------");
+
   }
 
   MethodVisitor jumpToIfLessThanOrEquals(MethodVisitor methodVisitor, Label label)
   {
+    out.format("IFLE GOTO %s\n", label);
     methodVisitor.visitJumpInsn(IFLE, label);
     return methodVisitor;
   }
@@ -172,17 +220,23 @@ public class ProductGenerator extends
 
   void multiplyResultingProductVariableByFactor(MethodVisitor methodVisitor)
   {
+    out.println("-----begin multiplyResultingProductVariableByFactor------");
     loadBits(methodVisitor);
     loadResultingProductVariable(methodVisitor);
     invokeMethod(methodVisitor, Real.class, "mul", MUL_METHOD_DESCRIPTOR, false);
     pop(methodVisitor);
+    out.println("-----end multiplyResultingProductVariableByFactor------");
   }
 
   void setIndexToTheStartIndex(MethodVisitor methodVisitor)
   {
+    out.println("-----begin setIndexToTheStartIndex------");
+
     loadIndexVariable(methodVisitor);
     loadStartIndex(methodVisitor);
     invokeSetMethod(methodVisitor, Integer.class, Integer.class);
     pop(methodVisitor);
+    out.println("-----endsetIndexToTheStartIndex------");
+
   }
 }

@@ -1,5 +1,6 @@
 package arb.expressions.nodes.nary;
 
+import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.*;
@@ -80,6 +81,7 @@ public abstract class BoringPartsOfProductGenerator
 
   protected void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
   {
+    out.format("getField(fieldName=%s, fieldTypeSignature=%s\n", fieldName, fieldTypeSignature);
     getField(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
 
@@ -96,6 +98,7 @@ public abstract class BoringPartsOfProductGenerator
   {
     assert thisClassInternalName != null : "thisClassInternalName is null";
     loadThis(methodVisitor).visitFieldInsn(GETFIELD, thisClassInternalName, fieldName, fieldTypeSignature);
+    System.out.format("GET %s field of type %s\n", fieldName, fieldTypeSignature, thisClassInternalName);
     return methodVisitor;
   }
 
@@ -137,6 +140,12 @@ public abstract class BoringPartsOfProductGenerator
                     String methodSignature,
                     boolean isInterface)
   {
+    System.out.format("INVOKE%s %s.%s methodSignature=%s\n",
+                      isInterface ? "INTERFACE" : "VIRTUAL",
+                      classInternalName,
+                      methodName,
+                      methodSignature);
+
     methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL,
                                   classInternalName,
                                   methodName,
@@ -146,6 +155,7 @@ public abstract class BoringPartsOfProductGenerator
 
   void invokeMethod(MethodVisitor methodVisitor, String classInternalName, String methodName, String methodSignature)
   {
+
     invokeMethod(methodVisitor, classInternalName, methodName, methodSignature, false);
   }
 
@@ -154,9 +164,14 @@ public abstract class BoringPartsOfProductGenerator
     return getField(mv, functionClass, fieldName, type);
   }
 
+  /**
+   * Emits ALOAD 2
+   * 
+   * @param methodVisitor
+   */
   void loadResultingProductVariable(MethodVisitor methodVisitor)
   {
-    System.out.println("loadResultingProductVariable/n");
+    System.out.println("loadResultingProductVariable ALOAD 2");
     methodVisitor.visitVarInsn(ALOAD, 2);
   }
 
@@ -167,6 +182,8 @@ public abstract class BoringPartsOfProductGenerator
 
   protected static MethodVisitor loadThis(MethodVisitor methodVisitor)
   {
+    System.out.println("loadThis ALOAD 0");
+
     methodVisitor.visitVarInsn(ALOAD, 0);
     return methodVisitor;
   }
@@ -182,6 +199,7 @@ public abstract class BoringPartsOfProductGenerator
 
   protected void pop(MethodVisitor methodVisitor)
   {
+    out.println( "POP");
     methodVisitor.visitInsn(POP);
   }
 }

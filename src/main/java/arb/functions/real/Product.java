@@ -28,11 +28,11 @@ public class Product implements
     product.one();
     index.set(startIndex);
 
-    while (index.compareTo(endIndex) <= 0)
+    do
     {
       product.mul(factor.evaluate(index, bits, factorValue), bits);
-      index.increment();
     }
+    while (index.increment().compareTo(endIndex) <= 0);
 
     return product;
   }
