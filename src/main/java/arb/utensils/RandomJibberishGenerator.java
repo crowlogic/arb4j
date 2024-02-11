@@ -2,6 +2,14 @@ package arb.utensils;
 
 import java.util.Random;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
+/**
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class RandomJibberishGenerator
 {
 
@@ -31,5 +39,7 @@ public class RandomJibberishGenerator
   public static void main(String[] args)
   {
     System.out.println(generateJibberish());
+    System.out.println(generateJibberish());
+
   }
 }
