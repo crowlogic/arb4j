@@ -94,17 +94,19 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> reify(String expression,
+  public static <D, R, F extends Function<D, R>>
+         Expression<D, R, F>
+         express(String expression,
                                                                            Context context,
                                                                            Class<? extends D> domainClass,
                                                                            Class<? extends R> rangeClass,
                                                                            Class<? extends F> functionClass,
                                                                            boolean verbose)
   {
-    return reify(expression, context, domainClass, rangeClass, functionClass, null);
+    return express(expression, context, domainClass, rangeClass, functionClass, null);
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> reify(String expression,
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String expression,
                                                                            Context context,
                                                                            Class<? extends D> domainClass,
                                                                            Class<? extends R> rangeClass,
@@ -112,11 +114,11 @@ public class Compiler
                                                                            String functionName)
   {
     String className = functionName != null ? functionName : expressionToUniqueClassname(expression);
-    return reify(className, expression, context, domainClass, rangeClass, functionClass, functionName);
+    return express(className, expression, context, domainClass, rangeClass, functionClass, functionName);
 
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> reify(String className,
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String className,
                                                                            String expressionString,
                                                                            Context context,
                                                                            Class<? extends D> domainClass,
@@ -124,16 +126,16 @@ public class Compiler
                                                                            Class<? extends F> functionClass,
                                                                            boolean verbose)
   {
-    return reify(className, expressionString, context, domainClass, rangeClass, functionClass, null);
+    return express(className, expressionString, context, domainClass, rangeClass, functionClass, null);
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> reify(String className,
-                                                                           String expressionString,
-                                                                           Context context,
-                                                                           Class<? extends D> domainClass,
-                                                                           Class<? extends R> rangeClass,
-                                                                           Class<? extends F> functionClass,
-                                                                           String functionName)
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String className,
+                                                                             String expressionString,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             String functionName)
   {
     Expression<D, R, F> expression = new Expression<D, R, F>(className,
                                                              domainClass,

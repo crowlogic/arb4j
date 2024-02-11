@@ -142,7 +142,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       mapping = context.registerFunctionMapping(functionName, null, domainClass, rangeClass, functionClass);
     }
 
-    Expression<D, R, F> compiledExpression = reify(expression,
+    Expression<D, R, F> compiledExpression = express(expression,
                                                    context,
                                                    domainClass,
                                                    rangeClass,
@@ -158,7 +158,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * {@link Compiler#reify(String, String, Context, Class, Class, Class, boolean)}s
+   * {@link Compiler#express(String, String, Context, Class, Class, Class, boolean)}s
    * then {@link Expression#instantiate()}s a mathematical expressions
    * 
    * @param <D>
@@ -181,7 +181,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                Class<F> functionClass,
                                                                boolean verbose)
   {
-    return reify(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
+    return express(className, expression, context, domainClass, rangeClass, functionClass, verbose).instantiate();
   }
 
   public char                                     character                     = 0;
