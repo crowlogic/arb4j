@@ -1,16 +1,7 @@
 package arb.expressions;
 
 import static arb.expressions.Parser.expressionToUniqueClassname;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACC_SUPER;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.DUP2_X1;
-import static org.objectweb.asm.Opcodes.DUP_X1;
-import static org.objectweb.asm.Opcodes.DUP_X2;
-import static org.objectweb.asm.Opcodes.POP2;
-import static org.objectweb.asm.Opcodes.SWAP;
-import static org.objectweb.asm.Opcodes.V21;
-import static org.objectweb.asm.Opcodes.V_PREVIEW;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
@@ -83,8 +74,11 @@ public class Compiler
                        "<init>",
                        "(Ljava/lang/Object;)V",
                        false);
+
     mv.visitInsn(Opcodes.ATHROW);
     mv.visitLabel(notNullLabel);
+    mv.visitFrame(F_SAME, 0, null, 0, null);
+
   }
 
   public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
@@ -94,24 +88,22 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static <D, R, F extends Function<D, R>>
-         Expression<D, R, F>
-         express(String expression,
-                                                                           Context context,
-                                                                           Class<? extends D> domainClass,
-                                                                           Class<? extends R> rangeClass,
-                                                                           Class<? extends F> functionClass,
-                                                                           boolean verbose)
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String expression,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             boolean verbose)
   {
     return express(expression, context, domainClass, rangeClass, functionClass, null);
   }
 
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String expression,
-                                                                           Context context,
-                                                                           Class<? extends D> domainClass,
-                                                                           Class<? extends R> rangeClass,
-                                                                           Class<? extends F> functionClass,
-                                                                           String functionName)
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             String functionName)
   {
     String className = functionName != null ? functionName : expressionToUniqueClassname(expression);
     return express(className, expression, context, domainClass, rangeClass, functionClass, functionName);
@@ -119,12 +111,12 @@ public class Compiler
   }
 
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String className,
-                                                                           String expressionString,
-                                                                           Context context,
-                                                                           Class<? extends D> domainClass,
-                                                                           Class<? extends R> rangeClass,
-                                                                           Class<? extends F> functionClass,
-                                                                           boolean verbose)
+                                                                             String expressionString,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             boolean verbose)
   {
     return express(className, expressionString, context, domainClass, rangeClass, functionClass, null);
   }

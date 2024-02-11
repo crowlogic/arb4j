@@ -167,6 +167,7 @@ public class When<D, R, F extends Function<D, R>> extends
     try
     {
       mv.visitCode();
+      mv.visitFrame(F_SAME, 0, null, 0, null);
 
       labels = new Label[cases.size()];
 
@@ -193,15 +194,16 @@ public class When<D, R, F extends Function<D, R>> extends
       }
 
       mv.visitLabel(defaultLabel);
-      mv.visitFrame(F_SAME, 0,null,0,null);
+      mv.visitFrame(F_SAME, 0, null, 0, null);
 
       super.generate(mv, resultType);
       mv.visitLabel(endSwitch);
-      mv.visitFrame(F_SAME, 0,null,0,null);
-
+      mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
+      { Type.getInternalName(expression.rangeType) });
     }
     finally
     {
+
       mv.visitEnd();
 
     }
