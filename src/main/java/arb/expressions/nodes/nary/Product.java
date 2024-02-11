@@ -47,7 +47,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   public Product(Expression<D, R, F> expression, Node<D, R, F> node)
   {
     super(expression);
-    factor = node;
+    factor        = node;
     functionClass = expression.className;
     assert functionClass != null : "functionClass is null";
   }
@@ -262,18 +262,8 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
     out.println("-----begin generateInnerLoop------");
 
-    // assert false : " * TODO; go over this the bug is here most\n";
+    assert false : " * TODO; the sequence is thus \n";
 
-    loadIndexVariable(methodVisitor);
-    loadResultingProductVariable(methodVisitor);
-    loadFactorFunction(methodVisitor);
-    loadIndexVariable(methodVisitor);
-    loadBits(methodVisitor);
-    loadVariableThatHoldsTheEvaluatedFactor(methodVisitor);
-    invokeMethod(methodVisitor, Function.class, evaluate, factorEvaluateMethodSignature, true);
-    checkClassCast(methodVisitor, Real.class);
-    multiplyResultingProductVariableByFactor(methodVisitor);
-    incrementIndex(methodVisitor);
     out.println("-----end generateInnerLoop------");
   }
 
@@ -382,7 +372,7 @@ public class Product<D, R, F extends Function<D, R>> extends
                                           String fieldName,
                                           String fieldTypeSignature)
   {
-    assert  thisClassInternalName != null : "thisClassInternalName is null";
+    assert thisClassInternalName != null : "thisClassInternalName is null";
     loadThis(methodVisitor).visitFieldInsn(GETFIELD, thisClassInternalName, fieldName, fieldTypeSignature);
     System.out.format("GET %s field of type %s\n", fieldName, fieldTypeSignature, thisClassInternalName);
     return methodVisitor;

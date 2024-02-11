@@ -32,6 +32,7 @@ module arb4j
   requires transitive org.objectweb.asm.util;
 
   exports arb;
+  exports arb.sequences;
   exports arb.logic;
   exports arb.documentation;
   exports arb.documentation.references;
