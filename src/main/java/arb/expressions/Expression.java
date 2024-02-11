@@ -413,6 +413,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor declareLocalVariables(MethodVisitor methodVisitor, Label startLabel, Label endLabel)
   {
+    methodVisitor.visitLocalVariable("this", "L" + className + ";", null, startLabel, endLabel, 0);
     methodVisitor.visitLocalVariable("in", domainType.descriptorString(), null, startLabel, endLabel, 1);
     methodVisitor.visitLocalVariable("order", "I", null, startLabel, endLabel, 2);
     methodVisitor.visitLocalVariable("bits", "I", null, startLabel, endLabel, 3);
@@ -440,7 +441,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public static boolean analyze       = Boolean.valueOf(System.getProperty("expressionCompiler.analyze", "false"));
 
   public static boolean computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
-                                                                           "false"));
+                                                                           "true"));
 
   public PrintWriter printWriter;;
 
