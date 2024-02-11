@@ -5,7 +5,7 @@ import arb.documentation.TheArb4jLibrary;
 import arb.functions.IntegerSequence;
 
 /**
- * by the swinging factorial of n we understand the ratio of n! to bn/2c!2 and
+ * by the swinging factorial of n we understand the ratio of n! to floor(n/2)*c!^2 and
  * denote it by no = n! bn/2c!2 (n > 0) . (1.1) bxc is the floor-function giving
  * the largest integer not greater than x. The first few values of no are
  * displayed in table 1. We write (n k ) = n!/(k!(n − k)!) for the binomial
