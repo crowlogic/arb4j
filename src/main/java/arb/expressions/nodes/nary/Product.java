@@ -143,6 +143,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     if (isResult)
     {
       Compiler.loadResultParameter(mv);
+      Compiler.checkClassCast(mv, expression.rangeType);
       loadResultingProductVariable(mv);
       invokeSetMethod(mv, expression.rangeType, expression.rangeType);
 
@@ -237,14 +238,10 @@ public class Product<D, R, F extends Function<D, R>> extends
     invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", factorEvaluateMethodSignature, true);
     Compiler.checkClassCast(mv, expression.rangeType);
     loadBitsParameter(mv);
-
     invokeMethod(mv,
                  expression.rangeType,
                  "mul",
-                 Utensils.getMethodDescriptor(expression.rangeType,
-                                              expression.rangeType,
-                                              int.class,
-                                              expression.rangeType),
+                 Utensils.getMethodDescriptor(expression.rangeType, expression.rangeType, int.class),
                  false);
     mv.visitInsn(Opcodes.POP);
 

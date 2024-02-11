@@ -410,6 +410,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     variablesDeclared = true;
   }
 
+
+
   public static boolean computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
                                                                            "true"));
 
@@ -419,6 +421,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     assert instructions != null : "the instructions field is null indicating that the expression has not been compiled";
 
+  
     return compiledClass = loadFunctionClass(className, instructions, context);
   }
 
