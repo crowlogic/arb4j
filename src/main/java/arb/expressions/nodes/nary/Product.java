@@ -4,7 +4,17 @@ import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.invokeSetMethod;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ARETURN;
+import static org.objectweb.asm.Opcodes.ASM9;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.POP;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -235,7 +245,12 @@ public class Product<D, R, F extends Function<D, R>> extends
      * POP
      * </pre>
      */
-    initializeResultToItsIdentity(methodVisitor);
+    out.println("-----begin initializeResultToItsIdentity------");
+
+    loadResultingProductVariable(methodVisitor);
+    invokeMethod(methodVisitor, Real.class, "one", Utensils.getMethodDescriptor(Real.class), false);
+    pop(methodVisitor);
+    out.println("-----end initializeResultToItsIdentity------");
 
     setIndexToTheStartIndex(methodVisitor);
 
@@ -286,28 +301,6 @@ public class Product<D, R, F extends Function<D, R>> extends
     invokeMethod(methodVisitor, "arb/Integer", "increment", "()Larb/Integer;");
     pop(methodVisitor);
     out.println("-----end incrementIndex------");
-  }
-
-  /**
-   * Emits
-   * 
-   * <pre>
-   * ALOAD 2 via this{@link #loadResultingProductVariable(MethodVisitor)}
-   * INVOKE "one" via this{@link #invokeMethod(MethodVisitor, String, String, String)}
-   * POP
-   * </pre>
-   * 
-   * @param methodVisitor
-   */
-  void initializeResultToItsIdentity(MethodVisitor methodVisitor)
-  {
-    out.println("-----begin initializeResultToItsIdentity------");
-
-    loadResultingProductVariable(methodVisitor);
-    invokeMethod(methodVisitor, Real.class, "one", Utensils.getMethodDescriptor(Real.class), false);
-    pop(methodVisitor);
-    out.println("-----end initializeResultToItsIdentity------");
-
   }
 
   MethodVisitor jumpToIfLessThanOrEquals(MethodVisitor methodVisitor, Label label)
