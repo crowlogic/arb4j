@@ -3,7 +3,6 @@ package arb.expressions;
 import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
-import static arb.utensils.Utensils.classTypes;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 import static org.objectweb.asm.Opcodes.*;
@@ -18,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -35,11 +33,6 @@ import arb.OrderedPair;
 import arb.RealPolynomial;
 import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
-import arb.expressions.executionflow.Analyzer;
-import arb.expressions.executionflow.SimpleVerifier;
-import arb.expressions.executionflow.nodes.BasicValue;
-import arb.expressions.executionflow.nodes.ClassNode;
-import arb.expressions.executionflow.nodes.MethodNode;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -57,6 +50,10 @@ import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
+ * An {@link Expression} is a finite combination of symbols, here in this case
+ * consisting of the {@link Character}s constituting {@link String}s which are
+ * well-formed according to rules that depend on the context.
+ * 
  * <p>
  * The <code>Expression</code> class in the <code>arb.expressions</code> package
  * is a versatile and dynamic expression {@link Compiler} which produces
@@ -94,31 +91,6 @@ import arb.utensils.Utensils;
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
-  public void analyze()
-  {
-    ClassNode   classNode   = new ClassNode();
-
-    ClassReader classReader = new ClassReader(instructions);
-
-    classReader.accept(classNode, 0);
-
-    SimpleVerifier       verifier       = new SimpleVerifier(Type.getObjectType(classNode.name),
-                                                             Type.getType(Object.class),
-                                                             classTypes(new Class[]
-                                                             { functionClass }),
-                                                             (classNode.access & Opcodes.ACC_INTERFACE) != 0);
-
-    Analyzer<BasicValue> analyzer       = new Analyzer<BasicValue>(verifier);
-
-    MethodNode           evaluateMethod = classNode.methods.stream()
-                                                           .filter(method -> method.name.equals("evaluate"))
-                                                           .findFirst()
-                                                           .get();
-
-    analyzer.analyze(classNode.name, evaluateMethod);
-
-    Analyzer.printResult(evaluateMethod, analyzer, new PrintWriter(System.out));
-  }
 
   public static final String  evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
@@ -143,11 +115,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     Expression<D, R, F> compiledExpression = express(expression,
-                                                   context,
-                                                   domainClass,
-                                                   rangeClass,
-                                                   functionClass,
-                                                   functionName);
+                                                     context,
+                                                     domainClass,
+                                                     rangeClass,
+                                                     functionClass,
+                                                     functionName);
     F                   func               = compiledExpression.instantiate();
     if (mapping != null)
     {
@@ -438,21 +410,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     variablesDeclared = true;
   }
 
-  public static boolean analyze       = Boolean.valueOf(System.getProperty("expressionCompiler.analyze", "false"));
-
   public static boolean computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
                                                                            "true"));
 
-  public PrintWriter printWriter;;
+  public PrintWriter    printWriter;;
 
   public Class<F> load()
   {
     assert instructions != null : "the instructions field is null indicating that the expression has not been compiled";
-
-    if (analyze)
-    {
-      analyze();
-    }
 
     return compiledClass = loadFunctionClass(className, instructions, context);
   }
@@ -691,8 +656,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     ClassVisitor classVisitor = constructClassVisitor();
 
-    printWriter = new PrintWriter(System.out,
-                                                false);
+    printWriter  = new PrintWriter(System.out,
+                                   false);
 
     classVisitor = new TraceClassVisitor(classVisitor,
                                          new Textifier(),
@@ -733,7 +698,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       classVisitor = ((TraceClassVisitor) classVisitor).getDelegate();
     }
-    
+
     instructions = ((ClassWriter) classVisitor).toByteArray();
 
     if (saveClasses)
@@ -771,7 +736,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     methodVisitor.visitInsn(Opcodes.RETURN);
-    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitMaxs(10, 10);
     methodVisitor.visitEnd();
 
     return classVisitor;
@@ -885,7 +850,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     methodVisitor.visitInsn(RETURN);
-    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitMaxs(10, 10);
     methodVisitor.visitEnd();
     return classVisitor;
   }
@@ -912,7 +877,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     generateIntermediateVariableInitializers(mv);
 
     mv.visitInsn(RETURN);
-    mv.visitMaxs(0, 0);
+    mv.visitMaxs(10, 10);
     mv.visitEnd();
     return classVisitor;
   }
@@ -955,7 +920,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       addChecksForNullVariableReferences(methodVisitor, false, false);
     }
 
-    rootNode.generate(classVisitor, methodVisitor, rangeType);
+    rootNode.generate(methodVisitor, rangeType);
 
     methodVisitor.visitInsn(Opcodes.ARETURN);
 
@@ -963,7 +928,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareLocalVariables(methodVisitor, startLabel, endLabel);
 
-    methodVisitor.visitMaxs(0, 0);
+    methodVisitor.visitMaxs(10, 10);
 
     methodVisitor.visitEnd();
 
@@ -984,7 +949,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       generateContextInitializationCode(methodVisitor);
 
       methodVisitor.visitInsn(Opcodes.RETURN);
-      methodVisitor.visitMaxs(0, 0);
+      methodVisitor.visitMaxs(10, 10);
     }
     finally
     {

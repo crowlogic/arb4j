@@ -108,8 +108,12 @@
   permitted by the correspondence principle in the course of quantization. We
   shall see that according to this principle for any smooth non-vanishing
   function <math|\<psi\>> on <math|M> the operator given by expression
-  (<reference|rec>) is a quantization of the Hamiltonian
-  <math|<frac|1|2>*<around|(|<around|\<langle\>|p,p|\<rangle\>>+<around|\<langle\>|v<around|(|x|)>,v<around|(|x|)>|\<rangle\>>|)>>.
+  (<reference|rec>) is a quantization of the Hamiltonian\ 
+
+  <\equation>
+    <frac|<around|\<langle\>|p,p|\<rangle\>>+<around|\<langle\>|v<around|(|x|)>,v<around|(|x|)>|\<rangle\>>|2>*
+  </equation>
+
   But, of course, the properties of the quantized Hamiltonian depend on the
   choice of <math|\<psi\>>. In practice the choice of <math|\<psi\>> should
   be dictated by experimental data and by purely mathematical restrictions.
@@ -137,7 +141,7 @@
   and then the corresponding operator (<reference|rec>) becomes
 
   <\equation>
-    -<frac|1|2>*e<rsup|<frac|1|2>*x<rsup|2>>*<frac|d|d*x>*e<rsup|-<frac|1|2>*x<rsup|2>>*<frac|d|d*x>:L<rsup|2>*<around|(|\<bbb-R\>,e<rsup|-<frac|x<rsup|2>|2>>*d*x|)>\<rightarrow\>L<rsup|2>*<around|(|\<bbb-R\>,e<rsup|-<frac|x<rsup|2>|2>>*d*x|)>
+    -<frac|e<rsup|<frac|1|2>*x<rsup|2>>|2>**<frac|d|d*x>*e<rsup|-<frac|x<rsup|2>|2>*>*<frac|d|d*x>:L<rsup|2>*<around|(|\<bbb-R\>,e<rsup|-<frac|x<rsup|2>|2>>*d*x|)>\<rightarrow\>L<rsup|2>*<around|(|\<bbb-R\>,e<rsup|-<frac|x<rsup|2>|2>>*d*x|)>
   </equation>
 
   which is the Hermite differential operator which gives rise to a
@@ -188,7 +192,7 @@
   that
 
   <\equation>
-    \<psi\>*e<rsup|-2*\<phi\>>=exp <around|(|-<frac|<around|\<langle\>|G,G|\<rangle\>>|2*c<rsup|2>>*-2*C*S<around|(|A|)>-<frac|<around|(|c<rsup|2>+m|)>*<around|\<langle\>|A,A|\<rangle\>>|2>*|)>
+    \<psi\>*e<rsup|-2*\<phi\>>=e<rsup|-<frac|<around|\<langle\>|G,G|\<rangle\>>|2*c<rsup|2>>*-2*C*S<around|(|A|)>-<frac|<around|(|c<rsup|2>+m|)>*<around|\<langle\>|A,A|\<rangle\>>|2>>
   </equation>
 
   is the exponent of a negatively defined quadratic expression in <math|A>.
@@ -259,7 +263,7 @@
   <math|Y*M> evaluated at <math|<A>> is defined by the formula
 
   <\equation>
-    <label|YM>Y*M=<frac|1|2>*<big|int><rsub|\<bbb-R\><rsub|1,3>><around|(|<F>\<wedge\>,\<star\><F>|)>,
+    <label|YM>Y*M=<frac|1|2>*<big|int><rsub|\<bbb-R\><rsub|1,3>><around|(|<F>\<wedge\>,\<star\><F>|)>
   </equation>
 
   where <math|\<star\>> stands for the Hodge star operation associated to the
@@ -269,7 +273,7 @@
   equal to <math|\<star\><around|(|<F>\<wedge\>,\<star\><F>|)>>,
 
   <\equation>
-    <label|L>\<cal-L\>=<frac|1|2>*\<star\><around|(|<F>\<wedge\>,\<star\><F>|)>.
+    <label|L>\<cal-L\>=<frac|1|2>*\<star\><around|(|<F>\<wedge\>,\<star\><F>|\<nobracket\>>
   </equation>
 
   Next, following <cite|FS>, we pass from Lagrangian to Hamiltonian
@@ -277,7 +281,7 @@
   modified Lagrangian density <math|\<cal-L\><rprime|'>>,
 
   <\equation>
-    <label|L'>\<cal-L\><rprime|'>=\<star\><around|(|<around|(|d<A>+<frac|1|2>*<around|[|<A>\<wedge\><A>|]>-<frac|1|2><F>|)>\<wedge\>,\<star\><F>|)>,
+    <label|L'>\<cal-L\><rprime|'>=\<star\><around|(|<around|(|d<A>+<frac|1|2>*<around|[|<A>\<wedge\><A>|]>-<frac|1|2><F>|)>\<wedge\>,\<star\><F>|)>
   </equation>
 
   where <math|<A>> and <math|<F>> should be regarded as independent
@@ -287,13 +291,13 @@
   (<reference|L'>) is just the definition of the curvature,
 
   <\equation>
-    <label|nondyn><F>=d<A>+<frac|1|2>*<around|[|<A>\<wedge\><A>|]>,
+    <label|nondyn><F>=d<A>+<frac|1|2>*<around|[|<A>\<wedge\><A>|\<nobracket\>>
   </equation>
 
   and the other equation,
 
   <\equation*>
-    d*\<star\><F>+<around|[|<A>\<wedge\>\<star\><F>|]>=0,
+    d*\<star\><F>+<around|[|<A>\<wedge\>\<star\><F>|]>=0
   </equation*>
 
   becomes the usual Yang\UMills equation after expressing <math|<F>> in terms
@@ -306,7 +310,7 @@
   We define a scalar product on this space, whenever it is finite, by
 
   <\equation>
-    <label|prod><around|\<langle\>|\<omega\><rsub|1>,\<omega\><rsub|2>|\<rangle\>>=-<big|int><rsub|\<bbb-R\><rsup|3>><around|(|\<omega\><rsub|1>\<wedge\>,\<ast\>\<omega\><rsub|2>|)>=-<big|int><rsub|\<bbb-R\><rsup|3>>\<ast\><around|(|\<omega\><rsub|1>\<wedge\>,\<ast\>\<omega\><rsub|2>|)>*d<rsup|3>*x,<nbsp>\<omega\><rsub|1,2>\<in\>\<Omega\><rsup|\<ast\>><around|(|\<bbb-R\><rsup|3>,<k>|)>
+    <label|prod><tabular|<tformat|<table|<row|<cell|<around|\<langle\>|\<omega\><rsub|1>,\<omega\><rsub|2>|\<rangle\>>>|<cell|=-<big|int><rsub|\<bbb-R\><rsup|3>><around|(|\<omega\><rsub|1>\<wedge\>,\<ast\>\<omega\><rsub|2>|)>>>|<row|<cell|>|<cell|=-<big|int><rsub|\<bbb-R\><rsup|3>>\<ast\><around|(|\<omega\><rsub|1>\<wedge\>,\<ast\>\<omega\><rsub|2>|)>*d<rsup|3>*x,<nbsp>\<omega\><rsub|1,2>\<in\>\<Omega\><rsup|\<ast\>><around|(|\<bbb-R\><rsup|3>,<k>|)>>>>>>
   </equation>
 
   where <math|\<ast\>> stands for the Hodge star operation associated to the
@@ -322,21 +326,34 @@
   <math|<around|(|x<rsub|1>,x<rsub|2>,x<rsub|3>|)>> are orthogonal Cartesian
   coordinates on <math|\<bbb-R\><rsup|3>\<subset\>\<bbb-R\><rsub|1,3>>. We
   denote by <math|A> the \Pthree-dimensional Euclidean part\Q of <math|<A>>,
-  <math|A=<big|sum><rsub|k=1><rsup|3>A<rsub|k>*d*x<rsub|k>>, where
-  <math|A<rsub|k>=<A><rsub|k>> for <math|k=1,2,3>. We also introduce the
-  \Pelectric\Q field <math|E> and the \Pmagnetic\Q field <math|G> associated
-  to <math|<F>> as follows:
 
-  <\equation*>
-    <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|E=<big|sum><rsub|k=1><rsup|3>E<rsub|k>*d*x<rsub|k>,<nbsp>E<rsub|k>=<F><rsub|0*k>,>>|<row|<cell|>>|<row|<cell|G=\<ast\>F,<nbsp>F=d*A+<frac|1|2>*<around|[|A\<wedge\>A|]>,>>>>>
-  </equation*>
+  <\equation>
+    A=<big|sum><rsub|k=1><rsup|3>A<rsub|k>*d*x<rsub|k>
+  </equation>
+
+  where <math|A<rsub|k>=<A><rsub|k>> for <math|k=1,2,3>. We also introduce
+  the \Pelectric\Q field <math|E> and the \Pmagnetic\Q field <math|G>
+  associated to <math|<F>> as follows:
+
+  <\equation>
+    <tabular*|<tformat|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<cwith|1|-1|2|2|cell-halign|l>|<cwith|1|-1|1|1|cell-halign|r>|<table|<row|<cell|E>|<cell|=<big|sum><rsub|k=1><rsup|3>E<rsub|k>*d*x<rsub|k>>>|<row|<cell|E<rsub|k>>|<cell|=<F><rsub|0*k>>>|<row|<cell|F>|<cell|=d*A+<frac|1|2>*<around|[|A\<wedge\>A|]>>>|<row|<cell|G>|<cell|=\<ast\>F>>>>>
+  </equation>
 
   i.e. <math|F> is the \Pthree-dimensional\Q spatial part of <math|<F>>.
 
   We recall that the covariant derivative
-  <math|d<rsub|A>:\<Omega\><rsup|n><around|(|\<bbb-R\><rsup|3>,<k>|)>\<rightarrow\>\<Omega\><rsup|n+1><around|(|\<bbb-R\><rsup|3>,<k>|)>>
-  associated to <math|A> is defined by <math|d<rsub|A>*\<omega\>=d*\<omega\>+<around|[|A\<wedge\>\<omega\>|]>>,
-  and the operator formally adjoint to <math|d<rsub|A>> with respect to
+
+  <\equation>
+    d<rsub|A>:\<Omega\><rsup|n><around|(|\<bbb-R\><rsup|3>,<k>|)>\<rightarrow\>\<Omega\><rsup|n+1><around|(|\<bbb-R\><rsup|3>,<k>|)>
+  </equation>
+
+  \ associated to <math|A> is defined by
+
+  <\equation>
+    d<rsub|A>*\<omega\>=d*\<omega\>+<around|[|A\<wedge\>\<omega\>|]>
+  </equation>
+
+  , and the operator formally adjoint to <math|d<rsub|A>> with respect to
   scalar product (<reference|prod>) is equal to
   <math|-\<ast\>d<rsub|A>\<ast\>>. We denote by
   <with|font-family|rm|div><rsub|<math|A>> the part of this operator acting
@@ -345,14 +362,14 @@
   opposite sign,
 
   <\equation*>
-    <math-up|div><rsub|A>=\<ast\>d<rsub|A>\<ast\>:\<Omega\><rsup|1><around|(|\<bbb-R\><rsup|3>,<k>|)>\<rightarrow\>\<Omega\><rsup|0><around|(|\<bbb-R\><rsup|3>,<k>|)>.
+    <math-up|div><rsub|A>=\<ast\>d<rsub|A>\<ast\>:\<Omega\><rsup|1><around|(|\<bbb-R\><rsup|3>,<k>|)>\<rightarrow\>\<Omega\><rsup|0><around|(|\<bbb-R\><rsup|3>,<k>|)>
   </equation*>
 
   Using this notation the Lagrangian density (<reference|L'>) can be
   rewritten, up to a divergence, in the following form
 
   <\equation>
-    <around*|\<nobracket\>|<label|L''>\<cal-L\><rprime|'>=-<around*|(|\<ast\><around|(|E\<wedge\>,\<ast\>\<partial\><rsub|t>*A|)>-<frac|1|2>|(>\<ast\><around|(|E\<wedge\>,\<ast\>E|)>+\<ast\><around|(|G\<wedge\>,\<ast\>G|)>)+<around|(|<A><rsub|0>,<math-up|div><rsub|A>E|)>|)>.
+    <around*|\<nobracket\>|<label|L''>\<cal-L\><rprime|'>=-<around*|(|\<ast\><around|(|E\<wedge\>,\<ast\>\<partial\><rsub|t>*A|)>-<frac|\<ast\><around|(|E\<wedge\>,\<ast\>E|)>+\<ast\><around|(|G\<wedge\>,\<ast\>G|)>+<around|(|<A><rsub|0>,<math-up|div><rsub|A>E|)>|2>|\<nobracket\>>|)>
   </equation>
 
   It is easier to confirm this formula by an explicit calculation in terms of
@@ -388,7 +405,7 @@
   Recalling the definitions of <math|F> and <math|E> we arrive at
 
   <\equation>
-    \<cal-L\><rprime|'>=<big|sum><rsub|k=1><rsup|3><around*|(|-<around|(|\<partial\><rsub|t>*A<rsub|k>,E<rsub|k>|)>+\<partial\><rsub|k><around|(|<A><rsub|0>,E<rsub|k>|)>-<around|(|<A><rsub|0>,\<partial\><rsub|k>*E<rsub|k>+<around|[|A<rsub|k>,E<rsub|k>|]>|)>+<frac|1|2>*<around|(|E<rsub|k>,E<rsub|k>|)>|)>+<big|sum><rsub|i\<less\>j><frac|1|2>*<around|(|<F><rsub|i*j>,<F><rsup|i*j>|)>
+    <with|font-base-size|8|\<cal-L\><rprime|'>=<big|sum><rsub|k=1><rsup|3><around*|(|-<around|(|\<partial\><rsub|t>*A<rsub|k>,E<rsub|k>|)>+\<partial\><rsub|k><around|(|<A><rsub|0>,E<rsub|k>|)>-<around|(|<A><rsub|0>,\<partial\><rsub|k>*E<rsub|k>+<around|[|A<rsub|k>,E<rsub|k>|]>|)>+<frac|1|2>*<around|(|E<rsub|k>,E<rsub|k>|)>|)>+<big|sum><rsub|i\<less\>j><frac|1|2>*<around|(|<F><rsub|i*j>,<F><rsup|i*j>|)>>
   </equation>
 
   which is equal to the right hand side of (<reference|L''>) up to the
@@ -397,30 +414,40 @@
   For the corresponding action we have
 
   <\equation>
-    <label|YM''>Y*M<rprime|'>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<around|\<langle\>|E,\<partial\><rsub|t>*A|\<rangle\>>-<frac|1|2>*<around|(|<around|\<langle\>|E,E|\<rangle\>>+<around|\<langle\>|G,G|\<rangle\>>|)>+<around|\<langle\>|<A><rsub|0>,<math-up|div><rsub|A>E|\<rangle\>>|)>*d*t.
+    <label|YM''>Y*M<rprime|'>=<big|int><rsub|-\<infty\>><rsup|\<infty\>><around*|(|<around|\<langle\>|E,\<partial\><rsub|t>*A|\<rangle\>>-<frac|<around|\<langle\>|E,E|\<rangle\>>+<around|\<langle\>|G,G|\<rangle\>>|2>*+<around|\<langle\>|<A><rsub|0>,<math-up|div><rsub|A>E|\<rangle\>>|)>*d*t.
   </equation>
 
-  Denote <math|C=<math-up|div><rsub|A>E>, and introduce an orthonormal basis
-  <math|T<rsub|a>,<nbsp>a=1,\<ldots\>,<math-up|dim><nbsp><k>> in <math|<k>>
-  with respect to the Killing form and the components of <math|A>, <math|E>,
-  <math|<A><rsub|0>> and <math|C> associated to this basis,
-  <math|A<rsub|k>=<big|sum><rsub|a>A<rsub|k><rsup|a>*T<rsub|a>,<nbsp>E<rsub|k>=<big|sum><rsub|a>E<rsub|k><rsup|a>*T<rsub|a>,<nbsp><A><rsub|0>=<A><rsub|0><rsup|a>T<rsub|a>,<nbsp>C=C<rsup|a>*T<rsub|a>>.
+  Denote
+
+  <\equation>
+    C=<math-up|div><rsub|A>E
+  </equation>
+
+  , and introduce an orthonormal basis <math|T<rsub|a>,<nbsp>a=1,\<ldots\>,<math-up|dim><nbsp><k>>
+  in <math|<k>> with respect to the Killing form and the components of
+  <math|A>, <math|E>, <math|<A><rsub|0>> and <math|C> associated to this
+  basis
+
+  <\equation>
+    <tabular|<tformat|<table|<row|<cell|A<rsub|k>>|<cell|=<big|sum><rsub|a>A<rsub|k><rsup|a>*T<rsub|a>,<nbsp>E<rsub|k>>>|<row|<cell|>|<cell|=<big|sum><rsub|a>E<rsub|k><rsup|a>*T<rsub|a>,<nbsp><A><rsub|0>=<A><rsub|0><rsup|a>T<rsub|a>,<nbsp>C=C<rsup|a>*T<rsub|a>>>>>>
+  </equation>
+
   In terms of these components the action (<reference|YM''>) takes the form
 
   <\equation>
-    <label|YM'''>Y*M<rprime|'>=<big|int><rsub|\<bbb-R\><rsub|1,3>><around*|(|<big|sum><rsub|k,a>E<rsub|k><rsup|a>*\<partial\><rsub|t>*A<rsub|k><rsup|a>-h*<around|(|A,E|)>+<big|sum><rsub|a><A><rsub|0><rsup|a>C<rsup|a>|)>*d<rsup|4>*x,
+    <label|YM'''>Y*M<rprime|'>=<big|int><rsub|\<bbb-R\><rsub|1,3>><around*|(|<big|sum><rsub|k,a>E<rsub|k><rsup|a>*\<partial\><rsub|t>*A<rsub|k><rsup|a>-h*<around|(|A,E|)>+<big|sum><rsub|a><A><rsub|0><rsup|a>C<rsup|a>|)>*d<rsup|4>*x
   </equation>
 
   where
 
   <\equation>
-    h*<around|(|A,E|)>=-<frac|1|2>(\<ast\><around|(|E\<wedge\>,\<ast\>E|)>+\<ast\><around|(|G\<wedge\>,\<ast\>G|)>)
+    h*<around|(|A,E|)>=-<frac|\<ast\><around|(|E\<wedge\>,\<ast\>E|)>+\<ast\><around|(|G\<wedge\>,\<ast\>G|)>|2>
   </equation>
 
   is the Hamiltonian density. Denote
 
   <\equation>
-    <label|hamilt>H*<around|(|A,E|)>=<frac|1|2>*<around|(|<around|\<langle\>|E,E|\<rangle\>>+<around|\<langle\>|G,G|\<rangle\>>|)>.
+    <label|hamilt>H*<around|(|A,E|)>=<frac|*<around|(|<around|\<langle\>|E,E|\<rangle\>>+<around|\<langle\>|G,G|\<rangle\>>|)>|2>
   </equation>
 
   From formula (<reference|YM'''>) it is clear that <math|A<rsub|k><rsup|a>>
@@ -520,8 +547,15 @@
     \<Omega\><around|(|A,E|)><around|(|<around|(|X,Y|)>,<around|(|X<rprime|'>,Y<rprime|'>|)>|)>=<around|\<langle\>|Y<rprime|'>,X|\<rangle\>>-<around|\<langle\>|Y,X<rprime|'>|\<rangle\>>
   </equation>
 
-  where <math|<around|(|A,E|)>\<in\>T*\<cal-D\>\<simeq\>\<cal-D\>\<times\>\<cal-D\>>,
-  <math|<around|(|X,Y|)>,<around|(|X<rprime|'>,Y<rprime|'>|)>\<in\>T<rsub|<around|(|A,E|)>>*T*\<cal-D\>\<simeq\>\<cal-D\>\<times\>\<cal-D\>>.
+  where\ 
+
+  <\equation>
+    <around|(|A,E|)>\<in\>T*\<cal-D\>\<simeq\>\<cal-D\>\<times\>\<cal-D\>
+  </equation>
+
+  <\equation>
+    <around|(|X,Y|)>,<around|(|X<rprime|'>,Y<rprime|'>|)>\<in\>T<rsub|<around|(|A,E|)>>*T*\<cal-D\>\<simeq\>\<cal-D\>\<times\>\<cal-D\>
+  </equation>
 
   The symplectic structure on the space <math|T*\<cal-D\>> can be identified
   with that which corresponds to Poisson structure (<reference|pois>).
@@ -542,12 +576,20 @@
   <math|\<cal-D\>> by
 
   <\equation>
-    <label|Gaugeact><tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|\<cal-K\>\<times\>\<cal-D\>\<rightarrow\>\<cal-D\>,>>|<row|<cell|>>|<row|<cell|g\<times\>A\<mapsto\>g\<circ\>A=-d*g*g<rsup|-1>+g*A*g<rsup|-1>,>>>>>
+    <label|Gaugeact><tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|\<cal-K\>\<times\>\<cal-D\>\<rightarrow\>\<cal-D\>>>|<row|<cell|g\<times\>A\<mapsto\>g\<circ\>A=-d*g*g<rsup|-1>+g*A*g<rsup|-1>>>>>>
   </equation>
 
-  where we denote <math|d*g*g<rsup|-1>=g<rsup|\<ast\>>*\<theta\><rsub|R>>,
-  <math|g*A*g<rsup|-1>=<math-up|Ad>g<around|(|A|)>>, and
-  <math|\<theta\><rsub|R>> is the right-invariant Maurer\UCartan form on
+  where we denote
+
+  <\equation>
+    d*g*g<rsup|-1>=g<rsup|\<ast\>>*\<theta\><rsub|R>
+  </equation>
+
+  <\equation>
+    g*A*g<rsup|-1>=<math-up|Ad>g<around|(|A|)>
+  </equation>
+
+  and <math|\<theta\><rsub|R>> is the right-invariant Maurer\UCartan form on
   <math|K>. This action is free, so that the quotient
   <math|\<cal-D\>/\<cal-K\>> is a smooth manifold.
 
@@ -555,7 +597,7 @@
   connections <math|\<cal-D\>> induces an action
 
   <\equation>
-    <label|Gaugeactph><tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|\<cal-K\>\<times\>T*\<cal-D\>\<rightarrow\>T*\<cal-D\>,>>|<row|<cell|>>|<row|<cell|g\<times\><around|(|A,E|)>\<mapsto\><around|(|g*E*g<rsup|-1>,-d*g*g<rsup|-1>+g*A*g<rsup|-1>|)>,>>>>>
+    <label|Gaugeactph><tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|\<cal-K\>\<times\>T*\<cal-D\>\<rightarrow\>T*\<cal-D\>>>|<row|<cell|g\<times\><around|(|A,E|)>\<mapsto\><around|(|g*E*g<rsup|-1>,-d*g*g<rsup|-1>+g*A*g<rsup|-1>|)>>>>>>
   </equation>
 
   where as before we write <math|g*E*g<rsup|-1>=<math-up|Ad>g<around|(|E|)>>.
@@ -567,24 +609,28 @@
   given by
 
   <\equation>
-    <label|gaugeactph>V<rsub|X><around|(|A,E|)>=<around|(|<around|[|X,E|]>,-d*X+<around|[|X,A|]>|)>,<nbsp><around|(|A,E|)>\<in\>T*\<cal-D\>\<simeq\>\<cal-D\>\<times\>\<cal-D\>.
+    <label|gaugeactph>V<rsub|X><around|(|A,E|)>=<around|(|<around|[|X,E|]>,-d*X+<around|[|X,A|]>|)>,<nbsp><around|(|A,E|)>\<in\>T*\<cal-D\>\<simeq\>\<cal-D\>\<times\>\<cal-D\>
   </equation>
 
   Here we, of course, identify <math|T<rsub|<around|(|A,E|)>>*T*\<cal-D\>\<simeq\>T*\<cal-D\>\<simeq\>\<cal-D\>\<times\>\<cal-D\>>.
 
   The action (<reference|gaugeactph>) is generated by the constraint
   <with|font-family|rm|div><math|<rsub|A><nbsp>E> in the sense that for
-  <math|X\<in\>\<Omega\><rsup|0><rsub|c><around|(|\<bbb-R\><rsup|3>,<k>|)>,<nbsp><around|(|A,E|)>\<in\>T*\<cal-D\>>
-  we have
 
   <\equation>
-    <around|{|<around|\<langle\>|<math-up|div><rsub|A><nbsp>E,X|\<rangle\>>,A<around|(|x|)>|}>=-d*X<around|(|x|)>+<around|[|X<around|(|x|)>,A<around|(|x|)>|]>,
+    X\<in\>\<Omega\><rsup|0><rsub|c><around|(|\<bbb-R\><rsup|3>,<k>|)>,<nbsp><around|(|A,E|)>\<in\>T*\<cal-D\>
+  </equation>
+
+  \ we have
+
+  <\equation>
+    <around|{|<around|\<langle\>|<math-up|div><rsub|A><nbsp>E,X|\<rangle\>>,A<around|(|x|)>|}>=-d*X<around|(|x|)>+<around|[|X<around|(|x|)>,A<around|(|x|)>|]>
   </equation>
 
   and
 
   <\equation*>
-    <around|{|<around|\<langle\>|<math-up|div><rsub|A><nbsp>E,X|\<rangle\>>,E<around|(|x|)>|}>=<around|[|X<around|(|x|)>,E<around|(|x|)>|]>.
+    <around|{|<around|\<langle\>|<math-up|div><rsub|A><nbsp>E,X|\<rangle\>>,E<around|(|x|)>|}>=<around|[|X<around|(|x|)>,E<around|(|x|)>|]>
   </equation*>
 
   Using the language of Poisson geometry and taking into account formula
@@ -593,7 +639,7 @@
   is a Hamiltonian group action, and the map
 
   <\equation>
-    <label|YMmoment><tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|\<mu\>:T*\<cal-D\>\<rightarrow\>\<Omega\><rsup|0><rsub|c><around|(|\<bbb-R\><rsup|3>,<k>|)>,>>|<row|<cell|>>|<row|<cell|\<mu\><around|(|A,E|)>=<math-up|div><rsub|A>
+    <label|YMmoment><tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|\<mu\>:T*\<cal-D\>\<rightarrow\>\<Omega\><rsup|0><rsub|c><around|(|\<bbb-R\><rsup|3>,<k>|)>>>|<row|<cell|\<mu\><around|(|A,E|)>=<math-up|div><rsub|A>
     E>>>>>
   </equation>
 
@@ -619,7 +665,7 @@
     manifold equipped with the metric
 
     <\equation>
-      <label|r1><around|\<langle\>|E,E<rprime|'>|\<rangle\>>=-<big|int><rsub|\<bbb-R\><rsup|3>><around|(|E\<wedge\>,\<ast\>E<rprime|'>|)>,<nbsp>E,E<rprime|'>\<in\>T<rsub|A>*\<cal-D\>.
+      <label|r1><around|\<langle\>|E,E<rprime|'>|\<rangle\>>=-<big|int><rsub|\<bbb-R\><rsup|3>><around|(|E\<wedge\>,\<ast\>E<rprime|'>|)>,<nbsp>E,E<rprime|'>\<in\>T<rsub|A>*\<cal-D\>
     </equation>
 
     This metric induces a natural imbedding
@@ -634,7 +680,7 @@
     with the moment map
 
     <\equation>
-      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|\<mu\>:T*\<cal-D\>\<rightarrow\>\<Omega\><rsup|0><rsub|c><around|(|\<bbb-R\><rsup|3>,<k>|)>,>>|<row|<cell|>>|<row|<cell|\<mu\><around|(|A,E|)>=<math-up|div><rsub|A><nbsp>E,<nbsp><around|(|A,E|)>\<in\>T*\<cal-D\>\<simeq\>\<cal-D\>\<times\>\<cal-D\>.>>>>>
+      <tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|l>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|\<mu\>:T*\<cal-D\>\<rightarrow\>\<Omega\><rsup|0><rsub|c><around|(|\<bbb-R\><rsup|3>,<k>|)>>>|<row|<cell|\<mu\><around|(|A,E|)>=<math-up|div><rsub|A><nbsp>E,<nbsp><around|(|A,E|)>\<in\>T*\<cal-D\>\<simeq\>\<cal-D\>\<times\>\<cal-D\>>>>>>
     </equation>
 
     (iii) The action of the gauge group <math|\<cal-K\>> on the spaces
@@ -669,7 +715,12 @@
   The potential <math|U<around|(|A|)>> is, in turn, equal to a half of the
   square of the vector field <math|G\<in\>\<Gamma\>*<around|(|T*\<cal-D\>|)>>.
   By definition the vector field <math|G> is invariant with respect to the
-  gauge action of <math|\<cal-K\>>, <math|G*<around|(|g\<circ\>A|)>=g*G<around|(|A|)>*g<rsup|-1>>.
+  gauge action of <math|\<cal-K\>> which is
+
+  <\equation>
+    G*<around|(|g\<circ\>A|)>=g*G<around|(|A|)>*g<rsup|-1>
+  </equation>
+
   The value of this field at each point <math|A\<in\>\<cal-D\>> belongs to
   the kernel of the operator <with|font-family|rm|div><rsub|<math|A>>.
   Indeed, from the Bianchi identity <math|d<rsub|A>*F=0>, the definition of
@@ -677,7 +728,11 @@
   it follows that
 
   <\equation>
-    <math-up|div><rsub|A><nbsp>G=-\<ast\>d<rsub|A>\<ast\>\<ast\>F=-\<ast\>d<rsub|A><nbsp>F=0.
+    <math-up|div><rsub|A><nbsp>G=-\<ast\>d<rsub|A>\<ast\>
+  </equation>
+
+  <\equation>
+    \<ast\>F=-\<ast\>d<rsub|A><nbsp>F=0
   </equation>
 
   The vector field <math|G> has one more important property: it is potential
@@ -685,7 +740,7 @@
   that this functional is defined by
 
   <\equation>
-    <label|CS>C*S<around|(|A|)>=<frac|1|2>*<around|\<langle\>|A,\<ast\>d*A|\<rangle\>>+<frac|1|3>*<around|\<langle\>|A,\<ast\><around|[|A\<wedge\>A|]>|\<rangle\>>.
+    <label|CS>C*S<around|(|A|)>=<frac|<around|\<langle\>|A,\<ast\>d*A|\<rangle\>>|2>*+<frac|<around|\<langle\>|A,\<ast\><around|[|A\<wedge\>A|]>|\<rangle\>>|3>
   </equation>
 
   This functional is invariant under the action of the Lie algebra of the
@@ -705,7 +760,7 @@
     manifold <math|T*\<cal-D\>> with the Hamiltonian
 
     <\equation>
-      H*<around|(|A,E|)>=<frac|1|2>*<around|(|<around|\<langle\>|E,E|\<rangle\>>+<around|\<langle\>|G,G|\<rangle\>>|)>
+      H*<around|(|A,E|)>=<frac|*<around|(|<around|\<langle\>|E,E|\<rangle\>>+<around|\<langle\>|G,G|\<rangle\>>|)>|2>
     </equation>
 
     <\equation>
@@ -713,7 +768,7 @@
     </equation>
 
     <\equation>
-      F=d*A+<frac|1|2>*<around|[|A\<wedge\>A|]>
+      F=d*A+<frac|*<around|[|A\<wedge\>A|]>|2>
     </equation>
 
     \ and the constraints
@@ -944,7 +999,7 @@
   <math|\<cal-M\>>. Then we put
 
   <\equation>
-    l<around|(|x,p|)>=<frac|1|2>*<around|(|<around|\<langle\>|p,p|\<rangle\>>+<around|\<langle\>|V<around|(|x|)>,V<around|(|x|)>|\<rangle\>>|)>,<nbsp>p\<in\>T<rsub|x>*\<cal-M\><text|>
+    l<around|(|x,p|)>=<frac|<around|\<langle\>|p,p|\<rangle\>>+<around|\<langle\>|V<around|(|x|)>,V<around|(|x|)>|\<rangle\>>|2>*\<forall\><nbsp>p\<in\>T<rsub|x>*\<cal-M\><text|>
   </equation>
 
   This Hamiltonian is obviously <math|G>-invariant and gives rise to a
@@ -954,7 +1009,7 @@
   (co)vector field on <math|\<cal-M\>/G> we have
 
   <\equation>
-    <label|hamiltred>l<rsub|r*e*d><around|(|\<cal-O\><rsub|x>,p<rsub|\<perp\>>|)>=<frac|1|2>*<around|(|<around|\<langle\>|p<rsub|\<perp\>>,p<rsub|\<perp\>>|\<rangle\>>+<around|\<langle\>|V<around|(|x|)>,V<around|(|x|)>|\<rangle\>>|)>,<nbsp>p<rsub|\<perp\>>\<in\>T<rsub|x>*\<cal-O\><rsub|x><rsup|\<perp\>>\<simeq\>T<rsub|\<cal-O\><rsub|x>><rsup|\<ast\>>*<around|(|\<cal-M\>/G|)>.
+    <label|hamiltred>l<rsub|r*e*d><around|(|\<cal-O\><rsub|x>,p<rsub|\<perp\>>|)>=<frac|<around|\<langle\>|p<rsub|\<perp\>>,p<rsub|\<perp\>>|\<rangle\>>+<around|\<langle\>|V<around|(|x|)>,V<around|(|x|)>|\<rangle\>>|2>*\<forall\><nbsp>p<rsub|\<perp\>>\<in\>T<rsub|x>*\<cal-O\><rsub|x><rsup|\<perp\>>\<simeq\>T<rsub|\<cal-O\><rsub|x>><rsup|\<ast\>>*<around|(|\<cal-M\>/G|)>
   </equation>
 
   Now we can apply the above obtained results in the case of the Yang\UMills
@@ -968,7 +1023,11 @@
   structure induced by the imbedding <math|T*\<cal-D\>\<subset\>T<rsup|\<ast\>>*\<cal-D\>>
   with the help of metric (<reference|r1>). Then the action of
   <math|\<cal-K\>> of <math|T*\<cal-D\>> becomes Hamiltonian, and in the
-  notation of Lemma <reference|l1> <math|m<around|(|x|)>=<math-up|div><rsub|A>>.
+  notation of Lemma <reference|l1>\ 
+
+  <\equation>
+    m<around|(|x|)>=<math-up|div><rsub|A>
+  </equation>
 
   Let <math|\<cal-O\><rsub|A>> be the gauge orbit of a connection
   <math|A\<in\>\<cal-D\>>. By Lemma <reference|l1> the space
@@ -986,7 +1045,7 @@
   rise to the Hamiltonian
 
   <\equation>
-    <label|Hamiltred>H<rsub|r*e*d>*<around|(|\<cal-O\><rsub|A>,E<rsub|\<perp\>>|)>=<frac|1|2>*<around|(|<around|\<langle\>|E<rsub|\<perp\>>,E<rsub|\<perp\>>|\<rangle\>>+<around|\<langle\>|G,G|\<rangle\>>|)>,<nbsp>E<rsub|\<perp\>>\<in\>T<rsub|\<cal-O\><rsub|A>>*<around|(|\<cal-D\>/\<cal-K\>|)>\<simeq\><math-up|Ker<nbsp>div><rsub|A>
+    <label|Hamiltred>H<rsub|r*e*d>*<around|(|\<cal-O\><rsub|A>,E<rsub|\<perp\>>|)>=<frac|<around|\<langle\>|E<rsub|\<perp\>>,E<rsub|\<perp\>>|\<rangle\>>+<around|\<langle\>|G,G|\<rangle\>>|2>*\<forall\><nbsp>E<rsub|\<perp\>>\<in\>T<rsub|\<cal-O\><rsub|A>>*<around|(|\<cal-D\>/\<cal-K\>|)>\<simeq\><math-up|Ker<nbsp>div><rsub|A>
   </equation>
 
   on the reduced phase space <math|\<mu\><rsup|-1><around|(|0|)>/\<cal-K\>\<simeq\>T*\<cal-D\>/\<cal-K\>>.
@@ -1842,7 +1901,7 @@
 
     <bibitem|Sing>Singer, I. M., The geometry of the orbit space for
     non-abelian gauge theories, <with|font-shape|italic|Physica Scripta>,
-    <with|font-series|bold|24> (1981), 817\U820.
+    <with|font-series|bold|24> (1981), 817\U820.#
 
     <bibitem|Sing1>Singer, I. M., Some remarks on the Gribov ambiguity,
     <with|font-shape|italic|Comm. Math. Phys.>, <with|font-series|bold|60>
@@ -1862,29 +1921,29 @@
 
 <\references>
   <\collection>
-    <associate|CS|<tuple|34|11|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|CS|<tuple|48|11|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|FTR|<tuple|10|23|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|GG|<tuple|70|19|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|Gaugeact|<tuple|26|9|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|Gaugeactph|<tuple|27|9|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|Hamiltred|<tuple|50|14|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|L|<tuple|7|4|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|L'|<tuple|8|4|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|L''|<tuple|11|5|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|YM|<tuple|6|4|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|YM''|<tuple|16|6|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|YM'''|<tuple|17|6|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|GG|<tuple|85|19|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|Gaugeact|<tuple|35|9|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|Gaugeactph|<tuple|38|9|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|Hamiltred|<tuple|65|14|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|L|<tuple|8|4|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|L'|<tuple|9|4|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|L''|<tuple|16|5|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|YM|<tuple|7|4|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|YM''|<tuple|21|6|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|YM'''|<tuple|24|6|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|YMH|<tuple|1|4|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|YMPh|<tuple|2|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|YMexp|<tuple|79|21|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|YMexp|<tuple|94|21|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|YMh|<tuple|1.1|4|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|YMhamiltprop|<tuple|34|11|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|YMhamiltprop|<tuple|48|11|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|YMhamquant|<tuple|3.2|17|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|YMmoment|<tuple|30|9|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|YMprop|<tuple|30|10|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|YMmoment|<tuple|42|9|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|YMprop|<tuple|42|10|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|YMred|<tuple|2.1|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|YMsym|<tuple|83|22|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|ansatz|<tuple|63|17|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|YMsym|<tuple|98|22|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|ansatz|<tuple|78|17|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|auto-1|<tuple|?|1|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|auto-10|<tuple|12|24|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|auto-2|<tuple|1|4|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
@@ -1913,36 +1972,36 @@
     <associate|bib-Sing1|<tuple|Sing1|25|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|charf|<tuple|7|19|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|classh|<tuple|1|2|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|commrel|<tuple|84|23|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|cr|<tuple|71|20|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|eigen|<tuple|73|20|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|exp1|<tuple|64|18|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|exp2|<tuple|65|18|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|expr|<tuple|60|16|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|fouriero|<tuple|81|22|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|fouriero1|<tuple|82|22|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|gaugeactph|<tuple|28|9|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|geneigen|<tuple|90|24|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|hamM|<tuple|51|15|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|hamilt|<tuple|19|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|hamiltred|<tuple|49|14|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|haminv|<tuple|22|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|commrel|<tuple|99|23|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|cr|<tuple|86|20|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|eigen|<tuple|88|20|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|exp1|<tuple|79|18|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|exp2|<tuple|80|18|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|expr|<tuple|75|16|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|fouriero|<tuple|96|22|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|fouriero1|<tuple|97|22|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|gaugeactph|<tuple|39|9|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|geneigen|<tuple|105|24|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|hamM|<tuple|66|15|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|hamilt|<tuple|26|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|hamiltred|<tuple|63|14|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|haminv|<tuple|29|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|l1|<tuple|1|12|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|m|<tuple|45|12|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|mom|<tuple|44|12|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|momentbrack|<tuple|21|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|nondyn|<tuple|9|5|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|pois|<tuple|20|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|prod|<tuple|10|5|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|qh1|<tuple|58|16|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|m|<tuple|59|12|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|mom|<tuple|58|12|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|momentbrack|<tuple|28|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|nondyn|<tuple|10|5|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|pois|<tuple|27|7|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|prod|<tuple|11|5|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|qh1|<tuple|73|16|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|quantmod|<tuple|3.1|15|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|r1|<tuple|31|10|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|r1|<tuple|43|10|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|rec|<tuple|2|2|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|redcoord|<tuple|2.2|12|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|redstruct|<tuple|2|13|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|riemann|<tuple|23|8|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|roteigen|<tuple|72|20|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
-    <associate|to|<tuple|46|12|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|riemann|<tuple|30|8|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|roteigen|<tuple|87|20|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
+    <associate|to|<tuple|60|12|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
     <associate|vectred|<tuple|3|13|../../git/docs/TowardsNonPerturbativeQuantizationAndTheMassGapProblemForTheYang-MillsField.tm>>
   </collection>
 </references>

@@ -17,7 +17,7 @@ public class ProductTest
       product.startIndex.set(1);
       product.endIndex.set(4);
       product.factor = (k, order, bits, result) -> result.set(k);
-      Real prod = product.evaluate(128, new Real() );
+      Real prod = product.evaluate(null,128, new Real() );
       out.println( "prod=" + prod );
     }
   }

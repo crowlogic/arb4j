@@ -4,7 +4,6 @@ import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadResultParameter;
 import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
 
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -54,9 +53,9 @@ public abstract class UnaryOperation<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    return arg.generate(classVisitor, mv, resultType);
+    return arg.generate(mv, resultType);
   }
 
   protected void loadOutputVariableOntoStack(MethodVisitor methodVisitor,

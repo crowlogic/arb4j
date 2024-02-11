@@ -6,27 +6,27 @@ import arb.functions.Function;
 
 public class Product implements AutoCloseable, NullaryFunction<Real> {
    public Function<Integer, Real> factor;
-   Integer startIndex = new Integer();
-   Integer endIndex = new Integer();
-   Integer index = new Integer();
-   Real value = new Real();
+   public final Integer startIndex = new Integer();
+   public final Integer endIndex = new Integer();
+   public final Integer index = new Integer();
+   public final Real factorValue = new Real();
+   public final Real r1 = new Real();
 
    public void close() {
       index.close();
-      value.close();
+      factorValue.close();
       startIndex.close();
       endIndex.close();
    }
 
-   public Real evaluate(int bits, Real product) {
-      product.one();
+   public Real evaluate(Void in, int order, int bits, Real result) {
+      r1.one();
       index.set(startIndex);
 
-      while(index.compareTo(endIndex) <= 0) {
-         product.mul(factor.evaluate(index, bits, value), bits);
-         index.increment();
-      }
+      do {
+         r1.mul(factor.evaluate(index, bits, factorValue), bits);
+      } while(index.increment().compareTo(endIndex) <= 0);
 
-      return product;
+      return result.set(r1);
    }
 }

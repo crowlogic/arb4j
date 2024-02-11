@@ -3,12 +3,12 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static java.lang.String.format;
+import static org.objectweb.asm.Opcodes.F_SAME;
 import static org.objectweb.asm.Opcodes.GOTO;
 
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -160,7 +160,7 @@ public class When<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     assert expression.domainType.equals(Integer.class) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
                                                                        expression.domainType);
@@ -186,14 +186,18 @@ public class When<D, R, F extends Function<D, R>> extends
       for (int i = 0; i < labels.length; i++)
       {
         mv.visitLabel(labels[i]);
-        branches.get(i).generate(classVisitor, mv, expression.rangeType);
-        mv.visitJumpInsn(GOTO, endSwitch);
+        mv.visitFrame(F_SAME, 0, null, 0, null);
 
+        branches.get(i).generate(mv, expression.rangeType);
+        mv.visitJumpInsn(GOTO, endSwitch);
       }
 
       mv.visitLabel(defaultLabel);
-      super.generate(classVisitor, mv, resultType);
+      mv.visitFrame(F_SAME, 0,null,0,null);
+
+      super.generate(mv, resultType);
       mv.visitLabel(endSwitch);
+      mv.visitFrame(F_SAME, 0,null,0,null);
 
     }
     finally

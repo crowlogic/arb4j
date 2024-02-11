@@ -92,7 +92,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     if (π.equals(fieldName))
     {

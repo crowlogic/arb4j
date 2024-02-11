@@ -16,13 +16,7 @@ public interface NullaryFunction<R> extends
                                 Function<Void, R>
 {
 
-  public default R evaluate(Void t, int order, int bits, R result)
-  {
-    return evaluate(bits, result);
-  }
-
-  public R evaluate(int bits, R result);
-
+ 
   @SuppressWarnings("unchecked")
   public static <R, F extends NullaryFunction<R>>
          F

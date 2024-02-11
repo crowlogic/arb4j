@@ -1,23 +1,11 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameter;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ARETURN;
-import static org.objectweb.asm.Opcodes.ASM9;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.GOTO;
-import static org.objectweb.asm.Opcodes.IFLE;
-import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.*;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -28,6 +16,7 @@ import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
+import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -53,6 +42,8 @@ public class Product<D, R, F extends Function<D, R>> extends
   public Variable<D, R, F> index;
 
   public Node<D, R, F>     startIndex;
+
+  private String           productResultVariable;
 
   public Product(Expression<D, R, F> expression, Node<D, R, F> node)
   {
@@ -111,11 +102,53 @@ public class Product<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor mv, Class<?> resultType)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    System.out.println("generateProduct: expr=" + expression);
 
-    generateProduct(mv);
+    expression.printWriter.println("-----begin generateProduct------");
+    productResultVariable = expression.reserveIntermediateVariable(mv, expression.rangeType);
+    out.flush();
+
+    out.println("-----begin generateInitializer------");
+
+    /**
+     * <pre>
+     * ALOAD 2 via this{@link #loadResultingProductVariable(MethodVisitor)}
+     * INVOKE "one" via this{@link #invokeMethod(MethodVisitor, String, String, String)}
+     * POP
+     * </pre>
+     */
+    out.println("-----begin initializeResultToItsIdentity------");
+
+    invokeMethod(mv, Real.class, "one", Utensils.getMethodDescriptor(Real.class), false);
+    pop(mv);
+    out.println("-----end initializeResultToItsIdentity------");
+
+    setIndexToTheStartIndex(mv);
+
+    designateLabel(mv, beginningOfTheLoop);
+    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+
+    out.println("-----end generateInitializer------");
+
+    generateInnerLoop(mv);
+
+    designateLabel(mv, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
+
+    loadEndIndex(mv);
+    invokeMethod(mv, Integer.class, "compareTo", Utensils.getMethodDescriptor(int.class, Integer.class), false);
+
+    jumpToIfLessThanOrEquals(mv, beginningOfTheLoop);
+
+    if (isResult)
+    {
+      Compiler.loadResultParameter(mv);
+      loadResultingProductVariable(mv);
+      invokeSetMethod(mv, expression.rangeType, expression.rangeType);
+
+    }
+    out.println("-----end generateProduct------");
+
     return mv;
 
   }
@@ -172,40 +205,6 @@ public class Product<D, R, F extends Function<D, R>> extends
                                                                                    int.class,
                                                                                    Real.class);
 
-  static MethodVisitor beginEvaluationCode(ClassWriter classWriter)
-  {
-    MethodVisitor methodVisitor;
-    methodVisitor = classWriter.visitMethod(ACC_PUBLIC, evaluate, "(ILarb/Real;)Larb/Real;", null, null);
-    methodVisitor = new ExecutionFlowDocumenter(ASM9,
-                                                methodVisitor);
-    methodVisitor.visitCode();
-    ;
-    return methodVisitor;
-  }
-
-  MethodVisitor compareIndexToEndIndex(MethodVisitor methodVisitor)
-  {
-    out.println("-----begin compareIndexToEndIndex------");
-
-    loadIndexVariable(methodVisitor);
-    loadEndIndex(methodVisitor);
-    invokeMethod(methodVisitor,
-                 Integer.class,
-                 "compareTo",
-                 Utensils.getMethodDescriptor(int.class, Integer.class),
-                 false);
-    out.println("-----end compareIndexToEndIndex------");
-    return methodVisitor;
-
-  }
-
-  static void endEvaluationCode(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitInsn(ARETURN);
-    methodVisitor.visitMaxs(6, 4);
-    methodVisitor.visitEnd();
-  }
-
   void loadIndexVariable(MethodVisitor methodVisitor)
   {
     getField(methodVisitor, getIndexFieldName(), "Larb/Integer;");
@@ -219,79 +218,39 @@ public class Product<D, R, F extends Function<D, R>> extends
   private void designateLabel(MethodVisitor methodVisitor, Label label)
   {
     methodVisitor.visitLabel(label);
-    methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-  }
-
-  public void generateEvaluateMethod(ClassWriter classWriter)
-  {
-    MethodVisitor methodVisitor = beginEvaluationCode(classWriter);
-
-    generateProduct(methodVisitor);
-
-    returnResult(methodVisitor);
-  }
-
-  public void generateProduct(MethodVisitor methodVisitor)
-  {
-    expression.printWriter.println("-----begin generateProduct------");
-    out.flush();
-
-    out.println("-----begin generateInitializer------");
-
-    /**
-     * <pre>
-     * ALOAD 2 via this{@link #loadResultingProductVariable(MethodVisitor)}
-     * INVOKE "one" via this{@link #invokeMethod(MethodVisitor, String, String, String)}
-     * POP
-     * </pre>
-     */
-    out.println("-----begin initializeResultToItsIdentity------");
-
-    loadResultingProductVariable(methodVisitor);
-    invokeMethod(methodVisitor, Real.class, "one", Utensils.getMethodDescriptor(Real.class), false);
-    pop(methodVisitor);
-    out.println("-----end initializeResultToItsIdentity------");
-
-    setIndexToTheStartIndex(methodVisitor);
-
-    jumpTo(methodVisitor, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
-
-    designateLabel(methodVisitor, beginningOfTheLoop);
-    out.println("-----end generateInitializer------");
-
-    generateInnerLoop(methodVisitor);
-
-    designateLabel(methodVisitor, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
-
-    jumpToIfLessThanOrEquals(compareIndexToEndIndex(methodVisitor), beginningOfTheLoop);
-
-    out.println("-----end generateProduct------");
   }
 
   /**
-   * TODO; replace with sequence derived from {@link Product}
    * 
-   * @param methodVisitor
+   * @param mv
    */
-  public void generateInnerLoop(MethodVisitor methodVisitor)
+  public void generateInnerLoop(MethodVisitor mv)
   {
     out.println("-----begin generateInnerLoop------");
 
-    assert false : " * TODO; the sequence is thus \n";
+    loadResultingProductVariable(mv);
+
+    loadFieldFromThis(mv, "factor", Function.class);
+    loadFieldFromThis(mv, "index", Integer.class);
+    loadBitsParameter(mv);
+    loadFieldFromThis(mv, "factorValue", expression.rangeType);
+    invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", factorEvaluateMethodSignature, true);
+    Compiler.checkClassCast(mv, expression.rangeType);
+    loadBitsParameter(mv);
+
+    invokeMethod(mv,
+                 expression.rangeType,
+                 "mul",
+                 Utensils.getMethodDescriptor(expression.rangeType,
+                                              expression.rangeType,
+                                              int.class,
+                                              expression.rangeType),
+                 false);
+    mv.visitInsn(Opcodes.POP);
+
+    incrementIndex(mv);
 
     out.println("-----end generateInnerLoop------");
-  }
-
-  private void returnResult(MethodVisitor methodVisitor)
-  {
-    loadResultingProductVariable(methodVisitor);
-    endEvaluationCode(methodVisitor);
-  }
-
-  private void jumpTo(MethodVisitor methodVisitor, Label label)
-  {
-    out.format("GOTO %s\n", label);
-    methodVisitor.visitJumpInsn(GOTO, label);
   }
 
   void incrementIndex(MethodVisitor methodVisitor)
@@ -299,7 +258,6 @@ public class Product<D, R, F extends Function<D, R>> extends
     out.println("-----begin incrementIndex------");
     loadIndexVariable(methodVisitor);
     invokeMethod(methodVisitor, "arb/Integer", "increment", "()Larb/Integer;");
-    pop(methodVisitor);
     out.println("-----end incrementIndex------");
   }
 
@@ -312,13 +270,13 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   void loadVariableThatHoldsTheEvaluatedFactor(MethodVisitor methodVisitor)
   {
-    loadFieldFromThis(methodVisitor, factorValue, Real.class);
+    loadFieldFromThis(methodVisitor, "factorValue", Real.class);
   }
 
   void multiplyResultingProductVariableByFactor(MethodVisitor methodVisitor)
   {
     out.println("-----begin multiplyResultingProductVariableByFactor------");
-    loadBits(methodVisitor);
+    loadBitsParameter(methodVisitor);
     loadResultingProductVariable(methodVisitor);
     invokeMethod(methodVisitor, Real.class, "mul", MUL_METHOD_DESCRIPTOR, false);
     pop(methodVisitor);
@@ -344,8 +302,6 @@ public class Product<D, R, F extends Function<D, R>> extends
                                                                                          Type.getType(int.class),
                                                                                          Type.getType(Object.class));
 
-  protected static final String factorFunction                = "factor";
-  protected static final String factorValue                   = "value";
   String                        functionClass;
 
   protected void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
@@ -371,11 +327,6 @@ public class Product<D, R, F extends Function<D, R>> extends
     return methodVisitor;
   }
 
-  protected static void loadBits(MethodVisitor methodVisitor)
-  {
-    methodVisitor.visitVarInsn(ILOAD, 1);
-  }
-
   protected void loadEndIndex(MethodVisitor methodVisitor)
   {
     getField(methodVisitor, "endIndex", "Larb/Integer;");
@@ -383,7 +334,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   protected void loadFactorFunction(MethodVisitor methodVisitor)
   {
-    loadFieldFromThis(methodVisitor, factorFunction, Function.class);
+    loadFieldFromThis(methodVisitor, "factor", Function.class);
   }
 
   void invokeMethod(MethodVisitor methodVisitor,
@@ -426,14 +377,16 @@ public class Product<D, R, F extends Function<D, R>> extends
   }
 
   /**
-   * Emits ALOAD 2
+   * Calls this{@link #getField(MethodVisitor, String, String, Class)} so that the
+   * variable named by this{@link #productResultVariable} is put on the top of the
+   * stack
    * 
    * @param methodVisitor
    */
   void loadResultingProductVariable(MethodVisitor methodVisitor)
   {
-    System.out.println("loadResultingProductVariable ALOAD 2");
-    methodVisitor.visitVarInsn(ALOAD, 2);
+    getField(methodVisitor, expression.className, productResultVariable, expression.rangeType);
+
   }
 
   protected void loadStartIndex(MethodVisitor methodVisitor)

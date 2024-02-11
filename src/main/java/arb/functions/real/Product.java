@@ -13,6 +13,7 @@ public class Product implements
   public final Integer           endIndex    = new Integer();
   public final Integer           index       = new Integer();
   public final Real              factorValue = new Real();
+  public final Real              r1     = new Real();
 
   public void close()
   {
@@ -23,17 +24,17 @@ public class Product implements
   }
 
   @Override
-  public Real evaluate(int bits, Real product)
+  public Real evaluate(Void in, int order, int bits, Real result)
   {
-    product.one();
+    r1.one();
     index.set(startIndex);
 
     do
     {
-      product.mul(factor.evaluate(index, bits, factorValue), bits);
+      r1.mul(factor.evaluate(index, bits, factorValue), bits);
     }
     while (index.increment().compareTo(endIndex) <= 0);
-
-    return product;
+    
+    return result.set(r1);
   }
 }

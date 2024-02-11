@@ -15,7 +15,6 @@ import static org.objectweb.asm.Opcodes.PUTFIELD;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -90,7 +89,7 @@ public class Function<D, R, F extends arb.functions.Function<D, R>> extends
   }
 
   @Override
-  public MethodVisitor generate(ClassVisitor classVisitor, MethodVisitor methodVisitor, Class<?> resultType)
+  public MethodVisitor generate(MethodVisitor methodVisitor, Class<?> resultType)
   {
 
     if (functionName.equals(expression.functionName))
@@ -107,16 +106,16 @@ public class Function<D, R, F extends arb.functions.Function<D, R>> extends
 
     if (contextual)
     {
-      return generateContextualFunctionCall(classVisitor, methodVisitor, resultType);
+      return generateContextualFunctionCall( methodVisitor, resultType);
     }
     else
     {
-      return generateBuiltinFunctionCall(methodVisitor, resultType, classVisitor);
+      return generateBuiltinFunctionCall(methodVisitor, resultType);
     }
   }
 
   public MethodVisitor
-         generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType, ClassVisitor classVisitor)
+         generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
     var     expression                = arg.expression;
     boolean needsResultTypeConversion = !resultType.equals(type());
@@ -126,7 +125,7 @@ public class Function<D, R, F extends arb.functions.Function<D, R>> extends
       loadResultParameter(methodVisitor);
     }
 
-    arg.generate(classVisitor, methodVisitor, expression.domainType);
+    arg.generate(methodVisitor, expression.domainType);
     loadBitsParameter(methodVisitor);
 
     loadOutputVariableOntoStack(methodVisitor, expression, resultType);
@@ -178,7 +177,7 @@ public class Function<D, R, F extends arb.functions.Function<D, R>> extends
 
   @SuppressWarnings("unchecked")
   public MethodVisitor
-         generateContextualFunctionCall(ClassVisitor classVisitor, MethodVisitor methodVisitor, Class<?> resultType)
+         generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
     Class<?>              type        = type();
     FunctionMapping<D, R> mapping     = expression.context.functions.get(functionName);
@@ -219,7 +218,7 @@ public class Function<D, R, F extends arb.functions.Function<D, R>> extends
     }
     else
     {
-      arg.generate(classVisitor, methodVisitor, argType);
+      arg.generate(methodVisitor, argType);
     }
 
     Class<?> typeAfter = isVoid ? Void.class : arg.type();
