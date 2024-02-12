@@ -17,6 +17,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Compiler;
+import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -48,6 +49,11 @@ public class Product<D, R, F extends Function<D, R>> extends
   public Product(Expression<D, R, F> expression, Node<D, R, F> node)
   {
     super(expression);
+    if (expression.context == null)
+    {
+      expression.context = new Context();
+    }
+    expression.context.registerVariable(getIndexFieldName(), new Integer());
     factor        = node;
     functionClass = expression.className;
     assert functionClass != null : "functionClass is null";
@@ -88,14 +94,6 @@ public class Product<D, R, F extends Function<D, R>> extends
   private void throwException(String msg)
   {
     throw new ExpressionCompilerException(msg);
-  }
-
-  public Product(Expression<D, R, F> expression)
-  {
-    super(expression);
-    {
-      expression.context.registerVariable(getIndexFieldName(), new Integer());
-    }
   }
 
   @Override

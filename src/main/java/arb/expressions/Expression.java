@@ -3,6 +3,7 @@ package arb.expressions;
 import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
+import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 import static org.objectweb.asm.Opcodes.*;
@@ -87,7 +88,7 @@ import arb.utensils.Utensils;
  * @param <R> range type
  * @param <F> the function type of the expression, extending {@link Function}
  * 
- * @author Stephen A. Crowley  ©2024 
+ * @author Stephen A. Crowley ©2024
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
@@ -1083,13 +1084,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
         try
         {
           String variableName = entry.getKey();
-          R      value        = variables.get(variableName);
+          R      value        = context.variables.get(variableName);
           setFieldValue(f, variableName, value, false);
         }
         catch (Exception e)
         {
-          throw new RuntimeException(e.getMessage(),
-                                     e);
+          throwOrWrap(e);
         }
       });
     }
@@ -1180,11 +1180,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   private Variable<D, R, F> newVariable(VariableReference<D, R, F> reference)
   {
-    var contextVar = context == null ? null : context.variables.get(reference.name);
+    var contextVar = getVariable(reference);
     reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
     Variable<D, R, F> variable = new Variable<D, R, F>(this,
                                                        reference);
     return variable;
+  }
+
+  public <Q> Q getVariable(VariableReference<D, R, F> reference)
+  {
+    return context == null ? null : context.variables.get(reference.name);
   }
 
   public char nextCharacter()

@@ -1,12 +1,7 @@
 package arb.utensils;
 
 import static arb.IntegerConstants.FLINT_BITS;
-import static arb.arblib.acb_add_error_mag;
-import static arb.arblib.acb_calc_gl_node;
-import static arb.arblib.acb_init;
-import static arb.arblib.arb_get_mag;
-import static arb.arblib.arb_init;
-import static arb.arblib.mag_init;
+import static arb.arblib.*;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -589,6 +584,19 @@ public class Utensils
   public static String getMethodDescriptor(Class<?> ret, Class<?>... args)
   {
     return Type.getMethodDescriptor(Type.getType(ret), classTypes(args).toArray(new Type[args.length]));
+  }
+
+  public static void throwOrWrap(Exception e)
+  {
+    if (e instanceof RuntimeException)
+    {
+      throw (RuntimeException) e;
+    }
+    else
+    {
+      throw new RuntimeException(e.getMessage(),
+                                 e);
+    }
   }
 
 }
