@@ -19,6 +19,17 @@ public interface IntegerSequence extends
   }
 
   /**
+   * <a href="https://oeis.org/A060632">A060632</a> a(n) = 2^wt(floor(n/2)) (i.e.,
+   * 2^A000120(floor(n/2)), or A001316(floor(n/2))).<br>
+   * <br>
+   * Number of conjugacy classes in the symmetric group S_n that have odd number
+   * of elements.<br>
+   * <br>
+   * 
+   */
+  public static IntegerSequence oddSymmetricGroupConjugacyClassCounts = express("n->Σbinom(n, 2k) mod 2{k=0..floor(n/2)}");
+
+  /**
    * <a href="https://oeis.org/A001316">A001316 Gould's sequence<a>: <br>
    * <br>
    * 
@@ -29,16 +40,21 @@ public interface IntegerSequence extends
    * 
    * {@link}
    */
-  public static IntegerSequence gouldsSequence     = express("a(n) = Σbinomial(n,k) mod 2{k=0..n}");
+  public static IntegerSequence gouldsSequence                        = express("n->Σbinomial(n,k) mod 2{k=0..n}");
 
   /**
+   * <pre>
    * by the swinging factorial of n we understand the ratio of n! to
-   * floor(n/2)*c!^2 and denote it by no = n! bn/2c!2 (n > 0) . (1.1) bxc is the
-   * floor-function giving the largest integer not greater than x. The first few
-   * values of no are displayed in table 1. We write (n k ) = n!/(k!(n − k)!) for
-   * the binomial coefficient. Let μn = ( n bn/2c ) denote the middle binomial
-   * coefficient. Then no = μn if n is even, otherwise no = μn((n + 1)/2). Thus no
-   * is always an integer
+   * floor(n/2)*c!^2 and denote it by no = n!/floor(n/2)*c!^2  (n > 0) . 
+   * 
+   * We write (n k ) = n!/(k!(n − k)!) for the binomial coefficient. 
+   * 
+   * Let μn = ( n bn/2c ) denote the middle binomial  coefficient. 
+   * 
+   * Then no = μn if n is even, otherwise no = μn((n + 1)/2). 
+   * 
+   * Thus no is always an integer
+   * </pre>
    */
-  public static IntegerSequence swingingFactorials = express("2^(n-(n mod 2))*∏(k=1..n)k^((-1)^(k+1))=n!/⌊n/2⌋!²");
+  public static IntegerSequence swingingFactorials                    = express("n->2^(n-(n mod 2))*∏(k=1..n)k^((-1)^(k+1))=n!/⌊n/2⌋!²");
 }
