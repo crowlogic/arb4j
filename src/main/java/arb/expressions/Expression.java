@@ -116,6 +116,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (functionName != null)
     {
       mapping = context.registerFunctionMapping(functionName, null, domainClass, rangeClass, functionClass);
+      
     }
 
     Expression<D, R, F> compiledExpression = express(expression,

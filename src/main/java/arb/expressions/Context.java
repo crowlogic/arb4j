@@ -115,7 +115,7 @@ public class Context
     return variable;
   }
 
-  public boolean                             verbose     = false;
+  public boolean                             verbose     = true;
 
   public final CompiledExpressionClassLoader classLoader = new CompiledExpressionClassLoader();
 
@@ -130,7 +130,7 @@ public class Context
    * @throws IllegalArgumentException if a function of the same name already
    *                                  exists in this{@link #functions}
    */
-  public FunctionMapping<?, ?> registerFunctionMapping(String functionName,
+  public <D,R> FunctionMapping<D,R> registerFunctionMapping(String functionName,
                                                        Function<?, ?> function,
                                                        Class<?> domainType,
                                                        Class<?> rangeType,
@@ -153,7 +153,7 @@ public class Context
                                                 function));
     }
 
-    FunctionMapping<?, ?> mapping = new FunctionMapping<Object, Object>();
+    FunctionMapping<D,R> mapping = new FunctionMapping<D, R>();
     mapping.name              = functionName;
     mapping.domain            = domainType;
     mapping.range             = rangeType;
