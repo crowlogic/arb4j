@@ -104,8 +104,9 @@ public class Product<D, R, F extends Function<D, R>> extends
     pop(mv);
     setIndexToTheStartIndex(mv);
     designateLabel(mv, beginningOfTheLoop);
-    mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
-    { Type.getInternalName(resultType) });
+    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, new Object[]
+    {});
+
     generateInnerLoop(mv);
     designateLabel(mv, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
 

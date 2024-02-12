@@ -129,7 +129,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       mapping.func = func;
     }
-
+    
     return func;
   }
 
