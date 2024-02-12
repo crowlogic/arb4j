@@ -3,7 +3,8 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.F_SAME;
+import static org.objectweb.asm.Opcodes.GOTO;
 
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Expression;
+import arb.expressions.nodes.Else;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -140,20 +142,13 @@ public class When<D, R, F extends Function<D, R>> extends
   public void evaluateCases()
   {
     Node<D, R, F> node = expression.evaluate();
-    if (!(node instanceof Variable))
-    {
-      throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable, but got "
-                    + node);
-    }
-
-    Variable<D, R, F> variable = (Variable<D, R, F>) node;
-
-    if ("else".equals(variable.reference.name))
+    if ((node instanceof Else))
     {
       arg = evaluateDefaultCase(expression);
     }
     else
     {
+      Variable<D, R, F> variable = (Variable<D, R, F>) node;
       evaluateCase(expression, cases, variable);
     }
   }

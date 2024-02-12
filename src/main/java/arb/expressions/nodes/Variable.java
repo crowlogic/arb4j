@@ -242,7 +242,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
       else
       {
         throw new UndefinedReferenceException(format("Undefined reference to variable"
-                      + " '%s' in %s, independent variable is %s", reference, expression, inputVariable));
+                      + " '%s' in %s, independent variable is %s", reference.name, expression, inputVariable));
       }
     }
   }

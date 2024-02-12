@@ -33,6 +33,7 @@ import arb.OrderedPair;
 import arb.RealPolynomial;
 import arb.Typesettable;
 import arb.exceptions.ExpressionCompilerException;
+import arb.expressions.nodes.Else;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -1316,9 +1317,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else
     {
-      Variable<D, R, F> variable = newVariable(reference);
+      if (reference.name.equals("else") && reference.index == null)
+      {
+        return new Else<D, R, F>(this);
+      }
+      else
+      {
+        Variable<D, R, F> variable = newVariable(reference);
 
-      return variable;
+        return variable;
+      }
     }
   }
 
