@@ -33,9 +33,6 @@ import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
- * TODO: declare factor field and transplant its rootNode into a new
- * {@link Expression} and {@link Expression#compile()} it and set it into the
- * this{@link #factor} field
  * 
  * @param <D> domain
  * @param <R> range
