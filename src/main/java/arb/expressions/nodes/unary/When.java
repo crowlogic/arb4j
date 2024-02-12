@@ -3,8 +3,7 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.F_SAME;
-import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -167,7 +166,10 @@ public class When<D, R, F extends Function<D, R>> extends
     try
     {
       mv.visitCode();
-      mv.visitFrame(F_SAME, 0, null, 0, null);
+      mv.visitFrame(F_SAME, 0, null, 0, new Object[]
+      {});
+//      mv.visitFrame(F_SAME1, 0, null, 1, new Object[]
+//      { Type.getInternalName(Integer.class) });
 
       labels = new Label[cases.size()];
 

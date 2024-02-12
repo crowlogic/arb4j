@@ -63,6 +63,7 @@ public class Compiler
 
   public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
   {
+
     Label notNullLabel = new Label();
     mv.visitFieldInsn(Opcodes.GETFIELD, className, fieldName, fieldDesc);
     mv.visitJumpInsn(Opcodes.IFNONNULL, notNullLabel);
@@ -76,9 +77,17 @@ public class Compiler
                        false);
 
     mv.visitInsn(Opcodes.ATHROW);
+    mv.visitLdcInsn(1);
+    
+    // Pushes the integer 0 onto the stack as the denominator.
+    mv.visitInsn(ICONST_0);
+    
+    // Performs the division, which will result in division by zero.
+    mv.visitInsn(IDIV);
+    
     mv.visitLabel(notNullLabel);
-    mv.visitFrame(F_SAME, 0, null, 0, null);
 
+  
   }
 
   public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
@@ -360,6 +369,11 @@ public class Compiler
     methodVisitor.visitInsn(SWAP);
     methodVisitor.visitInsn(DUP_X1);
     return methodVisitor;
+  }
+
+  public static void invokeSuperclassDefaultConstructor(MethodVisitor methodVisitor)
+  {
+    methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
   }
 
 }

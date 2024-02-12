@@ -106,7 +106,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
 
     expression.printWriter.println("-----begin generateProduct------");
-    productResultVariable = expression.reserveIntermediateVariable(mv, expression.rangeType);
+    productResultVariable = expression.reserveIntermediateVariable(mv, resultType);
     out.flush();
 
     out.println("-----begin generateInitializer------");
@@ -120,14 +120,15 @@ public class Product<D, R, F extends Function<D, R>> extends
      */
     out.println("-----begin initializeResultToItsIdentity------");
 
-    invokeMethod(mv, Real.class, "one", Utensils.getMethodDescriptor(Real.class), false);
+    invokeMethod(mv, resultType, "identity", Utensils.getMethodDescriptor(resultType), false);
     pop(mv);
     out.println("-----end initializeResultToItsIdentity------");
 
     setIndexToTheStartIndex(mv);
 
     designateLabel(mv, beginningOfTheLoop);
-    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+    mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
+    { Type.getInternalName(resultType) });
 
     out.println("-----end generateInitializer------");
 
@@ -143,9 +144,9 @@ public class Product<D, R, F extends Function<D, R>> extends
     if (isResult)
     {
       Compiler.loadResultParameter(mv);
-      Compiler.checkClassCast(mv, expression.rangeType);
+      Compiler.checkClassCast(mv, type());
       loadResultingProductVariable(mv);
-      invokeSetMethod(mv, expression.rangeType, expression.rangeType);
+      invokeSetMethod(mv, type(), type());
 
     }
     out.println("-----end generateProduct------");

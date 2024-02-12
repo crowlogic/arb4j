@@ -1,16 +1,8 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
-import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.F_SAME;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.IFNONNULL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -90,8 +82,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public MethodVisitor generate(MethodVisitor methodVisitor, Class<?> resultType)
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+
+   mv.visitFrame(F_SAME, 0, null, 0, null);
 
     if (functionName.equals(expression.functionName))
     {
@@ -107,16 +101,15 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (contextual)
     {
-      return generateContextualFunctionCall(methodVisitor, resultType);
+      return generateContextualFunctionCall(mv, resultType);
     }
     else
     {
-      return generateBuiltinFunctionCall(methodVisitor, resultType);
+      return generateBuiltinFunctionCall(mv, resultType);
     }
   }
 
-  public MethodVisitor
-         generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
     var     expression                = arg.expression;
     boolean needsResultTypeConversion = !resultType.equals(targetResultType);
@@ -171,32 +164,36 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     mv.visitFieldInsn(PUTFIELD, thisClassName, fieldName, fieldType);
     mv.visitLabel(fieldAlreadyPopulated);
-    mv.visitFrame(F_SAME, 0, null, 0, null);
+    mv.visitFrame(F_SAME1, 0, null, 1, new Object[]
+    { fieldType });
+
     return mv;
   }
 
+  public void inactive(MethodVisitor mv)
+  {
+    if (isRecursive())
+    {
+      conditionallyInstantiate(mv, functionName, expression.className, functionName, format("L%s;", functionName));
+    }
+  }
+
   @SuppressWarnings("unchecked")
-  public MethodVisitor
-         generateContextualFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
+  public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {
     Class<?>              type        = type();
     FunctionMapping<D, R> mapping     = expression.context.functions.get(functionName);
     F                     func        = (F) mapping.func;
-    boolean               isRecursive = expression.recursive && functionName.equals(expression.functionName);
-    if (isRecursive)
-    {
-      conditionallyInstantiate(methodVisitor,
-                               functionName,
-                               expression.className,
-                               functionName,
-                               format("L%s;", functionName));
-    }
+    boolean               isRecursive = isRecursive();
+
+    mv.visitFrame(F_SAME, 0, null, 0, null);
+
     if (func == null && mapping.functionInterface == null)
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
 
-    expression.loadFieldOntoStack(loadThisOntoStack(methodVisitor),
+    expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                   functionName,
                                   mapping.func != null ? mapping.func.getClass()
                                                                      .descriptorString() : String.format("L%s;",
@@ -209,16 +206,16 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (needsArgTypeConversion)
     {
-      expression.reserveIntermediateVariable(methodVisitor, mapping.domain);
+      expression.reserveIntermediateVariable(mv, mapping.domain);
     }
 
     if (isVoid)
     {
-      methodVisitor.visitInsn(Opcodes.ACONST_NULL);
+      mv.visitInsn(Opcodes.ACONST_NULL);
     }
     else
     {
-      arg.generate(methodVisitor, argType);
+      arg.generate(mv, argType);
     }
 
     Class<?> typeAfter = isVoid ? Void.class : arg.type();
@@ -228,15 +225,20 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (needsArgTypeConversion)
     {
-      invokeSetMethod(methodVisitor, arg.type(), mapping.domain);
+      invokeSetMethod(mv, arg.type(), mapping.domain);
     }
 
-    loadOrderParameter(methodVisitor);
-    loadBitsParameter(methodVisitor);
+    loadOrderParameter(mv);
+    loadBitsParameter(mv);
 
-    loadOutputVariableOntoStack(methodVisitor, expression, type);
+    loadOutputVariableOntoStack(mv, expression, type);
 
-    return expression.callContextualUnaryFunction(methodVisitor, mapping, type);
+    return expression.callContextualUnaryFunction(mv, mapping, type);
+  }
+
+  private boolean isRecursive()
+  {
+    return expression.recursive && functionName.equals(expression.functionName);
   }
 
   public boolean isBuiltin()

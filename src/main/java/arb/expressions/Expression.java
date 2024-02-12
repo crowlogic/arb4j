@@ -99,7 +99,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   private static final String nameOfInitializerFunction  = "initialize";
 
   public static boolean       saveClasses                = Boolean.valueOf(System.getProperty("expressionCompiler.saveClasses",
-                                                                                              "false"));
+                                                                                              "true"));
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
                                                                Context context,
@@ -295,12 +295,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public void addCheckForNullField(MethodVisitor methodVisitor, String varName, boolean variable)
+  public void addCheckForNullField(MethodVisitor mv, String varName, boolean variable)
   {
     Class<?> fieldClass = variable ? context.variables.map.get(varName).getClass() : context.functions.get(varName)
                                                                                                       .type();
     String   fieldDesc  = fieldClass.descriptorString();
-    addNullCheckForField(methodVisitor, className, varName, fieldDesc);
+
+    addNullCheckForField(mv, className, varName, fieldDesc);
+
   }
 
   public void addChecksForNullVariableReferences(MethodVisitor mv, boolean all, boolean that)
@@ -315,16 +317,19 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public MethodVisitor
-         callContextualUnaryFunction(MethodVisitor methodVisitor, FunctionMapping<D, R> mapping, Class<?> type)
+  public MethodVisitor callContextualUnaryFunction(MethodVisitor mv, FunctionMapping<D, R> mapping, Class<?> type)
   {
     boolean isInterface = mapping.functionInterface != null;
-    methodVisitor.visitMethodInsn(mapping.functionInterface != null ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
-                                  Type.getInternalName(isInterface ? mapping.functionInterface : mapping.func.getClass()),
-                                  "evaluate",
-                                  evaluationMethodDescriptor,
-                                  isInterface);
-    return Compiler.checkClassCast(methodVisitor, type);
+    mv.visitMethodInsn(mapping.functionInterface != null ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
+                       Type.getInternalName(isInterface ? mapping.functionInterface : mapping.func.getClass()),
+                       "evaluate",
+                       evaluationMethodDescriptor,
+                       isInterface);
+    MethodVisitor checkClassCast = Compiler.checkClassCast(mv, type);
+    mv.visitFrame(F_SAME1, 0, null, 1, new Object[]
+    { Type.getInternalName(type) });
+    return checkClassCast;
+
   }
 
   public ClassVisitor constructClassVisitor()
@@ -751,6 +756,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   private void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor methodVisitor)
   {
+
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     Label alreadyInitializedLabel = new Label();
@@ -835,10 +841,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                            null,
                                                            null);
     methodVisitor.visitCode();
+    Compiler.loadThisOntoStack(methodVisitor);
+    Compiler.invokeSuperclassDefaultConstructor(methodVisitor);
 
-    generateInvocationOfDefaultNoArgConstructor(methodVisitor, false);
+    if (checkForNullsBeforeEvaluating)
+    {
+      generateInvocationOfDefaultNoArgConstructor(methodVisitor, false);
+    }
 
-    addChecksForNullVariableReferences(methodVisitor, false, true);
+// addChecksForNullVariableReferences(methodVisitor, false, true);
 
     for (Variable<D, R, F> variable : referencedVariables.values())
     {
@@ -921,8 +932,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     rootNode.generate(methodVisitor, rangeType);
-
-  
 
     methodVisitor.visitInsn(Opcodes.ARETURN);
 
