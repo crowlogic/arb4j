@@ -14,7 +14,7 @@ public class RealFunctionExpressionCompilerTest extends
                                                 TestCase
 {
 
-  Context  context   = new Context();
+  Context      context   = new Context();
 
   Variables    variables = context.variables;
 
@@ -109,7 +109,7 @@ public class RealFunctionExpressionCompilerTest extends
       assertEquals(69.42, expression.eval(1.0));
     }
   }
-  
+
   public void testHalf()
   {
 
@@ -132,6 +132,9 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testFunctionInvolvingABesselFunction()
   {
+//    Context      context    = new Context(new Real("0.0",128).setName("a"),
+//                                          new Real("1.0",128).setName("b"),
+//                                          new Real("1.0",128).setName("λ"));
     RealFunction expression = express("a-b*J0(λ*t)", context);
     {
       Real evaluatedX = expression.evaluate(one, 1, 256, new Real());
@@ -208,7 +211,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   public void testIdentityInput()
   {
-    RealFunction identity = express("t", context,true);
+    RealFunction identity = express("t", context, true);
     Real         won      = identity.evaluate(one, 1, 256, new Real());
     {
       assertEquals(1.0, won.doubleValue());
@@ -391,13 +394,13 @@ public class RealFunctionExpressionCompilerTest extends
       assertEquals(0.0, evaluatedX.doubleValue(RoundingMode.Up));
     }
   }
-  
+
   public void testSFunctionWithGreekInputSplitIntoTwoFunctions()
   {
     Context context = new Context();
-    express("yay","1+ρ^2", context);
+    express("yay", "1+ρ^2", context);
     RealFunction expression = express("x->tanh(ln(yay(x)))", context);
-    
+
     {
       Real result     = new Real();
       Real evaluatedX = expression.evaluate(one, 1, 256, result);
@@ -405,7 +408,6 @@ public class RealFunctionExpressionCompilerTest extends
       assertEquals(0.6, evaluatedX.doubleValue());
     }
   }
-  
 
   public void testSFunctionWithGreekInput()
   {
@@ -461,7 +463,7 @@ public class RealFunctionExpressionCompilerTest extends
   public void testTanhLogOne()
   {
     /**
-     * This should be allocating a new intermediate variable 
+     * This should be allocating a new intermediate variable
      */
     RealFunction expression = express("tanh(ln(1))", context);
     {

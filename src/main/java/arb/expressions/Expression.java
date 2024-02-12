@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.objectweb.asm.ClassVisitor;
@@ -405,15 +406,24 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       for (var variable : context.variables.map.entrySet())
       {
-        classVisitor.visitField(ACC_PUBLIC,
-                                variable.getKey(),
-                                variable.getValue().getClass().descriptorString(),
-                                null,
-                                null);
+        declareVariableEntry(classVisitor, variable);
       }
     }
 
     variablesDeclared = true;
+  }
+
+  public void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Object> variable)
+  {
+    if (this.saveClasses)
+    {
+      System.out.println("Declaring variable of " + className + ": " + variable);
+    }
+    classVisitor.visitField(ACC_PUBLIC,
+                            variable.getKey(),
+                            variable.getValue().getClass().descriptorString(),
+                            null,
+                            null);
   }
 
   public static boolean computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
@@ -662,8 +672,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     ClassVisitor classVisitor = constructClassVisitor();
 
-    printWriter  = new PrintWriter(System.out,
-                                   false);
+    printWriter = new PrintWriter(System.out,
+                                  false);
+
+    System.out.println("Generating " + rootNode);
 
     classVisitor = new TraceClassVisitor(classVisitor,
                                          new Textifier(),
@@ -773,7 +785,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                   false);
     methodVisitor.visitInsn(Opcodes.ATHROW);
     methodVisitor.visitLabel(alreadyInitializedLabel);
-    methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
   }
 
   private void generateConditionalInitializater(MethodVisitor methodVisitor)
@@ -792,7 +803,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor generateContextInitializationCode(MethodVisitor methodVisitor)
   {
-    generateCodeToThrowErrorIfAlreadyInitialized(methodVisitor);
+   generateCodeToThrowErrorIfAlreadyInitialized(methodVisitor);
 
     addChecksForNullVariableReferences(methodVisitor, false, false);
 

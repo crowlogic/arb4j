@@ -85,7 +85,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
 
-   mv.visitFrame(F_SAME, 0, null, 0, null);
 
     if (functionName.equals(expression.functionName))
     {
