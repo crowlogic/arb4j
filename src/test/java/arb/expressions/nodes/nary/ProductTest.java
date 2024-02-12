@@ -26,7 +26,7 @@ public class ProductTest extends
     MethodNode  method      = new MethodNode();
 
 
-    NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1..3}");
+    NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1…3}");
     assertEquals(6.0, prod.evaluate(null,128, new Real()));
   }
 }

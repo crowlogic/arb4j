@@ -1,7 +1,7 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.*;
+import static arb.utensils.Utensils.getMethodDescriptor;
 import static java.lang.String.format;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
@@ -92,64 +92,39 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   public Product(Expression<D, R, F> expression)
   {
-
     super(expression);
     {
-
       expression.context.registerVariable(getIndexFieldName(), new Integer());
     }
-
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-
-    expression.printWriter.println("-----begin generateProduct------");
     productResultVariable = expression.reserveIntermediateVariable(mv, resultType);
-    out.flush();
-
-    out.println("-----begin generateInitializer------");
-
-    /**
-     * <pre>
-     * ALOAD 2 via this{@link #loadResultingProductVariable(MethodVisitor)}
-     * INVOKE "one" via this{@link #invokeMethod(MethodVisitor, String, String, String)}
-     * POP
-     * </pre>
-     */
-    out.println("-----begin initializeResultToItsIdentity------");
-
-    invokeMethod(mv, resultType, "identity", Utensils.getMethodDescriptor(resultType), false);
+    invokeMethod(mv, resultType, "multiplicativeIdentity", getMethodDescriptor(resultType), false);
     pop(mv);
-    out.println("-----end initializeResultToItsIdentity------");
-
     setIndexToTheStartIndex(mv);
-
     designateLabel(mv, beginningOfTheLoop);
     mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
     { Type.getInternalName(resultType) });
-
-    out.println("-----end generateInitializer------");
-
     generateInnerLoop(mv);
-
     designateLabel(mv, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
 
     loadEndIndex(mv);
-    invokeMethod(mv, Integer.class, "compareTo", Utensils.getMethodDescriptor(int.class, Integer.class), false);
+    invokeMethod(mv, Integer.class, "compareTo", getMethodDescriptor(int.class, Integer.class), false);
 
     jumpToIfLessThanOrEquals(mv, beginningOfTheLoop);
 
     if (isResult)
     {
       Compiler.loadResultParameter(mv);
-      Compiler.checkClassCast(mv, type());
+      Class<Real> type = type();
+      Compiler.checkClassCast(mv, type);
       loadResultingProductVariable(mv);
-      invokeSetMethod(mv, type(), type());
+      invokeSetMethod(mv, type, type);
 
     }
-    out.println("-----end generateProduct------");
 
     return mv;
 
@@ -228,40 +203,32 @@ public class Product<D, R, F extends Function<D, R>> extends
    */
   public void generateInnerLoop(MethodVisitor mv)
   {
-    out.println("-----begin generateInnerLoop------");
-
     loadResultingProductVariable(mv);
-
     loadFieldFromThis(mv, "factor", Function.class);
     loadFieldFromThis(mv, "index", Integer.class);
     loadBitsParameter(mv);
     loadFieldFromThis(mv, "factorValue", expression.rangeType);
     invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", factorEvaluateMethodSignature, true);
-    Compiler.checkClassCast(mv, expression.rangeType);
+    checkClassCast(mv, expression.rangeType);
     loadBitsParameter(mv);
     invokeMethod(mv,
                  expression.rangeType,
                  "mul",
-                 Utensils.getMethodDescriptor(expression.rangeType, expression.rangeType, int.class),
+                 getMethodDescriptor(expression.rangeType, expression.rangeType, int.class),
                  false);
     mv.visitInsn(Opcodes.POP);
-
     incrementIndex(mv);
 
-    out.println("-----end generateInnerLoop------");
   }
 
   void incrementIndex(MethodVisitor methodVisitor)
   {
-    out.println("-----begin incrementIndex------");
     loadIndexVariable(methodVisitor);
     invokeMethod(methodVisitor, "arb/Integer", "increment", "()Larb/Integer;");
-    out.println("-----end incrementIndex------");
   }
 
   MethodVisitor jumpToIfLessThanOrEquals(MethodVisitor methodVisitor, Label label)
   {
-    out.format("IFLE GOTO %s\n", label);
     methodVisitor.visitJumpInsn(IFLE, label);
     return methodVisitor;
   }
@@ -273,24 +240,18 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   void multiplyResultingProductVariableByFactor(MethodVisitor methodVisitor)
   {
-    out.println("-----begin multiplyResultingProductVariableByFactor------");
     loadBitsParameter(methodVisitor);
     loadResultingProductVariable(methodVisitor);
     invokeMethod(methodVisitor, Real.class, "mul", MUL_METHOD_DESCRIPTOR, false);
     pop(methodVisitor);
-    out.println("-----end multiplyResultingProductVariableByFactor------");
   }
 
   void setIndexToTheStartIndex(MethodVisitor methodVisitor)
   {
-    out.println("-----begin setIndexToTheStartIndex------");
-
     loadIndexVariable(methodVisitor);
     loadStartIndex(methodVisitor);
     invokeSetMethod(methodVisitor, Integer.class, Integer.class);
     pop(methodVisitor);
-    out.println("-----endsetIndexToTheStartIndex------");
-
   }
 
   protected static final String evaluate                      = "evaluate";
@@ -321,7 +282,6 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
     assert thisClassInternalName != null : "thisClassInternalName is null";
     loadThis(methodVisitor).visitFieldInsn(GETFIELD, thisClassInternalName, fieldName, fieldTypeSignature);
-    System.out.format("GET %s field of type %s\n", fieldName, fieldTypeSignature, thisClassInternalName);
     return methodVisitor;
   }
 
@@ -350,12 +310,6 @@ public class Product<D, R, F extends Function<D, R>> extends
                     String methodSignature,
                     boolean isInterface)
   {
-    System.out.format("INVOKE%s %s.%s methodSignature=%s\n",
-                      isInterface ? "INTERFACE" : "VIRTUAL",
-                      classInternalName,
-                      methodName,
-                      methodSignature);
-
     methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL,
                                   classInternalName,
                                   methodName,

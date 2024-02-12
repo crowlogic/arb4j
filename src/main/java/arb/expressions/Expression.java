@@ -33,6 +33,8 @@ import arb.Integer;
 import arb.OrderedPair;
 import arb.RealPolynomial;
 import arb.Typesettable;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.nodes.Else;
 import arb.expressions.nodes.LiteralConstant;
@@ -79,16 +81,15 @@ import arb.utensils.Utensils;
  * <li>expressionCompiler.saveClasses=true|false</li>
  * </ul>
  * 
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
+ * 
  * 
  * @param <D> domain type
  * @param <R> range type
  * @param <F> the function type of the expression, extending {@link Function}
  * 
- * @author ©2024 Stephen A. Crowley
+ * @author Stephen A. Crowley  ©2024 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
@@ -803,7 +804,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor generateContextInitializationCode(MethodVisitor methodVisitor)
   {
-   generateCodeToThrowErrorIfAlreadyInitialized(methodVisitor);
+    generateCodeToThrowErrorIfAlreadyInitialized(methodVisitor);
 
     addChecksForNullVariableReferences(methodVisitor, false, false);
 

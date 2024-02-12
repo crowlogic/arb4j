@@ -19,6 +19,9 @@ public interface Field<X extends Field<X>> extends
                       Ring<X>,
                       HasName
 {
+  public X additiveIdentity();
+
+  public X multiplicativeIdentity();
 
   public default X add(X x)
   {

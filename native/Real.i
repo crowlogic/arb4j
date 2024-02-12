@@ -202,6 +202,19 @@ import arb.stochastic.ProbabilityDistributionFunction;
   {
     return arblib.arb_is_int(this) != 0;
   }
+
+
+  @Override
+  public Real additiveIdentity()
+  {
+    return set(RealConstants.zero);
+  }
+
+  @Override
+  public Real multiplicativeIdentity()
+  {
+    return set(RealConstants.one);
+  }
   
   /**
    * Calculate the rising factorial this_(power)

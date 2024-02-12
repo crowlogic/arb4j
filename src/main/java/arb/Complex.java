@@ -104,6 +104,18 @@ public class Complex implements Domain<Complex>,Field<Complex>,Iterable<Complex>
     return value;
   }
   
+    @Override
+  public Complex additiveIdentity()
+  {
+   return set(ComplexConstants.ZERO);
+  }
+
+  @Override
+  public Complex multiplicativeIdentity()
+  {
+    return set(ComplexConstants.one);
+  }
+  
   /**
    * Sets u to an lower bound for the absolute value of x via
    * {@link arb#acb_get_mag_lower(Magnitude, Complex)}

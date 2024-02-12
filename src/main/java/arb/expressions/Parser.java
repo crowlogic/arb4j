@@ -163,30 +163,22 @@ public class Parser
 
   static String expressionToUniqueClassname(String expression)
   {
-    return expression.replace(",", "")
-                     .replace(" ", "")
-                     .replace("+", "Plus")
-                     .replace("-", "Minus")
-                     .replace("*", "Times")
-                     .replace("/", "DividedBy")
-                     .replace("^", "ToThePowerOf")
-                     .replace("(", "")
-                     .replace(")", "")
-                     .replace("1", "One")
-                     .replace("2", "Two")
-                     .replace("3", "Three")
-                     .replace("4", "Four")
-                     .replace("5", "Five")
-                     .replace("6", "Six")
-                     .replace("7", "Seven")
-                     .replace("8", "Eight")
-                     .replace("9", "Nine")
-                     .replace("0", "Zero")
-                     .replace(".", "Point")
-                     .replace('[', '_')
-                     .replace(']', '_')
-                     .replace("➔", "")
-                     .replace("½", "half");
+    String str = expression.replaceAll("\\.{2,}", "…")
+                           .replace(",", "")
+                           .replace(" ", "")
+                           .replace("+", "Plus")
+                           .replace("-", "Minus")
+                           .replace("*", "Times")
+                           .replace("/", "DividedBy")
+                           .replace("^", "ToThePowerOf")
+                           .replace("(", "")
+                           .replace(")", "")
+                           .replace(".", "•")                           
+                           .replace('[', '_')
+                           .replace(']', '_')
+                           .replace("➔", "")
+                           .replace("½", "half");
+    return  str;
   }
 
   public static boolean isSubscriptedParenthesis(char character)
@@ -200,7 +192,7 @@ public class Parser
   public static final char[]             SUBSCRIPT_CHARACTERS_ARRAY = new char[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
     'ₜ' };
-  public static final char[]             SUBSCRIPT_DIGITS_ARRAY = new char[]
-                { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉' };
+  public static final char[]             SUBSCRIPT_DIGITS_ARRAY     = new char[]
+  { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉' };
 
 }

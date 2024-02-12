@@ -89,6 +89,18 @@ public class Float implements AutoCloseable,Comparable<Float>,Field<Float> {
     this.dim     = length;
   }
 
+  @Override
+  public Float additiveIdentity()
+  {
+    return set(FloatConstants.zero);
+  }
+
+  @Override
+  public Float multiplicativeIdentity()
+  {
+    return set(FloatConstants.one);
+  }
+  
   public String name;
 
   public Float setName(String name)

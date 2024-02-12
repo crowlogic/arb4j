@@ -1,5 +1,7 @@
 package arb.functions.real;
 
+import static arb.expressions.Expression.instantiate;
+
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Context;
@@ -11,18 +13,18 @@ import arb.expressions.Context;
 public interface RealNullaryFunction extends
                                      NullaryFunction<Real>
 {
-  public static NullaryFunction<Real> express(String functionName, String expression, Context context)
+  public static RealNullaryFunction express(String functionName, String expression, Context context)
   {
-    return NullaryFunction.express(Real.class, functionName, expression, context);
+    return instantiate(expression, context, Void.class, Real.class, RealNullaryFunction.class, functionName);
   }
 
   public static NullaryFunction<Real> express(String expression, Context context)
   {
-    return NullaryFunction.express(Real.class, null, expression, context);
+    return express(null, expression, context);
   }
 
   public static NullaryFunction<Real> express(String expression)
   {
-    return NullaryFunction.express(Real.class, null, expression, null);
+    return express(null, expression, null);
   }
 }
