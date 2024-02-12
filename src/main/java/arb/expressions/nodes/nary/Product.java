@@ -19,12 +19,17 @@ import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
+ * TODO: declare factor field and transplant its rootNode into a new
+ * {@link Expression} and {@link Expression#compile()} it and set it into the
+ * this{@link #factor} field
+ * 
  * @param <D> domain
  * @param <R> range
  * @param <F> {@link Function}
@@ -53,7 +58,6 @@ public class Product<D, R, F extends Function<D, R>> extends
     {
       expression.context = new Context();
     }
-    expression.context.registerVariable(getIndexFieldName(), new Integer());
     factor        = node;
     functionClass = expression.className;
     assert functionClass != null : "functionClass is null";
@@ -61,34 +65,57 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   public Product<D, R, F> evaluateRangeSpecification()
   {
-    String rem = expression.remaining();
     if (!expression.nextCharacterIs('{'))
     {
-      throwException(format(MISSING_OPENING_CURLY_BRACE, expression.character, rem));
+      throwException(format(MISSING_OPENING_CURLY_BRACE, expression.character, expression.remaining()));
     }
     var indexVar = expression.determine();
     if (!(indexVar instanceof Variable<D, R, F>))
     {
-      throwException(format(NONVARIABLE_MSG, indexVar, rem));
+      throwException(format(NONVARIABLE_MSG, indexVar, expression.remaining()));
     }
+    parseIndex(indexVar);
+    parseStartIndex();
+    parseEndIndex();
+
+    if (startIndex instanceof LiteralConstant)
+    {
+      ((LiteralConstant<D, R, F>) startIndex).fieldName = "startIndex";
+    }
+    if (endIndex instanceof LiteralConstant)
+    {
+      ((LiteralConstant<D, R, F>) endIndex).fieldName = "endIndex";
+    }
+
+    return this;
+  }
+
+  private void parseIndex(Node<D, R, F> indexVar)
+  {
     index = (Variable<D, R, F>) indexVar;
     if (!expression.nextCharacterIs('='))
     {
       throwException(format(MISSING_EQUALS, expression.character, expression.position, expression));
     }
+  }
+
+  private void parseStartIndex()
+  {
     startIndex = expression.determine();
     if (!expression.nextCharacterIs('…'))
     {
       throwException(format(MISSING_ELLIPSIS, expression.character, expression.position, expression));
 
     }
+  }
+
+  private void parseEndIndex()
+  {
     endIndex = expression.determine();
     if (!expression.nextCharacterIs('}'))
     {
-      throwException(format(MISSING_CLOSING_CURLY_BRACE, rem));
+      throwException(format(MISSING_CLOSING_CURLY_BRACE, expression.remaining()));
     }
-
-    return this;
   }
 
   private void throwException(String msg)
@@ -99,6 +126,9 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    String indexFieldName = getIndexFieldName();
+    expression.context.registerVariable(indexFieldName, new Integer());
+
     productResultVariable = expression.reserveIntermediateVariable(mv, resultType);
     invokeMethod(mv, resultType, "multiplicativeIdentity", getMethodDescriptor(resultType), false);
     pop(mv);
@@ -110,7 +140,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     generateInnerLoop(mv);
     designateLabel(mv, justBeforeCheckingIfThisIsTheLastFactorAndJumpingToTheBeginningOfTheLoopIfNot);
 
-    loadEndIndex(mv);
+    endIndex.generate(mv, Integer.class);
     invokeMethod(mv, Integer.class, "compareTo", getMethodDescriptor(int.class, Integer.class), false);
 
     jumpToIfLessThanOrEquals(mv, beginningOfTheLoop);
@@ -188,7 +218,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   public String getIndexFieldName()
   {
-    return "index";
+    return index.reference.name;
   }
 
   private void designateLabel(MethodVisitor methodVisitor, Label label)
@@ -196,28 +226,48 @@ public class Product<D, R, F extends Function<D, R>> extends
     methodVisitor.visitLabel(label);
   }
 
-  /**
-   * 
-   * @param mv
-   */
   public void generateInnerLoop(MethodVisitor mv)
   {
     loadResultingProductVariable(mv);
-    loadFieldFromThis(mv, "factor", Function.class);
-    loadFieldFromThis(mv, "index", Integer.class);
+    loadFactor(mv);
+    loadIndex(mv);
     loadBitsParameter(mv);
-    loadFieldFromThis(mv, "factorValue", expression.rangeType);
-    invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", factorEvaluateMethodSignature, true);
+    loadFactorValue(mv);
+    evaluateFactor(mv);
     checkClassCast(mv, expression.rangeType);
     loadBitsParameter(mv);
+    multiplyFactor(mv);
+    pop(mv);
+    incrementIndex(mv);
+  }
+
+  private void multiplyFactor(MethodVisitor mv)
+  {
     invokeMethod(mv,
                  expression.rangeType,
                  "mul",
                  getMethodDescriptor(expression.rangeType, expression.rangeType, int.class),
                  false);
-    mv.visitInsn(Opcodes.POP);
-    incrementIndex(mv);
+  }
 
+  private void evaluateFactor(MethodVisitor mv)
+  {
+    invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", factorEvaluateMethodSignature, true);
+  }
+
+  private void loadFactorValue(MethodVisitor mv)
+  {
+    loadFieldFromThis(mv, "factorValue", expression.rangeType);
+  }
+
+  private void loadIndex(MethodVisitor mv)
+  {
+    loadFieldFromThis(mv, index.reference.name, Integer.class);
+  }
+
+  private void loadFactor(MethodVisitor mv)
+  {
+    loadFieldFromThis(mv, "factor", Function.class);
   }
 
   void incrementIndex(MethodVisitor methodVisitor)
@@ -248,19 +298,17 @@ public class Product<D, R, F extends Function<D, R>> extends
   void setIndexToTheStartIndex(MethodVisitor methodVisitor)
   {
     loadIndexVariable(methodVisitor);
-    loadStartIndex(methodVisitor);
+    startIndex.generate(methodVisitor, Integer.class);
     invokeSetMethod(methodVisitor, Integer.class, Integer.class);
     pop(methodVisitor);
   }
 
-  protected static final String evaluate                      = "evaluate";
+  protected static String factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(Object.class),
+                                                                                   Type.getType(Object.class),
+                                                                                   Type.getType(int.class),
+                                                                                   Type.getType(Object.class));
 
-  protected static String       factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(Object.class),
-                                                                                         Type.getType(Object.class),
-                                                                                         Type.getType(int.class),
-                                                                                         Type.getType(Object.class));
-
-  String                        functionClass;
+  String                  functionClass;
 
   protected void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
   {
@@ -284,14 +332,9 @@ public class Product<D, R, F extends Function<D, R>> extends
     return methodVisitor;
   }
 
-  protected void loadEndIndex(MethodVisitor methodVisitor)
-  {
-    getField(methodVisitor, "endIndex", "Larb/Integer;");
-  }
-
   protected void loadFactorFunction(MethodVisitor methodVisitor)
   {
-    loadFieldFromThis(methodVisitor, "factor", Function.class);
+    loadFactor(methodVisitor);
   }
 
   void invokeMethod(MethodVisitor methodVisitor,
@@ -338,11 +381,6 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
     getField(methodVisitor, expression.className, productResultVariable, expression.rangeType);
 
-  }
-
-  protected void loadStartIndex(MethodVisitor methodVisitor)
-  {
-    getField(methodVisitor, "startIndex", "Larb/Integer;");
   }
 
   protected static MethodVisitor loadThis(MethodVisitor methodVisitor)

@@ -1,14 +1,7 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.loadThisOntoStack;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.DUP;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.NEW;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.SIPUSH;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.HashSet;
 
@@ -49,13 +42,21 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     return constantSymbols.contains(var);
   }
 
-  public boolean isInt = false;
+  public boolean      isInt = false;
 
-  public final String           value;
+  public final String value;
 
-  public String                 fieldName;
+  public String       fieldName;
 
   public LiteralConstant(Expression<D, R, F> expression, String constantValueString)
+  {
+    this(expression,
+         constantValueString,
+         null);
+
+  }
+
+  public LiteralConstant(Expression<D, R, F> expression, String constantValueString, String name)
   {
     super(expression);
     assert Integer.class.equals(arb.Integer.class) : "an import statement for arb.Integer is probably missing";
@@ -76,7 +77,10 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
         return;
       }
     }
-
+    if (name != null)
+    {
+      fieldName = name;
+    }
     if (fieldName == null)
     {
       fieldName = expression.getNextConstantFieldName();
@@ -96,11 +100,11 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   {
     if (π.equals(fieldName))
     {
-      getStaticField(mv,π);
+      getStaticField(mv, π);
     }
     else if (half.equals(fieldName))
     {
-      getStaticField(mv,"half");
+      getStaticField(mv, "half");
     }
     else
     {

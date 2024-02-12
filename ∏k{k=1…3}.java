@@ -3,25 +3,25 @@ import arb.Real;
 import arb.functions.real.RealNullaryFunction;
 
 public class ∏k{k=1…3} implements RealNullaryFunction {
-   Integer c1 = new Integer("1");
-   Integer c2 = new Integer("3");
-   public Integer index;
+   Integer startIndex = new Integer("1");
+   Integer endIndex = new Integer("3");
+   public Integer k;
    public Real ℝ1 = new Real();
 
    public Real evaluate(Void in, int order, int bits, Real result) {
       ℝ1.multiplicativeIdentity();
-      index.set(startIndex);
+      k.set(startIndex);
 
       do {
-         ℝ1.mul(factor.evaluate(index, bits, factorValue), bits);
-      } while(index.increment().compareTo(endIndex) <= 0);
+         ℝ1.mul(factor.evaluate(k, bits, factorValue), bits);
+      } while(k.increment().compareTo(endIndex) <= 0);
 
       return result.set(ℝ1);
    }
 
    public void close() {
-      c1.close();
-      c2.close();
+      startIndex.close();
+      endIndex.close();
       ℝ1.close();
    }
 }
