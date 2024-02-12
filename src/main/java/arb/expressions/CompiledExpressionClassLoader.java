@@ -1,5 +1,8 @@
 package arb.expressions;
 
+import static java.lang.System.err;
+import static java.lang.System.out;
+
 import java.util.HashMap;
 
 /**
@@ -38,6 +41,8 @@ public class CompiledExpressionClassLoader extends
 
   public Class<?> defineClass(String className, byte[] bytecodes)
   {
+    
+    err.println("defining "  + className );
     Class<?> definedClass = defineClass(className, bytecodes, 0, bytecodes.length);
     compiledClasses.put(className, definedClass);
     return definedClass;

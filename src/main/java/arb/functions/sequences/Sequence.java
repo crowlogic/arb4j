@@ -1,7 +1,9 @@
-package arb.functions;
+package arb.functions.sequences;
 
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.functions.Function;
 
 /**
  * 

@@ -156,7 +156,8 @@ public class Compiler
                                                                                                 byte[] bytecodes,
                                                                                                 Context context)
   {
-
+    assert className != null;
+    System.out.println( "Loading " + className );
     try
     {
       CompiledExpressionClassLoader loader = context != null ? context.classLoader : new CompiledExpressionClassLoader();

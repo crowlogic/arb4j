@@ -174,9 +174,10 @@ public class Product<D, R, F extends Function<D, R>> extends
                                                                                      Function.class,
                                                                                      getFactorFieldName());
 
+    Function<Integer, Object> factorInstance = factor.instantiate();
     expression.referencedFunctions.put(getFactorFieldName(),
                                        expression.context.registerFunctionMapping(getFactorFieldName(),
-                                                                                  factor.instantiate(),
+                                                                                  factorInstance,
                                                                                   Integer.class,
                                                                                   Object.class,
                                                                                   Function.class));
@@ -289,7 +290,8 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void loadFactor(MethodVisitor mv)
   {
-    loadFieldFromThis(mv, getFactorFieldName(), Function.class);
+    getField(mv, functionClass, getFactorFieldName(),  format("L%s;", factor));
+   // loadFieldFromThis(mv, getFactorFieldName(),);
   }
 
   private void loadFactorValue(MethodVisitor mv)

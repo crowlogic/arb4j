@@ -32,7 +32,6 @@ module arb4j
   requires transitive org.objectweb.asm.util;
 
   exports arb;
-  exports arb.sequences;
   exports arb.logic;
   exports arb.documentation;
   exports arb.documentation.references;
@@ -63,6 +62,8 @@ module arb4j
   exports arb.functions.complex.hyperbolic;
   exports arb.functions.complex.dynamics;
   exports arb.functions.complex.trigonometric;
+  exports arb.functions.sequences;
+  exports arb.functions.sequences.triangles;
   exports arb.groups;
   exports arb.space.bornological;
   exports arb.space.topological;
@@ -73,5 +74,4 @@ module arb4j
   exports arb.stochastic.processes.integrators;
   exports arb.utensils;
   exports arb.viz;
-
 }
