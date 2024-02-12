@@ -192,6 +192,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     return a.mul(this, bits, res);
   }
 
+  public Real mul(Real x, int bits)
+  {
+    return mul(x, bits, this);
+  }
+  
   public Real factorial(int bits, Real result)
   {
     if (!isInteger())

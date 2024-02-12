@@ -1,17 +1,10 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.IFLE;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -107,6 +100,10 @@ public class Product<D, R, F extends Function<D, R>> extends
   private String           productResultVariable;
   public Node<D, R, F>     startIndex;
 
+  private String           factorValueFieldName;
+
+  private String           factorFieldName;
+
   public Product(Expression<D, R, F> expression, Node<D, R, F> node)
   {
     super(expression);
@@ -119,9 +116,11 @@ public class Product<D, R, F extends Function<D, R>> extends
     assert functionClass != null : "functionClass is null";
   }
 
-  private void designateLabel(MethodVisitor methodVisitor, Label label)
+  private void designateLabel(MethodVisitor mv, Label label)
   {
-    methodVisitor.visitLabel(label);
+    mv.visitLabel(label);
+    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, new Object[]
+    {});
   }
 
   private void evaluateFactor(MethodVisitor mv)
@@ -161,34 +160,35 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
     String factorExpression = getIndexFieldName() + "->" + getIndexFieldName();
 
+    factorFieldName      = expression.getNextIntermediateVariableFieldName("factor", resultType);
+    factorValueFieldName = expression.newIntermediateVariable("factorValue", resultType);
+
     expression.context.registerVariable(getIndexFieldName(), new Integer());
 
     // FIXME: read the entire factor string , dont parse it, pass it to
     // Function.express here, for now we hard code it so that the factor is just the
     // value of the index of the factor for now
 
-    Expression<Integer, Object, Function<Integer, Object>> factor = Compiler.express(factorExpression,
-                                                                                     expression.context,
-                                                                                     Integer.class,
-                                                                                     resultType,
-                                                                                     Function.class,
-                                                                                     getFactorFieldName());
+    Expression<Integer, Object, Function<Integer, Object>> factor         = Compiler.express(factorExpression,
+                                                                                             expression.context,
+                                                                                             Integer.class,
+                                                                                             resultType,
+                                                                                             Function.class,
+                                                                                             factorFieldName);
 
-    Function<Integer, Object> factorInstance = factor.instantiate();
-    expression.referencedFunctions.put(getFactorFieldName(),
-                                       expression.context.registerFunctionMapping(getFactorFieldName(),
+    Function<Integer, Object>                              factorInstance = factor.instantiate();
+    expression.referencedFunctions.put(factorFieldName,
+                                       expression.context.registerFunctionMapping(factorFieldName,
                                                                                   factorInstance,
                                                                                   Integer.class,
                                                                                   Object.class,
                                                                                   Function.class));
 
-    productResultVariable = expression.reserveIntermediateVariable(mv, resultType);
+    productResultVariable = expression.reserveIntermediateVariable(mv, "product", resultType);
     invokeMethod(mv, resultType, "multiplicativeIdentity", getMethodDescriptor(resultType), false);
     pop(mv);
     setIndexToTheStartIndex(mv);
     designateLabel(mv, beginningOfTheLoop);
-    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, new Object[]
-    {});
 
     generateInnerLoop(mv);
 
@@ -209,11 +209,6 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     return mv;
 
-  }
-
-  public String getFactorFieldName()
-  {
-    return "factor";
   }
 
   public void generateInnerLoop(MethodVisitor mv)
@@ -290,13 +285,13 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void loadFactor(MethodVisitor mv)
   {
-    getField(mv, functionClass, getFactorFieldName(),  format("L%s;", factor));
-   // loadFieldFromThis(mv, getFactorFieldName(),);
+    getField(mv, functionClass, factorFieldName, "L" + factorFieldName + ";");
+    // loadFieldFromThis(mv, factorFieldName,);
   }
 
   private void loadFactorValue(MethodVisitor mv)
   {
-    loadFieldFromThis(mv, "factorValue", expression.rangeType);
+    loadFieldFromThis(mv, factorValueFieldName, expression.rangeType);
   }
 
   protected MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
@@ -329,7 +324,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   void loadVariableThatHoldsTheEvaluatedFactor(MethodVisitor methodVisitor)
   {
-    loadFieldFromThis(methodVisitor, "factorValue", Real.class);
+    loadFieldFromThis(methodVisitor, factorValueFieldName, Real.class);
   }
 
   private void multiplyFactor(MethodVisitor mv)

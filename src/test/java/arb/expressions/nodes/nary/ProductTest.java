@@ -18,6 +18,6 @@ public class ProductTest extends
   public static void testOneTimesTwoTimesThreeEqualsSix() throws AnalyzerException
   {
     NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1…3}");
-    assertEquals(6.0, prod.evaluate(null, 128, new Real()));
+    assertEquals(6.0, prod.evaluate(null, 128, new Real()).doubleValue());
   }
 }

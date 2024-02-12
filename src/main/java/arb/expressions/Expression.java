@@ -116,7 +116,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (functionName != null)
     {
       mapping = context.registerFunctionMapping(functionName, null, domainClass, rangeClass, functionClass);
-      
+
     }
 
     Expression<D, R, F> compiledExpression = express(expression,
@@ -130,7 +130,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       mapping.func = func;
     }
-    
+
     return func;
   }
 
@@ -1039,9 +1039,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return "c" + constantCount++;
   }
 
-  public String getNextIntermediatevariableFieldName(Class<?> type)
+
+  public String getNextIntermediateVariableFieldName(String name, Class<?> type)
   {
-    String        prefix  = getVariablePrefix(type);
+    String        prefix  = name + getVariablePrefix(type);
     AtomicInteger counter = intermediateVariableCounters.get(prefix);
     if (counter == null)
     {
@@ -1171,7 +1172,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public String newIntermediateVariable(Class<?> type)
   {
     assert type != Void.class : "dont generate a variable for the Void type";
-    String intermediateVarName = getNextIntermediatevariableFieldName(type);
+    String intermediateVarName = getNextIntermediateVariableFieldName("",type);
+    intermediateVariables.add(new IntermediateVariable<>(this,
+                                                         intermediateVarName,
+                                                         type));
+
+    return intermediateVarName;
+  }
+
+  public String newIntermediateVariable(String name, Class<?> type)
+  {
+    assert type != Void.class : "dont generate a variable for the Void type";
+    String intermediateVarName = getNextIntermediateVariableFieldName(name, type);
     intermediateVariables.add(new IntermediateVariable<>(this,
                                                          intermediateVarName,
                                                          type));
@@ -1276,6 +1288,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public String remaining()
   {
     return expression.substring(position, expression.length());
+  }
+  
+  public String reserveIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
+  {
+    String intermediateVariableName = newIntermediateVariable(prefix, type);
+    loadFieldOntoStack(loadThisOntoStack(methodVisitor), intermediateVariableName, type.descriptorString());
+    return intermediateVariableName;
   }
 
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, Class<?> type)
