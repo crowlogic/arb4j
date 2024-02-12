@@ -35,6 +35,7 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
   {
     this.expression = expression;
     this.namespace  = expression.variables;
+    System.out.println( "new " + getClass() + " at pos " + expression.position );
   }
 
   final Variables namespace;

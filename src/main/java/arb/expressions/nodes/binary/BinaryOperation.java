@@ -109,7 +109,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-
     generatedType = resultType;
 
     left.generate(mv, left.type());

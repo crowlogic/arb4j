@@ -102,6 +102,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     this.reference  = reference;
     this.variables  = expression.variables;
     isMultivariate  = reference.isMultivariate();
+    assert reference != null;
     assert !(expression.recursive && reference.name.equals(expression.functionName)) : caveat;
 
     if (variables == null || !variables.map.containsKey(reference.name))
@@ -255,6 +256,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public String toString(int depth)
   {
+    
     return String.format("%s[reference=%s, type=%s]",
                          getClass().getSimpleName(),
                          isIndependent ? format("INPUT(%s)", reference) : reference,
