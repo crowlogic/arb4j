@@ -83,7 +83,11 @@
   with
 
   <\equation>
-    K=<around|[|k<rsub|0>,k<rsub|1>,\<ldots\>,k<rsub|m-1>|]><rsup|T>,<space|1em>P=<around|[|p<rsub|0><rsup|\<alpha\>,\<beta\>><around|(|x|)>,p<rsub|1><rsup|\<alpha\>,\<beta\>><around|(|x|)>,\<ldots\>,p<rsub|m-1><rsup|\<alpha\>,\<beta\>><around|(|x|)>|]><text|>
+    K=<around|[|k<rsub|0>,k<rsub|1>,\<ldots\>,k<rsub|m-1>|]><rsup|T><text|>
+  </equation>
+
+  <\equation>
+    P=<around|[|p<rsub|0><rsup|\<alpha\>,\<beta\>><around|(|x|)>,p<rsub|1><rsup|\<alpha\>,\<beta\>><around|(|x|)>,\<ldots\>,p<rsub|m-1><rsup|\<alpha\>,\<beta\>><around|(|x|)>|]>
   </equation>
 
   In as much as <math|p<rsub|m,\<alpha\>,\<beta\>>> is a finite dimensional
@@ -148,9 +152,9 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_18.tm>>
-    <associate|auto-2|<tuple|15|2|../../.TeXmacs/texts/scratch/no_name_18.tm>>
-    <associate|auto-3|<tuple|16|2|../../.TeXmacs/texts/scratch/no_name_18.tm>>
+    <associate|auto-1|<tuple|?|1>>
+    <associate|auto-2|<tuple|16|2>>
+    <associate|auto-3|<tuple|17|2>>
   </collection>
 </references>
 
