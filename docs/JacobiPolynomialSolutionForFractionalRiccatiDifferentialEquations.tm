@@ -138,6 +138,58 @@
   <\equation>
     E=I<rsup|\<mu\>>*P-Q<rsup|<around|(|\<mu\>|)>>*P<text|>
   </equation>
+
+  <\equation*>
+    <around|\<\|\|\>|E<rsub|n>|\<\|\|\>>\<leq\><choice|<tformat|<table|<row|<cell|<frac|m!|\<Gamma\>*<around|(|m-\<mu\>+1|)>><around*|(|<frac|L|x<rsub|0>>|)><rsup|\<mu\>><frac|m+\<beta\>|m>*B<around|(|\<alpha\>+1,\<beta\>+1|)>>|<cell|\<beta\>\<geq\>0>>|<row|<cell|<frac|m!|\<Gamma\>*<around|(|m-\<mu\>+1|)>><around*|(|<frac|L|x<rsub|0>>|)><rsup|\<mu\>>*B<around|(|\<alpha\>+1,\<beta\>+1|)>>|<cell|\<beta\>\<less\>0>>>>><space|1em><around|(|3.3|)>
+  </equation*>
+
+  where <math|x<rsub|0>\<gtr\>0> and <math|L=max
+  <around|{|1,-x<rsub|0>,x<rsub|b>|}>>.
+
+  <section*|4. Main Results>
+
+  <with|font-series|bold|Lemma 4.1.> Let
+
+  <\equation>
+    K=<around|[|k<rsub|0>,k<rsub|1>,\<ldots\>,k<rsub|n-1>|]><rsup|T>
+  </equation>
+
+  <\equation>
+    P=<around|[|P<rsub|0><rsup|\<alpha\>,\<beta\>><around|(|x|)>,P<rsub|1><rsup|\<alpha\>,\<beta\>><around|(|x|)>,\<ldots\>,P<rsub|n-1><rsup|\<alpha\>,\<beta\>><around|(|x|)>|]>
+  </equation>
+
+  Now if we suppose that <math|Q<rsup|<around|(|\<mu\>|)>>> is the same in
+  Theorem (3.1). Then,
+
+  <\equation*>
+    P<rsup|T><around|(|Q<rsup|<around|(|\<mu\>|)>>|)><rsup|T>*K=H*P<space|1em><around|(|4.1|)>
+  </equation*>
+
+  where
+
+  <\equation>
+    H=<around|(|h<rsub|i,j>|)><rsub|i,j=0,1,\<ldots\>,n-1>
+  </equation>
+
+  with
+
+  <\equation*>
+    h<rsub|i,j>=<frac|2<rsup|\<alpha\>+\<beta\>>|\<gamma\><rsub|i><rsup|\<alpha\>,\<beta\>>>*<big|int><rsub|0><rsup|1>P<rsub|i><rsup|\<alpha\>,\<beta\>><around|(|x|)>*P<rsub|j><rsup|\<alpha\>,\<beta\>><around|(|x|)><around*|(|<big|sum><rsub|\<ell\>=0><rsup|n-1>P<rsub|\<ell\>><rsup|\<alpha\>,\<beta\>><around|(|x|)>*k<rsub|\<ell\>>|)>*\<omega\><rsub|\<alpha\>,\<beta\>><around|(|x|)>*<space|0.17em>d*x
+  </equation*>
+
+  <math|\<forall\>i,j=0,1,\<ldots\>,n-1>
+
+  <with|font-series|bold|Proof:> We denote
+  <math|P<rsub|i><rsup|\<alpha\>,\<beta\>><around|(|x|)>> as
+  <math|p<rsub|i>>, <math|i=0,1,\<ldots\>,n-1>. We have
+
+  <\equation*>
+    P<rsup|T><around|(|Q<rsup|<around|(|\<mu\>|)>>|)><rsup|T>*K=<around*|[|<tabular*|<tformat|<table|<row|<cell|p<rsub|0>>>|<row|<cell|p<rsub|1>>>|<row|<cell|\<vdots\>>>|<row|<cell|p<rsub|n-1>>>>>>|]><rsup|T><around*|[|<tabular*|<tformat|<table|<row|<cell|q<rsup|<around|(|\<mu\>|)>><rsub|00>>|<cell|q<rsup|<around|(|\<mu\>|)>><rsub|01>>|<cell|\<cdots\>>|<cell|q<rsup|<around|(|\<mu\>|)>><rsub|0,n-1>>>|<row|<cell|q<rsup|<around|(|\<mu\>|)>><rsub|10>>|<cell|q<rsup|<around|(|\<mu\>|)>><rsub|11>>|<cell|\<cdots\>>|<cell|q<rsup|<around|(|\<mu\>|)>><rsub|1,n-1>>>|<row|<cell|\<vdots\>>|<cell|\<vdots\>>|<cell|\<ddots\>>|<cell|\<vdots\>>>|<row|<cell|q<rsup|<around|(|\<mu\>|)>><rsub|n-1,0>>|<cell|q<rsup|<around|(|\<mu\>|)>><rsub|n-1,1>>|<cell|\<cdots\>>|<cell|q<rsup|<around|(|\<mu\>|)>><rsub|n-1,n-1>>>>>>|]><around*|[|<tabular*|<tformat|<table|<row|<cell|k<rsub|0>>>|<row|<cell|k<rsub|1>>>|<row|<cell|\<vdots\>>>|<row|<cell|k<rsub|n-1>>>>>>|]>
+  </equation*>
+
+  <\equation*>
+    =<around*|[|<tabular*|<tformat|<table|<row|<cell|k<rsub|0>*<big|sum><rsub|i=0><rsup|n-1>p<rsub|0>*q<rsup|<around|(|\<mu\>|)>><rsub|0*i>+k<rsub|1>*<big|sum><rsub|i=0><rsup|n-1>p<rsub|0>*q<rsup|<around|(|\<mu\>|)>><rsub|1*i>+\<cdots\>+k<rsub|n-1>*<big|sum><rsub|i=0><rsup|n-1>p<rsub|0>*q<rsup|<around|(|\<mu\>|)>><rsub|n-1,i>>>|<row|<cell|\<vdots\>>>|<row|<cell|k<rsub|0>*<big|sum><rsub|i=0><rsup|n-1>p<rsub|n-1>*q<rsup|<around|(|\<mu\>|)>><rsub|0*i>+k<rsub|1>*<big|sum><rsub|i=0><rsup|n-1>p<rsub|n-1>*q<rsup|<around|(|\<mu\>|)>><rsub|1*i>+\<cdots\>+k<rsub|n-1>*<big|sum><rsub|i=0><rsup|n-1>p<rsub|n-1>*q<rsup|<around|(|\<mu\>|)>><rsub|n-1,i>>>>>>|]>
+  </equation*>
 </body>
 
 <\initial>
@@ -155,6 +207,7 @@
     <associate|auto-1|<tuple|?|1>>
     <associate|auto-2|<tuple|16|2>>
     <associate|auto-3|<tuple|17|2>>
+    <associate|auto-4|<tuple|19|?>>
   </collection>
 </references>
 
