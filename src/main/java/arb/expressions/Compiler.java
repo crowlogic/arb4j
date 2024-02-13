@@ -78,16 +78,15 @@ public class Compiler
 
     mv.visitInsn(Opcodes.ATHROW);
     mv.visitLdcInsn(1);
-    
+
     // Pushes the integer 0 onto the stack as the denominator.
     mv.visitInsn(ICONST_0);
-    
+
     // Performs the division, which will result in division by zero.
     mv.visitInsn(IDIV);
-    
+
     mv.visitLabel(notNullLabel);
 
-  
   }
 
   public static MethodVisitor checkClassCast(MethodVisitor methodVisitor, Class<?> type)
@@ -157,7 +156,10 @@ public class Compiler
                                                                                                 Context context)
   {
     assert className != null;
-    System.out.println( "Loading " + className );
+    if (context != null && context.verbose)
+    {
+      System.out.println("Loading " + className);
+    }
     try
     {
       CompiledExpressionClassLoader loader = context != null ? context.classLoader : new CompiledExpressionClassLoader();

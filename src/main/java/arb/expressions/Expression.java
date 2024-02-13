@@ -418,7 +418,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareVariableEntry(ClassVisitor classVisitor, Entry<String, Object> variable)
   {
-    if (this.saveClasses)
+    if (verbose)
     {
       System.out.println("Declaring variable of " + className + ": " + variable);
     }
@@ -432,7 +432,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public static boolean computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
                                                                            "true"));
 
-  public PrintWriter    printWriter;;
+  public PrintWriter    printWriter;
+
+  public boolean        verbose       = false;
 
   public Class<F> load()
   {
@@ -678,11 +680,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     printWriter = new PrintWriter(System.out,
                                   false);
 
-    System.out.println("Generating " + rootNode);
+    if (verbose)
+    {
+      System.out.println("Generating " + rootNode);
 
-    classVisitor = new TraceClassVisitor(classVisitor,
-                                         new Textifier(),
-                                         printWriter);
+      classVisitor = new TraceClassVisitor(classVisitor,
+                                           new Textifier(),
+                                           printWriter);
+    }
 
     try
     {
@@ -1039,7 +1044,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return "c" + constantCount++;
   }
 
-
   public String getNextIntermediateVariableFieldName(String name, Class<?> type)
   {
     String        prefix  = name + getVariablePrefix(type);
@@ -1172,7 +1176,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public String newIntermediateVariable(Class<?> type)
   {
     assert type != Void.class : "dont generate a variable for the Void type";
-    String intermediateVarName = getNextIntermediateVariableFieldName("",type);
+    String intermediateVarName = getNextIntermediateVariableFieldName("", type);
     intermediateVariables.add(new IntermediateVariable<>(this,
                                                          intermediateVarName,
                                                          type));
@@ -1289,7 +1293,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     return expression.substring(position, expression.length());
   }
-  
+
   public String reserveIntermediateVariable(MethodVisitor methodVisitor, String prefix, Class<?> type)
   {
     String intermediateVariableName = newIntermediateVariable(prefix, type);

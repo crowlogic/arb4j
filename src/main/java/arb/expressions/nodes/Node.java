@@ -26,7 +26,7 @@ import arb.functions.Function;
 public abstract class Node<D, R, F extends Function<D, R>> implements
                           Typesettable
 {
- 
+
   public Expression<D, R, F> expression;
 
   public boolean             isResult = false;
@@ -35,7 +35,10 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
   {
     this.expression = expression;
     this.namespace  = expression.variables;
-    System.out.println( "new " + getClass() + " at pos " + expression.position );
+    if (expression.verbose)
+    {
+      System.out.println("new " + getClass() + " at pos " + expression.position);
+    }
   }
 
   final Variables namespace;

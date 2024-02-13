@@ -81,8 +81,6 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   protected static MethodVisitor loadThis(MethodVisitor methodVisitor)
   {
-    System.out.println("loadThis ALOAD 0");
-
     methodVisitor.visitVarInsn(ALOAD, 0);
     return methodVisitor;
   }
@@ -228,7 +226,10 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   protected void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
   {
-    out.format("getField(fieldName=%s, fieldTypeSignature=%s\n", fieldName, fieldTypeSignature);
+    if (expression.verbose)
+    {
+      out.format("getField(fieldName=%s, fieldTypeSignature=%s\n", fieldName, fieldTypeSignature);
+    }
     getField(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
 
@@ -374,7 +375,6 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   protected void pop(MethodVisitor methodVisitor)
   {
-    out.println("POP");
     methodVisitor.visitInsn(POP);
   }
 

@@ -20,4 +20,10 @@ public class ProductTest extends
     NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1…3}");
     assertEquals(6.0, prod.evaluate(null, 128, new Real()).doubleValue());
   }
+  
+  public static void testOneTimesTwoTimesThreeTimesfourEqualsTwentyFour() throws AnalyzerException
+  {
+    NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1…4}");
+    assertEquals(24.0, prod.evaluate(null, 128, new Real()).doubleValue());
+  }
 }
