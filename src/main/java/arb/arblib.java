@@ -13,6 +13,10 @@ public class arblib {
     return arblibJNI.fmpz_popcnt(a);
   }
 
+  public static void fmpz_set_ui(long f, long val) {
+    arblibJNI.fmpz_set_ui(f, val);
+  }
+
   public static int arb_is_int(Real x) {
     return arblibJNI.arb_is_int(Real.getCPtr(x), x);
   }

@@ -425,4 +425,10 @@ public class Integer implements
     return factorial(this, this);
   }
 
+  public Integer set(long val)
+  {
+    arblib.fmpz_set_ui(swigCPtr, val);
+    return this;
+  }
+
 }

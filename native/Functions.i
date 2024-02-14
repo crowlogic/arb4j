@@ -6,7 +6,9 @@
 #include <flint/fmpq.h>
 
  ulong fmpz_popcnt(const fmpz_t a);
- 
+ void
+fmpz_set_ui(fmpz_t f, ulong val);
+
  int arb_is_int(const arb_t x);
  
 void fmpq_add(fmpq_t res, const fmpq_t op1, const fmpq_t op2);
