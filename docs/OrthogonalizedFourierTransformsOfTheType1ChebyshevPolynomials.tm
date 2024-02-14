@@ -46,8 +46,9 @@
 
   <section|The Type-I Chebyshev Polynomials <math|T<rsub|n><around*|(|x|)>>>
 
-  Let <math|T<rsub|n>> be the Chebyshev polynomials of the first kind, also
-  said to be of Type-I, defined by
+  Let <math|T<rsub|n>> be the Chebyshev polynomials of the first
+  kind<cite-detail|orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI|II.2.C>,
+  also said to be of Type-I, defined by
 
   <\equation>
     <tabular|<tformat|<table|<row|<cell|T<rsub|n><around*|(|x|)>>|<cell|=<rsub|2>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|1|2>-<frac|x|2>|)>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*x
@@ -57,45 +58,50 @@
     z>*T<rsub|n><around|(|z|)>d*z d*y>>>>>
   </equation>
 
-  where <math|<rsub|2>F<rsub|1>> is the (Gauss) hypergeometric function.
-  <cite|higherTranscendentalFunctions>
+  where <math|<rsub|2>F<rsub|1>> is the (Gauss) hypergeometric function.\ 
 
   <subsection|The Fourier Transforms <math|<wide|T|^><rsub|n><around|(|y|)>>
   of <math|T<rsub|n><around*|(|x|)>>>
 
-  The functions <math|<wide|T|^><rsub|n><around|(|y|)>> are Fourier
-  transforms <math|>of <math|T<rsub|n><around*|(|x|)>> defined by
+  <\lemma>
+    The functions <math|<wide|T|^><rsub|n><around|(|y|)>> are Fourier
+    transforms <math|>of <math|T<rsub|n><around*|(|x|)>> defined by
 
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|<wide|T|^><rsub|n><around|(|y|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
-    y>*T<rsub|n><around|(|x|)>d*y=<big|int><rsub|-1><rsup|1>e<rsup|-i*x
-    y>*T<rsub|n><around|(|x|)>d*x>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
-    y> <rsub|2>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|1|2>-<frac|x|2>|)>*<rsub|>d*x>>|<row|<cell|>|<cell|=<with|font-base-size|12|<frac|i*|y>*><around*|(|e<rsup|-i
-    y>F<rsup|+><rsub|n><around*|(|y|)>-e<rsup|i<around*|(|\<pi\>n+y|)>>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>
-  </equation>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|<wide|T|^><rsub|n><around|(|y|)>>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
+      y>*T<rsub|n><around|(|x|)>d*y=<big|int><rsub|-1><rsup|1>e<rsup|-i*x
+      y>*T<rsub|n><around|(|x|)>d*x>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*x
+      y> <rsub|2>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|1|1|cell-halign|c>|<cwith|1|-1|1|1|cell-lborder|0ln>|<cwith|1|-1|1|1|cell-rborder|0ln>|<table|<row|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|1|2>-<frac|x|2>|)>*<rsub|>d*x>>|<row|<cell|>|<cell|=<with|font-base-size|12|<frac|i*|y>*><around*|(|e<rsup|-i
+      y>F<rsup|+><rsub|n><around*|(|y|)>-e<rsup|i<around*|(|\<pi\>n+y|)>>F<rsub|n><rsup|-><around*|(|y|)>|)>>>>>>
+    </equation>
 
-  where
+    where
 
-  <\equation>
-    F<rsub|n><rsup|\<pm\>><around*|(|y|)>=<rsub|3>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|2|2|cell-halign|c>|<cwith|1|-1|2|2|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|1,>|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|\<pm\>i
-    y|2>|)>
-  </equation>
+    <\equation>
+      F<rsub|n><rsup|\<pm\>><around*|(|y|)>=<rsub|3>F<rsub|1><around*|(|<tabular*|<tformat|<cwith|1|-1|2|2|cell-halign|c>|<cwith|1|-1|2|2|cell-lborder|0ln>|<cwith|1|-1|2|2|cell-rborder|0ln>|<table|<row|<cell|1,>|<cell|n,>|<cell|-n>>|<row|<cell|>|<cell|>|<cell|<frac|1|2>>>>>><mid|\|><frac|\<pm\>i
+      y|2>|)>
+    </equation>
 
-  The <math|L<rsup|2>> norm of <math|<wide|T|^><rsub|n><around|(|y|)>> is
+    The <math|L<rsup|2>> norm of <math|<wide|T|^><rsub|n><around|(|y|)>> is
 
-  <\equation>
-    <around*|\||<wide|T|^><rsub|n>|\|><rsub|>=<sqrt|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|T|^><rsub|n><around|(|y|)><rsup|2>\<mathd\>y>=<sqrt|<frac|4<around*|(|-1|)><rsup|n>\<pi\>-<around*|(|2n<rsup|2>-1|)>|4n<rsup|2>-1>>
-  </equation>
+    <\equation>
+      <around*|\||<wide|T|^><rsub|n>|\|><rsub|>=<sqrt|<big|int><rsub|-\<infty\>><rsup|\<infty\>><wide|T|^><rsub|n><around|(|y|)><rsup|2>\<mathd\>y>=<sqrt|<frac|4<around*|(|-1|)><rsup|n>\<pi\>-<around*|(|2n<rsup|2>-1|)>|4n<rsup|2>-1>>
+    </equation>
 
-  then define the normalized Fourier transforms
-  <math|Y<rsub|n><around*|(|y|)>> of <math|T<rsub|n><around*|(|x|)>> by
+    then define the normalized Fourier transforms
+    <math|Y<rsub|n><around*|(|y|)>> of <math|T<rsub|n><around*|(|x|)>> by
 
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|Y<rsub|n><around*|(|y|)>>|<cell|=<frac|<wide|T|^><rsub|n><around|(|y|)>|<around*|\||<wide|T|^><rsub|n>|\|>>>>|<row|<cell|>|<cell|>>|<row|<cell|>|<cell|=<frac|i*|y><around*|(|<frac|e<rsup|-i
-    y>F<rsup|+><rsub|n><around*|(|y|)>-e<rsup|i<around*|(|\<pi\>n+y|)>>F<rsub|n><rsup|-><around*|(|y|)>|<sqrt|<frac|4<around*|(|-1|)><rsup|n>\<pi\>-<around*|(|2n<rsup|2>-1|)>|4n<rsup|2>-1>>>|)>>>>>>
-  </equation>
+    <\equation>
+      <tabular|<tformat|<table|<row|<cell|Y<rsub|n><around*|(|y|)>>|<cell|=<frac|<wide|T|^><rsub|n><around|(|y|)>|<around*|\||<wide|T|^><rsub|n>|\|>>>>|<row|<cell|>|<cell|>>|<row|<cell|>|<cell|=<frac|i*|y><around*|(|<frac|e<rsup|-i
+      y>F<rsup|+><rsub|n><around*|(|y|)>-e<rsup|i<around*|(|\<pi\>n+y|)>>F<rsub|n><rsup|-><around*|(|y|)>|<sqrt|<frac|4<around*|(|-1|)><rsup|n>\<pi\>-<around*|(|2n<rsup|2>-1|)>|4n<rsup|2>-1>>>|)>>>>>>
+    </equation>
+  </lemma>
 
-  For a proof see <cite|finiteFourierTransformsOfClassicalOrthogonalPolynomials>
+  <\proof>
+    For a proof see <cite|finiteFourierTransformsOfClassicalOrthogonalPolynomials>
+    TODO: repeat a little from <cite|finiteFourierTransformsOfClassicalOrthogonalPolynomials>
+    possibly\ 
+  </proof>
 
   \ <subsection|Orthogonalizing <math|Y<rsup|><rsub|n><around|(|y|)>> Via The
   Gram-Schmidt Process>
@@ -155,22 +161,25 @@
 
   <\bibliography|bib|tm-plain|refs2>
     <\bib-list|2>
-      <bibitem*|1><label|bib-higherTranscendentalFunctions>Fritz<nbsp>Oberhettinger,<nbsp>Francesco<nbsp>G.<nbsp>Tricomi
-      Arthur Erdélyi, Wilhelm Magnus. <newblock><with|font-shape|italic|Higher
-      Transcendental Functions>, <localize|volume> III. <newblock>McGraw-Hill
-      Book Company, Inc., New York-Toronto-London, 1955.<newblock>
-
-      <bibitem*|2><label|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials>Atul
+      <bibitem*|1><label|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials>Atul
       Dixit, Lin Jiu, Victor<nbsp>H Moll<localize|, and >Christophe Vignat.
       <newblock>The finite fourier transform of classical polynomials.
       <newblock><with|font-shape|italic|Journal of the Australian
       Mathematical Society>, 98:145\U160, 2015.<newblock>
+
+      <bibitem*|2><label|bib-orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI>Lance<nbsp>L
+      Littlejohn<localize| and >Allan<nbsp>M Krall. <newblock>Orthogonal
+      polynomials and singular sturm-liouville systems, i.
+      <newblock><with|font-shape|italic|The Rocky Mountain journal of
+      mathematics>, 16(3):435\U479, 1986.<newblock>
     </bib-list>
   </bibliography>
 </body>
 
 <\initial>
   <\collection>
+    <associate|global-title|An Orthogonal Basis for the Bessel Functions of
+    the First Kind of Orders 0 and 1>
     <associate|magnification|1.2>
     <associate|page-even-footer|>
     <associate|page-even-header|>
@@ -186,22 +195,22 @@
 
 <\references>
   <\collection>
-    <associate|A|<tuple|1|3|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|auto-1|<tuple|1|1|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|auto-2|<tuple|1.1|2|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|auto-3|<tuple|1.2|2|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|auto-4|<tuple|1|3|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|auto-5|<tuple|2|3|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|auto-6|<tuple|2|?|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|2|3|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
-    <associate|bib-higherTranscendentalFunctions|<tuple|1|?|../../b/docs/OrthogonalizedFourierTransformsOfTheType1ChebyshevPolynomials.tm>>
+    <associate|A|<tuple|1|3>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|1.1|2>>
+    <associate|auto-3|<tuple|1.2|2>>
+    <associate|auto-4|<tuple|1|3>>
+    <associate|auto-5|<tuple|2|3>>
+    <associate|auto-6|<tuple|2|?>>
+    <associate|bib-finiteFourierTransformsOfClassicalOrthogonalPolynomials|<tuple|1|3>>
+    <associate|bib-orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI|<tuple|2|?>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
-      higherTranscendentalFunctions
+      orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI
 
       finiteFourierTransformsOfClassicalOrthogonalPolynomials
     </associate>
