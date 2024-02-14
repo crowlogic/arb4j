@@ -27,14 +27,14 @@ public abstract class AbstractBibliography
   @Override
   public String toString()
   {
-    return getReferenceFields().map(field -> getReference(field).cite(field.getName()))
-                               .collect(Collectors.joining("\n\n"));
+    return getReferences().map(field -> getReference(field).cite(field.getName()))
+                          .collect(Collectors.joining("\n\n"));
   }
 
-  protected Stream<Field> getReferenceFields()
+  protected Stream<Field> getReferences()
   {
     return getFieldStream().filter(field -> Reference.class.isAssignableFrom(field.getType())
-                  && getReference(field) != null);
+                  && getReference(field) != null).collect(Collectors.toList()).reversed().stream();
   }
 
   protected Stream<Field> getFieldStream()
