@@ -1,17 +1,10 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.IFLE;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -33,6 +26,14 @@ import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
+ * Parse represent and generate bytecodes for the product operator where the
+ * syntax is ∏f(k){k=a…b} and the characters between the Π and { characters are
+ * compiled as a sub-expression as a function from the {@link Integer} index
+ * variable to whatever type is output by default or requested by whatever is
+ * requesting its generation
+ * 
+ * // FIXME: need to make this sub-expression aware of the input field of the
+ * containing expression
  * 
  * @param <D> domain
  * @param <R> range
@@ -98,11 +99,12 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   public String            factor;
 
-  String                   functionClass;
+  public String            functionClass;
 
   public Variable<D, R, F> index;
 
-  private String           productResultVariable;
+  public String            productResultVariable;
+
   public Node<D, R, F>     startIndex;
 
   private String           factorValueFieldName;
@@ -181,7 +183,8 @@ public class Product<D, R, F extends Function<D, R>> extends
     factorValueFieldName = expression.newIntermediateVariable("factorValue", resultType);
 
     expression.context.registerVariable(getIndexFieldName(), new Integer());
-
+    // FIXME: need to make this sub-expression aware of the input field of the
+    // containing expression
     Expression<Integer, Object, Function<Integer, Object>> factor         = Compiler.express(factorExpression,
                                                                                              expression.context,
                                                                                              Integer.class,
@@ -324,13 +327,6 @@ public class Product<D, R, F extends Function<D, R>> extends
     getField(methodVisitor, getIndexFieldName(), "Larb/Integer;");
   }
 
-  /**
-   * Calls this{@link #getField(MethodVisitor, String, String, Class)} so that the
-   * variable named by this{@link #productResultVariable} is put on the top of the
-   * stack
-   * 
-   * @param methodVisitor
-   */
   void loadResultingProductVariable(MethodVisitor methodVisitor)
   {
     getField(methodVisitor, expression.className, productResultVariable, expression.rangeType);
