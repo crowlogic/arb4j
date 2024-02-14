@@ -6,8 +6,9 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
 /**
- * Returns the number of ‘1’ bits in the given Z (aka Hamming weight or
- * population count). The return value is undefined if the input is negative.
+ * Returns the number of ‘1’ bits in the given Z (aka
+ * <a href="https://oeis.org/A000120">Hamming weight or population count</a>).
+ * The return value is undefined if the input is negative.
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
