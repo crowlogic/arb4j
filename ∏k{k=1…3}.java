@@ -6,29 +6,32 @@ public class ∏k{k=1…3} implements RealNullaryFunction {
    Integer startIndex;
    Integer endIndex;
    public Integer k;
-   public Real ℝ1;
-   public final factor factor = new factor();
+   public Real factorValueℝ1;
+   public Real productℝ1;
+   public final factorℝ1 factorℝ1 = new factorℝ1();
 
    public Real evaluate(Void in, int order, int bits, Real result) {
-      ℝ1.multiplicativeIdentity();
+      productℝ1.multiplicativeIdentity();
       k.set(startIndex);
 
       do {
-         ℝ1.mul(factor.evaluate(k, bits, factorValue), bits);
+         productℝ1.mul(factorℝ1.evaluate(k, bits, factorValueℝ1), bits);
       } while(k.increment().compareTo(endIndex) <= 0);
 
-      return result.set(ℝ1);
+      return result.set(productℝ1);
    }
 
    public _k_k_1_3_/* $VF was: ∏k{k=1…3}*/() {
       startIndex = new Integer("1");
       endIndex = new Integer("3");
-      ℝ1 = new Real();
+      factorValueℝ1 = new Real();
+      productℝ1 = new Real();
    }
 
    public void close() {
       startIndex.close();
       endIndex.close();
-      ℝ1.close();
+      factorValueℝ1.close();
+      productℝ1.close();
    }
 }

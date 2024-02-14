@@ -1,10 +1,17 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameter;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.POP;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -66,13 +73,13 @@ public class Product<D, R, F extends Function<D, R>> extends
   protected static MethodVisitor
             getField(MethodVisitor mv, String thisClassInternalName, String fieldName, Class<?> type)
   {
-    return getField(mv, thisClassInternalName, fieldName, type.descriptorString());
+    return getThisField(mv, thisClassInternalName, fieldName, type.descriptorString());
   }
 
-  protected static MethodVisitor getField(MethodVisitor methodVisitor,
-                                          String thisClassInternalName,
-                                          String fieldName,
-                                          String fieldTypeSignature)
+  protected static MethodVisitor getThisField(MethodVisitor methodVisitor,
+                                              String thisClassInternalName,
+                                              String fieldName,
+                                              String fieldTypeSignature)
   {
     assert thisClassInternalName != null : "thisClassInternalName is null";
     loadThis(methodVisitor).visitFieldInsn(GETFIELD, thisClassInternalName, fieldName, fieldTypeSignature);
@@ -89,7 +96,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   public Node<D, R, F>     endIndex;
 
-  public Node<D, R, F>     factor;
+  public String            factor;
 
   String                   functionClass;
 
@@ -102,16 +109,28 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private String           factorFieldName;
 
-  public Product(Expression<D, R, F> expression, Node<D, R, F> node)
+  public Product(Expression<D, R, F> expression)
   {
     super(expression);
     if (expression.context == null)
     {
       expression.context = new Context();
     }
-    factor        = node;
+    this.factor   = parseFactorExpression();
     functionClass = expression.className;
     assert functionClass != null : "functionClass is null";
+  }
+
+  private String parseFactorExpression()
+  {
+    int length   = expression.expression.length();
+    int startPos = expression.position;
+    while (expression.character != '{' && expression.position < length)
+    {
+      expression.nextCharacter();
+    }
+
+    return expression.expression.substring(startPos, expression.position).trim();
   }
 
   private void designateLabel(MethodVisitor mv, Label label)
@@ -156,16 +175,12 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    String factorExpression = getIndexFieldName() + "->" + getIndexFieldName();
+    String factorExpression = getIndexFieldName() + "➔" + factor;
 
     factorFieldName      = expression.getNextIntermediateVariableFieldName("factor", resultType);
     factorValueFieldName = expression.newIntermediateVariable("factorValue", resultType);
 
     expression.context.registerVariable(getIndexFieldName(), new Integer());
-
-    // FIXME: read the entire factor string , dont parse it, pass it to
-    // Function.express here, for now we hard code it so that the factor is just the
-    // value of the index of the factor for now
 
     Expression<Integer, Object, Function<Integer, Object>> factor         = Compiler.express(factorExpression,
                                                                                              expression.context,
@@ -230,7 +245,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     {
       out.format("getField(fieldName=%s, fieldTypeSignature=%s\n", fieldName, fieldTypeSignature);
     }
-    getField(methodVisitor, functionClass, fieldName, fieldTypeSignature);
+    getThisField(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
 
   public String getIndexFieldName()
@@ -286,8 +301,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void loadFactor(MethodVisitor mv)
   {
-    getField(mv, functionClass, factorFieldName, "L" + factorFieldName + ";");
-    // loadFieldFromThis(mv, factorFieldName,);
+    getThisField(mv, functionClass, factorFieldName, "L" + factorFieldName + ";");
   }
 
   private void loadFactorValue(MethodVisitor mv)
@@ -417,7 +431,7 @@ public class Product<D, R, F extends Function<D, R>> extends
                          index.typeset(),
                          startIndex.typeset(),
                          endIndex.typeset(),
-                         factor.typeset());
+                         factor);
   }
 
 }

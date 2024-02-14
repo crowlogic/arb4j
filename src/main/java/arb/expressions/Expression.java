@@ -488,8 +488,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      return new Product<D, R, F>(this,
-                                  determine()).evaluateRangeSpecification();
+      return new Product<D, R, F>(this).evaluateRangeSpecification();
     }
     else if (Parser.isNumeric(character))
     {

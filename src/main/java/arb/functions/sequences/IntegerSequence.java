@@ -27,7 +27,7 @@ public interface IntegerSequence extends
    * <br>
    * 
    */
-  public static IntegerSequence oddSymmetricGroupConjugacyClassCounts = express("n->Σbinom(n, 2k) mod 2{k=0..floor(n/2)}");
+  public static IntegerSequence symmetricGroupOddConjugacyClassCounts = express("n->Σbinomial(n, 2k) mod 2{k=0..⌊n/2⌋}");
 
   /**
    * <a href="https://oeis.org/A001316">A001316 Gould's sequence<a>: <br>
