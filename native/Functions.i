@@ -5,6 +5,8 @@
 #include <arb_mat.h>
 #include <flint/fmpq.h>
 
+ ulong fmpz_popcnt(const fmpz_t a);
+ 
  int arb_is_int(const arb_t x);
  
 void fmpq_add(fmpq_t res, const fmpq_t op1, const fmpq_t op2);

@@ -104,14 +104,8 @@ public class P implements Function<Integer, RealPolynomial> {
    }
 
    public P(P var1) {
-      if (var1.α == null) {
-         throw new AssertionError("α is null");
-      } else if (var1.β == null) {
-         throw new AssertionError("β is null");
-      } else {
-         α = var1.α;
-         β = var1.β;
-      }
+      α = var1.α;
+      β = var1.β;
    }
 
    public void close() {

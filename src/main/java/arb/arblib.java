@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static long fmpz_popcnt(long a) {
+    return arblibJNI.fmpz_popcnt(a);
+  }
+
   public static int arb_is_int(Real x) {
     return arblibJNI.arb_is_int(Real.getCPtr(x), x);
   }
