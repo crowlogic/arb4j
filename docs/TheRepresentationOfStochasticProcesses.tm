@@ -1,10 +1,10 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
+<style|<tuple|generic|alt-colors|parchment|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|The Karhunen-Loeve Expansion and the Spectral
-  Representation of Stochastic Processes>>
+  <doc-data|<doc-title|The Karhunen-Loeve Stochastic Processes
+  Representation>>
 
   Following <cite|stochasticFiniteElements>,a rigorous exposition of the
   basic concepts of the theory of representation for random processes can be
@@ -26,7 +26,7 @@
   admits of the decomposition
 
   <\equation>
-    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int>g<around|(|x<rsub|1>|)>*g<around|(|x<rsub|2>|)>*d*\<mu\><rsub|1><around|(|\<theta\>|)>*d*\<mu\><rsub|2><around|(|\<theta\>|)>.
+    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int>g<around|(|x<rsub|1>|)>*g<around|(|x<rsub|2>|)>*d*\<mu\><rsub|1><around|(|\<theta\>|)>*d*\<mu\><rsub|2><around|(|\<theta\>|)>
   </equation>
 
   In equation (2.1), <math|g<around|(|x|)>> is a deterministic function.
@@ -45,7 +45,7 @@
   and
 
   <\equation>
-    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsup|1>*x<rsub|1>-\<omega\><rsup|2>*x<rsub|2>|)><rsup|T>>*S<around|(|\<omega\>|)>*d*\<omega\>.
+    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*<around|(|\<omega\><rsup|1>*x<rsub|1>-\<omega\><rsup|2>*x<rsub|2>|)><rsup|T>>*S<around|(|\<omega\>|)>*d*\<omega\>
   </equation>
 
   Here, the symbol <math|T> denotes vector transposition,
@@ -81,26 +81,17 @@
   orthogonal projections in this Hilbert space whereby the magnitudes of the
   projections on successive basis vectors are proportional to the
   corresponding eigenvalues of the covariance function associated with the
-  process <math|w*<around|(|x,\<theta\>|)>>. Given the crucial role that the
-  Karhunen-Loeve expansion has in relation to the methods discussed in this
-  monograph, it will be treated in greater detail in section (2.3).
+  process <math|w*<around|(|x,\<theta\>|)>>. Collectively, the
+  representations discussed up to <cite-detail|stochasticFiniteElements|2.2>
+  can be thought of as linear operators or filters acting on processes with
+  independent increments (Doob, 1953). Given the crucial role that the
+  Karhunen-Loeve expansion has in relation to the methods discussed in
+  <cite-detail|stochasticFiniteElements|2.3> the essential features shall be
+  reiterated.
 
-  Collectively, the representations discussed thus far can be thought of as
-  linear operators or filters acting on processes with independent increments
-  (Doob, 1953). Interestingly, these concepts can be generalized to allow for
-  the representation of nonlinear functionals of the orthogonal stochastic
-  measures <math|d*\<mu\><around|(|\<theta\>|)>>. The theory of nonlinear
-  functionals was developed by Volterra (1913). He generalized the Taylor
-  expansion of functions to the case of functionals. It was Wiener, however,
-  who first applied Volterra's ideas to stochastic analysis, and developed
-  what is now known as the Homogeneous Chaos. Based on Wiener's work, Cameron
-  and Martin (1947) developed the Fourier-Hermite expansion, which is a
-  Fourier-type expansion for nonlinear functionals. Again, it was Wiener
-  (1958) who first applied the
+  <section|<subsection*|Karhunen-Loeve Expansion>>
 
-  <subsection*|Karhunen-Loeve Expansion>
-
-  <subsubsection*|Derivation>
+  <subsection|<subsubsection*|Derivation>>
 
   One of the major difficulties associated with the numerical incorporation
   of random processes in finite element analyses, is the necessity to deal
@@ -154,18 +145,18 @@
   They can be normalized according to the following criterion
 
   <\equation>
-    <big|int><rsub|D>f<rsub|n><around|(|x|)>*f<rsub|m><around|(|x|)>*d*x=\<delta\><rsub|n*m>,
+    <big|int><rsub|D>f<rsub|n><around|(|x|)>*f<rsub|m><around|(|x|)>*d*x=\<delta\><rsub|n*m>
   </equation>
 
   where <math|\<delta\><rsub|n*m>> is the Kronecker delta. Clearly,
-  <math|w*<around|(|x,\<theta\>|)>> can be written as
+  <math|w<around|(|x,\<theta\>|)>> can be written as
 
   <\equation>
     w*<around|(|x,\<theta\>|)>=<wide|w|\<bar\>><around|(|x|)>+\<alpha\><around|(|x,\<theta\>|)>
   </equation>
 
   where <math|\<alpha\><around|(|x,\<theta\>|)>> is a process with zero mean
-  and covariance
+  and covariance function <math|C<around*|(|x<rsub|1>,x<rsub|2>|)>>
 
   The process <math|\<alpha\><around|(|x,\<theta\>|)>> can be expanded in
   terms of the eigenfunctions <math|f<rsub|n><around|(|x|)>> as
@@ -180,7 +171,7 @@
   on both sides. Specifically, it is found that
 
   <\equation>
-    C<around|(|x<rsub|1>,x<rsub|2>|)>=<around|\<langle\>|\<alpha\><around|(|x<rsub|1>,\<theta\>|)>*\<alpha\><around|(|x<rsub|2>,\<theta\>|)>|\<rangle\>>=<big|sum><rsub|n=0><rsup|\<infty\>><big|sum><rsub|m=0><rsup|\<infty\>><around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|m>>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|m><around|(|x<rsub|2>|)>.
+    C<around|(|x<rsub|1>,x<rsub|2>|)>=<around|\<langle\>|\<alpha\><around|(|x<rsub|1>,\<theta\>|)>*\<alpha\><around|(|x<rsub|2>,\<theta\>|)>|\<rangle\>>=<big|sum><rsub|n=0><rsup|\<infty\>><big|sum><rsub|m=0><rsup|\<infty\>><around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|m>>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|m><around|(|x<rsub|2>|)>
   </equation>
 
   Then, multiplying both sides of equation (2.12) by
@@ -188,43 +179,43 @@
   <math|D>, and making use of the orthogonality of the eigenfunctions, yields
 
   <\equation>
-    <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|k><around|(|x<rsub|2>|)>*d*x<rsub|2>=\<lambda\><rsub|k>*f<rsub|k><around|(|x<rsub|1>|)>
-  </equation>
-
-  <\equation>
-    =<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|k><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|k>>*f<rsub|n><around|(|x<rsub|1>|)>.
+    <tabular|<tformat|<table|<row|<cell|<big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|k><around|(|x<rsub|2>|)>*d*x<rsub|2>>|<cell|=\<lambda\><rsub|k>*f<rsub|k><around|(|x<rsub|1>|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>><around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|k><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|k>>*f<rsub|n><around|(|x<rsub|1>|)>>>>>>
   </equation>
 
   Multiplying once more by <math|f<rsub|l><around|(|x<rsub|1>|)>> and
-  integrating over <math|D>, gives
+  integrating over <math|D> gives
 
   <\equation>
-    <big|int><rsub|D><big|int><rsub|D>f<rsub|l><around|(|x<rsub|1>|)>*f<rsub|k><around|(|x<rsub|1>|)>*d*x<rsub|1>=<big|sum><rsub|n=0><rsup|\<infty\>>E*<around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|k><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|k>>*\<delta\><rsub|n*l>.
+    <big|int><rsub|D><big|int><rsub|D>f<rsub|l><around|(|x<rsub|1>|)>*f<rsub|k><around|(|x<rsub|1>|)>*d*x<rsub|1>=<big|sum><rsub|n=0><rsup|\<infty\>>E*<around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|k><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|k>>*\<delta\><rsub|n*l>
   </equation>
 
   Then, using equation (2.9) leads to
 
   <\equation>
-    \<lambda\><rsub|k>*\<delta\><rsub|k*l>=<sqrt|\<lambda\><rsub|k>*\<lambda\><rsub|l>>*<around|\<langle\>|\<xi\><rsub|k><around|(|\<theta\>|)>*\<xi\><rsub|l><around|(|\<theta\>|)>|\<rangle\>>.
+    \<lambda\><rsub|k>*\<delta\><rsub|k*l>=<sqrt|\<lambda\><rsub|k>*\<lambda\><rsub|l>>*<around|\<langle\>|\<xi\><rsub|k><around|(|\<theta\>|)>*\<xi\><rsub|l><around|(|\<theta\>|)>|\<rangle\>>
   </equation>
 
   Equation (2.15) can be rearranged to give
 
   <\equation>
-    <around|\<langle\>|\<xi\><rsub|k><around|(|\<theta\>|)>*\<xi\><rsub|l><around|(|\<theta\>|)>|\<rangle\>>=\<delta\><rsub|k*l>.
+    <around|\<langle\>|\<xi\><rsub|k><around|(|\<theta\>|)>*\<xi\><rsub|l><around|(|\<theta\>|)>|\<rangle\>>=\<delta\><rsub|k*l>
   </equation>
 
   Thus, the random process <math|w*<around|(|x,\<theta\>|)>> can be written
   as
 
   <\equation>
-    w*<around|(|x,\<theta\>|)>=<wide|w|\<bar\>><around|(|x|)>+<big|sum><rsub|n=0><rsup|\<infty\>>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)>.
+    w*<around|(|x,\<theta\>|)>=<wide|w|\<bar\>><around|(|x|)>+<big|sum><rsub|n=0><rsup|\<infty\>>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)>
   </equation>
 
-  where,
+  where
 
   <\equation>
-    <around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>|\<rangle\>>=0,<space|1em><around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>>=\<delta\><rsub|n*m>.
+    <around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>|\<rangle\>>=0
+  </equation>
+
+  <\equation>
+    <around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>>=\<delta\><rsub|n*m>
   </equation>
 
   and <math|\<lambda\><rsub|n>,f<rsub|n><around|(|x|)>> are solution to
@@ -232,7 +223,7 @@
   <math|M<rsup|t*h>> term, gives
 
   <\equation>
-    w*<around|(|x,\<theta\>|)>=<wide|w|\<bar\>><around|(|x|)>+<big|sum><rsub|n=0><rsup|M>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)>.
+    w*<around|(|x,\<theta\>|)>=<wide|w|\<bar\>><around|(|x|)>+<big|sum><rsub|n=0><rsup|M>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)>
   </equation>
 
   An explicit expression for <math|\<xi\><rsub|n><around|(|\<theta\>|)>> can
@@ -241,38 +232,35 @@
   That is,
 
   <\equation>
-    \<xi\><rsub|n><around|(|\<theta\>|)>=<frac|1|<sqrt|\<lambda\><rsub|n>>>*<big|int><rsub|D>\<alpha\><around|(|x,\<theta\>|)>*f<rsub|n><around|(|x|)>*d*x.
+    \<xi\><rsub|n><around|(|\<theta\>|)>=<frac|<big|int><rsub|D>\<alpha\><around|(|x,\<theta\>|)>*f<rsub|n><around|(|x|)>*d*x|<sqrt|\<lambda\><rsub|n>>>
   </equation>
 
-  Viewed from a Reproducing Kernel Hilbert Space (RKHS) point of view
+  <subsubsection|Reproducing Kernel Hilbert Spaces (RKHS)>
+
+  The essential thing that the Reproducing Kernel Hilbert Space (RKHS)
   (Aronszajn, 1950; Parzen, 1959), either of equations (2.11) or (2.20), is
   an expression for the congruence that maps the Hilbert space spanned by the
   functions <math|f<rsub|n><around|(|x|)>> to the Hilbert space spanned by
   the random process, or equivalently, the space spanned by the set of random
-  variables <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>>. It is
-  this congruence along with the covariance function of the process that
-  determines uniquely the random process <math|w*<around|(|x,\<theta\>|)>>.
-  Observe the similarity of equations (2.11) and (2.20) with equations (2.7)
-  and (2.8), respectively. Indeed, it can be shown (Parzen, 1959) that if a
-  function can be represented in terms of linear operations on the family
-  <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>, then <math|f> belongs to the
-  RKHS corresponding to the kernel <math|C<around|(|x<rsub|1>,x<rsub|2>|)>>,
-  and the congruence between the two Hilbert spaces means of the same linear
-  operations used to represent <math|f> in terms of
-  <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>, <math|x<rsub|2>\<in\>D>. Another
-  point of practical importance is that the expansion given by equation
-  (2.19) can be used in a numerical simulation scheme to obtain numerical
-  realizations of the random process. In fact, this simulation procedure is
-  used in conjunction with the Monte Carlo method for one of the illustrative
-  examples in Chapter IV. It is optimal in the Fourier sense, as it minimizes
-  the mean square error resulting from truncation after a finite number of
-  terms. The expansion is used extensively in the fields of detection,
-  estimation, pattern recognition, and image processing as an efficient tool
-  to store random processes (Deviijver and Kittler, 1982). It is worth noting
-  at this point that the Karhunen-Loeve expansion was independently derived
-  in connection with stochastic turbulence problems (Lumley, 1970). In that
-  context, the associated eigenfunctions can be identified with the
-  characteristic eddies of the turbulence field.
+  variables <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>>.\ 
+
+  It is this congruence along with the covariance function of the process
+  that determines uniquely the random process
+  <math|w*<around|(|x,\<theta\>|)>>. Observe the similarity of equations
+  (2.11) and (2.20) with equations (2.7) and (2.8), respectively. Indeed, it
+  can be shown (Parzen, 1959) that if a function can be represented in terms
+  of linear operations on the family <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>,
+  then <math|f> belongs to the RKHS corresponding to the kernel
+  <math|C<around|(|x<rsub|1>,x<rsub|2>|)>>, and the congruence between the
+  two Hilbert spaces means of the same linear operations used to represent
+  <math|f> in terms of <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>,
+  <math|x<rsub|2>\<in\>D>.\ 
+
+  Another point of practical importance is that the expansion given by
+  equation (2.19) can be used in a numerical simulation scheme to obtain
+  numerical realizations of the random process. It is optimal in the Fourier
+  sense, as it minimizes the mean square error resulting from truncation
+  after a finite number of terms.
 
   It is well known from functional analysis that the steeper a bilinear form
   decays to zero as a function of one of its arguments, the more terms are
@@ -283,134 +271,125 @@
   the number of requisite terms to represent the underlying random process by
   the Karhunen-Loeve expansion.
 
-  For the special case of a random process possessing a rational spectrum,
-  the integral eigenvalue problem can be replaced by an equivalent
-  differential equation that is easier to solve (Van Trees, 1968). In the
-  same context, it is reminded that a necessary and sufficient condition for
-  a process to have a finite dimensional Markov realization is that its
-  spectrum be rational (Kree and Soize, 1986). Further, note that analytical
-  solutions for the integral equation (2.8) are obtainable for some quite
-  important and practical forms of the kernel
-  <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> (Juncosa, 1945; Slepian and
-  Pollak, 1961; Van Trees, 1968), some of which are treated later in this
-  chapter.
-
   It may seem that any complete set of functions can be used in lieu of the
   eigenfunctions of the covariance kernel in the expansion (2.11). However,
-  it will now be shown that the Karhunen-Loeve expansion as described above,
-  has some desirable properties that make it a preferable choice for some of
-  the objectives of the present approach.
+  the Karhunen-Loeve expansion as described above, has some desirable
+  properties that make it the the optimal choice.
 
-  <subsubsection*|Properties>
+  <subsection|Properties>
 
-  <paragraph|Error Minimizing Property>
+  <subsubsection|<paragraph|Error Minimizing Property>>
 
-  The generalized coordinate system defined by the eigenfunctions of the
-  covariance kernel is optimal in the sense that the mean-square error
-  resulting from a finite representation of the process
-  <math|w*<around|(|x,\<theta\>|)>> is minimized. This property can be proved
-  as follows.
+  <\lemma>
+    <paragraph|Error Minimizing Property>
 
-  Given a complete orthonormal set of functions
-  <math|h<rsub|n><around|(|x|)>>, the process
-  <math|w*<around|(|x,\<theta\>|)>> can be approximated in a convergent
-  series of the form
+    The generalized coordinate system defined by the eigenfunctions of the
+    covariance kernel is optimal in the sense that the mean-square error
+    resulting from a finite representation of the process
+    <math|w*<around|(|x,\<theta\>|)>> is minimized.
+  </lemma>
 
-  <\equation>
-    w*<around|(|x,\<theta\>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*\<xi\><rsub|n><around|(|\<theta\>|)>*h<rsub|n><around|(|x|)>.
-  </equation>
+  <\proof>
+    Given a complete orthonormal set of functions
+    <math|h<rsub|n><around|(|x|)>>, the process
+    <math|w*<around|(|x,\<theta\>|)>> can be approximated in a convergent
+    series of the form
 
-  . Truncating the series in equation (2.17) at the <math|M<rsup|t*h>> term,
-  gives
+    <\equation>
+      w*<around|(|x,\<theta\>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*\<xi\><rsub|n><around|(|\<theta\>|)>*h<rsub|n><around|(|x|)>.
+    </equation>
 
-  <\equation>
-    w*<around|(|x,\<theta\>|)>=<wide|w|\<bar\>><around|(|x|)>+<big|sum><rsub|n=0><rsup|M>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)>.
-  </equation>
+    Truncating equation (2.21) at the <math|M<rsup|t*h>> term results in an
+    error <math|\<epsilon\><rsub|M>> equal to
 
-  An explicit expression for <math|\<xi\><rsub|n><around|(|\<theta\>|)>> can
-  be obtained by multiplying equation (2.11) by
-  <math|f<rsub|n><around|(|x|)>> and integrating over the domain <math|D>.
-  That is,
+    <\equation>
+      \<epsilon\><rsub|M>=<big|sum><rsub|n=M+1><rsup|\<infty\>>\<lambda\><rsub|n>*\<xi\><rsub|n><around|(|\<theta\>|)>*h<rsub|n><around|(|x|)>.
+    </equation>
 
-  <\equation>
-    \<xi\><rsub|n><around|(|\<theta\>|)>=<frac|1|<sqrt|\<lambda\><rsub|n>>>*<big|int><rsub|D>\<alpha\><around|(|x,\<theta\>|)>*f<rsub|n><around|(|x|)>*d*x.
-  </equation>
+    Multiplying equation (2.21) by <math|h<rsub|m><around|(|x|)>> and
+    integrating throughout gives
 
-  Viewed from a Reproducing Kernel Hilbert Space (RKHS) point of view
-  (Aronszajn, 1950; Parzen, 1959), either of equations (2.11) or (2.20), is
-  an expression for the congruence that maps the Hilbert space spanned by the
-  functions <math|f<rsub|n><around|(|x|)>> to the Hilbert space spanned by
-  the random process, or equivalently, the space spanned by the set of random
-  variables <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>>. It is
-  this congruence along with the covariance function of the process that
-  determines uniquely the random process <math|w*<around|(|x,\<theta\>|)>>.
-  Observe the similarity of equations (2.11) and (2.20) with equations (2.7)
-  and (2.8), respectively. Indeed, it can be shown (Parzen, 1959) that if a
-  function can be represented in terms of linear operations on the family
-  <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>, then <math|f> belongs to the
-  RKHS corresponding to the kernel <math|C<around|(|x<rsub|1>,x<rsub|2>|)>>,
-  and the congruence between the two Hilbert spaces means of the same linear
-  operations used to represent <math|f> in terms of
-  <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>, <math|x<rsub|2>\<in\>D>. Another
-  point of practical importance is that the expansion given by equation
-  (2.19) can be used in a numerical simulation scheme to obtain numerical
-  realizations of the random process. In fact, this simulation procedure is
-  used in conjunction with the Monte Carlo method for one of the illustrative
-  examples in Chapter IV. It is optimal in the Fourier sense, as it minimizes
-  the mean square error resulting from truncation after a finite number of
-  terms. The expansion is used extensively in the fields of detection,
-  estimation, pattern recognition, and image processing as an efficient tool
-  to store random processes (Deviijver and Kittler, 1982). It is worth noting
-  at this point that the Karhunen-Loeve expansion was independently derived
-  in connection with stochastic turbulence problems (Lumley, 1970). In that
-  context, the associated eigenfunctions can be identified with the
-  characteristic eddies of the turbulence field.
+    <\equation>
+      \<xi\><rsub|m><around|(|\<theta\>|)>=<frac|<big|int><rsub|D>w*<around|(|x,\<theta\>|)>*h<rsub|m><around|(|x|)>*d*x|<sqrt|\<lambda\><rsub|m>>>
+    </equation>
 
-  Differentiating equation (2.26) with respect to
-  <math|h<rsub|i><around|(|x|)>> and setting the result equal to zero, gives
+    where use is made of the orthogonality property of the set
+    <math|h<rsub|n><around|(|x|)>>. Substituting equation (2.23) for
+    <math|\<xi\><rsub|m><around|(|\<theta\>|)>> back into equation (2.22),
+    the mean-square error <math|\<epsilon\><rsub|M><rsup|2>> can be written
+    as
 
-  <\equation>
-    <frac|\<partial\>*\<cal-F\><around|[|h<around|(|x|)>|]>|\<partial\>*h<rsub|i><around|(|x|)>>=<big|int><rsub|D><big|int><rsub|D>R<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|1>|)>*d*x<rsub|1>-\<lambda\><rsub|i>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>=0
-  </equation>
+    <\equation>
+      \<epsilon\><rsub|M><rsup|2>=<around*|[|<big|sum><rsub|m=M+1><rsup|\<infty\>><big|sum><rsub|n=M+1><rsup|\<infty\>><big|int><rsub|D><big|int><rsub|D><around|\<langle\>|\<xi\><rsub|m><around|(|\<theta\>|)>*\<xi\><rsub|n><around|(|\<theta\>|)>|\<rangle\>>*h<rsub|m><around|(|x<rsub|1>|)>*h<rsub|n><around|(|x<rsub|2>|)>*d*x<rsub|1>*d*x<rsub|2>|]><rsup|2>
+    </equation>
 
-  which is satisfied when
+    Integrating equation (2.24) over <math|D> and using the orthonormality of
+    the set <math|<around|{|h<rsub|i><around|(|x|)>|}>> yields
 
-  <\equation>
-    <big|int><rsub|D>R<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>=\<lambda\><rsub|i>*h<rsub|i><around|(|x<rsub|1>|)>
-  </equation>
+    <\equation>
+      <big|int><rsub|D>\<epsilon\><rsub|M><rsup|2>*d*x=<big|sum><rsub|m=M+1><rsup|\<infty\>><big|int><rsub|D><big|int><rsub|D>R<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|m><around|(|x<rsub|1>|)>*h<rsub|m><around|(|x<rsub|2>|)>*d*x<rsub|1>*d*x<rsub|2>
+    </equation>
 
-  <subsubsection*|Uniqueness of the Expansion>
+    The problem, then, is to minimize <math|<big|int><rsub|D>\<epsilon\><rsub|M><rsup|2>>
+    subject to the orthonormality of the functions
+    <math|h<rsub|n><around|(|x|)>>. In other words, the solution minimizes
+    the functional given by the equation
 
-  The random variables appearing in an expansion of the kind given by
-  equation (2.10) are orthonormal if and only if the orthonormal functions
-  <math|<around|{|f<rsub|n><around|(|x|)>|}>> and the constants
-  <math|<around|{|\<lambda\><rsub|n>|}>> are respectively the eigenfunctions
-  and the eigenvalues of the covariance kernel as given by equation (2.8).
+    <\equation>
+      <with|font-base-size|9|\<cal-F\><around|[|h<around|(|x|)>|]>=<big|sum><rsub|m=M+1><rsup|\<infty\>><big|int><rsub|D><big|int><rsub|D>R<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|m><around|(|x<rsub|1>|)>*h<rsub|m><around|(|x<rsub|2>|)>*d*x<rsub|1>*d*x<rsub|2>-\<lambda\><rsub|m>*<around*|[|<big|int><rsub|D>h<rsub|m><around|(|x|)>*h<rsub|m><around|(|x|)>*d*x-1|]>>
+    </equation>
 
-  The "if" part is an immediate consequence of equation (2.11). To show the
-  "only if" part, equation (2.12) can be used with
-  <math|<around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>>=\<delta\><rsub|n*m>>
-  to obtain
+    Differentiating equation (2.26) with respect to
+    <math|h<rsub|i><around|(|x|)>> and setting the result equal to zero,
+    gives
 
-  <\equation>
-    C<around|(|x<rsub|1>,x<rsub|2>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|n><around|(|x<rsub|2>|)>.
-  </equation>
+    <\equation>
+      <frac|\<partial\>*\<cal-F\><around|[|h<around|(|x|)>|]>|\<partial\>*h<rsub|i><around|(|x|)>>=<big|int><rsub|D><big|int><rsub|D>R<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|1>|)>*d*x<rsub|1>-\<lambda\><rsub|i>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>=0
+    </equation>
 
-  Multiplying both sides by <math|f<rsub|m><around|(|x<rsub|2>|)>> and
-  integrating over <math|D> gives
+    which is satisfied when
 
-  <\equation>
-    <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|m><around|(|x<rsub|2>|)>*d*x<rsub|2>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*\<delta\><rsub|n*m>=\<lambda\><rsub|m>*f<rsub|m><around|(|x<rsub|1>|)>
-  </equation>
+    <\equation>
+      <big|int><rsub|D>R<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>=\<lambda\><rsub|i>*h<rsub|i><around|(|x<rsub|1>|)>
+    </equation>
+  </proof>
 
-  In the context of this last theorem, it is interesting to note that some
-  investigators (e.g., Lawrence, 1987) have used an expansion of the kind
-  given by equation (2.11) with orthogonal random variables and orthogonal
-  deterministic functions that do not satisfy equation (2.8). It is obvious
-  that such an expansion cannot form a basis for the representation of random
-  processes.
+  <subsubsection|Uniqueness of the Expansion>
 
-  <subsubsection*|Expansion of Gaussian Processes>
+  <\lemma>
+    <subsubsection*|Uniqueness of the Expansion>
+
+    The random variables appearing in an expansion of the kind given by
+    equation (2.10) are orthonormal if and only if the orthonormal functions
+    <math|<around|{|f<rsub|n><around|(|x|)>|}>> and the constants
+    <math|<around|{|\<lambda\><rsub|n>|}>> are respectively the
+    eigenfunctions and the eigenvalues of the covariance kernel as given by
+    equation (2.8).
+  </lemma>
+
+  <\proof>
+    The "if" part is an immediate consequence of equation (2.11). To show the
+    "only if" part, equation (2.12) can be used with
+
+    <\equation>
+      <around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>>=\<delta\><rsub|n*m>
+    </equation>
+
+    \ to obtain
+
+    <\equation>
+      C<around|(|x<rsub|1>,x<rsub|2>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|n><around|(|x<rsub|2>|)>
+    </equation>
+
+    Multiplying both sides by <math|f<rsub|m><around|(|x<rsub|2>|)>> and
+    integrating over <math|D> gives
+
+    <\equation>
+      <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|m><around|(|x<rsub|2>|)>*d*x<rsub|2>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*\<delta\><rsub|n*m>=\<lambda\><rsub|m>*f<rsub|m><around|(|x<rsub|1>|)>
+    </equation>
+  </proof>
+
+  <subsubsection|Expansion of Gaussian Processes>
 
   Let <math|w*<around|(|x,\<theta\>|)>> be a Gaussian process with covariance
   function <math|C<around|(|x<rsub|1>,x<rsub|2>|)>>. Then
@@ -429,7 +408,7 @@
   and
 
   <\equation>
-    <around|\<langle\>|\<xi\><rsub|1><around|(|\<theta\>|)>,\<ldots\>,\<xi\><rsub|2*n><around|(|\<theta\>|)>|\<rangle\>>=<big|sum><big|prod><around|\<langle\>|\<xi\><rsub|i><around|(|\<theta\>|)>*\<xi\><rsub|j><around|(|\<theta\>|)>|\<rangle\>>,
+    <around|\<langle\>|\<xi\><rsub|1><around|(|\<theta\>|)>,\<ldots\>,\<xi\><rsub|2*n><around|(|\<theta\>|)>|\<rangle\>>=<big|sum><big|prod><around|\<langle\>|\<xi\><rsub|i><around|(|\<theta\>|)>*\<xi\><rsub|j><around|(|\<theta\>|)>|\<rangle\>>
   </equation>
 
   where the summation extends over all the partitions of the set
@@ -438,46 +417,51 @@
   partition. Furthermore, it can be shown (Loeve, 1977) that for Gaussian
   processes, the Karhunen-Loeve expansion is almost surely convergent.
 
+  <subsubsection|Minimum Representation Entropy>
+
   <subsection*|Other Properties>
 
-  In addition to the mean-square error minimizing property, the
-  Karhunen-Loeve expansion has some additional desirable properties. Of
-  these, the minimum representation of entropy property is worth mentioning.
-  These properties, however, are not relevant to the present study and will
-  not be discussed any further. A detailed study of the properties of the
-  Karhunen-Loeve expansion is given by Devijver and Kittler (1982).
+  The minimum representation of entropy property is worth mentioning even
+  though it only references and no details were given in
+  <cite|stochasticFiniteElements>.
 
-  <subsection*|Solution of the Integral Equation>
+  <\subsection*>
+    \;
 
-  <subsubsection*|Preliminary Remarks>
+    <section|Solution of the Integral Equation>
+  </subsection*>
 
   The usefulness of the Karhunen-Loeve expansion hinges on the ability to
   solve the integral equation of the form
 
   <\equation>
-    <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<around|(|x<rsub|2>|)>*d*x<rsub|2>=\<lambda\>*f<around|(|x<rsub|1>|)>,
+    <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<around|(|x<rsub|2>|)>*d*x<rsub|2>=\<lambda\>*f<around|(|x<rsub|1>|)><label|2.33>
   </equation>
 
   where <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> is an autocovariance
-  function. Equation (2.33) is a homogeneous Fredholm integral equation of
-  the second kind. The theory underlying this kind of equations has been
-  extensively investigated and is well documented in a number of monographs
-  (Mikhlin, 1957). Being an autocovariance function, the kernel
+  function. Equation (<reference|2.33>) is a homogeneous Fredholm integral
+  equation of the second kind. The theory underlying this kind of equations
+  has been extensively investigated and is well documented in a number of
+  monographs (Mikhlin, 1957). Being an autocovariance function, the kernel
   <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> is bounded, symmetric, and
   positive definite. This fact simplifies the ensuing analysis considerably
   in
 
-  <subsubsection*|Nonrational Spectra>
+  <subsection|Irrational Spectra>
 
-  There is no general method for the solution of the integral equation (2.33)
-  corresponding to nonrational spectra. Several of these equations have been
-  investigated and explicit solutions have been obtained for certain
-  covariance kernels. The method described in the previous section may be
-  applied successfully to a number of these kernels as will be demonstrated
-  for the case of the triangular kernel given by the equation
+  There is no general method for the solution of the integral equation
+  (<reference|2.33>) corresponding to irrational spectra. Several of these
+  equations have been investigated and explicit solutions have been obtained
+  for certain covariance kernels.\ 
+
+  <subsubsection|The Triangular Kernel>
+
+  The method described in the previous section may be applied successfully to
+  a number of these kernels as will be demonstrated for the case of the
+  triangular kernel given by the equation
 
   <\equation>
-    C<around|(|x<rsub|1>,x<rsub|2>|)>=1-d*<around|\||x<rsub|1>-x<rsub|2>|\|>,<space|1em><around|\||x<rsub|1>-x<rsub|2>|\|>\<in\><around|[|0,<frac|1|d>|]>.
+    C<around|(|x<rsub|1>,x<rsub|2>|)>=1-d*<around|\||x<rsub|1>-x<rsub|2>|\|>\<forall\><around|\||x<rsub|1>-x<rsub|2>|\|>\<in\><around|[|0,d<rsup|-1>|]>
   </equation>
 
   Here, <math|d> is a parameter which can be used to adjust the distance of
@@ -488,26 +472,27 @@
   solution to the integral equation
 
   <\equation>
-    <big|int><rsub|0><rsup|a><around|(|1-d*<around|\||x<rsub|1>-x<rsub|2>|\|>|)>*f<rsub|n><around|(|x<rsub|2>|)>*d*x<rsub|2>=\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>.
+    <big|int><rsub|0><rsup|a><around|(|1-d*<around|\||x<rsub|1>-x<rsub|2>|\|>|)>*f<rsub|n><around|(|x<rsub|2>|)>*d*x<rsub|2>=\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)><label|2.57>
   </equation>
 
-  Differentiating equation (2.57) twice with respect to <math|x<rsub|2>>, the
-  following equivalent differential equation is obtained
+  Differentiating equation (<reference|2.57>) twice with respect to
+  <math|x<rsub|2>>, the following equivalent differential equation is
+  obtained
 
   <\equation>
-    f<rsub|n><rprime|''><around|(|x|)>+\<omega\><rsub|n><rsup|2>*f<rsub|n><around|(|x|)>=0,<space|1em>0\<leq\>x\<leq\>a.
+    f<rsub|n><rprime|''><around|(|x|)>+\<omega\><rsub|n><rsup|2>*f<rsub|n><around|(|x|)>=0\<forall\><space|1em>0\<leq\>x\<leq\>a.
   </equation>
 
   The associated boundary conditions are given by the equations
 
   <\equation>
-    f<rsub|n><rprime|'><around|(|a|)>=-f<rsub|n><rprime|'><around|(|0|)>,
+    f<rsub|n><rprime|'><around|(|a|)>=-f<rsub|n><rprime|'><around|(|0|)>
   </equation>
 
   and
 
   <\equation>
-    f<rsub|n><rprime|'><around|(|0|)>=<frac|f<rsub|n><around|(|0|)>+f<rsub|n><around|(|a|)>|2-<frac|a|d>>.
+    f<rsub|n><rprime|'><around|(|0|)>=<frac|f<rsub|n><around|(|0|)>+f<rsub|n><around|(|a|)>|2-<frac|a|d>>
   </equation>
 
   and
@@ -517,54 +502,45 @@
   </equation>
 
   The solution of equation (2.58) subjected to the boundary conditions
-  described by equations (2.59) and (2.60) is, for <math|n> odd,
+  described by equations (2.59) and (2.60) is
 
   <\equation>
-    f<rsub|n><around|(|x|)>=<sqrt|<frac|a|2>>*<frac|cos
-    <around|(|\<omega\><rsub|n>*x|)>+tan <around|(|<frac|\<omega\><rsub|n>*a|2>|)>*sin
-    <around|(|\<omega\><rsub|n>*x|)>|<sqrt|<frac|a|2>+<frac|tan<rsup|2><around|(|<frac|\<omega\><rsub|n>*a|2>|)>-1|4*\<omega\><rsub|n>>*sin
-    <around|(|2*\<omega\><rsub|n>*a|)>+<frac|sin<rsup|2><around|(|\<omega\><rsub|n>*a|)>|\<omega\><rsub|n>>*tan
-    <around|(|<frac|\<omega\><rsub|n>*a|2>|)>>>
-  </equation>
-
-  and, for <math|n> even,
-
-  <\equation>
-    f<rsub|n><around|(|x|)>=<sqrt|<frac|a|2>>*<frac|cos
+    <with|font-base-size|12|f<rsub|n><around|(|x|)>=<choice|<tformat|<table|<row|<cell|<sqrt|<frac|a|2>>*<frac|cos
     <around|(|\<omega\><rsub|n>*x|)>|<sqrt|<frac|a|2>+<frac|sin
-    <around|(|2*\<omega\><rsub|n>*a|)>|4*\<omega\><rsub|n>>>>
+    <around|(|2*\<omega\><rsub|n>*a|)>|4*\<omega\><rsub|n>>>>>|<cell|n
+    even>>|<row|<cell|<sqrt|<frac|a|2>>*<frac|cos
+    <around|(|\<omega\><rsub|n>*x|)>+tan <around|(|<frac|\<omega\><rsub|n>*a|2>|)>*tan
+    <around*|(|<frac|\<omega\><rsub|n>*a|2>|)>sin
+    <around|(|\<omega\><rsub|n>*x|)>|<sqrt|<frac|a|2>+<frac|tan<rsup|2><around*|(|<frac|\<omega\><rsub|n>*a|2>|)>-1|4*\<omega\><rsub|n>>*sin
+    <around|(|2*\<omega\><rsub|n>*a|)>+<frac|sin<rsup|2><around|(|\<omega\><rsub|n>*a|)>|\<omega\><rsub|n>>*tan
+    <around*|(|<frac|\<omega\><rsub|n>*a|2>|)>>>>|<cell|n odd>>>>>>
   </equation>
 
-  where <math|\<omega\><rsub|n>> is the solution to the following equation
+  where <math|\<omega\><rsub|n>> is defined implicitly as the solution to
+  <math|tan <around|(|<frac|\<omega\><rsub|n>*a|2>|)>=\<omega\><rsub|n>*<around|(|<frac|2|a>-a|)>>
+  when <math|n> is even and explicitly when <math|n> is odd
 
   <\equation>
-    tan <around|(|<frac|\<omega\><rsub|n>*a|2>|)>=\<omega\><rsub|n>*<around|(|<frac|2|a>-a|)>*<space|1em><text|for><space|1em>n=2,4,6*\<ldots\>
+    \<omega\><rsub|n>=<choice|<tformat|<table|<row|<cell|<around*|{|\<omega\><rsub|n>:tan
+    <around|(|<frac|\<omega\><rsub|n>*a|2>|)>=\<omega\><rsub|n>*<around|(|<frac|2|a>-a|)>|}>>|<cell|n
+    even>>|<row|<cell|<frac|\<pi\>*n|a>>|<cell|n odd>>>>>
   </equation>
 
-  and
-
-  <\equation>
-    \<omega\><rsub|n>=<frac|\<pi\>*n|a>*<space|1em><text|for><space|1em>n=1,3,5*\<ldots\>
-  </equation>
-
-  Figure (2.8) shows a plot of the first four eigenfunctions associated with
-  this kernel. The eigenvalues are shown in Figure (2.9) for various values
-  of <math|d>. Figures (2.10)-(2.14) show the exact kernel, its four-term
-  approximation, its ten-term approximation and the corresponding errors.
+  \;
 
   Another kernel that may be treated by the same method is the kernel of the
   Wiener process. It is given by the equation
 
   <\equation>
     C<around|(|x<rsub|1>,x<rsub|2>|)>=min
-    <around|(|x<rsub|1>,x<rsub|2>|)>,<space|1em><around|(|x<rsub|1>,x<rsub|2>|)>\<in\><around|[|0,T|]>\<times\><around|[|0,T|]>.
+    <around|(|x<rsub|1>,x<rsub|2>|)>\<forall\><around|(|x<rsub|1>,x<rsub|2>|)>\<in\><around|[|0,T|]>\<times\><around|[|0,T|]>
   </equation>
 
   The resulting normalized eigenfunctions and eigenvalues are
 
   <\equation>
     f<rsub|n><around|(|x<rsub|1>|)>=<sqrt|2>*sin
-    <around|(|<frac|n*\<pi\>*x<rsub|1>|T>|)>
+    <around*|(|<frac|n*\<pi\>*x<rsub|1>|T>|)>
   </equation>
 
   <\bibliography|bib|tm-plain|refs2>
@@ -579,6 +555,7 @@
 
 <\initial>
   <\collection>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -588,18 +565,28 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-10|<tuple|31|6|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-11|<tuple|43|7|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-2|<tuple|5|2|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-3|<tuple|21|4|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-4|<tuple|1|4|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-5|<tuple|26|5|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-6|<tuple|28|6|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-7|<tuple|30|6|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-8|<tuple|30|6|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|auto-9|<tuple|30|6|../../.TeXmacs/texts/scratch/no_name_27.tm>>
-    <associate|bib-stochasticFiniteElements|<tuple|1|7|../../.TeXmacs/texts/scratch/no_name_27.tm>>
+    <associate|2.33|<tuple|35|7>>
+    <associate|2.57|<tuple|37|8>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|1.2|5>>
+    <associate|auto-11|<tuple|1.2.1|5>>
+    <associate|auto-14|<tuple|1.2.1.3|5>>
+    <associate|auto-15|<tuple|1.2.1.4|5>>
+    <associate|auto-16|<tuple|1.2.2|6>>
+    <associate|auto-17|<tuple|2|6>>
+    <associate|auto-18|<tuple|1.2.3|7>>
+    <associate|auto-19|<tuple|1.2.4|7>>
+    <associate|auto-20|<tuple|1.2.4|7>>
+    <associate|auto-21|<tuple|1.2.4|7>>
+    <associate|auto-24|<tuple|4|7>>
+    <associate|auto-25|<tuple|4.1|7>>
+    <associate|auto-26|<tuple|4.1.1|8>>
+    <associate|auto-27|<tuple|45|9>>
+    <associate|auto-4|<tuple|1|2>>
+    <associate|auto-5|<tuple|1.1|2>>
+    <associate|auto-8|<tuple|1.1|2>>
+    <associate|auto-9|<tuple|1.1.1|4>>
+    <associate|bib-stochasticFiniteElements|<tuple|1|9>>
   </collection>
 </references>
 
@@ -607,51 +594,115 @@
   <\collection>
     <\associate|bib>
       stochasticFiniteElements
+
+      stochasticFiniteElements
+
+      stochasticFiniteElements
+
+      stochasticFiniteElements
     </associate>
     <\associate|toc>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc><assign|subsection-numbered|false><assign|subsection-prefix|<macro|>><assign|subsubsection-nr|0><assign|paragraph-nr|0><assign|subparagraph-nr|0><flag|table
+      of contents|dark green|what><assign|auto-nr|2><write|toc|<with|par-left|<quote|1tab>|Karhunen-Loeve
+      Expansion <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2>>><toc-notify|toc-2|Karhunen-Loeve
+      Expansion><with|color|<quote|#006060>|math-color|<quote|#006060>|strong-color|<quote|#006060>|locus-color|<quote|#006060>|visited-color|<quote|#006060>|<surround|<no-indent>|<specific|texmacs|<htab|0fn|first>>|<with|color|<quote|#006060>|<with|font-series|<quote|bold>|math-font-series|<quote|bold>|<vspace*|1fn><with|font-size|<quote|1.189>|Karhunen-Loeve
+      Expansion<space|2spc>><vspace|0.3333fn>>><no-page-break><no-indent*>>>>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2><vspace|0.5fn>
+
       <with|par-left|<quote|1tab>|Karhunen-Loeve Expansion
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-1>>
+      <no-break><pageref|auto-4>>
 
-      <with|par-left|<quote|2tab>|Derivation
+      <with|par-left|<quote|1tab>|1.1<space|2spc><assign|subsubsection-numbered|false><assign|subsubsection-prefix|<macro|>><assign|paragraph-nr|0><assign|subparagraph-nr|0><flag|table
+      of contents|dark green|what><assign|auto-nr|6><write|toc|<with|par-left|<quote|2tab>|Derivation
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2>>
-
-      <with|par-left|<quote|2tab>|Properties
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-3>>
-
-      <with|par-left|<quote|4tab>|Error Minimizing Property
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-4><vspace|0.15fn>>
-
-      <with|par-left|<quote|2tab>|Uniqueness of the Expansion
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5>>
-
-      <with|par-left|<quote|2tab>|Expansion of Gaussian Processes
+      <no-break><pageref|auto-6>>><toc-notify|toc-3|Derivation><with|color|<quote|#006060>|math-color|<quote|#006060>|strong-color|<quote|#006060>|locus-color|<quote|#006060>|visited-color|<quote|#006060>|<surround|<no-indent>|<specific|texmacs|<htab|0fn|first>>|<with|color|<quote|#006060>|<with|font-series|<quote|bold>|math-font-series|<quote|bold>|<vspace*|0.75fn>Derivation<space|2spc><vspace|0.25fn>>><no-page-break><no-indent*>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6>>
 
-      <with|par-left|<quote|1tab>|Other Properties
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-7>>
-
-      <with|par-left|<quote|1tab>|Solution of the Integral Equation
+      <with|par-left|<quote|2tab>|Derivation
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
 
-      <with|par-left|<quote|2tab>|Preliminary Remarks
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|2tab>|1.1.1<space|2spc>Reproducing Kernel Hilbert
+      Spaces (RKHS) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-9>>
 
-      <with|par-left|<quote|2tab>|Nonrational Spectra
+      <with|par-left|<quote|1tab>|1.2<space|2spc>Properties
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-10>>
 
+      <with|par-left|<quote|2tab>|1.2.1<space|2spc><assign|paragraph-numbered|false><assign|paragraph-prefix|<macro|<compound|the-paragraph>.>><assign|paragraph-nr|1><hidden-binding|<tuple>|1.2.1.1><assign|subparagraph-nr|0><flag|table
+      of contents|dark green|what><assign|auto-nr|12><write|toc|<with|par-left|<quote|4tab>|Error
+      Minimizing Property <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-12><vspace|0.15fn>>><toc-notify|toc-4|Error
+      Minimizing Property><with|color|<quote|#006060>|math-color|<quote|#006060>|strong-color|<quote|#006060>|locus-color|<quote|#006060>|visited-color|<quote|#006060>|<no-indent><with|color|<quote|#006060>|<with|font-series|<quote|bold>|math-font-series|<quote|bold>|<vspace*|0.5fn>Error
+      Minimizing Property<space|2spc>>>> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-12>>
+
+      <with|par-left|<quote|4tab>|Error Minimizing Property
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-14><vspace|0.15fn>>
+
+      <with|par-left|<quote|4tab>|Error Minimizing Property
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-15><vspace|0.15fn>>
+
+      <with|par-left|<quote|2tab>|1.2.2<space|2spc>Uniqueness of the
+      Expansion <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-16>>
+
+      <with|par-left|<quote|2tab>|Uniqueness of the Expansion
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-17>>
+
+      <with|par-left|<quote|2tab>|1.2.3<space|2spc>Expansion of Gaussian
+      Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-18>>
+
+      <with|par-left|<quote|2tab>|1.2.4<space|2spc>Minimum Representation
+      Entropy <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-19>>
+
+      <with|par-left|<quote|1tab>|Other Properties
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-20>>
+
+      \;
+
+      <with|par-left|<quote|1tab>|<assign|section-numbered|true><assign|section-prefix|<macro|<compound|the-section>.>><assign|section-nr|2><hidden-binding|<tuple>|2><assign|subsection-nr|0><assign|subsubsection-nr|0><assign|paragraph-nr|0><assign|subparagraph-nr|0><flag|table
+      of contents|dark green|what><assign|auto-nr|22><write|toc|<vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Solution
+      of the Integral Equation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-22><vspace|0.5fn>><toc-notify|toc-strong-2|2<space|2spc>Solution
+      of the Integral Equation><with|color|<quote|#006060>|math-color|<quote|#006060>|strong-color|<quote|#006060>|locus-color|<quote|#006060>|visited-color|<quote|#006060>|<surround|<no-indent>|<specific|texmacs|<htab|0fn|first>>|<with|color|<quote|#006060>|<with|font-series|<quote|bold>|math-font-series|<quote|bold>|<vspace*|1.5fn><\with|font-size|<quote|1.414>>
+        <\with|par-first|<quote|0fn>>
+          <\tformat|<twith|table-width|1par>|<twith|table-hmode|exact>|<twith|table-block|yes>|<twith|table-min-cols|2>|<cwith|1|-1|2|-1|cell-hyphen|t>|<cwith|1|-1|1|-1|cell-hpart|0.001>|<cwith|1|-1|1|1|cell-lsep|0fn>|<cwith|1|-1|-1|-1|cell-rsep|0fn>|<cwith|1|-2|1|-1|cell-bsep|0.6666fn>|<cwith|2|-1|1|-1|cell-tsep|0.2fn>>
+            <tformat|<twith|table-valign|T>|<twith|table-hmode|min>|<cwith|1|-1|1|-1|cell-lsep|0em>|<cwith|1|-1|1|-1|cell-rsep|0em>|<cwith|1|1|1|-1|cell-tsep|0em>|<cwith|-1|-1|1|-1|cell-bsep|0em>|<cwith|1|-1|1|-1|cell-vcorrect|n>|<table|<row|<cell|2<space|2spc>>|<\cell>
+              Solution of the Integral Equation<space|2spc>
+            </cell>>>>
+          </tformat>
+        </with>
+      </with><vspace|0.5fn>>><no-page-break><no-indent*>>>
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-22>>
+
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Solution
+      of the Integral Equation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-24><vspace|0.5fn>
+
+      <with|par-left|<quote|1tab>|4.1<space|2spc>Irrational Spectra
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-25>>
+
+      <with|par-left|<quote|2tab>|4.1.1<space|2spc>The Triangular Kernel
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-26>>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-11><vspace|0.5fn>
+      <no-break><pageref|auto-27><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>

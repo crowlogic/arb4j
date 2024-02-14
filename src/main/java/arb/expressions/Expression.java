@@ -134,22 +134,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return func;
   }
 
-  /**
-   * {@link Compiler#express(String, String, Context, Class, Class, Class, boolean)}s
-   * then {@link Expression#instantiate()}s a mathematical expressions
-   * 
-   * @param <D>
-   * @param <R>
-   * @param <F>
-   * @param className
-   * @param expression
-   * @param context
-   * @param domainClass
-   * @param rangeClass
-   * @param functionClass
-   * @param verbose
-   * @return
-   */
   public static <D, R, F extends Function<D, R>> F instantiate(String className,
                                                                String expression,
                                                                Context context,
@@ -1444,12 +1428,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
   @Override
   public String toString()
   {
-    return String.format("Expression[expression=%s, className=%s, functionName=%s, recursive=%s, className=%s, functionClass=%s]",
+    return String.format("Expression[expression=%s, className=%s, functionName=%s, recursive=%s, functionClass=%s]",
                          expression,
                          className,
                          functionName,
                          recursive,
-                         className,
                          functionClass);
   }
 
