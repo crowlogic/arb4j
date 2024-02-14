@@ -11,10 +11,9 @@
 
   <abstract-data|<\abstract>
     This is a nearly verbatim reproduction of most of the first two chapters
-    of <label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
-    and >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
-    finite elements: a spectral approach>. <newblock>Springer-Verlag, Berlin,
-    Heidelberg, 1991.<newblock>
+    of Roger<nbsp>G.<nbsp>Ghanem<localize| and >Pol<nbsp>D.<nbsp>Spanos.
+    <newblock><with|font-shape|italic|Stochastic finite elements: a spectral
+    approach>. <newblock>Springer-Verlag, Berlin, Heidelberg, 1991.<newblock>
   </abstract>>
 
   Following <cite|stochasticFiniteElements>,a rigorous exposition of the
