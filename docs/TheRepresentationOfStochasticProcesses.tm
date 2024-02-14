@@ -3,8 +3,19 @@
 <style|<tuple|generic|alt-colors|parchment|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|The Karhunen-Loeve Stochastic Processes
-  Representation>>
+  <doc-data|<doc-title|The Spectral Representation of Stochastic
+  Processes>|<doc-author|<author-data|<author-name|Stephen
+  Crowley>|<\author-affiliation>
+    <date|>
+  </author-affiliation>>>>
+
+  <abstract-data|<\abstract>
+    This is a nearly verbatim reproduction of most of the first two chapters
+    of <label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
+    and >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
+    finite elements: a spectral approach>. <newblock>Springer-Verlag, Berlin,
+    Heidelberg, 1991.<newblock>
+  </abstract>>
 
   Following <cite|stochasticFiniteElements>,a rigorous exposition of the
   basic concepts of the theory of representation for random processes can be
@@ -94,18 +105,18 @@
   <subsection|<subsubsection*|Derivation>>
 
   One of the major difficulties associated with the numerical incorporation
-  of random processes in finite element analyses, is the necessity to deal
-  with abstract measures spaces that have limited physical intuitive support.
-  The major conceptual difficulty from the viewpoint of the class of problems
+  of random processes in finite element analyses, is the necessity t. The
+  major conceptual difficulty from the viewpoint of the class of problems
   considered herein, involves the treatment of functions defined on these
   abstract spaces, namely random variables defined on the
   <math|\<sigma\>>-field of random events. The most widely used method, the
   Monte Carlo simulation, consists of sampling these functions at randomly
   chosen elements of this <math|\<sigma\>>-field, in a random,
   collocation-like, scheme. Obviously, a quite large number of points needs
-  to be sampled if a good approximation is to be achieved. A theoretically
-  more sound and more appealing approach would be to expand these functions
-  in a Fourier-type series as
+  to be sampled if a good approximation is to be achieved. The Karhunen-Loeve
+  expansion is a theoretically sound and appealing approach to dealing with
+  abstract measures spaces that have limited physical intuitive support that
+  works by expanding these functions in Fourier-type series as
 
   <\equation>
     w*<around|(|x,\<theta\>|)>=<big|sum><rsub|n=0><rsup|\<infty\>><sqrt|\<lambda\><rsub|n>>*\<xi\><rsub|n><around|(|\<theta\>|)>*f<rsub|n><around|(|x|)>
@@ -114,9 +125,7 @@
   where <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>> is a set of
   random variables to be determined, <math|\<lambda\><rsub|n>> is some
   constant, and <math|<around|{|f<rsub|n><around|(|x|)>|}>> is an orthonormal
-  set of deterministic functions. This is exactly what the Karhunen-Loeve
-  expansion achieves. The expansion was derived independently by a number of
-  investigators (Karhunen, 1947; Loeve, 1948; Kac and Siegert, 1947).
+  set of deterministic functions.\ 
 
   Let <math|w*<around|(|x,\<theta\>|)>> be a random process, function of the
   position vector <math|x> defined over the domain <math|D>, with
@@ -126,7 +135,7 @@
   process, and <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> denote its covariance
   function. By definition of the covariance function, it is bounded,
   symmetric and positive definite. Thus, it has the spectral decomposition
-  (Courant and Hilbert, 1953)
+  <cite-detail|stochasticFiniteElements|2.3.1>
 
   <\equation>
     C<around|(|x<rsub|1>,x<rsub|2>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|n><around|(|x<rsub|2>|)>
@@ -140,9 +149,9 @@
     <big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*f<rsub|n><around|(|x<rsub|1>|)>*d*x<rsub|1>=\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|2>|)>
   </equation>
 
-  Due to the symmetry and the positive definiteness of the covariance kernel
-  (Loeve, 1977), its eigenfunctions are orthogonal and form a complete set.
-  They can be normalized according to the following criterion
+  Due to the symmetry and the positive definiteness of the covariance kernel,
+  its eigenfunctions are orthogonal and form a complete set. They can be
+  normalized according to the following criterion
 
   <\equation>
     <big|int><rsub|D>f<rsub|n><around|(|x|)>*f<rsub|m><around|(|x|)>*d*x=\<delta\><rsub|n*m>
@@ -156,13 +165,12 @@
   </equation>
 
   where <math|\<alpha\><around|(|x,\<theta\>|)>> is a process with zero mean
-  and covariance function <math|C<around*|(|x<rsub|1>,x<rsub|2>|)>>
-
-  The process <math|\<alpha\><around|(|x,\<theta\>|)>> can be expanded in
-  terms of the eigenfunctions <math|f<rsub|n><around|(|x|)>> as
+  and covariance function <math|C<around*|(|x<rsub|1>,x<rsub|2>|)>>. The
+  process <math|\<alpha\><around|(|x,\<theta\>|)>> can be expanded in terms
+  of the eigenfunctions <math|f<rsub|n><around|(|x|)>> as
 
   <\equation>
-    \<alpha\><around|(|x,\<theta\>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)>
+    \<alpha\><around|(|x,\<theta\>|)>=<big|sum><rsub|n=0><rsup|\<infty\>>\<xi\><rsub|n><around|(|\<theta\>|)><sqrt|\<lambda\><rsub|n>>*f<rsub|n><around|(|x|)><label|2.11>
   </equation>
 
   Second order properties of the random variables <math|\<xi\><rsub|n>> can
@@ -171,7 +179,7 @@
   on both sides. Specifically, it is found that
 
   <\equation>
-    C<around|(|x<rsub|1>,x<rsub|2>|)>=<around|\<langle\>|\<alpha\><around|(|x<rsub|1>,\<theta\>|)>*\<alpha\><around|(|x<rsub|2>,\<theta\>|)>|\<rangle\>>=<big|sum><rsub|n=0><rsup|\<infty\>><big|sum><rsub|m=0><rsup|\<infty\>><around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|m>>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|m><around|(|x<rsub|2>|)>
+    <tabular|<tformat|<table|<row|<cell|C<around|(|x<rsub|1>,x<rsub|2>|)>>|<cell|=<around|\<langle\>|\<alpha\><around|(|x<rsub|1>,\<theta\>|)>*\<alpha\><around|(|x<rsub|2>,\<theta\>|)>|\<rangle\>>>>|<row|<cell|>|<cell|=<big|sum><rsub|n=0><rsup|\<infty\>><big|sum><rsub|m=0><rsup|\<infty\>><around|\<langle\>|\<xi\><rsub|n><around|(|\<theta\>|)>*\<xi\><rsub|m><around|(|\<theta\>|)>|\<rangle\>><sqrt|\<lambda\><rsub|n>*\<lambda\><rsub|m>>*f<rsub|n><around|(|x<rsub|1>|)>*f<rsub|m><around|(|x<rsub|2>|)>>>>>>
   </equation>
 
   Then, multiplying both sides of equation (2.12) by
@@ -227,7 +235,7 @@
   </equation>
 
   An explicit expression for <math|\<xi\><rsub|n><around|(|\<theta\>|)>> can
-  be obtained by multiplying equation (2.11) by
+  be obtained by multiplying equation (<reference|2.11>) by
   <math|f<rsub|n><around|(|x|)>> and integrating over the domain <math|D>.
   That is,
 
@@ -242,15 +250,14 @@
   an expression for the congruence that maps the Hilbert space spanned by the
   functions <math|f<rsub|n><around|(|x|)>> to the Hilbert space spanned by
   the random process, or equivalently, the space spanned by the set of random
-  variables <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>>.\ 
-
-  It is this congruence along with the covariance function of the process
-  that determines uniquely the random process
-  <math|w*<around|(|x,\<theta\>|)>>. Observe the similarity of equations
-  (2.11) and (2.20) with equations (2.7) and (2.8), respectively. Indeed, it
-  can be shown (Parzen, 1959) that if a function can be represented in terms
-  of linear operations on the family <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>,
-  then <math|f> belongs to the RKHS corresponding to the kernel
+  variables <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>>. It is
+  this congruence along with the covariance function of the process that
+  determines uniquely the random process <math|w*<around|(|x,\<theta\>|)>>.
+  Observe the similarity of equations (<reference|2.11>) and (2.20) with
+  equations (2.7) and (2.8), respectively. Indeed, it can be shown (Parzen,
+  1959) that if a function can be represented in terms of linear operations
+  on the family <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>, then <math|f>
+  belongs to the RKHS corresponding to the kernel
   <math|C<around|(|x<rsub|1>,x<rsub|2>|)>>, and the congruence between the
   two Hilbert spaces means of the same linear operations used to represent
   <math|f> in terms of <math|<around|{|C|(>\<cdot\>,x<rsub|2>)}>,
@@ -260,21 +267,15 @@
   equation (2.19) can be used in a numerical simulation scheme to obtain
   numerical realizations of the random process. It is optimal in the Fourier
   sense, as it minimizes the mean square error resulting from truncation
-  after a finite number of terms.
-
-  It is well known from functional analysis that the steeper a bilinear form
-  decays to zero as a function of one of its arguments, the more terms are
-  needed in its spectral representation in order to reach a preset accuracy.
-  Noting that the Fourier transform operator is a spectral representation, it
-  may be concluded that the faster the autocorrelation function tends to
-  zero, the broader is the corresponding spectral density, and the greater
-  the number of requisite terms to represent the underlying random process by
-  the Karhunen-Loeve expansion.
-
-  It may seem that any complete set of functions can be used in lieu of the
-  eigenfunctions of the covariance kernel in the expansion (2.11). However,
-  the Karhunen-Loeve expansion as described above, has some desirable
-  properties that make it the the optimal choice.
+  after a finite number of terms.It is well known from functional analysis
+  that the steeper a bilinear form decays to zero as a function of one of its
+  arguments, the more terms are needed in its spectral representation in
+  order to reach a preset accuracy. Noting that the Fourier transform
+  operator is a spectral representation, it may be concluded that the faster
+  the autocorrelation function tends to zero, the broader is the
+  corresponding spectral density, and the greater the number of requisite
+  terms to represent the underlying random process by the Karhunen-Loeve
+  expansion.\ 
 
   <subsection|Properties>
 
@@ -528,6 +529,8 @@
 
   \;
 
+  <subsubsection|Wiener process>
+
   Another kernel that may be treated by the same method is the kernel of the
   Wiener process. It is given by the equation
 
@@ -542,6 +545,114 @@
     f<rsub|n><around|(|x<rsub|1>|)>=<sqrt|2>*sin
     <around*|(|<frac|n*\<pi\>*x<rsub|1>|T>|)>
   </equation>
+
+  and
+
+  <\equation>
+    \<lambda\><rsub|n>=<frac|4*T<rsup|2>|\<pi\><rsup|2>*<around|(|2*n+1|)><rsup|2>>\<forall\>n=0,1,\<ldots\>
+  </equation>
+
+  Note that the Wiener process is an example of a nonstationary process, a
+  fact that emphasizes the generality of the Karhunen-Loeve expansion and its
+  applicability to such processes.
+
+  <\remark>
+    A final remark is in order concerning the choice of the domain <math|D>
+    of definition of the random process being investigated. Taking <math|D>
+    to be the finite domain over which the process is being observed may
+    often be the most obvious choice. Clearly, this choice does not induce
+    the ergodic assumption for the process, which involves observing infinite
+    length records. This is by no means a handicap of this approach since the
+    ergodic assumption is usually introduced for convenience and is not
+    necessary for the present study. If ergodicity is needed for some
+    particular problem, then it may be recovered by extending the limits of
+    integration in equation (<reference|2.33>) to
+    infinity.<cite-detail|stochasticFiniteElements|2.3.2>
+  </remark>
+
+  <subsection|Numerical Solution>
+
+  In this section, a Galerkin type procedure is described for the solution of
+  the Fredholm equation (2.33). Let <math|h<rsub|i><around|(|x|)>> be a
+  complete set of functions in the Hilbert space <math|H>. Each eigenfunction
+  of the kernel <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> may be represented
+  as
+
+  <\equation>
+    f<rsub|k><around|(|x|)>=<big|sum><rsub|i=1><rsup|N>d<rsub|i><rsup|<around|(|k|)>>*h<rsub|i><around|(|x|)>
+  </equation>
+
+  with an error <math|e<rsub|N>> resulting from truncating the summation
+  after the <math|N>th term. This error is equal to the difference between
+  the left hand side and the right hand side of equation (2.33). Substituting
+  equation (2.74) into equation (2.33) yields the following expression for
+  the error
+
+  <\equation>
+    e<rsub|N>=<big|sum><rsub|i=1><rsup|N>d<rsub|i><rsup|<around|(|k|)>>*<around*|[|<big|int><rsub|D><big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>-\<lambda\><rsub|n>*h<rsub|i><around|(|x<rsub|1>|)>|]>
+  </equation>
+
+  Requiring the error to be orthogonal to the approximating space yields
+  equations of the following form
+
+  <\equation>
+    <around|(|e<rsub|N>,h<rsub|j><around|(|x|)>|)>=0\<forall\>j=1,\<ldots\>,N
+  </equation>
+
+  Equivalently,
+
+  <\equation>
+    <big|sum><rsub|i=1><rsup|N>d<rsub|i><rsup|<around|(|k|)>><around*|[|<big|int><rsub|D><big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>*h<rsub|j><around|(|x<rsub|1>|)>*d*x<rsub|1>|]>-\<lambda\><rsub|n>*<big|int><rsub|D>h<rsub|i><around|(|x|)>*h<rsub|j><around|(|x|)>*d*x=0
+  </equation>
+
+  Denoting
+
+  <\equation>
+    C<rsub|i*j>=<big|int><rsub|D><big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>*h<rsub|j><around|(|x<rsub|1>|)>*d*x<rsub|1>*d*x<rsub|2>
+  </equation>
+
+  \;
+
+  <\equation>
+    B<rsub|i*j>=<big|int><rsub|D>h<rsub|i><around|(|x|)>*h<rsub|j><around|(|x|)>*<space|0.17em>d*x<label|2.79>
+  </equation>
+
+  <\equation>
+    D<rsub|i*j>=d<rsup|<around|(|j|)>><rsub|i><text|>
+  </equation>
+
+  <\equation>
+    \<Lambda\><rsub|i*j>=\<delta\><rsub|i*j>*\<lambda\><rsub|j><space|1em>
+  </equation>
+
+  equation (2.77) becomes
+
+  <\equation>
+    C*D=A*B*D
+  </equation>
+
+  where <math|C>, <math|B> and <math|D> are three <math|N>-dimensional
+  matrices whose elements are given by equations (2.78)-(2.79). Equation
+  (2.82) represents a generalized algebraic eigenvalue problem which may be
+  solved for the matrix <math|D> and the eigenvalues
+  <math|\<lambda\><rsub|k>>. Backsubstituting into equation (2.74) yields the
+  eigenfunctions of the covariance kernel. The preceding procedure can be
+  implemented using piecewise polynomials as the basis for the expansion.
+  With this choice
+
+  of basis functions, the columns of the matrix <math|<math-bf|D>> become the
+  eigenvectors computed at the respective nodal points of the induced mesh,
+  and the <math|i*j<rsup|t*h>> element of the matrix <math|<math-bf|C>>
+  becomes the weighted correlation between the process at nodes <math|i> and
+  <math|j>. Note that both matrices <math|<math-bf|C>> and <math|<math-bf|B>>
+  are symmetric positive definite, a fact that substantially simplifies the
+  numerical solution. The Galerkin scheme described above can be shown to be
+  equivalent to a variational treatment of the problem. This property ensures
+  that the computed eigenvalues are a lower bound of the correspondingly
+  numbered exact eigenvalues. This implies that the convergence of each
+  eigenvalue is monotonic in <math|N>. Further, note that the accuracy in
+  estimating the eigenvalues is better than that achieved for the
+  eigenfunctions (Delves and Mohamed, 1985).
 
   <\bibliography|bib|tm-plain|refs2>
     <\bib-list|1>
@@ -565,8 +676,10 @@
 
 <\references>
   <\collection>
-    <associate|2.33|<tuple|35|7>>
+    <associate|2.11|<tuple|11|3>>
+    <associate|2.33|<tuple|35|8>>
     <associate|2.57|<tuple|37|8>>
+    <associate|2.79|<tuple|52|11>>
     <associate|auto-1|<tuple|1|2>>
     <associate|auto-10|<tuple|1.2|5>>
     <associate|auto-11|<tuple|1.2.1|5>>
@@ -577,22 +690,28 @@
     <associate|auto-18|<tuple|1.2.3|7>>
     <associate|auto-19|<tuple|1.2.4|7>>
     <associate|auto-20|<tuple|1.2.4|7>>
-    <associate|auto-21|<tuple|1.2.4|7>>
-    <associate|auto-24|<tuple|4|7>>
-    <associate|auto-25|<tuple|4.1|7>>
+    <associate|auto-21|<tuple|1.2.4|8>>
+    <associate|auto-24|<tuple|4|8>>
+    <associate|auto-25|<tuple|4.1|8>>
     <associate|auto-26|<tuple|4.1.1|8>>
-    <associate|auto-27|<tuple|45|9>>
+    <associate|auto-27|<tuple|4.1.2|9>>
+    <associate|auto-28|<tuple|4.2|10>>
+    <associate|auto-29|<tuple|55|11>>
     <associate|auto-4|<tuple|1|2>>
     <associate|auto-5|<tuple|1.1|2>>
     <associate|auto-8|<tuple|1.1|2>>
-    <associate|auto-9|<tuple|1.1.1|4>>
-    <associate|bib-stochasticFiniteElements|<tuple|1|9>>
+    <associate|auto-9|<tuple|1.1.1|5>>
+    <associate|bib-stochasticFiniteElements|<tuple|1|11>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|bib>
+      stochasticFiniteElements
+
+      stochasticFiniteElements
+
       stochasticFiniteElements
 
       stochasticFiniteElements
@@ -700,9 +819,17 @@
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-26>>
 
+      <with|par-left|<quote|2tab>|4.1.2<space|2spc>Wiener process
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-27>>
+
+      <with|par-left|<quote|1tab>|4.2<space|2spc>Numerical Solution
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-28>>
+
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-27><vspace|0.5fn>
+      <no-break><pageref|auto-29><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
