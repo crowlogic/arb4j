@@ -19,6 +19,13 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       orthogonalPolynomialsAndQuadraticExtremalProblems       = new Article("Orthogonal Polynomials and Quadratic Extremal Problems",
+                                                                                                    "McDougall, J",
+                                                                                                    "2002",
+                                                                                                    "Transactions of the American Mathematical Society",
+                                                                                                    "354",
+                                                                                                    "2341--2357").setNumber("6");
+
   public static Article       orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI  = new Article("Orthogonal polynomials and Singular Sturm-Liouville Systems, I",
                                                                                                     "Littlejohn, Lance L and Krall, Allan M",
                                                                                                     "1986",
