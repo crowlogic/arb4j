@@ -413,12 +413,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
                             null);
   }
 
-  public static boolean computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
-                                                                           "true"));
+  public static boolean      computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
+                                                                                "true"));
 
-  public PrintWriter    printWriter;
+  public PrintWriter         printWriter;
 
-  public boolean        verbose       = false;
+  public boolean             verbose       = false;
+
+  public Expression<?, ?, ?> containingExpression;
 
   public Class<F> load()
   {

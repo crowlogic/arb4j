@@ -119,6 +119,7 @@ public class Product<D, R, F extends Function<D, R>> extends
       expression.context = new Context();
     }
     this.factor   = parseFactorExpression();
+
     functionClass = expression.className;
     assert functionClass != null : "functionClass is null";
   }
@@ -177,22 +178,25 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    String factorExpression = getIndexFieldName() + "➔" + factor;
-
     factorFieldName      = expression.getNextIntermediateVariableFieldName("factor", resultType);
     factorValueFieldName = expression.newIntermediateVariable("factorValue", resultType);
 
     expression.context.registerVariable(getIndexFieldName(), new Integer());
-    // FIXME: need to make this sub-expression aware of the input field of the
-    // containing expression
-    Expression<Integer, Object, Function<Integer, Object>> factor         = Compiler.express(factorExpression,
-                                                                                             expression.context,
-                                                                                             Integer.class,
-                                                                                             resultType,
-                                                                                             Function.class,
-                                                                                             factorFieldName);
 
-    Function<Integer, Object>                              factorInstance = factor.instantiate();
+    String                                                 factorExpression = format("%s➔%s",
+                                                                                     getIndexFieldName(),
+                                                                                     factor);
+
+    Expression<Integer, Object, Function<Integer, Object>> factor           = Compiler.express(factorFieldName,
+                                                                                               factorExpression,
+                                                                                               expression.context,
+                                                                                               Integer.class,
+                                                                                               resultType,
+                                                                                               Function.class,
+                                                                                               factorFieldName,
+                                                                                               expression);
+
+    Function<Integer, Object>                              factorInstance   = factor.instantiate();
     expression.referencedFunctions.put(factorFieldName,
                                        expression.context.registerFunctionMapping(factorFieldName,
                                                                                   factorInstance,
