@@ -99,7 +99,9 @@ public class P implements Function<Integer, RealPolynomial> {
          C.β = β;
          E.α = α;
          E.β = β;
-         isInitialized = true;
+         P = new P();
+         P.α = α;
+         P.β = β;
       }
    }
 

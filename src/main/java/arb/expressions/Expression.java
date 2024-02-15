@@ -1,12 +1,28 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.addNullCheckForField;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.express;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getVariablePrefix;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadFunctionClass;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.F_SAME1;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -794,39 +811,54 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
   }
 
-  public MethodVisitor generateContextInitializationCode(MethodVisitor methodVisitor)
+  public MethodVisitor generateInitializationCode(MethodVisitor mv)
   {
-    generateCodeToThrowErrorIfAlreadyInitialized(methodVisitor);
+    generateCodeToThrowErrorIfAlreadyInitialized(mv);
 
-    addChecksForNullVariableReferences(methodVisitor, false, false);
+    addChecksForNullVariableReferences(mv, false, false);
 
     if (needsInitializer())
     {
-      referencedFunctions.values().forEach(mapping -> generateContextInitializer(methodVisitor, mapping));
+      referencedFunctions.values().forEach(mapping -> generateInitializer(mv, mapping));
 
-      generateCodeToSetIsInitializedToTrue(methodVisitor);
+      if (recursive)
+      {
+        return generateSelfReference(mv);
+      }
+
+      generateCodeToSetIsInitializedToTrue(mv);
     }
 
-    return methodVisitor;
+    return mv;
   }
 
-  public MethodVisitor generateContextInitializer(MethodVisitor mv, FunctionMapping<?, ?> nestedFunction)
+  public MethodVisitor generateSelfReference(MethodVisitor mv)
   {
+    String functionFieldType = functionName;
+    mv.visitVarInsn(Opcodes.ALOAD, 0);
+    mv.visitTypeInsn(Opcodes.NEW, functionFieldType);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, functionFieldType, "<init>", "()V", false);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, functionName, "L" + functionFieldType + ";");
 
+    initializeNestedFunctionVariableReferences(loadThisOntoStack(mv),
+                                               className,
+                                               functionFieldType,
+                                               functionFieldType,
+                                               context.variableTypeStream());
+
+    return mv;
+  }
+
+  public MethodVisitor generateInitializer(MethodVisitor mv, FunctionMapping<?, ?> nestedFunction)
+  {
     if (nestedFunction.func != null)
     {
-      var nestedFunctionsVariables = context.variableEntryStream()
-                                            .map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
-                                                                                            entry.getValue()
-                                                                                                 .getClass()))
-                                            .collect(toList());
-
       initializeNestedFunctionVariableReferences(loadThisOntoStack(mv),
                                                  className,
                                                  Type.getInternalName(nestedFunction.type()),
                                                  nestedFunction.name,
-                                                 nestedFunctionsVariables);
-
+                                                 context.variableTypeStream());
     }
     else
     {
@@ -880,12 +912,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     referencedFunctions.values().stream().filter(func -> func.func != null).forEach(mapping ->
     {
-      String fieldType = Type.getInternalName(mapping.type());
-      mv.visitVarInsn(Opcodes.ALOAD, 0);
-      mv.visitTypeInsn(Opcodes.NEW, fieldType);
-      mv.visitInsn(Opcodes.DUP);
-      mv.visitMethodInsn(Opcodes.INVOKESPECIAL, fieldType, "<init>", "()V", false);
-      mv.visitFieldInsn(Opcodes.PUTFIELD, className, mapping.name, "L" + fieldType + ";");
+      generateFunctionReference(mv, mapping);
     });
 
     generateLiteralConstantInitializers(mv);
@@ -896,6 +923,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
     mv.visitMaxs(10, 10);
     mv.visitEnd();
     return classVisitor;
+  }
+
+  private void generateFunctionReference(MethodVisitor mv, FunctionMapping<D, R> mapping)
+  {
+    String fieldType = Type.getInternalName(mapping.type());
+    mv.visitVarInsn(Opcodes.ALOAD, 0);
+    mv.visitTypeInsn(Opcodes.NEW, fieldType);
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, fieldType, "<init>", "()V", false);
+    mv.visitFieldInsn(Opcodes.PUTFIELD, className, mapping.name, "L" + fieldType + ";");
   }
 
   public ClassVisitor generateEvaluationMethod(ClassVisitor classVisitor) throws ExpressionCompilerException
@@ -962,7 +999,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       methodVisitor.visitCode();
 
-      generateContextInitializationCode(methodVisitor);
+      generateInitializationCode(methodVisitor);
 
       methodVisitor.visitInsn(Opcodes.RETURN);
       methodVisitor.visitMaxs(10, 10);
@@ -1049,11 +1086,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                          String classType,
                                                          String fieldType,
                                                          String functionFieldName,
-                                                         List<OrderedPair<String, Class<?>>> variables)
+                                                         Stream<OrderedPair<String, Class<?>>> variables)
   {
     String typeDesc = "L" + fieldType + ";";
 
-    for (OrderedPair<String, Class<?>> variable : variables)
+    variables.forEach(variable ->
     {
       String variableFieldName = variable.getKey();
       String variableFieldType = variable.getValue().descriptorString();
@@ -1062,7 +1099,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       mv.visitVarInsn(Opcodes.ALOAD, 0);
       mv.visitFieldInsn(Opcodes.GETFIELD, classType, variableFieldName, variableFieldType);
       mv.visitFieldInsn(Opcodes.PUTFIELD, fieldType, variableFieldName, variableFieldType);
-    }
+    });
 
   }
 
@@ -1154,8 +1191,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       onlyReferencedFunctionName = referencedFunctions.entrySet().iterator().next().getKey();
     }
 
-    return !referencedFunctions.isEmpty()
-                  && (functionName != null && !functionName.equals(onlyReferencedFunctionName));
+    return (!referencedFunctions.isEmpty()
+                  && (functionName != null && !functionName.equals(onlyReferencedFunctionName))) || recursive;
   }
 
   public String newIntermediateVariable(Class<?> type)

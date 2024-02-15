@@ -144,39 +144,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return arg.getGeneratedType() != null ? arg.getGeneratedType() : arg.type();
   }
 
-  public static MethodVisitor conditionallyInstantiate(MethodVisitor mv,
-                                                       String thisClassName,
-                                                       String className,
-                                                       String fieldName,
-                                                       String fieldType)
-  {
-    mv.visitVarInsn(ALOAD, 0);
-    mv.visitFieldInsn(GETFIELD, className, fieldName, fieldType);
-    Label fieldAlreadyPopulated = new Label();
-    mv.visitJumpInsn(IFNONNULL, fieldAlreadyPopulated);
-    mv.visitVarInsn(ALOAD, 0);
-
-    mv.visitTypeInsn(Opcodes.NEW, className);
-    mv.visitInsn(Opcodes.DUP);
-    mv.visitVarInsn(Opcodes.ALOAD, 0);
-    mv.visitMethodInsn(Opcodes.INVOKESPECIAL, className, "<init>", format("(L%s;)V", className), false);
-
-    mv.visitFieldInsn(PUTFIELD, thisClassName, fieldName, fieldType);
-    mv.visitLabel(fieldAlreadyPopulated);
-    mv.visitFrame(F_SAME1, 0, null, 1, new Object[]
-    { fieldType });
-
-    return mv;
-  }
-
-  public void inactive(MethodVisitor mv)
-  {
-    if (isRecursive())
-    {
-      conditionallyInstantiate(mv, functionName, expression.className, functionName, format("L%s;", functionName));
-    }
-  }
-
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {

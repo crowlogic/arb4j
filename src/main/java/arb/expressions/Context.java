@@ -5,9 +5,11 @@ import static java.lang.System.err;
 
 import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import arb.HasName;
+import arb.OrderedPair;
 import arb.Real;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -46,14 +48,13 @@ public class Context
 {
   public final FunctionMappings functions;
 
-
   public Context()
   {
     this.variables = new Variables();
     this.functions = new FunctionMappings();
   }
 
-  public Context( Variables variables, FunctionMappings functions)
+  public Context(Variables variables, FunctionMappings functions)
   {
     this.variables = variables;
     this.functions = functions;
@@ -78,11 +79,11 @@ public class Context
 
   public Variables variables;
 
-  public <R> R getVariable( String name )
+  public <R> R getVariable(String name)
   {
     return variables.get(name);
   }
-  
+
   /**
    * public FunctionMappings functions; Adds a given variable to
    * {@link #variables}
@@ -97,7 +98,7 @@ public class Context
   {
     assert name != null : "name cannot be null";
     assert variable != null : "variable cannot be null";
-    
+
     R existing = null;
     if ((existing = variables.get(name)) != null)
     {
@@ -130,11 +131,11 @@ public class Context
    * @throws IllegalArgumentException if a function of the same name already
    *                                  exists in this{@link #functions}
    */
-  public <D,R> FunctionMapping<D,R> registerFunctionMapping(String functionName,
-                                                       Function<?, ?> function,
-                                                       Class<?> domainType,
-                                                       Class<?> rangeType,
-                                                       Class<?> functionClass)
+  public <D, R> FunctionMapping<D, R> registerFunctionMapping(String functionName,
+                                                              Function<?, ?> function,
+                                                              Class<?> domainType,
+                                                              Class<?> rangeType,
+                                                              Class<?> functionClass)
   {
 
     if (verbose)
@@ -153,7 +154,7 @@ public class Context
                                                 function));
     }
 
-    FunctionMapping<D,R> mapping = new FunctionMapping<D, R>();
+    FunctionMapping<D, R> mapping = new FunctionMapping<D, R>();
     mapping.name              = functionName;
     mapping.domain            = domainType;
     mapping.range             = rangeType;
@@ -171,5 +172,11 @@ public class Context
   public Stream<Entry<String, Object>> variableEntryStream()
   {
     return variableEntries().stream();
+  }
+
+  public Stream<OrderedPair<String, Class<?>>> variableTypeStream()
+  {
+    return variableEntryStream().map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
+                                                                                entry.getValue().getClass()));
   }
 }
