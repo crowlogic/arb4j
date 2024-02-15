@@ -28,10 +28,10 @@ public class P implements Function<Integer, RealPolynomial> {
    public Real ℝ5;
    public Real ℝ6;
    public P P;
-   public final A A;
-   public final B B;
-   public final C C;
-   public final E E;
+   public final A A = new A();
+   public final B B = new B();
+   public final C C = new C();
+   public final E E = new E();
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
       if (!isInitialized) {
@@ -57,10 +57,6 @@ public class P implements Function<Integer, RealPolynomial> {
    }
 
    public P() {
-      A = new A();
-      B = new B();
-      C = new C();
-      E = new E();
       c1 = new Integer("0");
       c2 = new Integer("1");
       c3 = new Integer("2");
@@ -102,12 +98,8 @@ public class P implements Function<Integer, RealPolynomial> {
          P = new P();
          P.α = α;
          P.β = β;
+         isInitialized = true;
       }
-   }
-
-   public P(P var1) {
-      α = var1.α;
-      β = var1.β;
    }
 
    public void close() {

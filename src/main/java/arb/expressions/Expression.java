@@ -13,7 +13,6 @@ import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
-import static java.util.stream.Collectors.toList;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ALOAD;
@@ -31,7 +30,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -706,11 +704,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
         generateInitializationMethod(classVisitor);
       }
 
-      if (recursive)
-      {
-        generateCopyConstructor(classVisitor);
-      }
-
       if (needsCloseMethod())
       {
         generateCloseMethod(classVisitor);
@@ -823,7 +816,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       if (recursive)
       {
-        return generateSelfReference(mv);
+        generateSelfReference(mv);
       }
 
       generateCodeToSetIsInitializedToTrue(mv);
@@ -868,39 +861,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     return mv;
-  }
-
-  public ClassVisitor generateCopyConstructor(ClassVisitor classVisitor)
-  {
-    MethodVisitor methodVisitor = classVisitor.visitMethod(ACC_PUBLIC,
-                                                           "<init>",
-                                                           "(L" + className + ";)V",
-                                                           null,
-                                                           null);
-    methodVisitor.visitCode();
-    Compiler.loadThisOntoStack(methodVisitor);
-    Compiler.invokeSuperclassDefaultConstructor(methodVisitor);
-
-    if (checkForNullsBeforeEvaluating)
-    {
-      generateInvocationOfDefaultNoArgConstructor(methodVisitor, false);
-    }
-
-// addChecksForNullVariableReferences(methodVisitor, false, true);
-
-    for (Variable<D, R, F> variable : referencedVariables.values())
-    {
-      String variableName = variable.reference.name;
-      loadThisOntoStack(methodVisitor);
-      methodVisitor.visitVarInsn(ALOAD, 1);
-      loadFieldOntoStack(methodVisitor, variableName, variable.type().descriptorString());
-      methodVisitor.visitFieldInsn(PUTFIELD, className, variableName, variable.type().descriptorString());
-    }
-
-    methodVisitor.visitInsn(RETURN);
-    methodVisitor.visitMaxs(10, 10);
-    methodVisitor.visitEnd();
-    return classVisitor;
   }
 
   public ClassVisitor generateDefaultConstructor(ClassVisitor classVisitor)
