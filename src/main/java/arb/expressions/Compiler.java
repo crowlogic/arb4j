@@ -77,13 +77,6 @@ public class Compiler
                        false);
 
     mv.visitInsn(Opcodes.ATHROW);
-    mv.visitLdcInsn(1);
-
-    // Pushes the integer 0 onto the stack as the denominator.
-    mv.visitInsn(ICONST_0);
-
-    // Performs the division, which will result in division by zero.
-    mv.visitInsn(IDIV);
 
     mv.visitLabel(notNullLabel);
 
@@ -101,21 +94,10 @@ public class Compiler
                                                                              Class<? extends D> domainClass,
                                                                              Class<? extends R> rangeClass,
                                                                              Class<? extends F> functionClass,
-                                                                             boolean verbose)
-  {
-    return express(expression, context, domainClass, rangeClass, functionClass, null);
-  }
-
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String expression,
-                                                                             Context context,
-                                                                             Class<? extends D> domainClass,
-                                                                             Class<? extends R> rangeClass,
-                                                                             Class<? extends F> functionClass,
                                                                              String functionName)
   {
     String className = functionName != null ? functionName : expressionToUniqueClassname(expression);
     return express(className, expression, context, domainClass, rangeClass, functionClass, functionName);
-
   }
 
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String className,
@@ -126,16 +108,19 @@ public class Compiler
                                                                              Class<? extends F> functionClass,
                                                                              boolean verbose)
   {
-    return express(className, expressionString, context, domainClass, rangeClass, functionClass, null);
+    return express(className, expressionString, context, domainClass, rangeClass, functionClass, className);
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String className,
-                                                                             String expressionString,
-                                                                             Context context,
-                                                                             Class<? extends D> domainClass,
-                                                                             Class<? extends R> rangeClass,
-                                                                             Class<? extends F> functionClass,
-                                                                             String functionName)
+  public static <D, R, F extends Function<D, R>, PD, PR, PF extends Function<PD, PR>>
+         Expression<D, R, F>
+         express(String className,
+                 String expressionString,
+                 Context context,
+                 Class<? extends D> domainClass,
+                 Class<? extends R> rangeClass,
+                 Class<? extends F> functionClass,
+                 String functionName,
+                 Expression<PD, PR, PF> containingExpression)
   {
     Expression<D, R, F> expression = new Expression<D, R, F>(className,
                                                              domainClass,
@@ -145,9 +130,25 @@ public class Compiler
                                                              context,
                                                              functionName);
 
+    if (containingExpression != null)
+    {
+      expression.containingExpression = containingExpression;
+    }
+
     expression.parse().compile().load();
 
     return expression;
+  }
+
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String className,
+                                                                             String expressionString,
+                                                                             Context context,
+                                                                             Class<? extends D> domainClass,
+                                                                             Class<? extends R> rangeClass,
+                                                                             Class<? extends F> functionClass,
+                                                                             String functionName)
+  {
+    return express(className, expressionString, context, domainClass, rangeClass, functionClass, functionName, null);
   }
 
   @SuppressWarnings("unchecked")

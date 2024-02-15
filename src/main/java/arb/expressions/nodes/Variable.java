@@ -81,21 +81,21 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return isIndeterminant ? expression.rangeType : reference.type();
   }
 
-  public final VariableReference<D,R,F> reference;
+  public final VariableReference<D, R, F> reference;
 
-  public final Variables         variables;
+  public final Variables                  variables;
 
-  public Expression<D, R, F>     expression;
+  public Expression<D, R, F>              expression;
 
-  public boolean                 isIndependent   = false;
+  public boolean                          isIndependent   = false;
 
-  public boolean                 isIndeterminant = false;
+  public boolean                          isIndeterminant = false;
 
-  public final boolean           isMultivariate;
+  public final boolean                    isMultivariate;
 
-  private Class<?>               generatedType;
+  private Class<?>                        generatedType;
 
-  public Variable(Expression<D, R, F> expression, VariableReference<D,R,F> reference)
+  public Variable(Expression<D, R, F> expression, VariableReference<D, R, F> reference)
   {
     super(expression);
     this.expression = expression;
@@ -243,7 +243,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
       else
       {
         throw new UndefinedReferenceException(format("Undefined reference to variable"
-                      + " '%s' in %s, independent variable is %s", reference.name, expression, inputVariable));
+                      + " '%s' in %s, independent variable is %s and containingExpression is %s",
+                                                     reference.name,
+                                                     expression,
+                                                     inputVariable,
+                                                     expression.containingExpression));
       }
     }
   }
@@ -256,7 +260,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public String toString(int depth)
   {
-    
+
     return String.format("%s[reference=%s, type=%s]",
                          getClass().getSimpleName(),
                          isIndependent ? format("INPUT(%s)", reference) : reference,
