@@ -41,12 +41,6 @@ public class Bibliography extends
                                                                                                                                   "16",
                                                                                                                                   "435--479").setNumber("3");
 
-  public static Book          higherTranscendentalFunctions                                                         = new Book("Higher Transcendental Functions",
-                                                                                                                               "Arthur Erdélyi, Wilhelm Magnus, Fritz Oberhettinger, Francesco G. Tricomi",
-                                                                                                                               "1955").setPublisher("McGraw-Hill Book Company, Inc.")
-                                                                                                                                      .setAddress("New York-Toronto-London")
-                                                                                                                                      .setVolume("III");
-
   public static Book          stochasticProcessesHarmonizableTheory                                                 = new Book("Stochastic Processes: Harmonizable Theory",
                                                                                                                                "M.M. Rao",
                                                                                                                                "2020").setPublisher("World Scientific Publishing Co. Pte. Ltd.")
