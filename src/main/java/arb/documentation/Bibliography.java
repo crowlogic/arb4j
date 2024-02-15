@@ -19,10 +19,10 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
-  public static Article       orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI  = new Article("Orthogonal polynomials and singular Sturm-Liouville systems, I",
+  public static Article       orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI  = new Article("Orthogonal polynomials and Singular Sturm-Liouville Systems, I",
                                                                                                     "Littlejohn, Lance L and Krall, Allan M",
                                                                                                     "1986",
-                                                                                                    "The Rocky Mountain journal of mathematics",
+                                                                                                    "The Rocky Mountain Journal of Mathematics",
                                                                                                     "16",
                                                                                                     "435--479").setNumber("3");
 
