@@ -19,6 +19,13 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       orthogonalPolynomialsAndSingularSturmLiouvilleSystemsI  = new Article("Orthogonal polynomials and singular Sturm-Liouville systems, I",
+                                                                                                    "Littlejohn, Lance L and Krall, Allan M",
+                                                                                                    "1986",
+                                                                                                    "The Rocky Mountain journal of mathematics",
+                                                                                                    "16",
+                                                                                                    "435--479").setNumber("3");
+
   public static Book          higherTranscendentalFunctions                           = new Book("Higher Transcendental Functions",
                                                                                                  "Arthur Erdélyi, Wilhelm Magnus, Fritz Oberhettinger, Francesco G. Tricomi",
                                                                                                  "1955").setPublisher("McGraw-Hill Book Company, Inc.")
