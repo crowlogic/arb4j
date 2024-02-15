@@ -1,7 +1,11 @@
 package arb.algebra;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
- * A commutative ring is a ring R that satisfies the additional axiom that
+ * A commutative ring is a {@link Ring} R that satisfies the additional axiom
+ * that
  * 
  * <pre>
  * 
@@ -9,12 +13,10 @@ package arb.algebra;
  * 
  * </pre>
  * 
- * TODO: use this whilst implementing
- * https://github.com/crowlogic/arb4j/issues/287 - expression compiler:
- * implement reorderable operands based on their commutativity(permutability) to
- * facilitate memoization and automatic complexity reduction #287
- * 
  * @param <X>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface CommutativeRing<X> extends
                                 Ring<X>

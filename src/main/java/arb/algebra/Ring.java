@@ -1,6 +1,8 @@
 package arb.algebra;
 
 import arb.HasName;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * <pre>
@@ -26,6 +28,8 @@ import arb.HasName;
  * </pre>
  *
  * @param <X> the set over which this {@link Ring} is defined.
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface Ring<X> extends
                      Magma<X>,

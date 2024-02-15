@@ -1,6 +1,8 @@
 package arb.algebra;
 
 import arb.Field;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.groups.LieGroup;
 import arb.space.topological.VectorSpace;
 
@@ -22,6 +24,8 @@ import arb.space.topological.VectorSpace;
  *
  * @param <F> the type of the field elements in the Lie algebra
  * @param <B> the type of the {@link LieBracket} operation
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface LieAlgebra<F extends Field<F>, B extends LieBracket<F>, V> extends
                            VectorSpace<F, V>

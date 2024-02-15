@@ -2,11 +2,16 @@ package arb.algebra;
 
 import java.util.function.BinaryOperator;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * A {@link Semigroup} is an {@link Associative} {@link Magma}
  *
  * @param <X>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface Semigroup<X> extends
                           Magma<X>
