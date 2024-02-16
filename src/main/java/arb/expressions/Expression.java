@@ -1,27 +1,11 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.addNullCheckForField;
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.express;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getVariablePrefix;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadFunctionClass;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.F_SAME1;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +74,7 @@ import arb.utensils.Utensils;
  * bytecode for expressions.</li>
  * </ul>
  * 
- * TODO: sum ⅀, factorial and Γ function
+ * TODO: sum ⅀, and Γ function
  * 
  * <h2>System Properties</h2>
  * <ul>
@@ -278,7 +262,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     while (true)
     {
-
       if (nextCharacterIs('+', '₊'))
       {
         node = new Addition<>(this,
@@ -291,7 +274,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                  node,
                                  exponentiateMultiplyAndDivide());
       }
-
       else
       {
         return node;
@@ -459,8 +441,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   /**
    * @return a parenthetical {@link Node}, a {@link Product}, a
    *         {@link LiteralConstant},a {@link Function}, a {@link Variable} or
-   *         null if for instance "-t" is encountered, a 0 is implied by the
-   *         abscence of a node before the {@link Subtraction} operator is
+   *         null if for instance "-t" is encountered, as a 0 is implied by the
+   *         absence of a node before the {@link Subtraction} operator is
    *         encountered
    * 
    * @throws ExpressionCompilerException
@@ -477,13 +459,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       if (!nextCharacterIs(')'))
       {
-        throw new ExpressionCompilerException(format("expected closing parenthesis, instead "
-                      + "got %c at position %s in " + "expression '%s' node=%s which is fllowed by %s ",
-                                                     character,
-                                                     position,
-                                                     expression,
-                                                     node,
-                                                     expression.substring(position, expression.length())));
+        throwMissingClosingParanthesisException(node);
       }
 
     }
@@ -502,8 +478,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
       assert node != null : "parseFunctionInvocationOrVariableReference returned null";
     }
 
-    node = resolvePostfixOperators(node);
-    return node;
+    return resolvePostfixOperators(node);
+  }
+
+  private void throwMissingClosingParanthesisException(Node<D, R, F> node)
+  {
+    throw new ExpressionCompilerException(format("expected closing parenthesis, instead "
+                  + "got %c at position %s in " + "expression '%s' node=%s which is fllowed by %s ",
+                                                 character,
+                                                 position,
+                                                 expression,
+                                                 node,
+                                                 expression.substring(position, expression.length())));
   }
 
   private VariableReference<D, R, F> evaluateName(int startPos)
@@ -593,7 +579,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * Calls this{@link #evaluateOptionalIndependentVariableSpecification()} befor
+   * Calls this{@link #evaluateOptionalIndependentVariableSpecification()} before
    * calling this{@link #determine()} and assigning the result to
    * this{@link #rootNode}
    * 
@@ -617,15 +603,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return exponentiate(evaluate());
   }
 
-  /**
-   * TODO: this could probably be handled in
-   * this{@link #resolvePostfixOperators(Node)}
-   * 
-   * @param node
-   * @return
-   * @throws ExpressionCompilerException
-   */
-  private Node<D, R, F> exponentiate(Node<D, R, F> node) throws ExpressionCompilerException
+  public Node<D, R, F> exponentiate(Node<D, R, F> node) throws ExpressionCompilerException
   {
     if (nextCharacterIs('^'))
     {

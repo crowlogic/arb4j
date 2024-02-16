@@ -8,6 +8,13 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  
+  public static void testGamma()
+  {
+    RealFunction func   = RealFunction.express("Γ(4)");
+    Real         result = func.evaluate(null, 0, 128, new Real());
+    assertEquals(6.0, result.doubleValue());
+  }
 
   public static void testFactorial()
   {
