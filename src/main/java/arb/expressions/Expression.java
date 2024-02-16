@@ -1,11 +1,27 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.addNullCheckForField;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.express;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getVariablePrefix;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadFunctionClass;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.F_SAME1;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.io.File;
 import java.io.IOException;
@@ -459,7 +475,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
       if (!nextCharacterIs(')'))
       {
-        throwMissingClosingParanthesisException(node);
+        throwMissingClosingParenthesisException(node);
       }
 
     }
@@ -481,13 +497,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return resolvePostfixOperators(node);
   }
 
-  private void throwMissingClosingParanthesisException(Node<D, R, F> node)
+  private void throwMissingClosingParenthesisException(Object node)
   {
     throw new ExpressionCompilerException(format("expected closing parenthesis, instead "
-                  + "got %c at position %s in " + "expression '%s' node=%s which is fllowed by %s ",
+                  + "got %c at position %s in expression '%s' %s=%s which is followed by %s ",
                                                  character,
                                                  position,
                                                  expression,
+                                                 node instanceof Node ? "node" : "variableReference",
                                                  node,
                                                  expression.substring(position, expression.length())));
   }
@@ -1065,11 +1082,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     try
     {
-      F f;
-
-      f = instance = (compiledClass != null ? compiledClass : load()).getDeclaredConstructor().newInstance();
-
-      injectVariableReferences(f);
+      injectVariableReferences(constructNewInstance());
     }
     catch (Exception e)
     {
@@ -1077,6 +1090,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     return instance;
+  }
+
+  private F constructNewInstance() throws ReflectiveOperationException
+  {
+    return instance = (compiledClass != null ? compiledClass : load()).getDeclaredConstructor().newInstance();
   }
 
   public MethodVisitor loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
@@ -1171,9 +1189,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     var contextVar = getVariable(reference);
     reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
-    Variable<D, R, F> variable = new Variable<D, R, F>(this,
-                                                       reference);
-    return variable;
+    return new Variable<D, R, F>(this,
+                                 reference);
   }
 
   public <Q> Q getVariable(VariableReference<D, R, F> reference)
@@ -1307,8 +1324,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else
       {
-        throw new RuntimeException(String.format("expected closing parenthesis at: startPos=%s, position=%s,"
-                      + " identifier='%s', expression=%s\n", startPos, position, reference, expression));
+        throwMissingClosingParenthesisException(reference);
+        return null;
       }
     }
   }
