@@ -181,22 +181,35 @@ public class Product<D, R, F extends Function<D, R>> extends
     factorFieldName      = expression.getNextIntermediateVariableFieldName("factor", resultType);
     factorValueFieldName = expression.newIntermediateVariable("factorValue", resultType);
 
-    expression.context.registerVariable(getIndexFieldName(), new Integer());
+    expression.registerIntermediateVariable(getIndexFieldName(), Integer.class);
+    /***
+     * if there is a name-conflict then use newIntermediateVariable which names
+     * variables based on an increasing integer sequence. If this is done then
+     * index.reference.name needs to be somehow updated to address the renamed
+     * variable
+     **/
+    String                                            factorExpression = format("%s➔%s",
+                                                                                getIndexFieldName(),
+                                                                                factor);
 
-    String                                                 factorExpression = format("%s➔%s",
-                                                                                     getIndexFieldName(),
-                                                                                     factor);
+    /**
+     * FIXME: TODO: when an Expression is passed to Compiler#express the input
+     * variable needs become a field of the compiled sub-expression and the input
+     * value needs to be injected into the newly constructed functions field.. if
+     * this sub-expression makes any sub-expressions then it needs to propagate all
+     * of the input fields by making fields for the inputs (this is cause an invoked
+     * method cannot access a callers local variables in java
+     */
+    Expression<Integer, ?, Function<Integer, Object>> factor           = Compiler.express(factorFieldName,
+                                                                                          factorExpression,
+                                                                                          expression.context,
+                                                                                          Integer.class,
+                                                                                          resultType,
+                                                                                          Function.class,
+                                                                                          factorFieldName,
+                                                                                          expression);
 
-    Expression<Integer, Object, Function<Integer, Object>> factor           = Compiler.express(factorFieldName,
-                                                                                               factorExpression,
-                                                                                               expression.context,
-                                                                                               Integer.class,
-                                                                                               resultType,
-                                                                                               Function.class,
-                                                                                               factorFieldName,
-                                                                                               expression);
-
-    Function<Integer, Object>                              factorInstance   = factor.instantiate();
+    var                                               factorInstance   = factor.instantiate();
     expression.referencedFunctions.put(factorFieldName,
                                        expression.context.registerFunctionMapping(factorFieldName,
                                                                                   factorInstance,

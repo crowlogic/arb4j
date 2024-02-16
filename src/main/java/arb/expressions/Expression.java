@@ -1137,17 +1137,29 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     assert type != Void.class : "dont generate a variable for the Void type";
     String intermediateVarName = getNextIntermediateVariableFieldName("", type);
-    intermediateVariables.add(new IntermediateVariable<>(this,
-                                                         intermediateVarName,
-                                                         type));
-
-    return intermediateVarName;
+    return registerIntermediateVariable(intermediateVarName, type);
   }
 
-  public String newIntermediateVariable(String name, Class<?> type)
+  /**
+   * Assigns the next field name in the sequence for the given variable name
+   * prefix by calling
+   * this{@link #getNextIntermediateVariableFieldName(String, Class)} then passing
+   * the result to this{@link #registerIntermediateVariable(String, Class)}
+   * 
+   * @param prefix
+   * @param type
+   * @return the variable name assigned
+   */
+  public String newIntermediateVariable(String prefix, Class<?> type)
   {
+    assert prefix != null : "name shan't be null";
     assert type != Void.class : "dont generate a variable for the Void type";
-    String intermediateVarName = getNextIntermediateVariableFieldName(name, type);
+    String intermediateVarName = getNextIntermediateVariableFieldName(prefix, type);
+    return registerIntermediateVariable(intermediateVarName, type);
+  }
+
+  public String registerIntermediateVariable(String intermediateVarName, Class<?> type)
+  {
     intermediateVariables.add(new IntermediateVariable<>(this,
                                                          intermediateVarName,
                                                          type));
