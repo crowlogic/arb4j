@@ -188,6 +188,11 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return integer;
   }
   
+  public Real Γ(int bits)
+  {
+    return Γ(bits, this);
+  }
+  
  /**
    * Calculate the rising factorial this_(power)
    * 

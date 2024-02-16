@@ -32,6 +32,11 @@ public class Integer implements
                      HasName
 {
 
+  public Real Γ(int bits, Real result)
+  {
+    return result.set(this).Γ(bits);
+  }
+
   public String name;
 
   public String getName()
@@ -74,8 +79,6 @@ public class Integer implements
     return result;
   }
 
-
-  
   public static Real factorial(long n, int bits, Real result)
   {
     arblib.arb_fac_ui(result, n, bits);
@@ -419,7 +422,7 @@ public class Integer implements
     arblib.fmpz_fac_ui(result.swigCPtr, n.getUnsignedValue());
     return result;
   }
-  
+
   public Integer factorial()
   {
     return factorial(this, this);
