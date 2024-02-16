@@ -52,10 +52,6 @@ public class HypergeometricPolynomialSequence implements
 
   public final Function<Integer, RealPolynomial> F;
 
-  // public static final String Fdef =
-  // "n➔when(n=0,1,else,x*F(n-1)*∏αₖ₍ₙ₋₁₎{k=1…p})";
-  public static final String                     Fdef = "n➔when(n=0,1,else,x*F(n-1)*∏α[k]₍ₙ₋₁₎{k=1…p}/((n-1)!*∏β[k]₍ₙ₋₁₎{k=1…q}))";
-
   @SuppressWarnings("resource")
   public HypergeometricPolynomialSequence(int p, int q)
   {
@@ -64,7 +60,11 @@ public class HypergeometricPolynomialSequence implements
                                       α = Real.newVector(p).setName("α"),
                                       β = Real.newVector(q).setName("β"));
     context.saveClasses = true;
-    F                   = Function.express(Integer.class, RealPolynomial.class, "F", Fdef, context);
+    F                   = Function.express(Integer.class,
+                                           RealPolynomial.class,
+                                           "F",
+                                           "n➔when(n=0,1,else,x*F(n-1)*∏α[k]₍ₙ₋₁₎{k=1…p}/((n-1)!*∏β[k]₍ₙ₋₁₎{k=1…q}))",
+                                           context);
   }
 
   @Override
