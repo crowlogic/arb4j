@@ -2,15 +2,19 @@ package arb.expressions;
 
 import arb.Real;
 import arb.RealConstants;
+import arb.functions.Function;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
+import arb.Integer;
 
 public class ExpressionTest extends
                             TestCase
 {
   public static void testParentExpressionInputToSubexpression()
   {
-    assert false : "TODO: test n➔∏k₍ₙ₋₁₎{k=1…3}";
+    Function<Integer, Integer> f = Function.express(Integer.class, Integer.class, "n➔∏k₍ₙ₋₁₎{k=1…3}");
+    Integer evaluate = f.evaluate(new Integer(0), 128,  new Integer());
+    System.out.println( "f(0)" + evaluate );
   }
 
   public static void testGammaReal()
