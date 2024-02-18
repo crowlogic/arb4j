@@ -10,7 +10,7 @@ public class ExpressionTest extends
 {
   public static void testParentExpressionInputToSubexpression()
   {
-    assert false : "TODO: extract test statement from n➔when(n=0,1,else,x*F(n-1)*∏α[k]₍ₙ₋₁₎{k=1…p}/((n-1)!*∏β[k]₍ₙ₋₁₎{k=1…q}))";
+    assert false : "TODO: test n➔∏k₍ₙ₋₁₎{k=1…3}";
   }
 
   public static void testGammaReal()
