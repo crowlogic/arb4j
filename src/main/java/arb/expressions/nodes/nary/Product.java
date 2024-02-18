@@ -216,7 +216,7 @@ public class Product<D, R, F extends Function<D, R>> extends
      **/
     String                                            factorExpression = format("%s➔%s",
                                                                                 getIndexFieldName(),
-                                                                                index.reference.name);
+                                                                                factor);
 
     /**
      * FIXME: TODO: when an Expression is passed to Compiler#express the input

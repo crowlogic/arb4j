@@ -206,31 +206,31 @@ public class Compiler
   {
     if (type.equals(Real.class))
     {
-      return "r";
+      return "ℝ";
     }
     else if (type.equals(Complex.class))
     {
-      return "c";
+      return "ℂ";
     }
     else if (type.equals(Integer.class))
     {
-      return "z";
+      return "ℤ";
     }
     else if (type.equals(RealPolynomial.class))
     {
-      return "rp";
+      return "r̅";
     }
     else if (type.equals(ComplexPolynomial.class))
     {
-      return "cp";
+      return "c̅";
     }
     else if (type.equals(RealMatrix.class))
     {
-      return "rᵐˣⁿ";
+      return "ℝᵐˣⁿ";
     }
     else if (type.equals(ComplexMatrix.class))
     {
-      return "cᵐˣⁿ";
+      return "ℂᵐˣⁿ";
     }
     else
     {

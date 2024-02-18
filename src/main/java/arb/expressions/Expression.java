@@ -1,27 +1,11 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.addNullCheckForField;
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.express;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getVariableSuffix;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadFunctionClass;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.F_SAME1;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -405,17 +389,19 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareVariables(ClassVisitor classVisitor)
   {
-    if ( parentExpression != null )
+    if (parentExpression != null)
     {
       Variable<?, ?, ?> independentVariableNode2 = parentExpression.independentVariableNode;
-      System.out.println( "Declaring " + independentVariableNode2);
-      classVisitor.visitField(ACC_PUBLIC,
-                              independentVariableNode2.reference.name,
-                              independentVariableNode2.type().descriptorString(),
-                              null,
-                              null);
+      if (!independentVariableNode2.type().equals(Void.class))
+      {
+        classVisitor.visitField(ACC_PUBLIC,
+                                independentVariableNode2.reference.name,
+                                independentVariableNode2.type().descriptorString(),
+                                null,
+                                null);
+      }
     }
-    
+
     if (context != null)
     {
       for (var variable : context.variables.map.entrySet())
