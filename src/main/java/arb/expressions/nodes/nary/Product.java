@@ -1,10 +1,19 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameter;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.POP;
+
+import java.util.Optional;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -19,6 +28,7 @@ import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
@@ -181,8 +191,22 @@ public class Product<D, R, F extends Function<D, R>> extends
     factorFieldName      = expression.getNextIntermediateVariableFieldName("factor", resultType);
     factorValueFieldName = expression.newIntermediateVariable("value", resultType);
 
-    String originalIndexFieldName = getIndexFieldName();
-    index.reference.name = expression.newIntermediateVariable(getIndexFieldName(), Integer.class);
+    Optional<IntermediateVariable<D, R, F>> existingIndexVariable = expression.intermediateVariables.stream()
+                                                                                                    .filter(predicate -> predicate.name.equals(getIndexFieldName()))
+                                                                                                    .findFirst();
+
+    if (existingIndexVariable.isPresent())
+    {
+      if (!existingIndexVariable.get().type.equals(Integer.class))
+      {
+        throw new ExpressionCompilerException("index variable " + existingIndexVariable
+                      + " already declared  and not of Intger type so it cant be used as the index");
+      }
+    }
+    else
+    {
+      expression.registerIntermediateVariable(getIndexFieldName(), Integer.class);
+    }
 
     /***
      * if there is a name-conflict then use newIntermediateVariable which names
@@ -192,8 +216,7 @@ public class Product<D, R, F extends Function<D, R>> extends
      **/
     String                                            factorExpression = format("%s➔%s",
                                                                                 getIndexFieldName(),
-                                                                                factor.replace(originalIndexFieldName,
-                                                                                               index.reference.name));
+                                                                                index.reference.name);
 
     /**
      * FIXME: TODO: when an Expression is passed to Compiler#express the input

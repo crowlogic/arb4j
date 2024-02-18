@@ -1190,7 +1190,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return registerIntermediateVariable(intermediateVarName, type);
   }
 
-  private String registerIntermediateVariable(String intermediateVarName, Class<?> type)
+  public String registerIntermediateVariable(String intermediateVarName, Class<?> type)
   {
     intermediateVariables.add(new IntermediateVariable<>(this,
                                                          intermediateVarName,
