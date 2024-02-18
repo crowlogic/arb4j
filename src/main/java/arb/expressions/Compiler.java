@@ -202,35 +202,35 @@ public class Compiler
 
   }
 
-  public static String getVariablePrefix(Class<?> type)
+  public static String getVariableSuffix(Class<?> type)
   {
     if (type.equals(Real.class))
     {
-      return "ℝ";
+      return "r";
     }
     else if (type.equals(Complex.class))
     {
-      return "ℂ";
+      return "c";
     }
     else if (type.equals(Integer.class))
     {
-      return "ℤ";
+      return "z";
     }
     else if (type.equals(RealPolynomial.class))
     {
-      return "r̅";
+      return "rp";
     }
     else if (type.equals(ComplexPolynomial.class))
     {
-      return "c̅";
+      return "cp";
     }
     else if (type.equals(RealMatrix.class))
     {
-      return "ℝᵐˣⁿ";
+      return "rᵐˣⁿ";
     }
     else if (type.equals(ComplexMatrix.class))
     {
-      return "ℂᵐˣⁿ";
+      return "cᵐˣⁿ";
     }
     else
     {

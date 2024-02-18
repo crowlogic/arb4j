@@ -179,10 +179,11 @@ public class Product<D, R, F extends Function<D, R>> extends
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
     factorFieldName      = expression.getNextIntermediateVariableFieldName("factor", resultType);
-    factorValueFieldName = expression.newIntermediateVariable("factorValue", resultType);
+    factorValueFieldName = expression.newIntermediateVariable("value", resultType);
 
+    String originalIndexFieldName = getIndexFieldName();
     index.reference.name = expression.newIntermediateVariable(getIndexFieldName(), Integer.class);
-    
+
     /***
      * if there is a name-conflict then use newIntermediateVariable which names
      * variables based on an increasing integer sequence. If this is done then
@@ -191,7 +192,8 @@ public class Product<D, R, F extends Function<D, R>> extends
      **/
     String                                            factorExpression = format("%s➔%s",
                                                                                 getIndexFieldName(),
-                                                                                factor);
+                                                                                factor.replace(originalIndexFieldName,
+                                                                                               index.reference.name));
 
     /**
      * FIXME: TODO: when an Expression is passed to Compiler#express the input
@@ -210,7 +212,6 @@ public class Product<D, R, F extends Function<D, R>> extends
                                                                                           factorFieldName,
                                                                                           expression);
 
-    
     var                                               factorInstance   = factor.instantiate();
     expression.referencedFunctions.put(factorFieldName,
                                        expression.context.registerFunctionMapping(factorFieldName,
