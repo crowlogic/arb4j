@@ -128,12 +128,8 @@ public class Compiler
                                                              functionClass,
                                                              expressionString,
                                                              context,
-                                                             functionName);
-
-    if (containingExpression != null)
-    {
-      expression.containingExpression = containingExpression;
-    }
+                                                             functionName,
+                                                             containingExpression);
 
     expression.parse().compile().load();
 

@@ -239,6 +239,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
          functionClass,
          expressionString,
          context,
+         null,
          null);
   }
 
@@ -248,8 +249,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
                     Class<? extends F> functionClass,
                     String expression,
                     Context context,
-                    String functionName)
+                    String functionName,
+                    Expression<?, ?, ?> parentExpression)
   {
+    this.parentExpression                 = parentExpression;
     this.rangeClassDescriptor             = rangeClass.descriptorString();
     this.domainClassDescriptor            = domainClass.descriptorString();
     this.className                        = className;
@@ -402,6 +405,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareVariables(ClassVisitor classVisitor)
   {
+    if ( parentExpression != null )
+    {
+      Variable<?, ?, ?> independentVariableNode2 = parentExpression.independentVariableNode;
+      System.out.println( "Declaring " + independentVariableNode2);
+      classVisitor.visitField(ACC_PUBLIC,
+                              independentVariableNode2.reference.name,
+                              independentVariableNode2.type().descriptorString(),
+                              null,
+                              null);
+    }
+    
     if (context != null)
     {
       for (var variable : context.variables.map.entrySet())
@@ -433,7 +447,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean             verbose       = false;
 
-  public Expression<?, ?, ?> containingExpression;
+  public Expression<?, ?, ?> parentExpression;
 
   public Class<F> load()
   {
@@ -1176,7 +1190,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return registerIntermediateVariable(intermediateVarName, type);
   }
 
-  public String registerIntermediateVariable(String intermediateVarName, Class<?> type)
+  private String registerIntermediateVariable(String intermediateVarName, Class<?> type)
   {
     intermediateVariables.add(new IntermediateVariable<>(this,
                                                          intermediateVarName,

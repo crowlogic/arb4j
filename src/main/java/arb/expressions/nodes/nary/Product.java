@@ -181,7 +181,8 @@ public class Product<D, R, F extends Function<D, R>> extends
     factorFieldName      = expression.getNextIntermediateVariableFieldName("factor", resultType);
     factorValueFieldName = expression.newIntermediateVariable("factorValue", resultType);
 
-    expression.registerIntermediateVariable(getIndexFieldName(), Integer.class);
+    index.reference.name = expression.newIntermediateVariable(getIndexFieldName(), Integer.class);
+    
     /***
      * if there is a name-conflict then use newIntermediateVariable which names
      * variables based on an increasing integer sequence. If this is done then
@@ -209,6 +210,7 @@ public class Product<D, R, F extends Function<D, R>> extends
                                                                                           factorFieldName,
                                                                                           expression);
 
+    
     var                                               factorInstance   = factor.instantiate();
     expression.referencedFunctions.put(factorFieldName,
                                        expression.context.registerFunctionMapping(factorFieldName,

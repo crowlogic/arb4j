@@ -95,6 +95,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   private Class<?>                        generatedType;
 
+  private boolean isIndependentVariableOfParentExpression;
+
   public Variable(Expression<D, R, F> expression, VariableReference<D, R, F> reference)
   {
     super(expression);
@@ -194,6 +196,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
+    //  assert !isIndependentVariableOfParentExpression : "handle isIndependentVariableOfParentExpression: " + reference;
       expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type().descriptorString());
     }
   }
@@ -218,7 +221,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   }
 
   /**
-   * Set this{@link #isIndeterminant} , this{@link #isIndependent}
+   * Set this{@link #isIndeterminant} , this{@link #isIndependent}, or this{@link #isIndependentVariableOfParentExpression}
    * 
    * @param reference
    */
@@ -242,12 +245,24 @@ public class Variable<D, R, F extends Function<D, R>> extends
       }
       else
       {
+        if ( expression.parentExpression != null )
+        {
+          if ( expression.parentExpression.independentVariableNode.reference.equals(reference) )
+          {
+            isIndependentVariableOfParentExpression = true;
+            return;
+          }
+
+        }
+        else
+        {
         throw new UndefinedReferenceException(format("Undefined reference to variable"
                       + " '%s' in %s, independent variable is %s and containingExpression is %s",
                                                      reference.name,
                                                      expression,
                                                      inputVariable,
-                                                     expression.containingExpression));
+                                                     expression.parentExpression));
+        }
       }
     }
   }
