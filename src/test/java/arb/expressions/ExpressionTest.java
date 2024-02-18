@@ -8,13 +8,18 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public static void testParentExpressionInputToSubexpression()
+  {
+    assert false : "TODO: extract test statement from n➔when(n=0,1,else,x*F(n-1)*∏α[k]₍ₙ₋₁₎{k=1…p}/((n-1)!*∏β[k]₍ₙ₋₁₎{k=1…q}))";
+  }
+
   public static void testGammaReal()
   {
     RealFunction func   = RealFunction.express("Γ(4.0)");
     Real         result = func.evaluate(null, 0, 128, new Real());
     assertEquals(6.0, result.doubleValue());
   }
-  
+
   public static void testGamma()
   {
     RealFunction func   = RealFunction.express("Γ(4)");
@@ -32,10 +37,14 @@ public class ExpressionTest extends
   public static void testFactorialToo()
   {
     RealFunction func   = RealFunction.express("x!");
-    Real         result = func.evaluate(new Real("4",128), 0, 128, new Real());
+    Real         result = func.evaluate(new Real("4",
+                                                 128),
+                                        0,
+                                        128,
+                                        new Real());
     assertEquals(24.0, result.doubleValue());
   }
-  
+
   public static void testRisingFactorial()
   {
     RealFunction func   = RealFunction.express("x₍₃₎");
