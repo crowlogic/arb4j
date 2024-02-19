@@ -209,19 +209,6 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
     }
   }
 
-  @Override
-  public Real additiveIdentity()
-  {
-    return set(RealConstants.zero);
-  }
-
-  @Override
-  public Real multiplicativeIdentity()
-  {
-    return set(RealConstants.one);
-  }
-  
-  
   public Integer integerValue(Integer integer)
   {
     arblib.arb_get_unique_fmpz(integer.swigCPtr, this);
