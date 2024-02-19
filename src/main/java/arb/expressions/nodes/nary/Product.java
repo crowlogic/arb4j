@@ -260,7 +260,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     if (isResult)
     {
       Compiler.loadResultParameter(mv);
-      Class<Real> type = type();
+      Class<?> type = type();
       Compiler.checkClassCast(mv, type);
       loadResultingProductVariable(mv);
       invokeSetMethod(mv, type, type);
@@ -450,9 +450,9 @@ public class Product<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  public Class<Real> type()
+  public Class<?> type()
   {
-    return Real.class;
+    return expression.rangeType;
   }
 
   @Override
