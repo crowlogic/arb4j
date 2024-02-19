@@ -14,18 +14,18 @@ public class F implements Function<Integer, RealPolynomial> {
    public Integer ℤ1;
    public RealPolynomial r̅1;
    public RealPolynomial r̅2;
-   public Real valueℝ1;
+   public RealPolynomial valuer̅1;
    public Integer k;
-   public Real productℝ1;
+   public RealPolynomial productr̅1;
    public RealPolynomial r̅3;
    public Integer ℤ2;
    public Integer ℤ3;
-   public Real valueℝ2;
-   public Real productℝ2;
-   public Real ℝ1;
+   public RealPolynomial valuer̅2;
+   public RealPolynomial productr̅2;
+   public RealPolynomial r̅4;
+   public final factorr̅2 factorr̅2 = new factorr̅2();
    public F F;
-   public final factorℝ2 factorℝ2 = new factorℝ2();
-   public final factorℝ1 factorℝ1 = new factorℝ1();
+   public final factorr̅1 factorr̅1 = new factorr̅1();
 
    public RealPolynomial evaluate(Integer param1, int param2, int param3, RealPolynomial param4) {
       // $VF: Couldn't be decompiled
@@ -78,8 +78,8 @@ public class F implements Function<Integer, RealPolynomial> {
       // 054: getfield F.r̅2 Larb/RealPolynomial;
       // 057: invokevirtual arb/RealPolynomial.mul (Larb/RealPolynomial;ILarb/RealPolynomial;)Larb/RealPolynomial;
       // 05a: aload 0
-      // 05b: getfield F.productℝ1 Larb/Real;
-      // 05e: invokevirtual arb/Real.multiplicativeIdentity ()Larb/Real;
+      // 05b: getfield F.productr̅1 Larb/RealPolynomial;
+      // 05e: invokevirtual arb/RealPolynomial.multiplicativeIdentity ()Larb/RealPolynomial;
       // 061: pop
       // 062: aload 0
       // 063: getfield F.k Larb/Integer;
@@ -88,14 +88,14 @@ public class F implements Function<Integer, RealPolynomial> {
       // 06a: invokevirtual arb/Integer.set (Larb/Integer;)Larb/Integer;
       // 06d: pop
       // 06e: aload 0
-      // 06f: getfield F.productℝ1 Larb/RealPolynomial;
+      // 06f: getfield F.productr̅1 Larb/RealPolynomial;
       // 072: aload 0
-      // 073: getfield F.factorℝ1 Lfactorℝ1;
+      // 073: getfield F.factorr̅1 Lfactorr̅1;
       // 076: aload 0
       // 077: getfield F.k Larb/Integer;
       // 07a: iload 3
       // 07b: aload 0
-      // 07c: getfield F.valueℝ1 Larb/RealPolynomial;
+      // 07c: getfield F.valuer̅1 Larb/RealPolynomial;
       // 07f: invokeinterface arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; 4
       // 084: checkcast arb/RealPolynomial
       // 087: iload 3
@@ -111,7 +111,7 @@ public class F implements Function<Integer, RealPolynomial> {
       // 09d: iload 3
       // 09e: aload 0
       // 09f: getfield F.r̅3 Larb/RealPolynomial;
-      // 0a2: invokevirtual arb/RealPolynomial.mul (Larb/Real;ILarb/RealPolynomial;)Larb/RealPolynomial;
+      // 0a2: invokevirtual arb/RealPolynomial.mul (Larb/RealPolynomial;ILarb/RealPolynomial;)Larb/RealPolynomial;
       // 0a5: aload 4
       // 0a7: aload 1
       // 0a8: checkcast arb/Integer
@@ -127,8 +127,8 @@ public class F implements Function<Integer, RealPolynomial> {
       // 0bc: invokevirtual arb/Integer.factorial (ILarb/RealPolynomial;)Larb/RealPolynomial;
       // 0bf: invokevirtual arb/Integer.set (Larb/RealPolynomial;)Larb/Integer;
       // 0c2: aload 0
-      // 0c3: getfield F.productℝ2 Larb/Real;
-      // 0c6: invokevirtual arb/Real.multiplicativeIdentity ()Larb/Real;
+      // 0c3: getfield F.productr̅2 Larb/RealPolynomial;
+      // 0c6: invokevirtual arb/RealPolynomial.multiplicativeIdentity ()Larb/RealPolynomial;
       // 0c9: pop
       // 0ca: aload 0
       // 0cb: getfield F.k Larb/Integer;
@@ -137,14 +137,14 @@ public class F implements Function<Integer, RealPolynomial> {
       // 0d2: invokevirtual arb/Integer.set (Larb/Integer;)Larb/Integer;
       // 0d5: pop
       // 0d6: aload 0
-      // 0d7: getfield F.productℝ2 Larb/RealPolynomial;
+      // 0d7: getfield F.productr̅2 Larb/RealPolynomial;
       // 0da: aload 0
-      // 0db: getfield F.factorℝ2 Lfactorℝ2;
+      // 0db: getfield F.factorr̅2 Lfactorr̅2;
       // 0de: aload 0
       // 0df: getfield F.k Larb/Integer;
       // 0e2: iload 3
       // 0e3: aload 0
-      // 0e4: getfield F.valueℝ2 Larb/RealPolynomial;
+      // 0e4: getfield F.valuer̅2 Larb/RealPolynomial;
       // 0e7: invokeinterface arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; 4
       // 0ec: checkcast arb/RealPolynomial
       // 0ef: iload 3
@@ -159,12 +159,12 @@ public class F implements Function<Integer, RealPolynomial> {
       // 102: ifle 0d6
       // 105: iload 3
       // 106: aload 0
-      // 107: getfield F.ℝ1 Larb/Real;
-      // 10a: invokevirtual arb/Integer.mul (Larb/Real;ILarb/Real;)Larb/Real;
+      // 107: getfield F.r̅4 Larb/RealPolynomial;
+      // 10a: invokevirtual arb/Integer.mul (Larb/RealPolynomial;ILarb/RealPolynomial;)Larb/RealPolynomial;
       // 10d: iload 3
       // 10e: aload 4
       // 110: checkcast arb/RealPolynomial
-      // 113: invokevirtual arb/RealPolynomial.div (Larb/Real;ILarb/RealPolynomial;)Larb/RealPolynomial;
+      // 113: invokevirtual arb/RealPolynomial.div (Larb/RealPolynomial;ILarb/RealPolynomial;)Larb/RealPolynomial;
       // 116: areturn
    }
 
@@ -174,15 +174,15 @@ public class F implements Function<Integer, RealPolynomial> {
       ℤ1 = new Integer();
       r̅1 = new RealPolynomial();
       r̅2 = new RealPolynomial();
-      valueℝ1 = new Real();
+      valuer̅1 = new RealPolynomial();
       k = new Integer();
-      productℝ1 = new Real();
+      productr̅1 = new RealPolynomial();
       r̅3 = new RealPolynomial();
       ℤ2 = new Integer();
       ℤ3 = new Integer();
-      valueℝ2 = new Real();
-      productℝ2 = new Real();
-      ℝ1 = new Real();
+      valuer̅2 = new RealPolynomial();
+      productr̅2 = new RealPolynomial();
+      r̅4 = new RealPolynomial();
    }
 
    public void initialize() {
@@ -193,14 +193,14 @@ public class F implements Function<Integer, RealPolynomial> {
       } else if (q == null) {
          throw new AssertionError("q is null");
       } else {
-         factorℝ2.p = p;
-         factorℝ2.q = q;
-         factorℝ2.α = α;
-         factorℝ2.β = β;
-         factorℝ1.p = p;
-         factorℝ1.q = q;
-         factorℝ1.α = α;
-         factorℝ1.β = β;
+         factorr̅2.p = p;
+         factorr̅2.q = q;
+         factorr̅2.α = α;
+         factorr̅2.β = β;
+         factorr̅1.p = p;
+         factorr̅1.q = q;
+         factorr̅1.α = α;
+         factorr̅1.β = β;
          F = new F();
          F.p = p;
          F.q = q;
@@ -216,15 +216,15 @@ public class F implements Function<Integer, RealPolynomial> {
       ℤ1.close();
       r̅1.close();
       r̅2.close();
-      valueℝ1.close();
+      valuer̅1.close();
       k.close();
-      productℝ1.close();
+      productr̅1.close();
       r̅3.close();
       ℤ2.close();
       ℤ3.close();
-      valueℝ2.close();
-      productℝ2.close();
-      ℝ1.close();
+      valuer̅2.close();
+      productr̅2.close();
+      r̅4.close();
       F.close();
    }
 }

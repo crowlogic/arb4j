@@ -39,6 +39,17 @@ public class Integer implements
 
   public String name;
 
+  public Integer additiveIdentity()
+  {
+    return set(0);
+  }
+
+  public Integer multiplicativeIdentity()
+  {
+    return set(1);
+  }
+  
+  
   public String getName()
   {
     return name;
