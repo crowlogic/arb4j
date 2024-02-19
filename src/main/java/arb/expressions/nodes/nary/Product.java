@@ -103,23 +103,23 @@ public class Product<D, R, F extends Function<D, R>> extends
     return methodVisitor;
   }
 
-  protected Label          beginningOfTheLoop = new Label();
+  protected Label      beginningOfTheLoop = new Label();
 
-  public Node<D, R, F>     endIndex;
+  public Node<D, R, F> endIndex;
 
-  public String            factor;
+  public String        factor;
 
-  public String            functionClass;
+  public String        functionClass;
 
-  public Variable<D, R, F> index;
+  public String        index;
 
-  public String            productResultVariable;
+  public String        productResultVariable;
 
-  public Node<D, R, F>     startIndex;
+  public Node<D, R, F> startIndex;
 
-  private String           factorValueFieldName;
+  private String       factorValueFieldName;
 
-  private String           factorFieldName;
+  private String       factorFieldName;
 
   public Product(Expression<D, R, F> expression)
   {
@@ -164,12 +164,13 @@ public class Product<D, R, F extends Function<D, R>> extends
     {
       throwException(format(MISSING_OPENING_CURLY_BRACE, expression.character, expression.remaining()));
     }
-    var indexVar = expression.determine();
-    if (!(indexVar instanceof Variable<D, R, F>))
+    index = expression.parseName();
+    if (!expression.nextCharacterIs('='))
     {
-      throwException(format(NONVARIABLE_MSG, indexVar, expression.remaining()));
+      throw new ExpressionCompilerException("Expected = character after index variable name at position "
+                    + expression.position + "in " + expression);
     }
-    parseIndex(indexVar);
+
     parseStartIndex();
     parseEndIndex();
 
@@ -296,7 +297,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   public String getIndexFieldName()
   {
-    return index.reference.name;
+    return index;
   }
 
   void incrementIndex(MethodVisitor methodVisitor)
@@ -362,7 +363,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void loadIndex(MethodVisitor mv)
   {
-    loadFieldFromThis(mv, index.reference.name, Integer.class);
+    loadFieldFromThis(mv, index, Integer.class);
   }
 
   void loadIndexVariable(MethodVisitor methodVisitor)
@@ -404,15 +405,6 @@ public class Product<D, R, F extends Function<D, R>> extends
     if (!expression.nextCharacterIs('}'))
     {
       throwException(format(MISSING_CLOSING_CURLY_BRACE, expression.remaining()));
-    }
-  }
-
-  private void parseIndex(Node<D, R, F> indexVar)
-  {
-    index = (Variable<D, R, F>) indexVar;
-    if (!expression.nextCharacterIs('='))
-    {
-      throwException(format(MISSING_EQUALS, expression.character, expression.position, expression));
     }
   }
 
@@ -466,11 +458,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return String.format("\\prod_{%s = %s}^{%s}{%s}",
-                         index.typeset(),
-                         startIndex.typeset(),
-                         endIndex.typeset(),
-                         factor);
+    return String.format("\\prod_{%s = %s}^{%s}{%s}", index, startIndex.typeset(), endIndex.typeset(), factor);
   }
 
 }

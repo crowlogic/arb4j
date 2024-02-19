@@ -392,7 +392,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (parentExpression != null)
     {
       Variable<?, ?, ?> independentVariableNode2 = parentExpression.independentVariableNode;
-      if (!independentVariableNode2.type().equals(Void.class))
+      if (independentVariableNode2 != null && !independentVariableNode2.type().equals(Void.class))
       {
         classVisitor.visitField(ACC_PUBLIC,
                                 independentVariableNode2.reference.name,
@@ -1217,6 +1217,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     return false;
+  }
+
+  public String parseName()
+  {
+    return parseName(position);
   }
 
   private String parseName(int startPos)
