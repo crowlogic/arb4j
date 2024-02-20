@@ -1,6 +1,6 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
+<style|<tuple|generic|alt-colors|parchment|framed-theorems>>
 
 <\body>
   \;

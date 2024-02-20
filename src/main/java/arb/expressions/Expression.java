@@ -911,18 +911,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (position < expression.length())
     {
-      throw new ExpressionCompilerException(String.format("unexpected '%c' character at position=%s in expression '%s' of length %d\n",
-                                                          character,
-                                                          position,
-                                                          expression,
-                                                          expression.length()));
+      throwNewUnexpectedCharacterException();
     }
 
 
-    if (parentExpression != null && !parentExpression.domainType.equals(Void.class))
-    {
-      assert false : "TODO: set parent expressions input variable in its local variable index to this subexpressions field of the same name";
-    }
+
     
     if (needsInitializer())
     {
@@ -942,11 +935,30 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     declareLocalVariables(methodVisitor, startLabel, endLabel);
 
+    handleInputVariableInjectionIntoSubexpressionFields();
+    
     methodVisitor.visitMaxs(10, 10);
 
     methodVisitor.visitEnd();
 
     return classVisitor;
+  }
+
+  private void handleInputVariableInjectionIntoSubexpressionFields()
+  {
+    if (parentExpression != null && !parentExpression.domainType.equals(Void.class))
+    {
+      assert false : "TODO: set parent expressions input variable in its local variable index to this subexpressions field of the same name";
+    }
+  }
+
+  private void throwNewUnexpectedCharacterException()
+  {
+    throw new ExpressionCompilerException(String.format("unexpected '%c' character at position=%s in expression '%s' of length %d\n",
+                                                        character,
+                                                        position,
+                                                        expression,
+                                                        expression.length()));
   }
 
   public ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)
