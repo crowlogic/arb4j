@@ -918,6 +918,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           expression.length()));
     }
 
+
+    if (parentExpression != null && !parentExpression.domainType.equals(Void.class))
+    {
+      assert false : "TODO: set parent expressions input variable in its local variable index to this subexpressions field of the same name";
+    }
+    
     if (needsInitializer())
     {
       generateConditionalInitializater(methodVisitor);
