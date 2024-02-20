@@ -966,7 +966,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                            nameOfInitializerFunction,
                                                            "()V",
-                                                           null,
+                                                           null, 
                                                            null);
     try
     {
