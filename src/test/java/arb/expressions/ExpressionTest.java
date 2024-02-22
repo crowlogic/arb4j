@@ -12,9 +12,10 @@ public class ExpressionTest extends
 {
   public static void testParentExpressionInputToSubexpression()
   {
-    Function<Integer, Integer> f = Function.express(Integer.class, Integer.class, "n➔∏k₍ₙ₋₁₎{k=1…3}");
-    Integer evaluate = f.evaluate(new Integer(0), 128,  new Integer());
-    System.out.println( "f(0)" + evaluate );
+    Function<Integer, Integer> f        = Function.express(Integer.class, Integer.class, "n➔∏2*k₍ₙ₋₁₎{k=1…3}");
+    Integer                    in       = new Integer(2);
+    Integer                    evaluate = f.evaluate(in, 128, new Integer());
+    System.out.format("f(%d)=%s\n", in, evaluate);
   }
 
   public static void testGammaReal()

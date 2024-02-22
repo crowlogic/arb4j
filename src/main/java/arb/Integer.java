@@ -62,12 +62,12 @@ public class Integer implements
 
   public Integer risingFactorial(Integer n, int bits, Integer result)
   {
-    assert n.getSignedValue() >= 0 : "power must be non-negative";
+    assert n.getSignedValue() >= 0 : String.format("power=%d must be non-negative where this=%d", n.getSignedValue(), getSignedValue() );;
 
     try ( Real x = new Real(); Real realResult = new Real(); )
     {
       arblib.arb_rising_ui(realResult, x.set(this), n.swigCPtr, bits);
-      assert realResult.isInteger();
+      assert realResult.isInteger() : realResult + " is not an integer";
       return realResult.getInteger(result);
     }
   }
