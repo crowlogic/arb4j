@@ -909,8 +909,11 @@ int acb_contains_zero(const acb_t x);
  void arb_set(arb_t z, const arb_t x);
  
  void acb_elliptic_k(acb_t res, const acb_t m, slong prec);
-  
-   int arb_get_unique_fmpz(fmpz_t z, const arb_t x);
+
+int
+arb_get_unique_fmpz(fmpz_t z, const arb_t x);
+
+
    
 void acb_get_mid(acb_t m, const acb_t x);
                                        

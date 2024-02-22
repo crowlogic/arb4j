@@ -9,10 +9,6 @@
 package arb;
 
 public class arblib {
-  public static int arb_get_unique_fmpz(SWIGTYPE_p_fmpz_t z, Real x) {
-    return arblibJNI.arb_get_unique_fmpz__SWIG_0(SWIGTYPE_p_fmpz_t.getCPtr(z), Real.getCPtr(x), x);
-  }
-
   public static long fmpz_popcnt(long a) {
     return arblibJNI.fmpz_popcnt(a);
   }
@@ -1799,7 +1795,7 @@ public class arblib {
   }
 
   public static int arb_get_unique_fmpz(long z, Real x) {
-    return arblibJNI.arb_get_unique_fmpz__SWIG_1(z, Real.getCPtr(x), x);
+    return arblibJNI.arb_get_unique_fmpz(z, Real.getCPtr(x), x);
   }
 
   public static void acb_get_mid(Complex m, Complex x) {

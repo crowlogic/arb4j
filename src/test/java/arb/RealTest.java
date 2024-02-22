@@ -8,6 +8,16 @@ import junit.framework.TestCase;
 public class RealTest extends
                       TestCase
 {
+  public static void testLong()
+  {
+    try ( Real real = new Real("3",
+                               128))
+    {
+      Integer intThree = real.getInteger(new Integer());
+      assertEquals(3, intThree.getSignedValue());
+    }
+    
+  }
   public void testRisingFactorialLong()
   {
     try ( Real real = new Real("6.9",
