@@ -1,5 +1,4 @@
 import arb.Integer;
-import arb.Real;
 import arb.functions.Function;
 
 public class n∏k₍ₙ₋₁₎{k=1…3} implements Function<Integer, Integer> {
@@ -11,6 +10,7 @@ public class n∏k₍ₙ₋₁₎{k=1…3} implements Function<Integer, Integer>
    public final factorℤ1 factorℤ1 = new factorℤ1();
 
    public Integer evaluate(Integer in, int order, int bits, Integer result) {
+      factorℤ1.n = in;
       productℤ1.multiplicativeIdentity();
       k.set(startIndex);
 
@@ -18,7 +18,7 @@ public class n∏k₍ₙ₋₁₎{k=1…3} implements Function<Integer, Integer>
          productℤ1.mul(factorℤ1.evaluate(k, bits, valueℤ1), bits);
       } while(k.increment().compareTo(endIndex) <= 0);
 
-      return (result).set(productℤ1);
+      return result.set(productℤ1);
    }
 
    public n_k_ₙ____k_1_3_/* $VF was: n∏k₍ₙ₋₁₎{k=1…3}*/() {

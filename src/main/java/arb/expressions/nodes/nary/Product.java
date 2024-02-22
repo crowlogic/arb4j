@@ -1,17 +1,10 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.IFLE;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Optional;
 
@@ -119,7 +112,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private String       factorValueFieldName;
 
-  private String       factorFieldName;
+  private String       factorFunctionFieldName;
 
   public Product(Expression<D, R, F> expression)
   {
@@ -189,8 +182,8 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    factorFieldName      = expression.getNextIntermediateVariableFieldName("factor", resultType);
-    factorValueFieldName = expression.newIntermediateVariable("value", resultType);
+    factorFunctionFieldName = expression.getNextIntermediateVariableFieldName("factor", resultType);
+    factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
 
     Optional<IntermediateVariable<D, R, F>> existingIndexVariable = expression.intermediateVariables.stream()
                                                                                                     .filter(predicate -> predicate.name.equals(getIndexFieldName()))
@@ -209,16 +202,6 @@ public class Product<D, R, F extends Function<D, R>> extends
       expression.registerIntermediateVariable(getIndexFieldName(), Integer.class);
     }
 
-    /***
-     * if there is a name-conflict then use newIntermediateVariable which names
-     * variables based on an increasing integer sequence. If this is done then
-     * index.reference.name needs to be somehow updated to address the renamed
-     * variable
-     **/
-    String                                            factorExpression = format("%s➔%s",
-                                                                                getIndexFieldName(),
-                                                                                factor);
-
     /**
      * FIXME: TODO: when an Expression is passed to Compiler#express the input
      * variable needs become a field of the compiled sub-expression and the input
@@ -227,22 +210,27 @@ public class Product<D, R, F extends Function<D, R>> extends
      * of the input fields by making fields for the inputs (this is cause an invoked
      * method cannot access a callers local variables in java
      */
-    Expression<Integer, ?, Function<Integer, Object>> factor           = Compiler.express(factorFieldName,
-                                                                                          factorExpression,
+    Expression<Integer, ?, Function<Integer, Object>> factorExpression = Compiler.express(factorFunctionFieldName,
+                                                                                          format("%s➔%s",
+                                                                                                 getIndexFieldName(),
+                                                                                                 factor),
                                                                                           expression.context,
                                                                                           Integer.class,
                                                                                           resultType,
                                                                                           Function.class,
-                                                                                          factorFieldName,
+                                                                                          factorFunctionFieldName,
                                                                                           expression);
 
-    var                                               factorInstance   = factor.instantiate();
-    expression.referencedFunctions.put(factorFieldName,
-                                       expression.context.registerFunctionMapping(factorFieldName,
+    var                                               factorInstance   = factorExpression.instantiate();
+
+    expression.referencedFunctions.put(factorFunctionFieldName,
+                                       expression.context.registerFunctionMapping(factorFunctionFieldName,
                                                                                   factorInstance,
                                                                                   Integer.class,
-                                                                                  Object.class,
+                                                                                  factorExpression.rangeType,
                                                                                   Function.class));
+
+    propagateInputToFactorFunctionSubexpression(mv);
 
     productResultVariable = expression.reserveIntermediateVariable(mv, "product", resultType);
     invokeMethod(mv, resultType, "multiplicativeIdentity", getMethodDescriptor(resultType), false);
@@ -269,6 +257,21 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     return mv;
 
+  }
+
+  private void propagateInputToFactorFunctionSubexpression(MethodVisitor mv)
+  {
+    Variable<D, R, F> independentVariableNode = expression.independentVariableNode;
+    if (independentVariableNode != null && !independentVariableNode.type().equals(Void.class))
+    {
+      expression.loadFieldOntoStack(loadThis(mv), factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
+      mv.visitVarInsn(ALOAD, 1);
+      checkClassCast(mv, independentVariableNode.type());
+      mv.visitFieldInsn(PUTFIELD,
+                        factorFunctionFieldName,
+                        independentVariableNode.reference.name,
+                        independentVariableNode.type().descriptorString());
+    }
   }
 
   public void generateInnerLoop(MethodVisitor mv)
@@ -348,7 +351,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void loadFactor(MethodVisitor mv)
   {
-    getThisField(mv, functionClass, factorFieldName, "L" + factorFieldName + ";");
+    getThisField(mv, functionClass, factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
   }
 
   private void loadFactorValue(MethodVisitor mv)

@@ -15,6 +15,12 @@ import arb.documentation.TheArb4jLibrary;
 public class Variables
 
 {
+  @Override
+  public String toString()
+  {
+    return String.format("Variables[%s]", map);
+  }
+
   public final HashMap<String, Object> map = new HashMap<>();
 
   @SafeVarargs

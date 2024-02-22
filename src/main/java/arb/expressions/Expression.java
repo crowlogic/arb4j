@@ -900,14 +900,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     Label         startLabel    = new Label();
     Label         endLabel      = new Label();
 
-    MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                            "evaluate",
                                                            evaluationMethodDescriptor,
                                                            evaluateMethodSignature,
                                                            null);
 
-    methodVisitor.visitCode();
-    methodVisitor.visitLabel(startLabel);
+    mv.visitCode();
+    mv.visitLabel(startLabel);
 
     if (position < expression.length())
     {
@@ -919,38 +919,29 @@ public class Expression<D, R, F extends Function<D, R>> implements
     
     if (needsInitializer())
     {
-      generateConditionalInitializater(methodVisitor);
+      generateConditionalInitializater(mv);
     }
 
     if (checkForNullsBeforeEvaluating)
     {
-      addChecksForNullVariableReferences(methodVisitor, false, false);
+      addChecksForNullVariableReferences(mv, false, false);
     }
 
-    rootNode.generate(methodVisitor, rangeType);
+    rootNode.generate(mv, rangeType);
 
-    methodVisitor.visitInsn(Opcodes.ARETURN);
+    mv.visitInsn(Opcodes.ARETURN);
 
-    methodVisitor.visitLabel(endLabel);
+    mv.visitLabel(endLabel);
 
-    declareLocalVariables(methodVisitor, startLabel, endLabel);
-
-    handleInputVariableInjectionIntoSubexpressionFields();
+    declareLocalVariables(mv, startLabel, endLabel);
     
-    methodVisitor.visitMaxs(10, 10);
+    mv.visitMaxs(10, 10);
 
-    methodVisitor.visitEnd();
+    mv.visitEnd();
 
     return classVisitor;
   }
 
-  private void handleInputVariableInjectionIntoSubexpressionFields()
-  {
-    if (parentExpression != null && !parentExpression.domainType.equals(Void.class))
-    {
-      assert false : "TODO: set parent expressions input variable in its local variable index to this subexpressions field of the same name";
-    }
-  }
 
   private void throwNewUnexpectedCharacterException()
   {
