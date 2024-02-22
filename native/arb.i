@@ -5,6 +5,8 @@
 %include "init.i"
 
 
+int arb_get_unique_fmpz(fmpz_t z, const arb_t x);
+
 %typemap(javabody) SWIGTYPE (CLASS::Real) %{
   protected long swigCPtr;
   protected boolean swigCMemOwn;

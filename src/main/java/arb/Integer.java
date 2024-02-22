@@ -48,8 +48,7 @@ public class Integer implements
   {
     return set(1);
   }
-  
-  
+
   public String getName()
   {
     return name;
@@ -59,6 +58,18 @@ public class Integer implements
   {
     this.name = name;
     return this;
+  }
+
+  public Integer risingFactorial(Integer n, int bits, Integer result)
+  {
+    assert n.getSignedValue() >= 0 : "power must be non-negative";
+
+    try ( Real x = new Real(); Real realResult = new Real(); )
+    {
+      arblib.arb_rising_ui(realResult, x.set(this), n.swigCPtr, bits);
+      assert realResult.isInteger();
+      return realResult.getInteger(result);
+    }
   }
 
   public Real risingFactorial(Integer n, int bits, Real result)

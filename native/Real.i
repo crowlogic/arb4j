@@ -213,6 +213,12 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return arblib.arb_is_int(this) != 0;
   }
 
+  public Integer getInteger(Integer result)
+  {
+    arblib.arb_get_unique_fmpz(result.swigCPtr, this);
+    return result;
+  }
+
 
   @Override
   public Real additiveIdentity()
