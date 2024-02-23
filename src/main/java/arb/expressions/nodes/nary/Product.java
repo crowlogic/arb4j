@@ -1,10 +1,18 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameter;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.util.Optional;
 
@@ -114,6 +122,8 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private String       factorFunctionFieldName;
 
+  private String       endIndexFieldName;
+
   public Product(Expression<D, R, F> expression)
   {
     super(expression);
@@ -173,7 +183,8 @@ public class Product<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      assert false : "evaluate " + startIndex + " and reserve a new intermediate variable with the startIndex prefix and assign the evaluated startIndex node to it";
+      assert false : "this is the parsing function..code isnt generated here, evaluate " + startIndex
+                    + " and reserve a new intermediate variable with the startIndex prefix and assign the evaluated startIndex node to it";
     }
     if (endIndex instanceof LiteralConstant)
     {
@@ -181,9 +192,13 @@ public class Product<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      assert false : "evaluate " + startIndex + " and reserve a new intermediate variable with the endIndex prefix and assign the evaluated endIndex node to it";
+      assert false : "this is the parsing function..code isnt generated here, evaluate " + startIndex
+                    + " and reserve a new intermediate variable with the endIndex prefix and assign the evaluated endIndex node to it";
+//      endIndexFieldName = expression.newIntermediateVariable("endIndex", Integer.class);
+//      endIndex.generate(mv, Integer.class);
+//      mv.visitFieldInsn(PUTFIELD, expression.className, endIndexFieldName, Integer.class.descriptorString());
+//
     }
-  
 
     return this;
   }
@@ -194,22 +209,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     factorFunctionFieldName = expression.getNextIntermediateVariableFieldName("factor", resultType);
     factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
 
-    Optional<IntermediateVariable<D, R, F>> existingIndexVariable = expression.intermediateVariables.stream()
-                                                                                                    .filter(predicate -> predicate.name.equals(getIndexFieldName()))
-                                                                                                    .findFirst();
-
-    if (existingIndexVariable.isPresent())
-    {
-      if (!existingIndexVariable.get().type.equals(Integer.class))
-      {
-        throw new ExpressionCompilerException("index variable " + existingIndexVariable
-                      + " already declared  and not of Intger type so it cant be used as the index");
-      }
-    }
-    else
-    {
-      expression.registerIntermediateVariable(getIndexFieldName(), Integer.class);
-    }
+    prepareIndexVariable();
 
     Expression<Integer, ?, Function<Integer, Object>> factorExpression = Compiler.express(factorFunctionFieldName,
                                                                                           format("%s➔%s",
@@ -224,12 +224,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     var                                               factorInstance   = factorExpression.instantiate();
 
-    expression.referencedFunctions.put(factorFunctionFieldName,
-                                       expression.context.registerFunctionMapping(factorFunctionFieldName,
-                                                                                  factorInstance,
-                                                                                  Integer.class,
-                                                                                  factorExpression.rangeType,
-                                                                                  Function.class));
+    registerFactorSubexpressionInstance(factorExpression, factorInstance);
 
     propagateInputToFactorFunctionSubexpression(mv);
 
@@ -241,7 +236,10 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     generateInnerLoop(mv);
 
-    endIndex.generate(mv, Integer.class);
+    // TODO: move this to before the loop and assign it to the endIndex field rather
+    // than performing the calculation on each pass thru the loop
+    endIndex.generate(mv, resultType);
+    // loadFieldFromThis(mv, endIndexFieldName, Integer.class);
     invokeMethod(mv, Integer.class, "compareTo", getMethodDescriptor(int.class, Integer.class), false);
 
     jumpToIfLessThanOrEquals(mv, beginningOfTheLoop);
@@ -258,6 +256,38 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     return mv;
 
+  }
+
+  private void prepareIndexVariable()
+  {
+    Optional<IntermediateVariable<D, R, F>> existingIndexVariable = expression.intermediateVariables.stream()
+                                                                                                    .filter(predicate -> predicate.name.equals(getIndexFieldName()))
+                                                                                                    .findFirst();
+
+    if (existingIndexVariable.isPresent())
+    {
+      if (!existingIndexVariable.get().type.equals(Integer.class))
+      {
+        throw new ExpressionCompilerException("index variable " + existingIndexVariable
+                      + " already declared  and not of Intger type so it cant be used as the index");
+      }
+    }
+    else
+    {
+      expression.registerIntermediateVariable(getIndexFieldName(), Integer.class);
+    }
+  }
+
+  private void
+          registerFactorSubexpressionInstance(Expression<Integer, ?, Function<Integer, Object>> factorExpression,
+                                              Function<Integer, Object> factorInstance)
+  {
+    expression.referencedFunctions.put(factorFunctionFieldName,
+                                       expression.context.registerFunctionMapping(factorFunctionFieldName,
+                                                                                  factorInstance,
+                                                                                  Integer.class,
+                                                                                  factorExpression.rangeType,
+                                                                                  Function.class));
   }
 
   private void propagateInputToFactorFunctionSubexpression(MethodVisitor mv)
