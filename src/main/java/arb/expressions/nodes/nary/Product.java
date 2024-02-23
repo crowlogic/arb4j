@@ -173,7 +173,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      assert false : "evaluate " + startIndex + " and reserve a new intermediate variable with the startIndex prefix and assign the results to it";
+      assert false : "evaluate " + startIndex + " and reserve a new intermediate variable with the startIndex prefix and assign the evaluated startIndex node to it";
     }
     if (endIndex instanceof LiteralConstant)
     {
@@ -181,7 +181,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      assert false : "evaluate " + startIndex + " and reserve a new intermediate variable with the endIndex prefix and assign the results to it";
+      assert false : "evaluate " + startIndex + " and reserve a new intermediate variable with the endIndex prefix and assign the evaluated endIndex node to it";
     }
   
 
