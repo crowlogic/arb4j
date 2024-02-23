@@ -1,21 +1,21 @@
 package arb.expressions;
 
+import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
-import arb.Integer;
 
 public class ExpressionTest extends
                             TestCase
 {
-  public static void testParentExpressionInputToSubexpression()
+  public static void testParentExpressionInputToSubexpressionViaAProductOfRisingFactorials()
   {
-    Function<Integer, Integer> f        = Function.express(Integer.class, Integer.class, "n➔∏2*k₍ₙ₋₁₎{k=1…3}");
+    Function<Integer, Integer> f        = Function.express(Integer.class, Integer.class, "n➔∏(2*k)₍ₙ₋₁₎{k=1…3}");
     Integer                    in       = new Integer(2);
     Integer                    evaluate = f.evaluate(in, 128, new Integer());
-    System.out.format("f(%d)=%s\n", in, evaluate);
+    assertEquals(48, evaluate.getSignedValue());
   }
 
   public static void testGammaReal()
