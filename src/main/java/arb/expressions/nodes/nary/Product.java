@@ -173,7 +173,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      assert false : "handle " + startIndex;
+      assert false : "evaluate " + startIndex + " and reserve a new intermediate variable with the startIndex prefix and assign the results to it";
     }
     if (endIndex instanceof LiteralConstant)
     {
@@ -181,8 +181,9 @@ public class Product<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      assert false : "handle " + endIndex;
+      assert false : "evaluate " + startIndex + " and reserve a new intermediate variable with the endIndex prefix and assign the results to it";
     }
+  
 
     return this;
   }
@@ -210,14 +211,6 @@ public class Product<D, R, F extends Function<D, R>> extends
       expression.registerIntermediateVariable(getIndexFieldName(), Integer.class);
     }
 
-    /**
-     * FIXME: TODO: when an Expression is passed to Compiler#express the input
-     * variable needs become a field of the compiled sub-expression and the input
-     * value needs to be injected into the newly constructed functions field.. if
-     * this sub-expression makes any sub-expressions then it needs to propagate all
-     * of the input fields by making fields for the inputs (this is cause an invoked
-     * method cannot access a callers local variables in java
-     */
     Expression<Integer, ?, Function<Integer, Object>> factorExpression = Compiler.express(factorFunctionFieldName,
                                                                                           format("%s➔%s",
                                                                                                  getIndexFieldName(),
@@ -412,7 +405,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void parseEndIndex()
   {
-    endIndex = expression.determine();
+    endIndex = expression.evaluate();
     if (!expression.nextCharacterIs('}'))
     {
       throwException(format(MISSING_CLOSING_CURLY_BRACE, expression.remaining()));
@@ -421,7 +414,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void parseStartIndex()
   {
-    startIndex = expression.determine();
+    startIndex = expression.evaluate();
     if (!expression.nextCharacterIs('…'))
     {
       throwException(format(MISSING_ELLIPSIS, expression.character, expression.position, expression));
