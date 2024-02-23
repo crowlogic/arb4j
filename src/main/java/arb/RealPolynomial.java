@@ -192,6 +192,30 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     return this;
   }
 
+  public RealPolynomial mul(RealPolynomial that, int bits)
+  {
+    return mul( that, bits, this );
+  }
+  
+  public RealPolynomial add(Integer a, int bits, RealPolynomial res)
+  {
+    res.set(this);
+    res.getCoeffs().get(0).add(a, bits);
+    return res;
+  }  
+  
+  public RealPolynomial sub(Integer a, int bits, RealPolynomial res)
+  {
+    res.set(this);
+    res.getCoeffs().get(0).sub(a, bits);
+    return res;
+  }  
+
+  public RealPolynomial multiplicativeIdentity()
+  {
+    return identity();
+  }
+  
   /**
    * Calculate the integral of this polynomial
    * 

@@ -15,6 +15,8 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
@@ -62,6 +64,9 @@ import arb.functions.Function;
  * 
  *
  * @author ©2024 Stephen Crowley
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class Variable<D, R, F extends Function<D, R>> extends
                      Node<D, R, F>
@@ -95,7 +100,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   private Class<?>                        generatedType;
 
-  private boolean isIndependentVariableOfParentExpression;
+  private boolean                         isIndependentVariableOfParentExpression;
 
   public Variable(Expression<D, R, F> expression, VariableReference<D, R, F> reference)
   {
@@ -150,6 +155,19 @@ public class Variable<D, R, F extends Function<D, R>> extends
   {
     generateReference(mv);
 
+    generateIndexAccess(mv);
+
+    generatedType = type();
+    if (isResult)
+    {
+      expression.setResult(mv, generatedType);
+    }
+
+    return mv;
+  }
+
+  private void generateIndexAccess(MethodVisitor mv)
+  {
     Class<?> indexType = null;
     if (reference.index != null)
     {
@@ -168,14 +186,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
                          false);
 
     }
-
-    generatedType = type();
-    if (isResult)
-    {
-      expression.setResult(mv, generatedType);
-    }
-
-    return mv;
   }
 
   private void generateReference(MethodVisitor mv)
@@ -193,10 +203,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
                          "identity",
                          format("()%s", expression.rangeType.descriptorString()),
                          false);
+
+      addTypeToStackMapFrame(mv, expression.rangeType);
     }
     else
     {
-    //  assert !isIndependentVariableOfParentExpression : "handle isIndependentVariableOfParentExpression: " + reference;
+      // assert !isIndependentVariableOfParentExpression : "handle
+      // isIndependentVariableOfParentExpression: " + reference;
       expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type().descriptorString());
     }
   }
@@ -221,7 +234,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
   }
 
   /**
-   * Set this{@link #isIndeterminant} , this{@link #isIndependent}, or this{@link #isIndependentVariableOfParentExpression}
+   * Set this{@link #isIndeterminant} , this{@link #isIndependent}, or
+   * this{@link #isIndependentVariableOfParentExpression}
    * 
    * @param reference
    */
@@ -245,9 +259,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        if ( expression.parentExpression != null )
+        if (expression.parentExpression != null)
         {
-          if ( expression.parentExpression.independentVariableNode.reference.equals(reference) )
+          if (expression.parentExpression.independentVariableNode.reference.equals(reference))
           {
             isIndependentVariableOfParentExpression = true;
             return;
@@ -256,12 +270,12 @@ public class Variable<D, R, F extends Function<D, R>> extends
         }
         else
         {
-        throw new UndefinedReferenceException(format("Undefined reference to variable"
-                      + " '%s' in %s, independent variable is %s and parentExpression is %s",
-                                                     reference.name,
-                                                     expression,
-                                                     inputVariable,
-                                                     expression.parentExpression));
+          throw new UndefinedReferenceException(format("Undefined reference to variable"
+                        + " '%s' in %s, independent variable is %s and parentExpression is %s",
+                                                       reference.name,
+                                                       expression,
+                                                       inputVariable,
+                                                       expression.parentExpression));
         }
       }
     }

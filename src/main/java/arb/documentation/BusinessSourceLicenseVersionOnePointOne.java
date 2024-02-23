@@ -34,9 +34,9 @@ public class BusinessSourceLicenseVersionOnePointOne implements
   {
     return "arb4j is the Licensed Work by Author and Licensor Stephen Andrew Crowley ©2024\n" + "\n"
                   + "that is made available under the terms of the Business Source License™ v1.1 ©2023 by MariaDB plc, All Rights Reserved."
-                  + "\n===Licensed Work Definition===\n" + licensedWork.getDefinition()
-                  + "===Additional Use Grant===\n" + personalUseGrant.getDefinition() + "\n" + "===Change Date===\n"
-                  + changeDateClause.getDefinition() + "\n===Terms===\n" + "\n"
+                  + "\n===Licensed Work Definition===\n" + licensedWork.getLicensedWorkDefinition()
+                  + "===Additional Use Grant===\n" + personalUseGrant.getLicensedWorkDefinition() + "\n" + "===Change Date===\n"
+                  + changeDateClause.getLicensedWorkDefinition() + "\n===Terms===\n" + "\n"
                   + "The Licensor(Stephen Crowley) hereby grants you the right to\n" + "•  copy,\n" + "•  modify,\n"
                   + "•  create derivative works,\n" + "•  redistribute,\n"
                   + "•  and make non-production use of the Licensed Work.\n"

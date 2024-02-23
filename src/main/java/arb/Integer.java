@@ -5,6 +5,8 @@ import java.lang.foreign.MemorySegment;
 import java.util.Arrays;
 
 import arb.algebra.Ring;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * This class wraps the fmpz type in flint which is an arbitrary precision
@@ -14,16 +16,14 @@ import arb.algebra.Ring;
  * When the second most significant bit is 1 an fmpz represents a pointer which
  * is shifted right 2 bits and the second most siginificant bit is set to 1 -
  * this relies on the fact that {@link arblib#flint_malloc(long)} always
- * allocates memory blocks on a 4 or 8 byte boundary and the second most
+ * allocates memory blocks on a 4 or 8 byte boundary and <b>the second most
  * significant bit is reserved to indicate whether the fmpz_t value represents
- * an ordinary slong integer or a pointer to an arbitrary precision integer
+ * an ordinary signed 64-bit integer or a pointer to an arbitrary precision integer</b>
  * therefore the maximum size integer that can be passed to ARB as a fmpz_t
  * without it being interpreted as a pointer is 2^62 - 1.
  * 
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class Integer implements
                      AutoCloseable,

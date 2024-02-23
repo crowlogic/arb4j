@@ -143,10 +143,8 @@ import arb.stochastic.ProbabilityDistributionFunction;
  * object and clean up the resources used by the instance.
  * </pre>
  *
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 
 public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real> {

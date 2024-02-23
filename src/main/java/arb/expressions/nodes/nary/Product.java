@@ -171,9 +171,17 @@ public class Product<D, R, F extends Function<D, R>> extends
     {
       ((LiteralConstant<D, R, F>) startIndex).fieldName = "startIndex";
     }
+    else
+    {
+      assert false : "handle " + startIndex;
+    }
     if (endIndex instanceof LiteralConstant)
     {
       ((LiteralConstant<D, R, F>) endIndex).fieldName = "endIndex";
+    }
+    else
+    {
+      assert false : "handle " + endIndex;
     }
 
     return this;
