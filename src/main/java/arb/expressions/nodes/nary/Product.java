@@ -30,7 +30,6 @@ import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.IntermediateVariable;
-import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
@@ -177,40 +176,60 @@ public class Product<D, R, F extends Function<D, R>> extends
     parseStartIndex();
     parseEndIndex();
 
-    if (startIndex instanceof LiteralConstant)
-    {
-      ((LiteralConstant<D, R, F>) startIndex).fieldName = "startIndex";
-    }
-    else
-    {
-      assert false : "this is the parsing function..code isnt generated here, evaluate " + startIndex
-                    + " and reserve a new intermediate variable with the startIndex prefix and assign the evaluated startIndex node to it";
-    }
-    if (endIndex instanceof LiteralConstant)
-    {
-      ((LiteralConstant<D, R, F>) endIndex).fieldName = "endIndex";
-    }
-    else
-    {
-      assert false : "this is the parsing function..code isnt generated here, evaluate " + startIndex
-                    + " and reserve a new intermediate variable with the endIndex prefix and assign the evaluated endIndex node to it";
-//      endIndexFieldName = expression.newIntermediateVariable("endIndex", Integer.class);
-//      endIndex.generate(mv, Integer.class);
-//      mv.visitFieldInsn(PUTFIELD, expression.className, endIndexFieldName, Integer.class.descriptorString());
-//
-    }
-
     return this;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    factorFunctionFieldName = expression.getNextIntermediateVariableFieldName("factor", resultType);
-    factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
+    assignFieldNames(resultType);
 
     prepareIndexVariable();
 
+    generateFactorClass(resultType);
+
+    propagateInputToFactorClass(mv);
+
+    initializeProductResultVariable(mv, resultType);
+    
+    setIndexToTheStartIndex(mv);
+
+    generateEndingIndex(mv);
+    
+    designateLabel(mv, beginningOfTheLoop);
+
+    generateInnerLoop(mv);
+
+    compareIndexToEndIndex(mv);
+
+    jumpToIfLessThanOrEquals(mv, beginningOfTheLoop);
+
+    assignResult(mv);
+
+    return mv;
+
+  }
+
+  private void assignResult(MethodVisitor mv)
+  {
+    if (isResult)
+    {
+      Compiler.loadResultParameter(mv);
+      Class<?> type = type();
+      Compiler.checkClassCast(mv, type);
+      loadResultingProductVariable(mv);
+      invokeSetMethod(mv, type, type);
+    }
+  }
+
+  private void assignFieldNames(Class<?> resultType)
+  {
+    factorFunctionFieldName = expression.getNextIntermediateVariableFieldName("factor", resultType);
+    factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
+  }
+
+  private void generateFactorClass(Class<?> resultType)
+  {
     Expression<Integer, ?, Function<Integer, Object>> factorExpression = Compiler.express(factorFunctionFieldName,
                                                                                           format("%s➔%s",
                                                                                                  getIndexFieldName(),
@@ -225,37 +244,28 @@ public class Product<D, R, F extends Function<D, R>> extends
     var                                               factorInstance   = factorExpression.instantiate();
 
     registerFactorSubexpressionInstance(factorExpression, factorInstance);
+  }
 
-    propagateInputToFactorFunctionSubexpression(mv);
+  private void compareIndexToEndIndex(MethodVisitor mv)
+  {
+    loadFieldFromThis(mv, endIndexFieldName, Integer.class);
+    invokeMethod(mv, Integer.class, "compareTo", getMethodDescriptor(int.class, Integer.class), false);
+  }
 
+  private void initializeProductResultVariable(MethodVisitor mv, Class<?> resultType)
+  {
     productResultVariable = expression.reserveIntermediateVariable(mv, "product", resultType);
     invokeMethod(mv, resultType, "multiplicativeIdentity", getMethodDescriptor(resultType), false);
     pop(mv);
-    setIndexToTheStartIndex(mv);
-    designateLabel(mv, beginningOfTheLoop);
+  }
 
-    generateInnerLoop(mv);
-
-    // TODO: move this to before the loop and assign it to the endIndex field rather
-    // than performing the calculation on each pass thru the loop
-    endIndex.generate(mv, resultType);
-    // loadFieldFromThis(mv, endIndexFieldName, Integer.class);
-    invokeMethod(mv, Integer.class, "compareTo", getMethodDescriptor(int.class, Integer.class), false);
-
-    jumpToIfLessThanOrEquals(mv, beginningOfTheLoop);
-
-    if (isResult)
-    {
-      Compiler.loadResultParameter(mv);
-      Class<?> type = type();
-      Compiler.checkClassCast(mv, type);
-      loadResultingProductVariable(mv);
-      invokeSetMethod(mv, type, type);
-
-    }
-
-    return mv;
-
+  private void generateEndingIndex(MethodVisitor mv)
+  {
+    endIndexFieldName = expression.newIntermediateVariable("endIndex", Integer.class);
+    loadFieldFromThis(mv, endIndexFieldName, Integer.class);
+    endIndex.generate(mv, Integer.class);
+    invokeSetMethod(mv, Integer.class, Integer.class);
+    pop(mv);
   }
 
   private void prepareIndexVariable()
@@ -290,7 +300,7 @@ public class Product<D, R, F extends Function<D, R>> extends
                                                                                   Function.class));
   }
 
-  private void propagateInputToFactorFunctionSubexpression(MethodVisitor mv)
+  private void propagateInputToFactorClass(MethodVisitor mv)
   {
     Variable<D, R, F> independentVariableNode = expression.independentVariableNode;
     if (independentVariableNode != null && !independentVariableNode.type().equals(Void.class))
@@ -444,7 +454,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void parseStartIndex()
   {
-    startIndex = expression.evaluate();
+    startIndex = expression.determine();
     if (!expression.nextCharacterIs('…'))
     {
       throwException(format(MISSING_ELLIPSIS, expression.character, expression.position, expression));
