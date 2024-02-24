@@ -2067,6 +2067,12 @@ public static String removeTrailingZeros(String decimal)
     return name;
   }  
   
+  public RealPolynomial risingFactorial(RealPolynomial sub, int bits, RealPolynomial result)
+  {
+    assert false : String.format("this=%s sub=%s bits=%s result=%s\n", this, sub, bits, result);
+    // TODO Auto-generated method stub
+    return null;
+  }  
 
   public void setMid(Float value) {
     arblibJNI.Real_mid_set(swigCPtr, this, Float.getCPtr(value), value);

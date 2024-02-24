@@ -4,21 +4,42 @@ import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
 import arb.RealPolynomial;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
+/**
+ * @author Stephen A. Crowley ©2024
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class ExpressionTest extends
                             TestCase
 {
+
+  public static void testProductViaFactorial()
+  {
+    Function<Integer, Integer> f        = Function.express(Integer.class, Integer.class, "n➔∏k{k=1…n}");
+    Integer                    in       = new Integer(3);
+    Integer                    evaluate = f.evaluate(in, 128, new Integer());
+    assertEquals(6, evaluate.getUnsignedValue());
+  }
+
   public static void testRisingFactorialPolynomial()
   {
     Function<Integer, RealPolynomial> f        = Function.express(Integer.class,
                                                                   RealPolynomial.class,
                                                                   "n➔∏x+k{k=1…(n-1)}");
-    Integer                           in       = new Integer(2);
+    Integer                           in       = new Integer(3);
     RealPolynomial                    evaluate = f.evaluate(in, 128, new RealPolynomial());
-    System.out.format("f(%s)=%s\n", in, evaluate);
+
+    assertEquals(0, evaluate.get(0).integerValue(in).getSignedValue());
+    assertEquals(2, evaluate.get(1).integerValue(in).getSignedValue());
+    assertEquals(3, evaluate.get(2).integerValue(in).getSignedValue());
+    assertEquals(1, evaluate.get(3).integerValue(in).getSignedValue());
+
   }
 
   public static void testGammaReal()
