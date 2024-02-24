@@ -1,6 +1,0 @@
-put the inline conditional initializer into a method that can be called after the function has been construted and its variables assigned, then this conditional check could be removed from the evaluate method thus increasing performance. I know its customary to put these into a constructor but its often necessary to construct the function before you know what its values are and one wants a collection of functions to all reference the same underlying variable... the express method can call this after injecting the variable references
-
-if (F == null)
-{
-  F = new F(this);
-}
