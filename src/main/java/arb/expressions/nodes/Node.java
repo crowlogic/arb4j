@@ -29,10 +29,11 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
                           Typesettable
 {
 
-  public void addTypeToStackMapFrame(MethodVisitor mv, Class<? extends R> type)
+  public void addTypeToStackMapFrame(MethodVisitor mv, Class<?> class1)
   {
+    System.out.println( "Adding " + class1 + " to StackMap");
     mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
-    { Type.getInternalName(type) });
+    { Type.getInternalName(class1) });
   }
 
   public Expression<D, R, F> expression;

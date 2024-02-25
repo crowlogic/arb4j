@@ -14,9 +14,7 @@
 
   Consider an eigenfunction <math|\<psi\><rsub|k>> of the covariance kernel,
   which can be represented exactly by a finite sum of orthogonal polynomials
-  <math|<around|{|\<phi\><rsub|n>|}><rsub|n=0><rsup|k>> (noting the corrected
-  summation index starts at <math|0> and <math|N> equals <math|k>), such
-  that:
+  <math|<around|{|\<phi\><rsub|n>|}><rsub|n=0><rsup|k>>\ 
 
   <\equation>
     \<psi\><rsub|k><around|(|x|)>=<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|x|)>
@@ -27,35 +25,35 @@
   The integral covariance equation for a Gaussian process is given by:
 
   <\equation>
-    <big|int>k<around|(|x,y|)>*\<psi\><rsub|k><around|(|y|)>*<space|0.17em>d*y=\<lambda\><rsub|k>*\<psi\><rsub|k><around|(|x|)>
+    <big|int>R<around|(|x,y|)>*\<psi\><rsub|k><around|(|y|)>*<space|0.17em>d*y=\<lambda\><rsub|k>*\<psi\><rsub|k><around|(|x|)>
   </equation>
 
   Substituting the finite representation of
   <math|\<psi\><rsub|k><around|(|x|)>> into this equation yields:
 
   <\equation>
-    <big|int>k<around|(|x,y|)><around*|(|<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|y|)>|)>*d*y=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|x|)>
+    <big|int>R<around|(|x,y|)><around*|(|<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|y|)>|)>*d*y=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|x|)>
   </equation>
 
   Differentiating both sides of this equation with respect to <math|x> twice,
-  assuming <math|k<around|(|x,y|)>> is sufficiently smooth for such
+  assuming <math|R<around|(|x,y|)>> is sufficiently smooth for such
   operations, leads to a form analogous to the Sturm-Liouville differential
   equation:
 
   <\equation>
-    <frac|d<rsup|2>|d*x<rsup|2>>*<around*|(|\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|x|)>|)>=<frac|d<rsup|2>|d*x<rsup|2>>*<big|int>k<around|(|x,y|)><around*|(|<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|y|)>|)>*d*y
+    <frac|d<rsup|2>|d*x<rsup|2>>*<around*|(|\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|x|)>|)>=<frac|d<rsup|2>|d*x<rsup|2>>*<big|int>R<around|(|x,y|)><around*|(|<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|y|)>|)>*d*y
   </equation>
 
   <section*|Application of Leibniz's Rule>
 
   Leibniz's rule for differentiation under the integral sign allows us to
   exchange differentiation and integration given certain regularity
-  conditions on <math|k<around|(|x,y|)>>. The rule states that if both
-  <math|k<around|(|x,y|)>> and <math|\<phi\><rsub|n><around|(|y|)>> are
+  conditions on <math|R<around|(|x,y|)>>. The rule states that if both
+  <math|R<around|(|x,y|)>> and <math|\<phi\><rsub|n><around|(|y|)>> are
   sufficiently smooth, then:
 
   <\equation>
-    <frac|d<rsup|2>|d*x<rsup|2>>*<big|int>k<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y=<big|int><frac|d<rsup|2>|d*x<rsup|2>>*k<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y
+    <frac|d<rsup|2>|d*x<rsup|2>>*<big|int>R<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y=<big|int><frac|d<rsup|2>|d*x<rsup|2>>*R<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y
   </equation>
 
   Applying this to our equation and assuming the order of summation and
@@ -63,7 +61,7 @@
   we get:
 
   <\equation>
-    \<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*<frac|d<rsup|2>|d*x<rsup|2>>*\<phi\><rsub|n><around|(|x|)>=<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*<big|int><frac|d<rsup|2>|d*x<rsup|2>>*k<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y
+    \<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*<frac|d<rsup|2>|d*x<rsup|2>>*\<phi\><rsub|n><around|(|x|)>=<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*<big|int><frac|d<rsup|2>|d*x<rsup|2>>*R<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y
   </equation>
 
   <section*|Triangular System and Back-Substitution>
@@ -128,6 +126,7 @@
     <associate|auto-3|<tuple|4|1>>
     <associate|auto-4|<tuple|6|2>>
     <associate|auto-5|<tuple|7|2>>
+    <associate|auto-6|<tuple|7|?>>
   </collection>
 </references>
 
