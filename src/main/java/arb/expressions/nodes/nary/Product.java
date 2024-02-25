@@ -42,9 +42,6 @@ import arb.utensils.Utensils;
  * variable to whatever type is output by default or requested by whatever is
  * requesting its generation
  * 
- * // FIXME: need to make this sub-expression aware of the input field of the
- * containing expression
- * 
  * @param <D> domain
  * @param <R> range
  * @param <F> {@link Function}
