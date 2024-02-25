@@ -218,7 +218,11 @@ public class When<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("When[cases=%s,default=%s]", cases, arg);
+    return String.format("When[cases=%s,default=%s]",
+                         cases.entrySet()
+                              .stream()
+                              .map(node -> node.getKey() + ((LiteralConstant<?, ?, ?>) node.getValue()).value),
+                         arg);
   }
 
   @Override

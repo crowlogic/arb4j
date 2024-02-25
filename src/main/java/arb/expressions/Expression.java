@@ -431,7 +431,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public PrintWriter         printWriter;
 
-  public boolean             verbose       = false;
+  public boolean             verbose       = true;
 
   public Expression<?, ?, ?> parentExpression;
 

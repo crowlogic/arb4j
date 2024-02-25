@@ -1,18 +1,10 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.IFLE;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.POP;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Optional;
 
@@ -23,6 +15,7 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
@@ -52,6 +45,14 @@ import arb.utensils.Utensils;
 public class Product<D, R, F extends Function<D, R>> extends
                     Node<D, R, F>
 {
+
+  private Class<?> generatedType;
+
+  @Override
+  public Class<?> getGeneratedType()
+  {
+    return generatedType;
+  }
 
   protected static String     factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(Object.class),
                                                                                        Type.getType(Object.class),
@@ -179,6 +180,8 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
+
     assignFieldNames(resultType);
 
     prepareIndexVariable();
@@ -188,11 +191,11 @@ public class Product<D, R, F extends Function<D, R>> extends
     propagateInputToFactorClass(mv);
 
     initializeProductResultVariable(mv, resultType);
-    
+
     setIndexToTheStartIndex(mv);
 
     generateEndingIndex(mv);
-    
+
     designateLabel(mv, beginningOfTheLoop);
 
     generateInnerLoop(mv);
@@ -320,7 +323,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     loadBitsParameter(mv);
     loadFactorValue(mv);
     evaluateFactor(mv);
-    checkClassCast(mv, expression.rangeType);
+    checkClassCast(mv, generatedType);
     loadBitsParameter(mv);
     multiplyFactor(mv);
     pop(mv);
@@ -394,7 +397,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void loadFactorValue(MethodVisitor mv)
   {
-    loadFieldFromThis(mv, factorValueFieldName, expression.rangeType);
+    loadFieldFromThis(mv, factorValueFieldName, generatedType);
   }
 
   protected MethodVisitor loadFieldFromThis(MethodVisitor mv, String fieldName, Class<?> type)
@@ -414,8 +417,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   void loadResultingProductVariable(MethodVisitor methodVisitor)
   {
-    getField(methodVisitor, expression.className, productResultVariable, expression.rangeType);
-
+    getField(methodVisitor, expression.className, productResultVariable, generatedType);
   }
 
   void loadVariableThatHoldsTheEvaluatedFactor(MethodVisitor methodVisitor)
@@ -426,9 +428,9 @@ public class Product<D, R, F extends Function<D, R>> extends
   private void multiplyFactor(MethodVisitor mv)
   {
     invokeMethod(mv,
-                 expression.rangeType,
+                 generatedType,
                  "mul",
-                 getMethodDescriptor(expression.rangeType, expression.rangeType, int.class),
+                 getMethodDescriptor(generatedType, generatedType, int.class),
                  false);
   }
 
@@ -493,7 +495,7 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    return expression.rangeType;
+    return generatedType;
   }
 
   @Override
