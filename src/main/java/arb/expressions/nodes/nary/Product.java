@@ -132,6 +132,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     functionClass = expression.className;
     assert functionClass != null : "functionClass is null";
+    generatedType = (RealPolynomial.class.equals(expression.rangeType) ? Real.class : expression.rangeType);
   }
 
   private String parseFactorExpression()

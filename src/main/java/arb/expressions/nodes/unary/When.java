@@ -221,8 +221,9 @@ public class When<D, R, F extends Function<D, R>> extends
     return String.format("When[cases=%s,default=%s]",
                          cases.entrySet()
                               .stream()
-                              .map(node -> node.getKey() + ((LiteralConstant<?, ?, ?>) node.getValue()).value),
-                         arg);
+                              .map(node -> node.getKey() + "=" + node.getValue().typeset())
+                              .collect(Collectors.toList()),
+                         arg.typeset());
   }
 
   @Override
