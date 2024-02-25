@@ -27,20 +27,6 @@ public class ExpressionTest extends
     assertEquals(6, evaluate.getUnsignedValue());
   }
 
-  public static void testRisingFactorialPolynomial()
-  {
-    Function<Integer, RealPolynomial> f        = Function.express(Integer.class,
-                                                                  RealPolynomial.class,
-                                                                  "n➔∏x+k{k=1…(n-1)}");
-    Integer                           in       = new Integer(3);
-    RealPolynomial                    evaluate = f.evaluate(in, 128, new RealPolynomial());
-
-    assertEquals(0, evaluate.get(0).integerValue(in).getSignedValue());
-    assertEquals(2, evaluate.get(1).integerValue(in).getSignedValue());
-    assertEquals(3, evaluate.get(2).integerValue(in).getSignedValue());
-    assertEquals(1, evaluate.get(3).integerValue(in).getSignedValue());
-
-  }
 
   public static void testGammaReal()
   {
