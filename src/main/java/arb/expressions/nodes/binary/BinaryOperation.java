@@ -222,7 +222,16 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
    */
   public boolean typesSymmetryicallyEqual(Class<?> a, Class<?> b)
   {
-    return (left.type().equals(a) && right.type().equals(b)) || (left.type().equals(b) && right.type().equals(a));
+    assert a != null : "a is null";
+    assert b != null : "b is null";
+    assert left != null : "lhs is null";
+    assert right != null : "rhs is null";
+    Class<? extends Object> leftType = left.type();
+    Class<? extends Object> rightType = right.type();
+    assert leftType != null : "lhs type is  null where lhs is " + left;
+    assert rightType != null : "rhs type is null where rhs is " + right;
+    
+    return (leftType.equals(a) && rightType.equals(b)) || (leftType.equals(b) && rightType.equals(a));
   }
 
   @Override

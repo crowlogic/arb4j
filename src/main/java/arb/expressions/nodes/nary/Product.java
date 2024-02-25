@@ -427,11 +427,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void multiplyFactor(MethodVisitor mv)
   {
-    invokeMethod(mv,
-                 generatedType,
-                 "mul",
-                 getMethodDescriptor(generatedType, generatedType, int.class),
-                 false);
+    invokeMethod(mv, generatedType, "mul", getMethodDescriptor(generatedType, generatedType, int.class), false);
   }
 
   void multiplyResultingProductVariableByFactor(MethodVisitor methodVisitor)
@@ -489,8 +485,8 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return typeset();
-  }
+    return String.format("Π%s{%s=%s…%s}", factor, index, startIndex.typeset(), endIndex.typeset());
+  };
 
   @Override
   public Class<?> type()
