@@ -1,9 +1,6 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.loadBitsParameter;
-import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
-import static arb.expressions.Compiler.prepareStackForReusingRightSide;
+import static arb.expressions.Compiler.*;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
@@ -65,19 +62,16 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   public Node<D, R, F> left;
 
-  public String                operation;
+  public String        operation;
 
-  public Class<?>              generatedType;
+  public Class<?>      generatedType;
 
   public Class<?> getGeneratedType()
   {
     return generatedType;
   }
 
-  public BinaryOperation(Expression<D, R, F> expression,
-                         Node<D, R, F> left,
-                         String operation,
-                         Node<D, R, F> right)
+  public BinaryOperation(Expression<D, R, F> expression, Node<D, R, F> left, String operation, Node<D, R, F> right)
   {
     super(expression);
 
@@ -104,8 +98,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                   + " set 0 value based on type here";
   }
 
-
-  
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
@@ -226,11 +218,11 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     assert b != null : "b is null";
     assert left != null : "lhs is null";
     assert right != null : "rhs is null";
-    Class<? extends Object> leftType = left.type();
+    Class<? extends Object> leftType  = left.type();
     Class<? extends Object> rightType = right.type();
-    assert leftType != null : "lhs type is  null where lhs is " + left;
-    assert rightType != null : "rhs type is null where rhs is " + right;
-    
+    assert leftType != null : "lhs type is  null where lhs is " + left + " and a=" + a + " b=" + b;
+    assert rightType != null : "rhs type is null where rhs is " + right + " and a=" + a + " b=" + b;
+
     return (leftType.equals(a) && rightType.equals(b)) || (leftType.equals(b) && rightType.equals(a));
   }
 
@@ -239,7 +231,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     assert left != null : "left is null: " + this + " for expr=" + expression;
     assert right != null : "right is null: " + this + " for expr=" + expression;
-    
+
     if (left.type().equals(right.type()))
     {
       boolean integerDivision = operation.equals("div") && left.type().equals(Integer.class);
