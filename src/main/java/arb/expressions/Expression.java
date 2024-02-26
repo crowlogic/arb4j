@@ -431,7 +431,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public PrintWriter         printWriter;
 
-  public boolean             verbose       = true;
+  public boolean             verbose       = false;
 
   public Expression<?, ?, ?> parentExpression;
 
@@ -899,19 +899,24 @@ public class Expression<D, R, F extends Function<D, R>> implements
       parse();
     }
 
-    Label                       startLabel = new Label();
-    Label                       endLabel   = new Label();
+    Label         startLabel = new Label();
+    Label         endLabel   = new Label();
 
-    StackAnalyzingMethodVisitor mv         = new StackAnalyzingMethodVisitor(className,
-                                                                             Opcodes.F_NEW,
-                                                                             "evaluate",
-                                                                             evaluationMethodDescriptor,
-                                                                             classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                                                                      "evaluate",
-                                                                                                      evaluationMethodDescriptor,
-                                                                                                      evaluateMethodSignature,
-                                                                                                      null));
+    MethodVisitor mv         = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                        "evaluate",
+                                                        evaluationMethodDescriptor,
+                                                        evaluateMethodSignature,
+                                                        null);
 
+    if (verbose)
+    {
+      mv = new StackAnalyzingMethodVisitor(className,
+                                           Opcodes.F_NEW,
+                                           "evaluate",
+                                           evaluationMethodDescriptor,
+                                           mv);
+    }
+    
     mv.visitCode();
     mv.visitLabel(startLabel);
 
