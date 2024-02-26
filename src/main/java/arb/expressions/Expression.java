@@ -679,6 +679,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       System.out.println("Generating " + rootNode);
 
+      // TODO: if stack debugging is enabled then use the StackTrackingTextifier
+      // instead of the regular Textifier here
       classVisitor = new TraceClassVisitor(classVisitor,
                                            new Textifier(),
                                            printWriter);
