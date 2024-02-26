@@ -14,18 +14,20 @@ public class F implements Function<Integer, RealPolynomial> {
    public Integer ℤ1;
    public RealPolynomial r̅1;
    public RealPolynomial r̅2;
-   public RealPolynomial valuer̅1;
+   public Real valueℝ1;
    public Integer k;
-   public RealPolynomial productr̅1;
+   public Real productℝ1;
+   public Integer endIndexℤ1;
    public RealPolynomial r̅3;
    public Integer ℤ2;
    public Integer ℤ3;
-   public RealPolynomial valuer̅2;
-   public RealPolynomial productr̅2;
-   public RealPolynomial r̅4;
-   public final factorr̅2 factorr̅2 = new factorr̅2();
+   public Real valueℝ2;
+   public Real productℝ2;
+   public Integer endIndexℤ2;
+   public Real ℝ1;
    public F F;
-   public final factorr̅1 factorr̅1 = new factorr̅1();
+   public final factorℝ2 factorℝ2 = new factorℝ2();
+   public final factorℝ1 factorℝ1 = new factorℝ1();
 
    public RealPolynomial evaluate(Integer param1, int param2, int param3, RealPolynomial param4) {
       // $VF: Couldn't be decompiled
@@ -53,7 +55,7 @@ public class F implements Function<Integer, RealPolynomial> {
       // 01e: checkcast arb/RealPolynomial
       // 021: swap
       // 022: invokevirtual arb/RealPolynomial.set (Larb/Integer;)Larb/RealPolynomial;
-      // 025: goto 12c
+      // 025: goto 144
       // 028: aload 4
       // 02a: checkcast arb/RealPolynomial
       // 02d: invokevirtual arb/RealPolynomial.identity ()Larb/RealPolynomial;
@@ -78,104 +80,116 @@ public class F implements Function<Integer, RealPolynomial> {
       // 054: getfield F.r̅2 Larb/RealPolynomial;
       // 057: invokevirtual arb/RealPolynomial.mul (Larb/RealPolynomial;ILarb/RealPolynomial;)Larb/RealPolynomial;
       // 05a: aload 0
-      // 05b: getfield F.factorr̅1 Lfactorr̅1;
+      // 05b: getfield F.factorℝ1 Lfactorℝ1;
       // 05e: aload 1
       // 05f: checkcast arb/Integer
-      // 062: putfield factorr̅1.n Larb/Integer;
+      // 062: putfield factorℝ1.n Larb/Integer;
       // 065: aload 0
-      // 066: getfield F.productr̅1 Larb/RealPolynomial;
-      // 069: invokevirtual arb/RealPolynomial.multiplicativeIdentity ()Larb/RealPolynomial;
+      // 066: getfield F.productℝ1 Larb/Real;
+      // 069: invokevirtual arb/Real.multiplicativeIdentity ()Larb/Real;
       // 06c: pop
       // 06d: aload 0
       // 06e: getfield F.k Larb/Integer;
       // 071: aload 0
-      // 072: getfield F.startIndex Larb/Integer;
+      // 072: getfield F.c2 Larb/Integer;
       // 075: invokevirtual arb/Integer.set (Larb/Integer;)Larb/Integer;
       // 078: pop
       // 079: aload 0
-      // 07a: getfield F.productr̅1 Larb/RealPolynomial;
+      // 07a: getfield F.endIndexℤ1 Larb/Integer;
       // 07d: aload 0
-      // 07e: getfield F.factorr̅1 Lfactorr̅1;
-      // 081: aload 0
-      // 082: getfield F.k Larb/Integer;
-      // 085: iload 3
-      // 086: aload 0
-      // 087: getfield F.valuer̅1 Larb/RealPolynomial;
-      // 08a: invokeinterface arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; 4
-      // 08f: checkcast arb/RealPolynomial
-      // 092: iload 3
-      // 093: invokevirtual arb/RealPolynomial.mul (Larb/RealPolynomial;I)Larb/RealPolynomial;
-      // 096: pop
-      // 097: aload 0
-      // 098: getfield F.k Larb/Integer;
-      // 09b: invokevirtual arb/Integer.increment ()Larb/Integer;
-      // 09e: aload 0
-      // 09f: getfield F.p Larb/Integer;
-      // 0a2: invokevirtual arb/Integer.compareTo (Larb/Integer;)I
-      // 0a5: ifle 079
-      // 0a8: iload 3
-      // 0a9: aload 0
-      // 0aa: getfield F.r̅3 Larb/RealPolynomial;
-      // 0ad: invokevirtual arb/RealPolynomial.mul (Larb/RealPolynomial;ILarb/RealPolynomial;)Larb/RealPolynomial;
-      // 0b0: aload 4
-      // 0b2: aload 1
-      // 0b3: checkcast arb/Integer
-      // 0b6: aload 0
-      // 0b7: getfield F.c2 Larb/Integer;
-      // 0ba: iload 3
-      // 0bb: aload 0
-      // 0bc: getfield F.ℤ2 Larb/Integer;
-      // 0bf: invokevirtual arb/Integer.sub (Larb/Integer;ILarb/Integer;)Larb/Integer;
-      // 0c2: iload 3
-      // 0c3: aload 0
-      // 0c4: getfield F.ℤ3 Larb/Integer;
-      // 0c7: invokevirtual arb/Integer.factorial (ILarb/RealPolynomial;)Larb/RealPolynomial;
-      // 0ca: invokevirtual arb/Integer.set (Larb/RealPolynomial;)Larb/Integer;
-      // 0cd: aload 0
-      // 0ce: getfield F.factorr̅2 Lfactorr̅2;
-      // 0d1: aload 1
-      // 0d2: checkcast arb/Integer
-      // 0d5: putfield factorr̅2.n Larb/Integer;
-      // 0d8: aload 0
-      // 0d9: getfield F.productr̅2 Larb/RealPolynomial;
-      // 0dc: invokevirtual arb/RealPolynomial.multiplicativeIdentity ()Larb/RealPolynomial;
-      // 0df: pop
-      // 0e0: aload 0
-      // 0e1: getfield F.k Larb/Integer;
+      // 07e: getfield F.p Larb/Integer;
+      // 081: invokevirtual arb/Integer.set (Larb/Integer;)Larb/Integer;
+      // 084: pop
+      // 085: aload 0
+      // 086: getfield F.productℝ1 Larb/Real;
+      // 089: aload 0
+      // 08a: getfield F.factorℝ1 Lfactorℝ1;
+      // 08d: aload 0
+      // 08e: getfield F.k Larb/Integer;
+      // 091: iload 3
+      // 092: aload 0
+      // 093: getfield F.valueℝ1 Larb/Real;
+      // 096: invokeinterface arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; 4
+      // 09b: checkcast arb/Real
+      // 09e: iload 3
+      // 09f: invokevirtual arb/Real.mul (Larb/Real;I)Larb/Real;
+      // 0a2: pop
+      // 0a3: aload 0
+      // 0a4: getfield F.k Larb/Integer;
+      // 0a7: invokevirtual arb/Integer.increment ()Larb/Integer;
+      // 0aa: aload 0
+      // 0ab: getfield F.endIndexℤ1 Larb/Integer;
+      // 0ae: invokevirtual arb/Integer.compareTo (Larb/Integer;)I
+      // 0b1: ifle 085
+      // 0b4: iload 3
+      // 0b5: aload 0
+      // 0b6: getfield F.r̅3 Larb/RealPolynomial;
+      // 0b9: invokevirtual arb/RealPolynomial.mul (Larb/Real;ILarb/RealPolynomial;)Larb/RealPolynomial;
+      // 0bc: aload 4
+      // 0be: aload 1
+      // 0bf: checkcast arb/Integer
+      // 0c2: aload 0
+      // 0c3: getfield F.c2 Larb/Integer;
+      // 0c6: iload 3
+      // 0c7: aload 0
+      // 0c8: getfield F.ℤ2 Larb/Integer;
+      // 0cb: invokevirtual arb/Integer.sub (Larb/Integer;ILarb/Integer;)Larb/Integer;
+      // 0ce: iload 3
+      // 0cf: aload 0
+      // 0d0: getfield F.ℤ3 Larb/Integer;
+      // 0d3: invokevirtual arb/Integer.factorial (ILarb/RealPolynomial;)Larb/RealPolynomial;
+      // 0d6: invokevirtual arb/Integer.set (Larb/RealPolynomial;)Larb/Integer;
+      // 0d9: aload 0
+      // 0da: getfield F.factorℝ2 Lfactorℝ2;
+      // 0dd: aload 1
+      // 0de: checkcast arb/Integer
+      // 0e1: putfield factorℝ2.n Larb/Integer;
       // 0e4: aload 0
-      // 0e5: getfield F.startIndex Larb/Integer;
-      // 0e8: invokevirtual arb/Integer.set (Larb/Integer;)Larb/Integer;
+      // 0e5: getfield F.productℝ2 Larb/Real;
+      // 0e8: invokevirtual arb/Real.multiplicativeIdentity ()Larb/Real;
       // 0eb: pop
       // 0ec: aload 0
-      // 0ed: getfield F.productr̅2 Larb/RealPolynomial;
+      // 0ed: getfield F.k Larb/Integer;
       // 0f0: aload 0
-      // 0f1: getfield F.factorr̅2 Lfactorr̅2;
-      // 0f4: aload 0
-      // 0f5: getfield F.k Larb/Integer;
-      // 0f8: iload 3
-      // 0f9: aload 0
-      // 0fa: getfield F.valuer̅2 Larb/RealPolynomial;
-      // 0fd: invokeinterface arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; 4
-      // 102: checkcast arb/RealPolynomial
-      // 105: iload 3
-      // 106: invokevirtual arb/RealPolynomial.mul (Larb/RealPolynomial;I)Larb/RealPolynomial;
-      // 109: pop
-      // 10a: aload 0
-      // 10b: getfield F.k Larb/Integer;
-      // 10e: invokevirtual arb/Integer.increment ()Larb/Integer;
+      // 0f1: getfield F.c2 Larb/Integer;
+      // 0f4: invokevirtual arb/Integer.set (Larb/Integer;)Larb/Integer;
+      // 0f7: pop
+      // 0f8: aload 0
+      // 0f9: getfield F.endIndexℤ2 Larb/Integer;
+      // 0fc: aload 0
+      // 0fd: getfield F.q Larb/Integer;
+      // 100: invokevirtual arb/Integer.set (Larb/Integer;)Larb/Integer;
+      // 103: pop
+      // 104: aload 0
+      // 105: getfield F.productℝ2 Larb/Real;
+      // 108: aload 0
+      // 109: getfield F.factorℝ2 Lfactorℝ2;
+      // 10c: aload 0
+      // 10d: getfield F.k Larb/Integer;
+      // 110: iload 3
       // 111: aload 0
-      // 112: getfield F.q Larb/Integer;
-      // 115: invokevirtual arb/Integer.compareTo (Larb/Integer;)I
-      // 118: ifle 0ec
-      // 11b: iload 3
-      // 11c: aload 0
-      // 11d: getfield F.r̅4 Larb/RealPolynomial;
-      // 120: invokevirtual arb/Integer.mul (Larb/RealPolynomial;ILarb/RealPolynomial;)Larb/RealPolynomial;
-      // 123: iload 3
-      // 124: aload 4
-      // 126: checkcast arb/RealPolynomial
-      // 129: invokevirtual arb/RealPolynomial.div (Larb/RealPolynomial;ILarb/RealPolynomial;)Larb/RealPolynomial;
-      // 12c: areturn
+      // 112: getfield F.valueℝ2 Larb/Real;
+      // 115: invokeinterface arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; 4
+      // 11a: checkcast arb/Real
+      // 11d: iload 3
+      // 11e: invokevirtual arb/Real.mul (Larb/Real;I)Larb/Real;
+      // 121: pop
+      // 122: aload 0
+      // 123: getfield F.k Larb/Integer;
+      // 126: invokevirtual arb/Integer.increment ()Larb/Integer;
+      // 129: aload 0
+      // 12a: getfield F.endIndexℤ2 Larb/Integer;
+      // 12d: invokevirtual arb/Integer.compareTo (Larb/Integer;)I
+      // 130: ifle 104
+      // 133: iload 3
+      // 134: aload 0
+      // 135: getfield F.ℝ1 Larb/Real;
+      // 138: invokevirtual arb/Integer.mul (Larb/Real;ILarb/Real;)Larb/Real;
+      // 13b: iload 3
+      // 13c: aload 4
+      // 13e: checkcast arb/RealPolynomial
+      // 141: invokevirtual arb/RealPolynomial.div (Larb/Real;ILarb/RealPolynomial;)Larb/RealPolynomial;
+      // 144: areturn
    }
 
    public F() {
@@ -184,15 +198,17 @@ public class F implements Function<Integer, RealPolynomial> {
       ℤ1 = new Integer();
       r̅1 = new RealPolynomial();
       r̅2 = new RealPolynomial();
-      valuer̅1 = new RealPolynomial();
+      valueℝ1 = new Real();
       k = new Integer();
-      productr̅1 = new RealPolynomial();
+      productℝ1 = new Real();
+      endIndexℤ1 = new Integer();
       r̅3 = new RealPolynomial();
       ℤ2 = new Integer();
       ℤ3 = new Integer();
-      valuer̅2 = new RealPolynomial();
-      productr̅2 = new RealPolynomial();
-      r̅4 = new RealPolynomial();
+      valueℝ2 = new Real();
+      productℝ2 = new Real();
+      endIndexℤ2 = new Integer();
+      ℝ1 = new Real();
    }
 
    public void initialize() {
@@ -203,14 +219,14 @@ public class F implements Function<Integer, RealPolynomial> {
       } else if (q == null) {
          throw new AssertionError("q is null");
       } else {
-         factorr̅2.p = p;
-         factorr̅2.q = q;
-         factorr̅2.α = α;
-         factorr̅2.β = β;
-         factorr̅1.p = p;
-         factorr̅1.q = q;
-         factorr̅1.α = α;
-         factorr̅1.β = β;
+         factorℝ2.p = p;
+         factorℝ2.q = q;
+         factorℝ2.α = α;
+         factorℝ2.β = β;
+         factorℝ1.p = p;
+         factorℝ1.q = q;
+         factorℝ1.α = α;
+         factorℝ1.β = β;
          F = new F();
          F.p = p;
          F.q = q;
@@ -226,15 +242,17 @@ public class F implements Function<Integer, RealPolynomial> {
       ℤ1.close();
       r̅1.close();
       r̅2.close();
-      valuer̅1.close();
+      valueℝ1.close();
       k.close();
-      productr̅1.close();
+      productℝ1.close();
+      endIndexℤ1.close();
       r̅3.close();
       ℤ2.close();
       ℤ3.close();
-      valuer̅2.close();
-      productr̅2.close();
-      r̅4.close();
+      valueℝ2.close();
+      productℝ2.close();
+      endIndexℤ2.close();
+      ℝ1.close();
       F.close();
    }
 }
