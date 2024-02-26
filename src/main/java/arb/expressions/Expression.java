@@ -897,14 +897,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
       parse();
     }
 
-    Label         startLabel    = new Label();
-    Label         endLabel      = new Label();
+    Label                       startLabel = new Label();
+    Label                       endLabel   = new Label();
 
-    MethodVisitor mv = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
-                                                           "evaluate",
-                                                           evaluationMethodDescriptor,
-                                                           evaluateMethodSignature,
-                                                           null);
+    StackAnalyzingMethodVisitor mv         = new StackAnalyzingMethodVisitor(className,
+                                                                             Opcodes.F_NEW,
+                                                                             "evaluate",
+                                                                             evaluationMethodDescriptor,
+                                                                             classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                                                                      "evaluate",
+                                                                                                      evaluationMethodDescriptor,
+                                                                                                      evaluateMethodSignature,
+                                                                                                      null));
 
     mv.visitCode();
     mv.visitLabel(startLabel);
@@ -914,9 +918,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
       throwNewUnexpectedCharacterException();
     }
 
-
-
-    
     if (needsInitializer())
     {
       generateConditionalInitializater(mv);
@@ -934,14 +935,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
     mv.visitLabel(endLabel);
 
     declareLocalVariables(mv, startLabel, endLabel);
-    
+
     mv.visitMaxs(10, 10);
 
     mv.visitEnd();
 
     return classVisitor;
   }
-
 
   private void throwNewUnexpectedCharacterException()
   {
@@ -957,7 +957,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     MethodVisitor methodVisitor = classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
                                                            nameOfInitializerFunction,
                                                            "()V",
-                                                           null, 
+                                                           null,
                                                            null);
     try
     {
