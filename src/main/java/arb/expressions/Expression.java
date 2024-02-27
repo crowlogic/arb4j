@@ -1,27 +1,11 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.addNullCheckForField;
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.express;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getVariableSuffix;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadFunctionClass;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.F_SAME1;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -782,24 +766,23 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitFieldInsn(PUTFIELD, className, IS_INITIALIZED, "Z");
   }
 
-  private void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor methodVisitor)
+  private void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor mv)
   {
 
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
+    mv.visitVarInsn(ALOAD, 0);
+    mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     Label alreadyInitializedLabel = new Label();
-    methodVisitor.visitJumpInsn(Opcodes.IFEQ, alreadyInitializedLabel);
+    mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
+    { Opcodes.INTEGER });
 
-    methodVisitor.visitTypeInsn(Opcodes.NEW, "java/lang/AssertionError");
-    methodVisitor.visitInsn(Opcodes.DUP);
-    methodVisitor.visitLdcInsn("Already initialized");
-    methodVisitor.visitMethodInsn(INVOKESPECIAL,
-                                  "java/lang/AssertionError",
-                                  "<init>",
-                                  "(Ljava/lang/Object;)V",
-                                  false);
-    methodVisitor.visitInsn(Opcodes.ATHROW);
-    methodVisitor.visitLabel(alreadyInitializedLabel);
+    mv.visitJumpInsn(Opcodes.IFEQ, alreadyInitializedLabel);
+
+    mv.visitTypeInsn(Opcodes.NEW, "java/lang/AssertionError");
+    mv.visitInsn(Opcodes.DUP);
+    mv.visitLdcInsn("Already initialized");
+    mv.visitMethodInsn(INVOKESPECIAL, "java/lang/AssertionError", "<init>", "(Ljava/lang/Object;)V", false);
+    mv.visitInsn(Opcodes.ATHROW);
+    mv.visitLabel(alreadyInitializedLabel);
   }
 
   private void generateConditionalInitializater(MethodVisitor methodVisitor)
@@ -824,7 +807,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (needsInitializer())
     {
-      referencedFunctions.values().forEach(mapping -> generateInitializer(mv, mapping));
+      referencedFunctions.values().forEach(mapping -> generateFunctionInitializer(mv, mapping));
 
       if (recursive)
       {
@@ -855,7 +838,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return mv;
   }
 
-  public MethodVisitor generateInitializer(MethodVisitor mv, FunctionMapping<?, ?> nestedFunction)
+  public MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?> nestedFunction)
   {
     if (nestedFunction.func != null)
     {

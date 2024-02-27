@@ -19,6 +19,22 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       isotropyPrevalenceInSpatialStatistics                   = new Article("Why is isotropy so prevalent in spatial statistics?",
+                                                                                                    "Chunsheng Ma",
+                                                                                                    "2007",
+                                                                                                    "Proceedings of the American Mathematical Society",
+                                                                                                    "135",
+                                                                                                    "865–871").setNumber("3")
+                                                                                                              .setPublisher("American Mathematical Society");
+
+  public static Article       stochasticProcessesAsCurvesInHilbertSpace               = new Article("Stochastic processes as curves in Hilbert space",
+                                                                                                    "Harald Cramér",
+                                                                                                    "1964",
+                                                                                                    "Theory of Probability & Its Applications",
+                                                                                                    "9",
+                                                                                                    "169–179").setNumber("2")
+                                                                                                              .setPublisher("SIAM");
+
   public static Article       skewOrthogonalPolynomialsAndRandomMatrixTheory          = new Article("Generalized Christoffel-Darboux formula for skew-orthogonal polynomials and random matrix theory",
                                                                                                     "Saugata Ghosh",
                                                                                                     "2006",
@@ -139,7 +155,7 @@ public class Bibliography extends
   public static Book          psychologyOfMathematicalInvention                       = new Book("The Psychology of Invention in the Mathematical Field",
                                                                                                  "Jacques Hadamard",
                                                                                                  "1954").setSeries("Dover books on advanced mathematics")
-                                                                                                        .setEdition("enlarged, unaltered, and unabridged 1949 edition reprint")
+                                                                                                        .setEdition("enlarged, unaltered, and unabridged reprint of the 1949")
                                                                                                         .setPublisher("Dover publications, Inc.")
                                                                                                         .setAddress("180 Varick Street New York, N.Y. 10014");
 
