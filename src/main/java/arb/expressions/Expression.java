@@ -773,6 +773,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     Label alreadyInitializedLabel = new Label();
+    methodVisitor.visitFrame(Opcodes.F_SAME1, 0, null, 0, new Object[]
+    { "Z" });
     methodVisitor.visitJumpInsn(Opcodes.IFEQ, alreadyInitializedLabel);
 
     methodVisitor.visitTypeInsn(Opcodes.NEW, "java/lang/AssertionError");
@@ -809,7 +811,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (needsInitializer())
     {
-      referencedFunctions.values().forEach(mapping -> generateInitializer(mv, mapping));
+      referencedFunctions.values().forEach(mapping -> generateFunctionInitializer(mv, mapping));
 
       if (recursive)
       {
@@ -840,7 +842,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return mv;
   }
 
-  public MethodVisitor generateInitializer(MethodVisitor mv, FunctionMapping<?, ?> nestedFunction)
+  public MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?> nestedFunction)
   {
     if (nestedFunction.func != null)
     {
@@ -916,7 +918,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                            evaluationMethodDescriptor,
                                            mv);
     }
-    
+
     mv.visitCode();
     mv.visitLabel(startLabel);
 
