@@ -19,6 +19,14 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       isotropyPrevalenceInSpatialStatistics                   = new Article("Why is isotropy so prevalent in spatial statistics?",
+                                                                                                    "Chunsheng Ma",
+                                                                                                    "2007",
+                                                                                                    "Proceedings of the American Mathematical Society",
+                                                                                                    "135",
+                                                                                                    "865–871").setNumber("3")
+                                                                                                              .setPublisher("American Mathematical Society");
+
   public static Article       stochasticProcessesAsCurvesInHilbertSpace               = new Article("Stochastic processes as curves in Hilbert space",
                                                                                                     "Harald Cramér",
                                                                                                     "1964",
