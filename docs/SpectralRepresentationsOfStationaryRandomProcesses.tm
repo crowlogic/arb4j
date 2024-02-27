@@ -38,11 +38,16 @@
     <around|(|\<omega\>*\<tau\>|)>*d*G<around|(|\<omega\>|)><text|>
   </equation>
 
-  where <math|d*G<around|(|\<omega\>|)>=d*F<around|(|\<omega\>|)>+d*F*<around|(|-\<omega\>|)>>
-  for <math|\<omega\>\<gtr\>0> (see (2.53)). Moreover, it is easy to show
-  that the relation <math|B<around|(|\<tau\>|)>=B*<around|(|-\<tau\>|)>>
-  implies that the increments of <math|F<around|(|\<omega\>|)>> on intervals
-  symmetric about the point <math|\<omega\>=0> must coincide. Thus
+  where\ 
+
+  <\equation>
+    d*G<around|(|\<omega\>|)>=d*F<around|(|\<omega\>|)>+d*F*<around|(|-\<omega\>|)>\<forall\>\<omega\>\<gtr\>0
+  </equation>
+
+  \ (see (2.53)). Moreover, it is easy to show that the relation
+  <math|B<around|(|\<tau\>|)>=B*<around|(|-\<tau\>|)>> implies that the
+  increments of <math|F<around|(|\<omega\>|)>> on intervals symmetric about
+  the point <math|\<omega\>=0> must coincide. Thus
 
   <\equation>
     d*G<around|(|\<omega\>|)>=2*d*F<around|(|\<omega\>|)>
@@ -50,17 +55,22 @@
 
   \ for <math|\<omega\>\<gtr\>0>, and if the function
   <math|F<around|(|\<omega\>|)>> is continuous at the point
-  <math|\<omega\>=0>, then <math|G<around|(|\<omega\>|)>=2*F<around|(|\<omega\>|)>+>const.
+  <math|\<omega\>=0>, then
+
+  \ 
+
+  <\equation>
+    G<around|(|\<omega\>|)>=2*F<around|(|\<omega\>|)>+<text|const>
+  </equation>
+
   (However, if <math|F<around|(|\<omega\>|)>> is discontinuous at
   <math|\<omega\>=0>, then <math|G<around|(|\<omega\>|)>> will have the same,
-  and not a two-fold, jump at this point.) It is convenient to assume, when
+  and not a two-fold jump at this point.) It is convenient to assume, when
   the function <math|G<around|(|\<omega\>|)>> is considered, that
   <math|G*<around|(|-\<omega\>|)>=0> (where <math|G*<around|(|-\<omega\>|)>>
   is the value of <math|G<around|(|\<omega\>|)>> just before its possible
-  jump at the point <math|\<omega\>=0>).
-
-  Note that if <math|X<around|(|\<tau\>|)>> is <math|\<mu\>> of <math|X>,
-  then
+  jump at the point <math|\<omega\>=0>). Note that if
+  <math|X<around|(|\<tau\>|)>> is <math|\<mu\>> of <math|X>, then
 
   <\equation>
     B<around|(|\<tau\>|)>=b<around|(|\<tau\>|)>+m<rsup|2>
@@ -136,8 +146,11 @@
 
   <\equation>
     B<around|(|t|)>=<big|int><rsub|0><rsup|\<infty\>>cos
-    <around|(|\<omega\>*t|)>*g<around|(|\<omega\>|)>*d*\<omega\>,<space|1em>g<around|(|\<omega\>|)>=2*f<around|(|\<omega\>|)>
-    <around|(|2.71|)>
+    <around|(|\<omega\>*t|)>*g<around|(|\<omega\>|)>*d*\<omega\>
+  </equation>
+
+  <\equation>
+    g<around|(|\<omega\>|)>=2*f<around|(|\<omega\>|)> <around|(|2.71|)>
   </equation>
 
   It is clear that in this case <math|g<around|(|\<omega\>|)>=G<rprime|'><around|(|\<omega\>|)>>
@@ -344,8 +357,13 @@
   and (2.77), the discontinuity point of <math|F<rsub|j><around|(|\<omega\>|)>>
   corresponds to the discontinuity point of the random function
   <math|Z<around|(|\<omega\>|)>>, where changes jumpwise by a random variable
-  <math|X<rsub|k>>, such that <math|<around|\<langle\>|X<rsub|k><rsup|2>|\<rangle\>>=f<rsub|k>>
-  (here <math|f<rsub|k>> is the increment of the function
+  <math|X<rsub|k>>, such that
+
+  <\equation>
+    <around|\<langle\>|X<rsub|k><rsup|2>|\<rangle\>>=f<rsub|k>
+  </equation>
+
+  \ (here <math|f<rsub|k>> is the increment of the function
   <math|F<around|(|\<omega\>|)>>).
 
   <text-dots>end of page 108
