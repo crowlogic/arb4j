@@ -2,8 +2,11 @@ package arb.expressions.nodes.nary;
 
 import org.objectweb.asm.tree.analysis.AnalyzerException;
 
+import arb.Integer;
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.expressions.Context;
+import arb.functions.Function;
 import arb.functions.real.NullaryFunction;
 import arb.functions.real.RealNullaryFunction;
 import junit.framework.TestCase;
@@ -15,20 +18,72 @@ import junit.framework.TestCase;
 public class ProductTest extends
                          TestCase
 {
+  public static void testProductNumerator()
+
+  {
+    Integer p;
+    Integer q;
+    Real    α;
+    Real    β;
+    Context context = new Context(p = new Integer(3).setName("p"),
+                                  q = new Integer(1).setName("q"),
+                                  α = Real.newVector(p.getSignedValue()).setName("α"),
+                                  β = Real.newVector(q.getSignedValue()).setName("β"));
+
+    α.set(1.0, 2.0, 3.0);
+    β.set(4.0);
+
+    Function<Integer, Real> ratio = Function.express(Integer.class,
+                                                     Real.class,
+                                                     "F",
+                                                     "n➔∏α[k]₍ₙ₋₁₎{k=1…p}",
+                                                     context);
+    Function<Integer, Real> val   = ratio;
+    Integer                 in    = new Integer(2);
+    val.evaluate(in, 128, new Real());
+    System.out.format("numerator ratio(%s)=%s\n", in, val);
+  }
+  
+  public static void testRatioOfProducts()
+  {
+    Integer p;
+    Integer q;
+    Real    α;
+    Real    β;
+    Context context = new Context(p = new Integer(3).setName("p"),
+                                  q = new Integer(1).setName("q"),
+                                  α = Real.newVector(p.getSignedValue()).setName("α"),
+                                  β = Real.newVector(q.getSignedValue()).setName("β"));
+
+    α.set(1.0, 2.0, 3.0);
+    β.set(4.0);
+
+    Function<Integer, Real> ratio = Function.express(Integer.class,
+                                                     Real.class,
+                                                     "F",
+                                                     "n➔∏α[k]₍ₙ₋₁₎{k=1…p}/∏β[k]₍ₙ₋₁₎{k=1…q}",
+                                                     context);
+    Function<Integer, Real> val   = ratio;
+    Integer                 in    = new Integer(2);
+    val.evaluate(in, 128, new Real());
+    System.out.format("ratio(%s)=%s\n", in, val);
+  }
+
   public static void testOneTimesTwoTimesThreeEqualsSix() throws AnalyzerException
   {
     NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1…3}");
     assertEquals(6.0, prod.evaluate(null, 128, new Real()).doubleValue());
   }
-  
+
   public static void testOneTimesTwoTimesThreeTimesfourEqualsTwentyFour() throws AnalyzerException
   {
     NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1…4}");
     assertEquals(24.0, prod.evaluate(null, 128, new Real()).doubleValue());
   }
-  
+
   public static void testTwoTimesFourTimesSixEqualsFourtyEight() throws AnalyzerException
   {
     NullaryFunction<Real> prod = RealNullaryFunction.express("∏2*k{k=1…3}");
     assertEquals(48.0, prod.evaluate(null, 128, new Real()).doubleValue());
-  }}
+  }
+}

@@ -1,11 +1,27 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.addNullCheckForField;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.express;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getVariableSuffix;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadFunctionClass;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.F_SAME1;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +41,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.signature.SignatureWriter;
-import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceClassVisitor;
 
 import arb.ComplexPolynomial;
@@ -682,7 +697,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       // TODO: if stack debugging is enabled then use the StackTrackingTextifier
       // instead of the regular Textifier here
       classVisitor = new TraceClassVisitor(classVisitor,
-                                           new Textifier(),
+                                           new StackTrackingTextifier(),
                                            printWriter);
     }
 
@@ -1156,7 +1171,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return !literalConstants.isEmpty() | !intermediateVariables.isEmpty();
   }
 
-  private boolean needsInitializer()
+  /**
+   * TODO: initializer not being called
+   * 
+   * <a href="https://github.com/crowlogic/arb4j/issues/337"> Product: initializer
+   * not being called #337 </a>
+   * 
+   * @return true if the call to the generated initialize() method is needed to
+   *         propagate contextual variables referenced functions
+   * 
+   */
+  public boolean needsInitializer()
   {
     String onlyReferencedFunctionName = null;
 
@@ -1165,8 +1190,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       onlyReferencedFunctionName = referencedFunctions.entrySet().iterator().next().getKey();
     }
 
-    return (!referencedFunctions.isEmpty()
-                  && (functionName != null && !functionName.equals(onlyReferencedFunctionName))) || recursive;
+    boolean thisIsTheOnlySelfReference = functionName != null && !functionName.equals(onlyReferencedFunctionName);
+    return (!referencedFunctions.isEmpty() && thisIsTheOnlySelfReference) || recursive;
   }
 
   public String newIntermediateVariable(Class<?> type)
