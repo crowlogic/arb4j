@@ -19,6 +19,14 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Article       stochasticProcessesAsCurvesInHilbertSpace               = new Article("Stochastic processes as curves in Hilbert space",
+                                                                                                    "Harald Cramér",
+                                                                                                    "1964",
+                                                                                                    "Theory of Probability & Its Applications",
+                                                                                                    "9",
+                                                                                                    "169–179").setNumber("2")
+                                                                                                              .setPublisher("SIAM");
+
   public static Article       skewOrthogonalPolynomialsAndRandomMatrixTheory          = new Article("Generalized Christoffel-Darboux formula for skew-orthogonal polynomials and random matrix theory",
                                                                                                     "Saugata Ghosh",
                                                                                                     "2006",
