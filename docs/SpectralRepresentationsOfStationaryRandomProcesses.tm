@@ -118,15 +118,15 @@
   particular case of formula (2.52); it indicates that, subject to the
   condition (2.66) (or (2.68)),
 
-  <\equation*>
+  <\equation>
     F<around|(|\<omega\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>f<around|(|\<omega\><rprime|'>|)>*d*\<omega\><rprime|'><space|1em><around|(|2.69|)>
-  </equation*>
+  </equation>
 
   where
 
-  <\equation*>
+  <\equation>
     f<around|(|\<omega\>|)>=F<rprime|'><around|(|\<omega\>|)><space|1em><around|(|2.70|)>
-  </equation*>
+  </equation>
 
   so that <math|F<around|(|\<omega\>|)>> is a differentiable function. In the
   case of a real process <math|X<around|(|t|)>>, where the function
