@@ -1181,15 +1181,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public boolean needsInitializer()
   {
-    String onlyReferencedFunctionName = null;
+//    String onlyReferencedFunctionName = null;
+//
+//    if (referencedFunctions.size() == 1)
+//    {
+//      onlyReferencedFunctionName = referencedFunctions.entrySet().iterator().next().getKey();
+//    }
 
-    if (referencedFunctions.size() == 1)
-    {
-      onlyReferencedFunctionName = referencedFunctions.entrySet().iterator().next().getKey();
-    }
-
-    boolean thisIsTheOnlySelfReference = functionName != null && !functionName.equals(onlyReferencedFunctionName);
-    return (!referencedFunctions.isEmpty() && thisIsTheOnlySelfReference) || recursive;
+    //boolean thisIsTheOnlySelfReference = functionName != null && !functionName.equals(onlyReferencedFunctionName);
+    return (!referencedFunctions.isEmpty() ) || recursive;
   }
 
   public String newIntermediateVariable(Class<?> type)
