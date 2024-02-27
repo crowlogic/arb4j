@@ -155,7 +155,7 @@ public class Bibliography extends
   public static Book          psychologyOfMathematicalInvention                       = new Book("The Psychology of Invention in the Mathematical Field",
                                                                                                  "Jacques Hadamard",
                                                                                                  "1954").setSeries("Dover books on advanced mathematics")
-                                                                                                        .setEdition("enlarged, unaltered, and unabridged 1949 edition reprint")
+                                                                                                        .setEdition("enlarged, unaltered, and unabridged reprint of the 1949")
                                                                                                         .setPublisher("Dover publications, Inc.")
                                                                                                         .setAddress("180 Varick Street New York, N.Y. 10014");
 
