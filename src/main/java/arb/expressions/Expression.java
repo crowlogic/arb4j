@@ -805,20 +805,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
     mv.visitMethodInsn(INVOKESPECIAL, "java/lang/AssertionError", "<init>", "(Ljava/lang/Object;)V", false);
     mv.visitInsn(Opcodes.ATHROW);
     mv.visitLabel(alreadyInitializedLabel);
+    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+
   }
 
-  private void generateConditionalInitializater(MethodVisitor methodVisitor)
+  private void generateConditionalInitializater(MethodVisitor mv)
   {
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
+    mv.visitVarInsn(ALOAD, 0);
+    mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     Label alreadyInitialized = new Label();
-    methodVisitor.visitJumpInsn(Opcodes.IFNE, alreadyInitialized);
+    mv.visitJumpInsn(Opcodes.IFNE, alreadyInitialized);
 
-    methodVisitor.visitVarInsn(ALOAD, 0);
-    methodVisitor.visitMethodInsn(INVOKEVIRTUAL, className, nameOfInitializerFunction, "()V", false);
+    mv.visitVarInsn(ALOAD, 0);
+    mv.visitMethodInsn(INVOKEVIRTUAL, className, nameOfInitializerFunction, "()V", false);
 
-    methodVisitor.visitLabel(alreadyInitialized);
-    methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+    mv.visitLabel(alreadyInitialized);
+    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
   }
 
   public MethodVisitor generateInitializationCode(MethodVisitor mv)

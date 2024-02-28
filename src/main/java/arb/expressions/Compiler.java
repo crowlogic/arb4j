@@ -79,6 +79,7 @@ public class Compiler
     mv.visitInsn(Opcodes.ATHROW);
 
     mv.visitLabel(notNullLabel);
+    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 
   }
 
