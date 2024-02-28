@@ -293,25 +293,35 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         if (varName != null && !varName.equals(independentVariableNode.reference.name))
         {
-          throw new UnsupportedOperationException("no contextual variable for varName='" + varName
-                        + "' and independent variable reference =" + independentVariableNode
-                        + " where parentExpression=" + parentExpression);
+          if (parentExpression != null && varName.equals(parentExpression.independentVariableNode.reference.name))
+          {
+            assert true : "TODO: add check for null parent input here";
+          }
+          else
+          {
+            throw new UnsupportedOperationException("no contextual variable for varName='" + varName
+                          + "' and independent variable reference =" + independentVariableNode
+                          + " where parentExpression=" + parentExpression);
+          }
         }
         else
         {
           assert true : "TODO: add check for null input here";
         }
       }
-      fieldClass = field.getClass();
+      fieldClass = field != null ? field.getClass() : null;
     }
     else
     {
       fieldClass = context.functions.get(varName).type();
     }
 
-    String fieldDesc = fieldClass.descriptorString();
+    if (fieldClass != null)
+    {
+      String fieldDesc = fieldClass.descriptorString();
 
-    addNullCheckForField(mv, className, varName, fieldDesc);
+      addNullCheckForField(mv, className, varName, fieldDesc);
+    }
 
   }
 
