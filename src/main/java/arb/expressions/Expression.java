@@ -283,6 +283,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
+  /**
+   * TODO: add code to retrieve the input variable from this expresson, or its
+   * parent, or its parents parent, etc and validate it just like non-input
+   * variables (fields)
+   * 
+   * @param mv
+   * @param varName
+   * @param variable
+   */
   public void addCheckForNullField(MethodVisitor mv, String varName, boolean variable)
   {
     Class<?> fieldClass;
