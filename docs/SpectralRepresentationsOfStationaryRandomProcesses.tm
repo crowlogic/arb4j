@@ -268,26 +268,14 @@
   derivation of Khinchin's formula <math|<around|(|2.52|)>>:
 
   <\equation>
-    <around|\<langle\>|X*<around|(|t+\<tau\>|)>*X<around|(|t|)>|\<rangle\>>=<around*|\<langle\>|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t+\<tau\>|)>>*d*Z<around|(|\<omega\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<omega\><rprime|'>*t>*d*Z<around|(|\<omega\><rprime|'>|)>|\<rangle\>>
-  </equation>
-
-  <\equation>
-    =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t+\<tau\>|)>-i*\<omega\><rprime|'>*t>*<around|\<langle\>|d*Z<around|(|\<omega\>|)>*d*Z<around|(|\<omega\><rprime|'>|)>|\<rangle\>>
-  </equation>
-
-  <\equation>
-    =<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t+\<tau\>|)>-i*\<omega\><rprime|'>*t>*\<delta\>*<around|(|\<omega\>-\<omega\><rprime|'>|)>*d*F<around|(|\<omega\>|)>*d*\<omega\><rprime|'>
-  </equation>
-
-  <\equation>
-    =<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*\<tau\>>*d*F<around|(|\<omega\>|)>
+    <tabular|<tformat|<table|<row|<cell|<around|\<langle\>|X*<around|(|t+\<tau\>|)>*X<around|(|t|)>|\<rangle\>>>|<cell|=<around*|\<langle\>|<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t+\<tau\>|)>>*d*Z<around|(|\<omega\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|-i*\<omega\><rprime|'>*t>*d*Z<around|(|\<omega\><rprime|'>|)>|\<rangle\>>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t+\<tau\>|)>-i*\<omega\><rprime|'>*t>*<around|\<langle\>|d*Z<around|(|\<omega\>|)>*d*Z<around|(|\<omega\><rprime|'>|)>|\<rangle\>>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>><big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*<around|(|t+\<tau\>|)>-i*\<omega\><rprime|'>*t>*\<delta\>*<around|(|\<omega\>-\<omega\><rprime|'>|)>*d*F<around|(|\<omega\>|)>*d*\<omega\><rprime|'>>>|<row|<cell|>|<cell|=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\>*\<tau\>>*d*F<around|(|\<omega\>|)>>>>>>
   </equation>
 
   Quite similarly, the following more general result can be derived:
 
-  <\equation*>
+  <\equation>
     <big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|\<omega\>|)>*d*Z<around|(|\<omega\>|)>*<big|int><rsub|-\<infty\>><rsup|\<infty\>>h<around|(|\<omega\><rprime|'>|)>*d*Z<around|(|\<omega\><rprime|'>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>g<around|(|\<omega\>|)>*h<around|(|\<omega\><rprime|'>|)>*\<delta\>*<around|(|\<omega\>-\<omega\><rprime|'>|)>*d*F<around|(|\<omega\>|)>
-  </equation*>
+  </equation>
 
   where <math|g<around|(|\<omega\>|)>> and <math|h<around|(|\<omega\>|)>> are
   any two complex functions whose squared absolute values are integrable with
