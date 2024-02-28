@@ -285,9 +285,31 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void addCheckForNullField(MethodVisitor mv, String varName, boolean variable)
   {
-    Class<?> fieldClass = variable ? context.variables.map.get(varName).getClass() : context.functions.get(varName)
-                                                                                                      .type();
-    String   fieldDesc  = fieldClass.descriptorString();
+    Class<?> fieldClass;
+    if (variable)
+    {
+      Object field = context.variables.map.get(varName);
+      if (field == null)
+      {
+        if (varName != null && !varName.equals(independentVariableNode.reference.name))
+        {
+          throw new UnsupportedOperationException("no contextual variable for varName='" + varName
+                        + "' and independent variable reference =" + independentVariableNode
+                        + " where parentExpression=" + parentExpression);
+        }
+        else
+        {
+          assert true : "TODO: add check for null input here";
+        }
+      }
+      fieldClass = field.getClass();
+    }
+    else
+    {
+      fieldClass = context.functions.get(varName).type();
+    }
+
+    String fieldDesc = fieldClass.descriptorString();
 
     addNullCheckForField(mv, className, varName, fieldDesc);
 
@@ -1171,8 +1193,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 //      onlyReferencedFunctionName = referencedFunctions.entrySet().iterator().next().getKey();
 //    }
 
-    //boolean thisIsTheOnlySelfReference = functionName != null && !functionName.equals(onlyReferencedFunctionName);
-    return (!referencedFunctions.isEmpty() ) || recursive;
+    // boolean thisIsTheOnlySelfReference = functionName != null &&
+    // !functionName.equals(onlyReferencedFunctionName);
+    // return (!referencedFunctions.isEmpty() ) || recursive;
+    return true;
   }
 
   public String newIntermediateVariable(Class<?> type)
