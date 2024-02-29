@@ -18,6 +18,8 @@ public interface IntegerSequence extends
     return instantiate(expression, null, Integer.class, Integer.class, IntegerSequence.class, null);
   }
 
+  public static IntegerSequence V0                                    = express("(exp(π*n*I)-1)/(n+2)");
+
   /**
    * <a href="https://oeis.org/A060632">A060632</a> a(n) = 2^wt(floor(n/2)) (i.e.,
    * 2^A000120(floor(n/2)), or A001316(floor(n/2))).<br>
