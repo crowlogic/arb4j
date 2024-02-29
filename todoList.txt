@@ -1,1 +1,2 @@
 Create SymmetricGroupOddConjugacyClassCounts class extending IntegerSequence #331
+fix recursive stack issue, either an element should be popped off the stack and it hasnt been or the stackmap should be updated to reflect the recursion.. i think the latter is the correct fix #338
