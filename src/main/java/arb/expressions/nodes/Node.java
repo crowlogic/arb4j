@@ -1,8 +1,6 @@
 package arb.expressions.nodes;
 
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 
 import arb.Complex;
@@ -28,13 +26,6 @@ import arb.functions.Function;
 public abstract class Node<D, R, F extends Function<D, R>> implements
                           Typesettable
 {
-
-  public void addTypeToStackMapFrame(MethodVisitor mv, Class<?> class1)
-  {
-    System.out.println( "Adding " + class1 + " to StackMap");
-    mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
-    { Type.getInternalName(class1) });
-  }
 
   public Expression<D, R, F> expression;
 

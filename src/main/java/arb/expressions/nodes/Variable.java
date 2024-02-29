@@ -216,7 +216,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
                          format("()%s", expression.rangeType.descriptorString()),
                          false);
 
-      addTypeToStackMapFrame(mv, expression.rangeType);
+      Compiler.addTypeToStackMapFrame(mv, expression.rangeType);
     }
     else
     {
