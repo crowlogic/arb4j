@@ -19,6 +19,8 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book          lecturesOnDifferentialAndIntegralEquations              = new Book("Lectures on Differential and Integral Equations","吉田 耕作(Kōsaku Yosida)","1960").setSeries("Pure and Applied Mathematics").setVolume("X").setPublisher("Interscience Publishers, a division of John Wiley & Sons Inc.)").setAddress("New York/London/Sydney");
+
   public static Article       isotropyPrevalenceInSpatialStatistics                   = new Article("Why is isotropy so prevalent in spatial statistics?",
                                                                                                     "Chunsheng Ma",
                                                                                                     "2007",

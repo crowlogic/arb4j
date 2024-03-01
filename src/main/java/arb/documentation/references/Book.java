@@ -15,10 +15,10 @@ public record Book(String title,
                   Reference
 {
 
-  public Book(String author, String title, String year)
+  public Book(String title, String author, String year)
   {
-    this(author,
-         title,
+    this(title,
+         author,
          year,
          new AtomicReference<>(),
          new AtomicReference<>(),
