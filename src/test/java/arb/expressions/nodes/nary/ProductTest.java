@@ -18,6 +18,27 @@ import junit.framework.TestCase;
 public class ProductTest extends
                          TestCase
 {
+  
+  @SuppressWarnings("resource")
+  public static void testFunctionOfProductOfPochhammerSymbols()
+  {
+    Integer p;
+    Real    α;
+    Context context = new Context(p = new Integer(4).setName("p"),
+                                  α = Real.newVector(p.getSignedValue()).setName("α"));
+
+    α.set(1.0, 2.0, 3.0, 4.0);
+
+    Function<Integer, Real> numer = Function.express(Integer.class, Real.class, "F", "n➔Z(∏α[k]₍ₙ₋₁₎{k=1…p})", context);
+
+    Integer                 in    = new Integer(2);
+    Real                    val   = numer.evaluate(in, 128, new Real());
+    assertEquals(24.0, val.doubleValue());
+    numer.evaluate(in.set(3), 128, val);
+    assertEquals(2880.0, val.doubleValue());
+  }
+
+  
   /**
    * In the theory of special functions (in particular the hypergeometric
    * function) and in the standard reference work Abramowitz and Stegun, the
