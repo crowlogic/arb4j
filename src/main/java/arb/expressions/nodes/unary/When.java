@@ -3,7 +3,8 @@ package arb.expressions.nodes.unary;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.loadInputParameter;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.F_SAME;
+import static org.objectweb.asm.Opcodes.GOTO;
 
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -155,8 +156,8 @@ public class When<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    assert expression.domainType.equals(Integer.class) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
-                                                                       expression.domainType);
+    assert expression.rangeType.equals(resultType) : String.format("expression.domain = %s != Integer, the only type supported presently\n",
+                                                                   expression.domainType);
     try
     {
       mv.visitCode();

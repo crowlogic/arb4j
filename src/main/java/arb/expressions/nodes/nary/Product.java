@@ -205,13 +205,13 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     jumpToIfLessThanOrEquals(mv, beginningOfTheLoop);
 
-    assignResult(mv);
+    assignResult(mv, resultType );
 
     return mv;
 
   }
 
-  private void assignResult(MethodVisitor mv)
+  private void assignResult(MethodVisitor mv, Class<?> resultType)
   {
     if (isResult)
     {
@@ -220,6 +220,10 @@ public class Product<D, R, F extends Function<D, R>> extends
       Compiler.checkClassCast(mv, type);
       loadResultingProductVariable(mv);
       invokeSetMethod(mv, type, type);
+    }
+    else
+    {
+      loadResultingProductVariable(mv);
     }
   }
 
