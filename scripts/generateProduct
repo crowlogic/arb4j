@@ -1,9 +1,0 @@
-import arb.GeneratedProductClass;
-var f = new GeneratedProductClass();
-f.factor=Function.express(Integer.class,Real.class,"n+1");
-f.startIndex=new Integer(1);
-f.endIndex=new Integer(4);
-f.index=new Integer();
-var prod = f.evaluate(128, new Real());
-System.out.println("prod(n,n=1..4)=" + prod );
-
