@@ -2,18 +2,18 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.*;
+import static java.lang.System.out;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -85,12 +85,15 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
 
-
+    if (expression.verbose)
+    {
+      System.out.format("", null);
+    }
     if (functionName.equals(expression.functionName))
     {
       contextual           = true;
       mapping              = new FunctionMapping<>();
-      targetResultType     = expression.rangeType;
+      targetResultType     = resultType;
       mapping.range        = targetResultType;
       mapping.domain       = getDomainType();
       mapping.name         = functionName;
@@ -147,12 +150,17 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {
-    Class<?>              type        = type();
+   
+    Class<?> type                      = type();
+    boolean  needsResultTypeConversion = !resultType.equals(type);
+    assert !needsResultTypeConversion : String.format("needs result type conversion: resultType=%s != type=%s\n",
+                                                      resultType,
+                                                      type);
     FunctionMapping<D, R> mapping     = expression.context.functions.get(functionName);
     F                     func        = (F) mapping.func;
     boolean               isRecursive = isRecursive();
 
-   // mv.visitFrame(F_SAME, 0, null, 0, null);
+    // mv.visitFrame(F_SAME, 0, null, 0, null);
 
     if (func == null && mapping.functionInterface == null)
     {
@@ -191,6 +199,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (needsArgTypeConversion)
     {
+      System.out.println("About to jump the shark");
       invokeSetMethod(mv, arg.type(), mapping.domain);
     }
 
@@ -199,7 +208,16 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     loadOutputVariableOntoStack(mv, expression, type);
 
-    return expression.callContextualUnaryFunction(mv, mapping, type);
+    if (expression.verbose)
+    {
+      out.format("callContextualUnaryFUnction( mapping=%s type=%s\n", mapping, type);
+    }
+    expression.callContextualUnaryFunction(mv, mapping, type);
+//    if ( isRecursive )
+//    {
+//      assert false : "damn";
+//    }
+    return mv;
   }
 
   private boolean isRecursive()

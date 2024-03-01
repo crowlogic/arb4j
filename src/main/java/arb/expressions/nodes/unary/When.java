@@ -184,7 +184,7 @@ public class When<D, R, F extends Function<D, R>> extends
         mv.visitLabel(labels[i]);
         mv.visitFrame(F_SAME, 0, null, 0, null);
 
-        branches.get(i).generate(mv, expression.rangeType);
+        branches.get(i).generate(mv, resultType);
         mv.visitJumpInsn(GOTO, endSwitch);
       }
 
@@ -194,7 +194,7 @@ public class When<D, R, F extends Function<D, R>> extends
       super.generate(mv, resultType);
       mv.visitLabel(endSwitch);
       mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
-      { Type.getInternalName(expression.rangeType) });
+      { Type.getInternalName(resultType) });
     }
     finally
     {

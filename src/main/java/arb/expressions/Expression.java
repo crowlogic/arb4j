@@ -471,7 +471,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public PrintWriter         printWriter;
 
-  public boolean             verbose       = false;
+  public boolean             verbose       = true;
 
   public Expression<?, ?, ?> parentExpression;
 
@@ -700,6 +700,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return multiplyAndDivide(node);
   }
 
+  public static boolean trace = false;
+  
   /**
    * Generate the implementation of the function after this{@link #parse()} has
    * been invoked
@@ -715,7 +717,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     printWriter = new PrintWriter(System.out,
                                   false);
 
-    if (verbose)
+    if (trace)
     {
       System.out.println("Generating " + rootNode);
 
