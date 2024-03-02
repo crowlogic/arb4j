@@ -1,6 +1,10 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -86,9 +90,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (expression.traceGenerator)
     {
-      System.out.format("FunctionCall: this=%s resultType=%s\n", this, resultType);
+      System.out.format("FunctionCall.generate: this=%s resultType=%s\n", this, resultType);
     }
-    
+
     if (functionName.equals(expression.functionName))
     {
       contextual           = true;
@@ -103,12 +107,20 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (contextual)
     {
-      return generateContextualFunctionCall(mv, resultType);
+      generateContextualFunctionCall(mv, resultType);
     }
     else
     {
-      return generateBuiltinFunctionCall(mv, resultType);
+      generateBuiltinFunctionCall(mv, resultType);
     }
+
+    boolean needsResultTypeConversion = !resultType.equals(targetResultType);
+    assert !needsResultTypeConversion : String.format("needs result type conversion: resultType=%s != targetResultType=%s, this=%s\n",
+                                                      resultType,
+                                                      targetResultType,
+                                                      this);
+
+    return mv;
   }
 
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
@@ -151,14 +163,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {
 
-    Class<?> type                      = type();
-    boolean  needsResultTypeConversion = !resultType.equals(type);
-    assert !needsResultTypeConversion : String.format("needs result type conversion: resultType=%s != type=%s\n",
-                                                      resultType,
-                                                      type);
-    FunctionMapping<D, R> mapping     = expression.context.functions.get(functionName);
-    F                     func        = (F) mapping.func;
-    boolean               isRecursive = isRecursive();
+    Class<?>              outputType = type();
+
+    FunctionMapping<D, R> mapping    = expression.context.functions.get(functionName);
+    F                     func       = (F) mapping.func;
 
     // mv.visitFrame(F_SAME, 0, null, 0, null);
 
@@ -205,13 +213,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     loadOrderParameter(mv);
     loadBitsParameter(mv);
 
-    loadOutputVariableOntoStack(mv, expression, type);
+    loadOutputVariableOntoStack(mv, expression, outputType);
 
     if (expression.verbose)
     {
-      out.format("callContextualUnaryFUnction( mapping=%s type=%s\n", mapping, type);
+      out.format("callContextualUnaryFUnction( mapping=%s type=%s\n", mapping, outputType);
     }
-    expression.callContextualUnaryFunction(mv, mapping, type);
+    expression.callContextualUnaryFunction(mv, mapping, outputType);
 //    if ( isRecursive )
 //    {
 //      assert false : "damn";
