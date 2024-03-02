@@ -473,7 +473,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean             verbose        = false;
 
-  public boolean             traceGenerator = true;
+  public boolean             traceGenerator = false;
 
   public Expression<?, ?, ?> parentExpression;
 
@@ -980,6 +980,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
       addChecksForNullVariableReferences(mv, false, false);
     }
 
+    if ( traceGenerator )
+    {
+      System.out.println( "Generating " + expression );
+    }
     rootNode.generate(mv, rangeType);
 
     mv.visitInsn(Opcodes.ARETURN);

@@ -23,7 +23,7 @@ public class VariableReference<D, R, F extends Function<D, R>>
   @Override
   public String toString()
   {
-    return index != null ? String.format("%s[%s]", name, index) : name;
+    return index != null ? String.format("%s[%s]", name, index.typeset()) : name;
 
   }
 

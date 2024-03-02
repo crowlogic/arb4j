@@ -13,7 +13,6 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
-import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -85,10 +84,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
 
-    if (expression.verbose)
+    if (expression.traceGenerator)
     {
-      System.out.format("", null);
+      System.out.format("FunctionCall: this=%s resultType=%s\n", this, resultType);
     }
+    
     if (functionName.equals(expression.functionName))
     {
       contextual           = true;
@@ -121,7 +121,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       loadResultParameter(methodVisitor);
     }
 
-    arg.generate(methodVisitor, expression.domainType);
+    arg.generate(methodVisitor, expression.rangeType);
     loadBitsParameter(methodVisitor);
 
     loadOutputVariableOntoStack(methodVisitor, expression, resultType);
@@ -150,7 +150,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {
-   
+
     Class<?> type                      = type();
     boolean  needsResultTypeConversion = !resultType.equals(type);
     assert !needsResultTypeConversion : String.format("needs result type conversion: resultType=%s != type=%s\n",
@@ -199,7 +199,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (needsArgTypeConversion)
     {
-      System.out.println("About to jump the shark");
       invokeSetMethod(mv, arg.type(), mapping.domain);
     }
 

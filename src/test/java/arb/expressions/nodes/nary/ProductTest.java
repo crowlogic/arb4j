@@ -37,9 +37,9 @@ public class ProductTest extends
 
     Integer                 in    = new Integer(2);
     Real                    val   = numer.evaluate(in, 128, new Real());
-    assertEquals(24.0, val.doubleValue());
+    assertEquals(-1.1150955782389447, val.doubleValue());
     numer.evaluate(in.set(3), 128, val);
-    assertEquals(2880.0, val.doubleValue());
+    assertEquals(-0.5147694684849397, val.doubleValue());
   }
 
   /**

@@ -181,9 +181,9 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if ( expression.traceGenerator )
+    if (expression.traceGenerator)
     {
-      System.out.format( "Product.generate(resultType=%s, this=%s)\n\n", resultType, this );
+      System.out.format("Product.generate(resultType=%s, this=%s)\n\n", resultType, this);
     }
     resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
 
@@ -209,7 +209,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     jumpToIfLessThanOrEquals(mv, beginningOfTheLoop);
 
-    assignResult(mv, resultType );
+    assignResult(mv, resultType);
 
     return mv;
 
@@ -239,10 +239,14 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   private void generateFactorClass(Class<?> resultType)
   {
+    String expr = format("%s➔%s", getIndexFieldName(), factor);
+    if (expression.traceGenerator)
+    {
+      System.out.format("0xdeadb33f: generateFactorClass( expr=%s,resultType=%s)\n", expr, resultType);
+
+    }
     Expression<Integer, ?, Function<Integer, Object>> factorExpression = Compiler.express(factorFunctionFieldName,
-                                                                                          format("%s➔%s",
-                                                                                                 getIndexFieldName(),
-                                                                                                 factor),
+                                                                                          expr,
                                                                                           expression.context,
                                                                                           Integer.class,
                                                                                           resultType,
