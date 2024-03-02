@@ -473,7 +473,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean             verbose        = false;
 
-  public boolean             traceGenerator = false;
+  public boolean             traceGenerator = true;
 
   public Expression<?, ?, ?> parentExpression;
 

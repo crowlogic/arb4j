@@ -19,8 +19,8 @@ public class F implements Function<Integer, RealPolynomial> {
    public Real productℝ1;
    public Integer endIndexℤ1;
    public RealPolynomial r̅3;
+   public RealPolynomial r̅4;
    public Integer ℤ2;
-   public Integer ℤ3;
    public Real valueℝ2;
    public Real productℝ2;
    public Integer endIndexℤ2;
@@ -47,7 +47,7 @@ public class F implements Function<Integer, RealPolynomial> {
             } while(k.increment().compareTo(endIndexℤ1) <= 0);
 
             var5 = var5.mul(productℝ1, bits, r̅3);
-            Integer var10001 = result.set(in.sub(c2, bits, ℤ2).factorial(bits, ℤ3));
+            Integer var10001 = result.set(in.sub(c2, bits, r̅4).factorial(bits, ℤ2));
             factorℝ2.n = in;
             productℝ2.multiplicativeIdentity();
             k.set(c2);
@@ -73,8 +73,8 @@ public class F implements Function<Integer, RealPolynomial> {
       productℝ1 = new Real();
       endIndexℤ1 = new Integer();
       r̅3 = new RealPolynomial();
+      r̅4 = new RealPolynomial();
       ℤ2 = new Integer();
-      ℤ3 = new Integer();
       valueℝ2 = new Real();
       productℝ2 = new Real();
       endIndexℤ2 = new Integer();
@@ -117,8 +117,8 @@ public class F implements Function<Integer, RealPolynomial> {
       productℝ1.close();
       endIndexℤ1.close();
       r̅3.close();
+      r̅4.close();
       ℤ2.close();
-      ℤ3.close();
       valueℝ2.close();
       productℝ2.close();
       endIndexℤ2.close();

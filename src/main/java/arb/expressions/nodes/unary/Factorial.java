@@ -15,6 +15,12 @@ public class Factorial<D, R, F extends Function<D, R>> extends
 {
 
   @Override
+  public String typeset()
+  {
+    return String.format( "(%s)!", arg.typeset() );
+  }
+
+  @Override
   public Class<?> type()
   {
     return arb.Integer.class;
