@@ -1,6 +1,9 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
+import static arb.expressions.Compiler.prepareStackForReusingRightSide;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
@@ -101,6 +104,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    if (expression.traceGenerator)
+    {
+      System.out.format("BinaryOperation.generate( this=%s, resultType=%s )\n\n", this, resultType);
+    }
     generatedType = resultType;
 
     left.generate(mv, left.type());

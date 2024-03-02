@@ -466,12 +466,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
                             null);
   }
 
-  public static boolean      computeFrames = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
-                                                                                "true"));
+  public static boolean      computeFrames  = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
+                                                                                 "true"));
 
   public PrintWriter         printWriter;
 
-  public boolean             verbose       = true;
+  public boolean             verbose        = false;
+
+  public boolean             traceGenerator = true;
 
   public Expression<?, ?, ?> parentExpression;
 
@@ -701,7 +703,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   public static boolean trace = false;
-  
+
   /**
    * Generate the implementation of the function after this{@link #parse()} has
    * been invoked
@@ -953,11 +955,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (verbose)
     {
-      mv = new StackAnalyzingMethodVisitor(className,
-                                           Opcodes.F_NEW,
-                                           "evaluate",
-                                           evaluationMethodDescriptor,
-                                           mv);
+      mv = new StackTrackingMethodVisitor(className,
+                                          Opcodes.F_NEW,
+                                          "evaluate",
+                                          evaluationMethodDescriptor,
+                                          mv);
     }
 
     mv.visitCode();

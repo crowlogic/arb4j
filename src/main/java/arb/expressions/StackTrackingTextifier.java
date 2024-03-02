@@ -25,7 +25,7 @@ import arb.documentation.TheArb4jLibrary;
 
 /**
  * Like {@link StackTrackingTextifier} but also includes stack information from
- * the {@link StackAnalyzingMethodVisitor} which is a version of the
+ * the {@link StackTrackingMethodVisitor} which is a version of the
  * {@link AnalyzerAdapter} that doesn't require the expanded frames option
  * (which apparently degrades performance)
  * 
@@ -1821,7 +1821,7 @@ public class StackTrackingTextifier extends
     }
   }
 
-  StackAnalyzingMethodVisitor analyzer;
+  StackTrackingMethodVisitor analyzer;
 
   private List<Object> getStack()
   {

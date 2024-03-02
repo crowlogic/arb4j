@@ -7,11 +7,11 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.AnalyzerAdapter;
 
-public class StackAnalyzingMethodVisitor extends
+public class StackTrackingMethodVisitor extends
                                          AnalyzerAdapter
 {
 
-  public StackAnalyzingMethodVisitor(String owner, int access, String name, String desc, MethodVisitor mv)
+  public StackTrackingMethodVisitor(String owner, int access, String name, String desc, MethodVisitor mv)
   {
     super(Opcodes.ASM9,
           owner,

@@ -6,7 +6,10 @@ import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -22,6 +25,7 @@ import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
+import arb.expressions.StackTrackingMethodVisitor;
 import arb.expressions.VariableReference;
 import arb.expressions.Variables;
 import arb.functions.Function;
@@ -151,6 +155,19 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return Objects.equals(reference, other.reference);
   }
 
+  public static String printStack(MethodVisitor mv)
+  {
+    if (!(mv instanceof StackTrackingMethodVisitor))
+    {
+      return "";
+    }
+    else
+    {
+      Stream<List<Object>> stream = Stream.of(((StackTrackingMethodVisitor) mv).stack);
+      return stream.collect(Collectors.toList()).toString();
+    }
+  }
+
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
@@ -203,7 +220,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if (isIndependent)
     {
       Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
-     // addTypeToStackMapFrame(mv, expression.domainType);
+      // addTypeToStackMapFrame(mv, expression.domainType);
 
     }
     else if (isIndeterminant)
@@ -223,7 +240,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
       // assert !isIndependentVariableOfParentExpression : "handle
       // isIndependentVariableOfParentExpression: " + reference;
       expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type().descriptorString());
-     // addTypeToStackMapFrame(mv, reference.type());
+      // addTypeToStackMapFrame(mv, reference.type());
 
     }
   }

@@ -181,6 +181,10 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    if ( expression.traceGenerator )
+    {
+      System.out.format( "Product.generate(resultType=%s, this=%s)\n\n", resultType, this );
+    }
     resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
 
     assignFieldNames(resultType);

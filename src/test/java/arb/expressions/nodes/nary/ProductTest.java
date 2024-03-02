@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 public class ProductTest extends
                          TestCase
 {
-  
+
   @SuppressWarnings("resource")
   public static void testFunctionOfProductOfPochhammerSymbols()
   {
@@ -29,7 +29,11 @@ public class ProductTest extends
 
     α.set(1.0, 2.0, 3.0, 4.0);
 
-    Function<Integer, Real> numer = Function.express(Integer.class, Real.class, "F", "n➔Z(∏α[k]₍ₙ₋₁₎{k=1…p})", context);
+    Function<Integer, Real> numer = Function.express(Integer.class,
+                                                     Real.class,
+                                                     "F",
+                                                     "n➔Z(∏α[k]₍ₙ₋₁₎{k=1…p})",
+                                                     context);
 
     Integer                 in    = new Integer(2);
     Real                    val   = numer.evaluate(in, 128, new Real());
@@ -38,7 +42,6 @@ public class ProductTest extends
     assertEquals(2880.0, val.doubleValue());
   }
 
-  
   /**
    * In the theory of special functions (in particular the hypergeometric
    * function) and in the standard reference work Abramowitz and Stegun, the
@@ -82,10 +85,9 @@ public class ProductTest extends
                                                      "F",
                                                      "n➔∏α[k]₍ₙ₋₁₎{k=1…p}/∏β[k]₍ₙ₋₁₎{k=1…q}",
                                                      context);
-    Function<Integer, Real> val   = ratio;
     Integer                 in    = new Integer(2);
-    val.evaluate(in, 128, new Real());
-    System.out.format("ratio(%s)=%s\n", in, val);
+    Real                    val   = ratio.evaluate(in, 128, new Real());
+    assertEquals(1.5, val.doubleValue());
   }
 
   public static void testOneTimesTwoTimesThreeEqualsSix() throws AnalyzerException
