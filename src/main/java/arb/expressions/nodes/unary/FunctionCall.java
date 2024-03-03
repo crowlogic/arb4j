@@ -138,9 +138,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                   false);
     if (needsResultTypeConversion)
     {
-      assert false : "todo: allocate intermeidate variable to facilitate type conversion";
+      expression.reserveIntermediateVariable(methodVisitor, targetResultType);
       checkClassCast(methodVisitor, targetResultType);
       invokeSetMethod(methodVisitor, resultType, targetResultType );
+      assert false : "insert visitFrame here";
     }
     return methodVisitor;
   }

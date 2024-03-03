@@ -21,6 +21,7 @@ public class F implements Function<Integer, RealPolynomial> {
    public RealPolynomial r̅3;
    public RealPolynomial r̅4;
    public Integer ℤ2;
+   public RealPolynomial r̅5;
    public Real valueℝ2;
    public Real productℝ2;
    public Integer endIndexℤ2;
@@ -33,10 +34,14 @@ public class F implements Function<Integer, RealPolynomial> {
       if (!isInitialized) {
          initialize();
       }
-      return switch(in.getSignedValue()) {
-         case 0 -> result.set(c2);
-         default -> {
-            RealPolynomial var5 = result.identity().mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2);
+
+      RealPolynomial var10000;
+      switch(in.getSignedValue()) {
+         case 0:
+            var10000 = result.set(c2);
+            break;
+         default:
+            var10000 = result.identity().mul(F.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅1), bits, r̅2);
             factorℝ1.n = in;
             productℝ1.multiplicativeIdentity();
             k.set(c2);
@@ -46,8 +51,8 @@ public class F implements Function<Integer, RealPolynomial> {
                productℝ1.mul(factorℝ1.evaluate(k, bits, valueℝ1), bits);
             } while(k.increment().compareTo(endIndexℤ1) <= 0);
 
-            var5 = var5.mul(productℝ1, bits, r̅3);
-            RealPolynomial var10001 = result.set(in.sub(c2, bits, r̅4).factorial(bits, ℤ2));
+            var10000 = var10000.mul(productℝ1, bits, r̅3);
+            RealPolynomial var10002 = in.sub(c2, bits, r̅4).factorial(bits, ℤ2).set(r̅5);
             factorℝ2.n = in;
             productℝ2.multiplicativeIdentity();
             k.set(c2);
@@ -57,9 +62,10 @@ public class F implements Function<Integer, RealPolynomial> {
                productℝ2.mul(factorℝ2.evaluate(k, bits, valueℝ2), bits);
             } while(k.increment().compareTo(endIndexℤ2) <= 0);
 
-            yield var5.div(var10001.mul(productℝ2, bits, ℝ1), bits, result);
-         }
-      };
+            result.div(var10002.mul(productℝ2, bits, ℝ1), bits, result);
+      }
+
+      return var10000;
    }
 
    public F() {
@@ -75,6 +81,7 @@ public class F implements Function<Integer, RealPolynomial> {
       r̅3 = new RealPolynomial();
       r̅4 = new RealPolynomial();
       ℤ2 = new Integer();
+      r̅5 = new RealPolynomial();
       valueℝ2 = new Real();
       productℝ2 = new Real();
       endIndexℤ2 = new Integer();
@@ -119,6 +126,7 @@ public class F implements Function<Integer, RealPolynomial> {
       r̅3.close();
       r̅4.close();
       ℤ2.close();
+      r̅5.close();
       valueℝ2.close();
       productℝ2.close();
       endIndexℤ2.close();
