@@ -1,0 +1,221 @@
+  // access flags 0x1
+  public evaluate(Larb/Integer;IILarb/RealPolynomial;)Larb/RealPolynomial;
+   L0
+    LINENUMBER 65 L0
+    ALOAD 0
+    GETFIELD arb/functions/real/F.isInitialized : Z
+    IFNE L1
+   L2
+    LINENUMBER 67 L2
+    ALOAD 0
+    INVOKEVIRTUAL arb/functions/real/F.initialize ()V
+   L1
+    LINENUMBER 71 L1
+   FRAME SAME
+    ALOAD 1
+    INVOKEVIRTUAL arb/Integer.getSignedValue ()I
+    TABLESWITCH
+      0: L3
+      default: L4
+   L3
+    LINENUMBER 74 L3
+   FRAME SAME
+    ALOAD 4
+    ALOAD 0
+    GETFIELD arb/functions/real/F.c2 : Larb/Integer;
+    INVOKEVIRTUAL arb/RealPolynomial.set (Larb/Integer;)Larb/RealPolynomial;
+    ASTORE 5
+   L5
+    LINENUMBER 75 L5
+    GOTO L6
+   L4
+    LINENUMBER 77 L4
+   FRAME SAME
+    ALOAD 4
+    INVOKEVIRTUAL arb/RealPolynomial.identity ()Larb/RealPolynomial;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.F : Larb/functions/real/F;
+    ALOAD 1
+    ALOAD 0
+    GETFIELD arb/functions/real/F.c2 : Larb/Integer;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℤ1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.sub (Larb/Integer;ILarb/Integer;)Larb/Integer;
+    ILOAD 2
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.r̅1 : Larb/RealPolynomial;
+    INVOKEVIRTUAL arb/functions/real/F.evaluate (Larb/Integer;IILarb/RealPolynomial;)Larb/RealPolynomial;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.r̅2 : Larb/RealPolynomial;
+    INVOKEVIRTUAL arb/RealPolynomial.mul (Larb/RealPolynomial;ILarb/RealPolynomial;)Larb/RealPolynomial;
+    ASTORE 5
+   L7
+    LINENUMBER 78 L7
+    ALOAD 0
+    GETFIELD arb/functions/real/F.factorℝ1 : Larb/functions/real/factorℝ1;
+    ALOAD 1
+    PUTFIELD arb/functions/real/factorℝ1.n : Larb/Integer;
+   L8
+    LINENUMBER 79 L8
+    ALOAD 0
+    GETFIELD arb/functions/real/F.productℝ1 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.multiplicativeIdentity ()Larb/Real;
+    POP
+   L9
+    LINENUMBER 80 L9
+    ALOAD 0
+    GETFIELD arb/functions/real/F.k : Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.c2 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+   L10
+    LINENUMBER 81 L10
+    ALOAD 0
+    GETFIELD arb/functions/real/F.endIndexℤ1 : Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.p : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+   L11
+    LINENUMBER 85 L11
+   FRAME APPEND [arb/RealPolynomial]
+    ALOAD 0
+    GETFIELD arb/functions/real/F.productℝ1 : Larb/Real;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.factorℝ1 : Larb/functions/real/factorℝ1;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.k : Larb/Integer;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.valueℝ1 : Larb/Real;
+    INVOKEVIRTUAL arb/functions/real/factorℝ1.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;
+    CHECKCAST arb/Real
+    ILOAD 3
+    INVOKEVIRTUAL arb/Real.mul (Larb/Real;I)Larb/Real;
+    POP
+   L12
+    LINENUMBER 87 L12
+    ALOAD 0
+    GETFIELD arb/functions/real/F.k : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.increment ()Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.endIndexℤ1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.compareTo (Larb/Integer;)I
+   L13
+    LINENUMBER 83 L13
+    IFLE L11
+   L14
+    LINENUMBER 89 L14
+    ALOAD 5
+    ALOAD 0
+    GETFIELD arb/functions/real/F.productℝ1 : Larb/Real;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.r̅3 : Larb/RealPolynomial;
+    INVOKEVIRTUAL arb/RealPolynomial.mul (Larb/Real;ILarb/RealPolynomial;)Larb/RealPolynomial;
+    ASTORE 5
+   L15
+    LINENUMBER 90 L15
+    ALOAD 1
+    ALOAD 0
+    GETFIELD arb/functions/real/F.c2 : Larb/Integer;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℤ3 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.sub (Larb/Integer;ILarb/Integer;)Larb/Integer;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℤ2 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.factorial (ILarb/Integer;)Larb/Integer;
+    ASTORE 6
+   L16
+    LINENUMBER 91 L16
+    ALOAD 0
+    GETFIELD arb/functions/real/F.factorℝ2 : Larb/functions/real/factorℝ2;
+    ALOAD 1
+    PUTFIELD arb/functions/real/factorℝ2.n : Larb/Integer;
+   L17
+    LINENUMBER 92 L17
+    ALOAD 0
+    GETFIELD arb/functions/real/F.productℝ2 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.multiplicativeIdentity ()Larb/Real;
+    POP
+   L18
+    LINENUMBER 93 L18
+    ALOAD 0
+    GETFIELD arb/functions/real/F.k : Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.c2 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+   L19
+    LINENUMBER 94 L19
+    ALOAD 0
+    GETFIELD arb/functions/real/F.endIndexℤ2 : Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.q : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+   L20
+    LINENUMBER 98 L20
+   FRAME APPEND [arb/Integer]
+    ALOAD 0
+    GETFIELD arb/functions/real/F.productℝ2 : Larb/Real;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.factorℝ2 : Larb/functions/real/factorℝ2;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.k : Larb/Integer;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.valueℝ2 : Larb/Real;
+    INVOKEVIRTUAL arb/functions/real/factorℝ2.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;
+    CHECKCAST arb/Real
+    ILOAD 3
+    INVOKEVIRTUAL arb/Real.mul (Larb/Real;I)Larb/Real;
+    POP
+   L21
+    LINENUMBER 100 L21
+    ALOAD 0
+    GETFIELD arb/functions/real/F.k : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.increment ()Larb/Integer;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.endIndexℤ2 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.compareTo (Larb/Integer;)I
+   L22
+    LINENUMBER 96 L22
+    IFLE L20
+   L23
+    LINENUMBER 102 L23
+    ALOAD 4
+    ALOAD 6
+    ALOAD 0
+    GETFIELD arb/functions/real/F.productℝ2 : Larb/Real;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℝ1 : Larb/Real;
+    INVOKEVIRTUAL arb/Integer.mul (Larb/Real;ILarb/Real;)Larb/Real;
+    ILOAD 3
+    ALOAD 4
+    INVOKEVIRTUAL arb/RealPolynomial.div (Larb/Real;ILarb/RealPolynomial;)Larb/RealPolynomial;
+    POP
+   L6
+    LINENUMBER 105 L6
+   FRAME CHOP 1
+    ALOAD 5
+    ARETURN
+   L24
+    LOCALVARIABLE this Larb/functions/real/F; L0 L24 0
+    LOCALVARIABLE in Larb/Integer; L0 L24 1
+    LOCALVARIABLE order I L0 L24 2
+    LOCALVARIABLE bits I L0 L24 3
+    LOCALVARIABLE result Larb/RealPolynomial; L0 L24 4
+    LOCALVARIABLE var10000 Larb/RealPolynomial; L5 L4 5
+    LOCALVARIABLE var10000 Larb/RealPolynomial; L7 L24 5
+    LOCALVARIABLE var10002 Larb/Integer; L16 L6 6
+    MAXSTACK = 6
+    MAXLOCALS = 7
+
