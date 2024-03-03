@@ -141,7 +141,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       expression.reserveIntermediateVariable(methodVisitor, targetResultType);
       checkClassCast(methodVisitor, targetResultType);
       invokeSetMethod(methodVisitor, resultType, targetResultType );
-      assert false : "insert visitFrame here";
+     // assert false : "insert visitFrame here";
     }
     return methodVisitor;
   }

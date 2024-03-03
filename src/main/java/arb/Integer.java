@@ -18,9 +18,9 @@ import arb.documentation.TheArb4jLibrary;
  * this relies on the fact that {@link arblib#flint_malloc(long)} always
  * allocates memory blocks on a 4 or 8 byte boundary and <b>the second most
  * significant bit is reserved to indicate whether the fmpz_t value represents
- * an ordinary signed 64-bit integer or a pointer to an arbitrary precision integer</b>
- * therefore the maximum size integer that can be passed to ARB as a fmpz_t
- * without it being interpreted as a pointer is 2^62 - 1.
+ * an ordinary signed 64-bit integer or a pointer to an arbitrary precision
+ * integer</b> therefore the maximum size integer that can be passed to ARB as a
+ * fmpz_t without it being interpreted as a pointer is 2^62 - 1.
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -89,6 +89,12 @@ public class Integer implements
   public Real factorial(int bits, Real result)
   {
     arblib.arb_fac_ui(result, getUnsignedValue(), bits);
+    return result;
+  }
+
+  public Integer factorial(int bits, Integer result)
+  {
+    arblib.fmpz_fac_ui(result.swigCPtr, getUnsignedValue());
     return result;
   }
 
