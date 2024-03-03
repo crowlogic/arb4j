@@ -158,11 +158,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     FunctionMapping<D, R> mapping    = expression.context.functions.get(functionName);
     F                     func       = (F) mapping.func;
-    boolean needsResultTypeConversion = !resultType.equals(targetResultType);
-    assert !needsResultTypeConversion : String.format("needs result type conversion: resultType=%s != targetResultType=%s, this=%s\n",
-                                                      resultType,
-                                                      targetResultType,
-                                                      this);
+
     // mv.visitFrame(F_SAME, 0, null, 0, null);
 
     if (func == null && mapping.functionInterface == null)
