@@ -1,10 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
-import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -114,12 +110,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       generateBuiltinFunctionCall(mv, resultType);
     }
 
-    boolean needsResultTypeConversion = !resultType.equals(targetResultType);
-    assert !needsResultTypeConversion : String.format("needs result type conversion: resultType=%s != targetResultType=%s, this=%s\n",
-                                                      resultType,
-                                                      targetResultType,
-                                                      this);
-
     return mv;
   }
 
@@ -139,7 +129,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     loadOutputVariableOntoStack(methodVisitor, expression, resultType);
 
     Class<?> domainType = getDomainType();
-    Class<?> rangeType  = targetResultType;
+    Class<?> rangeType  = resultType;
 
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
@@ -148,8 +138,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                   false);
     if (needsResultTypeConversion)
     {
-      invokeSetMethod(methodVisitor, targetResultType, resultType);
-
+      assert false : "todo: allocate intermeidate variable to facilitate type conversion";
+      checkClassCast(methodVisitor, targetResultType);
+      invokeSetMethod(methodVisitor, resultType, targetResultType );
     }
     return methodVisitor;
   }
@@ -167,7 +158,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     FunctionMapping<D, R> mapping    = expression.context.functions.get(functionName);
     F                     func       = (F) mapping.func;
-
+    boolean needsResultTypeConversion = !resultType.equals(targetResultType);
+    assert !needsResultTypeConversion : String.format("needs result type conversion: resultType=%s != targetResultType=%s, this=%s\n",
+                                                      resultType,
+                                                      targetResultType,
+                                                      this);
     // mv.visitFrame(F_SAME, 0, null, 0, null);
 
     if (func == null && mapping.functionInterface == null)

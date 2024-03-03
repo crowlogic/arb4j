@@ -47,7 +47,7 @@ public class F implements Function<Integer, RealPolynomial> {
             } while(k.increment().compareTo(endIndexℤ1) <= 0);
 
             var5 = var5.mul(productℝ1, bits, r̅3);
-            Integer var10001 = result.set(in.sub(c2, bits, r̅4).factorial(bits, ℤ2));
+            RealPolynomial var10001 = result.set(in.sub(c2, bits, r̅4).factorial(bits, ℤ2));
             factorℝ2.n = in;
             productℝ2.multiplicativeIdentity();
             k.set(c2);
