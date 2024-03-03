@@ -81,7 +81,9 @@ public class F implements
       endIndexℤ1.set(p);
 
       do
-      {
+      { // need to generate methodVisitor.visitFrame(Opcodes.F_APPEND,1, new Object[]
+        // {"arb/RealPolynomial"}, 0, null);
+
         productℝ1.mul(factorℝ1.evaluate(k, bits, valueℝ1), bits);
       }
       while (k.increment().compareTo(endIndexℤ1) <= 0);
@@ -95,13 +97,16 @@ public class F implements
 
       do
       {
+        // need to generate methodVisitor.visitFrame(Opcodes.F_APPEND,1, new Object[]
+        // {"arb/RealPolynomial"}, 0, null);
+
         productℝ2.mul(factorℝ2.evaluate(k, bits, valueℝ2), bits);
       }
       while (k.increment().compareTo(endIndexℤ2) <= 0);
 
       result.div(var10002.mul(productℝ2, bits, ℝ1), bits, result);
     }
-
+    // methodVisitor.visitFrame(Opcodes.F_CHOP,1, null, 0, null);
     return var10000;
   }
 
