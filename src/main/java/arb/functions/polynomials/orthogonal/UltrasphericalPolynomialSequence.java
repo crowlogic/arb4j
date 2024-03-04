@@ -1,6 +1,10 @@
 package arb.functions.polynomials.orthogonal;
 
+import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
+import arb.expressions.Context;
+import arb.functions.Function;
 
 /**
  * The {@link UltrasphericalPolynomial}s are special-cases of the
@@ -16,9 +20,30 @@ import arb.Real;
  * 
  * @author ©2024 Stephen Crowley
  */
-public class UltrasphericalPolynomialSequence extends
-                                              JacobiPolynomialSequence
+public abstract class UltrasphericalPolynomialSequence implements
+                                                       OrthogonalPolynomialSequence
 {
+  @Override
+  public void close()
+  {
+    λ.close();
+  }
+
+  JacobiPolynomialSequence          P;
+
+  Real                              λ       = new Real();
+
+  Function<Integer, RealPolynomial> scaledJacobiPolynomial;
+
+  Context                           context = new Context(λ.setName("λ"));
+  {
+  }
+
+  @Override
+  public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
+  {
+    return scaledJacobiPolynomial.evaluate(t, order, bits, res);
+  }
 
   /**
    * 
@@ -27,8 +52,14 @@ public class UltrasphericalPolynomialSequence extends
    */
   public UltrasphericalPolynomialSequence(Real μ)
   {
-    super(μ,
-          μ);
+    P = new JacobiPolynomialSequence(λ,
+                                     λ);
+    this.λ.set(μ);
+    context.registerFunctionMapping("P", P.P, Integer.class, RealPolynomial.class);
+    scaledJacobiPolynomial = Function.express(Integer.class,
+                                              RealPolynomial.class,
+                                              "(λ*2.0)₍ₙ₎/(λ+½)₍ₙ₎",
+                                              context);
   }
 
 }

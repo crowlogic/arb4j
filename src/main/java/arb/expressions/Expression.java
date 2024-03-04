@@ -473,7 +473,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean             verbose        = false;
 
-  public boolean             traceGenerator = false;
+  public boolean             traceGenerator = true;
 
   public Expression<?, ?, ?> parentExpression;
 
@@ -1001,11 +1001,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   private void throwNewUnexpectedCharacterException()
   {
-    throw new ExpressionCompilerException(String.format("unexpected '%c' character at position=%s in expression '%s' of length %d\n",
+    throw new ExpressionCompilerException(String.format("unexpected '%c' character at position=%s in expression '%s' of length %d, remaining=%s\n",
                                                         character,
                                                         position,
                                                         expression,
-                                                        expression.length()));
+                                                        expression.length(), remaining()));
+                                        
   }
 
   public ClassVisitor generateInitializationMethod(ClassVisitor classVisitor)

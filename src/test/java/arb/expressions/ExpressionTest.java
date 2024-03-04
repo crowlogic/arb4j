@@ -19,6 +19,20 @@ public class ExpressionTest extends
                             TestCase
 {
 
+  
+ 
+
+  public static void testRatioOfRisingFactorials()
+  {
+    Real λ = new Real();
+    Context      context = new Context(λ.setName("λ"));
+    Function<Integer, Integer> f        = Function.express(Integer.class, Integer.class, "n➔(λ*2.0)₍ₙ₎/(λ+½)₍ₙ₎",context);
+    Integer                    in       = new Integer(3);
+    Integer                    evaluate = f.evaluate(in, 128, new Integer());
+    assertEquals(6, evaluate.getUnsignedValue());
+  }
+
+  
   public static void testProductViaFactorial()
   {
     Function<Integer, Integer> f        = Function.express(Integer.class, Integer.class, "n➔∏k{k=1…n}");

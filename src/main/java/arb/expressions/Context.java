@@ -5,7 +5,6 @@ import static java.lang.System.err;
 
 import java.util.Collection;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import arb.HasName;
@@ -178,5 +177,13 @@ public class Context
   {
     return variableEntryStream().map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
                                                                                 entry.getValue().getClass()));
+  }
+
+  public FunctionMapping<Object, Object> registerFunctionMapping(String functionName,
+                                      Function<?, ?> function,
+                                      Class<?> domainType,
+                                      Class<?> rangeType)
+  {
+    return registerFunctionMapping(functionName, function, domainType, rangeType, function.getClass());
   }
 }
