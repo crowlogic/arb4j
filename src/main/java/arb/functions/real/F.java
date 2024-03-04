@@ -18,8 +18,8 @@ public class F implements
       F.q = new Integer(1);
       F.α = Real.newVector(2);
       F.β = Real.newVector(1);
-      F.β.set(-0.5);
-      F.α.set(-3, 7.5);
+      F.β.set(0.5);
+      F.α.set(-3, 3);
       F.F = new F();
       F.initialize();
 

@@ -1,5 +1,3 @@
-package arb.functions.real;
-
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
@@ -21,7 +19,7 @@ public class F implements Function<Integer, RealPolynomial> {
    public Real productℝ1;
    public Integer endIndexℤ1;
    public RealPolynomial r̅3;
-   public Integer ℤ3;
+   public RealPolynomial r̅4;
    public Integer ℤ2;
    public RealPolynomial r̅5;
    public Real valueℝ2;
@@ -31,65 +29,6 @@ public class F implements Function<Integer, RealPolynomial> {
    public F F;
    public final factorℝ2 factorℝ2 = new factorℝ2();
    public final factorℝ1 factorℝ1 = new factorℝ1();
-
-   // $VF: Could not inline inconsistent finally blocks
-   // Please report this to the Vineflower issue tracker, at https://github.com/Vineflower/vineflower/issues with a copy of the class file (if you have the rights to distribute it!)
-   public static void main(String[] args) {
-      Throwable var1 = null;
-      Object var2 = null;
-
-      try {
-         F F = new F();
-
-         try {
-            F.p = new Integer(2);
-            F.q = new Integer(1);
-            F.α = Real.newVector(2);
-            F.β = Real.newVector(1);
-            F.β.set(-0.5);
-            F.α.set(new double[]{-3.0, 7.5});
-            F.F = new F();
-            F.initialize();
-            Throwable var4 = null;
-            Object var5 = null;
-
-            try {
-               Integer index = new Integer();
-
-               try {
-                  for(int n = 0; n < 10; ++n) {
-                     RealPolynomial fn = F.F.evaluate(index.set(n), 0, 128, new RealPolynomial());
-                     System.out.format("F(%d,x)=%s\n", n, fn);
-                  }
-               } finally {
-                  if (index != null) {
-                     index.close();
-                  }
-               }
-            } catch (Throwable var26) {
-               if (var4 == null) {
-                  var4 = var26;
-               } else if (var4 != var26) {
-                  var4.addSuppressed(var26);
-               }
-
-               throw var4;
-            }
-         } finally {
-            if (F != null) {
-               F.close();
-            }
-         }
-      } catch (Throwable var28) {
-         if (var1 == null) {
-            var1 = var28;
-         } else if (var1 != var28) {
-            var1.addSuppressed(var28);
-         }
-
-         throw var1;
-      }
-   }
 
    public RealPolynomial evaluate(Integer in, int order, int bits, RealPolynomial result) {
       if (!isInitialized) {
@@ -113,7 +52,7 @@ public class F implements Function<Integer, RealPolynomial> {
             } while(k.increment().compareTo(endIndexℤ1) <= 0);
 
             var10000 = var10000.mul(productℝ1, bits, r̅3);
-            Integer var10002 = in.sub(c2, bits, ℤ3).factorial(bits, ℤ2);
+            RealPolynomial var10002 = in.sub(c2, bits, r̅4).factorial(bits, ℤ2).set(r̅5);
             factorℝ2.n = in;
             productℝ2.multiplicativeIdentity();
             k.set(c2);
@@ -140,7 +79,7 @@ public class F implements Function<Integer, RealPolynomial> {
       productℝ1 = new Real();
       endIndexℤ1 = new Integer();
       r̅3 = new RealPolynomial();
-      ℤ3 = new Integer();
+      r̅4 = new RealPolynomial();
       ℤ2 = new Integer();
       r̅5 = new RealPolynomial();
       valueℝ2 = new Real();
@@ -185,15 +124,13 @@ public class F implements Function<Integer, RealPolynomial> {
       productℝ1.close();
       endIndexℤ1.close();
       r̅3.close();
-      ℤ3.close();
+      r̅4.close();
       ℤ2.close();
       r̅5.close();
       valueℝ2.close();
       productℝ2.close();
       endIndexℤ2.close();
       ℝ1.close();
-      if (F != null) {
-         F.close();
-      }
+      F.close();
    }
 }

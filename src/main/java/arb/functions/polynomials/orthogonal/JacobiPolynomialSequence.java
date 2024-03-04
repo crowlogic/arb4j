@@ -15,7 +15,6 @@ import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.expressions.Context;
 import arb.functions.Function;
-import arb.functions.real.HypergeometricPolynomialSequence;
 import arb.functions.real.NullaryFunction;
 import arb.functions.real.RealFunction;
 import arb.functions.real.RealNullaryFunction;
