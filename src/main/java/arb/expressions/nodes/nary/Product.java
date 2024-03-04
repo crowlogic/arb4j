@@ -147,11 +147,19 @@ public class Product<D, R, F extends Function<D, R>> extends
     return expression.expression.substring(startPos, expression.position).trim();
   }
 
-  private void designateLabel(MethodVisitor mv, Label label)
+  private void designateLabel(MethodVisitor mv, Label label, boolean appendRealToFrame)
   {
     mv.visitLabel(label);
-    mv.visitFrame(Opcodes.F_SAME, 0, null, 0, new Object[]
-    {});
+    if (!appendRealToFrame)
+    {
+      mv.visitFrame(Opcodes.F_SAME, 0, null, 0, new Object[]
+      {});
+    }
+    else
+    {
+      mv.visitFrame(Opcodes.F_SAME1, 0, null, 0, new Object[]
+      { Type.getInternalName(Real.class) });
+    }
   }
 
   private void evaluateFactor(MethodVisitor mv)
@@ -201,7 +209,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     generateEndingIndex(mv);
 
-    designateLabel(mv, beginningOfTheLoop);
+    designateLabel(mv, beginningOfTheLoop, expression.hasRealOnStack() );
 
     generateInnerLoop(mv);
 
