@@ -19,20 +19,21 @@ public class ExpressionTest extends
                             TestCase
 {
 
-  
- 
-
+  /**
+   * THe problem is that the resultType is not being checked in LiteralConstant,
+   * it should check it and cast if necessary.
+   * https://github.com/crowlogic/arb4j/issues/343
+   */
   public static void testRatioOfRisingFactorials()
   {
-    Real λ = new Real();
-    Context      context = new Context(λ.setName("λ"));
-    Function<Integer, Integer> f        = Function.express(Integer.class, Integer.class, "n➔(λ*2.0)₍ₙ₎/(λ+½)₍ₙ₎",context);
-    Integer                    in       = new Integer(3);
-    Integer                    evaluate = f.evaluate(in, 128, new Integer());
-    assertEquals(6, evaluate.getUnsignedValue());
+    Real                    λ        = new Real();
+    Context                 context  = new Context(λ.setName("λ"));
+    Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2.0)₍ₙ₎/(λ+½)₍ₙ₎", context);
+    Integer                 in       = new Integer(3);
+    Real                    evaluate = f.evaluate(in, 128, new Real());
+    System.out.println(evaluate);
   }
 
-  
   public static void testProductViaFactorial()
   {
     Function<Integer, Integer> f        = Function.express(Integer.class, Integer.class, "n➔∏k{k=1…n}");
@@ -40,7 +41,6 @@ public class ExpressionTest extends
     Integer                    evaluate = f.evaluate(in, 128, new Integer());
     assertEquals(6, evaluate.getUnsignedValue());
   }
-
 
   public static void testGammaReal()
   {
