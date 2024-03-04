@@ -26,12 +26,15 @@ public class ExpressionTest extends
    */
   public static void testRatioOfRisingFactorials()
   {
-    Real                    λ        = new Real();
-    Context                 context  = new Context(λ.setName("λ"));
-    Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2.0)₍ₙ₎/(λ+½)₍ₙ₎", context);
-    Integer                 in       = new Integer(3);
-    Real                    evaluate = f.evaluate(in, 128, new Real());
-    System.out.println(evaluate);
+    try ( Real λ = new Real())
+    {
+      λ.set(3);
+      Context                 context  = new Context(λ.setName("λ"));
+      Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2.0)₍ₙ₎/(λ+½)₍ₙ₎", context);
+      Integer                 in       = new Integer(3);
+      Real                    evaluate = f.evaluate(in, 128, new Real());
+      assertEquals( 3.8787878787878787878787878787878787879, evaluate.doubleValue() );
+    }
   }
 
   public static void testProductViaFactorial()

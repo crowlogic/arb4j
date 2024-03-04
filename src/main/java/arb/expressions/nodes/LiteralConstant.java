@@ -148,7 +148,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     mv.visitFieldInsn(Opcodes.GETSTATIC,
                       Type.getInternalName(RealConstants.class),
                       fn,
-                      expression.domainClassDescriptor);
+                      Real.class.descriptorString());
   }
 
   @Override
