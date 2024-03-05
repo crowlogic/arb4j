@@ -14,9 +14,6 @@ public class BusinessSourceLicenseVersionOnePointOne implements
 {
   public static LicensedWork licensedWork     = new TheArb4jLibrary();
 
-  /**
-   * TODO: add 4 years to the current time so this can be generated for releases
-   */
   public static Clause       changeDateClause = () -> "Effective on the Change Date of December 18, 2023+4 years, or the fourth anniversary of the first publicly available distribution of a specific version of the \n"
                 + "Licensed Work under this License, whichever comes first, the Licensor hereby grants you rights under the terms of the Change License, and the rights granted \n"
                 + "in the paragraph above terminate.\n" + "\n"
