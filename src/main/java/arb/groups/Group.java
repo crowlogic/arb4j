@@ -3,13 +3,17 @@ package arb.groups;
 import java.util.function.BiFunction;
 
 import arb.algebra.Magma;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
- * A {@link Group} is an associative invertible {@link Magma} that has an identity element.
+ * A {@link Group} is an associative invertible {@link Magma} that has an
+ * identity element.
  * 
  * @param <X> the type of elements in this group
  * 
- * @author ©2023 Stephen Crowley All rights reserved. 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface Group<X> extends
                       Magma<X>,

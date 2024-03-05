@@ -91,6 +91,18 @@ import arb.utensils.Utensils;
     }
   }
 
+  @Override
+  public Class<Real> domainType()
+  {
+    return Real.class;
+  }
+
+  @Override
+  public Class<Real> rangeType()
+  {
+    return Real.class;
+  }
+  
   public RealPolynomial set(Real real)
   {
     setLength(1);

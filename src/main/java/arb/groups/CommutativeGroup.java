@@ -3,9 +3,11 @@ package arb.groups;
 import java.util.function.BinaryOperator;
 
 import arb.Set;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
- * A {@link CommutativeGroup} is a {@link Set} A, together with a binary
+ * A {@link CommutativeGroup} is a {@link Group} A, together with a binary
  * operator called multiplication ⋅ that combines any two elements a,b of A to
  * form another element of A , denoted by a ⋅ b. The symbol ⋅ is a general
  * placeholder for a concretely given operation. To qualify as a
@@ -31,7 +33,8 @@ import arb.Set;
  * A Group in which the group operation is not commutative is called a
  * "non-abelian group" or "non-commutative group".
  * 
- *
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface CommutativeGroup<X> extends
                                  Group<X>
