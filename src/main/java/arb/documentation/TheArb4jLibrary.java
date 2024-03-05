@@ -1,6 +1,38 @@
 package arb.documentation;
 
 /**
+ * <pre>
+ * The library arb4j is a Java adaptation of the ARB library, a powerful tool
+ * designed for rigorous high-performance mathematical computation with arbitrary 
+ * (unlimited) precision. This library is particularly tailored to support high-precision 
+ * calculations in all fields of science. arb4j leverages the capabilities of ARB to 
+ * provide the ability to perform complex mathematical operations in Java, 
+ * including but not limited to, high-precision arithmetic, transcendental functions, 
+ * and special functions, orthogonal polynomials, spectral solvers for fractional Ricatti
+ * differential equations with guaranteed bounds on the error of the computed
+ * results and more.
+ * 
+ * At its core, arb4j offers an interface that marries the precision of the ARB
+ * library with the versatility and platform-independence of Java, making it an
+ * indispensable tool for computational tasks where accuracy and reliability are
+ * paramount. The library encapsulates functionalities to handle real and
+ * complex numbers with arbitrary precision, facilitating operations that are
+ * often beyond the scope of standard double-precision arithmetic. This includes
+ * the computation of functions to an arbitrary number of significant digits,
+ * with a clear and straightforward approach to managing the precision and error
+ * bounds of calculations.
+ * 
+ * arb4j is designed with usability in mind, providing a straightforward API
+ * that allows users to easily integrate high-precision computations into their
+ * Java applications. The library serves as a bridge, extending the ARB
+ * library's capabilities to the Java ecosystem, thus enabling a wider audience
+ * to benefit from the rigorous computational possibilities it offers.
+ * 
+ * In essence, arb4j is a valuable resource for scientific computing within the
+ * Java programming environment, offering precision, flexibility, and error
+ * control that are crucial for technical computing tasks demanding the utmost
+ * accuracy, performance, and very importantly, maintainability.
+ * </pre>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
