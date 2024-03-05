@@ -28,18 +28,22 @@ import arb.expressions.Expression;
 import arb.expressions.StackTrackingMethodVisitor;
 import arb.expressions.VariableReference;
 import arb.expressions.Variables;
+import arb.expressions.nodes.nary.Product;
 import arb.functions.Function;
 
 /**
- * Represents a variable node within an {@link Expression}. This class extends
- * the {@link Node} class to provide additional behavior for tracking variables
- * in a {@link Context} and for handling independent variables within the
- * expression.
+ * This class represents a {@link Variable} node within an {@link Expression} by
+ * extending the {@link Node} class to provide additional functionality for managing
+ * {@link VariableReference}s those registered in the {@link Context} and or those which are inputs
+ * to the expression, or any upstream expression (in the case of nested-expressions such as for
+ * {@link Product}s 
  *
  * <p>
- * A variable can either be the independent variable otherwise its value is
- * assumed to be defined in the {@link Context} associated with this
- * this{@link #expression} where its value is substituted and subsequently acts
+ * A variable can either be the independent variable , or the independent(input)
+ * variable to the containing expression, or the
+ * containtain-containing-expressions input, etc; otherwise the variable should
+ * be defined in the {@link Context} associated with this
+ * this{@link #expression} where its reference is stored and subsequently acts
  * as a mutable variable reference but remains a constant if not modified. If
  * one really wants the constant to be immutable then calling
  * {@link Real#lock()} will do the trick, but for that to work the Real (scalar
@@ -52,11 +56,6 @@ import arb.functions.Function;
  * This class is also responsible for generating bytecode for this variable node
  * through its {@link #generate(MethodVisitor, Class)} method.
  * </p>
- * 
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
  * 
  * @param <D> Type of domain field
  * @param <R> Type of range field

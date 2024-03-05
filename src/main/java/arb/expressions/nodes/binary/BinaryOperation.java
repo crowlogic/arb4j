@@ -12,6 +12,8 @@ import org.objectweb.asm.Type;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Compiler;
 import arb.expressions.Expression;
@@ -20,10 +22,9 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
+ * @author Stephen A. Crowley ©2024
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                      Node<D, R, F>
