@@ -6,8 +6,10 @@ import arb.functions.Function;
 public class P implements Function<Integer, RealPolynomial> {
    private boolean isInitialized;
    Integer c1;
-   Integer c2;
+   Real c2;
    Integer c3;
+   Real c4;
+   Integer c5;
    public Real α;
    public Real β;
    public Real ℝ1;
@@ -39,16 +41,16 @@ public class P implements Function<Integer, RealPolynomial> {
       }
       return switch(in.getSignedValue()) {
          case 0 -> result.set(c2);
-         case 1 -> (C.evaluate(ℝ1.set(c2), order, bits, ℝ2))
+         case 1 -> (C.evaluate(ℝ1.set(c3), order, bits, ℝ2))
          .mul(result.identity(), bits, r̅1)
          .sub(β, bits, r̅2)
          .add(α, bits, r̅3)
-         .div(c3, bits, result);
+         .div(c4, bits, result);
          default -> (A.evaluate(in, order, bits, r̅4))
-         .mul(P.evaluate(in.sub(c2, bits, ℤ1), order, bits, r̅5), bits, r̅6)
+         .mul(P.evaluate(in.sub(c3, bits, ℤ1), order, bits, r̅5), bits, r̅6)
          .sub(
             (B.evaluate(ℝ3.set(in), order, bits, ℝ4))
-               .mul(P.evaluate(in.sub(c3, bits, ℤ2), order, bits, r̅7), bits, r̅8),
+               .mul(P.evaluate(in.sub(c5, bits, ℤ2), order, bits, r̅7), bits, r̅8),
             bits,
             r̅9
          )
@@ -58,8 +60,10 @@ public class P implements Function<Integer, RealPolynomial> {
 
    public P() {
       c1 = new Integer("0");
-      c2 = new Integer("1");
-      c3 = new Integer("2");
+      c2 = new Real("1.0", 128);
+      c3 = new Integer("1");
+      c4 = new Real("2.0", 128);
+      c5 = new Integer("2");
       ℝ1 = new Real();
       ℝ2 = new Real();
       r̅1 = new RealPolynomial();
@@ -106,6 +110,8 @@ public class P implements Function<Integer, RealPolynomial> {
       c1.close();
       c2.close();
       c3.close();
+      c4.close();
+      c5.close();
       ℝ1.close();
       ℝ2.close();
       r̅1.close();

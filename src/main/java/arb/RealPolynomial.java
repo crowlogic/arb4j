@@ -118,6 +118,14 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     }
   }
 
+  public RealPolynomial set(Real real)
+  {
+    setLength(1);
+    fitLength(1);
+    get(0).set(real);
+    return this;
+  }
+  
   public RealPolynomial div(int i, int bits, RealPolynomial result)
   {
     if (result.getLength() > 0)

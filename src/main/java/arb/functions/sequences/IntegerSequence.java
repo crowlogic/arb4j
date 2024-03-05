@@ -46,17 +46,11 @@ public interface IntegerSequence extends
 
   /**
    * <pre>
-   * by the swinging factorial of n we understand the ratio of n! to
-   * floor(n/2)*c!^2 and denote it by no = n!/floor(n/2)*c!^2  (n > 0) . 
-   * 
-   * We write (n k ) = n!/(k!(n − k)!) for the binomial coefficient. 
-   * 
-   * Let μn = ( n bn/2c ) denote the middle binomial  coefficient. 
-   * 
-   * Then no = μn if n is even, otherwise no = μn((n + 1)/2). 
-   * 
-   * Thus no is always an integer
+   * n≀ = n!/⌊n/2⌋!² 
    * </pre>
+   * 
+   * <a href="https://oeis.org/A056040">A056040 Swinging factorial, a(n) = 2^(n-(n
+   * mod 2))*Product_{k=1..n} k^((-1)^(k+1))</a>
    */
-  public static IntegerSequence swingingFactorials                    = express("n->2^(n-(n mod 2))*∏(k=1..n)k^((-1)^(k+1))=n!/⌊n/2⌋!²");
+  public static IntegerSequence swingingFactorials                    = express("n->n!/⌊n/2⌋!²");
 }
