@@ -76,9 +76,6 @@ public class Product<D, R, F extends Function<D, R>> extends
                                                                                            int.class,
                                                                                            Real.class);
 
-  private static final String NONVARIABLE_MSG               = "Expected the first element of the product range specification"
-                + " {...} in ∏f(k){k=a…b} to be a Variable but got %s with remaining %s";
-
   protected static MethodVisitor
             getField(MethodVisitor mv, String thisClassInternalName, String fieldName, Class<?> type)
   {
@@ -209,7 +206,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     generateEndingIndex(mv);
 
-    designateLabel(mv, beginningOfTheLoop, expression.hasRealOnStack() );
+    designateLabel(mv, beginningOfTheLoop, expression.hasRealOnStack());
 
     generateInnerLoop(mv);
 
@@ -368,7 +365,10 @@ public class Product<D, R, F extends Function<D, R>> extends
   void incrementIndex(MethodVisitor methodVisitor)
   {
     loadIndexVariable(methodVisitor);
-    invokeMethod(methodVisitor, "arb/Integer", "increment", "()Larb/Integer;");
+    invokeMethod(methodVisitor,
+                 Type.getInternalName(Integer.class),
+                 "increment",
+                 Type.getMethodDescriptor(Type.getType(Integer.class)));
   }
 
   void invokeMethod(MethodVisitor methodVisitor,

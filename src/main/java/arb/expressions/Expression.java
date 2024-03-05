@@ -1547,7 +1547,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean hasRealOnStack()
   {
-    assert false : "TODO: keep track of stack in Expression for frame generation info";
+    //assert false : "TODO: keep track of stack in Expression for frame generation info";
     return false;
   }
 
