@@ -1,6 +1,8 @@
 package arb.logic;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.Term;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  *
@@ -25,8 +27,12 @@ where pᵢ and qᵢ are atoms and the operators ~, ∧, ∨, ⇒ are connectives
  
      ⇒  for implication
  * </pre>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public interface Clause extends Term
+public interface Clause extends
+                        Term
 {
 
 }
