@@ -65,9 +65,6 @@ public class Product<D, R, F extends Function<D, R>> extends
   private static final String MISSING_ELLIPSIS              = "Expected an … character after the start index a in the "
                 + "index specification {k=a..b} in ∏f(k){k=a..b} but instead got '%c' at position %d in %s";
 
-  private static final String MISSING_EQUALS                = "Expected an = character after the index variable specification {k=a..b} "
-                + "in ∏f(k){k=a..b} but instead got '%c' at position %d in %s";
-
   private static final String MISSING_OPENING_CURLY_BRACE   = "Expected the opening curly brace { of the product range specification {k=a..b} in Πf(k){k=a..b}"
                 + " to follow the operand definition, instead got '%c' with remaining %s";
 
@@ -438,6 +435,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   void loadResultingProductVariable(MethodVisitor methodVisitor)
   {
+    expression.addTypeToStack(generatedType);
     getField(methodVisitor, expression.className, productResultVariable, generatedType);
   }
 

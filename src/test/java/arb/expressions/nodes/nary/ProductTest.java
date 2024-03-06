@@ -66,6 +66,7 @@ public class ProductTest extends
     assertEquals(2880.0, val.doubleValue());
   }
 
+  @SuppressWarnings("resource")
   public static void testRatioOfProducts()
   {
     Integer p;
@@ -88,6 +89,31 @@ public class ProductTest extends
     Integer                 in    = new Integer(2);
     Real                    val   = ratio.evaluate(in, 128, new Real());
     assertEquals(1.5, val.doubleValue());
+  }
+  
+  @SuppressWarnings("resource")
+  public static void testRatioOfRatioOverProductPlusOne()
+  {
+    Integer p;
+    Integer q;
+    Real    α;
+    Real    β;
+    Context context = new Context(p = new Integer(3).setName("p"),
+                                  q = new Integer(1).setName("q"),
+                                  α = Real.newVector(p.getSignedValue()).setName("α"),
+                                  β = Real.newVector(q.getSignedValue()).setName("β"));
+
+    α.set(1.0, 2.0, 3.0);
+    β.set(4.0);
+
+    Function<Integer, Real> ratio = Function.express(Integer.class,
+                                                     Real.class,
+                                                     "F",
+                                                     "n➔∏α[k]₍ₙ₋₁₎{k=1…p}/∏β[k]₍ₙ₋₁₎{k=1…q}/∏β[k]₍ₙ₋₁₎{k=1…q}+1",
+                                                     context);
+    Integer                 in    = new Integer(2);
+    Real                    val   = ratio.evaluate(in, 128, new Real());
+    assertEquals(1.375, val.doubleValue());
   }
 
   public static void testOneTimesTwoTimesThreeEqualsSix() throws AnalyzerException

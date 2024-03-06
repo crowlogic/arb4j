@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -46,6 +47,7 @@ import org.objectweb.asm.util.TraceClassVisitor;
 import arb.ComplexPolynomial;
 import arb.Integer;
 import arb.OrderedPair;
+import arb.Real;
 import arb.RealPolynomial;
 import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -1549,9 +1551,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean hasRealOnStack()
   {
-    // assert false : "TODO: keep track of stack in Expression for frame generation
-    // info";
-    return false;
+    return !typeStack.isEmpty() && typeStack.getLast().equals(Real.class);
+  }
+
+  Stack<Class<?>> typeStack = new Stack<>();
+
+  public void addTypeToStack(Class<?> type)
+  {
+    typeStack.add(type);
   }
 
 }
