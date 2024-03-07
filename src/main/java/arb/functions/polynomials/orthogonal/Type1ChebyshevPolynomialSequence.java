@@ -16,11 +16,16 @@ import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
 /**
+ * 
+ * TODO: unit tests <br>
+ * 
  * The Chebyshev polynomials of the first kind are an instance of the Jacobi
  * Polynomial Pₙ with α=β=−½ such that <br>
  * <br>
  * 
- * Tₙ(x) = Pₙ(−½,−½,x) / Γ(n + 1/2)/(√(π)*Γ(n + 1))
+ * <br>
+ * 
+ * <a href="https://github.com/crowlogic/arb4j/wiki/ChebyshevPolynomial">Tₙ(x) = Pₙ(−½,−½,x) / Γ(n + 1/2)/(√(π)*Γ(n + 1))</a>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
