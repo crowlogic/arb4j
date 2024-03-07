@@ -21,7 +21,7 @@ public final class FunctionMapping<D, R>
   {
     return String.format("Mapping[name=%s, func=%s, domain=%s, range=%s, functionInterface=%s]",
                          name,
-                         func,
+                         function,
                          domain != null ? domain.getName() : null,
                          range != null ? range.getName() : null,
                          functionInterface);
@@ -49,7 +49,7 @@ public final class FunctionMapping<D, R>
 
   public String         name;
 
-  public Function<?, ?> func;
+  public Function<?, ?> function;
 
   public Class<?>       domain;
 
@@ -57,7 +57,7 @@ public final class FunctionMapping<D, R>
 
   public Class<?> type()
   {
-    return func == null ? functionInterface : func.getClass();
+    return function == null ? functionInterface : function.getClass();
   }
 
 }

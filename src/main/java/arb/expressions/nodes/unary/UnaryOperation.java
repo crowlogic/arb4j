@@ -77,5 +77,6 @@ public abstract class UnaryOperation<D, R, F extends Function<D, R>> extends
         expression.reserveIntermediateVariable(methodVisitor, resultType);
       }
     }
+    
   }
 }

@@ -160,7 +160,7 @@ public class Context
     mapping.name              = functionName;
     mapping.domain            = domainType;
     mapping.range             = rangeType;
-    mapping.func              = function;
+    mapping.function              = function;
     mapping.functionInterface = functionClass;
     functions.map.put(functionName, mapping);
     return mapping;

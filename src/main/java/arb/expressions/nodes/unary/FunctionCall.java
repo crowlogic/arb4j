@@ -142,7 +142,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       expression.reserveIntermediateVariable(methodVisitor, targetResultType);
       checkClassCast(methodVisitor, targetResultType);
       invokeSetMethod(methodVisitor, resultType, targetResultType);
-      // assert false : "insert visitFrame here";
     }
     return methodVisitor;
   }
@@ -159,9 +158,23 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     Class<?>              outputType = type();
 
     FunctionMapping<D, R> mapping    = expression.context.functions.get(functionName);
-    F                     func       = (F) mapping.func;
+    F                     func       = (F) mapping.function;
 
-    // mv.visitFrame(F_SAME, 0, null, 0, null);
+    if (expression.traceGenerator)
+    {
+      System.out.format("generateContextualFunctionCall( resultType=%s ): expression.typeStack=%s\n",
+                        resultType,
+                        expression.typeStack);
+    }
+    if (expression.typeStack.isEmpty())
+    {
+      mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+    }
+    else
+    {
+      mv.visitFrame(Opcodes.F_SAME1, 0, null, 0, new Object[]
+      { Type.getInternalName(expression.typeStack.getLast()) });
+    }
 
     if (func == null && mapping.functionInterface == null)
     {
@@ -170,9 +183,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                   functionName,
-                                  mapping.func != null ? mapping.func.getClass()
-                                                                     .descriptorString() : String.format("L%s;",
-                                                                                                         functionName));
+                                  mapping.function != null ? mapping.function.getClass()
+                                                                             .descriptorString() : String.format("L%s;",
+                                                                                                                 functionName));
 
     Class<?> argType                = arg == null ? Void.class : arg.type();
     var      typeBefore             = argType;
@@ -213,16 +226,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       out.format("callContextualUnaryFUnction( mapping=%s type=%s\n", mapping, outputType);
     }
     expression.callContextualUnaryFunction(mv, mapping, outputType);
-//    if ( isRecursive )
-//    {
-//      assert false : "damn";
-//    }
-    return mv;
-  }
 
-  private boolean isRecursive()
-  {
-    return expression.recursive && functionName.equals(expression.functionName);
+    return mv;
   }
 
   public boolean isBuiltin()

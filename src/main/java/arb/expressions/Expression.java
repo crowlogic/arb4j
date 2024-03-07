@@ -128,7 +128,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     F                   func               = compiledExpression.instantiate();
     if (mapping != null)
     {
-      mapping.func = func;
+      mapping.function = func;
     }
 
     return func;
@@ -256,7 +256,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           rangeClassInternalName,
                                                           rangeClassInternalName);
     parseOptionalInlineFunctionNameSpecification(expression, functionName);
-    saveClasses = context != null && context.saveClasses;
+    if (context != null && context.saveClasses)
+    {
+      saveClasses = true;
+    }
   }
 
   public void parseOptionalInlineFunctionNameSpecification(String expression, String functionName)
@@ -366,7 +369,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     boolean isInterface = mapping.functionInterface != null;
     mv.visitMethodInsn(mapping.functionInterface != null ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(isInterface ? mapping.functionInterface : mapping.func.getClass()),
+                       Type.getInternalName(isInterface ? mapping.functionInterface : mapping.function.getClass()),
                        "evaluate",
                        evaluationMethodDescriptor,
                        isInterface);
@@ -489,7 +492,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean             verbose        = false;
 
-  public boolean             traceGenerator = false;
+  public boolean             traceGenerator = true;
 
   public Expression<?, ?, ?> parentExpression;
 
@@ -771,7 +774,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       File file = new File(className + ".class");
       writeBytecodes(file);
     }
-
+   
     return this;
   }
 
@@ -890,7 +893,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?> nestedFunction)
   {
-    if (nestedFunction.func != null)
+    if (nestedFunction.function != null)
     {
       initializeNestedFunctionVariableReferences(loadThisOntoStack(mv),
                                                  className,
@@ -915,7 +918,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     generateInvocationOfDefaultNoArgConstructor(mv, true);
 
-    referencedFunctions.values().stream().filter(func -> func.func != null).forEach(mapping ->
+    referencedFunctions.values().stream().filter(func -> func.function != null).forEach(mapping ->
     {
       generateFunctionReference(mv, mapping);
     });
@@ -1525,14 +1528,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return this;
   }
 
-  public boolean hasRealOnStack()
+  public boolean isRealNumberOnTopOfTheStack()
   {
     return !typeStack.isEmpty() && typeStack.getLast().equals(Real.class);
   }
 
-  Stack<Class<?>> typeStack = new Stack<>();
+  public Stack<Class<?>> typeStack = new Stack<>();
 
-  public void addTypeToStack(Class<?> type)
+  public void appendTypeToStack(Class<?> type)
   {
     typeStack.add(type);
   }

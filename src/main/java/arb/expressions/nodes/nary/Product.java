@@ -152,7 +152,7 @@ public class Product<D, R, F extends Function<D, R>> extends
     else
     {
       mv.visitFrame(Opcodes.F_SAME1, 0, null, 0, new Object[]
-      { Type.getInternalName(Real.class) });
+      { Type.getInternalName(expression.typeStack.getLast()) });
     }
   }
 
@@ -203,7 +203,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
     generateEndingIndex(mv);
 
-    designateLabel(mv, beginningOfTheLoop, expression.hasRealOnStack());
+    designateLabel(mv, beginningOfTheLoop, expression.isRealNumberOnTopOfTheStack());
 
     generateInnerLoop(mv);
 
@@ -435,7 +435,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   void loadResultingProductVariable(MethodVisitor methodVisitor)
   {
-    expression.addTypeToStack(generatedType);
+    expression.appendTypeToStack(generatedType);
     getField(methodVisitor, expression.className, productResultVariable, generatedType);
   }
 
