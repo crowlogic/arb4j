@@ -132,7 +132,7 @@ public class Compiler
                                                              functionName,
                                                              containingExpression);
 
-    expression.parse().compile().load();
+    expression.parseRoot().compile().load();
 
     return expression;
   }

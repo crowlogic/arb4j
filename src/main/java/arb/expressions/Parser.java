@@ -154,11 +154,11 @@ public class Parser
    * 
    * @param expression
    * 
-   * @return expression with 0-9 substituted in place of ₀-₉
+   * @return expression with with the described substitions made
    */
   public static String replaceArrowsAndEllipses(String expression)
   {
-    return expression.replace("->", "➔").replace("..", "…");
+    return expression.replace("->", "➔").replace("...", "…");
   }
 
   static String expressionToUniqueClassname(String expression)

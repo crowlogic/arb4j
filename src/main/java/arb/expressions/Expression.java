@@ -1,27 +1,11 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.addNullCheckForField;
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.express;
-import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getVariableSuffix;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadFunctionClass;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.ACC_FINAL;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.F_SAME1;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
-import static org.objectweb.asm.Opcodes.RETURN;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -129,7 +113,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                String functionName)
   {
     FunctionMapping<?, ?> mapping = null;
-    if (functionName != null)
+    if (functionName != null && context != null )
     {
       mapping = context.registerFunctionMapping(functionName, null, domainClass, rangeClass, functionClass);
 
@@ -272,6 +256,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           rangeClassInternalName,
                                                           rangeClassInternalName);
     this.functionName                     = functionName;
+    int colonCharacterIndex = expression.indexOf(":");
+    if (colonCharacterIndex != -1)
+    {
+      String inlineFunctionName = expression.substring(0, colonCharacterIndex);
+      if (functionName != null && !functionName.equals(inlineFunctionName))
+      {
+        throw new ExpressionCompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
+                                                            functionName,
+                                                            inlineFunctionName));
+      }
+      assert false : "functionName='" + functionName + "'";
+    }
     if (context != null && context.saveClasses)
     {
       saveClasses = true;
@@ -663,7 +659,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return this
    * @throws ExpressionCompilerException
    */
-  public Expression<D, R, F> parse()
+  public Expression<D, R, F> parseRoot()
   {
     assert position == -1 : "parse must only be called before anything else has been parsed but position="
                   + position;
@@ -723,8 +719,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public static boolean trace = false;
 
   /**
-   * Generate the implementation of the function after this{@link #parse()} has
-   * been invoked
+   * Generate the implementation of the function after this{@link #parseRoot()}
+   * has been invoked
    * 
    * @return
    * @throws ExpressionCompilerException
@@ -959,7 +955,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (rootNode == null)
     {
-      parse();
+      parseRoot();
     }
 
     Label         startLabel = new Label();

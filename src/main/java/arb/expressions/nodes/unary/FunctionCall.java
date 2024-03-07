@@ -39,7 +39,8 @@ import arb.functions.Function;
  * {@link Function#express(Class, Class, String, String, Context)} or
  * {@link Function#express(Class, Class, String, String, Context)} methods that
  * accepts another {@link String} argument specifying the name of the function
- * should be used.<br>
+ * should be used or you can prepend the expression "x->x^2" with "F:x->x^2" so
+ * that the functions name as it is known by in the {@link Context} <br>
  * <br>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -140,8 +141,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       expression.reserveIntermediateVariable(methodVisitor, targetResultType);
       checkClassCast(methodVisitor, targetResultType);
-      invokeSetMethod(methodVisitor, resultType, targetResultType );
-     // assert false : "insert visitFrame here";
+      invokeSetMethod(methodVisitor, resultType, targetResultType);
+      // assert false : "insert visitFrame here";
     }
     return methodVisitor;
   }

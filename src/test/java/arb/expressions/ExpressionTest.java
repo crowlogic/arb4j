@@ -5,6 +5,7 @@ import arb.Real;
 import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.exceptions.ExpressionCompilerException;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
@@ -17,21 +18,41 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public static void testConflictingFunctionNameDefinitionThrowsException()
+  {
+    boolean caughtException = false;
+    try
+    {
+      RealFunction func = RealFunction.express("G", "F: x₍₃₎", null);
+      try ( Real result = func.evaluate(new Real("5",
+                                                 128),
+                                        0,
+                                        128,
+                                        new Real()))
+      {
+      }
+    }
+    catch (ExpressionCompilerException e)
+    {
+      String message = e.getMessage();
+      assertTrue(message.contains("'F'"));
+      assertTrue(message.contains("'G"));
+      caughtException = true;
+    }
+    assertTrue(caughtException);
+  }
 
-  /**
-   * THe problem is that the resultType is not being checked in LiteralConstant,
-   * it should check it and cast if necessary.
-   * https://github.com/crowlogic/arb4j/issues/343
-   */
   public static void testRatioOfRisingFactorials()
   {
 
-    Real                    λ        = new Real();
-    Context                 context  = new Context(λ.setName("λ"));
-    Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
-    Integer                 in       = new Integer(3);
-    Real                    evaluate = f.evaluate(in, 128, new Real());
-    System.out.println(evaluate);
+    try ( Real λ = new Real())
+    {
+      Context                 context  = new Context(λ.setName("λ"));
+      Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
+      Integer                 in       = new Integer(3);
+      Real                    evaluate = f.evaluate(in, 128, new Real());
+      System.out.println(evaluate);
+    }
   }
 
   public static void testProductViaFactorial()
@@ -85,7 +106,12 @@ public class ExpressionTest extends
     assertEquals(210.0, result.doubleValue());
   }
 
-  public void testVariableIndexedByASquareBracketedConstant()
+  /**
+   * {@link #testVariableIndexedByASubscriptAndMultipliedByTheDefactoInput()} is
+   * equivalent to this but with the other syntax where the i-th element of x is
+   * specified by xᵢ
+   */
+  public void testVariableIndexedByASquareBracketedConstantAndMultipliedByTheDefactoInput()
   {
     Real         α       = Real.newVector(3);
     Context      context = new Context(α.setName("α"));
@@ -95,11 +121,15 @@ public class ExpressionTest extends
     assertTrue(RealConstants.twoπ.approximatelyEquals(twoPi, 257));
   }
 
+  /**
+   * {@link #testVariableIndexedByASquareBracketedConstantAndMultipliedByTheDefactoInput()}
+   * is equivalent to this but with the other syntax where the i-th element of x
+   * is specified by x[i]
+   */
   public void testVariableIndexedByASubscriptAndMultipliedByTheDefactoInput()
   {
     Real         α       = Real.newVector(3);
     Context      context = new Context(α.setName("α"));
-    // RealFunction f = RealFunction.express("α[1]*t", context);
     RealFunction f       = RealFunction.express("α₁*t", context);
     α.set(0, RealConstants.π);
     Real twoPi = f.evaluate(RealConstants.two, 128, new Real());
