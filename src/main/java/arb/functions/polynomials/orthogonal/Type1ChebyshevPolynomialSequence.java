@@ -12,6 +12,7 @@ import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
+import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
 /**
@@ -19,7 +20,7 @@ import arb.functions.real.RealFunction;
  * Polynomial Pₙ with α=β=−½ such that <br>
  * <br>
  * 
- * Tₙ(x) = Pₙ(−½,−½,x) * π​*Γ(n+1)/Γ(n+½)
+ * Tₙ(x) = Pₙ(−½,−½,x) / Γ(n + 1/2)/(√(π)*Γ(n + 1))
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -27,7 +28,25 @@ import arb.functions.real.RealFunction;
 public class Type1ChebyshevPolynomialSequence extends
                                               JacobiPolynomialSequence
 {
-  int bits = 128;
+  @Override
+  public void close()
+  {
+    norm.close();
+  }
+
+  Real norm = new Real();
+
+  @Override
+  public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
+  {
+    return super.evaluate(n, order, bits, res).div(normalizationFactor.evaluate(n, bits, norm), bits);
+  }
+
+  int                     bits                = 128;
+
+  Function<Integer, Real> normalizationFactor = Function.express(Integer.class,
+                                                                 Real.class,
+                                                                 "Γ(n + 1/2)/(√(π)*Γ(n + 1))");
 
   public static void main(String args[])
   {
@@ -35,8 +54,12 @@ public class Type1ChebyshevPolynomialSequence extends
 
     try ( Integer index = new Integer())
     {
-      IntStream.range(0, 10)
-               .forEach(n -> out.format("T(%d,x)=%s\n", n, T.evaluate(index.set(n), 1, 128, new RealPolynomial())));
+      IntStream.range(0, 10).forEach(n ->
+      {
+        RealPolynomial poly = T.evaluate(index.set(n), 1, 128, new RealPolynomial());
+        
+        out.format("T(%d,x)=%s\n", n, poly);
+      });
 
       // ShellFunctions.plot(-1, 1, 1000, polys.toArray(new
       // RealPolynomial[polys.size()]));
@@ -51,7 +74,8 @@ public class Type1ChebyshevPolynomialSequence extends
 
   public Type1ChebyshevPolynomialSequence()
   {
-    super(RealConstants.negHalf,RealConstants.negHalf);
+    super(RealConstants.negHalf,
+          RealConstants.negHalf);
   }
 
   @Override

@@ -102,7 +102,7 @@ import arb.utensils.Utensils;
   {
     return Real.class;
   }
-  
+    
   public RealPolynomial set(Real real)
   {
     setLength(1);
@@ -262,14 +262,11 @@ import arb.utensils.Utensils;
     {
       return "∅";
     }
-    if (getLength() == 1)
-    {
-      return get(0).toString();
-    }
     StringBuilder builder = new StringBuilder();
     for (int i = getLength() - 1; i >= 0; --i)
     {
       Real xi = get(i);
+      xi.printPrecision = false;
       if (!xi.isZero())
       {
         if (i < getLength() - 1)

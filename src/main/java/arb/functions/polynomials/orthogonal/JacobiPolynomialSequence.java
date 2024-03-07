@@ -63,7 +63,7 @@ public class JacobiPolynomialSequence implements
 
     try ( Integer index = new Integer())
     {
-      var polys = IntStream.range(0, 20)
+      var polys = IntStream.range(0, 10)
                            .mapToObj(n -> P.evaluate(index.set(n), 128, new RealPolynomial()))
                            .collect(toList());
 
