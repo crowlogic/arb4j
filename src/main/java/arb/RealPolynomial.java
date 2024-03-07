@@ -282,7 +282,7 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     return get(i);
   }
   
-  @Override
+ @Override
   public String toString()
   {
     if (getLength() == 0)

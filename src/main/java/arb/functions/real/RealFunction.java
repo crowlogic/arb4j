@@ -606,7 +606,7 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression)
   {
-    return express(expression, null, null);
+    return express(null, expression, null);
   }
 
   public static RealFunction express(String expression, Context context)
