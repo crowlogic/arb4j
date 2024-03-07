@@ -10,6 +10,8 @@ import java.util.stream.Stream;
 import arb.HasName;
 import arb.OrderedPair;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
@@ -41,7 +43,8 @@ import arb.functions.Function;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  * 
- * @author ©2023 Stephen Crowley
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class Context
 {
@@ -180,9 +183,9 @@ public class Context
   }
 
   public FunctionMapping<Object, Object> registerFunctionMapping(String functionName,
-                                      Function<?, ?> function,
-                                      Class<?> domainType,
-                                      Class<?> rangeType)
+                                                                 Function<?, ?> function,
+                                                                 Class<?> domainType,
+                                                                 Class<?> rangeType)
   {
     return registerFunctionMapping(functionName, function, domainType, rangeType, function.getClass());
   }

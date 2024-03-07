@@ -18,6 +18,8 @@ import arb.Integer;
 import arb.Real;
 import arb.RealMatrix;
 import arb.RealPolynomial;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 
 /**
@@ -47,12 +49,8 @@ import arb.functions.Function;
  * 
  * </pre>
  * 
- * <pre>
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
- * </pre>
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  * 
  * @author ©2024 Stephen Crowley
  */
@@ -379,7 +377,7 @@ public class Compiler
 
   public static void addTypeToStackMapFrame(MethodVisitor mv, Class<?> class1)
   {
-    //System.out.println( "Adding " + class1 + " to StackMap");
+    // System.out.println( "Adding " + class1 + " to StackMap");
     mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
     { Type.getInternalName(class1) });
   }
