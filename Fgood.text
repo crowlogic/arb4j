@@ -1,0 +1,256 @@
+// class version 65.65535 (-65471)
+// access flags 0x21
+// signature Ljava/lang/Object;Larb/functions/Function<Larb/Integer;Larb/Real;>;
+// declaration: arb/functions/real/F implements arb.functions.Function<arb.Integer, arb.Real>
+public class arb/functions/real/F implements arb/functions/Function {
+
+  // access flags 0x2
+  private Z isInitialized
+
+  // access flags 0x0
+  Larb/Integer; c1
+
+  // access flags 0x1
+  public Larb/Real; α
+
+  // access flags 0x1
+  public Larb/Real; β
+
+  // access flags 0x1
+  public Larb/Real; ℝ1
+
+  // access flags 0x1
+  public Larb/Integer; ℤ1
+
+  // access flags 0x1
+  public Larb/Real; ℝ2
+
+  // access flags 0x1
+  public Larb/Real; ℝ3
+
+  // access flags 0x1
+  public Larb/Real; ℝ4
+
+  // access flags 0x11
+  public final Larb/functions/real/C; C
+
+  // access flags 0x1
+  public evaluate(Larb/Integer;IILarb/Real;)Larb/Real;
+   L0
+    ALOAD 0
+    GETFIELD arb/functions/real/F.isInitialized : Z
+    IFNE L1
+   L2
+    ALOAD 0
+    INVOKEVIRTUAL arb/functions/real/F.initialize ()V
+   L1
+   FRAME SAME
+    ALOAD 0
+    GETFIELD arb/functions/real/F.C : Larb/functions/real/C;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℝ1 : Larb/Real;
+    ALOAD 1
+    ALOAD 0
+    GETFIELD arb/functions/real/F.c1 : Larb/Integer;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℤ1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.sub (Larb/Integer;ILarb/Integer;)Larb/Integer;
+    INVOKEVIRTUAL arb/Real.set (Larb/Integer;)Larb/Real;
+    ILOAD 2
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℝ2 : Larb/Real;
+    INVOKEVIRTUAL arb/functions/real/C.evaluate (Larb/Real;IILarb/Real;)Larb/Real;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.C : Larb/functions/real/C;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℝ3 : Larb/Real;
+    ALOAD 1
+    INVOKEVIRTUAL arb/Real.set (Larb/Integer;)Larb/Real;
+    ILOAD 2
+    ILOAD 3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℝ4 : Larb/Real;
+    INVOKEVIRTUAL arb/functions/real/C.evaluate (Larb/Real;IILarb/Real;)Larb/Real;
+   L3
+    LINENUMBER 29 L3
+    ILOAD 3
+   L4
+    LINENUMBER 30 L4
+    ALOAD 4
+   L5
+    LINENUMBER 28 L5
+    INVOKEVIRTUAL arb/Real.mul (Larb/Real;ILarb/Real;)Larb/Real;
+    ARETURN
+   L6
+    LOCALVARIABLE this Larb/functions/real/F; L0 L6 0
+    LOCALVARIABLE in Larb/Integer; L0 L6 1
+    LOCALVARIABLE order I L0 L6 2
+    LOCALVARIABLE bits I L0 L6 3
+    LOCALVARIABLE result Larb/Real; L0 L6 4
+    MAXSTACK = 6
+    MAXLOCALS = 5
+
+  // access flags 0x1
+  public <init>()V
+   L0
+    LINENUMBER 33 L0
+    ALOAD 0
+    INVOKESPECIAL java/lang/Object.<init> ()V
+   L1
+    LINENUMBER 19 L1
+    ALOAD 0
+    NEW arb/functions/real/C
+    DUP
+    INVOKESPECIAL arb/functions/real/C.<init> ()V
+    PUTFIELD arb/functions/real/F.C : Larb/functions/real/C;
+   L2
+    LINENUMBER 35 L2
+    ALOAD 0
+    NEW arb/Integer
+    DUP
+    LDC "1"
+    INVOKESPECIAL arb/Integer.<init> (Ljava/lang/String;)V
+    PUTFIELD arb/functions/real/F.c1 : Larb/Integer;
+   L3
+    LINENUMBER 36 L3
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD arb/functions/real/F.ℝ1 : Larb/Real;
+   L4
+    LINENUMBER 37 L4
+    ALOAD 0
+    NEW arb/Integer
+    DUP
+    INVOKESPECIAL arb/Integer.<init> ()V
+    PUTFIELD arb/functions/real/F.ℤ1 : Larb/Integer;
+   L5
+    LINENUMBER 38 L5
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD arb/functions/real/F.ℝ2 : Larb/Real;
+   L6
+    LINENUMBER 39 L6
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD arb/functions/real/F.ℝ3 : Larb/Real;
+   L7
+    LINENUMBER 40 L7
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD arb/functions/real/F.ℝ4 : Larb/Real;
+   L8
+    LINENUMBER 41 L8
+    RETURN
+   L9
+    LOCALVARIABLE this Larb/functions/real/F; L0 L9 0
+    MAXSTACK = 4
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public initialize()V
+   L0
+    LINENUMBER 45 L0
+    ALOAD 0
+    GETFIELD arb/functions/real/F.isInitialized : Z
+    IFEQ L1
+   L2
+    LINENUMBER 47 L2
+    NEW java/lang/AssertionError
+    DUP
+    LDC "Already initialized"
+    INVOKESPECIAL java/lang/AssertionError.<init> (Ljava/lang/Object;)V
+    ATHROW
+   L1
+    LINENUMBER 51 L1
+   FRAME SAME
+    ALOAD 0
+    GETFIELD arb/functions/real/F.C : Larb/functions/real/C;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.α : Larb/Real;
+    PUTFIELD arb/functions/real/C.α : Larb/Real;
+   L3
+    LINENUMBER 52 L3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.C : Larb/functions/real/C;
+    ALOAD 0
+    GETFIELD arb/functions/real/F.β : Larb/Real;
+    PUTFIELD arb/functions/real/C.β : Larb/Real;
+   L4
+    LINENUMBER 53 L4
+    ALOAD 0
+    ICONST_1
+    PUTFIELD arb/functions/real/F.isInitialized : Z
+   L5
+    LINENUMBER 55 L5
+    RETURN
+   L6
+    LOCALVARIABLE this Larb/functions/real/F; L0 L6 0
+    MAXSTACK = 3
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public close()V
+   L0
+    LINENUMBER 59 L0
+    ALOAD 0
+    GETFIELD arb/functions/real/F.c1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.close ()V
+   L1
+    LINENUMBER 60 L1
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℝ1 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+   L2
+    LINENUMBER 61 L2
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℤ1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.close ()V
+   L3
+    LINENUMBER 62 L3
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℝ2 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+   L4
+    LINENUMBER 63 L4
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℝ3 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+   L5
+    LINENUMBER 64 L5
+    ALOAD 0
+    GETFIELD arb/functions/real/F.ℝ4 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+   L6
+    LINENUMBER 65 L6
+    RETURN
+   L7
+    LOCALVARIABLE this Larb/functions/real/F; L0 L7 0
+    MAXSTACK = 1
+    MAXLOCALS = 1
+
+  // access flags 0x1041
+  public synthetic bridge evaluate(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;
+   L0
+    LINENUMBER 1 L0
+    ALOAD 0
+    ALOAD 1
+    CHECKCAST arb/Integer
+    ILOAD 2
+    ILOAD 3
+    ALOAD 4
+    CHECKCAST arb/Real
+    INVOKEVIRTUAL arb/functions/real/F.evaluate (Larb/Integer;IILarb/Real;)Larb/Real;
+    ARETURN
+    MAXSTACK = 5
+    MAXLOCALS = 5
+}

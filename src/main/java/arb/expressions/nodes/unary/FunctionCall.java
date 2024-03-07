@@ -1,6 +1,11 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -166,15 +171,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                         resultType,
                         expression.typeStack);
     }
-    if (expression.typeStack.isEmpty())
-    {
-      mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-    }
-    else
-    {
-      mv.visitFrame(Opcodes.F_SAME1, 0, null, 0, new Object[]
-      { Type.getInternalName(expression.typeStack.getLast()) });
-    }
+
+   // mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 
     if (func == null && mapping.functionInterface == null)
     {

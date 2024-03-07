@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.stream.IntStream;
 
 import arb.Integer;
-import arb.OrthogonalBasis;
 import arb.Real;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -24,7 +23,7 @@ import arb.functions.real.RealNullaryFunction;
  * The Jacobi polynomials are mutually orthogonal with respect to the weight
  * function
  * 
- * (1-x)^α*(1+x)^β
+ * <pre>(1-x)ᵅ(1+x)ᵝ</pre>
  * 
  * over the interval [-1,1] when α,β>-1 and are recursively defined by
  * 
