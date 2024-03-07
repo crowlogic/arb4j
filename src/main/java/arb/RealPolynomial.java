@@ -138,6 +138,11 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     return this;
   }
   
+  public RealPolynomial div(Real divisor, int bits)
+  {
+    return div(divisor,bits,this);
+  }
+    
   public RealPolynomial div(int i, int bits, RealPolynomial result)
   {
     if (result.getLength() > 0)

@@ -189,4 +189,9 @@ public class Context
   {
     return registerFunctionMapping(functionName, function, domainType, rangeType, function.getClass());
   }
+
+  public Real registerVariable(Real var)
+  {
+    return registerVariable(var.getName(), var);    
+  }
 }

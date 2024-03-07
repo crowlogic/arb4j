@@ -1,15 +1,16 @@
 package arb.functions.polynomials.orthogonal;
 
-import static arb.RealConstants.negHalf;
 import static java.lang.System.out;
-import static java.util.stream.Collectors.toList;
 
 import java.util.Iterator;
 import java.util.stream.IntStream;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealConstants;
 import arb.RealPolynomial;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
 import arb.functions.real.RealFunction;
 
@@ -20,30 +21,22 @@ import arb.functions.real.RealFunction;
  * 
  * Tₙ(x) = Pₙ(−½,−½,x) * π​*Γ(n+1)/Γ(n+½)
  * 
- * <pre>
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
- * </pre>
- * 
- * @author ©2024 Stephen Crowley
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class Type1ChebyshevPolynomialSequence extends
-                                              UltrasphericalPolynomialSequence
-
+                                              JacobiPolynomialSequence
 {
+  int bits = 128;
+
   public static void main(String args[])
   {
-    Type1ChebyshevPolynomialSequence P = new Type1ChebyshevPolynomialSequence();
+    Type1ChebyshevPolynomialSequence T = new Type1ChebyshevPolynomialSequence();
 
     try ( Integer index = new Integer())
     {
-      var polys = IntStream.range(0, 20)
-                           .mapToObj(n -> P.evaluate(index.set(n), 128, new RealPolynomial()))
-                           .collect(toList());
-
-      polys.forEach(p -> out.format("P(%d,x)=%s\n", p.getLength() - 1, p));
+      IntStream.range(0, 10)
+               .forEach(n -> out.format("T(%d,x)=%s\n", n, T.evaluate(index.set(n), 1, 128, new RealPolynomial())));
 
       // ShellFunctions.plot(-1, 1, 1000, polys.toArray(new
       // RealPolynomial[polys.size()]));
@@ -51,13 +44,14 @@ public class Type1ChebyshevPolynomialSequence extends
 
   }
 
-  public static Real          domain  = new Real("0+/-1",
-                                                 128);
+  public static Real   domain = new Real("0+/-1",
+                                         128);
 
   private RealFunction orthogonalityMeasure;
+
   public Type1ChebyshevPolynomialSequence()
   {
-    super(negHalf);
+    super(RealConstants.negHalf,RealConstants.negHalf);
   }
 
   @Override
@@ -71,7 +65,7 @@ public class Type1ChebyshevPolynomialSequence extends
   {
     if (orthogonalityMeasure == null)
     {
-      orthogonalityMeasure = RealFunction.express("w", "x➔(1-x)^α*(1+x)^β", context);
+      orthogonalityMeasure = RealFunction.express("w", "x➔1/√((1-x)²)", context);
     }
     return orthogonalityMeasure;
   }
@@ -88,7 +82,7 @@ public class Type1ChebyshevPolynomialSequence extends
       {
         try ( Integer index = new Integer(n++))
         {
-          return P.evaluate(index, 128, new RealPolynomial());
+          return P.evaluate(index, bits, new RealPolynomial());
         }
       }
 

@@ -2,8 +2,10 @@ package arb.functions.polynomials.orthogonal;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealConstants;
 import arb.RealPolynomial;
-import arb.expressions.Context;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.Function;
 
 /**
@@ -11,55 +13,47 @@ import arb.functions.Function;
  * {@link JacobiPolynomial}s where both α and β are equal to the same value
  * α=β=μ
  * 
- * <pre>
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
- * </pre>
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  * 
  * @author ©2024 Stephen Crowley
  */
-public abstract class UltrasphericalPolynomialSequence implements
-                                                       OrthogonalPolynomialSequence
+public abstract class UltrasphericalPolynomialSequence extends
+                                                       JacobiPolynomialSequence
 {
   @Override
   public void close()
   {
     λ.close();
+    scale.close();
   }
 
-  JacobiPolynomialSequence          P;
+  Real                            λ     = new Real().setName("λ");
+  Real                            scale = new Real();
 
-  Real                              λ       = new Real();
-
-  Function<Integer, RealPolynomial> scaledJacobiPolynomial;
-
-  Context                           context = new Context(λ.setName("λ"));
-  {
-  }
+  private Function<Integer, Real> normalizationFactor;
 
   @Override
   public RealPolynomial evaluate(Integer t, int order, int bits, RealPolynomial res)
   {
-    return scaledJacobiPolynomial.evaluate(t, order, bits, res);
+    super.evaluate(t, order, bits, res);
+    Real evaluate = normalizationFactor.evaluate(t, order, bits, scale);
+    return res.mul(evaluate, bits, res);
   }
 
   /**
    * 
-   * @param μ the value of α=μ and β=μ to pass to the
+   * @param λ the value of α=μ and β=μ to pass to the
    *          {@link JacobiPolynomialSequence} constructor
    */
-  public UltrasphericalPolynomialSequence(Real μ)
+  public UltrasphericalPolynomialSequence(Real λ)
   {
-    P = new JacobiPolynomialSequence(λ,
-                                     λ);
-    this.λ.set(μ);
-    context.registerFunctionMapping("P", P.P, Integer.class, RealPolynomial.class);
-    scaledJacobiPolynomial = Function.express(Integer.class,
-                                              RealPolynomial.class,
-                                              "(λ*2.0)₍ₙ₎/(λ+½)₍ₙ₎",
-                                              context);
+    super(λ,
+          λ);
+    α.sub(RealConstants.half, bits);
+    β.sub(RealConstants.half, bits);
+    context.registerVariable(λ.sub(RealConstants.half, bits, this.λ));
+    normalizationFactor = Function.express(Integer.class, Real.class, "(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
   }
 
 }

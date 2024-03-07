@@ -233,6 +233,11 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
 
   }
 
+  public RealPolynomial div(Real divisor, int bits, RealPolynomial result)
+  {
+    return result.set(this).div(divisor,bits);
+  }
+  
   public boolean isInteger()
   {
     return arblib.arb_is_int(this) != 0;
