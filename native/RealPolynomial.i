@@ -255,7 +255,7 @@ import arb.utensils.Utensils;
     return get(i);
   }
   
-  @Override
+ @Override
   public String toString()
   {
     if (getLength() == 0)
@@ -266,14 +266,13 @@ import arb.utensils.Utensils;
     for (int i = getLength() - 1; i >= 0; --i)
     {
       Real xi = get(i);
-      xi.printPrecision = false;
       if (!xi.isZero())
       {
         if (i < getLength() - 1)
         {
           builder.append(xi.sign() >= 0 ? " + " : " ");
         }
-        if (!xi.isOne())
+        if (!xi.isOne() || i == 0 )
         {
           builder.append(xi);
         }

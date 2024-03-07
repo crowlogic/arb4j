@@ -20,11 +20,11 @@ import arb.RealDataSet;
 import arb.RealPartition;
 import arb.RealRootInterval;
 import arb.RealRootInterval.RefinementResult;
-import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.RootLocatorOptions;
 import arb.Roots;
 import arb.RoundingMode;
 import arb.arblib;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
@@ -606,7 +606,7 @@ public interface RealFunction extends
 
   public static RealFunction express(String expression)
   {
-    return express(expression, null);
+    return express(expression, null, null);
   }
 
   public static RealFunction express(String expression, Context context)
@@ -640,6 +640,11 @@ public interface RealFunction extends
   public static RealFunction express(String expression, Context context, boolean verbose)
   {
     return instantiate(expression, context, Real.class, Real.class, RealFunction.class, null);
+  }
+
+  public static RealFunction express(String expression, String string)
+  {
+    return express(expression, string, null);
   }
 
 }

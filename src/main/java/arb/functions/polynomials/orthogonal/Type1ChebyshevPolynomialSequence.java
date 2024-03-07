@@ -7,12 +7,10 @@ import java.util.stream.IntStream;
 
 import arb.Integer;
 import arb.Real;
-import arb.RealConstants;
 import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
-import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -20,20 +18,14 @@ import arb.functions.real.RealFunction;
  * 
  * TODO: unit tests <br>
  * 
- * The Chebyshev polynomials of the first kind are an instance of the Jacobi
- * Polynomial Pₙ with α=β=−½ such that <br>
- * <br>
+ * The Chebyshev polynomials of the first kind are defined by 2*x*T(n-1)-T(n-2)) with initial conditions T(0)=1, T(1)=x
  * 
- * <br>
- * 
- * <a href="https://github.com/crowlogic/arb4j/wiki/ChebyshevPolynomial">Tₙ(x) =
- * Pₙ(−½,−½,x) / Γ(n + 1/2)/(√(π)*Γ(n + 1))</a>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Type1ChebyshevPolynomialSequence extends
-                                              JacobiPolynomialSequence
+public class Type1ChebyshevPolynomialSequence implements
+                                              OrthogonalPolynomialSequence
 {
   @Override
   public void close()
@@ -85,12 +77,6 @@ public class Type1ChebyshevPolynomialSequence extends
 
   private RealFunction orthogonalityMeasure;
 
-  public Type1ChebyshevPolynomialSequence()
-  {
-    super(RealConstants.negHalf,
-          RealConstants.negHalf);
-  }
-
   @Override
   public Domain<Real> getDomain()
   {
@@ -102,7 +88,7 @@ public class Type1ChebyshevPolynomialSequence extends
   {
     if (orthogonalityMeasure == null)
     {
-      orthogonalityMeasure = RealFunction.express("w", "x➔1/√((1-x)²)", context);
+      orthogonalityMeasure = RealFunction.express("w", "x➔1/√((1-x)²)");
     }
     return orthogonalityMeasure;
   }
@@ -119,7 +105,7 @@ public class Type1ChebyshevPolynomialSequence extends
       {
         try ( Integer index = new Integer(n++))
         {
-          return P.evaluate(index, bits, new RealPolynomial());
+          return T.evaluate(index, bits, new RealPolynomial());
         }
       }
 

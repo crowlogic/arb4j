@@ -32,6 +32,11 @@ public class Integer implements
                      HasName
 {
 
+  public RealPolynomial mul( RealPolynomial x, int bits, RealPolynomial res )
+  {
+    return res.set(this).mul(x,bits);
+  }
+  
   public Real Γ(int bits, Real result)
   {
     return result.set(this).Γ(bits);
