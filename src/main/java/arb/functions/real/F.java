@@ -25,9 +25,8 @@ public class F implements
       initialize();
     }
 
-    return (C.evaluate(ℝ1.set(in.sub(c1, bits, ℤ1)), order, bits, ℝ2)).mul(C.evaluate(ℝ3.set(in), order, bits, ℝ4),
-                                                                           bits,
-                                                                           result);
+    return C.evaluate(ℝ1.set(in.sub(c1, bits, ℤ1)), order, bits, ℝ2)
+            .mul(C.evaluate(ℝ3.set(in), order, bits, ℝ4), bits, result);
   }
 
   public F()

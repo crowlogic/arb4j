@@ -161,8 +161,6 @@ public class When<D, R, F extends Function<D, R>> extends
     try
     {
       mv.visitCode();
-//      mv.visitFrame(F_SAME, 0, null, 0, new Object[]
-//      {});
 
       labels = new Label[cases.size()];
 

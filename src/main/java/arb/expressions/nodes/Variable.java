@@ -184,8 +184,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
                          "get",
                          Type.getMethodDescriptor(Type.getType(reference.type()), Type.getType(indexType)),
                          false);
-      mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
-      { Type.getInternalName(reference.type) });
 
     }
     else
@@ -202,7 +200,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if (isIndependent)
     {
       Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
-      // addTypeToStackMapFrame(mv, expression.domainType);
 
     }
     else if (isIndeterminant)
@@ -215,14 +212,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
                          format("()%s", expression.rangeType.descriptorString()),
                          false);
 
-      Compiler.addTypeToStackMapFrame(mv, expression.rangeType);
     }
     else
     {
-      // assert !isIndependentVariableOfParentExpression : "handle
-      // isIndependentVariableOfParentExpression: " + reference;
+
       expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type().descriptorString());
-      // addTypeToStackMapFrame(mv, reference.type());
 
     }
   }

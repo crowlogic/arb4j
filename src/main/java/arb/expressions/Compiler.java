@@ -375,11 +375,5 @@ public class Compiler
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
   }
 
-  public static void addTypeToStackMapFrame(MethodVisitor mv, Class<?> class1)
-  {
-    // System.out.println( "Adding " + class1 + " to StackMap");
-    mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
-    { Type.getInternalName(class1) });
-  }
 
 }

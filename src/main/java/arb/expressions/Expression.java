@@ -374,8 +374,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                        evaluationMethodDescriptor,
                        isInterface);
     MethodVisitor checkClassCast = Compiler.checkClassCast(mv, type);
-    mv.visitFrame(F_SAME1, 0, null, 1, new Object[]
-    { Type.getInternalName(type) });
+
     return checkClassCast;
 
   }
@@ -486,13 +485,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   public static boolean      computeFrames  = Boolean.valueOf(System.getProperty("expressionCompiler.computeFrames",
-                                                                                 "true"));
+                                                                                 "false"));
 
   public PrintWriter         printWriter;
 
   public boolean             verbose        = false;
 
-  public boolean             traceGenerator = true;
+  public boolean             traceGenerator = false;
 
   public Expression<?, ?, ?> parentExpression;
 
@@ -823,8 +822,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     mv.visitVarInsn(ALOAD, 0);
     mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
     Label alreadyInitializedLabel = new Label();
-    mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]
-    { Opcodes.INTEGER });
 
     mv.visitJumpInsn(Opcodes.IFEQ, alreadyInitializedLabel);
 

@@ -172,8 +172,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                         expression.typeStack);
     }
 
-   // mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
-
     if (func == null && mapping.functionInterface == null)
     {
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));

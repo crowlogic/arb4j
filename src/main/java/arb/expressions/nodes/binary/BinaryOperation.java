@@ -133,8 +133,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
     Class<?> targetResultType = expression.rangeType;
-
-    System.out.format("stack before calling loadBitsParameter in BinaryOperation.invokeMethod left=%s right=%s:\n %s\n", left, right, expression.typeStack );
     
     loadBitsParameter(mv);
     loadResult(mv, resultType, targetResultType);
