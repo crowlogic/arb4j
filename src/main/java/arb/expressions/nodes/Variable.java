@@ -6,10 +6,7 @@ import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -25,7 +22,6 @@ import arb.exceptions.UndefinedReferenceException;
 import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
-import arb.expressions.StackTrackingMethodVisitor;
 import arb.expressions.VariableReference;
 import arb.expressions.Variables;
 import arb.expressions.nodes.nary.Product;
@@ -33,10 +29,10 @@ import arb.functions.Function;
 
 /**
  * This class represents a {@link Variable} node within an {@link Expression} by
- * extending the {@link Node} class to provide additional functionality for managing
- * {@link VariableReference}s those registered in the {@link Context} and or those which are inputs
- * to the expression, or any upstream expression (in the case of nested-expressions such as for
- * {@link Product}s 
+ * extending the {@link Node} class to provide additional functionality for
+ * managing {@link VariableReference}s those registered in the {@link Context}
+ * and or those which are inputs to the expression, or any upstream expression
+ * (in the case of nested-expressions such as for {@link Product}s
  *
  * <p>
  * A variable can either be the independent variable , or the independent(input)
@@ -152,19 +148,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
       return false;
     var other = (Variable<?, ?, ?>) obj;
     return Objects.equals(reference, other.reference);
-  }
-
-  public static String printStack(MethodVisitor mv)
-  {
-    if (!(mv instanceof StackTrackingMethodVisitor))
-    {
-      return "";
-    }
-    else
-    {
-      Stream<List<Object>> stream = Stream.of(((StackTrackingMethodVisitor) mv).stack);
-      return stream.collect(Collectors.toList()).toString();
-    }
   }
 
   @Override

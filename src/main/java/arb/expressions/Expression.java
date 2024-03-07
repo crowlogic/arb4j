@@ -96,14 +96,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
 
-  public static final String  evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String evaluationMethodDescriptor = "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
-  private static final String IS_INITIALIZED             = "isInitialized";
+  public static final String IS_INITIALIZED             = "isInitialized";
 
-  private static final String nameOfInitializerFunction  = "initialize";
+  public static final String nameOfInitializerFunction  = "initialize";
 
-  public static boolean       saveClasses                = Boolean.valueOf(System.getProperty("expressionCompiler.saveClasses",
-                                                                                              "true"));
+  public static boolean      saveClasses                = Boolean.valueOf(System.getProperty("expressionCompiler.saveClasses",
+                                                                                             "true"));
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
                                                                Context context,
@@ -113,7 +113,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                String functionName)
   {
     FunctionMapping<?, ?> mapping = null;
-    if (functionName != null && context != null )
+    if (functionName != null && context != null)
     {
       mapping = context.registerFunctionMapping(functionName, null, domainClass, rangeClass, functionClass);
 
@@ -255,7 +255,13 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                           domainClassInternalName,
                                                           rangeClassInternalName,
                                                           rangeClassInternalName);
-    this.functionName                     = functionName;
+    parseOptionalInlineFunctionNameSpecification(expression, functionName);
+    saveClasses = context != null && context.saveClasses;
+  }
+
+  public void parseOptionalInlineFunctionNameSpecification(String expression, String functionName)
+  {
+    this.functionName = functionName;
     int colonCharacterIndex = expression.indexOf(":");
     if (colonCharacterIndex != -1)
     {
@@ -267,10 +273,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                             inlineFunctionName));
       }
       assert false : "functionName='" + functionName + "'";
-    }
-    if (context != null && context.saveClasses)
-    {
-      saveClasses = true;
     }
   }
 
@@ -553,7 +555,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return resolvePostfixOperators(node);
   }
 
-  private void throwMissingClosingParenthesisException(Object node)
+  public void throwMissingClosingParenthesisException(Object node)
   {
     throw new ExpressionCompilerException(format("expected closing parenthesis, instead "
                   + "got %c at position %s in expression '%s' %s=%s which is followed by %s ",
@@ -565,7 +567,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                  expression.substring(position, expression.length())));
   }
 
-  private VariableReference<D, R, F> evaluateName(int startPos)
+  public VariableReference<D, R, F> evaluateName(int startPos)
   {
     String        identifier = parseName(startPos);
     Node<D, R, F> index      = evaluateIndex();
@@ -573,7 +575,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                           index);
   }
 
-  private Node<D, R, F> evaluateIndex()
+  public Node<D, R, F> evaluateIndex()
   {
     Node<D, R, F> index = evaluateSquareBracketedIndex();
     if (index == null)
@@ -611,7 +613,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  private Node<D, R, F> evaluateSquareBracketedIndex()
+  public Node<D, R, F> evaluateSquareBracketedIndex()
   {
     Node<D, R, F> index = null;
     if (nextCharacterIs('['))
@@ -629,7 +631,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return index;
   }
 
-  private Node<D, R, F> evaluateSubscriptedIndex()
+  public Node<D, R, F> evaluateSubscriptedIndex()
   {
     if (nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
     {
@@ -716,8 +718,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return multiplyAndDivide(node);
   }
 
-  public static boolean trace = false;
-
   /**
    * Generate the implementation of the function after this{@link #parseRoot()}
    * has been invoked
@@ -732,17 +732,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     printWriter = new PrintWriter(System.out,
                                   false);
-
-    if (trace)
-    {
-      System.out.println("Generating " + rootNode);
-
-      // TODO: if stack debugging is enabled then use the StackTrackingTextifier
-      // instead of the regular Textifier here
-      classVisitor = new TraceClassVisitor(classVisitor,
-                                           new StackTrackingTextifier(),
-                                           printWriter);
-    }
 
     try
     {
@@ -818,14 +807,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  private void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
+  public void generateCodeToSetIsInitializedToTrue(MethodVisitor methodVisitor)
   {
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitInsn(Opcodes.ICONST_1);
     methodVisitor.visitFieldInsn(PUTFIELD, className, IS_INITIALIZED, "Z");
   }
 
-  private void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor mv)
+  public void generateCodeToThrowErrorIfAlreadyInitialized(MethodVisitor mv)
   {
 
     mv.visitVarInsn(ALOAD, 0);
@@ -846,7 +835,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   }
 
-  private void generateConditionalInitializater(MethodVisitor mv)
+  public void generateConditionalInitializater(MethodVisitor mv)
   {
     mv.visitVarInsn(ALOAD, 0);
     mv.visitFieldInsn(GETFIELD, className, IS_INITIALIZED, "Z");
@@ -941,7 +930,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  private void generateFunctionReference(MethodVisitor mv, FunctionMapping<D, R> mapping)
+  public void generateFunctionReference(MethodVisitor mv, FunctionMapping<D, R> mapping)
   {
     String fieldType = Type.getInternalName(mapping.type());
     mv.visitVarInsn(Opcodes.ALOAD, 0);
@@ -966,15 +955,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                         evaluationMethodDescriptor,
                                                         evaluateMethodSignature,
                                                         null);
-
-    if (verbose)
-    {
-      mv = new StackTrackingMethodVisitor(className,
-                                          Opcodes.F_NEW,
-                                          "evaluate",
-                                          evaluationMethodDescriptor,
-                                          mv);
-    }
 
     mv.visitCode();
     mv.visitLabel(startLabel);
@@ -1013,7 +993,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return classVisitor;
   }
 
-  private void throwNewUnexpectedCharacterException()
+  public void throwNewUnexpectedCharacterException()
   {
     throw new ExpressionCompilerException(String.format("unexpected '%c' character at position=%s in expression '%s' of length %d, remaining=%s\n",
                                                         character,
@@ -1173,7 +1153,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return instance;
   }
 
-  private F constructNewInstance() throws ReflectiveOperationException
+  public F constructNewInstance() throws ReflectiveOperationException
   {
     return instance = (compiledClass != null ? compiledClass : load()).getDeclaredConstructor().newInstance();
   }
@@ -1263,7 +1243,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return intermediateVarName;
   }
 
-  private Variable<D, R, F> newVariable(VariableReference<D, R, F> reference)
+  public Variable<D, R, F> newVariable(VariableReference<D, R, F> reference)
   {
     var contextVar = getVariable(reference);
     reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
@@ -1302,7 +1282,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return parseName(position);
   }
 
-  private String parseName(int startPos)
+  public String parseName(int startPos)
   {
     boolean entirelySubscripted = true;
     boolean isLatinOrGreek;
@@ -1380,7 +1360,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return intermediateVariableName;
   }
 
-  private Node<D, R, F> resolveFactorial(Node<D, R, F> node)
+  public Node<D, R, F> resolveFactorial(Node<D, R, F> node)
   {
     if (nextCharacterIs('!'))
     {
@@ -1390,7 +1370,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return node;
   }
 
-  private Node<D, R, F> resolveFunction(int startPos, VariableReference<D, R, F> reference)
+  public Node<D, R, F> resolveFunction(int startPos, VariableReference<D, R, F> reference)
   {
     if ("when".equals(reference.name))
     {
@@ -1443,14 +1423,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  private Node<D, R, F> resolvePostfixOperators(Node<D, R, F> node)
+  public Node<D, R, F> resolvePostfixOperators(Node<D, R, F> node)
   {
     node = resolveRisingFactorial(node);
     node = resolveFactorial(node);
     return node;
   }
 
-  private Node<D, R, F> resolveRisingFactorial(Node<D, R, F> node)
+  public Node<D, R, F> resolveRisingFactorial(Node<D, R, F> node)
   {
     if (nextCharacterIs('₍'))
     {

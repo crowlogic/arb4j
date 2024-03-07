@@ -45,5 +45,7 @@
  * </pre>
  * 
  * @author ©2024 Stephen Crowley
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 package arb.expressions;
