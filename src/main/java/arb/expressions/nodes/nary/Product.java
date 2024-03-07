@@ -430,7 +430,7 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   void loadIndexVariable(MethodVisitor methodVisitor)
   {
-    getField(methodVisitor, getIndexFieldName(), "Larb/Integer;");
+    getField(methodVisitor, getIndexFieldName(), Integer.class.descriptorString());
   }
 
   void loadResultingProductVariable(MethodVisitor methodVisitor)
