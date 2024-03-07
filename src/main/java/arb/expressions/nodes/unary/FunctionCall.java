@@ -159,7 +159,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {
-
+   
     Class<?>              outputType = type();
 
     FunctionMapping<D, R> mapping    = expression.context.functions.get(functionName);

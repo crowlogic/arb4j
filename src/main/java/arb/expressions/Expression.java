@@ -1,11 +1,26 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.addNullCheckForField;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.express;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getVariableSuffix;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadFunctionClass;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.io.File;
 import java.io.IOException;
@@ -112,6 +127,20 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                Class<? extends F> functionClass,
                                                                String functionName)
   {
+    int colonCharacterIndex = expression.indexOf(":");
+    if (colonCharacterIndex != -1)
+    {
+      String inlineFunctionName = expression.substring(0, colonCharacterIndex);
+      if (functionName != null && !functionName.equals(inlineFunctionName))
+      {
+        throw new ExpressionCompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
+                                                            functionName,
+                                                            inlineFunctionName));
+      }
+      functionName = inlineFunctionName;
+      expression   = expression.substring(colonCharacterIndex + 1, expression.length());
+    }
+    
     FunctionMapping<?, ?> mapping = null;
     if (functionName != null && context != null)
     {
@@ -251,33 +280,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.expression                       = Parser.replaceArrowsAndEllipses(expression);
     this.context                          = context;
     this.variables                        = context != null ? context.variables : null;
+    this.functionName                     = functionName;
     evaluateMethodSignature               = String.format("(L%s;IIL%s;)L%s;",
                                                           domainClassInternalName,
                                                           rangeClassInternalName,
                                                           rangeClassInternalName);
-    parseOptionalInlineFunctionNameSpecification(expression, functionName);
     if (context != null && context.saveClasses)
     {
       saveClasses = true;
     }
   }
 
-  public void parseOptionalInlineFunctionNameSpecification(String expression, String functionName)
-  {
-    this.functionName = functionName;
-    int colonCharacterIndex = expression.indexOf(":");
-    if (colonCharacterIndex != -1)
-    {
-      String inlineFunctionName = expression.substring(0, colonCharacterIndex);
-      if (functionName != null && !functionName.equals(inlineFunctionName))
-      {
-        throw new ExpressionCompilerException(String.format("functionName='%s' specified via function argument != inlineFunctionName='%s'",
-                                                            functionName,
-                                                            inlineFunctionName));
-      }
-      assert false : "functionName='" + functionName + "'";
-    }
-  }
 
   public Node<D, R, F> addAndSubtract(Node<D, R, F> node)
   {
@@ -665,8 +678,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public Expression<D, R, F> parseRoot()
   {
-    assert position == -1 : "parse must only be called before anything else has been parsed but position="
-                  + position;
+    assert rootNode == null : "parse must only be called before anything else has been parsed but rootNode="
+                  + rootNode;
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
     rootNode = determine();
@@ -773,7 +786,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       File file = new File(className + ".class");
       writeBytecodes(file);
     }
-   
+
     return this;
   }
 
@@ -901,7 +914,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else
     {
       assert nestedFunction.name.equals(functionName) : "nestedFunction.func should not be null if its"
-                    + " not the recursive function referring to itself";
+                    + " not the recursive function referring to itself, "
+                    + String.format("nestedFunction.name=%s, name=%s\n", nestedFunction.name, functionName);
 
     }
 

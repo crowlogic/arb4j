@@ -12,6 +12,7 @@ import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.domains.Domain;
+import arb.expressions.Context;
 import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
@@ -25,7 +26,8 @@ import arb.functions.real.RealFunction;
  * 
  * <br>
  * 
- * <a href="https://github.com/crowlogic/arb4j/wiki/ChebyshevPolynomial">Tₙ(x) = Pₙ(−½,−½,x) / Γ(n + 1/2)/(√(π)*Γ(n + 1))</a>
+ * <a href="https://github.com/crowlogic/arb4j/wiki/ChebyshevPolynomial">Tₙ(x) =
+ * Pₙ(−½,−½,x) / Γ(n + 1/2)/(√(π)*Γ(n + 1))</a>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
@@ -39,12 +41,18 @@ public class Type1ChebyshevPolynomialSequence extends
     norm.close();
   }
 
-  Real norm = new Real();
+  Real                              norm = new Real();
+
+  Function<Integer, RealPolynomial> T    = Function.express(Integer.class,
+                                                            RealPolynomial.class,
+                                                            "T:n->when(n=0,1,n=1,x,else,2*x*T(n-1)-T(n-2))");
 
   @Override
   public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
   {
-    return super.evaluate(n, order, bits, res).div(normalizationFactor.evaluate(n, bits, norm), bits);
+    return T.evaluate(n, order, bits, res);
+    // return super.evaluate(n, order, bits,
+    // res).div(normalizationFactor.evaluate(n, bits, norm), bits);
   }
 
   int                     bits                = 128;
@@ -62,7 +70,7 @@ public class Type1ChebyshevPolynomialSequence extends
       IntStream.range(0, 10).forEach(n ->
       {
         RealPolynomial poly = T.evaluate(index.set(n), 1, 128, new RealPolynomial());
-        
+
         out.format("T(%d,x)=%s\n", n, poly);
       });
 

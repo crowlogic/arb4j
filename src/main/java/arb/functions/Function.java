@@ -11,7 +11,7 @@ import arb.functions.complex.ComplexFunction;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
- * {@link TheArb4jLibrary}
+ *      {@link TheArb4jLibrary}
  * 
  * @param <D>
  * @param <R>
@@ -165,14 +165,14 @@ public interface Function<D, R> extends
          F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, boolean verbose)
   {
-    return (F) instantiate(expression, null, domainClass, rangeClass, Function.class, null);
+    return (F) instantiate(expression, new Context(), domainClass, rangeClass, Function.class, null);
   }
 
   public static <D, R> Function<D, R> express(Class<? extends D> domainClass,
                                               Class<? extends R> rangeClass,
                                               String expression)
   {
-    return express(domainClass, rangeClass, expression, null);
+    return express(domainClass, rangeClass, expression, new Context());
   }
 
   public static <D, R> Function<? extends D, ? extends R> express(Class<? extends D> domainClass,
