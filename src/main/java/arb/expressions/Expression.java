@@ -554,11 +554,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      return new Product<D, R, F>(this).evaluateRangeSpecification();
+      return new Product<D, R, F>(this);
     }
     else if (nextCharacterIs('∑', 'Σ'))
     {
-      return new Sum<D, R, F>(this).evaluateRangeSpecification();
+      return new Sum<D, R, F>(this);
     }
     else if (Parser.isNumeric(character))
     {

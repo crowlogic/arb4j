@@ -156,30 +156,28 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
       expression.context = new Context();
     }
     this.factor   = parseFactorExpression();
-
     functionClass = expression.className;
     assert functionClass != null : "functionClass is null";
-    generatedType = (RealPolynomial.class.equals(expression.rangeType) ? Real.class : expression.rangeType);
+    generatedType         = (RealPolynomial.class.equals(expression.rangeType) ? Real.class : expression.rangeType);
+    expression.position  += factor.length();
+    expression.character  = expression.expression.charAt(expression.position);
+    evaluateRangeSpecification();
   }
 
   protected String parseFactorExpression()
   {
     int length     = expression.expression.length();
     int startPos   = expression.position;
-    /**
-     * TODO: read until first rightArrow character, the chars between the operator
-     * symbol and the arrow are the indexing-variable, when it gets to the end of
-     * the expression and the range is expressed {n=a...b} the variable n must match
-     * the name that was designated with the arrow , this keeps the parser markovian
-     * so that it doesnt have to keep track of how deep the inner expression goes
-     * without knowing what the index variable is
-     */
-    int arrowIndex = expression.remaining().indexOf('➔');
-    assert arrowIndex == -1 : "TODO: set index with parseName then move the expression.position so that it points to the first character after the arrow, expression="
-                  + expression.expression;
+    int arrowIndex = expression.remaining().indexOf('➔') + expression.position;
 
-    int rangeSpecificationPosition = index != null ? expression.expression.indexOf(String.format("{%s=",
-                                                                                                 index)) : -1;
+    if (arrowIndex != -1)
+    {
+      index               = expression.expression.substring(startPos, arrowIndex);
+      expression.position = arrowIndex + 1;
+    }
+
+    int rangeSpecificationPosition = index != null ? expression.expression.indexOf(String.format("{%s=", index),
+                                                                                   expression.position) : -1;
     if (rangeSpecificationPosition == -1)
     {
       while (expression.character != '{' && expression.position < length)
@@ -192,7 +190,7 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     else
     {
 
-      String pos = expression.expression.substring(startPos, rangeSpecificationPosition).trim();
+      String pos = expression.expression.substring(arrowIndex + 1, rangeSpecificationPosition).trim();
       System.out.println("Returning " + pos);
       return pos;
     }
