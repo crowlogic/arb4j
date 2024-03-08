@@ -59,7 +59,7 @@ public class HypergeometricPolynomial implements
                                       α = Real.newVector(p).setName("α"),
                                       β = Real.newVector(q).setName("β"));
     context.saveClasses = true;
-    F                   = RealFunction.express("F", "z➔Σ(n➔zⁿ*∏α[k]₍ₙ₎{k=1…p}/n!*∏β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
+    F                   = RealFunction.express("F", "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/n!*∏k➔β[k]₍ₙ₎{k=1…q}{n=0…N}", context);
   }
 
   @Override

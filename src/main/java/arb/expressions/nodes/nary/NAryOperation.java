@@ -164,14 +164,37 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
 
   protected String parseFactorExpression()
   {
-    int length   = expression.expression.length();
-    int startPos = expression.position;
-    while (expression.character != '{' && expression.position < length)
-    {
-      expression.nextCharacter();
-    }
+    int length     = expression.expression.length();
+    int startPos   = expression.position;
+    /**
+     * TODO: read until first rightArrow character, the chars between the operator
+     * symbol and the arrow are the indexing-variable, when it gets to the end of
+     * the expression and the range is expressed {n=a...b} the variable n must match
+     * the name that was designated with the arrow , this keeps the parser markovian
+     * so that it doesnt have to keep track of how deep the inner expression goes
+     * without knowing what the index variable is
+     */
+    int arrowIndex = expression.expression.indexOf('➔');
+    assert arrowIndex == -1 : "TODO: set index with parseName then move the expression.position so that it points to the first character after the arrow";
 
-    return expression.expression.substring(startPos, expression.position).trim();
+    int rangeSpecificationPosition = index != null ? expression.expression.indexOf(String.format("{%s=",
+                                                                                                 index)) : -1;
+    if (rangeSpecificationPosition == -1)
+    {
+      while (expression.character != '{' && expression.position < length)
+      {
+        expression.nextCharacter();
+      }
+
+      return expression.expression.substring(startPos, expression.position).trim();
+    }
+    else
+    {
+
+      String pos = expression.expression.substring(startPos, rangeSpecificationPosition).trim();
+      System.out.println("Returning " + pos);
+      return pos;
+    }
   }
 
   protected void designateLabel(MethodVisitor mv, Label label, boolean appendRealToFrame)
@@ -206,7 +229,20 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     {
       throwException(format(MISSING_OPENING_CURLY_BRACE, "Π", expression.character, expression.remaining()));
     }
-    index = expression.parseName();
+    if (index != null)
+    {
+      String shouldBeIndex = expression.parseName();
+      if (!index.equals(shouldBeIndex))
+      {
+        throw new ExpressionCompilerException(String.format("index variable specified in the range specification '%s' != the index variable specified between the operator symbol and the right arrow '%s'",
+                                                            shouldBeIndex,
+                                                            index));
+      }
+    }
+    else
+    {
+      index = expression.parseName();
+    }
     if (!expression.nextCharacterIs('='))
     {
       throw new ExpressionCompilerException("Expected = character after index variable name at position "
