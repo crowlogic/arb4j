@@ -1,1 +1,1 @@
-Create SymmetricGroupOddConjugacyClassCounts class extending IntegerSequence #331
+expression compiler: support utf superscript chars for exponentiation #348
