@@ -191,7 +191,10 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     {
 
       String pos = expression.expression.substring(arrowIndex + 1, rangeSpecificationPosition).trim();
-      System.out.println("Returning " + pos);
+      if (expression.verbose)
+      {
+        System.out.println("parseFactorExpression: Returning " + pos);
+      }
       return pos;
     }
   }
