@@ -290,7 +290,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public Node<D, R, F> addAndSubtract(Node<D, R, F> node)
+  public Node<D, R, F> performArithmeticalOperations(Node<D, R, F> node)
   {
     while (true)
     {
@@ -517,12 +517,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * Apply the order of operations except for parenthesis
    * 
    * @return the result of passing this{@link #exponentiateMultiplyAndDivide()} to
-   *         this{@link #addAndSubtract(Node)}
+   *         this{@link #performArithmeticalOperations(Node)}
    */
   public Node<D, R, F> determine()
   {
     Node<D, R, F> node = exponentiateMultiplyAndDivide();
-    return addAndSubtract(node);
+    return performArithmeticalOperations(node);
   }
 
   /**
@@ -554,7 +554,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       return new Product<D, R, F>(this).evaluateRangeSpecification();
     }
-    else if (nextCharacterIs('∑','Σ'))
+    else if (nextCharacterIs('∑', 'Σ'))
     {
       return new Sum<D, R, F>(this).evaluateRangeSpecification();
     }
@@ -1381,7 +1381,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (nextCharacterIs('!'))
     {
       return new Factorialization<D, R, F>(this,
-                                    node);
+                                           node);
     }
     return node;
   }
