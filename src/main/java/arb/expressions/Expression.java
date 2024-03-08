@@ -211,7 +211,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   protected byte[]                                instructions;
 
-  public HashMap<String, AtomicInteger>           intermediateVariableCounters  = new HashMap<>();
 
   public ArrayList<IntermediateVariable<D, R, F>> intermediateVariables         = new ArrayList<>();
 
@@ -1106,11 +1105,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String getNextIntermediateVariableFieldName(String name, Class<?> type)
   {
+    if ( context == null )
+    {
+      context = new Context();
+    }
     String        prefix  = name + getVariableSuffix(type);
-    AtomicInteger counter = intermediateVariableCounters.get(prefix);
+    AtomicInteger counter = context.intermediateVariableCounters.get(prefix);
     if (counter == null)
     {
-      intermediateVariableCounters.put(prefix, counter = new AtomicInteger(1));
+      context.intermediateVariableCounters.put(prefix, counter = new AtomicInteger(1));
     }
     return prefix + counter.getAndIncrement();
   }

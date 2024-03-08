@@ -4,7 +4,9 @@ import static java.lang.String.format;
 import static java.lang.System.err;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import arb.HasName;
@@ -38,11 +40,6 @@ import arb.functions.Function;
  * functions are localized and maintained.
  * </p>
  * 
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
- * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
@@ -55,6 +52,8 @@ public class Context
     this.variables = new Variables();
     this.functions = new FunctionMappings();
   }
+
+  public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
   public Context(Variables variables, FunctionMappings functions)
   {
@@ -160,7 +159,7 @@ public class Context
     mapping.name              = functionName;
     mapping.domain            = domainType;
     mapping.range             = rangeType;
-    mapping.function              = function;
+    mapping.function          = function;
     mapping.functionInterface = functionClass;
     functions.map.put(functionName, mapping);
     return mapping;
@@ -192,6 +191,6 @@ public class Context
 
   public Real registerVariable(Real var)
   {
-    return registerVariable(var.getName(), var);    
+    return registerVariable(var.getName(), var);
   }
 }

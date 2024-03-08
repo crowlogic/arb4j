@@ -462,7 +462,7 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
 
   void loadVariableThatHoldsTheEvaluatedFactor(MethodVisitor methodVisitor)
   {
-    loadFieldFromThis(methodVisitor, factorValueFieldName, Real.class);
+    loadFieldFromThis(methodVisitor, factorValueFieldName, type() );
   }
 
   private void parseEndIndex()
