@@ -281,7 +281,10 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     String expr = format("%s➔%s", getIndexFieldName(), factor);
     if (expression.traceGenerator)
     {
-      System.out.format("0xdeadb33f: generateFactorClass( expr=%s,resultType=%s)\n", expr, resultType);
+      System.out.format("%s: generateFactorClass( expr=%s,resultType=%s)\n",
+                        getClass().getSimpleName(),
+                        expr,
+                        resultType);
 
     }
     Expression<Integer, ?, Function<Integer, Object>> factorExpression = Compiler.express(factorFunctionFieldName,
