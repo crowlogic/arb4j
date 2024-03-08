@@ -11,8 +11,8 @@ import arb.expressions.Expression;
 import arb.functions.Function;
 
 /**
- * Parse represent and generate bytecodes for the product operator where the
- * syntax is ∏f(k){k=a…b} and the characters between the Π and { characters are
+ * Parse represent and generate bytecodes for the sum operator where the
+ * syntax is ∑f(k){k=a…b} and the characters between the Π and { characters are
  * compiled as a sub-expression as a function from the {@link Integer} index
  * variable to whatever type is output by default or requested by whatever is
  * requesting its generation
@@ -24,11 +24,11 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Product<D, R, F extends Function<D, R>> extends
-                    NAryOperation<D, R, F>
+public class Sum<D, R, F extends Function<D, R>> extends
+                NAryOperation<D, R, F>
 {
 
-  public Product(Expression<D, R, F> expression)
+  public Sum(Expression<D, R, F> expression)
   {
     super(expression);
   }
@@ -36,21 +36,21 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
   {
-    resultVariable = expression.reserveIntermediateVariable(mv, "∏", resultType);
-    invokeMethod(mv, resultType, "multiplicativeIdentity", getMethodDescriptor(resultType), false);
+    resultVariable = expression.reserveIntermediateVariable(mv, "∑", resultType);
+    invokeMethod(mv, resultType, "additiveIdentity", getMethodDescriptor(resultType), false);
     pop(mv);
   }
 
   @Override
   public MethodVisitor operate(MethodVisitor mv)
   {
-    multiplyFactor(mv);
+    addFactor(mv);
     return mv;
   }
 
-  public void multiplyFactor(MethodVisitor mv)
+  public void addFactor(MethodVisitor mv)
   {
-    invokeMethod(mv, generatedType, "mul", getMethodDescriptor(generatedType, generatedType, int.class), false);
+    invokeMethod(mv, generatedType, "add", getMethodDescriptor(generatedType, generatedType, int.class), false);
   }
 
 }

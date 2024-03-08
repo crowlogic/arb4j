@@ -23,14 +23,28 @@ import org.objectweb.asm.Type;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
 import arb.expressions.Compiler;
+import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
+/**
+ * abstract base class for {@link Product} and {@link Sum}
+ * 
+ * @param <D> domain
+ * @param <R> range
+ * @param <F> {@link Function}
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
                                    Node<D, R, F>
 {
@@ -76,6 +90,39 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     return methodVisitor;
   }
 
+  @Override
+  public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
+  {
+    resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
+
+    assignFieldNames(resultType);
+
+    prepareIndexVariable();
+
+    generateFactorClass(resultType);
+
+    propagateInputToFactorClass(mv);
+
+    initializeResultVariable(mv, resultType);
+
+    setIndexToTheStartIndex(mv);
+
+    generateEndingIndex(mv);
+
+    designateLabel(mv, beginningOfTheLoop, expression.isRealNumberOnTopOfTheStack());
+
+    generateInnerLoop(mv);
+
+    compareIndexToEndIndex(mv);
+
+    jumpToIfLessThanOrEquals(mv, beginningOfTheLoop);
+
+    assignResult(mv, resultType);
+
+    return mv;
+
+  }
+
   protected Label      beginningOfTheLoop = new Label();
   public Node<D, R, F> endIndex;
   public String        factor;
@@ -104,6 +151,15 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
   public NAryOperation(Expression<D, R, F> expression)
   {
     super(expression);
+    if (expression.context == null)
+    {
+      expression.context = new Context();
+    }
+    this.factor   = parseFactorExpression();
+
+    functionClass = expression.className;
+    assert functionClass != null : "functionClass is null";
+    generatedType = (RealPolynomial.class.equals(expression.rangeType) ? Real.class : expression.rangeType);
   }
 
   protected String parseFactorExpression()
