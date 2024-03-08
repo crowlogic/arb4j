@@ -140,7 +140,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       functionName = inlineFunctionName;
       expression   = expression.substring(colonCharacterIndex + 1, expression.length());
     }
-    
+
     FunctionMapping<?, ?> mapping = null;
     if (functionName != null && context != null)
     {
@@ -290,7 +290,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
       saveClasses = true;
     }
   }
-
 
   public Node<D, R, F> addAndSubtract(Node<D, R, F> node)
   {

@@ -43,15 +43,11 @@ public class Type1ChebyshevPolynomialSequence implements
   public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
   {
     return T.evaluate(n, order, bits, res);
-    // return super.evaluate(n, order, bits,
-    // res).div(normalizationFactor.evaluate(n, bits, norm), bits);
+    
   }
 
   int                     bits                = 128;
 
-  Function<Integer, Real> normalizationFactor = Function.express(Integer.class,
-                                                                 Real.class,
-                                                                 "Γ(n + 1/2)/(√(π)*Γ(n + 1))");
 
   public static void main(String args[])
   {

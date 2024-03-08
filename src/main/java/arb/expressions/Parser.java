@@ -190,13 +190,11 @@ public class Parser
     return character == '₍' || character == '₎';
   }
 
-  public static final HashSet<Character> SUBSCRIPT_CHARACTERS       = new HashSet<Character>(Arrays.asList(new Character[]
+  public static final HashSet<Character> SUBSCRIPT_CHARACTERS   = new HashSet<Character>(Arrays.asList(new Character[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
     'ₜ' }));
-  public static final char[]             SUBSCRIPT_CHARACTERS_ARRAY = new char[]
-  { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
-    'ₜ' };
-  public static final char[]             SUBSCRIPT_DIGITS_ARRAY     = new char[]
+
+  public static final char[]             SUBSCRIPT_DIGITS_ARRAY = new char[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉' };
 
 }

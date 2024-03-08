@@ -1,7 +1,17 @@
 package arb.expressions;
 
 import static arb.expressions.Parser.expressionToUniqueClassname;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ACC_SUPER;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.DUP2_X1;
+import static org.objectweb.asm.Opcodes.DUP_X1;
+import static org.objectweb.asm.Opcodes.DUP_X2;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.POP2;
+import static org.objectweb.asm.Opcodes.SWAP;
+import static org.objectweb.asm.Opcodes.V21;
+import static org.objectweb.asm.Opcodes.V_PREVIEW;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
@@ -374,6 +384,5 @@ public class Compiler
   {
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
   }
-
 
 }
