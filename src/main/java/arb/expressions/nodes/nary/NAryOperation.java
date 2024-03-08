@@ -174,8 +174,9 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
      * so that it doesnt have to keep track of how deep the inner expression goes
      * without knowing what the index variable is
      */
-    int arrowIndex = expression.expression.indexOf('➔');
-    assert arrowIndex == -1 : "TODO: set index with parseName then move the expression.position so that it points to the first character after the arrow";
+    int arrowIndex = expression.remaining().indexOf('➔');
+    assert arrowIndex == -1 : "TODO: set index with parseName then move the expression.position so that it points to the first character after the arrow, expression="
+                  + expression.expression;
 
     int rangeSpecificationPosition = index != null ? expression.expression.indexOf(String.format("{%s=",
                                                                                                  index)) : -1;
