@@ -47,11 +47,11 @@ public class ExpressionTest extends
 
     try ( Real λ = new Real())
     {
-      Context                 context  = new Context(λ.setName("λ"));
+      Context                 context  = new Context(λ.setName("λ").set("3.5", 128));
       Function<Integer, Real> f        = Function.express(Integer.class, Real.class, "n➔(λ*2)₍ₙ₎/(λ+½)₍ₙ₎", context);
-      Integer                 in       = new Integer(3);
+      Integer                 in       = new Integer(4);
       Real                    evaluate = f.evaluate(in, 128, new Real());
-      System.out.println(evaluate);
+      assertEquals(6.0, evaluate.doubleValue());
     }
   }
 

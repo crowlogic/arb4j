@@ -63,6 +63,7 @@ import arb.expressions.nodes.binary.Multiplication;
 import arb.expressions.nodes.binary.RisingFactorial;
 import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.nary.Product;
+import arb.expressions.nodes.nary.Sum;
 import arb.expressions.nodes.unary.Factorial;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
@@ -554,6 +555,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     else if (nextCharacterIs('Π', '∏'))
     {
       return new Product<D, R, F>(this).evaluateRangeSpecification();
+    }
+    else if (nextCharacterIs('∑','Σ'))
+    {
+      return new Sum<D, R, F>(this).evaluateRangeSpecification();
     }
     else if (Parser.isNumeric(character))
     {

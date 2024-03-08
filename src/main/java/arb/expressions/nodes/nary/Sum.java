@@ -17,6 +17,8 @@ import arb.functions.Function;
  * variable to whatever type is output by default or requested by whatever is
  * requesting its generation
  * 
+ * TODO: use ⨊ which is the <a href="https://symbl.cc/en/2A0A/">modulo 2 sum</a>
+ * 
  * @param <D> domain
  * @param <R> range
  * @param <F> {@link Function}
