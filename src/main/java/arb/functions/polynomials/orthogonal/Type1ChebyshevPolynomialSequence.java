@@ -16,9 +16,8 @@ import arb.functions.real.RealFunction;
 
 /**
  * 
- * TODO: unit tests <br>
- * 
- * The Chebyshev polynomials of the first kind are defined by 2*x*T(n-1)-T(n-2)) with initial conditions T(0)=1, T(1)=x
+ * The Chebyshev polynomials of the first kind are defined by 2*x*T(n-1)-T(n-2))
+ * with initial conditions T(0)=1, T(1)=x
  * 
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -27,33 +26,24 @@ import arb.functions.real.RealFunction;
 public class Type1ChebyshevPolynomialSequence implements
                                               OrthogonalPolynomialSequence
 {
-  @Override
-  public void close()
-  {
-    norm.close();
-  }
 
-  Real                              norm = new Real();
-
-  Function<Integer, RealPolynomial> T    = Function.express(Integer.class,
-                                                            RealPolynomial.class,
-                                                            "T:n->when(n=0,1,n=1,x,else,2*x*T(n-1)-T(n-2))");
+  Function<Integer, RealPolynomial> T = Function.express(Integer.class,
+                                                         RealPolynomial.class,
+                                                         "T:n->when(n=0,1,n=1,x,else,2*x*T(n-1)-T(n-2))");
 
   @Override
   public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)
   {
     return T.evaluate(n, order, bits, res);
-    
+
   }
 
-  int                     bits                = 128;
-
+  int bits = 128;
 
   public static void main(String args[])
   {
-    Type1ChebyshevPolynomialSequence T = new Type1ChebyshevPolynomialSequence();
 
-    try ( Integer index = new Integer())
+    try ( Type1ChebyshevPolynomialSequence T = new Type1ChebyshevPolynomialSequence(); Integer index = new Integer())
     {
       IntStream.range(0, 10).forEach(n ->
       {
@@ -101,6 +91,8 @@ public class Type1ChebyshevPolynomialSequence implements
       {
         try ( Integer index = new Integer(n++))
         {
+          // FIXME: these will be leaked unless something like the Cleanable interface is
+          // implemented if the caller doesnt close them as they are iterated over
           return T.evaluate(index, bits, new RealPolynomial());
         }
       }
