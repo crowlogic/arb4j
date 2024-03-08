@@ -152,7 +152,10 @@ public class Parser
   { 'ᵃ', 'ᵇ', 'ᶜ', 'ᵈ', 'ᵉ', 'ᶠ', 'ᵍ', 'ʰ', 'ⁱ', 'ʲ', 'ᵏ', 'ˡ', 'ᵐ', 'ⁿ', 'ᵒ', 'ᵖ', 0x107A5, 'ʳ', 'ˢ', 'ᵗ', 'ᵘ', 'ᵛ',
     'ʷ', 'ˣ', 'ʸ', 'ᶻ' };
 
-  int[]                                  uppercaseSuperscriptAlphabet    =
+  /**
+   * Not all uppercase letters have UTF superscript representations
+   */
+  public static int[]                    uppercaseSuperscriptAlphabet =
   { 'ᴬ', 'ᴮ', 'ᴰ', 'ᴱ', 'ᴳ', 'ᴴ', 'ᴵ', 'ᴶ', 'ᴷ', 'ᴸ', 'ᴹ', 'ᴺ', 'ᴼ', 'ᴾ', 'ᴿ', 'ᵀ', 'ᵁ', 'ⱽ', 'ᵂ' };
 
 }
