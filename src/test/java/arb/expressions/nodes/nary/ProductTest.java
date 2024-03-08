@@ -124,7 +124,7 @@ public class ProductTest extends
 
   public static void testOneTimesTwoTimesThreeTimesfourEqualsTwentyFour() throws AnalyzerException
   {
-    NullaryFunction<Real> prod = RealNullaryFunction.express("∏k{k=1…4}");
+    NullaryFunction<Real> prod = RealNullaryFunction.express("∏cool{cool=1…4}");
     assertEquals(24.0, prod.evaluate(null, 128, new Real()).doubleValue());
   }
 

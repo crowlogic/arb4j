@@ -339,8 +339,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
           else
           {
             throw new UnsupportedOperationException("no contextual variable for varName='" + varName
-                          + "' and independent variable reference =" + independentVariableNode
-                          + " where parentExpression=" + parentExpression);
+                          + "' and independent variable reference is " + independentVariableNode
+                          + " where parentExpression=" + parentExpression + " and this expression=" + this);
           }
         }
         else
@@ -686,9 +686,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
                   + rootNode;
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
-    if ( verbose )
+    if (verbose)
     {
-      System.out.println( "parseRoot " + expression );
+      System.out.println("parseRoot " + expression);
     }
     rootNode = resolve();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='" + expression + "'";

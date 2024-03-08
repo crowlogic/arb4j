@@ -158,9 +158,12 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     this.factor   = parseFactorExpression();
     functionClass = expression.className;
     assert functionClass != null : "functionClass is null";
-    generatedType         = (RealPolynomial.class.equals(expression.rangeType) ? Real.class : expression.rangeType);
-    expression.position  += factor.length();
-    expression.character  = expression.expression.charAt(expression.position);
+    generatedType = (RealPolynomial.class.equals(expression.rangeType) ? Real.class : expression.rangeType);
+    if (index != null)
+    {
+      expression.position += factor.length();
+    }
+    expression.character = expression.expression.charAt(expression.position);
     evaluateRangeSpecification();
   }
 
@@ -168,7 +171,7 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
   {
     int length     = expression.expression.length();
     int startPos   = expression.position;
-    int arrowIndex = expression.remaining().indexOf('➔') + expression.position;
+    int arrowIndex = expression.expression.indexOf('➔', expression.position);
 
     if (arrowIndex != -1)
     {
@@ -185,16 +188,12 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
         expression.nextCharacter();
       }
 
-      return expression.expression.substring(startPos, expression.position).trim();
+      String str = expression.expression.substring(startPos, expression.position).trim();
+      return str;
     }
     else
     {
-
       String pos = expression.expression.substring(arrowIndex + 1, rangeSpecificationPosition).trim();
-      if (expression.verbose)
-      {
-        System.out.println("parseFactorExpression: Returning " + pos);
-      }
       return pos;
     }
   }
