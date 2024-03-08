@@ -16,8 +16,8 @@ public class Type1ChebyshevPolynomialSequenceTest extends
 {
   public static void test4thType1ChebyshevPolynomial()
   {
-    Type1ChebyshevPolynomialSequence T = new Type1ChebyshevPolynomialSequence();
-    try ( Integer n = new Integer(); Real correct = Real.newVector(5);)
+    try ( Type1ChebyshevPolynomialSequence T = new Type1ChebyshevPolynomialSequence(); Integer n = new Integer();
+          Real correct = Real.newVector(5);)
     {
       RealPolynomial T4 = T.evaluate(n.set(4), 1, 128, new RealPolynomial());
       correct.set(1, 0, -8, 0, 8);
