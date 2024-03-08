@@ -290,7 +290,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public Node<D, R, F> performArithmeticalOperations(Node<D, R, F> node)
+  public Node<D, R, F> applyOperationsInOrder(Node<D, R, F> node)
   {
     while (true)
     {
@@ -514,15 +514,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * Apply the order of operations except for parenthesis
+   * Apply the order of operations except for parenthesis by first calling
+   * this{@link #exponentiateMultiplyAndDivide()} then passing the result to
+   * {@link #applyOperationsInOrder(Node)}
    * 
    * @return the result of passing this{@link #exponentiateMultiplyAndDivide()} to
-   *         this{@link #performArithmeticalOperations(Node)}
+   *         this{@link #applyOperationsInOrder(Node)}
    */
-  public Node<D, R, F> determine()
+  public Node<D, R, F> resolve()
   {
     Node<D, R, F> node = exponentiateMultiplyAndDivide();
-    return performArithmeticalOperations(node);
+    return applyOperationsInOrder(node);
   }
 
   /**
@@ -542,7 +544,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (nextCharacterIs('('))
     {
-      node = determine();
+      node = resolve();
 
       if (!nextCharacterIs(')'))
       {
@@ -635,7 +637,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     Node<D, R, F> index = null;
     if (nextCharacterIs('['))
     {
-      index = determine();
+      index = resolve();
       if (!nextCharacterIs(']'))
       {
         throw new ExpressionCompilerException(format("Expected closing ] at position %d in %s but got %c and the rest is %s",
@@ -672,7 +674,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   /**
    * Calls this{@link #evaluateOptionalIndependentVariableSpecification()} before
-   * calling this{@link #determine()} and assigning the result to
+   * calling this{@link #resolve()} and assigning the result to
    * this{@link #rootNode}
    * 
    * @return this
@@ -684,7 +686,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                   + rootNode;
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
-    rootNode = determine();
+    rootNode = resolve();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='" + expression + "'";
     rootNode.isResult = true;
     return this;
@@ -706,7 +708,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       node = new Exponentiation<>(this,
                                   node,
-                                  parenthetical ? determine() : evaluate());
+                                  parenthetical ? resolve() : evaluate());
       if (parenthetical)
       {
         if (!nextCharacterIs(')'))
@@ -1394,7 +1396,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else
     {
-      Node<D, R, F> arg = determine();
+      Node<D, R, F> arg = resolve();
       if (nextCharacterIs(')'))
       {
         return new FunctionCall<>(this,
@@ -1450,7 +1452,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (nextCharacterIs('₍'))
     {
-      Node<D, R, F> power = determine();
+      Node<D, R, F> power = resolve();
       if (nextCharacterIs('₎'))
       {
         node = new RisingFactorial<D, R, F>(this,

@@ -428,7 +428,7 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
 
   private void parseStartIndex()
   {
-    startIndex = expression.determine();
+    startIndex = expression.resolve();
     if (!expression.nextCharacterIs('…'))
     {
       throwException(format(MISSING_ELLIPSIS, "∏", expression.character, expression.position, expression));
