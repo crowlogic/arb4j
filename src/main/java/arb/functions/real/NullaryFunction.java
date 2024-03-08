@@ -18,14 +18,14 @@ public interface NullaryFunction<R> extends
 
  
   @SuppressWarnings("unchecked")
-  public static <R, F extends NullaryFunction<R>>
+  public static <R>
          F
          express(Class<? extends R> rangeClass, String functionName, String expression, Context context)
   {
     return (F) instantiate(expression, context, Void.class, rangeClass, NullaryFunction.class, functionName);
   }
 
-  public static <R> NullaryFunction<R> express(Class<? extends R> rangeClass, String expression)
+  public static <R> F express(Class<? extends R> rangeClass, String expression)
   {
     return express(rangeClass, null, expression, null);
   }
