@@ -500,7 +500,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public PrintWriter         printWriter;
 
-  public boolean             verbose        = false;
+  public boolean             verbose        = true;
 
   public boolean             traceGenerator = false;
 
@@ -686,6 +686,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
                   + rootNode;
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
+    if ( verbose )
+    {
+      System.out.println( "parseRoot " + expression );
+    }
     rootNode = resolve();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='" + expression + "'";
     rootNode.isResult = true;

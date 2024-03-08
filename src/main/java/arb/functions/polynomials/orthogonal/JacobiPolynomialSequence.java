@@ -28,7 +28,7 @@ import arb.functions.real.RealNullaryFunction;
  * over the interval [-1,1] when α,β>-1 and are recursively defined by
  * 
  * The Jacobi polynomials are also known as a
- * {@link HypergeometricPolynomialSequence}s
+ * {@link HypergeometricPolynomial}s
  * 
  * <pre>
  *  C(n)=2n+α+β
