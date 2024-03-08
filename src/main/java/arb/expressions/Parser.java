@@ -141,15 +141,18 @@ public class Parser
     return character == '₍' || character == '₎';
   }
 
-  public static final HashSet<Character> SUBSCRIPT_CHARACTERS   = new HashSet<Character>(Arrays.asList(new Character[]
+  public static final HashSet<Character> SUBSCRIPT_CHARACTERS         = new HashSet<Character>(Arrays.asList(new Character[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉', 'ₐ', 'ₑ', 'ₒ', 'ₓ', 'ₔ', 'ₕ', 'ₖ', 'ₗ', 'ₘ', 'ₙ', 'ₚ', 'ₛ',
     'ₜ' }));
 
-  public static final char[]             SUBSCRIPT_DIGITS_ARRAY = new char[]
+  public static final char[]             SUBSCRIPT_DIGITS_ARRAY       = new char[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉' };
 
-  public static int[] lowercaseSuperscriptAlphabet =
+  public static int[]                    lowercaseSuperscriptAlphabet =
   { 'ᵃ', 'ᵇ', 'ᶜ', 'ᵈ', 'ᵉ', 'ᶠ', 'ᵍ', 'ʰ', 'ⁱ', 'ʲ', 'ᵏ', 'ˡ', 'ᵐ', 'ⁿ', 'ᵒ', 'ᵖ', 0x107A5, 'ʳ', 'ˢ', 'ᵗ', 'ᵘ', 'ᵛ',
     'ʷ', 'ˣ', 'ʸ', 'ᶻ' };
+
+  int[]                                  uppercaseSuperscriptAlphabet    =
+  { 'ᴬ', 'ᴮ', 'ᴰ', 'ᴱ', 'ᴳ', 'ᴴ', 'ᴵ', 'ᴶ', 'ᴷ', 'ᴸ', 'ᴹ', 'ᴺ', 'ᴼ', 'ᴾ', 'ᴿ', 'ᵀ', 'ᵁ', 'ⱽ', 'ᵂ' };
 
 }
