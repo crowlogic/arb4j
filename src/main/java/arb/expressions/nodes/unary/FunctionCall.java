@@ -69,7 +69,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     super(argument,
           expression);
-    this.functionName = Parser.replaceArrowsAndEllipses(functionName).replace("ln", "log").replace("√", "sqrt");
+    this.functionName = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName).replace("ln", "log").replace("√", "sqrt");
     targetResultType  = resultTypeFor(functionName);
 
     // assert argument == null && !targetResultType.equals(Void.class) : "argument

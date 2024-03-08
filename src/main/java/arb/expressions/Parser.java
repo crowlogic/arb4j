@@ -106,9 +106,9 @@ public class Parser
    * 
    * @return expression with with the described substitions made
    */
-  public static String replaceArrowsAndEllipses(String expression)
+  public static String replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(String expression)
   {
-    return expression.replace("->", "➔").replace("...", "…");
+    return expression.replace("->", "➔").replace("...", "…").replace("ⁿ", "^n");
   }
 
   static String expressionToUniqueClassname(String expression)

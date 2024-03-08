@@ -276,7 +276,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     this.domainClassInternalName          = Type.getInternalName(domainClass);
     this.genericFunctionClassInternalName = Type.getInternalName(functionClass);
     this.functionClassDescriptor          = functionClass.descriptorString();
-    this.expression                       = Parser.replaceArrowsAndEllipses(expression);
+    this.expression                       = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(expression);
     this.context                          = context;
     this.variables                        = context != null ? context.variables : null;
     this.functionName                     = functionName;
@@ -502,7 +502,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean             verbose        = false;
 
-  public boolean             traceGenerator = false;
+  public boolean             traceGenerator = true;
 
   public Expression<?, ?, ?> parentExpression;
 

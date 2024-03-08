@@ -275,6 +275,14 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
   {
     factorFunctionFieldName = expression.getNextIntermediateVariableFieldName("factor", resultType);
     factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
+    if (expression.traceGenerator)
+    {
+      System.out.format("%s.assignFieldNames(resultType=%s) factorFunctionFieldName=%s factorValueFieldName=%s\n",
+                        getClass(),
+                        resultType,
+                        factorFunctionFieldName,
+                        factorValueFieldName);
+    }
   }
 
   protected void generateFactorClass(Class<?> resultType)
