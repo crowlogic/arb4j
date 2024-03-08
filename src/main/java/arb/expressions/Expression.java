@@ -91,8 +91,6 @@ import arb.utensils.Utensils;
  * bytecode for expressions.</li>
  * </ul>
  * 
- * TODO: sum ⅀, and Γ function
- * 
  * <h2>System Properties</h2>
  * <ul>
  * <li>expressionCompiler.saveClasses=true|false</li>
