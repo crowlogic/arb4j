@@ -148,4 +148,8 @@ public class Parser
   public static final char[]             SUBSCRIPT_DIGITS_ARRAY = new char[]
   { '₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉' };
 
+  public static int[] lowercaseSuperscriptAlphabet =
+  { 'ᵃ', 'ᵇ', 'ᶜ', 'ᵈ', 'ᵉ', 'ᶠ', 'ᵍ', 'ʰ', 'ⁱ', 'ʲ', 'ᵏ', 'ˡ', 'ᵐ', 'ⁿ', 'ᵒ', 'ᵖ', 0x107A5, 'ʳ', 'ˢ', 'ᵗ', 'ᵘ', 'ᵛ',
+    'ʷ', 'ˣ', 'ʸ', 'ᶻ' };
+
 }

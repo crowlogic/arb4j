@@ -18,6 +18,11 @@ import junit.framework.TestCase;
 public class ExpressionTest extends
                             TestCase
 {
+  public static void testSuperscriptLowercaseQ()
+  {
+    assertEquals("𐞥", String.format("%c", Parser.lowercaseSuperscriptAlphabet[16]));
+  }
+
   public static void testConflictingFunctionNameDefinitionThrowsException()
   {
     boolean caughtException = false;
