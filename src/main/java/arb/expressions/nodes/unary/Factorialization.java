@@ -10,14 +10,14 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Factorial<D, R, F extends Function<D, R>> extends
-                      FunctionCall<D, R, F>
+public class Factorialization<D, R, F extends Function<D, R>> extends
+                             FunctionCall<D, R, F>
 {
 
   @Override
   public String typeset()
   {
-    return String.format( "(%s)!", arg.typeset() );
+    return String.format("(%s)!", arg.typeset());
   }
 
   @Override
@@ -26,7 +26,7 @@ public class Factorial<D, R, F extends Function<D, R>> extends
     return arb.Integer.class;
   }
 
-  public Factorial(Expression<D, R, F> parser, Node<D, R, F> argument)
+  public Factorialization(Expression<D, R, F> parser, Node<D, R, F> argument)
   {
     super(parser,
           "factorial",

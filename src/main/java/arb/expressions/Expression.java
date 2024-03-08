@@ -64,7 +64,7 @@ import arb.expressions.nodes.binary.RisingFactorial;
 import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.nary.Product;
 import arb.expressions.nodes.nary.Sum;
-import arb.expressions.nodes.unary.Factorial;
+import arb.expressions.nodes.unary.Factorialization;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.When;
 import arb.functions.Function;
@@ -1382,7 +1382,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (nextCharacterIs('!'))
     {
-      return new Factorial<D, R, F>(this,
+      return new Factorialization<D, R, F>(this,
                                     node);
     }
     return node;
