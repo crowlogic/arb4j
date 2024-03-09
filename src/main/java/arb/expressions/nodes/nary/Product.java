@@ -30,19 +30,10 @@ public class Product<D, R, F extends Function<D, R>> extends
 
   public Product(Expression<D, R, F> expression)
   {
-    super(expression);
-  }
-
-  @Override
-  public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
-  {
-    initializeResult(mv, resultType, "multiplicativeIdentity", "product");
-  }
-
-  @Override
-  public MethodVisitor operate(MethodVisitor mv)
-  {
-    return operate(mv, "mul");
+    super(expression,
+          "multiplicativeIdentity",
+          "product",
+          "mul");
   }
 
 

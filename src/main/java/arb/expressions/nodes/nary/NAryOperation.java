@@ -45,8 +45,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
-                                   Node<D, R, F>
+public class NAryOperation<D, R, F extends Function<D, R>> extends
+                          Node<D, R, F>
 {
 
   protected Class<?>      generatedType;
@@ -54,6 +54,16 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
                                                                                    Type.getType(Object.class),
                                                                                    Type.getType(int.class),
                                                                                    Type.getType(Object.class));
+
+  public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
+  {
+    initializeResult(mv, resultType, identity, prefix);
+  }
+
+  public MethodVisitor operate(MethodVisitor mv)
+  {
+    return operate(mv, operation);
+  }
 
   public MethodVisitor operate(MethodVisitor mv, String method)
   {
@@ -147,6 +157,9 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
   private String       factorValueFieldName;
   private String       factorFunctionFieldName;
   private String       endIndexFieldName;
+  public final String  operation;
+  public final String  prefix;
+  public final String  identity;
 
   public void generateInnerLoop(MethodVisitor mv)
   {
@@ -163,9 +176,12 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     incrementIndex(mv);
   }
 
-  public NAryOperation(Expression<D, R, F> expression)
+  public NAryOperation(Expression<D, R, F> expression, String identity, String prefix, String operation)
   {
     super(expression);
+    this.identity  = identity;
+    this.prefix    = prefix;
+    this.operation = operation;
     if (expression.context == null)
     {
       expression.context = new Context();
@@ -557,9 +573,5 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     expression.appendTypeToStack(generatedType);
     getField(methodVisitor, expression.className, resultVariable, generatedType);
   }
-
-  public abstract void initializeResultVariable(MethodVisitor mv, Class<?> resultType);
-
-  public abstract MethodVisitor operate(MethodVisitor mv);
 
 }

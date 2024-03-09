@@ -1,7 +1,5 @@
 package arb.expressions.nodes.nary;
 
-import org.objectweb.asm.MethodVisitor;
-
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -30,19 +28,10 @@ public class Sum<D, R, F extends Function<D, R>> extends
 
   public Sum(Expression<D, R, F> expression)
   {
-    super(expression);
-  }
-
-  @Override
-  public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
-  {
-    initializeResult(mv, resultType, "additiveIdentity", "sum");
-  }
-
-  @Override
-  public MethodVisitor operate(MethodVisitor mv)
-  {
-    return operate(mv, "add");
+    super(expression,
+          "additiveIdentity",
+          "sum",
+          "add");
   }
 
 }
