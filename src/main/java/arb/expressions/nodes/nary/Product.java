@@ -36,21 +36,22 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
   {
-    resultVariable = expression.reserveIntermediateVariable(mv, "product", resultType);
-    invokeMethod(mv, resultType, "multiplicativeIdentity", getMethodDescriptor(resultType), false);
-    pop(mv);
+    initializeResult(mv, resultType, "multiplicativeIdentity", "product");
   }
 
   @Override
   public MethodVisitor operate(MethodVisitor mv)
   {
-    multiplyFactor(mv);
-    return mv;
+    return multiplyFactor(mv);
   }
 
-  public void multiplyFactor(MethodVisitor mv)
+  public MethodVisitor multiplyFactor(MethodVisitor mv)
   {
-    invokeMethod(mv, generatedType, "mul", getMethodDescriptor(generatedType, generatedType, int.class), false);
+    return invokeMethod(mv,
+                        generatedType,
+                        "mul",
+                        getMethodDescriptor(generatedType, generatedType, int.class),
+                        false);
   }
 
 }

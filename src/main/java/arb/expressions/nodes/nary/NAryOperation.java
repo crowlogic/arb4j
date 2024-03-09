@@ -74,6 +74,12 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     return getThisField(mv, thisClassInternalName, fieldName, type.descriptorString());
   }
 
+  public void initializeResult(MethodVisitor mv, Class<?> resultType, String identityFunction, String prefix)
+  {
+    resultVariable = expression.reserveIntermediateVariable(mv, prefix, resultType);
+    pop(invokeMethod(mv, resultType, identityFunction, getMethodDescriptor(resultType), false));
+  }
+
   protected static MethodVisitor getThisField(MethodVisitor methodVisitor,
                                               String thisClassInternalName,
                                               String fieldName,
@@ -403,32 +409,35 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
                  Type.getMethodDescriptor(Type.getType(Integer.class)));
   }
 
-  protected void invokeMethod(MethodVisitor methodVisitor,
-                              Class<?> thisClass,
-                              String functionName,
-                              String methodSignature,
-                              boolean isInterface)
+  protected MethodVisitor invokeMethod(MethodVisitor methodVisitor,
+                                       Class<?> thisClass,
+                                       String functionName,
+                                       String methodSignature,
+                                       boolean isInterface)
   {
-    invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature, isInterface);
+    return invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature, isInterface);
   }
 
-  void invokeMethod(MethodVisitor methodVisitor, String classInternalName, String methodName, String methodSignature)
+  MethodVisitor invokeMethod(MethodVisitor methodVisitor,
+                             String classInternalName,
+                             String methodName,
+                             String methodSignature)
   {
-
-    invokeMethod(methodVisitor, classInternalName, methodName, methodSignature, false);
+    return invokeMethod(methodVisitor, classInternalName, methodName, methodSignature, false);
   }
 
-  void invokeMethod(MethodVisitor methodVisitor,
-                    String classInternalName,
-                    String methodName,
-                    String methodSignature,
-                    boolean isInterface)
+  MethodVisitor invokeMethod(MethodVisitor methodVisitor,
+                             String classInternalName,
+                             String methodName,
+                             String methodSignature,
+                             boolean isInterface)
   {
     methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL,
                                   classInternalName,
                                   methodName,
                                   methodSignature,
                                   isInterface);
+    return methodVisitor;
   }
 
   @Override
