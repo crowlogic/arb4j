@@ -123,16 +123,20 @@ public class Parser
                            .replace("^", "ToThePowerOf")
                            .replace("(", "")
                            .replace(")", "")
-                           .replace(".", "•")
-                           // .replace('{', '_')
-                           // .replace('}', '_')
-                           // .replace('∏', '_')
-                           // .replace('=', '_')
-                           // .replace('…','_')
-                           .replace('[', '_')
-                           .replace(']', '_')
+                           .replace(".", "﹒")
+                           .replace("{", "")
+                           .replace("}", "")
+                           .replace("∏", "Prod")
+                           .replace("₍", "")
+                           .replace("=", "")
+                           .replace("ₙ", "n")
+                           .replace("…", "")
+                           .replace("!", "Bang")
+                           .replace("₎", "")
+                           .replace("[", "")
+                           .replace("]", "")
                            .replace("➔", "")
-                           .replace("½", "half");
+                           .replace("½", "Half");
     return str;
   }
 
