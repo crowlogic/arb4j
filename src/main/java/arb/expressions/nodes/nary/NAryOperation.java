@@ -526,8 +526,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     {
       if (!existingIndexVariable.get().type.equals(Integer.class))
       {
-        throw new ExpressionCompilerException("index variable " + existingIndexVariable
-                      + " already declared  and not of Intger type so it cant be used as the index");
+        throw new ExpressionCompilerException(String.format("index variable %s already declared  and not of Intger type so it cant be used as the index",
+                                                            existingIndexVariable));
       }
     }
     else
@@ -548,8 +548,9 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     Variable<D, R, F> independentVariableNode = expression.independentVariableNode;
     if (independentVariableNode != null && !independentVariableNode.type().equals(Void.class))
     {
-      expression.loadFieldOntoStack(loadThis(mv), factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
-      mv.visitVarInsn(ALOAD, 1);
+      loadThis(mv);
+      expression.loadFieldOntoStack(mv, factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
+      Compiler.loadInputParameter(mv);
       checkClassCast(mv, independentVariableNode.type());
       mv.visitFieldInsn(PUTFIELD,
                         factorFunctionFieldName,
@@ -566,7 +567,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                                                                                   factorInstance,
                                                                                   Integer.class,
                                                                                   factorExpression.rangeType,
-                                                                                  arb.functions.Function.class));
+                                                                                  Function.class));
   }
 
   protected void setIndexToTheStartIndex(MethodVisitor methodVisitor)

@@ -8,7 +8,7 @@ import arb.functions.Function;
 
 /**
  * Parse represent and generate bytecodes for the product operator where the
- * syntax is ∏f(k){k=a…b} and the characters between the Π and { characters are
+ * syntax is Πf(k){k=a…b} and the characters between the Π and { characters are
  * compiled as a sub-expression as a function from the {@link Integer} index
  * variable to whatever type is output by default or requested by whatever is
  * requesting its generation
