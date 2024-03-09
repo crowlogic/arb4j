@@ -1,7 +1,5 @@
 package arb.expressions.nodes.nary;
 
-import static arb.utensils.Utensils.getMethodDescriptor;
-
 import org.objectweb.asm.MethodVisitor;
 
 import arb.Integer;
@@ -44,16 +42,7 @@ public class Sum<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor operate(MethodVisitor mv)
   {
-    return addFactor(mv);
-  }
-
-  public MethodVisitor addFactor(MethodVisitor mv)
-  {
-    return invokeMethod(mv,
-                        generatedType,
-                        "add",
-                        getMethodDescriptor(generatedType, generatedType, int.class),
-                        false);
+    return operate(mv, "add");
   }
 
 }

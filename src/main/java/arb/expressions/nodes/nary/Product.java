@@ -42,16 +42,8 @@ public class Product<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor operate(MethodVisitor mv)
   {
-    return multiplyFactor(mv);
+    return operate(mv, "mul");
   }
 
-  public MethodVisitor multiplyFactor(MethodVisitor mv)
-  {
-    return invokeMethod(mv,
-                        generatedType,
-                        "mul",
-                        getMethodDescriptor(generatedType, generatedType, int.class),
-                        false);
-  }
 
 }

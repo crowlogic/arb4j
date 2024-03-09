@@ -55,6 +55,15 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
                                                                                    Type.getType(int.class),
                                                                                    Type.getType(Object.class));
 
+  public MethodVisitor operate(MethodVisitor mv, String method)
+  {
+    return invokeMethod(mv,
+                        generatedType,
+                        method,
+                        getMethodDescriptor(generatedType, generatedType, int.class),
+                        false);
+  }
+
   @Override
   public Class<?> getGeneratedType()
   {
@@ -163,13 +172,12 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     }
     this.factor   = parseFactorExpression();
     functionClass = expression.className;
-    assert functionClass != null : "functionClass is null";
+    assert functionClass != null : "functionClass=expression.className shan't be null";
     generatedType = (RealPolynomial.class.equals(expression.rangeType) ? Real.class : expression.rangeType);
     if (index != null)
     {
-      expression.position += factor.length();
+      expression.character = expression.expression.charAt(expression.position += factor.length());
     }
-    expression.character = expression.expression.charAt(expression.position);
     evaluateRangeSpecification();
   }
 
