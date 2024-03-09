@@ -107,7 +107,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     if (expression.traceGenerator)
     {
-      System.out.format("BinaryOperation.generate( this=%s, resultType=%s )\n\n", this, resultType);
+      System.out.format("BinaryOperation.generate( this=%s, resultType=%s, left.type=%s, right.type=%s )\n\n", this, resultType, left.type(), right.type() );
     }
     generatedType = resultType;
 

@@ -11,8 +11,7 @@ import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
 /**
- * TODO: handle https://github.com/crowlogic/arb4j/issues/347 nested nAry
- * functions
+ *
  */
 public class HypergeometricPolynomial implements
                                       RealFunction,

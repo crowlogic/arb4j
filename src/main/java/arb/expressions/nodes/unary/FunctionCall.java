@@ -60,7 +60,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public FunctionMapping<D, R> mapping;
 
   HashSet<String>              integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
-  { "sqrt", "tanh", "log" }));
+  { "sqrt", "tanh", "log"}));
 
   Class<?>                     targetResultType;
 
@@ -69,7 +69,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     super(argument,
           expression);
-    this.functionName = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName).replace("ln", "log").replace("√", "sqrt");
+    this.functionName = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
+                              .replace("ln", "log")
+                              .replace("√", "sqrt");
     targetResultType  = resultTypeFor(functionName);
 
     // assert argument == null && !targetResultType.equals(Void.class) : "argument
@@ -159,7 +161,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {
-   
+
     Class<?>              outputType = type();
 
     FunctionMapping<D, R> mapping    = expression.context.functions.get(functionName);
@@ -177,11 +179,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
     }
 
-    expression.loadFieldOntoStack(loadThisOntoStack(mv),
-                                  functionName,
-                                  mapping.function != null ? mapping.function.getClass()
-                                                                             .descriptorString() : String.format("L%s;",
-                                                                                                                 functionName));
+    loadFunctionReferenceOntoStack(mv, mapping);
 
     Class<?> argType                = arg == null ? Void.class : arg.type();
     var      typeBefore             = argType;
@@ -219,11 +217,16 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (expression.verbose)
     {
-      out.format("callContextualUnaryFUnction( mapping=%s type=%s\n", mapping, outputType);
+      out.format("callContextualUnaryFunction( mapping=%s type=%s\n", mapping, outputType);
     }
     expression.callContextualUnaryFunction(mv, mapping, outputType);
 
     return mv;
+  }
+
+  private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R> mapping)
+  {
+    expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, mapping.functionFieldDescriptor());
   }
 
   public boolean isBuiltin()

@@ -211,7 +211,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   protected byte[]                                instructions;
 
-
   public ArrayList<IntermediateVariable<D, R, F>> intermediateVariables         = new ArrayList<>();
 
   public ArrayList<LiteralConstant<D, R, F>>      literalConstants              = new ArrayList<>();
@@ -383,10 +382,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                        "evaluate",
                        evaluationMethodDescriptor,
                        isInterface);
-    MethodVisitor checkClassCast = Compiler.checkClassCast(mv, type);
-
-    return checkClassCast;
-
+    return Compiler.checkClassCast(mv, type);
   }
 
   public ClassVisitor constructClassVisitor()
@@ -459,12 +455,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (parentExpression != null)
     {
-      Variable<?, ?, ?> independentVariableNode2 = parentExpression.independentVariableNode;
-      if (independentVariableNode2 != null && !independentVariableNode2.type().equals(Void.class))
+      Variable<?, ?, ?> parentIndependentVariableNode = parentExpression.independentVariableNode;
+      if (parentIndependentVariableNode != null && !parentIndependentVariableNode.type().equals(Void.class))
       {
         classVisitor.visitField(ACC_PUBLIC,
-                                independentVariableNode2.reference.name,
-                                independentVariableNode2.type().descriptorString(),
+                                parentIndependentVariableNode.reference.name,
+                                parentIndependentVariableNode.type().descriptorString(),
                                 null,
                                 null);
       }
@@ -1105,7 +1101,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public String getNextIntermediateVariableFieldName(String name, Class<?> type)
   {
-    if ( context == null )
+    if (context == null)
     {
       context = new Context();
     }

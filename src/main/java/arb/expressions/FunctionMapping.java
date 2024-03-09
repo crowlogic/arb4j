@@ -60,4 +60,9 @@ public final class FunctionMapping<D, R>
     return function == null ? functionInterface : function.getClass();
   }
 
+  public String functionFieldDescriptor()
+  {
+    return function != null ? function.getClass().descriptorString() : String.format("L%s;", name);
+  }
+
 }
