@@ -31,7 +31,8 @@ public class Sum<D, R, F extends Function<D, R>> extends
     super(expression,
           "additiveIdentity",
           "sum",
-          "add");
+          "add",
+          "Σ");
   }
 
 }

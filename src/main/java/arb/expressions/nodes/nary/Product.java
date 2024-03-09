@@ -1,9 +1,5 @@
 package arb.expressions.nodes.nary;
 
-import static arb.utensils.Utensils.getMethodDescriptor;
-
-import org.objectweb.asm.MethodVisitor;
-
 import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -32,9 +28,9 @@ public class Product<D, R, F extends Function<D, R>> extends
   {
     super(expression,
           "multiplicativeIdentity",
-          "product",
-          "mul");
+          "prod",
+          "mul",
+          "Π");
   }
-
 
 }
