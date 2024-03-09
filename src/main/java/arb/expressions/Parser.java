@@ -128,6 +128,7 @@ public class Parser
                            .replace("}", "")
                            .replace("∏", "Prod")
                            .replace("₍", "")
+                           .replace(">", "")
                            .replace("=", "")
                            .replace("ₙ", "n")
                            .replace("…", "")

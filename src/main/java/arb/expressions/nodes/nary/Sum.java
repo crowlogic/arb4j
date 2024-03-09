@@ -29,7 +29,7 @@ import arb.functions.Function;
 public class Sum<D, R, F extends Function<D, R>> extends
                 NAryOperation<D, R, F>
 {
-
+ 
   public Sum(Expression<D, R, F> expression)
   {
     super(expression);
@@ -38,7 +38,7 @@ public class Sum<D, R, F extends Function<D, R>> extends
   @Override
   public void initializeResultVariable(MethodVisitor mv, Class<?> resultType)
   {
-    resultVariable = expression.reserveIntermediateVariable(mv, "∑", resultType);
+    resultVariable = expression.reserveIntermediateVariable(mv, "sum", resultType);
     invokeMethod(mv, resultType, "additiveIdentity", getMethodDescriptor(resultType), false);
     pop(mv);
   }
