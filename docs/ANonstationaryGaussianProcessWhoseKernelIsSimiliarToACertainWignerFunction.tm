@@ -1,6 +1,6 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
+<style|<tuple|generic|alt-colors|parchment|framed-theorems>>
 
 <\body>
   Let <math|R<around*|(|t,s|)>> be defined by
@@ -29,8 +29,8 @@
   </equation>
 
   The eigenfunction equation for the integral covariance operator
-  <math|\<cal-K\>> seeks functions <math|\<phi\><rsub|n><around|(|t|)>> such
-  that
+  <math|\<cal-K\>> is solved to yield characteristic eigenfunctions
+  <math|\<phi\><rsub|n><around|(|t|)>> such that
 
   <\equation>
     <around|(|\<cal-K\>*\<phi\><rsub|n>|)><around|(|t|)>=\<lambda\>*<rsub|n>\<phi\><rsub|n><around|(|t|)>
@@ -56,12 +56,3 @@
     <associate|page-width|auto>
   </collection>
 </initial>
-
-<\references>
-  <\collection>
-    <associate|auto-1|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-3|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-    <associate|auto-4|<tuple|4|1|../../.TeXmacs/texts/scratch/no_name_29.tm>>
-  </collection>
-</references>
