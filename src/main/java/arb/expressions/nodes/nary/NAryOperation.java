@@ -285,7 +285,7 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     }
   }
 
-  protected void generateFactorClass(Class<?> resultType)
+  protected <Q> void generateFactorClass(Class<Q> resultType)
   {
     String expr = format("%s➔%s", getIndexFieldName(), factor);
     if (expression.traceGenerator)
@@ -296,16 +296,16 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
                         resultType);
 
     }
-    Expression<Integer, ?, Function<Integer, Object>> factorExpression = Compiler.express(factorFunctionFieldName,
-                                                                                          expr,
-                                                                                          expression.context,
-                                                                                          Integer.class,
-                                                                                          resultType,
-                                                                                          arb.functions.Function.class,
-                                                                                          factorFunctionFieldName,
-                                                                                          expression);
+    Expression<Integer, Q, Function<Integer, Q>> factorExpression = Compiler.express(factorFunctionFieldName,
+                                                                                     expr,
+                                                                                     expression.context,
+                                                                                     Integer.class,
+                                                                                     resultType,
+                                                                                     arb.functions.Function.class,
+                                                                                     factorFunctionFieldName,
+                                                                                     expression);
 
-    var                                               factorInstance   = factorExpression.instantiate();
+    var                                          factorInstance   = factorExpression.instantiate();
 
     registerFactorSubexpressionInstance(factorExpression, factorInstance);
   }
@@ -327,11 +327,10 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
 
   protected void prepareIndexVariable()
   {
-    Optional<IntermediateVariable<D, R, F>> existingIndexVariable = expression.intermediateVariables.stream()
-                                                                                                    .filter(predicate -> predicate.name.equals(getIndexFieldName()))
-                                                                                                    .findFirst();
+    Optional<IntermediateVariable<D, R, F>> existingIndexVariable = getExistingIndexVariable();
 
     if (existingIndexVariable.isPresent())
+
     {
       if (!existingIndexVariable.get().type.equals(Integer.class))
       {
@@ -345,9 +344,18 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
     }
   }
 
-  private void
-          registerFactorSubexpressionInstance(Expression<Integer, ?, Function<Integer, Object>> factorExpression,
-                                              Function<Integer, Object> factorInstance)
+  private Optional<IntermediateVariable<D, R, F>> getExistingIndexVariable()
+  {
+    String                                  indexFieldName        = getIndexFieldName();
+
+    Optional<IntermediateVariable<D, R, F>> existingIndexVariable = expression.intermediateVariables.stream()
+                                                                                                    .filter(variable -> variable.name.equals(indexFieldName))
+                                                                                                    .findFirst();
+    return existingIndexVariable;
+  }
+
+  private <Q> void registerFactorSubexpressionInstance(Expression<Integer, Q, Function<Integer, Q>> factorExpression,
+                                                       Function<Integer, Q> factorInstance)
   {
     expression.referencedFunctions.put(factorFunctionFieldName,
                                        expression.context.registerFunctionMapping(factorFunctionFieldName,
@@ -462,7 +470,7 @@ public abstract class NAryOperation<D, R, F extends Function<D, R>> extends
 
   void loadVariableThatHoldsTheEvaluatedFactor(MethodVisitor methodVisitor)
   {
-    loadFieldFromThis(methodVisitor, factorValueFieldName, type() );
+    loadFieldFromThis(methodVisitor, factorValueFieldName, type());
   }
 
   private void parseEndIndex()
