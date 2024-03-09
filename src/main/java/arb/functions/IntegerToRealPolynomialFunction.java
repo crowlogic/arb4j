@@ -16,20 +16,27 @@ public interface IntegerToRealPolynomialFunction extends
                                                  Function<Integer, RealPolynomial>
 {
 
-  public static IntegerToRealPolynomialFunction
-         express(String functionName, String expression, Context context, boolean verbose)
+  public static IntegerToRealPolynomialFunction express(String functionName, String expression, Context context)
   {
-    IntegerToRealPolynomialFunction func = instantiate(expression,
-                                                       context,
-                                                       Integer.class,
-                                                       RealPolynomial.class,
-                                                       IntegerToRealPolynomialFunction.class,
-                                                       functionName);
-
-    return func;
+    return instantiate(expression,
+                       context,
+                       Integer.class,
+                       RealPolynomial.class,
+                       IntegerToRealPolynomialFunction.class,
+                       functionName);
   }
 
-  public static IntegerToRealPolynomialFunction express(String expression, Context context, boolean verbose)
+  public static IntegerToRealPolynomialFunction express(String expression)
+  {
+    return instantiate(expression,
+                       null,
+                       Integer.class,
+                       RealPolynomial.class,
+                       IntegerToRealPolynomialFunction.class,
+                       null);
+  }
+
+  public static IntegerToRealPolynomialFunction express(String expression, Context context)
   {
     return instantiate(expression,
                        context,
@@ -38,4 +45,5 @@ public interface IntegerToRealPolynomialFunction extends
                        IntegerToRealPolynomialFunction.class,
                        null);
   }
+
 }

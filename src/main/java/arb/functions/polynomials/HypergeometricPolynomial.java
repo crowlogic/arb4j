@@ -82,7 +82,6 @@ public class HypergeometricPolynomial implements
       }
 
       α.stream().filter(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative()).min((a, b) -> a.compareTo(b)).get().integerValue(N);
-      assert 4 == N.getSignedValue();
       initialized = true;
     }
     return F.evaluate(n, order, bits, f);
