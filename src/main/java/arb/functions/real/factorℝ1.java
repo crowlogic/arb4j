@@ -4,7 +4,7 @@ import arb.Integer;
 import arb.Real;
 import arb.functions.Function;
 
-public class factorℝ2 implements
+public class factorℝ1 implements
                       Function<Integer, Real>
 {
   private boolean isInitialized;
@@ -22,7 +22,7 @@ public class factorℝ2 implements
       initialize();
     }
 
-    return β.get(in).risingFactorial(n, bits, result);
+    return α.get(in).risingFactorial(n, bits, result);
   }
 
   public void initialize()
@@ -31,9 +31,9 @@ public class factorℝ2 implements
     {
       throw new AssertionError("Already initialized");
     }
-    else if (β == null)
+    else if (α == null)
     {
-      throw new AssertionError("β is null");
+      throw new AssertionError("α is null");
     }
     else
     {

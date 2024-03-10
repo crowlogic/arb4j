@@ -7,6 +7,12 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
+ * Factorialize a number, where the factorial is of course defined by
+ * 
+ * <pre>
+ *   n! = n*(n - 1)!
+ * </pre>
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */

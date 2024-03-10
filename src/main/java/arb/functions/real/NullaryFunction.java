@@ -8,7 +8,8 @@ import arb.expressions.Context;
 import arb.functions.Function;
 
 /**
- * @see BusinessSourceLicenseVersionOnePointOne copyright terms governing the {@link TheArb4jLibrary} 
+ * @see BusinessSourceLicenseVersionOnePointOne copyright terms governing the
+ *      {@link TheArb4jLibrary}
  * 
  * @param <R>
  */
@@ -16,16 +17,15 @@ public interface NullaryFunction<R> extends
                                 Function<Void, R>
 {
 
- 
   @SuppressWarnings("unchecked")
-  public static <R>
+  public static <R, F extends Function<Void, R>>
          F
          express(Class<? extends R> rangeClass, String functionName, String expression, Context context)
   {
     return (F) instantiate(expression, context, Void.class, rangeClass, NullaryFunction.class, functionName);
   }
 
-  public static <R> F express(Class<? extends R> rangeClass, String expression)
+  public static <R, F extends Function<Void, R>> F express(Class<? extends R> rangeClass, String expression)
   {
     return express(rangeClass, null, expression, null);
   }
