@@ -82,11 +82,6 @@ public class VariableReference<D, R, F extends Function<D, R>>
     }
   }
 
-  public boolean isMultivariate()
-  {
-    return name.startsWith("(") && name.endsWith(")");
-  }
-
   public Class<?> type()
   {
     return type;

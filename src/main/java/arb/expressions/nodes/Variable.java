@@ -96,10 +96,23 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public boolean                          isIndeterminant = false;
 
-  public final boolean                    isMultivariate;
-
   private Class<?>                        generatedType;
 
+  /**
+   * TODO: this needs to be replaced with
+   * isIndependentVariableOfAnyAscendentExpression where ascendent means any
+   * parent expression, or parent expression of the parent expression, etc, also
+   * known as ancestor but that connotates that only ascendents from earlier
+   * generations and not the most recent are refered to. here, it is meant that an
+   * ascendent expression is one that is an antecedent of this expression.
+   * basically, this follows the natural lexical scope that is expected to be part
+   * of a system such as this. in other words, these expressions can be nested
+   * arbitrarily deep so it is not sufficient to only check the parent expression
+   * to see if the variable matches its input during the
+   * this{@link #resolveReference(VariableReference)} invocation but that the
+   * inputs going back to the root node must be checked and from there the
+   * resolution process completes.
+   */
   private boolean                         isIndependentVariableOfParentExpression;
 
   public Variable(Expression<D, R, F> expression, VariableReference<D, R, F> reference)
@@ -108,7 +121,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
     this.expression = expression;
     this.reference  = reference;
     this.variables  = expression.variables;
-    isMultivariate  = reference.isMultivariate();
     assert reference != null;
     assert !(expression.recursive && reference.name.equals(expression.functionName)) : caveat;
 
@@ -200,25 +212,25 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if (isIndependent)
     {
       Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
-
     }
     else if (isIndeterminant)
     {
       Compiler.checkClassCast(Compiler.loadResultParameter(mv), expression.rangeType);
-
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                         Type.getInternalName(expression.rangeType),
-                         "identity",
-                         format("()%s", expression.rangeType.descriptorString()),
-                         false);
-
+      generateIndeterminateRangeIdentityInvocation(mv);
     }
     else
     {
-
       expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type().descriptorString());
-
     }
+  }
+
+  private void generateIndeterminateRangeIdentityInvocation(MethodVisitor mv)
+  {
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       Type.getInternalName(expression.rangeType),
+                       "identity",
+                       format("()%s", expression.rangeType.descriptorString()),
+                       false);
   }
 
   @Override
@@ -240,12 +252,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return null;
   }
 
-  /**
-   * Set this{@link #isIndeterminant} , this{@link #isIndependent}, or
-   * this{@link #isIndependentVariableOfParentExpression}
-   * 
-   * @param reference
-   */
   public void resolveReference(VariableReference<D, R, F> reference)
   {
     var inputVariable = expression.independentVariableNode;
@@ -259,7 +265,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-
       if (isIndeterminant = expression.hasPolynomialRange())
       {
         expression.indeterminate = this;
@@ -273,7 +278,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
             isIndependentVariableOfParentExpression = true;
             return;
           }
-
         }
         else
         {

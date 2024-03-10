@@ -156,7 +156,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     F                   func               = compiledExpression.instantiate();
     if (mapping != null)
     {
-      mapping.function = func;
+      mapping.instance = func;
     }
 
     return func;
@@ -378,7 +378,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     boolean isInterface = mapping.functionInterface != null;
     mv.visitMethodInsn(mapping.functionInterface != null ? Opcodes.INVOKEINTERFACE : Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(isInterface ? mapping.functionInterface : mapping.function.getClass()),
+                       Type.getInternalName(isInterface ? mapping.functionInterface : mapping.instance.getClass()),
                        "evaluate",
                        evaluationMethodDescriptor,
                        isInterface);
@@ -906,7 +906,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public MethodVisitor generateFunctionInitializer(MethodVisitor mv, FunctionMapping<?, ?> nestedFunction)
   {
-    if (nestedFunction.function != null)
+    if (nestedFunction.instance != null)
     {
       initializeNestedFunctionVariableReferences(loadThisOntoStack(mv),
                                                  className,
@@ -932,7 +932,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     generateInvocationOfDefaultNoArgConstructor(mv, true);
 
-    referencedFunctions.values().stream().filter(func -> func.function != null).forEach(mapping ->
+    referencedFunctions.values().stream().filter(func -> func.instance != null).forEach(mapping ->
     {
       generateFunctionReference(mv, mapping);
     });

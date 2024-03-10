@@ -19,9 +19,10 @@ public final class FunctionMapping<D, R>
   @Override
   public String toString()
   {
-    return String.format("Mapping[name=%s, func=%s, domain=%s, range=%s, functionInterface=%s]",
+    return String.format("%s[name=%s, instance=%s, domain=%s, range=%s, functionInterface=%s]",
+                         getClass().getSimpleName(),
                          name,
-                         function,
+                         instance,
                          domain != null ? domain.getName() : null,
                          range != null ? range.getName() : null,
                          functionInterface);
@@ -49,7 +50,7 @@ public final class FunctionMapping<D, R>
 
   public String         name;
 
-  public Function<?, ?> function;
+  public Function<?, ?> instance;
 
   public Class<?>       domain;
 
@@ -57,12 +58,12 @@ public final class FunctionMapping<D, R>
 
   public Class<?> type()
   {
-    return function == null ? functionInterface : function.getClass();
+    return instance == null ? functionInterface : instance.getClass();
   }
 
   public String functionFieldDescriptor()
   {
-    return function != null ? function.getClass().descriptorString() : String.format("L%s;", name);
+    return instance != null ? instance.getClass().descriptorString() : String.format("L%s;", name);
   }
 
 }

@@ -165,7 +165,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     Class<?>              outputType = type();
 
     FunctionMapping<D, R> mapping    = expression.context.functions.get(functionName);
-    F                     func       = (F) mapping.function;
+    F                     func       = (F) mapping.instance;
 
     if (expression.traceGenerator)
     {

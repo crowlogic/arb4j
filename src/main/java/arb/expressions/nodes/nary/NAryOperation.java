@@ -147,8 +147,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
     if (expression.traceGenerator)
     {
-      System.out.format("%s.assignFieldNames(resultType=%s) factorFunctionFieldName=%s factorValueFieldName=%s\n",
-                        getClass(),
+      System.out.format("%s.assignFieldNames(resultType=%s) factorFunctionFieldName=%s factorValueFieldName=%s\n\n",
+                        getClass().getSimpleName(),
                         resultType,
                         factorFunctionFieldName,
                         factorValueFieldName);
