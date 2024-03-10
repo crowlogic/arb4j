@@ -46,11 +46,23 @@ public interface IntegerSequence extends
 
   /**
    * <pre>
-   * n≀ = n!/⌊n/2⌋!² 
+   * n≀ = n!/⌊n/2⌋!²
    * </pre>
+   * 
+   * <br>
+   * 
+   * Exactly p consecutive multiples of p follow the least positive multiple of p
+   * if p is an odd prime.<br>
    * 
    * <a href="https://oeis.org/A056040">A056040 Swinging factorial, a(n) = 2^(n-(n
    * mod 2))*Product_{k=1..n} k^((-1)^(k+1))</a>
    */
   public static IntegerSequence swingingFactorials                    = express("n->n!/⌊n/2⌋!²");
+  
+  /**
+   * Dual to the this{@link #swingingFactorials} <br><br>
+   * 
+   * <a href="https://oeis.org/A100071">A100071     a(n) = n * binomial(n-1, floor((n-1)/2)) = n * max_{i=0..n} binomial(n-1, i)</a>
+   */
+  public static IntegerSequence A100071 = express("n*binomial(n-1, ⌊(n-1)/2)⌋");
 }
