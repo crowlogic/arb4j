@@ -255,7 +255,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return contextual ? String.format("FunctionCall[name=%s,  function=%s, arg=%s, targetResultType=%s]",
+    return contextual ? String.format("FunctionCall[name=%s,  function=%s, arg=%s, generatedType=%s]",
                                       functionName,
                                       mapping,
                                       arg == null ? "null" : arg.typeset(),
