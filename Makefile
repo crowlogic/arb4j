@@ -1,5 +1,5 @@
-BASEDIR=$(dirname $(readlink -f $0))/..
-VERSION := $(shell grep "<version>" $BASEDIR/pom.xml | head -1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
+BASEDIR=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+VERSION= $(shell grep "<version>" $(BASEDIR)/pom.xml | head -1 | sed 's/.*<version>\(.*\)<\/version>.*/\1/')
 
 INCLUDES=-I/usr/include/x86_64-linux-gnu -I/usr/include/linux -I/usr/include/flint \
  -I/usr/include -I/usr/include/i386-linux-gnu -I/usr/lib/gcc/x86_64-linux-gnu/11/include/
