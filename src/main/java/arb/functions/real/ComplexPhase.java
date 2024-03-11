@@ -17,7 +17,7 @@ public class ComplexPhase implements
   public Real evaluate(Complex t, int order, int prec, Real res)
   {
     order = max(0, order);
-    assert order == 1 : "the argument of a function isn't complex-differentiable";
+    assert order <= 1 : "the argument of a function isn't complex-differentiable";
     return t.arg(prec, res);
   }
 

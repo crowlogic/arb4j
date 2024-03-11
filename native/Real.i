@@ -1230,7 +1230,7 @@ import arb.stochastic.ProbabilityDistributionFunction;
 
     Real x = new Real(0,
                       false);
-    x.nativeSegment = arena.allocate(Real.BYTES * size, 4096);
+    x.nativeSegment = arena.allocate(Real.BYTES * size, arblib.getpagesize());
     x.swigCPtr      = x.nativeSegment.address();
     x.dim           = size;
     x.elements      = new Real[x.dim];
