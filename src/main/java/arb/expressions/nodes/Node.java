@@ -45,9 +45,11 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
 
   public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 
+  public Class<?> generatedType;
+  
   public Class<?> getGeneratedType()
   {
-    return null;
+    return generatedType;
   }
 
   public int bits = 128;

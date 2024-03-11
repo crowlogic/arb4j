@@ -60,9 +60,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public FunctionMapping<D, R> mapping;
 
   HashSet<String>              integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
-  { "sqrt", "tanh", "log"}));
-
-  Class<?>                     targetResultType;
+  { "sqrt", "tanh", "log" }));
 
   @SuppressWarnings("unchecked")
   public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
@@ -72,7 +70,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     this.functionName = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
                               .replace("ln", "log")
                               .replace("√", "sqrt");
-    targetResultType  = resultTypeFor(functionName);
+    generatedType     = resultTypeFor(functionName);
 
     // assert argument == null && !targetResultType.equals(Void.class) : "argument
     // is null for " + this;
@@ -101,8 +99,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       contextual           = true;
       mapping              = new FunctionMapping<>();
-      targetResultType     = resultType;
-      mapping.range        = targetResultType;
+      generatedType        = resultType;
+      mapping.range        = generatedType;
       mapping.domain       = getDomainType();
       mapping.name         = functionName;
       expression.recursive = true;
@@ -118,13 +116,16 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       generateBuiltinFunctionCall(mv, resultType);
     }
 
+    assert getGeneratedType().equals(resultType) : String.format("generatedType=%s != resultType = %s\n",
+                                                                 getGeneratedType(),
+                                                                 resultType);
     return mv;
   }
 
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
     var     expression                = arg.expression;
-    boolean needsResultTypeConversion = !resultType.equals(targetResultType);
+    boolean needsResultTypeConversion = !resultType.equals(generatedType);
 
     if (needsResultTypeConversion)
     {
@@ -146,9 +147,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                   false);
     if (needsResultTypeConversion)
     {
-      expression.reserveIntermediateVariable(methodVisitor, targetResultType);
-      checkClassCast(methodVisitor, targetResultType);
-      invokeSetMethod(methodVisitor, resultType, targetResultType);
+      expression.reserveIntermediateVariable(methodVisitor, generatedType);
+      checkClassCast(methodVisitor, generatedType);
+      invokeSetMethod(methodVisitor, resultType, generatedType);
     }
     return methodVisitor;
   }
@@ -161,11 +162,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @SuppressWarnings("unchecked")
   public MethodVisitor generateContextualFunctionCall(MethodVisitor mv, Class<?> resultType)
   {
+    generatedType = type();
 
-    Class<?>              outputType = type();
-
-    FunctionMapping<D, R> mapping    = expression.context.functions.get(functionName);
-    F                     func       = (F) mapping.instance;
+    FunctionMapping<D, R> mapping = expression.context.functions.get(functionName);
+    F                     func    = (F) mapping.instance;
 
     if (expression.traceGenerator)
     {
@@ -213,13 +213,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     loadOrderParameter(mv);
     loadBitsParameter(mv);
 
-    loadOutputVariableOntoStack(mv, expression, outputType);
+    loadOutputVariableOntoStack(mv, expression, generatedType);
 
     if (expression.verbose)
     {
-      out.format("callContextualUnaryFunction( mapping=%s type=%s\n", mapping, outputType);
+      out.format("callContextualUnaryFunction( mapping=%s type=%s\n", mapping, generatedType);
     }
-    expression.callContextualUnaryFunction(mv, mapping, outputType);
+    expression.callContextualUnaryFunction(mv, mapping, generatedType);
 
     return mv;
   }
@@ -257,10 +257,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                       functionName,
                                       mapping,
                                       arg == null ? "null" : arg.typeset(),
-                                      targetResultType != null ? targetResultType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
-                                                                                                                    functionName,
-                                                                                                                    arg == null ? "null" : arg.typeset(),
-                                                                                                                    targetResultType != null ? targetResultType.getName() : null);
+                                      generatedType != null ? generatedType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
+                                                                                                              functionName,
+                                                                                                              arg == null ? "null" : arg.typeset(),
+                                                                                                              generatedType != null ? generatedType.getName() : null);
   }
 
   @Override
