@@ -116,7 +116,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       generateBuiltinFunctionCall(mv, resultType);
     }
 
-    assert getGeneratedType().equals(resultType) : String.format("generatedType=%s != resultType = %s\n",
+    assert getGeneratedType().equals(resultType) : String.format("TODO: type conversion for output where generatedType=%s != resultType = %s\n",
                                                                  getGeneratedType(),
                                                                  resultType);
     return mv;
@@ -169,9 +169,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (expression.traceGenerator)
     {
-      System.out.format("generateContextualFunctionCall( resultType=%s ): expression.typeStack=%s\n",
+      System.out.format("%s.generateContextualFunctionCall( resultType=%s, generatedType=%s ): expression.typeStack=%s\n",
+                        getClass().getSimpleName(),
                         resultType,
-                        expression.typeStack);
+                        expression.typeStack,
+                        generatedType);
     }
 
     if (func == null && mapping.functionInterface == null)
