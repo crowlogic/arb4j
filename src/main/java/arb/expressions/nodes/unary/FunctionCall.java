@@ -29,9 +29,13 @@ import arb.functions.Function;
 
 /**
  * {@link FunctionCall} is a {@link Node} in the {@link Expression} that
- * represents a call to either a builtin or a contextual function. A built-in
- * function is one that is a member of the type of the domain or range of the
- * function, such as {@link Real#tanh(int, Real)}. <br>
+ * represents a call to either a builtin or a contextual function, a contextual
+ * function call being one that has been constructed by passing a
+ * {@link Context} to
+ * {@link arb.functions.Function#express(Class, Class, String)} or calling
+ * {@link Context#registerFunctionMapping(String, Function, Class, Class)}. A
+ * built-in function is one that is a member of the type of the domain or range
+ * of the function, such as {@link Real#tanh(int, Real)}. <br>
  * <br>
  * A contextual function is one that is shared thru a mutual {@link Context} by
  * constructing one and passing it to the
