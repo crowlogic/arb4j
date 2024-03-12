@@ -82,9 +82,9 @@
 
     Then the series
 
-    <\equation*>
+    <\equation>
       <big|sum><rsub|n=1><rsup|\<infty\>>f<rsub|n><around|(|x|)>
-    </equation*>
+    </equation>
 
     converges absolutely and uniformly on <math|A>.
 
@@ -99,9 +99,9 @@
   <\proof>
     Consider the sequence of functions
 
-    <\equation*>
-      S<rsub|n><around|(|x|)>=<big|sum><rsub|k=1><rsup|n>f<rsub|k><around|(|x|)>.
-    </equation*>
+    <\equation>
+      S<rsub|n><around|(|x|)>=<big|sum><rsub|k=1><rsup|n>f<rsub|k><around|(|x|)>
+    </equation>
 
     Since the series
 
@@ -112,11 +112,11 @@
     <math|> converges and <math|M<rsub|n>\<geq\>0\<forall\>><math|n>, then by
     the Cauchy criterion,
 
-    <\equation*>
+    <\equation>
       <big|sum><rsub|k=n+1><rsup|m>M<rsub|k>\<less\>\<varepsilon\>\<forall\>\<varepsilon\>\<gtr\>0\<exists\>N\<forall\>m\<gtr\>n\<gtr\>N
-    </equation*>
+    </equation>
 
-    For the chosen <math|N>,
+    For a given value of <math|N>,
 
     <\equation*>
       \;
