@@ -122,6 +122,15 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return mv;
   }
 
+  /**
+   * TODO: move the result type conversion logic to
+   * this{@link #generate(MethodVisitor, Class)} so it works for the calls to
+   * other functions in the context as well
+   * 
+   * @param methodVisitor
+   * @param resultType
+   * @return
+   */
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
     var     expression                = arg.expression;
