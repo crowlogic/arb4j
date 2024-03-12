@@ -272,7 +272,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                       functionName,
                                       arg == null ? "null" : arg.typeset(),
                                       mapping,
-                                      generatedType != null ? generatedType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
+                                      generatedType != null ? generatedType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, generatedType=%s]",
                                                                                                               functionName,
                                                                                                               arg == null ? "null" : arg.typeset(),
                                                                                                               generatedType != null ? generatedType.getName() : null);

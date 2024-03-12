@@ -74,7 +74,7 @@ public class VariableReference<D, R, F extends Function<D, R>>
   {
     if (index != null)
     {
-      return String.format("%s_{%s}", name, index);
+      return String.format("%s_{%s}", name, index.typeset());
     }
     else
     {
