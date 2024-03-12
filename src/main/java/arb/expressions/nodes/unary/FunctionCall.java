@@ -132,13 +132,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * other functions in the context as well
    * 
    * @param methodVisitor
-   * @param resultType
+   * @param targetResultType
    * @return
    */
-  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> targetResultType)
   {
     var     expression                = arg.expression;
-    boolean needsResultTypeConversion = !resultType.equals(generatedType);
+    boolean needsResultTypeConversion = !targetResultType.equals(generatedType);
 
     if (needsResultTypeConversion)
     {
@@ -148,10 +148,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     arg.generate(methodVisitor, expression.rangeType);
     loadBitsParameter(methodVisitor);
 
-    loadOutputVariableOntoStack(methodVisitor, expression, resultType);
+    loadOutputVariableOntoStack(methodVisitor, expression, targetResultType);
 
     Class<?> domainType = getDomainType();
-    Class<?> rangeType  = resultType;
+    Class<?> rangeType  = targetResultType;
 
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
@@ -162,7 +162,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       expression.reserveIntermediateVariable(methodVisitor, generatedType);
       checkClassCast(methodVisitor, generatedType);
-      invokeSetMethod(methodVisitor, resultType, generatedType);
+      invokeSetMethod(methodVisitor, generatedType, targetResultType );
+      generatedType = targetResultType;
     }
     return methodVisitor;
   }
@@ -272,7 +273,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                       functionName,
                                       arg == null ? "null" : arg.typeset(),
                                       mapping,
-                                      generatedType != null ? generatedType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
+                                      generatedType != null ? generatedType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, generatedType=%s]",
                                                                                                               functionName,
                                                                                                               arg == null ? "null" : arg.typeset(),
                                                                                                               generatedType != null ? generatedType.getName() : null);
