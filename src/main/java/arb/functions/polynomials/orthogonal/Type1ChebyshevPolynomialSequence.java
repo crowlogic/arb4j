@@ -29,7 +29,7 @@ public class Type1ChebyshevPolynomialSequence implements
 
   Function<Integer, RealPolynomial> T = Function.express(Integer.class,
                                                          RealPolynomial.class,
-                                                         "T:n->when(n=0,1,n=1,x,else,2*x*T(n-1)-T(n-2))");
+                                                         "T:n➔when(n=0,1,n=1,x,else,2*x*T(n-1)-T(n-2))");
 
   @Override
   public RealPolynomial evaluate(Integer n, int order, int bits, RealPolynomial res)

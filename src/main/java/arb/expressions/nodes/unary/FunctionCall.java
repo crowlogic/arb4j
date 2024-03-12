@@ -92,7 +92,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (expression.traceGenerator)
     {
-      System.out.format("FunctionCall.generate: this=%s resultType=%s\n", this, resultType);
+      System.out.format("FunctionCall.generate: this=%s resultType=%s\n\n", this, resultType);
     }
 
     if (functionName.equals(expression.functionName))
@@ -169,7 +169,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     if (expression.traceGenerator)
     {
-      System.out.format("%s.generateContextualFunctionCall( resultType=%s, generatedType=%s ): expression.typeStack=%s\n",
+      System.out.format("%s.generateContextualFunctionCall( resultType=%s, generatedType=%s ): expression.typeStack=%s\n\n",
                         getClass().getSimpleName(),
                         resultType,
                         expression.typeStack,
@@ -255,10 +255,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return contextual ? String.format("FunctionCall[name=%s,  function=%s, arg=%s, generatedType=%s]",
+    return contextual ? String.format("FunctionCall[%s(%s), function=%s,  generatedType=%s]",
                                       functionName,
-                                      mapping,
                                       arg == null ? "null" : arg.typeset(),
+                                      mapping,
                                       generatedType != null ? generatedType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
                                                                                                               functionName,
                                                                                                               arg == null ? "null" : arg.typeset(),
