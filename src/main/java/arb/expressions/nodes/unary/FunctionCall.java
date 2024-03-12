@@ -93,6 +93,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    boolean needsResultTypeConversion = !resultType.equals(generatedType);
+
+    if (needsResultTypeConversion)
+    {
+      loadResultParameter(mv);
+    }
 
     if (expression.traceGenerator)
     {
@@ -120,6 +126,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       generateBuiltinFunctionCall(mv, resultType);
     }
 
+    if (needsResultTypeConversion)
+    {
+      expression.reserveIntermediateVariable(mv, generatedType);
+      checkClassCast(mv, generatedType);
+      invokeSetMethod(mv, resultType, generatedType);
+    }
+
     assert getGeneratedType().equals(resultType) : String.format("TODO: type conversion for output where generatedType=%s != resultType = %s\n",
                                                                  getGeneratedType(),
                                                                  resultType);
@@ -127,23 +140,14 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   }
 
   /**
-   * TODO: move the result type conversion logic to
-   * this{@link #generate(MethodVisitor, Class)} so it works for the calls to
-   * other functions in the context as well
-   * 
+   *
    * @param methodVisitor
    * @param resultType
    * @return
    */
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
   {
-    var     expression                = arg.expression;
-    boolean needsResultTypeConversion = !resultType.equals(generatedType);
-
-    if (needsResultTypeConversion)
-    {
-      loadResultParameter(methodVisitor);
-    }
+    var expression = arg.expression;
 
     arg.generate(methodVisitor, expression.rangeType);
     loadBitsParameter(methodVisitor);
@@ -158,12 +162,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                   functionName,
                                   format("(I%s)%s", rangeType.descriptorString(), rangeType.descriptorString()),
                                   false);
-    if (needsResultTypeConversion)
-    {
-      expression.reserveIntermediateVariable(methodVisitor, generatedType);
-      checkClassCast(methodVisitor, generatedType);
-      invokeSetMethod(methodVisitor, resultType, generatedType);
-    }
     return methodVisitor;
   }
 
@@ -272,9 +270,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
                                       functionName,
                                       arg == null ? "null" : arg.typeset(),
                                       mapping,
-                                      generatedType != null ? generatedType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, targetResultType=%s]",
+                                      generatedType != null ? generatedType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, arg.type=%s, generatedType=%s]",
                                                                                                               functionName,
                                                                                                               arg == null ? "null" : arg.typeset(),
+                                                                                                              arg == null ? "null" : arg.type(),
                                                                                                               generatedType != null ? generatedType.getName() : null);
   }
 
