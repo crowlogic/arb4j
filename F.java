@@ -1,53 +1,66 @@
 import arb.Integer;
 import arb.Real;
-import arb.functions.Function;
+import arb.functions.real.RealFunction;
 
-public class F implements Function<Integer, Real> {
+public class F implements RealFunction {
    private boolean isInitialized;
    Integer c1;
+   public Integer p;
+   public Integer q;
    public Real α;
    public Real β;
-   public Real ℝ1;
-   public Integer ℤ1;
-   public Real ℝ2;
-   public Real ℝ3;
-   public Real ℝ4;
-   public final C C = new C();
+   public Integer N;
+   public Real valueℝ1;
+   public Integer n;
+   public Real sumℝ1;
+   public Integer endIndexℤ3;
+   public final factorℝ1 factorℝ1 = new factorℝ1();
 
-   public Real evaluate(Integer in, int order, int bits, Real result) {
+   public Real evaluate(Real in, int order, int bits, Real result) {
       if (!isInitialized) {
          initialize();
       }
 
-      return (C.evaluate(ℝ1.set(in.sub(c1, bits, ℤ1)), order, bits, ℝ2))
-         .mul(C.evaluate(ℝ3.set(in), order, bits, ℝ4), bits, result);
+      factorℝ1.z = in;
+      sumℝ1.additiveIdentity();
+      n.set(c1);
+      endIndexℤ3.set(N);
+
+      do {
+         sumℝ1.add(factorℝ1.evaluate(n, bits, valueℝ1), bits);
+      } while(n.increment().compareTo(endIndexℤ3) <= 0);
+
+      return result.set(sumℝ1);
    }
 
    public F() {
-      c1 = new Integer("1");
-      ℝ1 = new Real();
-      ℤ1 = new Integer();
-      ℝ2 = new Real();
-      ℝ3 = new Real();
-      ℝ4 = new Real();
+      c1 = new Integer("0");
+      valueℝ1 = new Real();
+      n = new Integer();
+      sumℝ1 = new Real();
+      endIndexℤ3 = new Integer();
    }
 
    public void initialize() {
       if (isInitialized) {
          throw new AssertionError("Already initialized");
+      } else if (N == null) {
+         throw new AssertionError("N is null");
       } else {
-         C.α = α;
-         C.β = β;
+         factorℝ1.p = p;
+         factorℝ1.q = q;
+         factorℝ1.α = α;
+         factorℝ1.β = β;
+         factorℝ1.N = N;
          isInitialized = true;
       }
    }
 
    public void close() {
       c1.close();
-      ℝ1.close();
-      ℤ1.close();
-      ℝ2.close();
-      ℝ3.close();
-      ℝ4.close();
+      valueℝ1.close();
+      n.close();
+      sumℝ1.close();
+      endIndexℤ3.close();
    }
 }
