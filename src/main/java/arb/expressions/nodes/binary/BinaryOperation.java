@@ -33,7 +33,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("BinaryOperation[left=%s, right=%s, operation=%s, generatedType=%s]",
+    return String.format("BinaryOperation[left=$%s$, right=$%s$, operation=%s, generatedType=%s]",
                          left == null ? "∅" : left.typeset(),
                          right == null ? "∅" : right.typeset(),
                          operation,

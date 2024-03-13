@@ -3,7 +3,9 @@ package arb.expressions.nodes.unary;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
+import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
@@ -23,7 +25,8 @@ public class Factorialization<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return String.format("(%s)!", arg.typeset());
+    return String.format((arg instanceof Variable) || (arg instanceof LiteralConstant) ? "%s!" : "(%s)!",
+                         arg.typeset());
   }
 
   @Override

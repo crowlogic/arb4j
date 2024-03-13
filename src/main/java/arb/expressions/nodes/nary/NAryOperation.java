@@ -599,7 +599,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   public String typeset()
   {
     return String.format("\\%s_{%s = %s}^{%s}{%s}",
-                         operation,
+                         operation.replace("mul", "prod"),
                          index,
                          startIndex.typeset(),
                          endIndex.typeset(),
