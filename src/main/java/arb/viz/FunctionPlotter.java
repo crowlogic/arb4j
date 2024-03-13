@@ -86,7 +86,7 @@ public class FunctionPlotter extends
     resampleFunctions(parallel);
   }
 
-  public boolean parallel = true;
+  public boolean parallel = false;
   
   public void set(Stage primaryStage, javafx.event.EventHandler<WindowEvent> onCloseRequestHandler)
   {
