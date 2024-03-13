@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import arb.algebra.Ring;
-import dnl.utils.text.table.TextTable;
+import arb.utensils.text.TextTable;
 
 public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix> {
   protected long swigCPtr;

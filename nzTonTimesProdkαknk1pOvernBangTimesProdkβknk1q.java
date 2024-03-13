@@ -2,7 +2,7 @@ import arb.Integer;
 import arb.Real;
 import arb.functions.Function;
 
-public class nzToThePowerOfnTimesProdkαknk1pDividedBynBangTimesProdkβknk1q implements Function<Integer, Real> {
+public class nzTonTimesProdkαknk1pOvernBangTimesProdkβknk1q implements Function<Integer, Real> {
    private boolean isInitialized;
    Integer c1;
    public Integer p;
@@ -52,7 +52,7 @@ public class nzToThePowerOfnTimesProdkαknk1pDividedBynBangTimesProdkβknk1q imp
       return var10000.mul(prodℝ2, bits, result);
    }
 
-   public nzToThePowerOfnTimesProdkαknk1pDividedBynBangTimesProdkβknk1q() {
+   public nzTonTimesProdkαknk1pOvernBangTimesProdkβknk1q() {
       c1 = new Integer("1");
       ℝ1 = new Real();
       valueℝ1 = new Real();

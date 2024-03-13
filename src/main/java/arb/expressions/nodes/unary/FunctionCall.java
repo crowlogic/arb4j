@@ -93,6 +93,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    changeGeneratedTypeIfNecessary(resultType);
 
     if (expression.traceGenerator)
     {
@@ -127,9 +128,6 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   }
 
   /**
-   * TODO: move the result type conversion logic to
-   * this{@link #generate(MethodVisitor, Class)} so it works for the calls to
-   * other functions in the context as well
    * 
    * @param methodVisitor
    * @param targetResultType
@@ -137,8 +135,14 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    */
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> targetResultType)
   {
+<<<<<<< HEAD
     var     expression                = arg.expression;
     boolean needsResultTypeConversion = !targetResultType.equals(generatedType);
+=======
+    var expression = arg.expression;
+        
+    boolean needsResultTypeConversion = !resultType.equals(generatedType);
+>>>>>>> 1d81e5aa9f6b49c22b676884c9046643242210f1
 
     if (needsResultTypeConversion)
     {
@@ -166,6 +170,14 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       generatedType = targetResultType;
     }
     return methodVisitor;
+  }
+
+  private void changeGeneratedTypeIfNecessary(Class<?> resultType)
+  {
+    if (resultType.equals(Integer.class) && "factorial".equals(functionName))
+    {
+      generatedType = Integer.class;
+    }
   }
 
   public Class<?> getDomainType()
