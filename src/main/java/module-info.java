@@ -19,7 +19,6 @@ module arb4j
   requires transitive javafx.controls;
   requires transitive javafx.swing;
   requires transitive junit;
-  requires transitive j.text.utils;
   requires transitive jlatexmath;
   requires transitive jdk.unsupported;
   requires transitive jdk.jshell;
@@ -31,6 +30,7 @@ module arb4j
   requires transitive org.objectweb.asm;
   requires transitive org.objectweb.asm.util;
   requires transitive org.objectweb.asm.commons;
+  requires transitive org.apache.commons.lang3;
 
   exports arb;
   exports arb.logic;
@@ -74,5 +74,6 @@ module arb4j
   exports arb.stochastic.processes.correlationfunctions;
   exports arb.stochastic.processes.integrators;
   exports arb.utensils;
+  exports arb.utensils.text;
   exports arb.viz;
 }

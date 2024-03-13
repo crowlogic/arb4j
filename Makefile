@@ -35,3 +35,5 @@ libarblib.so: $(SOURCES)
 clean:
 	rm -rf libarblib.so *.o native/arb_wrap.c target/*.jar target/site/apidocs
 
+cleanGenerated:
+	cd $(BASEDIR)/src/main/java/arb && rm -fv Real.java Complex.java RealPolynomial.java ComplexPolynomial.java SWIGTYPE*.java Float.java Rational.java DirichletCharacter.java DirichletGroup.java DirichletPrimeGroup.java FastDFT*.java GMPRandomState.java Magnitude.java Mantissa*.java RandomState.java RealMatrix.java ComplexMatrix.java 
