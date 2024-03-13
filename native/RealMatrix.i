@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import arb.algebra.Ring;
-import dnl.utils.text.table.TextTable;
+import arb.utensils.text.TextTable;
 %}
 
 %typemap(javafinalize) arb_mat_struct ""
