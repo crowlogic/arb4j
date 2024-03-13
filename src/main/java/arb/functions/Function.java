@@ -70,8 +70,8 @@ public interface Function<D, R> extends
    * enclosures.
    * 
    * <b>However,special care is needed for bounded functions with branch cuts.
-   * </b> For example, when evaluating f , the output must be set to a non-finite
-   * value if it overlaps with the branch cut.
+   * </b> For example, when evaluating f , <b>the output must be set to a non-finite
+   * value if it overlaps with the branch cut.</b>
    * 
    * The easiest way to accomplish this is to use versions of basic functions
    * (sqrt, log, pow, etc.) that test holomorphicity of their arguments

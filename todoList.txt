@@ -1,3 +1,2 @@
 expression compiler: support utf superscript chars for exponentiation #348
-expression compiler: binary operation causing type mismatch by either getting passed an incorrect resultType or ignoring it #350
 derive eigenfunctions of the new integral operator
