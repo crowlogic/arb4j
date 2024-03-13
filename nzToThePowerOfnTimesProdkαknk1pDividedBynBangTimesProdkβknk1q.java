@@ -18,7 +18,6 @@ public class nzToThePowerOfnTimesProdkαknk1pDividedBynBangTimesProdkβknk1q imp
    public Real ℝ2;
    public Integer ℤ1;
    public Real ℝ3;
-   public Real ℝ4;
    public Real valueℝ2;
    public Real prodℝ2;
    public Integer endIndexℤ2;
@@ -40,8 +39,7 @@ public class nzToThePowerOfnTimesProdkαknk1pDividedBynBangTimesProdkβknk1q imp
          prodℝ1.mul(factorℝ1.evaluate(k, bits, valueℝ1), bits);
       } while(k.increment().compareTo(endIndexℤ1) <= 0);
 
-      var10000.mul(prodℝ1, bits, ℝ2);
-      Real var10001 = result.div(in.factorial(bits, ℤ1).set(ℝ3), bits, ℝ4);
+      var10000 = var10000.mul(prodℝ1, bits, ℝ2).div(in.factorial(bits, ℤ1), bits, ℝ3);
       factorℝ2.n = in;
       prodℝ2.multiplicativeIdentity();
       k.set(c1);
@@ -51,7 +49,7 @@ public class nzToThePowerOfnTimesProdkαknk1pDividedBynBangTimesProdkβknk1q imp
          prodℝ2.mul(factorℝ2.evaluate(k, bits, valueℝ2), bits);
       } while(k.increment().compareTo(endIndexℤ2) <= 0);
 
-      return var10001.mul(prodℝ2, bits, result);
+      return var10000.mul(prodℝ2, bits, result);
    }
 
    public nzToThePowerOfnTimesProdkαknk1pDividedBynBangTimesProdkβknk1q() {
@@ -64,7 +62,6 @@ public class nzToThePowerOfnTimesProdkαknk1pDividedBynBangTimesProdkβknk1q imp
       ℝ2 = new Real();
       ℤ1 = new Integer();
       ℝ3 = new Real();
-      ℝ4 = new Real();
       valueℝ2 = new Real();
       prodℝ2 = new Real();
       endIndexℤ2 = new Integer();
@@ -104,7 +101,6 @@ public class nzToThePowerOfnTimesProdkαknk1pDividedBynBangTimesProdkβknk1q imp
       ℝ2.close();
       ℤ1.close();
       ℝ3.close();
-      ℝ4.close();
       valueℝ2.close();
       prodℝ2.close();
       endIndexℤ2.close();

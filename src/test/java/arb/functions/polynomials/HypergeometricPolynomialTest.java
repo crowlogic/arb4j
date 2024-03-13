@@ -2,6 +2,7 @@ package arb.functions.polynomials;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealConstants;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -20,6 +21,7 @@ public class HypergeometricPolynomialTest extends
     try ( Integer p = new Integer(3); Integer q = new Integer(1); Real α = Real.newVector(p.getSignedValue());
           Real β = Real.newVector(q.getSignedValue()); Real z = new Real();)
     {
+      z.set(RealConstants.π);
       Context                 context = new Context(p.setName("p"),
                                                     q.setName("q"),
                                                     α.setName("α").set(1.5, 0.75, -3),
@@ -30,7 +32,8 @@ public class HypergeometricPolynomialTest extends
                                                          Real.class,
                                                          "n➔z^n*∏k➔α[k]₍ₙ₎{k=1…p}/n!*∏k➔β[k]₍ₙ₎{k=1…q}",
                                                          context);
-      System.out.println(summand);
+      Real                    res     = summand.evaluate(new Integer(3), 1, 128, new Real());
+      System.out.println("summand(3)=" + res);
     }
   }
 }
