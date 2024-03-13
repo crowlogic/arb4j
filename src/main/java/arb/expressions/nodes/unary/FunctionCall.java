@@ -130,14 +130,14 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   /**
    * 
    * @param methodVisitor
-   * @param resultType
+   * @param requisiteResultType
    * @return
    */
-  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> resultType)
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> requisiteResultType)
   {
-    var expression = arg.expression;
-        
-    boolean needsResultTypeConversion = !resultType.equals(generatedType);
+    var     expression                = arg.expression;
+      
+    boolean needsResultTypeConversion = !requisiteResultType.equals(generatedType);
 
     if (needsResultTypeConversion)
     {
@@ -147,10 +147,10 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     arg.generate(methodVisitor, expression.rangeType);
     loadBitsParameter(methodVisitor);
 
-    loadOutputVariableOntoStack(methodVisitor, expression, resultType);
+    loadOutputVariableOntoStack(methodVisitor, expression, requisiteResultType);
 
     Class<?> domainType = getDomainType();
-    Class<?> rangeType  = resultType;
+    Class<?> rangeType  = requisiteResultType;
 
     methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                                   Type.getInternalName(domainType),
@@ -161,7 +161,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       expression.reserveIntermediateVariable(methodVisitor, generatedType);
       checkClassCast(methodVisitor, generatedType);
-      invokeSetMethod(methodVisitor, resultType, generatedType);
+      invokeSetMethod(methodVisitor, generatedType, requisiteResultType );
+      generatedType = requisiteResultType;
     }
     return methodVisitor;
   }
