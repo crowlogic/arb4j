@@ -1529,7 +1529,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   @Override
   public String typeset()
   {
-    return rootNode == null ? null : rootNode.typeset();
+    return rootNode == null ? null : "$" + rootNode.typeset() + "$";
   }
 
   public Expression<D, R, F> writeBytecodes(File file)
