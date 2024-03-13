@@ -83,9 +83,11 @@ public class FunctionPlotter extends
   public void initializeFuctions()
   {
     refreshFunctionDatasets();
-    resampleFunctions(false);
+    resampleFunctions(parallel);
   }
 
+  public boolean parallel = true;
+  
   public void set(Stage primaryStage, javafx.event.EventHandler<WindowEvent> onCloseRequestHandler)
   {
     primaryStage.setTitle(this.getClass().getSimpleName());

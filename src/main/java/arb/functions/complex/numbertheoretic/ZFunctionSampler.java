@@ -4,6 +4,7 @@ import static java.lang.System.out;
 
 import arb.Float;
 import arb.FloatInterval;
+import arb.Real;
 import arb.RealDataSet;
 import arb.functions.real.FunctionSampler;
 import arb.functions.real.RealFunction;
@@ -16,7 +17,7 @@ public class ZFunctionSampler
   {
 
     // Instantiate ZFunction
-    RealFunction    zFunction = new ZFunction().asRealToComplexFunction().realPart();
+    RealFunction    zFunction = RealFunction.express("Z(t)");
 
     // Instantiate FunctionSampler with the required domain
     FunctionSampler sampler   = new FunctionSampler(new FloatInterval(new Float(0),
@@ -35,7 +36,14 @@ public class ZFunctionSampler
     sampler.resampleFunctions(true);
 
     RealDataSet sample = sampler.dataSets.get(0);
-    out.println(sample);
+    Real row = sample.data.getRow(1).sum(128, new Real() );
+    System.out.println( "sampledZfuncSum=" + row );
+    
+    sampler.resampleFunctions(false);
+
+    sample = sampler.dataSets.get(0);
+    row = sample.data.getRow(1).sum(128, new Real() );
+    System.out.println( "sampledZfuncSum=" + row );
     // Your sampled data sets are now in sampler.dataSets
   }
 }

@@ -69,7 +69,7 @@ public class FunctionSampler implements
   public final void resampleFunctions(boolean parallel)
   {
     assert functions.size() == dataSets.size();
-    IntStream.range(0, functions.size()).parallel().forEach(i ->
+    IntStream.range(0, functions.size()).forEach(i ->
     {
       RealFunction function = functions.get(i);
       RealDataSet  dataset  = dataSets.get(i);

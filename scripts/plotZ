@@ -1,0 +1,2 @@
+var z = express("Z(t)");
+plot(0.0,40.0,1000,z);
