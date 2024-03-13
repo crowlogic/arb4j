@@ -57,8 +57,8 @@ public class TODO extends
                             loadButton,
                             listView);
     Scene scene  = new Scene(layout,
-                             300,
-                             250);
+                             800,
+                             550);
 
     Platform.runLater(this::loadItems);
 
