@@ -1,18 +1,11 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.getMethodDescriptor;
+import static arb.utensils.Utensils.indent;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.IFLE;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.POP;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.Optional;
 
@@ -147,10 +140,13 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
     if (expression.traceGenerator)
     {
-      System.out.format("%s.assignFieldNames(resultType=%s) factorFunctionFieldName=%s factorValueFieldName=%s\n\n",
+      int indentation = 18 + getClass().getSimpleName().length();
+      System.out.format("%s.assignFieldNames(resultType=%s,\n%sfactorFunctionFieldName=%s,\n%sfactorValueFieldName=%s)\n\n",
                         getClass().getSimpleName(),
                         resultType,
+                        indent(indentation),
                         factorFunctionFieldName,
+                        indent(indentation),
                         factorValueFieldName);
     }
   }
@@ -284,7 +280,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     String expr = format("%s➔%s", getIndexFieldName(), factor);
     if (expression.traceGenerator)
     {
-      System.out.format("%s: generateFactorClass( expr=%s,resultType=%s)\n\n",
+      System.out.format("%s.generateFactorClass( expr=%s,resultType=%s)\n\n",
                         getClass().getSimpleName(),
                         expr,
                         resultType);
@@ -299,9 +295,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                                                                                      factorFunctionFieldName,
                                                                                      expression);
 
-    var                                          factorInstance   = factorExpression.instantiate();
-
-    registerFactorSubexpressionInstance(factorExpression, factorInstance);
+    registerFactorSubexpressionInstance(factorExpression, factorExpression.instantiate());
   }
 
   public void generateInnerLoop(MethodVisitor mv)
@@ -328,19 +322,24 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
    */
   private Optional<IntermediateVariable<D, R, F>> getExistingIndexVariable()
   {
-    String                                  indexFieldName        = getIndexFieldName();
+    String indexFieldName        = getIndexFieldName();
 
-    Optional<IntermediateVariable<D, R, F>> existingIndexVariable = expression.intermediateVariables.stream()
-                                                                                                    .filter(variable -> variable.name.equals(indexFieldName))
-                                                                                                    .findFirst();
+    var    existingIndexVariable = expression.intermediateVariables.stream()
+                                                                   .filter(variable -> variable.name.equals(indexFieldName))
+                                                                   .findFirst();
     return existingIndexVariable;
   }
 
   protected void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
   {
-    if (expression.verbose)
+    if (expression.verbose || expression.traceGenerator)
     {
-      out.format("getField(fieldName=%s, fieldTypeSignature=%s\n", fieldName, fieldTypeSignature);
+      out.format("getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n",
+                 functionClass,
+                 indent(9),
+                 fieldName,
+                 indent(9),
+                 fieldTypeSignature);
     }
     getThisField(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
