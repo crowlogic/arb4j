@@ -20,7 +20,8 @@ public class Division<D, R, F extends Function<D, R>> extends
     super(expression,
           left,
           "div",
-          right);
+          right,
+          "/");
   }
 
   @Override

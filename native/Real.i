@@ -191,19 +191,53 @@ import arb.stochastic.ProbabilityDistributionFunction;
     return Γ(bits, this);
   }
   
- /**
-   * Calculate the rising factorial this_(power)
+ public RealPolynomial ascendingFactorial(RealPolynomial sub, int bits, RealPolynomial result)
+  {
+    assert false : String.format("this=%s sub=%s bits=%s result=%s\n", this, sub, bits, result);
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /**
+   * Calculate the ascending factorial this_(power)
    * 
    * @param power
    * @param bits
    * @param result
    * @return
    */
-  public Real risingFactorial(Real power, int bits, Real result)
+  public Real ascendingFactorial(long power, int bits, Real result)
+  {
+    arblib.arb_hypgeom_rising_ui(result, this, power, bits);
+    return result;
+  }
+
+  /**
+   * Calculate the ascending factorial this_(power)
+   * 
+   * @param power
+   * @param bits
+   * @param result
+   * @return
+   */
+  public Real ascendingFactorial(Integer power, int bits, Real result)
+  {
+    arblib.arb_hypgeom_rising_ui(result, this, power.getUnsignedValue(), bits);
+    return result;
+  }
+
+  /**
+   * Calculate the ascending factorial this_(power)
+   * 
+   * @param power
+   * @param bits
+   * @param result
+   * @return
+   */
+  public Real ascendingFactorial(Real power, int bits, Real result)
   {
     arblib.arb_hypgeom_rising(result, this, power, bits);
     return result;
-
   }
 
   public RealPolynomial div(Real divisor, int bits, RealPolynomial result)
@@ -233,34 +267,6 @@ import arb.stochastic.ProbabilityDistributionFunction;
   public Real multiplicativeIdentity()
   {
     return set(RealConstants.one);
-  }
-  
-  /**
-   * Calculate the rising factorial this_(power)
-   * 
-   * @param power
-   * @param bits
-   * @param result
-   * @return
-   */
-  public Real risingFactorial(Integer power, int bits, Real result)
-  {
-    arblib.arb_hypgeom_rising_ui(result, this, power.getUnsignedValue(), bits);
-    return result;
-  }
-
-  /**
-   * Calculate the rising factorial this_(power)
-   * 
-   * @param power
-   * @param bits
-   * @param result
-   * @return
-   */
-  public Real risingFactorial(long power, int bits, Real result)
-  {
-    arblib.arb_hypgeom_rising_ui(result, this, power, bits);
-    return result;
   }
   
   public Real div(Integer operand, int prec)
@@ -2044,12 +2050,6 @@ public static String removeTrailingZeros(String decimal)
   {
     return name;
   }  
-  
-  public RealPolynomial risingFactorial(RealPolynomial sub, int bits, RealPolynomial result)
-  {
-    assert false : String.format("this=%s sub=%s bits=%s result=%s\n", this, sub, bits, result);
-    // TODO Auto-generated method stub
-    return null;
-  }  
+
 %};
 

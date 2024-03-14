@@ -23,7 +23,7 @@ public class RealTest extends
     try ( Real real = new Real("6.9",
                                128))
     {
-      Real y = real.risingFactorial(3, 128, new Real());
+      Real y = real.ascendingFactorial(3, 128, new Real());
       assertEquals(485.139, y.doubleValue());
     }
   }
@@ -35,7 +35,7 @@ public class RealTest extends
           Real three = new Real("3",
                                 128);)
     {
-      Real y = real.risingFactorial(three, 128, new Real());
+      Real y = real.ascendingFactorial(three, 128, new Real());
       assertEquals(485.139, y.doubleValue());
     }
   }

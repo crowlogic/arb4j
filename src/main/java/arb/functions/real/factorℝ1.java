@@ -22,7 +22,7 @@ public class factorℝ1 implements
       initialize();
     }
 
-    return α.get(in).risingFactorial(n, bits, result);
+    return α.get(in).ascendingFactorial(n, bits, result);
   }
 
   public void initialize()

@@ -28,7 +28,8 @@ public class SwingingFactorial<D, R, F extends Function<D, R>> extends
     super(expression,
           left,
           operation,
-          right);
+          right,
+          "≀");
   }
 
   @Override

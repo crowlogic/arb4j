@@ -60,7 +60,7 @@ import arb.expressions.nodes.binary.Addition;
 import arb.expressions.nodes.binary.Division;
 import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
-import arb.expressions.nodes.binary.RisingFactorial;
+import arb.expressions.nodes.binary.AscendingFactorial;
 import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.nary.Product;
 import arb.expressions.nodes.nary.Sum;
@@ -1452,19 +1452,19 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F> resolvePostfixOperators(Node<D, R, F> node)
   {
-    node = resolveRisingFactorial(node);
+    node = resolveAscendingFactorial(node);
     node = resolveFactorials(node);
     return node;
   }
 
-  public Node<D, R, F> resolveRisingFactorial(Node<D, R, F> node)
+  public Node<D, R, F> resolveAscendingFactorial(Node<D, R, F> node)
   {
     if (nextCharacterIs('₍'))
     {
       Node<D, R, F> power = resolve();
       if (nextCharacterIs('₎'))
       {
-        node = new RisingFactorial<D, R, F>(this,
+        node = new AscendingFactorial<D, R, F>(this,
                                             node,
                                             power);
       }

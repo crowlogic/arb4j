@@ -29,6 +29,7 @@ public class Exponentiation<D, R, F extends Function<D, R>> extends
     super(expression,
           base,
           "pow",
-          exponent);
+          exponent,
+          "^");
   }
 }

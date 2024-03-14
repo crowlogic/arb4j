@@ -1,9 +1,6 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.loadBitsParameter;
-import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
-import static arb.expressions.Compiler.prepareStackForReusingRightSide;
+import static arb.expressions.Compiler.*;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
@@ -70,18 +67,25 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   public Class<?>      generatedType;
 
+  private String       symbol;
+
   public Class<?> getGeneratedType()
   {
     return generatedType;
   }
 
-  public BinaryOperation(Expression<D, R, F> expression, Node<D, R, F> left, String operation, Node<D, R, F> right)
+  public BinaryOperation(Expression<D, R, F> expression,
+                         Node<D, R, F> left,
+                         String operation,
+                         Node<D, R, F> right,
+                         String symbol)
   {
     super(expression);
 
     this.right     = right;
     this.operation = operation;
     this.left      = left;
+    this.symbol    = symbol;
     assert right != null : "the right-hand-side of a binary operator should never be null";
     if (left == null)
     {
@@ -107,7 +111,11 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     if (expression.traceGenerator)
     {
-      System.out.format("BinaryOperation.generate( this=%s, resultType=%s, left.type=%s, right.type=%s )\n\n", this, resultType, left.type(), right.type() );
+      System.out.format("BinaryOperation.generate( this=%s, resultType=%s, left.type=%s, right.type=%s )\n\n",
+                        this,
+                        resultType,
+                        left.type(),
+                        right.type());
     }
     generatedType = resultType;
 
@@ -133,7 +141,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
     Class<?> targetResultType = expression.rangeType;
-    
+
     loadBitsParameter(mv);
     loadResult(mv, resultType, targetResultType);
 

@@ -27,7 +27,8 @@ public class Addition<D, R, F extends Function<D, R>> extends
     super(expression,
           left,
           "add",
-          right);
+          right,
+          "+");
   }
 
 }

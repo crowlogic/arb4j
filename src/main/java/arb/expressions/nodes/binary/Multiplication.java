@@ -20,7 +20,8 @@ public class Multiplication<D, R, F extends Function<D, R>> extends
     super(expression,
           left,
           "mul",
-          right);
+          right,
+          "*");
   }
 
   @Override

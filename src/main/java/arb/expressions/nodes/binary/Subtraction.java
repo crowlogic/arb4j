@@ -41,6 +41,7 @@ public class Subtraction<D, R, F extends Function<D, R>> extends
     super(expression,
           left,
           "sub",
-          right);
+          right,
+          "-");
   }
 }
