@@ -993,7 +993,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (traceGenerator)
     {
-      System.out.println("Generating " + expression);
+      System.out.format("Generating %s\n\n", expression);
     }
     rootNode.generate(mv, rangeType);
 
