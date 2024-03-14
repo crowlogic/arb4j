@@ -10,7 +10,7 @@ import arb.functions.Function;
 import arb.functions.sequences.IntegerSequence;
 
 /**
- * Factorialize a number, where the factorial is of course defined by
+ * Swingingly factorialize a number, where the swinging factorial is defined by
  * 
  * <pre>
  *  n≀=n!/⌊n/2⌋!²
