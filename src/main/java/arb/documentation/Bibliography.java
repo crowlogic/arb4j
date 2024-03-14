@@ -222,7 +222,7 @@ public class Bibliography extends
   {
     Bibliography bibiography = new Bibliography();
     System.out.println(bibiography);
-    Path path = Paths.get("docs/refs2.bib");
+    Path path = Paths.get("docs/refs.bib");
     Files.write(path, bibiography.toString().getBytes());
     System.out.println("wrote " + path);
   }
