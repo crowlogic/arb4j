@@ -66,6 +66,7 @@ import arb.expressions.nodes.nary.Product;
 import arb.expressions.nodes.nary.Sum;
 import arb.expressions.nodes.unary.Factorialization;
 import arb.expressions.nodes.unary.FunctionCall;
+import arb.expressions.nodes.unary.SwingingFactorialization;
 import arb.expressions.nodes.unary.When;
 import arb.functions.Function;
 import arb.utensils.Utensils;
@@ -1381,12 +1382,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return intermediateVariableName;
   }
 
-  public Node<D, R, F> resolveFactorial(Node<D, R, F> node)
+  public Node<D, R, F> resolveFactorials(Node<D, R, F> node)
   {
     if (nextCharacterIs('!'))
     {
       return new Factorialization<D, R, F>(this,
                                            node);
+    }
+    else if (nextCharacterIs('≀'))
+    {
+      return new SwingingFactorialization<D, R, F>(this,
+                                                   node);
     }
     return node;
   }
@@ -1447,7 +1453,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public Node<D, R, F> resolvePostfixOperators(Node<D, R, F> node)
   {
     node = resolveRisingFactorial(node);
-    node = resolveFactorial(node);
+    node = resolveFactorials(node);
     return node;
   }
 
