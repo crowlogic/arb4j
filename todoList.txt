@@ -1,2 +1,4 @@
 expression compiler: support utf superscript chars for exponentiation #348
 derive eigenfunctions of the new integral operator
+expression compiler; wrong type used attempting to propagate input field to subexpression.NoSuchFieldError: Class factorℝ1 does not have member field 'arb.Integer z' #357
+expression compiler: revisit visitFrame to sync up the stack map with the instruction set bug #356
