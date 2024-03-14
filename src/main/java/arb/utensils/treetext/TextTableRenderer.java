@@ -218,9 +218,4 @@ public class TextTableRenderer implements
     }
   }
 
-  @Override
-  public void render(Writer w, int indent)
-  {
-    throw new UnsupportedOperationException();
-  }
 }
