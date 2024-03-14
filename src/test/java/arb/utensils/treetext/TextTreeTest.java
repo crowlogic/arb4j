@@ -2,27 +2,22 @@ package arb.utensils.treetext;
 
 import java.io.File;
 
-import javax.swing.tree.TreeModel;
-
-import org.junit.Test;
-
-import arb.utensils.treetext.FileSystemTreeModel;
-import arb.utensils.treetext.FileSystemTreeNode;
-import arb.utensils.treetext.TextTree;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
 /**
- * 
- * @author Daniel Orr
- * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public class TextTreeTest extends TestCase
+public class TextTreeTest extends
+                          TestCase
 {
 
   public void testPrintTree()
   {
-    var tm = new FileSystemTreeModel(new File("./target"));
-    TextTree <FileSystemTreeNode> tt = new TextTree(tm);
+    var                          tm = new FileSystemTreeModel(new File("./docs"));
+    TextTree<FileSystemTreeNode> tt = new TextTree<FileSystemTreeNode>(tm);
     System.out.println(tt);
   }
 
