@@ -265,13 +265,9 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   }
 
-  /**
-   * 
-   */
   public Class<?> scalarDowncast(Class<?> resultType)
   {
-    resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
-    return resultType;
+    return resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
   }
 
   protected void generateEndingIndex(MethodVisitor mv)
