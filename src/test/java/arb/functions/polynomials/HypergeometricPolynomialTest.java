@@ -30,10 +30,11 @@ public class HypergeometricPolynomialTest extends
 
       Function<Integer, Real> summand = Function.express(Integer.class,
                                                          Real.class,
-                                                         "n➔z^n*∏k➔α[k]₍ₙ₎{k=1…p}/n!*∏k➔β[k]₍ₙ₎{k=1…q}",
+                                                         "n➔z^n*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
                                                          context);
       Real                    res     = summand.evaluate(new Integer(3), 1, 128, new Real());
       System.out.println("summand(3)=" + res);
+      assertEquals( -244.81029976584379503781836652101052755, res.doubleValue() );
     }
   }
 }

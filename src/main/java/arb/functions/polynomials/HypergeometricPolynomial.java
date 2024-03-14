@@ -53,8 +53,8 @@ public class HypergeometricPolynomial implements
 
   private Integer                   N;
 
-  boolean initialized = false;
-  
+  boolean                           initialized = false;
+
   @SuppressWarnings("resource")
   public HypergeometricPolynomial(int p, int q)
   {
@@ -66,14 +66,14 @@ public class HypergeometricPolynomial implements
 
     context.saveClasses = true;
     F                   = RealFunction.express("F",
-                                               "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/n!*∏k➔β[k]₍ₙ₎{k=1…q}{n=0…N}",
+                                               "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}{n=0…N})",
                                                context);
   }
 
   @Override
   public Real evaluate(Real n, int order, int bits, Real f)
   {
-    if ( !initialized )
+    if (!initialized)
     {
       if (!verify())
       {
