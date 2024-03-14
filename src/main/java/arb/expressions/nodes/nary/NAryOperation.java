@@ -284,7 +284,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     String expr = format("%s➔%s", getIndexFieldName(), factor);
     if (expression.traceGenerator)
     {
-      System.out.format("%s: generateFactorClass( expr=%s,resultType=%s)\n",
+      System.out.format("%s: generateFactorClass( expr=%s,resultType=%s)\n\n",
                         getClass().getSimpleName(),
                         expr,
                         resultType);
@@ -583,7 +583,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     pop(methodVisitor);
   }
 
-  private void throwException(String msg)
+  private static void throwException(String msg)
   {
     throw new ExpressionCompilerException(msg);
   }

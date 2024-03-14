@@ -550,11 +550,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      return new NaryMultiplication<D, R, F>(this);
+      return new NaryMultiplication<>(this);
     }
     else if (nextCharacterIs('∑', 'Σ'))
     {
-      return new Summation<D, R, F>(this);
+      return new Summation<>(this);
     }
     else if (Parser.isNumeric(character))
     {
@@ -613,16 +613,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void evaluateOptionalIndependentVariableSpecification()
   {
-    expression = expression.replace("->", "➔");
-    int rightArrowIndex = expression.indexOf('➔');
+    int rightArrowIndex = (expression = expression.replace("->", "➔")).indexOf('➔');
     if (rightArrowIndex != -1)
     {
-      String                     name      = expression.substring(0, rightArrowIndex);
-      VariableReference<D, R, F> reference = new VariableReference<D, R, F>(name,
-                                                                            null,
-                                                                            domainType);
-      independentVariableNode = new Variable<D, R, F>(this,
-                                                      reference);
+      String independentVariableName = expression.substring(0, rightArrowIndex);
+      independentVariableNode = new Variable<>(this,
+                                               new VariableReference<>(independentVariableName,
+                                                                       null,
+                                                                       domainType));
 
       position                = rightArrowIndex;
     }
@@ -652,8 +650,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       if (!nextCharacterIs(Parser.SUBSCRIPT_DIGITS_ARRAY))
       {
-        return new LiteralConstant<D, R, F>(this,
-                                            String.valueOf(previousCharacter));
+        return new LiteralConstant<>(this,
+                                     String.valueOf(previousCharacter));
       }
       else
       {
@@ -733,7 +731,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    */
   public Node<D, R, F> exponentiateMultiplyAndDivide()
   {
-    Node<D, R, F> node = exponentiate();
+    var node = exponentiate();
     return multiplyAndDivide(node);
   }
 
@@ -933,10 +931,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     generateInvocationOfDefaultNoArgConstructor(mv, true);
 
-    referencedFunctions.values().stream().filter(func -> func.instance != null).forEach(mapping ->
-    {
-      generateFunctionReference(mv, mapping);
-    });
+    referencedFunctions.values()
+                       .stream()
+                       .filter(func -> func.instance != null)
+                       .forEach(mapping -> generateFunctionReference(mv, mapping));
 
     generateLiteralConstantInitializers(mv);
 
@@ -1394,7 +1392,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
       return new SwingingFactorialization<D, R, F>(this,
                                                    node);
     }
-    return node;
+    else
+    {
+      return node = resolveAscendingFactorial(node);
+    }
   }
 
   public Node<D, R, F> resolveFunction(int startPos, VariableReference<D, R, F> reference)
@@ -1422,9 +1423,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F> resolveFunctionOrVariableReference(int startPos) throws ExpressionCompilerException
   {
-    VariableReference<D, R, F> reference  = evaluateName(startPos);
+    var     reference  = evaluateName(startPos);
 
-    boolean                    isFunction = nextCharacterIs('(');
+    boolean isFunction = nextCharacterIs('(');
 
     if (isFunction)
     {
@@ -1443,18 +1444,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else
       {
-        Variable<D, R, F> variable = newVariable(reference);
-
-        return variable;
+        return newVariable(reference);
       }
     }
   }
 
   public Node<D, R, F> resolvePostfixOperators(Node<D, R, F> node)
   {
-    node = resolveAscendingFactorial(node);
-    node = resolveFactorials(node);
-    return node;
+    return node = resolveFactorials(node);
   }
 
   public Node<D, R, F> resolveAscendingFactorial(Node<D, R, F> node)
@@ -1465,8 +1462,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (nextCharacterIs('₎'))
       {
         node = new AscendingFactorialization<D, R, F>(this,
-                                            node,
-                                            power);
+                                                      node,
+                                                      power);
       }
       else
       {
