@@ -167,11 +167,7 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("%s[fieldName=%s, value=%s, type=%s]",
-                         getClass().getSimpleName(),
-                         fieldName,
-                         value,
-                         type() != null ? type().getName() : null);
+    return value;
   }
 
   public String toString(int depth)
