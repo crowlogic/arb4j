@@ -1,6 +1,10 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
+import static arb.expressions.Compiler.prepareStackForReusingRightSide;
+import static arb.utensils.Utensils.indent;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
@@ -107,11 +111,14 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     if (expression.traceGenerator)
     {
-      System.out.format("BinaryOperation.generate( this=%s, resultType=%s, left.type=%s, right.type=%s )\n\n",
+      System.out.format("BinaryOperation.generate( this=%s,\n%sleft.type=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
                         this,
-                        resultType,
+                        indent(26),
                         left.type(),
-                        right.type());
+                        indent(26),
+                        right.type(),
+                        indent(26),
+                        resultType);
     }
     generatedType = resultType;
 

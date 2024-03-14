@@ -1,7 +1,12 @@
 package arb.utensils;
 
 import static arb.IntegerConstants.FLINT_BITS;
-import static arb.arblib.*;
+import static arb.arblib.acb_add_error_mag;
+import static arb.arblib.acb_calc_gl_node;
+import static arb.arblib.acb_init;
+import static arb.arblib.arb_get_mag;
+import static arb.arblib.arb_init;
+import static arb.arblib.mag_init;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -9,6 +14,7 @@ import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.Type;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
@@ -23,17 +29,22 @@ import arb.RealMatrix;
 import arb.RealRootInterval.RefinementResult;
 import arb.RoundingMode;
 import arb.arblib;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
 import arb.functions.real.RealFunction;
 
 /**
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2023 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs format of the same document respectively.
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class Utensils
 {
+  public static String indent(int n)
+  {
+    return StringUtils.repeat(' ', n);
+  }
+
   public static String subscriptToRegular(String input)
   {
     return input.replace("₀", "0")
@@ -111,18 +122,6 @@ public class Utensils
   {
     int number = 1234567890;
     System.out.println("Superscript: " + toSuperscript(number));
-  }
-
-  public static Real add(IntFunction<Real> func, int startInclusive, int stopExclusive, int bits, Real value)
-  {
-    value.zero();
-    for (int i = startInclusive; i < stopExclusive; i++)
-    {
-      Real y = func.apply(i);
-      value.add(y, bits, value);
-    }
-    return value;
-
   }
 
   /**
