@@ -5,8 +5,14 @@ import static arb.arblib.acb_cosh;
 import static arb.arblib.acb_sinh;
 
 import arb.Complex;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.EvenFunction;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class HyperbolicCosine implements
                               EvenFunction
 {
