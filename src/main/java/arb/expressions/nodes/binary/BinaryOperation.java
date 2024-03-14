@@ -121,25 +121,17 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   }
 
   /**
-   * Generates the bytecode to perform the operation.
+   * FIXME: this
    * 
-   * Input Stack: (L, R)
-   * 
-   * Output Stack: (L, R, I, L) or (L, R, I, R) or (L,R,I,N) or (L,R,I,T) where N
-   * is a newly allocated Real and T is the last argument passed to the
-   * {@link Expression#evaluate(Real, int, int, Real)} method which is where the
-   * result will be stored and returned
-   * 
+   * @param mv
+   * @param operator
    * @param resultType
-   * 
    * @return
    */
   public MethodVisitor invokeMethod(MethodVisitor mv, String operator, Class<?> resultType)
   {
-    Class<?> targetResultType = expression.rangeType;
-
     loadBitsParameter(mv);
-    loadResult(mv, resultType, targetResultType);
+    loadResult(mv, resultType);
 
     var leftGeneratedType = left.getGeneratedType();
     var overrideLeftType  = leftGeneratedType != null ? leftGeneratedType : left.type();
@@ -154,6 +146,15 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                    Class<?> rightType,
                                    Class<?> returnType)
   {
+    if (expression.traceGenerator)
+    {
+      String.format("%s.invokeBinaryOperationMethod(operator=%s, leftType=%s, rightType=%s, returnType=%s)\n",
+                    getClass().getSimpleName(),
+                    operator,
+                    leftType,
+                    rightType,
+                    returnType);
+    }
     mv.visitMethodInsn(INVOKEVIRTUAL,
                        Type.getInternalName(leftType),
                        operator,
@@ -164,7 +165,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                        false);
   }
 
-  private boolean loadResult(MethodVisitor mv, Class<?> resultType, Class<?> targetResultType)
+  private boolean loadResult(MethodVisitor mv, Class<?> resultType)
   {
     Node<D, R, F> reusableNode;
 
