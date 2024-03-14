@@ -19,11 +19,11 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class SwingingFactorial<D, R, F extends Function<D, R>> extends
+public class SwingingFactorialization<D, R, F extends Function<D, R>> extends
                               BinaryOperation<D, R, F>
 {
 
-  public SwingingFactorial(Expression<D, R, F> expression, Node<D, R, F> left, String operation, Node<D, R, F> right)
+  public SwingingFactorialization(Expression<D, R, F> expression, Node<D, R, F> left, String operation, Node<D, R, F> right)
   {
     super(expression,
           left,
