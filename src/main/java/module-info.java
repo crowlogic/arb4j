@@ -74,6 +74,6 @@ module arb4j
   exports arb.stochastic.processes.correlationfunctions;
   exports arb.stochastic.processes.integrators;
   exports arb.utensils;
-  exports arb.utensils.text;
+  exports arb.utensils.treetext;
   exports arb.viz;
 }

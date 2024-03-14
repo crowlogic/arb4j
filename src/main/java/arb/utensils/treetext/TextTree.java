@@ -1,22 +1,22 @@
-package arb.utensils.text;
+package arb.utensils.treetext;
 
 import java.io.PrintStream;
 
-import javax.swing.tree.TreeModel;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
- * Implements a tree that renders into text.
- * 
- * @author Daniel Orr
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
-public class TextTree
+public class TextTree<N>
 {
 
-  private TreeModel     model;
+  private Tree<N>       model;
   private boolean       showRoot = true;
   private StringBuilder sb;
 
-  public TextTree(TreeModel model)
+  public TextTree(Tree<N> model)
   {
     this.model = model;
   }
@@ -61,12 +61,12 @@ public class TextTree
   public String toString()
   {
     sb = new StringBuilder();
-    Object root = model.getRoot();
+    N root = model.getRoot();
     printNode(root, "", "", showRoot);
     return sb.toString();
   }
 
-  private void printNode(Object node, String pref, String bud, boolean render)
+  private void printNode(N node, String pref, String bud, boolean render)
   {
     if (render)
     {
@@ -79,7 +79,7 @@ public class TextTree
     String pref1      = pref + "   ";
     String pref2      = pref + "   |";
     String pref3      = pref + "";
-    int    childCount = model.getChildCount(node);
+    int    childCount = model.getNodeCount(node);
     String ind;
     String bud2;
     if (childCount > 0)
@@ -97,7 +97,7 @@ public class TextTree
           ind  = pref2;
           bud2 = "";
         }
-        printNode(model.getChild(node, i), !render ? pref3 : ind, !render ? "" : bud2, true);
+        printNode(model.getNode(node, i), !render ? pref3 : ind, !render ? "" : bud2, true);
       }
     }
   }

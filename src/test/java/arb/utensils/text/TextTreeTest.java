@@ -6,19 +6,23 @@ import javax.swing.tree.TreeModel;
 
 import org.junit.Test;
 
+import arb.utensils.treetext.FileSystemTreeModel;
+import arb.utensils.treetext.FileSystemTreeNode;
+import arb.utensils.treetext.TextTree;
+import junit.framework.TestCase;
+
 /**
  * 
  * @author Daniel Orr
  * 
  */
-public class TextTreeTest
+public class TextTreeTest extends TestCase
 {
 
-  @Test
-  public void printTree()
+  public void testPrintTree()
   {
-    TreeModel tm = new FsModel(new File("./target"));
-    TextTree  tt = new TextTree(tm);
+    var tm = new FileSystemTreeModel(new File("./target"));
+    TextTree <FileSystemTreeNode> tt = new TextTree(tm);
     System.out.println(tt);
   }
 

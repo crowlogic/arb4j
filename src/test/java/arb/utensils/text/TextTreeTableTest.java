@@ -2,11 +2,15 @@ package arb.utensils.text;
 
 import org.junit.Test;
 
-public class TextTreeTableTest
+import arb.utensils.treetext.TextTable;
+import arb.utensils.treetext.TextTreeTable;
+import junit.framework.TestCase;
+
+public class TextTreeTableTest extends
+                               TestCase
 {
 
-  @Test
-  public void printTableWithThreeColumns()
+  public void testPrintTableWithThreeColumns()
   {
     String[]      titles =
     { "column1", "column2", "column3" };

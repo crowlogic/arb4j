@@ -1,13 +1,15 @@
-package arb.utensils.text;
+package arb.utensils.treetext;
 
 import java.io.PrintStream;
 
 import javax.swing.table.TableModel;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
- * 
- * @author Daniel Orr
- * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class TextTreeTable extends
                            TextTable
@@ -48,7 +50,7 @@ public class TextTreeTable extends
   }
 
   private class TreeTableSeparatorPolicy extends
-                                         SeparatorPolicy
+                                         TextTreeLayout
   {
 
     @Override

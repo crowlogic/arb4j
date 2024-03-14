@@ -1,7 +1,14 @@
-package arb.utensils.text;
+package arb.utensils.treetext;
 
 import javax.swing.table.AbstractTableModel;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public abstract class TextTableModel extends
                                      AbstractTableModel
 {

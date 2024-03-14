@@ -1,4 +1,4 @@
-package arb.utensils.text;
+package arb.utensils.treetext;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -10,16 +10,18 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
- * 
- * @author Daniel Orr
- * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class TextTable
 {
 
   protected TableModel            tableModel;
-  protected List<SeparatorPolicy> separatorPolicies = new ArrayList<SeparatorPolicy>();
+  protected List<TextTreeLayout> separatorPolicies = new ArrayList<TextTreeLayout>();
 
   protected boolean               addRowNumbering;
 
@@ -54,7 +56,7 @@ public class TextTable
     this.addRowNumbering = addNumbering;
   }
 
-  public void addSeparatorPolicy(SeparatorPolicy separatorPolicy)
+  public void addSeparatorPolicy(TextTreeLayout separatorPolicy)
   {
     separatorPolicies.add(separatorPolicy);
     separatorPolicy.setTableModel(tableModel);
@@ -98,7 +100,7 @@ public class TextTable
 
   protected boolean hasSeparatorAt(int row)
   {
-    for (SeparatorPolicy separatorPolicy : separatorPolicies)
+    for (TextTreeLayout separatorPolicy : separatorPolicies)
     {
       if (separatorPolicy.hasSeparatorAt(row))
       {

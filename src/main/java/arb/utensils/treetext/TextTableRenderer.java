@@ -1,4 +1,4 @@
-package arb.utensils.text;
+package arb.utensils.treetext;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -8,6 +8,13 @@ import javax.swing.table.TableModel;
 
 import org.apache.commons.lang3.StringUtils;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class TextTableRenderer implements
                                TableRenderer
 {
