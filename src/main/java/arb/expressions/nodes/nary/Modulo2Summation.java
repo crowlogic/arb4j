@@ -25,11 +25,11 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class Modulo2Sum<D, R, F extends Function<D, R>> extends
-                       ModuloSum<D, R, F>
+public class Modulo2Summation<D, R, F extends Function<D, R>> extends
+                       ModuloSummation<D, R, F>
 {
 
-  public Modulo2Sum(Expression<D, R, F> expression)
+  public Modulo2Summation(Expression<D, R, F> expression)
   {
     super(expression,
           "⨊",

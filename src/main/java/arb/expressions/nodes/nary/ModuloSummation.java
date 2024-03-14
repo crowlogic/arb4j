@@ -27,11 +27,11 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class ModuloSum<D, R, F extends Function<D, R>> extends
+public class ModuloSummation<D, R, F extends Function<D, R>> extends
                       NAryOperation<D, R, F>
 {
 
-  public ModuloSum(Expression<D, R, F> expression, String identity, String prefix, String operation, String symbol)
+  public ModuloSummation(Expression<D, R, F> expression, String identity, String prefix, String operation, String symbol)
   {
     super(expression,
           identity,
@@ -50,7 +50,7 @@ public class ModuloSum<D, R, F extends Function<D, R>> extends
 
   int mod;
 
-  public ModuloSum(Expression<D, R, F> expression, String symbol, int mod)
+  public ModuloSummation(Expression<D, R, F> expression, String symbol, int mod)
   {
     super(expression,
           "additiveIdentity",
