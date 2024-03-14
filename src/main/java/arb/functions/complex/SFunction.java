@@ -6,19 +6,24 @@ import static java.lang.String.format;
 import arb.Complex;
 import arb.Real;
 import arb.RealConstants;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.Function;
 
 /**
  * The rational meromorphic quartic
  * <code>S(t)=tanh(ln(1-t^2)))=((1 - t^2)^2 - 1)/((1 - t^2)^2 + 1)</code>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class SFunction implements
                        ComplexFunction,
                        AutoCloseable
 {
 
-  public Real        scale;
+  public Real scale;
 
   public SFunction()
   {

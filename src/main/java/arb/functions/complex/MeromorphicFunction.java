@@ -1,5 +1,8 @@
 package arb.functions.complex;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
+
 /**
  * A meromorphic function on an open subset D of the complex plane is a
  * {@link ComplexFunction} on all of D except for a set of isolated points,
@@ -8,9 +11,11 @@ package arb.functions.complex;
  * <br>
  * 
  * Every meromorphic function on D can be expressed as the ratio between a pair
- * of {@link ComplexFunction}s (with the denominator not constant 0) defined
- * on D: any pole must coincide with a zero of the denominator.
- *
+ * of {@link ComplexFunction}s (with the denominator not constant 0) defined on
+ * D: any pole must coincide with a zero of the denominator.
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface MeromorphicFunction extends
                                      ComplexFunction

@@ -1,6 +1,8 @@
 package arb.functions.complex.dynamics;
 
 import arb.Complex;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotDifferentiableException;
 import arb.functions.complex.ComplexFunction;
 
@@ -9,6 +11,8 @@ import arb.functions.complex.ComplexFunction;
  *
  * @author Isaac Newton
  * @author Stephen Crowley
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class NewtonMap<F extends ComplexFunction> implements
                       ComplexFunction
@@ -25,22 +29,22 @@ public class NewtonMap<F extends ComplexFunction> implements
     this.f = f;
   }
 
-  public F                  f;
+  public F              f;
 
   final ComplexFunction diff = (t, order, prec, w) ->
-                                 {
-                                   assert order < 2;
-                                   assert w.size() >= order;
-                                   try ( Complex s = Complex.newVector(3);)
-                                   {
-                                     f.evaluate(t, 3, prec, s);
-                                     Complex numerator   = s.mul(s.get(2), prec, w);
-                                     Complex denominator = s.get(1).pow(2, prec, s);
-                                     numerator.div(denominator, prec, w);
-                                     evaluatePole(t, prec, w, true);
-                                     return w;
-                                   }
-                                 };
+                             {
+                               assert order < 2;
+                               assert w.size() >= order;
+                               try ( Complex s = Complex.newVector(3);)
+                               {
+                                 f.evaluate(t, 3, prec, s);
+                                 Complex numerator   = s.mul(s.get(2), prec, w);
+                                 Complex denominator = s.get(1).pow(2, prec, s);
+                                 numerator.div(denominator, prec, w);
+                                 evaluatePole(t, prec, w, true);
+                                 return w;
+                               }
+                             };
 
   protected void evaluatePole(Complex t, int prec, Complex w, boolean b)
   {

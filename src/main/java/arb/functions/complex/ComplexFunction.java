@@ -4,6 +4,8 @@ import arb.Complex;
 import arb.IntegrationOptions;
 import arb.Magnitude;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotDifferentiableException;
 import arb.exceptions.NotIntegrableException;
 import arb.functions.Function;
@@ -40,6 +42,9 @@ import arb.utensils.Utensils;
  * partial derivatives of a function satisfy the Cauchy-Riemann equations, then
  * the function is analytic in that region.
  * </pre>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface ComplexFunction extends
                                  Function<Complex, Complex>
@@ -69,7 +74,6 @@ public interface ComplexFunction extends
   {
     return new RealPartOfHolomorphicMapping(this);
   }
-
 
   /**
    * Calculates the line integral of this holomorphic function along a given curve

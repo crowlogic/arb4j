@@ -2,8 +2,14 @@ package arb.functions.complex;
 
 import arb.Complex;
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.RealToComplexFunction;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class RealPartOfHolomorphicMapping implements
                                           RealToComplexFunction
 {

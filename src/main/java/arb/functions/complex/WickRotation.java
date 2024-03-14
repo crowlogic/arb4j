@@ -2,6 +2,8 @@ package arb.functions.complex;
 
 import arb.Complex;
 import arb.ComplexConstants;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * Multiplication by the imaginary unit with optional negation. Wick rotation is
@@ -9,7 +11,8 @@ import arb.ComplexConstants;
  * multiplication of a complex number by i is equivalent to rotating the vector
  * representing that number by an angle of π/2 about the origin.
  * 
- * @author crow
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class WickRotation implements
                           ComplexFunction

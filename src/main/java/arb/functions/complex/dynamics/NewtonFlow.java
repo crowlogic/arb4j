@@ -1,12 +1,16 @@
 package arb.functions.complex.dynamics;
 
 import arb.Complex;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
 
 /**
  * The continuous version of the {@link NewtonMap}
  * 
  * @author ©2024 Stephen Crowley
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class NewtonFlow implements
                         ComplexFunction
@@ -43,7 +47,7 @@ public class NewtonFlow implements
     try ( Complex zt = Complex.newVector(order); Complex ft = Complex.newVector(order))
     {
       z.evaluate(t, order, bits, zt);
-      f.evaluate(zt, order+1, bits, ft);
+      f.evaluate(zt, order + 1, bits, ft);
       return ft.get(0).div(ft.get(1), bits, res).neg();
     }
   }

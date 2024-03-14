@@ -1,8 +1,14 @@
 package arb.functions.complex.dynamics;
 
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.SFunction;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class SNewtonMap extends
                         NewtonMap<SFunction>
 {

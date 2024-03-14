@@ -3,6 +3,8 @@ package arb.functions.complex;
 import static arb.arblib.acb_lambertw;
 
 import arb.Complex;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * <pre>
@@ -25,6 +27,9 @@ complex interval arithmetic</a>
  * @see <a href= "https://arblib.org/acb.html#lambert-w-function">the arblib
  *      documentation</a> for information about the flags parameter
  * @see ComplexFunction
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class LambertWFunction implements
                               ComplexFunction
