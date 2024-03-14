@@ -8,6 +8,7 @@
 
 package arb;
 
+
 import static arb.arblib.*;
 import static java.lang.String.format;
 
@@ -24,6 +25,11 @@ import java.util.stream.IntStream;
 
 import arb.algebra.Ring;
 import arb.utensils.treetext.TextTable;
+
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 
 public class RealMatrix implements AutoCloseable,Iterable<Real>,Ring<RealMatrix> {
   protected long swigCPtr;

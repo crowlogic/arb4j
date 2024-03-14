@@ -19,11 +19,11 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class AscendingFactorial<D, R, F extends Function<D, R>> extends
+public class AscendingFactorialization<D, R, F extends Function<D, R>> extends
                                BinaryOperation<D, R, F>
 {
 
-  public AscendingFactorial(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
+  public AscendingFactorialization(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
           left,

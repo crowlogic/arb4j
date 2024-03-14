@@ -1,4 +1,5 @@
 %typemap(javaimports) arb_mat_struct %{
+
 import static arb.arblib.*;
 import static java.lang.String.format;
 
@@ -14,9 +15,13 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import arb.algebra.Ring;
-import arb.utensils.text.TextTable;
-%}
+import arb.utensils.treetext.TextTable;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
+%}
 %typemap(javafinalize) arb_mat_struct ""
 %typemap(javainterfaces) arb_mat_struct "AutoCloseable,Iterable<Real>,Ring<RealMatrix>"
 

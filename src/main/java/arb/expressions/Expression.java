@@ -60,7 +60,7 @@ import arb.expressions.nodes.binary.Addition;
 import arb.expressions.nodes.binary.Division;
 import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
-import arb.expressions.nodes.binary.AscendingFactorial;
+import arb.expressions.nodes.binary.AscendingFactorialization;
 import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.nary.Product;
 import arb.expressions.nodes.nary.Sum;
@@ -1464,7 +1464,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       Node<D, R, F> power = resolve();
       if (nextCharacterIs('₎'))
       {
-        node = new AscendingFactorial<D, R, F>(this,
+        node = new AscendingFactorialization<D, R, F>(this,
                                             node,
                                             power);
       }
