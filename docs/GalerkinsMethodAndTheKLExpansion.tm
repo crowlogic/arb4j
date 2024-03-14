@@ -1,117 +1,112 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
+<style|generic>
 
 <\body>
-  \;
+  <documentclass|article>
 
-  This article details the finite representation of eigenfunctions, the
-  conversion into the Sturm-Liouville differential equation, and the
-  application of Leibniz's rule for differentiation under the integral sign.
-  We will also correct the summation details as per your instructions.
+  <usepackage|amsmath> <usepackage|amssymb> <usepackage|braket>
 
-  <section*|Finite Representation of Eigenfunctions>
+  <title|Finite Representation of Eigenfunctions in Reproducing Kernel
+  Hilbert Spaces> <author|><date|>
 
-  Consider an eigenfunction <math|\<psi\><rsub|k>> of the covariance kernel,
-  which can be represented exactly by a finite sum of orthogonal polynomials
-  <math|<around|{|\<phi\><rsub|n>|}><rsub|n=0><rsup|k>>\ 
+  <maketitle>
+
+  <\abstract>
+    This article explores the representation of eigenfunctions as finite
+    linear combinations of an orthonormal basis in the context of Reproducing
+    Kernel Hilbert Spaces. We'll delve into the conversion of the integral
+    covariance operator to the Sturm-Liouville form and the application of
+    Leibniz's rule in this mathematical framework.
+  </abstract>
+
+  <section|Finite Representation of Eigenfunctions>
+
+  Consider an eigenfunction <math|\<psi\><rsub|k>> of a covariance kernel. If
+  the kernel defines a Reproducing Kernel Hilbert Space (RKHS),
+  <math|\<psi\><rsub|k>> can be represented as a finite sum of orthogonal
+  polynomials <math|<around|{|\<phi\><rsub|n>|}><rsub|n=0><rsup|k>>:
 
   <\equation>
     \<psi\><rsub|k><around|(|x|)>=<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|x|)>
   </equation>
 
-  <section*|Integral Covariance Equation to Sturm-Liouville Form>
+  <section|From Integral Covariance Equation to Sturm-Liouville Form>
 
-  The integral covariance equation for a Gaussian process is given by:
+  For a Gaussian process, the integral covariance equation is given by:
 
   <\equation>
     <big|int>R<around|(|x,y|)>*\<psi\><rsub|k><around|(|y|)>*<space|0.17em>d*y=\<lambda\><rsub|k>*\<psi\><rsub|k><around|(|x|)>
   </equation>
 
   Substituting the finite representation of
-  <math|\<psi\><rsub|k><around|(|x|)>> into this equation yields:
+  <math|\<psi\><rsub|k><around|(|x|)>> and assuming sufficient smoothness of
+  <math|R<around|(|x,y|)>> to differentiate twice under the integral, we
+  obtain an equation resembling the Sturm-Liouville form:
 
   <\equation>
-    <big|int>R<around|(|x,y|)><around*|(|<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|y|)>|)>*d*y=\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|x|)>
+    \<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*<wide|\<phi\>|\<ddot\>><rsub|n><around|(|x|)>=<frac|d<rsup|2>|d*x<rsup|2>>*<big|int>R<around|(|x,y|)><around*|(|<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|y|)>|)>*d*y
   </equation>
 
-  Differentiating both sides of this equation with respect to <math|x> twice,
-  assuming <math|R<around|(|x,y|)>> is sufficiently smooth for such
-  operations, leads to a form analogous to the Sturm-Liouville differential
-  equation:
+  <section|Leibniz's Rule>
+
+  Leibniz's rule allows us to differentiate under the integral sign, given
+  certain regularity conditions on <math|R<around|(|x,y|)>> and
+  <math|\<phi\><rsub|n><around|(|y|)>>:
 
   <\equation>
-    <frac|d<rsup|2>|d*x<rsup|2>>*<around*|(|\<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|x|)>|)>=<frac|d<rsup|2>|d*x<rsup|2>>*<big|int>R<around|(|x,y|)><around*|(|<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*\<phi\><rsub|n><around|(|y|)>|)>*d*y
+    <frac|d<rsup|2>|d*x<rsup|2>>*<big|int>R<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y=<big|int><around*|[|<frac|d<rsup|2>|d*x<rsup|2>>*R<around|(|x,y|)>|]>*\<phi\><rsub|n><around|(|y|)>*d*y
   </equation>
 
-  <section*|Application of Leibniz's Rule>
-
-  Leibniz's rule for differentiation under the integral sign allows us to
-  exchange differentiation and integration given certain regularity
-  conditions on <math|R<around|(|x,y|)>>. The rule states that if both
-  <math|R<around|(|x,y|)>> and <math|\<phi\><rsub|n><around|(|y|)>> are
-  sufficiently smooth, then:
-
-  <\equation>
-    <frac|d<rsup|2>|d*x<rsup|2>>*<big|int>R<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y=<big|int><frac|d<rsup|2>|d*x<rsup|2>>*R<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y
-  </equation>
-
-  Applying this to our equation and assuming the order of summation and
-  integration can be exchanged (justified if the series converges uniformly),
-  we get:
+  Assuming uniform convergence of the series for <math|\<psi\><rsub|k>>, we
+  can interchange summation and integration, leading to:
 
   <\equation>
     \<lambda\><rsub|k>*<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*<frac|d<rsup|2>|d*x<rsup|2>>*\<phi\><rsub|n><around|(|x|)>=<big|sum><rsub|n=0><rsup|k>c<rsub|k,n>*<big|int><frac|d<rsup|2>|d*x<rsup|2>>*R<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y
   </equation>
 
-  <section*|Triangular System and Back-Substitution>
+  <section|Triangular System and Back-Substitution>
 
-  The above formulation implies a system of linear equations for the
-  coefficients <math|c<rsub|k,n>>. Given the orthogonality of
-  <math|<around|{|\<phi\><rsub|n>|}>>, this system is triangular when
-  expressed in matrix form, with the general form:
+  This formulation implies a triangular system of linear equations for the
+  coefficients <math|c<rsub|k,n>>. We can represent this system in matrix
+  form:
 
   <\equation>
     <math-bf|A><rsub|k><math-bf|c><rsub|k>=\<lambda\><rsub|k><math-bf|B><rsub|k><math-bf|c><rsub|k>
   </equation>
 
-  where <math|<math-bf|A><rsub|k>> and <math|<math-bf|B><rsub|k>> are
-  matrices derived from the differential operations and the integral terms,
-  respectively, and <math|<math-bf|c><rsub|k>> is the vector of coefficients
-  <math|c<rsub|k,n>>. The exact solution for <math|<math-bf|c><rsub|k>> can
-  be obtained via back-substitution if <math|<math-bf|A><rsub|k>> is
-  invertible, which is typically the case given the problem's well-posedness.
+  ...where <math|<math-bf|A><rsub|k>> and <math|<math-bf|B><rsub|k>> contain
+  differential and integral terms respectively, and
+  <math|<math-bf|c><rsub|k>> is the vector of coefficients. We solve for
+  <math|<math-bf|c><rsub|k>> using back-substitution if
+  <math|<math-bf|A><rsub|k>> is invertible.
 
-  <section*|Matrix Definitions and Solution Formula>
+  <section|Matrix Definitions and Solution>
 
-  The matrices <math|<math-bf|A><rsub|k>> and <math|<math-bf|B><rsub|k>> are
-  defined as follows:
+  Defining <math|<math-bf|A><rsub|k>> and <math|<math-bf|B><rsub|k>>
+  explicitly:
 
-  <\itemize>
-    <item><math|<math-bf|A><rsub|k><around|[|n,m|]>=<around|\<langle\>|<frac|d<rsup|2>|d*x<rsup|2>>*\<phi\><rsub|n>,\<phi\><rsub|m>|\<rangle\>>>,
-    representing the action of the second derivative on the basis functions.
+  <\equation>
+    <math-bf|A><rsub|k><around|[|n,m|]>=<around*|\<langle\>|<wide|\<phi\>|\<ddot\>><rsub|n><around|(|x|)>,\<phi\><rsub|m><around|(|x|)>|\<rangle\>>
+  </equation>
 
-    <item><math|<math-bf|B><rsub|k><around|[|n,m|]>=<big|int>\<phi\><rsub|n><around|(|y|)><around*|(|<big|int><frac|d<rsup|2>|d*x<rsup|2>>*k<around|(|x,y|)>*\<phi\><rsub|m><around|(|x|)>*d*x|)>*d*y>,
-    incorporating the kernel's second derivative and the basis functions.
-  </itemize>
+  <\equation>
+    <math-bf|B><rsub|k><around|[|n,m|]>=<big|int>\<phi\><rsub|n><around|(|y|)><around*|(|<big|int><around*|[|<frac|d<rsup|2>|d*x<rsup|2>>*R<around|(|x,y|)>|]>*\<phi\><rsub|m><around|(|x|)>*d*x|)>*d*y
+  </equation>
 
-  The solution for <math|<math-bf|c><rsub|k>> is given by solving the linear
-  system:
+  The solution for <math|<math-bf|c><rsub|k>> is then given by:
 
   <\equation>
     <math-bf|c><rsub|k>=<math-bf|A><rsub|k><rsup|-1>\<lambda\><rsub|k><math-bf|B><rsub|k><math-bf|c><rsub|k>
   </equation>
 
-  where <math|<math-bf|A><rsub|k><rsup|-1>> is the inverse of matrix
-  <math|<math-bf|A><rsub|k>>. The eigenvalues <math|\<lambda\><rsub|k>> can
-  be determined by ensuring the determinant of
-  <math|<around|(|<math-bf|A><rsub|k>-\<lambda\><rsub|k><math-bf|B><rsub|k>|)>>
-  is zero, a condition for non-trivial solutions.
+  The eigenvalues <math|\<lambda\><rsub|k>> are determined by ensuring that
+  the determinant of <math|<around|(|<math-bf|A><rsub|k>-\<lambda\><rsub|k><math-bf|B><rsub|k>|)>>
+  is zero.
 </body>
 
 <\initial>
   <\collection>
-    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -121,37 +116,36 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1>>
-    <associate|auto-2|<tuple|1|1>>
-    <associate|auto-3|<tuple|4|1>>
-    <associate|auto-4|<tuple|6|2>>
-    <associate|auto-5|<tuple|7|2>>
-    <associate|auto-6|<tuple|7|?>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-2|<tuple|2|1>>
+    <associate|auto-3|<tuple|3|1>>
+    <associate|auto-4|<tuple|4|2>>
+    <associate|auto-5|<tuple|5|2>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Finite
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>Finite
       Representation of Eigenfunctions> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Integral
-      Covariance Equation to Sturm-Liouville Form>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>From
+      Integral Covariance Equation to Sturm-Liouville Form>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Application
-      of Leibniz's Rule> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|3<space|2spc>Leibniz's
+      Rule> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Triangular
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Triangular
       System and Back-Substitution> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4><vspace|0.5fn>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Matrix
-      Definitions and Solution Formula> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Matrix
+      Definitions and Solution> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-5><vspace|0.5fn>
     </associate>
   </collection>

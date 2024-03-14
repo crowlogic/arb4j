@@ -1,6 +1,6 @@
 <TeXmacs|2.1.1>
 
-<style|<tuple|generic|alt-colors|parchment|framed-theorems>>
+<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|The Spectral Representation of Stochastic
@@ -607,7 +607,7 @@
   Denoting
 
   <\equation>
-    C<rsub|i*j>=<big|int><rsub|D><big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|2>|)>*d*x<rsub|2>*h<rsub|j><around|(|x<rsub|1>|)>*d*x<rsub|1>*d*x<rsub|2>
+    C<rsub|i*j>=<big|int><rsub|D><big|int><rsub|D>C<around|(|x<rsub|1>,x<rsub|2>|)>*h<rsub|i><around|(|x<rsub|2>|)>*h<rsub|j><around|(|x<rsub|1>|)>*d*x<rsub|1>*d*x<rsub|2>
   </equation>
 
   \;
