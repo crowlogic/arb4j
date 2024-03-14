@@ -72,9 +72,10 @@ import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
- * An {@link Expression} is a finite combination of symbols, here in this case
- * consisting of the {@link Character}s constituting {@link String}s which are
- * well-formed according to rules that depend on the context.
+ * An {@link Expression} is a mathematical statement consisting of a finite
+ * combination of symbols, here in this case {@link Character}s constituting
+ * {@link String}s representing the arithmetic operations performed on the
+ * symbols
  * 
  * <p>
  * The <code>Expression</code> class in the <code>arb.expressions</code> package
