@@ -30,11 +30,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("BinaryOperation[left=%s, right=%s, operation=%s, generatedType=%s]",
-                         left == null ? "∅" : left,
-                         right == null ? "∅" : right,
-                         operation,
-                         generatedType != null ? generatedType.toString() : null);
+    return String.format("%s%s%s", left == null ? "∅" : left, symbol, right == null ? "∅" : right);
   }
 
   public String toString(int depth)

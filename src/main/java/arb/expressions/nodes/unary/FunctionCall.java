@@ -1,11 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
-import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -136,7 +131,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> requisiteResultType)
   {
     var     expression                = arg.expression;
-      
+
     boolean needsResultTypeConversion = !requisiteResultType.equals(generatedType);
 
     if (needsResultTypeConversion)
@@ -161,7 +156,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     {
       expression.reserveIntermediateVariable(methodVisitor, generatedType);
       checkClassCast(methodVisitor, generatedType);
-      invokeSetMethod(methodVisitor, generatedType, requisiteResultType );
+      invokeSetMethod(methodVisitor, generatedType, requisiteResultType);
       generatedType = requisiteResultType;
     }
     return methodVisitor;
@@ -276,14 +271,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return contextual ? String.format("FunctionCall[%s(%s), function=%s,  generatedType=%s]",
-                                      functionName,
-                                      arg == null ? "null" : arg.typeset(),
-                                      mapping,
-                                      generatedType != null ? generatedType.getName() : null) : String.format("FunctionCall[name=%s, arg=%s, generatedType=%s]",
-                                                                                                              functionName,
-                                                                                                              arg == null ? "null" : arg.typeset(),
-                                                                                                              generatedType != null ? generatedType.getName() : null);
+    return String.format("%s(%s)", functionName, arg == null ? "null" : arg.typeset());
   }
 
   @Override

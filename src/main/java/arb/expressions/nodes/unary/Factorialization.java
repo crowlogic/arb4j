@@ -23,6 +23,12 @@ public class Factorialization<D, R, F extends Function<D, R>> extends
 {
 
   @Override
+  public String toString()
+  {
+   return String.format("%s!", arg );
+  }
+
+  @Override
   public String typeset()
   {
     return String.format((arg instanceof Variable) || (arg instanceof LiteralConstant) ? "%s!" : "(%s)!",
