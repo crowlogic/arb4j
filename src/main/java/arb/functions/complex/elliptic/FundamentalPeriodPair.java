@@ -2,6 +2,8 @@ package arb.functions.complex.elliptic;
 
 import arb.Complex;
 import arb.OrderedPair;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.domains.ComplexPlane;
 
 /**
@@ -12,16 +14,17 @@ import arb.domains.ComplexPlane;
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Fundamental_pair_of_periods">Wikipedia</a>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class FundamentalPeriodPair extends
                                    OrderedPair<Complex, Complex>
 {
 
-  public FundamentalPeriodPair(Complex a,
-                               Complex b)
+  public FundamentalPeriodPair(Complex a, Complex b)
   {
-    super(
-          a,
+    super(a,
           b);
   }
 

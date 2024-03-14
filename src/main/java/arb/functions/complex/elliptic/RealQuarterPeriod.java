@@ -3,14 +3,16 @@ package arb.functions.complex.elliptic;
 import static arb.arblib.acb_elliptic_k;
 
 import arb.Complex;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.ComplexFunction;
 
 /**
  * K(s) is the Complete Elliptical Integral of the First Kind, ALso known as the
  * real quarter period (function)
  * 
- * @author crow
- *
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class RealQuarterPeriod implements
                                ComplexFunction

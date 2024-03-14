@@ -1,6 +1,8 @@
 package arb.functions.complex.elliptic;
 
 import arb.Complex;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  *
@@ -21,6 +23,9 @@ import arb.Complex;
  * 
  * For general {@link Complex} q ∈ C with 0 < | q | < 1, τ is not a
  * single-valued function of q.
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface Nome extends
                       EllipticFunction

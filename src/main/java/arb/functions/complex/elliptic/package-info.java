@@ -14,5 +14,11 @@
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Elliptic_function">EllipticFunction@Wikipedia</a>
+ * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 package arb.functions.complex.elliptic;
+
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;

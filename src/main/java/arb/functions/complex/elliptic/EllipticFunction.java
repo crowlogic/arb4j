@@ -1,6 +1,8 @@
 package arb.functions.complex.elliptic;
 
 import arb.Complex;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.MeromorphicFunction;
 
 /**
@@ -58,17 +60,10 @@ import arb.functions.complex.MeromorphicFunction;
  * motion of celestial bodies and in the formulation of general relativity.</li>
  * </ul>
  * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  * 
- * 
- * <pre>
- * Copyright ©2023 Stephen Crowley
- *  
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at https://mozilla.org/MPL/2.0/.
- * </pre>
- * 
- * @see arb.functions.complex.MeromorphicFunction
+ * @see MeromorphicFunction
  */
 public interface EllipticFunction extends
                                   MeromorphicFunction
