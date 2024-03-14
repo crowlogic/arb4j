@@ -65,7 +65,7 @@ import arb.expressions.nodes.binary.Subtraction;
 import arb.expressions.nodes.nary.NaryMultiplication;
 import arb.expressions.nodes.nary.Summation;
 import arb.expressions.nodes.unary.Factorialization;
-import arb.expressions.nodes.unary.FunctionCall;
+import arb.expressions.nodes.unary.FunctionInvocation;
 import arb.expressions.nodes.unary.SwingingFactorialization;
 import arb.expressions.nodes.unary.When;
 import arb.functions.Function;
@@ -1410,7 +1410,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       Node<D, R, F> arg = resolve();
       if (nextCharacterIs(')'))
       {
-        return new FunctionCall<>(this,
+        return new FunctionInvocation<>(this,
                                   reference.name,
                                   arg);
       }

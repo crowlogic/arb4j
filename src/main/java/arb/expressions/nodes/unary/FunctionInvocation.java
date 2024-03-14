@@ -23,7 +23,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * {@link FunctionCall} is a {@link Node} in the {@link Expression} that
+ * {@link FunctionInvocation} is a {@link Node} in the {@link Expression} that
  * represents a call to either a builtin or a contextual function, a contextual
  * function call being one that has been constructed by passing a
  * {@link Context} to
@@ -50,7 +50,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FunctionCall<D, R, F extends Function<D, R>> extends
+public class FunctionInvocation<D, R, F extends Function<D, R>> extends
                          UnaryOperation<D, R, F>
 {
 
@@ -62,7 +62,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   { "sqrt", "tanh", "log" }));
 
   @SuppressWarnings("unchecked")
-  public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
+  public FunctionInvocation(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
   {
     super(argument,
           expression);
