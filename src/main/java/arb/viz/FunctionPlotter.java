@@ -2,6 +2,8 @@ package arb.viz;
 
 import static java.util.stream.Collectors.toList;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.FunctionSampler;
 import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
@@ -16,8 +18,10 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-@SuppressWarnings(
-{ "unused" })
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class FunctionPlotter extends
                              FunctionSampler
 {
@@ -87,7 +91,7 @@ public class FunctionPlotter extends
   }
 
   public boolean parallel = false;
-  
+
   public void set(Stage primaryStage, javafx.event.EventHandler<WindowEvent> onCloseRequestHandler)
   {
     primaryStage.setTitle(this.getClass().getSimpleName());
@@ -96,7 +100,7 @@ public class FunctionPlotter extends
     primaryStage.show();
   }
 
-  private void updateLegend()
+  public void updateLegend()
   {
     chart.getLegend().updateLegend(chart.getRenderers(), true);
   }

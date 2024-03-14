@@ -11,6 +11,8 @@ import java.nio.file.StandardOpenOption;
 import arb.Complex;
 import arb.ComplexMatrix;
 import arb.arblib;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
  * If the precision of the number is 128 bits or less then the only space
@@ -20,6 +22,8 @@ import arb.arblib;
  * things.. so we go with the rule-of-thumb that 128 bits is enough for
  * calculating RGB intensities anyway..
  * 
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 @SuppressWarnings(
 { "unused" })

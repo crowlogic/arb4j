@@ -1,9 +1,15 @@
 package arb.functions.complex.numbertheoretic;
 
 import arb.Real;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.complex.TFunction;
 import arb.operators.CompositionOperator;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class YFunction extends
                        CompositionOperator<TFunction, ZFunction>
 {
