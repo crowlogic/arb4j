@@ -129,11 +129,6 @@
       <version>11.3.0</version>
     </dependency>
     <dependency>
-      <groupId>io.fair-acc</groupId>
-      <artifactId>bench</artifactId>
-      <version>11.3.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.vineflower</groupId>
       <artifactId>vineflower</artifactId>
       <version>1.9.3</version>
