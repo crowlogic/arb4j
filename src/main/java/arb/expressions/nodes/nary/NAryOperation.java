@@ -36,7 +36,7 @@ import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
- * abstract base class for {@link Product} and {@link Sum}
+ * abstract base class for {@link NaryMultiplication} and {@link Summation}
  * 
  * @param <D> domain
  * @param <R> range

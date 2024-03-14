@@ -18,8 +18,8 @@
  * {@link arb.expressions.nodes.unary.When} and the related
  * {@link arb.expressions.nodes.Else} node as well as
  * {@link arb.expressions.nodes.nary.NAryOperation}s like
- * {@link arb.expressions.nodes.nary.Product} and
- * {@link arb.expressions.nodes.nary.Sum}
+ * {@link arb.expressions.nodes.nary.NaryMultiplication} and
+ * {@link arb.expressions.nodes.nary.Summation}
  *
  * <p>
  * The {@link arb.expressions.Expression} class uses the objectweb ASM library

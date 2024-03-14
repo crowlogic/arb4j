@@ -24,7 +24,7 @@ import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.VariableReference;
 import arb.expressions.Variables;
-import arb.expressions.nodes.nary.Product;
+import arb.expressions.nodes.nary.NaryMultiplication;
 import arb.functions.Function;
 
 /**
@@ -32,7 +32,7 @@ import arb.functions.Function;
  * extending the {@link Node} class to provide additional functionality for
  * managing {@link VariableReference}s those registered in the {@link Context}
  * and or those which are inputs to the expression, or any upstream expression
- * (in the case of nested-expressions such as for {@link Product}s
+ * (in the case of nested-expressions such as for {@link NaryMultiplication}s
  *
  * <p>
  * A variable can either be the independent variable , or the independent(input)

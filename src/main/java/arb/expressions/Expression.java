@@ -57,13 +57,13 @@ import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.expressions.nodes.binary.Addition;
+import arb.expressions.nodes.binary.AscendingFactorialization;
 import arb.expressions.nodes.binary.Division;
 import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
-import arb.expressions.nodes.binary.AscendingFactorialization;
 import arb.expressions.nodes.binary.Subtraction;
-import arb.expressions.nodes.nary.Product;
-import arb.expressions.nodes.nary.Sum;
+import arb.expressions.nodes.nary.NaryMultiplication;
+import arb.expressions.nodes.nary.Summation;
 import arb.expressions.nodes.unary.Factorialization;
 import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.SwingingFactorialization;
@@ -524,7 +524,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   }
 
   /**
-   * @return a parenthetical {@link Node}, a {@link Product}, a
+   * @return a parenthetical {@link Node}, a {@link NaryMultiplication}, a
    *         {@link LiteralConstant},a {@link Function}, a {@link Variable} or
    *         null if for instance "-t" is encountered, as a 0 is implied by the
    *         absence of a node before the {@link Subtraction} operator is
@@ -550,11 +550,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else if (nextCharacterIs('Π', '∏'))
     {
-      return new Product<D, R, F>(this);
+      return new NaryMultiplication<D, R, F>(this);
     }
     else if (nextCharacterIs('∑', 'Σ'))
     {
-      return new Sum<D, R, F>(this);
+      return new Summation<D, R, F>(this);
     }
     else if (Parser.isNumeric(character))
     {
