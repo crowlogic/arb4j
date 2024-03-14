@@ -1,19 +1,20 @@
-package arb.utensils.text;
+package arb.utensils.treetext;
 
 import org.junit.Test;
 
 import arb.utensils.treetext.TextTable;
+import arb.utensils.treetext.TextTreeTable;
 import junit.framework.TestCase;
 
-public class TextTableTest extends
-                           TestCase
+public class TextTreeTableTest extends
+                               TestCase
 {
 
   public void testPrintTableWithThreeColumns()
   {
-    String[]   titles =
+    String[]      titles =
     { "column1", "column2", "column3" };
-    String[][] data   =
+    String[][]    data   =
     {
       { "val10", "val20", "val30" },
       { "val13", "val20", "val30" },
@@ -21,12 +22,12 @@ public class TextTableTest extends
       { "val11", "val21", "val31" },
       { "val12", "val25", "val31" },
       { "val11", "val21", "val31" }, };
-    TextTable  tt     = new TextTable(titles,
-                                      data);
-//		tt.setAddRowNumbering(true);
+    TextTreeTable tt     = new TextTreeTable(titles,
+                                             data);
+    tt.setAddRowNumbering(true);
 //		tt.addSeparatorPolicy(new LastRowSeparatorPolicy());
     tt.setSort(0);
-    tt.printTable();
+    tt.printTable(System.out, 5);
   }
 
   @Test

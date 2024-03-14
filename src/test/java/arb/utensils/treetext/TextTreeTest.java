@@ -1,4 +1,4 @@
-package arb.utensils.text;
+package arb.utensils.treetext;
 
 import java.io.File;
 
