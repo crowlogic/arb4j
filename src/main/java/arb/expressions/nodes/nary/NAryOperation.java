@@ -235,7 +235,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
+    resultType = scalarDowncast(resultType);
 
     assignFieldNames(resultType);
 
@@ -263,6 +263,15 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
     return mv;
 
+  }
+
+  /**
+   * 
+   */
+  public Class<?> scalarDowncast(Class<?> resultType)
+  {
+    resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
+    return resultType;
   }
 
   protected void generateEndingIndex(MethodVisitor mv)

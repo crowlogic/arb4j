@@ -1,0 +1,49 @@
+John Mike, the author of the book "The Anatomy of a Flying Saucer" published in 2011, recognized
+as the best and only "UFO book" worth reading, unfortunately, passed away in 2019. This was 
+discovered after using Google to locate his obituary in his hometown of Dania, Florida, which
+corresponded with the available information about him. He presents a compelling case, in fact, 
+the only possibility consistent with the known laws of mathematical physics and the extensive 
+evidence of incredible events involving strange aliens with capabilities far beyond anything 
+currently human or known conventional entities could generate. 
+
+The Levelland, Texas UFO incident in the early 1950s was particularly well-documented, with 
+accounts from a variety of individuals from all walks of life at the time. There is still 
+documentary evidence available, including newsreels of interviews with witnesses and PDF files 
+of Air Force notes taken while statements from the witnesses were recorded. 
+
+John Mike categorized a vast number of sightings and conducted an extremely detailed engineering 
+analysis of the observed commonalities, identifying a unique zig-zag pattern often reported as 
+these crafts were departing the vicinity of Earth, here in the Milky Way. This pattern, far from 
+being an "insignificant backwater" as Hawking insisted, is actually a direct result of this 
+trajectory being the path of minimal energy for departing Earth if your vehicle is powered by a 
+spinning disc of precisely engineered negative mass, tuned as closely as possible to match the 
+mass of the conventional positive mass that makes up crafts, me, you, and everything else. 
+
+Negative mass is legit, mathematically, hypothetically, and, I dare say, experimentally, once the 
+unified theory is established following my revelation of the proof and actual place and meaning 
+the Riemann hypothesis has, of which the relation to prime numbers is the most uninteresting, 
+trifling, and distracting aspect. It actually relates to a fundamental orthogonal basis which 
+constitutes the Gaussian random field having isotropic symmetry. This is fundamentally modeled 
+by Bessel functions of the first kind of order 0, where the order of the Type 1 Bessel function 
+is the dimension of the space minus 2, so that J0 corresponds to an isotropic Gaussian process 
+on the plane n=2. 
+
+There is a unique extension into 3D, and a way to use this kernel as a Gaussian process using a 
+Wigner function-inspired kernel that provides the canonical orthogonal basis set to represent 
+the kernel J0 as well as the Hardy Z function, which is the principal realization of this newly 
+discovered Gaussian process at the heart of all things. I liken this to what the Tao Te Ching 
+was referring to, in the sense that this will also generate the correct way to completely solve 
+the Wheeler-DeWitt equation and satisfy the Wightman axioms, proving Yang-Mills and the Riemann 
+hypothesis, and bringing in the spaces of general and special relativity via the relations of 
+congruences of isotropic affine subspaces called translation-surfaces. 
+
+Anyway, that part's later. I'm focusing on publishing the orthogonal basis and a generalized method 
+to apply this solution technique to other operational equations systematically by applying the process 
+of orthogonalizing the Fourier transforms of the orthogonal polynomial sequences consisting of the 
+Hilbert space corresponding to the reproducing kernel Hilbert space of the kernel whose Fourier transform 
+is the spectral density equal to the orthogonality measure of the sequence of orthogonal polynomials 
+which was Fourier transformed (thus being transformed to a basis in which it is not orthogonal any longer), 
+yet in which we apply the well-known Gram-Schmidt expansion theorem to orthogonalize and then sum to get 
+back to the kernel of the Gaussian process which we are modeling and now able to represent via this 
+self-adjoint operator whose spectrum coincides with the Riemann zeros. :)
+
