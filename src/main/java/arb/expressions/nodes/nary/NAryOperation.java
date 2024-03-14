@@ -27,14 +27,39 @@ import arb.expressions.IntermediateVariable;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
- * abstract base class for {@link NaryMultiplication} and {@link Summation}
+ * Represents a generic n-ary operation on {@link Node}s within
+ * {@link Expression}s. This abstract base class provides the common structure
+ * and behavior for operations that involve multiple operands, such as
+ * {@link Summation}, {@link NaryMultiplication}, or other customized functions
+ * that combine elements of a class over a range of values.
+ * <p>
+ * It handles the initialization and execution of these operations, including
+ * setting up the operation's parameters, executing the operation over the
+ * specified range, and managing intermediate results. The class leverages ASM
+ * for bytecode manipulation, enabling dynamic generation and compilation of
+ * expressions.
+ * </p>
+ * <p>
+ * Generics <code>D</code>, <code>R</code>, and <code>F</code> represent the
+ * domain, range, and the function type of the operation, respectively. This
+ * allows for operations over different types of expressions and results,
+ * facilitating flexibility and reuse in various mathematical and computational
+ * contexts.
+ * </p>
+ * <p>
+ * The class integrates closely with the {@link arb.expressions.Compiler} and
+ * {@link arb.utensils.Utensils} for expression parsing, bytecode generation,
+ * and utility methods, ensuring a seamless operation within the arb framework.
+ * </p>
  * 
- * @param <D> domain
- * @param <R> range
- * @param <F> {@link Function}
- * 
+ * @param <D> the domain type of the operands and the operation
+ * @param <R> the range type of the operation's result
+ * @param <F> the function interface this operation implements, extending the
+ *            Function interface with specific domain and range types
+ *
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
@@ -308,7 +333,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     evaluateFactor(mv);
     checkClassCast(mv, generatedType);
     loadBitsParameter(mv);
-    operate(mv);
+    combine(mv);
     pop(mv);
     incrementIndex(mv);
   }
@@ -361,7 +386,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     invokeMethod(methodVisitor,
                  Type.getInternalName(Integer.class),
                  "increment",
-                 Type.getMethodDescriptor(Type.getType(Integer.class)));
+                 Utensils.getMethodDescriptor(Integer.class));
   }
 
   public void initializeResult(MethodVisitor mv, Class<?> resultType, String identityFunction, String prefix)
@@ -454,16 +479,11 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     loadFieldFromThis(methodVisitor, factorValueFieldName, type());
   }
 
-  public MethodVisitor operate(MethodVisitor mv)
-  {
-    return operate(mv, operation);
-  }
-
-  public MethodVisitor operate(MethodVisitor mv, String method)
+  public MethodVisitor combine(MethodVisitor mv)
   {
     return invokeMethod(mv,
                         generatedType,
-                        method,
+                        operation,
                         getMethodDescriptor(generatedType, generatedType, int.class),
                         false);
   }
