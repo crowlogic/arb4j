@@ -641,7 +641,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public boolean isLeaf()
   {
-    return false;
+    return true;
   }
 
 }

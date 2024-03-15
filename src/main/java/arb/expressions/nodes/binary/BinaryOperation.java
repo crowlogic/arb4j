@@ -20,6 +20,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.unary.Factorialization;
 import arb.functions.Function;
 
 /**
@@ -37,10 +38,19 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     return false;
   }
 
+  public static String stringFormat(Node<?, ?, ?> side)
+  {
+    return (side.isLeaf() || (side instanceof Factorialization)
+                  && ((Factorialization<?, ?, ?>) side).arg.isLeaf()) ? "%s" : "(%s)";
+  }
+
   @Override
   public String toString()
   {
-    return String.format("(%s)%s(%s)", left == null ? "∅" : left, symbol, right == null ? "∅" : right);
+    return String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
+                         left == null ? "∅" : left,
+                         symbol,
+                         right == null ? "∅" : right);
   }
 
   public String toString(int depth)
@@ -117,12 +127,16 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     if (expression.traceGenerator)
     {
-      System.out.format("BinaryOperation.generate( this=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
+      System.out.format("BinaryOperation.generate( this=%s,\n%sleft=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
                         this,
+                        indent(26),
+                        left,
                         indent(26),
                         left.type(),
                         indent(26),
-                        operation,                        
+                        operation,
+                        indent(26),
+                        right,
                         indent(26),
                         right.type(),
                         indent(26),
