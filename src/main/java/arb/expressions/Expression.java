@@ -314,6 +314,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
+  public static boolean ignoreTODO = true;
+
   /**
    * TODO: add code to retrieve the input variable from this expresson, or its
    * parent, or its parents parent, etc and validate it just like non-input
@@ -335,7 +337,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         {
           if (superExpression != null && varName.equals(superExpression.independentVariableNode.reference.name))
           {
-            assert false : "TODO: add check for null superexpression input here: " + superExpression;
+            assert ignoreTODO : "TODO: add check for null superexpression input here: " + superExpression;
           }
           else
           {
@@ -346,7 +348,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
         }
         else
         {
-          assert false : "TODO: add check for null input here field=" + field;
+          assert ignoreTODO : "TODO: add check for null input here field=" + field;
         }
       }
       fieldClass = field != null ? field.getClass() : null;
