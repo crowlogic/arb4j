@@ -271,6 +271,10 @@ public class Variable<D, R, F extends Function<D, R>> extends
       }
       else
       {
+        /**
+         * FIXME: variable is being referenced with the wrong type -
+         * https://github.com/crowlogic/arb4j/issues/357
+         */
         if (expression.superExpression != null)
         {
           if (expression.superExpression.independentVariableNode.reference.equals(reference))
