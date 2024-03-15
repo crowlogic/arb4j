@@ -5,14 +5,14 @@
 <\body>
   <doc-data|<doc-title|Inverse Spectral Theory: Part
   I>|<doc-author|<author-data|<author-name|<with|font-series|bold|Hiroshi
-  Isozaki><next-line>>|<\author-affiliation>
-    Department of Mathematics,\ 
+  Isozaki>>|<\author-affiliation>
+    Department of Mathematics
 
-    Tokyo Metropolitan University,\ 
+    Tokyo Metropolitan University
 
-    Hachioji, Minami-Osawa,\ 
+    Hachioji, Minami-Osawa 192-0397
 
-    192-0397, Japan<next-line>E-mail: isozakih@comp.metro-u.ac.jp
+    \ Japan<next-line>E-mail: isozakih@comp.metro-u.ac.jp
   </author-affiliation>>>>
 
   <abstract-data|<\abstract>
@@ -41,44 +41,85 @@
     rigid like analytic functions (at least in Euclidean spaces).
   </abstract>>
 
-  <section*|Part I One-Dimensional Problem>
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>The
+    Inverse Eigenvalue Problem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
 
-  <subsection*|1. Inverse Eigenvalue Problem>
+    <with|par-left|1tab|1.1<space|2spc>Theorem of Borg\ULevinson
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2>>
 
-  Let us begin with this lecture by the 1-dimensional inverse eigenvalue
-  problem. In Sections 1 and 2, we follow Pöschel\UTrubowitz<rsup|26> and
-  Deift.<rsup|13>
+    <with|par-left|1tab|1.2<space|2spc>Global structure of isospectral
+    potentials <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3>>
 
-  <subsubsection*|1.1. Theorem of Borg\ULevinson>
+    <with|par-left|2tab|1.2.1<space|2spc>Isospectral Deformation
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-4>>
 
-  Let us consider the simplest case of the Dirichlet boundary value problem
-  on <math|<around|(|0,1|)>>:
+    <with|par-left|1tab|1.3<space|2spc>Inverse Scattering
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5>>
+
+    <with|par-left|2tab|1.3.1<space|2spc>Scattering problem
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6>>
+
+    <with|par-left|2tab|1.3.2<space|2spc>Spherically symmetric potentials
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7>>
+
+    <with|par-left|2tab|1.3.3<space|2spc>Gel'fand\ULevitan theory
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8>>
+
+    <with|par-left|1tab|1.4<space|2spc>Generalized sine transformation
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-9>>
+
+    <with|par-left|1tab|1.5<space|2spc>The core of Gel'fand\ULevitan theory
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-10>>
+
+    <with|par-left|1tab|1.6<space|2spc>What is the hidden mechanism?
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-11>>
+  </table-of-contents>
+
+  <section|The Inverse Eigenvalue Problem>
+
+  <subsection|Theorem of Borg\ULevinson>
+
+  Consider the simplest case of the Dirichlet (zero) boundary value problen
+  <math|\<forall\>x\<in\>><math|<around|(|0,1|)>>:
 
   <\equation>
-    -y<rprime|''>+V<around|(|x|)>*y=\<lambda\>*y,<space|1em>0\<less\>x\<less\>1,
+    V<around|(|x|)>*y<around*|(|x|)>-<wide|y|\<ddot\>><around*|(|x|)>=\<lambda\>*y<around*|(|x|)>
   </equation>
 
-  where <math|V<around|(|x|)>> is a real-valued potential, <math|y> is the
-  wave function, and <math|\<lambda\>> represents the eigenvalue.
+  where <math|V<around|(|x|)>> is a real-valued potential,
+  <math|y<around*|(|x|)>> is the wave function, and <math|\<lambda\>>
+  represents the eigenvalue.
 
   The boundary conditions are given by:
 
   <\equation>
-    y<around|(|0|)>=y<around|(|1|)>=0.
+    y<around|(|0|)>=y<around|(|1|)>=0
   </equation>
 
-  If <math|V<around|(|x|)>> is real-valued, this problem has a set of
+  If <math|V<around|(|x|)>> is real-valued, the solution has a set of
   eigenvalues:
 
   <\equation>
-    \<lambda\><rsub|1><around|(|V|)>\<less\>\<lambda\><rsub|2><around|(|V|)>\<less\>\<cdots\>\<less\>\<lambda\><rsub|n><around|(|V|)>\<less\>\<cdots\>.
+    \<lambda\><rsub|1><around|(|V|)>\<less\>\<lambda\><rsub|2><around|(|V|)>\<less\>\<cdots\>\<less\>\<lambda\><rsub|n><around|(|V|)>\<less\>\<cdots\>
   </equation>
 
   The first question of the inverse eigenvalue problem is:
 
   <with|font-series|bold|Question:> If <math|\<lambda\><rsub|n><around|(|V<rsub|1>|)>=\<lambda\><rsub|n><around|(|V<rsub|2>|)>>
   for all <math|n\<geq\>1>, does <math|V<rsub|1>> coincide with
-  <math|V<rsub|2>>?The answer is easily seen to be
+  <math|V<rsub|2>>? The answer is easily seen to be
   <with|font-series|bold|negative>. You have only to take
   <math|V<rsub|2><around|(|x|)>=V<rsub|1>*<around|(|1-x|)>\<neq\>V<rsub|1><around|(|x|)>>
   as a counter example. A potential <math|V<around|(|x|)>> is said to be
@@ -88,32 +129,55 @@
   up to symmetry.
 
   <\theorem>
-    <dueto|Borg--Levinson>Suppose <math|V<rsub|1>> and <math|V<rsub|2>> are
-    even and <math|\<lambda\><rsub|n><around|(|V<rsub|1>|)>=\<lambda\><rsub|n><around|(|V<rsub|2>|)>>
-    for all <math|n\<geq\>1>. Then <math|V<rsub|1>=V<rsub|2>>.
+    <dueto|Borg--Levinson>If <math|V<rsub|1><around*|(|x|)>> and
+    <math|V<rsub|2><around*|(|x|)>> are even then
+
+    <\equation>
+      \<lambda\><rsub|n><around|(|V<rsub|1>|)>=\<lambda\><rsub|n><around|(|V<rsub|2>|)>\<forall\>n\<geqslant\>1
+    </equation>
+
+    implies that <math|V<rsub|1><around*|(|x|)>=V<rsub|2><around*|(|x|)>>.
   </theorem>
 
   If the potential is not even, one needs some auxiliary condition to prove
   the uniqueness. The second theorem, also due to Borg and Levinson, shows
-  that the values of the derivatives at the boundary of eigenfunctions serve
-  for this purpose.
+  that the values of the derivatives of the eigenfunctions at the boundary
+  serve this purpose.
 
   Let <math|y<around|(|x,\<lambda\>|)>> satisfy (1.1) and
 
   <\equation>
-    y<around|(|0,\<lambda\>|)>=0,<space|1em>y<rprime|'><around|(|0,\<lambda\>|)>=1
+    y<around|(|0,\<lambda\>|)>=0
   </equation>
 
-  We put
+  <\equation>
+    <wide|y|\<dot\>><around|(|0,\<lambda\>|)>=1
+  </equation>
+
+  Put
 
   <\equation>
-    k<rsub|n><around|(|V|)>=y<rprime|'><around|(|1,\<lambda\><rsub|n><around|(|V|)>|)>
+    k<rsub|n><around|(|V|)>=<wide|y|\<dot\>><around|(|1,\<lambda\><rsub|n><around|(|V|)>|)>
   </equation>
 
   <\theorem>
-    Suppose <math|\<lambda\><rsub|n><around|(|V<rsub|1>|)>=\<lambda\><rsub|n><around|(|V<rsub|2>|)>>,
-    <math|k<rsub|n><around|(|V<rsub|1>|)>=k<rsub|n><around|(|V<rsub|2>|)>>,
-    for all <math|n\<geq\>1>. Then <math|V<rsub|1>=V<rsub|2>>.
+    <dueto|2nd Borg--Levinson>If it is true that
+
+    <\equation>
+      \<lambda\><rsub|n><around|(|V<rsub|1>|)>=\<lambda\><rsub|n><around|(|V<rsub|2>|)>
+    </equation>
+
+    and
+
+    <\equation>
+      k<rsub|n><around|(|V<rsub|1>|)>=k<rsub|n><around|(|V<rsub|2>|)>
+    </equation>
+
+    \ <math|\<forall\>n\<geqslant\>1> then
+
+    <\equation>
+      V<rsub|1>=V<rsub|2>
+    </equation>
   </theorem>
 
   <subsection|Global structure of isospectral potentials>
@@ -124,13 +188,17 @@
   eigenvalues fixed. Let us formulate it rigorously.
 
   Let <math|L<rsup|2><rsub|R><around|(|0,1|)>> be the set of all real-valued
-  <math|L<rsup|2>>-functions on <math|<around|(|0,1|)>>. For
-  <math|V\<in\>L<rsup|2><rsub|R><around|(|0,1|)>>,
-  <math|\<lambda\><rsub|n><around|(|V|)>> has an asymptotic expansion
+  <math|L<rsup|2>>-functions on <math|<around|(|0,1|)>> then
+  <math|\<lambda\><rsub|n><around|(|V|)>> has an asymptotic expansion\ 
 
   <\equation>
     \<lambda\><rsub|n><around|(|V|)>=n<rsup|2>*\<pi\><rsup|2>+<big|int><rsub|0><rsup|1>V<around|(|x|)>*d*x+h<rsub|n><around|(|V|)>
-    where<space|1em><big|sum><rsub|n=1><rsup|\<infty\>><around|(|h<rsub|n><around|(|V|)>|)><rsup|2>\<less\>\<infty\>
+    </equation>
+
+  which satisifes
+
+  <\equation>
+    <space|1em><big|sum><rsub|n=1><rsup|\<infty\>><around|\<nobracket\>|h<rsub|n><around|(|V|\<nobracket\>>|)><rsup|2>\<less\>\<infty\>\<forall\>V<around*|(|x|)>\<in\>L<rsup|2><rsub|\<bbb-R\>><around|(|0,1|)>
   </equation>
 
   With this in mind, we put
@@ -156,7 +224,7 @@
   and let <math|l<rsup|2>> be defined by
 
   <\equation>
-    l<rsup|2>\<ni\>\<alpha\>=<around|(|\<alpha\><rsub|1>,\<alpha\><rsub|2>,\<ldots\>|)><space|1em>\<Leftrightarrow\><space|1em><big|sum><rsub|n=1><rsup|\<infty\>><around|(|\<alpha\><rsub|n>|)><rsup|2>\<less\>\<infty\>
+    l<rsup|2>\<ni\>\<alpha\>=<around|(|\<alpha\><rsub|1>,\<alpha\><rsub|2>,\<ldots\>|)><space|1em>\<Leftrightarrow\><space|1em><big|sum><rsub|n=1><rsup|\<infty\>>\<alpha\><rsub|n><rsup|2>\<less\>\<infty\>
   </equation>
 
   <\theorem>
@@ -164,29 +232,37 @@
     \<times\>S is a real analytic isomorphism.
   </theorem>
 
-  Here a map between real Hilbert spaces is said to be real analytic if it is
-  continuously Fréchet differentiable on the complexification of the real
-  Hilbert spaces.
+  <\definition>
+    Here a map between real Hilbert spaces is said to be <strong|real
+    analytic> if it is continuously Fréchet differentiable on the
+    complexification of the real Hilbert spaces.
+  </definition>
 
   Theorem 1.3 characterizes the Dirichlet spectral data, the eigenvalues and
-  the derivatives at the boundary of the eigenfunctions.
-
-  For <math|q\<in\>L<rsup|2><rsub|R><around|(|0,1|)>>, let
+  the derivatives at the boundary of the eigenfunctions. Let
 
   <\equation>
-    M<around|(|q|)>=<around|{|V\<in\>L<rsup|2><rsub|R><around|(|0,1|)>:\<lambda\><rsub|n><around|(|q|)>=\<lambda\><rsub|n><around|(|V|)>,\<forall\>n\<geq\>1|}>
+    M<around|(|q|)>=<around|{|V\<in\>L<rsup|2><rsub|R><around|(|0,1|)>:\<lambda\><rsub|n><around|(|q|)>=\<lambda\><rsub|n><around|(|V|)>\<forall\>n\<geqslant\>1,q\<in\>L<rsup|2><rsub|R><around|(|0,1|)>|}>
   </equation>
 
   <\theorem>
     M(q) is a real analytic submanifold of \ L<rsup|2><rsub|R>(0, 1) and
-    \ \<kappa\>is a global coordinate system on \ M(q).
+    \ \<kappa\> is a global coordinate system on \ M(q).
   </theorem>
 
-  Therefore one can deform <math|V<around|(|x|)>> continuously keeping
-  eigenvalues fixed, by varying <math|\<kappa\><rsub|1><around|(|V|)>> for
-  instance.
+  Thus we have the following\ 
 
-  <section*|Isospectral Deformation>
+  <\corollary>
+    \ <math|V<around|(|x|)>> can be continuously reshaped while keeping its
+    eigenvalues fixed.
+  </corollary>
+
+  <\proof>
+    TODO: show how varying <math|\<kappa\><rsub|1><around|(|V|)>> can
+    accomplish this.
+  </proof>
+
+  <subsubsection|Isospectral Deformation>
 
   It is well-known that for two bounded operators <math|A> and <math|B>
 
@@ -208,21 +284,30 @@
   Crum<rsup|<math|11>> used this method, by a straightforward computation, to
   deform and remove eigenvalues of Sturm\ULiouville operators.
 
-  The commutation method has a long history, precursors of which are seen in
-  the works of Jacobi<rsup|<math|41>> and Darboux<rsup|<math|12>>. We
+  The <strong|commutation metho>d has a long history, precursors of which are
+  seen in the works of Jacobi<rsup|<math|41>> and Darboux<rsup|<math|12>>. We
   elucidate it here formally.
 
   Let <math|V\<in\>L<rsup|2><rsub|R><around|(|0,1|)>> and
   <math|\<varphi\><rsub|n>> be a Dirichlet eigenfunction of
   <math|-d<rsup|2>/d*x<rsup|2>+V<around|(|x|)>> with eigenvalue
   <math|\<lambda\><rsub|n>>. Ignoring the question of domain of all relevant
-  operators...operators, we put formally
+  operators, we put formally
 
   <\equation>
-    A=\<varphi\><rsub|n>*<frac|d|d*x><around*|(|<frac|1|\<varphi\><rsub|n>>|)>,<space|1em>A<rsup|\<ast\>>=-<frac|1|\<varphi\><rsub|n>>*<frac|d|d*x>*<around|(|\<varphi\><rsub|n>*\<cdummy\>|)>
+    A=\<varphi\><rsub|n>*<frac|d|d*x><around*|(|<frac|1|\<varphi\><rsub|n>>|)>
   </equation>
 
-  Using <math|-\<varphi\><rsub|n><rprime|''>+V*\<varphi\><rsub|n>=\<lambda\><rsub|n>*\<varphi\><rsub|n>>,
+  <\equation>
+    A<rsup|\<ast\>>=-<frac|1|\<varphi\><rsub|n>>*<frac|d|d*x>*<around|(|\<varphi\><rsub|n>*\<cdummy\>|)>
+  </equation>
+
+  Using
+
+  <\equation>
+    V*\<varphi\><rsub|n>-\<varphi\><rsub|n><rprime|''>=\<lambda\><rsub|n>*\<varphi\><rsub|n>
+  </equation>
+
   we have
 
   <\equation>
@@ -234,7 +319,7 @@
   <math|L<rsup|2>> in neighborhoods of the zeros of
   <math|\<varphi\><rsub|n><around|(|x|)>>. This causes troubles.
 
-  The remedy comes from the double commutator. Namely by taking
+  The remedy comes from the <strong|double commutator>. Namely by taking
 
   <\equation>
     u=<frac|1|\<varphi\><rsub|n>>*<around*|(|a+b*<big|int><rsub|0><rsup|x>\<varphi\><rsub|n><around|(|t|)><rsup|2>*d*t|)>
@@ -243,7 +328,11 @@
   and putting
 
   <\equation>
-    B=u*<frac|d|d*x><around*|(|<frac|1|u>|)>,<space|1em>B<rsup|\<ast\>>=-<frac|1|u>*<frac|d|d*x>*<around|(|u\<cdot\>|)>
+    B=u*<frac|d|d*x><around*|(|<frac|1|u>|)>
+  </equation>
+
+  <\equation>
+    B<rsup|\<ast\>>=-<frac|1|u>*<frac|d|d*x>*<around|(|u\<cdot\>|)>
   </equation>
 
   we have
@@ -255,7 +344,7 @@
   Furthermore, we have
 
   <\equation*>
-    B<rsup|\<ast\>>*<frac|1|u>=0.
+    *<frac|B<rsup|\<ast\>>|u>=0
   </equation*>
 
   This shows that <math|V<around|(|x|)>> and
@@ -792,71 +881,66 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|?|1>>
-    <associate|auto-10|<tuple|2|8>>
-    <associate|auto-11|<tuple|3|9>>
-    <associate|auto-12|<tuple|4|10>>
-    <associate|auto-2|<tuple|?|1>>
-    <associate|auto-3|<tuple|?|1>>
-    <associate|auto-4|<tuple|1|2>>
-    <associate|auto-5|<tuple|4|3>>
-    <associate|auto-6|<tuple|1|5>>
-    <associate|auto-7|<tuple|1.1|5>>
-    <associate|auto-8|<tuple|1.2|6>>
-    <associate|auto-9|<tuple|1.3|7>>
+    <associate|auto-1|<tuple|1|2>>
+    <associate|auto-10|<tuple|1.5|10>>
+    <associate|auto-11|<tuple|1.6|11>>
+    <associate|auto-2|<tuple|1.1|2>>
+    <associate|auto-3|<tuple|1.2|3>>
+    <associate|auto-4|<tuple|1.2.1|4>>
+    <associate|auto-5|<tuple|1.3|6>>
+    <associate|auto-6|<tuple|1.3.1|6>>
+    <associate|auto-7|<tuple|1.3.2|7>>
+    <associate|auto-8|<tuple|1.3.3|8>>
+    <associate|auto-9|<tuple|1.4|9>>
   </collection>
 </references>
 
 <\auxiliary>
   <\collection>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Part
-      I One-Dimensional Problem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>The
+      Inverse Eigenvalue Problem> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|1. Inverse Eigenvalue Problem
+      <with|par-left|<quote|1tab>|1.1<space|2spc>Theorem of Borg\ULevinson
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-2>>
 
-      <with|par-left|<quote|2tab>|1.1. Theorem of Borg\ULevinson
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.2<space|2spc>Global structure of
+      isospectral potentials <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-3>>
 
-      <with|par-left|<quote|1tab>|1<space|2spc>Global structure of
-      isospectral potentials <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|2tab>|1.2.1<space|2spc>Isospectral Deformation
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Isospectral
-      Deformation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-5><vspace|0.5fn>
+      <with|par-left|<quote|1tab>|1.3<space|2spc>Inverse Scattering
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-5>>
 
-      <with|par-left|<quote|1tab>|1<space|2spc>Inverse Scattering
+      <with|par-left|<quote|2tab>|1.3.1<space|2spc>Scattering problem
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-6>>
 
-      <with|par-left|<quote|2tab>|1.1<space|2spc>Scattering problem
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|2tab>|1.3.2<space|2spc>Spherically symmetric
+      potentials <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-7>>
 
-      <with|par-left|<quote|2tab>|1.2<space|2spc>Spherically symmetric
-      potentials <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|2tab>|1.3.3<space|2spc>Gel'fand\ULevitan theory
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-8>>
 
-      <with|par-left|<quote|2tab>|1.3<space|2spc>Gel'fand\ULevitan theory
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.4<space|2spc>Generalized sine
+      transformation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-9>>
 
-      <with|par-left|<quote|1tab>|2<space|2spc>Generalized sine
-      transformation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.5<space|2spc>The core of
+      Gel'fand\ULevitan theory <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-10>>
 
-      <with|par-left|<quote|1tab>|3<space|2spc>The core of Gel'fand\ULevitan
-      theory <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1tab>|1.6<space|2spc>What is the hidden
+      mechanism? <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-11>>
-
-      <with|par-left|<quote|1tab>|4<space|2spc>What is the hidden mechanism?
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
     </associate>
   </collection>
 </auxiliary>
