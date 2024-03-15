@@ -271,9 +271,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        if (expression.parentExpression != null)
+        if (expression.superExpression != null)
         {
-          if (expression.parentExpression.independentVariableNode.reference.equals(reference))
+          if (expression.superExpression.independentVariableNode.reference.equals(reference))
           {
             isIndependentVariableOfParentExpression = true;
             return;
@@ -286,7 +286,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
                                                        reference.name,
                                                        expression,
                                                        inputVariable,
-                                                       expression.parentExpression));
+                                                       expression.superExpression));
         }
       }
     }
@@ -314,6 +314,12 @@ public class Variable<D, R, F extends Function<D, R>> extends
   {
     classVisitor.visitField(ACC_PUBLIC, reference.name, type().descriptorString(), null, null);
     return classVisitor;
+  }
+
+  @Override
+  public boolean isLeaf()
+  {
+    return true;
   }
 
 }

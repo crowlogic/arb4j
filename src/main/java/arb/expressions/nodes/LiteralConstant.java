@@ -1,7 +1,14 @@
 package arb.expressions.nodes;
 
 import static arb.expressions.Compiler.loadThisOntoStack;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.NEW;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.SIPUSH;
 
 import java.util.HashSet;
 
@@ -13,15 +20,15 @@ import org.objectweb.asm.Type;
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public class LiteralConstant<D, R, F extends Function<D, R>> extends
                             Node<D, R, F>
@@ -200,5 +207,11 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     {
       return value;
     }
+  }
+
+  @Override
+  public boolean isLeaf()
+  {
+    return true;
   }
 }

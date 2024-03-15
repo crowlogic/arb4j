@@ -2,7 +2,6 @@ package arb.utensils.treetext;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.Writer;
 
 import javax.swing.table.TableModel;
 

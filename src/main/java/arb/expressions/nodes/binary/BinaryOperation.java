@@ -32,9 +32,15 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 {
 
   @Override
+  public boolean isLeaf()
+  {
+    return false;
+  }
+
+  @Override
   public String toString()
   {
-    return String.format("%s%s%s", left == null ? "∅" : left, symbol, right == null ? "∅" : right);
+    return String.format("(%s)%s(%s)", left == null ? "∅" : left, symbol, right == null ? "∅" : right);
   }
 
   public String toString(int depth)

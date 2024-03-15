@@ -11,6 +11,7 @@ import static arb.expressions.Compiler.loadResultParameter;
 import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
+import static arb.utensils.Utensils.indent;
 import static arb.utensils.Utensils.throwOrWrap;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
@@ -265,7 +266,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                     String functionName,
                     Expression<?, ?, ?> parentExpression)
   {
-    this.parentExpression                 = parentExpression;
+    this.superExpression                  = parentExpression;
     this.rangeClassDescriptor             = rangeClass.descriptorString();
     this.domainClassDescriptor            = domainClass.descriptorString();
     this.className                        = className;
@@ -332,20 +333,20 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         if (varName != null && !varName.equals(independentVariableNode.reference.name))
         {
-          if (parentExpression != null && varName.equals(parentExpression.independentVariableNode.reference.name))
+          if (superExpression != null && varName.equals(superExpression.independentVariableNode.reference.name))
           {
-            assert true : "TODO: add check for null parent input here";
+            assert false : "TODO: add check for null superexpression input here: " + superExpression;
           }
           else
           {
             throw new UnsupportedOperationException("no contextual variable for varName='" + varName
                           + "' and independent variable reference is " + independentVariableNode
-                          + " where parentExpression=" + parentExpression + " and this expression=" + this);
+                          + " where parentExpression=" + superExpression + " and this expression=" + this);
           }
         }
         else
         {
-          assert true : "TODO: add check for null input here";
+          assert false : "TODO: add check for null input here field=" + field;
         }
       }
       fieldClass = field != null ? field.getClass() : null;
@@ -455,9 +456,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareVariables(ClassVisitor classVisitor)
   {
-    if (parentExpression != null)
+    if (superExpression != null)
     {
-      Variable<?, ?, ?> parentIndependentVariableNode = parentExpression.independentVariableNode;
+      Variable<?, ?, ?> parentIndependentVariableNode = superExpression.independentVariableNode;
       if (parentIndependentVariableNode != null && !parentIndependentVariableNode.type().equals(Void.class))
       {
         classVisitor.visitField(ACC_PUBLIC,
@@ -501,7 +502,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean             traceGenerator = true;
 
-  public Expression<?, ?, ?> parentExpression;
+  public Expression<?, ?, ?> superExpression;
 
   public Class<F> load()
   {
@@ -1411,8 +1412,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (nextCharacterIs(')'))
       {
         return new FunctionInvocation<>(this,
-                                  reference.name,
-                                  arg);
+                                        reference.name,
+                                        arg);
       }
       else
       {
@@ -1522,9 +1523,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
   @Override
   public String toString()
   {
-    return String.format("Expression[expression=%s, className=%s, functionName=%s, recursive=%s, functionClass=%s]",
+    return String.format("Expression[expression=%s,\n%sclassName=%s,\n%sfunctionName=%s, recursive=%s, functionClass=%s]",
                          expression,
+                         indent(22),
                          className,
+                         indent(22),
                          functionName,
                          recursive,
                          functionClass);

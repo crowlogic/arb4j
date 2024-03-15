@@ -1,7 +1,13 @@
 package arb;
 
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class RationalTest extends
                           TestCase
 {
@@ -9,7 +15,6 @@ public class RationalTest extends
   {
     try ( Rational a = new Rational(); Rational b = new Rational(); Rational c = new Rational())
     {
-      long ld = a.getLongDenominator();
 
       a.getDenominator().set(10);
       a.getNumerator().set(5);

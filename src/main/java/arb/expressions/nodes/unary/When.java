@@ -238,4 +238,10 @@ public class When<D, R, F extends Function<D, R>> extends
                   + " \text{otherwise} " + arg.typeset();
   }
 
+  @Override
+  public boolean isLeaf()
+  {
+    return false;
+  }
+
 }

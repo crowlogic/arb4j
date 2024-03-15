@@ -2,10 +2,14 @@ package arb.utensils.treetext;
 
 import org.junit.Test;
 
-import arb.utensils.treetext.TextTable;
-import arb.utensils.treetext.TextTreeTable;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class TextTreeTableTest extends
                                TestCase
 {

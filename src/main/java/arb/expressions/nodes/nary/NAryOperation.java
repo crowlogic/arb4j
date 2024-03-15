@@ -1,11 +1,19 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameter;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static arb.utensils.Utensils.indent;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.util.Optional;
 
@@ -628,6 +636,12 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                          startIndex.typeset(),
                          endIndex.typeset(),
                          factor);
+  }
+
+  @Override
+  public boolean isLeaf()
+  {
+    return false;
   }
 
 }

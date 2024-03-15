@@ -51,7 +51,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class FunctionInvocation<D, R, F extends Function<D, R>> extends
-                         UnaryOperation<D, R, F>
+                               UnaryOperation<D, R, F>
 {
 
   public String                functionName;
@@ -291,6 +291,12 @@ public class FunctionInvocation<D, R, F extends Function<D, R>> extends
     return format("%s(%s)",
                   functionName.replace("√", "\\sqrt").replace("J0", "J_0"),
                   arg == null ? "" : arg.typeset());
+  }
+
+  @Override
+  public boolean isLeaf()
+  {
+    return arg == null || (arg != null && arg.type().equals(Void.class));
   }
 
 }

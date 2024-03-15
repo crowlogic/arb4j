@@ -48,4 +48,10 @@ public class Else<D,R,F extends Function<D,R>> extends
     return null;
   }
 
+  @Override
+  public boolean isLeaf()
+  {
+    return true;
+  }
+
 }
