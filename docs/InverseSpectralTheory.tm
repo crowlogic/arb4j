@@ -162,6 +162,7 @@
 
   <\theorem>
     <dueto|2nd Borg--Levinson>If it is true that
+    <math|\<forall\>n\<geqslant\>1>
 
     <\equation>
       \<lambda\><rsub|n><around|(|V<rsub|1>|)>=\<lambda\><rsub|n><around|(|V<rsub|2>|)>
@@ -173,7 +174,7 @@
       k<rsub|n><around|(|V<rsub|1>|)>=k<rsub|n><around|(|V<rsub|2>|)>
     </equation>
 
-    \ <math|\<forall\>n\<geqslant\>1> then
+    then
 
     <\equation>
       V<rsub|1>=V<rsub|2>
