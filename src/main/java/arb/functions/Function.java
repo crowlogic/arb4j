@@ -194,12 +194,12 @@ public interface Function<D, R> extends
     return instantiate(expression, context, domainClass, rangeClass, Function.class, null);
   }
 
-  public static <D, R>
-         Function<? extends D, ? extends R>
-         express(Class<Integer> class1, Class<?> domainType, String string, Class<?> functionClass)
+  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
+                                                           Class<? extends R> rangeClass,
+                                                           String expression,
+                                                           Class<? extends F> functionClass)
   {
-    // TODO Auto-generated method stub
-    return null;
+    return instantiate(expression, new Context(), domainClass, rangeClass, functionClass, null);
   }
 
 }

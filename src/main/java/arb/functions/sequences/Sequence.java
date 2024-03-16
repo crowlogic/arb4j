@@ -17,12 +17,11 @@ public interface Sequence<R> extends
                          Function<Integer, R>
 {
 
-  @SuppressWarnings("unchecked")
   public static <Q> Sequence<? extends Q> express(Class<? extends Q> domainType,
                                                   String expression,
-                                                  Class<? extends Function<Integer, ? extends Q>> functionClass)
+                                                  Class<? extends Sequence<Q>> functionClass)
   {
-    return (Sequence<? extends Q>) Function.express(Integer.class, domainType, expression, functionClass);
+    return Function.express(Integer.class, domainType, expression, functionClass);
   }
 
 }
