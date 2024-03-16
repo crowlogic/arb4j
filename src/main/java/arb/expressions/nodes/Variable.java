@@ -178,6 +178,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return mv;
   }
 
+  public String getName()
+  {
+    return reference.name;
+  }
+
   private void generateIndexAccess(MethodVisitor mv)
   {
     Class<?> indexType = null;
@@ -275,9 +280,20 @@ public class Variable<D, R, F extends Function<D, R>> extends
          * FIXME: variable is being referenced with the wrong type -
          * https://github.com/crowlogic/arb4j/issues/357
          */
-        if (expression.superExpression != null)
+        var parentExpression = expression.parentExpression;
+        if (parentExpression != null)
         {
-          if (expression.superExpression.independentVariableNode.reference.equals(reference))
+          var parentExpressionsIndependentVariableNode = parentExpression.independentVariableNode;
+          if ("z".equals(getName()))
+          {
+            System.out.format("\nname=%s\nreference=%s\nparentExpressionsIndependentVariableNode=%s\nthisExpressionsindependentVariableNode=%s\ntype=%s\n\n",
+                              getName(),
+                              reference,
+                              parentExpressionsIndependentVariableNode,
+                              expression.independentVariableNode,
+                              type());
+          }
+          if (parentExpressionsIndependentVariableNode.reference.equals(reference))
           {
             isIndependentVariableOfParentExpression = true;
             return;
@@ -290,7 +306,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
                                                        reference.name,
                                                        expression,
                                                        inputVariable,
-                                                       expression.superExpression));
+                                                       expression.parentExpression));
         }
       }
     }

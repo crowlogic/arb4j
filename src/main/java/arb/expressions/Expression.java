@@ -266,7 +266,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                     String functionName,
                     Expression<?, ?, ?> parentExpression)
   {
-    this.superExpression                  = parentExpression;
+    this.parentExpression                  = parentExpression;
     this.rangeClassDescriptor             = rangeClass.descriptorString();
     this.domainClassDescriptor            = domainClass.descriptorString();
     this.className                        = className;
@@ -335,15 +335,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
       {
         if (varName != null && !varName.equals(independentVariableNode.reference.name))
         {
-          if (superExpression != null && varName.equals(superExpression.independentVariableNode.reference.name))
+          if (parentExpression != null && varName.equals(parentExpression.independentVariableNode.reference.name))
           {
-            assert ignoreTODO : "TODO: add check for null superexpression input here: " + superExpression;
+            assert ignoreTODO : "TODO: add check for null superexpression input here: " + parentExpression;
           }
           else
           {
             throw new UnsupportedOperationException("no contextual variable for varName='" + varName
                           + "' and independent variable reference is " + independentVariableNode
-                          + " where parentExpression=" + superExpression + " and this expression=" + this);
+                          + " where parentExpression=" + parentExpression + " and this expression=" + this);
           }
         }
         else
@@ -458,9 +458,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareVariables(ClassVisitor classVisitor)
   {
-    if (superExpression != null)
+    if (parentExpression != null)
     {
-      Variable<?, ?, ?> parentIndependentVariableNode = superExpression.independentVariableNode;
+      Variable<?, ?, ?> parentIndependentVariableNode = parentExpression.independentVariableNode;
       if (parentIndependentVariableNode != null && !parentIndependentVariableNode.type().equals(Void.class))
       {
         classVisitor.visitField(ACC_PUBLIC,
@@ -504,7 +504,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean             traceGenerator = true;
 
-  public Expression<?, ?, ?> superExpression;
+  public Expression<?, ?, ?> parentExpression;
 
   public Class<F> load()
   {

@@ -2,6 +2,7 @@ package arb.functions;
 
 import static arb.expressions.Expression.instantiate;
 
+import arb.Integer;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.NotDifferentiableException;
@@ -161,6 +162,15 @@ public interface Function<D, R> extends
     return (F) instantiate(expression, context, domainClass, rangeClass, Function.class, null);
   }
 
+  public static <D, R, F extends Function<D, R>> F express(Class<? extends D> domainClass,
+                                                           Class<? extends R> rangeClass,
+                                                           String expression,
+                                                           Context context,
+                                                           Class<? extends F> functionClass)
+  {
+    return (F) instantiate(expression, context, domainClass, rangeClass, functionClass, null);
+  }
+
   public static <D, R, F extends Function<D, R>>
          F
          express(Class<? extends D> domainClass, Class<? extends R> rangeClass, String expression, boolean verbose)
@@ -182,6 +192,14 @@ public interface Function<D, R> extends
                                                                   boolean verbose)
   {
     return instantiate(expression, context, domainClass, rangeClass, Function.class, null);
+  }
+
+  public static <D, R>
+         Function<? extends D, ? extends R>
+         express(Class<Integer> class1, Class<?> domainType, String string, Class<?> functionClass)
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
