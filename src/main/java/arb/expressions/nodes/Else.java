@@ -5,8 +5,8 @@ import org.objectweb.asm.MethodVisitor;
 import arb.expressions.Expression;
 import arb.functions.Function;
 
-public class Else<D,R,F extends Function<D,R>> extends
-                  Node<D, R, F>
+public class Else<D, R, F extends Function<D, R>> extends
+                 Node<D, R, F>
 {
 
   public Else(Expression<D, R, F> expression)
@@ -52,6 +52,12 @@ public class Else<D,R,F extends Function<D,R>> extends
   public boolean isLeaf()
   {
     return true;
+  }
+
+  @Override
+  public boolean hasSingleLeaf()
+  {
+    return false;
   }
 
 }

@@ -30,4 +30,10 @@ public class Multiplication<D, R, F extends Function<D, R>> extends
     return format("{%s} \\cdot {%s}", left.typeset(), right.typeset());
   }
 
+  @Override
+  protected boolean isCommutative()
+  {
+    return true;
+  }
+
 }

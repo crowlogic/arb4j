@@ -15,6 +15,12 @@ import arb.functions.Function;
 public class Division<D, R, F extends Function<D, R>> extends
                      BinaryOperation<D, R, F>
 {
+  @Override
+  public boolean hasSingleLeaf()
+  {
+    return false;
+  }
+
   public Division(Expression<D, R, F> expression, Node<D, R, F> left, Node<D, R, F> right)
   {
     super(expression,
@@ -28,6 +34,12 @@ public class Division<D, R, F extends Function<D, R>> extends
   public String typeset()
   {
     return format("\\frac{%s}{%s}", left.typeset(), right.typeset());
+  }
+
+  @Override
+  protected boolean isCommutative()
+  {
+    return false;
   }
 
 }

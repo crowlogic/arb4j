@@ -244,4 +244,10 @@ public class When<D, R, F extends Function<D, R>> extends
     return false;
   }
 
+  @Override
+  public boolean hasSingleLeaf()
+  {
+    return false;
+  }
+
 }

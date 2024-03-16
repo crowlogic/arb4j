@@ -44,4 +44,10 @@ public class Subtraction<D, R, F extends Function<D, R>> extends
           right,
           "-");
   }
+
+  @Override
+  protected boolean isCommutative()
+  {
+    return false;
+  }
 }

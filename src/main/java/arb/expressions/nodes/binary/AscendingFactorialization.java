@@ -38,4 +38,10 @@ public class AscendingFactorialization<D, R, F extends Function<D, R>> extends
     return String.format("(%s)_{%s}", left.typeset(), right.typeset());
   }
 
+  @Override
+  protected boolean isCommutative()
+  {
+    return false;
+  }
+
 }

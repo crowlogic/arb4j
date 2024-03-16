@@ -90,4 +90,6 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
    */
   public abstract <C> Class<? extends C> type();
 
+  public abstract boolean hasSingleLeaf();
+
 }

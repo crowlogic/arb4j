@@ -39,4 +39,10 @@ public class SwingingFactorialization<D, R, F extends Function<D, R>> extends
     return "TODO";
   }
 
+  @Override
+  protected boolean isCommutative()
+  {
+    return false;
+  }
+
 }

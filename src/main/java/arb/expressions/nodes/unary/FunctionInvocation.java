@@ -299,4 +299,10 @@ public class FunctionInvocation<D, R, F extends Function<D, R>> extends
     return arg == null || (arg != null && arg.type().equals(Void.class));
   }
 
+  @Override
+  public boolean hasSingleLeaf()
+  {
+    return arg.isLeaf();
+  }
+
 }

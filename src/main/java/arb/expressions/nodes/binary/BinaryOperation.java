@@ -33,6 +33,12 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 {
 
   @Override
+  public boolean hasSingleLeaf()
+  {
+    return left.isLeaf() && right.isLeaf();
+  }
+
+  @Override
   public boolean isLeaf()
   {
     return false;
@@ -40,8 +46,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   public static String stringFormat(Node<?, ?, ?> side)
   {
-    return (side.isLeaf() || (side instanceof Factorialization)
-                  && ((Factorialization<?, ?, ?>) side).arg.isLeaf()) ? "%s" : "(%s)";
+    return (side.isLeaf() || side.hasSingleLeaf()) ? "%s" : "(%s)";
   }
 
   @Override
@@ -306,5 +311,11 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                  right.type(),
                                  typeset());
     return null;
+  }
+
+  protected boolean isCommutative()
+  {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

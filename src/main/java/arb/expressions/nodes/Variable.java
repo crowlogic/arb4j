@@ -342,4 +342,10 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return true;
   }
 
+  @Override
+  public boolean hasSingleLeaf()
+  {
+    return false;
+  }
+
 }

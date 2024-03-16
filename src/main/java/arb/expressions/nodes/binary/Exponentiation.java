@@ -32,4 +32,10 @@ public class Exponentiation<D, R, F extends Function<D, R>> extends
           exponent,
           "^");
   }
+
+  @Override
+  protected boolean isCommutative()
+  {
+    return false;
+  }
 }
