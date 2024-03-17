@@ -580,12 +580,13 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
       checkClassCast(mv, independentVariableNode.type());
       if (expression.traceGenerator)
       {
-        System.out.format("propagateInputToFactorClass( factorFunctionFieldName=%s,\n"
+        System.out.format("%s.propagateInputToFactorClass( factorFunctionFieldName=%s,\n"
                       + "%sindependentVariableNode=%s,\n" + "%sindependentVariableNode.type=%s)\n\n",
+                          getClass().getSimpleName(),
                           factorFunctionFieldName,
-                          indent(29),
+                          indent(48),
                           independentVariableNode,
-                          indent(29),
+                          indent(48),
                           independentVariableNode.type());
       }
 
