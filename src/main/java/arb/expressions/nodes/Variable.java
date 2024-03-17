@@ -86,7 +86,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   {
     if ("z".equals(getName()))
     {
-      System.out.format("z indeterminant=%s\n isIndependent=%s\n isIndependentVariableOfParentExpression=%s\n",
+      System.out.format("z indeterminant=%s\n isIndependent=%s\n isAnyAscendingExpressionsInput=%s\n",
                         isIndeterminant,
                         isIndependent,
                         isAnyAscendingExpressionsInput);
@@ -96,7 +96,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       return expression.domainType;
     }
-    return isIndeterminant ? (isAnyAscendingExpressionsInput ? expression.ascendentExpression.domainType : expression.rangeType) : reference.type();
+    if (isAnyAscendingExpressionsInput)
+    {
+      return expression.ascendentExpression.domainType;
+    }
+    return isIndeterminant ? expression.rangeType : reference.type();
   }
 
   public final VariableReference<D, R, F> reference;
@@ -338,7 +342,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
                           Utensils.indent(44));
         System.out.flush();
         assert !type().equals(Integer.class) : "why is z an integer? #357 its using this expressions domain type"
-                      + " rather than the containing/parent"
+                      + " rather than the ascendent "
                       + " expressions domain type apparently which is the crux of the issue";
       }
     }
