@@ -271,6 +271,12 @@ public class Integer implements
     set(i);
   }
 
+  public Integer(int i, String name)
+  {
+    this(i);
+    setName(name);
+  }
+
   public static long getCPtr(Real obj)
   {
     return (obj == null) ? 0 : obj.swigCPtr;

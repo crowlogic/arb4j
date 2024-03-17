@@ -175,12 +175,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     {
       int indentation = 18 + getClass().getSimpleName().length();
       System.out.format("%s.assignFieldNames(resultType=%s,\n%sfactorFunctionFieldName=%s,\n%sfactorValueFieldName=%s)\n\n",
-                        getClass().getSimpleName(),
-                        resultType,
-                        indent(indentation),
-                        factorFunctionFieldName,
-                        indent(indentation),
-                        factorValueFieldName);
+                        getClass().getSimpleName(), resultType, indent(indentation), factorFunctionFieldName,
+                        indent(indentation), factorValueFieldName);
     }
   }
 
@@ -238,8 +234,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
       if (!index.equals(shouldBeIndex))
       {
         throw new ExpressionCompilerException(String.format("index variable specified in the range specification '%s' != the index variable specified between the operator symbol and the right arrow '%s'",
-                                                            shouldBeIndex,
-                                                            index));
+                                                            shouldBeIndex, index));
       }
     }
     else
@@ -309,17 +304,13 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     String expr = format("%s➔%s", getIndexFieldName(), factorExpression);
     if (expression.traceGenerator)
     {
-      System.out.format("%s.generateFactorClass( expr=%s,resultType=%s)\n\n",
-                        getClass().getSimpleName(),
-                        expr,
+      System.out.format("%s.generateFactorClass( expr=%s,resultType=%s)\n\n", getClass().getSimpleName(), expr,
                         resultType);
 
     }
-    Expression<Integer, Q, Function<Integer, Q>> factorExpression = Compiler.express(factorFunctionFieldName,
-                                                                                     expr,
+    Expression<Integer, Q, Function<Integer, Q>> factorExpression = Compiler.express(factorFunctionFieldName, expr,
                                                                                      expression.context,
-                                                                                     Integer.class,
-                                                                                     resultType,
+                                                                                     Integer.class, resultType,
                                                                                      Function.class,
                                                                                      factorFunctionFieldName,
                                                                                      expression);
@@ -363,12 +354,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   {
     if (expression.verbose || expression.traceGenerator)
     {
-      out.format("getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n",
-                 functionClass,
-                 indent(9),
-                 fieldName,
-                 indent(9),
-                 fieldTypeSignature);
+      out.format("getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n", functionClass,
+                 indent(9), fieldName, indent(9), fieldTypeSignature);
     }
     getThisField(methodVisitor, functionClass, fieldName, fieldTypeSignature);
   }
@@ -387,9 +374,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   protected void incrementIndex(MethodVisitor methodVisitor)
   {
     loadIndexVariable(methodVisitor);
-    invokeMethod(methodVisitor,
-                 Type.getInternalName(Integer.class),
-                 "increment",
+    invokeMethod(methodVisitor, Type.getInternalName(Integer.class), "increment",
                  Utensils.getMethodDescriptor(Integer.class));
   }
 
@@ -427,11 +412,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                              String methodSignature,
                              boolean isInterface)
   {
-    methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL,
-                                  classInternalName,
-                                  methodName,
-                                  methodSignature,
-                                  isInterface);
+    methodVisitor.visitMethodInsn(isInterface ? INVOKEINTERFACE : INVOKEVIRTUAL, classInternalName, methodName,
+                                  methodSignature, isInterface);
     return methodVisitor;
   }
 
@@ -485,10 +467,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   public MethodVisitor combine(MethodVisitor mv)
   {
-    return invokeMethod(mv,
-                        generatedType,
-                        operation,
-                        getMethodDescriptor(generatedType, generatedType, int.class),
+    return invokeMethod(mv, generatedType, operation, getMethodDescriptor(generatedType, generatedType, int.class),
                         false);
   }
 
@@ -582,17 +561,11 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
       {
         System.out.format("%s.propagateInputToFactorClass( factorFunctionFieldName=%s,\n"
                       + "%sindependentVariableNode=%s,\n" + "%sindependentVariableNode.type=%s)\n\n",
-                          getClass().getSimpleName(),
-                          factorFunctionFieldName,
-                          indent(48),
-                          independentVariableNode,
-                          indent(48),
-                          independentVariableNode.type());
+                          getClass().getSimpleName(), factorFunctionFieldName, indent(48), independentVariableNode,
+                          indent(48), independentVariableNode.type());
       }
 
-      mv.visitFieldInsn(PUTFIELD,
-                        factorFunctionFieldName,
-                        independentVariableNode.reference.name,
+      mv.visitFieldInsn(PUTFIELD, factorFunctionFieldName, independentVariableNode.reference.name,
                         independentVariableNode.type().descriptorString());
     }
   }
@@ -635,12 +608,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return String.format("\\%s_{%s = %s}^{%s}{%s}",
-                         operation.replace("mul", "prod"),
-                         index,
-                         startIndex.typeset(),
-                         endIndex.typeset(),
-                         factorExpression);
+    return String.format("\\%s_{%s = %s}^{%s}{%s}", operation.replace("mul", "prod"), index, startIndex.typeset(),
+                         endIndex.typeset(), factorExpression);
   }
 
   @Override

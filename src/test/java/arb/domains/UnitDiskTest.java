@@ -1,8 +1,14 @@
 package arb.domains;
 
 import arb.*;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class UnitDiskTest extends
                           TestCase
 {
@@ -21,12 +27,9 @@ public class UnitDiskTest extends
 
   public void setUp()
   {
-    pointInside     = new Complex(RealConstants.half,
-                                  RealConstants.half);
-    pointOnBoundary = new Complex(RealConstants.one,
-                                  RealConstants.zero);
-    pointOutside    = new Complex(new Real(1.5),
-                                  RealConstants.zero);
+    pointInside     = new Complex(RealConstants.half, RealConstants.half);
+    pointOnBoundary = new Complex(RealConstants.one, RealConstants.zero);
+    pointOutside    = new Complex(new Real(1.5), RealConstants.zero);
   }
 
   public void testContainsOpen()

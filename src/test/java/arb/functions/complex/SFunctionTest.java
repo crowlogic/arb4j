@@ -2,8 +2,14 @@ package arb.functions.complex;
 
 import arb.Complex;
 import arb.RealConstants;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class SFunctionTest extends
                            TestCase
 {

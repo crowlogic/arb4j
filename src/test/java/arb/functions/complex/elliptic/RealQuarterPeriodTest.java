@@ -1,8 +1,14 @@
 package arb.functions.complex.elliptic;
 
 import arb.Complex;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 @SuppressWarnings("resource")
 public class RealQuarterPeriodTest extends
                                    TestCase

@@ -10,9 +10,15 @@ import static arb.functions.polynomials.RealPolynomialFunction.express;
 
 import arb.RealConstants;
 import arb.RealPolynomial;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.functions.polynomials.RealPolynomialFunction;
 import junit.framework.TestCase;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 public class RealPolynomialFunctionExpressionCompilerTest extends
                                                           TestCase
 {
@@ -30,7 +36,6 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
       y.set(1, oneQuarter);
       y.set(2, π);
       f.evaluate(x, 1, RealConstants.prec, z);
-
 
       assertEquals(correctZ, z);
     }
@@ -68,7 +73,6 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
       y.set(2, π);
       f.evaluate(x, 1, RealConstants.prec, z);
 
-
       assertEquals(correctZ, z);
     }
   }
@@ -86,7 +90,6 @@ public class RealPolynomialFunctionExpressionCompilerTest extends
       y.set(1, oneQuarter);
       y.set(2, π);
       f.evaluate(x, 1, RealConstants.prec, z);
-
 
       assertTrue(z.isZero());
       assertEquals(x, z.remainder);

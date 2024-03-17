@@ -19,26 +19,20 @@ public class HypergeometricPolynomialTest extends
   public static void testSum()
   {
     HypergeometricPolynomial F = new HypergeometricPolynomial(2, 1);
-    F.α.set(-3,2.5);
+    F.α.set(-3, 2.5);
     F.β.set(1);
     F.eval(2.3);
   }
-  
+
   public static void testSummand()
   {
-    try ( var p = new Integer(3); var q = new Integer(1); var α = Real.newVector(p.getSignedValue());
-          var β = Real.newVector(q.getSignedValue()); var z = new Real();)
+    try ( var p = new Integer(3, "p"); var q = new Integer(1, "q"); var α = Real.newVector(p.getSignedValue(), "α");
+          var β = Real.newVector(q.getSignedValue(), "β"); var z = new Real();)
     {
       z.set(RealConstants.π);
-      var  context = new Context(p.setName("p"),
-                                 q.setName("q"),
-                                 α.setName("α").set(1.5, 0.75, -3),
-                                 β.setName("β").set(1),
-                                 z.setName("z"));
+      var  context = new Context(p, q, α.set(1.5, 0.75, -3), β.set(1), z.setName("z"));
 
-      var  summand = Function.express(Integer.class,
-                                      Real.class,
-                                      "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
+      var  summand = Function.express(Integer.class, Real.class, "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
                                       context);
       Real res     = summand.evaluate(new Integer(3), 1, 128, new Real());
       assertEquals(-244.81029976584379503781836652101052755, res.doubleValue());

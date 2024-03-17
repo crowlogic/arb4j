@@ -3,9 +3,21 @@ package arb.functions.complex.trigonometric;
 import static arb.ComplexConstants.π;
 import static java.lang.Math.pow;
 
-import arb.*;
+import arb.Complex;
+import arb.ComplexConstants;
+import arb.IntegrationOptions;
+import arb.Magnitude;
+import arb.Real;
+import arb.RealConstants;
+import arb.RoundingMode;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import junit.framework.TestCase;
 
+/**
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
+ */
 @SuppressWarnings("resource")
 public class SineFunctionTest extends
                               TestCase
@@ -32,13 +44,8 @@ public class SineFunctionTest extends
     res.printPrecision           = true;
     res.getReal().printPrecision = true;
     Complex two      = sine.realPart()
-                           .integrate(RealConstants.zero,
-                                      RealConstants.π,
-                                      relativeAccuracyBitsGoal,
-                                      absoluteErrorToleranceGoal,
-                                      options,
-                                      precisionBits,
-                                      res);
+                           .integrate(RealConstants.zero, RealConstants.π, relativeAccuracyBitsGoal,
+                                      absoluteErrorToleranceGoal, options, precisionBits, res);
     Real    realPart = two.getReal();
     Real    imagPart = two.getImag();
     assertEquals(2, realPart.getMid().doubleValue(RoundingMode.Near), realPart.getRad().doubleValue());
