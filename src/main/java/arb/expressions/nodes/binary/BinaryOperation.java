@@ -1,9 +1,6 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.loadBitsParameter;
-import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
-import static arb.expressions.Compiler.prepareStackForReusingRightSide;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
@@ -20,7 +17,6 @@ import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
-import arb.expressions.nodes.unary.Factorialization;
 import arb.functions.Function;
 
 /**
@@ -46,14 +42,16 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
   public String stringFormat(Node<?, ?, ?> side)
   {
-    return (side.isLeaf() || side.hasSingleLeaf() ) ? "%s" : "(%s)";
+    return (side.isLeaf() || side.hasSingleLeaf()) ? "%s" : "(%s)";
   }
 
   @Override
   public String toString()
   {
     return String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
-                         left == null ? "∅" : left, symbol, right == null ? "∅" : right);
+                         left == null ? "∅" : left,
+                         symbol,
+                         right == null ? "∅" : right);
   }
 
   public String toString(int depth)
@@ -130,8 +128,19 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     if (expression.traceGenerator)
     {
       System.out.format("BinaryOperation.generate( this=%s,\n%sleft=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
-                        this, indent(26), left, indent(26), left.type(), indent(26), operation, indent(26), right,
-                        indent(26), right.type(), indent(26), resultType);
+                        this,
+                        indent(26),
+                        left,
+                        indent(26),
+                        left.type(),
+                        indent(26),
+                        operation,
+                        indent(26),
+                        right,
+                        indent(26),
+                        right.type(),
+                        indent(26),
+                        resultType);
     }
     generatedType = resultType;
 
@@ -141,7 +150,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   }
 
   /**
-   * FIXME: this
+   * FIXME: this need to handle type conversion -
+   * https://github.com/crowlogic/arb4j/issues/356
    * 
    * @param mv
    * @param operator
@@ -169,10 +179,18 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     if (expression.traceGenerator)
     {
       String.format("%s.invokeBinaryOperationMethod(operator=%s, leftType=%s, rightType=%s, returnType=%s)\n",
-                    getClass().getSimpleName(), operator, leftType, rightType, returnType);
+                    getClass().getSimpleName(),
+                    operator,
+                    leftType,
+                    rightType,
+                    returnType);
     }
-    mv.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(leftType), operator,
-                       String.format("(%sI%s)%s", rightType.descriptorString(), returnType.descriptorString(),
+    mv.visitMethodInsn(INVOKEVIRTUAL,
+                       Type.getInternalName(leftType),
+                       operator,
+                       String.format("(%sI%s)%s",
+                                     rightType.descriptorString(),
+                                     returnType.descriptorString(),
                                      returnType.descriptorString()),
                        false);
   }
@@ -284,8 +302,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
     }
     assert Integer.class.equals(arb.Integer.class) : "you forgot to import arb.Integer";
-    assert false : String.format("TODO: handle resultant type for left=%s and right=%s in %s", left.type(),
-                                 right.type(), typeset());
+    assert false : String.format("TODO: handle resultant type for left=%s and right=%s in %s",
+                                 left.type(),
+                                 right.type(),
+                                 typeset());
     return null;
   }
 
