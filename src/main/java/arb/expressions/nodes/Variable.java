@@ -86,10 +86,12 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if ("z".equals(getName()))
     {
       System.out.format("z indeterminant=%s\n isIndependent=%s\n isIndependentVariableOfParentExpression=%s\n",
-                        isIndeterminant, isIndependent, isIndependentVariableOfParentExpression);
+                        isIndeterminant,
+                        isIndependent,
+                        isIndependentVariableOfParentExpression);
     }
     // return reference.type();
-    if ( isIndependent )
+    if (isIndependent)
     {
       return expression.domainType;
     }
@@ -210,8 +212,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (Integer.class.equals(indexType))
     {
-      mv.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(reference.type()), "get",
-                         Type.getMethodDescriptor(Type.getType(reference.type()), Type.getType(indexType)), false);
+      mv.visitMethodInsn(INVOKEVIRTUAL,
+                         Type.getInternalName(reference.type()),
+                         "get",
+                         Type.getMethodDescriptor(Type.getType(reference.type()), Type.getType(indexType)),
+                         false);
 
     }
     else
@@ -242,8 +247,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   private void generateIndeterminateRangeIdentityInvocation(MethodVisitor mv)
   {
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(expression.rangeType), "identity",
-                       format("()%s", expression.rangeType.descriptorString()), false);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                       Type.getInternalName(expression.rangeType),
+                       "identity",
+                       format("()%s", expression.rangeType.descriptorString()),
+                       false);
   }
 
   @Override
@@ -308,9 +316,15 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
       if ("z".equals(getName()))
       {
-        System.out.format("\nname=%s\nreference=%s\nparentExpressionsIndependentVariableNode=%s\nthisExpressionsindependentVariableNode=%s\ntype=%s\n\n",
-                          getName(), reference, parentExpressionsIndependentVariableNode,
-                          expression.independentVariableNode, type());
+        System.out.format("\nVariable.resolveInheritedVariableReference: name=%s\nreference=%s\n"
+                      + "parentExpressionsIndependentVariableNode=%s\nthisExpressionsindependentVariableNode=%s\n"
+                      + "type=%s\nparentExpressionsDomain=%s\n\n",
+                          getName(),
+                          reference,
+                          parentExpressionsIndependentVariableNode,
+                          expression.independentVariableNode,
+                          type(),
+                          expression.parentExpression.domainType);
         System.out.flush();
         assert !type().equals(Integer.class) : "why is z an integer? #357";
       }
@@ -318,8 +332,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
     else
     {
       throw new UndefinedReferenceException(format("Undefined reference to variable"
-                    + " '%s' in %s, independent variable is %s and parentExpression is %s", reference.name,
-                                                   expression, variable, expression.parentExpression));
+                    + " '%s' in %s, independent variable is %s and parentExpression is %s",
+                                                   reference.name,
+                                                   expression,
+                                                   variable,
+                                                   expression.parentExpression));
     }
   }
 
