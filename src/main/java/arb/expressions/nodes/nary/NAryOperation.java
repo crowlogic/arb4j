@@ -119,7 +119,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   public Node<D, R, F> endIndex;
 
-  public String        factor;
+  public String        factorExpression;
 
   public String        functionClass;
 
@@ -156,13 +156,13 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     {
       expression.context = new Context();
     }
-    this.factor   = parseFactorExpression();
-    functionClass = expression.className;
+    this.factorExpression = parseFactorExpression();
+    functionClass         = expression.className;
     assert functionClass != null : "functionClass=expression.className shan't be null";
     generatedType = (RealPolynomial.class.equals(expression.rangeType) ? Real.class : expression.rangeType);
     if (index != null)
     {
-      expression.character = expression.expression.charAt(expression.position += factor.length());
+      expression.character = expression.expression.charAt(expression.position += factorExpression.length());
     }
     evaluateRangeSpecification();
   }
@@ -223,11 +223,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   protected void evaluateFactor(MethodVisitor mv)
   {
-    invokeMethod(mv,
-                 Type.getInternalName(arb.functions.Function.class),
-                 "evaluate",
-                 factorEvaluateMethodSignature,
-                 true);
+    invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", factorEvaluateMethodSignature, true);
   }
 
   public NAryOperation<D, R, F> evaluateRangeSpecification()
@@ -310,7 +306,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   protected <Q> void generateFactorClass(Class<Q> resultType)
   {
-    String expr = format("%s➔%s", getIndexFieldName(), factor);
+    String expr = format("%s➔%s", getIndexFieldName(), factorExpression);
     if (expression.traceGenerator)
     {
       System.out.format("%s.generateFactorClass( expr=%s,resultType=%s)\n\n",
@@ -328,7 +324,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                                                                                      factorFunctionFieldName,
                                                                                      expression);
 
-    registerFactorSubexpressionInstance(factorExpression, factorExpression.instantiate());
+    registerFactorSubexpressionInstance(factorExpression);
   }
 
   public void generateInnerLoop(MethodVisitor mv)
@@ -526,13 +522,11 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
         expression.nextCharacter();
       }
 
-      String str = expression.expression.substring(startPos, expression.position).trim();
-      return str;
+      return expression.expression.substring(startPos, expression.position).trim();
     }
     else
     {
-      String pos = expression.expression.substring(arrowIndex + 1, rangeSpecificationPosition).trim();
-      return pos;
+      return expression.expression.substring(arrowIndex + 1, rangeSpecificationPosition).trim();
     }
   }
 
@@ -584,6 +578,17 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
       expression.loadFieldOntoStack(mv, factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
       Compiler.loadInputParameter(mv);
       checkClassCast(mv, independentVariableNode.type());
+      if (expression.traceGenerator)
+      {
+        System.out.format("propagateInputToFactorClass( factorFunctionFieldName=%s,\n"
+                      + "%sindependentVariableNode=%s,\n" + "%sindependentVariableNode.type=%s)\n\n",
+                          factorFunctionFieldName,
+                          indent(29),
+                          independentVariableNode,
+                          indent(29),
+                          independentVariableNode.type());
+      }
+
       mv.visitFieldInsn(PUTFIELD,
                         factorFunctionFieldName,
                         independentVariableNode.reference.name,
@@ -591,12 +596,11 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     }
   }
 
-  private <Q> void registerFactorSubexpressionInstance(Expression<Integer, Q, Function<Integer, Q>> factorExpression,
-                                                       Function<Integer, Q> factorInstance)
+  private <Q> void registerFactorSubexpressionInstance(Expression<Integer, Q, Function<Integer, Q>> factorExpression)
   {
     expression.referencedFunctions.put(factorFunctionFieldName,
                                        expression.context.registerFunctionMapping(factorFunctionFieldName,
-                                                                                  factorInstance,
+                                                                                  factorExpression.instantiate(),
                                                                                   Integer.class,
                                                                                   factorExpression.rangeType,
                                                                                   Function.class));
@@ -618,7 +622,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("%s%s{%s=%s…%s}", symbol, factor, index, startIndex.typeset(), endIndex.typeset());
+    return String.format("%s%s{%s=%s…%s}", symbol, factorExpression, index, startIndex, endIndex);
   }
 
   @Override
@@ -635,7 +639,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                          index,
                          startIndex.typeset(),
                          endIndex.typeset(),
-                         factor);
+                         factorExpression);
   }
 
   @Override

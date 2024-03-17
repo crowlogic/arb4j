@@ -4,3 +4,4 @@ expression compiler; wrong type used attempting to propagate input field to sube
 expression compiler: revisit visitFrame to sync up the stack map with the instruction set bug #356
 expression compiler: automatic differentiation #253
 estimation -  Estimate parameters of the covariance kernel of the Hardy z function #257
+implement TreeModel so that the parsed Expression (abstract syntax tree) can be printed in an organized way in text
