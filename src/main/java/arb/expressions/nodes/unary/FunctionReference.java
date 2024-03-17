@@ -1,6 +1,11 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.loadOrderParameter;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -23,7 +28,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * {@link FunctionInvocation} is a {@link Node} in the {@link Expression} that
+ * {@link FunctionReference} is a {@link Node} in the {@link Expression} that
  * represents a call to either a builtin or a contextual function, a contextual
  * function call being one that has been constructed by passing a
  * {@link Context} to
@@ -50,8 +55,8 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FunctionInvocation<D, R, F extends Function<D, R>> extends
-                               UnaryOperation<D, R, F>
+public class FunctionReference<D, R, F extends Function<D, R>> extends
+                              UnaryOperation<D, R, F>
 {
 
   public String                functionName;
@@ -62,10 +67,9 @@ public class FunctionInvocation<D, R, F extends Function<D, R>> extends
   { "sqrt", "tanh", "log" }));
 
   @SuppressWarnings("unchecked")
-  public FunctionInvocation(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
+  public FunctionReference(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
   {
-    super(argument,
-          expression);
+    super(argument,expression);
     this.functionName = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
                               .replace("ln", "log")
                               .replace("√", "sqrt");
@@ -117,8 +121,7 @@ public class FunctionInvocation<D, R, F extends Function<D, R>> extends
     }
 
     assert getGeneratedType().equals(resultType) : String.format("TODO: type conversion for output where generatedType=%s != resultType = %s\n",
-                                                                 getGeneratedType(),
-                                                                 resultType);
+                                                                 getGeneratedType(), resultType);
     return mv;
   }
 
@@ -147,9 +150,7 @@ public class FunctionInvocation<D, R, F extends Function<D, R>> extends
     Class<?> domainType = getDomainType();
     Class<?> rangeType  = requisiteResultType;
 
-    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                                  Type.getInternalName(domainType),
-                                  functionName,
+    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(domainType), functionName,
                                   format("(I%s)%s", rangeType.descriptorString(), rangeType.descriptorString()),
                                   false);
     if (needsResultTypeConversion)
@@ -186,10 +187,7 @@ public class FunctionInvocation<D, R, F extends Function<D, R>> extends
     if (expression.traceGenerator)
     {
       System.out.format("%s.generateContextualFunctionCall( resultType=%s, generatedType=%s ): expression.typeStack=%s\n\n",
-                        getClass().getSimpleName(),
-                        resultType,
-                        expression.typeStack,
-                        generatedType);
+                        getClass().getSimpleName(), resultType, expression.typeStack, generatedType);
     }
 
     if (func == null && mapping.functionInterface == null)
@@ -220,8 +218,8 @@ public class FunctionInvocation<D, R, F extends Function<D, R>> extends
 
     Class<?> typeAfter = isVoid ? Void.class : arg.type();
 
-    assert typeBefore.equals(typeAfter)
-                  || isVoid : String.format("%s: typeBefore=%s typeAfter=%s\n", this, typeBefore, typeAfter);
+    assert typeBefore.equals(typeAfter) || isVoid : String.format("%s: typeBefore=%s typeAfter=%s\n", this,
+                                                                  typeBefore, typeAfter);
 
     if (needsArgTypeConversion)
     {
@@ -288,8 +286,7 @@ public class FunctionInvocation<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return format("%s(%s)",
-                  functionName.replace("√", "\\sqrt").replace("J0", "J_0"),
+    return format("%s(%s)", functionName.replace("√", "\\sqrt").replace("J0", "J_0"),
                   arg == null ? "" : arg.typeset());
   }
 

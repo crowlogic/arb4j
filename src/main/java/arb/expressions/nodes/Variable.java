@@ -83,8 +83,17 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
+    if ("z".equals(getName()))
+    {
+      System.out.format("z indeterminant=%s\n isIndependent=%s\n isIndependentVariableOfParentExpression=%s\n",
+                        isIndeterminant, isIndependent, isIndependentVariableOfParentExpression);
+    }
     // return reference.type();
-    return isIndeterminant ? (isIndependentVariableOfParentExpression ? expression.parentExpression.rangeType : expression.rangeType) : reference.type();
+    if ( isIndependent )
+    {
+      return expression.domainType;
+    }
+    return isIndeterminant ? (isIndependentVariableOfParentExpression ? expression.parentExpression.domainType : expression.rangeType) : reference.type();
   }
 
   public final VariableReference<D, R, F> reference;
@@ -302,6 +311,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
         System.out.format("\nname=%s\nreference=%s\nparentExpressionsIndependentVariableNode=%s\nthisExpressionsindependentVariableNode=%s\ntype=%s\n\n",
                           getName(), reference, parentExpressionsIndependentVariableNode,
                           expression.independentVariableNode, type());
+        System.out.flush();
         assert !type().equals(Integer.class) : "why is z an integer? #357";
       }
     }

@@ -68,7 +68,7 @@ import arb.expressions.nodes.nary.NAryOperation;
 import arb.expressions.nodes.nary.NaryMultiplication;
 import arb.expressions.nodes.nary.Summation;
 import arb.expressions.nodes.unary.Factorialization;
-import arb.expressions.nodes.unary.FunctionInvocation;
+import arb.expressions.nodes.unary.FunctionReference;
 import arb.expressions.nodes.unary.SwingingFactorialization;
 import arb.expressions.nodes.unary.UnaryOperation;
 import arb.expressions.nodes.unary.When;
@@ -100,7 +100,7 @@ import arb.utensils.Utensils;
  * <li>Dynamically compiles mathematical expressions into executable Java
  * bytecode, allowing for efficient evaluation.</li>
  * <li>Supports {@link Variable}, {@link LiteralConstant}, and
- * {@link FunctionInvocation}s within {@link Expression}, providing a rich
+ * {@link FunctionReference}s within {@link Expression}, providing a rich
  * feature set for constructing complex expressions.</li>
  * <li>Effectively manages intermediate variables and constants, optimizing
  * memory usage and performance.</li>
@@ -1367,7 +1367,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       Node<D, R, F> arg = resolve();
       if (nextCharacterIs(')'))
       {
-        return new FunctionInvocation<>(this, reference.name, arg);
+        return new FunctionReference<>(this, reference.name, arg);
       }
       else
       {

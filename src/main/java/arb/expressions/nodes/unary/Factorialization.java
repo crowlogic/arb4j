@@ -19,7 +19,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class Factorialization<D, R, F extends Function<D, R>> extends
-                             FunctionInvocation<D, R, F>
+                             FunctionReference<D, R, F>
 {
 
   @Override
