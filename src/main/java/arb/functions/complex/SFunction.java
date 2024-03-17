@@ -15,6 +15,14 @@ import arb.functions.Function;
  * The rational meromorphic quartic
  * <code>S(t)=tanh(ln(1-t^2)))=((1 - t^2)^2 - 1)/((1 - t^2)^2 + 1)</code>
  * 
+ * Where the real part
+ * 
+ * <pre> 
+ * (𝑥̅⁴ + (2·|𝑥|⁴ + 2)·𝑥̅² + |𝑥|⁸ + (2𝑥² + 4)·|𝑥|⁴ + 𝑥⁴ + 2𝑥²) / (𝑥⁴ + 2𝑥² + 2) / (𝑥̅⁴ + 2𝑥̅² + 2)
+ * </pre>
+ * 
+ * equals 0 is equal to the implicit definition of the lemniscate of Bernoulli.
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */

@@ -177,7 +177,7 @@
     then
 
     <\equation>
-      V<rsub|1>=V<rsub|2>
+      Volterra<rsub|1>=V<rsub|2>
     </equation>
   </theorem>
 
@@ -418,7 +418,7 @@
   transformation
 
   <\equation>
-    \<cal-F\>*u<around|(|\<xi\>|)>=<wide|u|^><around|(|\<xi\>|)>=<around|(|2*\<pi\>|)><rsup|-3/2>*<big|int><rsub|\<bbb-R\><rsup|3>>e<rsup|-i*\<xi\>\<cdot\>x>*u<around|(|x|)>*d*x
+    \<cal-F\>*u<around|(|\<xi\>|)>=<wide|u|^><around|(|\<xi\>|)>=<around|(|2*\<pi\>|)><rsup|-3/2,.>*<big|int><rsub|\<bbb-R\><rsup|3>>e<rsup|-i*\<xi\>\<cdot\>x>*u<around|(|x|)>*d*x
   </equation>
 
   In fact, we have
