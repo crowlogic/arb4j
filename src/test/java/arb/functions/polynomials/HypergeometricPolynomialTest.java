@@ -32,7 +32,9 @@ public class HypergeometricPolynomialTest extends
       z.set(RealConstants.π);
       var  context = new Context(p, q, α.set(1.5, 0.75, -3), β.set(1), z.setName("z"));
 
-      var  summand = Function.express(Integer.class, Real.class, "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
+      var  summand = Function.express(Integer.class,
+                                      Real.class,
+                                      "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
                                       context);
       Real res     = summand.evaluate(new Integer(3), 1, 128, new Real());
       assertEquals(-244.81029976584379503781836652101052755, res.doubleValue());

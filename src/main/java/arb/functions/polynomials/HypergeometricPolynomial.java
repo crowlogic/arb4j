@@ -29,9 +29,7 @@ public class HypergeometricPolynomial implements
 
   public static void main(String... args)
   {
-    try ( var F = new HypergeometricPolynomial(2,
-                                               1);
-          var point = new Real())
+    try ( var F = new HypergeometricPolynomial(2, 1); var point = new Real())
     {
       F.α.set(4, -4);
       F.β.set(0.5);
@@ -58,10 +56,9 @@ public class HypergeometricPolynomial implements
   @SuppressWarnings("resource")
   public HypergeometricPolynomial(int p, int q)
   {
-    context = new Context(this.p = new Integer(p).setName("p"),
-                          this.q = new Integer(q).setName("q"),
-                          α = Real.newVector(p).setName("α"),
-                          β = Real.newVector(q).setName("β"));
+    context = new Context(this.p = new Integer(p).setName("p"), this.q = new Integer(q).setName("q"), α = Real.newVector(p)
+                                                                                                              .setName("α"), β = Real.newVector(q)
+                                                                                                                                     .setName("β"));
     context.registerVariable("N", N = new Integer());
 
     context.saveClasses = true;
