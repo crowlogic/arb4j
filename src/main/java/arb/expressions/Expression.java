@@ -59,54 +59,75 @@ import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
 import arb.expressions.nodes.binary.Addition;
 import arb.expressions.nodes.binary.AscendingFactorialization;
+import arb.expressions.nodes.binary.BinaryOperation;
 import arb.expressions.nodes.binary.Division;
 import arb.expressions.nodes.binary.Exponentiation;
 import arb.expressions.nodes.binary.Multiplication;
 import arb.expressions.nodes.binary.Subtraction;
+import arb.expressions.nodes.nary.NAryOperation;
 import arb.expressions.nodes.nary.NaryMultiplication;
 import arb.expressions.nodes.nary.Summation;
 import arb.expressions.nodes.unary.Factorialization;
 import arb.expressions.nodes.unary.FunctionInvocation;
 import arb.expressions.nodes.unary.SwingingFactorialization;
+import arb.expressions.nodes.unary.UnaryOperation;
 import arb.expressions.nodes.unary.When;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
 /**
- * An {@link Expression} is a mathematical statement consisting of a finite
- * combination of symbols, here in this case {@link Character}s constituting
- * {@link String}s representing the arithmetic operations performed on the
- * symbols
- * 
- * <p>
- * The <code>Expression</code> class in the <code>arb.expressions</code> package
- * is a versatile and dynamic expression {@link Compiler} which produces
- * high-performance {@link Function} implementations instantly using ASM's
- * {@link MethodVisitor} and {@link ClassVisitor} for bytecode generation.
+ * The {@link Expression} class represents a mathematical statement in infix
+ * notation, which is a notation that places operators between operands, such as
+ * "2 * 3 + 4". It uses characters and strings to represent symbols and
+ * operations within these expressions. This class is part of the
+ * {@code arb.expressions} package and serves as a dynamic compiler that
+ * translates these expressions into high-performance Java bytecode, leveraging
+ * the ASM library for bytecode manipulation and generation.
  *
- * <h2>Key features</h2>
+ * <p>
+ * Internally, the {@link Expression} class parses the input string to construct
+ * an Abstract Syntax Tree (AST), where each {@link Node} represents an
+ * {@link BinaryOperation}, {@link UnaryOperation}, {@link NAryOperation}, such
+ * as {@link Addition} , {@link Subtraction}, {@link Multiplication}, and
+ * {@link Division} or its operands like {@link Variable} and
+ * {@link LiteralConstant}. This tree structure allows the class to correctly
+ * manage operator precedence and associativity rules inherent in mathematical
+ * expressions. The AST is then traversed to generate the corresponding Java
+ * bytecode, which can be executed to evaluate the expression.
+ *
+ * <h2>Key Features:</h2>
  * <ul>
- * <li>Compiles mathematical expressions dynamically into Java bytecodes.</li>
- * <li>Manages variables, constants, and function calls within expressions.</li>
- * <li>Handles intermediate variables and constants effectively.</li>
- * <li>Injects variable and function references into compiled instances.</li>
- * <li>Includes methods for parsing, evaluating, and generating necessary
- * bytecode for expressions.</li>
+ * <li>Dynamically compiles mathematical expressions into executable Java
+ * bytecode, allowing for efficient evaluation.</li>
+ * <li>Supports {@link Variable}, {@link LiteralConstant}, and
+ * {@link FunctionInvocation}s within {@link Expression}, providing a rich
+ * feature set for constructing complex expressions.</li>
+ * <li>Effectively manages intermediate variables and constants, optimizing
+ * memory usage and performance.</li>
+ * <li>Automatically injects references to variables and functions into the
+ * compiled bytecode, facilitating dynamic execution.</li>
+ * <li>Provides comprehensive methods for parsing expressions, evaluating them,
+ * and generating the necessary bytecode, all while handling mathematical
+ * precedence and associativity.</li>
  * </ul>
- * 
- * <h2>System Properties</h2>
+ *
+ * <h2>System Properties:</h2>
  * <ul>
- * <li>expressionCompiler.saveClasses=true|false</li>
+ * <li>{@code expressionCompiler.saveClasses=true|false}: Specifies whether the
+ * compiled classes should be saved for inspection. Default is
+ * {@code true}.</li>
  * </ul>
- * 
- * 
- * 
- * @param <D> domain type
- * @param <R> range type
- * @param <F> the function type of the expression, extending {@link Function}
+ *
+ * @param <D> The domain type over which the expression operates, such as
+ *            {@link Integer} or {@link Double}.
+ * @param <R> The range type that the expression evaluates to, representing the
+ *            result of the expression.
+ * @param <F> The function type of the expression, extending the
+ *            {@link Function} interface, encapsulating the compiled expression
+ *            as an evaluatble function in the sense of the Java 
  * 
  * @author Stephen A. Crowley ©2024
- * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ * @see BusinessSourceLicenseVersionOnePointOne for the terms of use of the
  *      {@link TheArb4jLibrary}
  */
 public class Expression<D, R, F extends Function<D, R>> implements
@@ -266,7 +287,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                     String functionName,
                     Expression<?, ?, ?> parentExpression)
   {
-    this.parentExpression                  = parentExpression;
+    this.parentExpression                 = parentExpression;
     this.rangeClassDescriptor             = rangeClass.descriptorString();
     this.domainClassDescriptor            = domainClass.descriptorString();
     this.className                        = className;
@@ -291,7 +312,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public Node<D, R, F> applyOperationsInOrder(Node<D, R, F> node)
+  public Node<D, R, F> addAndSubtract(Node<D, R, F> node)
   {
     while (true)
     {
@@ -516,15 +537,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
   /**
    * Apply the order of operations except for parenthesis by first calling
    * this{@link #exponentiateMultiplyAndDivide()} then passing the result to
-   * {@link #applyOperationsInOrder(Node)}
+   * {@link #addAndSubtract(Node)}
    * 
    * @return the result of passing this{@link #exponentiateMultiplyAndDivide()} to
-   *         this{@link #applyOperationsInOrder(Node)}
+   *         this{@link #addAndSubtract(Node)}
    */
   public Node<D, R, F> resolve()
   {
     Node<D, R, F> node = exponentiateMultiplyAndDivide();
-    return applyOperationsInOrder(node);
+    return addAndSubtract(node);
   }
 
   /**
