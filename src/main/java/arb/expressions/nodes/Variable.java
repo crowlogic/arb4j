@@ -83,10 +83,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    return reference.type();
-    // return isIndeterminant ? (isIndependentVariableOfParentExpression ?
-    // expression.parentExpression.rangeType : expression.rangeType) :
-    // reference.type();
+    // return reference.type();
+    return isIndeterminant ? (isIndependentVariableOfParentExpression ? expression.parentExpression.rangeType : expression.rangeType) : reference.type();
   }
 
   public final VariableReference<D, R, F> reference;
@@ -286,8 +284,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
    * FIXME: variable is being referenced with the wrong type -
    * https://github.com/crowlogic/arb4j/issues/357
    */
-  protected void resolveInheritedVariableReference(VariableReference<D, R, F> reference,
-                                                   Variable<D, R, F> variable)
+  protected void resolveInheritedVariableReference(VariableReference<D, R, F> reference, Variable<D, R, F> variable)
   {
 
     var parentExpression = expression.parentExpression;
