@@ -44,18 +44,16 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     return false;
   }
 
-  public static String stringFormat(Node<?, ?, ?> side)
+  public String stringFormat(Node<?, ?, ?> side)
   {
-    return (side.isLeaf() || side.hasSingleLeaf()) ? "%s" : "(%s)";
+    return (side.isLeaf() || side.hasSingleLeaf() ) ? "%s" : "(%s)";
   }
 
   @Override
   public String toString()
   {
     return String.format(String.format("%s%s%s", stringFormat(left), "%s", stringFormat(right)),
-                         left == null ? "∅" : left,
-                         symbol,
-                         right == null ? "∅" : right);
+                         left == null ? "∅" : left, symbol, right == null ? "∅" : right);
   }
 
   public String toString(int depth)
@@ -113,8 +111,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       Class<? extends Object> rhsType = right.type();
       if (Integer.class.equals(rhsType) || Real.class.equals(rhsType))
       {
-        left = new LiteralConstant<>(expression,
-                                     Real.class.equals(rhsType) ? "0.0" : "0");
+        left = new LiteralConstant<>(expression, Real.class.equals(rhsType) ? "0.0" : "0");
       }
       else
       {
@@ -133,19 +130,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     if (expression.traceGenerator)
     {
       System.out.format("BinaryOperation.generate( this=%s,\n%sleft=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
-                        this,
-                        indent(26),
-                        left,
-                        indent(26),
-                        left.type(),
-                        indent(26),
-                        operation,
-                        indent(26),
-                        right,
-                        indent(26),
-                        right.type(),
-                        indent(26),
-                        resultType);
+                        this, indent(26), left, indent(26), left.type(), indent(26), operation, indent(26), right,
+                        indent(26), right.type(), indent(26), resultType);
     }
     generatedType = resultType;
 
@@ -183,18 +169,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     if (expression.traceGenerator)
     {
       String.format("%s.invokeBinaryOperationMethod(operator=%s, leftType=%s, rightType=%s, returnType=%s)\n",
-                    getClass().getSimpleName(),
-                    operator,
-                    leftType,
-                    rightType,
-                    returnType);
+                    getClass().getSimpleName(), operator, leftType, rightType, returnType);
     }
-    mv.visitMethodInsn(INVOKEVIRTUAL,
-                       Type.getInternalName(leftType),
-                       operator,
-                       String.format("(%sI%s)%s",
-                                     rightType.descriptorString(),
-                                     returnType.descriptorString(),
+    mv.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(leftType), operator,
+                       String.format("(%sI%s)%s", rightType.descriptorString(), returnType.descriptorString(),
                                      returnType.descriptorString()),
                        false);
   }
@@ -306,16 +284,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
     }
     assert Integer.class.equals(arb.Integer.class) : "you forgot to import arb.Integer";
-    assert false : String.format("TODO: handle resultant type for left=%s and right=%s in %s",
-                                 left.type(),
-                                 right.type(),
-                                 typeset());
+    assert false : String.format("TODO: handle resultant type for left=%s and right=%s in %s", left.type(),
+                                 right.type(), typeset());
     return null;
   }
 
-  protected boolean isCommutative()
-  {
-    // TODO Auto-generated method stub
-    return false;
-  }
+  public abstract boolean isCommutative();
 }

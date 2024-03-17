@@ -271,7 +271,7 @@ public class FunctionInvocation<D, R, F extends Function<D, R>> extends
   @Override
   public String toString()
   {
-    return String.format("%s(%s)", functionName, arg == null ? "null" : arg.typeset());
+    return String.format("%s(%s)", functionName, arg == null ? "null" : arg);
   }
 
   @Override

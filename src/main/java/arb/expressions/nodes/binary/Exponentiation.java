@@ -34,7 +34,7 @@ public class Exponentiation<D, R, F extends Function<D, R>> extends
   }
 
   @Override
-  protected boolean isCommutative()
+  public boolean isCommutative()
   {
     return false;
   }
