@@ -550,7 +550,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   protected void propagateInputToFactorClass(MethodVisitor mv)
   {
-    Variable<D, R, F> independentVariableNode = expression.independentVariableNode;
+    Variable<D, R, F> independentVariableNode = expression.inputNode;
     if (independentVariableNode != null && !independentVariableNode.type().equals(Void.class))
     {
       loadThis(mv);

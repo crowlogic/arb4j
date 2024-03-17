@@ -222,12 +222,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   final public String             genericFunctionClassInternalName;
 
-  public Variable<D, R, F>        independentVariableNode;
+  public Variable<D, R, F>        inputNode;
 
   @SuppressWarnings("unchecked")
   public <E, S, G extends Function<E, S>> Variable<E, S, G> getParentsExpressionsIndependentVariableNode()
   {
-    return parentExpression == null ? null : (Variable<E, S, G>) parentExpression.independentVariableNode;
+    return ascendentExpression == null ? null : (Variable<E, S, G>) ascendentExpression.inputNode;
   }
 
   public Variable<D, R, F>                        indeterminate;
@@ -281,7 +281,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                     String functionName,
                     Expression<?, ?, ?> parentExpression)
   {
-    this.parentExpression                 = parentExpression;
+    this.ascendentExpression                 = parentExpression;
     this.rangeClassDescriptor             = rangeClass.descriptorString();
     this.domainClassDescriptor            = domainClass.descriptorString();
     this.className                        = className;
@@ -342,17 +342,17 @@ public class Expression<D, R, F extends Function<D, R>> implements
       Object field = context.variables.map.get(varName);
       if (field == null)
       {
-        if (varName != null && !varName.equals(independentVariableNode.reference.name))
+        if (varName != null && !varName.equals(inputNode.reference.name))
         {
-          if (parentExpression != null && varName.equals(parentExpression.independentVariableNode.reference.name))
+          if (ascendentExpression != null && varName.equals(ascendentExpression.inputNode.reference.name))
           {
-            assert ignoreTODO : "TODO: add check for null superexpression input here: " + parentExpression;
+            assert ignoreTODO : "TODO: add check for null superexpression input here: " + ascendentExpression;
           }
           else
           {
             throw new UnsupportedOperationException("no contextual variable for varName='" + varName
-                          + "' and independent variable reference is " + independentVariableNode
-                          + " where parentExpression=" + parentExpression + " and this expression=" + this);
+                          + "' and independent variable reference is " + inputNode
+                          + " where parentExpression=" + ascendentExpression + " and this expression=" + this);
           }
         }
         else
@@ -465,9 +465,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void declareVariables(ClassVisitor classVisitor)
   {
-    if (parentExpression != null)
+    if (ascendentExpression != null)
     {
-      Variable<?, ?, ?> parentIndependentVariableNode = parentExpression.independentVariableNode;
+      Variable<?, ?, ?> parentIndependentVariableNode = ascendentExpression.inputNode;
       if (parentIndependentVariableNode != null && !parentIndependentVariableNode.type().equals(Void.class))
       {
         classVisitor.visitField(ACC_PUBLIC, parentIndependentVariableNode.reference.name,
@@ -505,7 +505,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean             traceGenerator = true;
 
-  public Expression<?, ?, ?> parentExpression;
+  public Expression<?, ?, ?> ascendentExpression;
 
   public Class<F> load()
   {
@@ -616,7 +616,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if (rightArrowIndex != -1)
     {
       String independentVariableName = expression.substring(0, rightArrowIndex);
-      independentVariableNode = new Variable<>(this, new VariableReference<>(independentVariableName, null, domainType));
+      inputNode = new Variable<>(this, new VariableReference<>(independentVariableName, null, domainType));
 
       position                = rightArrowIndex;
     }

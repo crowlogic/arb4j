@@ -47,10 +47,10 @@ public class When<D, R, F extends Function<D, R>> extends
                                                                     TreeMap<Integer, Node<D, R, F>> cases,
                                                                     Variable<D, R, F> variable)
   {
-    if (!variable.reference.equals(expression.independentVariableNode.reference))
+    if (!variable.reference.equals(expression.inputNode.reference))
     {
       throw new ExpressionCompilerException("condition of when statement must be the equality of the input variable which is "
-                    + expression.independentVariableNode + " not " + variable);
+                    + expression.inputNode + " not " + variable);
     }
 
     if (!expression.nextCharacterIs('='))

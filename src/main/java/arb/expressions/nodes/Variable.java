@@ -89,14 +89,14 @@ public class Variable<D, R, F extends Function<D, R>> extends
       System.out.format("z indeterminant=%s\n isIndependent=%s\n isIndependentVariableOfParentExpression=%s\n",
                         isIndeterminant,
                         isIndependent,
-                        isIndependentVariableOfParentExpression);
+                        isAnyAscendingExpressionsInput);
     }
     // return reference.type();
     if (isIndependent)
     {
       return expression.domainType;
     }
-    return isIndeterminant ? (isIndependentVariableOfParentExpression ? expression.parentExpression.domainType : expression.rangeType) : reference.type();
+    return isIndeterminant ? (isAnyAscendingExpressionsInput ? expression.ascendentExpression.domainType : expression.rangeType) : reference.type();
   }
 
   public final VariableReference<D, R, F> reference;
@@ -126,7 +126,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
    * inputs going back to the root node must be checked and from there the
    * resolution process completes.
    */
-  private boolean                         isIndependentVariableOfParentExpression;
+  private boolean                         isAnyAscendingExpressionsInput;
 
   public Variable(Expression<D, R, F> expression, VariableReference<D, R, F> reference)
   {
@@ -142,7 +142,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
       resolveReference(reference);
     }
 
-    if (expression.independentVariableNode != null && reference.equals(expression.independentVariableNode.reference))
+    if (expression.inputNode != null && reference.equals(expression.inputNode.reference))
     {
       isIndependent = true;
     }
@@ -276,13 +276,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public void resolveReference(VariableReference<D, R, F> reference)
   {
-    var inputVariable = expression.independentVariableNode;
+    var inputVariable = expression.inputNode;
 
     if (isIndependent = equals(inputVariable))
     {
-      if (expression.independentVariableNode == null)
+      if (expression.inputNode == null)
       {
-        expression.independentVariableNode = this;
+        expression.inputNode = this;
       }
     }
     else
@@ -307,15 +307,10 @@ public class Variable<D, R, F extends Function<D, R>> extends
   protected void resolveInheritedVariableReference(VariableReference<D, R, F> reference, Variable<D, R, F> variable)
   {
 
-    var parentExpression = expression.parentExpression;
+    var parentExpression = expression.ascendentExpression;
     if (parentExpression != null)
     {
-      var parentExpressionsIndependentVariableNode = parentExpression.independentVariableNode;
-
-      if (parentExpressionsIndependentVariableNode.reference.equals(reference))
-      {
-        isIndependentVariableOfParentExpression = true;
-      }
+      var parentExpressionsIndependentVariableNode = resolve(reference, parentExpression);
 
       if ("z".equals(getName()))
       {
@@ -329,13 +324,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
                           Utensils.indent(44),
                           parentExpressionsIndependentVariableNode,
                           Utensils.indent(44),
-                          expression.independentVariableNode,
+                          expression.inputNode,
                           Utensils.indent(44),
                           type(),
                           Utensils.indent(44),
-                          expression.parentExpression.domainType,
+                          expression.ascendentExpression.domainType,
                           Utensils.indent(44),
-                          expression.parentExpression.rangeType,
+                          expression.ascendentExpression.rangeType,
                           Utensils.indent(44),
                           expression.domainType,
                           Utensils.indent(44),
@@ -354,8 +349,24 @@ public class Variable<D, R, F extends Function<D, R>> extends
                                                    reference.name,
                                                    expression,
                                                    variable,
-                                                   expression.parentExpression));
+                                                   expression.ascendentExpression));
     }
+  }
+
+  protected Variable<?, ?, ?> resolve(VariableReference<D, R, F> reference, Expression<?, ?, ?> ascendentExpression)
+  {
+    var ascendentInputNode = ascendentExpression.inputNode;
+
+    if (ascendentInputNode.reference.equals(reference))
+    {
+      isAnyAscendingExpressionsInput = true;
+    }
+    else if (ascendentExpression.ascendentExpression != null)
+    {
+      return resolve(reference, ascendentExpression.ascendentExpression);
+    }
+
+    return ascendentInputNode;
   }
 
   @Override
