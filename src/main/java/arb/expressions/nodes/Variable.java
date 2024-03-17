@@ -26,6 +26,7 @@ import arb.expressions.VariableReference;
 import arb.expressions.Variables;
 import arb.expressions.nodes.nary.NaryMultiplication;
 import arb.functions.Function;
+import arb.utensils.Utensils;
 
 /**
  * This class represents a {@link Variable} node within an {@link Expression} by
@@ -316,14 +317,21 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
       if ("z".equals(getName()))
       {
-        System.out.format("\nVariable.resolveInheritedVariableReference: name=%s\nreference=%s\n"
-                      + "parentExpressionsIndependentVariableNode=%s\nthisExpressionsindependentVariableNode=%s\n"
-                      + "type=%s\nparentExpressionsDomain=%s\n\n",
+        System.out.format("\nVariable.resolveInheritedVariableReference( name=%s\n%sreference=%s\n"
+                      + "%sparentExpressionsIndependentVariableNode=%s\n"
+                      + "%sthisExpressionsindependentVariableNode=%s\n"
+                      + "%stype=%s\n"
+                      + "%sparentExpressionsDomain=%s)\n\n",
                           getName(),
+                          Utensils.indent(44),
                           reference,
+                          Utensils.indent(44),
                           parentExpressionsIndependentVariableNode,
+                          Utensils.indent(44),
                           expression.independentVariableNode,
+                          Utensils.indent(44),
                           type(),
+                          Utensils.indent(44),
                           expression.parentExpression.domainType);
         System.out.flush();
         assert !type().equals(Integer.class) : "why is z an integer? #357";
