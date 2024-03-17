@@ -277,7 +277,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        resolveInheritedVariableReferences(reference, inputVariable);
+        resolveInheritedVariableReference(reference, inputVariable);
       }
     }
   }
@@ -286,8 +286,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
    * FIXME: variable is being referenced with the wrong type -
    * https://github.com/crowlogic/arb4j/issues/357
    */
-  protected void resolveInheritedVariableReferences(VariableReference<D, R, F> reference,
-                                                    Variable<D, R, F> inputVariable)
+  protected void resolveInheritedVariableReference(VariableReference<D, R, F> reference,
+                                                   Variable<D, R, F> variable)
   {
 
     var parentExpression = expression.parentExpression;
@@ -312,7 +312,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       throw new UndefinedReferenceException(format("Undefined reference to variable"
                     + " '%s' in %s, independent variable is %s and parentExpression is %s", reference.name,
-                                                   expression, inputVariable, expression.parentExpression));
+                                                   expression, variable, expression.parentExpression));
     }
   }
 
