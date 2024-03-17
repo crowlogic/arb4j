@@ -83,7 +83,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    return isIndeterminant ? expression.rangeType : reference.type();
+    return (isIndeterminant && !isIndependentVariableOfParentExpression) ? expression.rangeType : reference.type();
   }
 
   public final VariableReference<D, R, F> reference;
@@ -196,11 +196,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (Integer.class.equals(indexType))
     {
-      mv.visitMethodInsn(INVOKEVIRTUAL,
-                         Type.getInternalName(reference.type()),
-                         "get",
-                         Type.getMethodDescriptor(Type.getType(reference.type()), Type.getType(indexType)),
-                         false);
+      mv.visitMethodInsn(INVOKEVIRTUAL, Type.getInternalName(reference.type()), "get",
+                         Type.getMethodDescriptor(Type.getType(reference.type()), Type.getType(indexType)), false);
 
     }
     else
@@ -231,11 +228,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   private void generateIndeterminateRangeIdentityInvocation(MethodVisitor mv)
   {
-    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(expression.rangeType),
-                       "identity",
-                       format("()%s", expression.rangeType.descriptorString()),
-                       false);
+    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(expression.rangeType), "identity",
+                       format("()%s", expression.rangeType.descriptorString()), false);
   }
 
   @Override
@@ -284,29 +278,25 @@ public class Variable<D, R, F extends Function<D, R>> extends
         if (parentExpression != null)
         {
           var parentExpressionsIndependentVariableNode = parentExpression.independentVariableNode;
+          
+          if (parentExpressionsIndependentVariableNode.reference.equals(reference))
+          {
+            isIndependentVariableOfParentExpression = true;           
+          }
+          
           if ("z".equals(getName()))
           {
             System.out.format("\nname=%s\nreference=%s\nparentExpressionsIndependentVariableNode=%s\nthisExpressionsindependentVariableNode=%s\ntype=%s\n\n",
-                              getName(),
-                              reference,
-                              parentExpressionsIndependentVariableNode,
-                              expression.independentVariableNode,
-                              type());
-          }
-          if (parentExpressionsIndependentVariableNode.reference.equals(reference))
-          {
-            isIndependentVariableOfParentExpression = true;
-            return;
+                              getName(), reference, parentExpressionsIndependentVariableNode,
+                              expression.independentVariableNode, type());
+            assert !type().equals(Integer.class) : "why is z an integer? #357";
           }
         }
         else
         {
           throw new UndefinedReferenceException(format("Undefined reference to variable"
-                        + " '%s' in %s, independent variable is %s and parentExpression is %s",
-                                                       reference.name,
-                                                       expression,
-                                                       inputVariable,
-                                                       expression.parentExpression));
+                        + " '%s' in %s, independent variable is %s and parentExpression is %s", reference.name,
+                                                       expression, inputVariable, expression.parentExpression));
         }
       }
     }
