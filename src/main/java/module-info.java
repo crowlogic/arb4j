@@ -32,8 +32,11 @@ module arb4j
   requires transitive org.objectweb.asm.commons;
   requires transitive org.apache.commons.lang3;
 
+
   exports arb;
   exports arb.logic;
+  exports arb.decisions;
+  exports arb.decisions.inference;
   exports arb.documentation;
   exports arb.documentation.references;
   exports arb.documentation.examples.quantum.mechanics;
