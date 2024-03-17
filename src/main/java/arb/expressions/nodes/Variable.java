@@ -216,7 +216,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
       mv.visitMethodInsn(INVOKEVIRTUAL,
                          Type.getInternalName(reference.type()),
                          "get",
-                         Type.getMethodDescriptor(Type.getType(reference.type()), Type.getType(indexType)),
+                         Utensils.getMethodDescriptor(reference.type(), indexType),
                          false);
 
     }
@@ -319,8 +319,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
       {
         System.out.format("\nVariable.resolveInheritedVariableReference( name=%s\n%sreference=%s\n"
                       + "%sparentExpressionsIndependentVariableNode=%s\n"
-                      + "%sthisExpressionsindependentVariableNode=%s\n"
-                      + "%stype=%s\n"
+                      + "%sthisExpressionsindependentVariableNode=%s\n" + "%stype=%s\n"
                       + "%sparentExpressionsDomain=%s)\n\n",
                           getName(),
                           Utensils.indent(44),
