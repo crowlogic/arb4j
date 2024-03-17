@@ -249,6 +249,7 @@ public class Real implements Domain<Real>,Serializable,Comparable<Real>,Iterable
    */
   public Real ascendingFactorial(Integer power, int bits, Real result)
   {
+    assert power.getSignedValue() >= 0 : "power must be nonnegative";
     arblib.arb_hypgeom_rising_ui(result, this, power.getUnsignedValue(), bits);
     return result;
   }
