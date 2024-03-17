@@ -300,7 +300,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   /**
    * FIXME: variable is being referenced with the wrong type -
-   * https://github.com/crowlogic/arb4j/issues/357
+   * https://github.com/crowlogic/arb4j/issues/357 this also beckons for a general
+   * recursive function called isAscendingInput(node) that would return true
+   * rather than just checking 1 level deep as it present does
    */
   protected void resolveInheritedVariableReference(VariableReference<D, R, F> reference, Variable<D, R, F> variable)
   {
@@ -320,7 +322,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
         System.out.format("\nVariable.resolveInheritedVariableReference( name=%s\n%sreference=%s\n"
                       + "%sparentExpressionsIndependentVariableNode=%s\n"
                       + "%sthisExpressionsindependentVariableNode=%s\n" + "%stype=%s\n"
-                      + "%sparentExpressionsDomain=%s)\n\n",
+                      + "%sparentExpressionsDomain=%s\n%sparentExpressionsRange=%s\n%sexpressionDomain=%s\n%sexpressionRange=%s)\n\n",
                           getName(),
                           Utensils.indent(44),
                           reference,
@@ -331,9 +333,18 @@ public class Variable<D, R, F extends Function<D, R>> extends
                           Utensils.indent(44),
                           type(),
                           Utensils.indent(44),
-                          expression.parentExpression.domainType);
+                          expression.parentExpression.domainType,
+                          Utensils.indent(44),
+                          expression.parentExpression.rangeType,
+                          Utensils.indent(44),
+                          expression.domainType,
+                          Utensils.indent(44),
+                          expression.rangeType,
+                          Utensils.indent(44));
         System.out.flush();
-        assert !type().equals(Integer.class) : "why is z an integer? #357";
+        assert !type().equals(Integer.class) : "why is z an integer? #357 its using this expressions domain type"
+                      + " rather than the containing/parent"
+                      + " expressions domain type apparently which is the crux of the issue";
       }
     }
     else
