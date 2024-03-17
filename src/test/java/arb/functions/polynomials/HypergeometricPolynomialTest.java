@@ -16,6 +16,14 @@ import junit.framework.TestCase;
 public class HypergeometricPolynomialTest extends
                                           TestCase
 {
+  public static void testSum()
+  {
+    HypergeometricPolynomial F = new HypergeometricPolynomial(2, 1);
+    F.α.set(-3,2.5);
+    F.β.set(1);
+    F.eval(2.3);
+  }
+  
   public static void testSummand()
   {
     try ( var p = new Integer(3); var q = new Integer(1); var α = Real.newVector(p.getSignedValue());
