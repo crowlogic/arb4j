@@ -9,6 +9,26 @@
 package arb;
 
 public class arblib {
+  public static void fmpz_abs(long f1, long f2) {
+    arblibJNI.fmpz_abs(f1, f2);
+  }
+
+  public static void fmpz_neg(long f1, long f2) {
+    arblibJNI.fmpz_neg(f1, f2);
+  }
+
+  public static void fmpz_mul_ui(long f, long g, long x) {
+    arblibJNI.fmpz_mul_ui(f, g, x);
+  }
+
+  public static void fmpz_mul_si(long f, long g, int x) {
+    arblibJNI.fmpz_mul_si(f, g, x);
+  }
+
+  public static void fmpz_mul(long f, long g, long h) {
+    arblibJNI.fmpz_mul(f, g, h);
+  }
+
   public static long fmpz_popcnt(long a) {
     return arblibJNI.fmpz_popcnt(a);
   }
@@ -79,10 +99,6 @@ public class arblib {
 
   public static void fmpz_rfac_uiui(long numRows, long x, long k) {
     arblibJNI.fmpz_rfac_uiui(numRows, x, k);
-  }
-
-  public static void fmpz_mul(long f, long g, long h) {
-    arblibJNI.fmpz_mul(f, g, h);
   }
 
   public static void fmpz_divexact(long f, long g, long h) {

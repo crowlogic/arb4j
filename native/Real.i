@@ -3,6 +3,8 @@
 %typemap(javainterfaces) arb_struct "Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real>"
 
 %typemap(javaimports) arb_struct %{
+import static arb.IntegerConstants.*;
+
 import static arb.RealConstants.zero;
 import static arb.arblib.*;
 import static java.lang.String.format;

@@ -503,4 +503,15 @@ public class Integer implements
     return result;
   }
 
+  public Integer neg(Integer result)
+  {
+    arblib.fmpz_neg(result.swigCPtr, swigCPtr);
+    return result;
+  }
+
+  public Integer neg()
+  {
+    return neg(this);
+  }
+
 }

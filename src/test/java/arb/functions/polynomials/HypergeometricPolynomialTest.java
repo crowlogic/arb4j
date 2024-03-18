@@ -1,8 +1,13 @@
 package arb.functions.polynomials;
 
+import static java.lang.System.out;
+
+import java.util.stream.IntStream;
+
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -41,28 +46,38 @@ public class HypergeometricPolynomialTest extends
     System.out.format("value=%f", val);
   }
 
+  /**
+   * the order is the degree of the polynomial plus 1 for the additional constant
+   * term. TODO: extract into {@link HypergeometricPolynomial}
+   */
   @SuppressWarnings("resource")
   public static void testFactorValue()
   {
     HypergeometricPolynomial F = new HypergeometricPolynomial(2, 1);
     F.α.set(-6, 2.5);
     F.β.set(1);
-    F.determineSeriesTermCount();
+    F.determinePolynomialOrder();
     F.F.initialize();
     F.F.factorℝ1.z = new Real().one();
     int order = F.F.N.getSignedValue();
-    System.out.format("order=%s\n", order);
-    for (int n = 0; n < order; n++)
-    {
-      Real val = F.F.factorℝ1.evaluate(new Integer(n), 128, new Real());
-      System.out.format("factorR1(%d)=%s\n", n, val);
-    }
+    assertEquals(7, order);
+    RealPolynomial value = new RealPolynomial(order);
+    Integer        index = new Integer();
+    IntStream.range(0, order).forEach(n -> F.F.factorℝ1.evaluate(index.set(n), 128, value.get(n)));
+
+    out.format("2F1(%s,%s,x)=%s\n", F.α, F.β, value);
+    double valueAtTwoPointThree = value.eval(2.3);
+    out.format("2F1(%s,%s,2.3)=%s\n", F.α, F.β, valueAtTwoPointThree);
+    assertEquals(145.01289685058583, valueAtTwoPointThree);
   }
 
   public static void testSummand()
   {
-    try ( var p = new Integer(3, "p"); var q = new Integer(1, "q"); var α = Real.newVector(p.getSignedValue(), "α");
-          var β = Real.newVector(q.getSignedValue(), "β"); var z = new Real();)
+    try ( var p = new Integer(3, "p"); 
+          var q = new Integer(1, "q"); 
+          var α = Real.newVector(p.getSignedValue(), "α");
+          var β = Real.newVector(q.getSignedValue(), "β"); 
+          var z = new Real();)
     {
       z.set(RealConstants.π);
       var  context = new Context(p, q, α.set(1.5, 0.75, -3), β.set(1), z.setName("z"));
@@ -71,6 +86,7 @@ public class HypergeometricPolynomialTest extends
                                       Real.class,
                                       "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
                                       context);
+      
       Real res     = summand.evaluate(new Integer(3), 1, 128, new Real());
       assertEquals(-244.81029976584379503781836652101052755, res.doubleValue());
     }

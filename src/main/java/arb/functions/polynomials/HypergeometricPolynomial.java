@@ -7,7 +7,6 @@ import arb.Real;
 import arb.Verifiable;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
-import arb.functions.Function;
 import arb.functions.real.F;
 import arb.functions.real.RealFunction;
 
@@ -81,22 +80,22 @@ public class HypergeometricPolynomial implements
                       + α);
       }
 
-      determineSeriesTermCount();
+      determinePolynomialOrder();
 
       initialized = true;
-      System.out.format("N=%s\n", N);
     }
     return F.evaluate(n, order, bits, f);
   }
 
-  public void determineSeriesTermCount()
+  public void determinePolynomialOrder()
   {
     α.stream()
      .filter(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative())
      .min((a, b) -> a.compareTo(b))
      .get()
+     .integerValue(N)
      .neg()
-     .integerValue(N);
+     .add(1);
   }
 
   /**

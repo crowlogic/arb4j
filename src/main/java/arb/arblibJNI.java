@@ -9,6 +9,11 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void fmpz_abs(long jarg1, long jarg2);
+  public final static native void fmpz_neg(long jarg1, long jarg2);
+  public final static native void fmpz_mul_ui(long jarg1, long jarg2, long jarg3);
+  public final static native void fmpz_mul_si(long jarg1, long jarg2, int jarg3);
+  public final static native void fmpz_mul(long jarg1, long jarg2, long jarg3);
   public final static native long fmpz_popcnt(long jarg1);
   public final static native void fmpz_set_ui(long jarg1, long jarg2);
   public final static native int arb_is_int(long jarg1, Real jarg1_);
@@ -27,7 +32,6 @@ public class arblibJNI {
   public final static native void fmpz_fac_ui(long jarg1, long jarg2);
   public final static native void fmpz_rfac_ui(long jarg1, long jarg2, long jarg3);
   public final static native void fmpz_rfac_uiui(long jarg1, long jarg2, long jarg3);
-  public final static native void fmpz_mul(long jarg1, long jarg2, long jarg3);
   public final static native void fmpz_divexact(long jarg1, long jarg2, long jarg3);
   public final static native void fmpz_add(long jarg1, long jarg2, long jarg3);
   public final static native void fmpz_sub(long jarg1, long jarg2, long jarg3);

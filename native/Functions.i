@@ -5,6 +5,13 @@
 #include <arb_mat.h>
 #include <flint/fmpq.h>
 
+void fmpz_abs(fmpz_t f1, const fmpz_t f2);
+void fmpz_neg(fmpz_t f1, const fmpz_t f2);
+
+void fmpz_mul_ui(fmpz_t f, const fmpz_t g, ulong x);
+void fmpz_mul_si(fmpz_t f, const fmpz_t g, slong x);
+void fmpz_mul(fmpz_t f, const fmpz_t g, const fmpz_t h);
+
  ulong fmpz_popcnt(const fmpz_t a);
  void
 fmpz_set_ui(fmpz_t f, ulong val);
