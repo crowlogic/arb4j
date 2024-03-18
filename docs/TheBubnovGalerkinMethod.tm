@@ -134,11 +134,11 @@
   Substituting the expression for <math|K<rsub|N><around|(|x,y|)>>, we get:
 
   <\equation>
-    <tabular|<tformat|<table|<row|<cell|A<rsub|k*,i>>|<cell|=<big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>K<rsub|N><around|(|x,y|)>d*y<space|0.17em>d
-    x>>|<row|<cell|>|<cell|=<big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>*<big|sum><rsub|j=0><rsup|N><frac|\<phi\><rsub|j><around|(|x|)>*\<phi\><rsub|j><around|(|y|)>|\<lambda\><rsub|j>>d*y<space|0.17em>d
-    x>>|<row|<cell|>|<cell|=<big|sum><rsub|j=0><rsup|N><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>*<frac|\<phi\><rsub|j><around|(|x|)>*\<phi\><rsub|j><around|(|y|)>|\<lambda\><rsub|j>>d*y<space|0.17em>d
-    x>>|<row|<cell|>|<cell|=<big|sum><rsub|j=0><rsup|N><frac|1|\<lambda\><rsub|j>><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>*\<phi\><rsub|j><around|(|x|)>\<phi\><rsub|j><around|(|y|)>d*y<space|0.17em>d
-    x>>|<row|<cell|>|<cell|=<big|sum><rsub|j=0><rsup|N><frac|C<rsub|i,j,k>|\<lambda\><rsub|j>>>>>>>
+    <tabular|<tformat|<table|<row|<cell|A<rsub|k*,i>>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>K<rsub|N><around|(|x,y|)>d*y<space|0.17em>d
+    x>>|<row|<cell|>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>*<big|sum><rsub|j=0><rsup|N><frac|\<phi\><rsub|j><around|(|x|)>*\<phi\><rsub|j><around|(|y|)>|\<lambda\><rsub|j>>d*y<space|0.17em>d
+    x>>|<row|<cell|>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|sum><rsub|j=0><rsup|N><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>*<frac|\<phi\><rsub|j><around|(|x|)>*\<phi\><rsub|j><around|(|y|)>|\<lambda\><rsub|j>>d*y<space|0.17em>d
+    x>>|<row|<cell|>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|sum><rsub|j=0><rsup|N><frac|1|\<lambda\><rsub|j>><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>*\<phi\><rsub|j><around|(|x|)>\<phi\><rsub|j><around|(|y|)>d*y<space|0.17em>d
+    x>>|<row|<cell|>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|sum><rsub|j=0><rsup|N><frac|C<rsub|i,j,k>|\<lambda\><rsub|j>>>>>>>
   </equation>
 
   \;
