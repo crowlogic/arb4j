@@ -59,11 +59,6 @@ import arb.utensils.Utensils;
  * @param <F> Type of function that maps domain to range, must implement
  *            {@link Function}.
  *
- * @see Node
- * @see Expression
- * @see Variables
- * 
- *
  * @author ©2024 Stephen Crowley
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
@@ -84,23 +79,18 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public Class<?> type()
   {
-    if ("z".equals(getName()))
-    {
-      System.out.format("z indeterminant=%s\n isIndependent=%s\n isAnyAscendingExpressionsInput=%s\n",
-                        isIndeterminant,
-                        isIndependent,
-                        isAnyAscendingExpressionsInput);
-    }
-    // return reference.type();
     if (isIndependent)
     {
       return expression.domainType;
     }
-    if (isAnyAscendingExpressionsInput)
+    else if (ascendentInput)
     {
-      return expression.ascendentExpression.domainType;
+      return ascendentInputNode.type();
     }
-    return isIndeterminant ? expression.rangeType : reference.type();
+    else
+    {
+      return isIndeterminant ? expression.rangeType : reference.type();
+    }
   }
 
   public final VariableReference<D, R, F> reference;
@@ -115,7 +105,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   private Class<?>                        generatedType;
 
-  private boolean                         isAnyAscendingExpressionsInput;
+  private boolean                         ascendentInput;
+
+  private Variable<?, ?, ?>               ascendentInputNode;
 
   public Variable(Expression<D, R, F> expression, VariableReference<D, R, F> reference)
   {
@@ -296,9 +288,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
     var parentExpression = expression.ascendentExpression;
     if (parentExpression != null)
     {
-      var parentExpressionsIndependentVariableNode = resolve(reference, parentExpression);
+      ascendentInputNode = resolve(reference, parentExpression);
 
- 
     }
     else
     {
@@ -318,7 +309,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (ascendentInputNode.reference.equals(reference))
     {
-      isAnyAscendingExpressionsInput = true;
+      ascendentInput = true;
     }
     else if (ascendentExpression.ascendentExpression != null)
     {
