@@ -779,17 +779,18 @@ import arb.stochastic.ProbabilityDistributionFunction;
   }
   
   /**
-   * Calls {@link Real#random(RandomState, int)} on each element of this
+   * Calls {@link Real#random(RandomState, int)} on each element of this set of Real numbers via a parallel stream
    * 
    * @param pdf
    * @param randomState
    * @param prec
    */
-  public void randomlyGenerate(ProbabilityDistributionFunction pdf, RandomState randomState, int prec)
+  public void randomlyGenerate(ProbabilityDistributionFunction pdf,
+                               RandomState randomState,
+                               int prec)
   {
-    forEach(element -> pdf.sample(randomState, prec, element));
-  }
-  
+    stream().parallel().forEach(element -> pdf.sample(randomState, prec, element));
+  }  
   public Real add(Real d, int prec)
   {
     return add(d, prec, this);
