@@ -31,7 +31,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public boolean hasSingleLeaf()
   {
-    return left.isLeaf() && right.isLeaf();
+    return (left.isLeaf() && !right.isLeaf()) || (!left.isLeaf() && right.isLeaf());
   }
 
   @Override
