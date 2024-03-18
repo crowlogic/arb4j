@@ -1,7 +1,5 @@
 package arb.functions.polynomials;
 
-import static java.lang.System.out;
-
 import arb.Integer;
 import arb.Real;
 import arb.Verifiable;
@@ -19,26 +17,13 @@ public class HypergeometricPolynomial implements
 {
 
   @Override
-  public void close()
+  public void close(
+  )
   {
     p.close();
     q.close();
     α.close();
     β.close();
-  }
-
-  public static void main(String... args)
-  {
-    try ( var F = new HypergeometricPolynomial(2, 1); var point = new Real())
-    {
-      F.α.set(4, -4);
-      F.β.set(0.5);
-
-      Real fn = F.F.evaluate(point.set(3.4), 0, 128, new Real());
-      assert 4 == ((Integer) F.context.getVariable("N")).getSignedValue();
-      out.format("F(%d)=%s\n", point, fn);
-
-    }
   }
 
   public final Context context;
@@ -54,11 +39,15 @@ public class HypergeometricPolynomial implements
   boolean              initialized = false;
 
   @SuppressWarnings("resource")
-  public HypergeometricPolynomial(int p, int q)
+  public HypergeometricPolynomial(
+                                  int p,
+                                  int q
+  )
   {
-    context = new Context(this.p = new Integer(p).setName("p"), this.q = new Integer(q).setName("q"), α = Real.newVector(p)
-                                                                                                              .setName("α"), β = Real.newVector(q)
-                                                                                                                                     .setName("β"));
+    context = new Context(this.p = new Integer(p).setName("p"),
+                          this.q = new Integer(q).setName("q"),
+                          α = Real.newVector(p).setName("α"),
+                          β = Real.newVector(q).setName("β"));
     context.registerVariable("N", N = new Integer());
 
     context.saveClasses = true;
@@ -70,7 +59,12 @@ public class HypergeometricPolynomial implements
   }
 
   @Override
-  public Real evaluate(Real n, int order, int bits, Real f)
+  public Real evaluate(
+                       Real n,
+                       int order,
+                       int bits,
+                       Real f
+  )
   {
     if (!initialized)
     {
@@ -87,7 +81,8 @@ public class HypergeometricPolynomial implements
     return F.evaluate(n, order, bits, f);
   }
 
-  public void determinePolynomialOrder()
+  public void determinePolynomialOrder(
+  )
   {
     α.stream()
      .filter(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative())
@@ -104,7 +99,8 @@ public class HypergeometricPolynomial implements
    *         in the hypergeometric series this function generates)
    */
   @Override
-  public boolean verify()
+  public boolean verify(
+  )
   {
     return α.stream().anyMatch(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative());
   };
