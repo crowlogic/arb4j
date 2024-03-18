@@ -13,6 +13,7 @@ import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -92,7 +93,7 @@ public class FunctionPlotter extends
 
   public boolean parallel = false;
 
-  public void set(Stage primaryStage, javafx.event.EventHandler<WindowEvent> onCloseRequestHandler)
+  public void set(Stage primaryStage, EventHandler<WindowEvent> onCloseRequestHandler)
   {
     primaryStage.setTitle(this.getClass().getSimpleName());
     primaryStage.setScene(scene);
