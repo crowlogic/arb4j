@@ -43,7 +43,7 @@ public class HypergeometricPolynomialTest extends
     F.α.set(-6, 2.5);
     F.β.set(1);
     double val = F.eval(2.3);
-    System.out.format("value=%f", val);
+    assertEquals( 145.01289685058583, val ); 
   }
 
   /**
