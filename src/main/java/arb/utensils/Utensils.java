@@ -597,4 +597,16 @@ public class Utensils
     }
   }
 
+  public static void wrapOrThrow(Throwable e)
+  {
+    if (e instanceof RuntimeException)
+    {
+      throw (RuntimeException) e;
+    }
+    else
+    {
+      throw new RuntimeException(e);
+    }
+  }
+
 }

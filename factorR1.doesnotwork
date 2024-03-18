@@ -1,0 +1,627 @@
+Classfile /home/crow/git/arb4j/factorℝ1.class
+  Last modified Mar 17, 2024; size 2725 bytes
+  SHA-256 checksum 186bb3e82ff633adda362dabd4d3bbd018ece8bcd8671e961dd768e837d855ae
+[32mpublic class factorℝ1 extends java.lang.Object [36mimplements[m arb.functions.Function<arb.Integer, arb.Real>[m
+  minor version: 65535
+  major version: 65
+  flags: (0x0021) ACC_PUBLIC, ACC_SUPER
+  this_class: #2                          [31m// factorℝ1[m
+  super_class: #5                         [31m// java/lang/Object[m
+  interfaces: 1, fields: 21, methods: 4, attributes: 1
+Constant pool:
+    #1 = Utf8               factorℝ1
+    #2 = Class              #1            [31m// factorℝ1[m
+    #3 = Utf8               Ljava/lang/Object;Larb/functions/Function<Larb/Integer;Larb/Real;>;
+    #4 = Utf8               java/lang/Object
+    #5 = Class              #4            [31m// java/lang/Object[m
+    #6 = Utf8               arb/functions/Function
+    #7 = Class              #6            [31m// arb/functions/Function[m
+    #8 = Utf8               evaluate
+    #9 = Utf8               (Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;
+   #10 = Utf8               (Larb/Integer;IILarb/Real;)Larb/Real;
+   #11 = Utf8               isInitialized
+   #12 = Utf8               Z
+   #13 = NameAndType        #11:#12       [31m// isInitialized:Z[m
+   #14 = Fieldref           #2.#13        [31m// factorℝ1.isInitialized:Z[m
+   #15 = Utf8               initialize
+   #16 = Utf8               ()V
+   #17 = NameAndType        #15:#16       [31m// initialize:()V[m
+   #18 = Methodref          #2.#17        [31m// factorℝ1.initialize:()V[m
+   #19 = Utf8               z
+   #20 = Utf8               Larb/Integer;
+   #21 = NameAndType        #19:#20       [31m// z:Larb/Integer;[m
+   #22 = Fieldref           #2.#21        [31m// factorℝ1.z:Larb/Integer;[m
+   #23 = Utf8               arb/Integer
+   #24 = Class              #23           [31m// arb/Integer[m
+   #25 = Utf8               ℝ1
+   #26 = Utf8               Larb/Real;
+   #27 = NameAndType        #25:#26       [31m// ℝ1:Larb/Real;[m
+   #28 = Fieldref           #2.#27        [31m// factorℝ1.ℝ1:Larb/Real;[m
+   #29 = Utf8               arb/Real
+   #30 = Class              #29           [31m// arb/Real[m
+   #31 = Utf8               pow
+   #32 = Utf8               (Larb/Integer;ILarb/Real;)Larb/Real;
+   #33 = NameAndType        #31:#32       [31m// pow:(Larb/Integer;ILarb/Real;)Larb/Real;[m
+   #34 = Methodref          #30.#33       [31m// arb/Real.pow:(Larb/Integer;ILarb/Real;)Larb/Real;[m
+   #35 = Utf8               factorℝ2
+   #36 = Utf8               Lfactorℝ2;
+   #37 = NameAndType        #35:#36       [31m// factorℝ2:Lfactorℝ2;[m
+   #38 = Fieldref           #2.#37        [31m// factorℝ1.factorℝ2:Lfactorℝ2;[m
+   #39 = Class              #35           [31m// factorℝ2[m
+   #40 = Utf8               n
+   #41 = NameAndType        #40:#20       [31m// n:Larb/Integer;[m
+   #42 = Fieldref           #39.#41       [31m// factorℝ2.n:Larb/Integer;[m
+   #43 = Utf8               prodℝ1
+   #44 = NameAndType        #43:#26       [31m// prodℝ1:Larb/Real;[m
+   #45 = Fieldref           #2.#44        [31m// factorℝ1.prodℝ1:Larb/Real;[m
+   #46 = Utf8               multiplicativeIdentity
+   #47 = Utf8               ()Larb/Real;
+   #48 = NameAndType        #46:#47       [31m// multiplicativeIdentity:()Larb/Real;[m
+   #49 = Methodref          #30.#48       [31m// arb/Real.multiplicativeIdentity:()Larb/Real;[m
+   #50 = Utf8               k
+   #51 = NameAndType        #50:#20       [31m// k:Larb/Integer;[m
+   #52 = Fieldref           #2.#51        [31m// factorℝ1.k:Larb/Integer;[m
+   #53 = Utf8               c1
+   #54 = NameAndType        #53:#20       [31m// c1:Larb/Integer;[m
+   #55 = Fieldref           #2.#54        [31m// factorℝ1.c1:Larb/Integer;[m
+   #56 = Utf8               set
+   #57 = Utf8               (Larb/Integer;)Larb/Integer;
+   #58 = NameAndType        #56:#57       [31m// set:(Larb/Integer;)Larb/Integer;[m
+   #59 = Methodref          #24.#58       [31m// arb/Integer.set:(Larb/Integer;)Larb/Integer;[m
+   #60 = Utf8               endIndexℤ1
+   #61 = NameAndType        #60:#20       [31m// endIndexℤ1:Larb/Integer;[m
+   #62 = Fieldref           #2.#61        [31m// factorℝ1.endIndexℤ1:Larb/Integer;[m
+   #63 = Utf8               p
+   #64 = NameAndType        #63:#20       [31m// p:Larb/Integer;[m
+   #65 = Fieldref           #2.#64        [31m// factorℝ1.p:Larb/Integer;[m
+   #66 = Utf8               valueℝ2
+   #67 = NameAndType        #66:#26       [31m// valueℝ2:Larb/Real;[m
+   #68 = Fieldref           #2.#67        [31m// factorℝ1.valueℝ2:Larb/Real;[m
+   #69 = Utf8               (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;
+   #70 = NameAndType        #8:#69        [31m// evaluate:(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;[m
+   #71 = InterfaceMethodref #7.#70        [31m// arb/functions/Function.evaluate:(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;[m
+   #72 = Utf8               mul
+   #73 = Utf8               (Larb/Real;I)Larb/Real;
+   #74 = NameAndType        #72:#73       [31m// mul:(Larb/Real;I)Larb/Real;[m
+   #75 = Methodref          #30.#74       [31m// arb/Real.mul:(Larb/Real;I)Larb/Real;[m
+   #76 = Utf8               increment
+   #77 = Utf8               ()Larb/Integer;
+   #78 = NameAndType        #76:#77       [31m// increment:()Larb/Integer;[m
+   #79 = Methodref          #24.#78       [31m// arb/Integer.increment:()Larb/Integer;[m
+   #80 = Utf8               compareTo
+   #81 = Utf8               (Larb/Integer;)I
+   #82 = NameAndType        #80:#81       [31m// compareTo:(Larb/Integer;)I[m
+   #83 = Methodref          #24.#82       [31m// arb/Integer.compareTo:(Larb/Integer;)I[m
+   #84 = Utf8               ℝ2
+   #85 = NameAndType        #84:#26       [31m// ℝ2:Larb/Real;[m
+   #86 = Fieldref           #2.#85        [31m// factorℝ1.ℝ2:Larb/Real;[m
+   #87 = Utf8               (Larb/Real;ILarb/Real;)Larb/Real;
+   #88 = NameAndType        #72:#87       [31m// mul:(Larb/Real;ILarb/Real;)Larb/Real;[m
+   #89 = Methodref          #30.#88       [31m// arb/Real.mul:(Larb/Real;ILarb/Real;)Larb/Real;[m
+   #90 = Utf8               ℤ1
+   #91 = NameAndType        #90:#20       [31m// ℤ1:Larb/Integer;[m
+   #92 = Fieldref           #2.#91        [31m// factorℝ1.ℤ1:Larb/Integer;[m
+   #93 = Utf8               factorial
+   #94 = Utf8               (ILarb/Integer;)Larb/Integer;
+   #95 = NameAndType        #93:#94       [31m// factorial:(ILarb/Integer;)Larb/Integer;[m
+   #96 = Methodref          #24.#95       [31m// arb/Integer.factorial:(ILarb/Integer;)Larb/Integer;[m
+   #97 = Utf8               factorℝ3
+   #98 = Utf8               Lfactorℝ3;
+   #99 = NameAndType        #97:#98       [31m// factorℝ3:Lfactorℝ3;[m
+  #100 = Fieldref           #2.#99        [31m// factorℝ1.factorℝ3:Lfactorℝ3;[m
+  #101 = Class              #97           [31m// factorℝ3[m
+  #102 = Fieldref           #101.#41      [31m// factorℝ3.n:Larb/Integer;[m
+  #103 = Utf8               prodℝ2
+  #104 = NameAndType        #103:#26      [31m// prodℝ2:Larb/Real;[m
+  #105 = Fieldref           #2.#104       [31m// factorℝ1.prodℝ2:Larb/Real;[m
+  #106 = Utf8               endIndexℤ2
+  #107 = NameAndType        #106:#20      [31m// endIndexℤ2:Larb/Integer;[m
+  #108 = Fieldref           #2.#107       [31m// factorℝ1.endIndexℤ2:Larb/Integer;[m
+  #109 = Utf8               q
+  #110 = NameAndType        #109:#20      [31m// q:Larb/Integer;[m
+  #111 = Fieldref           #2.#110       [31m// factorℝ1.q:Larb/Integer;[m
+  #112 = Utf8               valueℝ3
+  #113 = NameAndType        #112:#26      [31m// valueℝ3:Larb/Real;[m
+  #114 = Fieldref           #2.#113       [31m// factorℝ1.valueℝ3:Larb/Real;[m
+  #115 = Utf8               ℝ3
+  #116 = NameAndType        #115:#26      [31m// ℝ3:Larb/Real;[m
+  #117 = Fieldref           #2.#116       [31m// factorℝ1.ℝ3:Larb/Real;[m
+  #118 = Methodref          #24.#88       [31m// arb/Integer.mul:(Larb/Real;ILarb/Real;)Larb/Real;[m
+  #119 = Utf8               div
+  #120 = NameAndType        #119:#87      [31m// div:(Larb/Real;ILarb/Real;)Larb/Real;[m
+  #121 = Methodref          #30.#120      [31m// arb/Real.div:(Larb/Real;ILarb/Real;)Larb/Real;[m
+  #122 = Utf8               this
+  #123 = Utf8               Lfactorℝ1;
+  #124 = Utf8               in
+  #125 = Utf8               order
+  #126 = Utf8               I
+  #127 = Utf8               bits
+  #128 = Utf8               result
+  #129 = Utf8               α
+  #130 = Utf8               β
+  #131 = Utf8               N
+  #132 = Utf8               <init>
+  #133 = NameAndType        #132:#16      [31m// "<init>":()V[m
+  #134 = Methodref          #5.#133       [31m// java/lang/Object."<init>":()V[m
+  #135 = Methodref          #39.#133      [31m// factorℝ2."<init>":()V[m
+  #136 = Methodref          #101.#133     [31m// factorℝ3."<init>":()V[m
+  #137 = Utf8               1
+  #138 = String             #137          [31m// 1[m
+  #139 = Utf8               (Ljava/lang/String;)V
+  #140 = NameAndType        #132:#139     [31m// "<init>":(Ljava/lang/String;)V[m
+  #141 = Methodref          #24.#140      [31m// arb/Integer."<init>":(Ljava/lang/String;)V[m
+  #142 = Methodref          #30.#133      [31m// arb/Real."<init>":()V[m
+  #143 = Methodref          #24.#133      [31m// arb/Integer."<init>":()V[m
+  #144 = Utf8               java/lang/AssertionError
+  #145 = Class              #144          [31m// java/lang/AssertionError[m
+  #146 = Utf8               Already initialized
+  #147 = String             #146          [31m// Already initialized[m
+  #148 = Utf8               (Ljava/lang/Object;)V
+  #149 = NameAndType        #132:#148     [31m// "<init>":(Ljava/lang/Object;)V[m
+  #150 = Methodref          #145.#149     [31m// java/lang/AssertionError."<init>":(Ljava/lang/Object;)V[m
+  #151 = Utf8               p is null
+  #152 = String             #151          [31m// p is null[m
+  #153 = Utf8               q is null
+  #154 = String             #153          [31m// q is null[m
+  #155 = Fieldref           #39.#64       [31m// factorℝ2.p:Larb/Integer;[m
+  #156 = Fieldref           #39.#110      [31m// factorℝ2.q:Larb/Integer;[m
+  #157 = NameAndType        #129:#26      [31m// α:Larb/Real;[m
+  #158 = Fieldref           #2.#157       [31m// factorℝ1.α:Larb/Real;[m
+  #159 = Fieldref           #39.#157      [31m// factorℝ2.α:Larb/Real;[m
+  #160 = NameAndType        #130:#26      [31m// β:Larb/Real;[m
+  #161 = Fieldref           #2.#160       [31m// factorℝ1.β:Larb/Real;[m
+  #162 = Fieldref           #39.#160      [31m// factorℝ2.β:Larb/Real;[m
+  #163 = NameAndType        #131:#20      [31m// N:Larb/Integer;[m
+  #164 = Fieldref           #2.#163       [31m// factorℝ1.N:Larb/Integer;[m
+  #165 = Fieldref           #39.#163      [31m// factorℝ2.N:Larb/Integer;[m
+  #166 = Fieldref           #101.#64      [31m// factorℝ3.p:Larb/Integer;[m
+  #167 = Fieldref           #101.#110     [31m// factorℝ3.q:Larb/Integer;[m
+  #168 = Fieldref           #101.#157     [31m// factorℝ3.α:Larb/Real;[m
+  #169 = Fieldref           #101.#160     [31m// factorℝ3.β:Larb/Real;[m
+  #170 = Fieldref           #101.#163     [31m// factorℝ3.N:Larb/Integer;[m
+  #171 = Utf8               close
+  #172 = NameAndType        #171:#16      [31m// close:()V[m
+  #173 = Methodref          #24.#172      [31m// arb/Integer.close:()V[m
+  #174 = Methodref          #30.#172      [31m// arb/Real.close:()V[m
+  #175 = Utf8               Code
+  #176 = Utf8               StackMapTable
+  #177 = Utf8               LocalVariableTable
+  #178 = Utf8               Signature
+{
+  arb.Integer c1;
+    descriptor: Larb/Integer;
+    flags: (0x0000)
+
+[32m  public arb.Real z;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Integer p;[m
+    descriptor: Larb/Integer;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Integer q;[m
+    descriptor: Larb/Integer;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real α;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real β;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Integer N;[m
+    descriptor: Larb/Integer;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real ℝ1;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real valueℝ2;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Integer k;[m
+    descriptor: Larb/Integer;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real prodℝ1;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Integer endIndexℤ1;[m
+    descriptor: Larb/Integer;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real ℝ2;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Integer ℤ1;[m
+    descriptor: Larb/Integer;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real valueℝ3;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real prodℝ2;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Integer endIndexℤ2;[m
+    descriptor: Larb/Integer;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public arb.Real ℝ3;[m
+    descriptor: Larb/Real;
+    flags: (0x0001) ACC_PUBLIC
+
+[32m  public final factorℝ2 factorℝ2;[m
+    descriptor: Lfactorℝ2;
+    flags: (0x0011) ACC_PUBLIC, ACC_FINAL
+
+[32m  public final factorℝ3 factorℝ3;[m
+    descriptor: Lfactorℝ3;
+    flags: (0x0011) ACC_PUBLIC, ACC_FINAL
+
+[32m  public arb.Real evaluate(arb.Integer, int, int, arb.Real);[m
+    descriptor: (Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;
+    flags: (0x0001) ACC_PUBLIC
+[36m    Code:[m
+      stack=7, locals=5, args_size=5
+[33m         0:[m aload_0
+[33m         1:[m getfield      #14                 [31m// Field isInitialized:Z[m
+[33m         4:[m ifne          11
+[33m         7:[m aload_0
+[33m         8:[m invokevirtual #18                 [31m// Method initialize:()V[m
+[33m        11:[m aload_0
+[33m        12:[m getfield      #22                 [31m// Field z:Larb/Integer;[m
+[33m        15:[m aload_1
+[33m        16:[m checkcast     #24                 [31m// class arb/Integer[m
+[33m        19:[m iload_3
+[33m        20:[m aload_0
+[33m        21:[m getfield      #28                 [31m// Field ℝ1:Larb/Real;[m
+[33m        24:[m invokevirtual #34                 [31m// Method arb/Real.pow:(Larb/Integer;ILarb/Real;)Larb/Real;[m
+[33m        27:[m aload_0
+[33m        28:[m getfield      #38                 [31m// Field factorℝ2:Lfactorℝ2;[m
+[33m        31:[m aload_1
+[33m        32:[m checkcast     #24                 [31m// class arb/Integer[m
+[33m        35:[m putfield      #42                 [31m// Field factorℝ2.n:Larb/Integer;[m
+[33m        38:[m aload_0
+[33m        39:[m getfield      #45                 [31m// Field prodℝ1:Larb/Real;[m
+[33m        42:[m invokevirtual #49                 [31m// Method arb/Real.multiplicativeIdentity:()Larb/Real;[m
+[33m        45:[m pop
+[33m        46:[m aload_0
+[33m        47:[m getfield      #52                 [31m// Field k:Larb/Integer;[m
+[33m        50:[m aload_0
+[33m        51:[m getfield      #55                 [31m// Field c1:Larb/Integer;[m
+[33m        54:[m invokevirtual #59                 [31m// Method arb/Integer.set:(Larb/Integer;)Larb/Integer;[m
+[33m        57:[m pop
+[33m        58:[m aload_0
+[33m        59:[m getfield      #62                 [31m// Field endIndexℤ1:Larb/Integer;[m
+[33m        62:[m aload_0
+[33m        63:[m getfield      #65                 [31m// Field p:Larb/Integer;[m
+[33m        66:[m invokevirtual #59                 [31m// Method arb/Integer.set:(Larb/Integer;)Larb/Integer;[m
+[33m        69:[m pop
+[33m        70:[m aload_0
+[33m        71:[m getfield      #45                 [31m// Field prodℝ1:Larb/Real;[m
+[33m        74:[m aload_0
+[33m        75:[m getfield      #38                 [31m// Field factorℝ2:Lfactorℝ2;[m
+[33m        78:[m aload_0
+[33m        79:[m getfield      #52                 [31m// Field k:Larb/Integer;[m
+[33m        82:[m iload_3
+[33m        83:[m aload_0
+[33m        84:[m getfield      #68                 [31m// Field valueℝ2:Larb/Real;[m
+[33m        87:[m invokeinterface #71,  4           [31m// InterfaceMethod arb/functions/Function.evaluate:(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;[m
+[33m        92:[m checkcast     #30                 [31m// class arb/Real[m
+[33m        95:[m iload_3
+[33m        96:[m invokevirtual #75                 [31m// Method arb/Real.mul:(Larb/Real;I)Larb/Real;[m
+[33m        99:[m pop
+[33m       100:[m aload_0
+[33m       101:[m getfield      #52                 [31m// Field k:Larb/Integer;[m
+[33m       104:[m invokevirtual #79                 [31m// Method arb/Integer.increment:()Larb/Integer;[m
+[33m       107:[m aload_0
+[33m       108:[m getfield      #62                 [31m// Field endIndexℤ1:Larb/Integer;[m
+[33m       111:[m invokevirtual #83                 [31m// Method arb/Integer.compareTo:(Larb/Integer;)I[m
+[33m       114:[m ifle          70
+[33m       117:[m aload_0
+[33m       118:[m getfield      #45                 [31m// Field prodℝ1:Larb/Real;[m
+[33m       121:[m iload_3
+[33m       122:[m aload_0
+[33m       123:[m getfield      #86                 [31m// Field ℝ2:Larb/Real;[m
+[33m       126:[m invokevirtual #89                 [31m// Method arb/Real.mul:(Larb/Real;ILarb/Real;)Larb/Real;[m
+[33m       129:[m aload_1
+[33m       130:[m checkcast     #24                 [31m// class arb/Integer[m
+[33m       133:[m iload_3
+[33m       134:[m aload_0
+[33m       135:[m getfield      #92                 [31m// Field ℤ1:Larb/Integer;[m
+[33m       138:[m invokevirtual #96                 [31m// Method arb/Integer.factorial:(ILarb/Integer;)Larb/Integer;[m
+[33m       141:[m aload_0
+[33m       142:[m getfield      #100                [31m// Field factorℝ3:Lfactorℝ3;[m
+[33m       145:[m aload_1
+[33m       146:[m checkcast     #24                 [31m// class arb/Integer[m
+[33m       149:[m putfield      #102                [31m// Field factorℝ3.n:Larb/Integer;[m
+[33m       152:[m aload_0
+[33m       153:[m getfield      #105                [31m// Field prodℝ2:Larb/Real;[m
+[33m       156:[m invokevirtual #49                 [31m// Method arb/Real.multiplicativeIdentity:()Larb/Real;[m
+[33m       159:[m pop
+[33m       160:[m aload_0
+[33m       161:[m getfield      #52                 [31m// Field k:Larb/Integer;[m
+[33m       164:[m aload_0
+[33m       165:[m getfield      #55                 [31m// Field c1:Larb/Integer;[m
+[33m       168:[m invokevirtual #59                 [31m// Method arb/Integer.set:(Larb/Integer;)Larb/Integer;[m
+[33m       171:[m pop
+[33m       172:[m aload_0
+[33m       173:[m getfield      #108                [31m// Field endIndexℤ2:Larb/Integer;[m
+[33m       176:[m aload_0
+[33m       177:[m getfield      #111                [31m// Field q:Larb/Integer;[m
+[33m       180:[m invokevirtual #59                 [31m// Method arb/Integer.set:(Larb/Integer;)Larb/Integer;[m
+[33m       183:[m pop
+[33m       184:[m aload_0
+[33m       185:[m getfield      #105                [31m// Field prodℝ2:Larb/Real;[m
+[33m       188:[m aload_0
+[33m       189:[m getfield      #100                [31m// Field factorℝ3:Lfactorℝ3;[m
+[33m       192:[m aload_0
+[33m       193:[m getfield      #52                 [31m// Field k:Larb/Integer;[m
+[33m       196:[m iload_3
+[33m       197:[m aload_0
+[33m       198:[m getfield      #114                [31m// Field valueℝ3:Larb/Real;[m
+[33m       201:[m invokeinterface #71,  4           [31m// InterfaceMethod arb/functions/Function.evaluate:(Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object;[m
+[33m       206:[m checkcast     #30                 [31m// class arb/Real[m
+[33m       209:[m iload_3
+[33m       210:[m invokevirtual #75                 [31m// Method arb/Real.mul:(Larb/Real;I)Larb/Real;[m
+[33m       213:[m pop
+[33m       214:[m aload_0
+[33m       215:[m getfield      #52                 [31m// Field k:Larb/Integer;[m
+[33m       218:[m invokevirtual #79                 [31m// Method arb/Integer.increment:()Larb/Integer;[m
+[33m       221:[m aload_0
+[33m       222:[m getfield      #108                [31m// Field endIndexℤ2:Larb/Integer;[m
+[33m       225:[m invokevirtual #83                 [31m// Method arb/Integer.compareTo:(Larb/Integer;)I[m
+[33m       228:[m ifle          184
+[33m       231:[m aload_0
+[33m       232:[m getfield      #105                [31m// Field prodℝ2:Larb/Real;[m
+[33m       235:[m iload_3
+[33m       236:[m aload_0
+[33m       237:[m getfield      #117                [31m// Field ℝ3:Larb/Real;[m
+[33m       240:[m invokevirtual #118                [31m// Method arb/Integer.mul:(Larb/Real;ILarb/Real;)Larb/Real;[m
+[33m       243:[m iload_3
+[33m       244:[m aload         4
+[33m       246:[m checkcast     #30                 [31m// class arb/Real[m
+[33m       249:[m invokevirtual #121                [31m// Method arb/Real.div:(Larb/Real;ILarb/Real;)Larb/Real;[m
+[33m       252:[m areturn
+      StackMapTable: number_of_entries = 3
+        frame_type = 11 /* same */
+        frame_type = 122 /* same_locals_1_stack_item */
+          stack = [ class arb/Real ]
+        frame_type = 255 /* full_frame */
+          offset_delta = 113
+          locals = [ class factorℝ1, class java/lang/Object, int, int, class java/lang/Object ]
+          stack = [ class arb/Real, class arb/Integer ]
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0     253     0  this   Lfactorℝ1;
+            0     253     1    in   Larb/Integer;
+            0     253     2 order   I
+            0     253     3  bits   I
+            0     253     4 result   Larb/Real;
+    Signature: #10                          [31m// (Larb/Integer;IILarb/Real;)Larb/Real;[m
+
+[32m  public factorℝ1();[m
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+[36m    Code:[m
+      stack=4, locals=1, args_size=1
+[33m         0:[m aload_0
+[33m         1:[m invokespecial #134                [31m// Method java/lang/Object."<init>":()V[m
+[33m         4:[m aload_0
+[33m         5:[m new           #39                 [31m// class factorℝ2[m
+[33m         8:[m dup
+[33m         9:[m invokespecial #135                [31m// Method factorℝ2."<init>":()V[m
+[33m        12:[m putfield      #38                 [31m// Field factorℝ2:Lfactorℝ2;[m
+[33m        15:[m aload_0
+[33m        16:[m new           #101                [31m// class factorℝ3[m
+[33m        19:[m dup
+[33m        20:[m invokespecial #136                [31m// Method factorℝ3."<init>":()V[m
+[33m        23:[m putfield      #100                [31m// Field factorℝ3:Lfactorℝ3;[m
+[33m        26:[m aload_0
+[33m        27:[m new           #24                 [31m// class arb/Integer[m
+[33m        30:[m dup
+[33m        31:[m ldc           #138                [31m// String 1[m
+[33m        33:[m invokespecial #141                [31m// Method arb/Integer."<init>":(Ljava/lang/String;)V[m
+[33m        36:[m putfield      #55                 [31m// Field c1:Larb/Integer;[m
+[33m        39:[m aload_0
+[33m        40:[m new           #30                 [31m// class arb/Real[m
+[33m        43:[m dup
+[33m        44:[m invokespecial #142                [31m// Method arb/Real."<init>":()V[m
+[33m        47:[m putfield      #28                 [31m// Field ℝ1:Larb/Real;[m
+[33m        50:[m aload_0
+[33m        51:[m new           #30                 [31m// class arb/Real[m
+[33m        54:[m dup
+[33m        55:[m invokespecial #142                [31m// Method arb/Real."<init>":()V[m
+[33m        58:[m putfield      #68                 [31m// Field valueℝ2:Larb/Real;[m
+[33m        61:[m aload_0
+[33m        62:[m new           #24                 [31m// class arb/Integer[m
+[33m        65:[m dup
+[33m        66:[m invokespecial #143                [31m// Method arb/Integer."<init>":()V[m
+[33m        69:[m putfield      #52                 [31m// Field k:Larb/Integer;[m
+[33m        72:[m aload_0
+[33m        73:[m new           #30                 [31m// class arb/Real[m
+[33m        76:[m dup
+[33m        77:[m invokespecial #142                [31m// Method arb/Real."<init>":()V[m
+[33m        80:[m putfield      #45                 [31m// Field prodℝ1:Larb/Real;[m
+[33m        83:[m aload_0
+[33m        84:[m new           #24                 [31m// class arb/Integer[m
+[33m        87:[m dup
+[33m        88:[m invokespecial #143                [31m// Method arb/Integer."<init>":()V[m
+[33m        91:[m putfield      #62                 [31m// Field endIndexℤ1:Larb/Integer;[m
+[33m        94:[m aload_0
+[33m        95:[m new           #30                 [31m// class arb/Real[m
+[33m        98:[m dup
+[33m        99:[m invokespecial #142                [31m// Method arb/Real."<init>":()V[m
+[33m       102:[m putfield      #86                 [31m// Field ℝ2:Larb/Real;[m
+[33m       105:[m aload_0
+[33m       106:[m new           #24                 [31m// class arb/Integer[m
+[33m       109:[m dup
+[33m       110:[m invokespecial #143                [31m// Method arb/Integer."<init>":()V[m
+[33m       113:[m putfield      #92                 [31m// Field ℤ1:Larb/Integer;[m
+[33m       116:[m aload_0
+[33m       117:[m new           #30                 [31m// class arb/Real[m
+[33m       120:[m dup
+[33m       121:[m invokespecial #142                [31m// Method arb/Real."<init>":()V[m
+[33m       124:[m putfield      #114                [31m// Field valueℝ3:Larb/Real;[m
+[33m       127:[m aload_0
+[33m       128:[m new           #30                 [31m// class arb/Real[m
+[33m       131:[m dup
+[33m       132:[m invokespecial #142                [31m// Method arb/Real."<init>":()V[m
+[33m       135:[m putfield      #105                [31m// Field prodℝ2:Larb/Real;[m
+[33m       138:[m aload_0
+[33m       139:[m new           #24                 [31m// class arb/Integer[m
+[33m       142:[m dup
+[33m       143:[m invokespecial #143                [31m// Method arb/Integer."<init>":()V[m
+[33m       146:[m putfield      #108                [31m// Field endIndexℤ2:Larb/Integer;[m
+[33m       149:[m aload_0
+[33m       150:[m new           #30                 [31m// class arb/Real[m
+[33m       153:[m dup
+[33m       154:[m invokespecial #142                [31m// Method arb/Real."<init>":()V[m
+[33m       157:[m putfield      #117                [31m// Field ℝ3:Larb/Real;[m
+[33m       160:[m return
+
+[32m  public void initialize();[m
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+[36m    Code:[m
+      stack=5, locals=1, args_size=1
+[33m         0:[m aload_0
+[33m         1:[m getfield      #14                 [31m// Field isInitialized:Z[m
+[33m         4:[m ifeq          17
+[33m         7:[m new           #145                [31m// class java/lang/AssertionError[m
+[33m        10:[m dup
+[33m        11:[m ldc           #147                [31m// String Already initialized[m
+[33m        13:[m invokespecial #150                [31m// Method java/lang/AssertionError."<init>":(Ljava/lang/Object;)V[m
+[33m        16:[m athrow
+[33m        17:[m aload_0
+[33m        18:[m getfield      #65                 [31m// Field p:Larb/Integer;[m
+[33m        21:[m ifnonnull     34
+[33m        24:[m new           #145                [31m// class java/lang/AssertionError[m
+[33m        27:[m dup
+[33m        28:[m ldc           #152                [31m// String p is null[m
+[33m        30:[m invokespecial #150                [31m// Method java/lang/AssertionError."<init>":(Ljava/lang/Object;)V[m
+[33m        33:[m athrow
+[33m        34:[m aload_0
+[33m        35:[m getfield      #111                [31m// Field q:Larb/Integer;[m
+[33m        38:[m ifnonnull     51
+[33m        41:[m new           #145                [31m// class java/lang/AssertionError[m
+[33m        44:[m dup
+[33m        45:[m ldc           #154                [31m// String q is null[m
+[33m        47:[m invokespecial #150                [31m// Method java/lang/AssertionError."<init>":(Ljava/lang/Object;)V[m
+[33m        50:[m athrow
+[33m        51:[m aload_0
+[33m        52:[m aload_0
+[33m        53:[m aload_0
+[33m        54:[m getfield      #38                 [31m// Field factorℝ2:Lfactorℝ2;[m
+[33m        57:[m aload_0
+[33m        58:[m getfield      #65                 [31m// Field p:Larb/Integer;[m
+[33m        61:[m putfield      #155                [31m// Field factorℝ2.p:Larb/Integer;[m
+[33m        64:[m aload_0
+[33m        65:[m getfield      #38                 [31m// Field factorℝ2:Lfactorℝ2;[m
+[33m        68:[m aload_0
+[33m        69:[m getfield      #111                [31m// Field q:Larb/Integer;[m
+[33m        72:[m putfield      #156                [31m// Field factorℝ2.q:Larb/Integer;[m
+[33m        75:[m aload_0
+[33m        76:[m getfield      #38                 [31m// Field factorℝ2:Lfactorℝ2;[m
+[33m        79:[m aload_0
+[33m        80:[m getfield      #158                [31m// Field α:Larb/Real;[m
+[33m        83:[m putfield      #159                [31m// Field factorℝ2.α:Larb/Real;[m
+[33m        86:[m aload_0
+[33m        87:[m getfield      #38                 [31m// Field factorℝ2:Lfactorℝ2;[m
+[33m        90:[m aload_0
+[33m        91:[m getfield      #161                [31m// Field β:Larb/Real;[m
+[33m        94:[m putfield      #162                [31m// Field factorℝ2.β:Larb/Real;[m
+[33m        97:[m aload_0
+[33m        98:[m getfield      #38                 [31m// Field factorℝ2:Lfactorℝ2;[m
+[33m       101:[m aload_0
+[33m       102:[m getfield      #164                [31m// Field N:Larb/Integer;[m
+[33m       105:[m putfield      #165                [31m// Field factorℝ2.N:Larb/Integer;[m
+[33m       108:[m aload_0
+[33m       109:[m aload_0
+[33m       110:[m getfield      #100                [31m// Field factorℝ3:Lfactorℝ3;[m
+[33m       113:[m aload_0
+[33m       114:[m getfield      #65                 [31m// Field p:Larb/Integer;[m
+[33m       117:[m putfield      #166                [31m// Field factorℝ3.p:Larb/Integer;[m
+[33m       120:[m aload_0
+[33m       121:[m getfield      #100                [31m// Field factorℝ3:Lfactorℝ3;[m
+[33m       124:[m aload_0
+[33m       125:[m getfield      #111                [31m// Field q:Larb/Integer;[m
+[33m       128:[m putfield      #167                [31m// Field factorℝ3.q:Larb/Integer;[m
+[33m       131:[m aload_0
+[33m       132:[m getfield      #100                [31m// Field factorℝ3:Lfactorℝ3;[m
+[33m       135:[m aload_0
+[33m       136:[m getfield      #158                [31m// Field α:Larb/Real;[m
+[33m       139:[m putfield      #168                [31m// Field factorℝ3.α:Larb/Real;[m
+[33m       142:[m aload_0
+[33m       143:[m getfield      #100                [31m// Field factorℝ3:Lfactorℝ3;[m
+[33m       146:[m aload_0
+[33m       147:[m getfield      #161                [31m// Field β:Larb/Real;[m
+[33m       150:[m putfield      #169                [31m// Field factorℝ3.β:Larb/Real;[m
+[33m       153:[m aload_0
+[33m       154:[m getfield      #100                [31m// Field factorℝ3:Lfactorℝ3;[m
+[33m       157:[m aload_0
+[33m       158:[m getfield      #164                [31m// Field N:Larb/Integer;[m
+[33m       161:[m putfield      #170                [31m// Field factorℝ3.N:Larb/Integer;[m
+[33m       164:[m aload_0
+[33m       165:[m iconst_1
+[33m       166:[m putfield      #14                 [31m// Field isInitialized:Z[m
+[33m       169:[m return
+      StackMapTable: number_of_entries = 3
+        frame_type = 17 /* same */
+        frame_type = 16 /* same */
+        frame_type = 16 /* same */
+
+[32m  public void close();[m
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+[36m    Code:[m
+      stack=1, locals=1, args_size=1
+[33m         0:[m aload_0
+[33m         1:[m getfield      #55                 [31m// Field c1:Larb/Integer;[m
+[33m         4:[m invokevirtual #173                [31m// Method arb/Integer.close:()V[m
+[33m         7:[m aload_0
+[33m         8:[m getfield      #28                 [31m// Field ℝ1:Larb/Real;[m
+[33m        11:[m invokevirtual #174                [31m// Method arb/Real.close:()V[m
+[33m        14:[m aload_0
+[33m        15:[m getfield      #68                 [31m// Field valueℝ2:Larb/Real;[m
+[33m        18:[m invokevirtual #174                [31m// Method arb/Real.close:()V[m
+[33m        21:[m aload_0
+[33m        22:[m getfield      #52                 [31m// Field k:Larb/Integer;[m
+[33m        25:[m invokevirtual #173                [31m// Method arb/Integer.close:()V[m
+[33m        28:[m aload_0
+[33m        29:[m getfield      #45                 [31m// Field prodℝ1:Larb/Real;[m
+[33m        32:[m invokevirtual #174                [31m// Method arb/Real.close:()V[m
+[33m        35:[m aload_0
+[33m        36:[m getfield      #62                 [31m// Field endIndexℤ1:Larb/Integer;[m
+[33m        39:[m invokevirtual #173                [31m// Method arb/Integer.close:()V[m
+[33m        42:[m aload_0
+[33m        43:[m getfield      #86                 [31m// Field ℝ2:Larb/Real;[m
+[33m        46:[m invokevirtual #174                [31m// Method arb/Real.close:()V[m
+[33m        49:[m aload_0
+[33m        50:[m getfield      #92                 [31m// Field ℤ1:Larb/Integer;[m
+[33m        53:[m invokevirtual #173                [31m// Method arb/Integer.close:()V[m
+[33m        56:[m aload_0
+[33m        57:[m getfield      #114                [31m// Field valueℝ3:Larb/Real;[m
+[33m        60:[m invokevirtual #174                [31m// Method arb/Real.close:()V[m
+[33m        63:[m aload_0
+[33m        64:[m getfield      #105                [31m// Field prodℝ2:Larb/Real;[m
+[33m        67:[m invokevirtual #174                [31m// Method arb/Real.close:()V[m
+[33m        70:[m aload_0
+[33m        71:[m getfield      #108                [31m// Field endIndexℤ2:Larb/Integer;[m
+[33m        74:[m invokevirtual #173                [31m// Method arb/Integer.close:()V[m
+[33m        77:[m aload_0
+[33m        78:[m getfield      #117                [31m// Field ℝ3:Larb/Real;[m
+[33m        81:[m invokevirtual #174                [31m// Method arb/Real.close:()V[m
+[33m        84:[m return
+}
+Signature: #3                           [31m// Ljava/lang/Object;Larb/functions/Function<Larb/Integer;Larb/Real;>;[m

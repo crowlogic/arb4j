@@ -8,6 +8,7 @@ import arb.Verifiable;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
 import arb.functions.Function;
+import arb.functions.real.F;
 import arb.functions.real.RealFunction;
 
 /**
@@ -62,9 +63,11 @@ public class HypergeometricPolynomial implements
     context.registerVariable("N", N = new Integer());
 
     context.saveClasses = true;
-    F                   = RealFunction.express("F",
-                                               "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                               context);
+    F                   = new F();
+    context.injectVariableReferences(F);
+                  ; // RealFunction.express("F",
+                                   //            "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                   //            context);
   }
 
   @Override

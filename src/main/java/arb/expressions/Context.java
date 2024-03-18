@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import static arb.utensils.Utensils.throwOrWrap;
+import static arb.utensils.Utensils.wrapOrThrow;
 import static java.lang.String.format;
 import static java.lang.System.err;
 
@@ -177,8 +179,8 @@ public class Context
 
   public Stream<OrderedPair<String, Class<?>>> variableTypeStream()
   {
-    return variableEntryStream().map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(),
-                                                                                entry.getValue().getClass()));
+    return variableEntryStream().map(entry -> new OrderedPair<String, Class<?>>(entry.getKey(), entry.getValue()
+                                                                                                     .getClass()));
   }
 
   public FunctionMapping<Object, Object> registerFunctionMapping(String functionName,
@@ -192,5 +194,38 @@ public class Context
   public Real registerVariable(Real var)
   {
     return registerVariable(var.getName(), var);
+  }
+
+  public static <D, R, F extends Function<D, R>>
+         void
+         setFieldValue(Class<?> compiledClass, F f, String variableName, Object value, boolean overwrite)
+  {
+    java.lang.reflect.Field field;
+    try
+    {
+      field = compiledClass.getField(variableName);
+      field.set(f, value);
+    }
+    catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
+    {
+      wrapOrThrow(e);
+    }
+  }
+
+  public <D, R, F extends Function<D, R>> void injectVariableReferences(F f)
+  {
+    variables.map.entrySet().forEach(entry ->
+    {
+      try
+      {
+        String variableName = entry.getKey();
+        R      value        = variables.get(variableName);
+        setFieldValue(f.getClass(), f, variableName, value, false);
+      }
+      catch (Exception e)
+      {
+        throwOrWrap(e);
+      }
+    });
   }
 }

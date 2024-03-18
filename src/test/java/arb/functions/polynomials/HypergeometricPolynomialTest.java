@@ -1,5 +1,7 @@
 package arb.functions.polynomials;
 
+import static org.objectweb.asm.Opcodes.ASM10_EXPERIMENTAL;
+
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
@@ -19,9 +21,10 @@ public class HypergeometricPolynomialTest extends
   public static void testSum()
   {
     HypergeometricPolynomial F = new HypergeometricPolynomial(2, 1);
-    F.α.set(-3, 2.5);
-    F.β.set(1);
-    F.eval(2.3);
+    F.α.set(-6, 2.5);
+    F.β.set(1.5);
+    double val = F.eval(2.3);
+    System.out.format("value=%f", val );
   }
 
   public static void testSummand()
