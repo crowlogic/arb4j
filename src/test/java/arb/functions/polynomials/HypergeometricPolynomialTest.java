@@ -1,7 +1,5 @@
 package arb.functions.polynomials;
 
-import static org.objectweb.asm.Opcodes.ASM10_EXPERIMENTAL;
-
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
@@ -18,13 +16,29 @@ import junit.framework.TestCase;
 public class HypergeometricPolynomialTest extends
                                           TestCase
 {
+
+  /**
+   * <pre style="font-family: monospace">
+   * /-------------------------------------\
+   * | n   | New sumR1      | valueR1      |
+   * |-----|----------------|--------------|
+   * | 0   | 1.000000       | 1.000000     |
+   * | 1   | -33.500000     | -34.500000   |
+   * | 2   | 313.656250     | 347.156250   |
+   * | 3   | -1283.262500   | -1596.918750 |
+   * | 4   | 2504.429161    | 3787.691661  |
+   * | 5   | -2025.650065   | -4530.079226 |
+   * | 6   | 145.012899     | 2170.662964  |
+   * \-------------------------------------/
+   * </pre>
+   */
   public static void testSum()
   {
     HypergeometricPolynomial F = new HypergeometricPolynomial(2, 1);
     F.α.set(-6, 2.5);
-    F.β.set(1.5);
+    F.β.set(1);
     double val = F.eval(2.3);
-    System.out.format("value=%f", val );
+    System.out.format("value=%f", val);
   }
 
   public static void testSummand()

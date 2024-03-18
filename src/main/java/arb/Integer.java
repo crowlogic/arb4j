@@ -32,11 +32,11 @@ public class Integer implements
                      HasName
 {
 
-  public RealPolynomial mul( RealPolynomial x, int bits, RealPolynomial res )
+  public RealPolynomial mul(RealPolynomial x, int bits, RealPolynomial res)
   {
-    return res.set(this).mul(x,bits);
+    return res.set(this).mul(x, bits);
   }
-  
+
   public Real Γ(int bits, Real result)
   {
     return result.set(this).Γ(bits);
@@ -230,8 +230,7 @@ public class Integer implements
     Integer element = elements[index];
     if (element == null)
     {
-      element = elements[index] = new Integer(swigCPtr + index * Long.BYTES,
-                                              false);
+      element = elements[index] = new Integer(swigCPtr + index * Long.BYTES, false);
     }
     return element;
   }
@@ -480,6 +479,28 @@ public class Integer implements
   {
     arblib.fmpz_set_ui(swigCPtr, val);
     return this;
+  }
+
+  public Integer sub(int i)
+  {
+    return sub(i, this);
+  }
+
+  public Integer sub(int i, Integer result)
+  {
+    arblib.fmpz_sub_si(result.swigCPtr, swigCPtr, i);
+    return result;
+  }
+
+  public Integer add(int i)
+  {
+    return add(i, this);
+  }
+
+  public Integer add(int i, Integer result)
+  {
+    arblib.fmpz_add_si(result.swigCPtr, this.swigCPtr, i);
+    return result;
   }
 
 }

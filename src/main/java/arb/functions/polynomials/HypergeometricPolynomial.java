@@ -48,7 +48,7 @@ public class HypergeometricPolynomial implements
 
   public final Integer              p, q;
 
-  public final Function<Real, Real> F;
+  public final F F;
 
   private Integer                   N;
 
@@ -65,9 +65,9 @@ public class HypergeometricPolynomial implements
     context.saveClasses = true;
     F                   = new F();
     context.injectVariableReferences(F);
-                  ; // RealFunction.express("F",
-                                   //            "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                   //            context);
+    ; // RealFunction.express("F",
+      // "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+      // context);
   }
 
   @Override
@@ -81,8 +81,14 @@ public class HypergeometricPolynomial implements
                       + α);
       }
 
-      α.stream().filter(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative()).min((a, b) -> a.compareTo(b)).get().integerValue(N);
+      α.stream()
+       .filter(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative())
+       .min((a, b) -> a.compareTo(b))
+       .get()
+       .neg()
+       .integerValue(N);
       initialized = true;
+      System.out.format("N=%s\n", N);
     }
     return F.evaluate(n, order, bits, f);
   }

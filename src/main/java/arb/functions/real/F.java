@@ -31,12 +31,18 @@ public class F implements
     n.set(c1);
     endIndexℤ3.set(N);
 
+    System.out.println("Evaluation start. Input: " + in + ", Order: " + order + ", Bits: " + bits
+                  + ", Initial sumℝ1: " + sumℝ1);
+
     do
     {
+      System.out.println("Loop iteration. n: " + n + ", endIndexℤ3: " + endIndexℤ3 + ", Current sumℝ1: " + sumℝ1.toFixedString());
       sumℝ1.add(factorℝ1.evaluate(n, bits, valueℝ1), bits);
+      System.out.println("After addition. n: " + n + ", New sumℝ1: " + sumℝ1 + ", valueℝ1: " + valueℝ1.toFixedString());
     }
     while (n.increment().compareTo(endIndexℤ3) <= 0);
 
+    System.out.println("Evaluation end. Final sumℝ1: " + sumℝ1);
     return result.set(sumℝ1);
   }
 

@@ -3,7 +3,6 @@
 %typemap(javainterfaces) arb_struct "Domain<Real>,Serializable,Comparable<Real>,Iterable<Real>,Field<Real>,Lockable<Real>,IntFunction<Real>"
 
 %typemap(javaimports) arb_struct %{
-import static arb.IntegerConstants.*;
 import static arb.RealConstants.zero;
 import static arb.arblib.*;
 import static java.lang.String.format;
@@ -1514,10 +1513,7 @@ public static String removeTrailingZeros(String decimal)
   {
     if (dim == 1)
     {
-      return removeTrailingZeros(arblib.arb_get_str(this,
-                                                    digits,
-                                                    (printPrecision
-                                                                  || precise) ? 0 : IntegerConstants.ARB_STR_NO_RADIUS)
+      return removeTrailingZeros(arblib.arb_get_str(this, digits, (printPrecision || precise) ? 0 : 2)
                                        .replace("[", "")
                                        .replace("]", ""));
     }
