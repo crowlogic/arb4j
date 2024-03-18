@@ -42,12 +42,13 @@ public class factorℝ1 implements
     k.set(c1);
     endIndexℤ1.set(p);
 
-    //System.out.format("\nfactorℝ2.evaluate n=%s k=%s..%s %s %s\n", in, k, endIndexℤ1, α, β);
+    // System.out.format("\nfactorℝ2.evaluate n=%s k=%s..%s %s %s\n", in, k,
+    // endIndexℤ1, α, β);
 
     do
     {
       prodℝ1.mul(factorℝ2.evaluate(k, bits, valueℝ2), bits);
-      //System.out.format("prodℝ1 *= %s = %s\n", valueℝ2, prodℝ1);
+      // System.out.format("prodℝ1 *= %s = %s\n", valueℝ2, prodℝ1);
     }
     while (k.increment().compareTo(endIndexℤ1) <= 0);
 
@@ -58,14 +59,11 @@ public class factorℝ1 implements
     k.set(c1);
     endIndexℤ2.set(q);
 
-    //System.out.format("\nfactorℝ3.evaluate n=%s k=%s..%s\n", in, k, endIndexℤ2);
     do
     {
       prodℝ2.mul(factorℝ3.evaluate(k, bits, valueℝ3), bits);
-     // System.out.format("prodℝ2 *= %s = %s\n", valueℝ3, prodℝ2);
     }
     while (k.increment().compareTo(endIndexℤ2) <= 0);
-   // System.out.println("\n");
     return var10000.div(var10001.mul(prodℝ2, bits, ℝ3), bits, result);
   }
 

@@ -17,8 +17,7 @@ public class HypergeometricPolynomial implements
 {
 
   @Override
-  public void close(
-  )
+  public void close()
   {
     p.close();
     q.close();
@@ -39,15 +38,11 @@ public class HypergeometricPolynomial implements
   boolean              initialized = false;
 
   @SuppressWarnings("resource")
-  public HypergeometricPolynomial(
-                                  int p,
-                                  int q
-  )
+  public HypergeometricPolynomial(int p, int q)
   {
-    context = new Context(this.p = new Integer(p).setName("p"),
-                          this.q = new Integer(q).setName("q"),
-                          α = Real.newVector(p).setName("α"),
-                          β = Real.newVector(q).setName("β"));
+    context = new Context(this.p = new Integer(p).setName("p"), this.q = new Integer(q).setName("q"), α = Real.newVector(p)
+                                                                                                              .setName("α"), β = Real.newVector(q)
+                                                                                                                                     .setName("β"));
     context.registerVariable("N", N = new Integer());
 
     context.saveClasses = true;
@@ -59,12 +54,7 @@ public class HypergeometricPolynomial implements
   }
 
   @Override
-  public Real evaluate(
-                       Real n,
-                       int order,
-                       int bits,
-                       Real f
-  )
+  public Real evaluate(Real n, int order, int bits, Real f)
   {
     if (!initialized)
     {
@@ -81,8 +71,7 @@ public class HypergeometricPolynomial implements
     return F.evaluate(n, order, bits, f);
   }
 
-  public void determinePolynomialOrder(
-  )
+  public void determinePolynomialOrder()
   {
     α.stream()
      .filter(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative())
@@ -99,8 +88,7 @@ public class HypergeometricPolynomial implements
    *         in the hypergeometric series this function generates)
    */
   @Override
-  public boolean verify(
-  )
+  public boolean verify()
   {
     return α.stream().anyMatch(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative());
   };

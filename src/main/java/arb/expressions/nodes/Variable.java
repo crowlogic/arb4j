@@ -115,21 +115,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   private Class<?>                        generatedType;
 
-  /**
-   * TODO: this needs to be replaced with
-   * isIndependentVariableOfAnyAscendentExpression where ascendent means any
-   * parent expression, or parent expression of the parent expression, etc, also
-   * known as ancestor but that connotates that only ascendents from earlier
-   * generations and not the most recent are refered to. here, it is meant that an
-   * ascendent expression is one that is an antecedent of this expression.
-   * basically, this follows the natural lexical scope that is expected to be part
-   * of a system such as this. in other words, these expressions can be nested
-   * arbitrarily deep so it is not sufficient to only check the parent expression
-   * to see if the variable matches its input during the
-   * this{@link #resolveReference(VariableReference)} invocation but that the
-   * inputs going back to the root node must be checked and from there the
-   * resolution process completes.
-   */
   private boolean                         isAnyAscendingExpressionsInput;
 
   public Variable(Expression<D, R, F> expression, VariableReference<D, R, F> reference)
@@ -246,7 +231,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), reference.name, reference.type().descriptorString());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                    reference.name,
+                                    reference.type().descriptorString());
     }
   }
 
@@ -302,7 +289,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
   }
 
-  protected void resolveInheritedVariableReference(VariableReference<D, R, F> reference, Variable<D, R, F> variable)
+  protected void resolveInheritedVariableReference(VariableReference<D, R, F> reference,
+                                                   Variable<D, R, F> variable)
   {
 
     var parentExpression = expression.ascendentExpression;
@@ -310,32 +298,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       var parentExpressionsIndependentVariableNode = resolve(reference, parentExpression);
 
-      if ("z".equals(getName()))
-      {
-        System.out.format("\nVariable.resolveInheritedVariableReference( name=%s\n%sreference=%s\n"
-                      + "%sparentExpressionsIndependentVariableNode=%s\n"
-                      + "%sthisExpressionsindependentVariableNode=%s\n" + "%stype=%s\n"
-                      + "%sparentExpressionsDomain=%s\n%sparentExpressionsRange=%s\n%sexpressionDomain=%s\n%sexpressionRange=%s)\n\n",
-                          getName(),
-                          Utensils.indent(44),
-                          reference,
-                          Utensils.indent(44),
-                          parentExpressionsIndependentVariableNode,
-                          Utensils.indent(44),
-                          expression.inputNode,
-                          Utensils.indent(44),
-                          type(),
-                          Utensils.indent(44),
-                          expression.ascendentExpression.domainType,
-                          Utensils.indent(44),
-                          expression.ascendentExpression.rangeType,
-                          Utensils.indent(44),
-                          expression.domainType,
-                          Utensils.indent(44),
-                          expression.rangeType,
-                          Utensils.indent(44));
-       
-      }
+ 
     }
     else
     {
@@ -348,7 +311,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
   }
 
-  protected Variable<?, ?, ?> resolve(VariableReference<D, R, F> reference, Expression<?, ?, ?> ascendentExpression)
+  protected Variable<?, ?, ?> resolve(VariableReference<D, R, F> reference,
+                                      Expression<?, ?, ?> ascendentExpression)
   {
     var ascendentInputNode = ascendentExpression.inputNode;
 

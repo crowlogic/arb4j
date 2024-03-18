@@ -26,6 +26,7 @@ import arb.functions.Function;
 public abstract class Node<D, R, F extends Function<D, R>> implements
                           Typesettable
 {
+
   /**
    * @return true if this node has any subnodes
    */
