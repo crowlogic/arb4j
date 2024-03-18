@@ -139,10 +139,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      if (expression.traceGenerator)
-      {
-        System.out.format("Set reference type of %s to %s\n", reference, expression.domainType);
-      }
       reference.type = expression.domainType;
     }
   }
@@ -328,7 +324,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   public String toString(int depth)
   {
 
-    return typeset();
+    return reference.toString();
   }
 
   @Override
