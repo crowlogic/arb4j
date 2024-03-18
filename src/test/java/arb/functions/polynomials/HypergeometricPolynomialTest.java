@@ -41,6 +41,24 @@ public class HypergeometricPolynomialTest extends
     System.out.format("value=%f", val);
   }
 
+  @SuppressWarnings("resource")
+  public static void testFactorValue()
+  {
+    HypergeometricPolynomial F = new HypergeometricPolynomial(2, 1);
+    F.α.set(-6, 2.5);
+    F.β.set(1);
+    F.determineSeriesTermCount();
+    F.F.initialize();
+    F.F.factorℝ1.z = new Real().one();
+    int order = F.F.N.getSignedValue();
+    System.out.format("order=%s\n", order);
+    for (int n = 0; n < order; n++)
+    {
+      Real val = F.F.factorℝ1.evaluate(new Integer(n), 128, new Real());
+      System.out.format("factorR1(%d)=%s\n", n, val);
+    }
+  }
+
   public static void testSummand()
   {
     try ( var p = new Integer(3, "p"); var q = new Integer(1, "q"); var α = Real.newVector(p.getSignedValue(), "α");

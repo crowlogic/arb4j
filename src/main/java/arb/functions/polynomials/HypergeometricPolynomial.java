@@ -42,17 +42,17 @@ public class HypergeometricPolynomial implements
     }
   }
 
-  public final Context              context;
+  public final Context context;
 
-  public final Real                 α, β;
+  public final Real    α, β;
 
-  public final Integer              p, q;
+  public final Integer p, q;
 
-  public final F F;
+  public final F       F;
 
-  private Integer                   N;
+  private Integer      N;
 
-  boolean                           initialized = false;
+  boolean              initialized = false;
 
   @SuppressWarnings("resource")
   public HypergeometricPolynomial(int p, int q)
@@ -81,16 +81,22 @@ public class HypergeometricPolynomial implements
                       + α);
       }
 
-      α.stream()
-       .filter(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative())
-       .min((a, b) -> a.compareTo(b))
-       .get()
-       .neg()
-       .integerValue(N);
+      determineSeriesTermCount();
+
       initialized = true;
       System.out.format("N=%s\n", N);
     }
     return F.evaluate(n, order, bits, f);
+  }
+
+  public void determineSeriesTermCount()
+  {
+    α.stream()
+     .filter(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative())
+     .min((a, b) -> a.compareTo(b))
+     .get()
+     .neg()
+     .integerValue(N);
   }
 
   /**
