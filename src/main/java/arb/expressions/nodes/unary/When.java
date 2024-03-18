@@ -196,9 +196,7 @@ public class When<D, R, F extends Function<D, R>> extends
     }
     finally
     {
-
       mv.visitEnd();
-
     }
 
     return mv;

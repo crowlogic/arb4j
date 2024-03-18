@@ -1,9 +1,9 @@
 package arb.logic;
 
+import java.util.function.Predicate;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
-import arb.functions.Function;
-import arb.functions.Predicate;
 
 /**
  * A goal, in logic programming, is a {@link Predicate} applied to its
@@ -17,7 +17,7 @@ import arb.functions.Predicate;
  *      {@link TheArb4jLibrary}
  */
 public interface Goal<D> extends
-                     Predicate<D, Function<D, Boolean>>
+                     Predicate<D>
 {
 
 }
