@@ -69,22 +69,28 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   public final String         symbol;
 
-  protected static String     factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(Object.class),
+  protected static String     factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(
+                                                                                                    Object.class),
                                                                                        Type.getType(Object.class),
                                                                                        Type.getType(int.class),
                                                                                        Type.getType(Object.class));
 
-  private static final String MISSING_CLOSING_CURLY_BRACE   = "Expected the closing curly brace } of the range specification {k=a..b} in %sf(k){k=a..b}"
-                + " to follow the ending index parameter b, instead got '%s' with remaining";
+  private static final String MISSING_CLOSING_CURLY_BRACE   =
+                                                          "Expected the closing curly brace } of the range specification {k=a..b} in %sf(k){k=a..b}"
+                                                                        + " to follow the ending index parameter b, instead got '%s' with remaining";
 
-  private static final String MISSING_ELLIPSIS              = "Expected an … character after the start index a in the "
-                + "index specification {k=a..b} in %sf(k){k=a..b} but instead got '%c' at position %d in %s";
+  private static final String MISSING_ELLIPSIS              =
+                                               "Expected an … character after the start index a in the "
+                                                             + "index specification {k=a..b} in %sf(k){k=a..b} but instead got '%c' at position %d in %s";
 
-  private static final String MISSING_OPENING_CURLY_BRACE   = "Expected the opening curly brace { of the product range specification {k=a..b} in %sf(k){k=a..b}"
-                + " to follow the operand definition, instead got '%c' with remaining %s";
+  private static final String MISSING_OPENING_CURLY_BRACE   =
+                                                          "Expected the opening curly brace { of the product range specification {k=a..b} in %sf(k){k=a..b}"
+                                                                        + " to follow the operand definition, instead got '%c' with remaining %s";
 
-  protected static MethodVisitor
-            getField(MethodVisitor mv, String thisClassInternalName, String fieldName, Class<?> type)
+  protected static MethodVisitor getField(MethodVisitor mv,
+                                          String thisClassInternalName,
+                                          String fieldName,
+                                          Class<?> type)
   {
     return getThisField(mv, thisClassInternalName, fieldName, type.descriptorString());
   }
@@ -95,7 +101,10 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                                               String fieldTypeSignature)
   {
     assert thisClassInternalName != null : "thisClassInternalName is null";
-    loadThis(methodVisitor).visitFieldInsn(GETFIELD, thisClassInternalName, fieldName, fieldTypeSignature);
+    loadThis(methodVisitor).visitFieldInsn(GETFIELD,
+                                           thisClassInternalName,
+                                           fieldName,
+                                           fieldTypeSignature);
     return methodVisitor;
   }
 
@@ -151,10 +160,12 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     this.factorExpression = parseFactorExpression();
     functionClass         = expression.className;
     assert functionClass != null : "functionClass=expression.className shan't be null";
-    generatedType = (RealPolynomial.class.equals(expression.rangeType) ? Real.class : expression.rangeType);
+    generatedType = (RealPolynomial.class.equals(expression.rangeType) ? Real.class
+                                                                       : expression.rangeType);
     if (index != null)
     {
-      expression.character = expression.expression.charAt(expression.position += factorExpression.length());
+      expression.character = expression.expression.charAt(expression.position += factorExpression
+                                                                                                 .length());
     }
     evaluateRangeSpecification();
   }
@@ -195,11 +206,23 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   protected void compareIndexToEndIndex(MethodVisitor mv)
   {
     loadFieldFromThis(mv, endIndexFieldName, Integer.class);
-    invokeMethod(mv, Integer.class, "compareTo", getMethodDescriptor(int.class, Integer.class), false);
+    invokeMethod(mv,
+                 Integer.class,
+                 "compareTo",
+                 getMethodDescriptor(int.class, Integer.class),
+                 false);
   }
 
   protected void designateLabel(MethodVisitor mv, Label label, boolean addTypeToStackMap)
   {
+    if (expression.traceGenerator)
+    {
+      System.out.format("%s.designateLabel( label=%s,\n%saddTypeToStackMap=%s)\n\n",
+                        getClass().getSimpleName(),
+                        label,
+                        Utensils.indent(35),
+                        addTypeToStackMap);
+    }
     mv.visitLabel(label);
     if (!addTypeToStackMap)
     {
@@ -215,14 +238,21 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   protected void evaluateFactor(MethodVisitor mv)
   {
-    invokeMethod(mv, Type.getInternalName(Function.class), "evaluate", factorEvaluateMethodSignature, true);
+    invokeMethod(mv,
+                 Type.getInternalName(Function.class),
+                 "evaluate",
+                 factorEvaluateMethodSignature,
+                 true);
   }
 
   public NAryOperation<D, R, F> evaluateRangeSpecification()
   {
     if (!expression.nextCharacterIs('{'))
     {
-      throwException(format(MISSING_OPENING_CURLY_BRACE, symbol, expression.character, expression.remaining()));
+      throwException(format(MISSING_OPENING_CURLY_BRACE,
+                            symbol,
+                            expression.character,
+                            expression.remaining()));
     }
     if (index != null)
     {
@@ -284,7 +314,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   public Class<?> scalarDowncast(Class<?> resultType)
   {
-    return resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class : resultType);
+    return resultType = generatedType = (RealPolynomial.class.equals(resultType) ? Real.class
+                                                                                 : resultType);
   }
 
   protected void generateEndingIndex(MethodVisitor mv)
@@ -307,7 +338,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                         resultType);
 
     }
-    Expression<Integer, Q, Function<Integer, Q>> factorExpression = Compiler.express(factorFunctionFieldName,
+    Expression<Integer, Q, Function<Integer, Q>> factorExpression = Compiler.express(
+                                                                                     factorFunctionFieldName,
                                                                                      expr,
                                                                                      expression.context,
                                                                                      Integer.class,
@@ -385,7 +417,10 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                  Utensils.getMethodDescriptor(Integer.class));
   }
 
-  public void initializeResult(MethodVisitor mv, Class<?> resultType, String identityFunction, String prefix)
+  public void initializeResult(MethodVisitor mv,
+                               Class<?> resultType,
+                               String identityFunction,
+                               String prefix)
   {
     resultVariable = expression.reserveIntermediateVariable(mv, prefix, resultType);
     pop(invokeMethod(mv, resultType, identityFunction, getMethodDescriptor(resultType), false));
@@ -402,7 +437,11 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                                        String methodSignature,
                                        boolean isInterface)
   {
-    return invokeMethod(methodVisitor, Type.getInternalName(thisClass), functionName, methodSignature, isInterface);
+    return invokeMethod(methodVisitor,
+                        Type.getInternalName(thisClass),
+                        functionName,
+                        methodSignature,
+                        isInterface);
   }
 
   MethodVisitor invokeMethod(MethodVisitor methodVisitor,
@@ -505,8 +544,11 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
       expression.position = arrowIndex + 1;
     }
 
-    int rangeSpecificationPosition = index != null ? expression.expression.indexOf(String.format("{%s=", index),
-                                                                                   expression.position) : -1;
+    int rangeSpecificationPosition = index != null ? expression.expression.indexOf(String.format(
+                                                                                                 "{%s=",
+                                                                                                 index),
+                                                                                   expression.position)
+                                                   : -1;
     if (rangeSpecificationPosition == -1)
     {
       while (expression.character != '{' && expression.position < length)
@@ -527,7 +569,11 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     startIndex = expression.resolve();
     if (!expression.nextCharacterIs('…'))
     {
-      throwException(format(MISSING_ELLIPSIS, symbol, expression.character, expression.position, expression));
+      throwException(format(MISSING_ELLIPSIS,
+                            symbol,
+                            expression.character,
+                            expression.position,
+                            expression));
     }
   }
 
@@ -567,13 +613,16 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     if (independentVariableNode != null && !independentVariableNode.type().equals(Void.class))
     {
       loadThis(mv);
-      expression.loadFieldOntoStack(mv, factorFunctionFieldName, "L" + factorFunctionFieldName + ";");
+      expression.loadFieldOntoStack(mv,
+                                    factorFunctionFieldName,
+                                    "L" + factorFunctionFieldName + ";");
       Compiler.loadInputParameter(mv);
       checkClassCast(mv, independentVariableNode.type());
       if (expression.traceGenerator)
       {
         System.out.format("%s.propagateInputToFactorClass( factorFunctionFieldName=%s,\n"
-                      + "%sindependentVariableNode=%s,\n" + "%sindependentVariableNode.type=%s)\n\n",
+                      + "%sindependentVariableNode=%s,\n"
+                      + "%sindependentVariableNode.type=%s)\n\n",
                           getClass().getSimpleName(),
                           factorFunctionFieldName,
                           indent(48),
@@ -596,14 +645,17 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
    * generated bytecodes by disassembling and/or decompiling the resulting
    * instruction sequence generated by the {@link Expression} {@link Compiler}
    */
-  public static boolean instantiateFactors = Boolean.valueOf(System.getProperty("arb4.compiler.instantiateFactors",
+  public static boolean instantiateFactors = Boolean.valueOf(System.getProperty(
+                                                                                "arb4.compiler.instantiateFactors",
                                                                                 "true"));
 
-  private <Q> void registerFactorSubexpressionInstance(Expression<Integer, Q, Function<Integer, Q>> factorExpression)
+  private <Q> void registerFactorSubexpressionInstance(Expression<Integer, Q, Function<Integer,
+                Q>> factorExpression)
   {
     expression.referencedFunctions.put(factorFunctionFieldName,
                                        expression.context.registerFunctionMapping(factorFunctionFieldName,
-                                                                                  instantiateFactors ? factorExpression.instantiate() : null,
+                                                                                  instantiateFactors ? factorExpression.instantiate()
+                                                                                                     : null,
                                                                                   Integer.class,
                                                                                   factorExpression.rangeType,
                                                                                   Function.class));

@@ -12,41 +12,32 @@
 
   <section|Compact Integral Covariance Operators>
 
-  Consider a compact integral operator <math|K> with a positive-definite
-  infinitely differentiable analytic kernel function
-  <math|k<around*|(|x,y|)>> acting on functions in
-  <math|L<rsup|2><around|(|D|)>>, the space of square-integrable functions
-  over a domain <math|D>, where we take to be the noncompact domain of
-  semi-infinite positive half-line <math|D=<around*|[|0,\<infty\>|)>> . The
-  goal is to solve the eigenvalue problem for <math|K>:
+  Consider a compact integral operator <math|K> with a
+  positive-definitekernel function <math|k<around*|(|x,y|)>> acting on
+  functions in <math|L<rsup|2><around|(|D|)>>, the space of square-integrable
+  functions over the noncompact domain of the positive semi-infinite
+  half-line <math|D=<around*|[|0,\<infty\>|)>> . The goal is to answer the
+  eigenfunction question for <math|K>:
 
   <\equation>
-    <around|(|K*\<phi\><rsub|n>|)><around|(|x|)>=\<lambda\>*\<phi\><rsub|n><around|(|x|)>
+    <around|(|K*\<psi\><rsub|n>|)><around|(|x|)>=<big|int><rsub|D>k*<around|(|x,y|)>*\<psi\><rsub|n><around|(|y|)>*d*y=\<lambda\><rsub|n>*\<psi\><rsub|n><around|(|x|)><around|(|K*\<psi\><rsub|n>|)><around|(|x|)>
   </equation>
 
-  where <math|<rsub|>\<phi\><rsub|n><around*|(|x|)>> is an element of the
-  orthonormal basis <math|<around|{|\<phi\><rsub|i>|}><rsub|i=1><rsup|\<infty\>>>
-  in <math|L<rsup|2><around|(|D|)>>, consisting of orthogonal polynomials
-  constituting the RKHS of <math|k<around*|(|x,y|)>> so that\ 
+  where <math|<rsub|>\<psi\><rsub|n><around*|(|x|)>> is the <math|n>-th
+  eigenfunction corresponding to the <math|n>-th eigenvalue
+  <math|\<lambda\><rsub|n>> of the integral covariance operator <math|K> and
+  <math|k<around*|(|x,y|)>> can be represented \ sequence of orthonormal
+  polynomials which converges uniformly to <math|k<around*|(|x,y|)>>
 
   <\equation>
-    K<around*|(|x,y|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|\<phi\><rsub|n><around*|(|x|)>\<phi\><rsub|n><around*|(|y|)>|\<lambda\><rsub|n>>
+    k<around*|(|x,y|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|\<phi\><rsub|n><around*|(|x|)>\<phi\><rsub|n><around*|(|y|)>|\<lambda\><rsub|n>>
   </equation>
 
-  represents an eigenfunction of <math|K>, and <math|\<lambda\><rsub|n>> is
-  the corresponding eigenvalue. The action of <math|K> on <math|\<phi\>> is
-  defined by:
-
-  <\equation>
-    <around|(|K*\<phi\><rsub|n>|)><around|(|x|)>=<big|int><rsub|D>k*<around|(|x,y|)>*\<phi\><rsub|n><around|(|y|)>*d*y
-  </equation>
-
-  \;
-
-  The RKHS basis will assume to be known but it will be shown how one can
-  always be found or constructed if the sequence for the kernel does not
-  correspond to any of the off-the-shelf known orthognal polynomial
-  sequences, classical or otherwise.
+  The basis set \ <math|\<phi\><rsub|n><around*|(|x|)>> is a sequence of
+  orthonormal polynomials derived from the orthogonalized Fourier transforms
+  of the orthogonal polynomial sequence whose corresponding orthogonality
+  measure is equal to the spectral density which is the Fourier transform of
+  the kernel <math|k<around*|(|x,y|)>>.\ 
 
   <subsection|The Bubnov-Galerkin method>
 
@@ -96,8 +87,8 @@
     A<rsub|k,*i>=<big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>*k*<around|(|x,y|)>*\<phi\><rsub|i><around|(|y|)>*d*y*d*x<label|A>
   </equation>
 
-  and <math|<wide|c|\<vect\>>> is the vector of coefficients
-  <math|c<rsub|i>>.
+  and <math|<wide|c|\<vect\>>=<around*|[|c<rsub|0>,c<rsub|1>,\<ldots\>,c<rsub|n>|]>>
+  is the vector of coefficients <math|c<rsub|i>>.
 
   <subsection|The Christoffel-Darboux kernel>
 
@@ -185,7 +176,7 @@
 
 <\references>
   <\collection>
-    <associate|A|<tuple|9|2>>
+    <associate|A|<tuple|8|2>>
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.2|2>>

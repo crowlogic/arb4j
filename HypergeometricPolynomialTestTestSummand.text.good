@@ -1,0 +1,429 @@
+// class version 65.65535 (-65471)
+// access flags 0x21
+// signature Ljava/lang/Object;Larb/functions/Function<Larb/Integer;Larb/Real;>;
+// declaration: nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq implements arb.functions.Function<arb.Integer, arb.Real>
+public class nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq implements arb/functions/Function {
+
+
+  // access flags 0x2
+  private Z isInitialized
+
+  // access flags 0x0
+  Larb/Integer; c1
+
+  // access flags 0x1
+  public Larb/Integer; p
+
+  // access flags 0x1
+  public Larb/Integer; q
+
+  // access flags 0x1
+  public Larb/Real; α
+
+  // access flags 0x1
+  public Larb/Real; β
+
+  // access flags 0x1
+  public Larb/Real; z
+
+  // access flags 0x1
+  public Larb/Real; ℝ1
+
+  // access flags 0x1
+  public Larb/Real; valueℝ1
+
+  // access flags 0x1
+  public Larb/Integer; k
+
+  // access flags 0x1
+  public Larb/Real; prodℝ1
+
+  // access flags 0x1
+  public Larb/Integer; endIndexℤ1
+
+  // access flags 0x1
+  public Larb/Real; ℝ2
+
+  // access flags 0x1
+  public Larb/Integer; ℤ1
+
+  // access flags 0x1
+  public Larb/Real; valueℝ2
+
+  // access flags 0x1
+  public Larb/Real; prodℝ2
+
+  // access flags 0x1
+  public Larb/Integer; endIndexℤ2
+
+  // access flags 0x1
+  public Larb/Real; ℝ3
+
+  // access flags 0x11
+  public final Lfactorℝ2; factorℝ2
+
+  // access flags 0x11
+  public final Lfactorℝ1; factorℝ1
+
+  // access flags 0x1
+  // signature (Larb/Integer;IILarb/Real;)Larb/Real;
+  // declaration: arb.Real evaluate(arb.Integer, int, int, arb.Real)
+  public evaluate(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;
+   L0
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.isInitialized : Z
+    IFNE L1
+    ALOAD 0
+    INVOKEVIRTUAL nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.initialize ()V
+   L1
+   FRAME SAME
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.z : Larb/Real;
+    ALOAD 1
+    CHECKCAST arb/Integer
+    ILOAD 3
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℝ1 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.pow (Larb/Integer;ILarb/Real;)Larb/Real;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ1 : Lfactorℝ1;
+    ALOAD 1
+    CHECKCAST arb/Integer
+    PUTFIELD factorℝ1.n : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ1 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.multiplicativeIdentity ()Larb/Real;
+    POP
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.k : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.c1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.endIndexℤ1 : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.p : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+   L2
+   FRAME SAME1 arb/Real
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ1 : Larb/Real;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ1 : Lfactorℝ1;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.k : Larb/Integer;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.valueℝ1 : Larb/Real;
+    INVOKEINTERFACE arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; (itf)
+    CHECKCAST arb/Real
+    ILOAD 3
+    INVOKEVIRTUAL arb/Real.mul (Larb/Real;I)Larb/Real;
+    POP
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.k : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.increment ()Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.endIndexℤ1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.compareTo (Larb/Integer;)I
+    IFLE L2
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ1 : Larb/Real;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℝ2 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.mul (Larb/Real;ILarb/Real;)Larb/Real;
+    ALOAD 1
+    CHECKCAST arb/Integer
+    ILOAD 3
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℤ1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.factorial (ILarb/Integer;)Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ2 : Lfactorℝ2;
+    ALOAD 1
+    CHECKCAST arb/Integer
+    PUTFIELD factorℝ2.n : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ2 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.multiplicativeIdentity ()Larb/Real;
+    POP
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.k : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.c1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.endIndexℤ2 : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.q : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.set (Larb/Integer;)Larb/Integer;
+    POP
+   L3
+   FRAME FULL [nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq java/lang/Object I I java/lang/Object] [arb/Real arb/Integer]
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ2 : Larb/Real;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ2 : Lfactorℝ2;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.k : Larb/Integer;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.valueℝ2 : Larb/Real;
+    INVOKEINTERFACE arb/functions/Function.evaluate (Ljava/lang/Object;ILjava/lang/Object;)Ljava/lang/Object; (itf)
+    CHECKCAST arb/Real
+    ILOAD 3
+    INVOKEVIRTUAL arb/Real.mul (Larb/Real;I)Larb/Real;
+    POP
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.k : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.increment ()Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.endIndexℤ2 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.compareTo (Larb/Integer;)I
+    IFLE L3
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ2 : Larb/Real;
+    ILOAD 3
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℝ3 : Larb/Real;
+    INVOKEVIRTUAL arb/Integer.mul (Larb/Real;ILarb/Real;)Larb/Real;
+    ILOAD 3
+    ALOAD 4
+    CHECKCAST arb/Real
+    INVOKEVIRTUAL arb/Real.div (Larb/Real;ILarb/Real;)Larb/Real;
+    ARETURN
+   L4
+    LOCALVARIABLE this LnzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq; L0 L4 0
+    LOCALVARIABLE in Larb/Integer; L0 L4 1
+    LOCALVARIABLE order I L0 L4 2
+    LOCALVARIABLE bits I L0 L4 3
+    LOCALVARIABLE result Larb/Real; L0 L4 4
+    MAXSTACK = 7
+    MAXLOCALS = 5
+
+  // access flags 0x1
+  public <init>()V
+    ALOAD 0
+    INVOKESPECIAL java/lang/Object.<init> ()V
+    ALOAD 0
+    NEW factorℝ2
+    DUP
+    INVOKESPECIAL factorℝ2.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ2 : Lfactorℝ2;
+    ALOAD 0
+    NEW factorℝ1
+    DUP
+    INVOKESPECIAL factorℝ1.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ1 : Lfactorℝ1;
+    ALOAD 0
+    NEW arb/Integer
+    DUP
+    LDC "1"
+    INVOKESPECIAL arb/Integer.<init> (Ljava/lang/String;)V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.c1 : Larb/Integer;
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℝ1 : Larb/Real;
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.valueℝ1 : Larb/Real;
+    ALOAD 0
+    NEW arb/Integer
+    DUP
+    INVOKESPECIAL arb/Integer.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.k : Larb/Integer;
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ1 : Larb/Real;
+    ALOAD 0
+    NEW arb/Integer
+    DUP
+    INVOKESPECIAL arb/Integer.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.endIndexℤ1 : Larb/Integer;
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℝ2 : Larb/Real;
+    ALOAD 0
+    NEW arb/Integer
+    DUP
+    INVOKESPECIAL arb/Integer.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℤ1 : Larb/Integer;
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.valueℝ2 : Larb/Real;
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ2 : Larb/Real;
+    ALOAD 0
+    NEW arb/Integer
+    DUP
+    INVOKESPECIAL arb/Integer.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.endIndexℤ2 : Larb/Integer;
+    ALOAD 0
+    NEW arb/Real
+    DUP
+    INVOKESPECIAL arb/Real.<init> ()V
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℝ3 : Larb/Real;
+    RETURN
+    MAXSTACK = 4
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public initialize()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.isInitialized : Z
+    IFEQ L0
+    NEW java/lang/AssertionError
+    DUP
+    LDC "Already initialized"
+    INVOKESPECIAL java/lang/AssertionError.<init> (Ljava/lang/Object;)V
+    ATHROW
+   L0
+   FRAME SAME
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.p : Larb/Integer;
+    IFNONNULL L1
+    NEW java/lang/AssertionError
+    DUP
+    LDC "p is null"
+    INVOKESPECIAL java/lang/AssertionError.<init> (Ljava/lang/Object;)V
+    ATHROW
+   L1
+   FRAME SAME
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.q : Larb/Integer;
+    IFNONNULL L2
+    NEW java/lang/AssertionError
+    DUP
+    LDC "q is null"
+    INVOKESPECIAL java/lang/AssertionError.<init> (Ljava/lang/Object;)V
+    ATHROW
+   L2
+   FRAME SAME
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.z : Larb/Real;
+    IFNONNULL L3
+    NEW java/lang/AssertionError
+    DUP
+    LDC "z is null"
+    INVOKESPECIAL java/lang/AssertionError.<init> (Ljava/lang/Object;)V
+    ATHROW
+   L3
+   FRAME SAME
+    ALOAD 0
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ2 : Lfactorℝ2;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.p : Larb/Integer;
+    PUTFIELD factorℝ2.p : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ2 : Lfactorℝ2;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.q : Larb/Integer;
+    PUTFIELD factorℝ2.q : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ2 : Lfactorℝ2;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.α : Larb/Real;
+    PUTFIELD factorℝ2.α : Larb/Real;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ2 : Lfactorℝ2;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.β : Larb/Real;
+    PUTFIELD factorℝ2.β : Larb/Real;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ2 : Lfactorℝ2;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.z : Larb/Real;
+    PUTFIELD factorℝ2.z : Larb/Real;
+    ALOAD 0
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ1 : Lfactorℝ1;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.p : Larb/Integer;
+    PUTFIELD factorℝ1.p : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ1 : Lfactorℝ1;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.q : Larb/Integer;
+    PUTFIELD factorℝ1.q : Larb/Integer;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ1 : Lfactorℝ1;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.α : Larb/Real;
+    PUTFIELD factorℝ1.α : Larb/Real;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ1 : Lfactorℝ1;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.β : Larb/Real;
+    PUTFIELD factorℝ1.β : Larb/Real;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.factorℝ1 : Lfactorℝ1;
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.z : Larb/Real;
+    PUTFIELD factorℝ1.z : Larb/Real;
+    ALOAD 0
+    ICONST_1
+    PUTFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.isInitialized : Z
+    RETURN
+    MAXSTACK = 4
+    MAXLOCALS = 1
+
+  // access flags 0x1
+  public close()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.c1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℝ1 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.valueℝ1 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.k : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ1 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.endIndexℤ1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℝ2 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℤ1 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.valueℝ2 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.prodℝ2 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.endIndexℤ2 : Larb/Integer;
+    INVOKEVIRTUAL arb/Integer.close ()V
+    ALOAD 0
+    GETFIELD nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWherekEquals1Toq.ℝ3 : Larb/Real;
+    INVOKEVIRTUAL arb/Real.close ()V
+    RETURN
+    MAXSTACK = 1
+    MAXLOCALS = 1
+}
