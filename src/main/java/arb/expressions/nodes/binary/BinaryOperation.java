@@ -154,7 +154,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     int typeStackSizeAfter = expression.typeStack.size();
     if (typeStackSizeBefore + 1 != typeStackSizeAfter)
     {
-      throw new ExpressionCompilerException(format("left hand side %s did not add 1 item to the typestack as expected, typeStackSizeBefore = %d != typeStackSizeAfter = %d",
+      throw new ExpressionCompilerException(format("left hand side %s %s did not add 1 item to the typestack as expected, typeStackSizeBefore = %d != typeStackSizeAfter = %d",
+                                                   left.getClass().getSimpleName(),
                                                    left,
                                                    typeStackSizeBefore,
                                                    typeStackSizeAfter));
@@ -191,7 +192,9 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     Class<?> removedRightSideType = expression.removeFromTypeStack();
     if (!removedRightSideType.equals(leftType))
     {
-      throw new ExpressionCompilerException(String.format("Generated right hand side is %s but type popped from typestack is %s",
+      throw new ExpressionCompilerException(String.format("Generated right hand side %s %s is %s but type popped from typestack is %s",
+                                                          right.getClass().getSimpleName(),
+                                                          right,
                                                           rightType,
                                                           removedRightSideType));
     }

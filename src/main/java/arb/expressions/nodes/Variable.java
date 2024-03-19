@@ -167,7 +167,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     generateReference(mv);
 
     generateIndexAccess(mv);
-
+    
     generatedType = type();
     if (isResult)
     {
@@ -198,8 +198,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       indexType = reference.index.type();
 
+      int typeStackSizeBefore = expression.typeStack.size();
+                    
       reference.index.generate(mv, indexType);
 
+      int typeStackSizeAfter = expression.typeStack.size();
+      assert typeStackSizeAfter > typeStackSizeBefore;
+      assert expression.removeFromTypeStack().equals(Integer.class);
     }
 
     if (Integer.class.equals(indexType))

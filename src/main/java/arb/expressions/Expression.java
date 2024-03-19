@@ -1,11 +1,26 @@
 package arb.expressions;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.addNullCheckForField;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.express;
+import static arb.expressions.Compiler.generateFunctionInterface;
+import static arb.expressions.Compiler.getVariableSuffix;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadFunctionClass;
+import static arb.expressions.Compiler.loadResultParameter;
+import static arb.expressions.Compiler.loadThisOntoStack;
 import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.indent;
 import static java.lang.String.format;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_FINAL;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,14 +133,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
 
-  public static boolean      computeFrames  =
+  public static boolean      computeFrames              =
                                            Boolean.valueOf(System.getProperty("arb4j.compiler.computeFrames",
                                                                               "false"));
 
   public static final String evaluationMethodDescriptor =
                                                         "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
-  public static boolean ignoreTODO = true;
+  public static boolean      ignoreTODO                 = true;
 
   public static final String IS_INITIALIZED             = "isInitialized";
 
@@ -201,55 +216,55 @@ public class Expression<D, R, F extends Function<D, R>> implements
                    verbose).instantiate();
   }
 
-  public Expression<?, ?, ?> ascendentExpression;
+  public Expression<?, ?, ?>                      ascendentExpression;
 
-  public char                     character                     = 0;
+  public char                                     character                     = 0;
 
-  public boolean                  checkForNullsBeforeEvaluating = false;
+  public boolean                                  checkForNullsBeforeEvaluating = false;
 
-  public String                   className;
+  public String                                   className;
 
-  Class<F>                        compiledClass;
+  Class<F>                                        compiledClass;
 
-  int                             constantCount                 = 1;
+  int                                             constantCount                 = 1;
 
-  public Context                  context;
+  public Context                                  context;
 
-  final public String             domainClassDescriptor;
+  final public String                             domainClassDescriptor;
 
-  public final String             domainClassInternalName;
+  public final String                             domainClassInternalName;
 
-  final public Class<? extends D> domainType;
+  final public Class<? extends D>                 domainType;
 
-  public final String             evaluateMethodSignature;
+  public final String                             evaluateMethodSignature;
 
-  public String                   expression;
+  public String                                   expression;
 
-  public Class<? extends F>       functionClass;
+  public Class<? extends F>                       functionClass;
 
-  public String                   functionClassDescriptor;
+  public String                                   functionClassDescriptor;
 
-  public String                   functionName;
+  public String                                   functionName;
 
-  final public String             genericFunctionClassInternalName;
+  final public String                             genericFunctionClassInternalName;
 
   public Variable<D, R, F>                        indeterminate;
 
-  public Variable<D, R, F>        inputNode;
+  public Variable<D, R, F>                        inputNode;
 
   F                                               instance;
 
   protected byte[]                                instructions;
 
-  public ArrayList<IntermediateVariable<D, R, F>> intermediateVariables = new ArrayList<>();
+  public ArrayList<IntermediateVariable<D, R, F>> intermediateVariables         = new ArrayList<>();
 
-  public ArrayList<LiteralConstant<D, R, F>>      literalConstants      = new ArrayList<>();
+  public ArrayList<LiteralConstant<D, R, F>>      literalConstants              = new ArrayList<>();
 
-  public int                                      position              = -1;
+  public int                                      position                      = -1;
 
   public char                                     previousCharacter;
 
-  public PrintWriter         printWriter;
+  public PrintWriter                              printWriter;
 
   final public String                             rangeClassDescriptor;
 
@@ -257,23 +272,23 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   final public Class<? extends R>                 rangeType;
 
-  public boolean                                  recursive             = false;
+  public boolean                                  recursive                     = false;
 
-  public HashMap<String, FunctionMapping<D, R>>   referencedFunctions   = new HashMap<>();
+  public HashMap<String, FunctionMapping<D, R>>   referencedFunctions           = new HashMap<>();
 
-  public HashMap<String, Variable<D, R, F>>       referencedVariables   = new HashMap<>();
+  public HashMap<String, Variable<D, R, F>>       referencedVariables           = new HashMap<>();
 
   public Node<D, R, F>                            rootNode;
 
-  public boolean             traceGenerator = true;
+  public boolean                                  traceGenerator                = true;
 
-  public Stack<Class<?>> typeStack = new Stack<>();
+  public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
   public Variables                                variables;
 
-  public boolean                                  variablesDeclared     = false;
+  public boolean                                  variablesDeclared             = false;
 
-  public boolean             verbose        = false;
+  public boolean                                  verbose                       = false;
 
   public Expression(String className,
                     Class<? extends D> domainClass,
@@ -418,6 +433,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void addToTypeStack(Class<?> type)
   {
+    if (traceGenerator)
+    {
+      System.out.format("Adding %s to the type stack: %s\n", type, typeStack);
+    }
     typeStack.add(type);
   }
 
@@ -1618,6 +1637,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Class<?> removeFromTypeStack()
   {
+    if (traceGenerator)
+    {
+      System.out.format("Popping the top off the type stack: %s\n", typeStack);
+    }
     return typeStack.pop();
   }
 

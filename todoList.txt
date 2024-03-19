@@ -1,5 +1,2 @@
-expression compiler: support utf superscript chars for exponentiation #348
-derive eigenfunctions of the new integral operator
-expression compiler: automatic differentiation #253
-add dependencys among list items
 #359 expression compiler; fix stackmap frame generation issue - https://github.com/crowlogic/arb4j/issues/359
+add typestack mgmt to LiteralConstant for #359
