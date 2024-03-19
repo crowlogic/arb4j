@@ -161,7 +161,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   {
     if (expression.traceGenerator)
     {
-      System.out.format("Variable.generate( this=%s, resultType=%s)\n", this, resultType);
+      System.out.format("Variable.generate( this=%s, resultType=%s)\n\n", this, resultType);
     }
     
     generateReference(mv);
