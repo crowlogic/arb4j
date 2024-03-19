@@ -505,7 +505,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   public void loadResultVariable(MethodVisitor methodVisitor)
   {
-    expression.appendTypeToStack(generatedType);
+    expression.addToTypeStack(generatedType);
     getField(methodVisitor, expression.className, resultVariable, generatedType);
   }
 

@@ -1500,7 +1500,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Stack<Class<?>> typeStack = new Stack<>();
 
-  public void appendTypeToStack(Class<?> type)
+  public void addToTypeStack(Class<?> type)
   {
     typeStack.add(type);
   }

@@ -159,6 +159,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    if (expression.traceGenerator)
+    {
+      System.out.format("Variable.generate( this=%s, resultType=%s)\n", this, resultType);
+    }
+    
     generateReference(mv);
 
     generateIndexAccess(mv);
@@ -168,7 +173,16 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       expression.setResult(mv, generatedType);
     }
-
+    /**
+     * The reason this method gets away with ignoring the requested resultType is
+     * that the nodes which call generate on it check its generatedType and if its
+     * not the one they requested it does the cast there. For now, the requested
+     * resultType will be pushed onto the Expressions type stack
+     */
+    // expression.addToTypeStack(resultType);
+//    assert generatedType.equals(resultType) : String.format("generatedType = %s != resultType = %s\n",
+//                                                            generatedType,
+//                                                            resultType);
     return mv;
   }
 
