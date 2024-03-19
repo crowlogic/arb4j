@@ -167,6 +167,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     var overrideLeftType  = leftGeneratedType != null ? leftGeneratedType : left.type();
     invokeBinaryOperationMethod(mv, operator, overrideLeftType, right.type(), resultType);
 
+    expression.addToTypeStack(resultType);
+    
     return mv;
   }
 
