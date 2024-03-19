@@ -179,7 +179,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
      * not the one they requested it does the cast there. For now, the requested
      * resultType will be pushed onto the Expressions type stack
      */
-    // expression.addToTypeStack(resultType);
+     expression.addToTypeStack(resultType);
 //    assert generatedType.equals(resultType) : String.format("generatedType = %s != resultType = %s\n",
 //                                                            generatedType,
 //                                                            resultType);

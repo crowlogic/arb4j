@@ -1,7 +1,11 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
+import static arb.expressions.Compiler.prepareStackForReusingRightSide;
 import static arb.utensils.Utensils.indent;
+import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import org.objectweb.asm.MethodVisitor;
@@ -109,7 +113,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       Class<? extends Object> rhsType = right.type();
       if (Integer.class.equals(rhsType) || Real.class.equals(rhsType))
       {
-        left = new LiteralConstant<>(expression, Real.class.equals(rhsType) ? "0.0" : "0");
+        left = new LiteralConstant<>(expression,
+                                     Real.class.equals(rhsType) ? "0.0" : "0");
       }
       else
       {
@@ -118,8 +123,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                       + ", this is where -x is translated to 0-x. that is what is meant by fill-in");
       }
     }
-    assert left != null && right != null : "one or more of the operands to this were missing: " + this
-                  + " set 0 value based on type here";
+    assert left != null && right != null : "one or more of the operands to this were missing: "
+                  + this + " set 0 value based on type here";
   }
 
   @Override
@@ -144,7 +149,16 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     }
     generatedType = resultType;
 
+    int typeStackSizeBefore = expression.typeStack.size();
     left.generate(mv, left.type());
+    int typeStackSizeAfter = expression.typeStack.size();
+    if (typeStackSizeBefore + 1 != typeStackSizeAfter)
+    {
+      throw new UnsupportedOperationException(format("left hand side %s did not add 1 item to the typestack as expected, typeStackSizeBefore = %d != typeStackSizeAfter = %d",
+                                                     left,
+                                                     typeStackSizeBefore,
+                                                     typeStackSizeAfter));
+    }
     right.generate(mv, right.type());
     return invokeMethod(mv, operation, resultType);
   }
@@ -163,12 +177,26 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     loadBitsParameter(mv);
     loadResult(mv, resultType);
 
-    var leftGeneratedType = left.getGeneratedType();
-    var overrideLeftType  = leftGeneratedType != null ? leftGeneratedType : left.type();
-    invokeBinaryOperationMethod(mv, operator, overrideLeftType, right.type(), resultType);
-
+    var leftType = left.getGeneratedType();
+    leftType = leftType != null ? leftType : left.type();
+    Class<? extends Object> rightType = right.type();
+    invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
+    Class<?> removedLeftSideType = expression.removeFromTypeStack();
+    if (!removedLeftSideType.equals(leftType))
+    {
+      throw new ExpressionCompilerException(String.format("Generated left hand side is %s but type popped from typestack is %s",
+                                                          leftType,
+                                                          removedLeftSideType));
+    }
+    Class<?> removedRightSideType = expression.removeFromTypeStack();
+    if (!removedRightSideType.equals(leftType))
+    {
+      throw new ExpressionCompilerException(String.format("Generated right hand side is %s but type popped from typestack is %s",
+                                                          rightType,
+                                                          removedRightSideType));
+    }
     expression.addToTypeStack(resultType);
-    
+
     return mv;
   }
 
@@ -268,7 +296,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     assert leftType != null : "lhs type is  null where lhs is " + left + " and a=" + a + " b=" + b;
     assert rightType != null : "rhs type is null where rhs is " + right + " and a=" + a + " b=" + b;
 
-    return (leftType.equals(a) && rightType.equals(b)) || (leftType.equals(b) && rightType.equals(a));
+    return (leftType.equals(a) && rightType.equals(b))
+                  || (leftType.equals(b) && rightType.equals(a));
   }
 
   @Override

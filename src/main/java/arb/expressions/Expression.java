@@ -1616,4 +1616,9 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return this;
   }
 
+  public Class<?> removeFromTypeStack()
+  {
+    return typeStack.pop();
+  }
+
 }
