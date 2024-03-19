@@ -154,10 +154,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     int typeStackSizeAfter = expression.typeStack.size();
     if (typeStackSizeBefore + 1 != typeStackSizeAfter)
     {
-      throw new UnsupportedOperationException(format("left hand side %s did not add 1 item to the typestack as expected, typeStackSizeBefore = %d != typeStackSizeAfter = %d",
-                                                     left,
-                                                     typeStackSizeBefore,
-                                                     typeStackSizeAfter));
+      throw new ExpressionCompilerException(format("left hand side %s did not add 1 item to the typestack as expected, typeStackSizeBefore = %d != typeStackSizeAfter = %d",
+                                                   left,
+                                                   typeStackSizeBefore,
+                                                   typeStackSizeAfter));
     }
     right.generate(mv, right.type());
     return invokeMethod(mv, operation, resultType);
