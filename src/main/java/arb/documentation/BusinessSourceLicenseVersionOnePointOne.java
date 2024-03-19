@@ -14,17 +14,21 @@ public class BusinessSourceLicenseVersionOnePointOne implements
 {
   public static LicensedWork licensedWork     = new TheArb4jLibrary();
 
-  public static Clause       changeDateClause = () -> "Effective on the Change Date of December 18, 2023+4 years, or the fourth anniversary of the first publicly available distribution of a specific version of the \n"
-                + "Licensed Work under this License, whichever comes first, the Licensor hereby grants you rights under the terms of the Change License, and the rights granted \n"
-                + "in the paragraph above terminate.\n" + "\n"
-                + "This software shall be licensed under the Business Source License v1.1 until 4 years after the date of December 18, 2023. On this Change Date, the software will \n"
-                + "automatically transition to the Lesser General Public License (LGPL)";
+  public static Clause       changeDateClause =
+                                              () -> "Effective on the Change Date of March 19, 2024, or the fourth anniversary of the first publicly available distribution of a specific version of the \n"
+                                                            + "Licensed Work under this License, whichever comes first, the Licensor hereby grants you rights under the terms of the Change License, and the rights granted \n"
+                                                            + "in the paragraph above terminate.\n"
+                                                            + "\n"
+                                                            + "This software shall be licensed under the Business Source License v1.1 until 4 years after the date of March 19, 2024. On this Change Date, the software will \n"
+                                                            + "automatically transition to the Lesser General Public License (LGPL)";
 
-  private Term               personalUseGrant = () -> "Personal, educational, and hobby use of the Licensed Work is allowed without a commercial license. However, if the Licensed Work is used within a \n"
-                + "company or non-profit organization for more than two weeks, a commercial license is required. The use of the Licensed Work(arb4j) for commercial \n"
-                + "product development of any kind, especially financial purposes (including option pricing, futures pricing, hedging, or similar financial calculations), \n"
-                + "regardless of whether coinciding with being a personal, educational, or hobby use is prohibited and would be an instance of Production Use, thus \n"
-                + "requiring a license. Exceptions to this for the purposes of testing and evaluation must be approved in writing by the Licensor.";
+  private Term               personalUseGrant =
+                                              () -> "Personal and hobby use of the Licensed Work is allowed without a commercial license. However, if the Licensed Work is used within a \n"
+                                                            + "company, educational institution, or non-profit organization for more than two weeks, a commercial license is required. Production use means using arb4j to determine any result which is then used '"
+                                                            + "to do anything related to any sort of activity whatsoever. The use of the Licensed Work(arb4j) for commercial \n"
+                                                            + "product development of any kind or production use for any period of time, especially financial purposes (including option pricing, futures pricing, hedging, or similar financial calculations), \n"
+                                                            + "regardless of whether coinciding with being a personal, educational, or hobby use is prohibited and would be an instance of Production Use, thus \n"
+                                                            + "requiring a license. Exceptions to this for the purposes of testing and evaluation must be approved in writing by the Licensor ";
 
   @Override
   public String getText()
@@ -32,10 +36,11 @@ public class BusinessSourceLicenseVersionOnePointOne implements
     return "arb4j is the Licensed Work by Author and Licensor Stephen Andrew Crowley ©2024\n" + "\n"
                   + "that is made available under the terms of the Business Source License™ v1.1 ©2023 by MariaDB plc, All Rights Reserved."
                   + "\n===Licensed Work Definition===\n" + licensedWork.getLicensedWorkDefinition()
-                  + "===Additional Use Grant===\n" + personalUseGrant.getLicensedWorkDefinition() + "\n" + "===Change Date===\n"
-                  + changeDateClause.getLicensedWorkDefinition() + "\n===Terms===\n" + "\n"
-                  + "The Licensor(Stephen Crowley) hereby grants you the right to\n" + "•  copy,\n" + "•  modify,\n"
-                  + "•  create derivative works,\n" + "•  redistribute,\n"
+                  + "===Additional Use Grant===\n" + personalUseGrant.getLicensedWorkDefinition()
+                  + "\n" + "===Change Date===\n" + changeDateClause.getLicensedWorkDefinition()
+                  + "\n===Terms===\n" + "\n"
+                  + "The Licensor(Stephen Crowley) hereby grants you the right to\n" + "•  copy,\n"
+                  + "•  modify,\n" + "•  create derivative works,\n" + "•  redistribute,\n"
                   + "•  and make non-production use of the Licensed Work.\n"
                   + "The Licensor may make an Additional Use Grant, above, permitting limited production use.\n"
                   + "All copies of the original and modified Licensed Work, and derivative works of the Licensed Work, are subject to this License. This License applies separately \n"
@@ -56,7 +61,8 @@ public class BusinessSourceLicenseVersionOnePointOne implements
                   + "recipients of the licensed work to be provided by Licensor:\n" + "\n"
                   + "to specify as the Change License the GPL Version 2.0 or any later version, or a license that is compatible with GPL Version 2.0 or a later version, where \n"
                   + "“compatible” means that software provided under the Change License can be included in a program with software provided under GPL Version 2.0 or a later version. \n"
-                  + "Licensor may specify additional Change Licenses without limitation. To either:\n" + "\n"
+                  + "Licensor may specify additional Change Licenses without limitation. To either:\n"
+                  + "\n"
                   + "a) specify an additional grant of rights to use that does not impose any additional restriction on the right granted in this License, as the Additional Use Grant; \n"
                   + "\n" + "or\n" + "\n"
                   + "b) insert the text “None” to specify a Change Date. Not to modify this License in any other way.\n"
