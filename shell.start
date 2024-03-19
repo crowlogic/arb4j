@@ -26,4 +26,3 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import arb.functions.polynomials.orthogonal.*;
 
-ZFunction Z = new ZFunction();
