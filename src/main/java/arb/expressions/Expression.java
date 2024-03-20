@@ -1,6 +1,5 @@
 package arb.expressions;
 
-import arb.expressions.AbstractSyntaxTreeModel;
 import static arb.expressions.Compiler.addNullCheckForField;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.express;
@@ -74,6 +73,7 @@ import arb.expressions.nodes.unary.UnaryOperation;
 import arb.expressions.nodes.unary.When;
 import arb.functions.Function;
 import arb.utensils.Utensils;
+import arb.utensils.treetext.TextTree;
 
 /**
  * The {@link Expression} class represents a mathematical statement in infix
@@ -216,6 +216,15 @@ public class Expression<D, R, F extends Function<D, R>> implements
                    rangeClass,
                    functionClass,
                    verbose).instantiate();
+  }
+
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
+                                                                             String expression,
+                                                                             Class<D> domainClass,
+                                                                             Class<R> rangeClass,
+                                                                             Class<F> functionClass)
+  {
+    return express(className, expression, null, domainClass, rangeClass, functionClass, false);
   }
 
   public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
@@ -401,14 +410,18 @@ public class Expression<D, R, F extends Function<D, R>> implements
                         && varName.equals(ascendentExpression.inputNode.reference.name))
           {
             assert ignoreTODO : "TODO: add check for null superexpression input here: "
-                          + ascendentExpression;
+                                + ascendentExpression;
           }
           else
           {
-            throw new UnsupportedOperationException("no contextual variable for varName='" + varName
-                          + "' and independent variable reference is " + inputNode
-                          + " where parentExpression=" + ascendentExpression
-                          + " and this expression=" + this);
+            throw new UnsupportedOperationException("no contextual variable for varName='"
+                                                    + varName
+                                                    + "' and independent variable reference is "
+                                                    + inputNode
+                                                    + " where parentExpression="
+                                                    + ascendentExpression
+                                                    + " and this expression="
+                                                    + this);
           }
         }
         else
@@ -776,8 +789,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       else
       {
         throw new ExpressionCompilerException(String.format("TODO: handle subscripted index starting with"
-                      + " lastCharacter=%c this could be either a numeric literal constant or a "
-                      + "alphanumeric variable reference"));
+                                                            + " lastCharacter=%c this could be either a numeric literal constant or a "
+                                                            + "alphanumeric variable reference"));
       }
     }
     else
@@ -1003,10 +1016,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       assert !NAryOperation.instantiateFactors
                     || nestedFunction.name.equals(functionName) : "nestedFunction.func should not be null if its"
-                                  + " not the recursive function referring to itself, "
-                                  + String.format("nestedFunction.name=%s, name=%s\n",
-                                                  nestedFunction.name,
-                                                  functionName);
+                                                                  + " not the recursive function referring to itself, "
+                                                                  + String.format("nestedFunction.name=%s, name=%s\n",
+                                                                                  nestedFunction.name,
+                                                                                  functionName);
 
     }
 
@@ -1377,7 +1390,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     assert rootNode
                   == null : "parse must only be called before anything else has been parsed but rootNode="
-                                + rootNode;
+                            + rootNode;
     evaluateOptionalIndependentVariableSpecification();
     nextCharacter();
     if (verbose)
@@ -1386,7 +1399,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     rootNode = resolve();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
-                  + expression + "'";
+                              + expression
+                              + "'";
     rootNode.isResult = true;
     return this;
   }
@@ -1594,7 +1608,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public void throwMissingClosingParenthesisException(Object node)
   {
     throw new ExpressionCompilerException(format("expected closing parenthesis, instead "
-                  + "got %c at position %s in expression '%s' %s=%s which is followed by %s ",
+                                                 + "got %c at position %s in expression '%s' %s=%s which is followed by %s ",
                                                  character,
                                                  position,
                                                  expression,
@@ -1647,6 +1661,16 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                  e);
     }
     return this;
+  }
+
+  public String syntaxTreeToString()
+  {
+    return newSyntaxTextTree().toString();
+  }
+
+  public TextTree<Node<?, ?, ?>> newSyntaxTextTree()
+  {
+    return new TextTree<>(newSyntaxTree());
   }
 
   public AbstractSyntaxTreeModel newSyntaxTree()

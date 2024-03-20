@@ -16,18 +16,20 @@ public class TextTreeTest extends
 {
   public void testPrintAbstractSyntaxTree()
   {
-    Expression<Real,
-                  Real,
-                  RealFunction>          expression = Expression.compile("S",
-                                                                         "tanh(log(1+x^2))",
-                                                                         null,
-                                                                         Real.class,
-                                                                         Real.class,
-                                                                         RealFunction.class,
-                                                                         false);
-    var                                  model      = expression.newSyntaxTree();
-    var                                  tree       = new TextTree<>(model);
-    System.out.println(tree);
+    var expression = Expression.compile("S",
+                                        "tanh(log(1+x^2))",
+                                        Real.class,
+                                        Real.class,
+                                        RealFunction.class);
+
+    assertEquals("-- tanh(log(1+(x^2)))\n"
+                 + "   `-- log(1+(x^2))\n"
+                 + "      `-- 1+(x^2)\n"
+                 + "         |-- 1\n"
+                 + "         `-- x^2\n"
+                 + "            |-- x\n"
+                 + "            `-- 2\n",
+                 expression.syntaxTreeToString());
   }
 
 }
