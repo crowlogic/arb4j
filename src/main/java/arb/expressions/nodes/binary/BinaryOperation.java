@@ -185,11 +185,12 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     Class<?> removedLeftSideType = expression.removeFromTypeStack();
     if (!removedLeftSideType.equals(leftType))
     {
-      throw new ExpressionCompilerException(String.format("Generated left hand side %s %s is %s but type popped from typestack is %s",
+      throw new ExpressionCompilerException(String.format("Generated left hand side %s %s is %s but type popped from typestack is %s \n with typestack = %s",
                                                           left.getClass().getSimpleName(),
                                                           left,
                                                           leftType,
-                                                          removedLeftSideType));
+                                                          removedLeftSideType,
+                                                          expression.typeStack));
     }
     Class<?> removedRightSideType = expression.removeFromTypeStack();
     if (!removedRightSideType.equals(leftType))
