@@ -135,7 +135,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public static boolean      computeFrames              =
                                            Boolean.valueOf(System.getProperty("arb4j.compiler.computeFrames",
-                                                                              "false"));
+                                                                              "true"));
 
   public static final String evaluationMethodDescriptor =
                                                         "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
@@ -280,7 +280,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F>                            rootNode;
 
-  public boolean                                  traceGenerator                = true;
+  public boolean                                  traceGenerator                = false;
 
   public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
@@ -431,11 +431,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public void addToTypeStack(Class<?> type)
+  public void addToTypeStack(Class<?> type, String name)
   {
     if (traceGenerator)
     {
-      System.out.format("Adding %s to the type stack: %s\n", type, typeStack);
+      System.out.format("Adding %s to the type stack for %s: %s\n from \n", type, name, typeStack);
+      new Throwable().printStackTrace();
     }
     typeStack.add(type);
   }
@@ -1605,7 +1606,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   @Override
   public String toString()
   {
-    return String.format("Expression[expression=%s,\n%sclassName=%s,\n%sfunctionName=%s, recursive=%s, functionClass=%s]",
+    return String.format("Expression[expression=%s,\n%sclassName=%s,\n%sfunctionName=%s, recursive=%s, functionClass=%s] + from ",
                          expression,
                          indent(22),
                          className,
@@ -1635,13 +1636,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return this;
   }
 
-  public Class<?> removeFromTypeStack()
+  public Class<?> removeTopOfTypeStack()
   {
+    if ( computeFrames )
+    {
+      return null;
+    }
     if (traceGenerator)
     {
       System.out.format("Popping the top off the type stack: %s\n", typeStack);
     }
-    return typeStack.pop();
+    Class<?> popped = typeStack.pop();
+    if (traceGenerator)
+    {
+      System.out.format("Popped " + popped);
+    }
+    return popped;
   }
 
 }

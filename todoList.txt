@@ -1,2 +1,1 @@
-#359 expression compiler; fix stackmap frame generation issue - https://github.com/crowlogic/arb4j/issues/359
-add typestack mgmt to LiteralConstant for #359
+expression compiler: add ability to view expression tree graphically #275

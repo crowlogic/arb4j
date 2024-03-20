@@ -158,18 +158,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     }
     generatedType = resultType;
 
-    int typeStackSizeBefore = expression.typeStack.size();
     left.generate(mv, left.type());
-    int typeStackSizeAfter = expression.typeStack.size();
-    if (typeStackSizeBefore + 1 != typeStackSizeAfter)
-    {
-      throw new ExpressionCompilerException(format("left hand side %s %s did not add 1 item to the typestack as expected, typeStackSizeBefore = %d != typeStackSizeAfter = %d",
-                                                   left.getClass().getSimpleName(),
-                                                   left,
-                                                   typeStackSizeBefore,
-                                                   typeStackSizeAfter));
-    }
+  
     right.generate(mv, right.type());
+    
     return invokeMethod(mv, operation, resultType);
   }
 
@@ -191,26 +183,12 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     leftType = leftType != null ? leftType : left.type();
     Class<? extends Object> rightType = right.type();
     invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
-    Class<?> removedLeftSideType = expression.removeFromTypeStack();
-    if (!removedLeftSideType.equals(leftType))
+   
+    if ( expression.traceGenerator)
     {
-      throw new ExpressionCompilerException(String.format("Generated left hand side %s %s is %s but type popped from typestack is %s \n with typestack = %s",
-                                                          left.getClass().getSimpleName(),
-                                                          left,
-                                                          leftType,
-                                                          removedLeftSideType,
-                                                          expression.typeStack));
+      System.out.println( "Adding expression to type stack for " + this );
     }
-    Class<?> removedRightSideType = expression.removeFromTypeStack();
-    if (!removedRightSideType.equals(leftType))
-    {
-      throw new ExpressionCompilerException(String.format("Generated right hand side %s %s is %s but type popped from typestack is %s",
-                                                          right.getClass().getSimpleName(),
-                                                          right,
-                                                          rightType,
-                                                          removedRightSideType));
-    }
-    expression.addToTypeStack(resultType);
+    expression.addToTypeStack(resultType, toString() );
 
     return mv;
   }
