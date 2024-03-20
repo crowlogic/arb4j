@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import arb.OrderedPair;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
@@ -25,9 +26,11 @@ public class AbstractSyntaxTreeModel implements
     indexBranches(this.root = root);
   }
 
-  ArrayList<Node<?, ?, ?>>                    nodes           = new ArrayList<>();
+  ArrayList<Node<?, ?, ?>>                                          nodes           =
+                                                                          new ArrayList<>();
 
-  HashMap<Node<?, ?, ?>, List<Node<?, ?, ?>>> indexedBranches = new HashMap<>();
+  HashMap<Node<?, ?, ?>, OrderedPair<List<Node<?, ?, ?>>, Integer>> indexedBranches =
+                                                                                    new HashMap<>();
 
   void indexBranches(Node<?, ?, ?> stem)
   {
@@ -43,7 +46,9 @@ public class AbstractSyntaxTreeModel implements
     }
     int rightIndex = nodes.size();
 
-    indexedBranches.put(stem, nodes.subList(leftIndex, rightIndex));
+    indexedBranches.put(stem,
+                        new OrderedPair<>(nodes.subList(leftIndex, rightIndex),
+                                          Integer.valueOf(rightIndex - leftIndex)));
   }
 
   Node<?, ?, ?> root;
@@ -57,13 +62,13 @@ public class AbstractSyntaxTreeModel implements
   @Override
   public Node<?, ?, ?> getNode(Node<?, ?, ?> parent, int index)
   {
-    return indexedBranches.get(parent).get(index);
+    return indexedBranches.get(parent).getKey().get(index);
   }
 
   @Override
   public int getNodeCount(Node<?, ?, ?> parent)
   {
-    return indexedBranches.get(parent).size();
+    return indexedBranches.get(parent).getValue();
   }
 
   @Override

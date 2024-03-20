@@ -374,8 +374,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public List<Node<?, ?, ?>> getBranches()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return List.of();
   }
 
 }

@@ -233,8 +233,6 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   @Override
   public List<Node<?, ?, ?>> getBranches()
   {
-    // TODO Auto-generated method stub
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+    return List.of();
   }
 }
