@@ -48,7 +48,7 @@ public class AbstractSyntaxTreeModel implements
 
     indexedBranches.put(stem,
                         new OrderedPair<>(nodes.subList(leftIndex, rightIndex),
-                                          Integer.valueOf(rightIndex - leftIndex)));
+                                          Integer.valueOf(stem.getBranches().size())));
   }
 
   Node<?, ?, ?> root;

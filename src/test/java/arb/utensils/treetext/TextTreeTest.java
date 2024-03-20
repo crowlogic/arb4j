@@ -1,7 +1,5 @@
 package arb.utensils.treetext;
 
-import java.io.File;
-
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -30,13 +28,6 @@ public class TextTreeTest extends
     var                                  model      = expression.newSyntaxTree();
     var                                  tree       = new TextTree<>(model);
     System.out.println(tree);
-  }
-
-  public void testPrintTree()
-  {
-    var                          tm = new FileSystemTreeModel(new File("./docs"));
-    TextTree<FileSystemTreeNode> tt = new TextTree<FileSystemTreeNode>(tm);
-    System.out.println(tt);
   }
 
 }

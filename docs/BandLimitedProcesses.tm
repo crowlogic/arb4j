@@ -274,7 +274,7 @@
   has
 
   <\equation>
-    <around*|[|<big|int><rsub|\<bbb-R\>>X<rsub|t>-<big|int><rsub|\<bbb-R\>>e<rsup|i*t*u>*d*Z<around|(|u|)>|]>*f<around|(|t|)>*d*t=0\<forall\><space|1em>f\<in\>L<rsup|1><around|(|\<bbb-R\>|)>.<space|1em><around|(|12|)>
+    <around*|[|<big|int><rsub|\<bbb-R\>>X<rsub|t>-<big|int><rsub|\<bbb-R\>>e<rsup|i*t*u>*d*Z<around|(|u|)>|]>*f<around|(|t|)>*d*t=0\<forall\><space|1em>f\<in\>L<rsup|1><around|(|\<bbb-R\>|)><space|1em><around|(|12|)>
   </equation>
 
   It follows that
@@ -368,14 +368,14 @@
     for one of them, say <math|F<rsub|1>>. So let
 
     <\equation>
-      r<rsub|1><around|(|s,t|)>=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>e<rsup|i*s*x-i*t*y>*d*F<rsub|1><around|(|x,y|)>,<space|1em><around|(|2|)>
+      r<rsub|1><around|(|s,t|)>=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>e<rsup|i*s*x-i*t*y>*d*F<rsub|1><around|(|x,y|)><space|1em><around|(|2|)>
     </equation>
 
     and by hypothesis <math|r<rsub|1>> is analytic. Thus it admits a
     (uniformly and absolutely) convergent power series expansion
 
     <\equation>
-      r<rsub|1><around|(|s<rsub|1>,s<rsub|2>|)>=<big|sum><rsub|j,k=0><rsup|\<infty\>><frac|\<partial\><rsup|j+k>*r<rsub|1>|\<partial\>*s<rsub|1><rsup|j>*\<partial\>*s<rsub|2><rsup|k>>*<around|(|0,0|)><frac|s<rsub|1><rsup|j>|j!>*<frac|s<rsub|2><rsup|k>|k!>,<space|1em><around|(|3|)>
+      r<rsub|1><around|(|s<rsub|1>,s<rsub|2>|)>=<big|sum><rsub|j,k=0><rsup|\<infty\>><frac|\<partial\><rsup|j+k>*r<rsub|1>|\<partial\>*s<rsub|1><rsup|j>*\<partial\>*s<rsub|2><rsup|k>>*<around|(|0,0|)><frac|s<rsub|1><rsup|j>|j!>*<frac|s<rsub|2><rsup|k>|k!><space|1em><around|(|3|)>
     </equation>
 
     for <math|<around|\||s<rsub|m>|\|>\<less\>p<rsub|m>,m=1,2>, a rectangular
@@ -384,9 +384,13 @@
     probability theory. Now <math|r<rsub|1>> of (2) is infinitely
     differentiable, and it is the Fourier transform of a bounded (positive)
     measure. This implies that <math|F<rsub|1>> has all (absolute) moments
-    finite since the integral is in Lebesgue's sense. If
-    <math|\<alpha\><rsub|j,k>=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>x<rsup|j>*y<rsup|k>*d*F<rsub|1><around|(|x,y|)>>,
-    then <math|<frac|\<partial\><rsup|j+k>*r<rsub|1>|\<partial\>*s<rsub|1><rsup|j>*\<partial\>*s<rsub|2><rsup|k>>*<around|(|0,0|)>=i<rsup|j+k>*\<alpha\><rsub|j,k>>.
+    finite since the integral is in Lebesgue's sense. If\ 
+
+    <\equation>
+      \<alpha\><rsub|j,k>=<big|int><rsub|\<bbb-R\>><big|int><rsub|\<bbb-R\>>x<rsup|j>*y<rsup|k>*d*F<rsub|1><around|(|x,y|)>
+    </equation>
+
+    , then <math|<frac|\<partial\><rsup|j+k>*r<rsub|1>|\<partial\>*s<rsub|1><rsup|j>*\<partial\>*s<rsub|2><rsup|k>>*<around|(|0,0|)>=i<rsup|j+k>*\<alpha\><rsub|j,k>>.
     Because <math|\<alpha\><rsub|2*j,2*k>\<geq\>0>, the absolute moments
     <math|\<beta\><rsub|j,k>> of <math|F<rsub|1>> are dominated by the even
     moments as follows. Using the elementary inequality
@@ -450,7 +454,7 @@
     <associate|auto-1|<tuple|1|1>>
     <associate|auto-2|<tuple|1.1|1>>
     <associate|auto-3|<tuple|1.2|6>>
-    <associate|auto-4|<tuple|30|7>>
+    <associate|auto-4|<tuple|31|7>>
     <associate|bib-stochasticInferenceTheory|<tuple|1|7>>
   </collection>
 </references>

@@ -53,8 +53,10 @@
     be slowly increasing.
 
     Therefore, the Hardy <math|Z>-function <math|Z<around|(|t|)>> is a slowly
-    increasing function on the real line, independent of the truth of the
-    Riemann Hypothesis.
+    increasing function on the real line with a positive epsilon, independent
+    of the truth of the Riemann Hypothesis. If <math|\<varepsilon\>> can be
+    proven to to be able to taken all the way to zero then that would imply
+    the truth of the Riemann hypothesis would it not?
   </proof>
 
   TODO: cite Yosida.. not sure if thats the same defintiion used there
@@ -112,8 +114,6 @@
   and multiplication of functions by complex numbers, totally of
   <math|\<cal-O\><rsub|M><around|(|\<bbb-R\><rsup|N>|)>> will be denoted by
   <math|\<cal-O\><rsub|M><around|(|\<bbb-R\><rsup|N>|)>>.
-
-  <documentclass|article> <usepackage|amsmath,amsfonts>
 
   <with|font-series|bold|Example 2.> A <math|\<sigma\>>-finite, non-negative
   measure <math|\<mu\>*<around|(|d*x|)>> which is <math|\<sigma\>>-additive
