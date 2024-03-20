@@ -1,6 +1,6 @@
 /**
  * modeled after
- * {@link arb.documentation.Bibliography#stochasticProcessInferenceTheory}
+ * {@link arb.documentation.Bibliography#stochasticInferenceTheory}
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}

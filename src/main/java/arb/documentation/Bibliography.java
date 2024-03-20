@@ -235,12 +235,12 @@ public class Bibliography extends
                                                                 "1991").setPublisher("Springer-Verlag")
                                                                        .setAddress("Berlin, Heidelberg");
 
-  public static Book          stochasticProcessInferenceTheory                        =
-                                                               new Book("Stochastic Processes: Inference Theory",
-                                                                        "Malempati M. Rao",
-                                                                        "2014").setPublisher("Springer")
-                                                                               .setEdition("2nd")
-                                                                               .setSeries("Springer Monographs in Mathematics");
+  public static Book          stochasticInferenceTheory                               =
+                                                        new Book("Stochastic Processes: Inference Theory",
+                                                                 "Malempati M. Rao",
+                                                                 "2014").setPublisher("Springer")
+                                                                        .setEdition("2nd")
+                                                                        .setSeries("Springer Monographs in Mathematics");
 
   public static Book          stochasticQuantumMechanicalMethods                      =
                                                                  new Book("Stochastic Methods in Quantum Mechanics",
