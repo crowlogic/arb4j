@@ -1,1 +1,2 @@
 expression compiler: add ability to view expression tree graphically #275
+expression compiler: hypergeometric function support.. esp the 'terminating series' case where it results in a polynomia when theres a negative integer in the numerator

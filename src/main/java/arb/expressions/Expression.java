@@ -1,5 +1,6 @@
 package arb.expressions;
 
+import arb.expressions.AbstractSyntaxTreeModel;
 import static arb.expressions.Compiler.addNullCheckForField;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.express;
@@ -126,6 +127,7 @@ import arb.utensils.Utensils;
  *            as an evaluatble function in the sense of the Java
  * 
  * @author Stephen A. Crowley ©2024
+ * @param <AbstractSyntaxTreeModel>
  * @see BusinessSourceLicenseVersionOnePointOne for the terms of use of the
  *      {@link TheArb4jLibrary}
  */
@@ -207,13 +209,24 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                Class<F> functionClass,
                                                                boolean verbose)
   {
-    return express(className,
+    return compile(className,
                    expression,
                    context,
                    domainClass,
                    rangeClass,
                    functionClass,
                    verbose).instantiate();
+  }
+
+  public static <D, R, F extends Function<D, R>> Expression<D, R, F> compile(String className,
+                                                                             String expression,
+                                                                             Context context,
+                                                                             Class<D> domainClass,
+                                                                             Class<R> rangeClass,
+                                                                             Class<F> functionClass,
+                                                                             boolean verbose)
+  {
+    return express(className, expression, context, domainClass, rangeClass, functionClass, verbose);
   }
 
   public Expression<?, ?, ?>                      ascendentExpression;
@@ -1636,9 +1649,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return this;
   }
 
+  public AbstractSyntaxTreeModel newSyntaxTree()
+  {
+    return new AbstractSyntaxTreeModel(rootNode);
+  }
+
   public Class<?> removeTopOfTypeStack()
   {
-    if ( computeFrames )
+    if (computeFrames)
     {
       return null;
     }

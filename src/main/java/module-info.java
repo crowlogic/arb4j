@@ -31,7 +31,6 @@ module arb4j
   requires transitive org.objectweb.asm.util;
   requires transitive org.objectweb.asm.commons;
   requires transitive org.apache.commons.lang3;
-
   exports arb;
   exports arb.annotations;
   exports arb.logic;

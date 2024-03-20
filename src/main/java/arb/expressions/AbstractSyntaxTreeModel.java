@@ -1,6 +1,8 @@
 package arb.expressions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
@@ -23,7 +25,9 @@ public class AbstractSyntaxTreeModel implements
     indexBranches(this.root = root);
   }
 
-  ArrayList<Node<?, ?, ?>> nodes = new ArrayList<>();
+  ArrayList<Node<?, ?, ?>>                    nodes           = new ArrayList<>();
+
+  HashMap<Node<?, ?, ?>, List<Node<?, ?, ?>>> indexedBranches = new HashMap<>();
 
   void indexBranches(Node<?, ?, ?> stem)
   {
@@ -32,17 +36,14 @@ public class AbstractSyntaxTreeModel implements
 
     nodes.add(stem);
 
+    int leftIndex = nodes.size();
     for (var branch : stem.getBranches())
     {
       indexBranches(branch);
     }
+    int rightIndex = nodes.size();
 
-    assert false : "TODO: use ArrayList.subList to set slices of the main index onto each of the"
-                  + " branches in order then make getNode() do a hashmap lookup of the requested "
-                  + "node into a map from hashed nodes to indices and then add the index to that "
-                  + "offset to retrieve the node from the main root index rather than requring each"
-                  + " node to maintain its own index of subnodes which most likely will never need "
-                  + "to be traversed in isolation";
+    indexedBranches.put(stem, nodes.subList(leftIndex, rightIndex));
   }
 
   Node<?, ?, ?> root;
@@ -56,15 +57,13 @@ public class AbstractSyntaxTreeModel implements
   @Override
   public Node<?, ?, ?> getNode(Node<?, ?, ?> parent, int index)
   {
-    assert false : "TODO: implement";
-    return null;
+    return indexedBranches.get(parent).get(index);
   }
 
   @Override
   public int getNodeCount(Node<?, ?, ?> parent)
   {
-    assert false : "TODO: implement";
-    return 0;
+    return indexedBranches.get(parent).size();
   }
 
   @Override
