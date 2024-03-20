@@ -98,13 +98,15 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
 
   public ClassVisitor declareField(ClassVisitor classVisitor)
   {
-    classVisitor.visitField(ACC_PUBLIC & ACC_FINAL, fieldName, type().descriptorString(), null, null);
+    classVisitor.visitField(ACC_PUBLIC
+                  & ACC_FINAL, fieldName, type().descriptorString(), null, null);
     return classVisitor;
   }
 
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
+    Class<?> thisType = type();
     if (π.equals(fieldName))
     {
       getStaticField(mv, π);
@@ -118,13 +120,15 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
       // todo: https://github.com/crowlogic/arb4j/issues/222: use the primitive int ,
       // the signature of the method being invoked will also have to know this has
       // been done and change correspondingly
-      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, type().descriptorString());
+      expression.loadFieldOntoStack(loadThisOntoStack(mv), fieldName, thisType.descriptorString());
     }
 
     if (isResult)
     {
-      expression.setResult(mv, type());
+      expression.setResult(mv, thisType);
     }
+
+    expression.addToTypeStack(thisType);
 
     return mv;
   }
@@ -144,9 +148,13 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
     methodVisitor.visitMethodInsn(INVOKESPECIAL,
                                   Type.getInternalName(type),
                                   "<init>",
-                                  needsBitsPassedToStringConstructor ? "(Ljava/lang/String;I)V" : "(Ljava/lang/String;)V",
+                                  needsBitsPassedToStringConstructor ? "(Ljava/lang/String;I)V"
+                                                                     : "(Ljava/lang/String;)V",
                                   false);
-    methodVisitor.visitFieldInsn(PUTFIELD, expression.className, fieldName, type.descriptorString());
+    methodVisitor.visitFieldInsn(PUTFIELD,
+                                 expression.className,
+                                 fieldName,
+                                 type.descriptorString());
     return methodVisitor;
   }
 

@@ -163,7 +163,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       System.out.format("Variable.generate( this=%s, resultType=%s)\n\n", this, resultType);
     }
-    
+
     generateReference(mv);
 
     generateIndexAccess(mv);
@@ -179,7 +179,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
      * not the one they requested it does the cast there. For now, the requested
      * resultType will be pushed onto the Expressions type stack
      */
-    // expression.addToTypeStack(resultType);
+    // expression.addToTypeStack(generatedType);
 //    assert generatedType.equals(resultType) : String.format("generatedType = %s != resultType = %s\n",
 //                                                            generatedType,
 //                                                            resultType);
@@ -198,8 +198,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       indexType = reference.index.type();
 
+      int typeStackSizeBefore = expression.typeStack.size();
+
       reference.index.generate(mv, indexType);
 
+      int typeStackSizeAfter = expression.typeStack.size();
+      assert typeStackSizeAfter > typeStackSizeBefore;
+      assert expression.removeFromTypeStack().equals(Integer.class);
     }
 
     if (Integer.class.equals(indexType))
@@ -225,17 +230,21 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if (isIndependent)
     {
       Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
+      expression.addToTypeStack(expression.domainType);
     }
     else if (isIndeterminant)
     {
       Compiler.checkClassCast(Compiler.loadResultParameter(mv), expression.rangeType);
+      expression.addToTypeStack(expression.rangeType);
       generateIndeterminateRangeIdentityInvocation(mv);
     }
     else
     {
+      Class<?> referenceType = reference.type();
       expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                     reference.name,
-                                    reference.type().descriptorString());
+                                    referenceType.descriptorString());
+      expression.addToTypeStack(referenceType);
     }
   }
 

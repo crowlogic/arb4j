@@ -12,8 +12,8 @@ import arb.SubSet;
  * 
  * @param <X>
  */
-public class σField<X> implements
-                   SubSet<X>
+public interface σField<X> extends
+                       SubSet<X>
 {
 
 }

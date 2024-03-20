@@ -6,6 +6,9 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 
 /**
+ * The node is not supposed to be any specific type, so you could make Trees out
+ * of classes that cant be extended or whatever
+ * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
@@ -52,10 +55,5 @@ public class FileSystemTreeModel implements
     return !fsObject.f.isDirectory();
   }
 
-  @Override
-  public int getNodeIndex(FileSystemTreeNode parent, FileSystemTreeNode child)
-  {
-    return 0;
-  }
 
 }

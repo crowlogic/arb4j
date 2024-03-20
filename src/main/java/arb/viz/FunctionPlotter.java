@@ -91,7 +91,7 @@ public class FunctionPlotter extends
     resampleFunctions(parallel);
   }
 
-  public boolean parallel = false;
+  public boolean parallel = true;
 
   public void set(Stage primaryStage, EventHandler<WindowEvent> onCloseRequestHandler)
   {

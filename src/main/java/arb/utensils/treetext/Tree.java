@@ -18,6 +18,5 @@ public interface Tree<R>
 
   public boolean isLeaf(R node);
 
-  public int getNodeIndex(R parent, R child);
 
 }

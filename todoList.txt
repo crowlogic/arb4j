@@ -1,5 +1,2 @@
-expression compiler: support utf superscript chars for exponentiation #348
-derive eigenfunctions of the new integral operator
-expression compiler: automatic differentiation #253
-estimation -  Estimate parameters of the covariance kernel of the Hardy z function #257
-implement TreeModel so that the parsed Expression (abstract syntax tree) can be printed in an organized way in text
+#359 expression compiler; fix stackmap frame generation issue - https://github.com/crowlogic/arb4j/issues/359
+add typestack mgmt to LiteralConstant for #359
