@@ -1,5 +1,7 @@
 package arb.expressions;
 
+import java.util.ArrayList;
+
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.nodes.Node;
@@ -18,8 +20,29 @@ public class AbstractSyntaxTreeModel implements
 {
   public AbstractSyntaxTreeModel(Node<?, ?, ?> root)
   {
-    this.root = root;
-    assert false : "TODO: recurse and flatten into indexed array";
+    indexBranches(this.root = root);
+  }
+
+  ArrayList<Node<?, ?, ?>> nodes = new ArrayList<>();
+
+  void indexBranches(Node<?, ?, ?> stem)
+  {
+    if (stem == null)
+      return;
+
+    nodes.add(stem);
+
+    for (var branch : stem.getBranches())
+    {
+      indexBranches(branch);
+    }
+
+    assert false : "TODO: use ArrayList.subList to set slices of the main index onto each of the"
+                  + " branches in order then make getNode() do a hashmap lookup of the requested "
+                  + "node into a map from hashed nodes to indices and then add the index to that "
+                  + "offset to retrieve the node from the main root index rather than requring each"
+                  + " node to maintain its own index of subnodes which most likely will never need "
+                  + "to be traversed in isolation";
   }
 
   Node<?, ?, ?> root;

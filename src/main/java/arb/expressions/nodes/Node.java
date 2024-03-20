@@ -1,5 +1,7 @@
 package arb.expressions.nodes;
 
+import java.util.List;
+
 import org.objectweb.asm.MethodVisitor;
 import org.scilab.forge.jlatexmath.LaTeXAtom;
 
@@ -26,6 +28,8 @@ import arb.functions.Function;
 public abstract class Node<D, R, F extends Function<D, R>> implements
                           Typesettable
 {
+
+  public abstract List<Node<?,?,?>> getBranches();
 
   /**
    * @return true if this node has any subnodes
@@ -92,5 +96,6 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
   public abstract <C> Class<? extends C> type();
 
   public abstract boolean hasSingleLeaf();
+
 
 }

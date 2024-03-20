@@ -8,6 +8,8 @@ import static arb.utensils.Utensils.indent;
 import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import java.util.List;
+
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
@@ -31,6 +33,13 @@ import arb.functions.Function;
 public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                      Node<D, R, F>
 {
+
+  @Override
+  public List<Node<?, ?, ?>> getBranches()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
+  }
 
   @Override
   public boolean hasSingleLeaf()

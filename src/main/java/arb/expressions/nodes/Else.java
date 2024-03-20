@@ -1,5 +1,7 @@
 package arb.expressions.nodes;
 
+import java.util.List;
+
 import org.objectweb.asm.MethodVisitor;
 
 import arb.expressions.Expression;
@@ -58,6 +60,13 @@ public class Else<D, R, F extends Function<D, R>> extends
   public boolean hasSingleLeaf()
   {
     return false;
+  }
+
+  @Override
+  public List<Node<?, ?, ?>> getBranches()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 
 }

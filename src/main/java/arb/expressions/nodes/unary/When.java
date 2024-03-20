@@ -6,6 +6,7 @@ import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.F_SAME;
 import static org.objectweb.asm.Opcodes.GOTO;
 
+import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -246,6 +247,14 @@ public class When<D, R, F extends Function<D, R>> extends
   public boolean hasSingleLeaf()
   {
     return false;
+  }
+
+  @Override
+  public List<Node<?, ?, ?>> getBranches()
+  {
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 
 }

@@ -11,6 +11,7 @@ import static org.objectweb.asm.Opcodes.PUTFIELD;
 import static org.objectweb.asm.Opcodes.SIPUSH;
 
 import java.util.HashSet;
+import java.util.List;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -227,5 +228,13 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
   public boolean hasSingleLeaf()
   {
     return false;
+  }
+
+  @Override
+  public List<Node<?, ?, ?>> getBranches()
+  {
+    // TODO Auto-generated method stub
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 }

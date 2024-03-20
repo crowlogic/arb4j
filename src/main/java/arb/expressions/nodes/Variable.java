@@ -6,6 +6,7 @@ import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.objectweb.asm.ClassVisitor;
@@ -372,6 +373,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
   public boolean hasSingleLeaf()
   {
     return false;
+  }
+
+  @Override
+  public List<Node<?, ?, ?>> getBranches()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 
 }

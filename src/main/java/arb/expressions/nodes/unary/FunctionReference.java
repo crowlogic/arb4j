@@ -11,6 +11,7 @@ import static java.lang.System.out;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -300,6 +301,13 @@ public class FunctionReference<D, R, F extends Function<D, R>> extends
   public boolean hasSingleLeaf()
   {
     return arg.isLeaf();
+  }
+
+  @Override
+  public List<Node<?, ?, ?>> getBranches()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 
 }

@@ -7,6 +7,7 @@ import static java.lang.String.format;
 import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.objectweb.asm.Label;
@@ -707,6 +708,13 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   public boolean hasSingleLeaf()
   {
     return false;
+  }
+
+  @Override
+  public List<Node<?, ?, ?>> getBranches()
+  {
+    assert false : "TODO: Auto-generated method stub";
+    return null;
   }
 
 }
