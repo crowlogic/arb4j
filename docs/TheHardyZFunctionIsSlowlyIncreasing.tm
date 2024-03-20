@@ -60,6 +60,109 @@
   TODO: cite Yosida.. not sure if thats the same defintiion used there
 
   \;
+
+  <documentclass|article> <usepackage|amsmath,amsfonts>
+
+  <with|font-series|bold|Example 2.> A <math|\<sigma\>>-finite, non-negative
+  measure <math|\<mu\>*<around|(|d*x|)>> which is <math|\<sigma\>>-additive
+  on Baire sets of <math|\<bbb-R\><rsup|N>> is called a
+  <with|font-shape|italic|slowly increasing measure>, if, for some
+  non-negative <math|k>,
+
+  <\equation>
+    <big|int><rsub|\<bbb-R\><rsup|N>><around|(|1+<around|\||x|\|><rsup|2>|)><rsup|-k>*\<mu\>*<around|(|d*x|)>\<less\>\<infty\>.
+  </equation>
+
+  Such a measure <math|\<mu\>> defines a tempered distribution by
+
+  <\equation>
+    T<rsub|\<mu\>><around|(|\<varphi\>|)>=<big|int><rsub|\<bbb-R\><rsup|N>>\<varphi\><around|(|x|)>*\<mu\>*<around|(|d*x|)>,<space|1em>\<varphi\>\<in\>\<cal-S\><around|(|\<bbb-R\><rsup|N>|)>.
+  </equation>
+
+  <with|font-series|bold|Example 3.> As a special case of Example 2, any
+  function <math|f\<in\>L<rsup|p><around|(|\<bbb-R\><rsup|N>|)>>,
+  <math|p\<geq\>1>, defines a tempered distribution
+
+  <\equation>
+    T<rsub|f><around|(|\<varphi\>|)>=<big|int><rsub|\<bbb-R\><rsup|N>>\<varphi\><around|(|x|)>*f<around|(|x|)>*d*x,<space|1em>\<varphi\>\<in\>\<cal-S\><around|(|\<bbb-R\><rsup|N>|)>.
+  </equation>
+
+  That an <math|f\<in\>L<rsup|p><around|(|\<bbb-R\><rsup|N>|)>> gives rise to
+  a slowly increasing measure <math|\<mu\>*<around|(|d*x|)>=f<around|(|x|)>*d*x>
+  may be proved by applying Hölder's inequality to
+
+  <\equation*>
+    <big|int><rsub|\<bbb-R\><rsup|N>><around|(|1+<around|\||x|\|><rsup|2>|)><rsup|-k><around|\||f<around|(|x|)>|\|>*d*x.
+  </equation*>
+
+  <with|font-series|bold|Definition 2.> A function
+  <math|f\<in\>C<rsup|\<infty\>><around|(|\<bbb-R\><rsup|N>|)>> is called
+  <with|font-shape|italic|slowly increasing> (at <math|\<infty\>>), if, for
+  any differentiation <math|D<rsup|j>>, there exists a non-negative integer
+  <math|N> such that
+
+  <\equation>
+    lim<rsub|<around|\||x|\|>\<to\>\<infty\>>
+    <frac|<around|\||x|\|><rsup|N>*<around|\||D<rsup|j>*f<around|(|x|)>|\|>|1>=0.
+  </equation>
+
+  The totality of slowly increasing functions will be denoted by
+  <math|\<cal-O\><rsub|M><around|(|\<bbb-R\><rsup|N>|)>>. It is a locally
+  convex linear topological space by the algebraic operations of function sum
+  and multiplication of functions by complex numbers, totally of
+  <math|\<cal-O\><rsub|M><around|(|\<bbb-R\><rsup|N>|)>> will be denoted by
+  <math|\<cal-O\><rsub|M><around|(|\<bbb-R\><rsup|N>|)>>.
+
+  <documentclass|article> <usepackage|amsmath,amsfonts>
+
+  <with|font-series|bold|Example 2.> A <math|\<sigma\>>-finite, non-negative
+  measure <math|\<mu\>*<around|(|d*x|)>> which is <math|\<sigma\>>-additive
+  on Baire sets of <math|\<bbb-R\><rsup|N>> is called a
+  <with|font-shape|italic|slowly increasing measure>, if, for some
+  non-negative <math|k>,
+
+  <\equation>
+    <big|int><rsub|\<bbb-R\><rsup|N>><around|(|1+<around|\||x|\|><rsup|2>|)><rsup|-k>*\<mu\>*<around|(|d*x|)>\<less\>\<infty\>.
+  </equation>
+
+  Such a measure <math|\<mu\>> defines a tempered distribution by
+
+  <\equation>
+    T<rsub|\<mu\>><around|(|\<varphi\>|)>=<big|int><rsub|\<bbb-R\><rsup|N>>\<varphi\><around|(|x|)>*\<mu\>*<around|(|d*x|)>,<space|1em>\<varphi\>\<in\>\<cal-S\><around|(|\<bbb-R\><rsup|N>|)>.
+  </equation>
+
+  <with|font-series|bold|Example 3.> As a special case of Example 2, any
+  function <math|f\<in\>L<rsup|p><around|(|\<bbb-R\><rsup|N>|)>>,
+  <math|p\<geq\>1>, defines a tempered distribution
+
+  <\equation>
+    T<rsub|f><around|(|\<varphi\>|)>=<big|int><rsub|\<bbb-R\><rsup|N>>\<varphi\><around|(|x|)>*f<around|(|x|)>*d*x,<space|1em>\<varphi\>\<in\>\<cal-S\><around|(|\<bbb-R\><rsup|N>|)>.
+  </equation>
+
+  That an <math|f\<in\>L<rsup|p><around|(|\<bbb-R\><rsup|N>|)>> gives rise to
+  a slowly increasing measure <math|\<mu\>*<around|(|d*x|)>=f<around|(|x|)>*d*x>
+  may be proved by applying Hölder's inequality to
+
+  <\equation*>
+    <big|int><rsub|\<bbb-R\><rsup|N>><around|(|1+<around|\||x|\|><rsup|2>|)><rsup|-k><around|\||f<around|(|x|)>|\|>*d*x.
+  </equation*>
+
+  <with|font-series|bold|Definition 2.> A function
+  <math|f\<in\>C<rsup|\<infty\>><around|(|\<bbb-R\><rsup|N>|)>> is called
+  <with|font-shape|italic|slowly increasing> (at <math|\<infty\>>), if, for
+  any differentiation <math|D<rsup|j>>, there exists a non-negative integer
+  <math|N> such that
+
+  <\equation>
+    lim<rsub|<around|\||x|\|>\<to\>\<infty\>><around|\||x|\|><rsup|N>*<around|\||D<rsup|j>*f<around|(|x|)>|\|>=0.
+  </equation>
+
+  The totality of slowly increasing functions will be denoted by
+  <math|\<cal-O\><rsub|M><around|(|\<bbb-R\><rsup|N>|)>>. It is a locally
+  convex linear topological space by the algebraic operations of function sum
+  and multiplication of functions by complex numbers, totally of
+  <math|\<cal-O\><rsub|M><around|(|\<bbb-R\><rsup|N>|)>> will be denoted by
+  <math|\<cal-O\><rsub|M><around|(|\<bbb-R\><rsup|N>|)>>.
 </body>
 
 <\initial>
