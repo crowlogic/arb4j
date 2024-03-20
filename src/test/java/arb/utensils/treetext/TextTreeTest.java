@@ -13,6 +13,10 @@ import junit.framework.TestCase;
 public class TextTreeTest extends
                           TestCase
 {
+  public void testPrintAbstractSyntaxTree()
+  {
+
+  }
 
   public void testPrintTree()
   {
