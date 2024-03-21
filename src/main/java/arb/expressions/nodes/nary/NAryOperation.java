@@ -734,14 +734,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public List<Node<?, ?, ?>> getBranches()
   {
-//    Node<D, R, F> indexVar = new Variable<>(expression, new VariableReference<>(index));
-//    assert indexVar != null : expression.variables.toString();
-//    FunctionCall<D, R, F> pattern = new FunctionCall<>(expression,
-//                                                       factorFunctionFieldName,
-//     
     var ast = factorExpression.newSyntaxTree();
     return ast.indexedBranches.get(ast.getRoot()).getKey();
-    //return List.of(startIndex, endIndex);
   }
 
 }

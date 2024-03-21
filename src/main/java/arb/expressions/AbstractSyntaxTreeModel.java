@@ -39,14 +39,6 @@ public class AbstractSyntaxTreeModel implements
 
     nodes.add(stem);
 
-    int leftIndex = nodes.size();
-    for (var branch : stem.getBranches())
-    {
-      assert branch != null;
-      indexBranches(branch);
-    }
-    int rightIndex = nodes.size();
-
     indexedBranches.put(stem,
                         new OrderedPair<>(new ArrayList<>(stem.getBranches()),
                                           Integer.valueOf(stem.getBranches().size())));
