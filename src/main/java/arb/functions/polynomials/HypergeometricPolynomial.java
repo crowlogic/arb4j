@@ -5,7 +5,6 @@ import arb.Real;
 import arb.Verifiable;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
-import arb.functions.real.F;
 import arb.functions.real.RealFunction;
 
 /**
