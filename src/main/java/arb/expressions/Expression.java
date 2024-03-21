@@ -1248,6 +1248,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public MethodVisitor
          loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
+    if ( traceGenerator )
+    {
+      System.out.println( "loadFieldOntoStack " + fieldName + " of type " + fieldDescriptor);
+    }
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
     return methodVisitor;
   }
