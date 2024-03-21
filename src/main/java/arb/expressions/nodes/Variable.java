@@ -227,12 +227,12 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if (isIndependent)
     {
       Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
-      expression.addToTypeStack(expression.domainType, expression.inputNode.getName() );
+    //  expression.addToTypeStack(expression.domainType, expression.inputNode.getName() );
     }
     else if (isIndeterminant)
     {
       Compiler.checkClassCast(Compiler.loadResultParameter(mv), expression.rangeType);
-      expression.addToTypeStack(expression.rangeType, "result");
+    //  expression.addToTypeStack(expression.rangeType, "result");
       generateIndeterminateRangeIdentityInvocation(mv);
     }
     else
@@ -241,7 +241,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
       expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                     reference.name,
                                     referenceType.descriptorString());
-      expression.addToTypeStack(referenceType, toString() );
+     // expression.addToTypeStack(referenceType, toString() );
     }
   }
 

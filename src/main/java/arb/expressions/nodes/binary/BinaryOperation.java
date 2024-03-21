@@ -183,11 +183,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     Class<? extends Object> rightType = right.type();
     invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
    
-    if ( expression.traceGenerator)
-    {
-      System.out.println( "Adding expression to type stack for " + this );
-    }
-    expression.addToTypeStack(resultType, toString() );
+   
+    //expression.addToTypeStack(resultType, toString() );
 
     return mv;
   }
