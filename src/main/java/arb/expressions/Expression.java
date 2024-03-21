@@ -100,8 +100,8 @@ import arb.utensils.treetext.TextTree;
  * <li>Dynamically compiles mathematical expressions into executable Java
  * bytecode, allowing for efficient evaluation.</li>
  * <li>Supports {@link Variable}, {@link LiteralConstant}, and
- * {@link FunctionCall}s within {@link Expression}, providing a rich
- * feature set for constructing complex expressions.</li>
+ * {@link FunctionCall}s within {@link Expression}, providing a rich feature set
+ * for constructing complex expressions.</li>
  * <li>Effectively manages intermediate variables and constants, optimizing
  * memory usage and performance.</li>
  * <li>Automatically injects references to variables and functions into the
@@ -302,7 +302,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F>                            rootNode;
 
-  public boolean                                  traceGenerator                = true;
+  public boolean                                  traceGenerator                = false;
 
   public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
@@ -1248,10 +1248,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public MethodVisitor
          loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
-    if ( traceGenerator )
+    if (traceGenerator)
     {
-      System.out.println( "loadFieldOntoStack " + fieldName + " of type " + fieldDescriptor);
-      if ( fieldName.equals("z") && fieldDescriptor.equals("Larb/Integer;") )
+      System.out.println("loadFieldOntoStack " + fieldName + " of type " + fieldDescriptor);
+      if (fieldName.equals("z") && fieldDescriptor.equals("Larb/Integer;"))
       {
         new Throwable(fieldDescriptor).printStackTrace();
       }
@@ -1335,8 +1335,6 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Variable<D, R, F> newVariable(VariableReference<D, R, F> reference)
   {
-    var contextVar = getVariable(reference);
-    reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
     return new Variable<D, R, F>(this,
                                  reference);
   }
@@ -1555,8 +1553,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (nextCharacterIs(')'))
       {
         return new FunctionCall<>(this,
-                                       reference.name,
-                                       arg);
+                                  reference.name,
+                                  arg);
       }
       else
       {

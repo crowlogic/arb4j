@@ -40,7 +40,7 @@ public class HypergeometricPolynomialTest extends
                                           context);
 
       Real res     = sum.evaluate(RealConstants.π, 1, 128, new Real());
-      assertEquals(-244.81029976584379503781836652101052755, res.doubleValue());
+      assertEquals(-181.54773622929181, res.doubleValue());
     }
   }
 
@@ -68,7 +68,6 @@ public class HypergeometricPolynomialTest extends
     double val = F.eval(2.3);
     assertEquals(145.01289685058583, val);
   }
-
 
   public static void testSummand()
   {

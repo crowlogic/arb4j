@@ -75,7 +75,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   }
 
   private static final String caveat = "variable name clashes with "
-                + "the function name since its a recursve function";
+                                       + "the function name since its a recursve function";
 
   @Override
   public Class<?> type()
@@ -118,8 +118,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
     this.variables  = expression.variables;
     assert reference != null;
     assert !(expression.recursive && reference.name.equals(expression.functionName)) : caveat;
+    var contextVar = expression.getVariable(reference);
+    // reference.type = (expression.context == null || contextVar == null) ?
+    // domainType : contextVar.getClass();
 
-    if (variables == null || !variables.map.containsKey(reference.name))
+    if (variables == null || !variables.map.containsKey(reference.name) || reference.type == null)
     {
       resolveReference(reference);
     }
@@ -150,7 +153,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if (this == obj)
       return true;
     if (obj == null)
-      return true;
+      return false;
     if (getClass() != obj.getClass())
       return false;
     var other = (Variable<?, ?, ?>) obj;
@@ -201,7 +204,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
       reference.index.generate(mv, indexType);
 
-     
     }
 
     if (Integer.class.equals(indexType))
@@ -222,27 +224,35 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
   }
 
-  private void generateReference(MethodVisitor mv,Class<?> neededType )
+  private void generateReference(MethodVisitor mv, Class<?> neededType)
   {
     if (isIndependent)
     {
       Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
-    //  expression.addToTypeStack(expression.domainType, expression.inputNode.getName() );
+      // expression.addToTypeStack(expression.domainType,
+      // expression.inputNode.getName() );
     }
     else if (isIndeterminant)
     {
       Compiler.checkClassCast(Compiler.loadResultParameter(mv), expression.rangeType);
-    //  expression.addToTypeStack(expression.rangeType, "result");
+      // expression.addToTypeStack(expression.rangeType, "result");
       generateIndeterminateRangeIdentityInvocation(mv);
     }
     else
     {
+      if (reference.type() == null)
+      {
+        resolveReference(reference);
+      }
       Class<?> referenceType = reference.type();
-      assert referenceType.equals(neededType) : String.format("neededType=%s != referenceType = %s\n", neededType, referenceType );
+
+      assert referenceType.equals(neededType) : String.format("neededType=%s != referenceType = %s\n",
+                                                              neededType,
+                                                              referenceType);
       expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                     reference.name,
                                     referenceType.descriptorString());
-     // expression.addToTypeStack(referenceType, toString() );
+      // expression.addToTypeStack(referenceType, toString() );
     }
   }
 
@@ -278,11 +288,33 @@ public class Variable<D, R, F extends Function<D, R>> extends
   {
     var inputVariable = expression.inputNode;
 
-    if (isIndependent = equals(inputVariable))
+    if (expression.variables != null)
     {
-      if (expression.inputNode == null)
+      Object instanceVariable = expression.variables.get(reference.name);
+      if (instanceVariable != null)
       {
-        expression.inputNode = this;
+        reference.type = instanceVariable.getClass();
+        if (expression.traceGenerator)
+        {
+          System.err.println("Declaring "
+                             + reference
+                             + " as a contextual variable of type "
+                             + reference.type());
+
+        }
+
+        return;
+      }
+    }
+
+    if (isIndependent = equals(inputVariable) || (inputVariable == null
+                  && !expression.referencedVariables.containsKey(reference.name)))
+    {
+      expression.inputNode = this;
+      reference.type       = expression.domainType;
+      if (expression.traceGenerator)
+      {
+        System.err.println("Declaring " + reference + " as the input node to " + expression);
       }
     }
     else
@@ -293,7 +325,23 @@ public class Variable<D, R, F extends Function<D, R>> extends
       }
       else
       {
-        resolveInheritedVariableReference(reference, inputVariable);
+        Object referencedVariable = variables.get(reference.name);
+        if (referencedVariable != null)
+        {
+          reference.type = referencedVariable.getClass();
+          if (expression.traceGenerator)
+          {
+            System.err.println("Variable.resolveReference assigned type "
+                               + reference.type
+                               + " to "
+                               + referencedVariable);
+          }
+          System.err.println("Hardy Harr Harr");
+        }
+        else
+        {
+          resolveInheritedVariableReference(reference, inputVariable);
+        }
       }
     }
   }
@@ -311,7 +359,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     else
     {
       throw new UndefinedReferenceException(format("Undefined reference to variable"
-                    + " '%s' in %s, independent variable is %s and parentExpression is %s",
+                                                   + " '%s' in %s, independent variable is %s and parentExpression is %s",
                                                    reference.name,
                                                    expression,
                                                    variable,
@@ -324,9 +372,10 @@ public class Variable<D, R, F extends Function<D, R>> extends
   {
     var ascendentInputNode = ascendentExpression.inputNode;
 
-    if (ascendentInputNode.reference.equals(reference))
+    if (ascendentInputNode != null && ascendentInputNode.reference.equals(reference))
     {
       ascendentInput = true;
+      reference.type = ascendentExpression.domainType;
     }
     else if (ascendentExpression.ascendentExpression != null)
     {
