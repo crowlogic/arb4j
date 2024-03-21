@@ -42,6 +42,7 @@ public class AbstractSyntaxTreeModel implements
     int leftIndex = nodes.size();
     for (var branch : stem.getBranches())
     {
+      assert branch != null;
       indexBranches(branch);
     }
     int rightIndex = nodes.size();

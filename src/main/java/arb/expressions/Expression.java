@@ -67,7 +67,7 @@ import arb.expressions.nodes.nary.NAryOperation;
 import arb.expressions.nodes.nary.NaryMultiplication;
 import arb.expressions.nodes.nary.Summation;
 import arb.expressions.nodes.unary.Factorialization;
-import arb.expressions.nodes.unary.FunctionReference;
+import arb.expressions.nodes.unary.FunctionCall;
 import arb.expressions.nodes.unary.SwingingFactorialization;
 import arb.expressions.nodes.unary.UnaryOperation;
 import arb.expressions.nodes.unary.When;
@@ -100,7 +100,7 @@ import arb.utensils.treetext.TextTree;
  * <li>Dynamically compiles mathematical expressions into executable Java
  * bytecode, allowing for efficient evaluation.</li>
  * <li>Supports {@link Variable}, {@link LiteralConstant}, and
- * {@link FunctionReference}s within {@link Expression}, providing a rich
+ * {@link FunctionCall}s within {@link Expression}, providing a rich
  * feature set for constructing complex expressions.</li>
  * <li>Effectively manages intermediate variables and constants, optimizing
  * memory usage and performance.</li>
@@ -673,7 +673,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
    *         {@link LiteralConstant},a {@link Function}, a {@link Variable} or
    *         null if for instance "-t" is encountered, as a 0 is implied by the
    *         absence of a node before the {@link Subtraction} operator is
-   *         encountered
+   *         encountered, also handles {@link NaryMultiplication} also known as
+   *         the product operator and {@link Summation}
    * 
    * @throws ExpressionCompilerException
    */
@@ -685,7 +686,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     if (nextCharacterIs('('))
     {
-      node = resolve();
+      node = resolveArithmetic();
 
       if (!nextCharacterIs(')'))
       {
@@ -764,7 +765,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     Node<D, R, F> index = null;
     if (nextCharacterIs('['))
     {
-      index = resolve();
+      index = resolveArithmetic();
       if (!nextCharacterIs(']'))
       {
         throw new ExpressionCompilerException(format("Expected closing ] at position %d in %s but got %c and the rest is %s",
@@ -815,7 +816,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       node = new Exponentiation<>(this,
                                   node,
-                                  parenthetical ? resolve() : evaluate());
+                                  parenthetical ? resolveArithmetic() : evaluate());
       if (parenthetical)
       {
         if (!nextCharacterIs(')'))
@@ -1380,7 +1381,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   /**
    * Calls this{@link #evaluateOptionalIndependentVariableSpecification()} before
-   * calling this{@link #resolve()} and assigning the result to
+   * calling this{@link #resolveArithmetic()} and assigning the result to
    * this{@link #rootNode}
    * 
    * @return this
@@ -1397,7 +1398,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       System.out.println("parseRoot " + expression);
     }
-    rootNode = resolve();
+    rootNode = resolveArithmetic();
     assert rootNode != null : "evaluateRootNode: determine() returned null, expression='"
                               + expression
                               + "'";
@@ -1486,7 +1487,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
    * @return the result of passing this{@link #exponentiateMultiplyAndDivide()} to
    *         this{@link #addAndSubtract(Node)}
    */
-  public Node<D, R, F> resolve()
+  public Node<D, R, F> resolveArithmetic()
   {
     Node<D, R, F> node = exponentiateMultiplyAndDivide();
     return addAndSubtract(node);
@@ -1496,7 +1497,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     if (nextCharacterIs('₍'))
     {
-      Node<D, R, F> power = resolve();
+      Node<D, R, F> power = resolveArithmetic();
       if (nextCharacterIs('₎'))
       {
         node = new AscendingFactorialization<D, R, F>(this,
@@ -1542,10 +1543,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
     else
     {
-      Node<D, R, F> arg = resolve();
+      Node<D, R, F> arg = resolveArithmetic();
       if (nextCharacterIs(')'))
       {
-        return new FunctionReference<>(this,
+        return new FunctionCall<>(this,
                                        reference.name,
                                        arg);
       }

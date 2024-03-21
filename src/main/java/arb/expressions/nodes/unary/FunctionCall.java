@@ -29,7 +29,7 @@ import arb.expressions.nodes.Node;
 import arb.functions.Function;
 
 /**
- * {@link FunctionReference} is a {@link Node} in the {@link Expression} that
+ * {@link FunctionCall} is a {@link Node} in the {@link Expression} that
  * represents a call to either a builtin or a contextual function, a contextual
  * function call being one that has been constructed by passing a
  * {@link Context} to
@@ -56,7 +56,7 @@ import arb.functions.Function;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class FunctionReference<D, R, F extends Function<D, R>> extends
+public class FunctionCall<D, R, F extends Function<D, R>> extends
                               UnaryOperation<D, R, F>
 {
 
@@ -68,7 +68,7 @@ public class FunctionReference<D, R, F extends Function<D, R>> extends
   { "sqrt", "tanh", "log" }));
 
   @SuppressWarnings("unchecked")
-  public FunctionReference(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
+  public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
   {
     super(argument,expression);
     this.functionName = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
@@ -306,6 +306,7 @@ public class FunctionReference<D, R, F extends Function<D, R>> extends
   @Override
   public List<Node<?, ?, ?>> getBranches()
   {
+    assert arg != null;
     return List.of(arg);
   }
 

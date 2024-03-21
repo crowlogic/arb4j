@@ -21,7 +21,7 @@ import arb.functions.sequences.IntegerSequence;
  *      {@link TheArb4jLibrary}
  */
 public class SwingingFactorialization<D, R, F extends Function<D, R>> extends
-                                     FunctionReference<D, R, F>
+                                     FunctionCall<D, R, F>
 {
 
   @Override

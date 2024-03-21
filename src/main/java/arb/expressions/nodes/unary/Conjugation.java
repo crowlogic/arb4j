@@ -11,7 +11,7 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class Conjugation<D, R, F extends Function<D, R>> extends
-                        FunctionReference<D, R, F>
+                        FunctionCall<D, R, F>
 {
 
   public Conjugation(Expression<D, R, F> parser, String functionName, Node<D, R, F> argument, int depth)

@@ -142,6 +142,7 @@ public class Compiler
 
     expression.parseRoot().compile().load();
 
+    
     return expression;
   }
 

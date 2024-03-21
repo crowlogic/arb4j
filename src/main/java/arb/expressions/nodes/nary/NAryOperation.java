@@ -1,11 +1,19 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.*;
+import static arb.expressions.Compiler.checkClassCast;
+import static arb.expressions.Compiler.invokeSetMethod;
+import static arb.expressions.Compiler.loadBitsParameter;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static arb.utensils.Utensils.indent;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,8 +33,10 @@ import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.IntermediateVariable;
+import arb.expressions.VariableReference;
 import arb.expressions.nodes.Node;
 import arb.expressions.nodes.Variable;
+import arb.expressions.nodes.unary.FunctionCall;
 import arb.functions.Function;
 import arb.utensils.Utensils;
 
@@ -70,23 +80,23 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   public final String         symbol;
 
-  protected static String     factorEvaluateMethodSignature = Type.getMethodDescriptor(Type.getType(
-                                                                                                    Object.class),
-                                                                                       Type.getType(Object.class),
-                                                                                       Type.getType(int.class),
-                                                                                       Type.getType(Object.class));
+  protected static String     factorEvaluateMethodSignature =
+                                                            Type.getMethodDescriptor(Type.getType(Object.class),
+                                                                                     Type.getType(Object.class),
+                                                                                     Type.getType(int.class),
+                                                                                     Type.getType(Object.class));
 
   private static final String MISSING_CLOSING_CURLY_BRACE   =
                                                           "Expected the closing curly brace } of the range specification {k=a..b} in %sf(k){k=a..b}"
-                                                                        + " to follow the ending index parameter b, instead got '%s' with remaining";
+                                                              + " to follow the ending index parameter b, instead got '%s' with remaining";
 
   private static final String MISSING_ELLIPSIS              =
                                                "Expected an … character after the start index a in the "
-                                                             + "index specification {k=a..b} in %sf(k){k=a..b} but instead got '%c' at position %d in %s";
+                                                              + "index specification {k=a..b} in %sf(k){k=a..b} but instead got '%c' at position %d in %s";
 
   private static final String MISSING_OPENING_CURLY_BRACE   =
                                                           "Expected the opening curly brace { of the product range specification {k=a..b} in %sf(k){k=a..b}"
-                                                                        + " to follow the operand definition, instead got '%c' with remaining %s";
+                                                              + " to follow the operand definition, instead got '%c' with remaining %s";
 
   protected static MethodVisitor getField(MethodVisitor mv,
                                           String thisClassInternalName,
@@ -165,8 +175,9 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                                                                        : expression.rangeType);
     if (index != null)
     {
-      expression.character = expression.expression.charAt(expression.position += factorExpression
-                                                                                                 .length());
+      expression.character =
+                           expression.expression.charAt(expression.position +=
+                                                                            factorExpression.length());
     }
     evaluateRangeSpecification();
   }
@@ -272,7 +283,9 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     if (!expression.nextCharacterIs('='))
     {
       throw new ExpressionCompilerException("Expected = character after index variable name at position "
-                    + expression.position + "in " + expression);
+                                            + expression.position
+                                            + "in "
+                                            + expression);
     }
 
     parseStartIndex();
@@ -339,16 +352,25 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                         resultType);
 
     }
-    Expression<Integer, Q, Function<Integer, Q>> factorExpression = Compiler.express(
-                                                                                     factorFunctionFieldName,
-                                                                                     expr,
-                                                                                     expression.context,
-                                                                                     Integer.class,
-                                                                                     resultType,
-                                                                                     Function.class,
-                                                                                     factorFunctionFieldName,
-                                                                                     expression);
+    Expression<Integer,
+                  Q,
+                  Function<Integer, Q>> factorExpression = Compiler.express(factorFunctionFieldName,
+                                                                            expr,
+                                                                            expression.context,
+                                                                            Integer.class,
+                                                                            resultType,
+                                                                            Function.class,
+                                                                            factorFunctionFieldName,
+                                                                            expression);
 
+    if (expression.traceGenerator)
+    {
+      System.out.println("Compiled "
+                         + factorExpression
+                         + " \n "
+                         + factorExpression.syntaxTreeToString());
+    }
+    
     registerFactorSubexpressionInstance(factorExpression);
   }
 
@@ -378,9 +400,10 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   {
     String indexFieldName        = getIndexFieldName();
 
-    var    existingIndexVariable = expression.intermediateVariables.stream()
-                                                                   .filter(variable -> variable.name.equals(indexFieldName))
-                                                                   .findFirst();
+    var    existingIndexVariable =
+                                 expression.intermediateVariables.stream()
+                                                                 .filter(variable -> variable.name.equals(indexFieldName))
+                                                                 .findFirst();
     return existingIndexVariable;
   }
 
@@ -545,11 +568,11 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
       expression.position = arrowIndex + 1;
     }
 
-    int rangeSpecificationPosition = index != null ? expression.expression.indexOf(String.format(
-                                                                                                 "{%s=",
-                                                                                                 index),
-                                                                                   expression.position)
-                                                   : -1;
+    int rangeSpecificationPosition =
+                                   index != null ? expression.expression.indexOf(String.format("{%s=",
+                                                                                               index),
+                                                                                 expression.position)
+                                                 : -1;
     if (rangeSpecificationPosition == -1)
     {
       while (expression.character != '{' && expression.position < length)
@@ -567,7 +590,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   private void parseStartIndex()
   {
-    startIndex = expression.resolve();
+    startIndex = expression.resolveArithmetic();
     if (!expression.nextCharacterIs('…'))
     {
       throwException(format(MISSING_ELLIPSIS,
@@ -622,8 +645,8 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
       if (expression.traceGenerator)
       {
         System.out.format("%s.propagateInputToFactorClass( factorFunctionFieldName=%s,\n"
-                      + "%sindependentVariableNode=%s,\n"
-                      + "%sindependentVariableNode.type=%s)\n\n",
+                          + "%sindependentVariableNode=%s,\n"
+                          + "%sindependentVariableNode.type=%s)\n\n",
                           getClass().getSimpleName(),
                           factorFunctionFieldName,
                           indent(48),
@@ -646,12 +669,15 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
    * generated bytecodes by disassembling and/or decompiling the resulting
    * instruction sequence generated by the {@link Expression} {@link Compiler}
    */
-  public static boolean instantiateFactors = Boolean.valueOf(System.getProperty(
-                                                                                "arb4.compiler.instantiateFactors",
-                                                                                "true"));
+  public static boolean instantiateFactors =
+                                           Boolean.valueOf(System.getProperty("arb4.compiler.instantiateFactors",
+                                                                              "true"));
 
-  private <Q> void registerFactorSubexpressionInstance(Expression<Integer, Q, Function<Integer,
-                Q>> factorExpression)
+  private <Q>
+          void
+          registerFactorSubexpressionInstance(Expression<Integer,
+                        Q,
+                        Function<Integer, Q>> factorExpression)
   {
     expression.referencedFunctions.put(factorFunctionFieldName,
                                        expression.context.registerFunctionMapping(factorFunctionFieldName,
@@ -713,8 +739,12 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public List<Node<?, ?, ?>> getBranches()
   {
-    assert false : "TODO: Auto-generated method stub";
-    return null;
+//    Node<D, R, F> indexVar = new Variable<>(expression, new VariableReference<>(index));
+//    assert indexVar != null : expression.variables.toString();
+//    FunctionCall<D, R, F> pattern = new FunctionCall<>(expression,
+//                                                       factorFunctionFieldName,
+//                                                       indexVar);
+    return List.of(startIndex, endIndex);
   }
 
 }

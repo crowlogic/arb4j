@@ -65,9 +65,9 @@ public class HypergeometricPolynomialTest extends
     Integer        index = new Integer();
     IntStream.range(0, order).forEach(n -> F.F.factorℝ1.evaluate(index.set(n), 128, value.get(n)));
 
-    out.format("2F1(%s,%s,x)=%s\n", F.α, F.β, value);
+   // out.format("2F1(%s,%s,x)=%s\n", F.α, F.β, value);
     double valueAtTwoPointThree = value.eval(2.3);
-    out.format("2F1(%s,%s,2.3)=%s\n", F.α, F.β, valueAtTwoPointThree);
+   // out.format("2F1(%s,%s,2.3)=%s\n", F.α, F.β, valueAtTwoPointThree);
     assertEquals(145.01289685058583, valueAtTwoPointThree);
   }
 
