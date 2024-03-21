@@ -25,32 +25,32 @@ public class HypergeometricPolynomial implements
     β.close();
   }
 
-  public final Context context;
+  public final Context      context;
 
-  public final Real    α, β;
+  public final Real         α, β;
 
-  public final Integer p, q;
+  public final Integer      p, q;
 
-  public final F       F;
+  public final RealFunction F;
 
-  private Integer      N;
+  private Integer           N;
 
-  boolean              initialized = false;
+  boolean                   initialized = false;
 
   @SuppressWarnings("resource")
   public HypergeometricPolynomial(int p, int q)
   {
-    context = new Context(this.p = new Integer(p).setName("p"), this.q = new Integer(q).setName("q"), α = Real.newVector(p)
-                                                                                                              .setName("α"), β = Real.newVector(q)
-                                                                                                                                     .setName("β"));
+    context = new Context(this.p = new Integer(p).setName("p"),
+                          this.q = new Integer(q).setName("q"),
+                          α = Real.newVector(p).setName("α"),
+                          β = Real.newVector(q).setName("β"));
     context.registerVariable("N", N = new Integer());
 
     context.saveClasses = true;
-    F                   = new F();
-    context.injectVariableReferences(F);
-    ; // RealFunction.express("F",
-      // "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-      // context);
+//    F                   = new F();
+//    context.injectVariableReferences(F);
+    F                   =
+      RealFunction.express("F", "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
   }
 
   @Override
@@ -61,7 +61,7 @@ public class HypergeometricPolynomial implements
       if (!verify())
       {
         throw new ArbException("at least one of the upper parameters must be a non-negative integer but there is none among "
-                      + α);
+                               + α);
       }
 
       determinePolynomialOrder();

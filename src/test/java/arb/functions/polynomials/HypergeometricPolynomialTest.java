@@ -57,18 +57,17 @@ public class HypergeometricPolynomialTest extends
     F.α.set(-6, 2.5);
     F.β.set(1);
     F.determinePolynomialOrder();
-    F.F.initialize();
-    F.F.factorℝ1.z = new Real().one();
-    int order = F.F.N.getSignedValue();
-    assertEquals(7, order);
-    RealPolynomial value = new RealPolynomial(order);
+    //F.F.initialize();
+  //  F.F.factorℝ1.z = new Real().one();
+   //(7, order);
+  //  RealPolynomial value = new RealPolynomial(order);
     Integer        index = new Integer();
-    IntStream.range(0, order).forEach(n -> F.F.factorℝ1.evaluate(index.set(n), 128, value.get(n)));
+   // IntStream.range(0, order).forEach(n -> F.F.factorℝ1.evaluate(index.set(n), 128, value.get(n)));
 
    // out.format("2F1(%s,%s,x)=%s\n", F.α, F.β, value);
-    double valueAtTwoPointThree = value.eval(2.3);
-   // out.format("2F1(%s,%s,2.3)=%s\n", F.α, F.β, valueAtTwoPointThree);
-    assertEquals(145.01289685058583, valueAtTwoPointThree);
+    double valueAtTwoPointThree = F.F.eval(2.3);
+    out.format("2F1(%s,%s,2.3)=%s\n", F.α, F.β, valueAtTwoPointThree);
+     assertEquals(145.01289685058583, valueAtTwoPointThree);
   }
 
   public static void testSummand()
