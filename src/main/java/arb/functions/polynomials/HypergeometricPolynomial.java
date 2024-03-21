@@ -2,16 +2,17 @@ package arb.functions.polynomials;
 
 import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.Verifiable;
 import arb.exceptions.ArbException;
 import arb.expressions.Context;
-import arb.functions.real.RealFunction;
+import arb.functions.real.RealPolynomialNullaryFunction;
 
 /**
  *
  */
 public class HypergeometricPolynomial implements
-                                      RealFunction,
+                                      RealPolynomialNullaryFunction,
                                       Verifiable
 {
 
@@ -24,17 +25,17 @@ public class HypergeometricPolynomial implements
     β.close();
   }
 
-  public final Context      context;
+  public final Context                       context;
 
-  public final Real         α, β;
+  public final Real                          α, β;
 
-  public final Integer      p, q;
+  public final Integer                       p, q;
 
-  public final RealFunction F;
+  public final RealPolynomialNullaryFunction F;
 
-  private Integer           N;
+  private Integer                            N;
 
-  boolean                   initialized = false;
+  boolean                                    initialized = false;
 
   @SuppressWarnings("resource")
   public HypergeometricPolynomial(int p, int q)
@@ -49,11 +50,13 @@ public class HypergeometricPolynomial implements
 //    F                   = new F();
 //    context.injectVariableReferences(F);
     F                   =
-      RealFunction.express("F", "z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}", context);
+      RealPolynomialNullaryFunction.express("F",
+                                            "Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                            context);
   }
 
   @Override
-  public Real evaluate(Real n, int order, int bits, Real f)
+  public RealPolynomial evaluate(Void nullary, int order, int bits, RealPolynomial f)
   {
     if (!initialized)
     {
@@ -67,7 +70,7 @@ public class HypergeometricPolynomial implements
 
       initialized = true;
     }
-    return F.evaluate(n, order, bits, f);
+    return F.evaluate(null, order, bits, f);
   }
 
   public void determinePolynomialOrder()
@@ -90,6 +93,7 @@ public class HypergeometricPolynomial implements
   public boolean verify()
   {
     return α.stream().anyMatch(αᵢ -> αᵢ.isInteger() && αᵢ.isNegative());
-  };
+  }
+
 
 }

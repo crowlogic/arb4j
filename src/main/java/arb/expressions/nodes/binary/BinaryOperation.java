@@ -295,9 +295,11 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     assert left != null : "left is null: " + this + " for expr=" + expression;
     assert right != null : "right is null: " + this + " for expr=" + expression;
 
-    if (left.type().equals(right.type()))
+    Class<? extends Object> leftType = left.type();
+    Class<? extends Object> rightType = right.type();
+    if (leftType.equals(rightType))
     {
-      boolean integerDivision = operation.equals("div") && left.type().equals(Integer.class);
+      boolean integerDivision = operation.equals("div") && leftType.equals(Integer.class);
       return integerDivision ? Real.class : left.type();
     }
     else if (typesSymmetryicallyEqual(Integer.class, Real.class))
@@ -324,7 +326,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     assert Integer.class.equals(arb.Integer.class) : "you forgot to import arb.Integer";
     assert false : String.format("TODO: handle resultant type for left=%s and right=%s in %s",
                                  left.type(),
-                                 right.type(),
+                                 rightType,
                                  typeset());
     return null;
   }

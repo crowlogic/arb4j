@@ -220,6 +220,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                   rangeClass,
                                                   functionClass,
                                                   functionName);
+    System.out.println(compiledExpression.syntaxTreeToString());
     compiledExpression.mapping = mapping;
     return compiledExpression;
   }
@@ -325,7 +326,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F>                            rootNode;
 
-  public boolean                                  traceGenerator                = false;
+  public boolean                                  traceGenerator                = true;
 
   public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
@@ -333,7 +334,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean                                  variablesDeclared             = false;
 
-  public boolean                                  verbose                       = false;
+  public boolean                                  verbose                       = true;
 
   public Expression(String className,
                     Class<? extends D> domainClass,
@@ -773,13 +774,24 @@ public class Expression<D, R, F extends Function<D, R>> implements
     int rightArrowIndex = (expression = expression.replace("->", "➔")).indexOf('➔');
     if (rightArrowIndex != -1)
     {
-      String independentVariableName = expression.substring(0, rightArrowIndex);
-      inputNode = new Variable<>(this,
-                                 new VariableReference<>(independentVariableName,
-                                                         null,
-                                                         domainType));
+      String  independentVariableName  = expression.substring(0, rightArrowIndex);
+      boolean isInputVariableSpecified = true;
+      for (int i = 0; i < independentVariableName.length(); i++)
+      {
+        if (!Parser.isAlphabetical(independentVariableName.charAt(i)))
+        {
+          isInputVariableSpecified = false;
+        }
+      }
+      if (isInputVariableSpecified)
+      {
+        inputNode = new Variable<>(this,
+                                   new VariableReference<>(independentVariableName,
+                                                           null,
+                                                           domainType));
 
-      position  = rightArrowIndex;
+        position  = rightArrowIndex;
+      }
     }
   }
 

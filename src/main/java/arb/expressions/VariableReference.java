@@ -84,6 +84,7 @@ public class VariableReference<D, R, F extends Function<D, R>>
 
   public Class<?> type()
   {
+    
     return type;
   }
 

@@ -5,6 +5,7 @@ import static java.lang.System.out;
 import arb.Integer;
 import arb.Real;
 import arb.RealConstants;
+import arb.RealPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
@@ -73,7 +74,7 @@ public class HypergeometricPolynomialTest extends
                                                               1);
     F.α.set(-6, 2.5);
     F.β.set(1);
-    double val = F.eval(2.3);
+    double val = F.evaluate(null, 128, new RealPolynomial()).eval(2.3);
     assertEquals(145.01289685058583, val);
   }
 

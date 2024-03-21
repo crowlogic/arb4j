@@ -90,7 +90,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      return isIndeterminant ? expression.rangeType : reference.type();
+      Class<?> type = reference.type();
+      if (  type == null )
+      {
+        resolveReference(reference);
+        type = reference.type;
+      }
+      return isIndeterminant ? expression.rangeType : type;
     }
   }
 
