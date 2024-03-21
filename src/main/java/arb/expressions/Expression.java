@@ -1251,6 +1251,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     if ( traceGenerator )
     {
       System.out.println( "loadFieldOntoStack " + fieldName + " of type " + fieldDescriptor);
+      if ( fieldName.equals("z") && fieldDescriptor.equals("Larb/Integer;") )
+      {
+        new Throwable(fieldDescriptor).printStackTrace();
+      }
     }
     methodVisitor.visitFieldInsn(GETFIELD, className, fieldName, fieldDescriptor);
     return methodVisitor;
