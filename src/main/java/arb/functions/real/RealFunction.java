@@ -231,8 +231,11 @@ public interface RealFunction extends
    */
   public default RealDataSet quantize(FloatInterval interval, int bits, int n, boolean parallel)
   {
-    RealDataSet sample = new RealDataSet(toString() + " over " + interval.left().toString(5) + ".."
-                  + interval.right().toString(5),
+    RealDataSet sample = new RealDataSet(toString()
+                                         + " over "
+                                         + interval.left().toString(5)
+                                         + ".."
+                                         + interval.right().toString(5),
                                          n);
     Real        values = sample.getRealYValues();
 
@@ -261,7 +264,10 @@ public interface RealFunction extends
   {
     try ( Real x = Real.newVector(2))
     {
-      return evaluate(x.get(0).set(t), 1, Double.PRECISION + 5, x.get(1)).doubleValue(RoundingMode.Up);
+      return evaluate(x.get(0).set(t),
+                      1,
+                      Double.PRECISION + 5,
+                      x.get(1)).doubleValue(RoundingMode.Up);
     }
   }
 
@@ -292,8 +298,11 @@ public interface RealFunction extends
    * 
    * @return C=the supremum of |f''(t)|/(2*|f'(t)| oveRealFunction {t,u}∈I
    */
-  public default boolean
-         calculateNewtonStep(Real point, Real convergenceRegion, Float convergenceFactor, int prec, Real nextPoint)
+  public default boolean calculateNewtonStep(Real point,
+                                             Real convergenceRegion,
+                                             Float convergenceFactor,
+                                             int prec,
+                                             Real nextPoint)
   {
     return computeNewtonStep(this, point, convergenceRegion, convergenceFactor, prec, nextPoint);
   }
@@ -318,7 +327,12 @@ public interface RealFunction extends
                                                    int prec,
                                                    boolean verbose)
   {
-    return refineRootViaNewtonsMethod(this, root, convergenceRegion, convergenceFactor, extraPrec, prec);
+    return refineRootViaNewtonsMethod(this,
+                                      root,
+                                      convergenceRegion,
+                                      convergenceFactor,
+                                      extraPrec,
+                                      prec);
   }
 
   /**
@@ -339,13 +353,17 @@ public interface RealFunction extends
    * @return the convergenceFactoRealFunction C afteRealFunction it has been
    *         assigned the result
    */
-  public default Float
-         getNewtonConvergenceFactor(Real convergenceRegion, Real jet, int prec, Float convergenceFactor)
+  public default Float getNewtonConvergenceFactor(Real convergenceRegion,
+                                                  Real jet,
+                                                  int prec,
+                                                  Float convergenceFactor)
   {
     assert jet.size() >= 3;
     arblib.arb_get_abs_ubound_arf(convergenceFactor,
                                   evaluate(convergenceRegion, 3, prec, jet).get(2)
-                                                                           .div(jet.get(1), prec, jet)
+                                                                           .div(jet.get(1),
+                                                                                prec,
+                                                                                jet)
                                                                            .mul2e(-1),
                                   prec);
 
@@ -408,7 +426,8 @@ public interface RealFunction extends
    */
   public default Roots locateRoots(RootLocatorOptions config)
   {
-    assert config.maxDepth > 1 : "you probably dont really want the max recursion limit to be less than 2";
+    assert config.maxDepth
+                  > 1 : "you probably dont really want the max recursion limit to be less than 2";
     Roots            roots    = new Roots();
     int              asign, bsign;
     RealRootInterval interval = config.interval;
@@ -472,8 +491,12 @@ public interface RealFunction extends
       {
         if (verbose)
         {
-          println("the configured limit was hit at " + realRootInterval + " where the configuration is " + config
-                        + " and currently at " + found);
+          println("the configured limit was hit at "
+                  + realRootInterval
+                  + " where the configuration is "
+                  + config
+                  + " and currently at "
+                  + found);
         }
         found.add(realRootInterval);
       }
@@ -517,7 +540,8 @@ public interface RealFunction extends
    * @return the sign of this function evaluated at the midpoint of block with a
    *         zero radius of uncertainty
    */
-  public default int calculatePartition(FloatInterval left, FloatInterval right, FloatInterval block, int prec)
+  public default int
+         calculatePartition(FloatInterval left, FloatInterval right, FloatInterval block, int prec)
   {
     return Utensils.calculatePartition(this, left, right, block, prec);
   }
@@ -630,9 +654,15 @@ public interface RealFunction extends
     return express(functionName, expression, context, false);
   }
 
-  public static RealFunction express(String functionName, String expression, Context context, boolean verbose)
+  public static RealFunction
+         express(String functionName, String expression, Context context, boolean verbose)
   {
-    RealFunction func = instantiate(expression, context, Real.class, Real.class, RealFunction.class, functionName);
+    RealFunction func = instantiate(expression,
+                                    context,
+                                    Real.class,
+                                    Real.class,
+                                    RealFunction.class,
+                                    functionName);
 
     return func;
   }
@@ -645,6 +675,17 @@ public interface RealFunction extends
   public static RealFunction express(String expression, String string)
   {
     return express(expression, string, null);
+  }
+
+  public static Expression<Real, Real, RealFunction> compile(String expression, Context context)
+  {
+    return Expression.compile(expression,
+                              context,
+                              Real.class,
+                              Real.class,
+                              RealFunction.class,
+                              null);
+
   }
 
 }

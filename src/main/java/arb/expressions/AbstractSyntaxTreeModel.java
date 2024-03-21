@@ -26,10 +26,10 @@ public class AbstractSyntaxTreeModel implements
     indexBranches(this.root = root);
   }
 
-  ArrayList<Node<?, ?, ?>>                                          nodes           =
+  public ArrayList<Node<?, ?, ?>>                                   nodes           =
                                                                           new ArrayList<>();
 
-  HashMap<Node<?, ?, ?>, OrderedPair<List<Node<?, ?, ?>>, Integer>> indexedBranches =
+  public HashMap<Node<?, ?, ?>, OrderedPair<List<Node<?, ?, ?>>, Integer>> indexedBranches =
                                                                                     new HashMap<>();
 
   void indexBranches(Node<?, ?, ?> stem)
@@ -48,7 +48,7 @@ public class AbstractSyntaxTreeModel implements
     int rightIndex = nodes.size();
 
     indexedBranches.put(stem,
-                        new OrderedPair<>(nodes.subList(leftIndex, rightIndex),
+                        new OrderedPair<>(new ArrayList<>(stem.getBranches()),
                                           Integer.valueOf(stem.getBranches().size())));
   }
 

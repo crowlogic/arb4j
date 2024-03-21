@@ -135,22 +135,24 @@ public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
 
-  public static boolean      computeFrames              =
-                                           Boolean.valueOf(System.getProperty("arb4j.compiler.computeFrames",
-                                                                              "true"));
+  public static boolean         computeFrames              =
+                                              Boolean.valueOf(System.getProperty("arb4j.compiler.computeFrames",
+                                                                                 "true"));
 
-  public static final String evaluationMethodDescriptor =
-                                                        "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String    evaluationMethodDescriptor =
+                                                           "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
-  public static boolean      ignoreTODO                 = true;
+  public static boolean         ignoreTODO                 = true;
 
-  public static final String IS_INITIALIZED             = "isInitialized";
+  public static final String    IS_INITIALIZED             = "isInitialized";
 
-  public static final String nameOfInitializerFunction  = "initialize";
+  public static final String    nameOfInitializerFunction  = "initialize";
 
-  public static boolean      saveClasses                =
-                                         Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
-                                                                            "true"));
+  public static boolean         saveClasses                =
+                                            Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
+                                                                               "true"));
+
+  private FunctionMapping<D, R> mapping;
 
   public static <D, R, F extends Function<D, R>> F instantiate(String expression,
                                                                Context context,
@@ -158,6 +160,32 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                                Class<? extends R> rangeClass,
                                                                Class<? extends F> functionClass,
                                                                String functionName)
+  {
+    var compiledExpression = compile(expression,
+                                     context,
+                                     domainClass,
+                                     rangeClass,
+                                     functionClass,
+                                     functionName);
+
+    F   func               = compiledExpression.instantiate();
+
+    if (compiledExpression.mapping != null)
+    {
+      compiledExpression.mapping.instance = func;
+    }
+
+    return func;
+  }
+
+  public static <D, R, F extends Function<D, R>>
+         Expression<D, R, F>
+         compile(String expression,
+                 Context context,
+                 Class<? extends D> domainClass,
+                 Class<? extends R> rangeClass,
+                 Class<? extends F> functionClass,
+                 String functionName)
   {
     int colonCharacterIndex = expression.indexOf(":");
     if (colonCharacterIndex != -1)
@@ -173,7 +201,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       expression   = expression.substring(colonCharacterIndex + 1, expression.length());
     }
 
-    FunctionMapping<?, ?> mapping = null;
+    FunctionMapping<D, R> mapping = null;
     if (functionName != null && context != null)
     {
       mapping = context.registerFunctionMapping(functionName,
@@ -186,19 +214,14 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     Expression<D,
                   R,
-                  F>    compiledExpression = express(expression,
-                                                     context,
-                                                     domainClass,
-                                                     rangeClass,
-                                                     functionClass,
-                                                     functionName);
-    F                   func               = compiledExpression.instantiate();
-    if (mapping != null)
-    {
-      mapping.instance = func;
-    }
-
-    return func;
+                  F> compiledExpression = express(expression,
+                                                  context,
+                                                  domainClass,
+                                                  rangeClass,
+                                                  functionClass,
+                                                  functionName);
+    compiledExpression.mapping = mapping;
+    return compiledExpression;
   }
 
   public static <D, R, F extends Function<D, R>> F instantiate(String className,
