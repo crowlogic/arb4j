@@ -220,7 +220,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                   rangeClass,
                                                   functionClass,
                                                   functionName);
-    System.out.println(compiledExpression.syntaxTreeToString());
+    //System.out.println(compiledExpression.syntaxTreeToString());
     compiledExpression.mapping = mapping;
     return compiledExpression;
   }
