@@ -165,7 +165,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
       System.out.format("Variable.generate( this=%s, resultType=%s)\n\n", this, resultType);
     }
 
-    generateReference(mv);
+    generateReference(mv, resultType);
 
     generateIndexAccess(mv);
 
@@ -222,7 +222,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
   }
 
-  private void generateReference(MethodVisitor mv)
+  private void generateReference(MethodVisitor mv,Class<?> neededType )
   {
     if (isIndependent)
     {
@@ -238,6 +238,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     else
     {
       Class<?> referenceType = reference.type();
+      assert referenceType.equals(neededType) : String.format("neededType=%s != referenceType = %s\n", neededType, referenceType );
       expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                     reference.name,
                                     referenceType.descriptorString());
