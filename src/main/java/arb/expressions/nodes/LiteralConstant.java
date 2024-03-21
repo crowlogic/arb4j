@@ -129,6 +129,8 @@ public class LiteralConstant<D, R, F extends Function<D, R>> extends
       expression.setResult(mv, thisType);
     }
 
+    expression.addToTypeStack(thisType, toString() );
+
     return mv;
   }
 

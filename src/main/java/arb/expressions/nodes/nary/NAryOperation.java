@@ -363,6 +363,14 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                                                                             factorFunctionFieldName,
                                                                             expression);
 
+    if (expression.traceGenerator)
+    {
+      System.out.println("Compiled "
+                         + factorExpression
+                         + " \n "
+                         + factorExpression.syntaxTreeToString());
+    }
+    
     registerFactorSubexpressionInstance(factorExpression);
   }
 
@@ -521,6 +529,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   public void loadResultVariable(MethodVisitor methodVisitor)
   {
+    expression.addToTypeStack(generatedType, "result");
     getField(methodVisitor, expression.className, resultVariable, generatedType);
   }
 

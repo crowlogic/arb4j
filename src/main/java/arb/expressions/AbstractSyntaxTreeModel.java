@@ -3,7 +3,6 @@ package arb.expressions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 import arb.OrderedPair;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
@@ -24,19 +23,17 @@ public class AbstractSyntaxTreeModel implements
 {
   public AbstractSyntaxTreeModel(Node<?, ?, ?> root)
   {
-    this.root = root;
-
+    indexBranches(this.root = root);
   }
 
-  ArrayList<Node<?, ?, ?>>                                                    nodes           =
-                                                                                    new ArrayList<>();
+  ArrayList<Node<?, ?, ?>>                                          nodes           =
+                                                                          new ArrayList<>();
 
-  ConcurrentHashMap<Node<?, ?, ?>, OrderedPair<List<Node<?, ?, ?>>, Integer>> indexedBranches =
-                                                                                              new ConcurrentHashMap<>();
+  HashMap<Node<?, ?, ?>, OrderedPair<List<Node<?, ?, ?>>, Integer>> indexedBranches =
+                                                                                    new HashMap<>();
 
   void indexBranches(Node<?, ?, ?> stem)
   {
-
     if (stem == null)
       return;
 
@@ -60,10 +57,6 @@ public class AbstractSyntaxTreeModel implements
   @Override
   public Node<?, ?, ?> getRoot()
   {
-    if (nodes.isEmpty())
-    {
-      indexBranches(root);
-    }
     return root;
   }
 

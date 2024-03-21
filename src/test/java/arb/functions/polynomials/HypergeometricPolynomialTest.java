@@ -12,7 +12,6 @@ import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.functions.Function;
-import arb.functions.real.RealFunction;
 import junit.framework.TestCase;
 
 /**
@@ -40,59 +39,53 @@ public class HypergeometricPolynomialTest extends
    */
   public static void testSum()
   {
-
-    HypergeometricPolynomial F = new HypergeometricPolynomial(2,
-                                                              1);
+    HypergeometricPolynomial F = new HypergeometricPolynomial(2, 1);
     F.α.set(-6, 2.5);
     F.β.set(1);
     double val = F.eval(2.3);
-    assertEquals(145.01289685058583, val);
+    assertEquals( 145.01289685058583, val ); 
   }
 
-  public static void testSum2()
+  /**
+   * the order is the degree of the polynomial plus 1 for the additional constant
+   * term. TODO: extract into {@link HypergeometricPolynomial}
+   */
+  @SuppressWarnings("resource")
+  public static void testFactorValue()
   {
-    //
-    try ( var p = new Integer(3,
-                              "p");
-          var q = new Integer(1,
-                              "q");
-          var α = Real.newVector(p.getSignedValue(), "α");
-          var β = Real.newVector(q.getSignedValue(), "β");)
-    {
-      var  context = new Context(p,
-                                 q,
-                                 α.set(1.5, 0.75, -3),
-                                 β.set(1));
+    HypergeometricPolynomial F = new HypergeometricPolynomial(2, 1);
+    F.α.set(-6, 2.5);
+    F.β.set(1);
+    F.determinePolynomialOrder();
+    //F.F.initialize();
+  //  F.F.factorℝ1.z = new Real().one();
+   //(7, order);
+  //  RealPolynomial value = new RealPolynomial(order);
+    Integer        index = new Integer();
+   // IntStream.range(0, order).forEach(n -> F.F.factorℝ1.evaluate(index.set(n), 128, value.get(n)));
 
-      var  sum = RealFunction.express("z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                          context);
-
-      Real res     = sum.evaluate(RealConstants.π, 1, 128, new Real());
-      assertEquals(-244.81029976584379503781836652101052755, res.doubleValue());
-    }
+   // out.format("2F1(%s,%s,x)=%s\n", F.α, F.β, value);
+    double valueAtTwoPointThree = F.F.eval(2.3);
+    out.format("2F1(%s,%s,2.3)=%s\n", F.α, F.β, valueAtTwoPointThree);
+     assertEquals(145.01289685058583, valueAtTwoPointThree);
   }
 
   public static void testSummand()
   {
-    try ( var p = new Integer(3,
-                              "p");
-          var q = new Integer(1,
-                              "q");
+    try ( var p = new Integer(3, "p"); 
+          var q = new Integer(1, "q"); 
           var α = Real.newVector(p.getSignedValue(), "α");
-          var β = Real.newVector(q.getSignedValue(), "β"); var z = new Real();)
+          var β = Real.newVector(q.getSignedValue(), "β"); 
+          var z = new Real();)
     {
       z.set(RealConstants.π);
-      var  context = new Context(p,
-                                 q,
-                                 α.set(1.5, 0.75, -3),
-                                 β.set(1),
-                                 z.setName("z"));
+      var  context = new Context(p, q, α.set(1.5, 0.75, -3), β.set(1), z.setName("z"));
 
       var  summand = Function.express(Integer.class,
                                       Real.class,
                                       "n➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})",
                                       context);
-
+      
       Real res     = summand.evaluate(new Integer(3), 1, 128, new Real());
       assertEquals(-244.81029976584379503781836652101052755, res.doubleValue());
     }

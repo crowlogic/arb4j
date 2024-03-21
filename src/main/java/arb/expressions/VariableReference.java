@@ -23,7 +23,7 @@ public class VariableReference<D, R, F extends Function<D, R>>
 
   }
 
-  private Class<?> type;
+  public Class<?> type;
 
   @Override
   public int hashCode()
@@ -85,16 +85,6 @@ public class VariableReference<D, R, F extends Function<D, R>>
   public Class<?> type()
   {
     return type;
-  }
-
-  public void setType(Class<? extends D> domainType)
-  {
-    System.err.format("setType(%s) != type = %s for %s\n", domainType, type, this);
-    assert domainType
-                  == type : String.format("Attempt to set type to %s when it was already %s for %s\n",
-                                          domainType,
-                                          type,
-                                          this);
   }
 
 }
