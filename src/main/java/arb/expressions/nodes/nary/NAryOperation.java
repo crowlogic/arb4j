@@ -363,14 +363,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                                                                             factorFunctionFieldName,
                                                                             expression);
 
-    if (expression.traceGenerator)
-    {
-      System.out.println("Compiled "
-                         + factorExpression
-                         + " \n "
-                         + factorExpression.syntaxTreeToString());
-    }
-    
+
     registerFactorSubexpressionInstance(factorExpression);
   }
 

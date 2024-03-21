@@ -302,7 +302,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F>                            rootNode;
 
-  public boolean                                  traceGenerator                = false;
+  public boolean                                  traceGenerator                = true;
 
   public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
