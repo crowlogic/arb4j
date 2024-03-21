@@ -4,7 +4,7 @@ import static arb.functions.real.RealFunction.express;
 
 import arb.Real;
 import arb.expressions.Context;
-import arb.expressions.Variables;
+import arb.expressions.VariableValues;
 import arb.functions.real.RealFunction;
 import arb.stochastic.processes.RealSymmetricCovarianceKernel;
 
@@ -50,7 +50,7 @@ public class CauchyCorrelationFunction implements
    */
   public final Real   β       = new Real().setName("β");
 
-  public Variables    vars    = new Variables();
+  public VariableValues    vars    = new VariableValues();
 
   public Context  context = new Context(vars);
 
