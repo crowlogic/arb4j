@@ -306,7 +306,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
-  public VariableValues                                variables;
+  public Variables                                variables;
 
   public boolean                                  variablesDeclared             = false;
 

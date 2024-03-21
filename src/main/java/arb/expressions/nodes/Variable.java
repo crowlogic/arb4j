@@ -24,7 +24,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.expressions.VariableReference;
-import arb.expressions.VariableValues;
+import arb.expressions.Variables;
 import arb.expressions.nodes.nary.NaryMultiplication;
 import arb.functions.Function;
 import arb.utensils.Utensils;
@@ -96,7 +96,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public final VariableReference<D, R, F> reference;
 
-  public final VariableValues                  variables;
+  public final Variables                  variables;
 
   public Expression<D, R, F>              expression;
 

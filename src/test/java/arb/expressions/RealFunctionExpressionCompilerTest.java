@@ -22,7 +22,7 @@ public class RealFunctionExpressionCompilerTest extends
 
   Context      context   = new Context();
 
-  VariableValues    variables = context.variables;
+  Variables    variables = context.variables;
 
   private Real v;
   private Real v3;

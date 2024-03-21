@@ -4,7 +4,7 @@ import static arb.functions.real.RealFunction.express;
 
 import arb.Real;
 import arb.expressions.Context;
-import arb.expressions.VariableValues;
+import arb.expressions.Variables;
 import arb.functions.real.RealFunction;
 
 /**
@@ -35,7 +35,7 @@ public class ModifiedCauchyCorrelationFunction extends
    */
   public final Real   β       = new Real().setName("β");
 
-  public VariableValues    vars    = new VariableValues(α,
+  public Variables    vars    = new Variables(α,
                                               β);
 
   public Context      context = new Context(vars);

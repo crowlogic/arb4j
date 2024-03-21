@@ -16,7 +16,7 @@ import arb.Typesettable;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Expression;
-import arb.expressions.VariableValues;
+import arb.expressions.Variables;
 import arb.expressions.nodes.binary.Addition;
 import arb.expressions.nodes.binary.BinaryOperation;
 import arb.functions.Function;
@@ -50,7 +50,7 @@ public abstract class Node<D, R, F extends Function<D, R>> implements
     }
   }
 
-  final VariableValues namespace;
+  final Variables namespace;
 
   public abstract MethodVisitor generate(MethodVisitor mv, Class<?> resultType);
 

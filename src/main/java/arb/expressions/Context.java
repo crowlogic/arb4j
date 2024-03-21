@@ -51,19 +51,19 @@ public class Context
 
   public Context()
   {
-    this.variables = new VariableValues();
+    this.variables = new Variables();
     this.functions = new FunctionMappings();
   }
 
   public HashMap<String, AtomicInteger> intermediateVariableCounters = new HashMap<>();
 
-  public Context(VariableValues variables, FunctionMappings functions)
+  public Context(Variables variables, FunctionMappings functions)
   {
     this.variables = variables;
     this.functions = functions;
   }
 
-  public Context(VariableValues vars)
+  public Context(Variables vars)
   {
     this.variables = vars;
     this.functions = new FunctionMappings();
@@ -71,16 +71,16 @@ public class Context
 
   public Context(FunctionMappings funcs)
   {
-    this.variables = new VariableValues();
+    this.variables = new Variables();
     this.functions = funcs;
   }
 
   public Context(HasName... vars)
   {
-    this(new VariableValues(vars));
+    this(new Variables(vars));
   }
 
-  public VariableValues variables;
+  public Variables variables;
 
   public <R> R getVariable(String name)
   {

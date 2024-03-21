@@ -12,7 +12,7 @@ import arb.documentation.TheArb4jLibrary;
  * 
  * @author ©2024 Stephen Crowley
  */
-public class VariableValues
+public class Variables
 
 {
   @Override
@@ -24,7 +24,7 @@ public class VariableValues
   public final HashMap<String, Object> map = new HashMap<>();
 
   @SafeVarargs
-  public <A extends HasName> VariableValues(A... variables)
+  public <A extends HasName> Variables(A... variables)
   {
     for (A variable : variables)
     {
