@@ -30,20 +30,24 @@ public class HypergeometricPolynomialTest extends
           var α = Real.newVector(p.getSignedValue(), "α");
           var β = Real.newVector(q.getSignedValue(), "β"); var N = new Integer();)
     {
-      var  context = new Context(p,
-                                 q,
-                                 α.set(1.5, 0.75, -3),
-                                 β.set(1),
-                                 N.set(4).setName("N"));
+      var context    = new Context(p,
+                                   q,
+                                   α.set(1.5, 0.75, -3),
+                                   β.set(1),
+                                   N.set(4).setName("N"));
 
-      var expression = RealFunction.compile("z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
-                                            context);
-      
-      //System.out.println( "Instantiated " + expression.syntaxTreeToString() );
+      var expression =
+                     RealFunction.compile("z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
+                                          context);
 
-      var  sum     = expression.instantiate();
+      if (expression.traceGenerator)
+      {
+        System.out.println("Instantiated " + expression.syntaxTreeToString());
+      }
 
-      Real res     = sum.evaluate(RealConstants.π, 1, 128, new Real());
+      var  sum = expression.instantiate();
+
+      Real res = sum.evaluate(RealConstants.π, 1, 128, new Real());
       assertEquals(-181.54773622929181, res.doubleValue());
     }
   }
