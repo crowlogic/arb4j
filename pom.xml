@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.arblib</groupId>
   <artifactId>arb4j</artifactId>
-  <version>0.88</version>
+  <version>0.89</version>
   <properties>
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
     <mdep.outputFile>class.path</mdep.outputFile>
