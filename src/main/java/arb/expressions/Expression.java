@@ -100,8 +100,8 @@ import arb.utensils.treetext.TextTree;
  * <li>Dynamically compiles mathematical expressions into executable Java
  * bytecode, allowing for efficient evaluation.</li>
  * <li>Supports {@link Variable}, {@link LiteralConstant}, and
- * {@link FunctionCall}s within {@link Expression}, providing a rich
- * feature set for constructing complex expressions.</li>
+ * {@link FunctionCall}s within {@link Expression}, providing a rich feature set
+ * for constructing complex expressions.</li>
  * <li>Effectively manages intermediate variables and constants, optimizing
  * memory usage and performance.</li>
  * <li>Automatically injects references to variables and functions into the
@@ -302,7 +302,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F>                            rootNode;
 
-  public boolean                                  traceGenerator                = false;
+  public boolean                                  traceGenerator                = true;
 
   public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
@@ -755,8 +755,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                  new VariableReference<>(independentVariableName,
                                                          null,
                                                          domainType));
+      if (traceGenerator)
+      {
+        System.err.format("Input variable declared to be %s of type %s\n", inputNode, domainType);
+      }
 
-      position  = rightArrowIndex;
+      position = rightArrowIndex;
     }
   }
 
@@ -1178,7 +1182,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return ascendentExpression == null ? null : (Variable<E, S, G>) ascendentExpression.inputNode;
   }
 
-  public <Q> Q getVariable(VariableReference<D, R, F> reference)
+  public <E,S,G extends Function<E,S>,Q> Q getVariable(VariableReference<E,S,G> reference)
   {
     return context == null ? null : context.variables.get(reference.name);
   }
@@ -1325,12 +1329,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return registerIntermediateVariable(intermediateVarName, type);
   }
 
-  public Variable<D, R, F> newVariable(VariableReference<D, R, F> reference)
+  public <E,S,G extends Function<E,S>> Variable<E,S,G> newVariableReference(VariableReference<E,S,G> reference)
   {
-    var contextVar = getVariable(reference);
-    reference.type = (context == null || contextVar == null) ? domainType : contextVar.getClass();
-    return new Variable<D, R, F>(this,
-                                 reference);
+    assert false : "revisit: this either needs to return the reference to the existing variable or create a new entry for it and then return the reference, reference=" + reference;
+    return null;
   }
 
   public char nextCharacter()
@@ -1547,8 +1549,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
       if (nextCharacterIs(')'))
       {
         return new FunctionCall<>(this,
-                                       reference.name,
-                                       arg);
+                                  reference.name,
+                                  arg);
       }
       else
       {
@@ -1582,7 +1584,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       }
       else
       {
-        return newVariable(reference);
+        return newVariableReference(reference);
       }
     }
   }

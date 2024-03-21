@@ -1,11 +1,7 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.loadBitsParameter;
-import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
-import static arb.expressions.Compiler.prepareStackForReusingRightSide;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
-import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.List;
@@ -37,7 +33,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public List<Node<?, ?, ?>> getBranches()
   {
-    return List.of(left,right);
+    return List.of(left, right);
   }
 
   @Override
@@ -127,12 +123,14 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       else
       {
         throw new ExpressionCompilerException("Unhandled fill-in of left-hand-side of binary "
-                      + "operation when the right hand side is of type " + right.type()
-                      + ", this is where -x is translated to 0-x. that is what is meant by fill-in");
+                                              + "operation when the right hand side is of type "
+                                              + right.type()
+                                              + ", this is where -x is translated to 0-x. that is what is meant by fill-in");
       }
     }
     assert left != null && right != null : "one or more of the operands to this were missing: "
-                  + this + " set 0 value based on type here";
+                                           + this
+                                           + " set 0 value based on type here";
   }
 
   @Override
@@ -140,27 +138,32 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     if (expression.traceGenerator)
     {
-      System.out.format("BinaryOperation.generate( this=%s,\n%sleft=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
+      System.out.format("BinaryOperation.generate( this=%s,\n%sleft=%s(%s),\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s(%s),\n%sright.type=%s,\n%sresultType=%s )\n\n",
                         this,
                         indent(26),
                         left,
+                        left.getClass().getSimpleName(),
                         indent(26),
                         left.type(),
                         indent(26),
                         operation,
                         indent(26),
                         right,
+                        right.getClass().getSimpleName(),
                         indent(26),
                         right.type(),
                         indent(26),
                         resultType);
     }
-    generatedType = resultType;
 
     left.generate(mv, left.type());
-  
+
     right.generate(mv, right.type());
-    
+
+    generatedType = type();
+    assert generatedType.equals(resultType) : String.format("generatedType=%s != type = %s\n",
+                                                            generatedType,
+                                                            resultType);
     return invokeMethod(mv, operation, resultType);
   }
 
@@ -182,12 +185,6 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     leftType = leftType != null ? leftType : left.type();
     Class<? extends Object> rightType = right.type();
     invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
-   
-    if ( expression.traceGenerator)
-    {
-      System.out.println( "Adding expression to type stack for " + this );
-    }
-    expression.addToTypeStack(resultType, toString() );
 
     return mv;
   }

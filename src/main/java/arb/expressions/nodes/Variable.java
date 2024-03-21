@@ -75,7 +75,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   }
 
   private static final String caveat = "variable name clashes with "
-                + "the function name since its a recursve function";
+                                       + "the function name since its a recursve function";
 
   @Override
   public Class<?> type()
@@ -140,7 +140,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      reference.type = expression.domainType;
+      reference.setType( expression.domainType );
     }
   }
 
@@ -201,7 +201,6 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
       reference.index.generate(mv, indexType);
 
-     
     }
 
     if (Integer.class.equals(indexType))
@@ -227,21 +226,22 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if (isIndependent)
     {
       Compiler.checkClassCast(loadInputParameter(mv), expression.domainType);
-      expression.addToTypeStack(expression.domainType, expression.inputNode.getName() );
     }
     else if (isIndeterminant)
     {
       Compiler.checkClassCast(Compiler.loadResultParameter(mv), expression.rangeType);
-      expression.addToTypeStack(expression.rangeType, "result");
       generateIndeterminateRangeIdentityInvocation(mv);
     }
     else
     {
       Class<?> referenceType = reference.type();
+      if (expression.traceGenerator)
+      {
+        System.err.println("Loading " + reference.name + " of type " + referenceType);
+      }
       expression.loadFieldOntoStack(loadThisOntoStack(mv),
                                     reference.name,
                                     referenceType.descriptorString());
-      expression.addToTypeStack(referenceType, toString() );
     }
   }
 
@@ -310,7 +310,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     else
     {
       throw new UndefinedReferenceException(format("Undefined reference to variable"
-                    + " '%s' in %s, independent variable is %s and parentExpression is %s",
+                                                   + " '%s' in %s, independent variable is %s and parentExpression is %s",
                                                    reference.name,
                                                    expression,
                                                    variable,
