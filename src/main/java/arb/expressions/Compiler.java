@@ -212,7 +212,7 @@ public class Compiler
 
   }
 
-  public static String getVariableSuffix(Class<?> type)
+  public static String getVariablePrefix(Class<?> type)
   {
     if (type.equals(Real.class))
     {

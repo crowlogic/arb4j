@@ -4,7 +4,7 @@ import static arb.expressions.Compiler.addNullCheckForField;
 import static arb.expressions.Compiler.checkClassCast;
 import static arb.expressions.Compiler.express;
 import static arb.expressions.Compiler.generateFunctionInterface;
-import static arb.expressions.Compiler.getVariableSuffix;
+import static arb.expressions.Compiler.getVariablePrefix;
 import static arb.expressions.Compiler.invokeSetMethod;
 import static arb.expressions.Compiler.loadFunctionClass;
 import static arb.expressions.Compiler.loadResultParameter;
@@ -1201,7 +1201,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       context = new Context();
     }
-    String        prefix  = name + getVariableSuffix(type);
+    String        prefix  = name + getVariablePrefix(type);
     AtomicInteger counter = context.intermediateVariableCounters.get(prefix);
     if (counter == null)
     {
