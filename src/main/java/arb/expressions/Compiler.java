@@ -228,11 +228,11 @@ public class Compiler
     }
     else if (type.equals(RealPolynomial.class))
     {
-      return "r̅";
+      return "P";
     }
     else if (type.equals(ComplexPolynomial.class))
     {
-      return "c̅";
+      return "Q";
     }
     else if (type.equals(RealMatrix.class))
     {
