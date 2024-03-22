@@ -1223,9 +1223,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return context == null ? null : context.variables.get(reference.name);
   }
 
-  public boolean hasPolynomialRange()
+  public boolean thisOrAnyAscendentExpressionHasPolynomialRange()
   {
-    return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class);
+    return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class)
+                  || (ascendentExpression != null
+                                && ascendentExpression.thisOrAnyAscendentExpressionHasPolynomialRange());
   }
 
   public void
@@ -1741,6 +1743,26 @@ public class Expression<D, R, F extends Function<D, R>> implements
       System.out.format("Popped " + popped);
     }
     return popped;
+  }
+
+  public Class<?> getThisOrAnyAscendentExpressionsPolynomialRange()
+  {
+    if (rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class))
+    {
+      return rangeType;
+    }
+    if (ascendentExpression != null)
+    {
+      Class<?> ascendentPolynomialRangeType =
+                                            ascendentExpression.getThisOrAnyAscendentExpressionsPolynomialRange();
+
+      if (ascendentPolynomialRangeType != null)
+      {
+        return ascendentPolynomialRangeType;
+      }
+    }
+
+    return null;
   }
 
 }

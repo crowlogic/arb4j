@@ -1,8 +1,9 @@
 import arb.Integer;
 import arb.Real;
-import arb.functions.real.RealFunction;
+import arb.RealPolynomial;
+import arb.functions.real.RealPolynomialNullaryFunction;
 
-public class F implements RealFunction {
+public class F implements RealPolynomialNullaryFunction {
    private boolean isInitialized;
    Integer c1;
    public Integer p;
@@ -16,12 +17,11 @@ public class F implements RealFunction {
    public Integer endIndexℤ3;
    public final factorℝ1 factorℝ1 = new factorℝ1();
 
-   public Real evaluate(Real in, int order, int bits, Real result) {
+   public RealPolynomial evaluate(Void in, int order, int bits, RealPolynomial result) {
       if (!isInitialized) {
          initialize();
       }
 
-      factorℝ1.z = in;
       sumℝ1.additiveIdentity();
       n.set(c1);
       endIndexℤ3.set(N);
@@ -30,7 +30,7 @@ public class F implements RealFunction {
          sumℝ1.add(factorℝ1.evaluate(n, bits, valueℝ1), bits);
       } while(n.increment().compareTo(endIndexℤ3) <= 0);
 
-      return result.set(sumℝ1);
+      return (result).set(sumℝ1);
    }
 
    public F() {

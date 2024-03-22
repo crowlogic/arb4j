@@ -1,11 +1,7 @@
 package arb.expressions.nodes.binary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.loadBitsParameter;
-import static arb.expressions.Compiler.prepareStackForReusingLeftSide;
-import static arb.expressions.Compiler.prepareStackForReusingRightSide;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.indent;
-import static java.lang.String.format;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 
 import java.util.List;
@@ -23,6 +19,7 @@ import arb.expressions.Compiler;
 import arb.expressions.Expression;
 import arb.expressions.nodes.LiteralConstant;
 import arb.expressions.nodes.Node;
+import arb.expressions.nodes.Variable;
 import arb.functions.Function;
 
 /**
@@ -37,7 +34,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public List<Node<?, ?, ?>> getBranches()
   {
-    return List.of(left,right);
+    return List.of(left, right);
   }
 
   @Override
@@ -127,12 +124,14 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
       else
       {
         throw new ExpressionCompilerException("Unhandled fill-in of left-hand-side of binary "
-                      + "operation when the right hand side is of type " + right.type()
-                      + ", this is where -x is translated to 0-x. that is what is meant by fill-in");
+                                              + "operation when the right hand side is of type "
+                                              + right.type()
+                                              + ", this is where -x is translated to 0-x. that is what is meant by fill-in");
       }
     }
     assert left != null && right != null : "one or more of the operands to this were missing: "
-                  + this + " set 0 value based on type here";
+                                           + this
+                                           + " set 0 value based on type here";
   }
 
   @Override
@@ -140,28 +139,33 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   {
     if (expression.traceGeneration)
     {
-      System.out.format("BinaryOperation.generate( this=%s,\n%sleft=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
-                        this,
-                        indent(26),
-                        left,
-                        indent(26),
-                        left.type(),
-                        indent(26),
-                        operation,
-                        indent(26),
-                        right,
-                        indent(26),
-                        right.type(),
-                        indent(26),
-                        resultType);
+      System.out.println(formatGenerationParameters(resultType));
     }
     generatedType = resultType;
 
     left.generate(mv, left.type());
-  
+
     right.generate(mv, right.type());
-    
+
     return invokeMethod(mv, operation, resultType);
+  }
+
+  private String formatGenerationParameters(Class<?> resultType)
+  {
+    return String.format("BinaryOperation.generate( this=%s,\n%sleft=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
+                         this,
+                         indent(26),
+                         left,
+                         indent(26),
+                         left.type(),
+                         indent(26),
+                         operation,
+                         indent(26),
+                         right,
+                         indent(26),
+                         right.type(),
+                         indent(26),
+                         resultType);
   }
 
   /**
@@ -182,9 +186,8 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     leftType = leftType != null ? leftType : left.type();
     Class<? extends Object> rightType = right.type();
     invokeBinaryOperationMethod(mv, operator, leftType, rightType, resultType);
-   
-   
-    //expression.addToTypeStack(resultType, toString() );
+
+    // expression.addToTypeStack(resultType, toString() );
 
     return mv;
   }
@@ -295,12 +298,21 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
     assert left != null : "left is null: " + this + " for expr=" + expression;
     assert right != null : "right is null: " + this + " for expr=" + expression;
 
-    Class<? extends Object> leftType = left.type();
+    Class<? extends Object> leftType  = left.type();
     Class<? extends Object> rightType = right.type();
-    
-    assert leftType != null : String.format("leftType is null where this=%s\n", this );
-    assert rightType != null : String.format("rightType is null where this=%s\n", this );
-    
+
+    if ( leftType == null )
+    {
+      if ( left instanceof Variable)
+      {
+        Variable<D, R, F> leftVariable = (Variable<D, R, F>)left;
+        leftVariable.resolveType();
+        leftType = left.type();
+      }
+    }
+    assert leftType != null : String.format("leftType is null where this=%s\n", formatGenerationParameters(Real.class));
+    assert rightType != null : String.format("rightType is null where this=%s\n", this);
+
     if (leftType.equals(rightType))
     {
       boolean integerDivision = operation.equals("div") && leftType.equals(Integer.class);

@@ -1,5 +1,6 @@
 import arb.Integer;
 import arb.Real;
+import arb.RealPolynomial;
 import arb.functions.Function;
 
 public class factorℝ2 implements Function<Integer, Real> {
@@ -16,7 +17,7 @@ public class factorℝ2 implements Function<Integer, Real> {
          initialize();
       }
 
-      return α.get(in).ascendingFactorial(n, bits, result);
+      return α.get(in).ascendingFactorial((result).identity(), bits, result);
    }
 
    public void initialize() {

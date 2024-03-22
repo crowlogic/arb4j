@@ -91,7 +91,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     else
     {
       Class<?> type = reference.type();
-      if (  type == null )
+      if (type == null)
       {
         resolveReference(reference);
         type = reference.type;
@@ -240,7 +240,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else if (isIndeterminant)
     {
-      Compiler.checkClassCast(Compiler.loadResultParameter(mv), expression.rangeType);
+      Compiler.checkClassCast(Compiler.loadResultParameter(mv),
+                              expression.getThisOrAnyAscendentExpressionsPolynomialRange());
       // expression.addToTypeStack(expression.rangeType, "result");
       generateIndeterminateRangeIdentityInvocation(mv);
     }
@@ -292,6 +293,10 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public void resolveReference(VariableReference<D, R, F> reference)
   {
+    if (expression.traceGeneration)
+    {
+      System.out.format("resolveReference(reference=%s)\n", reference);
+    }
     var inputVariable = expression.inputNode;
 
     if (expression.variables != null)
@@ -325,7 +330,15 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else
     {
-      if (isIndeterminant = expression.hasPolynomialRange())
+      if (expression.traceGeneration)
+      {
+        System.err.println("Checking if "
+                           + reference
+                           + " is the indeterminant variable in a polynomial expression");
+
+      }
+
+      if (isIndeterminant = expression.thisOrAnyAscendentExpressionHasPolynomialRange())
       {
         expression.indeterminate = this;
       }
@@ -341,8 +354,9 @@ public class Variable<D, R, F extends Function<D, R>> extends
                                + reference.type
                                + " to "
                                + referencedVariable);
+            System.err.println("Hardy Harr Harr");
+
           }
-          System.err.println("Hardy Harr Harr");
         }
         else
         {
@@ -431,6 +445,13 @@ public class Variable<D, R, F extends Function<D, R>> extends
   public List<Node<?, ?, ?>> getBranches()
   {
     return List.of();
+  }
+
+  public Variable<D, R, F> resolveType()
+  {
+    resolveReference(reference);
+    assert type() != null : "type() STILL null even after calling resolveReference";
+    return this;
   }
 
 }

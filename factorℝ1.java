@@ -5,7 +5,6 @@ import arb.functions.Function;
 public class factorℝ1 implements Function<Integer, Real> {
    private boolean isInitialized;
    Integer c1;
-   public Real z;
    public Integer p;
    public Integer q;
    public Real α;
@@ -30,7 +29,7 @@ public class factorℝ1 implements Function<Integer, Real> {
          initialize();
       }
 
-      Real var10000 = z.pow(in, bits, ℝ1);
+      Real var10000 = result.identity().pow(in, bits, ℝ1);
       factorℝ2.n = in;
       prodℝ1.multiplicativeIdentity();
       k.set(c1);
