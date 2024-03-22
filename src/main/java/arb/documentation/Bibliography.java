@@ -19,6 +19,13 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+
+  public static Book          besselFunctionTreatise                                  =
+                                                     new Book("A Treatise on the Theory of Bessel Functions",
+                                                              "G.N. Watson",
+                                                              "1944").setPublisher("Cambridge University Press")
+                                                                     .setEdition("2nd");
+
   public static Book          lecturesOnDifferentialAndIntegralEquations              =
                                                                          new Book("Lectures on Differential and Integral Equations",
                                                                                   "吉田 耕作(Kōsaku Yosida)",
@@ -152,11 +159,11 @@ public class Bibliography extends
                                                             "2024",
                                                             "\\url{http://oeis.org/A001790}",
                                                             "This sequence gives the numerators of the Maclaurin series of the "
-                                                                          + "Lorentz factor (see Wikipedia link) of $\\frac{1}{\\sqrt{1-b^2}} = \\frac{dt}{d\\tau}$ "
-                                                                          + "where $b=\\frac{u}{c}$ is the velocity in terms of the speed of light c, "
-                                                                          + "u is the velocity as observed in the reference frame where time "
-                                                                          + "t is measured and tau is the proper time. "
-                                                                          + "- Stephen Crowley, Apr 03 2007",
+                                                                                              + "Lorentz factor (see Wikipedia link) of $\\frac{1}{\\sqrt{1-b^2}} = \\frac{dt}{d\\tau}$ "
+                                                                                              + "where $b=\\frac{u}{c}$ is the velocity in terms of the speed of light c, "
+                                                                                              + "u is the velocity as observed in the reference frame where time "
+                                                                                              + "t is measured and tau is the proper time. "
+                                                                                              + "- Stephen Crowley, Apr 03 2007",
                                                             "http://oeis.org/A001790");
 
   public static Book          oneParameterSemigroups                                  =
