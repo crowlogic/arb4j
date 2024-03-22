@@ -269,7 +269,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   private void generateIndeterminateRangeIdentityInvocation(MethodVisitor mv)
   {
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                       Type.getInternalName(expression.rangeType),
+                       Type.getInternalName(reference.type),
                        "identity",
                        format("()%s", reference.type.descriptorString()),
                        false);
