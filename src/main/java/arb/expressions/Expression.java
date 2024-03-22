@@ -295,7 +295,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   final public String                             genericFunctionClassInternalName;
 
-  public Variable<D, R, F>                        indeterminate;
+  public Variable<D, R, F>                        indeterminateVariable;
 
   public Variable<D, R, F>                        inputNode;
 

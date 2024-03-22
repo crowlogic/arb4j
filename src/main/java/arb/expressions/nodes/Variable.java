@@ -96,7 +96,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
         resolveReference(reference);
         type = reference.type;
       }
-      return isIndeterminant ? expression.rangeType : type;
+      return type;
     }
   }
 
@@ -240,8 +240,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
     }
     else if (isIndeterminant)
     {
-      Compiler.checkClassCast(Compiler.loadResultParameter(mv),
-                              expression.getThisOrAnyAscendentExpressionsPolynomialRange());
+      if (reference.type == null)
+      {
+        resolveReference(reference);
+      }
+      Compiler.checkClassCast(Compiler.loadResultParameter(mv), reference.type);
       // expression.addToTypeStack(expression.rangeType, "result");
       generateIndeterminateRangeIdentityInvocation(mv);
     }
@@ -268,7 +271,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(expression.rangeType),
                        "identity",
-                       format("()%s", expression.rangeType.descriptorString()),
+                       format("()%s", reference.type.descriptorString()),
                        false);
   }
 
@@ -293,6 +296,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
   public void resolveReference(VariableReference<D, R, F> reference)
   {
+    if (isIndeterminant)
+    {
+      reference.type = expression.getThisOrAnyAscendentExpressionsPolynomialRange();
+    }
+
     if (expression.traceGeneration)
     {
       System.out.format("resolveReference(reference=%s)\n", reference);
@@ -340,7 +348,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
       if (isIndeterminant = expression.thisOrAnyAscendentExpressionHasPolynomialRange())
       {
-        expression.indeterminate = this;
+        expression.indeterminateVariable = this;
       }
       else
       {
