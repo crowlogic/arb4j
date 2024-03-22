@@ -1,1 +1,1 @@
-expression compiler: hypergeometric function support.. esp the 'terminating series' case where it results in a polynomia when theres a negative integer in the numerator
+nullary->realPolynomial hypergeometric function: java.lang.AssertionError: leftType is null where this=z^n in HypergeometricPolynomialTest.testSum #364

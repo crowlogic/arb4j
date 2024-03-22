@@ -1,11 +1,6 @@
 package arb.expressions.nodes.unary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
-import static arb.expressions.Compiler.loadOrderParameter;
-import static arb.expressions.Compiler.loadResultParameter;
-import static arb.expressions.Compiler.loadThisOntoStack;
+import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -57,37 +52,50 @@ import arb.functions.Function;
  *      {@link TheArb4jLibrary}
  */
 public class FunctionCall<D, R, F extends Function<D, R>> extends
-                              UnaryOperation<D, R, F>
+                         UnaryOperation<D, R, F>
 {
 
   public String                functionName;
   public boolean               contextual                      = false;
   public FunctionMapping<D, R> mapping;
 
-  HashSet<String>              integerFunctionsWithRealResults = new HashSet<>(Arrays.asList(new String[]
-  { "sqrt", "tanh", "log" }));
+  HashSet<String>              integerFunctionsWithRealResults =
+                                                               new HashSet<>(Arrays.asList(new String[]
+                                                               { "sqrt", "tanh", "log" }));
 
-  @SuppressWarnings("unchecked")
   public FunctionCall(Expression<D, R, F> expression, String functionName, Node<D, R, F> argument)
   {
-    super(argument,expression);
-    this.functionName = Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
-                              .replace("ln", "log")
-                              .replace("√", "sqrt");
-    generatedType     = resultTypeFor(functionName);
+    super(argument,
+          expression);
+    this.functionName = functionName;
+    scrubSymbols();
+    generatedType = resultTypeFor(functionName);
 
-    // assert argument == null && !targetResultType.equals(Void.class) : "argument
-    // is null for " + this;
-    if (expression.context != null)
+    registerFunctionWhenItsContextual();
+
+  }
+
+  private void scrubSymbols()
+  {
+    this.functionName =
+                      Parser.replaceArrowsEllipsesAndSuperscriptAlphabeticalExponents(functionName)
+                            .replace("ln", "log")
+                            .replace("√", "sqrt");
+  }
+
+  @SuppressWarnings("unchecked")
+  private void registerFunctionWhenItsContextual()
+  {
+    if (this.expression.context != null)
     {
-      mapping    = (FunctionMapping<D, R>) expression.context.functions.map.get(functionName);
+      mapping    =
+              (FunctionMapping<D, R>) this.expression.context.functions.map.get(this.functionName);
       contextual = mapping != null;
       if (contextual)
       {
-        expression.referencedFunctions.put(functionName, mapping);
+        this.expression.referencedFunctions.put(this.functionName, mapping);
       }
     }
-
   }
 
   @Override
@@ -122,7 +130,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     }
 
     assert getGeneratedType().equals(resultType) : String.format("TODO: type conversion for output where generatedType=%s != resultType = %s\n",
-                                                                 getGeneratedType(), resultType);
+                                                                 getGeneratedType(),
+                                                                 resultType);
     return mv;
   }
 
@@ -132,7 +141,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
    * @param requisiteResultType
    * @return
    */
-  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor, Class<?> requisiteResultType)
+  public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor,
+                                                   Class<?> requisiteResultType)
   {
     var     expression                = arg.expression;
 
@@ -151,8 +161,12 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     Class<?> domainType = getDomainType();
     Class<?> rangeType  = requisiteResultType;
 
-    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, Type.getInternalName(domainType), functionName,
-                                  format("(I%s)%s", rangeType.descriptorString(), rangeType.descriptorString()),
+    methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+                                  Type.getInternalName(domainType),
+                                  functionName,
+                                  format("(I%s)%s",
+                                         rangeType.descriptorString(),
+                                         rangeType.descriptorString()),
                                   false);
     if (needsResultTypeConversion)
     {
@@ -188,12 +202,16 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     if (expression.traceGenerator)
     {
       System.out.format("%s.generateContextualFunctionCall( resultType=%s, generatedType=%s ): expression.typeStack=%s\n\n",
-                        getClass().getSimpleName(), resultType, expression.typeStack, generatedType);
+                        getClass().getSimpleName(),
+                        resultType,
+                        expression.typeStack,
+                        generatedType);
     }
 
     if (func == null && mapping.functionInterface == null)
     {
-      throw new IllegalArgumentException(String.format("Undefined reference to function %s", mapping));
+      throw new IllegalArgumentException(String.format("Undefined reference to function %s",
+                                                       mapping));
     }
 
     loadFunctionReferenceOntoStack(mv, mapping);
@@ -219,8 +237,11 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     Class<?> typeAfter = isVoid ? Void.class : arg.type();
 
-    assert typeBefore.equals(typeAfter) || isVoid : String.format("%s: typeBefore=%s typeAfter=%s\n", this,
-                                                                  typeBefore, typeAfter);
+    assert typeBefore.equals(typeAfter)
+                  || isVoid : String.format("%s: typeBefore=%s typeAfter=%s\n",
+                                            this,
+                                            typeBefore,
+                                            typeAfter);
 
     if (needsArgTypeConversion)
     {
@@ -243,7 +264,9 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R> mapping)
   {
-    expression.loadFieldOntoStack(loadThisOntoStack(mv), functionName, mapping.functionFieldDescriptor());
+    expression.loadFieldOntoStack(loadThisOntoStack(mv),
+                                  functionName,
+                                  mapping.functionFieldDescriptor());
   }
 
   public boolean isBuiltin()
@@ -287,7 +310,8 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   @Override
   public String typeset()
   {
-    return format("%s(%s)", functionName.replace("√", "\\sqrt").replace("J0", "J_0"),
+    return format("%s(%s)",
+                  functionName.replace("√", "\\sqrt").replace("J0", "J_0"),
                   arg == null ? "" : arg.typeset());
   }
 
