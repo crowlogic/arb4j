@@ -169,7 +169,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (expression.traceGenerator)
+    if (expression.traceGeneration)
     {
       System.out.format("Variable.generate( this=%s, resultType=%s)\n\n", this, resultType);
     }
@@ -300,7 +300,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
       if (instanceVariable != null)
       {
         reference.type = instanceVariable.getClass();
-        if (expression.traceGenerator)
+        if (expression.traceGeneration)
         {
           System.err.println("Declaring "
                              + reference
@@ -318,7 +318,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
     {
       expression.inputNode = this;
       reference.type       = expression.domainType;
-      if (expression.traceGenerator)
+      if (expression.traceGeneration)
       {
         System.err.println("Declaring " + reference + " as the input node to " + expression);
       }
@@ -335,7 +335,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
         if (referencedVariable != null)
         {
           reference.type = referencedVariable.getClass();
-          if (expression.traceGenerator)
+          if (expression.traceGeneration)
           {
             System.err.println("Variable.resolveReference assigned type "
                                + reference.type

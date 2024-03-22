@@ -41,7 +41,7 @@ public class HypergeometricPolynomialTest extends
                      RealFunction.compile("z➔Σn➔zⁿ*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}",
                                           context);
 
-      if (expression.traceGenerator)
+      if (expression.traceGeneration)
       {
         System.out.println("Instantiated " + expression.syntaxTreeToString());
       }

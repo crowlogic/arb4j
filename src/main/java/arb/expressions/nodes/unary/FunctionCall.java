@@ -2,7 +2,6 @@ package arb.expressions.nodes.unary;
 
 import static arb.expressions.Compiler.*;
 import static java.lang.String.format;
-import static java.lang.System.out;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -70,9 +69,7 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     this.functionName = functionName;
     scrubSymbols();
     generatedType = resultTypeFor(functionName);
-
     registerFunctionWhenItsContextual();
-
   }
 
   private void scrubSymbols()
@@ -103,21 +100,14 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
   {
     changeGeneratedTypeIfNecessary(resultType);
 
-    if (expression.traceGenerator)
+    if (expression.traceGeneration)
     {
       System.out.format("FunctionCall.generate: this=%s resultType=%s\n\n", this, resultType);
     }
 
     if (functionName.equals(expression.functionName))
     {
-      contextual           = true;
-      mapping              = new FunctionMapping<>();
-      generatedType        = resultType;
-      mapping.range        = generatedType;
-      mapping.domain       = getDomainType();
-      mapping.name         = functionName;
-      expression.recursive = true;
-
+      designateAsRecursiveFunction(resultType);
     }
 
     if (contextual)
@@ -135,12 +125,17 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     return mv;
   }
 
-  /**
-   * 
-   * @param methodVisitor
-   * @param requisiteResultType
-   * @return
-   */
+  private void designateAsRecursiveFunction(Class<?> resultType)
+  {
+    contextual           = true;
+    mapping              = new FunctionMapping<>();
+    generatedType        = resultType;
+    mapping.range        = generatedType;
+    mapping.domain       = getDomainType();
+    mapping.name         = functionName;
+    expression.recursive = true;
+  }
+
   public MethodVisitor generateBuiltinFunctionCall(MethodVisitor methodVisitor,
                                                    Class<?> requisiteResultType)
   {
@@ -199,26 +194,15 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
     FunctionMapping<D, R> mapping = expression.context.functions.get(functionName);
     F                     func    = (F) mapping.instance;
 
-    if (expression.traceGenerator)
-    {
-      System.out.format("%s.generateContextualFunctionCall( resultType=%s, generatedType=%s ): expression.typeStack=%s\n\n",
-                        getClass().getSimpleName(),
-                        resultType,
-                        expression.typeStack,
-                        generatedType);
-    }
+    possiblyPrintDebugInformation(resultType);
 
-    if (func == null && mapping.functionInterface == null)
-    {
-      throw new IllegalArgumentException(String.format("Undefined reference to function %s",
-                                                       mapping));
-    }
+    checkForUndefinedReferenced(mapping, func);
 
     loadFunctionReferenceOntoStack(mv, mapping);
 
-    Class<?> argType                = arg == null ? Void.class : arg.type();
-    var      typeBefore             = argType;
     boolean  isVoid                 = Void.class.equals(mapping.domain);
+    Class<?> argType                = arg == null ? Void.class : arg.type();
+
     boolean  needsArgTypeConversion = !argType.equals(mapping.domain) && !isVoid;
 
     if (needsArgTypeConversion)
@@ -226,22 +210,13 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
       expression.reserveIntermediateVariable(mv, mapping.domain);
     }
 
-    if (isVoid)
-    {
-      mv.visitInsn(Opcodes.ACONST_NULL);
-    }
-    else
-    {
-      arg.generate(mv, argType);
-    }
+    var typeBefore = argType;
+
+    generateParameter(mv, argType, isVoid);
 
     Class<?> typeAfter = isVoid ? Void.class : arg.type();
 
-    assert typeBefore.equals(typeAfter)
-                  || isVoid : String.format("%s: typeBefore=%s typeAfter=%s\n",
-                                            this,
-                                            typeBefore,
-                                            typeAfter);
+    validateTypeStability(typeBefore, isVoid, typeAfter);
 
     if (needsArgTypeConversion)
     {
@@ -253,13 +228,51 @@ public class FunctionCall<D, R, F extends Function<D, R>> extends
 
     loadOutputVariableOntoStack(mv, expression, generatedType);
 
-    if (expression.verbose)
-    {
-      out.format("callContextualUnaryFunction( mapping=%s type=%s\n", mapping, generatedType);
-    }
     expression.callContextualUnaryFunction(mv, mapping, generatedType);
 
     return mv;
+  }
+
+  private void generateParameter(MethodVisitor mv, Class<?> argType, boolean isVoid)
+  {
+    if (isVoid)
+    {
+      mv.visitInsn(Opcodes.ACONST_NULL);
+    }
+    else
+    {
+      arg.generate(mv, argType);
+    }
+  }
+
+  private void possiblyPrintDebugInformation(Class<?> resultType)
+  {
+    if (expression.traceGeneration)
+    {
+      System.out.format("%s.generateContextualFunctionCall( resultType=%s, generatedType=%s ): expression.typeStack=%s\n\n",
+                        getClass().getSimpleName(),
+                        resultType,
+                        expression.typeStack,
+                        generatedType);
+    }
+  }
+
+  private void checkForUndefinedReferenced(FunctionMapping<D, R> mapping, F func)
+  {
+    if (func == null && mapping.functionInterface == null)
+    {
+      throw new IllegalArgumentException(String.format("Undefined reference to function %s",
+                                                       mapping));
+    }
+  }
+
+  private void validateTypeStability(Class<?> typeBefore, boolean isVoid, Class<?> typeAfter)
+  {
+    assert typeBefore.equals(typeAfter)
+                  || isVoid : String.format("%s: typeBefore=%s typeAfter=%s\n",
+                                            this,
+                                            typeBefore,
+                                            typeAfter);
   }
 
   private void loadFunctionReferenceOntoStack(MethodVisitor mv, FunctionMapping<D, R> mapping)

@@ -13,6 +13,7 @@ import static arb.expressions.Parser.isLatinOrGreek;
 import static arb.expressions.Parser.isNumeric;
 import static arb.utensils.Utensils.indent;
 import static java.lang.String.format;
+import static java.lang.System.out;
 import static org.objectweb.asm.Opcodes.ACC_FINAL;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ALOAD;
@@ -220,7 +221,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                                   rangeClass,
                                                   functionClass,
                                                   functionName);
-    //System.out.println(compiledExpression.syntaxTreeToString());
+    // System.out.println(compiledExpression.syntaxTreeToString());
     compiledExpression.mapping = mapping;
     return compiledExpression;
   }
@@ -326,7 +327,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F>                            rootNode;
 
-  public boolean                                  traceGenerator                = true;
+  public boolean                                  traceGeneration               = true;
 
   public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
@@ -483,7 +484,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public void addToTypeStack(Class<?> type, String name)
   {
-    if (traceGenerator)
+    if (traceGeneration)
     {
       System.out.format("Adding %s to the type stack for %s: %s\n from \n", type, name, typeStack);
       new Throwable().printStackTrace();
@@ -494,6 +495,10 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public MethodVisitor
          callContextualUnaryFunction(MethodVisitor mv, FunctionMapping<D, R> mapping, Class<?> type)
   {
+    if (traceGeneration)
+    {
+      out.format("Expression.callContextualUnaryFunction( mapping=%s type=%s\n", mapping, type);
+    }
     boolean isInterface = mapping.functionInterface != null;
     mv.visitMethodInsn(mapping.functionInterface != null ? Opcodes.INVOKEINTERFACE
                                                          : Opcodes.INVOKEVIRTUAL,
@@ -1018,7 +1023,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
       addChecksForNullVariableReferences(mv, false, false);
     }
 
-    if (traceGenerator)
+    if (traceGeneration)
     {
       System.out.format("Generating %s\n\n", expression);
     }
@@ -1283,7 +1288,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   public MethodVisitor
          loadFieldOntoStack(MethodVisitor methodVisitor, String fieldName, String fieldDescriptor)
   {
-    if (traceGenerator)
+    if (traceGeneration)
     {
       System.out.println("loadFieldOntoStack " + fieldName + " of type " + fieldDescriptor);
       if (fieldName.equals("z") && fieldDescriptor.equals("Larb/Integer;"))
@@ -1726,12 +1731,12 @@ public class Expression<D, R, F extends Function<D, R>> implements
     {
       return null;
     }
-    if (traceGenerator)
+    if (traceGeneration)
     {
       System.out.format("Popping the top off the type stack: %s\n", typeStack);
     }
     Class<?> popped = typeStack.pop();
-    if (traceGenerator)
+    if (traceGeneration)
     {
       System.out.format("Popped " + popped);
     }

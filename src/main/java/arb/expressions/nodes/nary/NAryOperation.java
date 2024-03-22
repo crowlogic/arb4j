@@ -184,7 +184,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   {
     factorFunctionFieldName = expression.getNextIntermediateVariableFieldName("factor", resultType);
     factorValueFieldName    = expression.newIntermediateVariable("value", resultType);
-    if (expression.traceGenerator)
+    if (expression.traceGeneration)
     {
       int indentation = 18 + getClass().getSimpleName().length();
       System.out.format("%s.assignFieldNames(resultType=%s,\n%sfactorFunctionFieldName=%s,\n%sfactorValueFieldName=%s)\n\n",
@@ -225,7 +225,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   protected void designateLabel(MethodVisitor mv, Label label, boolean addTypeToStackMap)
   {
-    if (expression.traceGenerator)
+    if (expression.traceGeneration)
     {
       System.out.format("%s.designateLabel( label=%s,\n%saddTypeToStackMap=%s)\n\n",
                         getClass().getSimpleName(),
@@ -343,7 +343,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   protected void generateFactorClass(Class<?> resultType)
   {
     String expr = format("%s➔%s", getIndexFieldName(), factorExpressionString);
-    if (expression.traceGenerator)
+    if (expression.traceGeneration)
     {
       System.out.format("%s.generateFactorClass( expr=%s,resultType=%s)\n\n",
                         getClass().getSimpleName(),
@@ -397,7 +397,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   protected void getField(MethodVisitor methodVisitor, String fieldName, String fieldTypeSignature)
   {
-    if (expression.verbose || expression.traceGenerator)
+    if (expression.verbose || expression.traceGeneration)
     {
       out.format("getField(functionClass=%s,\n%sfieldName=%s,\n%sfieldTypeSignature=%s\n\n",
                  functionClass,
@@ -630,7 +630,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
                                     "L" + factorFunctionFieldName + ";");
       Compiler.loadInputParameter(mv);
       checkClassCast(mv, independentVariableNode.type());
-      if (expression.traceGenerator)
+      if (expression.traceGeneration)
       {
         System.out.format("%s.propagateInputToFactorClass( factorFunctionFieldName=%s,\n"
                           + "%sindependentVariableNode=%s,\n"

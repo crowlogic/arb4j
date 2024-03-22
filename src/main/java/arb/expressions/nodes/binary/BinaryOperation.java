@@ -138,7 +138,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    if (expression.traceGenerator)
+    if (expression.traceGeneration)
     {
       System.out.format("BinaryOperation.generate( this=%s,\n%sleft=%s,\n%sleft.type=%s,\n%soperation=%s,\n%sright=%s,\n%sright.type=%s,\n%sresultType=%s )\n\n",
                         this,
@@ -195,7 +195,7 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
                                    Class<?> rightType,
                                    Class<?> returnType)
   {
-    if (expression.traceGenerator)
+    if (expression.traceGeneration)
     {
       String.format("%s.invokeBinaryOperationMethod(operator=%s, leftType=%s, rightType=%s, returnType=%s)\n",
                     getClass().getSimpleName(),
