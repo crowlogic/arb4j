@@ -297,6 +297,10 @@ public abstract class BinaryOperation<D, R, F extends Function<D, R>> extends
 
     Class<? extends Object> leftType = left.type();
     Class<? extends Object> rightType = right.type();
+    
+    assert leftType != null : String.format("leftType is null where this=%s\n", this );
+    assert rightType != null : String.format("rightType is null where this=%s\n", this );
+    
     if (leftType.equals(rightType))
     {
       boolean integerDivision = operation.equals("div") && leftType.equals(Integer.class);
