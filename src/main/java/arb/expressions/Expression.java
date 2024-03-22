@@ -327,7 +327,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F>                            rootNode;
 
-  public boolean                                  traceGeneration               = true;
+  public boolean                                  traceGeneration               = false;
 
   public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
@@ -335,7 +335,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public boolean                                  variablesDeclared             = false;
 
-  public boolean                                  verbose                       = true;
+  public boolean                                  verbose                       = false;
 
   public Expression(String className,
                     Class<? extends D> domainClass,
