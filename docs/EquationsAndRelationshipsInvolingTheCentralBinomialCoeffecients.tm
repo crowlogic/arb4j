@@ -32,7 +32,7 @@
     factorial numbers are involved in expanding polynomials of the form
 
     <\equation>
-      x<rsup|<around|[|n|]>>=x\<cdot\><big|prod><rsub|i=1><rsup|n-1><around|(|x+<frac|n|2>-i|)>=<big|sum><rsub|k=0><rsup|n>t<around|(|n,k|)>\<cdot\>x<rsup|k>
+      <tabular|<tformat|<table|<row|<cell|x<rsup|<around|[|n|]>>>|<cell|=x\<cdot\><big|prod><rsub|i=1><rsup|n-1><around|(|x+<frac|n|2>-i|)>>>|<row|<cell|>|<cell|=<big|sum><rsub|k=0><rsup|n>t<around|(|n,k|)>\<cdot\>x<rsup|k>>>>>>
     </equation>
 
     For even <math|n=2*m>, the polynomial expansion simplifies to products
