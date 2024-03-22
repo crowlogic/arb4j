@@ -19,6 +19,13 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book          lecturesOnDifferentialAndIntegralEquationsYosida        =
+                                                                               new Book("Lectures on Differential and Integral Equations",
+                                                                                        "吉田 耕作(Kōsaku Yosida)",
+                                                                                        "1960").setPublisher("Interscience Publishers/John Wiley & Sons Inc.")
+                                                                                               .setAddress("New York/London/Sydney")
+                                                                                               .setSeries("Pure and Applied Mathematics")
+                                                                                               .setVolume("X");
 
   public static Book          besselFunctionTreatise                                  =
                                                      new Book("A Treatise on the Theory of Bessel Functions",
