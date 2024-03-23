@@ -1,3 +1,2 @@
 finish WignerFunction impllementation W(x,p)= ∫(ψ^(x+y)*ψ(x-y)*e^(2*i*p*y/ℏ)*d*y){y=-∞..∞}/(π*ℏ)
 implement ∫ operator in expression compiler by automatically producing the corresponding orthogonal polynomial sequence
-generateFactorClass, Summation.generateFactorClass( expr=n➔z^n*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}),resultType=class arb.Real) is the problem

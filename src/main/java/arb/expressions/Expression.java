@@ -482,7 +482,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
   }
 
-  public void addToTypeStack(Class<?> type, String name)
+  public void pushOntoTypeStack(Class<?> type, String name)
   {
     if (traceGeneration)
     {
@@ -545,6 +545,8 @@ public class Expression<D, R, F extends Function<D, R>> implements
         generateCloseMethod(classVisitor);
       }
 
+      generateToStringMethod(classVisitor);
+
     }
     finally
     {
@@ -565,6 +567,26 @@ public class Expression<D, R, F extends Function<D, R>> implements
     }
 
     return this;
+  }
+
+  private ClassVisitor generateToStringMethod(ClassVisitor classVisitor)
+  {
+    MethodVisitor methodVisitor =
+                                classVisitor.visitMethod(Opcodes.ACC_PUBLIC,
+                                                         "toString",
+                                                         Utensils.getMethodDescriptor(String.class),
+                                                         null,
+                                                         null);
+
+    methodVisitor.visitCode();
+
+    methodVisitor.visitLdcInsn(expression);
+
+    methodVisitor.visitInsn(Opcodes.ARETURN);
+    methodVisitor.visitMaxs(10, 10);
+    methodVisitor.visitEnd();
+
+    return classVisitor;
   }
 
   public ClassVisitor constructClassVisitor()
@@ -1727,7 +1749,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return new AbstractSyntaxTreeModel(rootNode);
   }
 
-  public Class<?> removeTopOfTypeStack()
+  public Class<?> pullFromTypeStack()
   {
     if (computeFrames)
     {
@@ -1740,7 +1762,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
     Class<?> popped = typeStack.pop();
     if (traceGeneration)
     {
-      System.out.format("Popped " + popped);
+      System.out.format("Popped " + popped + " off the stack so now its " + typeStack);
     }
     return popped;
   }
