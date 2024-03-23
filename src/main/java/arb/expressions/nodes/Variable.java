@@ -348,7 +348,20 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
       if (isIndeterminant = expression.thisOrAnyAscendentExpressionHasPolynomialRange())
       {
+        assert expression.inputNode == null : "cannot set indeterminant to "
+                                              + this
+                                              + " since expression input node is already set to "
+                                              + expression.inputNode
+                                              + " for expression="
+                                              + expression;
+
         expression.indeterminateVariable = this;
+
+        if (expression.traceGeneration)
+        {
+          System.err.format("Declaring %s to be the indeterminant of %s\n", this, expression);
+
+        }
       }
       else
       {
@@ -402,6 +415,12 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
     if (ascendentInputNode != null && ascendentInputNode.reference.equals(reference))
     {
+      if (expression.traceGeneration)
+      {
+        System.err.format("Assigning this %s as ascendent input node=%s\n",
+                          this,
+                          ascendentInputNode);
+      }
       ascendentInput = true;
       reference.type = ascendentExpression.domainType;
     }
