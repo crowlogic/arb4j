@@ -1,9 +1,11 @@
 package arb.functions.complex;
 
 import arb.Complex;
+import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 
 /**
- * W(x,p)= ∫(ψ^(x+y)*ψ(x-y)*e^(2*i*p*y/ℏ)*d*y){y=-∞..∞}/(π*ℏ)<br>
+ * Wψ(x,p)= ∫(ψ^(x+y)*ψ(x-y)*e^(2*i*p*y/ℏ)*d*y){y=-∞..∞}/(π*ℏ)<br>
  * <br>
  * 
  * 
@@ -17,6 +19,12 @@ import arb.Complex;
 public class WignerFunction<F extends ComplexFunction> implements
                            ComplexFunction
 {
+  public WignerFunction(ComplexFunction ψ)
+  {
+    this.ψ = ψ;
+  }
+
+  ComplexFunction ψ;
 
   @Override
   public Complex evaluate(Complex t, int order, int bits, Complex res)
