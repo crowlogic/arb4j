@@ -63,4 +63,8 @@ public class zΣnzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubkn
       sumℝ1.close();
       endIndexℤ3.close();
    }
+
+   public String toString() {
+      return "z➔Σn➔z^n*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
+   }
 }

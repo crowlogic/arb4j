@@ -580,8 +580,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
     methodVisitor.visitCode();
 
-    methodVisitor.visitLdcInsn(String.format("%s%s",
+    methodVisitor.visitLdcInsn(String.format("%s%s%s",
                                              functionName != null ? (functionName + ":") : "",
+                                             expression.contains("➔") || inputNode
+                                                           == null ? ""
+                                                                   : (inputNode.getName() + "➔"),
                                              expression));
 
     methodVisitor.visitInsn(Opcodes.ARETURN);

@@ -108,6 +108,6 @@ public class nzⁿTimesProdkαSubknWherekEquals1TopOvernBangTimesProdkβSubknWhe
    }
 
    public String toString() {
-      return "n➔n➔z^n*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})";
+      return "n➔z^n*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})";
    }
 }
