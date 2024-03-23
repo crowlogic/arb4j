@@ -23,8 +23,8 @@ import arb.Field;
  * @see NormedVectorSpace
  * @see VectorSpace
  */
-public interface InnerProductSpace<F extends Field<F>, VE> extends
-                                  VectorSpace<F, VE>
+public interface InnerProductSpace<F extends Field<F>> extends
+                                  VectorSpace<F>
 {
   /**
    * Computes the inner product of 'this' vector with 'that' vector. The
@@ -37,5 +37,5 @@ public interface InnerProductSpace<F extends Field<F>, VE> extends
    * @return A scalar in the field F that represents the result of the inner
    *         product computation.
    */
-  public VE innerProduct(VE that, int prec, F result);
+  public F innerProduct(F that, int prec, F result);
 }

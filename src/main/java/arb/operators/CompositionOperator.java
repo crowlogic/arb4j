@@ -13,7 +13,7 @@ import arb.space.topological.VectorSpace;
 
 public class CompositionOperator<F extends ComplexFunction, G extends ComplexFunction> implements
                                 ComplexFunction,
-                                LinearOperator<Complex, Complex>,
+                                LinearOperator<Complex>,
                                 AutoCloseable
 {
   public static <F extends ComplexFunction, G extends ComplexFunction> CompositionOperator<F, G> compose(F f,
@@ -86,10 +86,12 @@ public class CompositionOperator<F extends ComplexFunction, G extends ComplexFun
   }
 
   @Override
-  public VectorSpace<Complex, Complex>
-         apply(VectorSpace<Complex, Complex> x, int bits, VectorSpace<Complex, Complex> result)
+  public VectorSpace<? extends Complex>
+         apply(VectorSpace<? extends Complex> x, int bits, VectorSpace<? extends Complex> result)
   {
     // TODO Auto-generated method stub
     return null;
   }
+
+  
 }

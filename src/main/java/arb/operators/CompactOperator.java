@@ -27,9 +27,10 @@ import arb.space.topological.VectorSpace;
  * @param <VE2> The type of the elements in the codomain vector space.
  * @param <V2>  The type of the codomain vector space itself.
  */
-public interface CompactOperator<F extends Field<F>, VE1, V1 extends VectorSpace<F, VE1>, VE2, V2 extends VectorSpace<F, VE2>>
-                                extends
-                                BoundedLinearOperator<F, VE1, V1, VE2, V2>
+public interface CompactOperator<F extends Field<F>,
+              V1 extends VectorSpace<? extends F>,
+              V2 extends VectorSpace<? extends F>> extends
+                                BoundedLinearOperator<F, V1, V2>
 {
 
 }

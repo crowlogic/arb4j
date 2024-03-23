@@ -16,16 +16,15 @@ import arb.space.topological.VectorSpace;
  * self-adjoint operators (a type of normal operators) are associated with
  * observable physical quantities.
  *
- * @param <F>   The type of the field over which the vector spaces are defined.
- *              This should extend the {@link Field} interface.
- * @param <VE1> The type of the elements in the domain vector space.
- * @param <V1>  The type of the domain vector space itself.
- * @param <VE2> The type of the elements in the codomain vector space.
- * @param <V2>  The type of the codomain vector space itself.
+ * @param <F>  The type of the field over which the vector spaces are defined.
+ *             This should extend the {@link Field} interface.
+ * @param <V1> The type of the domain vector space itself.
+ * @param <V2> The type of the codomain vector space itself.
  */
-public interface NormalOperator<F extends Field<F>, VE1, V1 extends VectorSpace<F, VE1>, VE2, V2 extends VectorSpace<F, VE2>>
-                               extends
-                               BoundedLinearOperator<F, VE1, V1, VE2, V2>
+public interface NormalOperator<F extends Field<? extends F>,
+              V1 extends VectorSpace<? extends F>,
+              V2 extends VectorSpace<? extends F>> extends
+                               BoundedLinearOperator<F, V1, V2>
 {
   /**
    * Computes and returns the adjoint (conjugate transpose) of this operator. The
@@ -39,5 +38,5 @@ public interface NormalOperator<F extends Field<F>, VE1, V1 extends VectorSpace<
    *
    * @return the adjoint of this operator
    */
-  BoundedLinearOperator<F, VE2, V2, VE1, V1> adjointOperator();
+  BoundedLinearOperator<F, V2, V1> adjointOperator();
 }

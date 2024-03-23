@@ -21,9 +21,9 @@ import arb.Field;
  *      Vector Space (Mathematics)@Wikipedia</a>
  */
 public interface EuclideanVectorSpace<X extends Field<X>> extends
-                                     VectorSpace<X, X>,
+                                     VectorSpace<X>,
                                      EuclideanSpace<X>,
-                                     InnerProductSpace<X, X>
+                                     InnerProductSpace<X>
 {
 
   /**
@@ -33,6 +33,5 @@ public interface EuclideanVectorSpace<X extends Field<X>> extends
    */
   @Override
   public int dim();
-
 
 }

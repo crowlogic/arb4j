@@ -13,9 +13,11 @@ import arb.space.topological.VectorSpace;
  * @param <OUT> Type of output vector space.
  * @param <K>   Type of {@link SquareIntegrableKernel}
  */
-public interface FredholmOperator<F extends Field<F>, IN extends VectorSpace<F, F>, OUT extends VectorSpace<F, F>, K extends SquareIntegrableKernel<F>>
-                                 extends
-                                 CompactOperator<F, IN, VectorSpace<F, IN>, F, OUT>,
+public interface FredholmOperator<F extends Field<F>,
+              IN extends VectorSpace<? extends F>,
+              OUT extends VectorSpace<? extends F>,
+              K extends SquareIntegrableKernel<F>> extends
+                                 CompactOperator<F, IN, OUT>,
                                  IntegralOperator<F, IN, OUT, K>
 {
 

@@ -14,9 +14,11 @@ import arb.space.topological.HilbertSpace;
  * @param <VE> The type of the elements in the Hilbert space.
  * @param <V>  The type of the Hilbert space itself.
  */
-public interface TraceClassOperator<F extends Field<F>, VE, O extends OrthogonalBasis<F, VE>, V extends HilbertSpace<F, VE, O>>
-                                   extends
-                                   NuclearOperator<F, VE, V, VE, V>
+public interface TraceClassOperator<F extends Field<F>,
+              VE,
+              O extends OrthogonalBasis<? extends F,?>,
+              V extends HilbertSpace<? extends F, O>> extends
+                                   NuclearOperator<F, V, V>
 {
   /**
    * In the finite-dimensional case, the trace of an operator (matrix) is the sum

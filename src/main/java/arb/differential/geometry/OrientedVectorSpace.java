@@ -21,8 +21,8 @@ import arb.space.topological.VectorSpace;
  *      "https://en.wikipedia.org/wiki/Orientation_(vector_space)">Orientation
  *      of vector spaces@Wikipedia</a>
  */
-public interface OrientedVectorSpace<F extends Field<F>, X> extends
-                                    VectorSpace<F, X>
+public interface OrientedVectorSpace<F extends Field<? extends F>, X> extends
+                                    VectorSpace<F>
 {
 
 }

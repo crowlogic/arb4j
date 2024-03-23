@@ -19,8 +19,9 @@ import arb.Real;
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Normed_vector_space">NormedVectorSpace@Wikipedia</a>
  */
-public interface NormedVectorSpace<F extends Field<F>, VE, V extends VectorSpace<F, VE>> extends
-                                  VectorSpace<F, VE>
+public interface NormedVectorSpace<F extends Field<? extends F>,
+              V extends VectorSpace<? extends F>> extends
+                                  VectorSpace<F>
 {
   /**
    * Returns the norm of a vector in this space.

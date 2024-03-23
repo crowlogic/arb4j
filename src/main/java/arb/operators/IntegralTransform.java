@@ -11,9 +11,9 @@ import arb.functions.Function;
  * @param <F> the type of the field elements
  * @param <VE> the type of the vector elements
  */
-public interface IntegralTransform<F extends Field<F>, VE> extends
+public interface IntegralTransform<F extends Field<F>> extends
                                   Function<F, F>,
-                                  LinearOperator<F, VE>
+                                  LinearOperator<F>
 {
   /**
    * Gets the kernel function for this integral transform. The kernel function

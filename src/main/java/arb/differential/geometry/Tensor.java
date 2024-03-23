@@ -33,7 +33,7 @@ import arb.space.topological.VectorSpace;
  * tensor of type ρ is an equivariant map T : F → W . Equivariance here means
  * that
  * 
- * T ( F R ) = ρ ( R − 1 ) T ( F ) .
+ * T ( F R ) = ρ ( R − 1 ) T ( F )
  * 
  * When ρ is a tensor representation of the general linear group, this gives the
  * usual definition of tensors as multidimensional arrays. This definition is
@@ -43,7 +43,7 @@ import arb.space.topological.VectorSpace;
  * @author crow
  *
  */
-public interface Tensor<X extends Field<X>, Y, V extends VectorSpace<X, Y>>
+public interface Tensor<X extends Field<? extends X>, Y, V extends VectorSpace<X>>
 {
 
 }

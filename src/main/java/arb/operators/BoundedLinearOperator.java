@@ -20,9 +20,10 @@ import arb.space.topological.VectorSpace;
  * @param <VE2> The type of the elements in the codomain vector space.
  * @param <V2>  The type of the codomain vector space itself.
  */
-public interface BoundedLinearOperator<F extends Field<F>, VE1, V1 extends VectorSpace<F, VE1>, VE2, V2 extends VectorSpace<F, VE2>>
-                                      extends
-                                      LinearOperator<F, VE1>
+public interface BoundedLinearOperator<F extends Field<? extends F>,
+              V1 extends VectorSpace<? extends F>,
+              V2 extends VectorSpace<? extends F>> extends
+                                      LinearOperator<F>
 {
 
   /**
@@ -42,7 +43,7 @@ public interface BoundedLinearOperator<F extends Field<F>, VE1, V1 extends Vecto
    *
    * @return The adjoint of 'this' operator.
    */
-  BoundedLinearOperator<F, VE2, V2, VE1, V1> adjointOperator();
+  BoundedLinearOperator<F, V2, V1> adjointOperator();
 
   // other properties and methods specific to bounded linear operators...
 }

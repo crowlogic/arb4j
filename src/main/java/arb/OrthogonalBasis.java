@@ -9,12 +9,13 @@ import arb.functions.real.RealFunction;
  * named License.pdf, License.txt, or License.tm which are the pdf, text, and
  * TeXmacs format of the same document respectively.
  */
-public interface OrthogonalBasis<X, VE> extends
-                                Iterable<VE>
+public interface OrthogonalBasis<X extends Field<? extends X>, E> extends
+                                Iterable<E>
 {
 
   RealFunction getOrthogonalMeasure();
 
   Domain<X> getDomain();
 
+  
 }

@@ -34,8 +34,8 @@ import arb.operators.LinearOperator;
  * @see <a href=
  *      "https://en.m.wikipedia.org/wiki/Hodge_star_operator">HodgeStarOperator@Wikipedia</a>
  */
-public interface HodgeStarOperator<F extends Field<F>, VE> extends
-                                  LinearOperator<F, VE>
+public interface HodgeStarOperator<F extends Field<F>> extends
+                                  LinearOperator<F>
 {
 
 }

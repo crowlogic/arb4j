@@ -31,9 +31,10 @@ import arb.space.topological.HilbertSpace;
  * @param <O>  the type of {@link OrthogonalBasis}
  * @param <V>  The type of the Hilbert space itself.
  */
-public interface HilbertSchmidtOperator<F extends Field<F>, VE, O extends OrthogonalBasis<F, VE>, V extends HilbertSpace<F, VE, O>>
-                                       extends
-                                       CompactOperator<F, VE, V, VE, V>
+public interface HilbertSchmidtOperator<F extends Field<F>,
+              O extends OrthogonalBasis<? extends F,?>,
+              V extends HilbertSpace<? extends F, O>> extends
+                                       CompactOperator<F, V, V>
 {
   /**
    * Computes the Hilbert-Schmidt norm of 'this' operator. The Hilbert-Schmidt

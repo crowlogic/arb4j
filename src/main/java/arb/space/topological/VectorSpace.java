@@ -1,7 +1,6 @@
 package arb.space.topological;
 
 import arb.Field;
-import arb.operators.LinearFunctional;
 
 /**
  * Represents a vector space over a field F with elements of type VE.
@@ -21,8 +20,8 @@ import arb.operators.LinearFunctional;
  * @see <a href="https://en.wikipedia.org/wiki/Vector_space">VectorSpace
  *      (Mathematics)@Wikipedia</a>
  */
-public interface VectorSpace<F extends Field<F>, VE> extends
-                            Space<VE>
+public interface VectorSpace<F extends Field<? extends F>> extends
+                            Space<F>
 {
   /**
    * Returns the field over which the vector space is defined.
@@ -40,7 +39,7 @@ public interface VectorSpace<F extends Field<F>, VE> extends
    * @param result    The resulting vector.
    * @return The result of adding a and b, represented as a VectorSpace<F, VE>.
    */
-  VectorSpace<F, VE> add(VE a, VE b, int precision, VE result);
+  VectorSpace<F> add(F a, F b, int precision, F result);
 
   /**
    * Scale a vector by a scalar.
@@ -52,7 +51,7 @@ public interface VectorSpace<F extends Field<F>, VE> extends
    * @return The result of scaling the vector, represented as a VectorSpace<F,
    *         VE>.
    */
-  VectorSpace<F, VE> scale(VE vector, F scalar, int precision, VE result);
+  VectorSpace<F> scale(F vector, F scalar, int precision, F result);
 
   /**
    * Returns the dual space of the current vector space. The dual space consists
@@ -63,5 +62,5 @@ public interface VectorSpace<F extends Field<F>, VE> extends
    * @return The dual space of the vector space, represented as a VectorSpace<F,
    *         LinearFunctional<F, VE>>.
    */
-  VectorSpace<F, LinearFunctional<F, VE>> dual();
+  VectorSpace<F> dual();
 }

@@ -20,8 +20,8 @@ import arb.Field;
  * @see VectorSpace
  * @see TopologicalSpace
  */
-public interface TopologicalVectorSpace<F extends Field<F>, VE> extends
-                                       VectorSpace<F, VE>,
-                                       TopologicalSpace<VE>
+public interface TopologicalVectorSpace<F extends Field<? extends F>> extends
+                                       VectorSpace<F>,
+                                       TopologicalSpace<F>
 {
 }

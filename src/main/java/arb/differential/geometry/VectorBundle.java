@@ -24,9 +24,12 @@ import arb.space.topological.TopologicalVectorSpace;
  * @see Shiing-Shen Chern, 1987. Vector bundles with a connection. Mathematical
  *      Sciences Research Institute
  */
-public interface VectorBundle<X extends Field<X>, E extends TopologicalSpace<X>, B extends TopologicalSpace<X>, C extends Connection<X, B>, π extends SurjectiveFunction<E, B>>
-                             extends
-                             FiberBundle<X, E, B, TopologicalVectorSpace<X, X>, π>
+public interface VectorBundle<X extends Field<X>,
+              E extends TopologicalSpace<X>,
+              B extends TopologicalSpace<X>,
+              C extends Connection<X, B>,
+              π extends SurjectiveFunction<E, B>> extends
+                             FiberBundle<X, E, B, TopologicalVectorSpace<X>, π>
 {
   /**
    * Retrieves the Connection associated with this VectorBundle. The Connection

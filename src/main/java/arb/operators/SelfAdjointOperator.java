@@ -18,8 +18,8 @@ import arb.space.topological.VectorSpace;
  * @param <VE> The type of the elements in the vector space.
  * @param <V>  The type of the vector space itself.
  */
-public interface SelfAdjointOperator<F extends Field<F>, VE, V extends VectorSpace<F, VE>> extends
-                                    NormalOperator<F, VE, V, VE, V>
+public interface SelfAdjointOperator<F extends Field<? extends F>, V extends VectorSpace<? extends F>> extends
+                                    NormalOperator<F, V, V>
 {
   /**
    * By definition, a Self Adjoint Operator is its own adjoint. Therefore, this
@@ -28,7 +28,7 @@ public interface SelfAdjointOperator<F extends Field<F>, VE, V extends VectorSpa
    * @return this operator
    */
   @Override
-  default SelfAdjointOperator<F, VE, V> adjointOperator()
+  default SelfAdjointOperator<F, V> adjointOperator()
   {
     return this;
   }

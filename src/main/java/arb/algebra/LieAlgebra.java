@@ -27,8 +27,8 @@ import arb.space.topological.VectorSpace;
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public interface LieAlgebra<F extends Field<F>, B extends LieBracket<F>, V> extends
-                           VectorSpace<F, V>
+public interface LieAlgebra<F extends Field<F>, B extends LieBracket<F>> extends
+                           VectorSpace<F>
 {
 
   /**

@@ -1,7 +1,5 @@
 package arb.functions.polynomials.orthogonal;
 
-import java.util.Iterator;
-
 import arb.Integer;
 import arb.OrthogonalBasis;
 import arb.Real;
@@ -11,7 +9,7 @@ import arb.functions.Function;
 import arb.functions.real.RealFunction;
 
 public interface OrthogonalPolynomialSequence extends
-                                              OrthogonalBasis<Real, RealPolynomial>,
+                                              OrthogonalBasis<Real,RealPolynomial>,
                                               Function<Integer, RealPolynomial>
 
 {
@@ -21,6 +19,5 @@ public interface OrthogonalPolynomialSequence extends
 
   RealFunction getOrthogonalMeasure();
 
-  Iterator<RealPolynomial> iterator();
 
 }

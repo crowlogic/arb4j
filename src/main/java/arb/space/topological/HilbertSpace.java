@@ -21,9 +21,9 @@ import arb.OrthogonalBasis;
  * @param <VE> The type of the elements in the vector space.
  * @param <S>  The type of the Hilbert space itself.
  */
-public interface HilbertSpace<F extends Field<F>, VE, O extends OrthogonalBasis<F, VE>> extends
-                             BanachSpace<F, VE>,
-                             InnerProductSpace<F, VE>
+public interface HilbertSpace<F extends Field<F>, O extends OrthogonalBasis<? extends F,?>> extends
+                             BanachSpace<F>,
+                             InnerProductSpace<F>
 {
   /**
    * Returns an orthonormal basis for this space.

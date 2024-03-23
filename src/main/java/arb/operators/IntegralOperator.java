@@ -14,9 +14,11 @@ import arb.space.topological.VectorSpace;
  * @param <OUT> Type of output vector space.
  * @param <K>   Type of kernel {@link Function}
  */
-public interface IntegralOperator<F extends Field<F>, IN extends VectorSpace<F, ?>, OUT extends VectorSpace<F, ?>, K extends Kernel<F>>
-                                 extends
-                                 LinearOperator<F, IN>
+public interface IntegralOperator<F extends Field<F>,
+              IN extends VectorSpace<? extends F>,
+              OUT extends VectorSpace<? extends F>,
+              K extends Kernel<F>> extends
+                                 LinearOperator<F>
 {
   /**
    * Access the kernel function to be used by this operator. The kernel function

@@ -10,6 +10,7 @@ package arb;
 
 import static arb.arblib.*;
 import arb.functions.real.RealFunction;
+import arb.space.topological.VectorSpace;
 import arb.algebra.Ring;
 import arb.exceptions.DivisionByZeroException;
 import arb.utensils.Utensils;
