@@ -294,7 +294,10 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
   @Override
   public MethodVisitor generate(MethodVisitor mv, Class<?> resultType)
   {
-    resultType = scalarDowncast(resultType);
+    if (!expression.thisOrAnyAscendentExpressionHasPolynomialRange())
+    {
+      resultType = scalarDowncast(resultType);
+    }
 
     assignFieldNames(resultType);
 
