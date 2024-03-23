@@ -9,7 +9,7 @@
   </author-name>|<\author-affiliation>
     (transcribed by Stephen Crowley and some 'aye eye' thing)
 
-    <slink|https://oeis.org/wiki/User:Peter_Luschny/PrimeFactorsSwingingFactorial>
+    <slink|https://oeis.org/wiki/User:Peter_Luschny/PrimeFactorsSwingingFactorial\<cdot\>>
   </author-affiliation>>>>
 
   <vspace*|2fn><no-indent><with|font-series|bold|KEYWORDS:> swinging
