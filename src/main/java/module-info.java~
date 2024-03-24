@@ -40,6 +40,7 @@ module arb4j
   exports arb.documentation;
   exports arb.documentation.concepts;
   exports arb.documentation.annotations;
+  exports arb.documentation.examples;
   exports arb.documentation.references;
   exports arb.documentation.examples.quantum.mechanics;
   exports arb.expressions;

@@ -348,13 +348,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
       if (isIndeterminant = expression.thisOrAnyAscendentExpressionHasPolynomialRange())
       {
-        assert expression.inputNode == null : "cannot set indeterminant to "
-                                              + this
-                                              + " since expression input node is already set to "
-                                              + expression.inputNode
-                                              + " for expression="
-                                              + expression;
-
+        assert expression.indeterminateVariable == null
+                      || expression.indeterminateVariable.equals(this) : "indeterminant expression already set to "
+                                                                         + expression.indeterminateVariable
+                                                                         + " but the code wants to set it to "
+                                                                         + this;
         expression.indeterminateVariable = this;
 
         if (expression.traceGeneration)
