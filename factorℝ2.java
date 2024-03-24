@@ -29,4 +29,8 @@ public class factorℝ2 implements Function<Integer, Real> {
          isInitialized = true;
       }
    }
+
+   public String toString() {
+      return "factorℝ2:k➔β[k]₍ₙ₎";
+   }
 }

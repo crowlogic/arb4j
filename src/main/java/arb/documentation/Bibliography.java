@@ -19,15 +19,23 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
-  public static Article       classicalOrthogonalPolynomialReproducingKernels     =
-                                                                                  new Article("A new property of reproducing kernels for classical orthogonal polynomials",
-                                                                                              "F. Alberto Grünbaum",
-                                                                                              "1983",
-                                                                                              "Journal of Mathematical Analysis and Applications",
-                                                                                              "95",
-                                                                                              "491-500").setNumber("2")
-                                                                                                        .setPublisher("Elsevier");
-  
+  public static Book          specialFunctionsOfMathematicalPhysics                   =
+                                                                    new Book("Formulas and Theorems for the Special Functions of Mathematical Physics",
+                                                                             "Wilhelm Magnus, Fritz Oberhettinger, Raj Pal Soni",
+                                                                             "1966").setPublisher("Springer")
+                                                                                    .setSeries("Die Grundlehren der mathematischen Wissenschaften in Einzeldarstellungen")
+                                                                                    .setVolume("52")
+                                                                                    .setEdition("VIII, 508 p. ; 24 cm. 3rd enl. ed.");
+
+  public static Article       classicalOrthogonalPolynomialReproducingKernels         =
+                                                                              new Article("A new property of reproducing kernels for classical orthogonal polynomials",
+                                                                                          "F. Alberto Grünbaum",
+                                                                                          "1983",
+                                                                                          "Journal of Mathematical Analysis and Applications",
+                                                                                          "95",
+                                                                                          "491-500").setNumber("2")
+                                                                                                    .setPublisher("Elsevier");
+
   public static Book          lecturesOnDifferentialAndIntegralEquationsYosida        =
                                                                                new Book("Lectures on Differential and Integral Equations",
                                                                                         "吉田 耕作(Kōsaku Yosida)",

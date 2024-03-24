@@ -1,57 +1,70 @@
 import arb.Integer;
 import arb.Real;
-import arb.functions.Function;
+import arb.RealPolynomial;
+import arb.functions.real.RealPolynomialNullaryFunction;
 
-public class F implements Function<Integer, Real> {
+public class F implements RealPolynomialNullaryFunction {
    private boolean isInitialized;
    Integer c1;
+   public Integer p;
+   public Integer q;
    public Real α;
    public Real β;
-   public Real ℝ3;
-   public Integer ℤ1;
-   public Real ℝ4;
-   public Real ℝ5;
-   public Real ℝ6;
-   public final C C = new C();
+   public Integer N;
+   public RealPolynomial valueP1;
+   public Integer n;
+   public RealPolynomial sumP1;
+   public Integer endIndexℤ3;
+   public final factorP1 factorP1 = new factorP1();
 
-   public Real evaluate(Integer in, int order, int bits, Real result) {
+   public RealPolynomial evaluate(Void in, int order, int bits, RealPolynomial result) {
       if (!isInitialized) {
          initialize();
       }
 
-      return (C.evaluate(ℝ3.set(in.sub(c1, bits, ℤ1)), order, bits, ℝ4))
-         .mul(C.evaluate(ℝ5.set(in), order, bits, ℝ6), bits, result);
+      sumP1.additiveIdentity();
+      n.set(c1);
+      endIndexℤ3.set(N);
+
+      do {
+         sumP1.add(factorP1.evaluate(n, bits, valueP1), bits);
+      } while(n.increment().compareTo(endIndexℤ3) <= 0);
+
+      return (result).set(sumP1);
    }
 
    public F() {
-      c1 = new Integer("1");
-      ℝ3 = new Real();
-      ℤ1 = new Integer();
-      ℝ4 = new Real();
-      ℝ5 = new Real();
-      ℝ6 = new Real();
+      c1 = new Integer("0");
+      valueP1 = new RealPolynomial();
+      n = new Integer();
+      sumP1 = new RealPolynomial();
+      endIndexℤ3 = new Integer();
    }
 
    public void initialize() {
       if (isInitialized) {
          throw new AssertionError("Already initialized");
+      } else if (N == null) {
+         throw new AssertionError("N is null");
       } else {
-         C.α = α;
-         C.β = β;
+         factorP1.p = p;
+         factorP1.q = q;
+         factorP1.α = α;
+         factorP1.β = β;
+         factorP1.N = N;
          isInitialized = true;
       }
    }
 
    public void close() {
       c1.close();
-      ℝ3.close();
-      ℤ1.close();
-      ℝ4.close();
-      ℝ5.close();
-      ℝ6.close();
+      valueP1.close();
+      n.close();
+      sumP1.close();
+      endIndexℤ3.close();
    }
 
    public String toString() {
-      return "F:n➔C(n-1)*C(n)";
+      return "F:Σn➔z^n*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q}){n=0…N}";
    }
 }
