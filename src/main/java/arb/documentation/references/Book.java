@@ -1,6 +1,9 @@
 package arb.documentation.references;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
+
+import arb.documentation.ChapterReferral;
 
 public record Book(String title,
                    String author,
@@ -14,6 +17,14 @@ public record Book(String title,
                   implements
                   Reference
 {
+
+  public ChapterReferral referToChapters(String... chapters)
+  {
+    return new ChapterReferral(this,Stream.of(chapters)
+                                     .map(chapter -> new Chapter(this,
+                                                                 chapter)));
+  }
+
 
   public Book(String title, String author, String year)
   {
