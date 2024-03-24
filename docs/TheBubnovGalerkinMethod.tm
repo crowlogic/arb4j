@@ -90,78 +90,7 @@
   and <math|<wide|c|\<vect\>>=<around*|[|c<rsub|0>,c<rsub|1>,\<ldots\>,c<rsub|n>|]>>
   is the vector of coefficients <math|c<rsub|i>>.
 
-  <subsection|The Christoffel-Darboux kernel>
-
-  Leveraging the Christoffel-Darboux kernel we can construct a sequence of
-  optimal (in the sense that their truncating at finite N minimzes the error
-  of the approximation for any finite N) finite rank approximations, we can
-  express the N-th partial sum as a ratio of the N and N-1 polynomials . This
-  allows us to compute the integrals involved in <math|A<rsub|k*i>> exactly,
-  without the need for direct integration over the kernel, possibly taking
-  the limit via\ 
-
-  Let's denote the N-th partial sum as <math|K<rsub|N><around|(|x,y|)>>, and
-  let <math|\<phi\><rsub|i><around|(|x|)>> and
-  <math|\<phi\><rsub|k><around|(|x|)>> be the N-th order polynomials. Then,
-  we have:
-
-  <\equation>
-    K<rsub|N><around|(|x,y|)>=<big|sum><rsub|j=0><rsup|N><frac|\<phi\><rsub|j><around|(|x|)>*\<phi\><rsub|j><around|(|y|)>|\<lambda\><rsub|j>>
-  </equation>
-
-  Using this kernel which converges to
-
-  <\equation*>
-    lim<rsub|N\<rightarrow\>\<infty\>>K<rsub|N><around*|(|x,y|)>=k<around*|(|x,y|)>=<big|sum><rsub|n=0><rsup|\<infty\>><frac|\<phi\><rsub|n><around*|(|x|)>\<phi\><rsub|n><around*|(|y|)>|\<lambda\><rsub|n>>
-  </equation*>
-
-  we can express <math|A<rsub|k*,i>> as:
-
-  <\equation>
-    A<rsub|k,*i>=<big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i>k<around*|(|x,y|)>d*y<space|0.17em>d
-    x
-  </equation>
-
-  Substituting the expression for <math|K<rsub|N><around|(|x,y|)>>, we get:
-
-  <\equation>
-    <tabular|<tformat|<table|<row|<cell|A<rsub|k*,i>>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>K<rsub|N><around|(|x,y|)>d*y<space|0.17em>d
-    x>>|<row|<cell|>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>*<big|sum><rsub|j=0><rsup|N><frac|\<phi\><rsub|j><around|(|x|)>*\<phi\><rsub|j><around|(|y|)>|\<lambda\><rsub|j>>d*y<space|0.17em>d
-    x>>|<row|<cell|>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|sum><rsub|j=0><rsup|N><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>*<frac|\<phi\><rsub|j><around|(|x|)>*\<phi\><rsub|j><around|(|y|)>|\<lambda\><rsub|j>>d*y<space|0.17em>d
-    x>>|<row|<cell|>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|sum><rsub|j=0><rsup|N><frac|1|\<lambda\><rsub|j>><big|int><rsub|D><big|int><rsub|D>\<phi\><rsub|k><around|(|x|)>\<phi\><rsub|i><around|(|y|)>*\<phi\><rsub|j><around|(|x|)>\<phi\><rsub|j><around|(|y|)>d*y<space|0.17em>d
-    x>>|<row|<cell|>|<cell|=lim<rsub|N\<rightarrow\>\<infty\>><big|sum><rsub|j=0><rsup|N><frac|C<rsub|i,j,k>|\<lambda\><rsub|j>>>>>>>
-  </equation>
-
   \;
-
-  <subsection|The Eigenfunctions>
-
-  \ Given the matrix elements <math|A<rsub|k*i>> as computed using the
-  Christoffel-Darboux kernel approximation(which is exact in the limit), we
-  can express the eigenfunctions <math|\<psi\><rsub|k><around|(|x|)>> in
-  terms of the coefficients <math|c<rsub|i>> and the RKHS basis functions
-  <math|\<phi\><rsub|k> >as follows:
-
-  <\equation*>
-    \<psi\><rsub|k><around|(|x|)>=<big|sum><rsub|i=0><rsup|n>c<rsub|i>*\<phi\><rsub|k*><around|(|x|)>
-  </equation*>
-
-  where <math|\<phi\><rsub|k*><around|(|x|)>> are the basis functions
-  constituting the RKHS which reproduces <math|k<around*|(|x,y|)>>. The
-  specific form of <math|\<psi\><rsub|k*><around|(|x|)>> depends on the
-  choice of basis functions.
-
-  In terms of the matrix elements <math|A<rsub|k*i>>, we can express the
-  eigenfunctions as:
-
-  <\equation*>
-    \<psi\><rsub|k><around|(|x|)>=<big|sum><rsub|i=0><rsup|n>*\<phi\><rsub|*i><around|(|x|)><frac|c<rsub|i>|\<lambda\><rsub|k>>*<big|sum><rsub|j=0><rsup|N><frac|C<rsub|i*j*k>|\<lambda\><rsub|j>>*
-  </equation*>
-
-  where <math|C<rsub|i*j*k>> are the product integrals and
-  <math|\<lambda\><rsub|k>> are the eigenvalues. This expression provides the
-  eigenfunctions in terms of the coefficients <math|c<rsub|i>> and the basis
-  functions used to construct the RKHS.
 </body>
 
 <\initial>
