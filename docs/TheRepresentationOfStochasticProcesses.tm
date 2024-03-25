@@ -16,6 +16,71 @@
     approach>. <newblock>Springer-Verlag, Berlin, Heidelberg, 1991.<newblock>
   </abstract>>
 
+  <\table-of-contents|toc>
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|1<space|2spc>The
+    Spectral Approach to Stochastic Processes>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-1><vspace|0.5fn>
+
+    <with|par-left|1tab|1.1<space|2spc>Karhunen-Loeve Expansion
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-2>>
+
+    <with|par-left|2tab|1.1.1<space|2spc>Derivation
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-3>>
+
+    <with|par-left|2tab|1.1.2<space|2spc>Spectral Covariance Representations
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-4>>
+
+    <with|par-left|2tab|1.1.3<space|2spc>Reproducing Kernel Hilbert Spaces
+    (RKHS) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-5>>
+
+    <with|par-left|1tab|1.2<space|2spc>Properties
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-6>>
+
+    <with|par-left|2tab|1.2.1<space|2spc>Error Minimization
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-7>>
+
+    <with|par-left|2tab|1.2.2<space|2spc>Uniqueness of the Expansion
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-8>>
+
+    <with|par-left|2tab|1.2.3<space|2spc>Expansion of Gaussian Processes
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-9>>
+
+    <with|par-left|2tab|1.2.4<space|2spc>Minimum Representation Entropy
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-10>>
+
+    <with|par-left|1tab|1.3<space|2spc>Solution of the Integral Equation
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-11>>
+
+    <with|par-left|1tab|1.4<space|2spc>Irrational Spectra
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-12>>
+
+    <with|par-left|2tab|1.4.1<space|2spc>Wiener process
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-13>>
+
+    <with|par-left|1tab|1.5<space|2spc>Numerical Solution
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-14>>
+
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-15><vspace|0.5fn>
+  </table-of-contents>
+
+  <section|The Spectral Approach to Stochastic Processes>
+
   Following verabatim(for the most part) the excellent account of the theory
   of the spectral representation of stochastic proceses
   <cite|stochasticFiniteElements>, the central concepts of the theory of
@@ -103,35 +168,50 @@
   can be thought of as linear operators or filters acting on processes with
   independent increments (Doob, 1953). Given the crucial role that the
   Karhunen-Loeve expansion has in relation to the methods discussed in
-  <cite-detail|stochasticFiniteElements|2.3> the essential features shall be
+  <cite-detail|stochasticFiniteElements|2.3> its essential features shall be
   reiterated.
 
-  <section|<subsection*|Karhunen-Loeve Expansion>>
+  <subsection|Karhunen-Loeve Expansion>
 
-  <subsection|<subsubsection*|Derivation>>
+  <subsubsection|Derivation>
 
   One of the major difficulties associated with the numerical incorporation
-  of random processes in finite element analyses, is the necessity t. The
-  major conceptual difficulty from the viewpoint of the class of problems
-  considered herein, involves the treatment of functions defined on these
-  abstract spaces, namely random variables defined on the
-  <math|\<sigma\>>-field of random events. The most widely used method, the
+  of random processes in finite element analyses, is the necessity of dealing
+  with infinite-dimensional spaces. The major conceptual difficulty from the
+  viewpoint of the class of problems considered involves the treatment of
+  functions defined on abstract spaces of random variables defined on
+  <math|\<sigma\>>-fields of random events. The most widely used method, the
   Monte Carlo simulation, consists of sampling these functions at randomly
   chosen elements of this <math|\<sigma\>>-field, in a random,
   collocation-like, scheme. Obviously, a quite large number of points needs
-  to be sampled if a good approximation is to be achieved. The Karhunen-Loeve
-  expansion is a theoretically sound and appealing approach to dealing with
-  abstract measures spaces that have limited physical intuitive support that
-  works by expanding these functions in Fourier-type series as
+  to be sampled if a good approximation is to be achieved. I've always
+  thought the method was a terrible hack and led to no good. The
+  Karhunen-Loeve expansion is a muc theoretically elegant and computationally
+  appealing way to deal with abstract measures spaces can sometimes have
+  limited physical intuitive support. It works by expanding functions in
+  Fourier-like series as
 
   <\equation>
     w*<around|(|x,\<theta\>|)>=<big|sum><rsub|n=0><rsup|\<infty\>><sqrt|\<lambda\><rsub|n>>*\<xi\><rsub|n><around|(|\<theta\>|)>*f<rsub|n><around|(|x|)>
   </equation>
 
-  where <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>> is a set of
-  random variables to be determined, <math|\<lambda\><rsub|n>> is some
-  constant, and <math|<around|{|f<rsub|n><around|(|x|)>|}>> is an orthonormal
-  set of deterministic functions.\ 
+  where <math|<around|{|\<xi\><rsub|n><around|(|\<theta\>|)>|}>> is a usually
+  said to be a set of random variables to be determined,
+  <math|\<lambda\><rsub|n>> is some constant, and
+  <math|<around|{|f<rsub|n><around|(|x|)>|}>> is an orthonormal set of
+  deterministic functions. I find it a bit of a misnomer to refer to the
+  sequence <math|\<xi\><rsub|n><around*|(|\<theta\>|)>> as random variables
+  because none of the mathematics is dependent upon the stochastic nature to
+  which they are usually applied or regarded. For instance, the realization
+  of a well known complex analytic function with a very elaborate behaviour
+  can be shown to be the principal realization of a Gaussian process having a
+  certain kernel. In this instance, even though we use the mathematics of
+  randomness and stochastics the function to which it applies can be computed
+  to any degree of precision at any given point and in that sense there is
+  nothing random about it, other than the fact that I have yet to point out
+  to everyone how it comes together.\ 
+
+  <subsubsection|Spectral Covariance Representations>
 
   Let <math|w*<around|(|x,\<theta\>|)>> be a random process, function of the
   position vector <math|x> defined over the domain <math|D>, with
@@ -285,15 +365,13 @@
 
   <subsection|Properties>
 
-  <subsubsection|<paragraph|Error Minimizing Property>>
+  <subsubsection|Error Minimization>
 
   <\lemma>
-    <paragraph|Error Minimizing Property>
-
-    The generalized coordinate system defined by the eigenfunctions of the
-    covariance kernel is optimal in the sense that the mean-square error
-    resulting from a finite representation of the process
-    <math|w*<around|(|x,\<theta\>|)>> is minimized.
+    <strong|Error Minimization>: The generalized coordinate system defined by
+    the eigenfunctions of the covariance kernel is optimal in the sense that
+    the mean-square error resulting from a finite representation of the
+    process <math|w*<around|(|x,\<theta\>|)>> is minimized.
   </lemma>
 
   <\proof>
@@ -364,12 +442,10 @@
   <subsubsection|Uniqueness of the Expansion>
 
   <\lemma>
-    <subsubsection*|Uniqueness of the Expansion>
-
-    The random variables appearing in an expansion of the kind given by
-    equation (2.10) are orthonormal if and only if the orthonormal functions
-    <math|<around|{|f<rsub|n><around|(|x|)>|}>> and the constants
-    <math|<around|{|\<lambda\><rsub|n>|}>> are respectively the
+    <strong|Uniqueness>: The random variables appearing in an expansion of
+    the kind given by equation (2.10) are orthonormal if and only if the
+    orthonormal functions <math|<around|{|f<rsub|n><around|(|x|)>|}>> and the
+    constants <math|<around|{|\<lambda\><rsub|n>|}>> are respectively the
     eigenfunctions and the eigenvalues of the covariance kernel as given by
     equation (2.8).
   </lemma>
@@ -426,17 +502,11 @@
 
   <subsubsection|Minimum Representation Entropy>
 
-  <subsection*|Other Properties>
-
   The minimum representation of entropy property is worth mentioning even
   though it only references and no details were given in
   <cite|stochasticFiniteElements>.
 
-  <\subsection*>
-    \;
-
-    <section|Solution of the Integral Equation>
-  </subsection*>
+  <subsection|Solution of the Integral Equation>
 
   The usefulness of the Karhunen-Loeve expansion hinges on the ability to
   solve the integral equation of the form
@@ -447,91 +517,20 @@
 
   where <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> is an autocovariance
   function. Equation (<reference|2.33>) is a homogeneous Fredholm integral
-  equation of the second kind. The theory underlying this kind of equations
-  has been extensively investigated and is well documented in a number of
-  monographs (Mikhlin, 1957). Being an autocovariance function, the kernel
-  <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> is bounded, symmetric, and
-  positive definite. This fact simplifies the ensuing analysis considerably
-  in
+  equation of the second kind. Being an autocovariance function, by
+  definition the kernel <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> is bounded,
+  symmetric, and positive definite. This fact simplifies the ensuing analysis
+  considerably by virtue of the fact that positive definite kernels implies
+  the existence of an RKHS for the kernel and its spectral density given by
+  its Fourier transform is non-negative and non-decreasing over its domain of
+  definition by Aronszajn's Theorem and Bochner's theorem respectively.
 
   <subsection|Irrational Spectra>
 
   There is no general method for the solution of the integral equation
-  (<reference|2.33>) corresponding to irrational spectra. Several of these
-  equations have been investigated and explicit solutions have been obtained
-  for certain covariance kernels.\ 
+  (<reference|2.33>) corresponding to irrational spectra.
 
-  <subsubsection|The Triangular Kernel>
-
-  The method described in the previous section may be applied successfully to
-  a number of these kernels as will be demonstrated for the case of the
-  triangular kernel given by the equation
-
-  <\equation>
-    C<around|(|x<rsub|1>,x<rsub|2>|)>=1-d*<around|\||x<rsub|1>-x<rsub|2>|\|>\<forall\><around|\||x<rsub|1>-x<rsub|2>|\|>\<in\><around|[|0,d<rsup|-1>|]>
-  </equation>
-
-  Here, <math|d> is a parameter which can be used to adjust the distance of
-  null correlation between <math|w*<around|(|x<rsub|1>,\<theta\>|)>> and
-  <math|w*<around|(|x<rsub|2>,\<theta\>|)>>. Consider realizations of this
-  process on the interval <math|<around|[|0,a|]>>. The eigenfunctions and
-  eigenvalues of <math|C<around|(|x<rsub|1>,x<rsub|2>|)>> are obtained as the
-  solution to the integral equation
-
-  <\equation>
-    <big|int><rsub|0><rsup|a><around|(|1-d*<around|\||x<rsub|1>-x<rsub|2>|\|>|)>*f<rsub|n><around|(|x<rsub|2>|)>*d*x<rsub|2>=\<lambda\><rsub|n>*f<rsub|n><around|(|x<rsub|1>|)><label|2.57>
-  </equation>
-
-  Differentiating equation (<reference|2.57>) twice with respect to
-  <math|x<rsub|2>>, the following equivalent differential equation is
-  obtained
-
-  <\equation>
-    f<rsub|n><rprime|''><around|(|x|)>+\<omega\><rsub|n><rsup|2>*f<rsub|n><around|(|x|)>=0\<forall\><space|1em>0\<leq\>x\<leq\>a.
-  </equation>
-
-  The associated boundary conditions are given by the equations
-
-  <\equation>
-    f<rsub|n><rprime|'><around|(|a|)>=-f<rsub|n><rprime|'><around|(|0|)>
-  </equation>
-
-  and
-
-  <\equation>
-    f<rsub|n><rprime|'><around|(|0|)>=<frac|f<rsub|n><around|(|0|)>+f<rsub|n><around|(|a|)>|2-<frac|a|d>>
-  </equation>
-
-  and
-
-  <\equation>
-    \<omega\><rsub|n>=<sqrt|<frac|2*d|\<lambda\><rsub|n>>>
-  </equation>
-
-  The solution of equation (2.58) subjected to the boundary conditions
-  described by equations (2.59) and (2.60) is
-
-  <\equation>
-    <with|font-base-size|12|f<rsub|n><around|(|x|)>=<choice|<tformat|<table|<row|<cell|<sqrt|<frac|a|2>>*<frac|cos
-    <around|(|\<omega\><rsub|n>*x|)>|<sqrt|<frac|a|2>+<frac|sin
-    <around|(|2*\<omega\><rsub|n>*a|)>|4*\<omega\><rsub|n>>>>>|<cell|n
-    even>>|<row|<cell|<sqrt|<frac|a|2>>*<frac|cos
-    <around|(|\<omega\><rsub|n>*x|)>+tan <around|(|<frac|\<omega\><rsub|n>*a|2>|)>*tan
-    <around*|(|<frac|\<omega\><rsub|n>*a|2>|)>sin
-    <around|(|\<omega\><rsub|n>*x|)>|<sqrt|<frac|a|2>+<frac|tan<rsup|2><around*|(|<frac|\<omega\><rsub|n>*a|2>|)>-1|4*\<omega\><rsub|n>>*sin
-    <around|(|2*\<omega\><rsub|n>*a|)>+<frac|sin<rsup|2><around|(|\<omega\><rsub|n>*a|)>|\<omega\><rsub|n>>*tan
-    <around*|(|<frac|\<omega\><rsub|n>*a|2>|)>>>>|<cell|n odd>>>>>>
-  </equation>
-
-  where <math|\<omega\><rsub|n>> is defined implicitly as the solution to
-  <math|tan <around|(|<frac|\<omega\><rsub|n>*a|2>|)>=\<omega\><rsub|n>*<around|(|<frac|2|a>-a|)>>
-  when <math|n> is even and explicitly when <math|n> is odd
-
-  <\equation>
-    \<omega\><rsub|n>=<choice|<tformat|<table|<row|<cell|<around*|{|\<omega\><rsub|n>:tan
-    <around|(|<frac|\<omega\><rsub|n>*a|2>|)>=\<omega\><rsub|n>*<around|(|<frac|2|a>-a|)>|}>>|<cell|n
-    even>>|<row|<cell|<frac|\<pi\>*n|a>>|<cell|n odd>>>>>
-  </equation>
+  \;
 
   \;
 
@@ -660,12 +659,17 @@
   estimating the eigenvalues is better than that achieved for the
   eigenfunctions (Delves and Mohamed, 1985).
 
-  <\bibliography|bib|tm-plain|refs2>
-    <\bib-list|1>
+  <\bibliography|bib|tm-plain|refs>
+    <\bib-list|2>
       <bibitem*|1><label|bib-stochasticFiniteElements>Roger<nbsp>G.<nbsp>Ghanem<localize|
       and >Pol<nbsp>D.<nbsp>Spanos. <newblock><with|font-shape|italic|Stochastic
       finite elements: a spectral approach>. <newblock>Springer-Verlag,
       Berlin, Heidelberg, 1991.<newblock>
+
+      <bibitem*|2><label|bib-stochasticInferenceTheory>Malempati<nbsp>M.<nbsp>Rao.
+      <newblock><with|font-shape|italic|Stochastic Processes: Inference
+      Theory>. <newblock>Springer Monographs in Mathematics. Springer,
+      2nd<localize| edition>, 2014.<newblock>
     </bib-list>
   </bibliography>
 </body>
@@ -683,33 +687,27 @@
 <\references>
   <\collection>
     <associate|2.1|<tuple|1|1>>
-    <associate|2.11|<tuple|11|3>>
+    <associate|2.11|<tuple|11|4>>
     <associate|2.2|<tuple|2|1>>
     <associate|2.33|<tuple|35|8>>
-    <associate|2.57|<tuple|37|8>>
-    <associate|2.79|<tuple|52|11>>
-    <associate|auto-1|<tuple|1|2>>
-    <associate|auto-10|<tuple|1.2|5>>
-    <associate|auto-11|<tuple|1.2.1|5>>
-    <associate|auto-14|<tuple|1.2.1.3|5>>
-    <associate|auto-15|<tuple|1.2.1.4|5>>
-    <associate|auto-16|<tuple|1.2.2|7>>
-    <associate|auto-17|<tuple|2|7>>
-    <associate|auto-18|<tuple|1.2.3|7>>
-    <associate|auto-19|<tuple|1.2.4|8>>
-    <associate|auto-20|<tuple|1.2.4|8>>
-    <associate|auto-21|<tuple|1.2.4|8>>
-    <associate|auto-24|<tuple|4|8>>
-    <associate|auto-25|<tuple|4.1|8>>
-    <associate|auto-26|<tuple|4.1.1|8>>
-    <associate|auto-27|<tuple|4.1.2|9>>
-    <associate|auto-28|<tuple|4.2|10>>
-    <associate|auto-29|<tuple|55|11>>
-    <associate|auto-4|<tuple|1|2>>
-    <associate|auto-5|<tuple|1.1|2>>
-    <associate|auto-8|<tuple|1.1|2>>
-    <associate|auto-9|<tuple|1.1.1|5>>
-    <associate|bib-stochasticFiniteElements|<tuple|1|11>>
+    <associate|2.79|<tuple|44|10>>
+    <associate|auto-1|<tuple|1|1>>
+    <associate|auto-10|<tuple|1.2.4|8>>
+    <associate|auto-11|<tuple|1.3|8>>
+    <associate|auto-12|<tuple|1.4|8>>
+    <associate|auto-13|<tuple|1.4.1|8>>
+    <associate|auto-14|<tuple|1.5|9>>
+    <associate|auto-15|<tuple|47|10>>
+    <associate|auto-2|<tuple|1.1|3>>
+    <associate|auto-3|<tuple|1.1.1|3>>
+    <associate|auto-4|<tuple|1.1.2|3>>
+    <associate|auto-5|<tuple|1.1.3|5>>
+    <associate|auto-6|<tuple|1.2|6>>
+    <associate|auto-7|<tuple|1.2.1|6>>
+    <associate|auto-8|<tuple|1.2.2|7>>
+    <associate|auto-9|<tuple|1.2.3|7>>
+    <associate|bib-stochasticFiniteElements|<tuple|1|10>>
+    <associate|bib-stochasticInferenceTheory|<tuple|2|10>>
   </collection>
 </references>
 
@@ -731,115 +729,66 @@
       stochasticFiniteElements
     </associate>
     <\associate|toc>
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc><assign|subsection-numbered|false><assign|subsection-prefix|<macro|>><assign|subsubsection-nr|0><assign|paragraph-nr|0><assign|subparagraph-nr|0><flag|table
-      of contents|dark green|what><assign|auto-nr|2><write|toc|<with|par-left|<quote|1tab>|Karhunen-Loeve
-      Expansion <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2>>><toc-notify|toc-2|Karhunen-Loeve
-      Expansion><with|color|<quote|#006060>|math-color|<quote|#006060>|strong-color|<quote|#006060>|locus-color|<quote|#006060>|visited-color|<quote|#006060>|<surround|<no-indent>|<specific|texmacs|<htab|0fn|first>>|<with|color|<quote|#006060>|<with|font-series|<quote|bold>|math-font-series|<quote|bold>|<vspace*|1fn><with|font-size|<quote|1.189>|Karhunen-Loeve
-      Expansion<space|2spc>><vspace|0.3333fn>>><no-page-break><no-indent*>>>>
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|1<space|2spc>The
+      Spectral Approach to Stochastic Processes>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-2><vspace|0.5fn>
+      <no-break><pageref|auto-1><vspace|0.5fn>
 
-      <with|par-left|<quote|1tab>|Karhunen-Loeve Expansion
+      <with|par-left|<quote|1tab>|1.1<space|2spc>Karhunen-Loeve Expansion
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-2>>
+
+      <with|par-left|<quote|2tab>|1.1.1<space|2spc>Derivation
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-3>>
+
+      <with|par-left|<quote|2tab>|1.1.2<space|2spc>Spectral Covariance
+      Representations <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4>>
 
-      <with|par-left|<quote|1tab>|1.1<space|2spc><assign|subsubsection-numbered|false><assign|subsubsection-prefix|<macro|>><assign|paragraph-nr|0><assign|subparagraph-nr|0><flag|table
-      of contents|dark green|what><assign|auto-nr|6><write|toc|<with|par-left|<quote|2tab>|Derivation
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6>>><toc-notify|toc-3|Derivation><with|color|<quote|#006060>|math-color|<quote|#006060>|strong-color|<quote|#006060>|locus-color|<quote|#006060>|visited-color|<quote|#006060>|<surround|<no-indent>|<specific|texmacs|<htab|0fn|first>>|<with|color|<quote|#006060>|<with|font-series|<quote|bold>|math-font-series|<quote|bold>|<vspace*|0.75fn>Derivation<space|2spc><vspace|0.25fn>>><no-page-break><no-indent*>>>
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-6>>
-
-      <with|par-left|<quote|2tab>|Derivation
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-8>>
-
-      <with|par-left|<quote|2tab>|1.1.1<space|2spc>Reproducing Kernel Hilbert
+      <with|par-left|<quote|2tab>|1.1.3<space|2spc>Reproducing Kernel Hilbert
       Spaces (RKHS) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-9>>
+      <no-break><pageref|auto-5>>
 
       <with|par-left|<quote|1tab>|1.2<space|2spc>Properties
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-10>>
+      <no-break><pageref|auto-6>>
 
-      <with|par-left|<quote|2tab>|1.2.1<space|2spc><assign|paragraph-numbered|false><assign|paragraph-prefix|<macro|<compound|the-paragraph>.>><assign|paragraph-nr|1><hidden-binding|<tuple>|1.2.1.1><assign|subparagraph-nr|0><flag|table
-      of contents|dark green|what><assign|auto-nr|12><write|toc|<with|par-left|<quote|4tab>|Error
-      Minimizing Property <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12><vspace|0.15fn>>><toc-notify|toc-4|Error
-      Minimizing Property><with|color|<quote|#006060>|math-color|<quote|#006060>|strong-color|<quote|#006060>|locus-color|<quote|#006060>|visited-color|<quote|#006060>|<no-indent><with|color|<quote|#006060>|<with|font-series|<quote|bold>|math-font-series|<quote|bold>|<vspace*|0.5fn>Error
-      Minimizing Property<space|2spc>>>> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-12>>
-
-      <with|par-left|<quote|4tab>|Error Minimizing Property
+      <with|par-left|<quote|2tab>|1.2.1<space|2spc>Error Minimization
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-14><vspace|0.15fn>>
-
-      <with|par-left|<quote|4tab>|Error Minimizing Property
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-15><vspace|0.15fn>>
+      <no-break><pageref|auto-7>>
 
       <with|par-left|<quote|2tab>|1.2.2<space|2spc>Uniqueness of the
       Expansion <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-16>>
-
-      <with|par-left|<quote|2tab>|Uniqueness of the Expansion
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-17>>
+      <no-break><pageref|auto-8>>
 
       <with|par-left|<quote|2tab>|1.2.3<space|2spc>Expansion of Gaussian
       Processes <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-18>>
+      <no-break><pageref|auto-9>>
 
       <with|par-left|<quote|2tab>|1.2.4<space|2spc>Minimum Representation
       Entropy <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-19>>
+      <no-break><pageref|auto-10>>
 
-      <with|par-left|<quote|1tab>|Other Properties
+      <with|par-left|<quote|1tab>|1.3<space|2spc>Solution of the Integral
+      Equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-11>>
+
+      <with|par-left|<quote|1tab>|1.4<space|2spc>Irrational Spectra
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-20>>
+      <no-break><pageref|auto-12>>
 
-      \;
-
-      <with|par-left|<quote|1tab>|<assign|section-numbered|true><assign|section-prefix|<macro|<compound|the-section>.>><assign|section-nr|2><hidden-binding|<tuple>|2><assign|subsection-nr|0><assign|subsubsection-nr|0><assign|paragraph-nr|0><assign|subparagraph-nr|0><flag|table
-      of contents|dark green|what><assign|auto-nr|22><write|toc|<vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|2<space|2spc>Solution
-      of the Integral Equation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-22><vspace|0.5fn>><toc-notify|toc-strong-2|2<space|2spc>Solution
-      of the Integral Equation><with|color|<quote|#006060>|math-color|<quote|#006060>|strong-color|<quote|#006060>|locus-color|<quote|#006060>|visited-color|<quote|#006060>|<surround|<no-indent>|<specific|texmacs|<htab|0fn|first>>|<with|color|<quote|#006060>|<with|font-series|<quote|bold>|math-font-series|<quote|bold>|<vspace*|1.5fn><\with|font-size|<quote|1.414>>
-        <\with|par-first|<quote|0fn>>
-          <\tformat|<twith|table-width|1par>|<twith|table-hmode|exact>|<twith|table-block|yes>|<twith|table-min-cols|2>|<cwith|1|-1|2|-1|cell-hyphen|t>|<cwith|1|-1|1|-1|cell-hpart|0.001>|<cwith|1|-1|1|1|cell-lsep|0fn>|<cwith|1|-1|-1|-1|cell-rsep|0fn>|<cwith|1|-2|1|-1|cell-bsep|0.6666fn>|<cwith|2|-1|1|-1|cell-tsep|0.2fn>>
-            <tformat|<twith|table-valign|T>|<twith|table-hmode|min>|<cwith|1|-1|1|-1|cell-lsep|0em>|<cwith|1|-1|1|-1|cell-rsep|0em>|<cwith|1|1|1|-1|cell-tsep|0em>|<cwith|-1|-1|1|-1|cell-bsep|0em>|<cwith|1|-1|1|-1|cell-vcorrect|n>|<table|<row|<cell|2<space|2spc>>|<\cell>
-              Solution of the Integral Equation<space|2spc>
-            </cell>>>>
-          </tformat>
-        </with>
-      </with><vspace|0.5fn>>><no-page-break><no-indent*>>>
+      <with|par-left|<quote|2tab>|1.4.1<space|2spc>Wiener process
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-22>>
+      <no-break><pageref|auto-13>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|4<space|2spc>Solution
-      of the Integral Equation> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-24><vspace|0.5fn>
-
-      <with|par-left|<quote|1tab>|4.1<space|2spc>Irrational Spectra
+      <with|par-left|<quote|1tab>|1.5<space|2spc>Numerical Solution
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-25>>
-
-      <with|par-left|<quote|2tab>|4.1.1<space|2spc>The Triangular Kernel
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-26>>
-
-      <with|par-left|<quote|2tab>|4.1.2<space|2spc>Wiener process
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-27>>
-
-      <with|par-left|<quote|1tab>|4.2<space|2spc>Numerical Solution
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-28>>
+      <no-break><pageref|auto-14>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-29><vspace|0.5fn>
+      <no-break><pageref|auto-15><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
