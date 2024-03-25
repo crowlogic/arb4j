@@ -1,7 +1,6 @@
 package arb.operators;
 
 import arb.Field;
-import arb.space.topological.VectorSpace;
 
 /**
  * A Bounded Linear Operator is a Linear Operator between two possibly different
@@ -20,9 +19,7 @@ import arb.space.topological.VectorSpace;
  * @param <VE2> The type of the elements in the codomain vector space.
  * @param <V2>  The type of the codomain vector space itself.
  */
-public interface BoundedLinearOperator<F extends Field<? extends F>,
-              V1 extends VectorSpace<? extends F>,
-              V2 extends VectorSpace<? extends F>> extends
+public interface BoundedLinearOperator<F extends Field<? extends F>> extends
                                       LinearOperator<F>
 {
 
@@ -43,7 +40,7 @@ public interface BoundedLinearOperator<F extends Field<? extends F>,
    *
    * @return The adjoint of 'this' operator.
    */
-  BoundedLinearOperator<F, V2, V1> adjointOperator();
+  BoundedLinearOperator<F> adjointOperator();
 
   // other properties and methods specific to bounded linear operators...
 }

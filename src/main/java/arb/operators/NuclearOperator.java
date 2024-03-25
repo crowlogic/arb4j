@@ -18,7 +18,7 @@ import arb.space.topological.VectorSpace;
 public interface NuclearOperator<F extends Field<F>,
               V1 extends VectorSpace<? extends F>,
               V2 extends VectorSpace<? extends F>> extends
-                                CompactOperator<F, V1, V2>
+                                CompactOperator<F>
 {
 
 }

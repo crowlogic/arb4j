@@ -21,10 +21,8 @@ import arb.space.topological.VectorSpace;
  * @param <V1> The type of the domain vector space itself.
  * @param <V2> The type of the codomain vector space itself.
  */
-public interface NormalOperator<F extends Field<? extends F>,
-              V1 extends VectorSpace<? extends F>,
-              V2 extends VectorSpace<? extends F>> extends
-                               BoundedLinearOperator<F, V1, V2>
+public interface NormalOperator<F extends Field<? extends F>> extends
+                               BoundedLinearOperator<F>
 {
   /**
    * Computes and returns the adjoint (conjugate transpose) of this operator. The
@@ -38,5 +36,5 @@ public interface NormalOperator<F extends Field<? extends F>,
    *
    * @return the adjoint of this operator
    */
-  BoundedLinearOperator<F, V2, V1> adjointOperator();
+  BoundedLinearOperator<F> adjointOperator();
 }

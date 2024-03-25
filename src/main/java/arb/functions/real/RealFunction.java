@@ -1,9 +1,7 @@
 package arb.functions.real;
 
 import static arb.expressions.Expression.instantiate;
-import static arb.utensils.Utensils.computeNewtonStep;
-import static arb.utensils.Utensils.println;
-import static arb.utensils.Utensils.refineRootViaNewtonsMethod;
+import static arb.utensils.Utensils.*;
 import static java.lang.String.format;
 import static java.lang.System.out;
 
@@ -25,6 +23,7 @@ import arb.Roots;
 import arb.RoundingMode;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
+import arb.documentation.TheArb4jLibrary;
 import arb.expressions.Context;
 import arb.expressions.Expression;
 import arb.functions.Function;
@@ -39,14 +38,9 @@ import arb.utensils.Utensils;
  * {@link Function}<Real, Real> and includes default implementations of various
  * techniques, including Newton's method.
  *
- * arb4j is made available under the terms of the Business Source License™ v1.1
- * ©2024 which can be found in the root directory of this project in a file
- * named License.pdf, License.txt, or License.tm which are the pdf, text, and
- * TeXmacs formatted versions of the same document respectively.
  * 
- * @author Stephen Crowley
- * 
- * @see BusinessSourceLicenseVersionOnePointOne for © terms
+ * @see BusinessSourceLicenseVersionOnePointOne © terms of the
+ *      {@link TheArb4jLibrary}
  */
 public interface RealFunction extends
                               Function<Real, Real>

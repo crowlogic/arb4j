@@ -22,7 +22,7 @@ import arb.functions.Function;
  *
  * @param <X>
  */
-public interface Kernel<X extends Field<X>> extends
+public interface Kernel<X extends Field<? extends X>> extends
                        Function<X, X>
 {
 

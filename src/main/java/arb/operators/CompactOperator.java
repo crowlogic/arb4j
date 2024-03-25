@@ -1,7 +1,6 @@
 package arb.operators;
 
 import arb.Field;
-import arb.space.topological.VectorSpace;
 
 /**
  * Compact operators are a class of operators that map bounded sets into
@@ -22,15 +21,10 @@ import arb.space.topological.VectorSpace;
  * compact operator.
  * 
  * @param <F>   Field over which the vector spaces are defined.
- * @param <VE1> The type of the elements in the domain vector space.
- * @param <V1>  The type of the domain vector space itself.
- * @param <VE2> The type of the elements in the codomain vector space.
- * @param <V2>  The type of the codomain vector space itself.
+
  */
-public interface CompactOperator<F extends Field<F>,
-              V1 extends VectorSpace<? extends F>,
-              V2 extends VectorSpace<? extends F>> extends
-                                BoundedLinearOperator<F, V1, V2>
+public interface CompactOperator<F extends Field<? extends F>> extends
+                                BoundedLinearOperator<F>
 {
 
 }

@@ -2,7 +2,6 @@ package arb.operators;
 
 import arb.Field;
 import arb.functions.Function;
-import arb.space.topological.VectorSpace;
 
 /**
  * Integral operators are a specific type of operator, which transform a
@@ -14,10 +13,7 @@ import arb.space.topological.VectorSpace;
  * @param <OUT> Type of output vector space.
  * @param <K>   Type of kernel {@link Function}
  */
-public interface IntegralOperator<F extends Field<F>,
-              IN extends VectorSpace<? extends F>,
-              OUT extends VectorSpace<? extends F>,
-              K extends Kernel<F>> extends
+public interface IntegralOperator<F extends Field<? extends F>, K extends Kernel<? extends F>> extends
                                  LinearOperator<F>
 {
   /**

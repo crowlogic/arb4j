@@ -4,6 +4,7 @@ import arb.Real;
 import arb.arblib;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
+import arb.stochastic.processes.CovarianceKernel;
 
 /**
  * todo: add some sort of root enumeration interface that this implements
@@ -14,7 +15,8 @@ import arb.documentation.TheArb4jLibrary;
  */
 public class BesselFunctionOfTheFirstKind implements
                                           RealFunction,
-                                          AutoCloseable
+                                          AutoCloseable,
+                                          CovarianceKernel<Real>
 {
 
   /**
