@@ -40,4 +40,9 @@ public class factorℝ1 implements
       isInitialized = true;
     }
   }
+
+  public String toString()
+  {
+    return "factorℝ1:k➔α[k]₍ₙ₎";
+  }
 }

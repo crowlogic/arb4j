@@ -1,3 +1,5 @@
+package arb.functions.real;
+
 import arb.Integer;
 import arb.Real;
 import arb.functions.Function;
