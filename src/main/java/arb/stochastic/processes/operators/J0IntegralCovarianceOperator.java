@@ -1,17 +1,18 @@
-package arb.operators;
+package arb.stochastic.processes.operators;
 
 import arb.Real;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.functions.real.BesselFunctionOfTheFirstKind;
 import arb.functions.sequences.RealSequence;
+import arb.operators.IntegralCovarianceOperator;
 import arb.space.topological.VectorSpace;
 
 /**
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
  */
-public class TheJ0IntegralCovarianceOperator implements
+public class J0IntegralCovarianceOperator implements
                                              IntegralCovarianceOperator<Real,
                                                            BesselFunctionOfTheFirstKind>
 {
@@ -26,11 +27,9 @@ public class TheJ0IntegralCovarianceOperator implements
 
   /**
    * projection of the k-th orthonormalized Fourier transformed Type 1 Chebyshev
-   * polynomial function onto the Bessel function of the first kind of order n.
-   * for J0 take the limit as n->0
+   * polynomial function onto the Bessel function of the first kind of order 0
    */
-  RealSequence ξ =
-                 RealSequence.express("1/√(π)*sin((π*n)/2)*n*Π(n+2*i-1)*(n-2*i+1){i=1..k}/Π(n+2*i-2)*(n-2*i+2)√(2*(k+1)+1){i=1..k+1}");
+  RealSequence ξ = RealSequence.express("(√(2⋅k+3)⋅Γ(k+½)²)/(2⋅√(π)⋅Γ(k+1)²)");
 
   @Override
   public BesselFunctionOfTheFirstKind kernel()

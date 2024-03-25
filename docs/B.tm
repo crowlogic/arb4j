@@ -25,7 +25,9 @@
   <\equation*>
     lim<rsub|k\<rightarrow\>0><frac| 1|<sqrt|\<pi\>>> sin
     <space|-0.17em><around*|(|<frac|\<pi\>*n|2>|)>*n<sqrt|2*<around*|(|k+1|)>+1>
-    <frac|\<Pi\><rsub|i=1><rsup|k>*<space|-0.17em><around*|(|n+2*i-1|)>*<around*|(|n-2*i+1|)>|\<Pi\><rsub|i=1><rsup|k+1><space|-0.17em><around*|(|n+2*i-2|)>*<around*|(|n-2*i+2|)>>
+    <frac|\<Pi\><rsub|i=1><rsup|k>*<space|-0.17em><around*|(|n+2*i-1|)>*<around*|(|n-2*i+1|)>|\<Pi\><rsub|i=1><rsup|k+1><space|-0.17em><around*|(|n+2*i-2|)>*<around*|(|n-2*i+2|)>>=<frac|<sqrt|2\<cdot\>k+3>\<cdot\>\<Gamma\>*<space|-0.17em><around*|(|<frac|1|2>+k|)><rsup|2>|2\<cdot\><sqrt|\<pi\>>\<cdot\>\<Gamma\>*<space|-0.17em><around*|(|k+1|)><rsup|2>>
+
+    \;
   </equation*>
 </body>
 

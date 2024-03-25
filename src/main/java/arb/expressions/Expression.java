@@ -1342,7 +1342,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   {
     while (true)
     {
-      if (nextCharacterIs('*', '×', 'ₓ'))
+      if (nextCharacterIs('*', '×', 'ₓ', '⋅'))
       {
         node = new Multiplication<>(this,
                                     node,
