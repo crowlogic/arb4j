@@ -33,7 +33,7 @@ public class J0IntegralCovarianceOperator implements
    * whcih is the measure to which the {@link Type1ChebyshevPolynomialSequence} is
    * orthogonal with respect to
    */
-  RealSequence ξ = RealSequence.express("(√(2⋅k+3)⋅Γ(k+½)²)/(2⋅√(π)⋅Γ(k+1)²)");
+  RealSequence ξ = RealSequence.express("ξ","(√(2⋅k+3)⋅Γ(k+½)²)/(2⋅√(π)⋅Γ(k+1)²)");
 
   @Override
   public BesselFunctionOfTheFirstKind kernel()

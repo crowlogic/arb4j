@@ -16,4 +16,9 @@ public interface RealSequence extends
     return (RealSequence) Sequence.express(Real.class, expression, RealSequence.class);
   }
 
+  public static RealSequence express(String name, String expression)
+  {
+    return (RealSequence) Sequence.express(name, Real.class, expression, RealSequence.class);
+  }
+
 }

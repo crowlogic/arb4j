@@ -1,17 +1,7 @@
 package arb.expressions;
 
 import static arb.expressions.Parser.expressionToUniqueClassname;
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.ACC_SUPER;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.DUP2_X1;
-import static org.objectweb.asm.Opcodes.DUP_X1;
-import static org.objectweb.asm.Opcodes.DUP_X2;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.POP2;
-import static org.objectweb.asm.Opcodes.SWAP;
-import static org.objectweb.asm.Opcodes.V21;
-import static org.objectweb.asm.Opcodes.V_PREVIEW;
+import static org.objectweb.asm.Opcodes.*;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
@@ -69,7 +59,10 @@ public class Compiler
 {
   public static final String objectDesc = Type.getInternalName(Object.class);
 
-  public static void addNullCheckForField(MethodVisitor mv, String className, String fieldName, String fieldDesc)
+  public static void addNullCheckForField(MethodVisitor mv,
+                                          String className,
+                                          String fieldName,
+                                          String fieldDesc)
   {
 
     Label notNullLabel = new Label();
@@ -98,26 +91,43 @@ public class Compiler
     return methodVisitor;
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String expression,
-                                                                             Context context,
-                                                                             Class<? extends D> domainClass,
-                                                                             Class<? extends R> rangeClass,
-                                                                             Class<? extends F> functionClass,
-                                                                             String functionName)
+  public static <D, R, F extends Function<D, R>>
+         Expression<D, R, F>
+         express(String expression,
+                 Context context,
+                 Class<? extends D> domainClass,
+                 Class<? extends R> rangeClass,
+                 Class<? extends F> functionClass,
+                 String functionName)
   {
-    String className = functionName != null ? functionName : expressionToUniqueClassname(expression);
-    return express(className, expression, context, domainClass, rangeClass, functionClass, functionName);
+    String className =
+                     functionName != null ? functionName : expressionToUniqueClassname(expression);
+    return express(className,
+                   expression,
+                   context,
+                   domainClass,
+                   rangeClass,
+                   functionClass,
+                   functionName);
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String className,
-                                                                             String expressionString,
-                                                                             Context context,
-                                                                             Class<? extends D> domainClass,
-                                                                             Class<? extends R> rangeClass,
-                                                                             Class<? extends F> functionClass,
-                                                                             boolean verbose)
+  public static <D, R, F extends Function<D, R>>
+         Expression<D, R, F>
+         express(String className,
+                 String expressionString,
+                 Context context,
+                 Class<? extends D> domainClass,
+                 Class<? extends R> rangeClass,
+                 Class<? extends F> functionClass,
+                 boolean verbose)
   {
-    return express(className, expressionString, context, domainClass, rangeClass, functionClass, className);
+    return express(className,
+                   expressionString,
+                   context,
+                   domainClass,
+                   rangeClass,
+                   functionClass,
+                   className);
   }
 
   public static <D, R, F extends Function<D, R>, PD, PR, PF extends Function<PD, PR>>
@@ -140,27 +150,37 @@ public class Compiler
                                                              functionName,
                                                              containingExpression);
 
-    expression.parseRoot().compile().load();
+    expression.parseRoot();
+    expression.compile();
+    expression.load();
 
-    
     return expression;
   }
 
-  public static <D, R, F extends Function<D, R>> Expression<D, R, F> express(String className,
-                                                                             String expressionString,
-                                                                             Context context,
-                                                                             Class<? extends D> domainClass,
-                                                                             Class<? extends R> rangeClass,
-                                                                             Class<? extends F> functionClass,
-                                                                             String functionName)
+  public static <D, R, F extends Function<D, R>>
+         Expression<D, R, F>
+         express(String className,
+                 String expressionString,
+                 Context context,
+                 Class<? extends D> domainClass,
+                 Class<? extends R> rangeClass,
+                 Class<? extends F> functionClass,
+                 String functionName)
   {
-    return express(className, expressionString, context, domainClass, rangeClass, functionClass, functionName, null);
+    return express(className,
+                   expressionString,
+                   context,
+                   domainClass,
+                   rangeClass,
+                   functionClass,
+                   functionName,
+                   null);
   }
 
   @SuppressWarnings("unchecked")
-  public static <D, R, F extends Function<? extends D, ? extends R>> Class<F> loadFunctionClass(String className,
-                                                                                                byte[] bytecodes,
-                                                                                                Context context)
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Class<F>
+         loadFunctionClass(String className, byte[] bytecodes, Context context)
   {
     assert className != null;
     if (context != null && context.verbose)
@@ -169,7 +189,8 @@ public class Compiler
     }
     try
     {
-      CompiledExpressionClassLoader loader = context != null ? context.classLoader : new CompiledExpressionClassLoader();
+      CompiledExpressionClassLoader loader = context != null ? context.classLoader
+                                                             : new CompiledExpressionClassLoader();
       loader.defineClass(className, bytecodes);
       return (Class<F>) loader.findClass(className);
     }
@@ -182,7 +203,9 @@ public class Compiler
 
   public static <D, R, F extends Function<D, R>>
          ClassVisitor
-         generateFunctionInterface(Expression<D, R, F> expression, String className, ClassVisitor classVisitor)
+         generateFunctionInterface(Expression<D, R, F> expression,
+                                   String className,
+                                   ClassVisitor classVisitor)
   {
     String classSignature = null;
 
@@ -191,8 +214,13 @@ public class Compiler
       classSignature = expression.getFunctionClassTypeSignature();
     }
 
-    classVisitor.visit(V21 | V_PREVIEW, ACC_PUBLIC | ACC_SUPER, className, classSignature, objectDesc, new String[]
-    { expression.genericFunctionClassInternalName });
+    classVisitor.visit(V21 | V_PREVIEW,
+                       ACC_PUBLIC | ACC_SUPER,
+                       className,
+                       classSignature,
+                       objectDesc,
+                       new String[]
+                       { expression.genericFunctionClassInternalName });
     return classVisitor;
   }
 
@@ -250,7 +278,8 @@ public class Compiler
 
   public static MethodVisitor invokeSetMethod(MethodVisitor mv, Class<?> inType, Class<?> outType)
   {
-    assert !outType.getClass().equals(Void.class) : "invokeSetMethod shouldnt be called for Void type";
+    assert !outType.getClass()
+                   .equals(Void.class) : "invokeSetMethod shouldnt be called for Void type";
 
     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
                        Type.getInternalName(outType),
