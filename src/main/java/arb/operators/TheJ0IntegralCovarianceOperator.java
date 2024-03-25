@@ -25,7 +25,9 @@ public class TheJ0IntegralCovarianceOperator implements
   }
 
   /**
-   * k is the order of J function J_k, for J_0 you need to take the limit
+   * projection of the k-th orthonormalized Fourier transformed Type 1 Chebyshev
+   * polynomial function onto the Bessel function of the first kind of order n.
+   * for J0 take the limit as n->0
    */
   RealSequence ξ =
                  RealSequence.express("1/√(π)*sin((π*n)/2)*n*Π(n+2*i-1)*(n-2*i+1){i=1..k}/Π(n+2*i-2)*(n-2*i+2)√(2*(k+1)+1){i=1..k+1}");
