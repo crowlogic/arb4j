@@ -3,9 +3,8 @@
 <style|generic>
 
 <\body>
-  <doc-data|<doc-title|Wick Rotating the Newton Flow Into A Solution of the
-  Schrödinger Equation>|<doc-author|<author-data|<author-name|Stephen
-  Crowley>>>>
+  <doc-data|<doc-title|Wick Rotating the Newton Flow Into A Schrödinger
+  Operator>|<doc-author|<author-data|<author-name|Stephen Crowley>>>>
 
   <section*|Definitions and Framework>
 
