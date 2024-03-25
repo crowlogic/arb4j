@@ -26,7 +26,7 @@
   terms of position <math|x> and momentum <math|p> as:
 
   <\equation>
-    H=<frac|p<rsup|2>|2*m>+<frac|m*\<omega\><rsup|2>*x<rsup|2>|2>*
+    H<around*|(|x,p|)>=<frac|p<rsup|2>|2*m>+<frac|m*\<omega\><rsup|2>*x<rsup|2>|2>*
   </equation>
 
   Substituting the expression for <math|H> into the Wigner function, we
@@ -42,7 +42,7 @@
   often described by a complex number <math|\<alpha\>>, where\ 
 
   <\equation>
-    \<alpha\><around*|(|x<rsub|0>,p<rsub|0>|)>=<frac|<around|(|m*\<omega\>*x<rsub|0>+i*p<rsub|0>|)>|<sqrt|2*\<hbar\>*m*\<omega\>>>*
+    \<alpha\><around*|(|x<rsub|>,p<rsub|>|)>=<frac|<around|(|m*\<omega\>*x<rsub|0>+i*p<rsub|0>|)>|<sqrt|2*\<hbar\>*m*\<omega\>>>*
   </equation>
 
   \ with <math|x<rsub|0>> and <math|p<rsub|0>> being the first moment of the
@@ -50,7 +50,7 @@
   state centered at <math|\<alpha\>> is:
 
   <\equation>
-    W<rsub|\<alpha\>><around|(|x,p|)>=<frac|e<rsup|-<frac|m*\<omega\>|\<hbar\>>*<around|(|x-x<rsub|0>|)><rsup|2>-<frac|1|\<hbar\>*m*\<omega\>>*<around|(|p-p<rsub|0>|)><rsup|2>>|\<pi\>*\<hbar\>>*
+    W<rsub|\<alpha\>><around|(|x,p|)>=<frac|e<rsup|-<frac|<around|(|x-x<rsub|0>|)><rsup|2>m*\<omega\>|\<hbar\>>*-<frac|<around|(|p-p<rsub|0>|)><rsup|2>|\<hbar\>*m*\<omega\>>*>|\<pi\>*\<hbar\>>*
   </equation>
 </body>
 
