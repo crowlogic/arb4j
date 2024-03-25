@@ -42,6 +42,7 @@ module arb4j
   exports arb.documentation.annotations;
   exports arb.documentation.references;
   exports arb.documentation.examples.quantum.mechanics;
+  exports arb.stochastic.processes.operators;
   exports arb.expressions;
   exports arb.expressions.decompiler;
   exports arb.expressions.nodes;
