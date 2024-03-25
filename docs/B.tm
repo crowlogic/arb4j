@@ -23,7 +23,8 @@
   -<frac|n|2><right|)> <sqrt|\<pi\>>>\ 
 
   <\equation*>
-    <frac| 1|<sqrt|\<pi\>>> sin <space|-0.17em><around*|(|<frac|\<pi\>*n|2>|)>*n<sqrt|2*<around*|(|k+1|)>+1>
+    lim<rsub|k\<rightarrow\>0><frac| 1|<sqrt|\<pi\>>> sin
+    <space|-0.17em><around*|(|<frac|\<pi\>*n|2>|)>*n<sqrt|2*<around*|(|k+1|)>+1>
     <frac|\<Pi\><rsub|i=1><rsup|k>*<space|-0.17em><around*|(|n+2*i-1|)>*<around*|(|n-2*i+1|)>|\<Pi\><rsub|i=1><rsup|k+1><space|-0.17em><around*|(|n+2*i-2|)>*<around*|(|n-2*i+2|)>>
   </equation*>
 </body>
