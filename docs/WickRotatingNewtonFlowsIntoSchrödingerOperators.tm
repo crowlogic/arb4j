@@ -1,6 +1,6 @@
 <TeXmacs|2.1.1>
 
-<style|generic>
+<style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
 
 <\body>
   <doc-data|<doc-title|Wick Rotating the Newton Flow Into A Schrödinger
@@ -12,7 +12,7 @@
   The Newton flow for <math|f> is given by:
 
   <\equation>
-    <frac|d*z|d*t>=-<frac|f<around|(|z|)>|f<rprime|'><around|(|z|)>>\<forall\><space|1em>z\<in\>\<bbb-C\>,t\<in\>\<bbb-R\>
+    <frac|d*z|d*t>=-<frac|f<around|(|z<around*|(|t|)>|)>|f<rprime|'><around|(|z<around*|(|t|)>|)>>\<forall\><space|1em>z\<in\>\<bbb-C\>,t\<in\>\<bbb-R\>
   </equation>
 
   Wick rotation: <math|t\<mapsto\>-i*\<tau\>>, with
@@ -66,7 +66,7 @@
   yields a Schrödinger equation in imaginary time,
 
   <\equation>
-    -<frac|\<partial\>*\<psi\>|\<partial\>*\<tau\>>=<around|(|-<frac|1|2*m>*\<nabla\><rsup|2>+V<around|(|z|)>|)>*\<psi\>
+    -<frac|\<partial\>*\<psi\>|\<partial\>*\<tau\>>=<around|(|-<frac|1|2*m>*\<nabla\><rsup|2>+V<around|(|z|)>|)>*\<psi\><around|(|z,\<tau\>|)>
   </equation>
 
   whose solutions <math|\<psi\><around|(|z,\<tau\>|)>> exhibit dynamics that
@@ -97,6 +97,7 @@
 
 <\initial>
   <\collection>
+    <associate|magnification|1.2>
     <associate|page-height|auto>
     <associate|page-medium|paper>
     <associate|page-type|letter>
@@ -108,7 +109,7 @@
   <\collection>
     <associate|auto-1|<tuple|?|1|../../.TeXmacs/texts/scratch/no_name_32.tm>>
     <associate|auto-2|<tuple|2|1|../../.TeXmacs/texts/scratch/no_name_32.tm>>
-    <associate|auto-3|<tuple|3|1|../../.TeXmacs/texts/scratch/no_name_32.tm>>
+    <associate|auto-3|<tuple|3|2|../../.TeXmacs/texts/scratch/no_name_32.tm>>
     <associate|auto-4|<tuple|6|2|../../.TeXmacs/texts/scratch/no_name_32.tm>>
   </collection>
 </references>
@@ -129,7 +130,7 @@
       <no-break><pageref|auto-3><vspace|0.5fn>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Solution
-      for <with|mode|<quote|math>|\<psi\><around|(|z,\<tau\>|)>>>
+      for <with|color|<quote|#503050>|font-family|<quote|rm>|<with|mode|<quote|math>|\<psi\><around|(|z,\<tau\>|)>>>>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-4><vspace|0.5fn>
     </associate>
