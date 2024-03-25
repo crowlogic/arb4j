@@ -3,7 +3,7 @@
 <style|<tuple|generic|alt-colors|boring-white|framed-theorems>>
 
 <\body>
-  <doc-data|<doc-title|The Spectral Representation of Stochastic
+  <doc-data|<doc-title|Spectral Representation of Stochastic
   Processes>|<doc-author|<author-data|<author-name|Stephen
   Crowley>|<\author-affiliation>
     <date|>
@@ -16,19 +16,17 @@
     approach>. <newblock>Springer-Verlag, Berlin, Heidelberg, 1991.<newblock>
   </abstract>>
 
-  Following <cite|stochasticFiniteElements>,a rigorous exposition of the
-  basic concepts of the theory of representation for random processes can be
-  formulated (Parzen, 1959). This theory is quite rich and mature
-  mathematical subject. The development of the theory parallels that of the
-  modern theory of random processes, and has had its origin in the need for
-  more sophisticated models in applied statistics. Most of the related
-  results have been derived for the class of second order processes. Perhaps
-  the most important result is the spectral representation of random
-  processes (Gel'fand and Vilenkin, 1964), which, in its most general form,
-  can be stated as
+  Following verabatim(for the most part) the excellent account of the theory
+  of the spectral representation of stochastic proceses
+  <cite|stochasticFiniteElements>, the central concepts of the theory of
+  representation for random processes can be formulated where the majority of
+  the results have been derived for the class of second order processes. A
+  very important result is the <verbatim|Gelfand an-Vilenkin spectral
+  representation of random processes> which, in its most general form, can be
+  stated as
 
   <\equation>
-    w*<around|(|x,\<theta\>|)>=<big|int>g<around|(|x|)>*d*\<mu\><around|(|\<theta\>|)>
+    w*<around|(|x,\<theta\>|)>=<big|int>g<around|(|x|)>*d*\<mu\><around|(|\<theta\>|)><label|2.1>
   </equation>
 
   where <math|w*<around|(|x,\<theta\>|)>> is a stochastic process whose
@@ -36,7 +34,7 @@
   admits of the decomposition
 
   <\equation>
-    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int>g<around|(|x<rsub|1>|)>*g<around|(|x<rsub|2>|)>*d*\<mu\><rsub|1><around|(|\<theta\>|)>*d*\<mu\><rsub|2><around|(|\<theta\>|)>
+    C<rsub|w*w><around|(|x<rsub|1>,x<rsub|2>|)>=<big|int>g<around|(|x<rsub|1>|)>*g<around|(|x<rsub|2>|)>*d*\<mu\><rsub|1><around|(|\<theta\>|)>*d*\<mu\><rsub|2><around|(|\<theta\>|)><label|2.2>
   </equation>
 
   In equation (2.1), <math|g<around|(|x|)>> is a deterministic function.
@@ -45,8 +43,8 @@
   <math|\<sigma\>>-field <math|\<Psi\>> of random events. An important
   specialization of the spectral decomposition occurs if the process
   <math|w*<around|(|x,\<theta\>|)>> is wide stationary. In this case,
-  equation (2.1) can be shown to reduce to the Wiener-Khintchine relation
-  (Yaglom, 1962) and the following equations hold
+  equation (<reference|2.1>) can be shown to reduce to the Wiener-Khintchine
+  relation (Yaglom, 1962) and the following equations hold
 
   <\equation>
     w*<around|(|x,\<theta\>|)>=<big|int><rsub|-\<infty\>><rsup|\<infty\>>e<rsup|i*\<omega\><rsup|T>*x>*d*\<mu\><around|(|\<omega\>,\<theta\>|)>
@@ -59,8 +57,9 @@
   </equation>
 
   Here, the symbol <math|T> denotes vector transposition,
-  <math|S<around|(|\<omega\>|)>> is the usual spectral density of the
-  stationary process, and <math|\<omega\>> is the wave number vector.
+  <math|S<around|(|\<omega\>|)>> is the usual <verbatim|spectral density> of
+  the stationary process, and <math|\<omega\>> is the <verbatim|wave number
+  vector>.
 
   The preceding representations have had a strong impact on the subsequent
   development of the theory of random processes. However, their applications
@@ -68,9 +67,17 @@
   largely attributed to the fact that all of these representations involve
   differentials of random functions, and are therefore set in an infinite
   dimensional space, not readily amenable to computational algorithms. An
-  alternative formulation of the spectral representation, and one which is
-  extensively used in the sequel, is the Karhunen-Loeve expansion whereby a
-  random process <math|w*<around|(|x,\<theta\>|)>> can be expanded in terms
+  analagous problem arises in <cite-detail|stochasticInferenceTheory|Ch.1
+  Bibliogaphical notes, p.18> where the hoped for revolution in von Neumann's
+  zero-sum two person sum games formal similarity to a problem in inference
+  theory on the nature of the distinguishibility of hypothesis due to the
+  fact that no one has so far been able to generalize the theory to the
+  realistic case of stochastic processses due to the infinite-dimensionality
+  just mentioned.\ 
+
+  \ An alternative formulation of the spectral representation, and one which
+  is extensively used in the sequel, is the Karhunen-Loeve expansion whereby
+  a random process <math|w*<around|(|x,\<theta\>|)>> can be expanded in terms
   of a denumerable set of orthogonal random variables in the form
 
   <\equation>
@@ -675,7 +682,9 @@
 
 <\references>
   <\collection>
+    <associate|2.1|<tuple|1|1>>
     <associate|2.11|<tuple|11|3>>
+    <associate|2.2|<tuple|2|1>>
     <associate|2.33|<tuple|35|8>>
     <associate|2.57|<tuple|37|8>>
     <associate|2.79|<tuple|52|11>>
@@ -684,11 +693,11 @@
     <associate|auto-11|<tuple|1.2.1|5>>
     <associate|auto-14|<tuple|1.2.1.3|5>>
     <associate|auto-15|<tuple|1.2.1.4|5>>
-    <associate|auto-16|<tuple|1.2.2|6>>
-    <associate|auto-17|<tuple|2|6>>
+    <associate|auto-16|<tuple|1.2.2|7>>
+    <associate|auto-17|<tuple|2|7>>
     <associate|auto-18|<tuple|1.2.3|7>>
-    <associate|auto-19|<tuple|1.2.4|7>>
-    <associate|auto-20|<tuple|1.2.4|7>>
+    <associate|auto-19|<tuple|1.2.4|8>>
+    <associate|auto-20|<tuple|1.2.4|8>>
     <associate|auto-21|<tuple|1.2.4|8>>
     <associate|auto-24|<tuple|4|8>>
     <associate|auto-25|<tuple|4.1|8>>
@@ -708,6 +717,8 @@
   <\collection>
     <\associate|bib>
       stochasticFiniteElements
+
+      stochasticInferenceTheory
 
       stochasticFiniteElements
 
