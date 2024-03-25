@@ -42,12 +42,12 @@
   often described by a complex number <math|\<alpha\>>, where\ 
 
   <\equation>
-    \<alpha\>=<frac|<around|(|m*\<omega\>*x<rsub|0>+i*p<rsub|0>|)>|<sqrt|2*\<hbar\>*m*\<omega\>>>*
+    \<alpha\><around*|(|x<rsub|0>,p<rsub|0>|)>=<frac|<around|(|m*\<omega\>*x<rsub|0>+i*p<rsub|0>|)>|<sqrt|2*\<hbar\>*m*\<omega\>>>*
   </equation>
 
-  \ with <math|x<rsub|0>> and <math|p<rsub|0>> being the average position and
-  momentum, respectively. The Wigner function for a coherent state centered
-  at <math|\<alpha\>> is:
+  \ with <math|x<rsub|0>> and <math|p<rsub|0>> being the first moment of the
+  position and momentum, respectively. The Wigner function for a coherent
+  state centered at <math|\<alpha\>> is:
 
   <\equation>
     W<rsub|\<alpha\>><around|(|x,p|)>=<frac|e<rsup|-<frac|m*\<omega\>|\<hbar\>>*<around|(|x-x<rsub|0>|)><rsup|2>-<frac|1|\<hbar\>*m*\<omega\>>*<around|(|p-p<rsub|0>|)><rsup|2>>|\<pi\>*\<hbar\>>*
