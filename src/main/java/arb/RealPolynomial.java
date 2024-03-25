@@ -234,6 +234,11 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     return res;
   }  
 
+  public RealPolynomial additiveIdentity()
+  {
+    return zero();
+  }
+  
   public RealPolynomial multiplicativeIdentity()
   {
     return identity();

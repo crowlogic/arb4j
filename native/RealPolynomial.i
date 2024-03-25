@@ -207,6 +207,11 @@ import arb.utensils.Utensils;
     return res;
   }  
 
+  public RealPolynomial additiveIdentity()
+  {
+    return zero();
+  }
+  
   public RealPolynomial multiplicativeIdentity()
   {
     return identity();
