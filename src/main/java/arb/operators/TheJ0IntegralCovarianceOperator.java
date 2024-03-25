@@ -24,8 +24,11 @@ public class TheJ0IntegralCovarianceOperator implements
     return null;
   }
 
+  /**
+   * k is the order of J function J_k, for J_0 you need to take the limit
+   */
   RealSequence ξ =
-                 RealSequence.express("1/√(π)*sin((π*n)/2)*n*√(2*(k+1)+1)*Π(n+2*i-1)*(n-2*i+1){i=1..k}/Π(n+2*i-2)*(n-2*i+2){i=1..k+1}");
+                 RealSequence.express("1/√(π)*sin((π*n)/2)*n*Π(n+2*i-1)*(n-2*i+1){i=1..k}/Π(n+2*i-2)*(n-2*i+2)√(2*(k+1)+1){i=1..k+1}");
 
   @Override
   public BesselFunctionOfTheFirstKind kernel()
