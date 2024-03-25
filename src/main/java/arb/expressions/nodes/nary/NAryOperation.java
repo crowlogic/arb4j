@@ -1,19 +1,11 @@
 package arb.expressions.nodes.nary;
 
-import static arb.expressions.Compiler.checkClassCast;
-import static arb.expressions.Compiler.invokeSetMethod;
-import static arb.expressions.Compiler.loadBitsParameter;
+import static arb.expressions.Compiler.*;
 import static arb.utensils.Utensils.getMethodDescriptor;
 import static arb.utensils.Utensils.indent;
 import static java.lang.String.format;
 import static java.lang.System.out;
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.GETFIELD;
-import static org.objectweb.asm.Opcodes.IFLE;
-import static org.objectweb.asm.Opcodes.INVOKEINTERFACE;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
-import static org.objectweb.asm.Opcodes.POP;
-import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -520,7 +512,16 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
 
   public void loadResultVariable(MethodVisitor methodVisitor)
   {
-    // expression.addToTypeStack(generatedType, "result");
+    if (expression.traceGeneration)
+    {
+
+      System.err.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
+                        getClass().getSimpleName(),
+                        resultVariable,
+                        generatedType);
+
+      // expression.addToTypeStack(generatedType, "result");
+    }
     getField(methodVisitor, expression.className, resultVariable, generatedType);
   }
 

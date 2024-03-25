@@ -5,6 +5,8 @@
 #include <arb_mat.h>
 #include <flint/fmpq.h>
 
+void arb_poly_pow_ui(arb_poly_t res, const arb_poly_t poly, ulong exp, slong prec);
+
 void fmpz_abs(fmpz_t f1, const fmpz_t f2);
 void fmpz_neg(fmpz_t f1, const fmpz_t f2);
 

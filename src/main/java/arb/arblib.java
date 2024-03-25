@@ -9,6 +9,10 @@
 package arb;
 
 public class arblib {
+  public static void arb_poly_pow_ui(RealPolynomial res, RealPolynomial poly, long exp, int prec) {
+    arblibJNI.arb_poly_pow_ui(RealPolynomial.getCPtr(res), res, RealPolynomial.getCPtr(poly), poly, exp, prec);
+  }
+
   public static void fmpz_abs(long f1, long f2) {
     arblibJNI.fmpz_abs(f1, f2);
   }

@@ -125,4 +125,9 @@ public class factorP1 implements
     endIndexℤ2.close();
     ℝ1.close();
   }
+
+  public String toString()
+  {
+    return "factorP1:n➔z^n*∏k➔α[k]₍ₙ₎{k=1…p}/(n!*∏k➔β[k]₍ₙ₎{k=1…q})";
+  }
 }

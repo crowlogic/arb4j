@@ -166,6 +166,11 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     return g.add(this, bits, res);   
   }
   
+  public RealPolynomial add(RealPolynomial evaluate, int bits)
+  {
+    return add(evaluate, bits, this);
+  }
+    
   public RealPolynomial fitLength( int n )
   {
     arblib.arb_poly_fit_length(this, n);
@@ -684,6 +689,11 @@ public class RealPolynomial implements AutoCloseable,RealFunction,Ring<RealPolyn
     return this;
   }
 
+  public RealPolynomial pow(Integer in, int bits, RealPolynomial result)
+  {
+    arblib.arb_poly_pow_ui(result,this,in.getUnsignedValue(), bits);
+    return this;
+  }
 
   public void setCoeffsNative(Real value) {
     arblibJNI.RealPolynomial_coeffsNative_set(swigCPtr, this, Real.getCPtr(value), value);

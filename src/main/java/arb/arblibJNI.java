@@ -9,6 +9,7 @@
 package arb;
 
 public class arblibJNI {
+  public final static native void arb_poly_pow_ui(long jarg1, RealPolynomial jarg1_, long jarg2, RealPolynomial jarg2_, long jarg3, int jarg4);
   public final static native void fmpz_abs(long jarg1, long jarg2);
   public final static native void fmpz_neg(long jarg1, long jarg2);
   public final static native void fmpz_mul_ui(long jarg1, long jarg2, long jarg3);
