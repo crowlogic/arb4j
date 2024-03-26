@@ -19,6 +19,13 @@ import arb.documentation.references.Reference;
 public class Bibliography extends
                           AbstractBibliography
 {
+  public static Book          outOfThisWorld                                          =
+                                             new Book("Out of This World: Thinking Fourth Dimensionally",
+                                                      "Neville Goddard",
+                                                      "2010").setPublisher("Martino Fine Books")
+                                                             .setAddress("Eastford, CT")
+                                                             .setEdition("Reprint of First 1949 Edition");
+
   public static Book          specialFunctionsOfMathematicalPhysics                   =
                                                                     new Book("Formulas and Theorems for the Special Functions of Mathematical Physics",
                                                                              "Wilhelm Magnus, Fritz Oberhettinger, Raj Pal Soni",
