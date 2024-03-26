@@ -136,22 +136,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
                        Typesettable
 {
 
-  public static boolean      computeFrames              =
-                                           Boolean.valueOf(System.getProperty("arb4j.compiler.computeFrames",
-                                                                              "true"));
+  public static boolean         computeFrames              =
+                                              Boolean.valueOf(System.getProperty("arb4j.compiler.computeFrames",
+                                                                                 "true"));
 
-  public static final String evaluationMethodDescriptor =
-                                                        "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
+  public static final String    evaluationMethodDescriptor =
+                                                           "(Ljava/lang/Object;IILjava/lang/Object;)Ljava/lang/Object;";
 
-  public static boolean      ignoreTODO                 = true;
+  public static boolean         ignoreTODO                 = true;
 
-  public static final String IS_INITIALIZED             = "isInitialized";
+  public static final String    IS_INITIALIZED             = "isInitialized";
 
-  public static final String nameOfInitializerFunction  = "initialize";
+  public static final String    nameOfInitializerFunction  = "initialize";
 
-  public static boolean      saveClasses                =
-                                         Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
-                                                                            "true"));
+  public static boolean         saveClasses                =
+                                            Boolean.valueOf(System.getProperty("arb4j.compiler.saveClasses",
+                                                                               "true"));
 
   public static <D, R, F extends Function<D, R>>
          Expression<D, R, F>
@@ -305,7 +305,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public ArrayList<LiteralConstant<D, R, F>>      literalConstants              = new ArrayList<>();
 
-  private FunctionMapping<D, R>                   mapping;
+  private FunctionMapping<D, R> mapping;
 
   public int                                      position                      = -1;
 
@@ -1732,20 +1732,11 @@ public class Expression<D, R, F extends Function<D, R>> implements
     return newSyntaxTextTree().toString();
   }
 
-  public boolean hasPolynomialRange()
-  {
-    return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class);
-  }
-
   public boolean thisOrAnyAscendentExpressionHasPolynomialRange()
   {
-    return hasPolynomialRange() || anyAscendentExpressionHasPolynomialRange();
-  }
-
-  private boolean anyAscendentExpressionHasPolynomialRange()
-  {
-    return ascendentExpression != null
-                  && ascendentExpression.thisOrAnyAscendentExpressionHasPolynomialRange();
+    return rangeType.equals(RealPolynomial.class) || rangeType.equals(ComplexPolynomial.class)
+                  || (ascendentExpression != null
+                                && ascendentExpression.thisOrAnyAscendentExpressionHasPolynomialRange());
   }
 
   public void throwMissingClosingParenthesisException(Object node)
@@ -1776,7 +1767,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
   @Override
   public String toString()
   {
-    return String.format("Expression[expression=%s,\n%sclassName=%s,\n%sfunctionName=%s, recursive=%s, functionClass=%s]",
+    return String.format("Expression[expression=%s,\n%sclassName=%s,\n%sfunctionName=%s, recursive=%s, functionClass=%s] + from ",
                          expression,
                          indent(22),
                          className,
