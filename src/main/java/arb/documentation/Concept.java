@@ -6,5 +6,6 @@ package arb.documentation;
  */
 public interface Concept
 {
-  
+  public ChapterReferral getChapterReferrals();
+
 }

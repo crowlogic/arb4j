@@ -245,12 +245,12 @@ public class Bibliography extends
                                                                      "Harald Cramér and M.R. Leadbetter",
                                                                      "1967").setSeries("Wiley Series in Probability and Mathematical Statistics");
 
-  public static Book          stationaryCorrelationFunctions                          =
-                                                             new Book("Correlation Theory of Stationary and Related Random Functions",
-                                                                      "Yaglom, A.M.",
-                                                                      "1987").setSeries("Applied Probability")
-                                                                             .setPublisher("Springer New York")
-                                                                             .setVolume("I: Basic Results");
+  public static Book          correlationTheoryOfStationaryRandomProcesses            =
+                                                                           new Book("Correlation Theory of Stationary and Related Random Functions",
+                                                                                    "Yaglom, A.M.",
+                                                                                    "1987").setSeries("Applied Probability")
+                                                                                           .setPublisher("Springer New York")
+                                                                                           .setVolume("I: Basic Results");
 
   public static Book          stochasticFiniteElements                                =
                                                        new Book("Stochastic finite elements: a spectral approach",
