@@ -5,14 +5,12 @@ import arb.documentation.ChapterReferral;
 import arb.documentation.Concept;
 
 /**
- * An isotropic random field is a mathematical construct used to model spatially
- * varying phenomena where the statistical properties are the same in all
- * directions. This concept is particularly relevant in fields like
- * geostatistics, physics, and cosmology, where it is essential to analyze
- * spatial data or physical properties that exhibit uniformity in all
- * orientations.
+ * <pre>
+ * An isotropic random field is a random field that is invariant 
+ * under rotations. It models spatially varying phenomena where the 
+ * properties are the same in all directions.
  * 
- * Formally, a random field X(r), where r is a position vector in a space (which
+ * A random field X(r), where r is a position vector in a space (which
  * can be two-dimensional, three-dimensional, etc.), is said to be isotropic if
  * its statistical properties are invariant under rotations. This means that the
  * statistical properties of X(r) do not change when the coordinate system is
@@ -32,6 +30,7 @@ import arb.documentation.Concept;
  * between any two points depends only on the Euclidean distance between those
  * points, which is a significant simplification compared to anisotropic fields,
  * where the correlation might also depend on the direction between points.
+ * </pre>
  * 
  * @see BusinessSourceLicenseVersionOnePointOne © terms of the
  *      {@link TheArb4jLibrary}
