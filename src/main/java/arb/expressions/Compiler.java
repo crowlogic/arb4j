@@ -177,6 +177,30 @@ public class Compiler
                    null);
   }
 
+  @SuppressWarnings("unchecked")
+  public static <D, R, F extends Function<? extends D, ? extends R>>
+         Class<F>
+         loadFunctionClass(String className, byte[] bytecodes, Context context)
+  {
+    assert className != null;
+    if (context != null && context.verbose)
+    {
+      System.out.println("Loading " + className);
+    }
+    try
+    {
+      CompiledExpressionClassLoader loader = context != null ? context.classLoader
+                                                             : new CompiledExpressionClassLoader();
+      loader.defineClass(className, bytecodes);
+      return (Class<F>) loader.findClass(className);
+    }
+    catch (Exception e)
+    {
+      throw new RuntimeException(e.getMessage(),
+                                 e);
+    }
+  }
+
   public static <D, R, F extends Function<D, R>>
          ClassVisitor
          generateFunctionInterface(Expression<D, R, F> expression,
