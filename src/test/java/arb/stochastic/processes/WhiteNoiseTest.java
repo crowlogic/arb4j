@@ -10,17 +10,18 @@ public class WhiteNoiseTest extends
 
   public static void testPDF()
   {
-    GaussianDensityFunction p            = new GaussianDensityFunction(new Real("5",
-                                                                                256),
-                                                                       new Real("2",
-                                                                                256));
-    Real                    somePoint    = new Real("0.23",
-                                                    256);
-    Real                    pAtSomePoint = p.evaluate(somePoint, 1, 256, new Real());
-    pAtSomePoint.printPrecision = true;
+    try ( GaussianDensityFunction p = new GaussianDensityFunction(new Real("5",
+                                                                           256),
+                                                                  new Real("2",
+                                                                           256)))
+    {
+      Real somePoint    = new Real("0.23",
+                                   256);
+      Real pAtSomePoint = p.evaluate(somePoint, 1, 256, new Real());
+      pAtSomePoint.printPrecision = true;
 
-
-    assertEquals(0.0116064045858180667, pAtSomePoint.doubleValue(), Math.pow(10, -17));
+      assertEquals(0.0116064045858180667, pAtSomePoint.doubleValue(), Math.pow(10, -17));
+    }
   }
 
 }

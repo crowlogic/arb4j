@@ -30,6 +30,7 @@ public final class ArcLengthFunction implements
   final RealToComplexFunction absdf;
   Magnitude                   absErr = new Magnitude().set(Math.pow(10, -75));
 
+  @SuppressWarnings("resource")
   @Override
   public Real evaluate(Real a, int order, int prec, Real q)
   {

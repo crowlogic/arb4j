@@ -66,6 +66,7 @@ public class RealDataSet extends
     data.close();
   }
 
+  @SuppressWarnings("resource")
   public RealDataSet structure(int n)
   {
     var         x    = getRealXValues();

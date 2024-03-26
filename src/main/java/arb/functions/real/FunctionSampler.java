@@ -66,6 +66,7 @@ public class FunctionSampler implements
    * @param parallel A boolean that indicates if the process should be
    *                 parallelized.
    */
+  @SuppressWarnings("resource")
   public final void resampleFunctions(boolean parallel)
   {
     assert functions.size() == dataSets.size();

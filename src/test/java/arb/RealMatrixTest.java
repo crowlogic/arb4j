@@ -47,14 +47,16 @@ public class RealMatrixTest extends
     RealMatrix sqrtCorrelation          = correlation.chol(prec, RealMatrix.newMatrix(2, 2));
     RealMatrix reconstructedCorrelation = RealMatrix.newMatrix(2, 2);
 
-    sqrtCorrelation.mul(sqrtCorrelation.transpose(RealMatrix.newMatrix(2, 2)), prec, reconstructedCorrelation);
+    sqrtCorrelation.mul(sqrtCorrelation.transpose(RealMatrix.newMatrix(2, 2)),
+                        prec,
+                        reconstructedCorrelation);
 
     assertTrue(reconstructedCorrelation.contains(correlation));
     assertTrue(reconstructedCorrelation.overlaps(correlation));
 
-
   }
 
+  @SuppressWarnings("resource")
   public void testDiagonal()
   {
     int        n    = 5;
@@ -65,7 +67,8 @@ public class RealMatrixTest extends
     IntStream.range(0, n)
              .forEach(i -> IntStream.range(0, n)
                                     .forEach(j -> assertTrue(A.get(i, j)
-                                                              .equals(i == j ? diag.get(i) : RealConstants.zero))));
+                                                              .equals(i == j ? diag.get(i)
+                                                                             : RealConstants.zero))));
   }
 
   /**
@@ -138,8 +141,10 @@ public class RealMatrixTest extends
   {
     int n = 4;
 
-    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A"); RealMatrix LU = RealMatrix.newMatrix(n, n);
-          RealMatrix lowerFactor = RealMatrix.newMatrix(n, n); RealMatrix upperFactor = RealMatrix.newMatrix(n, n);
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A");
+          RealMatrix LU = RealMatrix.newMatrix(n, n);
+          RealMatrix lowerFactor = RealMatrix.newMatrix(n, n);
+          RealMatrix upperFactor = RealMatrix.newMatrix(n, n);
           RealMatrix B = RealMatrix.newMatrix(n, n).setName("B"))
     {
 
@@ -162,7 +167,6 @@ public class RealMatrixTest extends
       upperFactor.permute(permutation);
 
       lowerFactor.mul(upperFactor, 128, B);
-
 
       RealMatrix diff = A.sub(B, 128, factorization);
       diff.printPrecision = true;
@@ -197,8 +201,10 @@ public class RealMatrixTest extends
   {
     int n = 4;
 
-    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A"); RealMatrix diff = RealMatrix.newMatrix(n, n);
-          RealMatrix lowerFactor = RealMatrix.newMatrix(n, n); RealMatrix upperFactor = RealMatrix.newMatrix(n, n);
+    try ( RealMatrix A = RealMatrix.newMatrix(n, n).setName("A");
+          RealMatrix diff = RealMatrix.newMatrix(n, n);
+          RealMatrix lowerFactor = RealMatrix.newMatrix(n, n);
+          RealMatrix upperFactor = RealMatrix.newMatrix(n, n);
           RealMatrix B = RealMatrix.newMatrix(n, n).setName("B"))
     {
 
@@ -207,11 +213,9 @@ public class RealMatrixTest extends
       A.getRow(2).set(3, 24, 90, 141);
       A.getRow(3).set(4, 29, 105, 265);
 
-      
       A.computeLowerUpperFactorization(128, lowerFactor, upperFactor);
 
       lowerFactor.mul(upperFactor, 128, B);
-
 
       A.sub(B, 128, diff);
       diff.printPrecision = true;
@@ -230,10 +234,11 @@ public class RealMatrixTest extends
 
   public String getPermutationString(LongBuffer permutation)
   {
-    String permutationString = "[" + IntStream.range(0, permutation.capacity())
-                                              .mapToObj(i -> String.valueOf(permutation.get(i)))
-                                              .collect(Collectors.joining(","))
-                  + "]";
+    String permutationString = "["
+                               + IntStream.range(0, permutation.capacity())
+                                          .mapToObj(i -> String.valueOf(permutation.get(i)))
+                                          .collect(Collectors.joining(","))
+                               + "]";
     return permutationString;
   }
 

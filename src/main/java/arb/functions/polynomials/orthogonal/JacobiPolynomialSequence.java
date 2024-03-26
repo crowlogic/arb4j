@@ -23,12 +23,13 @@ import arb.functions.real.RealNullaryFunction;
  * The Jacobi polynomials are mutually orthogonal with respect to the weight
  * function
  * 
- * <pre>(1-x)ᵅ(1+x)ᵝ</pre>
+ * <pre>
+ * (1-x)ᵅ(1+x)ᵝ
+ * </pre>
  * 
  * over the interval [-1,1] when α,β>-1 and are recursively defined by
  * 
- * The Jacobi polynomials are also known as a
- * {@link HypergeometricPolynomial}s
+ * The Jacobi polynomials are also known as a {@link HypergeometricPolynomial}s
  * 
  * <pre>
  *  C(n)=2n+α+β
@@ -49,13 +50,15 @@ import arb.functions.real.RealNullaryFunction;
  *      {@link TheArb4jLibrary}
  */
 public class JacobiPolynomialSequence implements
-                                      AutoCloseable, OrthogonalPolynomialSequence
+                                      AutoCloseable,
+                                      OrthogonalPolynomialSequence
 {
   final public static boolean verbose = false;
 
   public static Real          domain  = new Real("0+/-1",
                                                  128);
 
+  @SuppressWarnings("resource")
   public static void main(String args[])
   {
     JacobiPolynomialSequence P = new JacobiPolynomialSequence(Real.of("-0.5", 128),
@@ -83,36 +86,45 @@ public class JacobiPolynomialSequence implements
   final public Context                           context = new Context(α,
                                                                        β);
 
-  final public RealFunction                      C       = RealFunction.express("C", "2*n+α+β", context, verbose);
+  final public RealFunction                      C       = RealFunction.express("C",
+                                                                                "2*n+α+β",
+                                                                                context,
+                                                                                verbose);
 
-  final public Function<Integer, Real>           F       = Function.express(Integer.class,
+  final public Function<Integer,
+                Real>                            F       = Function.express(Integer.class,
                                                                             Real.class,
                                                                             "F",
                                                                             "n➔C(n-1)*C(n)",
                                                                             context);
 
-  final public NullaryFunction<Real>             G       = RealNullaryFunction.express("G", "α²-β²", context);
+  final public NullaryFunction<Real>             G       = RealNullaryFunction.express("G",
+                                                                                       "α²-β²",
+                                                                                       context);
 
-  final public Function<Integer, RealPolynomial> A       = Function.express(Integer.class,
-                                                                            RealPolynomial.class,
-                                                                            "A",
-                                                                            "n➔(F(n)*x + G())*(C(n) - 1)/2",
-                                                                            context);
+  final public Function<Integer, RealPolynomial> A       =
+                                                   Function.express(Integer.class,
+                                                                    RealPolynomial.class,
+                                                                    "A",
+                                                                    "n➔(F(n)*x + G())*(C(n) - 1)/2",
+                                                                    context);
 
   final public RealFunction                      E       = RealFunction.express("E",
                                                                                 "n➔n*C(n/2)*C(n-1)",
                                                                                 context,
                                                                                 verbose);
-  final public RealFunction                      B       = RealFunction.express("B",
-                                                                                "n➔(n+α-1)*(n+β-1)*C(n)",
-                                                                                context,
-                                                                                verbose);
+  final public RealFunction                      B       =
+                                                   RealFunction.express("B",
+                                                                        "n➔(n+α-1)*(n+β-1)*C(n)",
+                                                                        context,
+                                                                        verbose);
 
-  final public Function<Integer, RealPolynomial> P       = Function.express(Integer.class,
-                                                                            RealPolynomial.class,
-                                                                            "P",
-                                                                            "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2.0,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
-                                                                            context);
+  final public Function<Integer, RealPolynomial> P       =
+                                                   Function.express(Integer.class,
+                                                                    RealPolynomial.class,
+                                                                    "P",
+                                                                    "n➔when(n=0,1,n=1,(C(1)*x-β+α)/2.0,else,(A(n)*P(n-1)-B(n)*P(n-2))/E(n))",
+                                                                    context);
 
   private RealFunction                           orthogonalityMeasure;
 
