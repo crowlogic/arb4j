@@ -74,8 +74,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return generatedType;
   }
 
-  private static final String caveat = "variable name clashes with "
-                                       + "the function name since its a recursve function";
+  private static final String variableNameClash = "variable name clashes with "
+                                                  + "the function name since its a recursve function";
 
   @Override
   public Class<?> type()
@@ -123,10 +123,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
     this.reference  = reference;
     this.variables  = expression.variables;
     assert reference != null;
-    assert !(expression.recursive && reference.name.equals(expression.functionName)) : caveat;
-    var contextVar = expression.getVariable(reference);
-    // reference.type = (expression.context == null || contextVar == null) ?
-    // domainType : contextVar.getClass();
+    assert !(expression.recursive
+                  && reference.name.equals(expression.functionName)) : variableNameClash;
 
     if (variables == null || !variables.map.containsKey(reference.name) || reference.type == null)
     {
@@ -171,7 +169,7 @@ public class Variable<D, R, F extends Function<D, R>> extends
   {
     if (expression.traceGeneration)
     {
-      System.out.format("Variable.generate( this=%s, resultType=%s)\n\n", this, resultType);
+      System.err.format("Variable.generate( this=%s, resultType=%s)\n\n", this, resultType);
     }
 
     generateReference(mv, resultType);
@@ -207,6 +205,14 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if (reference.index != null)
     {
       indexType = reference.index.type();
+
+      if (expression.traceGeneration)
+      {
+        System.err.format("Variable.generateIndexAccess() reference=%s index=%s indexType=%s\n",
+                          reference,
+                          reference.index,
+                          indexType);
+      }
 
       reference.index.generate(mv, indexType);
 
@@ -294,6 +300,11 @@ public class Variable<D, R, F extends Function<D, R>> extends
     return null;
   }
 
+  /**
+   * Resolve the {@link VariableReference#type} and establish its linkage
+   * 
+   * @param reference
+   */
   public void resolveReference(VariableReference<D, R, F> reference)
   {
     if (isIndeterminant)
@@ -329,37 +340,41 @@ public class Variable<D, R, F extends Function<D, R>> extends
     if (isIndependent = equals(inputVariable) || (inputVariable == null
                   && !expression.referencedVariables.containsKey(reference.name)))
     {
-      expression.inputNode = this;
-      reference.type       = expression.domainType;
-      if (expression.traceGeneration)
+      reference.type = expression.domainType;
+
+      if (expression.inputNode == null)
       {
-        System.err.println("Declaring " + reference + " as the input node to " + expression);
+        expression.inputNode = this;
+        if (expression.traceGeneration)
+        {
+          System.err.println("Declaring " + reference + " as the input node to " + expression);
+        }
       }
     }
     else
     {
-      if (expression.traceGeneration)
+      if (resolveAscendentInput(reference))
       {
-        System.err.println("Checking if "
-                           + reference
-                           + " is the indeterminant variable in a polynomial expression");
 
       }
-
-      if (isIndeterminant = expression.thisOrAnyAscendentExpressionHasPolynomialRange())
+      else if (isIndeterminant = expression.thisOrAnyAscendentExpressionHasPolynomialRange())
       {
         assert expression.indeterminateVariable == null
                       || expression.indeterminateVariable.equals(this) : "indeterminant expression already set to "
                                                                          + expression.indeterminateVariable
                                                                          + " but the code wants to set it to "
                                                                          + this;
-        expression.indeterminateVariable = this;
 
-        if (expression.traceGeneration)
+        if (expression.indeterminateVariable == null)
         {
-          System.err.format("Declaring %s to be the indeterminant of %s\n", this, expression);
+          if (expression.traceGeneration)
+          {
+            System.err.format("Declaring %s to be the indeterminant of %s\n", this, expression);
+          }
+          expression.indeterminateVariable = this;
 
         }
+
       }
       else
       {
@@ -383,6 +398,38 @@ public class Variable<D, R, F extends Function<D, R>> extends
         }
       }
     }
+  }
+
+  /**
+   * The realm of {@link Expression} and imagination is forever transcendend.
+   * 
+   * @author Longchenpa
+   * 
+   * @param ref
+   * 
+   * @return
+   */
+  public boolean resolveAscendentInput(VariableReference<D, R, F> ref)
+  {
+    Expression<?, ?, ?> ascendentExpression = expression.ascendentExpression;
+
+    if (ascendentExpression != null)
+    {
+      if (ascendentExpression.inputNode != null)
+      {
+        if (equals(ascendentExpression.inputNode))
+        {
+          if (expression.traceGeneration)
+          {
+            assert false : String.format("TODO: Declare %s in the ascendent %s to be the input of the ascendent of this %s in which it lives",
+                                         ref,
+                                         expression.ascendentExpression,
+                                         expression);
+          }
+        }
+      }
+    }
+    return false;
   }
 
   protected void resolveInheritedVariableReference(VariableReference<D, R, F> reference,

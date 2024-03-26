@@ -519,7 +519,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     if (expression.traceGeneration)
     {
 
-      System.err.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n",
+      System.err.format("%s.loadResultvariable( resultVariable= %s, generatedType=%s )\n\n",
                         getClass().getSimpleName(),
                         resultVariable,
                         generatedType);
