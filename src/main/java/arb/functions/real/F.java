@@ -7,6 +7,19 @@ import arb.RealPolynomial;
 public class F implements
                RealPolynomialNullaryFunction
 {
+  @SuppressWarnings("resource")
+  public static void main(String args[])
+  {
+    F f = new F();
+    f.α = Real.newVector(2).setName("α").set(-3, 1.75);
+    f.β = Real.newVector(1).setName("β").set(2);
+    f.N = new Integer(4).setName("N");
+    f.p = new Integer(2).setName("p");
+    f.q = new Integer(1).setName("q");
+    RealPolynomial great = f.evaluate(null, 128, new RealPolynomial());
+    System.out.format("%s=%s where %s, %s, %s, %s and %s", f, great, f.α, f.β, f.N, f.p,f.q);
+  }
+
   private boolean       isInitialized;
   Integer               c1;
   public Integer        p;

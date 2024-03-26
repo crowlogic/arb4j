@@ -61,7 +61,9 @@ public class factorP1 implements
     }
     while (k.increment().compareTo(endIndexℤ2) <= 0);
 
-    return var10000.div(var10001.mul(prodℝ2, bits, ℝ1), bits, result);
+    var10000.div(var10001.mul(prodℝ2, bits, ℝ1), bits, result);
+        
+    return result;
   }
 
   public factorP1()

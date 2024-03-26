@@ -8,6 +8,15 @@ import junit.framework.TestCase;
 public class RealPolynomialTest extends
                                 TestCase
 {
+  public void testPower()
+  {
+    try ( RealPolynomial p = RealPolynomial.newIdentityPolynomial())
+    {
+      RealPolynomial pSquared = p.pow(new Integer(2), 128, new RealPolynomial());
+      assertEquals("x²", pSquared.toString());
+    }
+  }
+
   /**
    * Assert that ∫5x + 10dx=2.5x² + 10x
    */

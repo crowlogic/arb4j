@@ -665,6 +665,12 @@ import arb.utensils.Utensils;
   public RealPolynomial pow(Integer in, int bits, RealPolynomial result)
   {
     arblib.arb_poly_pow_ui(result,this,in.getUnsignedValue(), bits);
-    return this;
+    return result;
   }
+  
+  @SuppressWarnings("resource")
+  public static RealPolynomial newIdentityPolynomial()
+  {
+    return new RealPolynomial().identity();
+  }  
 %};

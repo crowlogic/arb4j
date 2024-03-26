@@ -144,7 +144,7 @@ public class Integer implements
   @Override
   public String toString()
   {
-    return arblib.fmpz_get_str(null, 10, swigCPtr);
+    return ( name != null ? ( name + "=" ) : "" ) + arblib.fmpz_get_str(null, 10, swigCPtr);
   }
 
   static
