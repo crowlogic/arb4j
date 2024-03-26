@@ -279,9 +279,12 @@ import arb.utensils.Utensils;
       {
         if (i > 0)
         {
-          builder.append(xi.sign() >= 0 ? " + " : " ");
+          builder.append(((xi.sign() >= 0 && !builder.isEmpty()) ? " + " : " "));
         }
-        builder.append(xi);
+        if (i == 0 || !xi.isOne())
+        {
+          builder.append(xi);
+        }
         if (i > 0)
         {
           builder.append("x");
@@ -293,8 +296,8 @@ import arb.utensils.Utensils;
       }
     }
     return (builder.toString()
-                  + (remainder != null ? " with remainder " + remainder : "")).replaceAll("-",
-                                                                                          "- ");
+                  + (remainder != null ? " with remainder " + remainder : "")).replaceAll("-", "- ")
+                                                                              .trim();
   }
   
   /**

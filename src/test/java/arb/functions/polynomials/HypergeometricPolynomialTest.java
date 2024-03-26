@@ -54,6 +54,8 @@ public class HypergeometricPolynomialTest extends
   }
 
   /**
+   * Evaluating for the value x=2.3
+   * 
    * <pre style="font-family: monospace">
    * /-------------------------------------\
    * | n   | New sumR1      | valueR1      |
@@ -76,7 +78,8 @@ public class HypergeometricPolynomialTest extends
       F.α.set(-6, 2.5);
       F.β.set(1);
       RealPolynomial polynomial = F.evaluate(null, 128, new RealPolynomial());
-      System.out.println( "testSum=" + polynomial );
+      assertEquals("1 - 15x + 65.625x² - 131.25x³ + 135.3515625x⁴ - 70.3828125x⁵ + 14.6630859375x⁶",
+                   polynomial.toString());
       double val = polynomial.eval(2.3);
       assertEquals(145.01289685058583, val);
     }
