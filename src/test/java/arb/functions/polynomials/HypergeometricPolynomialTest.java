@@ -70,12 +70,14 @@ public class HypergeometricPolynomialTest extends
    */
   public static void testSum()
   {
-    HypergeometricPolynomial F = new HypergeometricPolynomial(2,
-                                                              1);
-    F.α.set(-6, 2.5);
-    F.β.set(1);
-    double val = F.evaluate(null, 128, new RealPolynomial()).eval(2.3);
-    assertEquals(145.01289685058583, val);
+    try ( HypergeometricPolynomial F = new HypergeometricPolynomial(2,
+                                                                    1))
+    {
+      F.α.set(-6, 2.5);
+      F.β.set(1);
+      double val = F.evaluate(null, 128, new RealPolynomial()).eval(2.3);
+      assertEquals(145.01289685058583, val);
+    }
   }
 
   public static void testSummand()

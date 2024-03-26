@@ -18,6 +18,7 @@ import org.objectweb.asm.Type;
 import arb.Integer;
 import arb.Real;
 import arb.RealPolynomial;
+import arb.ComplexPolynomial;
 import arb.documentation.BusinessSourceLicenseVersionOnePointOne;
 import arb.documentation.TheArb4jLibrary;
 import arb.exceptions.ExpressionCompilerException;
@@ -161,6 +162,7 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     assert functionClass != null : "functionClass=expression.className shan't be null";
     generatedType = (RealPolynomial.class.equals(expression.rangeType) ? Real.class
                                                                        : expression.rangeType);
+
     if (index != null)
     {
       expression.character =
@@ -287,6 +289,10 @@ public class NAryOperation<D, R, F extends Function<D, R>> extends
     if (!expression.thisOrAnyAscendentExpressionHasPolynomialRange())
     {
       resultType = scalarDowncast(resultType);
+    }
+    else if (RealPolynomial.class.equals(resultType) || ComplexPolynomial.class.equals(resultType))
+    {
+      generatedType = resultType;
     }
 
     assignFieldNames(resultType);
