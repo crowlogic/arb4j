@@ -327,7 +327,7 @@ public class Expression<D, R, F extends Function<D, R>> implements
 
   public Node<D, R, F>                            rootNode;
 
-  public boolean                                  traceGeneration               = true;
+  public boolean                                  traceGeneration               = false;
 
   public Stack<Class<?>>                          typeStack                     = new Stack<>();
 
@@ -1795,6 +1795,22 @@ public class Expression<D, R, F extends Function<D, R>> implements
                                  e);
     }
     return this;
+  }
+
+  public boolean anyAscendentInputIsEqualTo(String name)
+  {
+   if ( inputNode != null && inputNode.getName().equals(name))
+   {
+     return true;
+   }
+   if ( ascendentExpression != null )
+   {
+     if ( ascendentExpression.anyAscendentInputIsEqualTo(name))
+     {
+       return true;
+     }
+   }
+   return false;
   }
 
 }

@@ -265,7 +265,6 @@ import arb.utensils.Utensils;
     return get(i);
   }
   
- @Override
   public String toString()
   {
     if (getLength() == 0)
@@ -273,19 +272,16 @@ import arb.utensils.Utensils;
       return "∅";
     }
     StringBuilder builder = new StringBuilder();
-    for (int i = getLength() - 1; i >= 0; --i)
+    for (int i = 0; i < getLength(); i++)
     {
       Real xi = get(i);
       if (!xi.isZero())
       {
-        if (i < getLength() - 1)
+        if (i > 0)
         {
           builder.append(xi.sign() >= 0 ? " + " : " ");
         }
-        if (!xi.isOne() || i == 0 )
-        {
-          builder.append(xi);
-        }
+        builder.append(xi);
         if (i > 0)
         {
           builder.append("x");
@@ -296,7 +292,9 @@ import arb.utensils.Utensils;
         }
       }
     }
-    return (builder.toString() + (remainder != null ? " with remainder " + remainder : "")).replaceAll("-", "- ");
+    return (builder.toString()
+                  + (remainder != null ? " with remainder " + remainder : "")).replaceAll("-",
+                                                                                          "- ");
   }
   
   /**

@@ -346,7 +346,8 @@ public class Variable<D, R, F extends Function<D, R>> extends
 
       }
 
-      if (isIndeterminant = expression.thisOrAnyAscendentExpressionHasPolynomialRange())
+      if (isIndeterminant = (expression.thisOrAnyAscendentExpressionHasPolynomialRange()
+                    && !expression.anyAscendentInputIsEqualTo(getName())))
       {
         assert expression.indeterminateVariable == null
                       || expression.indeterminateVariable.equals(this) : "indeterminant expression already set to "

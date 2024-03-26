@@ -75,7 +75,9 @@ public class HypergeometricPolynomialTest extends
     {
       F.α.set(-6, 2.5);
       F.β.set(1);
-      double val = F.evaluate(null, 128, new RealPolynomial()).eval(2.3);
+      RealPolynomial polynomial = F.evaluate(null, 128, new RealPolynomial());
+      System.out.println( "testSum=" + polynomial );
+      double val = polynomial.eval(2.3);
       assertEquals(145.01289685058583, val);
     }
   }
